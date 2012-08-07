@@ -1,17 +1,26 @@
 package org.jboss.pressgangccms.client.local.presenter.base;
 
+import javax.inject.Inject;
+
 import org.jboss.errai.bus.client.api.ErrorCallback;
 import org.jboss.errai.bus.client.api.RemoteCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgangccms.client.local.constants.Constants;
+import org.jboss.pressgangccms.client.local.events.SearchViewEvent;
 import org.jboss.pressgangccms.client.local.resources.ImageResources;
+import org.jboss.pressgangccms.client.local.strings.PressGangCCMSUI;
+import org.jboss.pressgangccms.client.local.view.SearchView;
+import org.jboss.pressgangccms.client.local.view.WelcomeView;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
@@ -60,7 +69,11 @@ public interface Presenter
 	 */
 	public abstract class TemplateDisplay implements TemplateInterface
 	{
-		private static final ImageResources resources = GWT.create(ImageResources.class);
+		protected static final ImageResources resources = GWT.create(ImageResources.class);
+		protected static final PressGangCCMSUI pressGangCCMSUI = GWT.create(PressGangCCMSUI.class);
+
+		@Inject	private HandlerManager eventBus;
+		
 		private final VerticalPanel topLevelPanel = new VerticalPanel();
 		private final Label applicationTitle = new Label();
 		private final Label pageTitle = new Label();
@@ -101,17 +114,16 @@ public interface Presenter
 			topLevelPanel.add(footerPanel);
 
 			/* Build the shortcut panel */
-			search = new PushButton(new Image(resources.search()));
+			search = new PushButton(new Image(resources.search()), new Image(resources.searchDown()));
 			search.getUpHoveringFace().setImage(new Image(resources.searchHover()));
-			search.getDownFace().setImage(new Image(resources.searchDown()));
 			search.addStyleName("SpacedElement");
 			shortcutPanel.add(search);
 			
-			bug = new PushButton(new Image(resources.bug()));
+			bug = new PushButton(new Image(resources.bug()), new Image(resources.bugDown()));
 			bug.getUpHoveringFace().setImage(new Image(resources.bugHover()));
-			bug.getDownFace().setImage(new Image(resources.bugDown()));
 			bug.addStyleName("SpacedElement");
 			shortcutPanel.add(bug);
+			
 			
 			bind();
 		}
@@ -123,7 +135,7 @@ public interface Presenter
 				@Override
 				public void onClick(final ClickEvent event)
 				{
-					// TODO Auto-generated method stub
+					eventBus.fireEvent(new SearchViewEvent());
 				}
 			});
 			
@@ -132,7 +144,6 @@ public interface Presenter
 				@Override
 				public void onClick(final ClickEvent event)
 				{
-					bug.setFocus(false);
 					Window.open(Constants.BUGZILLA_URL, "_blank", "");
 				}
 			});

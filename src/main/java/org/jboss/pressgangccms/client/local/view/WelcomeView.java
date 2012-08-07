@@ -13,7 +13,7 @@ public class WelcomeView extends Presenter.TemplateDisplay implements WelcomePre
 
 	public WelcomeView()
 	{
-		super("PressGang CCMS", "Welcome");
+		super(pressGangCCMSUI.PressGangCCMS(), pressGangCCMSUI.Welcome());
 	}
 
 	@Override

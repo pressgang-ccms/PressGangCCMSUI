@@ -16,8 +16,6 @@ import com.google.gwt.user.client.ui.RootPanel;
 @EntryPoint
 public class App
 {
-	
-	
 	private HandlerManager eventBus = new HandlerManager(null);
 
 	@Inject

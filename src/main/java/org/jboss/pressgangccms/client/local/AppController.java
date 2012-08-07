@@ -4,8 +4,12 @@ import javax.enterprise.context.ApplicationScoped;
 
 import org.jboss.errai.ioc.client.container.IOCBeanDef;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
+import org.jboss.pressgangccms.client.local.events.SearchViewEvent;
+import org.jboss.pressgangccms.client.local.events.SearchViewEventHandler;
+import org.jboss.pressgangccms.client.local.presenter.SearchPresenter;
 import org.jboss.pressgangccms.client.local.presenter.WelcomePresenter;
 import org.jboss.pressgangccms.client.local.presenter.base.Presenter;
+import org.jboss.pressgangccms.client.local.view.SearchView;
 import org.jboss.pressgangccms.client.local.view.WelcomeView;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -29,6 +33,14 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 	public void bind()
 	{
 		History.addValueChangeHandler(this);
+
+		eventBus.addHandler(SearchViewEvent.TYPE, new SearchViewEventHandler()
+		{
+			public void onSearchViewOpen(final SearchViewEvent event)
+			{
+				History.newItem(SearchView.HISTORY_TOKEN);
+			}
+		});
 	}
 
 	public void go(final HasWidgets container)
@@ -56,6 +68,14 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 			if (token.equals(WelcomeView.HISTORY_TOKEN))
 			{
 				final IOCBeanDef<WelcomePresenter> bean = manager.lookupBean(WelcomePresenter.class);
+				if (bean != null)
+				{
+					presenter = bean.getInstance();
+				}
+			}
+			else if (token.equals(SearchView.HISTORY_TOKEN))
+			{
+				final IOCBeanDef<SearchPresenter> bean = manager.lookupBean(SearchPresenter.class);
 				if (bean != null)
 				{
 					presenter = bean.getInstance();
