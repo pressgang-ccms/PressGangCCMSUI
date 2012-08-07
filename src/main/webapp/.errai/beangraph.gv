@@ -27,8 +27,8 @@ digraph g {
   "org.jboss.errai.ioc.client.api.builtin.DisposerProvider" -> "org.jboss.errai.ioc.client.container.IOCBeanManager"
   "org.jboss.errai.ioc.client.api.Disposer" -> "org.jboss.errai.ioc.client.api.builtin.DisposerProvider"
   "org.jboss.errai.ioc.client.api.Disposer" -> "org.jboss.errai.ioc.client.container.IOCBeanManager"
+  "org.jboss.errai.ioc.client.api.Sender" -> "org.jboss.errai.ioc.client.api.builtin.SenderProvider"
   "org.jboss.pressgangccms.client.local.view.WelcomeView"
   "org.jboss.pressgangccms.client.local.presenter.WelcomePresenter$Display" -> "org.jboss.pressgangccms.client.local.view.WelcomeView"
   "org.jboss.pressgangccms.client.local.presenter.WelcomePresenter" -> "org.jboss.pressgangccms.client.local.presenter.WelcomePresenter$Display"
-  "org.jboss.errai.ioc.client.api.Sender" -> "org.jboss.errai.ioc.client.api.builtin.SenderProvider"
 }

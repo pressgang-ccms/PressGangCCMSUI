@@ -1,5 +1,10 @@
 package org.jboss.pressgangccms.client.local;
 
+import org.jboss.errai.bus.client.api.ErrorCallback;
+import org.jboss.errai.bus.client.api.RemoteCallback;
+import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
+import org.jboss.pressgangccms.client.local.resources.ImageResources;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -12,9 +17,15 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 /**
  * The base interface for all presenters
  */
-public abstract interface Presenter
-{
-	public abstract void go(final HasWidgets container);
+public interface Presenter {
+	/**
+	 * Called when the presenter is to be displayed
+	 * 
+	 * @param container
+	 *            The container that will host the presneter
+	 */
+	abstract public void go(final HasWidgets container);
+
 
 	/**
 	 * This interface defines the base methods that the presenters expect to
@@ -23,8 +34,7 @@ public abstract interface Presenter
 	 * @author Matthew Casperson
 	 * 
 	 */
-	public interface TemplateInterface
-	{
+	public interface TemplateInterface {
 		/**
 		 * @return The panel that should be added as a child to the root panel
 		 */
@@ -43,9 +53,8 @@ public abstract interface Presenter
 	 * 
 	 * @author Matthew Casperson
 	 */
-	public abstract class TemplateDisplay implements TemplateInterface
-	{
-		//private static final ImageResources resources = GWT.create(ImageResources.class);
+	public abstract class TemplateDisplay implements TemplateInterface {
+		private static final ImageResources resources =	GWT.create(ImageResources.class);
 		private final VerticalPanel topLevelPanel = new VerticalPanel();
 		private final Label applicationTitle = new Label();
 		private final Label pageTitle = new Label();
@@ -53,13 +62,12 @@ public abstract interface Presenter
 		private final HorizontalPanel topActionPanel = new HorizontalPanel();
 		private final HorizontalPanel footerPanel = new HorizontalPanel();
 
-		public Panel getTopLevelPanel()
-		{
+		public Panel getTopLevelPanel() {
 			return this.topLevelPanel;
 		}
 
-		public TemplateDisplay(final String applicationName, final String pageName)
-		{
+		public TemplateDisplay(final String applicationName,
+				final String pageName) {
 			applicationTitle.setText(applicationName);
 			topLevelPanel.add(applicationTitle);
 
@@ -76,11 +84,11 @@ public abstract interface Presenter
 			buildShortcutPanel();
 		}
 
-		private void buildShortcutPanel()
-		{
-			//final PushButton search = new PushButton(new Image(resources.search()));
+		private void buildShortcutPanel() {
+			final PushButton search = new PushButton(new
+			Image(resources.search()));
 
-			//shortcutPanel.add(search);
+			shortcutPanel.add(search);
 		}
 
 		abstract protected Panel getContentPanel();
