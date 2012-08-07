@@ -53,6 +53,8 @@ public interface Presenter
 		 * @return The panel that should be added as a child to the root panel
 		 */
 		Panel getTopLevelPanel();
+		
+		void setSpinnerVisible(final boolean enabled);
 	}
 
 	/**
@@ -69,11 +71,10 @@ public interface Presenter
 	 */
 	public abstract class TemplateDisplay implements TemplateInterface
 	{
-
-
 		@Inject	private HandlerManager eventBus;
 		
 		private final VerticalPanel topLevelPanel = new VerticalPanel();
+		private final HorizontalPanel appTitleAndSpinnerPanel = new HorizontalPanel();
 		private final Label applicationTitle = new Label();
 		private final Label pageTitle = new Label();
 		private final HorizontalPanel shortcutAndContentPanel = new HorizontalPanel();
@@ -81,6 +82,7 @@ public interface Presenter
 		private final VerticalPanel contentPanel = new VerticalPanel();
 		private final HorizontalPanel topActionPanel = new HorizontalPanel();
 		private final HorizontalPanel footerPanel = new HorizontalPanel();
+		private final Image spinner = new Image(Constants.resources.spinner());
 
 		private final PushButton search;
 		private final PushButton bug;
@@ -89,13 +91,23 @@ public interface Presenter
 		{
 			return this.topLevelPanel;
 		}
+		
+		public void setSpinnerVisible(final boolean enabled)
+		{
+			spinner.setVisible(enabled);
+		}
 
 		public TemplateDisplay(final String applicationName, final String pageName)
 		{
+			topLevelPanel.add(appTitleAndSpinnerPanel);
+			
 			applicationTitle.setText(applicationName);
 			applicationTitle.addStyleName("ApplicationTitle");
 			applicationTitle.addStyleName("SpacedElement");
-			topLevelPanel.add(applicationTitle);
+			appTitleAndSpinnerPanel.add(applicationTitle);
+			
+			appTitleAndSpinnerPanel.add(spinner);
+			setSpinnerVisible(false);
 
 			pageTitle.setText(pageName);
 			pageTitle.addStyleName("PageTitle");
