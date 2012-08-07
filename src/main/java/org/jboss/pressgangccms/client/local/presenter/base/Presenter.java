@@ -69,8 +69,7 @@ public interface Presenter
 	 */
 	public abstract class TemplateDisplay implements TemplateInterface
 	{
-		protected static final ImageResources resources = GWT.create(ImageResources.class);
-		protected static final PressGangCCMSUI pressGangCCMSUI = GWT.create(PressGangCCMSUI.class);
+
 
 		@Inject	private HandlerManager eventBus;
 		
@@ -114,16 +113,15 @@ public interface Presenter
 			topLevelPanel.add(footerPanel);
 
 			/* Build the shortcut panel */
-			search = new PushButton(new Image(resources.search()), new Image(resources.searchDown()));
-			search.getUpHoveringFace().setImage(new Image(resources.searchHover()));
+			search = new PushButton(new Image(Constants.resources.search()), new Image(Constants.resources.searchDown()));
+			search.getUpHoveringFace().setImage(new Image(Constants.resources.searchHover()));
 			search.addStyleName("SpacedElement");
 			shortcutPanel.add(search);
 			
-			bug = new PushButton(new Image(resources.bug()), new Image(resources.bugDown()));
-			bug.getUpHoveringFace().setImage(new Image(resources.bugHover()));
+			bug = new PushButton(new Image(Constants.resources.bug()), new Image(Constants.resources.bugDown()));
+			bug.getUpHoveringFace().setImage(new Image(Constants.resources.bugHover()));
 			bug.addStyleName("SpacedElement");
 			shortcutPanel.add(bug);
-			
 			
 			bind();
 		}

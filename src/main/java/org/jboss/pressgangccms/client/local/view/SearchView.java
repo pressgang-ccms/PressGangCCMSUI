@@ -1,6 +1,7 @@
 package org.jboss.pressgangccms.client.local.view;
 
 
+import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter;
 import org.jboss.pressgangccms.client.local.presenter.base.Presenter;
 
@@ -13,7 +14,7 @@ public class SearchView extends Presenter.TemplateDisplay implements SearchPrese
 
 	public SearchView()
 	{
-		super(pressGangCCMSUI.PressGangCCMS(), pressGangCCMSUI.Search());
+		super(Constants.pressGangCCMSUI.PressGangCCMS(), Constants.pressGangCCMSUI.Search());
 	}
 
 	@Override

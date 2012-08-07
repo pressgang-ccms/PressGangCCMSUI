@@ -1,5 +1,6 @@
 package org.jboss.pressgangccms.client.local.view;
 
+import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.presenter.WelcomePresenter;
 import org.jboss.pressgangccms.client.local.presenter.base.Presenter;
 
@@ -13,7 +14,7 @@ public class WelcomeView extends Presenter.TemplateDisplay implements WelcomePre
 
 	public WelcomeView()
 	{
-		super(pressGangCCMSUI.PressGangCCMS(), pressGangCCMSUI.Welcome());
+		super(Constants.pressGangCCMSUI.PressGangCCMS(), Constants.pressGangCCMSUI.Welcome());
 	}
 
 	@Override

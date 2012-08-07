@@ -21,4 +21,16 @@ public interface ImageResources extends ClientBundle  {
 	
 	@Source("bugDown.png")
 	ImageResource bugDown();
+	
+	@Source("check16.png")
+	ImageResource check16();
+	
+	@Source("plus16.png")
+	ImageResource plus16();
+	
+	@Source("minus16.png")
+	ImageResource minus16();
+	
+	@Source("round16.png")
+	ImageResource round16();
 }
