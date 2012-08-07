@@ -191,7 +191,6 @@
 			<version>${gwt.version}</version>
 		</dependency>
 
-
 		<!-- Runtime / Container dependencies -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
