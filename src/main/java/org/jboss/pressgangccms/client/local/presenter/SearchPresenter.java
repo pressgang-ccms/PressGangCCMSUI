@@ -87,7 +87,7 @@ public class SearchPresenter implements Presenter
 		try
 		{
 			startProcessing();
-			restMethod.getJSONProjects(URL.encode(expand));
+			restMethod.getJSONProjects(expand);
 		}
 		catch (final Exception ex)
 		{
