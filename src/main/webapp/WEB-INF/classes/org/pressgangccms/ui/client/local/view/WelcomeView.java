@@ -6,16 +6,19 @@ import org.pressgangccms.ui.client.local.presenter.WelcomePresenter;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class WelcomeView extends Presenter.TemplateDisplay implements WelcomePresenter.Display  {
-	
+public class WelcomeView extends Presenter.TemplateDisplay implements WelcomePresenter.Display
+{
+
 	public static final String HISTORY_TOKEN = "WelcomeView";
-	
-	public WelcomeView() {
+
+	public WelcomeView()
+	{
 		super("PressGang CCMS", "Welcome");
 	}
 
 	@Override
-	protected Panel getContentPanel() {
+	protected Panel getContentPanel()
+	{
 		return new VerticalPanel();
 	}
 }

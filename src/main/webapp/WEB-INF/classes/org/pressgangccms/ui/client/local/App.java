@@ -17,6 +17,11 @@ public class App
 
 	@Inject
 	private AppController appController;
+	
+	public App()
+	{
+		System.out.println("Constructed");
+	}
 
 	@AfterInitialization
 	public void startApp()
