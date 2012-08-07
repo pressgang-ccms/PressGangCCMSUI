@@ -1,7 +1,7 @@
 package org.jboss.pressgangccms.client.local.view;
 
-import org.jboss.pressgangccms.client.local.Presenter;
 import org.jboss.pressgangccms.client.local.presenter.WelcomePresenter;
+import org.jboss.pressgangccms.client.local.presenter.base.Presenter;
 
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;

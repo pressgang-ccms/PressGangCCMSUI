@@ -1,7 +1,19 @@
 body {
-    background-color: #ffffff;
-    color: black;
-    font-family: Arial, sans-serif;
-    font-size: small;
-    margin: 8px;
+	background-color: #ffffff;
+	color: black;
+	font-family: Arial, sans-serif;
+	font-size: small;
+	margin: 8px;
+}
+
+.SpacedElement {
+	margin: 8px;
+}
+
+.ApplicationTitle {
+	font-size: xx-large;
+}
+
+.PageTitle {
+	font-size: x-large;
 }

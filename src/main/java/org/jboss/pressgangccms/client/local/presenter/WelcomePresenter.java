@@ -3,7 +3,7 @@ package org.jboss.pressgangccms.client.local.presenter;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import org.jboss.pressgangccms.client.local.Presenter;
+import org.jboss.pressgangccms.client.local.presenter.base.Presenter;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 

@@ -5,6 +5,7 @@ import javax.enterprise.context.ApplicationScoped;
 import org.jboss.errai.ioc.client.container.IOCBeanDef;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
 import org.jboss.pressgangccms.client.local.presenter.WelcomePresenter;
+import org.jboss.pressgangccms.client.local.presenter.base.Presenter;
 import org.jboss.pressgangccms.client.local.view.WelcomeView;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
