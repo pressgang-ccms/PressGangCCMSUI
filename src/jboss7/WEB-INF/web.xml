@@ -4,6 +4,32 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
+         
+                     <context-param>
+        <param-name>resteasy.scan</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <!-- We have to register RestEasy providers manually during integration testing because the scan doesn't see them. -->
+    <context-param>
+      <param-name>resteasy.providers</param-name>
+      <param-value>org.jboss.errai.jaxrs.ErraiProvider</param-value>
+    </context-param>
+
+    <filter>
+        <filter-name>Resteasy</filter-name>
+        <filter-class>
+            org.jboss.resteasy.plugins.server.servlet.FilterDispatcher</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>Resteasy</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <welcome-file-list>
+        <welcome-file>App.html</welcome-file>
+    </welcome-file-list>
 
     <servlet>
         <servlet-name>ErraiServlet</servlet-name>
@@ -15,20 +41,5 @@
         <servlet-name>ErraiServlet</servlet-name>
         <url-pattern>*.erraiBus</url-pattern>
     </servlet-mapping>
-   
-    <context-param>
-        <param-name>errai.properties</param-name>
-        <param-value>/WEB-INF/errai.properties</param-value>
-    </context-param>
-
-    <context-param>
-        <param-name>login.config</param-name>
-        <param-value>/WEB-INF/login.config</param-value>
-    </context-param>
-
-    <context-param>
-        <param-name>users.properties</param-name>
-        <param-value>/WEB-INF/users.properties</param-value>
-    </context-param>
 
 </web-app>

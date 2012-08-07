@@ -1,2 +1,2 @@
 eclipse.preferences.version=1
-entryPointModules=com.test.App|org.jboss.pressgangccms.App
+entryPointModules=org.jboss.pressgangccms.App
