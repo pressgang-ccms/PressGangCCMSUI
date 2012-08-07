@@ -1,6 +1,5 @@
 package org.pressgangccms.ui.client.local;
 
-
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 

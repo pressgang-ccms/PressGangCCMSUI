@@ -1,9 +1,14 @@
 package org.pressgangccms.ui.client.local;
 
+import org.pressgangccms.ui.resources.ImageResources;
+
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -16,6 +21,7 @@ public abstract interface Presenter
 	
 	public abstract class TemplateDisplay
 	{
+		private static final ImageResources resources = GWT.create(ImageResources.class);
 		private final VerticalPanel topLevelPanel = new VerticalPanel();
 		private final Label applicationTitle = new Label();
 		private final Label pageTitle = new Label();
@@ -48,7 +54,9 @@ public abstract interface Presenter
 		
 		private void buildShortcutPanel()
 		{
+			final PushButton search = new PushButton(new Image(resources.search()));
 			
+			shortcutPanel.add(search);
 		}
 		
 		abstract protected Panel getContentPanel();
