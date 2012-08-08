@@ -6,8 +6,8 @@ import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.adapters.EditorSource;
 import com.google.gwt.editor.client.adapters.ListEditor;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProjects>
 {
@@ -21,7 +21,7 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
 		public SearchUIProjectEditor create(final int index)
 		{
 			final SearchUIProjectEditor subEditor = new SearchUIProjectEditor();
-			projectButtonPanel.insert(subEditor.name, index + 1);
+			projectButtonPanel.setWidget(index, 0, subEditor);
 			return subEditor;
 		}
 
@@ -33,14 +33,14 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
 		}
 
 		@Override
-		public void setIndex(final SearchUIProjectEditor editor, final int index)
+		public void setIndex(final SearchUIProjectEditor subEditor, final int index)
 		{
-			projectButtonPanel.insert(editor.name, index + 1);
+			projectButtonPanel.setWidget(index, 0, subEditor);
 		}
 	}
 
 	ListEditor<SearchUIProject, SearchUIProjectEditor> projects = ListEditor.of(new SearchUIProjectEditorSource());
-	private final VerticalPanel projectButtonPanel = new VerticalPanel();
+	private final FlexTable projectButtonPanel = new FlexTable();
 
 	public SearchUIProjectsEditor()
 	{

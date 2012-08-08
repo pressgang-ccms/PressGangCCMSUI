@@ -12,6 +12,6 @@ import com.google.gwt.user.client.ui.Label;
  */
 public class SearchUITagEditor implements Editor<SearchUITag>
 {
-	Label name;
-	TriStatePushButton state;
+	Label name = new Label();
+	TriStatePushButton state = new TriStatePushButton();
 }

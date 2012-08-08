@@ -46,7 +46,7 @@ public class SearchUICategoryEditor extends DecoratorPanel implements Editor<Sea
 		}
 	}
 	
-	Label name;
+	Label name = new Label();
 	ListEditor<SearchUITag, SearchUITagEditor> myTags = ListEditor.of(new SearchUITagEditorSource());
 	final FlexTable table = new FlexTable();
 	
