@@ -39,7 +39,7 @@ public class QualifierEqualityFactoryImpl implements QualifierEqualityFactory {
   public boolean isEqual(Annotation a1, Annotation a2) {
     if (QualifierUtil.isSameType(a1, a2)) {
       if (comparatorMap.containsKey(a1.annotationType().getName())) {
-        return comparatorMap.get(a1.annotationType().getName()).isEqual(a1, a2);
+        return ((AnnotationComparator) comparatorMap.get(a1.annotationType().getName())).isEqual(a1, a2);
       } else {
         return true;
       }
@@ -50,7 +50,7 @@ public class QualifierEqualityFactoryImpl implements QualifierEqualityFactory {
 
   public int hashCodeOf(Annotation a1) {
     if (comparatorMap.containsKey(a1.annotationType().getName())) {
-      return comparatorMap.get(a1.annotationType().getName()).hashCodeOf(a1);
+      return ((AnnotationComparator) comparatorMap.get(a1.annotationType().getName())).hashCodeOf(a1);
     } else {
       return a1.annotationType().hashCode();
     }
