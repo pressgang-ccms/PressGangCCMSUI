@@ -79,13 +79,13 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 			topLevelPanel.add(footerPanel);
 
 			/* Build the shortcut panel */
-			search = new PushButton(new Image(Constants.resources.search()), new Image(Constants.resources.searchDown()));
-			search.getUpHoveringFace().setImage(new Image(Constants.resources.searchHover()));
+			search = new PushButton(new Image(Constants.resources.search48()), new Image(Constants.resources.searchDown48()));
+			search.getUpHoveringFace().setImage(new Image(Constants.resources.searchHover48()));
 			search.addStyleName("SpacedElement");
 			shortcutPanel.add(search);
 			
-			bug = new PushButton(new Image(Constants.resources.bug()), new Image(Constants.resources.bugDown()));
-			bug.getUpHoveringFace().setImage(new Image(Constants.resources.bugHover()));
+			bug = new PushButton(new Image(Constants.resources.bug48()), new Image(Constants.resources.bugDown48()));
+			bug.getUpHoveringFace().setImage(new Image(Constants.resources.bugHover48()));
 			bug.addStyleName("SpacedElement");
 			shortcutPanel.add(bug);
 		}

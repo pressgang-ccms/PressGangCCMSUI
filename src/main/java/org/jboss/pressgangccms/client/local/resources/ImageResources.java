@@ -7,24 +7,27 @@ public interface ImageResources extends ClientBundle
 {
 	@Source("spinner.gif")
 	ImageResource spinner();
+	
+	@Source("users48.png")
+	ImageResource users48();
 
-	@Source("search.png")
-	ImageResource search();
+	@Source("search48.png")
+	ImageResource search48();
 
-	@Source("searchHover.png")
-	ImageResource searchHover();
+	@Source("searchHover48.png")
+	ImageResource searchHover48();
 
-	@Source("searchDown.png")
-	ImageResource searchDown();
+	@Source("searchDown48.png")
+	ImageResource searchDown48();
 
-	@Source("bug.png")
-	ImageResource bug();
+	@Source("bug48.png")
+	ImageResource bug48();
 
-	@Source("bugHover.png")
-	ImageResource bugHover();
+	@Source("bugHover48.png")
+	ImageResource bugHover48();
 
-	@Source("bugDown.png")
-	ImageResource bugDown();
+	@Source("bugDown48.png")
+	ImageResource bugDown48();
 
 	@Source("check16.png")
 	ImageResource check16();
