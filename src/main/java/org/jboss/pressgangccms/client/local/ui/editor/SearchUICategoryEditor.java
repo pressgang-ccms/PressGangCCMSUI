@@ -53,10 +53,7 @@ public class SearchUICategoryEditor extends DockPanel implements Editor<SearchUI
 	
 	public SearchUICategoryEditor()
 	{
-		final VerticalPanel verticalPanel = new VerticalPanel();
-		this.add(verticalPanel);
-		
 		this.add(name, DockPanel.NORTH);
-		this.add(name, DockPanel.CENTER);
+		this.add(table, DockPanel.CENTER);
 	}
 }
