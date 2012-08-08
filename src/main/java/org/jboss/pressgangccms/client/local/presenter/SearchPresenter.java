@@ -7,17 +7,17 @@ import org.jboss.errai.bus.client.api.ErrorCallback;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.errai.bus.client.api.RemoteCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
-import org.jboss.pressgangccms.client.local.presenter.base.Presenter;
+import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
+import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgangccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 
-import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
-public class SearchPresenter implements Presenter
+public class SearchPresenter extends TemplatePresenter
 {
-	public interface Display extends TemplateInterface
+	public interface Display extends BaseTemplateViewInterface
 	{
 
 	}
@@ -31,6 +31,8 @@ public class SearchPresenter implements Presenter
 		container.add(display.getTopLevelPanel());
 
 		getProjects();
+		
+		bind(display);
 	}
 
 	private void stopProcessing()

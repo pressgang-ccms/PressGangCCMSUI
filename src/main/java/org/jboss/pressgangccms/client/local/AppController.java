@@ -9,6 +9,7 @@ import org.jboss.pressgangccms.client.local.events.SearchViewEventHandler;
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter;
 import org.jboss.pressgangccms.client.local.presenter.WelcomePresenter;
 import org.jboss.pressgangccms.client.local.presenter.base.Presenter;
+import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.view.SearchView;
 import org.jboss.pressgangccms.client.local.view.WelcomeView;
 
@@ -63,7 +64,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 		final String token = event.getValue();
 		if (token != null)
 		{
-			Presenter presenter = null;
+			TemplatePresenter presenter = null;
 
 			if (token.equals(WelcomeView.HISTORY_TOKEN))
 			{
