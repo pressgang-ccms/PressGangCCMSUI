@@ -8,6 +8,10 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
 
+/**
+ * This class represents a single project, with child categories 
+ * @author Matthew Casperson
+ */
 public class SearchUIProject extends SearchUIBase
 {
 	private final List<SearchUICategory> categories = new ArrayList<SearchUICategory>();

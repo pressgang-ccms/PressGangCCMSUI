@@ -47,7 +47,7 @@ public class SearchUIProjectEditor extends FlexTable implements Editor<SearchUIP
 
 	private static final int COLUMNS = 6;
 
-	TextAndImageButton name;
+	TextAndImageButton name = new TextAndImageButton();
 	ListEditor<SearchUICategory, SearchUICategoryEditor> categories = ListEditor.of(new SearchUICategoryEditorSource());
 
 	public SearchUIProjectEditor()

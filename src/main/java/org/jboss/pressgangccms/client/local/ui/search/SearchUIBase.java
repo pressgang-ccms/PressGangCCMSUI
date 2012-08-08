@@ -1,7 +1,13 @@
 package org.jboss.pressgangccms.client.local.ui.search;
 
+/**
+ * The base class for all the entites that make up the tag search screen.
+ * @author matthew
+ *
+ */
 public class SearchUIBase
 {
+	/** Each entity has a name */
 	private final String name;
 	
 	public String getName()
