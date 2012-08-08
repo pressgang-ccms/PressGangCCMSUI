@@ -1,5 +1,7 @@
 package org.jboss.pressgangccms.client.local.ui;
 
+import com.google.gwt.editor.client.IsEditor;
+import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -11,15 +13,18 @@ import com.google.gwt.user.client.ui.Image;
  * 
  * @author Matthew Casperson
  */
-public class TextAndImageButton extends Button
+public class TextAndImageButton extends Button implements IsEditor<LeafValueEditor<String>>
 {
 	private String text;
+	private Element span = DOM.createElement("span");
 
 	public TextAndImageButton()
 	{
 		super();
+		span.setAttribute("style", "padding-left:3px; vertical-align:middle;");
+		DOM.insertChild(getElement(), span, 0);		
 	}
-	
+
 	public TextAndImageButton(final String text, final ImageResource imageResource)
 	{
 		setText(text);
@@ -38,16 +43,31 @@ public class TextAndImageButton extends Button
 	public void setText(final String text)
 	{
 		this.text = text;
-		Element span = DOM.createElement("span");
 		span.setInnerText(text);
-		span.setAttribute("style", "padding-left:3px; vertical-align:middle;");
-
-		DOM.insertChild(getElement(), span, 0);
 	}
 
 	@Override
 	public String getText()
 	{
 		return this.text;
+	}
+
+	@Override
+	public LeafValueEditor<String> asEditor()
+	{
+		return new LeafValueEditor<String>()
+		{
+			@Override
+			public void setValue(final String value)
+			{
+				setText(value);
+			}
+
+			@Override
+			public String getValue()
+			{
+				return getText();
+			}
+		};
 	}
 }

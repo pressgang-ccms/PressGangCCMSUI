@@ -21,15 +21,15 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
 		public SearchUIProjectEditor create(final int index)
 		{
 			final SearchUIProjectEditor subEditor = new SearchUIProjectEditor();
-			projectButtonPanel.setWidget(index, 0, subEditor);
+			projectButtonPanel.setWidget(index, 0, subEditor.name);
 			return subEditor;
 		}
 
 		@Override
 		public void dispose(final SearchUIProjectEditor subEditor)
 		{
+			subEditor.name.removeFromParent();
 			subEditor.removeFromParent();
-			projectButtonPanel.remove(subEditor.name);
 		}
 
 		@Override
