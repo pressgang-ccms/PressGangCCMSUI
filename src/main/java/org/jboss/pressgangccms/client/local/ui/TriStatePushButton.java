@@ -2,6 +2,8 @@ package org.jboss.pressgangccms.client.local.ui;
 
 import org.jboss.pressgangccms.client.local.constants.Constants;
 
+import com.google.gwt.editor.client.IsEditor;
+import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Image;
@@ -9,17 +11,13 @@ import com.google.gwt.user.client.ui.PushButton;
 
 /**
  * A PushButton to perform the functionality of a tristate checkbox.
+ * 
  * @author Matthew Casperson
- *
+ * 
  */
-public class TriStatePushButton extends PushButton
+public class TriStatePushButton extends PushButton implements IsEditor<LeafValueEditor<TriStateSelectionState>>
 {
-	private enum State
-	{
-		NONE, SELECTED, UNSELECTED
-	}
-
-	private State state = State.NONE;
+	private TriStateSelectionState state = TriStateSelectionState.NONE;
 
 	public TriStatePushButton()
 	{
@@ -30,48 +28,67 @@ public class TriStatePushButton extends PushButton
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				if (state == State.NONE)
+				if (state == TriStateSelectionState.NONE)
 				{
-					state = State.SELECTED;
+					state = TriStateSelectionState.SELECTED;
 				}
-				else if (state == State.SELECTED)
+				else if (state == TriStateSelectionState.SELECTED)
 				{
-					state = State.UNSELECTED;
+					state = TriStateSelectionState.UNSELECTED;
 				}
-				else if (state == State.UNSELECTED)
+				else if (state == TriStateSelectionState.UNSELECTED)
 				{
-					state = State.NONE;
+					state = TriStateSelectionState.NONE;
 				}
-				
+
 				updateState();
 			}
 		});
 	}
 
-	public State getState()
+	public TriStateSelectionState getState()
 	{
 		return state;
 	}
 
-	public void setState(final State state)
+	public void setState(final TriStateSelectionState state)
 	{
 		this.state = state;
 		updateState();
 	}
-	
+
 	private void updateState()
 	{
-		if (state == State.SELECTED)
+		if (state == TriStateSelectionState.SELECTED)
 		{
 			TriStatePushButton.this.getUpFace().setImage(new Image(Constants.resources.plus16()));
 		}
-		else if (state == State.UNSELECTED)
+		else if (state == TriStateSelectionState.UNSELECTED)
 		{
 			TriStatePushButton.this.getUpFace().setImage(new Image(Constants.resources.minus16()));
 		}
-		else if (state == State.NONE)
+		else if (state == TriStateSelectionState.NONE)
 		{
 			TriStatePushButton.this.getUpFace().setImage(new Image(Constants.resources.round16()));
 		}
+	}
+
+	@Override
+	public LeafValueEditor<TriStateSelectionState> asEditor()
+	{
+		return new LeafValueEditor<TriStateSelectionState>()
+		{
+			@Override
+			public void setValue(final TriStateSelectionState value)
+			{
+				setState(value);
+			}
+
+			@Override
+			public TriStateSelectionState getValue()
+			{
+				return state;
+			}
+		};
 	}
 }
