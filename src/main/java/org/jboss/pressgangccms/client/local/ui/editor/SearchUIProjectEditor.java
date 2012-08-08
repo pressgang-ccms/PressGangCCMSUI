@@ -8,7 +8,6 @@ import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.adapters.EditorSource;
 import com.google.gwt.editor.client.adapters.ListEditor;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Grid;
 
 public class SearchUIProjectEditor extends FlexTable implements Editor<SearchUIProject>
 {
@@ -53,17 +52,6 @@ public class SearchUIProjectEditor extends FlexTable implements Editor<SearchUIP
 
 	public SearchUIProjectEditor()
 	{
-		int column = 0;
-		int row = 0;
-		for (final SearchUICategoryEditor categoryEditor : categories.getEditors())
-		{
-			this.setWidget(row, column, categoryEditor);
 
-			++column;
-			column %= COLUMNS;
-
-			if (column == 0)
-				++row;
-		}
 	}
 }

@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 	/**
@@ -25,31 +26,39 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 		private final HorizontalPanel topActionPanel = new HorizontalPanel();
 		private final HorizontalPanel footerPanel = new HorizontalPanel();
 		private final Image spinner = new Image(Constants.resources.spinner());
+		private final SimplePanel panel = new SimplePanel();
 
 		private final PushButton search;
 		private final PushButton bug;
 
+		protected SimplePanel getPanel()
+		{
+			return panel;
+		}
+
+		@Override
 		public PushButton getBug()
 		{
 			return bug;
 		}
 
+		@Override
 		public PushButton getSearch()
 		{
 			return search;
 		}
 
+		@Override
 		public Panel getTopLevelPanel()
 		{
 			return this.topLevelPanel;
 		}
 		
+		@Override
 		public void setSpinnerVisible(final boolean enabled)
 		{
 			spinner.setVisible(enabled);
 		}
-		
-		abstract protected Panel getContentPanel();
 
 		public BaseTemplateView(final String applicationName, final String pageName)
 		{
@@ -74,7 +83,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 			
 			contentPanel.add(topActionPanel);
 
-			contentPanel.add(getContentPanel());
+			contentPanel.add(panel);
 
 			topLevelPanel.add(footerPanel);
 

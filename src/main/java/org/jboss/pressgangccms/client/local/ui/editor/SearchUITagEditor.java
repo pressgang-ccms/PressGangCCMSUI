@@ -4,7 +4,6 @@ import org.jboss.pressgangccms.client.local.ui.TriStatePushButton;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUITag;
 
 import com.google.gwt.editor.client.Editor;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 
 /**

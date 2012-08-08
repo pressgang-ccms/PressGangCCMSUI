@@ -9,7 +9,7 @@ import org.jboss.errai.bus.client.api.RemoteCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgangccms.rest.v1.collections.RESTProjectCollectionV1;
+import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -19,12 +19,13 @@ public class SearchPresenter extends TemplatePresenter
 {
 	public interface Display extends BaseTemplateViewInterface
 	{
-
+		void initialise(final RESTTagCollectionV1 tags);
 	}
 
 	@Inject
 	private Display display;
 
+	@Override
 	public void go(final HasWidgets container)
 	{
 		container.clear();
@@ -47,15 +48,17 @@ public class SearchPresenter extends TemplatePresenter
 
 	private void getProjects()
 	{
-		final RemoteCallback<RESTProjectCollectionV1> successCallback = new RemoteCallback<RESTProjectCollectionV1>()
+		final RemoteCallback<RESTTagCollectionV1> successCallback = new RemoteCallback<RESTTagCollectionV1>()
 		{
 			@Override
-			public void callback(final RESTProjectCollectionV1 retValue)
+			public void callback(final RESTTagCollectionV1 retValue)
 			{
 				try
 				{
 					final String message = retValue.getItems().size() + " projects returned.";
 					System.out.println(message);
+					
+					display.initialise(retValue);
 				}
 				finally
 				{
@@ -84,12 +87,13 @@ public class SearchPresenter extends TemplatePresenter
 		};
 
 		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, successCallback, errorCallback);
-		final String expand = "{\"branches\":[{\"trunk\":{\"showSize\":true,\"name\":\"projects\"}}]}";
+		/* Expand the categories and projects in the tags */
+		final String expand = "{\"branches\":[{\"branches\":[{\"trunk\":{\"showSize\":true,\"name\":\"categories\"}},{\"trunk\":{\"showSize\":true,\"name\":\"projects\"}}],\"trunk\":{\"showSize\":true,\"name\":\"tags\"}}]}";
 
 		try
 		{
 			startProcessing();
-			restMethod.getJSONProjects(expand);
+			restMethod.getJSONTags(expand);
 		}
 		catch (final Exception ex)
 		{

@@ -1,19 +1,11 @@
 package org.jboss.pressgangccms.client.local.ui.search;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.jboss.pressgangccms.client.local.constants.Constants;
-import org.jboss.pressgangccms.client.local.ui.TextAndImageButton;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
-
-import com.google.gwt.user.client.ui.DecoratorPanel;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Panel;
 
 /**
  * The REST interface does not define a hierarchy or projects->categories->tags. Instead, tags belong to both categories and projects,

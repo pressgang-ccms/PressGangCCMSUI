@@ -9,8 +9,6 @@ import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.SimplePanel;
 
 public class SearchView extends BaseTemplateView implements SearchPresenter.Display
 {
@@ -24,13 +22,12 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 	// Create the Driver
 	final Driver driver = GWT.create(Driver.class);
 	
-	final SimplePanel panel = new SimplePanel();
-
 	public SearchView()
 	{
 		super(Constants.pressGangCCMSUI.PressGangCCMS(), Constants.pressGangCCMSUI.Search());
 	}
 	
+	@Override
 	public void initialise(final RESTTagCollectionV1 tags)
 	{
 	    /* Construct a hierarchy of tags from the tag collection */
@@ -43,12 +40,6 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 	    /* Copy the data in the object into the UI */
 	    driver.edit(searchUIProjects);
 	    /* Add the projects */
-	    panel.setWidget(editor);
-	}
-
-	@Override
-	protected Panel getContentPanel()
-	{
-		return panel;
+	    this.getPanel().setWidget(editor);
 	}
 }

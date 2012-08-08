@@ -38,77 +38,78 @@ import org.jboss.pressgangccms.client.local.presenter.SearchPresenter;
 import org.jboss.pressgangccms.client.local.presenter.WelcomePresenter;
 import org.jboss.pressgangccms.client.local.presenter.WelcomePresenter.Display;
 import org.jboss.pressgangccms.client.local.presenter.base.Presenter;
-import org.jboss.pressgangccms.client.local.presenter.base.Presenter.TemplateDisplay;
-import org.jboss.pressgangccms.client.local.presenter.base.Presenter.TemplateInterface;
+import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.view.SearchView;
 import org.jboss.pressgangccms.client.local.view.WelcomeView;
+import org.jboss.pressgangccms.client.local.view.base.BaseTemplateView;
+import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
 
 public class BootstrapperImpl implements Bootstrapper {
   {
     new CDI().initLookupTable(CDIEventTypeLookup.get());
     new JaxrsModuleBootstrapper().run();
   }
-  private final Default javax_enterprise_inject_Default_19647613 = new Default() {
-    public Class annotationType() {
-      return Default.class;
-    }
-  };
-  private final Any javax_enterprise_inject_Any_8269158 = new Any() {
+  private final Any javax_enterprise_inject_Any_27224302 = new Any() {
     public Class annotationType() {
       return Any.class;
     }
   };
-  private final Annotation[] arrayOf_java_lang_annotation_Annotation_12293146 = new Annotation[] { javax_enterprise_inject_Default_19647613, javax_enterprise_inject_Any_8269158 };
+  private final Default javax_enterprise_inject_Default_11141842 = new Default() {
+    public Class annotationType() {
+      return Default.class;
+    }
+  };
+  private final Annotation[] arrayOf_java_lang_annotation_Annotation_6556129 = new Annotation[] { javax_enterprise_inject_Any_27224302, javax_enterprise_inject_Default_11141842 };
   private final BootstrapperInjectionContext injContext = new BootstrapperInjectionContext();
   private final CreationalContext context = injContext.getRootContext();
-  private final CreationalCallback<RequestDispatcherProvider> inj11441_RequestDispatcherProvider_creationalCallback = new CreationalCallback<RequestDispatcherProvider>() {
+  private final CreationalCallback<RequestDispatcherProvider> inj1897_RequestDispatcherProvider_creationalCallback = new CreationalCallback<RequestDispatcherProvider>() {
     public RequestDispatcherProvider getInstance(final CreationalContext context) {
       Class beanType = RequestDispatcherProvider.class;
-      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_12293146;
-      final RequestDispatcherProvider inj11426_RequestDispatcherProvider = new RequestDispatcherProvider();
+      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_6556129;
+      final RequestDispatcherProvider inj1882_RequestDispatcherProvider = new RequestDispatcherProvider();
       BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
-      context.addBean(beanRef, inj11426_RequestDispatcherProvider);
-      return inj11426_RequestDispatcherProvider;
+      context.addBean(beanRef, inj1882_RequestDispatcherProvider);
+      return inj1882_RequestDispatcherProvider;
     }
   };
-  private final RequestDispatcherProvider inj11426_RequestDispatcherProvider = inj11441_RequestDispatcherProvider_creationalCallback.getInstance(context);
-  private final CreationalCallback<InstanceProvider> inj11442_InstanceProvider_creationalCallback = new CreationalCallback<InstanceProvider>() {
+  private final RequestDispatcherProvider inj1882_RequestDispatcherProvider = inj1897_RequestDispatcherProvider_creationalCallback.getInstance(context);
+  private final CreationalCallback<InstanceProvider> inj1898_InstanceProvider_creationalCallback = new CreationalCallback<InstanceProvider>() {
     public InstanceProvider getInstance(final CreationalContext context) {
       Class beanType = InstanceProvider.class;
-      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_12293146;
-      final InstanceProvider inj11440_InstanceProvider = new InstanceProvider();
+      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_6556129;
+      final InstanceProvider inj1896_InstanceProvider = new InstanceProvider();
       BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
-      context.addBean(beanRef, inj11440_InstanceProvider);
-      return inj11440_InstanceProvider;
+      context.addBean(beanRef, inj1896_InstanceProvider);
+      return inj1896_InstanceProvider;
     }
   };
-  private final InstanceProvider inj11440_InstanceProvider = inj11442_InstanceProvider_creationalCallback.getInstance(context);
-  private final CreationalCallback<IOCBeanManagerProvider> inj11443_IOCBeanManagerProvider_creationalCallback = new CreationalCallback<IOCBeanManagerProvider>() {
+  private final InstanceProvider inj1896_InstanceProvider = inj1898_InstanceProvider_creationalCallback.getInstance(context);
+  private final CreationalCallback<IOCBeanManagerProvider> inj1899_IOCBeanManagerProvider_creationalCallback = new CreationalCallback<IOCBeanManagerProvider>() {
     public IOCBeanManagerProvider getInstance(final CreationalContext context) {
       Class beanType = IOCBeanManagerProvider.class;
-      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_12293146;
-      final IOCBeanManagerProvider inj11434_IOCBeanManagerProvider = new IOCBeanManagerProvider();
+      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_6556129;
+      final IOCBeanManagerProvider inj1890_IOCBeanManagerProvider = new IOCBeanManagerProvider();
       BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
-      context.addBean(beanRef, inj11434_IOCBeanManagerProvider);
-      return inj11434_IOCBeanManagerProvider;
+      context.addBean(beanRef, inj1890_IOCBeanManagerProvider);
+      return inj1890_IOCBeanManagerProvider;
     }
   };
-  private final IOCBeanManagerProvider inj11434_IOCBeanManagerProvider = inj11443_IOCBeanManagerProvider_creationalCallback.getInstance(context);
-  private final CreationalCallback<App> inj11444_App_creationalCallback = new CreationalCallback<App>() {
+  private final IOCBeanManagerProvider inj1890_IOCBeanManagerProvider = inj1899_IOCBeanManagerProvider_creationalCallback.getInstance(context);
+  private final CreationalCallback<App> inj1900_App_creationalCallback = new CreationalCallback<App>() {
     public App getInstance(final CreationalContext context) {
       Class beanType = App.class;
-      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_12293146;
-      final App inj10159_App = new App();
+      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_6556129;
+      final App inj609_App = new App();
       BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
-      context.addBean(beanRef, inj10159_App);
-      final org_jboss_pressgangccms_client_local_AppController_inj11445_proxy inj11445_proxy = new org_jboss_pressgangccms_client_local_AppController_inj11445_proxy();
+      context.addBean(beanRef, inj609_App);
+      final org_jboss_pressgangccms_client_local_AppController_inj1901_proxy inj1901_proxy = new org_jboss_pressgangccms_client_local_AppController_inj1901_proxy();
       context.addUnresolvedProxy(new ProxyResolver<AppController>() {
         public void resolve(AppController obj) {
-          inj11445_proxy.__$setProxiedInstance$(obj);
-          context.addProxyReference(inj11445_proxy, obj);
+          inj1901_proxy.__$setProxiedInstance$(obj);
+          context.addProxyReference(inj1901_proxy, obj);
         }
-      }, AppController.class, arrayOf_java_lang_annotation_Annotation_12293146);
-      org_jboss_pressgangccms_client_local_App_appController(inj10159_App, inj11445_proxy);
+      }, AppController.class, arrayOf_java_lang_annotation_Annotation_6556129);
+      org_jboss_pressgangccms_client_local_App_appController(inj609_App, inj1901_proxy);
       InitVotes.registerOneTimeInitCallback(new Runnable() {
         public void run() {
           GWT.runAsync(new RunAsyncCallback() {
@@ -116,158 +117,158 @@ public class BootstrapperImpl implements Bootstrapper {
               throw new RuntimeException("failed to run asynchronously", throwable);
             }
             public void onSuccess() {
-              inj10159_App.startApp();
+              inj609_App.startApp();
             }
           });
         }
       });
-      return inj10159_App;
+      return inj609_App;
     }
   };
-  private final App inj10159_App = inj11444_App_creationalCallback.getInstance(context);
-  private final CreationalCallback<HandlerManager> inj11420_HandlerManager_creationalCallback = new CreationalCallback<HandlerManager>() {
+  private final App inj609_App = inj1900_App_creationalCallback.getInstance(context);
+  private final CreationalCallback<HandlerManager> inj1876_HandlerManager_creationalCallback = new CreationalCallback<HandlerManager>() {
     public HandlerManager getInstance(CreationalContext pContext) {
-      HandlerManager var6 = org_jboss_pressgangccms_client_local_App_produceEventBus(inj10159_App);
-      context.addBean(context.getBeanReference(HandlerManager.class, arrayOf_java_lang_annotation_Annotation_12293146), var6);
-      return var6;
+      HandlerManager var1 = org_jboss_pressgangccms_client_local_App_produceEventBus(inj609_App);
+      context.addBean(context.getBeanReference(HandlerManager.class, arrayOf_java_lang_annotation_Annotation_6556129), var1);
+      return var1;
     }
   };
-  private final CreationalCallback<AppController> inj11447_AppController_creationalCallback = new CreationalCallback<AppController>() {
+  private final CreationalCallback<AppController> inj1903_AppController_creationalCallback = new CreationalCallback<AppController>() {
     public AppController getInstance(final CreationalContext context) {
       Class beanType = AppController.class;
-      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_12293146;
-      final AppController inj11446_AppController = new AppController();
+      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_6556129;
+      final AppController inj1902_AppController = new AppController();
       BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
-      context.addBean(beanRef, inj11446_AppController);
-      org_jboss_pressgangccms_client_local_AppController_manager(inj11446_AppController, inj11434_IOCBeanManagerProvider.get());
-      org_jboss_pressgangccms_client_local_AppController_eventBus(inj11446_AppController, org_jboss_pressgangccms_client_local_App_produceEventBus(inj10159_App));
-      return inj11446_AppController;
+      context.addBean(beanRef, inj1902_AppController);
+      org_jboss_pressgangccms_client_local_AppController_manager(inj1902_AppController, inj1890_IOCBeanManagerProvider.get());
+      org_jboss_pressgangccms_client_local_AppController_eventBus(inj1902_AppController, org_jboss_pressgangccms_client_local_App_produceEventBus(inj609_App));
+      return inj1902_AppController;
     }
   };
-  private final AppController inj11446_AppController = inj11447_AppController_creationalCallback.getInstance(context);
-  private final CreationalCallback<EventProvider> inj11448_EventProvider_creationalCallback = new CreationalCallback<EventProvider>() {
+  private final AppController inj1902_AppController = inj1903_AppController_creationalCallback.getInstance(context);
+  private final CreationalCallback<EventProvider> inj1904_EventProvider_creationalCallback = new CreationalCallback<EventProvider>() {
     public EventProvider getInstance(final CreationalContext context) {
       Class beanType = EventProvider.class;
-      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_12293146;
-      final EventProvider inj11436_EventProvider = new EventProvider();
+      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_6556129;
+      final EventProvider inj1892_EventProvider = new EventProvider();
       BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
-      context.addBean(beanRef, inj11436_EventProvider);
-      return inj11436_EventProvider;
+      context.addBean(beanRef, inj1892_EventProvider);
+      return inj1892_EventProvider;
     }
   };
-  private final EventProvider inj11436_EventProvider = inj11448_EventProvider_creationalCallback.getInstance(context);
-  private final CreationalCallback<MessageBusProvider> inj11449_MessageBusProvider_creationalCallback = new CreationalCallback<MessageBusProvider>() {
+  private final EventProvider inj1892_EventProvider = inj1904_EventProvider_creationalCallback.getInstance(context);
+  private final CreationalCallback<MessageBusProvider> inj1905_MessageBusProvider_creationalCallback = new CreationalCallback<MessageBusProvider>() {
     public MessageBusProvider getInstance(final CreationalContext context) {
       Class beanType = MessageBusProvider.class;
-      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_12293146;
-      final MessageBusProvider inj11432_MessageBusProvider = new MessageBusProvider();
+      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_6556129;
+      final MessageBusProvider inj1888_MessageBusProvider = new MessageBusProvider();
       BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
-      context.addBean(beanRef, inj11432_MessageBusProvider);
-      return inj11432_MessageBusProvider;
+      context.addBean(beanRef, inj1888_MessageBusProvider);
+      return inj1888_MessageBusProvider;
     }
   };
-  private final MessageBusProvider inj11432_MessageBusProvider = inj11449_MessageBusProvider_creationalCallback.getInstance(context);
-  private final CreationalCallback<WelcomeView> inj11452_WelcomeView_creationalCallback = new CreationalCallback<WelcomeView>() {
-    public WelcomeView getInstance(final CreationalContext context) {
-      Class beanType = WelcomeView.class;
-      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_12293146;
-      final WelcomeView inj11096_WelcomeView = new WelcomeView();
-      BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
-      context.addBean(beanRef, inj11096_WelcomeView);
-      org_jboss_pressgangccms_client_local_presenter_base_Presenter$TemplateDisplay_eventBus(inj11096_WelcomeView, org_jboss_pressgangccms_client_local_App_produceEventBus(inj10159_App));
-      return inj11096_WelcomeView;
-    }
-  };
-  private final CreationalCallback<WelcomePresenter> inj11451_WelcomePresenter_creationalCallback = new CreationalCallback<WelcomePresenter>() {
-    public WelcomePresenter getInstance(final CreationalContext context) {
-      Class beanType = WelcomePresenter.class;
-      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_12293146;
-      final WelcomePresenter inj11450_WelcomePresenter = new WelcomePresenter();
-      BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
-      context.addBean(beanRef, inj11450_WelcomePresenter);
-      org_jboss_pressgangccms_client_local_presenter_WelcomePresenter_display(inj11450_WelcomePresenter, inj11452_WelcomeView_creationalCallback.getInstance(context));
-      return inj11450_WelcomePresenter;
-    }
-  };
-  private final CreationalCallback<SenderProvider> inj11453_SenderProvider_creationalCallback = new CreationalCallback<SenderProvider>() {
+  private final MessageBusProvider inj1888_MessageBusProvider = inj1905_MessageBusProvider_creationalCallback.getInstance(context);
+  private final CreationalCallback<SenderProvider> inj1906_SenderProvider_creationalCallback = new CreationalCallback<SenderProvider>() {
     public SenderProvider getInstance(final CreationalContext context) {
       Class beanType = SenderProvider.class;
-      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_12293146;
-      final SenderProvider inj11438_SenderProvider = new SenderProvider();
+      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_6556129;
+      final SenderProvider inj1894_SenderProvider = new SenderProvider();
       BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
-      context.addBean(beanRef, inj11438_SenderProvider);
-      return inj11438_SenderProvider;
+      context.addBean(beanRef, inj1894_SenderProvider);
+      return inj1894_SenderProvider;
     }
   };
-  private final SenderProvider inj11438_SenderProvider = inj11453_SenderProvider_creationalCallback.getInstance(context);
-  private final CreationalCallback<InitBallotProvider> inj11454_InitBallotProvider_creationalCallback = new CreationalCallback<InitBallotProvider>() {
+  private final SenderProvider inj1894_SenderProvider = inj1906_SenderProvider_creationalCallback.getInstance(context);
+  private final CreationalCallback<WelcomeView> inj1909_WelcomeView_creationalCallback = new CreationalCallback<WelcomeView>() {
+    public WelcomeView getInstance(final CreationalContext context) {
+      Class beanType = WelcomeView.class;
+      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_6556129;
+      final WelcomeView inj1550_WelcomeView = new WelcomeView();
+      BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
+      context.addBean(beanRef, inj1550_WelcomeView);
+      return inj1550_WelcomeView;
+    }
+  };
+  private final CreationalCallback<WelcomePresenter> inj1908_WelcomePresenter_creationalCallback = new CreationalCallback<WelcomePresenter>() {
+    public WelcomePresenter getInstance(final CreationalContext context) {
+      Class beanType = WelcomePresenter.class;
+      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_6556129;
+      final WelcomePresenter inj1907_WelcomePresenter = new WelcomePresenter();
+      BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
+      context.addBean(beanRef, inj1907_WelcomePresenter);
+      org_jboss_pressgangccms_client_local_presenter_WelcomePresenter_display(inj1907_WelcomePresenter, inj1909_WelcomeView_creationalCallback.getInstance(context));
+      org_jboss_pressgangccms_client_local_presenter_base_TemplatePresenter_eventBus(inj1907_WelcomePresenter, org_jboss_pressgangccms_client_local_App_produceEventBus(inj609_App));
+      return inj1907_WelcomePresenter;
+    }
+  };
+  private final CreationalCallback<InitBallotProvider> inj1910_InitBallotProvider_creationalCallback = new CreationalCallback<InitBallotProvider>() {
     public InitBallotProvider getInstance(final CreationalContext context) {
       Class beanType = InitBallotProvider.class;
-      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_12293146;
-      final InitBallotProvider inj11430_InitBallotProvider = new InitBallotProvider();
+      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_6556129;
+      final InitBallotProvider inj1886_InitBallotProvider = new InitBallotProvider();
       BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
-      context.addBean(beanRef, inj11430_InitBallotProvider);
-      return inj11430_InitBallotProvider;
+      context.addBean(beanRef, inj1886_InitBallotProvider);
+      return inj1886_InitBallotProvider;
     }
   };
-  private final InitBallotProvider inj11430_InitBallotProvider = inj11454_InitBallotProvider_creationalCallback.getInstance(context);
-  private final CreationalCallback<CallerProvider> inj11455_CallerProvider_creationalCallback = new CreationalCallback<CallerProvider>() {
+  private final InitBallotProvider inj1886_InitBallotProvider = inj1910_InitBallotProvider_creationalCallback.getInstance(context);
+  private final CreationalCallback<CallerProvider> inj1911_CallerProvider_creationalCallback = new CreationalCallback<CallerProvider>() {
     public CallerProvider getInstance(final CreationalContext context) {
       Class beanType = CallerProvider.class;
-      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_12293146;
-      final CallerProvider inj11422_CallerProvider = new CallerProvider();
+      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_6556129;
+      final CallerProvider inj1878_CallerProvider = new CallerProvider();
       BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
-      context.addBean(beanRef, inj11422_CallerProvider);
-      return inj11422_CallerProvider;
+      context.addBean(beanRef, inj1878_CallerProvider);
+      return inj1878_CallerProvider;
     }
   };
-  private final CallerProvider inj11422_CallerProvider = inj11455_CallerProvider_creationalCallback.getInstance(context);
-  private final CreationalCallback<SearchView> inj11458_SearchView_creationalCallback = new CreationalCallback<SearchView>() {
-    public SearchView getInstance(final CreationalContext context) {
-      Class beanType = SearchView.class;
-      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_12293146;
-      final SearchView inj11095_SearchView = new SearchView();
-      BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
-      context.addBean(beanRef, inj11095_SearchView);
-      org_jboss_pressgangccms_client_local_presenter_base_Presenter$TemplateDisplay_eventBus(inj11095_SearchView, org_jboss_pressgangccms_client_local_App_produceEventBus(inj10159_App));
-      return inj11095_SearchView;
-    }
-  };
-  private final CreationalCallback<SearchPresenter> inj11457_SearchPresenter_creationalCallback = new CreationalCallback<SearchPresenter>() {
-    public SearchPresenter getInstance(final CreationalContext context) {
-      Class beanType = SearchPresenter.class;
-      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_12293146;
-      final SearchPresenter inj11456_SearchPresenter = new SearchPresenter();
-      BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
-      context.addBean(beanRef, inj11456_SearchPresenter);
-      org_jboss_pressgangccms_client_local_presenter_SearchPresenter_display(inj11456_SearchPresenter, inj11458_SearchView_creationalCallback.getInstance(context));
-      return inj11456_SearchPresenter;
-    }
-  };
-  private final CreationalCallback<RootPanelProvider> inj11459_RootPanelProvider_creationalCallback = new CreationalCallback<RootPanelProvider>() {
+  private final CallerProvider inj1878_CallerProvider = inj1911_CallerProvider_creationalCallback.getInstance(context);
+  private final CreationalCallback<RootPanelProvider> inj1912_RootPanelProvider_creationalCallback = new CreationalCallback<RootPanelProvider>() {
     public RootPanelProvider getInstance(final CreationalContext context) {
       Class beanType = RootPanelProvider.class;
-      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_12293146;
-      final RootPanelProvider inj11428_RootPanelProvider = new RootPanelProvider();
+      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_6556129;
+      final RootPanelProvider inj1884_RootPanelProvider = new RootPanelProvider();
       BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
-      context.addBean(beanRef, inj11428_RootPanelProvider);
-      return inj11428_RootPanelProvider;
+      context.addBean(beanRef, inj1884_RootPanelProvider);
+      return inj1884_RootPanelProvider;
     }
   };
-  private final RootPanelProvider inj11428_RootPanelProvider = inj11459_RootPanelProvider_creationalCallback.getInstance(context);
-  private final CreationalCallback<DisposerProvider> inj11460_DisposerProvider_creationalCallback = new CreationalCallback<DisposerProvider>() {
+  private final RootPanelProvider inj1884_RootPanelProvider = inj1912_RootPanelProvider_creationalCallback.getInstance(context);
+  private final CreationalCallback<SearchView> inj1915_SearchView_creationalCallback = new CreationalCallback<SearchView>() {
+    public SearchView getInstance(final CreationalContext context) {
+      Class beanType = SearchView.class;
+      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_6556129;
+      final SearchView inj1549_SearchView = new SearchView();
+      BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
+      context.addBean(beanRef, inj1549_SearchView);
+      return inj1549_SearchView;
+    }
+  };
+  private final CreationalCallback<SearchPresenter> inj1914_SearchPresenter_creationalCallback = new CreationalCallback<SearchPresenter>() {
+    public SearchPresenter getInstance(final CreationalContext context) {
+      Class beanType = SearchPresenter.class;
+      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_6556129;
+      final SearchPresenter inj1913_SearchPresenter = new SearchPresenter();
+      BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
+      context.addBean(beanRef, inj1913_SearchPresenter);
+      org_jboss_pressgangccms_client_local_presenter_SearchPresenter_display(inj1913_SearchPresenter, inj1915_SearchView_creationalCallback.getInstance(context));
+      org_jboss_pressgangccms_client_local_presenter_base_TemplatePresenter_eventBus(inj1913_SearchPresenter, org_jboss_pressgangccms_client_local_App_produceEventBus(inj609_App));
+      return inj1913_SearchPresenter;
+    }
+  };
+  private final CreationalCallback<DisposerProvider> inj1916_DisposerProvider_creationalCallback = new CreationalCallback<DisposerProvider>() {
     public DisposerProvider getInstance(final CreationalContext context) {
       Class beanType = DisposerProvider.class;
-      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_12293146;
-      final DisposerProvider inj11424_DisposerProvider = new DisposerProvider();
+      Annotation[] qualifiers = arrayOf_java_lang_annotation_Annotation_6556129;
+      final DisposerProvider inj1880_DisposerProvider = new DisposerProvider();
       BeanRef beanRef = context.getBeanReference(beanType, qualifiers);
-      context.addBean(beanRef, inj11424_DisposerProvider);
-      org_jboss_errai_ioc_client_api_builtin_DisposerProvider_beanManager(inj11424_DisposerProvider, inj11434_IOCBeanManagerProvider.get());
-      return inj11424_DisposerProvider;
+      context.addBean(beanRef, inj1880_DisposerProvider);
+      org_jboss_errai_ioc_client_api_builtin_DisposerProvider_beanManager(inj1880_DisposerProvider, inj1890_IOCBeanManagerProvider.get());
+      return inj1880_DisposerProvider;
     }
   };
-  private final DisposerProvider inj11424_DisposerProvider = inj11460_DisposerProvider_creationalCallback.getInstance(context);
-  static class org_jboss_pressgangccms_client_local_AppController_inj11445_proxy extends AppController {
+  private final DisposerProvider inj1880_DisposerProvider = inj1916_DisposerProvider_creationalCallback.getInstance(context);
+  static class org_jboss_pressgangccms_client_local_AppController_inj1901_proxy extends AppController {
     private AppController $$_proxy_$$;
     public void bind() {
       $$_proxy_$$.bind();
@@ -302,45 +303,47 @@ public class BootstrapperImpl implements Bootstrapper {
     }
   }
   private void declareBeans_0() {
-    injContext.addBean(RequestDispatcherProvider.class, RequestDispatcherProvider.class, inj11441_RequestDispatcherProvider_creationalCallback, inj11426_RequestDispatcherProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, true);
-    injContext.addBean(Provider.class, RequestDispatcherProvider.class, inj11441_RequestDispatcherProvider_creationalCallback, inj11426_RequestDispatcherProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(InstanceProvider.class, InstanceProvider.class, inj11442_InstanceProvider_creationalCallback, inj11440_InstanceProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, true);
-    injContext.addBean(ContextualTypeProvider.class, InstanceProvider.class, inj11442_InstanceProvider_creationalCallback, inj11440_InstanceProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(IOCBeanManagerProvider.class, IOCBeanManagerProvider.class, inj11443_IOCBeanManagerProvider_creationalCallback, inj11434_IOCBeanManagerProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, true);
-    injContext.addBean(Provider.class, IOCBeanManagerProvider.class, inj11443_IOCBeanManagerProvider_creationalCallback, inj11434_IOCBeanManagerProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(App.class, App.class, inj11444_App_creationalCallback, inj10159_App, arrayOf_java_lang_annotation_Annotation_12293146, null, true);
-    injContext.addBean(HandlerManager.class, HandlerManager.class, inj11420_HandlerManager_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_12293146, null, true);
-    injContext.addBean(HasHandlers.class, HandlerManager.class, inj11420_HandlerManager_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(AppController.class, AppController.class, inj11447_AppController_creationalCallback, inj11446_AppController, arrayOf_java_lang_annotation_Annotation_12293146, null, true);
-    injContext.addBean(Presenter.class, AppController.class, inj11447_AppController_creationalCallback, inj11446_AppController, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(ValueChangeHandler.class, AppController.class, inj11447_AppController_creationalCallback, inj11446_AppController, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(EventHandler.class, AppController.class, inj11447_AppController_creationalCallback, inj11446_AppController, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(EventProvider.class, EventProvider.class, inj11448_EventProvider_creationalCallback, inj11436_EventProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, true);
-    injContext.addBean(ContextualTypeProvider.class, EventProvider.class, inj11448_EventProvider_creationalCallback, inj11436_EventProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(MessageBusProvider.class, MessageBusProvider.class, inj11449_MessageBusProvider_creationalCallback, inj11432_MessageBusProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, true);
-    injContext.addBean(Provider.class, MessageBusProvider.class, inj11449_MessageBusProvider_creationalCallback, inj11432_MessageBusProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(WelcomeView.class, WelcomeView.class, inj11452_WelcomeView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_12293146, null, true);
-    injContext.addBean(Display.class, WelcomeView.class, inj11452_WelcomeView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(TemplateInterface.class, WelcomeView.class, inj11452_WelcomeView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(TemplateDisplay.class, WelcomeView.class, inj11452_WelcomeView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(WelcomePresenter.class, WelcomePresenter.class, inj11451_WelcomePresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_12293146, null, true);
-    injContext.addBean(Presenter.class, WelcomePresenter.class, inj11451_WelcomePresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(SenderProvider.class, SenderProvider.class, inj11453_SenderProvider_creationalCallback, inj11438_SenderProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, true);
-    injContext.addBean(ContextualTypeProvider.class, SenderProvider.class, inj11453_SenderProvider_creationalCallback, inj11438_SenderProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(InitBallotProvider.class, InitBallotProvider.class, inj11454_InitBallotProvider_creationalCallback, inj11430_InitBallotProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, true);
-    injContext.addBean(ContextualTypeProvider.class, InitBallotProvider.class, inj11454_InitBallotProvider_creationalCallback, inj11430_InitBallotProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(CallerProvider.class, CallerProvider.class, inj11455_CallerProvider_creationalCallback, inj11422_CallerProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, true);
-    injContext.addBean(ContextualTypeProvider.class, CallerProvider.class, inj11455_CallerProvider_creationalCallback, inj11422_CallerProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(SearchView.class, SearchView.class, inj11458_SearchView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_12293146, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.class, SearchView.class, inj11458_SearchView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(TemplateInterface.class, SearchView.class, inj11458_SearchView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(TemplateDisplay.class, SearchView.class, inj11458_SearchView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(SearchPresenter.class, SearchPresenter.class, inj11457_SearchPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_12293146, null, true);
-    injContext.addBean(Presenter.class, SearchPresenter.class, inj11457_SearchPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(RootPanelProvider.class, RootPanelProvider.class, inj11459_RootPanelProvider_creationalCallback, inj11428_RootPanelProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, true);
-    injContext.addBean(Provider.class, RootPanelProvider.class, inj11459_RootPanelProvider_creationalCallback, inj11428_RootPanelProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
-    injContext.addBean(DisposerProvider.class, DisposerProvider.class, inj11460_DisposerProvider_creationalCallback, inj11424_DisposerProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, true);
-    injContext.addBean(ContextualTypeProvider.class, DisposerProvider.class, inj11460_DisposerProvider_creationalCallback, inj11424_DisposerProvider, arrayOf_java_lang_annotation_Annotation_12293146, null, false);
+    injContext.addBean(RequestDispatcherProvider.class, RequestDispatcherProvider.class, inj1897_RequestDispatcherProvider_creationalCallback, inj1882_RequestDispatcherProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, true);
+    injContext.addBean(Provider.class, RequestDispatcherProvider.class, inj1897_RequestDispatcherProvider_creationalCallback, inj1882_RequestDispatcherProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(InstanceProvider.class, InstanceProvider.class, inj1898_InstanceProvider_creationalCallback, inj1896_InstanceProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, true);
+    injContext.addBean(ContextualTypeProvider.class, InstanceProvider.class, inj1898_InstanceProvider_creationalCallback, inj1896_InstanceProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(IOCBeanManagerProvider.class, IOCBeanManagerProvider.class, inj1899_IOCBeanManagerProvider_creationalCallback, inj1890_IOCBeanManagerProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, true);
+    injContext.addBean(Provider.class, IOCBeanManagerProvider.class, inj1899_IOCBeanManagerProvider_creationalCallback, inj1890_IOCBeanManagerProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(App.class, App.class, inj1900_App_creationalCallback, inj609_App, arrayOf_java_lang_annotation_Annotation_6556129, null, true);
+    injContext.addBean(HandlerManager.class, HandlerManager.class, inj1876_HandlerManager_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_6556129, null, true);
+    injContext.addBean(HasHandlers.class, HandlerManager.class, inj1876_HandlerManager_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(AppController.class, AppController.class, inj1903_AppController_creationalCallback, inj1902_AppController, arrayOf_java_lang_annotation_Annotation_6556129, null, true);
+    injContext.addBean(Presenter.class, AppController.class, inj1903_AppController_creationalCallback, inj1902_AppController, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(ValueChangeHandler.class, AppController.class, inj1903_AppController_creationalCallback, inj1902_AppController, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(EventHandler.class, AppController.class, inj1903_AppController_creationalCallback, inj1902_AppController, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(EventProvider.class, EventProvider.class, inj1904_EventProvider_creationalCallback, inj1892_EventProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, true);
+    injContext.addBean(ContextualTypeProvider.class, EventProvider.class, inj1904_EventProvider_creationalCallback, inj1892_EventProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(MessageBusProvider.class, MessageBusProvider.class, inj1905_MessageBusProvider_creationalCallback, inj1888_MessageBusProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, true);
+    injContext.addBean(Provider.class, MessageBusProvider.class, inj1905_MessageBusProvider_creationalCallback, inj1888_MessageBusProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(SenderProvider.class, SenderProvider.class, inj1906_SenderProvider_creationalCallback, inj1894_SenderProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, true);
+    injContext.addBean(ContextualTypeProvider.class, SenderProvider.class, inj1906_SenderProvider_creationalCallback, inj1894_SenderProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(WelcomeView.class, WelcomeView.class, inj1909_WelcomeView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_6556129, null, true);
+    injContext.addBean(Display.class, WelcomeView.class, inj1909_WelcomeView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(BaseTemplateViewInterface.class, WelcomeView.class, inj1909_WelcomeView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(BaseTemplateView.class, WelcomeView.class, inj1909_WelcomeView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(WelcomePresenter.class, WelcomePresenter.class, inj1908_WelcomePresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_6556129, null, true);
+    injContext.addBean(TemplatePresenter.class, WelcomePresenter.class, inj1908_WelcomePresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(Presenter.class, WelcomePresenter.class, inj1908_WelcomePresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(InitBallotProvider.class, InitBallotProvider.class, inj1910_InitBallotProvider_creationalCallback, inj1886_InitBallotProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, true);
+    injContext.addBean(ContextualTypeProvider.class, InitBallotProvider.class, inj1910_InitBallotProvider_creationalCallback, inj1886_InitBallotProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(CallerProvider.class, CallerProvider.class, inj1911_CallerProvider_creationalCallback, inj1878_CallerProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, true);
+    injContext.addBean(ContextualTypeProvider.class, CallerProvider.class, inj1911_CallerProvider_creationalCallback, inj1878_CallerProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(RootPanelProvider.class, RootPanelProvider.class, inj1912_RootPanelProvider_creationalCallback, inj1884_RootPanelProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, true);
+    injContext.addBean(Provider.class, RootPanelProvider.class, inj1912_RootPanelProvider_creationalCallback, inj1884_RootPanelProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(SearchView.class, SearchView.class, inj1915_SearchView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_6556129, null, true);
+    injContext.addBean(org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.class, SearchView.class, inj1915_SearchView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(BaseTemplateViewInterface.class, SearchView.class, inj1915_SearchView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(BaseTemplateView.class, SearchView.class, inj1915_SearchView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(SearchPresenter.class, SearchPresenter.class, inj1914_SearchPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_6556129, null, true);
+    injContext.addBean(TemplatePresenter.class, SearchPresenter.class, inj1914_SearchPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(Presenter.class, SearchPresenter.class, inj1914_SearchPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
+    injContext.addBean(DisposerProvider.class, DisposerProvider.class, inj1916_DisposerProvider_creationalCallback, inj1880_DisposerProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, true);
+    injContext.addBean(ContextualTypeProvider.class, DisposerProvider.class, inj1916_DisposerProvider_creationalCallback, inj1880_DisposerProvider, arrayOf_java_lang_annotation_Annotation_6556129, null, false);
   }
 
   private native static void org_jboss_errai_ioc_client_api_builtin_DisposerProvider_beanManager(DisposerProvider instance, IOCBeanManager value) /*-{
@@ -351,8 +354,8 @@ public class BootstrapperImpl implements Bootstrapper {
     instance.@org.jboss.pressgangccms.client.local.presenter.SearchPresenter::display = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_presenter_base_Presenter$TemplateDisplay_eventBus(TemplateDisplay instance, HandlerManager value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.presenter.base.Presenter.TemplateDisplay::eventBus = value;
+  private native static void org_jboss_pressgangccms_client_local_presenter_base_TemplatePresenter_eventBus(TemplatePresenter instance, HandlerManager value) /*-{
+    instance.@org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter::eventBus = value;
   }-*/;
 
   private native static void org_jboss_pressgangccms_client_local_App_appController(App instance, AppController value) /*-{

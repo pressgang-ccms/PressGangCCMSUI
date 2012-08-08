@@ -37,6 +37,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 
 		eventBus.addHandler(SearchViewEvent.TYPE, new SearchViewEventHandler()
 		{
+			@Override
 			public void onSearchViewOpen(final SearchViewEvent event)
 			{
 				History.newItem(SearchView.HISTORY_TOKEN);
@@ -44,6 +45,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 		});
 	}
 
+	@Override
 	public void go(final HasWidgets container)
 	{
 		this.container = container;
@@ -59,6 +61,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 		}
 	}
 
+	@Override
 	public void onValueChange(final ValueChangeEvent<String> event)
 	{
 		final String token = event.getValue();

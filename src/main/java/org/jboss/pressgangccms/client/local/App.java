@@ -26,6 +26,7 @@ public class App
 	{
 		GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler()
 		{
+			@Override
 			public void onUncaughtException(final Throwable ex)
 			{
 				ex.printStackTrace();

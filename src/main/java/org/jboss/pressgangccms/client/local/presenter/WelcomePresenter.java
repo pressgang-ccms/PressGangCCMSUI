@@ -4,7 +4,6 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
-import org.jboss.pressgangccms.client.local.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
 
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -20,6 +19,7 @@ public class WelcomePresenter extends TemplatePresenter
 	@Inject
 	private Display display;
 
+	@Override
 	public void go(final HasWidgets container)
 	{
 		container.clear();
