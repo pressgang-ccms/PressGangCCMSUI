@@ -52,6 +52,6 @@ public class SearchUIProjectEditor extends FlexTable implements Editor<SearchUIP
 
 	public SearchUIProjectEditor()
 	{
-
+		this.addStyleName("SpacedElement");
 	}
 }

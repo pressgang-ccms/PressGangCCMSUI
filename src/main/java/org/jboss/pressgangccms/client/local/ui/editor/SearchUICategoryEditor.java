@@ -7,12 +7,13 @@ import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.adapters.EditorSource;
 import com.google.gwt.editor.client.adapters.ListEditor;
 import com.google.gwt.user.client.ui.DecoratorPanel;
+import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 
-public class SearchUICategoryEditor extends DecoratorPanel implements Editor<SearchUICategory>
+public class SearchUICategoryEditor extends DockPanel implements Editor<SearchUICategory>
 {
 	/**
 	 * The EditorSource is used to create and orgainse the Editors that go into
@@ -55,7 +56,7 @@ public class SearchUICategoryEditor extends DecoratorPanel implements Editor<Sea
 		final VerticalPanel verticalPanel = new VerticalPanel();
 		this.add(verticalPanel);
 		
-		verticalPanel.add(name);
-		verticalPanel.add(table);
+		this.add(name, DockPanel.NORTH);
+		this.add(name, DockPanel.CENTER);
 	}
 }
