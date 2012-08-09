@@ -33,6 +33,18 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
 				public void onClick(final ClickEvent event)
 				{
 					SearchUIProjectsEditor.this.setWidget(0, 1, subEditor);
+					
+					/* Untoggle the other buttons */
+					for (final SearchUIProjectEditor projectEditor : projects.getEditors())
+					{
+						if (projectEditor.name != subEditor.name)
+						{
+							projectEditor.name.removeStyleName("CustomButtonDown");
+							projectEditor.name.removeStyleName("CustomButton");
+							
+							projectEditor.name.addStyleName("CustomButton");
+						}
+					}
 				}
 			});
 
@@ -62,7 +74,6 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
 		
 		this.addStyleName("ProjectsLayout");
 		projectButtonPanel.addStyleName("ProjectsButtonsLayout");
-		
 		
 		this.setWidget(0, 0, projectButtonPanel);
 	}

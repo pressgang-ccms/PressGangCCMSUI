@@ -3,46 +3,115 @@ body {
 	color: black;
 	font-family: Arial, sans-serif;
 	font-size: small;
-	margin: 8px;
+	margin: 0px;
+	padding: 0px;
 }
+
+html
+{
+	margin: 0px;
+	padding: 0px;
+}
+
 
 .SpacedElement {
 	margin: 8px;
-}
-
-.ApplicationTitle {
-	font-size: xx-large;
 }
 
 .PageTitle {
 	font-size: x-large;
 }
 
-.ProjectsLayout td
-{
+.ProjectsLayout td {
 	vertical-align: top;
 }
 
-.ProjectsButtonsLayout
-{
+.ProjectsButtonsLayout {
 	
 }
 
-.ProjectLayout td
-{
+.ProjectLayout td {
 	vertical-align: top;
-	padding-right: 16px;
-	padding-bottom: 16px;
 }
 
-.CategoryLayout
-{
+.CategoryLayout {
 	margin-right: 32px;
 	margin-bottom: 32px;
+	width: 100%;
+	background-color: #F9FCFF;
 }
 
-.CategoryTitle
-{
+.CategoryTagLayout {
+	width: 100%;
+}
+
+.CategoryTagLayout td {
+	padding: 16px;
+}
+
+.CategoryTitle {
 	text-align: center;
-	font-size: large;
+	font-weight: bold;
+	background-color: #0077b4;
+	color: white;
+	padding: 1em;
+}
+
+.CustomButton {
+	width: 12em;
+	height: 5em;
+	vertical-align: top;
+	border: 0px;
+	color: white;
+	/*background-color: #0097B4;*/
+	background-image: linear-gradient(bottom, rgb(36, 50, 70) 32%,
+		rgb(59, 77, 100) 66% );
+	background-image: -o-linear-gradient(bottom, rgb(36, 50, 70) 32%,
+		rgb(59, 77, 100) 66% );
+	background-image: -moz-linear-gradient(bottom, rgb(36, 50, 70) 32%,
+		rgb(59, 77, 100) 66% );
+	background-image: -webkit-linear-gradient(bottom, rgb(36, 50, 70) 32%,
+		rgb(59, 77, 100) 66% );
+	background-image: -ms-linear-gradient(bottom, rgb(36, 50, 70) 32%,
+		rgb(59, 77, 100) 66% );
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.32, rgb(36,
+		50, 70) ), color-stop(0.66, rgb(59, 77, 100) ) );
+}
+
+.CustomButton:hover { 
+	/*background-color: #1AAAC5;*/
+	background-image: linear-gradient(bottom, rgb(52, 73, 102) 32%,
+		rgb(90, 118, 153) 66% );
+	background-image: -o-linear-gradient(bottom, rgb(52, 73, 102) 32%,
+		rgb(90, 118, 153) 66% );
+	background-image: -moz-linear-gradient(bottom, rgb(52, 73, 102) 32%,
+		rgb(90, 118, 153) 66% );
+	background-image: -webkit-linear-gradient(bottom, rgb(52, 73, 102) 32%,
+		rgb(90, 118, 153) 66% );
+	background-image: -ms-linear-gradient(bottom, rgb(52, 73, 102) 32%,
+		rgb(90, 118, 153) 66% );
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.32, rgb(52,
+		73, 102) ), color-stop(0.66, rgb(90, 118, 153) ) );
+}
+
+.CustomButtonDown {
+	width: 12em;
+	height: 5em;
+	vertical-align: top;
+	border: 0px;
+	color: white;
+	/*background-color: #006F85;*/
+	background-image: linear-gradient(bottom, rgb(13,18,26) 32%, rgb(45,59,76) 66%);
+	background-image: -o-linear-gradient(bottom, rgb(13,18,26) 32%, rgb(45,59,76) 66%);
+	background-image: -moz-linear-gradient(bottom, rgb(13,18,26) 32%, rgb(45,59,76) 66%);
+	background-image: -webkit-linear-gradient(bottom, rgb(13,18,26) 32%, rgb(45,59,76) 66%);
+	background-image: -ms-linear-gradient(bottom, rgb(13,18,26) 32%, rgb(45,59,76) 66%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.32, rgb(13,18,26)),
+		color-stop(0.66, rgb(45,59,76))
+	);
 }

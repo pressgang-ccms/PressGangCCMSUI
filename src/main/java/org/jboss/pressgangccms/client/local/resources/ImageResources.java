@@ -3,8 +3,55 @@ package org.jboss.pressgangccms.client.local.resources;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 
+/**
+ * Hover Hue: 200
+ * Hover Saturation: 100
+ * Hover Lightness: 25
+ * 
+ * Down Hue: 200
+ * Down Saturation: 100
+ * Down Lightness: 35
+ * 
+ * @author Matthew Casperson
+ */
 public interface ImageResources extends ClientBundle
 {
+	@Source("headingBanner.png")
+	ImageResource headingBanner();
+	
+	@Source("transparent48.png")
+	ImageResource transparent48();
+	
+	@Source("home48.png")
+	ImageResource home48();
+	
+	@Source("homeHover48.png")
+	ImageResource homeHover48();
+	
+	@Source("homeDown48.png")
+	ImageResource homeDown48();
+	
+	@Source("searchTranslations48.png")
+	ImageResource searchTranslations48();
+	
+	@Source("searchTranslationsDown48.png")
+	ImageResource searchTranslationsDown48();
+	
+	@Source("searchTranslationsHover48.png")
+	ImageResource searchTranslationsHover48();
+	
+	@Source("reports48.png")
+	ImageResource reports48();
+	
+	@Source("reportsDown48.png")
+	ImageResource reportsDown48();
+	
+	@Source("reportsHover48.png")
+	ImageResource reportsHover48();
+	
+	@Source("reportsDisabled48.png")
+	ImageResource reportsDisabled48();
+	
 	@Source("spinner.gif")
 	ImageResource spinner();
 	

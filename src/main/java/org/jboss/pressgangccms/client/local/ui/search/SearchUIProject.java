@@ -52,4 +52,30 @@ public class SearchUIProject extends SearchUIBase
 			}
 		}
 	}
+	
+	public void populateCategoriesWithoutProject(final RESTTagCollectionV1 tags)
+	{
+		if (tags == null) throw new NullPointerException("tags parameter cannot be null");
+		if (tags.getItems() == null) throw new IllegalArgumentException("tags.getItems() cannot be null");
+		
+		for (final RESTTagV1 tag : tags.getItems())
+		{
+			if (tag.getProjects().getItems() == null) throw new IllegalArgumentException("tag.getProjects().getItems() cannot be null");
+			
+			if (tag.getProjects().getItems().isEmpty())
+			{
+				if (tag.getCategories().getItems() == null) throw new IllegalArgumentException("tag.getCategories().getItems() cannot be null");
+				
+				for (final RESTCategoryV1 category : tag.getCategories().getItems())
+				{
+					final SearchUICategory searchUICategory = new SearchUICategory(category.getName());
+					if (!categories.contains(searchUICategory))
+					{
+						searchUICategory.populateCategoriesWithoutProject(category, tags);
+						categories.add(searchUICategory);
+					}
+				}
+			}
+		}
+	}
 }

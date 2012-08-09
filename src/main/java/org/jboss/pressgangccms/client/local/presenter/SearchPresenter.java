@@ -17,12 +17,14 @@ import org.jboss.pressgangccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.PushButton;
 
 @Dependent
 public class SearchPresenter extends TemplatePresenter
 {
 	public interface Display extends BaseTemplateViewInterface
 	{
+		PushButton getSearch();
 		void initialise(final RESTTagCollectionV1 tags);
 	}
 

@@ -7,6 +7,9 @@ import org.jboss.pressgangccms.client.local.ui.search.SearchUIProject;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.adapters.EditorSource;
 import com.google.gwt.editor.client.adapters.ListEditor;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 
 public class SearchUIProjectEditor extends FlexTable implements Editor<SearchUIProject>
@@ -24,7 +27,7 @@ public class SearchUIProjectEditor extends FlexTable implements Editor<SearchUIP
 		{
 			final int row = index / COLUMNS;
 			final int column = index % COLUMNS;
-			
+
 			final SearchUICategoryEditor subEditor = new SearchUICategoryEditor();
 			SearchUIProjectEditor.this.setWidget(row, column, subEditor);
 			return subEditor;
@@ -45,7 +48,7 @@ public class SearchUIProjectEditor extends FlexTable implements Editor<SearchUIP
 		}
 	}
 
-	private static final int COLUMNS = 6;
+	private static final int COLUMNS = 4;
 
 	TextAndImageButton name = new TextAndImageButton();
 	ListEditor<SearchUICategory, SearchUICategoryEditor> categories = ListEditor.of(new SearchUICategoryEditorSource());
@@ -53,5 +56,17 @@ public class SearchUIProjectEditor extends FlexTable implements Editor<SearchUIP
 	public SearchUIProjectEditor()
 	{
 		this.addStyleName("ProjectLayout");
+		name.addStyleName("CustomButton");
+
+		name.addClickHandler(new ClickHandler()
+		{
+
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				name.removeStyleName("CustomButton");
+				name.addStyleName("CustomButtonDown");
+			}
+		});
 	}
 }

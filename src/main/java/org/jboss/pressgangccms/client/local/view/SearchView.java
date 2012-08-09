@@ -9,10 +9,14 @@ import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.PushButton;
 
 public class SearchView extends BaseTemplateView implements SearchPresenter.Display
 {
 	public static final String HISTORY_TOKEN = "SearchView";
+	
+	private final PushButton search = new PushButton(new Image(Constants.resources.search48()), new Image(Constants.resources.searchDown48()));
 
 	// Empty interface declaration, similar to UiBinder
 	interface Driver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor>
@@ -22,6 +26,11 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 	// Create the Driver
 	final Driver driver = GWT.create(Driver.class);
 	
+	public PushButton getSearch()
+	{
+		return search;
+	}
+
 	public SearchView()
 	{
 		super(Constants.pressGangCCMSUI.PressGangCCMS(), Constants.pressGangCCMSUI.Search());
@@ -30,7 +39,10 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 	@Override
 	public void initialise(final RESTTagCollectionV1 tags)
 	{
-	    /* Construct a hierarchy of tags from the tag collection */
+	    /* Build the action bar icons */
+		this.getTopActionPanel().add(this.search);
+		
+		/* Construct a hierarchy of tags from the tag collection */
 		final SearchUIProjects searchUIProjects = new SearchUIProjects(tags);
 		
 		/* SearchUIProjectsEditor is a grid */
