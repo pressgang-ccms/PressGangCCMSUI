@@ -7,19 +7,34 @@ body {
 	padding: 0px;
 }
 
-html
-{
+html {
 	margin: 0px;
 	padding: 0px;
 }
 
+.TopLevelPanel {
+	width: 100%;
+}
 
 .SpacedElement {
-	margin: 8px;
+	padding: 8px;
 }
 
 .PageTitle {
 	font-size: x-large;
+	width: 100%;
+	background-color: #EFEFEF;
+}
+
+.ShortcutAndContentPanel
+{
+	margin-top: 16px;
+	margin-left: 16px;
+}
+
+.ContentPanel
+{
+	margin-left: 16px;
 }
 
 .ProjectsLayout td {
@@ -78,8 +93,7 @@ html
 		50, 70) ), color-stop(0.66, rgb(59, 77, 100) ) );
 }
 
-.CustomButton:hover { 
-	/*background-color: #1AAAC5;*/
+.CustomButton:hover { /*background-color: #1AAAC5;*/
 	background-image: linear-gradient(bottom, rgb(52, 73, 102) 32%,
 		rgb(90, 118, 153) 66% );
 	background-image: -o-linear-gradient(bottom, rgb(52, 73, 102) 32%,
@@ -101,17 +115,16 @@ html
 	border: 0px;
 	color: white;
 	/*background-color: #006F85;*/
-	background-image: linear-gradient(bottom, rgb(13,18,26) 32%, rgb(45,59,76) 66%);
-	background-image: -o-linear-gradient(bottom, rgb(13,18,26) 32%, rgb(45,59,76) 66%);
-	background-image: -moz-linear-gradient(bottom, rgb(13,18,26) 32%, rgb(45,59,76) 66%);
-	background-image: -webkit-linear-gradient(bottom, rgb(13,18,26) 32%, rgb(45,59,76) 66%);
-	background-image: -ms-linear-gradient(bottom, rgb(13,18,26) 32%, rgb(45,59,76) 66%);
-	
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.32, rgb(13,18,26)),
-		color-stop(0.66, rgb(45,59,76))
-	);
+	background-image: linear-gradient(bottom, rgb(13, 18, 26) 32%,
+		rgb(45, 59, 76) 66% );
+	background-image: -o-linear-gradient(bottom, rgb(13, 18, 26) 32%,
+		rgb(45, 59, 76) 66% );
+	background-image: -moz-linear-gradient(bottom, rgb(13, 18, 26) 32%,
+		rgb(45, 59, 76) 66% );
+	background-image: -webkit-linear-gradient(bottom, rgb(13, 18, 26) 32%,
+		rgb(45, 59, 76) 66% );
+	background-image: -ms-linear-gradient(bottom, rgb(13, 18, 26) 32%,
+		rgb(45, 59, 76) 66% );
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.32, rgb(13,
+		18, 26) ), color-stop(0.66, rgb(45, 59, 76) ) );
 }

@@ -1,7 +1,8 @@
 package org.jboss.pressgangccms.client.local.view;
 
-import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter;
+import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
+import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.editor.SearchUIProjectsEditor;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateView;
@@ -16,7 +17,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 {
 	public static final String HISTORY_TOKEN = "SearchView";
 	
-	private final PushButton search = new PushButton(new Image(Constants.resources.search48()), new Image(Constants.resources.searchDown48()));
+	private final PushButton search = new PushButton(new Image(ImageResources.INSTANCE.search48()), new Image(ImageResources.INSTANCE.searchDown48()));
 
 	// Empty interface declaration, similar to UiBinder
 	interface Driver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor>
@@ -33,7 +34,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 
 	public SearchView()
 	{
-		super(Constants.pressGangCCMSUI.PressGangCCMS(), Constants.pressGangCCMSUI.Search());
+		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Search());
 	}
 	
 	@Override

@@ -1,6 +1,8 @@
 package org.jboss.pressgangccms.client.local.view.base;
 
 import org.jboss.pressgangccms.client.local.constants.Constants;
+import org.jboss.pressgangccms.client.local.resources.css.CSSResources;
+import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -25,7 +27,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 		private final VerticalPanel contentPanel = new VerticalPanel();
 		private final HorizontalPanel topActionPanel = new HorizontalPanel();
 		private final HorizontalPanel footerPanel = new HorizontalPanel();
-		private final Image spinner = new Image(Constants.resources.spinner());
+		private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
 		private final SimplePanel panel = new SimplePanel();
 		private final DialogBox waiting = new DialogBox();
 
@@ -89,11 +91,13 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 		public BaseTemplateView(final String applicationName, final String pageName)
 		{
+			topLevelPanel.addStyleName("TopLevelPanel");
+			
 			waiting.setGlassEnabled(true);
 			waiting.setWidget(spinner);
 			
-			headingBanner.addStyleName("ApplicationHeadingPanel");
-			headingBanner.add(new Image(Constants.resources.headingBanner()));
+			headingBanner.addStyleName(CSSResources.INSTANCE.App().ApplicationHeadingPanel());
+			headingBanner.add(new Image(ImageResources.INSTANCE.headingBanner()));
 			topLevelPanel.add(headingBanner);
 			
 			pageTitle.setText(pageName);
@@ -101,8 +105,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 			pageTitle.addStyleName("SpacedElement");
 			topLevelPanel.add(pageTitle);
 
+			shortcutAndContentPanel.addStyleName("ShortcutAndContentPanel");
+			
 			topLevelPanel.add(shortcutAndContentPanel);
 			shortcutAndContentPanel.add(shortcutPanel);
+			
+			contentPanel.addStyleName("ContentPanel");
 			shortcutAndContentPanel.add(contentPanel);
 			
 			contentPanel.add(topActionPanel);
@@ -114,30 +122,30 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 			/* Build the shortcut panel */
 			
 			/* Add a spacer */
-			shortcutPanel.add(new Image(Constants.resources.transparent48()));
+			shortcutPanel.add(new Image(ImageResources.INSTANCE.transparent48()));
 			
-			home = new PushButton(new Image(Constants.resources.home48()), new Image(Constants.resources.homeDown48()));
-			home.getUpHoveringFace().setImage(new Image(Constants.resources.homeHover48()));
+			home = new PushButton(new Image(ImageResources.INSTANCE.home48()), new Image(ImageResources.INSTANCE.homeDown48()));
+			home.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.homeHover48()));
 			home.addStyleName("SpacedElement");
 			shortcutPanel.add(home);
 			
-			search = new PushButton(new Image(Constants.resources.search48()), new Image(Constants.resources.searchDown48()));
-			search.getUpHoveringFace().setImage(new Image(Constants.resources.searchHover48()));
+			search = new PushButton(new Image(ImageResources.INSTANCE.search48()), new Image(ImageResources.INSTANCE.searchDown48()));
+			search.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.searchHover48()));
 			search.addStyleName("SpacedElement");
 			shortcutPanel.add(search);
 			
-			searchTranslations = new PushButton(new Image(Constants.resources.searchTranslations48()), new Image(Constants.resources.searchTranslationsDown48()));
-			searchTranslations.getUpHoveringFace().setImage(new Image(Constants.resources.searchTranslationsHover48()));
+			searchTranslations = new PushButton(new Image(ImageResources.INSTANCE.searchTranslations48()), new Image(ImageResources.INSTANCE.searchTranslationsDown48()));
+			searchTranslations.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.searchTranslationsHover48()));
 			searchTranslations.addStyleName("SpacedElement");
 			shortcutPanel.add(searchTranslations);
 			
-			reports = new PushButton(new Image(Constants.resources.reports48()), new Image(Constants.resources.reportsDown48()));
-			reports.getUpHoveringFace().setImage(new Image(Constants.resources.reportsHover48()));
+			reports = new PushButton(new Image(ImageResources.INSTANCE.reports48()), new Image(ImageResources.INSTANCE.reportsDown48()));
+			reports.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.reportsHover48()));
 			reports.addStyleName("SpacedElement");
 			shortcutPanel.add(reports);
 			
-			bug = new PushButton(new Image(Constants.resources.bug48()), new Image(Constants.resources.bugDown48()));
-			bug.getUpHoveringFace().setImage(new Image(Constants.resources.bugHover48()));
+			bug = new PushButton(new Image(ImageResources.INSTANCE.bug48()), new Image(ImageResources.INSTANCE.bugDown48()));
+			bug.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.bugHover48()));
 			bug.addStyleName("SpacedElement");
 			shortcutPanel.add(bug);
 		}

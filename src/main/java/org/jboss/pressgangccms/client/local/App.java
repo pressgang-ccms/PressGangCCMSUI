@@ -7,6 +7,7 @@ import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.errai.ioc.client.api.AfterInitialization;
 import org.jboss.errai.ioc.client.api.EntryPoint;
 import org.jboss.pressgangccms.client.local.constants.Constants;
+import org.jboss.pressgangccms.client.local.resources.css.CSSResources;
 import org.jboss.pressgangccms.client.local.view.SearchView;
 import org.jboss.pressgangccms.client.local.view.WelcomeView;
 
@@ -42,8 +43,12 @@ public class App
 		RestClient.setApplicationRoot(Constants.REST_SERVER);
 		RestClient.setJacksonMarshallingActive(true);
 		
-		appController.go(RootPanel.get());
-
+		final RootPanel root = RootPanel.get();
+		
+		/* Inject the CSS file */		
+		CSSResources.INSTANCE.App().ensureInjected();
+		
+		appController.go(root);
 	}
 
 	@Produces

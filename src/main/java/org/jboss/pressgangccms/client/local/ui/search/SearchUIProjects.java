@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import org.jboss.pressgangccms.client.local.constants.Constants;
+import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.sort.SearchUIProjectNameSort;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTProjectV1;
@@ -61,7 +62,7 @@ public class SearchUIProjects
 		 * the projects have been added, so it won't get confused with a project
 		 * that might be called common.
 		 */
-		final SearchUIProject common = new SearchUIProject(Constants.pressGangCCMSUI.Common());
+		final SearchUIProject common = new SearchUIProject(PressGangCCMSUI.INSTANCE.Common());
 		common.populateCategoriesWithoutProject(tags);
 		projects.addFirst(common);
 	}

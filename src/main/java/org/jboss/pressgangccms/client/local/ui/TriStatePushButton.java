@@ -1,6 +1,7 @@
 package org.jboss.pressgangccms.client.local.ui;
 
 import org.jboss.pressgangccms.client.local.constants.Constants;
+import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 
 import com.google.gwt.editor.client.IsEditor;
 import com.google.gwt.editor.client.LeafValueEditor;
@@ -21,7 +22,7 @@ public class TriStatePushButton extends PushButton implements IsEditor<LeafValue
 
 	public TriStatePushButton()
 	{
-		super(new Image(Constants.resources.round16()));
+		super(new Image(ImageResources.INSTANCE.round16()));
 
 		this.addClickHandler(new ClickHandler()
 		{
@@ -61,15 +62,15 @@ public class TriStatePushButton extends PushButton implements IsEditor<LeafValue
 	{
 		if (state == TriStateSelectionState.SELECTED)
 		{
-			TriStatePushButton.this.getUpFace().setImage(new Image(Constants.resources.plus16()));
+			TriStatePushButton.this.getUpFace().setImage(new Image(ImageResources.INSTANCE.plus16()));
 		}
 		else if (state == TriStateSelectionState.UNSELECTED)
 		{
-			TriStatePushButton.this.getUpFace().setImage(new Image(Constants.resources.minus16()));
+			TriStatePushButton.this.getUpFace().setImage(new Image(ImageResources.INSTANCE.minus16()));
 		}
 		else if (state == TriStateSelectionState.NONE)
 		{
-			TriStatePushButton.this.getUpFace().setImage(new Image(Constants.resources.round16()));
+			TriStatePushButton.this.getUpFace().setImage(new Image(ImageResources.INSTANCE.round16()));
 		}
 	}
 
