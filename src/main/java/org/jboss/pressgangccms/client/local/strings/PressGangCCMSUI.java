@@ -7,5 +7,6 @@ public interface PressGangCCMSUI extends Constants
 	  String PressGangCCMS();
 	  String Welcome();
 	  String Search();
-	  String Common(); 
+	  String Common();
+	  String Troubleshooting(); 
 }

@@ -17,3 +17,32 @@ body {
 .PageTitle {
 	font-size: x-large;
 }
+
+.ProjectsLayout td
+{
+	vertical-align: top;
+}
+
+.ProjectsButtonsLayout
+{
+	
+}
+
+.ProjectLayout td
+{
+	vertical-align: top;
+	padding-right: 16px;
+	padding-bottom: 16px;
+}
+
+.CategoryLayout
+{
+	margin-right: 32px;
+	margin-bottom: 32px;
+}
+
+.CategoryTitle
+{
+	text-align: center;
+	font-size: large;
+}

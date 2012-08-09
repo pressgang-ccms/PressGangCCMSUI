@@ -55,5 +55,8 @@ public class SearchUICategoryEditor extends DockPanel implements Editor<SearchUI
 	{
 		this.add(name, DockPanel.NORTH);
 		this.add(table, DockPanel.CENTER);
+		
+		this.addStyleName("CategoryLayout");
+		this.name.addStyleName("CategoryTitle");
 	}
 }

@@ -59,6 +59,11 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
 	public SearchUIProjectsEditor()
 	{
 		super(1, 2);
+		
+		this.addStyleName("ProjectsLayout");
+		projectButtonPanel.addStyleName("ProjectsButtonsLayout");
+		
+		
 		this.setWidget(0, 0, projectButtonPanel);
 	}
 

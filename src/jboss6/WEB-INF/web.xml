@@ -9,6 +9,7 @@
         <welcome-file>App.html</welcome-file>
     </welcome-file-list>
 
+<!-- 
     <servlet>
         <servlet-name>ErraiServlet</servlet-name>
         <servlet-class>org.jboss.errai.bus.server.servlet.DefaultBlockingServlet</servlet-class>
@@ -19,6 +20,6 @@
         <servlet-name>ErraiServlet</servlet-name>
         <url-pattern>*.erraiBus</url-pattern>
     </servlet-mapping>
-
+ -->
 
 </web-app>
