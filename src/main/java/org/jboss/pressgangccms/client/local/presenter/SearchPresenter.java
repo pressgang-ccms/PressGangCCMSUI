@@ -12,6 +12,7 @@ import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
@@ -55,7 +56,7 @@ public class SearchPresenter extends TemplatePresenter
 			{
 				try
 				{
-					final String message = retValue.getItems().size() + " projects returned.";
+					final String message = retValue.getItems().size() + " tags returned.";
 					System.out.println(message);
 					
 					display.initialise(retValue);
@@ -74,8 +75,9 @@ public class SearchPresenter extends TemplatePresenter
 			{
 				try
 				{
-					final String error = "ERROR! REST call to find projects failed with a HTTP error.\nMessage: " + message + "\nException: " + throwable.toString();
+					final String error = "ERROR! REST call to find tags failed with a HTTP error.\nPlease check your internet connection.\nMessage: " + message + "\nException: " + throwable.toString();
 					System.out.println(error);
+					Window.alert(error);
 					return true;
 				}
 				finally
@@ -97,8 +99,9 @@ public class SearchPresenter extends TemplatePresenter
 		}
 		catch (final Exception ex)
 		{
-			final String error = "ERROR! REST call to find projects failed with an exception.";
+			final String error = "ERROR! REST call to find tags failed with an exception.";
 			System.out.println(error);
+			Window.alert(error);
 			stopProcessing();
 		}
 

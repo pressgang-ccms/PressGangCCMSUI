@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
 lastWarOutDir=/pressgang-ccms-ui/src/main/webapp
+launchConfigExternalUrlPrefix=
 warSrcDir=src/main/webapp
 warSrcDirIsOutput=false

@@ -7,9 +7,12 @@ import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.errai.ioc.client.api.AfterInitialization;
 import org.jboss.errai.ioc.client.api.EntryPoint;
 import org.jboss.pressgangccms.client.local.constants.Constants;
+import org.jboss.pressgangccms.client.local.view.SearchView;
+import org.jboss.pressgangccms.client.local.view.WelcomeView;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -30,7 +33,8 @@ public class App
 			public void onUncaughtException(final Throwable ex)
 			{
 				ex.printStackTrace();
-				Window.alert("Uncaught exception event");
+				Window.alert("Uncaught exception was detected. Redirecting you to the home page.\nException: " + ex.getMessage());
+				History.newItem(WelcomeView.HISTORY_TOKEN);
 			}
 		});
 		

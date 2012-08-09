@@ -199,25 +199,25 @@
 			<artifactId>errai-jaxrs-provider</artifactId>
 			<version>${errai.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jaxrs</artifactId>
 			<version>2.2.3.GA</version>
 		</dependency>
-		
+
 		<!-- Custom libraries -->
+
+		<!-- <dependency> <groupId>org.jboss.pressgangccms</groupId> <artifactId>rest</artifactId> 
+			<version>1</version> <scope>system</scope> <systemPath>${project.basedir}/lib/pressgang-ccms-rest.jar</systemPath> 
+			</dependency> -->
 
 		<dependency>
 			<groupId>org.jboss.pressgangccms</groupId>
-			<artifactId>rest</artifactId>
-			<version>1</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/pressgang-ccms-rest.jar</systemPath>
+			<artifactId>pressgang-ccms-rest</artifactId>
+			<version>1.0</version>
 		</dependency>
-
 	</dependencies>
-
 
 	<profiles>
 		<profile>
