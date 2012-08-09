@@ -1,7 +1,6 @@
-package org.jboss.errai.marshalling.server.impl;
+package org.jboss.errai.marshalling.client.api;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.AbstractMap;
 import java.util.ConcurrentModificationException;
 import java.util.Date;
@@ -15,9 +14,6 @@ import javax.enterprise.context.Dependent;
 import org.jboss.errai.bus.client.api.base.MessageDeliveryFailure;
 import org.jboss.errai.bus.client.api.base.TransportIOException;
 import org.jboss.errai.enterprise.client.cdi.events.BusReadyEvent;
-import org.jboss.errai.marshalling.client.api.Marshaller;
-import org.jboss.errai.marshalling.client.api.MarshallerFactory;
-import org.jboss.errai.marshalling.client.api.MarshallingSession;
 import org.jboss.errai.marshalling.client.api.json.EJArray;
 import org.jboss.errai.marshalling.client.api.json.EJObject;
 import org.jboss.errai.marshalling.client.api.json.EJValue;
@@ -74,7 +70,7 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTopicSourceUrlV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTranslatedTopicStringV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTranslatedTopicV1;
-@Dependent public class ServerMarshallingFactoryImpl implements MarshallerFactory {
+@Dependent public class MarshallerFactoryImpl implements MarshallerFactory {
   private Map<String, Marshaller> marshallers = new HashMap<String, Marshaller>();
   private FloatMarshaller java_lang_Float;
   private LinkedListMarshaller java_util_LinkedList;
@@ -98,8 +94,8 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTranslatedTopicV1;
   private TimestampMarshaller java_sql_Timestamp;
   private SortedSetMarshaller java_util_TreeSet;
   private QualifyingMarshallerWrapper<SortedMap> java_util_SortedMap;
-  private SQLDateMarshaller java_sql_Date;
   private BigDecimalMarshaller java_math_BigDecimal;
+  private SQLDateMarshaller java_sql_Date;
   private StringMarshaller java_lang_String;
   private QualifyingMarshallerWrapper<HashMap> java_util_HashMap;
   private SetMarshaller java_util_AbstractSet;
@@ -157,7 +153,6 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTranslatedTopicV1;
   private Marshaller<RESTTopicCollectionV1> org_jboss_pressgangccms_rest_v1_collections_RESTTopicCollectionV1;
   private Marshaller<ArithmeticException> java_lang_ArithmeticException;
   private Marshaller<MessageDeliveryFailure> org_jboss_errai_bus_client_api_base_MessageDeliveryFailure;
-  private static Field org_jboss_pressgangccms_rest_v1_entities_RESTTranslatedTopicV1_translatedTopicStrings_fld = _getAccessibleField(RESTTranslatedTopicV1.class, "translatedTopicStrings");
   private Marshaller<RESTTranslatedTopicV1> org_jboss_pressgangccms_rest_v1_entities_RESTTranslatedTopicV1;
   private Marshaller<RESTImageCollectionV1> org_jboss_pressgangccms_rest_v1_collections_RESTImageCollectionV1;
   private Marshaller<RESTBugzillaBugCollectionV1> org_jboss_pressgangccms_rest_v1_collections_RESTBugzillaBugCollectionV1;
@@ -179,7 +174,7 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTranslatedTopicV1;
   private QualifyingMarshallerWrapper<Boolean[]> arrayOf_java_lang_Boolean_D1;
   private QualifyingMarshallerWrapper<Byte[]> arrayOf_java_lang_Byte_D1;
   private QualifyingMarshallerWrapper<Character[]> arrayOf_java_lang_Character_D1;
-  public ServerMarshallingFactoryImpl() {
+  public MarshallerFactoryImpl() {
     java_lang_Float = new FloatMarshaller();
     marshallers.put("java.lang.Float", java_lang_Float);
     java_util_LinkedList = new LinkedListMarshaller();
@@ -248,10 +243,10 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTranslatedTopicV1;
     marshallers.put("java.util.Collections$SynchronizedSortedMap", java_util_SortedMap);
     marshallers.put("java.util.Collections$UnmodifiableSortedMap", java_util_SortedMap);
     marshallers.put("java.util.TreeMap", java_util_SortedMap);
-    java_sql_Date = new SQLDateMarshaller();
-    marshallers.put("java.sql.Date", java_sql_Date);
     java_math_BigDecimal = new BigDecimalMarshaller();
     marshallers.put("java.math.BigDecimal", java_math_BigDecimal);
+    java_sql_Date = new SQLDateMarshaller();
+    marshallers.put("java.sql.Date", java_sql_Date);
     java_lang_String = new StringMarshaller();
     marshallers.put("java.lang.String", java_lang_String);
     java_util_HashMap = new QualifyingMarshallerWrapper(new MapMarshaller());
@@ -3843,34 +3838,13 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTranslatedTopicV1;
     marshallers.put("[Ljava.lang.Character;", arrayOf_java_lang_Character_D1);
   }
 
-  private static Field _getAccessibleField(Class cls, String name) {
-    try {
-      Field fld = cls.getDeclaredField(name);
-      fld.setAccessible(true);
-      return fld;
-    } catch (Throwable e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
-    }
-  }
+  private native static RESTTranslatedTopicStringCollectionV1 org_jboss_pressgangccms_rest_v1_entities_RESTTranslatedTopicV1_translatedTopicStrings(RESTTranslatedTopicV1 instance) /*-{
+    return instance.@org.jboss.pressgangccms.rest.v1.entities.RESTTranslatedTopicV1::translatedTopicStrings;
+  }-*/;
 
-  private static RESTTranslatedTopicStringCollectionV1 org_jboss_pressgangccms_rest_v1_entities_RESTTranslatedTopicV1_translatedTopicStrings(RESTTranslatedTopicV1 instance) {
-    try {
-      return (RESTTranslatedTopicStringCollectionV1) org_jboss_pressgangccms_rest_v1_entities_RESTTranslatedTopicV1_translatedTopicStrings_fld.get(instance);
-    } catch (Throwable e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
-    }
-  }
-
-  private static void org_jboss_pressgangccms_rest_v1_entities_RESTTranslatedTopicV1_translatedTopicStrings(RESTTranslatedTopicV1 instance, RESTTranslatedTopicStringCollectionV1 value) {
-    try {
-      org_jboss_pressgangccms_rest_v1_entities_RESTTranslatedTopicV1_translatedTopicStrings_fld.set(instance, value);
-    } catch (Throwable e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
-    }
-  }
+  private native static void org_jboss_pressgangccms_rest_v1_entities_RESTTranslatedTopicV1_translatedTopicStrings(RESTTranslatedTopicV1 instance, RESTTranslatedTopicStringCollectionV1 value) /*-{
+    instance.@org.jboss.pressgangccms.rest.v1.entities.RESTTranslatedTopicV1::translatedTopicStrings = value;
+  }-*/;
 
   public Marshaller getMarshaller(String a0, String a1) {
     return marshallers.get(a1);

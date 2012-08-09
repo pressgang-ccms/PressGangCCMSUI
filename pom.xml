@@ -770,6 +770,7 @@
 						<version>${gwt.maven.version}</version>
 						<configuration>
 							<skip>true</skip>
+							
 						</configuration>
 					</plugin>
 				</plugins>
