@@ -18,4 +18,10 @@ public interface PressGangCCMSUI extends Constants
 	String Troubleshooting();
 
 	String PleaseWait();
+	
+	String Categories();
+	
+	String Included();
+	
+	String Excluded();
 }

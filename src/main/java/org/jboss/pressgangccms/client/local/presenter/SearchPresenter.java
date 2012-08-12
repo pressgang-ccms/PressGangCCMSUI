@@ -8,13 +8,13 @@ import org.jboss.errai.bus.client.api.Message;
 import org.jboss.errai.bus.client.api.RemoteCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
+import org.jboss.pressgangccms.client.local.ui.editor.SearchUIProjectsEditor;
+import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgangccms.rest.v1.collections.RESTCategoryCollectionV1;
-import org.jboss.pressgangccms.rest.v1.collections.RESTProjectCollectionV1;
-import org.jboss.pressgangccms.rest.v1.collections.RESTPropertyTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 
+import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
@@ -24,7 +24,15 @@ public class SearchPresenter extends TemplatePresenter
 {
 	public interface Display extends BaseTemplateViewInterface
 	{
+		// Empty interface declaration, similar to UiBinder
+		public interface Driver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor>
+		{
+		}
+		
+		SearchUIProjects getSearchUIProjects();
+		@Override
 		PushButton getSearch();
+		Driver getDriver();
 		void initialise(final RESTTagCollectionV1 tags);
 	}
 
@@ -39,7 +47,14 @@ public class SearchPresenter extends TemplatePresenter
 
 		getProjects();
 		
-		bind(display);
+		bind();
+	}
+	
+	protected void bind()
+	{
+		super.bind(display);
+		
+		
 	}
 
 	private void stopProcessing()

@@ -1,6 +1,5 @@
 package org.jboss.pressgangccms.client.local.view.base;
 
-import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.resources.css.CSSResources;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 

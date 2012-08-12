@@ -1,10 +1,5 @@
 package org.jboss.pressgangccms.client.local.constants;
 
-import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
-import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
-
-import com.google.gwt.core.client.GWT;
-
 public class Constants 
 {
 	

@@ -1,6 +1,5 @@
 package org.jboss.pressgangccms.client.local.ui;
 
-import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 
 import com.google.gwt.editor.client.IsEditor;

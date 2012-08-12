@@ -1,7 +1,10 @@
 package org.jboss.pressgangccms.client.local.ui.editor;
 
+import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.Driver;
 import org.jboss.pressgangccms.client.local.ui.TextAndImageButton;
+import org.jboss.pressgangccms.client.local.ui.TextAndImageButtonStringEditor;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
+import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUITag;
 
 import com.google.gwt.editor.client.Editor;
@@ -15,8 +18,11 @@ import com.google.gwt.user.client.ui.FlexTable;
 public class SearchUICategoryEditor extends FlexTable implements Editor<SearchUICategory>
 {
 	private static final int COLUMNS = 2;
-	TextAndImageButton name = new TextAndImageButton();
-	ListEditor<SearchUITag, SearchUITagEditor> myTags = ListEditor.of(new SearchUITagEditorSource());
+	private final Driver driver;
+	private final SearchUIProjects searchUIProjects;
+	
+	final TextAndImageButtonStringEditor name = new TextAndImageButtonStringEditor();
+	final ListEditor<SearchUITag, SearchUITagEditor> myTags = ListEditor.of(new SearchUITagEditorSource());
 	
 	/**
 	 * The EditorSource is used to create and orgainse the Editors that go into
@@ -32,7 +38,7 @@ public class SearchUICategoryEditor extends FlexTable implements Editor<SearchUI
 			final int fixedIndex = index / COLUMNS;
 			final int column = index % COLUMNS;
 			
-			final SearchUITagEditor subEditor = new SearchUITagEditor();
+			final SearchUITagEditor subEditor = new SearchUITagEditor(driver, searchUIProjects);
 			SearchUICategoryEditor.this.setWidget(fixedIndex, column * 2, subEditor.name);
 			SearchUICategoryEditor.this.setWidget(fixedIndex, (column * 2) + 1, subEditor.state);
 			return subEditor;
@@ -56,9 +62,11 @@ public class SearchUICategoryEditor extends FlexTable implements Editor<SearchUI
 		}
 	}
 
-	
-	public SearchUICategoryEditor()
+	public SearchUICategoryEditor(final Driver driver, final SearchUIProjects searchUIProjects)
 	{
+		this.driver = driver;
+		this.searchUIProjects = searchUIProjects;
+		
 		this.name.addStyleName("CustomButton");
 		this.addStyleName("CategoryTagLayout");
 		

@@ -3,7 +3,8 @@ package org.jboss.pressgangccms.client.local.ui.search;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import org.jboss.pressgangccms.client.local.constants.Constants;
+
+import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.Driver;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.sort.SearchUIProjectNameSort;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
@@ -25,12 +26,23 @@ public class SearchUIProjects
 {
 	private final LinkedList<SearchUIProject> projects = new LinkedList<SearchUIProject>();
 
+
 	public List<SearchUIProject> getProjects()
 	{
 		return projects;
 	}
+	
+	public SearchUIProjects()
+	{
+		
+	}
 
 	public SearchUIProjects(final RESTTagCollectionV1 tags)
+	{
+		initialize(tags);
+	}
+	
+	public void initialize(final RESTTagCollectionV1 tags)
 	{
 		if (tags == null)
 			throw new NullPointerException("tags parameter cannot be null");

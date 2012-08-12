@@ -1,5 +1,6 @@
 package org.jboss.pressgangccms.client.local.ui.editor;
 
+import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.Driver;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProject;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
 
@@ -13,6 +14,9 @@ import com.google.gwt.user.client.ui.Grid;
 
 public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProjects>
 {
+	private final Driver driver;
+	final SearchUIProjects searchUIProjects;
+	
 	/**
 	 * The EditorSource is used to create and orgainse the Editors that go into
 	 * a ListEditor
@@ -24,10 +28,10 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
 		@Override
 		public SearchUIProjectEditor create(final int index)
 		{
-			final SearchUIProjectEditor subEditor = new SearchUIProjectEditor();
-			projectButtonPanel.setWidget(index, 0, subEditor.name);
+			final SearchUIProjectEditor subEditor = new SearchUIProjectEditor(driver, searchUIProjects);
+			projectButtonPanel.setWidget(index, 0, subEditor.summary);
 
-			subEditor.name.addClickHandler(new ClickHandler()
+			subEditor.summary.addClickHandler(new ClickHandler()
 			{
 				@Override
 				public void onClick(final ClickEvent event)
@@ -37,12 +41,12 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
 					/* Untoggle the other buttons */
 					for (final SearchUIProjectEditor projectEditor : projects.getEditors())
 					{
-						if (projectEditor.name != subEditor.name)
+						if (projectEditor.summary != subEditor.summary)
 						{
-							projectEditor.name.removeStyleName("CustomButtonDown");
-							projectEditor.name.removeStyleName("CustomButton");
+							projectEditor.summary.removeStyleName("CustomButtonDown");
+							projectEditor.summary.removeStyleName("CustomButton");
 							
-							projectEditor.name.addStyleName("CustomButton");
+							projectEditor.summary.addStyleName("CustomButton");
 						}
 					}
 				}
@@ -54,7 +58,7 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
 		@Override
 		public void dispose(final SearchUIProjectEditor subEditor)
 		{
-			subEditor.name.removeFromParent();
+			subEditor.summary.removeFromParent();
 			subEditor.removeFromParent();
 		}
 
@@ -65,12 +69,15 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
 		}
 	}
 
-	ListEditor<SearchUIProject, SearchUIProjectEditor> projects = ListEditor.of(new SearchUIProjectEditorSource());
+	final ListEditor<SearchUIProject, SearchUIProjectEditor> projects = ListEditor.of(new SearchUIProjectEditorSource());
 	private final FlexTable projectButtonPanel = new FlexTable();
 
-	public SearchUIProjectsEditor()
+	public SearchUIProjectsEditor(final Driver driver, final SearchUIProjects searchUIProjects)
 	{
 		super(1, 2);
+		
+		this.driver = driver;
+		this.searchUIProjects = searchUIProjects;
 		
 		this.addStyleName("ProjectsLayout");
 		projectButtonPanel.addStyleName("ProjectsButtonsLayout");

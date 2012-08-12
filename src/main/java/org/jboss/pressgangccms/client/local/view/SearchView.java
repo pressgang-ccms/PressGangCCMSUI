@@ -9,7 +9,6 @@ import org.jboss.pressgangccms.client.local.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PushButton;
 
@@ -19,14 +18,24 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 	
 	private final PushButton search = new PushButton(new Image(ImageResources.INSTANCE.search48()), new Image(ImageResources.INSTANCE.searchDown48()));
 
-	// Empty interface declaration, similar to UiBinder
-	interface Driver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor>
+	/** The GWT Editor Driver */
+	private final Driver driver = GWT.create(Driver.class);
+	/** The UI hierarchy */
+	private final SearchUIProjects searchUIProjects = new SearchUIProjects();
+	
+	@Override
+	public SearchUIProjects getSearchUIProjects()
 	{
+		return searchUIProjects;
 	}
 
-	// Create the Driver
-	final Driver driver = GWT.create(Driver.class);
-	
+	@Override
+	public Driver getDriver()
+	{
+		return driver;
+	}
+
+	@Override
 	public PushButton getSearch()
 	{
 		return search;
@@ -44,10 +53,10 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 		this.getTopActionPanel().add(this.search);
 		
 		/* Construct a hierarchy of tags from the tag collection */
-		final SearchUIProjects searchUIProjects = new SearchUIProjects(tags);
+		getSearchUIProjects().initialize(tags);
 		
 		/* SearchUIProjectsEditor is a grid */
-		final SearchUIProjectsEditor editor = new SearchUIProjectsEditor();
+		final SearchUIProjectsEditor editor = new SearchUIProjectsEditor(driver, searchUIProjects);
 	    /* Initialize the driver with the top-level editor */
 	    driver.initialize(editor);
 	    /* Copy the data in the object into the UI */

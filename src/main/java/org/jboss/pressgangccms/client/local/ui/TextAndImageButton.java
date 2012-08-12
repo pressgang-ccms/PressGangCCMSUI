@@ -13,16 +13,17 @@ import com.google.gwt.user.client.ui.Image;
  * 
  * @author Matthew Casperson
  */
-public class TextAndImageButton extends Button implements IsEditor<LeafValueEditor<String>>
+public class TextAndImageButton extends Button 
 {
+	protected static final String DIV_STYLE = "padding-left:3px; vertical-align:middle;";
 	private String text;
-	private Element span = DOM.createElement("span");
+	private final Element div = DOM.createElement("div");
 
 	public TextAndImageButton()
 	{
 		super();
-		span.setAttribute("style", "padding-left:3px; vertical-align:middle;");
-		DOM.insertChild(getElement(), span, 0);		
+		div.setAttribute("style", DIV_STYLE);
+		DOM.insertChild(getElement(), div, 0);		
 	}
 
 	public TextAndImageButton(final String text, final ImageResource imageResource)
@@ -33,8 +34,8 @@ public class TextAndImageButton extends Button implements IsEditor<LeafValueEdit
 
 	public void setResource(final ImageResource imageResource)
 	{
-		Image img = new Image(imageResource);
-		String definedStyles = img.getElement().getAttribute("style");
+		final Image img = new Image(imageResource);
+		final String definedStyles = img.getElement().getAttribute("style");
 		img.getElement().setAttribute("style", definedStyles + "; vertical-align:middle;");
 		DOM.insertBefore(getElement(), img.getElement(), DOM.getFirstChild(getElement()));
 	}
@@ -43,31 +44,12 @@ public class TextAndImageButton extends Button implements IsEditor<LeafValueEdit
 	public void setText(final String text)
 	{
 		this.text = text;
-		span.setInnerText(text);
+		div.setInnerText(text);
 	}
 
 	@Override
 	public String getText()
 	{
 		return this.text;
-	}
-
-	@Override
-	public LeafValueEditor<String> asEditor()
-	{
-		return new LeafValueEditor<String>()
-		{
-			@Override
-			public void setValue(final String value)
-			{
-				setText(value);
-			}
-
-			@Override
-			public String getValue()
-			{
-				return getText();
-			}
-		};
 	}
 }

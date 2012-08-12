@@ -1,6 +1,5 @@
 package org.jboss.pressgangccms.client.local.view;
 
-import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.presenter.WelcomePresenter;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateView;
