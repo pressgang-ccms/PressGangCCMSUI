@@ -29,12 +29,12 @@ public class SearchUICategoryEditor extends FlexTable implements Editor<SearchUI
 		@Override
 		public SearchUITagEditor create(final int index)
 		{
-			final int column = COLUMNS / index;
-			final int fixedIndex = index % COLUMNS;
+			final int fixedIndex = index / COLUMNS;
+			final int column = index % COLUMNS;
 			
 			final SearchUITagEditor subEditor = new SearchUITagEditor();
-			SearchUICategoryEditor.this.setWidget(fixedIndex, column, subEditor.name);
-			SearchUICategoryEditor.this.setWidget(fixedIndex, column + 1, subEditor.state);
+			SearchUICategoryEditor.this.setWidget(fixedIndex, column * 2, subEditor.name);
+			SearchUICategoryEditor.this.setWidget(fixedIndex, (column * 2) + 1, subEditor.state);
 			return subEditor;
 		}
 
@@ -48,11 +48,11 @@ public class SearchUICategoryEditor extends FlexTable implements Editor<SearchUI
 		@Override
 		public void setIndex(final SearchUITagEditor subEditor, final int index)
 		{
-			final int column = COLUMNS / index;
-			final int fixedIndex = index % COLUMNS;
+			final int fixedIndex = index / COLUMNS;
+			final int column = index % COLUMNS;
 			
-			SearchUICategoryEditor.this.setWidget(fixedIndex, column, subEditor.name);
-			SearchUICategoryEditor.this.setWidget(fixedIndex, column + 1, subEditor.state);
+			SearchUICategoryEditor.this.setWidget(fixedIndex, column * 2, subEditor.name);
+			SearchUICategoryEditor.this.setWidget(fixedIndex, (column * 2) + 1, subEditor.state);
 		}
 	}
 

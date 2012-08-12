@@ -42,13 +42,16 @@ html {
 	padding: 0px;
 }
 
-.ProjectsButtonsLayout {
-	
+.ProjectsButtonsLayout td 
+{
+	padding-bottom: 2px;
+	padding-top: 2px;
 }
 
-.CategoriesButtonsLayout
+.CategoriesButtonsLayout td
 {
-	
+	padding-bottom: 2px;
+	padding-top: 2px;
 }
 
 .ProjectLayout
@@ -73,6 +76,7 @@ html {
 
 .CategoryTagLayout td {
 	padding: 16px;
+	vertical-align: middle;
 }
 
 .CategoryTitle {
@@ -81,6 +85,11 @@ html {
 	background-color: #BEBEBE;
 	color: white;
 	padding: 1em;
+}
+
+.TagLabel
+{
+	min-width: 200px;
 }
 
 .CustomButton {

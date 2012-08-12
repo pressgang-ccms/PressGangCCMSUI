@@ -84,10 +84,19 @@ public interface ImageResources extends ClientBundle
 
 	@Source("plus16.png")
 	ImageResource plus16();
+	
+	@Source("plus32.png")
+	ImageResource plus32();
 
 	@Source("minus16.png")
 	ImageResource minus16();
+	
+	@Source("minus32.png")
+	ImageResource minus32();
 
 	@Source("round16.png")
 	ImageResource round16();
+	
+	@Source("round32.png")
+	ImageResource round32();
 }

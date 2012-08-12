@@ -14,4 +14,9 @@ public class SearchUITagEditor implements Editor<SearchUITag>
 {
 	Label name = new Label();
 	TriStatePushButton state = new TriStatePushButton();
+	
+	public SearchUITagEditor()
+	{
+		name.addStyleName("TagLabel");
+	}
 }

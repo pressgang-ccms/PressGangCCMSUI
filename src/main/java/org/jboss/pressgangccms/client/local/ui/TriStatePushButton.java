@@ -62,15 +62,15 @@ public class TriStatePushButton extends PushButton implements IsEditor<LeafValue
 	{
 		if (state == TriStateSelectionState.SELECTED)
 		{
-			TriStatePushButton.this.getUpFace().setImage(new Image(ImageResources.INSTANCE.plus16()));
+			TriStatePushButton.this.getUpFace().setImage(new Image(ImageResources.INSTANCE.plus32()));
 		}
 		else if (state == TriStateSelectionState.UNSELECTED)
 		{
-			TriStatePushButton.this.getUpFace().setImage(new Image(ImageResources.INSTANCE.minus16()));
+			TriStatePushButton.this.getUpFace().setImage(new Image(ImageResources.INSTANCE.minus32()));
 		}
 		else if (state == TriStateSelectionState.NONE)
 		{
-			TriStatePushButton.this.getUpFace().setImage(new Image(ImageResources.INSTANCE.round16()));
+			TriStatePushButton.this.getUpFace().setImage(new Image(ImageResources.INSTANCE.round32()));
 		}
 	}
 
