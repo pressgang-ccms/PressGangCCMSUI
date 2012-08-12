@@ -39,10 +39,22 @@ html {
 
 .ProjectsLayout td {
 	vertical-align: top;
+	padding: 0px;
 }
 
 .ProjectsButtonsLayout {
 	
+}
+
+.CategoriesButtonsLayout
+{
+	
+}
+
+.ProjectLayout
+{
+	border-spacing: 0px;
+	padding: 0px;
 }
 
 .ProjectLayout td {
@@ -53,7 +65,6 @@ html {
 	margin-right: 32px;
 	margin-bottom: 32px;
 	width: 100%;
-	background-color: #F9FCFF;
 }
 
 .CategoryTagLayout {
@@ -67,7 +78,7 @@ html {
 .CategoryTitle {
 	text-align: center;
 	font-weight: bold;
-	background-color: #0077b4;
+	background-color: #BEBEBE;
 	color: white;
 	padding: 1em;
 }

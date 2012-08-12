@@ -100,9 +100,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 			headingBanner.add(new Image(ImageResources.INSTANCE.headingBanner()));
 			topLevelPanel.add(headingBanner);
 			
-			pageTitle.setText(pageName);
+			pageTitle.setText(" " + pageName);
 			pageTitle.addStyleName("PageTitle");
-			pageTitle.addStyleName("SpacedElement");
 			topLevelPanel.add(pageTitle);
 
 			shortcutAndContentPanel.addStyleName("ShortcutAndContentPanel");

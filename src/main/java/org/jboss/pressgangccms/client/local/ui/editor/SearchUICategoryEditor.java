@@ -1,20 +1,23 @@
 package org.jboss.pressgangccms.client.local.ui.editor;
 
+import org.jboss.pressgangccms.client.local.ui.TextAndImageButton;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUITag;
 
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.adapters.EditorSource;
 import com.google.gwt.editor.client.adapters.ListEditor;
-import com.google.gwt.user.client.ui.DecoratorPanel;
-import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 
-public class SearchUICategoryEditor extends DockPanel implements Editor<SearchUICategory>
+public class SearchUICategoryEditor extends FlexTable implements Editor<SearchUICategory>
 {
+	private static final int COLUMNS = 2;
+	TextAndImageButton name = new TextAndImageButton();
+	ListEditor<SearchUITag, SearchUITagEditor> myTags = ListEditor.of(new SearchUITagEditorSource());
+	
 	/**
 	 * The EditorSource is used to create and orgainse the Editors that go into
 	 * a ListEditor
@@ -26,9 +29,12 @@ public class SearchUICategoryEditor extends DockPanel implements Editor<SearchUI
 		@Override
 		public SearchUITagEditor create(final int index)
 		{
+			final int column = COLUMNS / index;
+			final int fixedIndex = index % COLUMNS;
+			
 			final SearchUITagEditor subEditor = new SearchUITagEditor();
-			SearchUICategoryEditor.this.table.setWidget(index, 0, subEditor.name);
-			SearchUICategoryEditor.this.table.setWidget(index, 1, subEditor.state);
+			SearchUICategoryEditor.this.setWidget(fixedIndex, column, subEditor.name);
+			SearchUICategoryEditor.this.setWidget(fixedIndex, column + 1, subEditor.state);
 			return subEditor;
 		}
 
@@ -42,22 +48,28 @@ public class SearchUICategoryEditor extends DockPanel implements Editor<SearchUI
 		@Override
 		public void setIndex(final SearchUITagEditor subEditor, final int index)
 		{
-			SearchUICategoryEditor.this.table.setWidget(index, 0, subEditor.name);
-			SearchUICategoryEditor.this.table.setWidget(index, 1, subEditor.state);
+			final int column = COLUMNS / index;
+			final int fixedIndex = index % COLUMNS;
+			
+			SearchUICategoryEditor.this.setWidget(fixedIndex, column, subEditor.name);
+			SearchUICategoryEditor.this.setWidget(fixedIndex, column + 1, subEditor.state);
 		}
 	}
-	
-	Label name = new Label();
-	ListEditor<SearchUITag, SearchUITagEditor> myTags = ListEditor.of(new SearchUITagEditorSource());
-	final FlexTable table = new FlexTable();
+
 	
 	public SearchUICategoryEditor()
 	{
-		this.add(name, DockPanel.NORTH);
-		this.add(table, DockPanel.CENTER);
+		this.name.addStyleName("CustomButton");
+		this.addStyleName("CategoryTagLayout");
 		
-		this.addStyleName("CategoryLayout");
-		this.name.addStyleName("CategoryTitle");
-		table.addStyleName("CategoryTagLayout");
+		name.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event)
+			{
+				name.removeStyleName("CustomButton");
+				name.addStyleName("CustomButtonDown");
+			}
+		});
 	}
 }
