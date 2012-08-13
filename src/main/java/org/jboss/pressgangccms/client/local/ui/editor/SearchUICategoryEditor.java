@@ -1,13 +1,13 @@
 package org.jboss.pressgangccms.client.local.ui.editor;
 
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.Driver;
-import org.jboss.pressgangccms.client.local.ui.TextAndImageButton;
-import org.jboss.pressgangccms.client.local.ui.TextAndImageButtonStringEditor;
+import org.jboss.pressgangccms.client.local.ui.FourTextAndImageButtonSearchUICategoryEditor;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUITag;
 
-import com.google.gwt.editor.client.Editor;
+import com.google.gwt.editor.client.EditorDelegate;
+import com.google.gwt.editor.client.ValueAwareEditor;
 import com.google.gwt.editor.client.adapters.EditorSource;
 import com.google.gwt.editor.client.adapters.ListEditor;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -15,13 +15,14 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlexTable;
 
 
-public class SearchUICategoryEditor extends FlexTable implements Editor<SearchUICategory>
+public class SearchUICategoryEditor extends FlexTable implements ValueAwareEditor<SearchUICategory>
 {
 	private static final int COLUMNS = 2;
 	private final Driver driver;
 	private final SearchUIProjects searchUIProjects;
+	private SearchUICategory value;
 	
-	final TextAndImageButtonStringEditor name = new TextAndImageButtonStringEditor();
+	final FourTextAndImageButtonSearchUICategoryEditor summary = new FourTextAndImageButtonSearchUICategoryEditor();
 	final ListEditor<SearchUITag, SearchUITagEditor> myTags = ListEditor.of(new SearchUITagEditorSource());
 	
 	/**
@@ -67,17 +68,41 @@ public class SearchUICategoryEditor extends FlexTable implements Editor<SearchUI
 		this.driver = driver;
 		this.searchUIProjects = searchUIProjects;
 		
-		this.name.addStyleName("CustomButton");
+		this.summary.addStyleName("CustomButton");
 		this.addStyleName("CategoryTagLayout");
 		
-		name.addClickHandler(new ClickHandler()
+		summary.addClickHandler(new ClickHandler()
 		{
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				name.removeStyleName("CustomButton");
-				name.addStyleName("CustomButtonDown");
+				summary.removeStyleName("CustomButton");
+				summary.addStyleName("CustomButtonDown");
 			}
 		});
+	}
+
+	@Override
+	public void setDelegate(final EditorDelegate<SearchUICategory> delegate)
+	{
+
+	}
+
+	@Override
+	public void flush()
+	{
+		this.summary.asEditor().setValue(value.getSummary());
+	}
+
+	@Override
+	public void onPropertyChange(final String... paths)
+	{
+
+	}
+
+	@Override
+	public void setValue(final SearchUICategory value)
+	{
+		this.value = value;
 	}
 }

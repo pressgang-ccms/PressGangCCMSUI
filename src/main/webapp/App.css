@@ -93,8 +93,8 @@ html {
 }
 
 .CustomButton {
-	width: 12em;
-	height: 5em;
+	width: 14em;
+	height: 6em;
 	vertical-align: top;
 	border: 0px;
 	color: white;
@@ -129,8 +129,8 @@ html {
 }
 
 .CustomButtonDown {
-	width: 12em;
-	height: 5em;
+	width: 14em;
+	height: 6em;
 	vertical-align: top;
 	border: 0px;
 	color: white;
@@ -147,4 +147,27 @@ html {
 		rgb(45, 59, 76) 66% );
 	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.32, rgb(13,
 		18, 26) ), color-stop(0.66, rgb(45, 59, 76) ) );
+}
+
+.CustomButtonText
+{
+	padding-left:3px; 
+	vertical-align:middle;
+}
+
+.CustomButtonTextBold
+{
+	padding-left: 3px; 
+	vertical-align: middle;
+	font-weight: bold;
+}
+
+.CustomButtonTagsInclued
+{
+	color: greenyellow;
+}
+
+.CustomButtonTagsExcluded
+{
+	color: #FF3333
 }

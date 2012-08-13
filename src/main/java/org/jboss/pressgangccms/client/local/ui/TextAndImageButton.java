@@ -15,14 +15,24 @@ import com.google.gwt.user.client.ui.Image;
  */
 public class TextAndImageButton extends Button 
 {
-	protected static final String DIV_STYLE = "padding-left:3px; vertical-align:middle;";
 	private String text;
 	private final Element div = DOM.createElement("div");
 
 	public TextAndImageButton()
 	{
 		super();
-		div.setAttribute("style", DIV_STYLE);
+		initialize("CustomButtonText");	
+	}
+	
+	public TextAndImageButton(final String divClass)
+	{
+		super();
+		initialize(divClass);	
+	}
+	
+	private void initialize(final String divClass)
+	{
+		div.setAttribute("class", divClass);
 		DOM.insertChild(getElement(), div, 0);		
 	}
 

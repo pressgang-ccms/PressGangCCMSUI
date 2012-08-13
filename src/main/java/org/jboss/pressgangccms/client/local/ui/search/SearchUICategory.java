@@ -3,6 +3,7 @@ package org.jboss.pressgangccms.client.local.ui.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.pressgangccms.client.local.ui.TriStateSelectionState;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTProjectV1;
@@ -15,6 +16,57 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
 public class SearchUICategory extends SearchUIBase
 {
 	private final List<SearchUITag> myTags = new ArrayList<SearchUITag>();
+	
+	public class TagSummary
+	{
+		private final String name;
+		private final int tagCount;
+		private final int includedTags;
+		private final int excludedTags;
+
+		public String getName()
+		{
+			return name;
+		}
+
+		public int getTagCount()
+		{
+			return tagCount;
+		}
+
+		public int getIncludedTags()
+		{
+			return includedTags;
+		}
+
+		public int getExcludedTags()
+		{
+			return excludedTags;
+		}
+
+		public TagSummary(final String name, final int tagCount, final int includedTags, final int excludedTags)
+		{
+			this.name = name;
+			this.tagCount = tagCount;
+			this.includedTags = includedTags;
+			this.excludedTags = excludedTags;
+		}
+	}
+	
+	public TagSummary getSummary()
+	{
+		int includedTags = 0;
+		int excludedTags = 0;
+		for (final SearchUITag tag : myTags)
+		{
+			if (tag.getState() == TriStateSelectionState.SELECTED)
+				++includedTags;
+			else if (tag.getState() == TriStateSelectionState.UNSELECTED)
+				++excludedTags;
+		}
+		
+		return new TagSummary(this.getName(), this.myTags.size(), includedTags, excludedTags);
+	}
 
 	public List<SearchUITag> getMyTags()
 	{

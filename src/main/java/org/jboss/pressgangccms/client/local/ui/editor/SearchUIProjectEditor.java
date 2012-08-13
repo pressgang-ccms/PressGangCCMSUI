@@ -1,6 +1,6 @@
 package org.jboss.pressgangccms.client.local.ui.editor;
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.Driver;
-import org.jboss.pressgangccms.client.local.ui.TextAndImageButtonSearchUIProjectEditor;
+import org.jboss.pressgangccms.client.local.ui.FourTextAndImageButtonSearchUIProjectEditor;
 import org.jboss.pressgangccms.client.local.ui.TextAndImageButtonStringEditor;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProject;
@@ -22,6 +22,10 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
 	private final SearchUIProjects searchUIProjects;
 	private SearchUIProject value;
 	
+	final FourTextAndImageButtonSearchUIProjectEditor summary = new FourTextAndImageButtonSearchUIProjectEditor();
+	final ListEditor<SearchUICategory, SearchUICategoryEditor> categories = ListEditor.of(new SearchUICategoryEditorSource());
+	private final FlexTable categoriesButtonPanel = new FlexTable();
+	
 	/**
 	 * The EditorSource is used to create and orgainse the Editors that go into
 	 * a ListEditor
@@ -35,9 +39,9 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
 		{			
 			final SearchUICategoryEditor subEditor = new SearchUICategoryEditor(driver, searchUIProjects);
 			
-			SearchUIProjectEditor.this.categoriesButtonPanel.setWidget(index, 0, subEditor.name);
+			SearchUIProjectEditor.this.categoriesButtonPanel.setWidget(index, 0, subEditor.summary);
 			
-			subEditor.name.addClickHandler(new ClickHandler()
+			subEditor.summary.addClickHandler(new ClickHandler()
 			{
 				@Override
 				public void onClick(final ClickEvent event)
@@ -47,12 +51,12 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
 					/* Untoggle the other buttons */
 					for (final SearchUICategoryEditor editor : categories.getEditors())
 					{
-						if (editor.name != subEditor.name)
+						if (editor.summary != subEditor.summary)
 						{
-							editor.name.removeStyleName("CustomButtonDown");
-							editor.name.removeStyleName("CustomButton");
+							editor.summary.removeStyleName("CustomButtonDown");
+							editor.summary.removeStyleName("CustomButton");
 							
-							editor.name.addStyleName("CustomButton");
+							editor.summary.addStyleName("CustomButton");
 						}
 					}
 				}
@@ -64,7 +68,7 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
 		@Override
 		public void dispose(final SearchUICategoryEditor subEditor)
 		{
-			subEditor.name.removeFromParent();
+			subEditor.summary.removeFromParent();
 			subEditor.removeFromParent();
 		}
 
@@ -74,10 +78,6 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
 			SearchUIProjectEditor.this.categoriesButtonPanel.setWidget(index, 0, subEditor);
 		}
 	}
-
-	final TextAndImageButtonSearchUIProjectEditor summary = new TextAndImageButtonSearchUIProjectEditor();
-	final ListEditor<SearchUICategory, SearchUICategoryEditor> categories = ListEditor.of(new SearchUICategoryEditorSource());
-	private final FlexTable categoriesButtonPanel = new FlexTable();
 
 	public SearchUIProjectEditor(final Driver driver, final SearchUIProjects searchUIProjects)
 	{
@@ -126,6 +126,6 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
 	@Override
 	public void setValue(final SearchUIProject value)
 	{
-		this.value = value;		
+		this.value = value;	
 	}
 }

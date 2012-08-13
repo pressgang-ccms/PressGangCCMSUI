@@ -24,4 +24,6 @@ public interface PressGangCCMSUI extends Constants
 	String Included();
 	
 	String Excluded();
+	
+	String Tags();
 }
