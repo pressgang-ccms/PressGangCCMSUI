@@ -27,4 +27,11 @@ public class WelcomePresenter extends TemplatePresenter
 		
 		bind(display);
 	}
+
+	@Override
+	public void parseToken(String historyToken)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

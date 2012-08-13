@@ -43,6 +43,10 @@ abstract public class TemplatePresenter implements Presenter
 			}
 		});
 	}
-
 	
+	/**
+	 * Parse the history token to extract some state from it
+	 * @param historyToken The history token in the URL
+	 */
+	abstract public void parseToken(final String historyToken);
 }

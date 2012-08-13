@@ -4,12 +4,16 @@ import javax.enterprise.context.ApplicationScoped;
 
 import org.jboss.errai.ioc.client.container.IOCBeanDef;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
+import org.jboss.pressgangccms.client.local.events.SearchResultsViewEvent;
+import org.jboss.pressgangccms.client.local.events.SearchResultsViewEventHandler;
 import org.jboss.pressgangccms.client.local.events.SearchViewEvent;
 import org.jboss.pressgangccms.client.local.events.SearchViewEventHandler;
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter;
+import org.jboss.pressgangccms.client.local.presenter.SearchResultsPresenter;
 import org.jboss.pressgangccms.client.local.presenter.WelcomePresenter;
 import org.jboss.pressgangccms.client.local.presenter.base.Presenter;
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
+import org.jboss.pressgangccms.client.local.view.SearchResultsView;
 import org.jboss.pressgangccms.client.local.view.SearchView;
 import org.jboss.pressgangccms.client.local.view.WelcomeView;
 
@@ -43,6 +47,15 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 				History.newItem(SearchView.HISTORY_TOKEN);
 			}
 		});
+		
+		eventBus.addHandler(SearchResultsViewEvent.TYPE, new SearchResultsViewEventHandler()
+		{
+			@Override
+			public void onSearchResultsViewOpen(final SearchResultsViewEvent event)
+			{
+				History.newItem(SearchResultsView.HISTORY_TOKEN);
+			}
+		});
 	}
 
 	@Override
@@ -69,7 +82,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 		{
 			TemplatePresenter presenter = null;
 
-			if (token.equals(WelcomeView.HISTORY_TOKEN))
+			if (token.startsWith(WelcomeView.HISTORY_TOKEN))
 			{
 				final IOCBeanDef<WelcomePresenter> bean = manager.lookupBean(WelcomePresenter.class);
 				if (bean != null)
@@ -77,9 +90,17 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 					presenter = bean.getInstance();
 				}
 			}
-			else if (token.equals(SearchView.HISTORY_TOKEN))
+			else if (token.startsWith(SearchView.HISTORY_TOKEN))
 			{
 				final IOCBeanDef<SearchPresenter> bean = manager.lookupBean(SearchPresenter.class);
+				if (bean != null)
+				{
+					presenter = bean.getInstance();
+				}
+			}
+			else if (token.startsWith(SearchResultsView.HISTORY_TOKEN))
+			{
+				final IOCBeanDef<SearchResultsPresenter> bean = manager.lookupBean(SearchResultsPresenter.class);
 				if (bean != null)
 				{
 					presenter = bean.getInstance();
@@ -88,6 +109,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 
 			if (presenter != null)
 			{
+				presenter.parseToken(token);
 				presenter.go(container);
 			}
 		}

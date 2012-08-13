@@ -14,4 +14,6 @@ public interface Presenter
 	 *            The container that will host the presneter
 	 */
 	void go(final HasWidgets container);
+	
+
 }

@@ -3,15 +3,19 @@
 //
 
 digraph g {
-  "org.jboss.errai.ioc.client.api.builtin.RequestDispatcherProvider"
-  "org.jboss.errai.enterprise.client.cdi.InstanceProvider"
-  "javax.enterprise.inject.Instance" -> "org.jboss.errai.enterprise.client.cdi.InstanceProvider"
+  "org.jboss.pressgangccms.client.local.view.SearchResultsView"
+  "org.jboss.pressgangccms.client.local.presenter.SearchResultsPresenter$Display" -> "org.jboss.pressgangccms.client.local.view.SearchResultsView"
   "org.jboss.errai.ioc.client.api.builtin.IOCBeanManagerProvider"
   "org.jboss.errai.ioc.client.container.IOCBeanManager" -> "org.jboss.errai.ioc.client.api.builtin.IOCBeanManagerProvider"
   "org.jboss.pressgangccms.client.local.App" -> "org.jboss.pressgangccms.client.local.AppController"
   "com.google.gwt.event.shared.HandlerManager" -> "org.jboss.pressgangccms.client.local.App"
   "org.jboss.pressgangccms.client.local.AppController" -> "org.jboss.errai.ioc.client.container.IOCBeanManager"
   "org.jboss.pressgangccms.client.local.AppController" -> "com.google.gwt.event.shared.HandlerManager"
+  "org.jboss.pressgangccms.client.local.presenter.SearchResultsPresenter" -> "org.jboss.pressgangccms.client.local.presenter.SearchResultsPresenter$Display"
+  "org.jboss.pressgangccms.client.local.presenter.SearchResultsPresenter" -> "com.google.gwt.event.shared.HandlerManager"
+  "org.jboss.errai.ioc.client.api.builtin.RequestDispatcherProvider"
+  "org.jboss.errai.enterprise.client.cdi.InstanceProvider"
+  "javax.enterprise.inject.Instance" -> "org.jboss.errai.enterprise.client.cdi.InstanceProvider"
   "org.jboss.errai.enterprise.client.cdi.EventProvider"
   "javax.enterprise.event.Event" -> "org.jboss.errai.enterprise.client.cdi.EventProvider"
   "org.jboss.errai.ioc.client.api.builtin.MessageBusProvider"

@@ -14,6 +14,7 @@ import org.jboss.errai.bus.client.api.ErrorCallback;
 import org.jboss.errai.bus.client.api.RemoteCallback;
 import org.jboss.errai.bus.client.framework.ProxyProvider;
 import org.jboss.errai.bus.client.framework.RemoteServiceProxyFactory;
+import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.errai.enterprise.client.jaxrs.api.ResponseCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.ResponseException;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
@@ -497,7 +498,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public RESTTranslatedTopicStringCollectionV1 deleteJSONTranslatedTopicStrings(final PathSegment a0, final String a1) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/translatedtopicstrings/delete/json/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/translatedtopicstrings/delete/json/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -531,7 +532,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public String deleteJSONPTranslatedTopicStrings(final PathSegment a0, final String a1, final String a2) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/translatedtopicstrings/delete/jsonp/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/translatedtopicstrings/delete/jsonp/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -803,7 +804,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public String deleteJSONPUsers(final PathSegment a0, final String a1, final String a2) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/users/delete/jsonp/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/users/delete/jsonp/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -1075,7 +1076,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public RESTUserCollectionV1 deleteJSONUsers(final PathSegment a0, final String a1) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/users/delete/json/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/users/delete/json/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -1347,7 +1348,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public String deleteJSONPStringConstants(final PathSegment a0, final String a1, final String a2) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/stringconstants/delete/jsonp/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/stringconstants/delete/jsonp/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -1619,7 +1620,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public RESTStringConstantCollectionV1 deleteJSONStringConstants(final PathSegment a0, final String a1) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/stringconstants/delete/json/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/stringconstants/delete/json/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -1891,7 +1892,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public String deleteJSONPTranslatedTopics(final PathSegment a0, final String a1, final String a2) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/translatedtopics/delete/jsonp/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/translatedtopics/delete/jsonp/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -1959,7 +1960,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public RESTTranslatedTopicCollectionV1 getJSONTranslatedTopicsWithQuery(final PathSegment a0, final String a1) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/translatedtopics/get/json/{query}".replace("{query}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/translatedtopics/get/json/{query}".replace("{query}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -2197,7 +2198,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public RESTTranslatedTopicCollectionV1 deleteJSONTranslatedTopics(final PathSegment a0, final String a1) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/translatedtopics/delete/json/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/translatedtopics/delete/json/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -2469,7 +2470,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public String deleteJSONPRoles(final PathSegment a0, final String a1, final String a2) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/roles/delete/jsonp/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/roles/delete/jsonp/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -2741,7 +2742,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public RESTRoleCollectionV1 deleteJSONRoles(final PathSegment a0, final String a1) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/roles/delete/json/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/roles/delete/json/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -3013,7 +3014,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public String deleteJSONPPropertyTags(final PathSegment a0, final String a1, final String a2) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/propertytags/delete/jsonp/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/propertytags/delete/jsonp/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -3285,7 +3286,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public RESTPropertyTagCollectionV1 deleteJSONPropertyTags(final PathSegment a0, final String a1) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/propertytags/delete/json/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/propertytags/delete/json/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -3557,7 +3558,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public String deleteJSONPBlobConstants(final PathSegment a0, final String a1, final String a2) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/blobconstants/delete/jsonp/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/blobconstants/delete/jsonp/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -3829,7 +3830,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public RESTBlobConstantCollectionV1 deleteJSONBlobConstants(final PathSegment a0, final String a1) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/blobconstants/delete/json/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/blobconstants/delete/json/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -4101,7 +4102,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public String deleteJSONPProjects(final PathSegment a0, final String a1, final String a2) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/projects/delete/jsonp/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/projects/delete/jsonp/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -4373,7 +4374,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public RESTProjectCollectionV1 deleteJSONProjects(final PathSegment a0, final String a1) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/projects/delete/json/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/projects/delete/json/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -4645,7 +4646,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public String deleteJSONPTags(final PathSegment a0, final String a1, final String a2) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/tags/delete/jsonp/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/tags/delete/jsonp/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -4917,7 +4918,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public RESTTagCollectionV1 deleteJSONTags(final PathSegment a0, final String a1) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/tags/delete/json/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/tags/delete/json/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -5189,7 +5190,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public String deleteJSONPCategories(final PathSegment a0, final String a1, final String a2) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/categories/delete/jsonp/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/categories/delete/jsonp/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -5461,7 +5462,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public RESTCategoryCollectionV1 deleteJSONCategories(final PathSegment a0, final String a1) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/categories/delete/json/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/categories/delete/json/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -5733,7 +5734,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public String deleteJSONPImages(final PathSegment a0, final String a1, final String a2) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/images/delete/jsonp/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/images/delete/jsonp/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -6039,7 +6040,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public RESTImageCollectionV1 deleteJSONImages(final PathSegment a0, final String a1) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/images/delete/json/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/images/delete/json/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -6073,7 +6074,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public String getJSONPTopicsWithQuery(final PathSegment a0, final String a1, final String a2) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/topics/get/jsonp/{query}".replace("{query}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/topics/get/jsonp/{query}".replace("{query}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -6345,7 +6346,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public String deleteJSONPTopics(final PathSegment a0, final String a1, final String a2) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/topics/delete/jsonp/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/topics/delete/jsonp/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -6413,7 +6414,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public RESTTopicCollectionV1 getJSONTopicsWithQuery(final PathSegment a0, final String a1) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/topics/get/json/{query}".replace("{query}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/topics/get/json/{query}".replace("{query}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");
@@ -6957,7 +6958,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
       public RESTTopicCollectionV1 deleteJSONTopics(final PathSegment a0, final String a1) {
         StringBuilder url = new StringBuilder(getBaseUrl());
-        url.append("1/topics/delete/json/{ids}".replace("{ids}", URL.encodePathSegment(new String(a0.getPath()).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        url.append("1/topics/delete/json/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
         RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
         requestBuilder.setHeader("Accept", "application/json");
         requestBuilder.setHeader("Content-Type", "*");

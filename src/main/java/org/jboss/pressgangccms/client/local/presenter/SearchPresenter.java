@@ -65,62 +65,7 @@ public class SearchPresenter extends TemplatePresenter
 			@Override
 			public void onClick(final ClickEvent event)
 			{
-				final String query = display.getSearchUIProjects().getRESTQueryString();
-
-				final RemoteCallback<RESTTopicCollectionV1> successCallback = new RemoteCallback<RESTTopicCollectionV1>()
-				{
-					@Override
-					public void callback(final RESTTopicCollectionV1 retValue)
-					{
-						try
-						{
-							final String message = retValue.getItems().size() + " topics returned.";
-							System.out.println(message);
-							Window.alert(message);
-						}
-						finally
-						{
-							stopProcessing();
-						}
-					}
-				};
-
-				final ErrorCallback errorCallback = new ErrorCallback()
-				{
-					@Override
-					public boolean error(final Message message, final Throwable throwable)
-					{
-						try
-						{
-							final String error = "ERROR! REST call to find topics failed with a HTTP error.\nPlease check your internet connection.\nMessage: " + message + "\nException: " + throwable.toString();
-							System.out.println(error);
-							Window.alert(error);
-							return true;
-						}
-						finally
-						{
-							stopProcessing();
-						}
-
-					}
-				};
-
-				final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, successCallback, errorCallback);
-				/* Expand the categories and projects in the tags */
-				final String expand = "{\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"topics\"}}]}";
-
-				try
-				{
-					startProcessing();
-					restMethod.getJSONTopicsWithQuery(new PathSegmentImpl(query), expand);
-				}
-				catch (final Exception ex)
-				{
-					final String error = "ERROR! REST call to find topics failed with an exception.";
-					System.out.println(error);
-					Window.alert(error);
-					stopProcessing();
-				}
+				
 			}
 		});
 	}
@@ -193,5 +138,12 @@ public class SearchPresenter extends TemplatePresenter
 			stopProcessing();
 		}
 
+	}
+
+	@Override
+	public void parseToken(String historyToken)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }
