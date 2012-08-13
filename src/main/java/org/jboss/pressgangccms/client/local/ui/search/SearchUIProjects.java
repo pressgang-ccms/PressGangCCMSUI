@@ -4,9 +4,11 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.Driver;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.sort.SearchUIProjectNameSort;
+import org.jboss.pressgangccms.client.local.ui.TriStateSelectionState;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
@@ -24,24 +26,27 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
  */
 public class SearchUIProjects
 {
-	private final LinkedList<SearchUIProject> projects = new LinkedList<SearchUIProject>();
+	private static final String TAG_PREFIX = "tag";
+	private static final int TAG_INCLUDED = 1;
+	private static final int TAG_EXCLUDED = 0;
 
+	private final LinkedList<SearchUIProject> projects = new LinkedList<SearchUIProject>();
 
 	public List<SearchUIProject> getProjects()
 	{
 		return projects;
 	}
-	
+
 	public SearchUIProjects()
 	{
-		
+
 	}
 
 	public SearchUIProjects(final RESTTagCollectionV1 tags)
 	{
 		initialize(tags);
 	}
-	
+
 	public void initialize(final RESTTagCollectionV1 tags)
 	{
 		if (tags == null)
@@ -66,7 +71,7 @@ public class SearchUIProjects
 				}
 			}
 		}
-		
+
 		Collections.sort(projects, new SearchUIProjectNameSort());
 
 		/*
@@ -77,5 +82,35 @@ public class SearchUIProjects
 		final SearchUIProject common = new SearchUIProject(PressGangCCMSUI.INSTANCE.Common());
 		common.populateCategoriesWithoutProject(tags);
 		projects.addFirst(common);
+	}
+
+	public String getRESTQueryString()
+	{
+		final StringBuilder builder = new StringBuilder("query;");
+
+		for (final SearchUIProject project : projects)
+		{
+			for (final SearchUICategory category : project.getCategories())
+			{
+				for (final SearchUITag tag : category.getMyTags())
+				{
+					if (tag.getState() != TriStateSelectionState.NONE)
+					{
+						builder.append(";");
+						
+						if (tag.getState() == TriStateSelectionState.SELECTED)
+						{
+							builder.append(TAG_PREFIX + tag.getId() + "=" + TAG_INCLUDED);
+						}
+						else if (tag.getState() == TriStateSelectionState.UNSELECTED)
+						{
+							builder.append(TAG_PREFIX + tag.getId() + "=" + TAG_EXCLUDED);
+						}
+					}
+				}
+			}
+		}
+
+		return builder.toString();
 	}
 }

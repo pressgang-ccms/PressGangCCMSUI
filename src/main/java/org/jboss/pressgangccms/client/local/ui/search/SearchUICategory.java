@@ -98,7 +98,7 @@ public class SearchUICategory extends SearchUIBase
 
 			if (tag.getProjects().getItems().contains(project) && tag.getCategories().getItems().contains(category))
 			{
-				final SearchUITag searchUITag = new SearchUITag(tag.getName());
+				final SearchUITag searchUITag = new SearchUITag(tag.getName(), tag.getId());
 				if (!myTags.contains(searchUITag))
 				{
 					myTags.add(searchUITag);
@@ -125,7 +125,7 @@ public class SearchUICategory extends SearchUIBase
 
 			if (tag.getProjects().getItems().isEmpty() && tag.getCategories().getItems().contains(category))
 			{
-				final SearchUITag searchUITag = new SearchUITag(tag.getName());
+				final SearchUITag searchUITag = new SearchUITag(tag.getName(), tag.getId());
 				if (!myTags.contains(searchUITag))
 				{
 					myTags.add(searchUITag);

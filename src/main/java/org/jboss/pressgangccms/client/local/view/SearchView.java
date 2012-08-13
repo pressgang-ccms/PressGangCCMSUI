@@ -50,6 +50,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 	public void initialise(final RESTTagCollectionV1 tags)
 	{
 	    /* Build the action bar icons */
+		search.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.searchHover48()));
 		this.getTopActionPanel().add(this.search);
 		
 		/* Construct a hierarchy of tags from the tag collection */

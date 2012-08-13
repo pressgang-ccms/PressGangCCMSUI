@@ -9,10 +9,22 @@ import org.jboss.pressgangccms.client.local.ui.TriStateSelectionState;
 public class SearchUITag extends SearchUIBase
 {
 	private TriStateSelectionState state = TriStateSelectionState.NONE;
+	private Integer id;
 	
-	public SearchUITag(final String name)
+	public Integer getId()
+	{
+		return id;
+	}
+
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
+
+	public SearchUITag(final String name, final Integer id)
 	{
 		super(name);
+		this.id = id;
 	}
 
 	public TriStateSelectionState getState()
