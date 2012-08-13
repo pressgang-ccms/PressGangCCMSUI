@@ -86,7 +86,7 @@ public class SearchUIProjects
 
 	public String getRESTQueryString()
 	{
-		final StringBuilder builder = new StringBuilder("query;");
+		final StringBuilder builder = new StringBuilder("query");
 
 		for (final SearchUIProject project : projects)
 		{

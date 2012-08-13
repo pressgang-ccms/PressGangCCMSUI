@@ -107,7 +107,7 @@ public class SearchPresenter extends TemplatePresenter
 
 				final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, successCallback, errorCallback);
 				/* Expand the categories and projects in the tags */
-				final String expand = "{\"branches\":[\"trunk\":{\"showSize\":true,\"name\":\"topics\"}}]}";
+				final String expand = "{\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"topics\"}}]}";
 
 				try
 				{
