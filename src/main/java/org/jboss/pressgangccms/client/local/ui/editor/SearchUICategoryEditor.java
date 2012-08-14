@@ -1,6 +1,6 @@
 package org.jboss.pressgangccms.client.local.ui.editor;
 
-import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.Driver;
+import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgangccms.client.local.ui.FourTextAndImageButtonSearchUICategoryEditor;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 public class SearchUICategoryEditor extends FlexTable implements ValueAwareEditor<SearchUICategory>
 {
 	private static final int COLUMNS = 2;
-	private final Driver driver;
+	private final SearchPresenterDriver driver;
 	private final SearchUIProjects searchUIProjects;
 	private SearchUICategory value;
 	
@@ -63,7 +63,7 @@ public class SearchUICategoryEditor extends FlexTable implements ValueAwareEdito
 		}
 	}
 
-	public SearchUICategoryEditor(final Driver driver, final SearchUIProjects searchUIProjects)
+	public SearchUICategoryEditor(final SearchPresenterDriver driver, final SearchUIProjects searchUIProjects)
 	{
 		this.driver = driver;
 		this.searchUIProjects = searchUIProjects;

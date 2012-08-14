@@ -8,6 +8,8 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.AsyncDataProvider;
 
@@ -15,7 +17,14 @@ public class SearchResultsView extends BaseTemplateView implements SearchResults
 {
 	public static final String HISTORY_TOKEN = "SearchResultsView";
 	
+	private final SplitLayoutPanel splitPanel = new SplitLayoutPanel(5);
+	
+	private final HorizontalPanel searchResultsButtonsPanel = new HorizontalPanel();
 	private final VerticalPanel searchResultsPanel = new VerticalPanel();
+	
+	private final HorizontalPanel topicViewButtonsPanel = new HorizontalPanel();
+	private final VerticalPanel topicViewPanel = new VerticalPanel();
+	
 	private final SimplePager pager = new SimplePager();
 	private final CellTable<RESTTopicV1> results = new CellTable<RESTTopicV1>();
 	private AsyncDataProvider<RESTTopicV1> provider;
@@ -70,7 +79,10 @@ public class SearchResultsView extends BaseTemplateView implements SearchResults
 		
 		pager.setDisplay(results);
 		
-		this.getPanel().add(searchResultsPanel);
+		splitPanel.addWest(searchResultsPanel, 1);
+		splitPanel.addEast(topicViewPanel, 1);
+		
+		this.getPanel().add(splitPanel);
 	}
 
 }

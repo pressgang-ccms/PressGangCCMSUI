@@ -1,6 +1,6 @@
 package org.jboss.pressgangccms.client.local.ui.editor;
 
-import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.Driver;
+import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgangccms.client.local.ui.TriStatePushButton;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUITag;
@@ -22,7 +22,7 @@ public class SearchUITagEditor implements Editor<SearchUITag>
 	final Label name = new Label();
 	final TriStatePushButton state = new TriStatePushButton();
 
-	public SearchUITagEditor(final Driver driver, final SearchUIProjects searchUIProjects)
+	public SearchUITagEditor(final SearchPresenterDriver driver, final SearchUIProjects searchUIProjects)
 	{
 		this.searchUIProjects = searchUIProjects;
 		

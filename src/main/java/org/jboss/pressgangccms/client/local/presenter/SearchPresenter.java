@@ -29,7 +29,7 @@ public class SearchPresenter extends TemplatePresenter
 	public interface Display extends BaseTemplateViewInterface
 	{
 		// Empty interface declaration, similar to UiBinder
-		public interface Driver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor>
+		public interface SearchPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor>
 		{
 		}
 
@@ -37,7 +37,7 @@ public class SearchPresenter extends TemplatePresenter
 
 		PushButton getSearch();
 
-		Driver getDriver();
+		SearchPresenterDriver getDriver();
 
 		void initialise(final RESTTagCollectionV1 tags);
 	}

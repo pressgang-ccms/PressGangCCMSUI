@@ -1,6 +1,6 @@
 package org.jboss.pressgangccms.client.local.ui.editor;
 
-import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.Driver;
+import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProject;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
 
@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.Grid;
 
 public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProjects>
 {
-	private final Driver driver;
+	private final SearchPresenterDriver driver;
 	final SearchUIProjects searchUIProjects;
 	
 	/**
@@ -72,7 +72,7 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
 	final ListEditor<SearchUIProject, SearchUIProjectEditor> projects = ListEditor.of(new SearchUIProjectEditorSource());
 	private final FlexTable projectButtonPanel = new FlexTable();
 
-	public SearchUIProjectsEditor(final Driver driver, final SearchUIProjects searchUIProjects)
+	public SearchUIProjectsEditor(final SearchPresenterDriver driver, final SearchUIProjects searchUIProjects)
 	{
 		super(1, 2);
 		

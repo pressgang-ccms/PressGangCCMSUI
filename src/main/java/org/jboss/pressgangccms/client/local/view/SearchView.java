@@ -19,7 +19,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 	private final PushButton search = new PushButton(new Image(ImageResources.INSTANCE.search48()), new Image(ImageResources.INSTANCE.searchDown48()));
 
 	/** The GWT Editor Driver */
-	private final Driver driver = GWT.create(Driver.class);
+	private final SearchPresenterDriver driver = GWT.create(SearchPresenterDriver.class);
 	/** The UI hierarchy */
 	private final SearchUIProjects searchUIProjects = new SearchUIProjects();
 	
@@ -30,7 +30,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 	}
 
 	@Override
-	public Driver getDriver()
+	public SearchPresenterDriver getDriver()
 	{
 		return driver;
 	}

@@ -10,11 +10,13 @@ import org.jboss.pressgangccms.client.local.events.SearchViewEvent;
 import org.jboss.pressgangccms.client.local.events.SearchViewEventHandler;
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter;
 import org.jboss.pressgangccms.client.local.presenter.SearchResultsPresenter;
+import org.jboss.pressgangccms.client.local.presenter.TopicPresenter;
 import org.jboss.pressgangccms.client.local.presenter.WelcomePresenter;
 import org.jboss.pressgangccms.client.local.presenter.base.Presenter;
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.view.SearchResultsView;
 import org.jboss.pressgangccms.client.local.view.SearchView;
+import org.jboss.pressgangccms.client.local.view.TopicView;
 import org.jboss.pressgangccms.client.local.view.WelcomeView;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -101,6 +103,14 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 			else if (token.startsWith(SearchResultsView.HISTORY_TOKEN))
 			{
 				final IOCBeanDef<SearchResultsPresenter> bean = manager.lookupBean(SearchResultsPresenter.class);
+				if (bean != null)
+				{
+					presenter = bean.getInstance();
+				}
+			}
+			else if (token.startsWith(TopicView.HISTORY_TOKEN))
+			{
+				final IOCBeanDef<TopicPresenter> bean = manager.lookupBean(TopicPresenter.class);
 				if (bean != null)
 				{
 					presenter = bean.getInstance();

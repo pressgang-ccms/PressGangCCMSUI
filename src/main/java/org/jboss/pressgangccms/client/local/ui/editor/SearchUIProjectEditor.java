@@ -1,5 +1,5 @@
 package org.jboss.pressgangccms.client.local.ui.editor;
-import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.Driver;
+import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgangccms.client.local.ui.FourTextAndImageButtonSearchUIProjectEditor;
 import org.jboss.pressgangccms.client.local.ui.TextAndImageButtonStringEditor;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.Grid;
 
 public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<SearchUIProject>
 {
-	private final Driver driver;
+	private final SearchPresenterDriver driver;
 	private final SearchUIProjects searchUIProjects;
 	private SearchUIProject value;
 	
@@ -79,7 +79,7 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
 		}
 	}
 
-	public SearchUIProjectEditor(final Driver driver, final SearchUIProjects searchUIProjects)
+	public SearchUIProjectEditor(final SearchPresenterDriver driver, final SearchUIProjects searchUIProjects)
 	{
 		super(1, 2);
 		
