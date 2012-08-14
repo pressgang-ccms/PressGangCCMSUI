@@ -9,11 +9,13 @@ import org.jboss.pressgangccms.client.local.events.SearchResultsViewEventHandler
 import org.jboss.pressgangccms.client.local.events.SearchViewEvent;
 import org.jboss.pressgangccms.client.local.events.SearchViewEventHandler;
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter;
+import org.jboss.pressgangccms.client.local.presenter.SearchResultsAndTopicPresenter;
 import org.jboss.pressgangccms.client.local.presenter.SearchResultsPresenter;
 import org.jboss.pressgangccms.client.local.presenter.TopicPresenter;
 import org.jboss.pressgangccms.client.local.presenter.WelcomePresenter;
 import org.jboss.pressgangccms.client.local.presenter.base.Presenter;
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
+import org.jboss.pressgangccms.client.local.view.SearchResultsAndTopicView;
 import org.jboss.pressgangccms.client.local.view.SearchResultsView;
 import org.jboss.pressgangccms.client.local.view.SearchView;
 import org.jboss.pressgangccms.client.local.view.TopicView;
@@ -111,6 +113,14 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 			else if (token.startsWith(TopicView.HISTORY_TOKEN))
 			{
 				final IOCBeanDef<TopicPresenter> bean = manager.lookupBean(TopicPresenter.class);
+				if (bean != null)
+				{
+					presenter = bean.getInstance();
+				}
+			}
+			else if (token.startsWith(SearchResultsAndTopicView.HISTORY_TOKEN))
+			{
+				final IOCBeanDef<SearchResultsAndTopicPresenter> bean = manager.lookupBean(SearchResultsAndTopicPresenter.class);
 				if (bean != null)
 				{
 					presenter = bean.getInstance();

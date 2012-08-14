@@ -4,6 +4,7 @@ import org.jboss.pressgangccms.client.local.resources.css.CSSResources;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -21,7 +22,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 		private final VerticalPanel topLevelPanel = new VerticalPanel();
 		private final SimplePanel headingBanner = new SimplePanel();
 		private final Label pageTitle = new Label();
-		private final HorizontalPanel shortcutAndContentPanel = new HorizontalPanel();
+		private final Grid shortcutAndContentPanel = new Grid(1, 2);
 		private final VerticalPanel shortcutPanel = new VerticalPanel();
 		private final VerticalPanel contentPanel = new VerticalPanel();
 		private final HorizontalPanel topActionPanel = new HorizontalPanel();
@@ -51,7 +52,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 			return topActionPanel;
 		}
 
-		protected SimplePanel getPanel()
+		public SimplePanel getPanel()
 		{
 			return panel;
 		}
@@ -104,12 +105,14 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 			topLevelPanel.add(pageTitle);
 
 			shortcutAndContentPanel.addStyleName("ShortcutAndContentPanel");
+			shortcutAndContentPanel.getCellFormatter().setStyleName(0, 0, "ShortcutParentPanel");
+			shortcutAndContentPanel.getCellFormatter().setStyleName(0, 1, "ContentParentPanel");
 			
 			topLevelPanel.add(shortcutAndContentPanel);
-			shortcutAndContentPanel.add(shortcutPanel);
+			shortcutAndContentPanel.setWidget(0, 0, shortcutPanel);
 			
 			contentPanel.addStyleName("ContentPanel");
-			shortcutAndContentPanel.add(contentPanel);
+			shortcutAndContentPanel.setWidget(0, 1, contentPanel);
 			
 			contentPanel.add(topActionPanel);
 

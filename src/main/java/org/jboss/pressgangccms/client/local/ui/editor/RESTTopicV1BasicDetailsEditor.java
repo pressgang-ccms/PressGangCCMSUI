@@ -28,6 +28,12 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
 		xml.setReadOnly(readOnly);
 		description.setReadOnly(readOnly);
 		
+		id.addStyleName("TopicViewIDField");
+		title.addStyleName("TopicViewTitleField");
+		locale.addStyleName("TopicViewLocaleField");
+		xml.addStyleName("TopicViewXMLField");
+		description.addStyleName("TopicViewDescriptionField");
+		
 		this.setWidget(0, 0, new Label(PressGangCCMSUI.INSTANCE.TopicID()));
 		this.setWidget(0, 1, id);
 		

@@ -17,13 +17,7 @@ public class SearchResultsView extends BaseTemplateView implements SearchResults
 {
 	public static final String HISTORY_TOKEN = "SearchResultsView";
 	
-	private final SplitLayoutPanel splitPanel = new SplitLayoutPanel(5);
-	
-	private final HorizontalPanel searchResultsButtonsPanel = new HorizontalPanel();
 	private final VerticalPanel searchResultsPanel = new VerticalPanel();
-	
-	private final HorizontalPanel topicViewButtonsPanel = new HorizontalPanel();
-	private final VerticalPanel topicViewPanel = new VerticalPanel();
 	
 	private final SimplePager pager = new SimplePager();
 	private final CellTable<RESTTopicV1> results = new CellTable<RESTTopicV1>();
@@ -79,10 +73,7 @@ public class SearchResultsView extends BaseTemplateView implements SearchResults
 		
 		pager.setDisplay(results);
 		
-		splitPanel.addWest(searchResultsPanel, 1);
-		splitPanel.addEast(topicViewPanel, 1);
-		
-		this.getPanel().add(splitPanel);
+		this.getPanel().add(searchResultsPanel);
 	}
 
 }

@@ -3,42 +3,30 @@ package org.jboss.pressgangccms.client.local.presenter;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import org.jboss.errai.bus.client.api.ErrorCallback;
-import org.jboss.errai.bus.client.api.Message;
-import org.jboss.errai.bus.client.api.RemoteCallback;
-import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
-import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
-import org.jboss.pressgangccms.client.local.presenter.WelcomePresenter.Display;
+import org.jboss.pressgangccms.client.local.presenter.SearchResultsPresenter.Display;
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
+import org.jboss.pressgangccms.client.local.view.SearchResultsAndTopicView;
 import org.jboss.pressgangccms.client.local.view.SearchResultsView;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgangccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 
-import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.CellPreviewEvent;
-import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
+import com.google.gwt.view.client.CellPreviewEvent.Handler;
 
 @Dependent
-public class SearchResultsPresenter extends TemplatePresenter
+public class SearchResultsAndTopicPresenter extends TemplatePresenter
 {
 	public interface Display extends BaseTemplateViewInterface
 	{
-		AsyncDataProvider<RESTTopicV1> getProvider();
+		SimplePanel getTopicResultsPanel();
 
-		void setProvider(final AsyncDataProvider<RESTTopicV1> provider);
-
-		CellTable<RESTTopicV1> getResults();
-
-		SimplePager getPager();
+		SimplePanel getTopicViewPanel();
 	}
 
 	@Inject
@@ -47,18 +35,19 @@ public class SearchResultsPresenter extends TemplatePresenter
 	@Inject
 	private TopicPresenter.Display topicViewDisplay;
 
-	private String queryString;
+	@Inject
+	private SearchResultsPresenter.Display searchResultsDisplay;
 
-	public void parseToken(final String searchToken)
-	{
-		queryString = searchToken.replace(SearchResultsView.HISTORY_TOKEN + ";", "");
-	}
+	private String queryString;
 
 	@Override
 	public void go(final HasWidgets container)
 	{
 		container.clear();
 		container.add(display.getTopLevelPanel());
+
+		display.getTopicResultsPanel().setWidget(searchResultsDisplay.getPanel());
+		display.getTopicViewPanel().setWidget(topicViewDisplay.getPanel());
 
 		bind();
 	}
@@ -102,7 +91,7 @@ public class SearchResultsPresenter extends TemplatePresenter
 						{
 							stopProcessing();
 						}
-					}	
+					}
 
 					@Override
 					public void failed()
@@ -110,58 +99,71 @@ public class SearchResultsPresenter extends TemplatePresenter
 						stopProcessing();
 					}
 				};
-				
+
 				RESTCalls.getTopicsFromQuery(callback, queryString, start, end);
 			}
 		};
 
 		/* Respone to row clicks */
-		display.getResults().addCellPreviewHandler(new Handler<RESTTopicV1>()
+
+		searchResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTTopicV1>()
 		{
 			@Override
 			public void onCellPreview(final CellPreviewEvent<RESTTopicV1> event)
 			{
-				final Integer id = event.getValue().getId();
+				/* Check to see if this was a click event */
+				final boolean isClick = "click".equals(event.getNativeEvent().getType());
 
-				final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>()
+				if (isClick)
 				{
-					@Override
-					public void begin()
-					{
-						startProcessing();
-					}
+					final Integer id = event.getValue().getId();
 
-					@Override
-					public void generalException(final Exception ex)
+					final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>()
 					{
-						stopProcessing();
-					}
-
-					@Override
-					public void success(final RESTTopicV1 retValue)
-					{
-						try
+						@Override
+						public void begin()
 						{
-							topicViewDisplay.initialize(retValue);
+							startProcessing();
 						}
-						finally
+
+						@Override
+						public void generalException(final Exception ex)
 						{
 							stopProcessing();
 						}
-					}
 
-					@Override
-					public void failed()
-					{
-						stopProcessing();
-					}
-				};
+						@Override
+						public void success(final RESTTopicV1 retValue)
+						{
+							try
+							{
+								topicViewDisplay.initialize(retValue);
+							}
+							finally
+							{
+								stopProcessing();
+							}
+						}
 
-				RESTCalls.getTopic(callback, id);
+						@Override
+						public void failed()
+						{
+							stopProcessing();
+						}
+					};
+
+					RESTCalls.getTopic(callback, id);
+				}
 			}
 		});
 
-		display.setProvider(provider);
+		searchResultsDisplay.setProvider(provider);
+	}
+
+	@Override
+	public void parseToken(final String historyToken)
+	{
+		queryString = historyToken.replace(SearchResultsAndTopicView.HISTORY_TOKEN + ";", "");
 	}
 
 	private void stopProcessing()

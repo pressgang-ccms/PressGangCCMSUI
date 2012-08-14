@@ -26,15 +26,20 @@ html {
 	background-color: #EFEFEF;
 }
 
-.ShortcutAndContentPanel
-{
-	margin-top: 16px;
-	margin-left: 16px;
+.ShortcutAndContentPanel {
+	padding-top: 16px;
+	padding-left: 16px;
+	width: 100%;
 }
 
-.ContentPanel
+.ContentParentPanel
 {
-	margin-left: 16px;
+	width: 100%;
+}
+
+.ContentPanel {
+	padding-left: 16px;
+	width: 100%;
 }
 
 .ProjectsLayout td {
@@ -42,20 +47,17 @@ html {
 	padding: 0px;
 }
 
-.ProjectsButtonsLayout td 
-{
+.ProjectsButtonsLayout td {
 	padding-bottom: 2px;
 	padding-top: 2px;
 }
 
-.CategoriesButtonsLayout td
-{
+.CategoriesButtonsLayout td {
 	padding-bottom: 2px;
 	padding-top: 2px;
 }
 
-.ProjectLayout
-{
+.ProjectLayout {
 	border-spacing: 0px;
 	padding: 0px;
 }
@@ -87,8 +89,7 @@ html {
 	padding: 1em;
 }
 
-.TagLabel
-{
+.TagLabel {
 	min-width: 200px;
 }
 
@@ -149,25 +150,38 @@ html {
 		18, 26) ), color-stop(0.66, rgb(45, 59, 76) ) );
 }
 
-.CustomButtonText
-{
-	padding-left:3px; 
-	vertical-align:middle;
+.CustomButtonText {
+	padding-left: 3px;
+	vertical-align: middle;
 }
 
-.CustomButtonTextBold
-{
-	padding-left: 3px; 
+.CustomButtonTextBold {
+	padding-left: 3px;
 	vertical-align: middle;
 	font-weight: bold;
 }
 
-.CustomButtonTagsInclued
-{
+.CustomButtonTagsInclued {
 	color: greenyellow;
 }
 
-.CustomButtonTagsExcluded
-{
+.CustomButtonTagsExcluded {
 	color: #FF3333
+}
+
+.TopicSearchResultsAndViewPanel {
+	width: 100%;
+}
+
+.TopicSearchResultsAndViewPanel td {
+	vertical-align: top;
+}
+
+.TopicViewXMLField,.TopicViewDescriptionField {
+	width: 500px;
+	height: 200px;
+}
+
+.TopicViewIDField,.TopicViewTitleField,.TopicViewLocaleField {
+	width: 500px;
 }
