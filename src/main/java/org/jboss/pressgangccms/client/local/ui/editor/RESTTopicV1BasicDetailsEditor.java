@@ -22,6 +22,14 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
 	{
 		super(5, 2);
 		
+		this.addStyleName("TopicViewPanel");
+		
+		for (int i = 0; i < 5; ++i)
+			this.getCellFormatter().addStyleName(i, 0, "TopicViewLabel");
+		
+		for (int i = 0; i < 5; ++i)
+			this.getCellFormatter().addStyleName(i, 1, "TopicViewDetail");
+		
 		id.setReadOnly(readOnly);
 		title.setReadOnly(readOnly);
 		locale.setReadOnly(readOnly);

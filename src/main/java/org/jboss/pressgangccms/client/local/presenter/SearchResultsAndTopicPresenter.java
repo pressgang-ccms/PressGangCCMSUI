@@ -27,6 +27,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		SimplePanel getTopicResultsPanel();
 
 		SimplePanel getTopicViewPanel();
+		
+		SimplePanel getTopicViewActionButtonsPanel();
+		
+		SimplePanel getTopicResultsActionButtonsPanel();
 	}
 
 	@Inject
@@ -46,7 +50,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		container.clear();
 		container.add(display.getTopLevelPanel());
 
+		display.getTopicResultsActionButtonsPanel().setWidget(searchResultsDisplay.getTopActionPanel());
 		display.getTopicResultsPanel().setWidget(searchResultsDisplay.getPanel());
+		display.getTopicViewActionButtonsPanel().setWidget(topicViewDisplay.getTopActionPanel());
 		display.getTopicViewPanel().setWidget(topicViewDisplay.getPanel());
 
 		bind();

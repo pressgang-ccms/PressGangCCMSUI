@@ -4,6 +4,8 @@ import javax.enterprise.context.ApplicationScoped;
 
 import org.jboss.errai.ioc.client.container.IOCBeanDef;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
+import org.jboss.pressgangccms.client.local.events.SearchResultsAndTopicViewEvent;
+import org.jboss.pressgangccms.client.local.events.SearchResultsAndTopicViewEventHandler;
 import org.jboss.pressgangccms.client.local.events.SearchResultsViewEvent;
 import org.jboss.pressgangccms.client.local.events.SearchResultsViewEventHandler;
 import org.jboss.pressgangccms.client.local.events.SearchViewEvent;
@@ -58,6 +60,15 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 			public void onSearchResultsViewOpen(final SearchResultsViewEvent event)
 			{
 				History.newItem(SearchResultsView.HISTORY_TOKEN);
+			}
+		});
+		
+		eventBus.addHandler(SearchResultsAndTopicViewEvent.TYPE, new SearchResultsAndTopicViewEventHandler()
+		{
+			@Override
+			public void onSearchResultsViewOpen(final SearchResultsAndTopicViewEvent event)
+			{
+				History.newItem(SearchResultsAndTopicView.HISTORY_TOKEN + ";" + event.getQuery());
 			}
 		});
 	}

@@ -178,10 +178,35 @@ html {
 }
 
 .TopicViewXMLField,.TopicViewDescriptionField {
-	width: 500px;
+	width: 100%;
 	height: 200px;
 }
 
 .TopicViewIDField,.TopicViewTitleField,.TopicViewLocaleField {
-	width: 500px;
+	width: 100%;
+}
+
+.ShortcutParentPanel
+{
+	vertical-align: top;
+}
+
+.TopicSearchResultsPanel, .TopicSearchTopicViewPanel
+{
+	width: 50%;
+}
+
+.TopicViewPanel
+{
+	width: 100%;
+}
+
+.TopicViewDetail
+{
+	width: 100%
+}
+
+.TopicViewLabel
+{
+	white-space: nowrap;
 }

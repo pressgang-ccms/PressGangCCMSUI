@@ -8,6 +8,8 @@ import org.jboss.errai.bus.client.api.Message;
 import org.jboss.errai.bus.client.api.RemoteCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
+import org.jboss.pressgangccms.client.local.events.SearchResultsAndTopicViewEvent;
+import org.jboss.pressgangccms.client.local.events.SearchViewEvent;
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.ui.editor.SearchUIProjectsEditor;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
@@ -19,6 +21,7 @@ import org.jboss.pressgangccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
@@ -41,6 +44,8 @@ public class SearchPresenter extends TemplatePresenter
 
 		void initialise(final RESTTagCollectionV1 tags);
 	}
+	
+	@Inject	private HandlerManager eventBus;
 
 	@Inject
 	private Display display;
@@ -65,7 +70,7 @@ public class SearchPresenter extends TemplatePresenter
 			@Override
 			public void onClick(final ClickEvent event)
 			{
-				
+				eventBus.fireEvent(new SearchResultsAndTopicViewEvent(display.getSearchUIProjects().getRESTQueryString()));
 			}
 		});
 	}

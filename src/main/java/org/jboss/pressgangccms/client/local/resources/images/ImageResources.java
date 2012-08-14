@@ -25,6 +25,33 @@ public interface ImageResources extends ClientBundle
 	@Source("transparent48.png")
 	ImageResource transparent48();
 	
+	@Source("fields48.png")
+	ImageResource fields48();
+	
+	@Source("fieldsHover48.png")
+	ImageResource fieldsHover48();
+	
+	@Source("fieldsDown48.png")
+	ImageResource fieldsDown48();
+	
+	@Source("xml48.png")
+	ImageResource xml48();
+	
+	@Source("xmlHover48.png")
+	ImageResource xmlHover48();
+	
+	@Source("xmlDown48.png")
+	ImageResource xmlDown48();
+	
+	@Source("rendered48.png")
+	ImageResource rendered48();
+	
+	@Source("renderedHover48.png")
+	ImageResource renderedHover48();
+	
+	@Source("renderedDown48.png")
+	ImageResource renderedDown48();
+	
 	@Source("home48.png")
 	ImageResource home48();
 	
