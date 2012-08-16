@@ -3,25 +3,13 @@ package org.jboss.pressgangccms.client.local.presenter;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import org.jboss.errai.bus.client.api.ErrorCallback;
-import org.jboss.errai.bus.client.api.Message;
-import org.jboss.errai.bus.client.api.RemoteCallback;
-import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
-import org.jboss.pressgangccms.client.local.presenter.SearchResultsPresenter.Display;
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.client.local.ui.editor.RESTTopicV1BasicDetailsEditor;
-import org.jboss.pressgangccms.client.local.ui.editor.SearchUIProjectsEditor;
-import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
-import org.jboss.pressgangccms.client.local.view.SearchResultsView;
 import org.jboss.pressgangccms.client.local.view.TopicView;
-import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgangccms.client.local.view.base.TopicViewInterface;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgangccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
-
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
@@ -32,8 +20,9 @@ public class TopicPresenter extends TemplatePresenter
 	{
 	}
 
-	public interface Display extends BaseTemplateViewInterface
+	public interface Display extends TopicViewInterface
 	{
+		@Override
 		void initialize(final RESTTopicV1 topic);
 	}
 
@@ -42,6 +31,7 @@ public class TopicPresenter extends TemplatePresenter
 	@Inject
 	private Display display;
 
+	@Override
 	public void parseToken(final String searchToken)
 	{
 		topicId = searchToken.replace(TopicView.HISTORY_TOKEN + ";", "");

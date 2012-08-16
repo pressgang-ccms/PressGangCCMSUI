@@ -9,4 +9,6 @@
 	<inherits name="org.jboss.errai.enterprise.Jaxrs" />
 	<inherits name="org.jboss.pressgangccms.rest.v1" />
 	<inherits name="com.google.gwt.xml.XML" />
+	<inherits name="hu.szaboaz.gwt.xslt.XSLT" />
+	<inherits name='edu.ycp.cs.dh.acegwt.AceGWT'/>
 </module>

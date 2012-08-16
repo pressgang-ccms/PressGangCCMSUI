@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
-import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.sort.SearchUIProjectNameSort;
 import org.jboss.pressgangccms.client.local.ui.TriStateSelectionState;

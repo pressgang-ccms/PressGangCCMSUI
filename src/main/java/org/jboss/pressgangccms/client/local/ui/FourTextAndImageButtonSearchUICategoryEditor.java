@@ -2,8 +2,6 @@ package org.jboss.pressgangccms.client.local.ui;
 
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
-import org.jboss.pressgangccms.client.local.ui.search.SearchUIProject;
-
 import com.google.gwt.editor.client.IsEditor;
 import com.google.gwt.editor.client.LeafValueEditor;
 

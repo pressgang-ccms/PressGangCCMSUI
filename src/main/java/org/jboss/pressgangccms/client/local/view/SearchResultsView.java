@@ -8,8 +8,6 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.AsyncDataProvider;
 
@@ -40,22 +38,26 @@ public class SearchResultsView extends BaseTemplateView implements SearchResults
 		}
 	};
 
+	@Override
 	public AsyncDataProvider<RESTTopicV1> getProvider()
 	{
 		return provider;
 	}
 
+	@Override
 	public void setProvider(AsyncDataProvider<RESTTopicV1> provider)
 	{
 		this.provider = provider;
 		provider.addDataDisplay(results);
 	}
 
+	@Override
 	public CellTable<RESTTopicV1> getResults()
 	{
 		return results;
 	}
 	
+	@Override
 	public SimplePager getPager()
 	{
 		return pager;

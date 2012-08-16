@@ -47,11 +47,13 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 			return searchTranslations;
 		}
 
+		@Override
 		public HorizontalPanel getTopActionPanel()
 		{
 			return topActionPanel;
 		}
 
+		@Override
 		public SimplePanel getPanel()
 		{
 			return panel;

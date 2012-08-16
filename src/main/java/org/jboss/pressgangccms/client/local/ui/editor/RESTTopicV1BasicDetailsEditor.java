@@ -16,30 +16,27 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
 	final TextBox locale = new TextBox();
 	final TextBox title = new TextBox();
 	final TextArea description = new TextArea();
-	final TextArea xml = new TextArea();
 	
 	public RESTTopicV1BasicDetailsEditor(final boolean readOnly)
 	{
-		super(5, 2);
+		super(4, 2);
 		
 		this.addStyleName("TopicViewPanel");
 		
-		for (int i = 0; i < 5; ++i)
+		for (int i = 0; i < 4; ++i)
 			this.getCellFormatter().addStyleName(i, 0, "TopicViewLabel");
 		
-		for (int i = 0; i < 5; ++i)
+		for (int i = 0; i < 4; ++i)
 			this.getCellFormatter().addStyleName(i, 1, "TopicViewDetail");
 		
 		id.setReadOnly(readOnly);
 		title.setReadOnly(readOnly);
 		locale.setReadOnly(readOnly);
-		xml.setReadOnly(readOnly);
 		description.setReadOnly(readOnly);
 		
 		id.addStyleName("TopicViewIDField");
 		title.addStyleName("TopicViewTitleField");
 		locale.addStyleName("TopicViewLocaleField");
-		xml.addStyleName("TopicViewXMLField");
 		description.addStyleName("TopicViewDescriptionField");
 		
 		this.setWidget(0, 0, new Label(PressGangCCMSUI.INSTANCE.TopicID()));
@@ -53,8 +50,5 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
 		
 		this.setWidget(3, 0, new Label(PressGangCCMSUI.INSTANCE.TopicDescription()));
 		this.setWidget(3, 1, description);
-	
-		this.setWidget(4, 0, new Label(PressGangCCMSUI.INSTANCE.TopicXML()));
-		this.setWidget(4, 1, xml);
 	}
 }
