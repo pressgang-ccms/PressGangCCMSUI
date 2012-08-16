@@ -38,8 +38,9 @@ import com.google.gwt.user.client.ui.RequiresResize;
  * values for things like text, mode, theme etc are cached until the ACE editor
  * is available.
  * 
- * The IsEditor interface has been implemented, to allow the ACE editor to bind to
- * POJOs with the Editor framework. And references to "require" have been removed.
+ * The IsEditor interface has been implemented, to allow the ACE editor to bind
+ * to POJOs with the Editor framework. And references to "require" have been
+ * removed.
  * 
  * @see <a href="http://ace.ajax.org/">Ajax.org Code Editor</a>
  */
@@ -75,8 +76,8 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 	 */
 	private boolean readOnly = false;
 	/**
-	 * This value is used as a buffer to hold the "use soft tabs" state before the
-	 * editor is created
+	 * This value is used as a buffer to hold the "use soft tabs" state before
+	 * the editor is created
 	 */
 	private boolean useSoftTabs = false;
 	/**
@@ -84,6 +85,26 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 	 * editor is created
 	 */
 	private int tabSize = 2;
+	/**
+	 * This value is used as a buffer to hold the
+	 * "always show horizontal scrollbar" state before the editor is created
+	 */
+	private boolean hScrollBarAlwaysVisible = false;
+	/**
+	 * This value is used as a buffer to hold the "show gutter" state before the
+	 * editor is created
+	 */
+	private boolean showGutter = false;
+	/**
+	 * This value is used as a buffer to hold the "highlight word" state before
+	 * the editor is created
+	 */
+	private boolean highlightSelectedWord = false;
+	/**
+	 * This value is used as a buffer to hold the "show print margin" state before
+	 * the editor is created
+	 */
+	private boolean showPrintMargin = false;
 
 	/**
 	 * This constructor will only work if the <code>.ace_editor</code> CSS class
@@ -147,7 +168,7 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 			public void onAttachOrDetach(final AttachEvent event)
 			{
 				if (AceEditor.this.isAttached())
-					startEditorNative(text, theme != null ? theme.getName() : null, mode != null ? mode.getName(): null, readOnly, useSoftTabs, tabSize);
+					startEditorNative(text, theme != null ? theme.getName() : null, mode != null ? mode.getName() : null, readOnly, useSoftTabs, tabSize, hScrollBarAlwaysVisible, showGutter, highlightSelectedWord, showPrintMargin);
 				else
 					destroy();
 			}
@@ -161,7 +182,7 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 	 * @param text
 	 *            The initial text to be placed into the editor
 	 */
-	private native void startEditorNative(final String text, final String themeName, final String shortModeName, final boolean readOnly, final boolean useSoftTabs, final int tabSize) /*-{
+	private native void startEditorNative(final String text, final String themeName, final String shortModeName, final boolean readOnly, final boolean useSoftTabs, final int tabSize, final boolean hScrollBarAlwaysVisible, final boolean showGutter, final boolean highlightSelectedWord, final boolean showPrintMargin) /*-{
 		if ($wnd.ace == undefined) {
 			$wnd
 					.alert("window.ace is undefined! Please make sure you have included the appropriate JavaScript files.");
@@ -194,12 +215,24 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 
 		// Set read only
 		editor.setReadOnly(readOnly);
-		
+
 		// Set soft tabs
 		editor.getSession().setUseSoftTabs(useSoftTabs);
-		
+
 		// Set the tab size
 		editor.getSession().setTabSize(tabSize);
+		
+		// Set horizontal scroll bar
+		editor.renderer.setHScrollBarAlwaysVisible(hScrollBarAlwaysVisible);
+		
+		// Show gutter
+		editor.renderer.setShowGutter(showGutter);
+		
+		// Highlight selected word
+		editor.setHighlightSelectedWord(highlightSelectedWord);
+		
+		// Set print margin
+		editor.renderer.setShowPrintMargin(showPrintMargin);
 	}-*/;
 
 	/**
@@ -424,14 +457,13 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 					.log("editor == null. setUseSoftTabsNative() was not called successfully.");
 		}
 	}-*/;
-	
-	public void setUseSoftTabs(boolean useSoftTabs) 
+
+	public void setUseSoftTabs(boolean useSoftTabs)
 	{
 		this.useSoftTabs = useSoftTabs;
 		setUseSoftTabsNative(useSoftTabs);
 	};
 
-	
 	/**
 	 * Set tab size. (Default is 4.)
 	 * 
@@ -440,8 +472,7 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 	 */
 	private native void setTabSizeNative(int tabSize) /*-{
 		var editor = this.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::editor;
-		if (editor != null)
-		{
+		if (editor != null) {
 			editor.getSession().setTabSize(tabSize);
 		} else {
 			console
@@ -454,7 +485,7 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 		this.tabSize = tabSize;
 		setTabSizeNative(tabSize);
 	}
-	
+
 	/**
 	 * Go to given line.
 	 * 
@@ -463,11 +494,9 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 	 */
 	public native void gotoLine(int line) /*-{
 		var editor = this.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::editor;
-		if (editor != null)
-		{
+		if (editor != null) {
 			editor.gotoLine(line);
-		}
-		 else {
+		} else {
 			console
 					.log("editor == null. gotoLine() was not called successfully.");
 		}
@@ -480,10 +509,21 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 	 *            true if the horizontal scrollbar is always visible, false if
 	 *            it is hidden when not needed
 	 */
-	public native void setHScrollBarAlwaysVisible(boolean hScrollBarAlwaysVisible) /*-{
+	private native void setHScrollBarAlwaysVisibleNative(boolean hScrollBarAlwaysVisible) /*-{
 		var editor = this.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::editor;
-		editor.renderer.setHScrollBarAlwaysVisible(hScrollBarAlwaysVisible);
+		if (editor != null) {
+			editor.renderer.setHScrollBarAlwaysVisible(hScrollBarAlwaysVisible);
+		} else {
+			console
+					.log("editor == null. setHScrollBarAlwaysVisible() was not called successfully.");
+		}
 	}-*/;
+
+	public void setHScrollBarAlwaysVisible(boolean hScrollBarAlwaysVisible)
+	{
+		this.hScrollBarAlwaysVisible = hScrollBarAlwaysVisible;
+		setHScrollBarAlwaysVisibleNative(hScrollBarAlwaysVisible);
+	}
 
 	/**
 	 * Set whether or not the gutter is shown.
@@ -492,10 +532,21 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 	 *            true if the gutter should be shown, false if it should be
 	 *            hidden
 	 */
-	public native void setShowGutter(boolean showGutter) /*-{
+	private native void setShowGutterNative(boolean showGutter) /*-{
 		var editor = this.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::editor;
-		editor.renderer.setShowGutter(showGutter);
+		if (editor != null) {
+			editor.renderer.setShowGutter(showGutter);
+		} else {
+			console
+					.log("editor == null. setShowGutterNative() was not called successfully.");
+		}
 	}-*/;
+
+	public void setShowGutter(boolean showGutter)
+	{
+		this.showGutter = showGutter;
+		setShowGutterNative(showGutter);
+	}
 
 	/**
 	 * Set or unset read-only mode.
@@ -522,10 +573,21 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 	 * @param highlightSelectedWord
 	 *            true to highlight currently selected word, false otherwise
 	 */
-	public native void setHighlightSelectedWord(boolean highlightSelectedWord) /*-{
+	private native void setHighlightSelectedWordNative(boolean highlightSelectedWord) /*-{
 		var editor = this.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::editor;
-		editor.setHighlightSelectedWord(highlightSelectedWord);
+		if (editor != null) {
+			editor.setHighlightSelectedWord(highlightSelectedWord);
+		} else {
+			console
+					.log("editor == null. setHighlightSelectedWordNative() was not called successfully.");
+		}
 	}-*/;
+
+	public void setHighlightSelectedWord(boolean highlightSelectedWord)
+	{
+		this.highlightSelectedWord = highlightSelectedWord;
+		setHighlightSelectedWordNative(highlightSelectedWord);
+	}
 
 	/**
 	 * Set or unset the visibility of the print margin.
@@ -533,10 +595,21 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 	 * @param showPrintMargin
 	 *            true if the print margin should be shown, false otherwise
 	 */
-	public native void setShowPrintMargin(boolean showPrintMargin) /*-{
+	private native void setShowPrintMarginNative(boolean showPrintMargin) /*-{
 		var editor = this.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::editor;
-		editor.renderer.setShowPrintMargin(showPrintMargin);
+		if (editor != null) {
+			editor.renderer.setShowPrintMargin(showPrintMargin);
+		} else {
+			console
+					.log("editor == null. setShowPrintMarginNative() was not called successfully.");
+		}
 	}-*/;
+
+	public void setShowPrintMargin(boolean showPrintMargin)
+	{
+		this.showPrintMargin = showPrintMargin;
+		setShowPrintMarginNative(showPrintMargin);
+	}
 
 	/**
 	 * Add an annotation to a the local <code>annotations</code>
@@ -564,7 +637,14 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 	public native void setAnnotations() /*-{
 		var editor = this.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::editor;
 		var annotations = this.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::annotations;
-		editor.getSession().setAnnotations(annotations);
+		if (editor != null)
+		{
+			editor.getSession().setAnnotations(annotations);
+		}
+		else {
+			console
+					.log("editor == null. setAnnotations() was not called successfully.");
+		}
 	}-*/;
 
 	/**
@@ -573,7 +653,15 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 	 */
 	public native void clearAnnotations() /*-{
 		var editor = this.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::editor;
-		editor.getSession().clearAnnotations();
+		if (editor != null)
+		{
+			editor.getSession().clearAnnotations();
+		}
+				else {
+			console
+					.log("editor == null. clearAnnotations() was not called successfully.");
+		}
+		
 		this.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::resetAnnotations();
 	}-*/;
 
@@ -607,7 +695,14 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 	 */
 	public native void removeCommandByName(String command) /*-{
 		var editor = this.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::editor;
-		editor.commands.removeCommand(command);
+		if (editor != null)
+		{
+			editor.commands.removeCommand(command);
+		}
+		else {
+			console
+					.log("editor == null. removeCommandByName() was not called successfully.");
+		}
 	}-*/;
 
 	/*
