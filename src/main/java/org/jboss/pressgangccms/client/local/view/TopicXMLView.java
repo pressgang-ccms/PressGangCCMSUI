@@ -2,11 +2,18 @@ package org.jboss.pressgangccms.client.local.view;
 
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLPresenter;
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLPresenter.TopicXMLPresenterDriver;
+import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.ui.editor.RESTTopicV1XMLEditor;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewBase;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.PushButton;
+
+import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 
 public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Display
 {
@@ -17,9 +24,27 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 	
 	private RESTTopicV1XMLEditor editor;
 	
+	final HorizontalPanel editorButtonsPanel = new HorizontalPanel();
+	private final PushButton lineWrap = new PushButton(new Image(ImageResources.INSTANCE.lineWrap48()), new Image(ImageResources.INSTANCE.lineWrapDown48()));
+
+	public PushButton getLineWrap()
+	{
+		return lineWrap;
+	}
+	
+	public AceEditor getEditor()
+	{
+		return editor.xml;
+	}
+
 	public TopicXMLView()
 	{
-		
+	    editorButtonsPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+	    this.getTopActionPanel().add(editorButtonsPanel);
+	    
+	    lineWrap.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.lineWrapHover48()));
+	    lineWrap.addStyleName("SpacedElement");
+	    editorButtonsPanel.add(lineWrap);
 	}
 	
 	@Override

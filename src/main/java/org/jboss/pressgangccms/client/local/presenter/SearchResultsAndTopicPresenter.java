@@ -39,23 +39,24 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 	@Inject
 	private TopicPresenter.Display topicViewDisplay;
-	
+
 	@Inject
 	private TopicXMLPresenter.Display topicXMLDisplay;
-	
+
 	@Inject
 	private TopicRenderedPresenter.Display topicRenderedDisplay;
 
 	@Inject
 	private SearchResultsPresenter.Display searchResultsDisplay;
-	
+
 	/**
-	 * This will reference the selected view, so as to maintain the view between clicks
+	 * This will reference the selected view, so as to maintain the view between
+	 * clicks
 	 */
 	private TopicViewInterface selectedView;
 
 	private String queryString;
-	
+
 	private RESTTopicV1 selectedTopic;
 
 	@Override
@@ -66,7 +67,6 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 		display.getTopicResultsActionButtonsPanel().setWidget(searchResultsDisplay.getTopActionPanel());
 		display.getTopicResultsPanel().setWidget(searchResultsDisplay.getPanel());
-
 
 		bind();
 	}
@@ -162,8 +162,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 									selectedView = topicViewDisplay;
 									updateTopicDisplay();
 								}
-								
-								selectedView.initialize(retValue);								
+
+								selectedView.initialize(retValue);
 							}
 							finally
 							{
@@ -182,7 +182,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				}
 			}
 		});
-		
+
 		final ClickHandler topicViewClickHandler = new ClickHandler()
 		{
 			@Override
@@ -196,7 +196,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				}
 			}
 		};
-		
+
 		final ClickHandler topicXMLClickHandler = new ClickHandler()
 		{
 			@Override
@@ -210,7 +210,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				}
 			}
 		};
-		
+
 		final ClickHandler topicRenderedClickHandler = new ClickHandler()
 		{
 			@Override
@@ -224,22 +224,31 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				}
 			}
 		};
-		
+
 		topicViewDisplay.getFields().addClickHandler(topicViewClickHandler);
 		topicViewDisplay.getXml().addClickHandler(topicXMLClickHandler);
 		topicViewDisplay.getRendered().addClickHandler(topicRenderedClickHandler);
-		
+
 		topicXMLDisplay.getFields().addClickHandler(topicViewClickHandler);
 		topicXMLDisplay.getXml().addClickHandler(topicXMLClickHandler);
 		topicXMLDisplay.getRendered().addClickHandler(topicRenderedClickHandler);
-		
+
 		topicRenderedDisplay.getFields().addClickHandler(topicViewClickHandler);
 		topicRenderedDisplay.getXml().addClickHandler(topicXMLClickHandler);
 		topicRenderedDisplay.getRendered().addClickHandler(topicRenderedClickHandler);
 
+		topicXMLDisplay.getLineWrap().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				topicXMLDisplay.getEditor().setUseWrapMode(!topicXMLDisplay.getEditor().getUserWrapMode());
+			}
+		});
+
 		searchResultsDisplay.setProvider(provider);
 	}
-	
+
 	/**
 	 * Sets the topic display view
 	 */
@@ -247,7 +256,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	{
 		display.getTopicViewActionButtonsPanel().clear();
 		display.getTopicViewPanel().clear();
-		
+
 		display.getTopicViewActionButtonsPanel().setWidget(selectedView.getTopActionPanel());
 		display.getTopicViewPanel().setWidget(selectedView.getPanel());
 	}

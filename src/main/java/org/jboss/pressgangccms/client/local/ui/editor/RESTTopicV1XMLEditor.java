@@ -10,8 +10,8 @@ import edu.ycp.cs.dh.acegwt.client.ace.AceEditorTheme;
 
 public class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RESTTopicV1>
 {
-	final AceEditor xml = new AceEditor(false);
-	
+	public final AceEditor xml = new AceEditor(false);
+
 	public RESTTopicV1XMLEditor(final boolean readOnly)
 	{
 		this.addStyleName("TopicXMLViewPanel");
@@ -21,6 +21,6 @@ public class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RESTTopi
 		xml.setMode(AceEditorMode.XML);
 		xml.setTheme(AceEditorTheme.ECLIPSE);
 		
-		this.setWidget(xml);		
+		this.setWidget(xml);	
 	}
 }

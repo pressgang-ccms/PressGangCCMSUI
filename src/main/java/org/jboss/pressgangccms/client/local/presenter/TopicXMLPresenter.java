@@ -9,6 +9,9 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.PushButton;
+
+import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 
 @Dependent
 public class TopicXMLPresenter extends TemplatePresenter
@@ -24,6 +27,8 @@ public class TopicXMLPresenter extends TemplatePresenter
 	{
 		@Override
 		void initialize(final RESTTopicV1 topic);
+		PushButton getLineWrap();
+		AceEditor getEditor();
 	}
 
 	@Override

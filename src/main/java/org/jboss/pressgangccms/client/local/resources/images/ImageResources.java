@@ -25,6 +25,15 @@ public interface ImageResources extends ClientBundle
 	@Source("transparent48.png")
 	ImageResource transparent48();
 	
+	@Source("lineWrap48.png")
+	ImageResource lineWrap48();
+	
+	@Source("lineWrapHover48.png")
+	ImageResource lineWrapHover48();
+	
+	@Source("lineWrapDown48.png")
+	ImageResource lineWrapDown48();
+	
 	@Source("fields48.png")
 	ImageResource fields48();
 	

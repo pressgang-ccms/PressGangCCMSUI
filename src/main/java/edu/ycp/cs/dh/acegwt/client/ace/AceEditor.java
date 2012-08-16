@@ -105,6 +105,13 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 	 * the editor is created
 	 */
 	private boolean showPrintMargin = false;
+	/**
+	 * This value is used as a buffer to hold the "user wrap mode" state before
+	 * the editor is created
+	 */
+	private boolean useWrap = true;
+	
+	
 
 	/**
 	 * This constructor will only work if the <code>.ace_editor</code> CSS class
@@ -168,7 +175,7 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 			public void onAttachOrDetach(final AttachEvent event)
 			{
 				if (AceEditor.this.isAttached())
-					startEditorNative(text, theme != null ? theme.getName() : null, mode != null ? mode.getName() : null, readOnly, useSoftTabs, tabSize, hScrollBarAlwaysVisible, showGutter, highlightSelectedWord, showPrintMargin);
+					startEditorNative(text, theme != null ? theme.getName() : null, mode != null ? mode.getName() : null, readOnly, useSoftTabs, tabSize, hScrollBarAlwaysVisible, showGutter, highlightSelectedWord, showPrintMargin, useWrap);
 				else
 					destroy();
 			}
@@ -182,7 +189,7 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 	 * @param text
 	 *            The initial text to be placed into the editor
 	 */
-	private native void startEditorNative(final String text, final String themeName, final String shortModeName, final boolean readOnly, final boolean useSoftTabs, final int tabSize, final boolean hScrollBarAlwaysVisible, final boolean showGutter, final boolean highlightSelectedWord, final boolean showPrintMargin) /*-{
+	private native void startEditorNative(final String text, final String themeName, final String shortModeName, final boolean readOnly, final boolean useSoftTabs, final int tabSize, final boolean hScrollBarAlwaysVisible, final boolean showGutter, final boolean highlightSelectedWord, final boolean showPrintMargin, final boolean userWrap) /*-{
 		if ($wnd.ace == undefined) {
 			$wnd
 					.alert("window.ace is undefined! Please make sure you have included the appropriate JavaScript files.");
@@ -200,8 +207,11 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 		//    https://groups.google.com/group/ace-discuss/browse_thread/thread/237262b521dcea33
 		editor.resize();
 		this.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::redisplay();
+		
+		// Set code folding (choose from manual, markbegin, markbeginend)
+		editor.getSession().setFoldStyle("markbeginend");
 
-		// Set test 
+		// Set text 
 		if (text != null)
 			editor.getSession().setValue(text);
 
@@ -233,6 +243,9 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 		
 		// Set print margin
 		editor.renderer.setShowPrintMargin(showPrintMargin);
+		
+		// Set wrapping
+		editor.getSession().setUseWrapMode(userWrap);
 	}-*/;
 
 	/**
@@ -609,6 +622,33 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 	{
 		this.showPrintMargin = showPrintMargin;
 		setShowPrintMarginNative(showPrintMargin);
+	}
+	
+	/**
+	 * Set or unset the wrap mode.
+	 * 
+	 * @param userWrap
+	 *           true if the text should be wrapped, false otherwise
+	 */
+	private native void setUseWrapModeNative(boolean userWrap) /*-{
+		var editor = this.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::editor;
+		if (editor != null) {
+			editor.getSession().setUseWrapMode(userWrap);
+		} else {
+			console
+					.log("editor == null. setUserWrapModeNative() was not called successfully.");
+		}
+	}-*/;
+
+	public void setUseWrapMode(boolean userWrap)
+	{
+		this.useWrap = userWrap;
+		setUseWrapModeNative(userWrap);
+	}
+	
+	public boolean getUserWrapMode()
+	{
+		return this.useWrap;
 	}
 
 	/**
