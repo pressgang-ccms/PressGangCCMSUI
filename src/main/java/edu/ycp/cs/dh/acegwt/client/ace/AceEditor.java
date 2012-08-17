@@ -94,7 +94,7 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 	 * This value is used as a buffer to hold the "show gutter" state before the
 	 * editor is created
 	 */
-	private boolean showGutter = false;
+	private boolean showGutter = true;
 	/**
 	 * This value is used as a buffer to hold the "highlight word" state before
 	 * the editor is created

@@ -1,20 +1,20 @@
 package org.jboss.pressgangccms.client.local.view;
 
-import org.jboss.pressgangccms.client.local.presenter.TopicPresenter;
-import org.jboss.pressgangccms.client.local.presenter.TopicPresenter.TopicPresenterDriver;
-import org.jboss.pressgangccms.client.local.ui.editor.RESTTopicV1BasicDetailsEditor;
+import org.jboss.pressgangccms.client.local.presenter.TopicXMLErrorsPresenter;
+import org.jboss.pressgangccms.client.local.presenter.TopicXMLErrorsPresenter.TopicXMLErrorsPresenterDriver;
+import org.jboss.pressgangccms.client.local.ui.editor.RESTTopicV1XMLErrorsEditor;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewBase;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 
-public class TopicView extends TopicViewBase implements TopicPresenter.Display
+public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsPresenter.Display
 {
-	public static final String HISTORY_TOKEN = "TopicView";
+	public static final String HISTORY_TOKEN = "TopicXMLErrorsView";
 
 	/** The GWT Editor Driver */
-	private final TopicPresenterDriver driver = GWT.create(TopicPresenterDriver.class);
+	private final TopicXMLErrorsPresenterDriver driver = GWT.create(TopicXMLErrorsPresenterDriver.class);
 	
 	@Override
 	public SimpleBeanEditorDriver getDriver()
@@ -22,7 +22,7 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display
 		return driver;
 	}
 
-	public TopicView()
+	public TopicXMLErrorsView()
 	{
 		addRightAlignedActionButtonPaddingPanel();
 	}
@@ -31,7 +31,7 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display
 	public void initialize(final RESTTopicV1 topic)
 	{
 		/* SearchUIProjectsEditor is a grid */
-		final RESTTopicV1BasicDetailsEditor editor = new RESTTopicV1BasicDetailsEditor(false);
+		final RESTTopicV1XMLErrorsEditor editor = new RESTTopicV1XMLErrorsEditor();
 	    /* Initialize the driver with the top-level editor */
 	    driver.initialize(editor);
 	    /* Copy the data in the object into the UI */
@@ -39,6 +39,5 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display
 	    /* Add the projects */
 	    this.getPanel().setWidget(editor);
 	}
-
-
+	
 }

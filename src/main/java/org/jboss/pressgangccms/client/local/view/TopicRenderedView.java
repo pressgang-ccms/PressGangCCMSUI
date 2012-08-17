@@ -8,6 +8,7 @@ import org.jboss.pressgangccms.client.local.resources.xsl.DocbookToHTML;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewBase;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
+import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HTML;
 
 public class TopicRenderedView extends TopicViewBase implements TopicRenderedPresenter.Display
@@ -15,10 +16,17 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 	public static final String HISTORY_TOKEN = "TopicRenderedView";
 	
 	private final HTML div = new HTML("div");
+	
+	@Override
+	public SimpleBeanEditorDriver getDriver()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	public TopicRenderedView()
 	{
-
+		addRightAlignedActionButtonPaddingPanel();
 	}
 
 	@Override
@@ -53,4 +61,6 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 			
 		}
 	}
+
+
 }

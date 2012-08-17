@@ -13,6 +13,10 @@ import com.google.gwt.resources.client.ImageResource;
  * Down Saturation: 100
  * Down Lightness: 35
  * 
+ * Disabled Hue: 0
+ * Disabled Saturation: 0
+ * Disabled Lightness: 35
+ * 
  * @author Matthew Casperson
  */
 public interface ImageResources extends ClientBundle
@@ -24,6 +28,30 @@ public interface ImageResources extends ClientBundle
 	
 	@Source("transparent48.png")
 	ImageResource transparent48();
+	
+	@Source("attention48.png")
+	ImageResource attention48();
+	
+	@Source("attentionDown48.png")
+	ImageResource attentionDown48();
+	
+	@Source("attentionHover48.png")
+	ImageResource attentionHover48();
+	
+	@Source("attentionDisabled48.png")
+	ImageResource attentionDisabled48();
+	
+	@Source("save48.png")
+	ImageResource save48();
+	
+	@Source("saveHover48.png")
+	ImageResource saveHover48();
+	
+	@Source("saveDown48.png")
+	ImageResource saveDown48();
+	
+	@Source("saveDisabled48.png")
+	ImageResource saveDisabled48();
 	
 	@Source("lineWrap48.png")
 	ImageResource lineWrap48();
@@ -78,6 +106,9 @@ public interface ImageResources extends ClientBundle
 	
 	@Source("searchTranslationsHover48.png")
 	ImageResource searchTranslationsHover48();
+	
+	@Source("searchTranslationsDisabled48.png")
+	ImageResource searchTranslationsDisabled48();
 	
 	@Source("reports48.png")
 	ImageResource reports48();

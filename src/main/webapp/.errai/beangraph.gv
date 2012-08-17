@@ -23,6 +23,10 @@ digraph g {
   "javax.enterprise.event.Event" -> "org.jboss.errai.enterprise.client.cdi.EventProvider"
   "org.jboss.errai.ioc.client.api.builtin.MessageBusProvider"
   "org.jboss.errai.bus.client.framework.RequestDispatcher" -> "org.jboss.errai.ioc.client.api.builtin.RequestDispatcherProvider"
+  "org.jboss.pressgangccms.client.local.view.TopicXMLErrorsView"
+  "org.jboss.pressgangccms.client.local.presenter.TopicXMLErrorsPresenter$Display" -> "org.jboss.pressgangccms.client.local.view.TopicXMLErrorsView"
+  "org.jboss.pressgangccms.client.local.presenter.TopicXMLErrorsPresenter" -> "org.jboss.pressgangccms.client.local.presenter.TopicXMLErrorsPresenter$Display"
+  "org.jboss.pressgangccms.client.local.presenter.TopicXMLErrorsPresenter" -> "com.google.gwt.event.shared.HandlerManager"
   "org.jboss.pressgangccms.client.local.view.WelcomeView"
   "org.jboss.pressgangccms.client.local.presenter.WelcomePresenter$Display" -> "org.jboss.pressgangccms.client.local.view.WelcomeView"
   "org.jboss.pressgangccms.client.local.presenter.WelcomePresenter" -> "org.jboss.pressgangccms.client.local.presenter.WelcomePresenter$Display"
@@ -58,5 +62,6 @@ digraph g {
   "org.jboss.pressgangccms.client.local.presenter.SearchResultsAndTopicPresenter" -> "org.jboss.pressgangccms.client.local.presenter.TopicPresenter$Display"
   "org.jboss.pressgangccms.client.local.presenter.SearchResultsAndTopicPresenter" -> "org.jboss.pressgangccms.client.local.presenter.TopicRenderedPresenter$Display"
   "org.jboss.pressgangccms.client.local.presenter.SearchResultsAndTopicPresenter" -> "org.jboss.pressgangccms.client.local.presenter.SearchResultsPresenter$Display"
+  "org.jboss.pressgangccms.client.local.presenter.SearchResultsAndTopicPresenter" -> "org.jboss.pressgangccms.client.local.presenter.TopicXMLErrorsPresenter$Display"
   "org.jboss.pressgangccms.client.local.presenter.SearchResultsAndTopicPresenter" -> "com.google.gwt.event.shared.HandlerManager"
 }

@@ -3,7 +3,9 @@ package org.jboss.pressgangccms.client.local.view.base;
 import org.jboss.pressgangccms.client.local.resources.css.CSSResources;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -12,6 +14,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 	/**
 	 * This class is used to build the standard page template
@@ -25,7 +28,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 		private final Grid shortcutAndContentPanel = new Grid(1, 2);
 		private final VerticalPanel shortcutPanel = new VerticalPanel();
 		private final VerticalPanel contentPanel = new VerticalPanel();
-		private final HorizontalPanel topActionPanel = new HorizontalPanel();
+		private final FlexTable topActionPanel = new FlexTable();
 		private final HorizontalPanel footerPanel = new HorizontalPanel();
 		private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
 		private final SimplePanel panel = new SimplePanel();
@@ -48,7 +51,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 		}
 
 		@Override
-		public HorizontalPanel getTopActionPanel()
+		public FlexTable getTopActionPanel()
 		{
 			return topActionPanel;
 		}
@@ -117,6 +120,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 			shortcutAndContentPanel.setWidget(0, 1, contentPanel);
 			
 			contentPanel.add(topActionPanel);
+			topActionPanel.addStyleName("TopActionPanel");
 
 			contentPanel.add(panel);
 
@@ -139,11 +143,15 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 			
 			searchTranslations = new PushButton(new Image(ImageResources.INSTANCE.searchTranslations48()), new Image(ImageResources.INSTANCE.searchTranslationsDown48()));
 			searchTranslations.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.searchTranslationsHover48()));
+			searchTranslations.getUpDisabledFace().setImage(new Image(ImageResources.INSTANCE.searchTranslationsDisabled48()));
 			searchTranslations.addStyleName("SpacedElement");
+			searchTranslations.setEnabled(false);
 			shortcutPanel.add(searchTranslations);
 			
 			reports = new PushButton(new Image(ImageResources.INSTANCE.reports48()), new Image(ImageResources.INSTANCE.reportsDown48()));
 			reports.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.reportsHover48()));
+			reports.getUpDisabledFace().setImage(new Image(ImageResources.INSTANCE.reportsDisabled48()));
+			reports.setEnabled(false);
 			reports.addStyleName("SpacedElement");
 			shortcutPanel.add(reports);
 			
@@ -151,5 +159,37 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 			bug.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.bugHover48()));
 			bug.addStyleName("SpacedElement");
 			shortcutPanel.add(bug);
+		}
+		
+		protected void addRightAlignedActionButtonPaddingPanel()
+		{
+			final int rows = this.getTopActionPanel().getRowCount();
+			int columns = 0;
+			if (rows != 0)
+			{
+				columns = this.getTopActionPanel().getCellCount(0);
+			}
+			
+			this.getTopActionPanel().setWidget(0, columns, new SimplePanel());
+		    this.getTopActionPanel().getCellFormatter().addStyleName(0, columns, "RightAlignedActionButtons");
+		}
+		
+		protected void addActionButton(final Widget widget)
+		{
+			final int rows = this.getTopActionPanel().getRowCount();
+			int columns = 0;
+			if (rows != 0)
+			{
+				columns = this.getTopActionPanel().getCellCount(0);
+			}
+			
+			this.getTopActionPanel().setWidget(0, columns, widget);
+		}
+		
+		protected PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover)
+		{
+			final PushButton retvalue = new PushButton(new Image(up), new Image(down));
+			retvalue.getUpHoveringFace().setImage(new Image(hover));
+			return retvalue;
 		}
 	}

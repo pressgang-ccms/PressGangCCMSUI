@@ -1,9 +1,12 @@
 package org.jboss.pressgangccms.client.local.presenter;
 
+import java.util.List;
+
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
+import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.client.local.view.SearchResultsAndTopicView;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
@@ -13,6 +16,7 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.AsyncDataProvider;
@@ -48,6 +52,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 	@Inject
 	private SearchResultsPresenter.Display searchResultsDisplay;
+	
+	@Inject
+	private TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay;
 
 	/**
 	 * This will reference the selected view, so as to maintain the view between
@@ -58,6 +65,12 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	private String queryString;
 
 	private RESTTopicV1 selectedTopic;
+	
+	/** Keeps a reference to the list of topics being displayed */
+	private List<RESTTopicV1> currentList;
+	
+	/** Keeps a reference to the start row */
+	private Integer tableStartRow;
 
 	@Override
 	public void go(final HasWidgets container)
@@ -80,9 +93,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			@Override
 			protected void onRangeChanged(final HasData<RESTTopicV1> display)
 			{
-				final int start = display.getVisibleRange().getStart();
+				tableStartRow = display.getVisibleRange().getStart();
 				final int length = display.getVisibleRange().getLength();
-				final int end = start + length;
+				final int end = tableStartRow + length;
 
 				final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>()
 				{
@@ -103,7 +116,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 					{
 						try
 						{
-							updateRowData(start, retValue.getItems());
+							currentList = retValue.getItems();
+							updateRowData(tableStartRow, currentList);
 							updateRowCount(retValue.getSize(), true);
 						}
 						finally
@@ -119,7 +133,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 					}
 				};
 
-				RESTCalls.getTopicsFromQuery(callback, queryString, start, end);
+				RESTCalls.getTopicsFromQuery(callback, queryString, tableStartRow, end);
 			}
 		};
 
@@ -134,7 +148,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				final boolean isClick = "click".equals(event.getNativeEvent().getType());
 
 				if (isClick)
-				{
+				{				
 					selectedTopic = event.getValue();
 
 					final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>()
@@ -159,7 +173,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 								/* default to the topic details view */
 								if (selectedView == null)
 								{
-									selectedView = topicViewDisplay;
+									selectedView = topicRenderedDisplay;
 									updateTopicDisplay();
 								}
 
@@ -188,6 +202,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			@Override
 			public void onClick(final ClickEvent event)
 			{
+				/* Sync any changes back to the underlying object */
+				flushChanges();
+				
 				if (selectedTopic != null)
 				{
 					selectedView = topicViewDisplay;
@@ -202,6 +219,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			@Override
 			public void onClick(final ClickEvent event)
 			{
+				/* Sync any changes back to the underlying object */
+				flushChanges();
+				
 				if (selectedTopic != null)
 				{
 					selectedView = topicXMLDisplay;
@@ -216,11 +236,99 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			@Override
 			public void onClick(final ClickEvent event)
 			{
+				/* Sync any changes back to the underlying object */
+				flushChanges();
+				
 				if (selectedTopic != null)
 				{
 					selectedView = topicRenderedDisplay;
-					topicRenderedDisplay.initialize(selectedTopic);
+					selectedView.initialize(selectedTopic);
 					updateTopicDisplay();
+				}
+			}
+		};
+		
+		final ClickHandler topicXMLErrorsClickHandler = new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				/* Sync any changes back to the underlying object */
+				flushChanges();
+				
+				if (selectedTopic != null)
+				{
+					selectedView = topicXMLErrorsDisplay;
+					selectedView.initialize(selectedTopic);
+					updateTopicDisplay();
+				}
+			}
+		};
+
+		/* Build up a click handler to save the topic */
+		final ClickHandler saveClickHandler = new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				if (selectedTopic != null)
+				{
+					final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>()
+					{
+						@Override
+						public void begin()
+						{
+							startProcessing();
+						}
+
+						@Override
+						public void generalException(final Exception ex)
+						{
+							stopProcessing();
+						}
+
+						@Override
+						public void success(final RESTTopicV1 retValue)
+						{
+							try
+							{
+								/* Update the local collection of topics */
+								retValue.cloneInto(selectedTopic, true);
+								/* Update the list of topics */
+								provider.updateRowData(tableStartRow, currentList);
+								/* Update the edit window */
+								selectedView.initialize(selectedTopic);
+								
+								Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+							}
+							finally
+							{
+								stopProcessing();
+							}
+						}
+
+						@Override
+						public void failed()
+						{
+							stopProcessing();
+						}
+					};
+					
+					/* Sync any changes back to the underlying object */
+					flushChanges();
+					
+					/* Create a new instance of the topic, with all the properties set to explicitly update */
+					final RESTTopicV1 updateTopic = selectedTopic.clone(true);
+					updateTopic.explicitSetBugzillaBugs_OTM(updateTopic.getBugzillaBugs_OTM());
+					updateTopic.explicitSetProperties(updateTopic.getProperties());
+					updateTopic.explicitSetSourceUrls_OTM(updateTopic.getSourceUrls_OTM());
+					updateTopic.explicitSetTags(updateTopic.getTags());
+					updateTopic.explicitSetDescription(updateTopic.getDescription());
+					updateTopic.explicitSetLocale(updateTopic.getLocale());
+					updateTopic.explicitSetTitle(updateTopic.getTitle());
+					updateTopic.explicitSetXml(updateTopic.getXml());
+					
+					RESTCalls.saveTopic(callback, updateTopic);
 				}
 			}
 		};
@@ -228,15 +336,27 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		topicViewDisplay.getFields().addClickHandler(topicViewClickHandler);
 		topicViewDisplay.getXml().addClickHandler(topicXMLClickHandler);
 		topicViewDisplay.getRendered().addClickHandler(topicRenderedClickHandler);
-
+		topicViewDisplay.getSave().addClickHandler(saveClickHandler);
+		topicViewDisplay.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
+		
 		topicXMLDisplay.getFields().addClickHandler(topicViewClickHandler);
 		topicXMLDisplay.getXml().addClickHandler(topicXMLClickHandler);
 		topicXMLDisplay.getRendered().addClickHandler(topicRenderedClickHandler);
+		topicXMLDisplay.getSave().addClickHandler(saveClickHandler);
+		topicXMLDisplay.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
 
 		topicRenderedDisplay.getFields().addClickHandler(topicViewClickHandler);
 		topicRenderedDisplay.getXml().addClickHandler(topicXMLClickHandler);
 		topicRenderedDisplay.getRendered().addClickHandler(topicRenderedClickHandler);
-
+		topicRenderedDisplay.getSave().addClickHandler(saveClickHandler);
+		topicRenderedDisplay.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
+		
+		topicXMLErrorsDisplay.getFields().addClickHandler(topicViewClickHandler);
+		topicXMLErrorsDisplay.getXml().addClickHandler(topicXMLClickHandler);
+		topicXMLErrorsDisplay.getRendered().addClickHandler(topicRenderedClickHandler);
+		topicXMLErrorsDisplay.getSave().addClickHandler(saveClickHandler);
+		topicXMLErrorsDisplay.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
+		
 		topicXMLDisplay.getLineWrap().addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -259,6 +379,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 		display.getTopicViewActionButtonsPanel().setWidget(selectedView.getTopActionPanel());
 		display.getTopicViewPanel().setWidget(selectedView.getPanel());
+	}
+	
+	private void flushChanges()
+	{
+		/* Sync any changes back to the underlying object, except for the xml errros because they are read only */
+		if (selectedView != null && selectedView != topicXMLErrorsDisplay && selectedView.getDriver() != null)
+			selectedView.getDriver().flush();
 	}
 
 	@Override

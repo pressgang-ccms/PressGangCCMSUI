@@ -51,7 +51,9 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 	{
 	    /* Build the action bar icons */
 		search.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.searchHover48()));
-		this.getTopActionPanel().add(this.search);
+		addActionButton(search);
+		
+		addRightAlignedActionButtonPaddingPanel();
 		
 		/* Construct a hierarchy of tags from the tag collection */
 		getSearchUIProjects().initialize(tags);

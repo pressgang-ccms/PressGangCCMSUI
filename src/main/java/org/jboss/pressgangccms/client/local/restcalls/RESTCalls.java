@@ -58,6 +58,23 @@ public final class RESTCalls
 		return errorCallback;
 
 	}
+	
+	static public void saveTopic(final RESTCallback<RESTTopicV1> callback, final RESTTopicV1 topic)
+	{
+		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
+		/* Expand the categories and projects in the tags */
+		final String expand = "";
+
+		try
+		{
+			callback.begin();
+			restMethod.updateJSONTopic(expand, topic);
+		}
+		catch (final Exception ex)
+		{
+			callback.generalException(ex);
+		}
+	}
 
 	static public void getTopic(final RESTCallback<RESTTopicV1> callback, final Integer id)
 	{
