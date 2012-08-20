@@ -274,7 +274,10 @@ public class AceEditor extends Composite implements RequiresResize, IsEditor<Lea
 	 */
 	public native void destroy() /*-{
 		var editor = this.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::editor;
+		var text = this.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::text;
 		if (editor != null) {
+			// Save the text before we destroy the editor. This is needed for the GWT Editor framework
+			text = editor.getSession().getValue();
 			editor.destroy();
 		} else {
 			console
