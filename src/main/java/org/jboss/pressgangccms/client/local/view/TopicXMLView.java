@@ -26,6 +26,7 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 	private final ToggleButton lineWrap = createToggleButton(ImageResources.INSTANCE.lineWrap48(), ImageResources.INSTANCE.lineWrapDown48(), ImageResources.INSTANCE.lineWrapHover48(), "SpacedButton");
 	private final ToggleButton showInvisibles = createToggleButton(ImageResources.INSTANCE.hiddenCharacters48(), ImageResources.INSTANCE.hiddenCharactersDown48(), ImageResources.INSTANCE.hiddenCharactersHover48(), "SpacedButton");
 
+	@Override
 	public ToggleButton getShowInvisibles()
 	{
 		return showInvisibles;

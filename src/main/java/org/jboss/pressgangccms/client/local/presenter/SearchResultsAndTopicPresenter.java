@@ -108,6 +108,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 					@Override
 					public void generalException(final Exception ex)
 					{
+						Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopics());
 						stopProcessing();
 					}
 
@@ -129,6 +130,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 					@Override
 					public void failed()
 					{
+						Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopics());
 						stopProcessing();
 					}
 				};
@@ -162,6 +164,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 						@Override
 						public void generalException(final Exception ex)
 						{
+							Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopic());
 							stopProcessing();
 						}
 
@@ -181,6 +184,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 							}
 							finally
 							{
+								Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopic());
 								stopProcessing();
 							}
 						}
@@ -284,6 +288,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 						@Override
 						public void generalException(final Exception ex)
 						{
+							Window.alert(PressGangCCMSUI.INSTANCE.ErrorSavingTopic());
 							stopProcessing();
 						}
 
@@ -310,6 +315,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 						@Override
 						public void failed()
 						{
+							Window.alert(PressGangCCMSUI.INSTANCE.ErrorSavingTopic());
 							stopProcessing();
 						}
 					};

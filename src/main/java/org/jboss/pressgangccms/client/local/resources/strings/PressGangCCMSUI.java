@@ -42,4 +42,12 @@ public interface PressGangCCMSUI extends Constants
 	String TopicXML();
 	
 	String SaveSuccess();
+	
+	String ErrorGettingTopics();
+	
+	String ErrorGettingTopic();
+	
+	String ErrorSavingTopic();
+	
+	String ErrorGettingTags();
 }
