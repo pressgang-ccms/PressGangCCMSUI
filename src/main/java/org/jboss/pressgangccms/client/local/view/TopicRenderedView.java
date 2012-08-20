@@ -4,12 +4,14 @@ import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
 import hu.szaboaz.gwt.xslt.client.XsltProcessor;
 
 import org.jboss.pressgangccms.client.local.presenter.TopicRenderedPresenter;
+import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.xsl.DocbookToHTML;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewBase;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Image;
 
 public class TopicRenderedView extends TopicViewBase implements TopicRenderedPresenter.Display
 {
@@ -26,6 +28,13 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 
 	public TopicRenderedView()
 	{
+		//addActionButton(this.getRendered());
+		addActionButton(new Image(ImageResources.INSTANCE.renderedDown48()));
+		addActionButton(this.getXml());
+		addActionButton(this.getXmlErrors());
+		addActionButton(this.getFields());
+		addActionButton(this.getSave());
+		
 		addRightAlignedActionButtonPaddingPanel();
 	}
 

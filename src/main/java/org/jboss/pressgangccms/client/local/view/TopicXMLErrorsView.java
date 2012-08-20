@@ -2,12 +2,14 @@ package org.jboss.pressgangccms.client.local.view;
 
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLErrorsPresenter;
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLErrorsPresenter.TopicXMLErrorsPresenterDriver;
+import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.ui.editor.RESTTopicV1XMLErrorsEditor;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewBase;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.user.client.ui.Image;
 
 public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsPresenter.Display
 {
@@ -24,6 +26,12 @@ public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsP
 
 	public TopicXMLErrorsView()
 	{
+		addActionButton(this.getRendered());		
+		addActionButton(this.getXml());
+		addActionButton(new Image(ImageResources.INSTANCE.attentionDown48()));
+		addActionButton(this.getFields());
+		addActionButton(this.getSave());
+		
 		addRightAlignedActionButtonPaddingPanel();
 	}
 	

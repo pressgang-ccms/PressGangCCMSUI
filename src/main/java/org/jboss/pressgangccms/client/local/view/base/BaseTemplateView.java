@@ -3,6 +3,10 @@ package org.jboss.pressgangccms.client.local.view.base;
 import org.jboss.pressgangccms.client.local.resources.css.CSSResources;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -13,6 +17,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -190,6 +195,21 @@ import com.google.gwt.user.client.ui.Widget;
 		{
 			final PushButton retvalue = new PushButton(new Image(up), new Image(down));
 			retvalue.getUpHoveringFace().setImage(new Image(hover));
+			return retvalue;
+		}
+		
+		protected PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final ImageResource disabled)
+		{
+			final PushButton retvalue = new PushButton(new Image(up), new Image(down));
+			retvalue.getUpHoveringFace().setImage(new Image(hover));
+			retvalue.getUpDisabledFace().setImage(new Image(disabled));
+			return retvalue;
+		}
+		
+		protected ToggleButton createToggleButton(final ImageResource up, final ImageResource down, final ImageResource hover)
+		{
+			final ToggleButton retvalue = new ToggleButton(new Image(up), new Image(down));
+			retvalue.getUpHoveringFace().setImage(new Image(hover));	
 			return retvalue;
 		}
 	}

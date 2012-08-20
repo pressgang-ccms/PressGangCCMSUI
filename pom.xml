@@ -217,6 +217,12 @@
 			<artifactId>pressgang-ccms-rest</artifactId>
 			<version>1.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>edu.ycp.cs.dh.acegwt</groupId>
+			<artifactId>acegwt-client</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 
 	<profiles>
@@ -770,7 +776,7 @@
 						<version>${gwt.maven.version}</version>
 						<configuration>
 							<skip>true</skip>
-							
+
 						</configuration>
 					</plugin>
 				</plugins>

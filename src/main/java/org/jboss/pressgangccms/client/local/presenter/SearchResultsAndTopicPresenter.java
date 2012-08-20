@@ -363,6 +363,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			public void onClick(final ClickEvent event)
 			{
 				topicXMLDisplay.getEditor().setUseWrapMode(!topicXMLDisplay.getEditor().getUserWrapMode());
+				topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
 			}
 		});
 
@@ -379,6 +380,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 		display.getTopicViewActionButtonsPanel().setWidget(selectedView.getTopActionPanel());
 		display.getTopicViewPanel().setWidget(selectedView.getPanel());
+		
+		/* Sync the editor buttons */
+		if (selectedView == topicXMLDisplay)
+			topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
 	}
 	
 	private void flushChanges()
