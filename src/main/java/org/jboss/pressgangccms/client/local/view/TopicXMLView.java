@@ -52,7 +52,9 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 	public TopicXMLView()
 	{
 		addActionButton(this.getRendered());
-		addActionButton(new Image(ImageResources.INSTANCE.xmlDown48()));
+		final Image downImage = new Image(ImageResources.INSTANCE.xmlDown48());
+		downImage.addStyleName("SpacedButton");
+		addActionButton(downImage);
 		addActionButton(this.getXmlErrors());
 		addActionButton(this.getFields());
 		addActionButton(this.getSave());

@@ -29,7 +29,9 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display
 		addActionButton(this.getRendered());		
 		addActionButton(this.getXml());
 		addActionButton(this.getXmlErrors());
-		addActionButton(new Image(ImageResources.INSTANCE.fieldsDown48()));
+		final Image downImage = new Image(ImageResources.INSTANCE.fieldsDown48());
+		downImage.addStyleName("SpacedButton");
+		addActionButton(downImage);
 		addActionButton(this.getSave());
 		
 		addRightAlignedActionButtonPaddingPanel();
