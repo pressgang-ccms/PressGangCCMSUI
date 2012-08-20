@@ -29,6 +29,7 @@ public class TopicXMLPresenter extends TemplatePresenter
 		@Override
 		void initialize(final RESTTopicV1 topic);
 		ToggleButton getLineWrap();
+		ToggleButton getShowInvisibles();
 		AceEditor getEditor();
 	}
 

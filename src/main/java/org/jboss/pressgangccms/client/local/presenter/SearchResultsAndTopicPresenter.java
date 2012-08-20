@@ -366,6 +366,16 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
 			}
 		});
+		
+		topicXMLDisplay.getShowInvisibles().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				topicXMLDisplay.getEditor().setShowInvisibles(!topicXMLDisplay.getEditor().getShowInvisibles());
+				topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
+			}
+		});
 
 		searchResultsDisplay.setProvider(provider);
 	}
@@ -383,7 +393,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		
 		/* Sync the editor buttons */
 		if (selectedView == topicXMLDisplay)
+		{
 			topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
+			topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
+		}
 	}
 	
 	private void flushChanges()

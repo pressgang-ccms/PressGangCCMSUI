@@ -27,7 +27,7 @@ import com.google.gwt.user.client.ui.Widget;
 	 */
 	public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	{
-		private final VerticalPanel topLevelPanel = new VerticalPanel();
+		private final FlexTable topLevelPanel = new FlexTable();
 		private final SimplePanel headingBanner = new SimplePanel();
 		private final Label pageTitle = new Label();
 		private final Grid shortcutAndContentPanel = new Grid(1, 2);
@@ -108,20 +108,21 @@ import com.google.gwt.user.client.ui.Widget;
 			
 			headingBanner.addStyleName(CSSResources.INSTANCE.App().ApplicationHeadingPanel());
 			headingBanner.add(new Image(ImageResources.INSTANCE.headingBanner()));
-			topLevelPanel.add(headingBanner);
+			topLevelPanel.setWidget(0, 0, headingBanner);
 			
 			pageTitle.setText(" " + pageName);
 			pageTitle.addStyleName("PageTitle");
-			topLevelPanel.add(pageTitle);
+			topLevelPanel.setWidget(1, 0, pageTitle);
 
 			shortcutAndContentPanel.addStyleName("ShortcutAndContentPanel");
 			shortcutAndContentPanel.getCellFormatter().setStyleName(0, 0, "ShortcutParentPanel");
 			shortcutAndContentPanel.getCellFormatter().setStyleName(0, 1, "ContentParentPanel");
 			
-			topLevelPanel.add(shortcutAndContentPanel);
+			topLevelPanel.setWidget(2, 0, shortcutAndContentPanel);
 			shortcutAndContentPanel.setWidget(0, 0, shortcutPanel);
 			
 			contentPanel.addStyleName("ContentPanel");
+			topLevelPanel.getCellFormatter().addStyleName(0,  1, "ContentParentPanel");
 			shortcutAndContentPanel.setWidget(0, 1, contentPanel);
 			
 			contentPanel.add(topActionPanel);
@@ -129,7 +130,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 			contentPanel.add(panel);
 
-			topLevelPanel.add(footerPanel);
+			topLevelPanel.setWidget(3, 0, footerPanel);
 
 			/* Build the shortcut panel */
 			
@@ -138,18 +139,18 @@ import com.google.gwt.user.client.ui.Widget;
 			
 			home = new PushButton(new Image(ImageResources.INSTANCE.home48()), new Image(ImageResources.INSTANCE.homeDown48()));
 			home.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.homeHover48()));
-			home.addStyleName("SpacedElement");
+			home.addStyleName("SpacedButton");
 			shortcutPanel.add(home);
 			
 			search = new PushButton(new Image(ImageResources.INSTANCE.search48()), new Image(ImageResources.INSTANCE.searchDown48()));
 			search.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.searchHover48()));
-			search.addStyleName("SpacedElement");
+			search.addStyleName("SpacedButton");
 			shortcutPanel.add(search);
 			
 			searchTranslations = new PushButton(new Image(ImageResources.INSTANCE.searchTranslations48()), new Image(ImageResources.INSTANCE.searchTranslationsDown48()));
 			searchTranslations.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.searchTranslationsHover48()));
 			searchTranslations.getUpDisabledFace().setImage(new Image(ImageResources.INSTANCE.searchTranslationsDisabled48()));
-			searchTranslations.addStyleName("SpacedElement");
+			searchTranslations.addStyleName("SpacedButton");
 			searchTranslations.setEnabled(false);
 			shortcutPanel.add(searchTranslations);
 			
@@ -157,12 +158,12 @@ import com.google.gwt.user.client.ui.Widget;
 			reports.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.reportsHover48()));
 			reports.getUpDisabledFace().setImage(new Image(ImageResources.INSTANCE.reportsDisabled48()));
 			reports.setEnabled(false);
-			reports.addStyleName("SpacedElement");
+			reports.addStyleName("SpacedButton");
 			shortcutPanel.add(reports);
 			
 			bug = new PushButton(new Image(ImageResources.INSTANCE.bug48()), new Image(ImageResources.INSTANCE.bugDown48()));
 			bug.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.bugHover48()));
-			bug.addStyleName("SpacedElement");
+			bug.addStyleName("SpacedButton");
 			shortcutPanel.add(bug);
 		}
 		
@@ -198,6 +199,14 @@ import com.google.gwt.user.client.ui.Widget;
 			return retvalue;
 		}
 		
+		protected PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final String className)
+		{
+			final PushButton retvalue = new PushButton(new Image(up), new Image(down));
+			retvalue.getUpHoveringFace().setImage(new Image(hover));
+			retvalue.addStyleName(className);
+			return retvalue;
+		}
+		
 		protected PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final ImageResource disabled)
 		{
 			final PushButton retvalue = new PushButton(new Image(up), new Image(down));
@@ -206,10 +215,27 @@ import com.google.gwt.user.client.ui.Widget;
 			return retvalue;
 		}
 		
+		protected PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final ImageResource disabled, final String className)
+		{
+			final PushButton retvalue = new PushButton(new Image(up), new Image(down));
+			retvalue.getUpHoveringFace().setImage(new Image(hover));
+			retvalue.getUpDisabledFace().setImage(new Image(disabled));
+			retvalue.addStyleName(className);
+			return retvalue;
+		}
+		
 		protected ToggleButton createToggleButton(final ImageResource up, final ImageResource down, final ImageResource hover)
 		{
 			final ToggleButton retvalue = new ToggleButton(new Image(up), new Image(down));
 			retvalue.getUpHoveringFace().setImage(new Image(hover));	
+			return retvalue;
+		}
+		
+		protected ToggleButton createToggleButton(final ImageResource up, final ImageResource down, final ImageResource hover, final String className)
+		{
+			final ToggleButton retvalue = new ToggleButton(new Image(up), new Image(down));
+			retvalue.getUpHoveringFace().setImage(new Image(hover));	
+			retvalue.addStyleName(className);
 			return retvalue;
 		}
 	}

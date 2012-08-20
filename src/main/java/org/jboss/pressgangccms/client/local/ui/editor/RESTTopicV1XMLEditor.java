@@ -14,7 +14,7 @@ public class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RESTTopi
 
 	public RESTTopicV1XMLEditor(final boolean readOnly)
 	{
-		this.addStyleName("TopicXMLViewPanel");
+		this.addStyleName("TopicXMLViewACEPanel");
 		xml.addStyleName("TopicXMLViewXMLField");
 		
 		xml.setReadOnly(readOnly);

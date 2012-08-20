@@ -4,13 +4,14 @@ import org.jboss.pressgangccms.client.local.presenter.SearchResultsAndTopicPrese
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateView;
 
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 public class SearchResultsAndTopicView extends BaseTemplateView implements SearchResultsAndTopicPresenter.Display
 {
 	public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
-	private final Grid resultsViewPanel = new Grid(2, 2);
+	private final FlexTable resultsViewPanel = new FlexTable();
 	private final SimplePanel topicResultsPanel = new SimplePanel();
 	private final SimplePanel topicViewPanel = new SimplePanel();
 	private final SimplePanel topicResultsActionButtonsPanel = new SimplePanel();
@@ -46,19 +47,21 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
 				
 		resultsViewPanel.addStyleName("TopicSearchResultsAndViewPanel");
 		
-		resultsViewPanel.getCellFormatter().addStyleName(0, 1, "TopicSearchResultsPanel");
-		resultsViewPanel.getCellFormatter().addStyleName(1, 1, "TopicSearchResultsPanel");
-		resultsViewPanel.getCellFormatter().addStyleName(0, 1, "TopicSearchTopicViewPanel");
-		resultsViewPanel.getCellFormatter().addStyleName(1, 1, "TopicSearchTopicViewPanel");
-		
 		resultsViewPanel.setWidget(0, 0, topicResultsActionButtonsPanel);
 		resultsViewPanel.setWidget(0, 1, topicViewActionButtonsPanel);
 		resultsViewPanel.setWidget(1, 0, topicResultsPanel);
 		resultsViewPanel.setWidget(1, 1, topicViewPanel);
 		
+		resultsViewPanel.getCellFormatter().addStyleName(0, 0, "TopicSearchResultsPanel");
+		resultsViewPanel.getCellFormatter().addStyleName(1, 0, "TopicSearchResultsPanel");
+		resultsViewPanel.getCellFormatter().addStyleName(0, 1, "TopicSearchTopicViewPanel");
+		resultsViewPanel.getCellFormatter().addStyleName(1, 1, "TopicSearchTopicViewPanel");
+		
+		topicViewActionButtonsPanel.addStyleName("TopicSearchTopicViewButtonsPanel");
+		topicViewPanel.addStyleName("TopicSearchTopicViewDetailsPanel");
+
+		this.getPanel().addStyleName("TopicSearchResultsAndViewParentPanel");
+		
 		this.getPanel().add(resultsViewPanel);
 	}
-
-
-
 }

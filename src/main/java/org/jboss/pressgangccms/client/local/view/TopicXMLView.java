@@ -9,12 +9,7 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ToggleButton;
 
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
@@ -28,18 +23,27 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
 	private RESTTopicV1XMLEditor editor;
 
-	private final ToggleButton lineWrap = new ToggleButton(new Image(ImageResources.INSTANCE.lineWrap48()), new Image(ImageResources.INSTANCE.lineWrapDown48()));
+	private final ToggleButton lineWrap = createToggleButton(ImageResources.INSTANCE.lineWrap48(), ImageResources.INSTANCE.lineWrapDown48(), ImageResources.INSTANCE.lineWrapHover48(), "SpacedButton");
+	private final ToggleButton showInvisibles = createToggleButton(ImageResources.INSTANCE.hiddenCharacters48(), ImageResources.INSTANCE.hiddenCharactersDown48(), ImageResources.INSTANCE.hiddenCharactersHover48(), "SpacedButton");
 
+	public ToggleButton getShowInvisibles()
+	{
+		return showInvisibles;
+	}
+
+	@Override
 	public SimpleBeanEditorDriver getDriver()
 	{
 		return driver;
 	}
 
+	@Override
 	public ToggleButton getLineWrap()
 	{
 		return lineWrap;
 	}
 
+	@Override
 	public AceEditor getEditor()
 	{
 		return editor.xml;
@@ -53,16 +57,16 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 		addActionButton(this.getFields());
 		addActionButton(this.getSave());
 
-		lineWrap.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.lineWrapHover48()));
-		lineWrap.addStyleName("SpacedElement");
-
 		addRightAlignedActionButtonPaddingPanel();
 		addActionButton(lineWrap);
+		addActionButton(showInvisibles);
 	}
 
 	@Override
 	public void initialize(final RESTTopicV1 topic)
 	{
+		this.getPanel().addStyleName("TopicXMLViewPanel");
+		
 		/* SearchUIProjectsEditor is a grid */
 		editor = new RESTTopicV1XMLEditor(false);
 		/* Initialize the driver with the top-level editor */
