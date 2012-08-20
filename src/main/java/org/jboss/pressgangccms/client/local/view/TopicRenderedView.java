@@ -29,7 +29,9 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 	public TopicRenderedView()
 	{
 		//addActionButton(this.getRendered());
-		addActionButton(new Image(ImageResources.INSTANCE.renderedDown48()));
+		final Image downImage = new Image(ImageResources.INSTANCE.renderedDown48());
+		downImage.addStyleName("SpacedButton");
+		addActionButton(downImage);
 		addActionButton(this.getXml());
 		addActionButton(this.getXmlErrors());
 		addActionButton(this.getFields());

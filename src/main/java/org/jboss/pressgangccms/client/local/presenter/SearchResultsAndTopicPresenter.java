@@ -183,8 +183,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 								selectedView.initialize(retValue);
 							}
 							finally
-							{
-								Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopic());
+							{								
 								stopProcessing();
 							}
 						}
@@ -192,6 +191,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 						@Override
 						public void failed()
 						{
+							Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopic());
 							stopProcessing();
 						}
 					};

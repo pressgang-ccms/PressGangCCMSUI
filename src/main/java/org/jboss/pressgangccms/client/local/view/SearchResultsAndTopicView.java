@@ -51,9 +51,9 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
 		resultsViewPanel.setWidget(1, 0, topicResultsPanel);
 		resultsViewPanel.setWidget(1, 1, topicViewPanel);
 		
-		resultsViewPanel.getCellFormatter().addStyleName(0, 0, "TopicSearchResultsPanel");
+		resultsViewPanel.getCellFormatter().addStyleName(0, 0, "TopicSearchResultsButtonPanel");
 		resultsViewPanel.getCellFormatter().addStyleName(1, 0, "TopicSearchResultsPanel");
-		resultsViewPanel.getCellFormatter().addStyleName(0, 1, "TopicSearchTopicViewPanel");
+		resultsViewPanel.getCellFormatter().addStyleName(0, 1, "TopicSearchTopicViewButtonPanel");
 		resultsViewPanel.getCellFormatter().addStyleName(1, 1, "TopicSearchTopicViewPanel");
 		
 		topicViewActionButtonsPanel.addStyleName("TopicSearchTopicViewButtonsPanel");

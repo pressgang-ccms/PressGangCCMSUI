@@ -149,35 +149,25 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		/* Build the shortcut panel */
 
 		/* Add a spacer */
-		shortcutPanel.add(new Image(ImageResources.INSTANCE.transparent48()));
+		final Image spacer = new Image(ImageResources.INSTANCE.transparent48());
+		spacer.addStyleName("SpacedButton");
+		shortcutPanel.add(spacer);
 
-		home = new PushButton(new Image(ImageResources.INSTANCE.home48()), new Image(ImageResources.INSTANCE.homeDown48()));
-		home.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.homeHover48()));
-		home.addStyleName("SpacedButton");
+		home = createPushButton(ImageResources.INSTANCE.home48(), ImageResources.INSTANCE.homeDown48(), ImageResources.INSTANCE.homeHover48(), "SpacedButton");
 		shortcutPanel.add(home);
 
-		search = new PushButton(new Image(ImageResources.INSTANCE.search48()), new Image(ImageResources.INSTANCE.searchDown48()));
-		search.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.searchHover48()));
-		search.addStyleName("SpacedButton");
+		search = createPushButton(ImageResources.INSTANCE.search48(), ImageResources.INSTANCE.searchDown48(), ImageResources.INSTANCE.searchHover48(), "SpacedButton");
 		shortcutPanel.add(search);
 
-		searchTranslations = new PushButton(new Image(ImageResources.INSTANCE.searchTranslations48()), new Image(ImageResources.INSTANCE.searchTranslationsDown48()));
-		searchTranslations.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.searchTranslationsHover48()));
-		searchTranslations.getUpDisabledFace().setImage(new Image(ImageResources.INSTANCE.searchTranslationsDisabled48()));
-		searchTranslations.addStyleName("SpacedButton");
+		searchTranslations = createPushButton(ImageResources.INSTANCE.searchTranslations48(), ImageResources.INSTANCE.searchTranslationsDown48(), ImageResources.INSTANCE.searchTranslationsHover48(), ImageResources.INSTANCE.searchTranslationsDisabled48(), "SpacedButton");
 		searchTranslations.setEnabled(false);
 		shortcutPanel.add(searchTranslations);
 
-		reports = new PushButton(new Image(ImageResources.INSTANCE.reports48()), new Image(ImageResources.INSTANCE.reportsDown48()));
-		reports.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.reportsHover48()));
-		reports.getUpDisabledFace().setImage(new Image(ImageResources.INSTANCE.reportsDisabled48()));
+		reports = createPushButton(ImageResources.INSTANCE.reports48(), ImageResources.INSTANCE.reportsDown48(), ImageResources.INSTANCE.reportsHover48(), ImageResources.INSTANCE.reportsDisabled48(), "SpacedButton");
 		reports.setEnabled(false);
-		reports.addStyleName("SpacedButton");
 		shortcutPanel.add(reports);
 
-		bug = new PushButton(new Image(ImageResources.INSTANCE.bug48()), new Image(ImageResources.INSTANCE.bugDown48()));
-		bug.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.bugHover48()));
-		bug.addStyleName("SpacedButton");
+		bug = createPushButton(ImageResources.INSTANCE.bug48(), ImageResources.INSTANCE.bugDown48(), ImageResources.INSTANCE.bugHover48(), "SpacedButton");
 		shortcutPanel.add(bug);
 	}
 
@@ -209,14 +199,14 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	protected PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover)
 	{
 		final PushButton retvalue = new PushButton(new Image(up), new Image(down));
-		retvalue.getUpHoveringFace().setImage(new Image(hover));
+		//retvalue.getUpHoveringFace().setImage(new Image(hover));
 		return retvalue;
 	}
 
 	protected PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final String className)
 	{
 		final PushButton retvalue = new PushButton(new Image(up), new Image(down));
-		retvalue.getUpHoveringFace().setImage(new Image(hover));
+		//retvalue.getUpHoveringFace().setImage(new Image(hover));
 		retvalue.addStyleName(className);
 		return retvalue;
 	}
@@ -224,7 +214,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	protected PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final ImageResource disabled)
 	{
 		final PushButton retvalue = new PushButton(new Image(up), new Image(down));
-		retvalue.getUpHoveringFace().setImage(new Image(hover));
+		//retvalue.getUpHoveringFace().setImage(new Image(hover));
 		retvalue.getUpDisabledFace().setImage(new Image(disabled));
 		return retvalue;
 	}
@@ -232,7 +222,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	protected PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final ImageResource disabled, final String className)
 	{
 		final PushButton retvalue = new PushButton(new Image(up), new Image(down));
-		retvalue.getUpHoveringFace().setImage(new Image(hover));
+		//retvalue.getUpHoveringFace().setImage(new Image(hover));
 		retvalue.getUpDisabledFace().setImage(new Image(disabled));
 		retvalue.addStyleName(className);
 		return retvalue;
@@ -241,14 +231,14 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	protected ToggleButton createToggleButton(final ImageResource up, final ImageResource down, final ImageResource hover)
 	{
 		final ToggleButton retvalue = new ToggleButton(new Image(up), new Image(down));
-		retvalue.getUpHoveringFace().setImage(new Image(hover));
+		//retvalue.getUpHoveringFace().setImage(new Image(hover));
 		return retvalue;
 	}
 
 	protected ToggleButton createToggleButton(final ImageResource up, final ImageResource down, final ImageResource hover, final String className)
 	{
 		final ToggleButton retvalue = new ToggleButton(new Image(up), new Image(down));
-		retvalue.getUpHoveringFace().setImage(new Image(hover));
+		//retvalue.getUpHoveringFace().setImage(new Image(hover));
 		retvalue.addStyleName(className);
 		return retvalue;
 	}
