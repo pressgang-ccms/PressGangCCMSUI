@@ -3,6 +3,7 @@ package org.jboss.pressgangccms.client.local.view;
 import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
 import hu.szaboaz.gwt.xslt.client.XsltProcessor;
 
+import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.TopicRenderedPresenter;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.xsl.DocbookToHTML;
@@ -28,6 +29,8 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 
 	public TopicRenderedView()
 	{
+		div.addStyleName(CSSConstants.TOPICRENDEREDVIEWDIV);
+		
 		//addActionButton(this.getRendered());
 		final Image downImage = new Image(ImageResources.INSTANCE.renderedDown48());
 		downImage.addStyleName("SpacedButton");

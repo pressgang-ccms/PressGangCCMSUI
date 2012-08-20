@@ -18,6 +18,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.CellPreviewEvent;
@@ -29,13 +30,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 {
 	public interface Display extends BaseTemplateViewInterface
 	{
-		SimplePanel getTopicResultsPanel();
+		SimpleLayoutPanel getTopicResultsPanel();
 
-		SimplePanel getTopicViewPanel();
+		SimpleLayoutPanel getTopicViewPanel();
 
-		SimplePanel getTopicViewActionButtonsPanel();
+		SimpleLayoutPanel getTopicViewActionButtonsPanel();
 
-		SimplePanel getTopicResultsActionButtonsPanel();
+		SimpleLayoutPanel getTopicResultsActionButtonsPanel();
 	}
 
 	@Inject
@@ -231,6 +232,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 					selectedView = topicXMLDisplay;
 					selectedView.initialize(selectedTopic);
 					updateTopicDisplay();
+					
+					topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
+					topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
+					topicXMLDisplay.getEditor().redisplay();
 				}
 			}
 		};
@@ -396,13 +401,6 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 		display.getTopicViewActionButtonsPanel().setWidget(selectedView.getTopActionPanel());
 		display.getTopicViewPanel().setWidget(selectedView.getPanel());
-		
-		/* Sync the editor buttons */
-		if (selectedView == topicXMLDisplay)
-		{
-			topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
-			topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
-		}
 	}
 	
 	private void flushChanges()

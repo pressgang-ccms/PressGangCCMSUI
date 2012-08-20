@@ -1,3 +1,12 @@
+.gwt-SplitLayoutPanel-HDragger {
+  background: #e7e7e7 url(images/thumb_vertical.png) center center no-repeat;
+  cursor: col-resize;
+}
+.gwt-SplitLayoutPanel-VDragger {
+  background: #e7e7e7 url(images/thumb_horz.png) center center no-repeat;
+  cursor: row-resize;
+}
+
 body {
 	background-color: #ffffff;
 	color: black;
@@ -41,11 +50,15 @@ html {
 }
 
 .PageTitle {
-	font-size: x-large;
-	padding-top: 8px;
-	padding-left: 8px;
-	padding-bottom: 8px;
+	font-size: x-large;	
+}
+
+.PageTitleParentLayoutPanel
+{
 	background-color: #EFEFEF;
+	padding-left: 1em;
+	padding-top: 1em;
+	padding-bottom: 1em;
 }
 
 .ShortcutAndContentPanel {
@@ -325,4 +338,9 @@ html {
 {
 	height: 100%;
 	overflow-y: auto;
+}
+
+.TopicSearchResultsAndViewParentPanel
+{
+	/*border: 3px solid #e7e7e7;*/
 }

@@ -1,17 +1,19 @@
 package org.jboss.pressgangccms.client.local.view.base;
 
+import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.resources.css.CSSResources;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -24,16 +26,25 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public abstract class BaseTemplateView implements BaseTemplateViewInterface
 {
-	private final FlexTable topLevelPanel = new FlexTable();
+	/** Defines the top level layout that holds the header and the other content */
+	private final DockLayoutPanel topLevelLayoutPanel = new DockLayoutPanel(Unit.PX);
+	
+	/** Defines the panel that holds the page title and the other content */
+	private final DockLayoutPanel secondLevelLayoutPanel = new DockLayoutPanel(Unit.EM);
+	
+	/** Defines the panel that holds the shortcut bar, content and footer */
+	private final DockLayoutPanel thirdLevelLayoutPanel = new DockLayoutPanel(Unit.PX);
+	
+	
 	private final SimplePanel headingBanner = new SimplePanel();
+	private final SimpleLayoutPanel pageTitleParentLayoutPanel = new SimpleLayoutPanel();
 	private final Label pageTitle = new Label();
-	private final Grid shortcutAndContentPanel = new Grid(1, 2);
 	private final VerticalPanel shortcutPanel = new VerticalPanel();
-	private final FlexTable contentParentPanel = new FlexTable();
+	private SimpleLayoutPanel panel = new SimpleLayoutPanel();
+
 	private final FlexTable topActionPanel = new FlexTable();
 	private final HorizontalPanel footerPanel = new HorizontalPanel();
 	private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
-	private final SimplePanel contentPanel = new SimplePanel();
 	private final DialogBox waiting = new DialogBox();
 
 	private final PushButton home;
@@ -41,6 +52,17 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	private final PushButton searchTranslations;
 	private final PushButton bug;
 	private final PushButton reports;
+	
+	public DockLayoutPanel getTopLevelPanel()
+	{
+		return topLevelLayoutPanel;
+	}
+	
+	@Override
+	public SimpleLayoutPanel getPanel()
+	{
+		return panel;
+	}
 
 	public PushButton getReports()
 	{
@@ -59,12 +81,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	}
 
 	@Override
-	public SimplePanel getPanel()
-	{
-		return contentPanel;
-	}
-
-	@Override
 	public PushButton getBug()
 	{
 		return bug;
@@ -74,12 +90,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	public PushButton getSearch()
 	{
 		return search;
-	}
-
-	@Override
-	public Panel getTopLevelPanel()
-	{
-		return this.topLevelPanel;
 	}
 
 	@Override
@@ -98,54 +108,54 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 
 	public BaseTemplateView(final String applicationName, final String pageName)
 	{
-		topLevelPanel.addStyleName("TopLevelPanel");
-
 		/* Iinitialize the loading spinner */
 		waiting.setGlassEnabled(true);
 		waiting.setWidget(spinner);
-
-		/* Add the header */
+		
+		/* Set the heading */
 		headingBanner.addStyleName(CSSResources.INSTANCE.App().ApplicationHeadingPanel());
 		headingBanner.add(new Image(ImageResources.INSTANCE.headingBanner()));
-		topLevelPanel.getCellFormatter().addStyleName(0, 0, "TopLevelPanelHeading");
-		topLevelPanel.setWidget(0, 0, headingBanner);
-
-		/* Add the page title */
+		
+		topLevelLayoutPanel.addStyleName(CSSConstants.TOPLEVELLAYOUTPANEL);
+		topLevelLayoutPanel.addNorth(headingBanner, 110);
+		
+		/* Set the second level layout */
+		secondLevelLayoutPanel.addStyleName(CSSConstants.SECONDLEVELLAYOUTPANEL);
+		topLevelLayoutPanel.add(secondLevelLayoutPanel);
+		
+		/* Set the page title */
 		pageTitle.setText(" " + pageName);
 		pageTitle.addStyleName("PageTitle");
-		topLevelPanel.getCellFormatter().addStyleName(1, 0, "TopLevelPanelPageTitle");
-		topLevelPanel.setWidget(1, 0, pageTitle);
-
-		/* Add the vertical shortcut panel and the content panel */
-		shortcutAndContentPanel.addStyleName("ShortcutAndContentPanel");
-		topLevelPanel.getCellFormatter().addStyleName(2, 0, "TopLevelPanelShortcutAndContentPanel");
-		topLevelPanel.setWidget(2, 0, shortcutAndContentPanel);
-
-		/*->Add the shortcut panel */
-		/**/shortcutPanel.addStyleName("ShortcutPanel");
-		/**/shortcutAndContentPanel.getCellFormatter().setStyleName(0, 0, "ShortcutAndContentPanelTopActionPanel");
-		/**/shortcutAndContentPanel.setWidget(0, 0, shortcutPanel);
-
-		/*->Add the panel that will hold the action buttons and content */
-		/**/contentParentPanel.addStyleName("ContentParentPanel");
-		/**/shortcutAndContentPanel.getCellFormatter().setStyleName(0, 1, "ShortcutAndContentPanelContentParentPanel");
-		/**/shortcutAndContentPanel.setWidget(0, 1, contentParentPanel);
-
-		/*----> Add the action buttons */
-		/*--->*/contentParentPanel.setWidget(0, 0, topActionPanel);
-		/*--->*/contentParentPanel.getCellFormatter().addStyleName(0, 0, "ContentParentTopActionPanel");
-		/*--->*/topActionPanel.addStyleName("TopActionPanel");
-
-		/*----> Add the content */
-		/*----> Each view can style the content panel with the name that suits them */
-		/*--->*/contentParentPanel.getCellFormatter().addStyleName(1, 0, "ContentParentContentPanel");
-		/*--->*/contentParentPanel.setWidget(1, 0, contentPanel);
-
-		/* Add the footer */
-		footerPanel.addStyleName("FooterPanel");
-		topLevelPanel.getCellFormatter().addStyleName(3, 0, "TopLevelPanelFooterPanel");
-		topLevelPanel.setWidget(3, 0, footerPanel);
-
+		
+		pageTitleParentLayoutPanel.add(pageTitle);
+		
+		pageTitleParentLayoutPanel.addStyleName(CSSConstants.PAGETITLEPARENTLAYOUTPANEL);
+		secondLevelLayoutPanel.addNorth(pageTitleParentLayoutPanel, 3);
+		
+		/* Set the remaining content */
+		thirdLevelLayoutPanel.addStyleName(CSSConstants.THIRDLEVELLAYOUTPANEL);
+		secondLevelLayoutPanel.add(thirdLevelLayoutPanel);
+		
+		/* Set the action bar panel */
+		topActionPanel.addStyleName(CSSConstants.TOPACTIONPANEL);
+		
+		thirdLevelLayoutPanel.addNorth(topActionPanel, 64);
+		
+		/* Set the shortcut bar */
+		shortcutPanel.addStyleName(CSSConstants.SHORTCUTPANEL);
+		
+		thirdLevelLayoutPanel.addWest(shortcutPanel, 64);
+		
+		/* Add the content panel */
+		panel.addStyleName(CSSConstants.CONTENTLAYOUTPANEL);
+		
+		thirdLevelLayoutPanel.add(panel);
+		
+		/* Set the footer panel */
+		footerPanel.addStyleName(CSSConstants.FOOTERPANEL);
+		
+		thirdLevelLayoutPanel.addSouth(footerPanel, 0);	
+		
 		/* Build the shortcut panel */
 
 		/* Add a spacer */
@@ -170,7 +180,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		bug = createPushButton(ImageResources.INSTANCE.bug48(), ImageResources.INSTANCE.bugDown48(), ImageResources.INSTANCE.bugHover48(), "SpacedButton");
 		shortcutPanel.add(bug);
 	}
-
+	
 	protected void addRightAlignedActionButtonPaddingPanel()
 	{
 		final int rows = this.getTopActionPanel().getRowCount();
@@ -181,7 +191,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		}
 
 		this.getTopActionPanel().setWidget(0, columns, new SimplePanel());
-		this.getTopActionPanel().getCellFormatter().addStyleName(0, columns, "RightAlignedActionButtons");
+		this.getTopActionPanel().getCellFormatter().addStyleName(0, columns, CSSConstants.RIGHTALIGNEDACTIONBUTTONS);
 	}
 
 	protected void addActionButton(final Widget widget)

@@ -14,6 +14,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
 @EntryPoint
@@ -42,7 +43,7 @@ public class App
 		RestClient.setApplicationRoot(Constants.REST_SERVER);
 		RestClient.setJacksonMarshallingActive(true);
 		
-		final RootPanel root = RootPanel.get();
+		final RootLayoutPanel root = RootLayoutPanel.get();
 		
 		/* Inject the CSS file */		
 		CSSResources.INSTANCE.App().ensureInjected();
