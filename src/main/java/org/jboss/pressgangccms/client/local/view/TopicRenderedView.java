@@ -6,6 +6,7 @@ import hu.szaboaz.gwt.xslt.client.XsltProcessor;
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.TopicRenderedPresenter;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
+import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.resources.xsl.DocbookToHTML;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewBase;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
@@ -38,6 +39,7 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 		addActionButton(this.getXml());
 		addActionButton(this.getXmlErrors());
 		addActionButton(this.getFields());
+		addActionButton(this.getTags());
 		addActionButton(this.getSave());
 		
 		addRightAlignedActionButtonPaddingPanel();
@@ -72,7 +74,7 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 		}
 		catch (final XsltProcessingException ex)
 		{
-			
+			div.setHTML(PressGangCCMSUI.INSTANCE.TopicCouldNotBeRendered());
 		}
 	}
 

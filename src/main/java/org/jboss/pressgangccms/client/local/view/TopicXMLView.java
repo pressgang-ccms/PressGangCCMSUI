@@ -4,7 +4,7 @@ import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLPresenter;
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLPresenter.TopicXMLPresenterDriver;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
-import org.jboss.pressgangccms.client.local.ui.editor.RESTTopicV1XMLEditor;
+import org.jboss.pressgangccms.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewBase;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
@@ -61,6 +61,7 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 		addActionButton(downImage);
 		addActionButton(this.getXmlErrors());
 		addActionButton(this.getFields());
+		addActionButton(this.getTags());
 		addActionButton(this.getSave());
 
 		addRightAlignedActionButtonPaddingPanel();

@@ -61,6 +61,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 	@Inject
 	private TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay;
+	
+	@Inject
+	private TopicTagsPresenter.Display topicTagsDisplay;
 
 	/**
 	 * This will reference the selected view, so as to maintain the view between
@@ -170,48 +173,12 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				{
 					selectedTopic = event.getValue();
 
-					final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>()
-					{
-						@Override
-						public void begin()
-						{
-							startProcessing();
-						}
+					/* default to the rendered view */
+					if (selectedView == null)
+						selectedView = topicRenderedDisplay;
 
-						@Override
-						public void generalException(final Exception ex)
-						{
-							Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopic());
-							stopProcessing();
-						}
-
-						@Override
-						public void success(final RESTTopicV1 retValue)
-						{
-							try
-							{
-								/* default to the topic details view */
-								if (selectedView == null)
-									selectedView = topicRenderedDisplay;
-
-								selectedView.initialize(retValue);
-								updateTopicDisplay();
-							}
-							finally
-							{
-								stopProcessing();
-							}
-						}
-
-						@Override
-						public void failed()
-						{
-							Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopic());
-							stopProcessing();
-						}
-					};
-
-					RESTCalls.getTopic(callback, selectedTopic.getId());
+					selectedView.initialize(selectedTopic);
+					updateTopicDisplay();
 				}
 			}
 		});
@@ -279,6 +246,23 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				if (selectedTopic != null)
 				{
 					selectedView = topicXMLErrorsDisplay;
+					selectedView.initialize(selectedTopic);
+					updateTopicDisplay();
+				}
+			}
+		};
+		
+		final ClickHandler topicTagsClickHandler = new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				/* Sync any changes back to the underlying object */
+				flushChanges();
+
+				if (selectedTopic != null)
+				{
+					selectedView = topicTagsDisplay;
 					selectedView.initialize(selectedTopic);
 					updateTopicDisplay();
 				}
@@ -361,29 +345,16 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			}
 		};
 
-		topicViewDisplay.getFields().addClickHandler(topicViewClickHandler);
-		topicViewDisplay.getXml().addClickHandler(topicXMLClickHandler);
-		topicViewDisplay.getRendered().addClickHandler(topicRenderedClickHandler);
-		topicViewDisplay.getSave().addClickHandler(saveClickHandler);
-		topicViewDisplay.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
-
-		topicXMLDisplay.getFields().addClickHandler(topicViewClickHandler);
-		topicXMLDisplay.getXml().addClickHandler(topicXMLClickHandler);
-		topicXMLDisplay.getRendered().addClickHandler(topicRenderedClickHandler);
-		topicXMLDisplay.getSave().addClickHandler(saveClickHandler);
-		topicXMLDisplay.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
-
-		topicRenderedDisplay.getFields().addClickHandler(topicViewClickHandler);
-		topicRenderedDisplay.getXml().addClickHandler(topicXMLClickHandler);
-		topicRenderedDisplay.getRendered().addClickHandler(topicRenderedClickHandler);
-		topicRenderedDisplay.getSave().addClickHandler(saveClickHandler);
-		topicRenderedDisplay.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
-
-		topicXMLErrorsDisplay.getFields().addClickHandler(topicViewClickHandler);
-		topicXMLErrorsDisplay.getXml().addClickHandler(topicXMLClickHandler);
-		topicXMLErrorsDisplay.getRendered().addClickHandler(topicRenderedClickHandler);
-		topicXMLErrorsDisplay.getSave().addClickHandler(saveClickHandler);
-		topicXMLErrorsDisplay.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
+		/* Hook up the click listeners */
+		for (final TopicViewInterface view :  new TopicViewInterface[] {topicViewDisplay, topicXMLDisplay, topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay})
+		{
+			view.getFields().addClickHandler(topicViewClickHandler);
+			view.getXml().addClickHandler(topicXMLClickHandler);
+			view.getRendered().addClickHandler(topicRenderedClickHandler);
+			view.getSave().addClickHandler(saveClickHandler);
+			view.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
+			view.getTags().addClickHandler(topicTagsClickHandler);
+		}
 
 		topicXMLDisplay.getLineWrap().addClickHandler(new ClickHandler()
 		{
@@ -428,14 +399,19 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		}
 	}
 
+	/**
+	 * Sync any changes back to the underlying object
+	 */
 	private void flushChanges()
-	{
-		/*
-		 * Sync any changes back to the underlying object, except for the xml
-		 * errros because they are read only
-		 */
-		if (selectedView != null && selectedView != topicXMLErrorsDisplay && selectedView.getDriver() != null)
-			selectedView.getDriver().flush();
+	{		
+		if (selectedView == null || selectedView.getDriver() == null)
+			return;
+		
+		/* These are read only views */
+		if (selectedView == topicXMLErrorsDisplay || selectedView == topicTagsDisplay)
+			return;
+			
+		selectedView.getDriver().flush();
 	}
 
 	@Override

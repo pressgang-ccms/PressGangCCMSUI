@@ -12,7 +12,14 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 	private final PushButton xml;
 	private final PushButton xmlErrors;
 	private final PushButton rendered;
+	private final PushButton tags;
 	private final PushButton save;
+
+	@Override
+	public PushButton getTags()
+	{
+		return tags;
+	}
 
 	@Override
 	public PushButton getXmlErrors()
@@ -53,6 +60,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 		xml = createPushButton(ImageResources.INSTANCE.xml48(), ImageResources.INSTANCE.xmlDown48(), ImageResources.INSTANCE.xmlHover48(), CSSConstants.SPACEDBUTTON);
 		xmlErrors = createPushButton(ImageResources.INSTANCE.attention48(), ImageResources.INSTANCE.attentionDown48(), ImageResources.INSTANCE.attentionHover48(), CSSConstants.SPACEDBUTTON);
 		fields = createPushButton(ImageResources.INSTANCE.fields48(), ImageResources.INSTANCE.fieldsDown48(), ImageResources.INSTANCE.fieldsHover48(), CSSConstants.SPACEDBUTTON);
-		save = createPushButton(ImageResources.INSTANCE.save48(), ImageResources.INSTANCE.saveDown48(), ImageResources.INSTANCE.saveHover48(), ImageResources.INSTANCE.saveDisabled48(), CSSConstants.SPACEDBUTTON);		
+		save = createPushButton(ImageResources.INSTANCE.save48(), ImageResources.INSTANCE.saveDown48(), ImageResources.INSTANCE.saveHover48(), ImageResources.INSTANCE.saveDisabled48(), CSSConstants.SPACEDBUTTON);
+		tags = createPushButton(ImageResources.INSTANCE.tag48(), ImageResources.INSTANCE.tagDown48(), ImageResources.INSTANCE.tagHover48(), ImageResources.INSTANCE.tagDisabled48(), CSSConstants.SPACEDBUTTON);
 	}
 }

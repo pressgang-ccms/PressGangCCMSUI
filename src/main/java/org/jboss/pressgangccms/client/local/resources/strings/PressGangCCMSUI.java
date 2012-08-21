@@ -50,4 +50,6 @@ public interface PressGangCCMSUI extends Constants
 	String ErrorSavingTopic();
 	
 	String ErrorGettingTags();
+	
+	String TopicCouldNotBeRendered();
 }

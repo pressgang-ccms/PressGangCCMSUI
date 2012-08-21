@@ -5,7 +5,7 @@ import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
-import org.jboss.pressgangccms.client.local.ui.editor.RESTTopicV1XMLErrorsEditor;
+import org.jboss.pressgangccms.client.local.ui.editor.topicview.RESTTopicV1XMLErrorsEditor;
 import org.jboss.pressgangccms.client.local.view.TopicXMLErrorsView;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewInterface;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;

@@ -12,6 +12,7 @@ public interface TopicViewInterface extends BaseTemplateViewInterface
 	PushButton getFields();
 	PushButton getSave();
 	PushButton getXmlErrors();
+	PushButton getTags();
 	
 	SimpleBeanEditorDriver getDriver();
 	

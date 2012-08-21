@@ -1,4 +1,4 @@
-package org.jboss.pressgangccms.client.local.ui.editor;
+package org.jboss.pressgangccms.client.local.ui.editor.search;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.SearchPresenterDriver;
@@ -17,6 +17,8 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
 {
 	private final SearchPresenterDriver driver;
 	final SearchUIProjects searchUIProjects;
+	final ListEditor<SearchUIProject, SearchUIProjectEditor> projects = ListEditor.of(new SearchUIProjectEditorSource());
+	private final FlexTable projectButtonPanel = new FlexTable();
 	
 	/**
 	 * The EditorSource is used to create and orgainse the Editors that go into
@@ -69,9 +71,6 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
 			projectButtonPanel.setWidget(index, 0, subEditor);
 		}
 	}
-
-	final ListEditor<SearchUIProject, SearchUIProjectEditor> projects = ListEditor.of(new SearchUIProjectEditorSource());
-	private final FlexTable projectButtonPanel = new FlexTable();
 
 	public SearchUIProjectsEditor(final SearchPresenterDriver driver, final SearchUIProjects searchUIProjects)
 	{

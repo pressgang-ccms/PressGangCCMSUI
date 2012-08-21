@@ -1,4 +1,4 @@
-package org.jboss.pressgangccms.client.local.ui.editor;
+package org.jboss.pressgangccms.client.local.ui.editor.topicview;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;

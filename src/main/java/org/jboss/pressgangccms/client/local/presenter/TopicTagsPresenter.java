@@ -5,18 +5,25 @@ import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
-import org.jboss.pressgangccms.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
-import org.jboss.pressgangccms.client.local.view.TopicView;
+import org.jboss.pressgangccms.client.local.ui.editor.topicview.tags.TopicTagViewProjectsEditor;
+import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
+import org.jboss.pressgangccms.client.local.view.TopicXMLErrorsView;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewInterface;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
+
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
-public class TopicPresenter extends TemplatePresenter
+public class TopicTagsPresenter extends TemplatePresenter
 {
+	private String topicId;
+
+	@Inject
+	private Display display;
+	
 	// Empty interface declaration, similar to UiBinder
-	public interface TopicPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1BasicDetailsEditor>
+	public interface TopicTagsPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, TopicTagViewProjectsEditor>
 	{
 	}
 
@@ -26,17 +33,12 @@ public class TopicPresenter extends TemplatePresenter
 		void initialize(final RESTTopicV1 topic);
 	}
 
-	private String topicId;
-
-	@Inject
-	private Display display;
-
 	@Override
 	public void parseToken(final String searchToken)
 	{
-		topicId = searchToken.replace(TopicView.HISTORY_TOKEN + ";", "");
+		topicId = searchToken.replace(TopicXMLErrorsView.HISTORY_TOKEN + ";", "");
 	}
-
+	
 	@Override
 	public void go(final HasWidgets container)
 	{
@@ -47,7 +49,7 @@ public class TopicPresenter extends TemplatePresenter
 
 		bind();
 	}
-
+	
 	private void getTopic()
 	{
 		final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>()
@@ -93,7 +95,7 @@ public class TopicPresenter extends TemplatePresenter
 			stopProcessing();
 		}
 	}
-
+	
 	private void bind()
 	{
 

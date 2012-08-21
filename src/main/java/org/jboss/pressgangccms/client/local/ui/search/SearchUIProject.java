@@ -46,6 +46,14 @@ public class SearchUIProject extends SearchUIBase
 			return excludedTags;
 		}
 
+		public int getChildCount()
+		{
+			int retValue = 0;
+			for (final SearchUICategory category : categories)
+				retValue += category.getChildCount();
+			return retValue;
+		}
+
 		public CategorySummary(final String name, final int categoryCount, final int includedTags, final int excludedTags)
 		{
 			this.name = name;
@@ -54,7 +62,7 @@ public class SearchUIProject extends SearchUIBase
 			this.excludedTags = excludedTags;
 		}
 	}
-	
+
 	public CategorySummary getSummary()
 	{
 		int includedTags = 0;
@@ -69,7 +77,7 @@ public class SearchUIProject extends SearchUIBase
 					++excludedTags;
 			}
 		}
-		
+
 		return new CategorySummary(this.getName(), this.categories.size(), includedTags, excludedTags);
 	}
 

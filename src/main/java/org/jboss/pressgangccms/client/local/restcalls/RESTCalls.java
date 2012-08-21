@@ -115,7 +115,7 @@ public final class RESTCalls
 	{
 		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
 		/* Expand the categories and projects in the tags */
-		final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"showSize\":true,\"name\": \"topics\"}}]}";
+		final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"showSize\":true,\"name\": \"topics\"}  ,\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"tags\"}  ,\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"projects\"}},{\"trunk\":{\"showSize\":true,\"name\": \"categories\"}}]  }]   }]}";
 
 		try
 		{

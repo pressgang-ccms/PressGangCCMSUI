@@ -52,4 +52,21 @@ final public class CSSConstants
 	static public final String TOPICXMLVIEWXMLFIELD = "TopicXMLViewXMLField";
 	static public final String TOPICXMLERRORSVIEWPANEL = "TopicXMLErrorsViewPanel";
 	static public final String TOPICXMLERRORSVIEWFIELD = "TopicXMLErrorsViewField";
+	static public final String TOPICVIEWTAGLABEL = "TopicViewTagLabel";
+	/** Assigned to the FlexTable rows that list a category in the topic tags view */
+	static public final String TOPICTAGVIEWCATEGORYROW = "TopicTagViewCategoryRow";
+	/** Assigned to the FlexTable rows that list a project in the topic tags view */
+	static public final String TOPICTAGVIEWPROJECTROW = "TopicTagViewProjectRow";
+	/** Assigned to the FlexTable rows that list a tag in the topic tags view */
+	static public final String TOPICTAGVIEWTAGROW = "TopicTagViewTagRow";
+	/** Assigned to the table that holds all the projects, categories and tags in the topic tags view */
+	static public final String TOPICTAGVIEWPROJECTSTABLE = "TopicTagViewProjectsTable";
+	/** Assigned to the table that holds a project in the topic tags view */
+	static public final String TOPICTAGVIEWPROJECTTABLE = "TopicTagViewProjectTable";
+	/** Assigned to the table that holds multiple categories in the topic tags view */
+	static public final String TOPICTAGVIEWCATEGORIESTABLE = "TopicTagViewCategoriesTable";
+	/** Assigned to the table that holds a category in the topic tags view */
+	static public final String TOPICTAGVIEWCATEGORYTABLE = "TopicTagViewCategoryTable";
+	/** Assigned to the table that holds multiple tags in the topic tags view */
+	static public final String TOPICTAGVIEWTAGSTABLE = "TopicTagViewTagsTable";
 }

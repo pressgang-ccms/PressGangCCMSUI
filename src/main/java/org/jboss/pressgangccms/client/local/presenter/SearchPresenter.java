@@ -7,7 +7,7 @@ import org.jboss.pressgangccms.client.local.events.SearchResultsAndTopicViewEven
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
-import org.jboss.pressgangccms.client.local.ui.editor.SearchUIProjectsEditor;
+import org.jboss.pressgangccms.client.local.ui.editor.search.SearchUIProjectsEditor;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;

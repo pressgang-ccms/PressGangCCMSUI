@@ -263,3 +263,20 @@ html {
 {
 	margin-right: 8px;
 }
+
+.TopicTagViewCategoryRow, .TopicTagViewProjectRow, .TopicTagViewTagRow
+{
+	min-width: 150px;
+	vertical-align: top;
+}
+
+.TopicTagViewProjectsTable>tbody>tr:nth-child(even) td
+{
+	background-color: #F3F7FB;
+}
+
+.TopicTagViewCategoriesTable>tbody>tr:nth-child(even) td
+{
+	background-color: #FDFFEA;
+}
+

@@ -4,7 +4,7 @@ import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgangccms.client.local.ui.editor.SearchUIProjectsEditor;
+import org.jboss.pressgangccms.client.local.ui.editor.search.SearchUIProjectsEditor;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;

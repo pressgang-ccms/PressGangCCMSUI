@@ -3,7 +3,7 @@ package org.jboss.pressgangccms.client.local.presenter;
 import javax.enterprise.context.Dependent;
 
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
-import org.jboss.pressgangccms.client.local.ui.editor.RESTTopicV1XMLEditor;
+import org.jboss.pressgangccms.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewInterface;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 

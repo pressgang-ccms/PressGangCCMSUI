@@ -73,6 +73,11 @@ public class SearchUICategory extends SearchUIBase
 	{
 		return myTags;
 	}
+	
+	public int getChildCount()
+	{
+		return myTags.size();
+	}
 
 	public SearchUICategory(final String name)
 	{
