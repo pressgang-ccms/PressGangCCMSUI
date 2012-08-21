@@ -9,6 +9,7 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -37,7 +38,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	
 	
 	private final SimplePanel headingBanner = new SimplePanel();
-	private final SimpleLayoutPanel pageTitleParentLayoutPanel = new SimpleLayoutPanel();
+	private final VerticalPanel pageTitleParentLayoutPanel = new VerticalPanel();
 	private final Label pageTitle = new Label();
 	private final VerticalPanel shortcutPanel = new VerticalPanel();
 	private SimpleLayoutPanel panel = new SimpleLayoutPanel();
@@ -52,6 +53,11 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	private final PushButton searchTranslations;
 	private final PushButton bug;
 	private final PushButton reports;
+	
+	public VerticalPanel getShortcutPanel()
+	{
+		return shortcutPanel;
+	}
 	
 	public DockLayoutPanel getTopLevelPanel()
 	{
@@ -126,7 +132,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		/* Set the page title */
 		pageTitle.setText(" " + pageName);
 		pageTitle.addStyleName("PageTitle");
-		
+		pageTitleParentLayoutPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		pageTitleParentLayoutPanel.add(pageTitle);
 		
 		pageTitleParentLayoutPanel.addStyleName(CSSConstants.PAGETITLEPARENTLAYOUTPANEL);
@@ -139,12 +145,12 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		/* Set the action bar panel */
 		topActionPanel.addStyleName(CSSConstants.TOPACTIONPANEL);
 		
-		thirdLevelLayoutPanel.addNorth(topActionPanel, 64);
+		thirdLevelLayoutPanel.addNorth(topActionPanel, 80);
 		
 		/* Set the shortcut bar */
-		shortcutPanel.addStyleName(CSSConstants.SHORTCUTPANEL);
+		getShortcutPanel().addStyleName(CSSConstants.SHORTCUTPANEL);
 		
-		thirdLevelLayoutPanel.addWest(shortcutPanel, 64);
+		thirdLevelLayoutPanel.addWest(getShortcutPanel(), 80);
 		
 		/* Add the content panel */
 		panel.addStyleName(CSSConstants.CONTENTLAYOUTPANEL);
@@ -158,27 +164,22 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		
 		/* Build the shortcut panel */
 
-		/* Add a spacer */
-		final Image spacer = new Image(ImageResources.INSTANCE.transparent48());
-		spacer.addStyleName("SpacedButton");
-		shortcutPanel.add(spacer);
-
 		home = createPushButton(ImageResources.INSTANCE.home48(), ImageResources.INSTANCE.homeDown48(), ImageResources.INSTANCE.homeHover48(), "SpacedButton");
-		shortcutPanel.add(home);
+		getShortcutPanel().add(home);
 
 		search = createPushButton(ImageResources.INSTANCE.search48(), ImageResources.INSTANCE.searchDown48(), ImageResources.INSTANCE.searchHover48(), "SpacedButton");
-		shortcutPanel.add(search);
+		getShortcutPanel().add(search);
 
 		searchTranslations = createPushButton(ImageResources.INSTANCE.searchTranslations48(), ImageResources.INSTANCE.searchTranslationsDown48(), ImageResources.INSTANCE.searchTranslationsHover48(), ImageResources.INSTANCE.searchTranslationsDisabled48(), "SpacedButton");
 		searchTranslations.setEnabled(false);
-		shortcutPanel.add(searchTranslations);
+		getShortcutPanel().add(searchTranslations);
 
 		reports = createPushButton(ImageResources.INSTANCE.reports48(), ImageResources.INSTANCE.reportsDown48(), ImageResources.INSTANCE.reportsHover48(), ImageResources.INSTANCE.reportsDisabled48(), "SpacedButton");
 		reports.setEnabled(false);
-		shortcutPanel.add(reports);
+		getShortcutPanel().add(reports);
 
 		bug = createPushButton(ImageResources.INSTANCE.bug48(), ImageResources.INSTANCE.bugDown48(), ImageResources.INSTANCE.bugHover48(), "SpacedButton");
-		shortcutPanel.add(bug);
+		getShortcutPanel().add(bug);
 	}
 	
 	protected void addRightAlignedActionButtonPaddingPanel()
@@ -251,5 +252,5 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		//retvalue.getUpHoveringFace().setImage(new Image(hover));
 		retvalue.addStyleName(className);
 		return retvalue;
-	}
+	}	
 }

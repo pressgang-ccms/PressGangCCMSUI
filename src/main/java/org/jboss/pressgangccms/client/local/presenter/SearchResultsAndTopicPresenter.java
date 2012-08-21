@@ -295,6 +295,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 						{
 							Window.alert(PressGangCCMSUI.INSTANCE.ErrorSavingTopic());
 							stopProcessing();
+							topicXMLDisplay.getEditor().redisplay();
 						}
 
 						@Override
@@ -314,6 +315,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 							finally
 							{
 								stopProcessing();
+								topicXMLDisplay.getEditor().redisplay();
 							}
 						}
 
@@ -322,11 +324,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 						{
 							Window.alert(PressGangCCMSUI.INSTANCE.ErrorSavingTopic());
 							stopProcessing();
+							topicXMLDisplay.getEditor().redisplay();
 						}
 					};
 					
 					/* Sync any changes back to the underlying object */
 					flushChanges();
+									
 					
 					/* Create a new instance of the topic, with all the properties set to explicitly update */
 					final RESTTopicV1 updateTopic = selectedTopic.clone(true);

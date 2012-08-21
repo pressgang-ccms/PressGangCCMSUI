@@ -16,7 +16,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 {
 	public static final String HISTORY_TOKEN = "SearchView";
 	
-	private final PushButton search = new PushButton(new Image(ImageResources.INSTANCE.search48()), new Image(ImageResources.INSTANCE.searchDown48()));
+	private final PushButton search = createPushButton(ImageResources.INSTANCE.search48(), ImageResources.INSTANCE.searchDown48(), ImageResources.INSTANCE.searchHover48(), "SpacedButton");
 
 	/** The GWT Editor Driver */
 	private final SearchPresenterDriver driver = GWT.create(SearchPresenterDriver.class);
@@ -49,8 +49,12 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 	@Override
 	public void initialise(final RESTTagCollectionV1 tags)
 	{
-	    /* Build the action bar icons */
-		search.getUpHoveringFace().setImage(new Image(ImageResources.INSTANCE.searchHover48()));
+		/* Add a spacer */
+		final Image spacer = new Image(ImageResources.INSTANCE.transparent48());
+		spacer.addStyleName("SpacedButton");
+		addActionButton(spacer);
+		
+		/* Build the action bar icons */
 		addActionButton(search);
 		
 		addRightAlignedActionButtonPaddingPanel();

@@ -23,4 +23,6 @@ final public class CSSConstants
 	static public final String TOPICSEARCHRESULTSANDVIEWPARENTPANEL = "TopicSearchResultsAndViewParentPanel";
 	
 	static public final String TOPICRENDEREDVIEWDIV = "TopicRenderedViewDiv";
+	
+	static public final String SEARCHRESULTSPANEL = "SearchResultsPanel";
 }

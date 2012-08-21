@@ -1,5 +1,6 @@
 package org.jboss.pressgangccms.client.local.view;
 
+import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.SearchResultsPresenter;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateView;
@@ -69,6 +70,8 @@ public class SearchResultsView extends BaseTemplateView implements SearchResults
 		
 		results.addColumn(idColumn);
 		results.addColumn(titleColumn);
+		
+		searchResultsPanel.addStyleName(CSSConstants.SEARCHRESULTSPANEL);
 		
 		searchResultsPanel.add(results);
 		searchResultsPanel.add(pager);
