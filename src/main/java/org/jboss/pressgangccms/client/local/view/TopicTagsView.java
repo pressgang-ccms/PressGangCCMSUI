@@ -134,13 +134,15 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 
 		/* Add the layout to the panel */
 		layout.addStyleName(CSSConstants.TOPICTAGVIEWNEWTAGTABLE);
-		this.getPanel().setWidget(layout);
 		layout.setWidget(0, 0, projects);
 		layout.setWidget(0, 1, categories);
 		layout.setWidget(0, 2, myTags);
 		layout.setWidget(0, 3, add);
 
 		layout.getFlexCellFormatter().setColSpan(1, 0, 4);
+		
+		this.getPanel().addStyleName(CSSConstants.TOPICTAGVIEWCONTENTPANEL);	
+		this.getPanel().setWidget(layout);
 	}
 
 	@Override
