@@ -192,12 +192,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 							{
 								/* default to the topic details view */
 								if (selectedView == null)
-								{
 									selectedView = topicRenderedDisplay;
-									updateTopicDisplay();
-								}
 
 								selectedView.initialize(retValue);
+								updateTopicDisplay();
 							}
 							finally
 							{
@@ -249,9 +247,6 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 					selectedView.initialize(selectedTopic);
 					updateTopicDisplay();
 
-					topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
-					topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
-					topicXMLDisplay.getEditor().redisplay();
 				}
 			}
 		};
@@ -423,6 +418,14 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 		display.getTopicViewActionButtonsPanel().setWidget(selectedView.getTopActionPanel());
 		display.getTopicViewPanel().setWidget(selectedView.getPanel());
+		
+		/* Need to redisplay to work around a bug in the ACE editor */
+		if (selectedView == this.topicXMLDisplay)
+		{
+			topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
+			topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
+			topicXMLDisplay.getEditor().redisplay();
+		}
 	}
 
 	private void flushChanges()

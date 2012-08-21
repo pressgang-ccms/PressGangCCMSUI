@@ -1,31 +1,31 @@
 package org.jboss.pressgangccms.client.local.constants;
 
+/**
+ * This class lists all of the CSS class names used by the application
+ * @author Matthew Casperson
+ *
+ */
 final public class CSSConstants
 {
+	/**
+	 * The class assigned to the top level DockLayoutPanel.
+	 */
 	static public final String TOPLEVELLAYOUTPANEL = "TopLevelLayoutPanel";
 	static public final String SECONDLEVELLAYOUTPANEL = "SecondLevelLayoutPanel";
 	static public final String THIRDLEVELLAYOUTPANEL = "ThirdLevelLayoutPanel";
 	static public final String CONTENTLAYOUTPANEL = "ContentLayoutPanel";
-	
 	static public final String TOPACTIONPANEL = "TopActionPanel";
 	static public final String SHORTCUTPANEL = "ShortcutPanel";
 	static public final String FOOTERPANEL = "FooterPanel";
-	
 	static public final String RIGHTALIGNEDACTIONBUTTONS = "RightAlignedActionButtons";
-	
 	static public final String PAGETITLEPARENTLAYOUTPANEL = "PageTitleParentLayoutPanel";
-	
 	static public final String RESULTSVIEWLAYOUTPANEL = "ResultsViewLayoutPanel";
 	static public final String TOPICVIEWLAYOUTPANEL = "TopicViewLayoutPanel";
-	
 	static public final String TOPICSEARCHTOPICVIEWBUTTONSPANEL = "TopicSearchTopicViewButtonsPanel";
 	static public final String TOPICSEARCHTOPICVIEWDETAILSPANEL = "TopicSearchTopicViewDetailsPanel";
 	static public final String TOPICSEARCHRESULTSANDVIEWPARENTPANEL = "TopicSearchResultsAndViewParentPanel";
-	
 	static public final String TOPICRENDEREDVIEWDIV = "TopicRenderedViewDiv";
-	
 	static public final String SEARCHRESULTSPANEL = "SearchResultsPanel";
-	
 	static public final String TOPICVIEWPANEL ="TopicViewPanel";
 	static public final String TOPICVIEWIDFIELD = "TopicViewIDField";
 	static public final String TOPICVIEWTITLEFIELD = "TopicViewTitleField";
@@ -34,9 +34,7 @@ final public class CSSConstants
 	static public final String TOPICVIEWLABEL = "TopicViewLabel";
 	static public final String TOPICVIEWDETAIL = "TopicViewDetail";
 	static public final String TOPICVIEWDESCRIPTIONDETAIL = "TopicViewDescriptionDetail";
-	
 	static public final String SPACEDBUTTON = "SpacedButton";
-	
 	static public final String PROJECTSLAYOUT = "ProjectsLayout";
 	static public final String PROJECTLAYOUT = "ProjectLayout";
 	static public final String PROJECTSBUTTONSLAYOUT = "ProjectsButtonsLayout";

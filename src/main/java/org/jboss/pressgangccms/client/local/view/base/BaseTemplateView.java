@@ -152,15 +152,15 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		
 		thirdLevelLayoutPanel.addWest(getShortcutPanel(), 80);
 		
-		/* Add the content panel */
-		panel.addStyleName(CSSConstants.CONTENTLAYOUTPANEL);
-		
-		thirdLevelLayoutPanel.add(panel);
-		
 		/* Set the footer panel */
 		footerPanel.addStyleName(CSSConstants.FOOTERPANEL);
 		
 		thirdLevelLayoutPanel.addSouth(footerPanel, 0);	
+		
+		/* Add the content panel */
+		panel.addStyleName(CSSConstants.CONTENTLAYOUTPANEL);
+		
+		thirdLevelLayoutPanel.add(panel);
 		
 		/* Build the shortcut panel */
 
