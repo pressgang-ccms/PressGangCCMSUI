@@ -4,6 +4,7 @@ import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLPresenter;
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLPresenter.TopicXMLPresenterDriver;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
+import org.jboss.pressgangccms.client.local.ui.UIUtilities;
 import org.jboss.pressgangccms.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewBase;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
@@ -24,8 +25,8 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
 	private RESTTopicV1XMLEditor editor;
 
-	private final ToggleButton lineWrap = createToggleButton(ImageResources.INSTANCE.lineWrap48(), ImageResources.INSTANCE.lineWrapDown48(), ImageResources.INSTANCE.lineWrapHover48(), CSSConstants.SPACEDBUTTON);
-	private final ToggleButton showInvisibles = createToggleButton(ImageResources.INSTANCE.hiddenCharacters48(), ImageResources.INSTANCE.hiddenCharactersDown48(), ImageResources.INSTANCE.hiddenCharactersHover48(), CSSConstants.SPACEDBUTTON);
+	private final ToggleButton lineWrap = UIUtilities.createToggleButton(ImageResources.INSTANCE.lineWrap48(), ImageResources.INSTANCE.lineWrapDown48(), ImageResources.INSTANCE.lineWrapHover48(), CSSConstants.SPACEDBUTTON);
+	private final ToggleButton showInvisibles = UIUtilities.createToggleButton(ImageResources.INSTANCE.hiddenCharacters48(), ImageResources.INSTANCE.hiddenCharactersDown48(), ImageResources.INSTANCE.hiddenCharactersHover48(), CSSConstants.SPACEDBUTTON);
 
 	@Override
 	public ToggleButton getShowInvisibles()

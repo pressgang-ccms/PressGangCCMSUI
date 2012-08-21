@@ -1,5 +1,7 @@
 package org.jboss.pressgangccms.client.local.ui.search;
 
+import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
+
 import com.google.gwt.user.client.ui.TriStateSelectionState;
 
 /**
@@ -9,24 +11,18 @@ import com.google.gwt.user.client.ui.TriStateSelectionState;
 public class SearchUITag extends SearchUIBase
 {
 	private TriStateSelectionState state = TriStateSelectionState.NONE;
-	private Integer id;
+	private RESTTagV1 tag;
 	
-	public Integer getId()
+	public RESTTagV1 getTag()
 	{
-		return id;
+		return tag;
 	}
 
-	public void setId(Integer id)
+	public void setTag(RESTTagV1 tag)
 	{
-		this.id = id;
+		this.tag = tag;
 	}
-
-	public SearchUITag(final String name, final Integer id)
-	{
-		super(name);
-		this.id = id;
-	}
-
+	
 	public TriStateSelectionState getState()
 	{
 		return state;
@@ -35,5 +31,11 @@ public class SearchUITag extends SearchUIBase
 	public void setState(TriStateSelectionState state)
 	{
 		this.state = state;
+	}
+
+	public SearchUITag(final String name, final RESTTagV1 tag)
+	{
+		super(tag.getName());
+		this.tag = tag;
 	}
 }

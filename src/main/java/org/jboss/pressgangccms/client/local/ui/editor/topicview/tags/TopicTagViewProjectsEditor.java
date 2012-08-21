@@ -16,7 +16,7 @@ public class TopicTagViewProjectsEditor extends SimplePanel implements Editor<Se
 	private final SearchUIProjects searchUIProjects;
 	private final TopicTagsPresenterDriver driver;
 	private final FlexTable projectLabelPanel = new FlexTable();
-	final ListEditor<SearchUIProject, TopicTagViewProjectEditor> projects = ListEditor.of(new TopicTagViewProjectEditorSource());
+	public final ListEditor<SearchUIProject, TopicTagViewProjectEditor> projects = ListEditor.of(new TopicTagViewProjectEditorSource());
 	
 	/**
 	 * The EditorSource is used to create and orgainse the Editors that go into

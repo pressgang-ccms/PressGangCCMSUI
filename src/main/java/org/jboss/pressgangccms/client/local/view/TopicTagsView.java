@@ -23,7 +23,13 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 	
 	/** The GWT Editor Driver */
 	private final TopicTagsPresenterDriver driver = GWT.create(TopicTagsPresenterDriver.class);
+	private TopicTagViewProjectsEditor editor;
 	
+	public TopicTagViewProjectsEditor getEditor()
+	{
+		return editor;
+	}
+
 	@Override
 	public SimpleBeanEditorDriver getDriver()
 	{
@@ -50,7 +56,7 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 		/* Build up a hierarchy of tags */
 		final SearchUIProjects projects = new SearchUIProjects(topic.getTags());
 		/* SearchUIProjectsEditor is a simple panel */
-		final TopicTagViewProjectsEditor editor = new TopicTagViewProjectsEditor(driver, projects);
+		editor = new TopicTagViewProjectsEditor(driver, projects);
 	    /* Initialize the driver with the top-level editor */
 	    driver.initialize(editor);
 	    /* Copy the data in the object into the UI */

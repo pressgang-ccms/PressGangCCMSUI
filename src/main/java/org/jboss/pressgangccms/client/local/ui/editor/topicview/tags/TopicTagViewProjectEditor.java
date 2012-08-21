@@ -21,7 +21,7 @@ public class TopicTagViewProjectEditor extends Grid implements Editor<SearchUIPr
 	private final SearchUIProjects searchUIProjects;
 	private final FlexTable categoriesLabelPanel = new FlexTable();
 	final Label name = new Label();
-	final ListEditor<SearchUICategory, TopicTagViewCategoryEditor> categories = ListEditor.of(new TopicTagViewCategoryEditorSource());
+	public final ListEditor<SearchUICategory, TopicTagViewCategoryEditor> categories = ListEditor.of(new TopicTagViewCategoryEditorSource());
 	
 	/**
 	 * The EditorSource is used to create and orgainse the Editors that go into

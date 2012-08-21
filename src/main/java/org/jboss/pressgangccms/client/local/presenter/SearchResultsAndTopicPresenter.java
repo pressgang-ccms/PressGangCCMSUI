@@ -8,10 +8,14 @@ import javax.inject.Inject;
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
+import org.jboss.pressgangccms.client.local.ui.editor.topicview.tags.TopicTagViewCategoryEditor;
+import org.jboss.pressgangccms.client.local.ui.editor.topicview.tags.TopicTagViewProjectEditor;
+import org.jboss.pressgangccms.client.local.ui.editor.topicview.tags.TopicTagViewTagEditor;
 import org.jboss.pressgangccms.client.local.view.SearchResultsAndTopicView;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewInterface;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -22,11 +26,10 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.CellPreviewEvent;
-import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
+import com.google.gwt.view.client.HasData;
 
 @Dependent
 public class SearchResultsAndTopicPresenter extends TemplatePresenter
@@ -43,6 +46,32 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 		HanldedSplitLayoutPanel getSplitPanel();
 	}
+
+	/**
+	 * A click handler to remove a tag from a topic
+	 * @author Matthew Casperson
+	 *
+	 */
+	private class DeleteTagClickHandler implements ClickHandler
+	{
+		private final RESTTagV1 tag;
+		
+		public DeleteTagClickHandler(final RESTTagV1 tag)
+		{
+			if (tag == null) throw new IllegalArgumentException("tag cannot be null");
+			
+			this.tag = tag;
+		}
+
+		@Override
+		public void onClick(final ClickEvent event)
+		{
+			if (selectedTopic == null) throw new IllegalStateException("selectedTopic cannot be null");
+			
+			tag.setRemoveItem(true);
+			updateTopicTagViewDisplay();
+		}
+	};
 
 	@Inject
 	private Display display;
@@ -61,7 +90,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 	@Inject
 	private TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay;
-	
+
 	@Inject
 	private TopicTagsPresenter.Display topicTagsDisplay;
 
@@ -97,7 +126,40 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	{
 		super.bind(display);
 
-		/* Have to redisplay as the split panel is moved */
+		bindSplitPanelResize();
+
+		final AsyncDataProvider<RESTTopicV1> provider = generateTopicListProvider();
+
+		bindTopicListRowClicks();
+
+		bindTopicEditButtons(provider);
+
+		bindAceEditorButtons();
+
+		searchResultsDisplay.setProvider(provider);
+	}
+
+	private void bindTagEditingButtons()
+	{
+
+		for (final TopicTagViewProjectEditor topicTagViewProjectEditor : topicTagsDisplay.getEditor().projects.getEditors())
+		{
+			for (final TopicTagViewCategoryEditor topicTagViewCategoryEditor : topicTagViewProjectEditor.categories.getEditors())
+			{
+				for (final TopicTagViewTagEditor topicTagViewTagEditor : topicTagViewCategoryEditor.myTags.getEditors())
+				{
+					topicTagViewTagEditor.getDelete().addClickHandler(new DeleteTagClickHandler(topicTagViewTagEditor.getTag().getTag()));
+				}
+			}
+		}
+	}
+
+	/**
+	 * Respond to the split panel resizing by redisplaying the ACE editor
+	 * component
+	 */
+	private void bindSplitPanelResize()
+	{
 		display.getSplitPanel().addResizeHandler(new ResizeHandler()
 		{
 			@Override
@@ -107,7 +169,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 					topicXMLDisplay.getEditor().redisplay();
 			}
 		});
+	}
 
+	/**
+	 * @return A provider to be used for the topic display list
+	 */
+	private AsyncDataProvider<RESTTopicV1> generateTopicListProvider()
+	{
 		final AsyncDataProvider<RESTTopicV1> provider = new AsyncDataProvider<RESTTopicV1>()
 		{
 			@Override
@@ -158,9 +226,14 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				RESTCalls.getTopicsFromQuery(callback, queryString, tableStartRow, end);
 			}
 		};
+		return provider;
+	}
 
-		/* Respond to row clicks */
-
+	/**
+	 * Bind the button click events for the topic editor screens
+	 */
+	private void bindTopicListRowClicks()
+	{
 		searchResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTTopicV1>()
 		{
 			@Override
@@ -176,99 +249,47 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 					/* default to the rendered view */
 					if (selectedView == null)
 						selectedView = topicRenderedDisplay;
-
-					selectedView.initialize(selectedTopic);
+					
 					updateTopicDisplay();
 				}
 			}
 		});
+	}
 
-		final ClickHandler topicViewClickHandler = new ClickHandler()
+	/**
+	 * Bind the button clicks for the ACE editor buttons
+	 */
+	private void bindAceEditorButtons()
+	{
+		topicXMLDisplay.getLineWrap().addClickHandler(new ClickHandler()
 		{
 			@Override
 			public void onClick(final ClickEvent event)
 			{
-				/* Sync any changes back to the underlying object */
-				flushChanges();
-
-				if (selectedTopic != null)
-				{
-					selectedView = topicViewDisplay;
-					selectedView.initialize(selectedTopic);
-					updateTopicDisplay();
-				}
+				topicXMLDisplay.getEditor().setUseWrapMode(!topicXMLDisplay.getEditor().getUserWrapMode());
+				topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
 			}
-		};
+		});
 
-		final ClickHandler topicXMLClickHandler = new ClickHandler()
+		topicXMLDisplay.getShowInvisibles().addClickHandler(new ClickHandler()
 		{
 			@Override
 			public void onClick(final ClickEvent event)
 			{
-				/* Sync any changes back to the underlying object */
-				flushChanges();
-
-				if (selectedTopic != null)
-				{
-					selectedView = topicXMLDisplay;
-					selectedView.initialize(selectedTopic);
-					updateTopicDisplay();
-
-				}
+				topicXMLDisplay.getEditor().setShowInvisibles(!topicXMLDisplay.getEditor().getShowInvisibles());
+				topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
 			}
-		};
+		});
+	}
 
-		final ClickHandler topicRenderedClickHandler = new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				/* Sync any changes back to the underlying object */
-				flushChanges();
-
-				if (selectedTopic != null)
-				{
-					selectedView = topicRenderedDisplay;
-					selectedView.initialize(selectedTopic);
-					updateTopicDisplay();
-				}
-			}
-		};
-
-		final ClickHandler topicXMLErrorsClickHandler = new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				/* Sync any changes back to the underlying object */
-				flushChanges();
-
-				if (selectedTopic != null)
-				{
-					selectedView = topicXMLErrorsDisplay;
-					selectedView.initialize(selectedTopic);
-					updateTopicDisplay();
-				}
-			}
-		};
-		
-		final ClickHandler topicTagsClickHandler = new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				/* Sync any changes back to the underlying object */
-				flushChanges();
-
-				if (selectedTopic != null)
-				{
-					selectedView = topicTagsDisplay;
-					selectedView.initialize(selectedTopic);
-					updateTopicDisplay();
-				}
-			}
-		};
-
+	/**
+	 * Bind the button click events for the various topic views
+	 * 
+	 * @param provider
+	 *            The provider created by the generateTopicListProvider() method
+	 */
+	private void bindTopicEditButtons(final AsyncDataProvider<RESTTopicV1> provider)
+	{
 		/* Build up a click handler to save the topic */
 		final ClickHandler saveClickHandler = new ClickHandler()
 		{
@@ -306,11 +327,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 								selectedView.initialize(selectedTopic);
 
 								Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+								retValue.getTags().getItems();
 							}
 							finally
 							{
 								stopProcessing();
-								topicXMLDisplay.getEditor().redisplay();
+								if (topicXMLDisplay.getEditor() != null)
+									topicXMLDisplay.getEditor().redisplay();
 							}
 						}
 
@@ -345,8 +368,90 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			}
 		};
 
+		final ClickHandler topicViewClickHandler = new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				/* Sync any changes back to the underlying object */
+				flushChanges();
+
+				if (selectedTopic != null)
+				{
+					selectedView = topicViewDisplay;
+					updateTopicDisplay();
+				}
+			}
+		};
+
+		final ClickHandler topicXMLClickHandler = new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				/* Sync any changes back to the underlying object */
+				flushChanges();
+
+				if (selectedTopic != null)
+				{
+					selectedView = topicXMLDisplay;
+					updateTopicDisplay();
+
+				}
+			}
+		};
+
+		final ClickHandler topicRenderedClickHandler = new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				/* Sync any changes back to the underlying object */
+				flushChanges();
+
+				if (selectedTopic != null)
+				{
+					selectedView = topicRenderedDisplay;
+					updateTopicDisplay();
+				}
+			}
+		};
+
+		final ClickHandler topicXMLErrorsClickHandler = new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				/* Sync any changes back to the underlying object */
+				flushChanges();
+
+				if (selectedTopic != null)
+				{
+					selectedView = topicXMLErrorsDisplay;
+					updateTopicDisplay();
+				}
+			}
+		};
+
+		final ClickHandler topicTagsClickHandler = new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				/* Sync any changes back to the underlying object */
+				flushChanges();
+
+				if (selectedTopic != null)
+				{
+					selectedView = topicTagsDisplay;
+					updateTopicTagViewDisplay();
+				}
+			}
+		};
+
 		/* Hook up the click listeners */
-		for (final TopicViewInterface view :  new TopicViewInterface[] {topicViewDisplay, topicXMLDisplay, topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay})
+		for (final TopicViewInterface view : new TopicViewInterface[]
+		{ topicViewDisplay, topicXMLDisplay, topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay })
 		{
 			view.getFields().addClickHandler(topicViewClickHandler);
 			view.getXml().addClickHandler(topicXMLClickHandler);
@@ -355,28 +460,15 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			view.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
 			view.getTags().addClickHandler(topicTagsClickHandler);
 		}
-
-		topicXMLDisplay.getLineWrap().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				topicXMLDisplay.getEditor().setUseWrapMode(!topicXMLDisplay.getEditor().getUserWrapMode());
-				topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
-			}
-		});
-
-		topicXMLDisplay.getShowInvisibles().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				topicXMLDisplay.getEditor().setShowInvisibles(!topicXMLDisplay.getEditor().getShowInvisibles());
-				topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
-			}
-		});
-
-		searchResultsDisplay.setProvider(provider);
+	}
+	
+	/**
+	 * The topic tag view requires each remove button to be re-bound once the view is initialized
+	 */
+	private void updateTopicTagViewDisplay()
+	{
+		updateTopicDisplay();
+		bindTagEditingButtons();
 	}
 
 	/**
@@ -384,12 +476,14 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	 */
 	private void updateTopicDisplay()
 	{
+		selectedView.initialize(selectedTopic);
+		
 		display.getTopicViewActionButtonsPanel().clear();
 		display.getTopicViewPanel().clear();
 
 		display.getTopicViewActionButtonsPanel().setWidget(selectedView.getTopActionPanel());
 		display.getTopicViewPanel().setWidget(selectedView.getPanel());
-		
+
 		/* Need to redisplay to work around a bug in the ACE editor */
 		if (selectedView == this.topicXMLDisplay)
 		{
@@ -403,14 +497,14 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	 * Sync any changes back to the underlying object
 	 */
 	private void flushChanges()
-	{		
+	{
 		if (selectedView == null || selectedView.getDriver() == null)
 			return;
-		
+
 		/* These are read only views */
 		if (selectedView == topicXMLErrorsDisplay || selectedView == topicTagsDisplay)
 			return;
-			
+
 		selectedView.getDriver().flush();
 	}
 

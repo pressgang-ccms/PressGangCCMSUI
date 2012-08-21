@@ -46,14 +46,6 @@ public class SearchUIProject extends SearchUIBase
 			return excludedTags;
 		}
 
-		public int getChildCount()
-		{
-			int retValue = 0;
-			for (final SearchUICategory category : categories)
-				retValue += category.getChildCount();
-			return retValue;
-		}
-
 		public CategorySummary(final String name, final int categoryCount, final int includedTags, final int excludedTags)
 		{
 			this.name = name;
@@ -86,6 +78,19 @@ public class SearchUIProject extends SearchUIBase
 		return categories;
 	}
 
+	public int getChildCount()
+	{
+		int retValue = 0;
+		for (final SearchUICategory category : categories)
+			retValue += category.getChildCount();
+		return retValue;
+	}
+
+	public SearchUIProject(final RESTProjectV1 project)
+	{
+		super(project.getName());
+	}
+
 	public SearchUIProject(final String name)
 	{
 		super(name);
@@ -105,18 +110,21 @@ public class SearchUIProject extends SearchUIBase
 			if (tag.getProjects().getItems() == null)
 				throw new IllegalArgumentException("tag.getProjects().getItems() cannot be null");
 
-			if (tag.getProjects().getItems().contains(project))
+			if (!tag.getRemoveItem())
 			{
-				if (tag.getCategories().getItems() == null)
-					throw new IllegalArgumentException("tag.getCategories().getItems() cannot be null");
-
-				for (final RESTCategoryV1 category : tag.getCategories().getItems())
+				if (tag.getProjects().getItems().contains(project))
 				{
-					final SearchUICategory searchUICategory = new SearchUICategory(category.getName());
-					if (!categories.contains(searchUICategory))
+					if (tag.getCategories().getItems() == null)
+						throw new IllegalArgumentException("tag.getCategories().getItems() cannot be null");
+
+					for (final RESTCategoryV1 category : tag.getCategories().getItems())
 					{
-						searchUICategory.populateCategories(project, category, tags);
-						categories.add(searchUICategory);
+						final SearchUICategory searchUICategory = new SearchUICategory(category);
+						if (!categories.contains(searchUICategory))
+						{
+							searchUICategory.populateCategories(project, category, tags);
+							categories.add(searchUICategory);
+						}
 					}
 				}
 			}
@@ -142,7 +150,7 @@ public class SearchUIProject extends SearchUIBase
 
 				for (final RESTCategoryV1 category : tag.getCategories().getItems())
 				{
-					final SearchUICategory searchUICategory = new SearchUICategory(category.getName());
+					final SearchUICategory searchUICategory = new SearchUICategory(category);
 					if (!categories.contains(searchUICategory))
 					{
 						searchUICategory.populateCategoriesWithoutProject(category, tags);

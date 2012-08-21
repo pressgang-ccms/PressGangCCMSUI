@@ -4,6 +4,7 @@ import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgangccms.client.local.ui.UIUtilities;
 import org.jboss.pressgangccms.client.local.ui.editor.search.SearchUIProjectsEditor;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateView;
@@ -17,7 +18,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 {
 	public static final String HISTORY_TOKEN = "SearchView";
 	
-	private final PushButton search = createPushButton(ImageResources.INSTANCE.search48(), ImageResources.INSTANCE.searchDown48(), ImageResources.INSTANCE.searchHover48(), CSSConstants.SPACEDBUTTON);
+	private final PushButton search = UIUtilities.createPushButton(ImageResources.INSTANCE.search48(), ImageResources.INSTANCE.searchDown48(), ImageResources.INSTANCE.searchHover48(), CSSConstants.SPACEDBUTTON);
 
 	/** The GWT Editor Driver */
 	private final SearchPresenterDriver driver = GWT.create(SearchPresenterDriver.class);

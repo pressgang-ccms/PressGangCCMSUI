@@ -3,6 +3,7 @@ package org.jboss.pressgangccms.client.local.view.base;
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.resources.css.CSSResources;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
+import org.jboss.pressgangccms.client.local.ui.UIUtilities;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.resources.client.ImageResource;
@@ -164,21 +165,21 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		
 		/* Build the shortcut panel */
 
-		home = createPushButton(ImageResources.INSTANCE.home48(), ImageResources.INSTANCE.homeDown48(), ImageResources.INSTANCE.homeHover48(), CSSConstants.SPACEDBUTTON);
+		home = UIUtilities.createPushButton(ImageResources.INSTANCE.home48(), ImageResources.INSTANCE.homeDown48(), ImageResources.INSTANCE.homeHover48(), CSSConstants.SPACEDBUTTON);
 		getShortcutPanel().add(home);
 
-		search = createPushButton(ImageResources.INSTANCE.search48(), ImageResources.INSTANCE.searchDown48(), ImageResources.INSTANCE.searchHover48(), CSSConstants.SPACEDBUTTON);
+		search = UIUtilities.createPushButton(ImageResources.INSTANCE.search48(), ImageResources.INSTANCE.searchDown48(), ImageResources.INSTANCE.searchHover48(), CSSConstants.SPACEDBUTTON);
 		getShortcutPanel().add(search);
 
-		searchTranslations = createPushButton(ImageResources.INSTANCE.searchTranslations48(), ImageResources.INSTANCE.searchTranslationsDown48(), ImageResources.INSTANCE.searchTranslationsHover48(), ImageResources.INSTANCE.searchTranslationsDisabled48(), CSSConstants.SPACEDBUTTON);
+		searchTranslations = UIUtilities.createPushButton(ImageResources.INSTANCE.searchTranslations48(), ImageResources.INSTANCE.searchTranslationsDown48(), ImageResources.INSTANCE.searchTranslationsHover48(), ImageResources.INSTANCE.searchTranslationsDisabled48(), CSSConstants.SPACEDBUTTON);
 		searchTranslations.setEnabled(false);
 		getShortcutPanel().add(searchTranslations);
 
-		reports = createPushButton(ImageResources.INSTANCE.reports48(), ImageResources.INSTANCE.reportsDown48(), ImageResources.INSTANCE.reportsHover48(), ImageResources.INSTANCE.reportsDisabled48(), CSSConstants.SPACEDBUTTON);
+		reports = UIUtilities.createPushButton(ImageResources.INSTANCE.reports48(), ImageResources.INSTANCE.reportsDown48(), ImageResources.INSTANCE.reportsHover48(), ImageResources.INSTANCE.reportsDisabled48(), CSSConstants.SPACEDBUTTON);
 		reports.setEnabled(false);
 		getShortcutPanel().add(reports);
 
-		bug = createPushButton(ImageResources.INSTANCE.bug48(), ImageResources.INSTANCE.bugDown48(), ImageResources.INSTANCE.bugHover48(), CSSConstants.SPACEDBUTTON);
+		bug = UIUtilities.createPushButton(ImageResources.INSTANCE.bug48(), ImageResources.INSTANCE.bugDown48(), ImageResources.INSTANCE.bugHover48(), CSSConstants.SPACEDBUTTON);
 		getShortcutPanel().add(bug);
 	}
 	
@@ -206,51 +207,4 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 
 		this.getTopActionPanel().setWidget(0, columns, widget);
 	}
-
-	protected PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover)
-	{
-		final PushButton retvalue = new PushButton(new Image(up), new Image(down));
-		//retvalue.getUpHoveringFace().setImage(new Image(hover));
-		return retvalue;
-	}
-
-	protected PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final String className)
-	{
-		final PushButton retvalue = new PushButton(new Image(up), new Image(down));
-		//retvalue.getUpHoveringFace().setImage(new Image(hover));
-		retvalue.addStyleName(className);
-		return retvalue;
-	}
-
-	protected PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final ImageResource disabled)
-	{
-		final PushButton retvalue = new PushButton(new Image(up), new Image(down));
-		//retvalue.getUpHoveringFace().setImage(new Image(hover));
-		retvalue.getUpDisabledFace().setImage(new Image(disabled));
-		return retvalue;
-	}
-
-	protected PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final ImageResource disabled, final String className)
-	{
-		final PushButton retvalue = new PushButton(new Image(up), new Image(down));
-		//retvalue.getUpHoveringFace().setImage(new Image(hover));
-		retvalue.getUpDisabledFace().setImage(new Image(disabled));
-		retvalue.addStyleName(className);
-		return retvalue;
-	}
-
-	protected ToggleButton createToggleButton(final ImageResource up, final ImageResource down, final ImageResource hover)
-	{
-		final ToggleButton retvalue = new ToggleButton(new Image(up), new Image(down));
-		//retvalue.getUpHoveringFace().setImage(new Image(hover));
-		return retvalue;
-	}
-
-	protected ToggleButton createToggleButton(final ImageResource up, final ImageResource down, final ImageResource hover, final String className)
-	{
-		final ToggleButton retvalue = new ToggleButton(new Image(up), new Image(down));
-		//retvalue.getUpHoveringFace().setImage(new Image(hover));
-		retvalue.addStyleName(className);
-		return retvalue;
-	}	
 }

@@ -11,13 +11,15 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
 import com.google.gwt.user.client.ui.TriStateSelectionState;
 
 /**
- * This class represents a single category assigned to a project, with child tags.
+ * This class represents a single category assigned to a project, with child
+ * tags.
+ * 
  * @author Matthew Casperson
  */
 public class SearchUICategory extends SearchUIBase
 {
 	private final List<SearchUITag> myTags = new ArrayList<SearchUITag>();
-	
+
 	public class TagSummary
 	{
 		private final String name;
@@ -53,7 +55,7 @@ public class SearchUICategory extends SearchUIBase
 			this.excludedTags = excludedTags;
 		}
 	}
-	
+
 	public TagSummary getSummary()
 	{
 		int includedTags = 0;
@@ -65,7 +67,7 @@ public class SearchUICategory extends SearchUIBase
 			else if (tag.getState() == TriStateSelectionState.UNSELECTED)
 				++excludedTags;
 		}
-		
+
 		return new TagSummary(this.getName(), this.myTags.size(), includedTags, excludedTags);
 	}
 
@@ -73,15 +75,15 @@ public class SearchUICategory extends SearchUIBase
 	{
 		return myTags;
 	}
-	
+
 	public int getChildCount()
 	{
 		return myTags.size();
 	}
 
-	public SearchUICategory(final String name)
+	public SearchUICategory(final RESTCategoryV1 category)
 	{
-		super(name);
+		super(category.getName());
 	}
 
 	public void populateCategories(final RESTProjectV1 project, final RESTCategoryV1 category, final RESTTagCollectionV1 tags)
@@ -102,17 +104,20 @@ public class SearchUICategory extends SearchUIBase
 			if (tag.getCategories().getItems() == null)
 				throw new IllegalArgumentException("tag.getCategories().getItems() cannot be null");
 
-			if (tag.getProjects().getItems().contains(project) && tag.getCategories().getItems().contains(category))
+			if (!tag.getRemoveItem())
 			{
-				final SearchUITag searchUITag = new SearchUITag(tag.getName(), tag.getId());
-				if (!myTags.contains(searchUITag))
+				if (tag.getProjects().getItems().contains(project) && tag.getCategories().getItems().contains(category))
 				{
-					myTags.add(searchUITag);
+					final SearchUITag searchUITag = new SearchUITag(tag.getName(), tag);
+					if (!myTags.contains(searchUITag))
+					{
+						myTags.add(searchUITag);
+					}
 				}
 			}
 		}
 	}
-	
+
 	public void populateCategoriesWithoutProject(final RESTCategoryV1 category, final RESTTagCollectionV1 tags)
 	{
 		if (tags == null)
@@ -129,12 +134,16 @@ public class SearchUICategory extends SearchUIBase
 			if (tag.getCategories().getItems() == null)
 				throw new IllegalArgumentException("tag.getCategories().getItems() cannot be null");
 
-			if (tag.getProjects().getItems().isEmpty() && tag.getCategories().getItems().contains(category))
+			/* Tags to be removed should not show up */
+			if (!tag.getRemoveItem())
 			{
-				final SearchUITag searchUITag = new SearchUITag(tag.getName(), tag.getId());
-				if (!myTags.contains(searchUITag))
+				if (tag.getProjects().getItems().isEmpty() && tag.getCategories().getItems().contains(category))
 				{
-					myTags.add(searchUITag);
+					final SearchUITag searchUITag = new SearchUITag(tag.getName(), tag);
+					if (!myTags.contains(searchUITag))
+					{
+						myTags.add(searchUITag);
+					}
 				}
 			}
 		}

@@ -29,8 +29,8 @@ public class TopicTagsPresenter extends TemplatePresenter
 
 	public interface Display extends TopicViewInterface
 	{
-		@Override
 		void initialize(final RESTTopicV1 topic);
+		TopicTagViewProjectsEditor getEditor();
 	}
 
 	@Override

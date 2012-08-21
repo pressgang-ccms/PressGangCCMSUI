@@ -60,13 +60,17 @@ public class SearchUIProjects
 			if (tag.getProjects().getItems() == null)
 				throw new IllegalArgumentException("tag.getProjects().getItems() cannot be null");
 
-			for (final RESTProjectV1 project : tag.getProjects().getItems())
+			/* Tags to be removed should not show up */
+			if (!tag.getRemoveItem())
 			{
-				final SearchUIProject searchUIProject = new SearchUIProject(project.getName());
-				if (!projects.contains(searchUIProject))
+				for (final RESTProjectV1 project : tag.getProjects().getItems())
 				{
-					searchUIProject.populateCategories(project, tags);
-					projects.add(searchUIProject);
+					final SearchUIProject searchUIProject = new SearchUIProject(project);
+					if (!projects.contains(searchUIProject))
+					{
+						searchUIProject.populateCategories(project, tags);
+						projects.add(searchUIProject);
+					}
 				}
 			}
 		}
@@ -80,7 +84,8 @@ public class SearchUIProjects
 		 */
 		final SearchUIProject common = new SearchUIProject(PressGangCCMSUI.INSTANCE.Common());
 		common.populateCategoriesWithoutProject(tags);
-		projects.addFirst(common);
+		if (common.getChildCount() != 0)
+			projects.addFirst(common);
 	}
 
 	public String getRESTQueryString()
@@ -96,14 +101,14 @@ public class SearchUIProjects
 					if (tag.getState() != TriStateSelectionState.NONE)
 					{
 						builder.append(";");
-						
+
 						if (tag.getState() == TriStateSelectionState.SELECTED)
 						{
-							builder.append(TAG_PREFIX + tag.getId() + "=" + TAG_INCLUDED);
+							builder.append(TAG_PREFIX + tag.getTag().getId() + "=" + TAG_INCLUDED);
 						}
 						else if (tag.getState() == TriStateSelectionState.UNSELECTED)
 						{
-							builder.append(TAG_PREFIX + tag.getId() + "=" + TAG_EXCLUDED);
+							builder.append(TAG_PREFIX + tag.getTag().getId() + "=" + TAG_EXCLUDED);
 						}
 					}
 				}

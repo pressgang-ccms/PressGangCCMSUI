@@ -19,7 +19,7 @@ public class TopicTagViewCategoryEditor extends Grid implements Editor<SearchUIC
 	private final TopicTagsPresenterDriver driver;
 	private final FlexTable tagsTable = new FlexTable();
 	final Label name = new Label();
-	final ListEditor<SearchUITag, TopicTagViewTagEditor> myTags = ListEditor.of(new TopicTagViewTagEditorSource());
+	public final ListEditor<SearchUITag, TopicTagViewTagEditor> myTags = ListEditor.of(new TopicTagViewTagEditorSource());
 	
 	/**
 	 * The EditorSource is used to create and orgainse the Editors that go into
@@ -34,6 +34,7 @@ public class TopicTagViewCategoryEditor extends Grid implements Editor<SearchUIC
 		{
 			final TopicTagViewTagEditor subEditor = new TopicTagViewTagEditor(driver, searchUIProjects);
 			tagsTable.setWidget(index, 0, subEditor.name);
+			tagsTable.setWidget(index, 1, subEditor.getDelete());			
 			tagsTable.getCellFormatter().addStyleName(index, 0, CSSConstants.TOPICTAGVIEWTAGROW);
 			return subEditor;
 		}
