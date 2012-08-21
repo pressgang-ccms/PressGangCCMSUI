@@ -182,7 +182,7 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 				myTags.setValue(tag);
 
 				final List<SearchUITag> cloneTags = new ArrayList<SearchUITag>(listTags);
-				clonedCategories.remove(tag);
+				cloneTags.remove(tag);
 
 				myTags.setAcceptableValues(cloneTags);
 			}
@@ -201,7 +201,7 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 			myTags.setValue(tag);
 
 			final List<SearchUITag> cloneTags = new ArrayList<SearchUITag>(listTags);
-			clonedCategories.remove(tag);
+			cloneTags.remove(tag);
 
 			myTags.setAcceptableValues(cloneTags);
 		}
