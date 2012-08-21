@@ -59,6 +59,8 @@ final public class CSSConstants
 	static public final String TOPICTAGVIEWPROJECTROW = "TopicTagViewProjectRow";
 	/** Assigned to the FlexTable rows that list a tag in the topic tags view */
 	static public final String TOPICTAGVIEWTAGROW = "TopicTagViewTagRow";
+	/** Assigned to the panel that holds all the TOPICTAGVIEWPROJECTSTABLE element in the topic tags view */
+	static public final String TOPICTAGVIEWPARENTPROJECTSTABLE = "TopicTagViewParentProjectsTable";
 	/** Assigned to the table that holds all the projects, categories and tags in the topic tags view */
 	static public final String TOPICTAGVIEWPROJECTSTABLE = "TopicTagViewProjectsTable";
 	/** Assigned to the table that holds a project in the topic tags view */
@@ -69,4 +71,6 @@ final public class CSSConstants
 	static public final String TOPICTAGVIEWCATEGORYTABLE = "TopicTagViewCategoryTable";
 	/** Assigned to the table that holds multiple tags in the topic tags view */
 	static public final String TOPICTAGVIEWTAGSTABLE = "TopicTagViewTagsTable";
+	/** Assigned to the table that holds the new tag project, category and tag lists */
+	static public final String TOPICTAGVIEWNEWTAGTABLE = "TopicTagViewNewTagTable";
 }

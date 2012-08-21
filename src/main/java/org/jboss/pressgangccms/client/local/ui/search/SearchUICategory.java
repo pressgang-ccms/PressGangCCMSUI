@@ -81,9 +81,9 @@ public class SearchUICategory extends SearchUIBase
 		return myTags.size();
 	}
 
-	public SearchUICategory(final RESTCategoryV1 category)
+	public SearchUICategory(final SearchUIProject project, final RESTCategoryV1 category)
 	{
-		super(category.getName());
+		super(category.getName(), project.getId() + "-" + category.getId());
 	}
 
 	public void populateCategories(final RESTProjectV1 project, final RESTCategoryV1 category, final RESTTagCollectionV1 tags)
@@ -108,7 +108,7 @@ public class SearchUICategory extends SearchUIBase
 			{
 				if (tag.getProjects().getItems().contains(project) && tag.getCategories().getItems().contains(category))
 				{
-					final SearchUITag searchUITag = new SearchUITag(tag.getName(), tag);
+					final SearchUITag searchUITag = new SearchUITag(this, tag);
 					if (!myTags.contains(searchUITag))
 					{
 						myTags.add(searchUITag);
@@ -139,7 +139,7 @@ public class SearchUICategory extends SearchUIBase
 			{
 				if (tag.getProjects().getItems().isEmpty() && tag.getCategories().getItems().contains(category))
 				{
-					final SearchUITag searchUITag = new SearchUITag(tag.getName(), tag);
+					final SearchUITag searchUITag = new SearchUITag(this, tag);
 					if (!myTags.contains(searchUITag))
 					{
 						myTags.add(searchUITag);

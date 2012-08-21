@@ -6,7 +6,6 @@ import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.ui.UIUtilities;
 
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -17,7 +16,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -60,6 +58,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		return shortcutPanel;
 	}
 	
+	@Override
 	public DockLayoutPanel getTopLevelPanel()
 	{
 		return topLevelLayoutPanel;

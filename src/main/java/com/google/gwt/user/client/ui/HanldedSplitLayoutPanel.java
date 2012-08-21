@@ -24,6 +24,7 @@ public class HanldedSplitLayoutPanel extends SplitLayoutPanel implements HasResi
 		ResizeEvent.fire(this, this.getOffsetWidth(), this.getOffsetHeight());
 	}
 	
+	@Override
 	public HandlerRegistration addResizeHandler(final ResizeHandler handler)
 	{
 		return ensureHandlers().addHandler(ResizeEvent.getType(), handler);

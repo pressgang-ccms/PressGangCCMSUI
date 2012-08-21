@@ -33,9 +33,9 @@ public class SearchUITag extends SearchUIBase
 		this.state = state;
 	}
 
-	public SearchUITag(final String name, final RESTTagV1 tag)
+	public SearchUITag(final SearchUICategory parent, final RESTTagV1 tag)
 	{
-		super(tag.getName());
+		super(tag.getName(), parent.getId() + "-" + tag.getId());
 		this.tag = tag;
 	}
 }

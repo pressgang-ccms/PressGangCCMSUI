@@ -8,12 +8,16 @@ import javax.inject.Inject;
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
-import org.jboss.pressgangccms.client.local.ui.editor.topicview.tags.TopicTagViewCategoryEditor;
-import org.jboss.pressgangccms.client.local.ui.editor.topicview.tags.TopicTagViewProjectEditor;
-import org.jboss.pressgangccms.client.local.ui.editor.topicview.tags.TopicTagViewTagEditor;
+import org.jboss.pressgangccms.client.local.ui.editor.topicview.assignedtags.TopicTagViewCategoryEditor;
+import org.jboss.pressgangccms.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectEditor;
+import org.jboss.pressgangccms.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
+import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
+import org.jboss.pressgangccms.client.local.ui.search.SearchUIProject;
+import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
 import org.jboss.pressgangccms.client.local.view.SearchResultsAndTopicView;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewInterface;
+import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
@@ -22,6 +26,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -49,25 +55,28 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 	/**
 	 * A click handler to remove a tag from a topic
+	 * 
 	 * @author Matthew Casperson
-	 *
+	 * 
 	 */
 	private class DeleteTagClickHandler implements ClickHandler
 	{
 		private final RESTTagV1 tag;
-		
+
 		public DeleteTagClickHandler(final RESTTagV1 tag)
 		{
-			if (tag == null) throw new IllegalArgumentException("tag cannot be null");
-			
+			if (tag == null)
+				throw new IllegalArgumentException("tag cannot be null");
+
 			this.tag = tag;
 		}
 
 		@Override
 		public void onClick(final ClickEvent event)
 		{
-			if (selectedTopic == null) throw new IllegalStateException("selectedTopic cannot be null");
-			
+			if (selectedTopic == null)
+				throw new IllegalStateException("selectedTopic cannot be null");
+
 			tag.setRemoveItem(true);
 			updateTopicTagViewDisplay();
 		}
@@ -93,6 +102,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 	@Inject
 	private TopicTagsPresenter.Display topicTagsDisplay;
+	
+	/** used to keep a track of how many rest calls are active */
+	int count = 0;
 
 	/**
 	 * This will reference the selected view, so as to maintain the view between
@@ -107,6 +119,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	/** Keeps a reference to the list of topics being displayed */
 	private List<RESTTopicV1> currentList;
 
+	private final SearchUIProjects searchUIProjects = new SearchUIProjects();
+
 	/** Keeps a reference to the start row */
 	private Integer tableStartRow;
 
@@ -120,6 +134,52 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		display.getTopicResultsPanel().setWidget(searchResultsDisplay.getPanel());
 
 		bind();
+
+		
+	}
+
+	/**
+	 * Gets the tags, so they can be displayed and added to topics
+	 */
+	private void getTags()
+	{
+		final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>()
+		{
+
+			@Override
+			public void begin()
+			{
+				startProcessing();
+			}
+
+			@Override
+			public void generalException(final Exception ex)
+			{
+				stopProcessing();
+			}
+
+			@Override
+			public void success(final RESTTagCollectionV1 retValue)
+			{
+				try
+				{
+					searchUIProjects.initialize(retValue);
+					topicTagsDisplay.initializeNewTags(searchUIProjects);
+				}
+				finally
+				{
+					stopProcessing();
+				}
+			}
+
+			@Override
+			public void failed()
+			{
+				stopProcessing();
+			}
+		};
+
+		RESTCalls.getTags(callback);
 	}
 
 	private void bind()
@@ -136,7 +196,32 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 		bindAceEditorButtons();
 
+		bindNewTagListBoxes();
+
 		searchResultsDisplay.setProvider(provider);
+		
+		getTags();
+	}
+
+	private void bindNewTagListBoxes()
+	{
+		topicTagsDisplay.getProjects().addValueChangeHandler(new ValueChangeHandler<SearchUIProject>()
+		{
+			@Override
+			public void onValueChange(final ValueChangeEvent<SearchUIProject> event)
+			{
+				topicTagsDisplay.updateNewTagCategoriesDisplay();
+			}
+		});
+
+		topicTagsDisplay.getCategories().addValueChangeHandler(new ValueChangeHandler<SearchUICategory>()
+		{
+			@Override
+			public void onValueChange(final ValueChangeEvent<SearchUICategory> event)
+			{
+				topicTagsDisplay.updateNewTagTagDisplay();
+			}
+		});
 	}
 
 	private void bindTagEditingButtons()
@@ -249,7 +334,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 					/* default to the rendered view */
 					if (selectedView == null)
 						selectedView = topicRenderedDisplay;
-					
+
 					updateTopicDisplay();
 				}
 			}
@@ -461,9 +546,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			view.getTags().addClickHandler(topicTagsClickHandler);
 		}
 	}
-	
+
 	/**
-	 * The topic tag view requires each remove button to be re-bound once the view is initialized
+	 * The topic tag view requires each remove button to be re-bound once the
+	 * view is initialized
 	 */
 	private void updateTopicTagViewDisplay()
 	{
@@ -477,7 +563,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	private void updateTopicDisplay()
 	{
 		selectedView.initialize(selectedTopic);
-		
+
 		display.getTopicViewActionButtonsPanel().clear();
 		display.getTopicViewPanel().clear();
 
@@ -516,11 +602,14 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 	private void stopProcessing()
 	{
-		display.setSpinnerVisible(false);
+		--count;
+		if (count == 0)
+			display.setSpinnerVisible(false);
 	}
 
 	private void startProcessing()
 	{
+		++count;
 		display.setSpinnerVisible(true);
 	}
 }

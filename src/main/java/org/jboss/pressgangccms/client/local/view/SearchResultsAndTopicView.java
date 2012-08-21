@@ -11,7 +11,6 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
-import com.google.gwt.user.client.ui.SplitLayoutPanel;
 
 public class SearchResultsAndTopicView extends BaseTemplateView implements SearchResultsAndTopicPresenter.Display
 {
@@ -24,6 +23,7 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
 	private final SimpleLayoutPanel topicResultsActionButtonsPanel = new SimpleLayoutPanel();
 	private final SimpleLayoutPanel topicViewActionButtonsPanel = new SimpleLayoutPanel();
 
+	@Override
 	public HanldedSplitLayoutPanel getSplitPanel()
 	{
 		return splitPanel;

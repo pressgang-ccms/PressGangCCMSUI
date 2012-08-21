@@ -99,7 +99,7 @@ public class SearchPresenter extends TemplatePresenter
 			}
 
 			@Override
-			public void success(RESTTagCollectionV1 retValue)
+			public void success(final RESTTagCollectionV1 retValue)
 			{
 				try
 				{

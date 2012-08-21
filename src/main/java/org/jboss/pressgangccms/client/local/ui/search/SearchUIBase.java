@@ -9,15 +9,23 @@ public class SearchUIBase
 {
 	/** Each entity has a name */
 	private final String name;
+	/** Each entity has an ID */
+	private final String id;
 	
+	public String getId()
+	{
+		return id;
+	}
+
 	public String getName()
 	{
 		return name;
 	}
 
-	public SearchUIBase(final String name)
+	public SearchUIBase(final String name, final String id)
 	{
 		this.name = name;
+		this.id = id;
 	}
 	
 	@Override

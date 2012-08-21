@@ -1,9 +1,7 @@
-package org.jboss.pressgangccms.client.local.ui.editor.topicview.tags;
+package org.jboss.pressgangccms.client.local.ui.editor.topicview.assignedtags;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
-import org.jboss.pressgangccms.client.local.presenter.TopicTagsPresenter.TopicTagsPresenterDriver;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
-import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUITag;
 
 import com.google.gwt.editor.client.Editor;
@@ -15,8 +13,6 @@ import com.google.gwt.user.client.ui.Label;
 
 public class TopicTagViewCategoryEditor extends Grid implements Editor<SearchUICategory>
 {
-	private final SearchUIProjects searchUIProjects;
-	private final TopicTagsPresenterDriver driver;
 	private final FlexTable tagsTable = new FlexTable();
 	final Label name = new Label();
 	public final ListEditor<SearchUITag, TopicTagViewTagEditor> myTags = ListEditor.of(new TopicTagViewTagEditorSource());
@@ -32,7 +28,7 @@ public class TopicTagViewCategoryEditor extends Grid implements Editor<SearchUIC
 		@Override
 		public TopicTagViewTagEditor create(final int index)
 		{
-			final TopicTagViewTagEditor subEditor = new TopicTagViewTagEditor(driver, searchUIProjects);
+			final TopicTagViewTagEditor subEditor = new TopicTagViewTagEditor();
 			tagsTable.setWidget(index, 0, subEditor.name);
 			tagsTable.setWidget(index, 1, subEditor.getDelete());			
 			tagsTable.getCellFormatter().addStyleName(index, 0, CSSConstants.TOPICTAGVIEWTAGROW);
@@ -52,7 +48,7 @@ public class TopicTagViewCategoryEditor extends Grid implements Editor<SearchUIC
 		}
 	}
 	
-	public TopicTagViewCategoryEditor(final TopicTagsPresenterDriver driver, final SearchUIProjects searchUIProjects)
+	public TopicTagViewCategoryEditor()
 	{
 		super(1, 2);
 		
@@ -63,8 +59,5 @@ public class TopicTagViewCategoryEditor extends Grid implements Editor<SearchUIC
 		
 		this.getCellFormatter().addStyleName(0, 0, CSSConstants.TOPICTAGVIEWCATEGORYROW);
 		tagsTable.addStyleName(CSSConstants.TOPICTAGVIEWTAGSTABLE);
-		
-		this.driver = driver;
-		this.searchUIProjects = searchUIProjects;
 	}
 }

@@ -88,12 +88,12 @@ public class SearchUIProject extends SearchUIBase
 
 	public SearchUIProject(final RESTProjectV1 project)
 	{
-		super(project.getName());
+		super(project.getName(), project.getId().toString());
 	}
 
 	public SearchUIProject(final String name)
 	{
-		super(name);
+		super(name, "-1");
 	}
 
 	public void populateCategories(final RESTProjectV1 project, final RESTTagCollectionV1 tags)
@@ -119,7 +119,7 @@ public class SearchUIProject extends SearchUIBase
 
 					for (final RESTCategoryV1 category : tag.getCategories().getItems())
 					{
-						final SearchUICategory searchUICategory = new SearchUICategory(category);
+						final SearchUICategory searchUICategory = new SearchUICategory(this, category);
 						if (!categories.contains(searchUICategory))
 						{
 							searchUICategory.populateCategories(project, category, tags);
@@ -150,7 +150,7 @@ public class SearchUIProject extends SearchUIBase
 
 				for (final RESTCategoryV1 category : tag.getCategories().getItems())
 				{
-					final SearchUICategory searchUICategory = new SearchUICategory(category);
+					final SearchUICategory searchUICategory = new SearchUICategory(this, category);
 					if (!categories.contains(searchUICategory))
 					{
 						searchUICategory.populateCategoriesWithoutProject(category, tags);

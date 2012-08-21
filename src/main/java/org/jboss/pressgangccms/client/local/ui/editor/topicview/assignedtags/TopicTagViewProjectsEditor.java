@@ -1,7 +1,6 @@
-package org.jboss.pressgangccms.client.local.ui.editor.topicview.tags;
+package org.jboss.pressgangccms.client.local.ui.editor.topicview.assignedtags;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
-import org.jboss.pressgangccms.client.local.presenter.TopicTagsPresenter.TopicTagsPresenterDriver;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProject;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
 
@@ -13,8 +12,6 @@ import com.google.gwt.user.client.ui.SimplePanel;
 
 public class TopicTagViewProjectsEditor extends SimplePanel implements Editor<SearchUIProjects>
 {
-	private final SearchUIProjects searchUIProjects;
-	private final TopicTagsPresenterDriver driver;
 	private final FlexTable projectLabelPanel = new FlexTable();
 	public final ListEditor<SearchUIProject, TopicTagViewProjectEditor> projects = ListEditor.of(new TopicTagViewProjectEditorSource());
 	
@@ -29,7 +26,7 @@ public class TopicTagViewProjectsEditor extends SimplePanel implements Editor<Se
 		@Override
 		public TopicTagViewProjectEditor create(final int index)
 		{
-			final TopicTagViewProjectEditor subEditor = new TopicTagViewProjectEditor(driver, searchUIProjects);
+			final TopicTagViewProjectEditor subEditor = new TopicTagViewProjectEditor();
 			projectLabelPanel.setWidget(index, 0, subEditor);
 			
 			return subEditor;
@@ -48,12 +45,10 @@ public class TopicTagViewProjectsEditor extends SimplePanel implements Editor<Se
 		}
 	}
 	
-	public TopicTagViewProjectsEditor(final TopicTagsPresenterDriver driver, final SearchUIProjects searchUIProjects)
+	public TopicTagViewProjectsEditor()
 	{
 		projectLabelPanel.addStyleName(CSSConstants.TOPICTAGVIEWPROJECTSTABLE);
+		this.addStyleName(CSSConstants.TOPICTAGVIEWPARENTPROJECTSTABLE);
 		this.setWidget(projectLabelPanel);
-		
-		this.searchUIProjects = searchUIProjects;
-		this.driver = driver;
 	}
 }

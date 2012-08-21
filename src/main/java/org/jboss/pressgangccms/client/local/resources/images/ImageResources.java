@@ -197,6 +197,12 @@ public interface ImageResources extends ClientBundle
 	@Source("plusGreen32.png")
 	ImageResource plusGreen32();
 	
+	@Source("plusGreenHover32.png")
+	ImageResource plusGreenHover32();
+	
+	@Source("plusGreenDown32.png")
+	ImageResource plusGreenDown32();
+	
 	@Source("cross32.png")
 	ImageResource cross32();
 	

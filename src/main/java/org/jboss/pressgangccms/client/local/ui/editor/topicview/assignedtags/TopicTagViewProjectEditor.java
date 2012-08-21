@@ -1,12 +1,8 @@
-package org.jboss.pressgangccms.client.local.ui.editor.topicview.tags;
+package org.jboss.pressgangccms.client.local.ui.editor.topicview.assignedtags;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
-import org.jboss.pressgangccms.client.local.presenter.TopicTagsPresenter.TopicTagsPresenterDriver;
-import org.jboss.pressgangccms.client.local.ui.editor.search.SearchUICategoryEditor;
-import org.jboss.pressgangccms.client.local.ui.editor.search.SearchUIProjectEditor;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProject;
-import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
 
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.adapters.EditorSource;
@@ -17,8 +13,6 @@ import com.google.gwt.user.client.ui.Label;
 
 public class TopicTagViewProjectEditor extends Grid implements Editor<SearchUIProject>
 {
-	private final TopicTagsPresenterDriver driver;
-	private final SearchUIProjects searchUIProjects;
 	private final FlexTable categoriesLabelPanel = new FlexTable();
 	final Label name = new Label();
 	public final ListEditor<SearchUICategory, TopicTagViewCategoryEditor> categories = ListEditor.of(new TopicTagViewCategoryEditorSource());
@@ -34,7 +28,7 @@ public class TopicTagViewProjectEditor extends Grid implements Editor<SearchUIPr
 		@Override
 		public TopicTagViewCategoryEditor create(final int index)
 		{			
-			final TopicTagViewCategoryEditor subEditor = new TopicTagViewCategoryEditor(driver, searchUIProjects);
+			final TopicTagViewCategoryEditor subEditor = new TopicTagViewCategoryEditor();
 			
 			categoriesLabelPanel.setWidget(index, 0, subEditor);
 			
@@ -55,7 +49,7 @@ public class TopicTagViewProjectEditor extends Grid implements Editor<SearchUIPr
 		}
 	}
 	
-	public TopicTagViewProjectEditor(final TopicTagsPresenterDriver driver, final SearchUIProjects searchUIProjects)
+	public TopicTagViewProjectEditor()
 	{
 		super(1, 2);
 		
@@ -66,8 +60,5 @@ public class TopicTagViewProjectEditor extends Grid implements Editor<SearchUIPr
 		
 		this.getCellFormatter().addStyleName(0, 0, CSSConstants.TOPICTAGVIEWPROJECTROW);
 		categoriesLabelPanel.addStyleName(CSSConstants.TOPICTAGVIEWCATEGORIESTABLE);
-		
-		this.driver = driver;
-		this.searchUIProjects = searchUIProjects;
 	}
 }

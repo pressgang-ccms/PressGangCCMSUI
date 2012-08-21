@@ -276,6 +276,11 @@ html {
 	vertical-align: middle;
 }
 
+.TopicTagViewNewTagTable
+{
+	overflow-y: auto;
+}
+
 .TopicTagViewProjectsTable>tbody>tr:nth-child(even) td
 {
 	background-color: #F3F7FB;
