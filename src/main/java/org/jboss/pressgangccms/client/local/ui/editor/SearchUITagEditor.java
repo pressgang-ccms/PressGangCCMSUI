@@ -26,7 +26,7 @@ public class SearchUITagEditor implements Editor<SearchUITag>
 	{
 		this.searchUIProjects = searchUIProjects;
 		
-		name.addStyleName("TagLabel");
+		name.addStyleName(CSSConstants.TAGLABEL);
 
 		state.addClickHandler(new ClickHandler()
 		{

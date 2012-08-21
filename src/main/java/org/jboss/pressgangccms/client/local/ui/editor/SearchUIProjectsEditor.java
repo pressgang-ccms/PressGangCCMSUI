@@ -1,5 +1,6 @@
 package org.jboss.pressgangccms.client.local.ui.editor;
 
+import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProject;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
@@ -43,10 +44,10 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
 					{
 						if (projectEditor.summary != subEditor.summary)
 						{
-							projectEditor.summary.removeStyleName("CustomButtonDown");
-							projectEditor.summary.removeStyleName("CustomButton");
+							projectEditor.summary.removeStyleName(CSSConstants.CUSTOMBUTTONDOWN);
+							projectEditor.summary.removeStyleName(CSSConstants.CUSTOMBUTTON);
 							
-							projectEditor.summary.addStyleName("CustomButton");
+							projectEditor.summary.addStyleName(CSSConstants.CUSTOMBUTTON);
 						}
 					}
 				}
@@ -79,8 +80,8 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
 		this.driver = driver;
 		this.searchUIProjects = searchUIProjects;
 		
-		this.addStyleName("ProjectsLayout");
-		projectButtonPanel.addStyleName("ProjectsButtonsLayout");
+		this.addStyleName(CSSConstants.PROJECTSLAYOUT);
+		projectButtonPanel.addStyleName(CSSConstants.PROJECTSBUTTONSLAYOUT);
 		
 		this.setWidget(0, 0, projectButtonPanel);
 	}

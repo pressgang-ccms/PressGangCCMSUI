@@ -1,5 +1,7 @@
 package com.google.gwt.user.client.ui;
 
+import org.jboss.pressgangccms.client.local.constants.CSSConstants;
+
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -19,7 +21,7 @@ public class TextAndImageButton extends Button
 	public TextAndImageButton()
 	{
 		super();
-		initialize("CustomButtonText");	
+		initialize(CSSConstants.CUSTOMBUTTONTEXT);	
 	}
 	
 	public TextAndImageButton(final String divClass)

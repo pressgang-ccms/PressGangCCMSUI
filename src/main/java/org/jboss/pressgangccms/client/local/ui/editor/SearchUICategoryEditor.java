@@ -1,5 +1,6 @@
 package org.jboss.pressgangccms.client.local.ui.editor;
 
+import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
@@ -68,16 +69,16 @@ public class SearchUICategoryEditor extends FlexTable implements ValueAwareEdito
 		this.driver = driver;
 		this.searchUIProjects = searchUIProjects;
 		
-		this.summary.addStyleName("CustomButton");
-		this.addStyleName("CategoryTagLayout");
+		this.summary.addStyleName(CSSConstants.CUSTOMBUTTON);
+		this.addStyleName(CSSConstants.CATEGORYTAGLAYOUT);
 		
 		summary.addClickHandler(new ClickHandler()
 		{
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				summary.removeStyleName("CustomButton");
-				summary.addStyleName("CustomButtonDown");
+				summary.removeStyleName(CSSConstants.CUSTOMBUTTON);
+				summary.addStyleName(CSSConstants.CUSTOMBUTTONDOWN);
 			}
 		});
 	}

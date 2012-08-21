@@ -1,9 +1,9 @@
 .gwt-SplitLayoutPanel-HDragger {
-  background: #e7e7e7 url(images/thumb_vertical.png) center center no-repeat;
+  background: #EFEFEF url(images/thumb_vertical.png) center center no-repeat;
   cursor: col-resize;
 }
 .gwt-SplitLayoutPanel-VDragger {
-  background: #e7e7e7 url(images/thumb_horz.png) center center no-repeat;
+  background: #EFEFEF url(images/thumb_horz.png) center center no-repeat;
   cursor: row-resize;
 }
 
@@ -23,28 +23,6 @@ html {
 	height: 100%;
 }
 
-.TopLevelPanel {
-	width: 100%;
-	height: 100%;
-	border-spacing: 0px;
-}
-
-.TopLevelPanelHeading, .TopLevelPanelPageTitle, .TopLevelPanelShortcutAndContentPanel, .TopLevelPanelFooterPanel
-{
-	padding: 0px;
-}
-
-.ShortcutAndContentPanelContentParentPanel
-{
-	height: 100%;
-	width: 100%;
-}
-
-.ContentParentContentPanel
-{
-	height: 100%;
-}
-
 .SpacedButton {
 	margin: 8px;
 }
@@ -56,32 +34,6 @@ html {
 	font-size: x-large;	
 	width: 100%;
 	height: 100%;
-}
-
-.ShortcutAndContentPanel {
-	padding-left: 16px;
-	padding-right: 16px;
-	padding-bottom: 16px;
-	width: 100%;
-	height: 100%;
-}
-
-.ShortcutAndContentPanelTopActionPanel
-{
-	vertical-align: top;
-	height: 100%;
-}
-
-.ContentParentPanel {
-	padding-left: 16px;
-	width: 100%;
-	height: 100%;
-}
-
-.TopLevelPanelShortcutAndContentPanel
-{
-	height: 100%;
-	border-spacing: 0px;
 }
 
 .ProjectsLayout td {
@@ -108,12 +60,6 @@ html {
 	vertical-align: top;
 }
 
-.CategoryLayout {
-	margin-right: 32px;
-	margin-bottom: 32px;
-	width: 100%;
-}
-
 .CategoryTagLayout {
 	width: 100%;
 }
@@ -121,14 +67,6 @@ html {
 .CategoryTagLayout td {
 	padding: 16px;
 	vertical-align: middle;
-}
-
-.CategoryTitle {
-	text-align: center;
-	font-weight: bold;
-	background-color: #BEBEBE;
-	color: white;
-	padding: 1em;
 }
 
 .TagLabel {
@@ -211,59 +149,25 @@ html {
 	color: #FF3333
 }
 
-.TopicSearchResultsAndViewPanel {
-	width: 100%;
-	height: 100%;
-}
-
 .TopicSearchResultsAndViewParentPanel
 {
 	height: 100%;
 }
 
-.TopicSearchResultsAndViewPanel td {
-	vertical-align: top;
+.TopicViewDescriptionDetail
+{
+	height: 100%;
 }
 
 .TopicViewDescriptionField {
 	width: 100%;
-	height: 200px;
+	height: 100%;
 	box-sizing: border-box;
 }
 
 .TopicViewIDField,.TopicViewTitleField,.TopicViewLocaleField {
 	width: 100%;
 	box-sizing: border-box;
-}
-
-.ShortcutParentPanel
-{
-	vertical-align: top;
-}
-
-.TopicSearchResultsButtonPanel
-{
-	width: 25%;
-	min-width: 300px;
-}
-
-.TopicSearchTopicViewButtonPanel
-{
-	width: 75%;
-}
-
-.TopicSearchResultsPanel
-{
-	height: 100%;
-}
-
-.TopicSearchTopicViewPanel
-{
-	/* 
-	 	Hacky, but works with webkit browsers. Used to allow the child div to set a height of 100%.
-	 	http://stackoverflow.com/a/3542470/157605 
-	*/
-	height: 1px;
 }
 
 .TopicViewPanel
@@ -280,6 +184,7 @@ html {
 .TopicViewLabel
 {
 	white-space: nowrap;
+	vertical-align: top;
 }
 
 .TopicXMLViewPanel
@@ -309,11 +214,6 @@ html {
 	width: 100%;
 }
 
-.TopicXMLViewEditorButtonsPanel
-{
-	width: 100%;
-}
-
 .RightAlignedActionButtons
 {
 	width: 100%;
@@ -327,7 +227,7 @@ html {
 .TopicXMLErrorsViewField
 {
 	width: 100%;
-	height: 300px;
+	height: 100%;
 	box-sizing: border-box;
 }
 

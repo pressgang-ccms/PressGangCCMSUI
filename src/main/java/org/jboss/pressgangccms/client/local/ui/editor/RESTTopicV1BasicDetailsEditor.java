@@ -1,5 +1,6 @@
 package org.jboss.pressgangccms.client.local.ui.editor;
 
+import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
@@ -21,23 +22,23 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
 	{
 		super(4, 2);
 		
-		this.addStyleName("TopicViewPanel");
+		this.addStyleName(CSSConstants.TOPICVIEWPANEL);
 		
 		for (int i = 0; i < 4; ++i)
-			this.getCellFormatter().addStyleName(i, 0, "TopicViewLabel");
+			this.getCellFormatter().addStyleName(i, 0, CSSConstants.TOPICVIEWLABEL);
 		
-		for (int i = 0; i < 4; ++i)
-			this.getCellFormatter().addStyleName(i, 1, "TopicViewDetail");
+		for (int i = 0; i < 3; ++i)
+			this.getCellFormatter().addStyleName(i, 1, CSSConstants.TOPICVIEWDETAIL);
 		
 		id.setReadOnly(readOnly);
 		title.setReadOnly(readOnly);
 		locale.setReadOnly(readOnly);
 		description.setReadOnly(readOnly);
 		
-		id.addStyleName("TopicViewIDField");
-		title.addStyleName("TopicViewTitleField");
-		locale.addStyleName("TopicViewLocaleField");
-		description.addStyleName("TopicViewDescriptionField");
+		id.addStyleName(CSSConstants.TOPICVIEWIDFIELD);
+		title.addStyleName(CSSConstants.TOPICVIEWTITLEFIELD);
+		locale.addStyleName(CSSConstants.TOPICVIEWLOCALEFIELD);
+		description.addStyleName(CSSConstants.TOPICVIEWDESCRIPTIONFIELD);
 		
 		this.setWidget(0, 0, new Label(PressGangCCMSUI.INSTANCE.TopicID()));
 		this.setWidget(0, 1, id);
@@ -47,8 +48,9 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
 		
 		this.setWidget(2, 0, new Label(PressGangCCMSUI.INSTANCE.TopicTitle()));
 		this.setWidget(2, 1, title);
-		
+				
 		this.setWidget(3, 0, new Label(PressGangCCMSUI.INSTANCE.TopicDescription()));
+		this.getCellFormatter().addStyleName(3, 1, CSSConstants.TOPICVIEWDESCRIPTIONDETAIL);
 		this.setWidget(3, 1, description);
 	}
 }

@@ -1,5 +1,6 @@
 package org.jboss.pressgangccms.client.local.view;
 
+import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.TopicPresenter;
 import org.jboss.pressgangccms.client.local.presenter.TopicPresenter.TopicPresenterDriver;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
@@ -30,7 +31,7 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display
 		addActionButton(this.getXml());
 		addActionButton(this.getXmlErrors());
 		final Image downImage = new Image(ImageResources.INSTANCE.fieldsDown48());
-		downImage.addStyleName("SpacedButton");
+		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
 		addActionButton(downImage);
 		addActionButton(this.getSave());
 		

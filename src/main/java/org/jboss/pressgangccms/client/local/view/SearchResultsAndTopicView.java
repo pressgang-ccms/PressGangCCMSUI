@@ -62,7 +62,7 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
 
 		/* Add a spacer */
 		final Image spacer = new Image(ImageResources.INSTANCE.transparent48());
-		spacer.addStyleName("SpacedButton");
+		spacer.addStyleName(CSSConstants.SPACEDBUTTON);
 		this.getShortcutPanel().insert(spacer, 0);
 
 		resultsViewLayoutPanel.addStyleName(CSSConstants.RESULTSVIEWLAYOUTPANEL);

@@ -1,4 +1,5 @@
 package org.jboss.pressgangccms.client.local.ui.editor;
+import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProject;
@@ -51,10 +52,10 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
 					{
 						if (editor.summary != subEditor.summary)
 						{
-							editor.summary.removeStyleName("CustomButtonDown");
-							editor.summary.removeStyleName("CustomButton");
+							editor.summary.removeStyleName(CSSConstants.CUSTOMBUTTONDOWN);
+							editor.summary.removeStyleName(CSSConstants.CUSTOMBUTTON);
 							
-							editor.summary.addStyleName("CustomButton");
+							editor.summary.addStyleName(CSSConstants.CUSTOMBUTTON);
 						}
 					}
 				}
@@ -84,10 +85,10 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
 		this.driver = driver;
 		this.searchUIProjects = searchUIProjects;
 		
-		this.addStyleName("ProjectLayout");
-		summary.addStyleName("CustomButton");
+		this.addStyleName(CSSConstants.PROJECTSLAYOUT);
+		summary.addStyleName(CSSConstants.CUSTOMBUTTON);
 		
-		categoriesButtonPanel.addStyleName("CategoriesButtonsLayout");
+		categoriesButtonPanel.addStyleName(CSSConstants.CATEGORIESBUTTONSLAYOUT);
 		this.setWidget(0,  0, categoriesButtonPanel);
 
 		summary.addClickHandler(new ClickHandler()
@@ -95,8 +96,8 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				summary.removeStyleName("CustomButton");
-				summary.addStyleName("CustomButtonDown");
+				summary.removeStyleName(CSSConstants.CUSTOMBUTTON);
+				summary.addStyleName(CSSConstants.CUSTOMBUTTONDOWN);
 			}
 		});
 	}

@@ -164,21 +164,21 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		
 		/* Build the shortcut panel */
 
-		home = createPushButton(ImageResources.INSTANCE.home48(), ImageResources.INSTANCE.homeDown48(), ImageResources.INSTANCE.homeHover48(), "SpacedButton");
+		home = createPushButton(ImageResources.INSTANCE.home48(), ImageResources.INSTANCE.homeDown48(), ImageResources.INSTANCE.homeHover48(), CSSConstants.SPACEDBUTTON);
 		getShortcutPanel().add(home);
 
-		search = createPushButton(ImageResources.INSTANCE.search48(), ImageResources.INSTANCE.searchDown48(), ImageResources.INSTANCE.searchHover48(), "SpacedButton");
+		search = createPushButton(ImageResources.INSTANCE.search48(), ImageResources.INSTANCE.searchDown48(), ImageResources.INSTANCE.searchHover48(), CSSConstants.SPACEDBUTTON);
 		getShortcutPanel().add(search);
 
-		searchTranslations = createPushButton(ImageResources.INSTANCE.searchTranslations48(), ImageResources.INSTANCE.searchTranslationsDown48(), ImageResources.INSTANCE.searchTranslationsHover48(), ImageResources.INSTANCE.searchTranslationsDisabled48(), "SpacedButton");
+		searchTranslations = createPushButton(ImageResources.INSTANCE.searchTranslations48(), ImageResources.INSTANCE.searchTranslationsDown48(), ImageResources.INSTANCE.searchTranslationsHover48(), ImageResources.INSTANCE.searchTranslationsDisabled48(), CSSConstants.SPACEDBUTTON);
 		searchTranslations.setEnabled(false);
 		getShortcutPanel().add(searchTranslations);
 
-		reports = createPushButton(ImageResources.INSTANCE.reports48(), ImageResources.INSTANCE.reportsDown48(), ImageResources.INSTANCE.reportsHover48(), ImageResources.INSTANCE.reportsDisabled48(), "SpacedButton");
+		reports = createPushButton(ImageResources.INSTANCE.reports48(), ImageResources.INSTANCE.reportsDown48(), ImageResources.INSTANCE.reportsHover48(), ImageResources.INSTANCE.reportsDisabled48(), CSSConstants.SPACEDBUTTON);
 		reports.setEnabled(false);
 		getShortcutPanel().add(reports);
 
-		bug = createPushButton(ImageResources.INSTANCE.bug48(), ImageResources.INSTANCE.bugDown48(), ImageResources.INSTANCE.bugHover48(), "SpacedButton");
+		bug = createPushButton(ImageResources.INSTANCE.bug48(), ImageResources.INSTANCE.bugDown48(), ImageResources.INSTANCE.bugHover48(), CSSConstants.SPACEDBUTTON);
 		getShortcutPanel().add(bug);
 	}
 	

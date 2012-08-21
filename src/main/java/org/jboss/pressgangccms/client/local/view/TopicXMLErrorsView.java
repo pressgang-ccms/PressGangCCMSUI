@@ -1,5 +1,6 @@
 package org.jboss.pressgangccms.client.local.view;
 
+import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLErrorsPresenter;
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLErrorsPresenter.TopicXMLErrorsPresenterDriver;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
@@ -29,7 +30,7 @@ public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsP
 		addActionButton(this.getRendered());		
 		addActionButton(this.getXml());
 		final Image downImage = new Image(ImageResources.INSTANCE.attentionDown48());
-		downImage.addStyleName("SpacedButton");
+		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
 		addActionButton(downImage);
 		addActionButton(this.getFields());
 		addActionButton(this.getSave());

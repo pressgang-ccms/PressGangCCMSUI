@@ -1,5 +1,6 @@
 package org.jboss.pressgangccms.client.local.ui.editor;
 
+import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.editor.client.Editor;
@@ -12,8 +13,8 @@ public class RESTTopicV1XMLErrorsEditor extends SimplePanel implements Editor<RE
 
 	public RESTTopicV1XMLErrorsEditor()
 	{
-		this.addStyleName("TopicXMLErrorsViewPanel");
-		xmlErrors.addStyleName("TopicXMLErrorsViewField");
+		this.addStyleName(CSSConstants.TOPICXMLERRORSVIEWPANEL);
+		xmlErrors.addStyleName(CSSConstants.TOPICXMLERRORSVIEWFIELD);
 		xmlErrors.setReadOnly(true);
 		
 		this.setWidget(xmlErrors);	

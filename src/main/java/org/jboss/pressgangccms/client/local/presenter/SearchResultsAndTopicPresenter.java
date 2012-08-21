@@ -100,7 +100,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			@Override
 			public void onResize(final ResizeEvent event)
 			{
-				topicXMLDisplay.getEditor().redisplay();
+				if (topicXMLDisplay.getEditor() != null)
+					topicXMLDisplay.getEditor().redisplay();
 			}
 		});
 

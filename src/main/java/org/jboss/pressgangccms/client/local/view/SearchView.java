@@ -1,5 +1,6 @@
 package org.jboss.pressgangccms.client.local.view;
 
+import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
@@ -16,7 +17,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 {
 	public static final String HISTORY_TOKEN = "SearchView";
 	
-	private final PushButton search = createPushButton(ImageResources.INSTANCE.search48(), ImageResources.INSTANCE.searchDown48(), ImageResources.INSTANCE.searchHover48(), "SpacedButton");
+	private final PushButton search = createPushButton(ImageResources.INSTANCE.search48(), ImageResources.INSTANCE.searchDown48(), ImageResources.INSTANCE.searchHover48(), CSSConstants.SPACEDBUTTON);
 
 	/** The GWT Editor Driver */
 	private final SearchPresenterDriver driver = GWT.create(SearchPresenterDriver.class);
@@ -51,7 +52,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 	{
 		/* Add a spacer */
 		final Image spacer = new Image(ImageResources.INSTANCE.transparent48());
-		spacer.addStyleName("SpacedButton");
+		spacer.addStyleName(CSSConstants.SPACEDBUTTON);
 		addActionButton(spacer);
 		
 		/* Build the action bar icons */

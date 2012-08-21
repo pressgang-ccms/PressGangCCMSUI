@@ -1,5 +1,6 @@
 package com.google.gwt.user.client.ui;
 
+import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
 import com.google.gwt.editor.client.IsEditor;
@@ -36,8 +37,8 @@ public class FourTextAndImageButtonSearchUICategoryEditor extends FourTextAndIma
 				setText3(PressGangCCMSUI.INSTANCE.Included() + ": " + value.getIncludedTags());
 				setText4(PressGangCCMSUI.INSTANCE.Excluded() + ": " + value.getExcludedTags());
 				
-				div3.setAttribute("class", value.getIncludedTags() != 0 ? "CustomButtonTagsInclued" + "" : "CustomButtonText");
-				div4.setAttribute("class", value.getExcludedTags() != 0 ? "CustomButtonTagsExcluded" + "" : "CustomButtonText");
+				div3.setAttribute("class", value.getIncludedTags() != 0 ? CSSConstants.CUSTOMBUTTONTAGSINCLUDED + "" : CSSConstants.CUSTOMBUTTONTEXT);
+				div4.setAttribute("class", value.getExcludedTags() != 0 ? CSSConstants.CUSTOMBUTTONTAGSEXCLUDED + "" : CSSConstants.CUSTOMBUTTONTEXT);
 					
 			}
 

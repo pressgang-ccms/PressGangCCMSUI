@@ -1,5 +1,6 @@
 package org.jboss.pressgangccms.client.local.view;
 
+import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLPresenter;
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLPresenter.TopicXMLPresenterDriver;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
@@ -23,8 +24,8 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
 	private RESTTopicV1XMLEditor editor;
 
-	private final ToggleButton lineWrap = createToggleButton(ImageResources.INSTANCE.lineWrap48(), ImageResources.INSTANCE.lineWrapDown48(), ImageResources.INSTANCE.lineWrapHover48(), "SpacedButton");
-	private final ToggleButton showInvisibles = createToggleButton(ImageResources.INSTANCE.hiddenCharacters48(), ImageResources.INSTANCE.hiddenCharactersDown48(), ImageResources.INSTANCE.hiddenCharactersHover48(), "SpacedButton");
+	private final ToggleButton lineWrap = createToggleButton(ImageResources.INSTANCE.lineWrap48(), ImageResources.INSTANCE.lineWrapDown48(), ImageResources.INSTANCE.lineWrapHover48(), CSSConstants.SPACEDBUTTON);
+	private final ToggleButton showInvisibles = createToggleButton(ImageResources.INSTANCE.hiddenCharacters48(), ImageResources.INSTANCE.hiddenCharactersDown48(), ImageResources.INSTANCE.hiddenCharactersHover48(), CSSConstants.SPACEDBUTTON);
 
 	@Override
 	public ToggleButton getShowInvisibles()
@@ -54,7 +55,7 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 	{
 		addActionButton(this.getRendered());
 		final Image downImage = new Image(ImageResources.INSTANCE.xmlDown48());
-		downImage.addStyleName("SpacedButton");
+		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
 		addActionButton(downImage);
 		addActionButton(this.getXmlErrors());
 		addActionButton(this.getFields());
@@ -68,7 +69,7 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 	@Override
 	public void initialize(final RESTTopicV1 topic)
 	{
-		this.getPanel().addStyleName("TopicXMLViewPanel");
+		this.getPanel().addStyleName(CSSConstants.TOPICXMLVIEWPANEL);
 		
 		/* SearchUIProjectsEditor is a grid */
 		editor = new RESTTopicV1XMLEditor(false);

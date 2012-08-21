@@ -1,5 +1,6 @@
 package org.jboss.pressgangccms.client.local.ui.editor;
 
+import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.editor.client.Editor;
@@ -14,8 +15,8 @@ public class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RESTTopi
 
 	public RESTTopicV1XMLEditor(final boolean readOnly)
 	{
-		this.addStyleName("TopicXMLViewACEPanel");
-		xml.addStyleName("TopicXMLViewXMLField");
+		this.addStyleName(CSSConstants.TOPICXMLVIEWACEPANEL);
+		xml.addStyleName(CSSConstants.TOPICXMLVIEWXMLFIELD);
 		
 		xml.setReadOnly(readOnly);
 		xml.setMode(AceEditorMode.XML);
