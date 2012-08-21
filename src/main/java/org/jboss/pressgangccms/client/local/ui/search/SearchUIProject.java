@@ -3,11 +3,12 @@ package org.jboss.pressgangccms.client.local.ui.search;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.pressgangccms.client.local.ui.TriStateSelectionState;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
+
+import com.google.gwt.user.client.ui.TriStateSelectionState;
 
 /**
  * This class represents a single project, with child categories

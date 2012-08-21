@@ -11,4 +11,5 @@
 	<inherits name="com.google.gwt.xml.XML" />
 	<inherits name="hu.szaboaz.gwt.xslt.XSLT" />
 	<inherits name='edu.ycp.cs.dh.acegwt.AceGWT'/>
+	<inherits name="com.google.gwt.user.client.ui"/>
 </module>

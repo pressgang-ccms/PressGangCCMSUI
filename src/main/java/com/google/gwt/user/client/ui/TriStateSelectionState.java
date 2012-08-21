@@ -1,4 +1,4 @@
-package org.jboss.pressgangccms.client.local.ui;
+package com.google.gwt.user.client.ui;
 
 public enum TriStateSelectionState
 {

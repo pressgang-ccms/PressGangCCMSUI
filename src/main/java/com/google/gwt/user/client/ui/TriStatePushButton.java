@@ -1,4 +1,4 @@
-package org.jboss.pressgangccms.client.local.ui;
+package com.google.gwt.user.client.ui;
 
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 

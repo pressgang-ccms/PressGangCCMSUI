@@ -16,7 +16,10 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -37,6 +40,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		SimpleLayoutPanel getTopicViewActionButtonsPanel();
 
 		SimpleLayoutPanel getTopicResultsActionButtonsPanel();
+
+		HanldedSplitLayoutPanel getSplitPanel();
 	}
 
 	@Inject
@@ -53,7 +58,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 	@Inject
 	private SearchResultsPresenter.Display searchResultsDisplay;
-	
+
 	@Inject
 	private TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay;
 
@@ -66,10 +71,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	private String queryString;
 
 	private RESTTopicV1 selectedTopic;
-	
+
 	/** Keeps a reference to the list of topics being displayed */
 	private List<RESTTopicV1> currentList;
-	
+
 	/** Keeps a reference to the start row */
 	private Integer tableStartRow;
 
@@ -88,6 +93,16 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	private void bind()
 	{
 		super.bind(display);
+
+		/* Have to redisplay as the split panel is moved */
+		display.getSplitPanel().addResizeHandler(new ResizeHandler()
+		{
+			@Override
+			public void onResize(final ResizeEvent event)
+			{
+				topicXMLDisplay.getEditor().redisplay();
+			}
+		});
 
 		final AsyncDataProvider<RESTTopicV1> provider = new AsyncDataProvider<RESTTopicV1>()
 		{
@@ -151,7 +166,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				final boolean isClick = "click".equals(event.getNativeEvent().getType());
 
 				if (isClick)
-				{				
+				{
 					selectedTopic = event.getValue();
 
 					final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>()
@@ -184,7 +199,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 								selectedView.initialize(retValue);
 							}
 							finally
-							{								
+							{
 								stopProcessing();
 							}
 						}
@@ -209,7 +224,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			{
 				/* Sync any changes back to the underlying object */
 				flushChanges();
-				
+
 				if (selectedTopic != null)
 				{
 					selectedView = topicViewDisplay;
@@ -226,13 +241,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			{
 				/* Sync any changes back to the underlying object */
 				flushChanges();
-				
+
 				if (selectedTopic != null)
 				{
 					selectedView = topicXMLDisplay;
 					selectedView.initialize(selectedTopic);
 					updateTopicDisplay();
-					
+
 					topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
 					topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
 					topicXMLDisplay.getEditor().redisplay();
@@ -247,7 +262,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			{
 				/* Sync any changes back to the underlying object */
 				flushChanges();
-				
+
 				if (selectedTopic != null)
 				{
 					selectedView = topicRenderedDisplay;
@@ -256,7 +271,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				}
 			}
 		};
-		
+
 		final ClickHandler topicXMLErrorsClickHandler = new ClickHandler()
 		{
 			@Override
@@ -264,7 +279,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			{
 				/* Sync any changes back to the underlying object */
 				flushChanges();
-				
+
 				if (selectedTopic != null)
 				{
 					selectedView = topicXMLErrorsDisplay;
@@ -309,7 +324,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 								provider.updateRowData(tableStartRow, currentList);
 								/* Update the edit window */
 								selectedView.initialize(selectedTopic);
-								
+
 								Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
 							}
 							finally
@@ -327,12 +342,14 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 							topicXMLDisplay.getEditor().redisplay();
 						}
 					};
-					
+
 					/* Sync any changes back to the underlying object */
 					flushChanges();
-									
-					
-					/* Create a new instance of the topic, with all the properties set to explicitly update */
+
+					/*
+					 * Create a new instance of the topic, with all the
+					 * properties set to explicitly update
+					 */
 					final RESTTopicV1 updateTopic = selectedTopic.clone(true);
 					updateTopic.explicitSetBugzillaBugs_OTM(updateTopic.getBugzillaBugs_OTM());
 					updateTopic.explicitSetProperties(updateTopic.getProperties());
@@ -342,7 +359,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 					updateTopic.explicitSetLocale(updateTopic.getLocale());
 					updateTopic.explicitSetTitle(updateTopic.getTitle());
 					updateTopic.explicitSetXml(updateTopic.getXml());
-					
+
 					RESTCalls.saveTopic(callback, updateTopic);
 				}
 			}
@@ -353,7 +370,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		topicViewDisplay.getRendered().addClickHandler(topicRenderedClickHandler);
 		topicViewDisplay.getSave().addClickHandler(saveClickHandler);
 		topicViewDisplay.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
-		
+
 		topicXMLDisplay.getFields().addClickHandler(topicViewClickHandler);
 		topicXMLDisplay.getXml().addClickHandler(topicXMLClickHandler);
 		topicXMLDisplay.getRendered().addClickHandler(topicRenderedClickHandler);
@@ -365,13 +382,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		topicRenderedDisplay.getRendered().addClickHandler(topicRenderedClickHandler);
 		topicRenderedDisplay.getSave().addClickHandler(saveClickHandler);
 		topicRenderedDisplay.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
-		
+
 		topicXMLErrorsDisplay.getFields().addClickHandler(topicViewClickHandler);
 		topicXMLErrorsDisplay.getXml().addClickHandler(topicXMLClickHandler);
 		topicXMLErrorsDisplay.getRendered().addClickHandler(topicRenderedClickHandler);
 		topicXMLErrorsDisplay.getSave().addClickHandler(saveClickHandler);
 		topicXMLErrorsDisplay.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
-		
+
 		topicXMLDisplay.getLineWrap().addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -381,7 +398,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
 			}
 		});
-		
+
 		topicXMLDisplay.getShowInvisibles().addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -406,10 +423,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		display.getTopicViewActionButtonsPanel().setWidget(selectedView.getTopActionPanel());
 		display.getTopicViewPanel().setWidget(selectedView.getPanel());
 	}
-	
+
 	private void flushChanges()
 	{
-		/* Sync any changes back to the underlying object, except for the xml errros because they are read only */
+		/*
+		 * Sync any changes back to the underlying object, except for the xml
+		 * errros because they are read only
+		 */
 		if (selectedView != null && selectedView != topicXMLErrorsDisplay && selectedView.getDriver() != null)
 			selectedView.getDriver().flush();
 	}

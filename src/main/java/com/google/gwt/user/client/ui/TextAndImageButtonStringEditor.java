@@ -1,4 +1,4 @@
-package org.jboss.pressgangccms.client.local.ui;
+package com.google.gwt.user.client.ui;
 
 import com.google.gwt.editor.client.IsEditor;
 import com.google.gwt.editor.client.LeafValueEditor;

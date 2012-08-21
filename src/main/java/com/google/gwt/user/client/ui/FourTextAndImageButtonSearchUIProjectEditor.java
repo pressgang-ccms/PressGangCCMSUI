@@ -1,7 +1,8 @@
-package org.jboss.pressgangccms.client.local.ui;
+package com.google.gwt.user.client.ui;
 
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
+import org.jboss.pressgangccms.client.local.ui.search.SearchUIProject;
+
 import com.google.gwt.editor.client.IsEditor;
 import com.google.gwt.editor.client.LeafValueEditor;
 
@@ -12,37 +13,37 @@ import com.google.gwt.editor.client.LeafValueEditor;
  * 
  * @author Matthew Casperson
  */
-public class FourTextAndImageButtonSearchUICategoryEditor extends FourTextAndImageButton implements IsEditor<LeafValueEditor<SearchUICategory.TagSummary>>
+public class FourTextAndImageButtonSearchUIProjectEditor extends FourTextAndImageButton implements IsEditor<LeafValueEditor<SearchUIProject.CategorySummary>>
 {
-	private SearchUICategory.TagSummary details;
+	private SearchUIProject.CategorySummary details;
 
-	public FourTextAndImageButtonSearchUICategoryEditor()
+	public FourTextAndImageButtonSearchUIProjectEditor()
 	{
-		
+
 	}
 
+
 	@Override
-	public LeafValueEditor<SearchUICategory.TagSummary> asEditor()
+	public LeafValueEditor<SearchUIProject.CategorySummary> asEditor()
 	{
-		return new LeafValueEditor<SearchUICategory.TagSummary>()
+		return new LeafValueEditor<SearchUIProject.CategorySummary>()
 		{
 			@Override
-			public void setValue(final SearchUICategory.TagSummary value)
+			public void setValue(final SearchUIProject.CategorySummary value)
 			{
 				details = value;
-
+				
 				setText(value.getName());
-				setText2(PressGangCCMSUI.INSTANCE.Tags() + ": " + value.getTagCount());
+				setText2(PressGangCCMSUI.INSTANCE.Categories() + ": " + value.getCategoryCount());
 				setText3(PressGangCCMSUI.INSTANCE.Included() + ": " + value.getIncludedTags());
 				setText4(PressGangCCMSUI.INSTANCE.Excluded() + ": " + value.getExcludedTags());
 				
 				div3.setAttribute("class", value.getIncludedTags() != 0 ? "CustomButtonTagsInclued" + "" : "CustomButtonText");
 				div4.setAttribute("class", value.getExcludedTags() != 0 ? "CustomButtonTagsExcluded" + "" : "CustomButtonText");
-					
 			}
 
 			@Override
-			public SearchUICategory.TagSummary getValue()
+			public SearchUIProject.CategorySummary getValue()
 			{
 				return details;
 			}

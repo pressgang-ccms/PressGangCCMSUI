@@ -1,6 +1,6 @@
 package org.jboss.pressgangccms.client.local.ui.search;
 
-import org.jboss.pressgangccms.client.local.ui.TriStateSelectionState;
+import com.google.gwt.user.client.ui.TriStateSelectionState;
 
 /**
  * This class represents a single tag under a parent category.

@@ -1,6 +1,5 @@
 package org.jboss.pressgangccms.client.local.ui.editor;
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter.Display.SearchPresenterDriver;
-import org.jboss.pressgangccms.client.local.ui.FourTextAndImageButtonSearchUIProjectEditor;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProject;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
@@ -12,6 +11,7 @@ import com.google.gwt.editor.client.adapters.ListEditor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FourTextAndImageButtonSearchUIProjectEditor;
 import com.google.gwt.user.client.ui.Grid;
 
 public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<SearchUIProject>
