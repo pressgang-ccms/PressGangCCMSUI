@@ -1,5 +1,6 @@
 package org.jboss.pressgangccms.client.local.presenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.Dependent;
@@ -19,6 +20,7 @@ import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewInterface;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgangccms.rest.v1.entities.RESTBugzillaBugV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
@@ -169,6 +171,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	@Inject
 	private TopicTagsPresenter.Display topicTagsDisplay;
 
+	@Inject
+	private TopicBugsPresenter.Display topicBugsDisplay;
+
 	/** used to keep a track of how many rest calls are active */
 	int count = 0;
 
@@ -178,13 +183,24 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	 */
 	private TopicViewInterface selectedView;
 
+	/**
+	 * The query string to be sent to the REST interface, as extracted from the
+	 * History Token
+	 */
 	private String queryString;
 
+	/**
+	 * The currently selected topic
+	 */
 	private RESTTopicV1 selectedTopic;
 
 	/** Keeps a reference to the list of topics being displayed */
 	private List<RESTTopicV1> currentList;
 
+	/**
+	 * A copy of all the tags in the system, broken down into
+	 * project->category->tag. Used when adding new tags to a topic.
+	 */
 	private final SearchUIProjects searchUIProjects = new SearchUIProjects();
 
 	/** Keeps a reference to the start row */
@@ -213,6 +229,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		bindSplitPanelResize();
 
 		final AsyncDataProvider<RESTTopicV1> provider = generateTopicListProvider();
+		searchResultsDisplay.setProvider(provider);
 
 		bindTopicListRowClicks();
 
@@ -222,11 +239,12 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 		bindNewTagListBoxes();
 
-		searchResultsDisplay.setProvider(provider);
-
 		getTags();
 	}
 
+	/**
+	 * Add behaviour to the tag view screen elements 
+	 */
 	private void bindNewTagListBoxes()
 	{
 		topicTagsDisplay.getProjects().addValueChangeHandler(new ValueChangeHandler<SearchUIProject>()
@@ -294,6 +312,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		RESTCalls.getTags(callback);
 	}
 
+	/**
+	 * Add behaviour to the tag delete buttons
+	 */
 	private void bindTagEditingButtons()
 	{
 
@@ -324,6 +345,42 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 					topicXMLDisplay.getEditor().redisplay();
 			}
 		});
+	}
+
+	/**
+	 * @return A provider to be used for the topic display list
+	 */
+	private AsyncDataProvider<RESTBugzillaBugV1> generateTopicBugListProvider()
+	{
+		final AsyncDataProvider<RESTBugzillaBugV1> provider = new AsyncDataProvider<RESTBugzillaBugV1>()
+		{
+			@Override
+			protected void onRangeChanged(final HasData<RESTBugzillaBugV1> display)
+			{
+				if (selectedTopic != null)
+				{
+					if (selectedTopic.getBugzillaBugs_OTM() == null)
+						throw new IllegalStateException("selectedTopic.getBugzillaBugs_OTM() cannot be null");
+					if (selectedTopic.getBugzillaBugs_OTM().getItems() == null)
+						throw new IllegalStateException("selectedTopic.getBugzillaBugs_OTM().getItems() cannot be null");
+
+					final int bugzillaCount = selectedTopic.getBugzillaBugs_OTM().getItems().size();
+					final int tableStartRow = display.getVisibleRange().getStart();
+					final int length = display.getVisibleRange().getLength();
+					final int end = tableStartRow + length;
+					final int fixedEnd = end > bugzillaCount ? bugzillaCount : end;
+
+					updateRowData(tableStartRow, selectedTopic.getBugzillaBugs_OTM().getItems().subList(tableStartRow, fixedEnd));
+					updateRowCount(bugzillaCount, true);
+				}
+				else
+				{
+					updateRowData(0, new ArrayList<RESTBugzillaBugV1>());
+					updateRowCount(0, true);
+				}
+			}
+		};
+		return provider;
 	}
 
 	/**
@@ -609,9 +666,25 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			}
 		};
 
+		final ClickHandler topicBugsClickHandler = new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				/* Sync any changes back to the underlying object */
+				flushChanges();
+
+				if (selectedTopic != null)
+				{
+					selectedView = topicBugsDisplay;
+					changeDisplayedTopicView();
+				}
+			}
+		};
+
 		/* Hook up the click listeners */
 		for (final TopicViewInterface view : new TopicViewInterface[]
-		{ topicViewDisplay, topicXMLDisplay, topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay })
+		{ topicViewDisplay, topicXMLDisplay, topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay })
 		{
 			view.getFields().addClickHandler(topicViewClickHandler);
 			view.getXml().addClickHandler(topicXMLClickHandler);
@@ -619,6 +692,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			view.getSave().addClickHandler(saveClickHandler);
 			view.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
 			view.getTags().addClickHandler(topicTagsClickHandler);
+			view.getBugs().addClickHandler(topicBugsClickHandler);
 		}
 	}
 
@@ -641,9 +715,18 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		 * if we just displayed a new selection of tags, link up all the tag
 		 * delete buttons
 		 */
-		if (selectedView == this.topicTagsDisplay)
+		else if (selectedView == this.topicTagsDisplay)
 		{
 			bindTagEditingButtons();
+		}
+		
+		/*
+		 * We need to hook up the bug list
+		 */
+		else if (selectedView == this.topicBugsDisplay)
+		{
+			final AsyncDataProvider<RESTBugzillaBugV1> bugzillaProvider = generateTopicBugListProvider();
+			topicBugsDisplay.setProvider(bugzillaProvider);
 		}
 	}
 

@@ -20,7 +20,7 @@ import org.jboss.pressgangccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 public final class RESTCalls
 {
 	/** The required expansion details for the tags */
-	private static final String TAG_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"tags\"},\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"projects\"}},{\"trunk\":{\"showSize\":true,\"name\":\"categories\"}}]}";
+	private static final String TAG_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"bugzillabugs_OTM\"}}, {\"trunk\":{\"showSize\":true,\"name\": \"tags\"},\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"projects\"}},{\"trunk\":{\"showSize\":true,\"name\":\"categories\"}}]}";
 	
 	abstract public interface RESTCallback<T>
 	{

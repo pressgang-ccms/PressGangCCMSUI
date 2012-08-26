@@ -1,12 +1,16 @@
 package org.jboss.pressgangccms.client.local.view;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
+import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.presenter.SearchResultsPresenter;
+import org.jboss.pressgangccms.client.local.resources.css.TableResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -19,7 +23,7 @@ public class SearchResultsView extends BaseTemplateView implements SearchResults
 	private final VerticalPanel searchResultsPanel = new VerticalPanel();
 	
 	private final SimplePager pager = new SimplePager();
-	private final CellTable<RESTTopicV1> results = new CellTable<RESTTopicV1>();
+	private final CellTable<RESTTopicV1> results = new CellTable<RESTTopicV1>(Constants.MAX_SEARCH_RESULTS, (Resources)GWT.create(TableResources.class));
 	private AsyncDataProvider<RESTTopicV1> provider;
 	private final TextColumn<RESTTopicV1> idColumn = new TextColumn<RESTTopicV1>()
 	{
@@ -27,6 +31,7 @@ public class SearchResultsView extends BaseTemplateView implements SearchResults
 		public String getValue(final RESTTopicV1 object)
 		{
 			return object.getId().toString();
+			
 		}
 	};
 
@@ -68,8 +73,8 @@ public class SearchResultsView extends BaseTemplateView implements SearchResults
 	{
 		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
 		
-		results.addColumn(idColumn);
-		results.addColumn(titleColumn);
+		results.addColumn(idColumn, PressGangCCMSUI.INSTANCE.TopicID());
+		results.addColumn(titleColumn, PressGangCCMSUI.INSTANCE.TopicTitle());
 		
 		searchResultsPanel.addStyleName(CSSConstants.SEARCHRESULTSPANEL);
 		
