@@ -19,6 +19,7 @@ public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsP
 	/** The GWT Editor Driver */
 	private final TopicXMLErrorsPresenterDriver driver = GWT.create(TopicXMLErrorsPresenterDriver.class);
 	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public SimpleBeanEditorDriver getDriver()
 	{
@@ -27,6 +28,12 @@ public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsP
 
 	public TopicXMLErrorsView()
 	{
+
+	}
+	
+	@Override
+	protected void populateTopActionBar()
+	{
 		addActionButton(this.getRendered());		
 		addActionButton(this.getXml());
 		final Image downImage = new Image(ImageResources.INSTANCE.attentionDown48());
@@ -34,6 +41,7 @@ public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsP
 		addActionButton(downImage);
 		addActionButton(this.getFields());
 		addActionButton(this.getTags());
+		addActionButton(this.getBugs());
 		addActionButton(this.getSave());
 		
 		addRightAlignedActionButtonPaddingPanel();

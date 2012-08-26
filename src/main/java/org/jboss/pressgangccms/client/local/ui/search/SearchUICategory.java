@@ -1,8 +1,10 @@
 package org.jboss.pressgangccms.client.local.ui.search;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.jboss.pressgangccms.client.local.sort.SearchUINameSort;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTProjectV1;
@@ -116,6 +118,8 @@ public class SearchUICategory extends SearchUIBase
 				}
 			}
 		}
+		
+		Collections.sort(myTags, new SearchUINameSort());
 	}
 
 	public void populateCategoriesWithoutProject(final RESTCategoryV1 category, final RESTTagCollectionV1 tags)
@@ -147,5 +151,7 @@ public class SearchUICategory extends SearchUIBase
 				}
 			}
 		}
+		
+		Collections.sort(myTags, new SearchUINameSort());
 	}
 }

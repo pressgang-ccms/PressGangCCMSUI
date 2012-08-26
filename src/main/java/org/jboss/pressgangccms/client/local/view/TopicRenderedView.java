@@ -21,6 +21,7 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 	
 	private final HTML div = new HTML("div");
 	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public SimpleBeanEditorDriver getDriver()
 	{
@@ -32,6 +33,12 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 	{
 		div.addStyleName(CSSConstants.TOPICRENDEREDVIEWDIV);
 		
+
+	}
+	
+	@Override
+	protected void populateTopActionBar()
+	{
 		//addActionButton(this.getRendered());
 		final Image downImage = new Image(ImageResources.INSTANCE.renderedDown48());
 		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
@@ -40,6 +47,7 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 		addActionButton(this.getXmlErrors());
 		addActionButton(this.getFields());
 		addActionButton(this.getTags());
+		addActionButton(this.getBugs());
 		addActionButton(this.getSave());
 		
 		addRightAlignedActionButtonPaddingPanel();

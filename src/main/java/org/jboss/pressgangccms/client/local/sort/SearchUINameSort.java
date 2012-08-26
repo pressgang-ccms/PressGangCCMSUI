@@ -2,13 +2,14 @@ package org.jboss.pressgangccms.client.local.sort;
 
 import java.util.Comparator;
 
+import org.jboss.pressgangccms.client.local.ui.search.SearchUIBase;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProject;
 
-public class SearchUIProjectNameSort implements Comparator<SearchUIProject>
+public class SearchUINameSort implements Comparator<SearchUIBase>
 {
 
 	@Override
-	public int compare(final SearchUIProject arg0, final SearchUIProject arg1)
+	public int compare(final SearchUIBase arg0, final SearchUIBase arg1)
 	{
 		if (arg0 == null && arg1 == null)
 			return 0;

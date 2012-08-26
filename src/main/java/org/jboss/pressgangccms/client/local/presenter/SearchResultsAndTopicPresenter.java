@@ -37,6 +37,13 @@ import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
 
+/**
+ * This presenter is used to display and wire selection of views, including the
+ * topic search results view, and the topic XML, details, tags and XML Errors
+ * views.
+ * 
+ * @author Matthew Casperson
+ */
 @Dependent
 public class SearchResultsAndTopicPresenter extends TemplatePresenter
 {
@@ -54,10 +61,59 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	}
 
 	/**
+	 * A click handler to add a tag to a topic
+	 * 
+	 * @author Matthew Casperson
+	 */
+	private class AddTagClickhandler implements ClickHandler
+	{
+
+		@Override
+		public void onClick(final ClickEvent event)
+		{
+			final RESTTagV1 selectedTag = topicTagsDisplay.getMyTags().getValue().getTag();
+
+			/* Need to deal with re-adding removed tags */
+			for (final RESTTagV1 tag : selectedTopic.getTags().getItems())
+			{
+				if (tag.getId().equals(selectedTag.getId()))
+				{
+					if (tag.getRemoveItem())
+					{
+						tag.setRemoveItem(false);
+
+						/* Redisplay the view */
+						updateDisplayedTopicView();
+
+						return;
+					}
+					else
+					{
+						/* Don't add tags twice */
+						Window.alert(PressGangCCMSUI.INSTANCE.TagAlreadyExists());
+						return;
+					}
+				}
+			}
+
+			/* Get the selected tag, and clone it */
+			final RESTTagV1 selectedTagClone = selectedTag.clone(true);
+			/*
+			 * Set the add item property to true, to indicate that we need at
+			 * add this tag to the topic
+			 */
+			selectedTagClone.setAddItem(true);
+			/* Add the tag to the topic */
+			selectedTopic.getTags().addItem(selectedTagClone);
+			/* Redisplay the view */
+			updateDisplayedTopicView();
+		}
+	}
+
+	/**
 	 * A click handler to remove a tag from a topic
 	 * 
 	 * @author Matthew Casperson
-	 * 
 	 */
 	private class DeleteTagClickHandler implements ClickHandler
 	{
@@ -77,8 +133,18 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			if (selectedTopic == null)
 				throw new IllegalStateException("selectedTopic cannot be null");
 
-			tag.setRemoveItem(true);
-			updateTopicTagViewDisplay();
+			if (tag.getAddItem())
+			{
+				/* Tag was added and then removed, so we just delete the tag */
+				selectedTopic.getTags().getItems().remove(tag);
+			}
+			else
+			{
+				/* Otherwise we set the tag as removed */
+				tag.setRemoveItem(true);
+			}
+
+			updateDisplayedTopicView();
 		}
 	};
 
@@ -102,7 +168,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 	@Inject
 	private TopicTagsPresenter.Display topicTagsDisplay;
-	
+
 	/** used to keep a track of how many rest calls are active */
 	int count = 0;
 
@@ -135,7 +201,53 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 		bind();
 
-		
+	}
+
+	/**
+	 * Add behaviour to the UI elements exposed by the views
+	 */
+	private void bind()
+	{
+		super.bind(display);
+
+		bindSplitPanelResize();
+
+		final AsyncDataProvider<RESTTopicV1> provider = generateTopicListProvider();
+
+		bindTopicListRowClicks();
+
+		bindTopicEditButtons(provider);
+
+		bindAceEditorButtons();
+
+		bindNewTagListBoxes();
+
+		searchResultsDisplay.setProvider(provider);
+
+		getTags();
+	}
+
+	private void bindNewTagListBoxes()
+	{
+		topicTagsDisplay.getProjects().addValueChangeHandler(new ValueChangeHandler<SearchUIProject>()
+		{
+			@Override
+			public void onValueChange(final ValueChangeEvent<SearchUIProject> event)
+			{
+				topicTagsDisplay.updateNewTagCategoriesDisplay();
+			}
+		});
+
+		topicTagsDisplay.getCategories().addValueChangeHandler(new ValueChangeHandler<SearchUICategory>()
+		{
+			@Override
+			public void onValueChange(final ValueChangeEvent<SearchUICategory> event)
+			{
+				topicTagsDisplay.updateNewTagTagDisplay();
+			}
+		});
+
+		topicTagsDisplay.getAdd().addClickHandler(new AddTagClickhandler());
 	}
 
 	/**
@@ -180,48 +292,6 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		};
 
 		RESTCalls.getTags(callback);
-	}
-
-	private void bind()
-	{
-		super.bind(display);
-
-		bindSplitPanelResize();
-
-		final AsyncDataProvider<RESTTopicV1> provider = generateTopicListProvider();
-
-		bindTopicListRowClicks();
-
-		bindTopicEditButtons(provider);
-
-		bindAceEditorButtons();
-
-		bindNewTagListBoxes();
-
-		searchResultsDisplay.setProvider(provider);
-		
-		getTags();
-	}
-
-	private void bindNewTagListBoxes()
-	{
-		topicTagsDisplay.getProjects().addValueChangeHandler(new ValueChangeHandler<SearchUIProject>()
-		{
-			@Override
-			public void onValueChange(final ValueChangeEvent<SearchUIProject> event)
-			{
-				topicTagsDisplay.updateNewTagCategoriesDisplay();
-			}
-		});
-
-		topicTagsDisplay.getCategories().addValueChangeHandler(new ValueChangeHandler<SearchUICategory>()
-		{
-			@Override
-			public void onValueChange(final ValueChangeEvent<SearchUICategory> event)
-			{
-				topicTagsDisplay.updateNewTagTagDisplay();
-			}
-		});
 	}
 
 	private void bindTagEditingButtons()
@@ -333,9 +403,14 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 					/* default to the rendered view */
 					if (selectedView == null)
+					{
 						selectedView = topicRenderedDisplay;
-
-					updateTopicDisplay();
+						changeDisplayedTopicView();
+					}
+					else
+					{
+						updateDisplayedTopicView();
+					}
 				}
 			}
 		});
@@ -464,7 +539,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				if (selectedTopic != null)
 				{
 					selectedView = topicViewDisplay;
-					updateTopicDisplay();
+					changeDisplayedTopicView();
 				}
 			}
 		};
@@ -480,7 +555,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				if (selectedTopic != null)
 				{
 					selectedView = topicXMLDisplay;
-					updateTopicDisplay();
+					changeDisplayedTopicView();
 
 				}
 			}
@@ -497,7 +572,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				if (selectedTopic != null)
 				{
 					selectedView = topicRenderedDisplay;
-					updateTopicDisplay();
+					changeDisplayedTopicView();
 				}
 			}
 		};
@@ -513,7 +588,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				if (selectedTopic != null)
 				{
 					selectedView = topicXMLErrorsDisplay;
-					updateTopicDisplay();
+					changeDisplayedTopicView();
 				}
 			}
 		};
@@ -529,7 +604,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				if (selectedTopic != null)
 				{
 					selectedView = topicTagsDisplay;
-					updateTopicTagViewDisplay();
+					changeDisplayedTopicView();
 				}
 			}
 		};
@@ -548,27 +623,11 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	}
 
 	/**
-	 * The topic tag view requires each remove button to be re-bound once the
-	 * view is initialized
+	 * Updates the current topic view
 	 */
-	private void updateTopicTagViewDisplay()
-	{
-		updateTopicDisplay();
-		bindTagEditingButtons();
-	}
-
-	/**
-	 * Sets the topic display view
-	 */
-	private void updateTopicDisplay()
+	private void updateDisplayedTopicView()
 	{
 		selectedView.initialize(selectedTopic);
-
-		display.getTopicViewActionButtonsPanel().clear();
-		display.getTopicViewPanel().clear();
-
-		display.getTopicViewActionButtonsPanel().setWidget(selectedView.getTopActionPanel());
-		display.getTopicViewPanel().setWidget(selectedView.getPanel());
 
 		/* Need to redisplay to work around a bug in the ACE editor */
 		if (selectedView == this.topicXMLDisplay)
@@ -577,6 +636,29 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
 			topicXMLDisplay.getEditor().redisplay();
 		}
+
+		/*
+		 * if we just displayed a new selection of tags, link up all the tag
+		 * delete buttons
+		 */
+		if (selectedView == this.topicTagsDisplay)
+		{
+			bindTagEditingButtons();
+		}
+	}
+
+	/**
+	 * Displays a new topic view
+	 */
+	private void changeDisplayedTopicView()
+	{
+		display.getTopicViewActionButtonsPanel().clear();
+		display.getTopicViewPanel().clear();
+
+		display.getTopicViewActionButtonsPanel().setWidget(selectedView.getTopActionPanel());
+		display.getTopicViewPanel().setWidget(selectedView.getPanel());
+
+		updateDisplayedTopicView();
 	}
 
 	/**

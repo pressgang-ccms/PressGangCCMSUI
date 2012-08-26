@@ -264,10 +264,20 @@ html {
 	margin-right: 8px;
 }
 
+.TopicTagViewProjectRow
+{
+	font-size: 2em;
+}
+
+.TopicTagViewCategoryRow
+{
+	font-size: 1.5em;
+}
+
 .TopicTagViewCategoryRow, .TopicTagViewProjectRow
 {
-	min-width: 150px;
-	vertical-align: top;
+	min-width: 250px;
+	vertical-align: middle;
 }
 
 .TopicTagViewTagRow
@@ -278,7 +288,7 @@ html {
 
 .TopicTagViewContentPanel div
 {
-	overflow-y: auto;
+	overflow-y: auto !important;
 }
 
 .TopicTagViewProjectsTable>tbody>tr:nth-child(even) td
@@ -289,5 +299,15 @@ html {
 .TopicTagViewCategoriesTable>tbody>tr:nth-child(even) td
 {
 	background-color: #FDFFEA;
+}
+
+.TopicTagViewNewTagProjectsList, .TopicTagViewNewTagCategoriesList, .TopicTagViewNewTagTagsList
+{
+	min-width: 150px;
+}
+
+.TopicTagViewNewTagParentPanel td
+{
+	vertical-align: middle !important;
 }
 

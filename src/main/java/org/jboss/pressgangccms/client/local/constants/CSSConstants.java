@@ -75,4 +75,12 @@ final public class CSSConstants
 	static public final String TOPICTAGVIEWNEWTAGTABLE = "TopicTagViewNewTagTable";
 	/** Assigned to the panel that holds the topic tag view */
 	static public final String TOPICTAGVIEWCONTENTPANEL = "TopicTagViewContentPanel";
+	/** Assigned to the list that holds the available projects in the topic tags view */
+	static public final String TOPICTAGVIEWNEWTAGPROJECTSLIST = "TopicTagViewNewTagProjectsList";
+	/** Assigned to the list that holds the available categories in the topic tags view */
+	static public final String TOPICTAGVIEWNEWTAGCATEGORIESLIST = "TopicTagViewNewTagCategoriesList";
+	/** Assigned to the list that holds the available tags in the topic tags view */
+	static public final String TOPICTAGVIEWNEWTAGTAGSLIST = "TopicTagViewNewTagTagsList";
+	/** Assigned to the panel that holds the new tag ui elements */
+	static public final String TOPICTAGVIEWNEWNEWTAGPARENTPANEL = "TopicTagViewNewTagParentPanel";
 }

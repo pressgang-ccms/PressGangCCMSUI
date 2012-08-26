@@ -15,6 +15,7 @@ import org.jboss.pressgangccms.client.local.view.base.TopicViewInterface;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ValueListBox;
 
 @Dependent
@@ -36,6 +37,7 @@ public class TopicTagsPresenter extends TemplatePresenter
 		ValueListBox<SearchUICategory> getCategories();
 		ValueListBox<SearchUIProject> getProjects();
 		TopicTagViewProjectsEditor getEditor();
+		PushButton getAdd();
 	}
 
 	@Override

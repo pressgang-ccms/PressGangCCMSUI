@@ -18,6 +18,7 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ValueListBox;
@@ -41,6 +42,11 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 
 	public interface TopicTagsPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, TopicTagViewProjectsEditor>
 	{
+	}
+
+	public PushButton getAdd()
+	{
+		return add;
 	}
 
 	public ValueListBox<SearchUITag> getMyTags()
@@ -73,16 +79,6 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 
 	public TopicTagsView()
 	{
-		addActionButton(this.getRendered());
-		addActionButton(this.getXml());
-		addActionButton(this.getXmlErrors());
-		addActionButton(this.getFields());
-		final Image downImage = new Image(ImageResources.INSTANCE.tagDown48());
-		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
-		addActionButton(downImage);
-		addActionButton(this.getSave());
-
-		addRightAlignedActionButtonPaddingPanel();
 
 		projects = new ValueListBox<SearchUIProject>(new ProxyRenderer<SearchUIProject>(null)
 		{
@@ -99,6 +95,7 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 				return item.getId();
 			}
 		});
+		projects.addStyleName(CSSConstants.TOPICTAGVIEWNEWTAGPROJECTSLIST);
 
 		categories = new ValueListBox<SearchUICategory>(new ProxyRenderer<SearchUICategory>(null)
 		{
@@ -115,6 +112,7 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 				return item.getId();
 			}
 		});
+		categories.addStyleName(CSSConstants.TOPICTAGVIEWNEWTAGCATEGORIESLIST);
 
 		myTags = new ValueListBox<SearchUITag>(new ProxyRenderer<SearchUITag>(null)
 		{
@@ -131,18 +129,38 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 				return item.getId();
 			}
 		});
+		myTags.addStyleName(CSSConstants.TOPICTAGVIEWNEWTAGTAGSLIST);
 
 		/* Add the layout to the panel */
 		layout.addStyleName(CSSConstants.TOPICTAGVIEWNEWTAGTABLE);
-		layout.setWidget(0, 0, projects);
-		layout.setWidget(0, 1, categories);
-		layout.setWidget(0, 2, myTags);
-		layout.setWidget(0, 3, add);
 
-		layout.getFlexCellFormatter().setColSpan(1, 0, 4);
-		
-		this.getPanel().addStyleName(CSSConstants.TOPICTAGVIEWCONTENTPANEL);	
+		final HorizontalPanel newTagUIElementsPanel = new HorizontalPanel();
+		newTagUIElementsPanel.addStyleName(CSSConstants.TOPICTAGVIEWNEWNEWTAGPARENTPANEL);
+		newTagUIElementsPanel.add(projects);
+		newTagUIElementsPanel.add(categories);
+		newTagUIElementsPanel.add(myTags);
+		newTagUIElementsPanel.add(add);
+
+		layout.setWidget(0, 0, newTagUIElementsPanel);
+
+		this.getPanel().addStyleName(CSSConstants.TOPICTAGVIEWCONTENTPANEL);
 		this.getPanel().setWidget(layout);
+	}
+
+	@Override
+	protected void populateTopActionBar()
+	{
+		addActionButton(this.getRendered());
+		addActionButton(this.getXml());
+		addActionButton(this.getXmlErrors());
+		addActionButton(this.getFields());
+		final Image downImage = new Image(ImageResources.INSTANCE.tagDown48());
+		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
+		addActionButton(downImage);
+		addActionButton(this.getBugs());
+		addActionButton(this.getSave());
+
+		addRightAlignedActionButtonPaddingPanel();
 	}
 
 	@Override
@@ -246,10 +264,5 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 		driver.edit(projects);
 		/* Add the projects */
 		layout.setWidget(1, 0, editor);
-	}
-
-	public PushButton getAdd()
-	{
-		return add;
 	}
 }

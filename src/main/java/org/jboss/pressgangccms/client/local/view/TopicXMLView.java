@@ -34,6 +34,7 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 		return showInvisibles;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public SimpleBeanEditorDriver getDriver()
 	{
@@ -56,6 +57,12 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
 	public TopicXMLView()
 	{
+
+	}
+	
+	@Override
+	protected void populateTopActionBar()
+	{
 		addActionButton(this.getRendered());
 		final Image downImage = new Image(ImageResources.INSTANCE.xmlDown48());
 		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
@@ -63,6 +70,7 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 		addActionButton(this.getXmlErrors());
 		addActionButton(this.getFields());
 		addActionButton(this.getTags());
+		addActionButton(this.getBugs());
 		addActionButton(this.getSave());
 
 		addRightAlignedActionButtonPaddingPanel();

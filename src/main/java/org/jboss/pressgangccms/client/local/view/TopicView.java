@@ -19,6 +19,7 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display
 	/** The GWT Editor Driver */
 	private final TopicPresenterDriver driver = GWT.create(TopicPresenterDriver.class);
 	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public SimpleBeanEditorDriver getDriver()
 	{
@@ -27,6 +28,12 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display
 
 	public TopicView()
 	{
+
+	}
+	
+	@Override
+	protected void populateTopActionBar()
+	{
 		addActionButton(this.getRendered());		
 		addActionButton(this.getXml());
 		addActionButton(this.getXmlErrors());
@@ -34,6 +41,7 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display
 		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
 		addActionButton(downImage);
 		addActionButton(this.getTags());
+		addActionButton(this.getBugs());
 		addActionButton(this.getSave());
 		
 		addRightAlignedActionButtonPaddingPanel();

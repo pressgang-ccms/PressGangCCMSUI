@@ -29,6 +29,18 @@ public interface ImageResources extends ClientBundle
 	@Source("transparent48.png")
 	ImageResource transparent48();
 	
+	@Source("bugs48.png")
+	ImageResource bugs48();
+	
+	@Source("bugsDown48.png")
+	ImageResource bugsDown48();
+	
+	@Source("bugsHover48.png")
+	ImageResource bugsHover48();
+	
+	@Source("bugsDisabled48.png")
+	ImageResource bugsDisabled48();
+	
 	@Source("tag48.png")
 	ImageResource tag48();
 	

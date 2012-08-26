@@ -1,8 +1,10 @@
 package org.jboss.pressgangccms.client.local.ui.search;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.jboss.pressgangccms.client.local.sort.SearchUINameSort;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTProjectV1;
@@ -129,6 +131,8 @@ public class SearchUIProject extends SearchUIBase
 				}
 			}
 		}
+		
+		Collections.sort(categories, new SearchUINameSort());
 	}
 
 	public void populateCategoriesWithoutProject(final RESTTagCollectionV1 tags)
@@ -143,21 +147,26 @@ public class SearchUIProject extends SearchUIBase
 			if (tag.getProjects().getItems() == null)
 				throw new IllegalArgumentException("tag.getProjects().getItems() cannot be null");
 
-			if (tag.getProjects().getItems().isEmpty())
+			if (!tag.getRemoveItem())
 			{
-				if (tag.getCategories().getItems() == null)
-					throw new IllegalArgumentException("tag.getCategories().getItems() cannot be null");
-
-				for (final RESTCategoryV1 category : tag.getCategories().getItems())
+				if (tag.getProjects().getItems().isEmpty())
 				{
-					final SearchUICategory searchUICategory = new SearchUICategory(this, category);
-					if (!categories.contains(searchUICategory))
+					if (tag.getCategories().getItems() == null)
+						throw new IllegalArgumentException("tag.getCategories().getItems() cannot be null");
+
+					for (final RESTCategoryV1 category : tag.getCategories().getItems())
 					{
-						searchUICategory.populateCategoriesWithoutProject(category, tags);
-						categories.add(searchUICategory);
+						final SearchUICategory searchUICategory = new SearchUICategory(this, category);
+						if (!categories.contains(searchUICategory))
+						{
+							searchUICategory.populateCategoriesWithoutProject(category, tags);
+							categories.add(searchUICategory);
+						}
 					}
 				}
 			}
 		}
+		
+		Collections.sort(categories, new SearchUINameSort());
 	}
 }
