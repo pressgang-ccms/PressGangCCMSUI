@@ -174,6 +174,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	@Inject
 	private TopicBugsPresenter.Display topicBugsDisplay;
 
+	@Inject
+	private TopicRevisionsPresenter.Display topicRevisionsDisplay;
+
 	/** used to keep a track of how many rest calls are active */
 	int count = 0;
 
@@ -193,6 +196,11 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	 * The currently selected topic
 	 */
 	private RESTTopicV1 selectedTopic;
+
+	/**
+	 * The currently selected topic from the search list
+	 */
+	private RESTTopicV1 selectedSearchTopic;
 
 	/** Keeps a reference to the list of topics being displayed */
 	private List<RESTTopicV1> currentList;
@@ -243,7 +251,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	}
 
 	/**
-	 * Add behaviour to the tag view screen elements 
+	 * Add behaviour to the tag view screen elements
 	 */
 	private void bindNewTagListBoxes()
 	{
@@ -345,6 +353,42 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 					topicXMLDisplay.getEditor().redisplay();
 			}
 		});
+	}
+
+	/**
+	 * @return A provider to be used for the topic revisions display list
+	 */
+	private AsyncDataProvider<RESTTopicV1> generateTopicRevisionsListProvider()
+	{
+		final AsyncDataProvider<RESTTopicV1> provider = new AsyncDataProvider<RESTTopicV1>()
+		{
+			@Override
+			protected void onRangeChanged(final HasData<RESTTopicV1> display)
+			{
+				if (selectedTopic != null)
+				{
+					if (selectedTopic.getRevisions() == null)
+						throw new IllegalStateException("selectedTopic.getRevisions() cannot be null");
+					if (selectedTopic.getRevisions().getItems() == null)
+						throw new IllegalStateException("selectedTopic.getRevisions().getItems() cannot be null");
+
+					final int bugzillaCount = selectedTopic.getRevisions().getItems().size();
+					final int tableStartRow = display.getVisibleRange().getStart();
+					final int length = display.getVisibleRange().getLength();
+					final int end = tableStartRow + length;
+					final int fixedEnd = end > bugzillaCount ? bugzillaCount : end;
+
+					updateRowData(tableStartRow, selectedTopic.getRevisions().getItems().subList(tableStartRow, fixedEnd));
+					updateRowCount(bugzillaCount, true);
+				}
+				else
+				{
+					updateRowData(0, new ArrayList<RESTTopicV1>());
+					updateRowCount(0, true);
+				}
+			}
+		};
+		return provider;
 	}
 
 	/**
@@ -456,18 +500,56 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 				if (isClick)
 				{
-					selectedTopic = event.getValue();
+					selectedSearchTopic = event.getValue();
+					selectedTopic = null;
 
-					/* default to the rendered view */
-					if (selectedView == null)
+					final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>()
 					{
-						selectedView = topicRenderedDisplay;
-						changeDisplayedTopicView();
-					}
-					else
-					{
-						updateDisplayedTopicView();
-					}
+						@Override
+						public void begin()
+						{
+							startProcessing();
+						}
+
+						@Override
+						public void generalException(final Exception ex)
+						{
+							stopProcessing();
+						}
+
+						@Override
+						public void success(final RESTTopicV1 retValue)
+						{
+							try
+							{
+								selectedTopic = retValue;
+								/* default to the rendered view */
+								if (selectedView == null)
+								{
+									selectedView = topicRenderedDisplay;
+									changeDisplayedTopicView();
+								}
+								else
+								{
+									updateDisplayedTopicView();
+								}
+							}
+							finally
+							{
+								stopProcessing();
+							}
+
+						}
+
+						@Override
+						public void failed()
+						{
+							stopProcessing();
+						}
+
+					};
+					
+					RESTCalls.getTopic(callback, selectedSearchTopic.getId());
 				}
 			}
 		});
@@ -538,13 +620,20 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 							{
 								/* Update the local collection of topics */
 								retValue.cloneInto(selectedTopic, true);
-								/* Update the list of topics */
-								provider.updateRowData(tableStartRow, currentList);
+								
+								/* The title may have been updated */
+								if (!selectedSearchTopic.getTitle().equals(selectedTopic.getTitle()))
+								{								
+									/* Update the title */
+									selectedSearchTopic.setTitle(selectedTopic.getTitle());
+									/* Update the list of topics */
+									provider.updateRowData(tableStartRow, currentList);
+								}
+								
 								/* Update the edit window */
 								selectedView.initialize(selectedTopic);
 
 								Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-								retValue.getTags().getItems();
 							}
 							finally
 							{
@@ -682,9 +771,25 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			}
 		};
 
+		final ClickHandler topicRevisionsClickHanlder = new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				/* Sync any changes back to the underlying object */
+				flushChanges();
+
+				if (selectedTopic != null)
+				{
+					selectedView = topicRevisionsDisplay;
+					changeDisplayedTopicView();
+				}
+			}
+		};
+
 		/* Hook up the click listeners */
 		for (final TopicViewInterface view : new TopicViewInterface[]
-		{ topicViewDisplay, topicXMLDisplay, topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay })
+		{ topicViewDisplay, topicXMLDisplay, topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay })
 		{
 			view.getFields().addClickHandler(topicViewClickHandler);
 			view.getXml().addClickHandler(topicXMLClickHandler);
@@ -693,6 +798,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			view.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
 			view.getTags().addClickHandler(topicTagsClickHandler);
 			view.getBugs().addClickHandler(topicBugsClickHandler);
+			view.getHistory().addClickHandler(topicRevisionsClickHanlder);
 		}
 	}
 
@@ -719,7 +825,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		{
 			bindTagEditingButtons();
 		}
-		
+
 		/*
 		 * We need to hook up the bug list
 		 */
@@ -727,6 +833,15 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		{
 			final AsyncDataProvider<RESTBugzillaBugV1> bugzillaProvider = generateTopicBugListProvider();
 			topicBugsDisplay.setProvider(bugzillaProvider);
+		}
+
+		/*
+		 * We need to hook up the revisions list
+		 */
+		else if (selectedView == this.topicRevisionsDisplay)
+		{
+			final AsyncDataProvider<RESTTopicV1> revisionsPropvider = generateTopicRevisionsListProvider();
+			topicRevisionsDisplay.setProvider(revisionsPropvider);
 		}
 	}
 

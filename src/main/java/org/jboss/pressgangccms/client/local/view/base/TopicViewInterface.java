@@ -14,6 +14,11 @@ import com.google.gwt.user.client.ui.PushButton;
 public interface TopicViewInterface extends BaseTemplateViewInterface
 {
 	/**
+	 * @return The button that is used to switch to the history view
+	 */
+	PushButton getHistory();
+	
+	/**
 	 * @return The button that is used to switch to the rendered view
 	 */
 	PushButton getRendered();

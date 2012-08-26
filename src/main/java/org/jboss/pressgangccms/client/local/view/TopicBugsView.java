@@ -31,7 +31,7 @@ import com.google.gwt.view.client.AsyncDataProvider;
  */
 public class TopicBugsView extends TopicViewBase implements TopicBugsPresenter.Display
 {
-	public static final String HISTORY_TOKEN = "SearchResultsView";
+	public static final String HISTORY_TOKEN = "TopicBugsView";
 
 	private final VerticalPanel searchResultsPanel = new VerticalPanel();
 
@@ -136,6 +136,7 @@ public class TopicBugsView extends TopicViewBase implements TopicBugsPresenter.D
 		final Image downImage = new Image(ImageResources.INSTANCE.bugsDown48());
 		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
 		addActionButton(downImage);
+		addActionButton(this.getHistory());
 		addActionButton(this.getSave());
 
 		addRightAlignedActionButtonPaddingPanel();

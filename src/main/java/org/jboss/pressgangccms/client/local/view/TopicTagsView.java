@@ -158,6 +158,7 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
 		addActionButton(downImage);
 		addActionButton(this.getBugs());
+		addActionButton(this.getHistory());
 		addActionButton(this.getSave());
 
 		addRightAlignedActionButtonPaddingPanel();

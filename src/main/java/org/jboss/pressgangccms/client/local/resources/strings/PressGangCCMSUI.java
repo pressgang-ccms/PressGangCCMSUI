@@ -62,4 +62,8 @@ public interface PressGangCCMSUI extends Constants
 	String IsOpen();
 	
 	String Link();
+	
+	String RevisionNumber();
+	
+	String RevisionDate();
 }

@@ -22,6 +22,13 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 	private final PushButton tags;
 	private final PushButton save;
 	private final PushButton bugs;
+	private final PushButton history;
+
+	@Override
+	public PushButton getHistory()
+	{
+		return history;
+	}
 
 	@Override
 	public PushButton getBugs()
@@ -77,6 +84,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 		save = UIUtilities.createPushButton(ImageResources.INSTANCE.save48(), ImageResources.INSTANCE.saveDown48(), ImageResources.INSTANCE.saveHover48(), ImageResources.INSTANCE.saveDisabled48(), CSSConstants.SPACEDBUTTON);
 		tags = UIUtilities.createPushButton(ImageResources.INSTANCE.tag48(), ImageResources.INSTANCE.tagDown48(), ImageResources.INSTANCE.tagHover48(), ImageResources.INSTANCE.tagDisabled48(), CSSConstants.SPACEDBUTTON);
 		bugs = UIUtilities.createPushButton(ImageResources.INSTANCE.bugs48(), ImageResources.INSTANCE.bugsDown48(), ImageResources.INSTANCE.bugsHover48(), ImageResources.INSTANCE.bugsDisabled48(), CSSConstants.SPACEDBUTTON);
+		history= UIUtilities.createPushButton(ImageResources.INSTANCE.history48(), ImageResources.INSTANCE.historyDown48(), ImageResources.INSTANCE.historyHover48(), ImageResources.INSTANCE.historyDisabled48(), CSSConstants.SPACEDBUTTON);
 		
 		populateTopActionBar();
 	}

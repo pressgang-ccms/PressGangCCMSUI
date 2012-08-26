@@ -42,6 +42,7 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display
 		addActionButton(downImage);
 		addActionButton(this.getTags());
 		addActionButton(this.getBugs());
+		addActionButton(this.getHistory());
 		addActionButton(this.getSave());
 		
 		addRightAlignedActionButtonPaddingPanel();

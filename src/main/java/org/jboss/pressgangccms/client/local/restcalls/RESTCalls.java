@@ -20,7 +20,7 @@ import org.jboss.pressgangccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 public final class RESTCalls
 {
 	/** The required expansion details for the tags */
-	private static final String TAG_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"bugzillabugs_OTM\"}}, {\"trunk\":{\"showSize\":true,\"name\": \"tags\"},\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"projects\"}},{\"trunk\":{\"showSize\":true,\"name\":\"categories\"}}]}";
+	private static final String TAG_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"bugzillabugs_OTM\"}}, {\"trunk\":{\"showSize\":true,\"name\": \"revisions\"}}, {\"trunk\":{\"showSize\":true,\"name\": \"tags\"},\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"projects\"}},{\"trunk\":{\"showSize\":true,\"name\":\"categories\"}}]}";
 	
 	abstract public interface RESTCallback<T>
 	{
@@ -101,7 +101,7 @@ public final class RESTCalls
 	{
 		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
 		/* Expand the categories and projects in the tags */
-		final String expand = "";
+		final String expand = "{\"branches\":[" + TAG_EXPANSION + "]}";
 
 		try
 		{
@@ -118,7 +118,7 @@ public final class RESTCalls
 	{
 		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
 		/* Expand the categories and projects in the tags */
-		final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"showSize\":true,\"name\": \"topics\"}  ,\"branches\":[ " + TAG_EXPANSION + "]}]}";
+		final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"showSize\":true,\"name\": \"topics\"}}]}";
 
 		try
 		{
