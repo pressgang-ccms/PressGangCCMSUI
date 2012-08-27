@@ -165,7 +165,7 @@ html {
 	box-sizing: border-box;
 }
 
-.TopicViewIDField,.TopicViewTitleField,.TopicViewLocaleField {
+.TopicViewIDField,.TopicViewTitleField,.TopicViewLocaleField, .TopicViewRevisionNumberField {
 	width: 100%;
 	box-sizing: border-box;
 }
@@ -291,14 +291,44 @@ html {
 	overflow-y: auto !important;
 }
 
+.TopicTagViewProjectsTable td
+{
+	padding: 0px;
+}
+
+.TopicTagViewProjectTable
+{
+	border-spacing: 0px;
+}
+
+.TopicTagViewNewTagTable td
+{
+	padding: 0px;
+}
+
+.TopicTagViewCategoryTable
+{
+	border-top: thin solid black;
+}
+
+.TopicTagViewProjectsTable
+{
+	border-spacing: 0px;
+}
+
 .TopicTagViewProjectsTable>tbody>tr:nth-child(even) td
 {
-	background-color: #F3F7FB;
+	background-color: #E2EFFC;
+}
+
+.TopicTagViewCategoriesTable
+{
+	border-spacing: 0px;
 }
 
 .TopicTagViewCategoriesTable>tbody>tr:nth-child(even) td
 {
-	background-color: #FDFFEA;
+	/*background-color: #FDFFEA;*/
 }
 
 .TopicTagViewNewTagProjectsList, .TopicTagViewNewTagCategoriesList, .TopicTagViewNewTagTagsList

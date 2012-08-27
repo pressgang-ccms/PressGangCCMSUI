@@ -28,6 +28,7 @@ final public class CSSConstants
 	static public final String SEARCHRESULTSPANEL = "SearchResultsPanel";
 	static public final String TOPICVIEWPANEL ="TopicViewPanel";
 	static public final String TOPICVIEWIDFIELD = "TopicViewIDField";
+	static public final String TOPICVIEWREVISIONNUMBERFIELD = "TopicViewRevisionNumberField";
 	static public final String TOPICVIEWTITLEFIELD = "TopicViewTitleField";
 	static public final String TOPICVIEWLOCALEFIELD = "TopicViewLocaleField";
 	static public final String TOPICVIEWDESCRIPTIONFIELD = "TopicViewDescriptionField";

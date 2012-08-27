@@ -252,12 +252,73 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 		getTags();
 	}
+	
+	native private void displayDiff(final String source, final String sourceLabel, final String diff, final String diffLabel)
+	/*-{
+		var diffTable = $wnd.prettydiff({source: source, sourcelabel: sourceLabel, diff: diff, difflabel: diffLabel, lang: "text", mode: "diff", diffview: "sidebyside"})[0];
+		
+		var win = $wnd.open("", "_blank", "width=" + (screen.width - 200) + ", height=" + (screen.height - 200)); // a window object
+		if (win != null)
+		{
+			win.document.open("text/html", "replace");
+			win.document.write("<HTML><HEAD><TITLE>PressGangCCMS XML Diff</TITLE><link rel=\"stylesheet\" type=\"text/css\" href=\"../prettydiff.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"prettydiff.css\"></HEAD><BODY>" + diffTable + "</BODY></HTML>");
+			win.document.close();
+		} 
+	}-*/;
 
 	/**
 	 * Bind behaviour to the view buttons in the topic revisions cell table
 	 */
 	private void bindViewTopicRevisionButton()
 	{
+		topicRevisionsDisplay.getDiffButton().setFieldUpdater(new FieldUpdater<RESTTopicV1, String>()
+		{
+			@Override
+			public void update(final int index, final RESTTopicV1 revisionTopic, final String value)
+			{
+				final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>()
+				{
+					@Override
+					public void begin()
+					{
+						startProcessing();
+					}
+
+					@Override
+					public void generalException(final Exception ex)
+					{
+						stopProcessing();
+					}
+
+					@Override
+					public void success(final RESTTopicV1 retValue)
+					{
+						try
+						{
+							final RESTTopicV1 sourceTopic = topicRevisionsDisplay.getRevisionTopic() == null ? selectedTopic : topicRevisionsDisplay.getRevisionTopic();
+							final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID() + ": " + retValue.getId() + " " + PressGangCCMSUI.INSTANCE.TopicRevision() + ": " + retValue.getRevision().toString();
+							final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID() + ": " + sourceTopic.getId() + " " + PressGangCCMSUI.INSTANCE.TopicRevision() + ": " + sourceTopic.getRevision().toString();
+							displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getXml(), sourceTopicLabel);
+						}
+						finally
+						{
+							stopProcessing();
+						}
+					}
+
+					@Override
+					public void failed()
+					{
+						stopProcessing();
+					}
+
+				};
+
+				RESTCalls.getTopicRevision(callback, revisionTopic.getId(), revisionTopic.getRevision());
+
+			}
+		});
+
 		topicRevisionsDisplay.getViewButton().setFieldUpdater(new FieldUpdater<RESTTopicV1, String>()
 		{
 			@Override
@@ -881,7 +942,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		 * topic. All other views will display the revision topic if it has been
 		 * selected.
 		 */
-		
+
 		final boolean readOnly = topicRevisionsDisplay.getRevisionTopic() != null;
 
 		if (selectedView == this.topicRevisionsDisplay)
@@ -895,7 +956,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		else
 		{
 			/* All other details come from the revision topic */
-			selectedView.initialize(readOnly ?  topicRevisionsDisplay.getRevisionTopic() : selectedTopic, readOnly);
+			selectedView.initialize(readOnly ? topicRevisionsDisplay.getRevisionTopic() : selectedTopic, readOnly);
 		}
 
 		/* Need to redisplay to work around a bug in the ACE editor */

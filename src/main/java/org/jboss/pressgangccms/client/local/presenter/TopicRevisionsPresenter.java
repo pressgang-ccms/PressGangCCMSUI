@@ -33,6 +33,8 @@ public class TopicRevisionsPresenter extends TemplatePresenter
 		
 		Column<RESTTopicV1, String> getViewButton();
 		
+		Column<RESTTopicV1, String> getDiffButton();
+		
 		/**
 		 * @return The currently selected revision topic. 
 		 */

@@ -82,6 +82,23 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 			return PressGangCCMSUI.INSTANCE.CurrentlyViewing();
 		}
 	};
+	
+	private final Column<RESTTopicV1, String> diffButton = new Column<RESTTopicV1, String>(new ButtonCell())
+	{
+		@Override
+		public String getValue(final RESTTopicV1 object)
+		{
+			if (revisionTopic == null || !revisionTopic.getRevision().equals(object.getRevision()))
+				return PressGangCCMSUI.INSTANCE.Diff();
+			
+			return PressGangCCMSUI.INSTANCE.CurrentlyViewing();
+		}
+	};
+
+	public Column<RESTTopicV1, String> getDiffButton()
+	{
+		return diffButton;
+	}
 
 	public RESTTopicV1 getRevisionTopic()
 	{
@@ -129,6 +146,7 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 		results.addColumn(revisionNumber, PressGangCCMSUI.INSTANCE.RevisionNumber());
 		results.addColumn(revisionDate, PressGangCCMSUI.INSTANCE.RevisionDate());
 		results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.View());
+		results.addColumn(diffButton, PressGangCCMSUI.INSTANCE.Diff());
 		
 		searchResultsPanel.addStyleName(CSSConstants.SEARCHRESULTSPANEL);
 
