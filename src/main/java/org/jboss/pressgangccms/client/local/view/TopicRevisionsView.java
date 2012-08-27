@@ -7,7 +7,6 @@ import org.jboss.pressgangccms.client.local.resources.css.TableResources;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewBase;
-import org.jboss.pressgangccms.rest.v1.entities.RESTBugzillaBugV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.cell.client.ButtonCell;
@@ -40,6 +39,7 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 	private final CellTable<RESTTopicV1> results = new CellTable<RESTTopicV1>(Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
 	private AsyncDataProvider<RESTTopicV1> provider;
 	private RESTTopicV1 revisionTopic;
+	private RESTTopicV1 mainTopic;
 
 	private final Column<RESTTopicV1, Boolean> viewing = new Column<RESTTopicV1, Boolean>(new DisableableCheckboxCell(false, true, false))
 	{
@@ -48,11 +48,11 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 		{
 			if (revisionTopic == null)
 				return false;
-			
+
 			return object.getRevision().equals(revisionTopic.getRevision());
 		}
 	};
-	
+
 	private final TextColumn<RESTTopicV1> revisionNumber = new TextColumn<RESTTopicV1>()
 	{
 		@Override
@@ -76,21 +76,40 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 		@Override
 		public String getValue(final RESTTopicV1 object)
 		{
+			/*
+			 * The last revision is the same as the topic in the main database.
+			 * We indicate that by showing the last revision as editable instead of read only.
+			 */
+			if (mainTopic != null && object.getRevision().equals(mainTopic.getRevision()))
+
+			{
+				if (revisionTopic == null || revisionTopic.getRevision().equals(mainTopic.getRevision()))
+					return PressGangCCMSUI.INSTANCE.CurrentlyEditing();
+				else
+					return PressGangCCMSUI.INSTANCE.Edit();
+			}
+
 			if (revisionTopic == null || !revisionTopic.getRevision().equals(object.getRevision()))
 				return PressGangCCMSUI.INSTANCE.View();
-			
+
 			return PressGangCCMSUI.INSTANCE.CurrentlyViewing();
 		}
 	};
-	
+
 	private final Column<RESTTopicV1, String> diffButton = new Column<RESTTopicV1, String>(new ButtonCell())
 	{
 		@Override
 		public String getValue(final RESTTopicV1 object)
 		{
+			if (mainTopic != null && object.getRevision().equals(mainTopic.getRevision()))
+			{
+				if (revisionTopic == null || revisionTopic.getRevision().equals(mainTopic.getRevision()))
+					return PressGangCCMSUI.INSTANCE.CurrentlyEditing();
+			}
+
 			if (revisionTopic == null || !revisionTopic.getRevision().equals(object.getRevision()))
 				return PressGangCCMSUI.INSTANCE.Diff();
-			
+
 			return PressGangCCMSUI.INSTANCE.CurrentlyViewing();
 		}
 	};
@@ -121,7 +140,7 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 		this.provider = provider;
 		provider.addDataDisplay(results);
 	}
-	
+
 	@Override
 	public AsyncDataProvider<RESTTopicV1> getProvider()
 	{
@@ -145,9 +164,9 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 		results.addColumn(viewing, PressGangCCMSUI.INSTANCE.CurrentlyViewing());
 		results.addColumn(revisionNumber, PressGangCCMSUI.INSTANCE.RevisionNumber());
 		results.addColumn(revisionDate, PressGangCCMSUI.INSTANCE.RevisionDate());
-		results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.View());
+		results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.View() + " / " + PressGangCCMSUI.INSTANCE.Edit());
 		results.addColumn(diffButton, PressGangCCMSUI.INSTANCE.Diff());
-		
+
 		searchResultsPanel.addStyleName(CSSConstants.SEARCHRESULTSPANEL);
 
 		searchResultsPanel.add(results);
@@ -169,6 +188,7 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 	public void initialize(final RESTTopicV1 topic, final boolean readOnly)
 	{
 		this.readOnly = readOnly;
+		this.mainTopic = topic;
 		fixReadOnlyButtons();
 	}
 
@@ -185,11 +205,10 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
 		addActionButton(downImage);
 		addActionButton(this.getSave());
-		
+
 		fixReadOnlyButtons();
 
 		addRightAlignedActionButtonPaddingPanel();
 	}
-
 
 }

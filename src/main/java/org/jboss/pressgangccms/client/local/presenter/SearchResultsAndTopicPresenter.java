@@ -252,18 +252,30 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 		getTags();
 	}
-	
+
 	native private void displayDiff(final String source, final String sourceLabel, final String diff, final String diffLabel)
 	/*-{
-		var diffTable = $wnd.prettydiff({source: source, sourcelabel: sourceLabel, diff: diff, difflabel: diffLabel, lang: "text", mode: "diff", diffview: "sidebyside"})[0];
-		
-		var win = $wnd.open("", "_blank", "width=" + (screen.width - 200) + ", height=" + (screen.height - 200)); // a window object
-		if (win != null)
-		{
-			win.document.open("text/html", "replace");
-			win.document.write("<HTML><HEAD><TITLE>PressGangCCMS XML Diff</TITLE><link rel=\"stylesheet\" type=\"text/css\" href=\"../prettydiff.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"prettydiff.css\"></HEAD><BODY>" + diffTable + "</BODY></HTML>");
-			win.document.close();
-		} 
+    var diffTable = $wnd.prettydiff(
+    {
+      source : source,
+      sourcelabel : sourceLabel,
+      diff : diff,
+      difflabel : diffLabel,
+      lang : "text",
+      mode : "diff",
+      diffview : "sidebyside"
+    })[0];
+
+    var win = $wnd.open("", "_blank", "width=" + (screen.width - 200)
+        + ", height=" + (screen.height - 200)); // a window object
+    if (win != null)
+    {
+	    win.document.open("text/html", "replace");
+	    win.document
+	        .write("<HTML><HEAD><TITLE>PressGangCCMS XML Diff</TITLE><link rel=\"stylesheet\" type=\"text/css\" href=\"../prettydiff.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"prettydiff.css\"></HEAD><BODY>"
+	            + diffTable + "</BODY></HTML>");
+	    win.document.close();
+    }
 	}-*/;
 
 	/**
@@ -324,8 +336,6 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			@Override
 			public void update(final int index, final RESTTopicV1 revisionTopic, final String value)
 			{
-				topicRevisionsDisplay.setRevisionTopic(null);
-
 				final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>()
 				{
 					@Override
@@ -372,7 +382,22 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 				};
 
-				RESTCalls.getTopicRevision(callback, revisionTopic.getId(), revisionTopic.getRevision());
+				/* Reset the reference to the revision topic */
+				topicRevisionsDisplay.setRevisionTopic(null);
+
+				if (revisionTopic.getRevision().equals(selectedTopic.getRevision()))
+				{
+					/*
+					 * The latest revision is actually the same as the main
+					 * topic, so if that is clicked, we want to edit the main
+					 * topic
+					 */
+					updateDisplayedTopicView();
+				}
+				else
+				{
+					RESTCalls.getTopicRevision(callback, revisionTopic.getId(), revisionTopic.getRevision());
+				}
 			}
 		});
 	}
