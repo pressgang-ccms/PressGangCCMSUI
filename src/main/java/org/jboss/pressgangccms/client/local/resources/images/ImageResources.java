@@ -41,6 +41,9 @@ public interface ImageResources extends ClientBundle
 	@Source("historyDisabled48.png")
 	ImageResource historyDisabled48();
 	
+	@Source("historyAlert48.png")
+	ImageResource historyAlert48();
+	
 	@Source("bugs48.png")
 	ImageResource bugs48();
 	

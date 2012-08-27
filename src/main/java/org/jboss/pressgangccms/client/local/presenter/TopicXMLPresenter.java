@@ -26,7 +26,7 @@ public class TopicXMLPresenter extends TemplatePresenter
 	public interface Display extends TopicViewInterface
 	{
 		@Override
-		void initialize(final RESTTopicV1 topic);
+		public void initialize(final RESTTopicV1 topic, final boolean readOnly);
 		ToggleButton getLineWrap();
 		ToggleButton getShowInvisibles();
 		AceEditor getEditor();

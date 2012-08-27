@@ -18,6 +18,7 @@ public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsP
 
 	/** The GWT Editor Driver */
 	private final TopicXMLErrorsPresenterDriver driver = GWT.create(TopicXMLErrorsPresenterDriver.class);
+
 	
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -45,12 +46,17 @@ public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsP
 		addActionButton(this.getHistory());
 		addActionButton(this.getSave());
 		
+		fixReadOnlyButtons();
+		
 		addRightAlignedActionButtonPaddingPanel();
 	}
 	
 	@Override
-	public void initialize(final RESTTopicV1 topic)
+	public void initialize(final RESTTopicV1 topic, final boolean readOnly)
 	{
+		this.readOnly = readOnly;
+		fixReadOnlyButtons();
+		
 		/* SearchUIProjectsEditor is a grid */
 		final RESTTopicV1XMLErrorsEditor editor = new RESTTopicV1XMLErrorsEditor();
 	    /* Initialize the driver with the top-level editor */

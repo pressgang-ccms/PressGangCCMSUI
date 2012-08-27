@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 
 public class TopicTagViewProjectsEditor extends SimplePanel implements Editor<SearchUIProjects>
 {
+	private final boolean readOnly;
 	private final FlexTable projectLabelPanel = new FlexTable();
 	public final ListEditor<SearchUIProject, TopicTagViewProjectEditor> projects = ListEditor.of(new TopicTagViewProjectEditorSource());
 	
@@ -26,7 +27,7 @@ public class TopicTagViewProjectsEditor extends SimplePanel implements Editor<Se
 		@Override
 		public TopicTagViewProjectEditor create(final int index)
 		{
-			final TopicTagViewProjectEditor subEditor = new TopicTagViewProjectEditor();
+			final TopicTagViewProjectEditor subEditor = new TopicTagViewProjectEditor(readOnly);
 			projectLabelPanel.setWidget(index, 0, subEditor);
 			
 			return subEditor;
@@ -45,8 +46,9 @@ public class TopicTagViewProjectsEditor extends SimplePanel implements Editor<Se
 		}
 	}
 	
-	public TopicTagViewProjectsEditor()
+	public TopicTagViewProjectsEditor(final boolean readOnly)
 	{
+		this.readOnly = readOnly;
 		projectLabelPanel.addStyleName(CSSConstants.TOPICTAGVIEWPROJECTSTABLE);
 		this.addStyleName(CSSConstants.TOPICTAGVIEWPARENTPROJECTSTABLE);
 		this.setWidget(projectLabelPanel);

@@ -113,6 +113,23 @@ public final class RESTCalls
 			callback.generalException(ex);
 		}
 	}
+	
+	static public void getTopicRevision(final RESTCallback<RESTTopicV1> callback, final Integer id, final Integer revision)
+	{
+		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
+		/* Expand the categories and projects in the tags */
+		final String expand = "{\"branches\":[" + TAG_EXPANSION + "]}";
+
+		try
+		{
+			callback.begin();
+			restMethod.getJSONTopicRevision(id, revision, expand);
+		}
+		catch (final Exception ex)
+		{
+			callback.generalException(ex);
+		}
+	}
 
 	static public void getTopicsFromQuery(final RESTCallback<RESTTopicCollectionV1> callback, final String queryString, int start, int end)
 	{

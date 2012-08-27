@@ -51,12 +51,17 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 		addActionButton(this.getHistory());
 		addActionButton(this.getSave());
 		
+		fixReadOnlyButtons();
+		
 		addRightAlignedActionButtonPaddingPanel();
 	}
 
 	@Override
-	public void initialize(final RESTTopicV1 topic)
+	public void initialize(final RESTTopicV1 topic, final boolean readOnly)
 	{
+		this.readOnly = readOnly;
+		fixReadOnlyButtons();
+		
 		try
 		{
 			// Any number of processors can be created, they will behave

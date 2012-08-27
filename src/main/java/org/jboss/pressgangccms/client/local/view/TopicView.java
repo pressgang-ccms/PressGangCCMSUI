@@ -45,14 +45,19 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display
 		addActionButton(this.getHistory());
 		addActionButton(this.getSave());
 		
+		fixReadOnlyButtons();
+		
 		addRightAlignedActionButtonPaddingPanel();
 	}
 	
 	@Override
-	public void initialize(final RESTTopicV1 topic)
+	public void initialize(final RESTTopicV1 topic, final boolean readOnly)
 	{
+		this.readOnly = readOnly;
+		fixReadOnlyButtons();
+		
 		/* SearchUIProjectsEditor is a grid */
-		final RESTTopicV1BasicDetailsEditor editor = new RESTTopicV1BasicDetailsEditor(false);
+		final RESTTopicV1BasicDetailsEditor editor = new RESTTopicV1BasicDetailsEditor(readOnly);
 	    /* Initialize the driver with the top-level editor */
 	    driver.initialize(editor);
 	    /* Copy the data in the object into the UI */

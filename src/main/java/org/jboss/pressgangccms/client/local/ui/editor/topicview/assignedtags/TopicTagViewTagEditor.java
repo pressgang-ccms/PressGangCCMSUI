@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.PushButton;
 
 public class TopicTagViewTagEditor implements Editor<SearchUITag>
 {
+	private final boolean readOnly;
 	/** bound to the SearchUITag itself */
 	@Path("")
 	final SimpleEditor<SearchUITag> self = SimpleEditor.of();
@@ -33,8 +34,9 @@ public class TopicTagViewTagEditor implements Editor<SearchUITag>
 		return delete;
 	}
 
-	public TopicTagViewTagEditor()
+	public TopicTagViewTagEditor(final boolean readOnly)
 	{
+		this.readOnly = readOnly;
 		name.addStyleName(CSSConstants.TOPICVIEWTAGLABEL);
 	}
 }

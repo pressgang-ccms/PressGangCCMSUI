@@ -5,6 +5,7 @@ import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.UIUtilities;
 
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PushButton;
 
 /**
@@ -23,6 +24,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 	private final PushButton save;
 	private final PushButton bugs;
 	private final PushButton history;
+	protected boolean readOnly = false;
 
 	@Override
 	public PushButton getHistory()
@@ -87,6 +89,24 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 		history= UIUtilities.createPushButton(ImageResources.INSTANCE.history48(), ImageResources.INSTANCE.historyDown48(), ImageResources.INSTANCE.historyHover48(), ImageResources.INSTANCE.historyDisabled48(), CSSConstants.SPACEDBUTTON);
 		
 		populateTopActionBar();
+	}
+	
+	/**
+	 * This method enables or disables the save button based on the read only state, and
+	 * also highlights the history button if needed.
+	 */
+	protected void fixReadOnlyButtons()
+	{
+		this.getSave().setEnabled(!readOnly);
+		
+		if (readOnly)
+		{	
+			this.getHistory().getUpFace().setImage(new Image(ImageResources.INSTANCE.historyAlert48()));
+		}
+		else
+		{
+			this.getHistory().getUpFace().setImage(new Image(ImageResources.INSTANCE.history48()));
+		}
 	}
 	
 	/**

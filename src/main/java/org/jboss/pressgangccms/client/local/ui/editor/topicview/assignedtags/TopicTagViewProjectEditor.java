@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Label;
 
 public class TopicTagViewProjectEditor extends Grid implements Editor<SearchUIProject>
 {
+	private final boolean readOnly;
 	private final FlexTable categoriesLabelPanel = new FlexTable();
 	final Label name = new Label();
 	public final ListEditor<SearchUICategory, TopicTagViewCategoryEditor> categories = ListEditor.of(new TopicTagViewCategoryEditorSource());
@@ -28,7 +29,7 @@ public class TopicTagViewProjectEditor extends Grid implements Editor<SearchUIPr
 		@Override
 		public TopicTagViewCategoryEditor create(final int index)
 		{			
-			final TopicTagViewCategoryEditor subEditor = new TopicTagViewCategoryEditor();
+			final TopicTagViewCategoryEditor subEditor = new TopicTagViewCategoryEditor(readOnly);
 			
 			categoriesLabelPanel.setWidget(index, 0, subEditor);
 			
@@ -49,9 +50,11 @@ public class TopicTagViewProjectEditor extends Grid implements Editor<SearchUIPr
 		}
 	}
 	
-	public TopicTagViewProjectEditor()
+	public TopicTagViewProjectEditor(final boolean readOnly)
 	{
 		super(1, 2);
+		
+		this.readOnly = readOnly;
 		
 		this.addStyleName(CSSConstants.TOPICTAGVIEWPROJECTTABLE);
 		

@@ -8,6 +8,7 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTBugzillaBugV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.AsyncDataProvider;
@@ -20,7 +21,7 @@ public class TopicRevisionsPresenter extends TemplatePresenter
 	public interface Display extends TopicViewInterface
 	{
 		@Override
-		void initialize(final RESTTopicV1 topic);
+		public void initialize(final RESTTopicV1 topic, final boolean readOnly);
 		
 		AsyncDataProvider<RESTTopicV1> getProvider();
 
@@ -29,6 +30,18 @@ public class TopicRevisionsPresenter extends TemplatePresenter
 		CellTable<RESTTopicV1> getResults();
 
 		SimplePager getPager();
+		
+		Column<RESTTopicV1, String> getViewButton();
+		
+		/**
+		 * @return The currently selected revision topic. 
+		 */
+		RESTTopicV1 getRevisionTopic();
+
+		/**
+		 * @param revisionTopic The currently selected revision topic.
+		 */
+		void setRevisionTopic(RESTTopicV1 revisionTopic);
 	}
 
 	@Override

@@ -38,6 +38,7 @@ public class TopicBugsView extends TopicViewBase implements TopicBugsPresenter.D
 	private final SimplePager pager = new SimplePager();
 	private final CellTable<RESTBugzillaBugV1> results = new CellTable<RESTBugzillaBugV1>(Constants.MAX_SEARCH_RESULTS, (Resources)GWT.create(TableResources.class));
 	private AsyncDataProvider<RESTBugzillaBugV1> provider;
+	
 
 	private final TextColumn<RESTBugzillaBugV1> summaryColumn = new TextColumn<RESTBugzillaBugV1>()
 	{
@@ -120,9 +121,10 @@ public class TopicBugsView extends TopicViewBase implements TopicBugsPresenter.D
 	}
 
 	@Override
-	public void initialize(final RESTTopicV1 topic)
+	public void initialize(final RESTTopicV1 topic, final boolean readOnly)
 	{
-
+		this.readOnly = readOnly;
+		fixReadOnlyButtons();
 	}
 
 	@Override
@@ -138,6 +140,8 @@ public class TopicBugsView extends TopicViewBase implements TopicBugsPresenter.D
 		addActionButton(downImage);
 		addActionButton(this.getHistory());
 		addActionButton(this.getSave());
+	
+		fixReadOnlyButtons();
 
 		addRightAlignedActionButtonPaddingPanel();
 	}

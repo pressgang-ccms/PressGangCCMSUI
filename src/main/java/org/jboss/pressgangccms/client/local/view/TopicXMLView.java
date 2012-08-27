@@ -73,6 +73,8 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 		addActionButton(this.getBugs());
 		addActionButton(this.getHistory());
 		addActionButton(this.getSave());
+		
+		fixReadOnlyButtons();
 
 		addRightAlignedActionButtonPaddingPanel();
 		addActionButton(lineWrap);
@@ -80,12 +82,15 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 	}
 
 	@Override
-	public void initialize(final RESTTopicV1 topic)
+	public void initialize(final RESTTopicV1 topic, final boolean readOnly)
 	{
 		this.getPanel().addStyleName(CSSConstants.TOPICXMLVIEWPANEL);
 		
+		this.readOnly = readOnly;
+		fixReadOnlyButtons();
+		
 		/* SearchUIProjectsEditor is a grid */
-		editor = new RESTTopicV1XMLEditor(false);
+		editor = new RESTTopicV1XMLEditor(readOnly);
 		/* Initialize the driver with the top-level editor */
 		driver.initialize(editor);
 		/* Copy the data in the object into the UI */

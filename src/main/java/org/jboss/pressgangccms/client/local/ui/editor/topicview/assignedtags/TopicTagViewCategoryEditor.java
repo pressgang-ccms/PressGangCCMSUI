@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Label;
 
 public class TopicTagViewCategoryEditor extends Grid implements Editor<SearchUICategory>
 {
+	private final boolean readOnly;
 	private final FlexTable tagsTable = new FlexTable();
 	final Label name = new Label();
 	public final ListEditor<SearchUITag, TopicTagViewTagEditor> myTags = ListEditor.of(new TopicTagViewTagEditorSource());
@@ -28,9 +29,15 @@ public class TopicTagViewCategoryEditor extends Grid implements Editor<SearchUIC
 		@Override
 		public TopicTagViewTagEditor create(final int index)
 		{
-			final TopicTagViewTagEditor subEditor = new TopicTagViewTagEditor();
+			final TopicTagViewTagEditor subEditor = new TopicTagViewTagEditor(readOnly);
 			tagsTable.setWidget(index, 0, subEditor.name);
-			tagsTable.setWidget(index, 1, subEditor.getDelete());			
+			
+			/* do not show the delete button in readOnly mode */
+			if (!readOnly)
+			{
+				tagsTable.setWidget(index, 1, subEditor.getDelete());
+			}
+			
 			tagsTable.getCellFormatter().addStyleName(index, 0, CSSConstants.TOPICTAGVIEWTAGROW);
 			return subEditor;
 		}
@@ -48,9 +55,11 @@ public class TopicTagViewCategoryEditor extends Grid implements Editor<SearchUIC
 		}
 	}
 	
-	public TopicTagViewCategoryEditor()
+	public TopicTagViewCategoryEditor(final boolean readOnly)
 	{
 		super(1, 2);
+		
+		this.readOnly = readOnly;
 		
 		this.addStyleName(CSSConstants.TOPICTAGVIEWCATEGORYTABLE);
 		

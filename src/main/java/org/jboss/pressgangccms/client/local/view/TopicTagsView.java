@@ -36,6 +36,7 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 	private TopicTagViewProjectsEditor editor;
 	private final PushButton add = UIUtilities.createPushButton(ImageResources.INSTANCE.plusGreen32(), ImageResources.INSTANCE.plusGreenDown32(), ImageResources.INSTANCE.plusGreenHover32());
 
+	private final HorizontalPanel newTagUIElementsPanel = new HorizontalPanel();
 	private final ValueListBox<SearchUIProject> projects;
 	private final ValueListBox<SearchUICategory> categories;
 	private final ValueListBox<SearchUITag> myTags;
@@ -79,6 +80,9 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 
 	public TopicTagsView()
 	{
+
+		/* Add the layout to the panel */
+		layout.addStyleName(CSSConstants.TOPICTAGVIEWNEWTAGTABLE);
 
 		projects = new ValueListBox<SearchUIProject>(new ProxyRenderer<SearchUIProject>(null)
 		{
@@ -131,17 +135,11 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 		});
 		myTags.addStyleName(CSSConstants.TOPICTAGVIEWNEWTAGTAGSLIST);
 
-		/* Add the layout to the panel */
-		layout.addStyleName(CSSConstants.TOPICTAGVIEWNEWTAGTABLE);
-
-		final HorizontalPanel newTagUIElementsPanel = new HorizontalPanel();
 		newTagUIElementsPanel.addStyleName(CSSConstants.TOPICTAGVIEWNEWNEWTAGPARENTPANEL);
 		newTagUIElementsPanel.add(projects);
 		newTagUIElementsPanel.add(categories);
 		newTagUIElementsPanel.add(myTags);
 		newTagUIElementsPanel.add(add);
-
-		layout.setWidget(0, 0, newTagUIElementsPanel);
 
 		this.getPanel().addStyleName(CSSConstants.TOPICTAGVIEWCONTENTPANEL);
 		this.getPanel().setWidget(layout);
@@ -160,6 +158,8 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 		addActionButton(this.getBugs());
 		addActionButton(this.getHistory());
 		addActionButton(this.getSave());
+		
+		fixReadOnlyButtons();
 
 		addRightAlignedActionButtonPaddingPanel();
 	}
@@ -253,17 +253,26 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 	}
 
 	@Override
-	public void initialize(final RESTTopicV1 topic)
+	public void initialize(final RESTTopicV1 topic, final boolean readOnly)
 	{
+		this.readOnly = readOnly;
+		fixReadOnlyButtons();
+		
+		/* reset the layout */
+		layout.clear();
+		
+		if (!readOnly)
+			layout.setWidget(0, 0, newTagUIElementsPanel);
+		
 		/* Build up a hierarchy of tags assigned to the topic */
 		final SearchUIProjects projects = new SearchUIProjects(topic.getTags());
 		/* SearchUIProjectsEditor is a simple panel */
-		editor = new TopicTagViewProjectsEditor();
+		editor = new TopicTagViewProjectsEditor(readOnly);
 		/* Initialize the driver with the top-level editor */
 		driver.initialize(editor);
 		/* Copy the data in the object into the UI */
 		driver.edit(projects);
 		/* Add the projects */
-		layout.setWidget(1, 0, editor);
+		layout.setWidget(layout.getRowCount(), 0, editor);
 	}
 }

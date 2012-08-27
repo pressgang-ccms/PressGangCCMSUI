@@ -7,16 +7,20 @@ import org.jboss.pressgangccms.client.local.resources.css.TableResources;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewBase;
+import org.jboss.pressgangccms.rest.v1.entities.RESTBugzillaBugV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
+import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.CellTable.Resources;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.DisableableCheckboxCell;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.AsyncDataProvider;
@@ -33,9 +37,22 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 	private final VerticalPanel searchResultsPanel = new VerticalPanel();
 
 	private final SimplePager pager = new SimplePager();
-	private final CellTable<RESTTopicV1> results = new CellTable<RESTTopicV1>(Constants.MAX_SEARCH_RESULTS, (Resources)GWT.create(TableResources.class));
+	private final CellTable<RESTTopicV1> results = new CellTable<RESTTopicV1>(Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
 	private AsyncDataProvider<RESTTopicV1> provider;
+	private RESTTopicV1 revisionTopic;
 
+	private final Column<RESTTopicV1, Boolean> viewing = new Column<RESTTopicV1, Boolean>(new DisableableCheckboxCell(false, true, false))
+	{
+		@Override
+		public Boolean getValue(final RESTTopicV1 object)
+		{
+			if (revisionTopic == null)
+				return false;
+			
+			return object.getRevision().equals(revisionTopic.getRevision());
+		}
+	};
+	
 	private final TextColumn<RESTTopicV1> revisionNumber = new TextColumn<RESTTopicV1>()
 	{
 		@Override
@@ -54,10 +71,31 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 		}
 	};
 
-	@Override
-	public AsyncDataProvider<RESTTopicV1> getProvider()
+	private final Column<RESTTopicV1, String> viewButton = new Column<RESTTopicV1, String>(new ButtonCell())
 	{
-		return provider;
+		@Override
+		public String getValue(final RESTTopicV1 object)
+		{
+			if (revisionTopic == null || !revisionTopic.getRevision().equals(object.getRevision()))
+				return PressGangCCMSUI.INSTANCE.View();
+			
+			return PressGangCCMSUI.INSTANCE.CurrentlyViewing();
+		}
+	};
+
+	public RESTTopicV1 getRevisionTopic()
+	{
+		return revisionTopic;
+	}
+
+	public void setRevisionTopic(RESTTopicV1 revisionTopic)
+	{
+		this.revisionTopic = revisionTopic;
+	}
+
+	public Column<RESTTopicV1, String> getViewButton()
+	{
+		return viewButton;
 	}
 
 	@Override
@@ -65,6 +103,12 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 	{
 		this.provider = provider;
 		provider.addDataDisplay(results);
+	}
+	
+	@Override
+	public AsyncDataProvider<RESTTopicV1> getProvider()
+	{
+		return provider;
 	}
 
 	@Override
@@ -81,9 +125,11 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 
 	public TopicRevisionsView()
 	{
+		results.addColumn(viewing, PressGangCCMSUI.INSTANCE.CurrentlyViewing());
 		results.addColumn(revisionNumber, PressGangCCMSUI.INSTANCE.RevisionNumber());
 		results.addColumn(revisionDate, PressGangCCMSUI.INSTANCE.RevisionDate());
-
+		results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.View());
+		
 		searchResultsPanel.addStyleName(CSSConstants.SEARCHRESULTSPANEL);
 
 		searchResultsPanel.add(results);
@@ -102,9 +148,10 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 	}
 
 	@Override
-	public void initialize(final RESTTopicV1 topic)
+	public void initialize(final RESTTopicV1 topic, final boolean readOnly)
 	{
-
+		this.readOnly = readOnly;
+		fixReadOnlyButtons();
 	}
 
 	@Override
@@ -120,7 +167,11 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
 		addActionButton(downImage);
 		addActionButton(this.getSave());
+		
+		fixReadOnlyButtons();
 
 		addRightAlignedActionButtonPaddingPanel();
 	}
+
+
 }

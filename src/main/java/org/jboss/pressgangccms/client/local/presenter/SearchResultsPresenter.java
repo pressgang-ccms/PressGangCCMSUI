@@ -133,7 +133,7 @@ public class SearchResultsPresenter extends TemplatePresenter
 					{
 						try
 						{
-							topicViewDisplay.initialize(retValue);
+							topicViewDisplay.initialize(retValue, false);
 						}
 						finally
 						{

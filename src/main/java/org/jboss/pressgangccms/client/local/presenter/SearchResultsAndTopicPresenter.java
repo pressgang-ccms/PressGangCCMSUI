@@ -24,6 +24,7 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTBugzillaBugV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
@@ -247,7 +248,72 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 
 		bindNewTagListBoxes();
 
+		bindViewTopicRevisionButton();
+
 		getTags();
+	}
+
+	/**
+	 * Bind behaviour to the view buttons in the topic revisions cell table
+	 */
+	private void bindViewTopicRevisionButton()
+	{
+		topicRevisionsDisplay.getViewButton().setFieldUpdater(new FieldUpdater<RESTTopicV1, String>()
+		{
+			@Override
+			public void update(final int index, final RESTTopicV1 revisionTopic, final String value)
+			{
+				topicRevisionsDisplay.setRevisionTopic(null);
+
+				final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>()
+				{
+					@Override
+					public void begin()
+					{
+						startProcessing();
+					}
+
+					@Override
+					public void generalException(final Exception ex)
+					{
+						stopProcessing();
+					}
+
+					@Override
+					public void success(final RESTTopicV1 retValue)
+					{
+						try
+						{
+							topicRevisionsDisplay.setRevisionTopic(retValue);
+
+							/* default to the rendered view */
+							if (selectedView == null)
+							{
+								selectedView = topicRevisionsDisplay;
+								changeDisplayedTopicView();
+							}
+							else
+							{
+								updateDisplayedTopicView();
+							}
+						}
+						finally
+						{
+							stopProcessing();
+						}
+					}
+
+					@Override
+					public void failed()
+					{
+						stopProcessing();
+					}
+
+				};
+
+				RESTCalls.getTopicRevision(callback, revisionTopic.getId(), revisionTopic.getRevision());
+			}
+		});
 	}
 
 	/**
@@ -502,6 +568,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				{
 					selectedSearchTopic = event.getValue();
 					selectedTopic = null;
+					topicRevisionsDisplay.setRevisionTopic(null);
 
 					final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>()
 					{
@@ -548,7 +615,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 						}
 
 					};
-					
+
 					RESTCalls.getTopic(callback, selectedSearchTopic.getId());
 				}
 			}
@@ -620,18 +687,18 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 							{
 								/* Update the local collection of topics */
 								retValue.cloneInto(selectedTopic, true);
-								
+
 								/* The title may have been updated */
 								if (!selectedSearchTopic.getTitle().equals(selectedTopic.getTitle()))
-								{								
+								{
 									/* Update the title */
 									selectedSearchTopic.setTitle(selectedTopic.getTitle());
 									/* Update the list of topics */
 									provider.updateRowData(tableStartRow, currentList);
 								}
-								
+
 								/* Update the edit window */
-								selectedView.initialize(selectedTopic);
+								selectedView.initialize(topicRevisionsDisplay.getRevisionTopic() == null ? selectedTopic : topicRevisionsDisplay.getRevisionTopic(), topicRevisionsDisplay.getRevisionTopic() != null);
 
 								Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
 							}
@@ -807,7 +874,29 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	 */
 	private void updateDisplayedTopicView()
 	{
-		selectedView.initialize(selectedTopic);
+		/*
+		 * Here we use the initialize function to copy the topic data into the
+		 * GWT Editors. To save some data being retreived and sent by the
+		 * server, the revisions view always uses the revisions from the current
+		 * topic. All other views will display the revision topic if it has been
+		 * selected.
+		 */
+		
+		final boolean readOnly = topicRevisionsDisplay.getRevisionTopic() != null;
+
+		if (selectedView == this.topicRevisionsDisplay)
+		{
+			/*
+			 * The revisions always come from the parent topic (this saves us
+			 * expanding the revisions when loading a revision
+			 */
+			selectedView.initialize(selectedTopic, readOnly);
+		}
+		else
+		{
+			/* All other details come from the revision topic */
+			selectedView.initialize(readOnly ?  topicRevisionsDisplay.getRevisionTopic() : selectedTopic, readOnly);
+		}
 
 		/* Need to redisplay to work around a bug in the ACE editor */
 		if (selectedView == this.topicXMLDisplay)
@@ -816,6 +905,11 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
 			topicXMLDisplay.getEditor().redisplay();
 		}
+
+		/*
+		 * Here we add behaviours to additional buttons or views that don't use
+		 * the Editor framework (like those that use CellTables)
+		 */
 
 		/*
 		 * if we just displayed a new selection of tags, link up all the tag

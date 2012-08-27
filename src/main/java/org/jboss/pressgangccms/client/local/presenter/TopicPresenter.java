@@ -23,7 +23,7 @@ public class TopicPresenter extends TemplatePresenter
 	public interface Display extends TopicViewInterface
 	{
 		@Override
-		void initialize(final RESTTopicV1 topic);
+		public void initialize(final RESTTopicV1 topic, final boolean readOnly);
 	}
 
 	private String topicId;
@@ -69,7 +69,7 @@ public class TopicPresenter extends TemplatePresenter
 			{
 				try
 				{
-					display.initialize(retValue);
+					display.initialize(retValue, false);
 				}
 				finally
 				{

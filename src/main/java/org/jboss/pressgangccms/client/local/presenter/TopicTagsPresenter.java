@@ -29,7 +29,7 @@ public class TopicTagsPresenter extends TemplatePresenter
 	public interface Display extends TopicViewInterface
 	{
 		@Override
-		void initialize(final RESTTopicV1 topic);
+		void initialize(final RESTTopicV1 topic, final boolean readOnly);
 		void initializeNewTags(final SearchUIProjects tags);
 		void updateNewTagCategoriesDisplay();
 		void updateNewTagTagDisplay();
@@ -78,7 +78,7 @@ public class TopicTagsPresenter extends TemplatePresenter
 			{
 				try
 				{
-					display.initialize(retValue);
+					display.initialize(retValue, false);
 				}
 				finally
 				{

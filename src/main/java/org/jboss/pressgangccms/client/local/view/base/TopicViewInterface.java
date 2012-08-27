@@ -72,6 +72,8 @@ public interface TopicViewInterface extends BaseTemplateViewInterface
 	 * 
 	 * @param topic
 	 *            The topic that is used to initialize the view
+	 * @param readOnly
+	 * 				true if the display is to be read only, false otherwise
 	 */
-	void initialize(final RESTTopicV1 topic);
+	void initialize(final RESTTopicV1 topic, final boolean readOnly);
 }

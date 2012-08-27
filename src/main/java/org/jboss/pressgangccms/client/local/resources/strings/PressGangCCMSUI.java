@@ -32,6 +32,8 @@ public interface PressGangCCMSUI extends Constants
 	String TopicView();
 
 	String TopicID();
+	
+	String TopicRevision();
 
 	String TopicTitle();
 
@@ -66,4 +68,10 @@ public interface PressGangCCMSUI extends Constants
 	String RevisionNumber();
 	
 	String RevisionDate();
+	
+	String View();
+	
+	String Diff();
+	
+	String CurrentlyViewing();
 }
