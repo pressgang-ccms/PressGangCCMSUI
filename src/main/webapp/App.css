@@ -27,6 +27,11 @@ html {
 	margin: 8px;
 }
 
+.ContentLayoutPanel>div
+{
+	overflow-y: auto !important;
+}
+
 .PageTitleParentLayoutPanel
 {
 	background-color: #EFEFEF;
