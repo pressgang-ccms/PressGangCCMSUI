@@ -17,6 +17,8 @@ public interface TopicViewInterface extends BaseTemplateViewInterface
 {
 	FlexTable getRenderedSplitViewMenu();
 	
+	PushButton getRenderedSplitOpen();
+	
 	PushButton getRenderedHorizontalSplit();
 	
 	PushButton getRenderedSplitClose();

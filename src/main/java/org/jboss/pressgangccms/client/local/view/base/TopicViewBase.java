@@ -33,9 +33,15 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 	private final PushButton renderedVerticalSplit;
 	private final PushButton renderedHorizontalSplit;
 	private final PushButton renderedSplitClose;
+	private final PushButton renderedSplitOpen;
 
 	protected boolean readOnly = false;
 	
+	public PushButton getRenderedSplitOpen()
+	{
+		return renderedSplitOpen;
+	}
+
 	public PushButton getRenderedHorizontalSplit()
 	{
 		return renderedHorizontalSplit;
@@ -119,6 +125,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.TopicView());
 
 		/* Build the action bar icons */
+		renderedSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), CSSConstants.SPACEDBUTTON);
 		rendered = UIUtilities.createPushButton(ImageResources.INSTANCE.rendered48(), ImageResources.INSTANCE.renderedDown48(), ImageResources.INSTANCE.renderedHover48(), CSSConstants.SPACEDBUTTON);
 		xml = UIUtilities.createPushButton(ImageResources.INSTANCE.xml48(), ImageResources.INSTANCE.xmlDown48(), ImageResources.INSTANCE.xmlHover48(), CSSConstants.SPACEDBUTTON);
 		xmlErrors = UIUtilities.createPushButton(ImageResources.INSTANCE.attention48(), ImageResources.INSTANCE.attentionDown48(), ImageResources.INSTANCE.attentionHover48(), CSSConstants.SPACEDBUTTON);
@@ -128,7 +135,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 		bugs = UIUtilities.createPushButton(ImageResources.INSTANCE.bugs48(), ImageResources.INSTANCE.bugsDown48(), ImageResources.INSTANCE.bugsHover48(), ImageResources.INSTANCE.bugsDisabled48(), CSSConstants.SPACEDBUTTON);
 		history = UIUtilities.createPushButton(ImageResources.INSTANCE.history48(), ImageResources.INSTANCE.historyDown48(), ImageResources.INSTANCE.historyHover48(), ImageResources.INSTANCE.historyDisabled48(), CSSConstants.SPACEDBUTTON);
 
-		renderedSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), CSSConstants.SPACEDBUTTON);
+		renderedSplitOpen = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), CSSConstants.SPACEDBUTTON);
 		renderedNoSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedNoSplit48(), ImageResources.INSTANCE.renderedNoSplitDown48(), ImageResources.INSTANCE.renderedNoSplitHover48(), ImageResources.INSTANCE.renderedNoSplitDisabled48(), CSSConstants.SPACEDBUTTON);
 		renderedVerticalSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedVerticalSplit48(), ImageResources.INSTANCE.renderedVerticalSplitDown48(), ImageResources.INSTANCE.renderedVerticalSplitHover48(), ImageResources.INSTANCE.renderedVerticalSplitDisabled48(), CSSConstants.SPACEDBUTTON);
 		renderedHorizontalSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedHorizontalSplit48(), ImageResources.INSTANCE.renderedHorizontalSplitDown48(), ImageResources.INSTANCE.renderedHorizontalSplitHover48(), ImageResources.INSTANCE.renderedHorizontalSplitDisabled48(), CSSConstants.SPACEDBUTTON);
@@ -161,9 +168,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 
 		if (splitType != SplitType.DISABLED)
 		{
-			final Image splitMenuImage = new Image(ImageResources.INSTANCE.renderedSplit48());
-			splitMenuImage.addStyleName(CSSConstants.SPACEDBUTTON);
-			renderedSplitViewMenu.setWidget(0, 0, splitMenuImage);
+			renderedSplitViewMenu.setWidget(0, 0, renderedSplitOpen);
 			
 			if (splitType == SplitType.NONE)
 				renderedSplitViewMenu.setWidget(0, 1, new Image(ImageResources.INSTANCE.renderedNoSplitDown48()));

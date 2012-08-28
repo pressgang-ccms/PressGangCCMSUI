@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 public class SearchResultsAndTopicView extends BaseTemplateView implements SearchResultsAndTopicPresenter.Display
 {
@@ -108,13 +109,17 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
 	{
 		this.splitType = splitType;
 		
+		final SimplePanel renderedPanelParent = new SimplePanel();
+		renderedPanelParent.addStyleName(CSSConstants.TOPICVIEWLAYOUTPANEL);
+		renderedPanelParent.add(panel);
+		
 		if (splitType == SplitType.HORIZONTAL)
-		{
-			splitPanel.addSouth(panel, 300);
+		{			
+			splitPanel.addSouth(renderedPanelParent, 300);
 		}
 		else if (splitType == SplitType.VERTICAL)
 		{
-			splitPanel.addEast(panel, 300);
+			splitPanel.addEast(renderedPanelParent, 300);
 		}
 		
 		splitPanel.add(topicViewLayoutPanel);

@@ -1063,6 +1063,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		for (final TopicViewInterface view : new TopicViewInterface[]
 		{ topicViewDisplay, topicXMLDisplay, topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay })
 		{
+			view.getRenderedSplit().addClickHandler(splitMenuHandler);
 			view.getFields().addClickHandler(topicViewClickHandler);
 			view.getXml().addClickHandler(topicXMLClickHandler);
 			view.getRendered().addClickHandler(topicRenderedClickHandler);
@@ -1072,7 +1073,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			view.getBugs().addClickHandler(topicBugsClickHandler);
 			view.getHistory().addClickHandler(topicRevisionsClickHanlder);
 			
-			view.getRenderedSplit().addClickHandler(splitMenuHandler);
+			view.getRenderedSplitOpen().addClickHandler(splitMenuCloseHandler);
 			view.getRenderedSplitClose().addClickHandler(splitMenuCloseHandler);
 			view.getRenderedNoSplit().addClickHandler(splitMenuNoSplitHandler);
 			view.getRenderedVerticalSplit().addClickHandler(splitMenuVSplitHandler);
@@ -1204,6 +1205,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		else if (queryString.startsWith(SPLIT_TOKEN_VERTICAL))
 		{
 			display.initialize(SplitType.VERTICAL, topicSplitPanelRenderedDisplay.getPanel());
+		}
+		else
+		{
+			display.initialize(SplitType.NONE, topicSplitPanelRenderedDisplay.getPanel());
 		}
 		
 		queryString = queryString.replace(SPLIT_TOKEN_HORIZONTAL, "").replace(SPLIT_TOKEN_VERTICAL, "");
