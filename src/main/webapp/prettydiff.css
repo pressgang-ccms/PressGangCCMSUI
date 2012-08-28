@@ -1,9 +1,9 @@
-table.diff
-{
+table.diff {
 	border-collapse: collapse;
-border-style: solid;
-border-width: .2em;
-font-family: "Arial";
+	border-style: solid;
+	border-width: .2em;
+	font-family: "Arial";
+	white-space: pre-wrap;
 }
 
 table.diff tbody th {
@@ -15,8 +15,7 @@ table.diff tbody th {
 	border-width: .1em;
 }
 
-table.diff td
-{
+table.diff td {
 	width: 50%;
 }
 

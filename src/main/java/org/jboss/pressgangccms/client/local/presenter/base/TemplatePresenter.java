@@ -18,7 +18,7 @@ import com.google.gwt.user.client.Window;
  */
 abstract public class TemplatePresenter implements Presenter
 {
-	@Inject	private HandlerManager eventBus;
+	@Inject	protected HandlerManager eventBus;
 
 	/**
 	 * Called to bind the UI elements to event handlers

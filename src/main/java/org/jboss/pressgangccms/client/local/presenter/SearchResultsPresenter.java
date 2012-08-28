@@ -5,6 +5,7 @@ import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
+import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.client.local.view.SearchResultsView;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTopicCollectionV1;
@@ -133,7 +134,7 @@ public class SearchResultsPresenter extends TemplatePresenter
 					{
 						try
 						{
-							topicViewDisplay.initialize(retValue, false);
+							topicViewDisplay.initialize(retValue, false, SplitType.NONE);
 						}
 						finally
 						{

@@ -5,6 +5,7 @@ import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
+import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.client.local.ui.editor.topicview.RESTTopicV1XMLErrorsEditor;
 import org.jboss.pressgangccms.client.local.view.TopicXMLErrorsView;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewInterface;
@@ -22,8 +23,7 @@ public class TopicXMLErrorsPresenter extends TemplatePresenter
 
 	public interface Display extends TopicViewInterface
 	{
-		@Override
-		public void initialize(final RESTTopicV1 topic, final boolean readOnly);
+
 	}
 
 	private String topicId;
@@ -69,7 +69,7 @@ public class TopicXMLErrorsPresenter extends TemplatePresenter
 			{
 				try
 				{
-					display.initialize(retValue, false);
+					display.initialize(retValue, false, SplitType.DISABLED);
 				}
 				finally
 				{

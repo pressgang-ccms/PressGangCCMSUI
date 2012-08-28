@@ -8,6 +8,7 @@ import org.jboss.pressgangccms.client.local.presenter.TopicRenderedPresenter;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.resources.xsl.DocbookToHTML;
+import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewBase;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
@@ -40,6 +41,7 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 	protected void populateTopActionBar()
 	{
 		//addActionButton(this.getRendered());
+		addActionButton(this.getRenderedSplit());
 		final Image downImage = new Image(ImageResources.INSTANCE.renderedDown48());
 		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
 		addActionButton(downImage);
@@ -57,10 +59,11 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 	}
 
 	@Override
-	public void initialize(final RESTTopicV1 topic, final boolean readOnly)
+	public void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType)
 	{
 		this.readOnly = readOnly;
 		fixReadOnlyButtons();
+		buildSplitViewButtons(splitType);
 		
 		try
 		{

@@ -20,9 +20,6 @@ public class TopicRevisionsPresenter extends TemplatePresenter
 
 	public interface Display extends TopicViewInterface
 	{
-		@Override
-		public void initialize(final RESTTopicV1 topic, final boolean readOnly);
-		
 		AsyncDataProvider<RESTTopicV1> getProvider();
 
 		void setProvider(final AsyncDataProvider<RESTTopicV1> provider);

@@ -4,6 +4,7 @@ import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLPresenter;
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLPresenter.TopicXMLPresenterDriver;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
+import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.client.local.ui.UIUtilities;
 import org.jboss.pressgangccms.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewBase;
@@ -63,6 +64,7 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 	@Override
 	protected void populateTopActionBar()
 	{
+		addActionButton(this.getRenderedSplit());
 		addActionButton(this.getRendered());
 		final Image downImage = new Image(ImageResources.INSTANCE.xmlDown48());
 		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
@@ -82,12 +84,13 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 	}
 
 	@Override
-	public void initialize(final RESTTopicV1 topic, final boolean readOnly)
+	public void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType)
 	{
 		this.getPanel().addStyleName(CSSConstants.TOPICXMLVIEWPANEL);
 		
 		this.readOnly = readOnly;
 		fixReadOnlyButtons();
+		buildSplitViewButtons(splitType);
 		
 		/* SearchUIProjectsEditor is a grid */
 		editor = new RESTTopicV1XMLEditor(readOnly);

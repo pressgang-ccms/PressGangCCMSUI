@@ -13,4 +13,5 @@ public interface BaseTemplateViewInterface
 	SimpleLayoutPanel getPanel();
 	DockLayoutPanel getTopLevelPanel();
 	void setSpinnerVisible(final boolean enabled);
+	void showRegularMenu();
 }

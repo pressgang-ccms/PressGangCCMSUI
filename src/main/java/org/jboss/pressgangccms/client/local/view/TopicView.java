@@ -4,6 +4,7 @@ import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.TopicPresenter;
 import org.jboss.pressgangccms.client.local.presenter.TopicPresenter.TopicPresenterDriver;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
+import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewBase;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
@@ -34,6 +35,7 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display
 	@Override
 	protected void populateTopActionBar()
 	{
+		addActionButton(this.getRenderedSplit());
 		addActionButton(this.getRendered());		
 		addActionButton(this.getXml());
 		addActionButton(this.getXmlErrors());
@@ -51,10 +53,11 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display
 	}
 	
 	@Override
-	public void initialize(final RESTTopicV1 topic, final boolean readOnly)
+	public void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType)
 	{
 		this.readOnly = readOnly;
 		fixReadOnlyButtons();
+		buildSplitViewButtons(splitType);
 		
 		/* SearchUIProjectsEditor is a grid */
 		final RESTTopicV1BasicDetailsEditor editor = new RESTTopicV1BasicDetailsEditor(readOnly);

@@ -5,6 +5,7 @@ import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
+import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectsEditor;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProject;
@@ -28,8 +29,6 @@ public class TopicTagsPresenter extends TemplatePresenter
 	
 	public interface Display extends TopicViewInterface
 	{
-		@Override
-		void initialize(final RESTTopicV1 topic, final boolean readOnly);
 		void initializeNewTags(final SearchUIProjects tags);
 		void updateNewTagCategoriesDisplay();
 		void updateNewTagTagDisplay();
@@ -78,7 +77,7 @@ public class TopicTagsPresenter extends TemplatePresenter
 			{
 				try
 				{
-					display.initialize(retValue, false);
+					display.initialize(retValue, false, SplitType.DISABLED);
 				}
 				finally
 				{

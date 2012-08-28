@@ -3,6 +3,7 @@ package org.jboss.pressgangccms.client.local.presenter;
 import javax.enterprise.context.Dependent;
 
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
+import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewInterface;
 import org.jboss.pressgangccms.rest.v1.entities.RESTBugzillaBugV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
@@ -19,8 +20,7 @@ public class TopicBugsPresenter extends TemplatePresenter
 
 	public interface Display extends TopicViewInterface
 	{
-		@Override
-		public void initialize(final RESTTopicV1 topic, final boolean readOnly);
+		void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType);
 		
 		AsyncDataProvider<RESTBugzillaBugV1> getProvider();
 

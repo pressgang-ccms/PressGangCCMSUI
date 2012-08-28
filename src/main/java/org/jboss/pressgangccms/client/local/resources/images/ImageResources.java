@@ -29,6 +29,57 @@ public interface ImageResources extends ClientBundle
 	@Source("transparent48.png")
 	ImageResource transparent48();
 	
+	@Source("cross48.png")
+	ImageResource cross48();
+	
+	@Source("crossDown48.png")
+	ImageResource crossDown48();
+	
+	@Source("crossHover48.png")
+	ImageResource crossHover48();
+	
+	@Source("crossDisabled48.png")
+	ImageResource crossDisabled48();
+	
+	@Source("renderedSplit48.png")
+	ImageResource renderedSplit48();
+	
+	@Source("renderedNoSplit48.png")
+	ImageResource renderedNoSplit48();
+	
+	@Source("renderedNoSplitDown48.png")
+	ImageResource renderedNoSplitDown48();
+	
+	@Source("renderedNoSplitHover48.png")
+	ImageResource renderedNoSplitHover48();
+	
+	@Source("renderedNoSplitDisabled48.png")
+	ImageResource renderedNoSplitDisabled48();
+	
+	@Source("renderedHorizontalSplit48.png")
+	ImageResource renderedHorizontalSplit48();
+	
+	@Source("renderedHorizontalSplitDown48.png")
+	ImageResource renderedHorizontalSplitDown48();
+	
+	@Source("renderedHorizontalSplitHover48.png")
+	ImageResource renderedHorizontalSplitHover48();
+	
+	@Source("renderedHorizontalSplitDisabled48.png")
+	ImageResource renderedHorizontalSplitDisabled48();
+	
+	@Source("renderedVerticalSplit48.png")
+	ImageResource renderedVerticalSplit48();
+	
+	@Source("renderedVerticalSplitDown48.png")
+	ImageResource renderedVerticalSplitDown48();
+	
+	@Source("renderedVerticalSplitHover48.png")
+	ImageResource renderedVerticalSplitHover48();
+	
+	@Source("renderedVerticalSplitDisabled48.png")
+	ImageResource renderedVerticalSplitDisabled48();
+	
 	@Source("history48.png")
 	ImageResource history48();
 	

@@ -6,6 +6,7 @@ import org.jboss.pressgangccms.client.local.presenter.TopicRevisionsPresenter;
 import org.jboss.pressgangccms.client.local.resources.css.TableResources;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewBase;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
@@ -185,16 +186,18 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 	}
 
 	@Override
-	public void initialize(final RESTTopicV1 topic, final boolean readOnly)
+	public void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType)
 	{
 		this.readOnly = readOnly;
 		this.mainTopic = topic;
 		fixReadOnlyButtons();
+		buildSplitViewButtons(splitType);
 	}
 
 	@Override
 	protected void populateTopActionBar()
 	{
+		addActionButton(this.getRenderedSplit());
 		addActionButton(this.getRendered());
 		addActionButton(this.getXml());
 		addActionButton(this.getXmlErrors());

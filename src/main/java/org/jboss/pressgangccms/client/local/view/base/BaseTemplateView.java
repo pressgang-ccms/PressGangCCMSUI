@@ -35,13 +35,15 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	/** Defines the panel that holds the shortcut bar, content and footer */
 	private final DockLayoutPanel thirdLevelLayoutPanel = new DockLayoutPanel(Unit.PX);
 	
-	
 	private final SimplePanel headingBanner = new SimplePanel();
 	private final VerticalPanel pageTitleParentLayoutPanel = new VerticalPanel();
 	private final Label pageTitle = new Label();
 	private final VerticalPanel shortcutPanel = new VerticalPanel();
 	private SimpleLayoutPanel panel = new SimpleLayoutPanel();
 
+	/** This panel holds the buttons currently displayed in the top action bar */
+	private final SimplePanel topActionParentPanel = new SimplePanel();
+	/** This is the default collection of top action bar items */
 	private final FlexTable topActionPanel = new FlexTable();
 	private final HorizontalPanel footerPanel = new HorizontalPanel();
 	private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
@@ -53,6 +55,11 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	private final PushButton bug;
 	private final PushButton reports;
 	
+	public SimplePanel getTopActionParentPanel()
+	{
+		return topActionParentPanel;
+	}
+
 	public VerticalPanel getShortcutPanel()
 	{
 		return shortcutPanel;
@@ -145,7 +152,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		/* Set the action bar panel */
 		topActionPanel.addStyleName(CSSConstants.TOPACTIONPANEL);
 		
-		thirdLevelLayoutPanel.addNorth(topActionPanel, 80);
+		topActionParentPanel.add(topActionPanel);
+		
+		thirdLevelLayoutPanel.addNorth(topActionParentPanel, 80);
 		
 		/* Set the shortcut bar */
 		getShortcutPanel().addStyleName(CSSConstants.SHORTCUTPANEL);
@@ -180,6 +189,12 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 
 		bug = UIUtilities.createPushButton(ImageResources.INSTANCE.bug48(), ImageResources.INSTANCE.bugDown48(), ImageResources.INSTANCE.bugHover48(), CSSConstants.SPACEDBUTTON);
 		getShortcutPanel().add(bug);
+	}
+	
+	public void showRegularMenu()
+	{
+		topActionParentPanel.clear();
+		topActionParentPanel.add(topActionPanel);
 	}
 	
 	protected void addRightAlignedActionButtonPaddingPanel()

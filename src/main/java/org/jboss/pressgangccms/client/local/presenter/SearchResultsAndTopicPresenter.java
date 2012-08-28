@@ -6,9 +6,11 @@ import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgangccms.client.local.events.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
+import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.client.local.ui.editor.topicview.assignedtags.TopicTagViewCategoryEditor;
 import org.jboss.pressgangccms.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectEditor;
 import org.jboss.pressgangccms.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
@@ -31,9 +33,16 @@ import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
+import com.google.gwt.regexp.shared.MatchResult;
+import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.CellPreviewEvent;
@@ -51,7 +60,9 @@ import com.google.gwt.view.client.HasData;
 public class SearchResultsAndTopicPresenter extends TemplatePresenter
 {
 	public interface Display extends BaseTemplateViewInterface
-	{
+	{	
+		SplitType getSplitType();
+		
 		SimpleLayoutPanel getTopicResultsPanel();
 
 		SimpleLayoutPanel getTopicViewPanel();
@@ -61,7 +72,35 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		SimpleLayoutPanel getTopicResultsActionButtonsPanel();
 
 		HanldedSplitLayoutPanel getSplitPanel();
+		
+		DockLayoutPanel getTopicViewLayoutPanel();
+		
+		void initialize(final SplitType splitType, final Panel panel);
 	}
+
+	/**
+	 * How long to wait before refreshing the rendered view (in milliseconds)
+	 */
+	private static final int REFRESH_RATE = 1000;
+
+	/** The history token that identifies the a horizontal rendered view split */
+	private static final String SPLIT_TOKEN_HORIZONTAL = "split=h;";
+	
+	/** The history token that identifies the a horizontal rendered view split */
+	private static final String SPLIT_TOKEN_VERTICAL = "split=v;";
+
+	/** Setup automatic flushing and rendering */
+	final Timer timer = new Timer()
+	{
+		public void run()
+		{
+			if (selectedView == topicXMLDisplay)
+			{
+				topicXMLDisplay.getDriver().flush();
+				topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic(), getReadOnlyMode(), display.getSplitType());
+			}
+		}
+	};
 
 	/**
 	 * A click handler to add a tag to a topic
@@ -160,8 +199,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	@Inject
 	private TopicXMLPresenter.Display topicXMLDisplay;
 
+	/** The rendered topic view display */
 	@Inject
 	private TopicRenderedPresenter.Display topicRenderedDisplay;
+
+	/** The rendered topic view display in a split panel */
+	@Inject
+	private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
 
 	@Inject
 	private SearchResultsPresenter.Display searchResultsDisplay;
@@ -194,12 +238,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	private String queryString;
 
 	/**
-	 * The currently selected topic
+	 * The currently selected topic. These topics have their details expanded.
 	 */
 	private RESTTopicV1 selectedTopic;
 
 	/**
-	 * The currently selected topic from the search list
+	 * The currently selected topic from the search list. These topics aren't
+	 * expanded.
 	 */
 	private RESTTopicV1 selectedSearchTopic;
 
@@ -253,6 +298,18 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		getTags();
 	}
 
+	/**
+	 * Open a new window with the results of a prettydiff comparison
+	 * 
+	 * @param source
+	 *            The source XML
+	 * @param sourceLabel
+	 *            The source XML label
+	 * @param diff
+	 *            The diff XML
+	 * @param diffLabel
+	 *            The diff XML label
+	 */
 	native private void displayDiff(final String source, final String sourceLabel, final String diff, final String diffLabel)
 	/*-{
     var diffTable = $wnd.prettydiff(
@@ -261,7 +318,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
       sourcelabel : sourceLabel,
       diff : diff,
       difflabel : diffLabel,
-      lang : "text",
+      lang : "markup",
       mode : "diff",
       diffview : "sidebyside"
     })[0];
@@ -307,9 +364,11 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 					{
 						try
 						{
-							final RESTTopicV1 sourceTopic = topicRevisionsDisplay.getRevisionTopic() == null ? selectedTopic : topicRevisionsDisplay.getRevisionTopic();
-							final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID() + ": " + retValue.getId() + " " + PressGangCCMSUI.INSTANCE.TopicRevision() + ": " + retValue.getRevision().toString();
-							final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID() + ": " + sourceTopic.getId() + " " + PressGangCCMSUI.INSTANCE.TopicRevision() + ": " + sourceTopic.getRevision().toString();
+							final RESTTopicV1 sourceTopic = getTopicOrRevisionTopic();
+							final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID() + ": " + retValue.getId() + " " + PressGangCCMSUI.INSTANCE.TopicRevision() + ": " + retValue.getRevision().toString() + " " + PressGangCCMSUI.INSTANCE.RevisionDate() + ": "
+									+ DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL).format(retValue.getLastModified());
+							final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID() + ": " + sourceTopic.getId() + " " + PressGangCCMSUI.INSTANCE.TopicRevision() + ": " + sourceTopic.getRevision().toString() + " " + PressGangCCMSUI.INSTANCE.RevisionDate() + ": "
+									+ DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL).format(sourceTopic.getLastModified());
 							displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getXml(), sourceTopicLabel);
 						}
 						finally
@@ -784,7 +843,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 								}
 
 								/* Update the edit window */
-								selectedView.initialize(topicRevisionsDisplay.getRevisionTopic() == null ? selectedTopic : topicRevisionsDisplay.getRevisionTopic(), topicRevisionsDisplay.getRevisionTopic() != null);
+								selectedView.initialize(getTopicOrRevisionTopic(), getReadOnlyMode(), display.getSplitType());
 
 								Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
 							}
@@ -939,6 +998,66 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 				}
 			}
 		};
+		
+		final ClickHandler splitMenuHandler = new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				/* Sync any changes back to the underlying object */
+				flushChanges();
+				
+				showRenderedSplitPanelMenu();
+			}
+		};
+		
+		final ClickHandler splitMenuCloseHandler = new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				/* Sync any changes back to the underlying object */
+				flushChanges();
+
+				showRegularMenu();
+			}
+		};
+		
+		final ClickHandler splitMenuNoSplitHandler = new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				/* Sync any changes back to the underlying object */
+				flushChanges();
+
+				eventBus.fireEvent(new SearchResultsAndTopicViewEvent(queryString));
+			}
+		};
+		
+		final ClickHandler splitMenuVSplitHandler = new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				/* Sync any changes back to the underlying object */
+				flushChanges();
+
+				eventBus.fireEvent(new SearchResultsAndTopicViewEvent(SPLIT_TOKEN_VERTICAL + queryString));
+			}
+		};
+		
+		final ClickHandler splitMenuHSplitHandler = new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				/* Sync any changes back to the underlying object */
+				flushChanges();
+
+				eventBus.fireEvent(new SearchResultsAndTopicViewEvent(SPLIT_TOKEN_HORIZONTAL + queryString));
+			}
+		};
 
 		/* Hook up the click listeners */
 		for (final TopicViewInterface view : new TopicViewInterface[]
@@ -952,6 +1071,12 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			view.getTags().addClickHandler(topicTagsClickHandler);
 			view.getBugs().addClickHandler(topicBugsClickHandler);
 			view.getHistory().addClickHandler(topicRevisionsClickHanlder);
+			
+			view.getRenderedSplit().addClickHandler(splitMenuHandler);
+			view.getRenderedSplitClose().addClickHandler(splitMenuCloseHandler);
+			view.getRenderedNoSplit().addClickHandler(splitMenuNoSplitHandler);
+			view.getRenderedVerticalSplit().addClickHandler(splitMenuVSplitHandler);
+			view.getRenderedHorizontalSplit().addClickHandler(splitMenuHSplitHandler);
 		}
 	}
 
@@ -967,8 +1092,14 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		 * topic. All other views will display the revision topic if it has been
 		 * selected.
 		 */
-
-		final boolean readOnly = topicRevisionsDisplay.getRevisionTopic() != null;
+		
+		/*
+		 * Need to do an initial call to initialize for the rendered view in
+		 * the split pane
+		 */
+		topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic(), getReadOnlyMode(), display.getSplitType());
+		/* By default, stop the automatic updating of the rendered view panel */
+		timer.cancel();
 
 		if (selectedView == this.topicRevisionsDisplay)
 		{
@@ -976,12 +1107,12 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			 * The revisions always come from the parent topic (this saves us
 			 * expanding the revisions when loading a revision
 			 */
-			selectedView.initialize(selectedTopic, readOnly);
+			selectedView.initialize(selectedTopic, getReadOnlyMode(), display.getSplitType());
 		}
 		else
 		{
 			/* All other details come from the revision topic */
-			selectedView.initialize(readOnly ? topicRevisionsDisplay.getRevisionTopic() : selectedTopic, readOnly);
+			selectedView.initialize(getTopicOrRevisionTopic(), getReadOnlyMode(), display.getSplitType());
 		}
 
 		/* Need to redisplay to work around a bug in the ACE editor */
@@ -990,6 +1121,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
 			topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
 			topicXMLDisplay.getEditor().redisplay();
+
+			/* While editing the XML, we need to setup a refresh of the rendered view */
+			if (display.getSplitType() != SplitType.NONE)
+			{						
+				if (!getReadOnlyMode())
+					timer.scheduleRepeating(REFRESH_RATE);
+			}
 		}
 
 		/*
@@ -1058,6 +1196,17 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	public void parseToken(final String historyToken)
 	{
 		queryString = historyToken.replace(SearchResultsAndTopicView.HISTORY_TOKEN + ";", "");
+
+		if (queryString.startsWith(SPLIT_TOKEN_HORIZONTAL))
+		{
+			display.initialize(SplitType.HORIZONTAL, topicSplitPanelRenderedDisplay.getPanel());			
+		}
+		else if (queryString.startsWith(SPLIT_TOKEN_VERTICAL))
+		{
+			display.initialize(SplitType.VERTICAL, topicSplitPanelRenderedDisplay.getPanel());
+		}
+		
+		queryString = queryString.replace(SPLIT_TOKEN_HORIZONTAL, "").replace(SPLIT_TOKEN_VERTICAL, "");
 	}
 
 	private void stopProcessing()
@@ -1071,5 +1220,39 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	{
 		++count;
 		display.setSpinnerVisible(true);
+	}
+
+	/**
+	 * The currently displayed topic is topicRevisionsDisplay.getRevisionTopic()
+	 * if it is not null, or selectedTopic otherwise.
+	 * 
+	 * @return The currently displayed topic
+	 */
+	private RESTTopicV1 getTopicOrRevisionTopic()
+	{
+		final RESTTopicV1 sourceTopic = topicRevisionsDisplay.getRevisionTopic() == null ? selectedTopic : topicRevisionsDisplay.getRevisionTopic();
+		return sourceTopic;
+	}
+
+	/**
+	 * The UI is in a readonly mode if viewing a topic revision
+	 * 
+	 * @return true if the UI is in readonly mode, and false otherwise
+	 */
+	private boolean getReadOnlyMode()
+	{
+		return topicRevisionsDisplay.getRevisionTopic() != null;
+	}
+	
+	private  void showRegularMenu()
+	{
+		display.getTopicViewActionButtonsPanel().clear();
+		display.getTopicViewActionButtonsPanel().add(selectedView.getTopActionPanel());
+	}
+	
+	private void showRenderedSplitPanelMenu()
+	{
+		display.getTopicViewActionButtonsPanel().clear();
+		display.getTopicViewActionButtonsPanel().add(selectedView.getRenderedSplitViewMenu());
 	}
 }

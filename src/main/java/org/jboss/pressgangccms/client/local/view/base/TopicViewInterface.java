@@ -1,8 +1,10 @@
 package org.jboss.pressgangccms.client.local.view.base;
 
+import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.PushButton;
 
 /**
@@ -13,6 +15,18 @@ import com.google.gwt.user.client.ui.PushButton;
  */
 public interface TopicViewInterface extends BaseTemplateViewInterface
 {
+	FlexTable getRenderedSplitViewMenu();
+	
+	PushButton getRenderedHorizontalSplit();
+	
+	PushButton getRenderedSplitClose();
+
+	PushButton getRenderedVerticalSplit();
+
+	PushButton getRenderedNoSplit();
+
+	PushButton getRenderedSplit();
+	
 	/**
 	 * @return The button that is used to switch to the history view
 	 */
@@ -75,5 +89,8 @@ public interface TopicViewInterface extends BaseTemplateViewInterface
 	 * @param readOnly
 	 * 				true if the display is to be read only, false otherwise
 	 */
-	void initialize(final RESTTopicV1 topic, final boolean readOnly);
+	void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType);
+	
+	/** Show the rendered split view menu */
+	void showSplitViewButtons();
 }

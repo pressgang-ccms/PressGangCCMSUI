@@ -4,6 +4,7 @@ import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLErrorsPresenter;
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLErrorsPresenter.TopicXMLErrorsPresenterDriver;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
+import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.client.local.ui.editor.topicview.RESTTopicV1XMLErrorsEditor;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewBase;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
@@ -35,6 +36,7 @@ public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsP
 	@Override
 	protected void populateTopActionBar()
 	{
+		addActionButton(this.getRenderedSplit());
 		addActionButton(this.getRendered());		
 		addActionButton(this.getXml());
 		final Image downImage = new Image(ImageResources.INSTANCE.attentionDown48());
@@ -52,10 +54,11 @@ public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsP
 	}
 	
 	@Override
-	public void initialize(final RESTTopicV1 topic, final boolean readOnly)
+	public void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType)
 	{
 		this.readOnly = readOnly;
 		fixReadOnlyButtons();
+		buildSplitViewButtons(splitType);
 		
 		/* SearchUIProjectsEditor is a grid */
 		final RESTTopicV1XMLErrorsEditor editor = new RESTTopicV1XMLErrorsEditor();

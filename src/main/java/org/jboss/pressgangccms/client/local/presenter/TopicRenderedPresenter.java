@@ -15,8 +15,7 @@ public class TopicRenderedPresenter extends TemplatePresenter
 
 	public interface Display extends TopicViewInterface
 	{
-		@Override
-		public void initialize(final RESTTopicV1 topic, final boolean readOnly);
+
 	}
 
 	@Override
