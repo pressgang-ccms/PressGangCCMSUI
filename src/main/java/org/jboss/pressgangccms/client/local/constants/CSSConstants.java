@@ -94,4 +94,38 @@ final public class CSSConstants
 	static public final String IMAGEVIEWLANGUAGEIMAGETABPANEL = "ImageViewLanguageImageTabPanel";
 	/** Assigned to the tab that shows a specific language image */
 	static public final String IMAGEVIEWLANGUAGEIMAGETAB = "ImageViewLanguageImageTab";
+	/** Assigned to the cell that holds the language file name label */
+	static public final String IMAGEVIEWLANGUAGEIMAGEFILENAMELABEL = "ImageViewLanguageImageFilenameLabel";
+	/** Assigned to the cell that holds the language file name text */
+	static public final String IMAGEVIEWLANGUAGEIMAGEFILENAMETEXT = "ImageViewLanguageImageFilenameText";
+	/** Assigned to the cell that holds the language locale label */
+	static public final String IMAGEVIEWLANGUAGEIMAGELOCALELABEL = "ImageViewLanguageImageLocaleLabel";
+	/** Assigned to the cell that holds the language locale text */
+	static public final String IMAGEVIEWLANGUAGEIMAGELOCALETEXT = "ImageViewLanguageImageLocaleText";
+	/** Assigned to the cell that holds the language display label */
+	static public final String IMAGEVIEWLANGUAGEIMAGEDISPLAYLABEL = "ImageViewLanguageImageDisplayLabel";
+	/** Assigned to the cell that holds the language display image */
+	static public final String IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGE = "ImageViewLanguageImageDisplayImage";
+	/** Assigned to the cell that holds the language file name label cell */
+	static public final String IMAGEVIEWLANGUAGEIMAGEFILENAMELABELCELL = "ImageViewLanguageImageFilenameLabelCell";
+	/** Assigned to the cell that holds the language file name text cell */
+	static public final String IMAGEVIEWLANGUAGEIMAGEFILENAMETEXTCELL = "ImageViewLanguageImageFilenameTextCell";
+	/** Assigned to the cell that holds the language locale label cell */
+	static public final String IMAGEVIEWLANGUAGEIMAGELOCALELABELCELL = "ImageViewLanguageImageLocaleLabelCell";
+	/** Assigned to the cell that holds the language locale text cell */
+	static public final String IMAGEVIEWLANGUAGEIMAGELOCALETEXTCELL = "ImageViewLanguageImageLocaleTextCell";
+	/** Assigned to the cell that holds the language display label cell */
+	static public final String IMAGEVIEWLANGUAGEIMAGEDISPLAYLABELCELL = "ImageViewLanguageImageDisplayLabelCell";
+	/** Assigned to the cell that holds the language display image cell */
+	static public final String IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGECELL = "ImageViewLanguageImageDisplayImageCell";
+	/** Assigned to the image description label */
+	static public final String IMAGEVIEWDESCRIPTIONLABEL = "ImageViewDescriptionLabel";
+	/** Assigned to the image description text */
+	static public final String IMAGEVIEWDESCRIPTIONTEXT = "ImageViewDescriptionText";
+	/** Assigned to the image description label cell */
+	static public final String IMAGEVIEWDESCRIPTIONLABELCELL = "ImageViewDescriptionLabelCell";
+	/** Assigned to the image description text cell*/
+	static public final String IMAGEVIEWDESCRIPTIONTEXTCELL = "ImageViewDescriptionTextCell";
+	/** Assigned to the table that holds the image details */
+	static public final String IMAGEVIEWDETAILSTABLE = "ImageViewDetailsTable";
 }

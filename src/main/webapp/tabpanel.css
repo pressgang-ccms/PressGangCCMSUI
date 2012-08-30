@@ -1,10 +1,13 @@
+/*
+	GWT does not include any default styling for tab panels. These CSS classes provide a simple style.
+*/
 .gwt-TabLayoutPanel {
 	height: 100%;
 }
 
 /** the tab bar */
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTabs {
-	
+	height: 100%;
 }
 
 /** the individual tab in the tab bar */
@@ -23,6 +26,10 @@
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
 	cursor: default;
 	background-color: #ABBCCF;
+	height: 100%;
+	padding-top: 0.5em;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
 }
 
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelContent {

@@ -30,8 +30,15 @@ public class RESTImageV1Editor extends DockPanel implements Editor<RESTImageV1>
 	{
 		this.addStyleName(CSSConstants.IMAGEVIEWPARENTDOCKPANEL);
 		
+		imageDetails.addStyleName(CSSConstants.IMAGEVIEWDETAILSTABLE);
+		descriptionLabel.addStyleName(CSSConstants.IMAGEVIEWDESCRIPTIONLABEL);
+		description.addStyleName(CSSConstants.IMAGEVIEWDESCRIPTIONTEXT);
+		
 		imageDetails.setWidget(0, 0, descriptionLabel);
 		imageDetails.setWidget(0, 1, description);
+		
+		imageDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.IMAGEVIEWDESCRIPTIONLABELCELL);
+		imageDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.IMAGEVIEWDESCRIPTIONTEXTCELL);
 		
 		this.add(imageDetails, DockPanel.NORTH);
 		this.add(languageImages_OTM, DockPanel.CENTER);
