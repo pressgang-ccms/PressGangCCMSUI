@@ -4,6 +4,7 @@ import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLPresenter;
 import org.jboss.pressgangccms.client.local.presenter.TopicXMLPresenter.TopicXMLPresenterDriver;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
+import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.client.local.ui.UIUtilities;
 import org.jboss.pressgangccms.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
@@ -58,7 +59,8 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
 	public TopicXMLView()
 	{
-
+		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - " + PressGangCCMSUI.INSTANCE.XMLEditing());
+		this.getPanel().addStyleName(CSSConstants.TOPICXMLVIEWPANEL);
 	}
 	
 	@Override
@@ -86,8 +88,6 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 	@Override
 	public void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType)
 	{
-		this.getPanel().addStyleName(CSSConstants.TOPICXMLVIEWPANEL);
-		
 		this.readOnly = readOnly;
 		fixReadOnlyButtons();
 		buildSplitViewButtons(splitType);

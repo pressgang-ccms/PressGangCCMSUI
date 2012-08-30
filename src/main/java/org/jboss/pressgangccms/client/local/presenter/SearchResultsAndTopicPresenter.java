@@ -35,8 +35,6 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
-import com.google.gwt.regexp.shared.MatchResult;
-import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
@@ -1086,6 +1084,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	 */
 	private void updateDisplayedTopicView()
 	{
+		/* Update the page name */
+		display.getPageTitle().setText(selectedView.getPageName());
+		
 		/*
 		 * Here we use the initialize function to copy the topic data into the
 		 * GWT Editors. To save some data being retreived and sent by the

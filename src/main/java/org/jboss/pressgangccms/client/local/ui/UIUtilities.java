@@ -19,7 +19,7 @@ final public class UIUtilities
 		return retvalue;
 	}
 
-	public static PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final String className)
+	public static PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final String text, final String className)
 	{
 		final PushButton retvalue = new PushButton(new Image(up), new Image(down));
 		//retvalue.getUpHoveringFace().setImage(new Image(hover));
@@ -27,7 +27,7 @@ final public class UIUtilities
 		return retvalue;
 	}
 
-	public static PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final ImageResource disabled)
+	public static PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final ImageResource disabled, final String text)
 	{
 		final PushButton retvalue = new PushButton(new Image(up), new Image(down));
 		//retvalue.getUpHoveringFace().setImage(new Image(hover));
@@ -35,7 +35,7 @@ final public class UIUtilities
 		return retvalue;
 	}
 
-	public static PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final ImageResource disabled, final String className)
+	public static PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final ImageResource disabled, final String text, final String className)
 	{
 		final PushButton retvalue = new PushButton(new Image(up), new Image(down));
 		//retvalue.getUpHoveringFace().setImage(new Image(hover));

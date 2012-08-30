@@ -32,9 +32,9 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 
 	public TopicRenderedView()
 	{
-		div.addStyleName(CSSConstants.TOPICRENDEREDVIEWDIV);
+		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - " + PressGangCCMSUI.INSTANCE.RenderedView());
 		
-
+		div.addStyleName(CSSConstants.TOPICRENDEREDVIEWDIV);
 	}
 	
 	@Override

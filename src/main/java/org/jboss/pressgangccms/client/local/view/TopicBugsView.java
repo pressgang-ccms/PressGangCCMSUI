@@ -100,6 +100,8 @@ public class TopicBugsView extends TopicViewBase implements TopicBugsPresenter.D
 
 	public TopicBugsView()
 	{
+		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - " + PressGangCCMSUI.INSTANCE.Bugs());
+		
 		results.addColumn(linkColumn, PressGangCCMSUI.INSTANCE.BugzillaID());
 		results.addColumn(summaryColumn, PressGangCCMSUI.INSTANCE.BugzillaSummary());
 		results.addColumn(checkColumn, PressGangCCMSUI.INSTANCE.IsOpen());

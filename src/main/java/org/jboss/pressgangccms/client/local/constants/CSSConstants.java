@@ -8,6 +8,10 @@ package org.jboss.pressgangccms.client.local.constants;
 final public class CSSConstants
 {
 	/**
+	 * The class assigned to the page title label.
+	 */
+	static public final String PAGETITLE = "PageTitle";
+	/**
 	 * The class assigned to the top level DockLayoutPanel.
 	 */
 	static public final String TOPLEVELLAYOUTPANEL = "TopLevelLayoutPanel";
@@ -84,4 +88,10 @@ final public class CSSConstants
 	static public final String TOPICTAGVIEWNEWTAGTAGSLIST = "TopicTagViewNewTagTagsList";
 	/** Assigned to the panel that holds the new tag ui elements */
 	static public final String TOPICTAGVIEWNEWNEWTAGPARENTPANEL = "TopicTagViewNewTagParentPanel";
+	/** Assigned to the dock panel that hosts the image description and the tab view of specific language images */
+	static public final String IMAGEVIEWPARENTDOCKPANEL = "ImageViewParentDockPanel";
+	/** Assigned to the tab panel of specific language images */
+	static public final String IMAGEVIEWLANGUAGEIMAGETABPANEL = "ImageViewLanguageImageTabPanel";
+	/** Assigned to the tab that shows a specific language image */
+	static public final String IMAGEVIEWLANGUAGEIMAGETAB = "ImageViewLanguageImageTab";
 }

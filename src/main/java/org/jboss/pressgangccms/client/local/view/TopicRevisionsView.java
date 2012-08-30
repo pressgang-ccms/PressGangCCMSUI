@@ -162,6 +162,8 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 
 	public TopicRevisionsView()
 	{
+		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - " + PressGangCCMSUI.INSTANCE.Revisions());
+		
 		results.addColumn(viewing, PressGangCCMSUI.INSTANCE.CurrentlyViewing());
 		results.addColumn(revisionNumber, PressGangCCMSUI.INSTANCE.RevisionNumber());
 		results.addColumn(revisionDate, PressGangCCMSUI.INSTANCE.RevisionDate());

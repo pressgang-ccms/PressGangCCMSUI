@@ -8,6 +8,8 @@ public interface PressGangCCMSUI extends Constants
 	public static final PressGangCCMSUI INSTANCE = GWT.create(PressGangCCMSUI.class);
 
 	String PressGangCCMS();
+	
+	String Home();
 
 	String Welcome();
 
@@ -78,4 +80,48 @@ public interface PressGangCCMSUI extends Constants
 	String Edit();
 	
 	String CurrentlyEditing();
+	
+	String RenderedView();
+	
+	String XMLEditing();
+	
+	String XMLValidationErrors();
+	
+	String Properties();
+	
+	String Bugs();
+	
+	String Revisions();
+	
+	String TopicTags();
+	
+	String SearchTranslations();
+	
+	String Reports();
+	
+	String CreateBug();
+	
+	String RenderedPane();
+	
+	String HorizontalSplit();
+	
+	String VerticalSplit();
+	
+	String NoSplit();
+	
+	String Close();
+	
+	String Save();
+	
+	String ImageDescription();
+	
+	String ImageLocale();
+	
+	String ImageFilename();
+	
+	String ImageSample();
+	
+	String Images();
+	
+	String ImagePlaceholder();
 }

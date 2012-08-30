@@ -4,12 +4,15 @@ import javax.enterprise.context.ApplicationScoped;
 
 import org.jboss.errai.ioc.client.container.IOCBeanDef;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
+import org.jboss.pressgangccms.client.local.events.ImagesViewEvent;
+import org.jboss.pressgangccms.client.local.events.ImagesViewEventHandler;
 import org.jboss.pressgangccms.client.local.events.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgangccms.client.local.events.SearchResultsAndTopicViewEventHandler;
 import org.jboss.pressgangccms.client.local.events.SearchResultsViewEvent;
 import org.jboss.pressgangccms.client.local.events.SearchResultsViewEventHandler;
 import org.jboss.pressgangccms.client.local.events.SearchViewEvent;
 import org.jboss.pressgangccms.client.local.events.SearchViewEventHandler;
+import org.jboss.pressgangccms.client.local.presenter.ImagePresenter;
 import org.jboss.pressgangccms.client.local.presenter.SearchPresenter;
 import org.jboss.pressgangccms.client.local.presenter.SearchResultsAndTopicPresenter;
 import org.jboss.pressgangccms.client.local.presenter.SearchResultsPresenter;
@@ -17,6 +20,7 @@ import org.jboss.pressgangccms.client.local.presenter.TopicPresenter;
 import org.jboss.pressgangccms.client.local.presenter.WelcomePresenter;
 import org.jboss.pressgangccms.client.local.presenter.base.Presenter;
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
+import org.jboss.pressgangccms.client.local.view.ImageView;
 import org.jboss.pressgangccms.client.local.view.SearchResultsAndTopicView;
 import org.jboss.pressgangccms.client.local.view.SearchResultsView;
 import org.jboss.pressgangccms.client.local.view.SearchView;
@@ -69,6 +73,15 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 			public void onSearchResultsViewOpen(final SearchResultsAndTopicViewEvent event)
 			{
 				History.newItem(SearchResultsAndTopicView.HISTORY_TOKEN + ";" + event.getQuery());
+			}
+		});
+		
+		eventBus.addHandler(ImagesViewEvent.TYPE, new ImagesViewEventHandler()
+		{
+			@Override
+			public void onImagesViewOpen(final ImagesViewEvent event)
+			{
+				History.newItem(ImageView.HISTORY_TOKEN);
 			}
 		});
 	}
@@ -132,6 +145,14 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 			else if (token.startsWith(SearchResultsAndTopicView.HISTORY_TOKEN))
 			{
 				final IOCBeanDef<SearchResultsAndTopicPresenter> bean = manager.lookupBean(SearchResultsAndTopicPresenter.class);
+				if (bean != null)
+				{
+					presenter = bean.getInstance();
+				}
+			}
+			else if (token.startsWith(ImageView.HISTORY_TOKEN))
+			{
+				final IOCBeanDef<ImagePresenter> bean = manager.lookupBean(ImagePresenter.class);
 				if (bean != null)
 				{
 					presenter = bean.getInstance();

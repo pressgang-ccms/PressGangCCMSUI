@@ -120,26 +120,26 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 		return fields;
 	}
 
-	public TopicViewBase()
+	public TopicViewBase(final String applicationName, final String pageName)
 	{
-		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.TopicView());
+		super(applicationName, pageName);
 
 		/* Build the action bar icons */
-		renderedSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), CSSConstants.SPACEDBUTTON);
-		rendered = UIUtilities.createPushButton(ImageResources.INSTANCE.rendered48(), ImageResources.INSTANCE.renderedDown48(), ImageResources.INSTANCE.renderedHover48(), CSSConstants.SPACEDBUTTON);
-		xml = UIUtilities.createPushButton(ImageResources.INSTANCE.xml48(), ImageResources.INSTANCE.xmlDown48(), ImageResources.INSTANCE.xmlHover48(), CSSConstants.SPACEDBUTTON);
-		xmlErrors = UIUtilities.createPushButton(ImageResources.INSTANCE.attention48(), ImageResources.INSTANCE.attentionDown48(), ImageResources.INSTANCE.attentionHover48(), CSSConstants.SPACEDBUTTON);
-		fields = UIUtilities.createPushButton(ImageResources.INSTANCE.fields48(), ImageResources.INSTANCE.fieldsDown48(), ImageResources.INSTANCE.fieldsHover48(), CSSConstants.SPACEDBUTTON);
-		save = UIUtilities.createPushButton(ImageResources.INSTANCE.save48(), ImageResources.INSTANCE.saveDown48(), ImageResources.INSTANCE.saveHover48(), ImageResources.INSTANCE.saveDisabled48(), CSSConstants.SPACEDBUTTON);
-		tags = UIUtilities.createPushButton(ImageResources.INSTANCE.tag48(), ImageResources.INSTANCE.tagDown48(), ImageResources.INSTANCE.tagHover48(), ImageResources.INSTANCE.tagDisabled48(), CSSConstants.SPACEDBUTTON);
-		bugs = UIUtilities.createPushButton(ImageResources.INSTANCE.bugs48(), ImageResources.INSTANCE.bugsDown48(), ImageResources.INSTANCE.bugsHover48(), ImageResources.INSTANCE.bugsDisabled48(), CSSConstants.SPACEDBUTTON);
-		history = UIUtilities.createPushButton(ImageResources.INSTANCE.history48(), ImageResources.INSTANCE.historyDown48(), ImageResources.INSTANCE.historyHover48(), ImageResources.INSTANCE.historyDisabled48(), CSSConstants.SPACEDBUTTON);
+		renderedSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), PressGangCCMSUI.INSTANCE.RenderedPane(), CSSConstants.SPACEDBUTTON);
+		rendered = UIUtilities.createPushButton(ImageResources.INSTANCE.rendered48(), ImageResources.INSTANCE.renderedDown48(), ImageResources.INSTANCE.renderedHover48(), PressGangCCMSUI.INSTANCE.RenderedView(), CSSConstants.SPACEDBUTTON);
+		xml = UIUtilities.createPushButton(ImageResources.INSTANCE.xml48(), ImageResources.INSTANCE.xmlDown48(), ImageResources.INSTANCE.xmlHover48(), PressGangCCMSUI.INSTANCE.XMLEditing(), CSSConstants.SPACEDBUTTON);
+		xmlErrors = UIUtilities.createPushButton(ImageResources.INSTANCE.attention48(), ImageResources.INSTANCE.attentionDown48(), ImageResources.INSTANCE.attentionHover48(), PressGangCCMSUI.INSTANCE.XMLValidationErrors(), CSSConstants.SPACEDBUTTON);
+		fields = UIUtilities.createPushButton(ImageResources.INSTANCE.fields48(), ImageResources.INSTANCE.fieldsDown48(), ImageResources.INSTANCE.fieldsHover48(), PressGangCCMSUI.INSTANCE.Properties(), CSSConstants.SPACEDBUTTON);
+		save = UIUtilities.createPushButton(ImageResources.INSTANCE.save48(), ImageResources.INSTANCE.saveDown48(), ImageResources.INSTANCE.saveHover48(), ImageResources.INSTANCE.saveDisabled48(), PressGangCCMSUI.INSTANCE.Save(), CSSConstants.SPACEDBUTTON);
+		tags = UIUtilities.createPushButton(ImageResources.INSTANCE.tag48(), ImageResources.INSTANCE.tagDown48(), ImageResources.INSTANCE.tagHover48(), ImageResources.INSTANCE.tagDisabled48(), PressGangCCMSUI.INSTANCE.TopicTags(), CSSConstants.SPACEDBUTTON);
+		bugs = UIUtilities.createPushButton(ImageResources.INSTANCE.bugs48(), ImageResources.INSTANCE.bugsDown48(), ImageResources.INSTANCE.bugsHover48(), ImageResources.INSTANCE.bugsDisabled48(), PressGangCCMSUI.INSTANCE.Bugs(), CSSConstants.SPACEDBUTTON);
+		history = UIUtilities.createPushButton(ImageResources.INSTANCE.history48(), ImageResources.INSTANCE.historyDown48(), ImageResources.INSTANCE.historyHover48(), ImageResources.INSTANCE.historyDisabled48(), PressGangCCMSUI.INSTANCE.Revisions(), CSSConstants.SPACEDBUTTON);
 
-		renderedSplitOpen = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), CSSConstants.SPACEDBUTTON);
-		renderedNoSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedNoSplit48(), ImageResources.INSTANCE.renderedNoSplitDown48(), ImageResources.INSTANCE.renderedNoSplitHover48(), ImageResources.INSTANCE.renderedNoSplitDisabled48(), CSSConstants.SPACEDBUTTON);
-		renderedVerticalSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedVerticalSplit48(), ImageResources.INSTANCE.renderedVerticalSplitDown48(), ImageResources.INSTANCE.renderedVerticalSplitHover48(), ImageResources.INSTANCE.renderedVerticalSplitDisabled48(), CSSConstants.SPACEDBUTTON);
-		renderedHorizontalSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedHorizontalSplit48(), ImageResources.INSTANCE.renderedHorizontalSplitDown48(), ImageResources.INSTANCE.renderedHorizontalSplitHover48(), ImageResources.INSTANCE.renderedHorizontalSplitDisabled48(), CSSConstants.SPACEDBUTTON);
-		renderedSplitClose = UIUtilities.createPushButton(ImageResources.INSTANCE.cross48(), ImageResources.INSTANCE.crossDown48(), ImageResources.INSTANCE.crossHover48(), ImageResources.INSTANCE.crossDisabled48(), CSSConstants.SPACEDBUTTON);
+		renderedSplitOpen = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), PressGangCCMSUI.INSTANCE.RenderedPane(), CSSConstants.SPACEDBUTTON);
+		renderedNoSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedNoSplit48(), ImageResources.INSTANCE.renderedNoSplitDown48(), ImageResources.INSTANCE.renderedNoSplitHover48(), ImageResources.INSTANCE.renderedNoSplitDisabled48(), PressGangCCMSUI.INSTANCE.NoSplit(), CSSConstants.SPACEDBUTTON);
+		renderedVerticalSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedVerticalSplit48(), ImageResources.INSTANCE.renderedVerticalSplitDown48(), ImageResources.INSTANCE.renderedVerticalSplitHover48(), ImageResources.INSTANCE.renderedVerticalSplitDisabled48(), PressGangCCMSUI.INSTANCE.VerticalSplit(), CSSConstants.SPACEDBUTTON);
+		renderedHorizontalSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedHorizontalSplit48(), ImageResources.INSTANCE.renderedHorizontalSplitDown48(), ImageResources.INSTANCE.renderedHorizontalSplitHover48(), ImageResources.INSTANCE.renderedHorizontalSplitDisabled48(), PressGangCCMSUI.INSTANCE.HorizontalSplit(), CSSConstants.SPACEDBUTTON);
+		renderedSplitClose = UIUtilities.createPushButton(ImageResources.INSTANCE.cross48(), ImageResources.INSTANCE.crossDown48(), ImageResources.INSTANCE.crossHover48(), ImageResources.INSTANCE.crossDisabled48(), PressGangCCMSUI.INSTANCE.Close(), CSSConstants.SPACEDBUTTON);
 
 		populateTopActionBar();
 	}

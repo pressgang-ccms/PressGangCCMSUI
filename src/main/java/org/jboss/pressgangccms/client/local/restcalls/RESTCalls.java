@@ -7,6 +7,7 @@ import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgangccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgangccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 
@@ -107,6 +108,23 @@ public final class RESTCalls
 		{
 			callback.begin();
 			restMethod.getJSONTopic(id, expand);
+		}
+		catch (final Exception ex)
+		{
+			callback.generalException(ex);
+		}
+	}
+	
+	static public void getImage(final RESTCallback<RESTImageV1> callback, final Integer id)
+	{
+		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
+		/* Expand the language images */
+		final String expand = "{\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"languageimages\"},\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"imageDataBase64\"}}]}]}";
+
+		try
+		{
+			callback.begin();
+			restMethod.getJSONImage(id, expand);
 		}
 		catch (final Exception ex)
 		{

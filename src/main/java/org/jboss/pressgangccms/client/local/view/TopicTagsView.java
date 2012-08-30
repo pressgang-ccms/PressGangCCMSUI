@@ -6,6 +6,7 @@ import java.util.List;
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.TopicTagsPresenter;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
+import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.client.local.ui.UIUtilities;
 import org.jboss.pressgangccms.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectsEditor;
@@ -81,7 +82,8 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 
 	public TopicTagsView()
 	{
-
+		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - " + PressGangCCMSUI.INSTANCE.TopicTags());
+		
 		/* Add the layout to the panel */
 		layout.addStyleName(CSSConstants.TOPICTAGVIEWNEWTAGTABLE);
 

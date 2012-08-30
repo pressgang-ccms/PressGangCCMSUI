@@ -4,6 +4,7 @@ import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.TopicPresenter;
 import org.jboss.pressgangccms.client.local.presenter.TopicPresenter.TopicPresenterDriver;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
+import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jboss.pressgangccms.client.local.view.base.TopicViewBase;
@@ -29,7 +30,7 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display
 
 	public TopicView()
 	{
-
+		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - " + PressGangCCMSUI.INSTANCE.Properties());
 	}
 	
 	@Override

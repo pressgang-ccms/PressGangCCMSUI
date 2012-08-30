@@ -3,6 +3,7 @@ package org.jboss.pressgangccms.client.local.view.base;
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.resources.css.CSSResources;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
+import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.UIUtilities;
 
 import com.google.gwt.dom.client.Style.Unit;
@@ -26,6 +27,11 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public abstract class BaseTemplateView implements BaseTemplateViewInterface
 {
+	/** The name of the application */
+	private final String applicationName;
+	/** The name of the current page */
+	private final String pageName;
+	
 	/** Defines the top level layout that holds the header and the other content */
 	private final DockLayoutPanel topLevelLayoutPanel = new DockLayoutPanel(Unit.PX);
 	
@@ -55,6 +61,21 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	private final PushButton bug;
 	private final PushButton reports;
 	
+	public Label getPageTitle()
+	{
+		return pageTitle;
+	}
+
+	public String getPageName()
+	{
+		return pageName;
+	}
+
+	public String getApplicationName()
+	{
+		return applicationName;
+	}
+
 	public SimplePanel getTopActionParentPanel()
 	{
 		return topActionParentPanel;
@@ -121,6 +142,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 
 	public BaseTemplateView(final String applicationName, final String pageName)
 	{
+		this.applicationName = applicationName;
+		this.pageName = pageName;
+		
 		/* Iinitialize the loading spinner */
 		waiting.setGlassEnabled(true);
 		waiting.setWidget(spinner);
@@ -137,8 +161,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		topLevelLayoutPanel.add(secondLevelLayoutPanel);
 		
 		/* Set the page title */
-		pageTitle.setText(" " + pageName);
-		pageTitle.addStyleName("PageTitle");
+		pageTitle.setText(pageName);
+		pageTitle.addStyleName(CSSConstants.PAGETITLE);
 		pageTitleParentLayoutPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		pageTitleParentLayoutPanel.add(pageTitle);
 		
@@ -173,21 +197,21 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		
 		/* Build the shortcut panel */
 
-		home = UIUtilities.createPushButton(ImageResources.INSTANCE.home48(), ImageResources.INSTANCE.homeDown48(), ImageResources.INSTANCE.homeHover48(), CSSConstants.SPACEDBUTTON);
+		home = UIUtilities.createPushButton(ImageResources.INSTANCE.home48(), ImageResources.INSTANCE.homeDown48(), ImageResources.INSTANCE.homeHover48(), PressGangCCMSUI.INSTANCE.Home(), CSSConstants.SPACEDBUTTON);
 		getShortcutPanel().add(home);
 
-		search = UIUtilities.createPushButton(ImageResources.INSTANCE.search48(), ImageResources.INSTANCE.searchDown48(), ImageResources.INSTANCE.searchHover48(), CSSConstants.SPACEDBUTTON);
+		search = UIUtilities.createPushButton(ImageResources.INSTANCE.search48(), ImageResources.INSTANCE.searchDown48(), ImageResources.INSTANCE.searchHover48(), PressGangCCMSUI.INSTANCE.Search(), CSSConstants.SPACEDBUTTON);
 		getShortcutPanel().add(search);
 
-		searchTranslations = UIUtilities.createPushButton(ImageResources.INSTANCE.searchTranslations48(), ImageResources.INSTANCE.searchTranslationsDown48(), ImageResources.INSTANCE.searchTranslationsHover48(), ImageResources.INSTANCE.searchTranslationsDisabled48(), CSSConstants.SPACEDBUTTON);
+		searchTranslations = UIUtilities.createPushButton(ImageResources.INSTANCE.searchTranslations48(), ImageResources.INSTANCE.searchTranslationsDown48(), ImageResources.INSTANCE.searchTranslationsHover48(), ImageResources.INSTANCE.searchTranslationsDisabled48(), PressGangCCMSUI.INSTANCE.SearchTranslations(), CSSConstants.SPACEDBUTTON);
 		searchTranslations.setEnabled(false);
 		getShortcutPanel().add(searchTranslations);
 
-		reports = UIUtilities.createPushButton(ImageResources.INSTANCE.reports48(), ImageResources.INSTANCE.reportsDown48(), ImageResources.INSTANCE.reportsHover48(), ImageResources.INSTANCE.reportsDisabled48(), CSSConstants.SPACEDBUTTON);
+		reports = UIUtilities.createPushButton(ImageResources.INSTANCE.reports48(), ImageResources.INSTANCE.reportsDown48(), ImageResources.INSTANCE.reportsHover48(), ImageResources.INSTANCE.reportsDisabled48(), PressGangCCMSUI.INSTANCE.Reports(), CSSConstants.SPACEDBUTTON);
 		reports.setEnabled(false);
 		getShortcutPanel().add(reports);
 
-		bug = UIUtilities.createPushButton(ImageResources.INSTANCE.bug48(), ImageResources.INSTANCE.bugDown48(), ImageResources.INSTANCE.bugHover48(), CSSConstants.SPACEDBUTTON);
+		bug = UIUtilities.createPushButton(ImageResources.INSTANCE.bug48(), ImageResources.INSTANCE.bugDown48(), ImageResources.INSTANCE.bugHover48(), PressGangCCMSUI.INSTANCE.CreateBug(), CSSConstants.SPACEDBUTTON);
 		getShortcutPanel().add(bug);
 	}
 	

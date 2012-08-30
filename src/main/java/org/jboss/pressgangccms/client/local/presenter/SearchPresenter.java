@@ -11,6 +11,7 @@ import org.jboss.pressgangccms.client.local.ui.editor.search.SearchUIProjectsEdi
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
+
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -31,7 +32,6 @@ public class SearchPresenter extends TemplatePresenter
 
 		SearchUIProjects getSearchUIProjects();
 
-		@Override
 		PushButton getSearch();
 
 		SearchPresenterDriver getDriver();
