@@ -187,12 +187,12 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 		history = UIUtilities.createPushButton(ImageResources.INSTANCE.history48(), ImageResources.INSTANCE.historyDown48(), ImageResources.INSTANCE.historyHover48(), ImageResources.INSTANCE.historyDisabled48(), PressGangCCMSUI.INSTANCE.Revisions());
 		
 		fieldsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Properties());
-		xmlDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TopicXML());
+		xmlDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.XMLEditing());
 		xmlErrorsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
 		renderedDown= UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.RenderedView());
 		tagsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TopicTags());
 		bugsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Bugs());
-		historyDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TopicRevision());
+		historyDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
 
 		renderedSplitOpen = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), PressGangCCMSUI.INSTANCE.RenderedPane());
 		renderedNoSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedNoSplit48(), ImageResources.INSTANCE.renderedNoSplitDown48(), ImageResources.INSTANCE.renderedNoSplitHover48(), ImageResources.INSTANCE.renderedNoSplitDisabled48(), PressGangCCMSUI.INSTANCE.NoSplit());
