@@ -26,7 +26,7 @@ public interface ImageResources extends ClientBundle
 	@Source("spinner.gif")
 	ImageResource spinner();
 	
-	@Source("headingBanner.gif")
+	@Source("headingBanner.png")
 	ImageResource headingBanner();
 	
 	@Source("round32.png")

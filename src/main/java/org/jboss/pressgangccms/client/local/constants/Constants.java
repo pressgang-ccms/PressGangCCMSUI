@@ -9,6 +9,21 @@ package org.jboss.pressgangccms.client.local.constants;
 public final class Constants
 {
 	/**
+	 * The size of the split panels
+	 */
+	public static final int SPLIT_PANEL_SIZE = 300;
+	
+	/**
+	 * The height of the action bars
+	 */
+	public static final int ACTION_BAR_HEIGHT = 80;
+	
+	/**
+	 * The width of the shortcut bar
+	 */
+	public static final int SHORTCUT_BAR_WIDTH = 110;
+	
+	/**
 	 * The maximum number of results to return in a search result
 	 */
 	public static final int MAX_SEARCH_RESULTS = 15;

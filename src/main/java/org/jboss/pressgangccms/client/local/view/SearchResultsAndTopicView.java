@@ -1,6 +1,7 @@
 package org.jboss.pressgangccms.client.local.view;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
+import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.presenter.SearchResultsAndTopicPresenter;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
@@ -9,6 +10,7 @@ import org.jboss.pressgangccms.client.local.view.base.BaseTemplateView;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Panel;
@@ -76,22 +78,20 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
 
 		/* We have own own top action panels */
 		this.getTopActionParentPanel().removeFromParent();
-
-		/* Add a spacer */
-		final Image spacer = new Image(ImageResources.INSTANCE.transparent48());
-		spacer.addStyleName(CSSConstants.SPACEDBUTTON);
+		
+		final HTML spacer = new HTML("<div style=\"height: " + Constants.ACTION_BAR_HEIGHT + "px;\"></div>");		
 		this.getShortcutPanel().insert(spacer, 0);
 
 		resultsViewLayoutPanel.addStyleName(CSSConstants.RESULTSVIEWLAYOUTPANEL);
 		topicViewLayoutPanel.addStyleName(CSSConstants.TOPICVIEWLAYOUTPANEL);
 
-		resultsViewLayoutPanel.addNorth(topicResultsActionButtonsPanel, 70);
-		topicViewLayoutPanel.addNorth(topicViewActionButtonsPanel, 70);
+		resultsViewLayoutPanel.addNorth(topicResultsActionButtonsPanel, Constants.ACTION_BAR_HEIGHT);
+		topicViewLayoutPanel.addNorth(topicViewActionButtonsPanel, Constants.ACTION_BAR_HEIGHT);
 
 		resultsViewLayoutPanel.add(topicResultsPanel);
 		topicViewLayoutPanel.add(topicViewPanel);
 
-		splitPanel.addWest(resultsViewLayoutPanel, 300);
+		splitPanel.addWest(resultsViewLayoutPanel, Constants.SPLIT_PANEL_SIZE);
 
 		topicViewActionButtonsPanel.addStyleName(CSSConstants.TOPICSEARCHTOPICVIEWBUTTONSPANEL);
 		topicViewPanel.addStyleName(CSSConstants.TOPICSEARCHTOPICVIEWDETAILSPANEL);

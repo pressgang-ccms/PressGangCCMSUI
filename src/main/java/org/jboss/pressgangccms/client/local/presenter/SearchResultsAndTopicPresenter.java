@@ -268,7 +268,6 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		display.getTopicResultsPanel().setWidget(searchResultsDisplay.getPanel());
 
 		bind();
-
 	}
 
 	/**

@@ -11,7 +11,12 @@ import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.rest.v1.entities.RESTImageV1;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PushButton;
 
 @Dependent
 public class ImagePresenter extends TemplatePresenter
@@ -20,15 +25,32 @@ public class ImagePresenter extends TemplatePresenter
 	private Display display;
 
 	private Integer imageId;
-	
+
 	public interface Display extends BaseTemplateViewInterface
 	{
 		// Empty interface declaration, similar to UiBinder
 		public interface ImagePresenterDriver extends SimpleBeanEditorDriver<RESTImageV1, RESTImageV1Editor>
 		{
 		}
-		
+
+		public interface AddLocaleInterface
+		{
+			PushButton getCancel();
+
+			PushButton getOk();
+
+			ListBox getLocales();
+			
+			DialogBox getDialogBox();
+		}
+
 		void initialize(final RESTImageV1 image);
+
+		PushButton getRemoveLocale();
+
+		PushButton getAddLocale();
+
+		AddLocaleInterface getAddLocaleDialog();
 	}
 
 	@Override
@@ -36,8 +58,41 @@ public class ImagePresenter extends TemplatePresenter
 	{
 		container.clear();
 		container.add(display.getTopLevelPanel());
+		
+		bind();
 
 		getImage();
+	}
+
+	private void bind()
+	{
+		display.getAddLocale().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				display.getAddLocaleDialog().getDialogBox().center();
+				display.getAddLocaleDialog().getDialogBox().show();
+			}
+		});
+		
+		display.getAddLocaleDialog().getOk().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				display.getAddLocaleDialog().getDialogBox().hide();
+			}
+		});
+		
+		display.getAddLocaleDialog().getCancel().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				display.getAddLocaleDialog().getDialogBox().hide();
+			}
+		});
 	}
 
 	@Override

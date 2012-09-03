@@ -1,6 +1,7 @@
 package org.jboss.pressgangccms.client.local.view.base;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
+import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.resources.css.CSSResources;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
@@ -184,12 +185,12 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		
 		topActionParentPanel.add(topActionPanel);
 		
-		thirdLevelLayoutPanel.addNorth(topActionParentPanel, 70);
+		thirdLevelLayoutPanel.addNorth(topActionParentPanel, Constants.ACTION_BAR_HEIGHT);
 		
 		/* Set the shortcut bar */
 		getShortcutPanel().addStyleName(CSSConstants.SHORTCUTPANEL);
 		
-		thirdLevelLayoutPanel.addWest(getShortcutPanel(), 100);
+		thirdLevelLayoutPanel.addWest(getShortcutPanel(), Constants.SHORTCUT_BAR_WIDTH);
 		
 		/* Set the footer panel */
 		footerPanel.addStyleName(CSSConstants.FOOTERPANEL);

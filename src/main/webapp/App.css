@@ -30,6 +30,11 @@ html {
 	height: 100%;
 	border-spacing: 0px;
 	padding-bottom: 8px;
+	padding-top: 8px;
+}
+
+.TopActionPanel td, .RenderedSplitViewMenuTable td {
+	padding: 1px;
 }
 
 .TopActionPanel
@@ -38,6 +43,8 @@ html {
 	left: 100px;
 }
 
+
+
 .ShortcutPanel {
 	margin-right: 8px;
 }
@@ -45,10 +52,6 @@ html {
 
 .ShortcutPanel td {
 	padding: 1px;	
-}
-
-.TopActionPanel td {
-	padding: 1px;
 }
 
 .TextButton {

@@ -7,6 +7,10 @@ public interface PressGangCCMSUI extends Constants
 {
 	public static final PressGangCCMSUI INSTANCE = GWT.create(PressGangCCMSUI.class);
 
+	String OK();
+	
+	String Cancel();
+	
 	String PressGangCCMS();
 	
 	String Home();
@@ -136,4 +140,6 @@ public interface PressGangCCMSUI extends Constants
 	String AddLocale();
 	
 	String RemoveLocale();
+	
+	String Locales();
 }
