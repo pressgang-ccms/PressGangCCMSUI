@@ -18,7 +18,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 {
 	public static final String HISTORY_TOKEN = "SearchView";
 	
-	private final PushButton search = UIUtilities.createPushButton(ImageResources.INSTANCE.search48(), ImageResources.INSTANCE.searchDown48(), ImageResources.INSTANCE.searchHover48(), PressGangCCMSUI.INSTANCE.Search());
+	private final PushButton search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
 
 	/** The GWT Editor Driver */
 	private final SearchPresenterDriver driver = GWT.create(SearchPresenterDriver.class);

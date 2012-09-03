@@ -21,7 +21,7 @@ public class TriStatePushButton extends PushButton implements IsEditor<LeafValue
 
 	public TriStatePushButton()
 	{
-		super(new Image(ImageResources.INSTANCE.round16()));
+		super(new Image(ImageResources.INSTANCE.round32()));
 
 		this.addClickHandler(new ClickHandler()
 		{

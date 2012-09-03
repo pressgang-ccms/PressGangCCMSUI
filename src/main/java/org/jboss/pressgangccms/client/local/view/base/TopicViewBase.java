@@ -176,15 +176,15 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 		renderedSplitViewMenu.addStyleName(CSSConstants.RENDEREDSPLITVIEWMENUTABLE);
 
 		/* Build the action bar icons */
-		renderedSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), PressGangCCMSUI.INSTANCE.RenderedPane(), true);
-		rendered = UIUtilities.createPushButton(ImageResources.INSTANCE.rendered48(), ImageResources.INSTANCE.renderedDown48(), ImageResources.INSTANCE.renderedHover48(), PressGangCCMSUI.INSTANCE.RenderedView());
-		xml = UIUtilities.createPushButton(ImageResources.INSTANCE.xml48(), ImageResources.INSTANCE.xmlDown48(), ImageResources.INSTANCE.xmlHover48(), PressGangCCMSUI.INSTANCE.XMLEditing());
-		xmlErrors = UIUtilities.createPushButton(ImageResources.INSTANCE.attention48(), ImageResources.INSTANCE.attentionDown48(), ImageResources.INSTANCE.attentionHover48(), PressGangCCMSUI.INSTANCE.XMLValidationErrors());
-		fields = UIUtilities.createPushButton(ImageResources.INSTANCE.fields48(), ImageResources.INSTANCE.fieldsDown48(), ImageResources.INSTANCE.fieldsHover48(), PressGangCCMSUI.INSTANCE.Properties());
-		save = UIUtilities.createPushButton(ImageResources.INSTANCE.save48(), ImageResources.INSTANCE.saveDown48(), ImageResources.INSTANCE.saveHover48(), ImageResources.INSTANCE.saveDisabled48(), PressGangCCMSUI.INSTANCE.Save());
-		tags = UIUtilities.createPushButton(ImageResources.INSTANCE.tag48(), ImageResources.INSTANCE.tagDown48(), ImageResources.INSTANCE.tagHover48(), ImageResources.INSTANCE.tagDisabled48(), PressGangCCMSUI.INSTANCE.TopicTags());
-		bugs = UIUtilities.createPushButton(ImageResources.INSTANCE.bugs48(), ImageResources.INSTANCE.bugsDown48(), ImageResources.INSTANCE.bugsHover48(), ImageResources.INSTANCE.bugsDisabled48(), PressGangCCMSUI.INSTANCE.Bugs());
-		history = UIUtilities.createPushButton(ImageResources.INSTANCE.history48(), ImageResources.INSTANCE.historyDown48(), ImageResources.INSTANCE.historyHover48(), ImageResources.INSTANCE.historyDisabled48(), PressGangCCMSUI.INSTANCE.Revisions());
+		renderedSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
+		rendered = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedView());
+		xml = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.XMLEditing());
+		xmlErrors = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
+		fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Properties());
+		save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+		tags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TopicTags());
+		bugs = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Bugs());
+		history = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Revisions());
 		
 		fieldsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Properties());
 		xmlDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.XMLEditing());
@@ -194,14 +194,14 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 		bugsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Bugs());
 		historyDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
 
-		renderedSplitOpen = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), PressGangCCMSUI.INSTANCE.RenderedPane(), true);
-		renderedNoSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedNoSplit48(), ImageResources.INSTANCE.renderedNoSplitDown48(), ImageResources.INSTANCE.renderedNoSplitHover48(), ImageResources.INSTANCE.renderedNoSplitDisabled48(), PressGangCCMSUI.INSTANCE.NoSplit());
+		renderedSplitOpen = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
+		renderedNoSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.NoSplit());
 		renderedNoSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.NoSplit());
-		renderedVerticalSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedVerticalSplit48(), ImageResources.INSTANCE.renderedVerticalSplitDown48(), ImageResources.INSTANCE.renderedVerticalSplitHover48(), ImageResources.INSTANCE.renderedVerticalSplitDisabled48(), PressGangCCMSUI.INSTANCE.VerticalSplit());
+		renderedVerticalSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.VerticalSplit());
 		renderedVerticalSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.VerticalSplit());
-		renderedHorizontalSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedHorizontalSplit48(), ImageResources.INSTANCE.renderedHorizontalSplitDown48(), ImageResources.INSTANCE.renderedHorizontalSplitHover48(), ImageResources.INSTANCE.renderedHorizontalSplitDisabled48(), PressGangCCMSUI.INSTANCE.HorizontalSplit());
+		renderedHorizontalSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HorizontalSplit());
 		renderedHorizontalSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.HorizontalSplit());
-		renderedSplitClose = UIUtilities.createPushButton(ImageResources.INSTANCE.cross48(), ImageResources.INSTANCE.crossDown48(), ImageResources.INSTANCE.crossHover48(), ImageResources.INSTANCE.crossDisabled48(), PressGangCCMSUI.INSTANCE.Close());
+		renderedSplitClose = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Close());
 		
 		
 
@@ -218,13 +218,11 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 
 		if (readOnly)
 		{
-			if (Preferences.INSTANCE.getButtonView() == ButtonView.IMAGE)
-				this.getHistory().getUpFace().setImage(new Image(ImageResources.INSTANCE.historyAlert48()));
+			this.getHistory().addStyleName(CSSConstants.ALERTBUTTON);
 		}
 		else
 		{
-			if (Preferences.INSTANCE.getButtonView() == ButtonView.IMAGE)
-				this.getHistory().getUpFace().setImage(new Image(ImageResources.INSTANCE.history48()));
+			this.getHistory().removeStyleName(CSSConstants.ALERTBUTTON);
 		}
 	}
 

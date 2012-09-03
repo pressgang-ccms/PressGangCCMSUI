@@ -132,4 +132,8 @@ public interface PressGangCCMSUI extends Constants
 	String Add();
 	
 	String Remove();
+	
+	String AddLocale();
+	
+	String RemoveLocale();
 }

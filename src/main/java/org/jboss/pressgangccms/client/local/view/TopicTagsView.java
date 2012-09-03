@@ -36,7 +36,7 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 	/** The GWT Editor Driver */
 	private final TopicTagsPresenterDriver driver = GWT.create(TopicTagsPresenterDriver.class);
 	private TopicTagViewProjectsEditor editor;
-	private final PushButton add = UIUtilities.createPushButton(ImageResources.INSTANCE.plusGreen32(), ImageResources.INSTANCE.plusGreenDown32(), ImageResources.INSTANCE.plusGreenHover32(), PressGangCCMSUI.INSTANCE.Add());
+	private final PushButton add = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Add());
 
 	private final HorizontalPanel newTagUIElementsPanel = new HorizontalPanel();
 	private final ValueListBox<SearchUIProject> projects;

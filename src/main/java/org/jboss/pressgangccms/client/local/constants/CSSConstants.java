@@ -138,4 +138,6 @@ final public class CSSConstants
 	static public final String DOWNLABEL = "DownLabel";
 	/** Assigned to push buttons that are sub menus */
 	static public final String SUBMENU = "SubMenu";
+	/** Assigned to buttons that need to show some kind of alert status */
+	static public final String ALERTBUTTON = "AlertButton";
 }

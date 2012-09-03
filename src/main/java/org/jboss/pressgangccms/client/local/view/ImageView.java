@@ -2,11 +2,13 @@ package org.jboss.pressgangccms.client.local.view;
 
 import org.jboss.pressgangccms.client.local.presenter.ImagePresenter;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgangccms.client.local.ui.UIUtilities;
 import org.jboss.pressgangccms.client.local.ui.editor.image.RESTImageV1Editor;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.rest.v1.entities.RESTImageV1;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.PushButton;
 
 public class ImageView extends BaseTemplateView implements ImagePresenter.Display
 {
@@ -14,6 +16,9 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
 	
 	private RESTImageV1Editor editor;
 	private ImagePresenterDriver driver = GWT.create(ImagePresenterDriver.class);
+	
+	private final PushButton addLocale = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.AddLocale());
+	private final PushButton removeLocale = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RemoveLocale());
 	
 	public ImageView()
 	{

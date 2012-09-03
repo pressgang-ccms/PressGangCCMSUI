@@ -18,80 +18,26 @@ import com.google.gwt.user.client.ui.ToggleButton;
  */
 final public class UIUtilities
 {
-	public static PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final String text)
+	public static PushButton createPushButton(final String text)
 	{
-		return createPushButton(up, down, hover, text, false);
+		return createPushButton(text, false);
 	}
 	
-	public static PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final String text, boolean subMenu)
+	public static PushButton createPushButton(final String text, boolean subMenu)
 	{
-		PushButton retvalue;
-
-		if (Preferences.INSTANCE.getButtonView() == ButtonView.IMAGE)
-		{
-			retvalue = new PushButton(new Image(up), new Image(down));
-			retvalue.getUpHoveringFace().setImage(new Image(hover));
-			retvalue.addStyleName(CSSConstants.IMAGEBUTTON);
-		}
-		else
-		{
-			retvalue = new PushButton(text);
-			retvalue.addStyleName(CSSConstants.TEXTBUTTON);
-		}
+		final PushButton retvalue = new PushButton(text);
+		retvalue.addStyleName(CSSConstants.TEXTBUTTON);
 		
 		if (subMenu)
 			retvalue.addStyleName(CSSConstants.SUBMENU);
 
 		return retvalue;
 	}
-	
-	public static PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final ImageResource disabled, final String text)
-	{
-		return createPushButton(up, down, hover, disabled, text, false);
-	}
 
-	public static PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final ImageResource disabled, final String text, final boolean subMenu)
+	public static ToggleButton createToggleButton(final String text, final boolean subMenu)
 	{
-		PushButton retvalue;
-
-		if (Preferences.INSTANCE.getButtonView() == ButtonView.IMAGE)
-		{
-			retvalue = new PushButton(new Image(up), new Image(down));
-			retvalue.getUpHoveringFace().setImage(new Image(hover));
-			retvalue.getUpDisabledFace().setImage(new Image(disabled));
-			retvalue.addStyleName(CSSConstants.IMAGEBUTTON);
-		}
-		else
-		{
-			retvalue = new PushButton(text);
+		final ToggleButton retvalue  = new ToggleButton(text);
 			retvalue.addStyleName(CSSConstants.TEXTBUTTON);
-		}
-		
-		if (subMenu)
-			retvalue.addStyleName(CSSConstants.SUBMENU);
-
-		return retvalue;
-	}
-	public static ToggleButton createToggleButton(final ImageResource up, final ImageResource down, final String text, final ImageResource hover)
-	{
-		return createToggleButton(up, down, text, hover, false);
-	}
-
-	public static ToggleButton createToggleButton(final ImageResource up, final ImageResource down, final String text, final ImageResource hover, final boolean subMenu)
-	{
-		ToggleButton retvalue;
-
-		if (Preferences.INSTANCE.getButtonView() == ButtonView.IMAGE)
-		{
-			retvalue = new ToggleButton(new Image(up), new Image(down));
-			retvalue.getUpHoveringFace().setImage(new Image(hover));
-			retvalue.addStyleName(CSSConstants.IMAGEBUTTON);
-		}
-		else
-		{
-			retvalue = new ToggleButton(text);
-			retvalue.addStyleName(CSSConstants.TEXTBUTTON);
-		}
 		
 		if (subMenu)
 			retvalue.addStyleName(CSSConstants.SUBMENU);
@@ -99,31 +45,9 @@ final public class UIUtilities
 		return retvalue;
 	}
 	
-	public static ToggleButton createToggleButton(final ImageResource up, final ImageResource down, final ImageResource hover, final String text)
+	public static ToggleButton createToggleButton(final String text)
 	{
-		return createToggleButton(up, down, hover, text, false);
-	}
-
-	public static ToggleButton createToggleButton(final ImageResource up, final ImageResource down, final ImageResource hover, final String text, final boolean subMenu)
-	{
-		ToggleButton retvalue;
-
-		if (Preferences.INSTANCE.getButtonView() == ButtonView.IMAGE)
-		{
-			retvalue = new ToggleButton(new Image(up), new Image(down));
-			retvalue.getUpHoveringFace().setImage(new Image(hover));
-			retvalue.addStyleName(CSSConstants.TEXTBUTTON);
-		}
-		else
-		{
-			retvalue = new ToggleButton(text);
-			retvalue.addStyleName(CSSConstants.IMAGEBUTTON);
-		}
-		
-		if (subMenu)
-			retvalue.addStyleName(CSSConstants.SUBMENU);
-		
-		return retvalue;
+		return createToggleButton(text, false);
 	}
 	
 	public static Label createDownLabel(final String text)

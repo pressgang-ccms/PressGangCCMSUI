@@ -20,7 +20,7 @@ public class TopicTagViewTagEditor implements Editor<SearchUITag>
 	/** bound to SearchUITag.getName() */
 	final Label name = new Label();
 	/** A button used to delete this tag */
-	private final PushButton delete = UIUtilities.createPushButton(ImageResources.INSTANCE.crossRed32(), ImageResources.INSTANCE.crossRedDown32(), ImageResources.INSTANCE.crossRedHover32(), ImageResources.INSTANCE.crossDisabled32(), PressGangCCMSUI.INSTANCE.Remove());
+	private final PushButton delete = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Remove());
 
 	/** @return a reference to the SearchUITag that was used to bind this Editor */
 	public SearchUITag getTag()

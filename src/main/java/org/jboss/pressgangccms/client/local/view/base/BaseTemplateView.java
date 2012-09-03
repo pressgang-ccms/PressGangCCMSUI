@@ -203,25 +203,25 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		
 		/* Build the shortcut panel */
 
-		home = UIUtilities.createPushButton(ImageResources.INSTANCE.home48(), ImageResources.INSTANCE.homeDown48(), ImageResources.INSTANCE.homeHover48(), PressGangCCMSUI.INSTANCE.Home());
+		home = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Home());
 		getShortcutPanel().add(home);
 
-		search = UIUtilities.createPushButton(ImageResources.INSTANCE.search48(), ImageResources.INSTANCE.searchDown48(), ImageResources.INSTANCE.searchHover48(), PressGangCCMSUI.INSTANCE.Search());
+		search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
 		getShortcutPanel().add(search);
 
-		searchTranslations = UIUtilities.createPushButton(ImageResources.INSTANCE.searchTranslations48(), ImageResources.INSTANCE.searchTranslationsDown48(), ImageResources.INSTANCE.searchTranslationsHover48(), ImageResources.INSTANCE.searchTranslationsDisabled48(), PressGangCCMSUI.INSTANCE.SearchTranslations());
+		searchTranslations = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.SearchTranslations());
 		searchTranslations.setEnabled(false);
 		getShortcutPanel().add(searchTranslations);
 		
-		images = UIUtilities.createPushButton(ImageResources.INSTANCE.image48(), ImageResources.INSTANCE.imageDown48(), ImageResources.INSTANCE.imageHover48(), ImageResources.INSTANCE.imageDisabled48(), PressGangCCMSUI.INSTANCE.Images());
+		images = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Images());
 		images.setEnabled(false);
 		getShortcutPanel().add(images);
 
-		reports = UIUtilities.createPushButton(ImageResources.INSTANCE.reports48(), ImageResources.INSTANCE.reportsDown48(), ImageResources.INSTANCE.reportsHover48(), ImageResources.INSTANCE.reportsDisabled48(), PressGangCCMSUI.INSTANCE.Reports());
+		reports = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Reports());
 		reports.setEnabled(false);
 		getShortcutPanel().add(reports);
 
-		bug = UIUtilities.createPushButton(ImageResources.INSTANCE.bug48(), ImageResources.INSTANCE.bugDown48(), ImageResources.INSTANCE.bugHover48(), PressGangCCMSUI.INSTANCE.CreateBug());
+		bug = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CreateBug());
 		getShortcutPanel().add(bug);
 	}
 	
