@@ -40,11 +40,8 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 	@Override
 	protected void populateTopActionBar()
 	{
-		//addActionButton(this.getRendered());
 		addActionButton(this.getRenderedSplit());
-		final Image downImage = new Image(ImageResources.INSTANCE.renderedDown48());
-		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
-		addActionButton(downImage);
+		addActionButton(this.getRenderedDown());
 		addActionButton(this.getXml());
 		addActionButton(this.getXmlErrors());
 		addActionButton(this.getFields());

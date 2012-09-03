@@ -41,7 +41,7 @@ final public class Preferences
 			// invalid data in local store. Just fail silently
 		}
 
-		return ButtonView.IMAGE;
+		return ButtonView.TEXT;
 	}
 
 	public void setButtonView(final ButtonView value)

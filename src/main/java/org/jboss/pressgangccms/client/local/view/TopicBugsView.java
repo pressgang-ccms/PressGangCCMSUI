@@ -140,9 +140,7 @@ public class TopicBugsView extends TopicViewBase implements TopicBugsPresenter.D
 		addActionButton(this.getXmlErrors());
 		addActionButton(this.getFields());
 		addActionButton(this.getTags());
-		final Image downImage = new Image(ImageResources.INSTANCE.bugsDown48());
-		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
-		addActionButton(downImage);
+		addActionButton(this.getBugsDown());
 		addActionButton(this.getHistory());
 		addActionButton(this.getSave());
 	

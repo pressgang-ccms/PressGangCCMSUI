@@ -85,8 +85,8 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
 		resultsViewLayoutPanel.addStyleName(CSSConstants.RESULTSVIEWLAYOUTPANEL);
 		topicViewLayoutPanel.addStyleName(CSSConstants.TOPICVIEWLAYOUTPANEL);
 
-		resultsViewLayoutPanel.addNorth(topicResultsActionButtonsPanel, 80);
-		topicViewLayoutPanel.addNorth(topicViewActionButtonsPanel, 80);
+		resultsViewLayoutPanel.addNorth(topicResultsActionButtonsPanel, 70);
+		topicViewLayoutPanel.addNorth(topicViewActionButtonsPanel, 70);
 
 		resultsViewLayoutPanel.add(topicResultsPanel);
 		topicViewLayoutPanel.add(topicViewPanel);

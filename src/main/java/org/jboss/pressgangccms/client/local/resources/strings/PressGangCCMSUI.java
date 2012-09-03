@@ -124,4 +124,12 @@ public interface PressGangCCMSUI extends Constants
 	String Images();
 	
 	String ImagePlaceholder();
+	
+	String LineWrap();
+	
+	String ShowHiddenCharacters();
+	
+	String Add();
+	
+	String Remove();
 }

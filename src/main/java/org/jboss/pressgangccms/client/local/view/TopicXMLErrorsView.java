@@ -40,9 +40,7 @@ public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsP
 		addActionButton(this.getRenderedSplit());
 		addActionButton(this.getRendered());		
 		addActionButton(this.getXml());
-		final Image downImage = new Image(ImageResources.INSTANCE.attentionDown48());
-		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
-		addActionButton(downImage);
+		addActionButton(this.getXmlErrorsDown());
 		addActionButton(this.getFields());
 		addActionButton(this.getTags());
 		addActionButton(this.getBugs());

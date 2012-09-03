@@ -36,7 +36,7 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 	/** The GWT Editor Driver */
 	private final TopicTagsPresenterDriver driver = GWT.create(TopicTagsPresenterDriver.class);
 	private TopicTagViewProjectsEditor editor;
-	private final PushButton add = UIUtilities.createPushButton(ImageResources.INSTANCE.plusGreen32(), ImageResources.INSTANCE.plusGreenDown32(), ImageResources.INSTANCE.plusGreenHover32());
+	private final PushButton add = UIUtilities.createPushButton(ImageResources.INSTANCE.plusGreen32(), ImageResources.INSTANCE.plusGreenDown32(), ImageResources.INSTANCE.plusGreenHover32(), PressGangCCMSUI.INSTANCE.Add());
 
 	private final HorizontalPanel newTagUIElementsPanel = new HorizontalPanel();
 	private final ValueListBox<SearchUIProject> projects;
@@ -156,9 +156,7 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 		addActionButton(this.getXml());
 		addActionButton(this.getXmlErrors());
 		addActionButton(this.getFields());
-		final Image downImage = new Image(ImageResources.INSTANCE.tagDown48());
-		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
-		addActionButton(downImage);
+		addActionButton(this.getTagsDown());
 		addActionButton(this.getBugs());
 		addActionButton(this.getHistory());
 		addActionButton(this.getSave());

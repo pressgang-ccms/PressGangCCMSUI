@@ -27,8 +27,8 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
 	private RESTTopicV1XMLEditor editor;
 
-	private final ToggleButton lineWrap = UIUtilities.createToggleButton(ImageResources.INSTANCE.lineWrap48(), ImageResources.INSTANCE.lineWrapDown48(), ImageResources.INSTANCE.lineWrapHover48(), CSSConstants.SPACEDBUTTON);
-	private final ToggleButton showInvisibles = UIUtilities.createToggleButton(ImageResources.INSTANCE.hiddenCharacters48(), ImageResources.INSTANCE.hiddenCharactersDown48(), ImageResources.INSTANCE.hiddenCharactersHover48(), CSSConstants.SPACEDBUTTON);
+	private final ToggleButton lineWrap = UIUtilities.createToggleButton(ImageResources.INSTANCE.lineWrap48(), ImageResources.INSTANCE.lineWrapDown48(), ImageResources.INSTANCE.lineWrapHover48(), PressGangCCMSUI.INSTANCE.LineWrap());
+	private final ToggleButton showInvisibles = UIUtilities.createToggleButton(ImageResources.INSTANCE.hiddenCharacters48(), ImageResources.INSTANCE.hiddenCharactersDown48(), ImageResources.INSTANCE.hiddenCharactersHover48(), PressGangCCMSUI.INSTANCE.ShowHiddenCharacters());
 
 	@Override
 	public ToggleButton getShowInvisibles()
@@ -68,9 +68,7 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 	{
 		addActionButton(this.getRenderedSplit());
 		addActionButton(this.getRendered());
-		final Image downImage = new Image(ImageResources.INSTANCE.xmlDown48());
-		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
-		addActionButton(downImage);
+		addActionButton(this.getXmlDown());
 		addActionButton(this.getXmlErrors());
 		addActionButton(this.getFields());
 		addActionButton(this.getTags());

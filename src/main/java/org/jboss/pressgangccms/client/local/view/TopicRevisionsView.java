@@ -206,9 +206,7 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 		addActionButton(this.getFields());
 		addActionButton(this.getTags());
 		addActionButton(this.getBugs());
-		final Image downImage = new Image(ImageResources.INSTANCE.historyDown48());
-		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
-		addActionButton(downImage);
+		addActionButton(this.getHistoryDown());
 		addActionButton(this.getSave());
 
 		fixReadOnlyButtons();

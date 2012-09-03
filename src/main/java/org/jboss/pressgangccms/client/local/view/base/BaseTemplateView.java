@@ -178,12 +178,12 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		
 		topActionParentPanel.add(topActionPanel);
 		
-		thirdLevelLayoutPanel.addNorth(topActionParentPanel, 80);
+		thirdLevelLayoutPanel.addNorth(topActionParentPanel, 70);
 		
 		/* Set the shortcut bar */
 		getShortcutPanel().addStyleName(CSSConstants.SHORTCUTPANEL);
 		
-		thirdLevelLayoutPanel.addWest(getShortcutPanel(), 80);
+		thirdLevelLayoutPanel.addWest(getShortcutPanel(), 100);
 		
 		/* Set the footer panel */
 		footerPanel.addStyleName(CSSConstants.FOOTERPANEL);
@@ -197,21 +197,21 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		
 		/* Build the shortcut panel */
 
-		home = UIUtilities.createPushButton(ImageResources.INSTANCE.home48(), ImageResources.INSTANCE.homeDown48(), ImageResources.INSTANCE.homeHover48(), PressGangCCMSUI.INSTANCE.Home(), CSSConstants.SPACEDBUTTON);
+		home = UIUtilities.createPushButton(ImageResources.INSTANCE.home48(), ImageResources.INSTANCE.homeDown48(), ImageResources.INSTANCE.homeHover48(), PressGangCCMSUI.INSTANCE.Home());
 		getShortcutPanel().add(home);
 
-		search = UIUtilities.createPushButton(ImageResources.INSTANCE.search48(), ImageResources.INSTANCE.searchDown48(), ImageResources.INSTANCE.searchHover48(), PressGangCCMSUI.INSTANCE.Search(), CSSConstants.SPACEDBUTTON);
+		search = UIUtilities.createPushButton(ImageResources.INSTANCE.search48(), ImageResources.INSTANCE.searchDown48(), ImageResources.INSTANCE.searchHover48(), PressGangCCMSUI.INSTANCE.Search());
 		getShortcutPanel().add(search);
 
-		searchTranslations = UIUtilities.createPushButton(ImageResources.INSTANCE.searchTranslations48(), ImageResources.INSTANCE.searchTranslationsDown48(), ImageResources.INSTANCE.searchTranslationsHover48(), ImageResources.INSTANCE.searchTranslationsDisabled48(), PressGangCCMSUI.INSTANCE.SearchTranslations(), CSSConstants.SPACEDBUTTON);
+		searchTranslations = UIUtilities.createPushButton(ImageResources.INSTANCE.searchTranslations48(), ImageResources.INSTANCE.searchTranslationsDown48(), ImageResources.INSTANCE.searchTranslationsHover48(), ImageResources.INSTANCE.searchTranslationsDisabled48(), PressGangCCMSUI.INSTANCE.SearchTranslations());
 		searchTranslations.setEnabled(false);
 		getShortcutPanel().add(searchTranslations);
 
-		reports = UIUtilities.createPushButton(ImageResources.INSTANCE.reports48(), ImageResources.INSTANCE.reportsDown48(), ImageResources.INSTANCE.reportsHover48(), ImageResources.INSTANCE.reportsDisabled48(), PressGangCCMSUI.INSTANCE.Reports(), CSSConstants.SPACEDBUTTON);
+		reports = UIUtilities.createPushButton(ImageResources.INSTANCE.reports48(), ImageResources.INSTANCE.reportsDown48(), ImageResources.INSTANCE.reportsHover48(), ImageResources.INSTANCE.reportsDisabled48(), PressGangCCMSUI.INSTANCE.Reports());
 		reports.setEnabled(false);
 		getShortcutPanel().add(reports);
 
-		bug = UIUtilities.createPushButton(ImageResources.INSTANCE.bug48(), ImageResources.INSTANCE.bugDown48(), ImageResources.INSTANCE.bugHover48(), PressGangCCMSUI.INSTANCE.CreateBug(), CSSConstants.SPACEDBUTTON);
+		bug = UIUtilities.createPushButton(ImageResources.INSTANCE.bug48(), ImageResources.INSTANCE.bugDown48(), ImageResources.INSTANCE.bugHover48(), PressGangCCMSUI.INSTANCE.CreateBug());
 		getShortcutPanel().add(bug);
 	}
 	
@@ -223,15 +223,20 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	
 	protected void addRightAlignedActionButtonPaddingPanel()
 	{
-		final int rows = this.getTopActionPanel().getRowCount();
+		addRightAlignedActionButtonPaddingPanel(this.getTopActionPanel());
+	}
+	
+	protected void addRightAlignedActionButtonPaddingPanel(final FlexTable table)
+	{
+		final int rows = table.getRowCount();
 		int columns = 0;
 		if (rows != 0)
 		{
-			columns = this.getTopActionPanel().getCellCount(0);
+			columns = table.getCellCount(0);
 		}
 
-		this.getTopActionPanel().setWidget(0, columns, new SimplePanel());
-		this.getTopActionPanel().getCellFormatter().addStyleName(0, columns, CSSConstants.RIGHTALIGNEDACTIONBUTTONS);
+		table.setWidget(0, columns, new SimplePanel());
+		table.getCellFormatter().addStyleName(0, columns, CSSConstants.RIGHTALIGNEDACTIONBUTTONS);
 	}
 
 	protected void addActionButton(final Widget widget)

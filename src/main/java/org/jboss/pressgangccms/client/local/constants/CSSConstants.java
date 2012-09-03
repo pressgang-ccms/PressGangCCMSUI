@@ -128,4 +128,13 @@ final public class CSSConstants
 	static public final String IMAGEVIEWDESCRIPTIONTEXTCELL = "ImageViewDescriptionTextCell";
 	/** Assigned to the table that holds the image details */
 	static public final String IMAGEVIEWDETAILSTABLE = "ImageViewDetailsTable";
+	/** Assigned to image buttons */
+	static public final String TEXTBUTTON = "TextButton";
+	/** Assigned to text buttons */
+	static public final String IMAGEBUTTON = "ImageButton";
+	/** Assigned to the table that holds the split view menu */
+	static public final String RENDEREDSPLITVIEWMENUTABLE = "RenderedSplitViewMenuTable";
+	/** Assigned to labels that represent down pushbuttons */
+	static public final String DOWNLABEL = "DownLabel";
+	
 }

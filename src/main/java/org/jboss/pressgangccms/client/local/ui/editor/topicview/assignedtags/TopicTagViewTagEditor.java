@@ -2,6 +2,7 @@ package org.jboss.pressgangccms.client.local.ui.editor.topicview.assignedtags;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
+import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.UIUtilities;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUITag;
 
@@ -19,7 +20,7 @@ public class TopicTagViewTagEditor implements Editor<SearchUITag>
 	/** bound to SearchUITag.getName() */
 	final Label name = new Label();
 	/** A button used to delete this tag */
-	private final PushButton delete = UIUtilities.createPushButton(ImageResources.INSTANCE.crossRed32(), ImageResources.INSTANCE.crossRedDown32(), ImageResources.INSTANCE.crossRedHover32(), ImageResources.INSTANCE.crossDisabled32(), CSSConstants.SPACEDBUTTON);
+	private final PushButton delete = UIUtilities.createPushButton(ImageResources.INSTANCE.crossRed32(), ImageResources.INSTANCE.crossRedDown32(), ImageResources.INSTANCE.crossRedHover32(), ImageResources.INSTANCE.crossDisabled32(), PressGangCCMSUI.INSTANCE.Remove());
 
 	/** @return a reference to the SearchUITag that was used to bind this Editor */
 	public SearchUITag getTag()

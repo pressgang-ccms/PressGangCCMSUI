@@ -40,9 +40,7 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display
 		addActionButton(this.getRendered());		
 		addActionButton(this.getXml());
 		addActionButton(this.getXmlErrors());
-		final Image downImage = new Image(ImageResources.INSTANCE.fieldsDown48());
-		downImage.addStyleName(CSSConstants.SPACEDBUTTON);
-		addActionButton(downImage);
+		addActionButton(this.getFieldsDown());
 		addActionButton(this.getTags());
 		addActionButton(this.getBugs());
 		addActionButton(this.getHistory());
