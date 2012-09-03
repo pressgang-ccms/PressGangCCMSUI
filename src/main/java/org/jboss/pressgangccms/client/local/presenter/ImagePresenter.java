@@ -1,5 +1,8 @@
 package org.jboss.pressgangccms.client.local.presenter;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
@@ -10,6 +13,7 @@ import org.jboss.pressgangccms.client.local.ui.editor.image.RESTImageV1Editor;
 import org.jboss.pressgangccms.client.local.view.ImageView;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.rest.v1.entities.RESTImageV1;
+import org.jboss.pressgangccms.rest.v1.entities.RESTLanguageImageV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTStringConstantV1;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
@@ -33,7 +37,7 @@ public class ImagePresenter extends TemplatePresenter
 	int count = 0;
 	
 	/** A reference to the StringConstants that holds the locales */
-	private RESTStringConstantV1 locales;
+	private String[] locales;
 	
 	/** The image to be displayed */
 	private RESTImageV1 image;
@@ -99,7 +103,8 @@ public class ImagePresenter extends TemplatePresenter
 			{
 				try
 				{
-					locales = retValue;
+					/* Get the list of locales from the StringConstant */
+					locales = retValue.getValue().replaceAll("\\n", "").replaceAll(" ", "").split(",");
 					finishLoading();
 				}
 				finally
@@ -126,10 +131,7 @@ public class ImagePresenter extends TemplatePresenter
 	{
 		if (locales != null && image != null)
 		{
-			/* Get the list of locales from the StringConstant */
-			final String[] localesArray = locales.getValue().replaceAll("\\n", "").replaceAll(" ", "").split(",");
-			
-			display.initialize(image, localesArray);
+			reInitialise();
 		}
 	}
 
@@ -150,8 +152,24 @@ public class ImagePresenter extends TemplatePresenter
 			@Override
 			public void onClick(final ClickEvent event)
 			{
+				final String selectedLocale = display.getAddLocaleDialog().getLocales().getItemText(display.getAddLocaleDialog().getLocales().getSelectedIndex());
+				
+				/* Don't add locales twice */
+				if (image.getLanguageImages_OTM() != null && image.getLanguageImages_OTM().getItems() != null)
+					for (final RESTLanguageImageV1 langImage : image.getLanguageImages_OTM().getItems())
+						if (langImage.getLocale().equals(selectedLocale))
+							return;
+				
+				final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
+				languageImage.setAddItem(true);
+				languageImage.setLocale(selectedLocale);
+				
+				image.getLanguageImages_OTM().addItem(languageImage);
+				
 				display.getAddLocaleDialog().getDialogBox().hide();
-			}
+				
+				reInitialise();
+			}			
 		});
 
 		display.getAddLocaleDialog().getCancel().addClickHandler(new ClickHandler()
@@ -224,6 +242,17 @@ public class ImagePresenter extends TemplatePresenter
 		{
 			stopProcessing();
 		}
+	}
+	
+	private void reInitialise()
+	{
+		final List<String> newLocales = Arrays.asList(locales);
+		
+		if (image.getLanguageImages_OTM() != null && image.getLanguageImages_OTM().getItems() != null)
+			for (final RESTLanguageImageV1 langImage : image.getLanguageImages_OTM().getItems())
+				newLocales.remove(langImage);
+		
+		display.initialize(image, newLocales.toArray(new String[0]));
 	}
 
 	private void stopProcessing()

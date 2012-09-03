@@ -97,10 +97,16 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
 	public void setValue(final RESTLanguageImageV1 value)
 	{
 		this.self = value;
-		this.filename.setText(value.getFilename());
-		final String base64 = GWTStringUtilities.getStringUTF8(value.getImageDataBase64());
-		this.imageDataBase64.setUrl(JPG_BASE64_PREFIX + base64);
+		
+		if (value.getFilename() != null)
+			this.filename.setText(value.getFilename());
+		
+		if (value.getImageDataBase64() != null)
+		{
+			final String base64 = GWTStringUtilities.getStringUTF8(value.getImageDataBase64());
+			this.imageDataBase64.setUrl(JPG_BASE64_PREFIX + base64);
+		}
 
-		parentPanel.setTabText(parentIndex, this.self.getLocale());
+		parentPanel.setTabText(parentIndex, this.self.getLocale() == null ? PressGangCCMSUI.INSTANCE.NotSpecified() : this.self.getLocale());
 	}
 }

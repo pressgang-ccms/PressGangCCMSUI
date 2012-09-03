@@ -21,16 +21,17 @@
 	text-align: center;
 	float: left;
 	margin-right: 5px;
+		height: 100%;
+	padding-top: 0.5em;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
 }
 
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
 	cursor: default;
 	background-color: #ABBCCF;
-	height: 100%;
-	padding-top: 0.5em;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
 }
+
 
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelContent {
 	border: 5px solid #ABBCCF;

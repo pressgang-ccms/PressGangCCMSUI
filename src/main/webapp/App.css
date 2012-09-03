@@ -15,6 +15,16 @@
 	border-spacing: 4px;
 }
 
+.ImageViewLanguageImageFilenameTextCell
+{
+	width: 100%;
+}
+
+.ImageViewLanguageImageFilenameLabel, .ImageViewLanguageImageDisplayLabel
+{
+	white-space: nowrap;
+}
+
 body {
 	background-color: #ffffff;
 	color: black;
