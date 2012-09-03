@@ -176,7 +176,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 		renderedSplitViewMenu.addStyleName(CSSConstants.RENDEREDSPLITVIEWMENUTABLE);
 
 		/* Build the action bar icons */
-		renderedSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), PressGangCCMSUI.INSTANCE.RenderedPane());
+		renderedSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), PressGangCCMSUI.INSTANCE.RenderedPane(), true);
 		rendered = UIUtilities.createPushButton(ImageResources.INSTANCE.rendered48(), ImageResources.INSTANCE.renderedDown48(), ImageResources.INSTANCE.renderedHover48(), PressGangCCMSUI.INSTANCE.RenderedView());
 		xml = UIUtilities.createPushButton(ImageResources.INSTANCE.xml48(), ImageResources.INSTANCE.xmlDown48(), ImageResources.INSTANCE.xmlHover48(), PressGangCCMSUI.INSTANCE.XMLEditing());
 		xmlErrors = UIUtilities.createPushButton(ImageResources.INSTANCE.attention48(), ImageResources.INSTANCE.attentionDown48(), ImageResources.INSTANCE.attentionHover48(), PressGangCCMSUI.INSTANCE.XMLValidationErrors());
@@ -194,7 +194,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 		bugsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Bugs());
 		historyDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
 
-		renderedSplitOpen = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), PressGangCCMSUI.INSTANCE.RenderedPane());
+		renderedSplitOpen = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), ImageResources.INSTANCE.renderedSplit48(), PressGangCCMSUI.INSTANCE.RenderedPane(), true);
 		renderedNoSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedNoSplit48(), ImageResources.INSTANCE.renderedNoSplitDown48(), ImageResources.INSTANCE.renderedNoSplitHover48(), ImageResources.INSTANCE.renderedNoSplitDisabled48(), PressGangCCMSUI.INSTANCE.NoSplit());
 		renderedNoSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.NoSplit());
 		renderedVerticalSplit = UIUtilities.createPushButton(ImageResources.INSTANCE.renderedVerticalSplit48(), ImageResources.INSTANCE.renderedVerticalSplitDown48(), ImageResources.INSTANCE.renderedVerticalSplitHover48(), ImageResources.INSTANCE.renderedVerticalSplitDisabled48(), PressGangCCMSUI.INSTANCE.VerticalSplit());

@@ -29,6 +29,7 @@ html {
 	width: 100%;
 	height: 100%;
 	border-spacing: 0px;
+	padding-bottom: 8px;
 }
 
 .TopActionPanel
@@ -39,6 +40,7 @@ html {
 
 .ShortcutPanel td {
 	padding: 1px;
+	margin-right: 8px;
 }
 
 .TopActionPanel td {
@@ -55,6 +57,12 @@ html {
 	height: 100%;
 }
 
+.TextButton.SubMenu
+{
+	background-color: #00C618;
+	border-color: #009200;
+}
+
 .TextButton:hover, .DownLabel {
 	border-style: solid;
 	border-width: 1px;
@@ -63,6 +71,12 @@ html {
 	padding: 8px;
 	color: white;
 	height: 100%;
+}
+
+.TextButton.SubMenu:hover
+{
+	background-color: #009200;
+	border-color: #009200;
 }
 
 .TextButton.gwt-PushButton-up-disabled

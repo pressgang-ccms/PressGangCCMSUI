@@ -136,5 +136,6 @@ final public class CSSConstants
 	static public final String RENDEREDSPLITVIEWMENUTABLE = "RenderedSplitViewMenuTable";
 	/** Assigned to labels that represent down pushbuttons */
 	static public final String DOWNLABEL = "DownLabel";
-	
+	/** Assigned to push buttons that are sub menus */
+	static public final String SUBMENU = "SubMenu";
 }

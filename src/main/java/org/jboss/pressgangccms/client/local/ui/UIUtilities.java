@@ -20,6 +20,11 @@ final public class UIUtilities
 {
 	public static PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final String text)
 	{
+		return createPushButton(up, down, hover, text, false);
+	}
+	
+	public static PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final String text, boolean subMenu)
+	{
 		PushButton retvalue;
 
 		if (Preferences.INSTANCE.getButtonView() == ButtonView.IMAGE)
@@ -33,11 +38,19 @@ final public class UIUtilities
 			retvalue = new PushButton(text);
 			retvalue.addStyleName(CSSConstants.TEXTBUTTON);
 		}
+		
+		if (subMenu)
+			retvalue.addStyleName(CSSConstants.SUBMENU);
 
 		return retvalue;
 	}
-
+	
 	public static PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final ImageResource disabled, final String text)
+	{
+		return createPushButton(up, down, hover, disabled, text, false);
+	}
+
+	public static PushButton createPushButton(final ImageResource up, final ImageResource down, final ImageResource hover, final ImageResource disabled, final String text, final boolean subMenu)
 	{
 		PushButton retvalue;
 
@@ -53,12 +66,19 @@ final public class UIUtilities
 			retvalue = new PushButton(text);
 			retvalue.addStyleName(CSSConstants.TEXTBUTTON);
 		}
+		
+		if (subMenu)
+			retvalue.addStyleName(CSSConstants.SUBMENU);
 
 		return retvalue;
 	}
-
 	public static ToggleButton createToggleButton(final ImageResource up, final ImageResource down, final String text, final ImageResource hover)
 	{
+		return createToggleButton(up, down, text, hover, false);
+	}
+
+	public static ToggleButton createToggleButton(final ImageResource up, final ImageResource down, final String text, final ImageResource hover, final boolean subMenu)
+	{
 		ToggleButton retvalue;
 
 		if (Preferences.INSTANCE.getButtonView() == ButtonView.IMAGE)
@@ -72,11 +92,19 @@ final public class UIUtilities
 			retvalue = new ToggleButton(text);
 			retvalue.addStyleName(CSSConstants.TEXTBUTTON);
 		}
+		
+		if (subMenu)
+			retvalue.addStyleName(CSSConstants.SUBMENU);
 
 		return retvalue;
 	}
-
+	
 	public static ToggleButton createToggleButton(final ImageResource up, final ImageResource down, final ImageResource hover, final String text)
+	{
+		return createToggleButton(up, down, hover, text, false);
+	}
+
+	public static ToggleButton createToggleButton(final ImageResource up, final ImageResource down, final ImageResource hover, final String text, final boolean subMenu)
 	{
 		ToggleButton retvalue;
 
@@ -91,6 +119,9 @@ final public class UIUtilities
 			retvalue = new ToggleButton(text);
 			retvalue.addStyleName(CSSConstants.IMAGEBUTTON);
 		}
+		
+		if (subMenu)
+			retvalue.addStyleName(CSSConstants.SUBMENU);
 		
 		return retvalue;
 	}
