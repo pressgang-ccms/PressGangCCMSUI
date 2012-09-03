@@ -1,5 +1,12 @@
 package org.jboss.pressgangccms.client.local.view;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.presenter.ImagePresenter;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.UIUtilities;
@@ -73,6 +80,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
 			layout.setWidget(0, 1, locales);
 			
 			final HorizontalPanel buttonPanel = new HorizontalPanel();
+			buttonPanel.addStyleName(CSSConstants.DIALOGBOXOKCANCELPANEL);
 			buttonPanel.add(cancel);
 			buttonPanel.add(ok);
 			
@@ -121,8 +129,12 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
 		/* Add the projects */
 		this.getPanel().setWidget(editor);
 		
+		/* Sort the array */
+		final List<String> localesList = new ArrayList<String>(Arrays.asList(locales));
+		Collections.sort(localesList);
+				
 		/* populate the locales listbox */
-		for (final String locale : locales)
+		for (final String locale : localesList)
 			this.addLocaleDialog.locales.addItem(locale);
 		
 		/* Make sure the dialog box is closed */

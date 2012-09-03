@@ -9,6 +9,12 @@
 	cursor: row-resize;
 }
 
+.DialogBoxOKCancelPanel
+{
+	margin-left: auto;
+	border-spacing: 4px;
+}
+
 body {
 	background-color: #ffffff;
 	color: black;

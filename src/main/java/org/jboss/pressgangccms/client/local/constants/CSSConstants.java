@@ -98,10 +98,6 @@ final public class CSSConstants
 	static public final String IMAGEVIEWLANGUAGEIMAGEFILENAMELABEL = "ImageViewLanguageImageFilenameLabel";
 	/** Assigned to the cell that holds the language file name text */
 	static public final String IMAGEVIEWLANGUAGEIMAGEFILENAMETEXT = "ImageViewLanguageImageFilenameText";
-	/** Assigned to the cell that holds the language locale label */
-	static public final String IMAGEVIEWLANGUAGEIMAGELOCALELABEL = "ImageViewLanguageImageLocaleLabel";
-	/** Assigned to the cell that holds the language locale text */
-	static public final String IMAGEVIEWLANGUAGEIMAGELOCALETEXT = "ImageViewLanguageImageLocaleText";
 	/** Assigned to the cell that holds the language display label */
 	static public final String IMAGEVIEWLANGUAGEIMAGEDISPLAYLABEL = "ImageViewLanguageImageDisplayLabel";
 	/** Assigned to the cell that holds the language display image */
@@ -110,10 +106,6 @@ final public class CSSConstants
 	static public final String IMAGEVIEWLANGUAGEIMAGEFILENAMELABELCELL = "ImageViewLanguageImageFilenameLabelCell";
 	/** Assigned to the cell that holds the language file name text cell */
 	static public final String IMAGEVIEWLANGUAGEIMAGEFILENAMETEXTCELL = "ImageViewLanguageImageFilenameTextCell";
-	/** Assigned to the cell that holds the language locale label cell */
-	static public final String IMAGEVIEWLANGUAGEIMAGELOCALELABELCELL = "ImageViewLanguageImageLocaleLabelCell";
-	/** Assigned to the cell that holds the language locale text cell */
-	static public final String IMAGEVIEWLANGUAGEIMAGELOCALETEXTCELL = "ImageViewLanguageImageLocaleTextCell";
 	/** Assigned to the cell that holds the language display label cell */
 	static public final String IMAGEVIEWLANGUAGEIMAGEDISPLAYLABELCELL = "ImageViewLanguageImageDisplayLabelCell";
 	/** Assigned to the cell that holds the language display image cell */
@@ -140,4 +132,6 @@ final public class CSSConstants
 	static public final String SUBMENU = "SubMenu";
 	/** Assigned to buttons that need to show some kind of alert status */
 	static public final String ALERTBUTTON = "AlertButton";
+	/** Assigned to the panel that holds the OK and Cancel buttons in a popup dialog box */
+	static public final String DIALOGBOXOKCANCELPANEL = "DialogBoxOKCancelPanel";
 }

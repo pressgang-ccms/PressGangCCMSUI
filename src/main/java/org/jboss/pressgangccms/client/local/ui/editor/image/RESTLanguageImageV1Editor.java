@@ -47,17 +47,10 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
 	private final int parentIndex;
 
 	private final TextBox filename = new TextBox();
-	private final ListBox locale = new ListBox();
 	private final Image imageDataBase64 = new Image();
 
 	private final Label filenameLabel = new Label(PressGangCCMSUI.INSTANCE.ImageFilename());
-	private final Label localeLabel = new Label(PressGangCCMSUI.INSTANCE.ImageLocale());
 	private final Label imageLabel = new Label(PressGangCCMSUI.INSTANCE.ImageSample());
-
-	public ListBox getLocale()
-	{
-		return locale;
-	}
 
 	public RESTLanguageImageV1Editor(final TabLayoutPanel parentPanel, final int parentIndex)
 	{
@@ -68,45 +61,36 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
 
 		this.setWidget(0, 0, filenameLabel);
 		this.setWidget(0, 1, filename);
-		this.setWidget(1, 0, localeLabel);
-		this.setWidget(1, 1, locale);
-		this.setWidget(2, 0, imageLabel);
-		this.setWidget(2, 1, imageDataBase64);
+		this.setWidget(1, 0, imageLabel);
+		this.setWidget(1, 1, imageDataBase64);
 		
 		filenameLabel.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMELABEL);
 		filename.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMETEXT);
-		localeLabel.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGELOCALELABEL);
-		locale.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGELOCALETEXT);
 		imageLabel.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYLABEL);
 		imageDataBase64.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGE);
 		
 		this.getCellFormatter().addStyleName(0,  0, CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMELABELCELL);
 		this.getCellFormatter().addStyleName(0,  1, CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMETEXTCELL);
-		this.getCellFormatter().addStyleName(1,  0, CSSConstants.IMAGEVIEWLANGUAGEIMAGELOCALELABELCELL);
-		this.getCellFormatter().addStyleName(1,  1, CSSConstants.IMAGEVIEWLANGUAGEIMAGELOCALETEXTCELL);
-		this.getCellFormatter().addStyleName(2,  0, CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYLABELCELL);
-		this.getCellFormatter().addStyleName(2,  1, CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGECELL);
+		this.getCellFormatter().addStyleName(1,  0, CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYLABELCELL);
+		this.getCellFormatter().addStyleName(1,  1, CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGECELL);
 	}
 
 	@Override
 	public void setDelegate(final EditorDelegate<RESTLanguageImageV1> delegate)
 	{
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void flush()
 	{
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onPropertyChange(final String... paths)
 	{
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
