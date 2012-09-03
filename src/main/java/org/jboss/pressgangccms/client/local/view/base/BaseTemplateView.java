@@ -58,9 +58,15 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	private final PushButton home;
 	private final PushButton search;
 	private final PushButton searchTranslations;
+	private final PushButton images;
 	private final PushButton bug;
 	private final PushButton reports;
 	
+	public PushButton getImages()
+	{
+		return images;
+	}
+
 	public Label getPageTitle()
 	{
 		return pageTitle;
@@ -206,6 +212,10 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		searchTranslations = UIUtilities.createPushButton(ImageResources.INSTANCE.searchTranslations48(), ImageResources.INSTANCE.searchTranslationsDown48(), ImageResources.INSTANCE.searchTranslationsHover48(), ImageResources.INSTANCE.searchTranslationsDisabled48(), PressGangCCMSUI.INSTANCE.SearchTranslations());
 		searchTranslations.setEnabled(false);
 		getShortcutPanel().add(searchTranslations);
+		
+		images = UIUtilities.createPushButton(ImageResources.INSTANCE.image48(), ImageResources.INSTANCE.imageDown48(), ImageResources.INSTANCE.imageHover48(), ImageResources.INSTANCE.imageDisabled48(), PressGangCCMSUI.INSTANCE.Images());
+		images.setEnabled(false);
+		getShortcutPanel().add(images);
 
 		reports = UIUtilities.createPushButton(ImageResources.INSTANCE.reports48(), ImageResources.INSTANCE.reportsDown48(), ImageResources.INSTANCE.reportsHover48(), ImageResources.INSTANCE.reportsDisabled48(), PressGangCCMSUI.INSTANCE.Reports());
 		reports.setEnabled(false);

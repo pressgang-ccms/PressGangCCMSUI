@@ -10,6 +10,7 @@ public interface BaseTemplateViewInterface
 {
 	PushButton getBug();
 	PushButton getSearch();
+	PushButton getImages();
 	FlexTable getTopActionPanel();
 	SimpleLayoutPanel getPanel();
 	DockLayoutPanel getTopLevelPanel();
