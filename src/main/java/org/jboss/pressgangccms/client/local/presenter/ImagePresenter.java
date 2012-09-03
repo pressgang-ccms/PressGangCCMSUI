@@ -3,12 +3,14 @@ package org.jboss.pressgangccms.client.local.presenter;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgangccms.client.local.constants.ServiceConstants;
 import org.jboss.pressgangccms.client.local.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.client.local.ui.editor.image.RESTImageV1Editor;
 import org.jboss.pressgangccms.client.local.view.ImageView;
 import org.jboss.pressgangccms.client.local.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.rest.v1.entities.RESTImageV1;
+import org.jboss.pressgangccms.rest.v1.entities.RESTStringConstantV1;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -24,7 +26,17 @@ public class ImagePresenter extends TemplatePresenter
 	@Inject
 	private Display display;
 
+	/** The id of the image to display, extracted from the history token */
 	private Integer imageId;
+
+	/** used to keep a track of how many rest calls are active */
+	int count = 0;
+	
+	/** A reference to the StringConstants that holds the locales */
+	private RESTStringConstantV1 locales;
+	
+	/** The image to be displayed */
+	private RESTImageV1 image;
 
 	public interface Display extends BaseTemplateViewInterface
 	{
@@ -40,11 +52,11 @@ public class ImagePresenter extends TemplatePresenter
 			PushButton getOk();
 
 			ListBox getLocales();
-			
+
 			DialogBox getDialogBox();
 		}
 
-		void initialize(final RESTImageV1 image);
+		void initialize(final RESTImageV1 image, final String[] locales);
 
 		PushButton getRemoveLocale();
 
@@ -58,10 +70,67 @@ public class ImagePresenter extends TemplatePresenter
 	{
 		container.clear();
 		container.add(display.getTopLevelPanel());
-		
+
 		bind();
 
+		getLocales();
+
 		getImage();
+	}
+
+	private void getLocales()
+	{
+		final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new RESTCalls.RESTCallback<RESTStringConstantV1>()
+		{
+			@Override
+			public void begin()
+			{
+				startProcessing();
+			}
+
+			@Override
+			public void generalException(final Exception ex)
+			{
+				stopProcessing();
+			}
+
+			@Override
+			public void success(final RESTStringConstantV1 retValue)
+			{
+				try
+				{
+					locales = retValue;
+					finishLoading();
+				}
+				finally
+				{
+					stopProcessing();
+				}
+			}
+
+			@Override
+			public void failed()
+			{
+				stopProcessing();
+			}
+		};
+
+		RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRINGCONSTANT);
+	}
+	
+	/**
+	 * Potentially two REST calls have to finish before we can display the page. This function will be called
+	 * as each REST call finishes, and when all the information has been gathered, the page will be displayed.
+	 */
+	private void finishLoading()
+	{
+		if (locales != null && image != null)
+		{
+			/* Get the list of locales from the StringConstant */
+			final String[] localesArray = locales.getValue().replaceAll("\\n", "").replaceAll(" ", "").split(",");
+			
+			display.initialize(image, localesArray);
+		}
 	}
 
 	private void bind()
@@ -75,7 +144,7 @@ public class ImagePresenter extends TemplatePresenter
 				display.getAddLocaleDialog().getDialogBox().show();
 			}
 		});
-		
+
 		display.getAddLocaleDialog().getOk().addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -84,7 +153,7 @@ public class ImagePresenter extends TemplatePresenter
 				display.getAddLocaleDialog().getDialogBox().hide();
 			}
 		});
-		
+
 		display.getAddLocaleDialog().getCancel().addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -130,7 +199,8 @@ public class ImagePresenter extends TemplatePresenter
 			{
 				try
 				{
-					display.initialize(retValue);
+					image = retValue;
+					finishLoading();
 				}
 				finally
 				{
@@ -158,11 +228,14 @@ public class ImagePresenter extends TemplatePresenter
 
 	private void stopProcessing()
 	{
-		display.setSpinnerVisible(false);
+		--count;
+		if (count == 0)
+			display.setSpinnerVisible(false);
 	}
 
 	private void startProcessing()
 	{
+		++count;
 		display.setSpinnerVisible(true);
 	}
 

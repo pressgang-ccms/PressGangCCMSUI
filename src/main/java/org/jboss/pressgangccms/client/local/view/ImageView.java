@@ -108,8 +108,11 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
 		this.addRightAlignedActionButtonPaddingPanel();
 	}
 	
-	public void initialize(final RESTImageV1 image)
+	public void initialize(final RESTImageV1 image, final String[] locales)
 	{
+		if (image == null) throw new IllegalArgumentException("image cannot be null");
+		if (locales == null) throw new IllegalArgumentException("locales cannot be null");
+		
 		/* SearchUIProjectsEditor is a grid */
 		editor = new RESTImageV1Editor();	/* Initialize the driver with the top-level editor */
 		driver.initialize(editor);
@@ -117,5 +120,12 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
 		driver.edit(image);
 		/* Add the projects */
 		this.getPanel().setWidget(editor);
+		
+		/* populate the locales listbox */
+		for (final String locale : locales)
+			this.addLocaleDialog.locales.addItem(locale);
+		
+		/* Make sure the dialog box is closed */
+		addLocaleDialog.hide();
 	}
 }

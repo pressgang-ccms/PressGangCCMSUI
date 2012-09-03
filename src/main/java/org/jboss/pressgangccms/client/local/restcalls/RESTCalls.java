@@ -8,6 +8,7 @@ import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTImageV1;
+import org.jboss.pressgangccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgangccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 
@@ -74,6 +75,22 @@ public final class RESTCalls
 		{
 			callback.begin();
 			restMethod.updateJSONTopic(expand, topic);
+		}
+		catch (final Exception ex)
+		{
+			callback.generalException(ex);
+		}
+	}
+	
+	static public void getStringConstant(final RESTCalls.RESTCallback<RESTStringConstantV1> callback, final int id)
+	{
+		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
+		final String expand = "";
+		
+		try
+		{
+			callback.begin();
+			restMethod.getJSONStringConstant(id, expand);
 		}
 		catch (final Exception ex)
 		{
