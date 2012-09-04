@@ -154,4 +154,6 @@ public interface PressGangCCMSUI extends Constants
 	String ConnectionError();
 	
 	String ConfirmDelete();
+	
+	String DocbookFilename();
 }

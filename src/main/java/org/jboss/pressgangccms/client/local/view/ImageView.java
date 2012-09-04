@@ -30,6 +30,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
 	
 	private final PushButton addLocale = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.AddLocale());
 	private final PushButton removeLocale = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RemoveLocale());
+	private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
 	private final AddLocaleDialog addLocaleDialog = new AddLocaleDialog();
 	
 	/**
@@ -89,6 +90,13 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
 			
 			this.add(layout);
 		}
+
+		
+	}
+	
+	public PushButton getSave()
+	{
+		return save;
 	}
 	
 	public RESTImageV1Editor getEditor()
@@ -122,6 +130,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
 		
 		this.addActionButton(addLocale);
 		this.addActionButton(removeLocale);
+		this.addActionButton(save);
 		this.addRightAlignedActionButtonPaddingPanel();
 	}
 	

@@ -118,6 +118,10 @@ final public class CSSConstants
 	static public final String IMAGEVIEWDESCRIPTIONLABELCELL = "ImageViewDescriptionLabelCell";
 	/** Assigned to the image description text cell*/
 	static public final String IMAGEVIEWDESCRIPTIONTEXTCELL = "ImageViewDescriptionTextCell";
+	/** Assigned to the image docbook file name label cell*/
+	public static final String IMAGEVIEWDOCBOOKFILENAMELABELCELL = "ImageViewDocbookFileNameLabelCell";
+	/** Assigned to the image docbook file name text cell*/
+	public static final String IMAGEVIEWDOCBOOKFILENAMETEXTCELL = "ImageViewDocbookFileNameTextCell";
 	/** Assigned to the table that holds the image details */
 	static public final String IMAGEVIEWDETAILSTABLE = "ImageViewDetailsTable";
 	/** Assigned to image buttons */

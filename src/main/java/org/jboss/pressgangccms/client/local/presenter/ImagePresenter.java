@@ -78,6 +78,8 @@ public class ImagePresenter extends TemplatePresenter
 
 		PushButton getAddLocale();
 
+		PushButton getSave();
+
 		AddLocaleInterface getAddLocaleDialog();
 
 		RESTImageV1Editor getEditor();
@@ -152,6 +154,61 @@ public class ImagePresenter extends TemplatePresenter
 
 	private void bind()
 	{
+		display.getSave().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				display.getEditor().flush();
+				
+				/*
+				 * Create the image to be modified. This is so we don't
+				 * send off unnessessary data.
+				 */
+				final RESTImageV1 updateImage = new RESTImageV1();
+				updateImage.setId(image.getId());
+				updateImage.explicitSetDescription(image.getDescription());
+
+				final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>()
+				{
+					@Override
+					public void begin()
+					{
+						startProcessing();
+					}
+
+					@Override
+					public void generalException(final Exception ex)
+					{
+						stopProcessing();
+					}
+
+					@Override
+					public void success(final RESTImageV1 retValue)
+					{
+						try
+						{
+							image = retValue;
+							reInitialise();
+						}
+						finally
+						{
+							stopProcessing();
+						}
+					}
+
+					@Override
+					public void failed()
+					{
+						stopProcessing();
+					}
+				};
+
+				RESTCalls.saveImage(callback, updateImage);
+
+			}
+		});
+
 		display.getAddLocale().addClickHandler(new ClickHandler()
 		{
 			@Override

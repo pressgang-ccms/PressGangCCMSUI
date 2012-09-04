@@ -2,22 +2,31 @@ package org.jboss.pressgangccms.client.local.ui.editor.image;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgangccms.rest.v1.components.ComponentImageV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTImageV1;
 
-import com.google.gwt.editor.client.Editor;
+import com.google.gwt.editor.client.EditorDelegate;
+import com.google.gwt.editor.client.ValueAwareEditor;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 
-public class RESTImageV1Editor extends DockPanel implements Editor<RESTImageV1>
+public class RESTImageV1Editor extends DockPanel implements ValueAwareEditor<RESTImageV1>
 {
+	private RESTImageV1 value;
+	
 	/**
 	 * A text area to represent the description field
 	 */
 	private final TextArea description = new TextArea();
 	
+	private final TextBox docbookFileName = new TextBox();
+	
 	private final Label descriptionLabel = new Label(PressGangCCMSUI.INSTANCE.ImageDescription()) ;
+	
+	private final Label docbookFileNameLabel = new Label(PressGangCCMSUI.INSTANCE.DocbookFilename()) ;
 	
 	private final FlexTable imageDetails = new FlexTable();
 	
@@ -40,18 +49,50 @@ public class RESTImageV1Editor extends DockPanel implements Editor<RESTImageV1>
 	{
 		this.addStyleName(CSSConstants.IMAGEVIEWPARENTDOCKPANEL);
 		
+		docbookFileName.setReadOnly(true);
+		
 		imageDetails.addStyleName(CSSConstants.IMAGEVIEWDETAILSTABLE);
 		descriptionLabel.addStyleName(CSSConstants.IMAGEVIEWDESCRIPTIONLABEL);
 		description.addStyleName(CSSConstants.IMAGEVIEWDESCRIPTIONTEXT);
 		
 		imageDetails.setWidget(0, 0, descriptionLabel);
 		imageDetails.setWidget(0, 1, description);
+		imageDetails.setWidget(1, 0, docbookFileNameLabel);
+		imageDetails.setWidget(1, 1, docbookFileName);
 		
 		imageDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.IMAGEVIEWDESCRIPTIONLABELCELL);
 		imageDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.IMAGEVIEWDESCRIPTIONTEXTCELL);
+		imageDetails.getCellFormatter().addStyleName(1, 0, CSSConstants.IMAGEVIEWDOCBOOKFILENAMELABELCELL);
+		imageDetails.getCellFormatter().addStyleName(1, 1, CSSConstants.IMAGEVIEWDOCBOOKFILENAMETEXTCELL);
 		
 		this.add(imageDetails, DockPanel.NORTH);
 		this.add(languageImages_OTM, DockPanel.CENTER);
+	}
+
+	@Override
+	public void setDelegate(final EditorDelegate<RESTImageV1> delegate)
+	{
+		
+	}
+
+	@Override
+	public void flush()
+	{
+		value.setDescription(this.description.getText());
+	}
+
+	@Override
+	public void onPropertyChange(final String... paths)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setValue(final RESTImageV1 value)
+	{
+		this.value = value;
+		this.docbookFileName.setText(ComponentImageV1.getDocbookFileName(value));		
 	}
 
 }
