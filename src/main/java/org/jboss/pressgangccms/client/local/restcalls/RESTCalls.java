@@ -5,6 +5,7 @@ import org.jboss.errai.bus.client.api.Message;
 import org.jboss.errai.bus.client.api.RemoteCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
+import org.jboss.pressgangccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTImageV1;
@@ -212,6 +213,23 @@ public final class RESTCalls
 		{
 			callback.begin();
 			restMethod.getJSONTopicsWithQuery(new PathSegmentImpl(queryString), expand);
+		}
+		catch (final Exception ex)
+		{
+			callback.generalException(ex);
+		}
+	}
+	
+	static public void getImagesFromQuery(final RESTCallback<RESTImageCollectionV1> callback, final String queryString, int start, int end)
+	{
+		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
+		/* Expand the categories and projects in the tags */
+		final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"showSize\":true,\"name\": \"images\"}}]}";
+
+		try
+		{
+			callback.begin();
+			restMethod.getJSONImagesWithQuery(new PathSegmentImpl(queryString), expand);
 		}
 		catch (final Exception ex)
 		{

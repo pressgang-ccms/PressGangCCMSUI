@@ -14,6 +14,11 @@ public final class Constants
 	public static final int SPLIT_PANEL_SIZE = 300;
 	
 	/**
+	 * The size of the split panel dividers
+	 */
+	public static final int SPLIT_PANEL_DIVIDER_SIZE = 5;
+	
+	/**
 	 * The height of the action bars
 	 */
 	public static final int ACTION_BAR_HEIGHT = 80;

@@ -142,4 +142,6 @@ final public class CSSConstants
 	static public final String IMAGEVIEWLANGUAGEIMAGEUPLOADLABELCELL = "ImageViewLanguageImageUploadLabelCell";
 	/** Assigned to the cell that holds the image upload buttons */
 	static public final String IMAGEVIEWLANGUAGEIMAGEUPLOADBUTTONSCELL = "ImageViewLanguageImageUploadButtonsCell";
+	/** Assigned to the panel that holds the list of images */
+	static public final String IMAGEFILTEREDRESULTSPANEL = "ImageFilteredResultsPanel";
 }
