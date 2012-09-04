@@ -88,20 +88,9 @@ public class ImagesFilteredResultsAndImageView extends BaseTemplateView implemen
 		viewPanel.addStyleName(CSSConstants.TOPICSEARCHTOPICVIEWDETAILSPANEL);
 
 		splitPanel.addStyleName(CSSConstants.TOPICSEARCHRESULTSANDVIEWPARENTPANEL);
-
-		this.getPanel().add(splitPanel);
-	}
-	
-	/**
-	 * The split panel needs to have the center widget added last, which we need to do after
-	 * optionally added a east or south widget for the rendered view.
-	 */
-	public void initialize(final Panel panel)
-	{
-		final SimplePanel renderedPanelParent = new SimplePanel();
-		renderedPanelParent.addStyleName(CSSConstants.TOPICVIEWLAYOUTPANEL);
-		renderedPanelParent.add(panel);
 		
 		splitPanel.add(viewLayoutPanel);
+
+		this.getPanel().add(splitPanel);
 	}
 }

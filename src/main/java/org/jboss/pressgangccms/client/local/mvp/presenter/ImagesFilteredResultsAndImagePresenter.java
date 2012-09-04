@@ -6,7 +6,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.constants.Constants;
-import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.base.ImagePresenterBase;
 import org.jboss.pressgangccms.client.local.mvp.view.ImagesFilteredResultsAndImageView;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
@@ -18,13 +18,14 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.view.client.AsyncDataProvider;
+import com.google.gwt.view.client.CellPreviewEvent;
+import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
 
 @Dependent
-public class ImagesFilteredResultsAndImagePresenter extends TemplatePresenter
+public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 {
 	public interface Display extends BaseTemplateViewInterface
 	{
@@ -39,8 +40,6 @@ public class ImagesFilteredResultsAndImagePresenter extends TemplatePresenter
 		HanldedSplitLayoutPanel getSplitPanel();
 
 		DockLayoutPanel getViewLayoutPanel();
-
-		void initialize(final Panel panel);
 	}
 
 	@Inject
@@ -48,6 +47,9 @@ public class ImagesFilteredResultsAndImagePresenter extends TemplatePresenter
 
 	@Inject
 	private ImageFilteredResultsPresenter.Display imageFilteredResultsDisplay;
+	
+	@Inject
+	private ImagePresenter.Display imageDisplay;
 
 	private String queryString;
 
@@ -56,6 +58,9 @@ public class ImagesFilteredResultsAndImagePresenter extends TemplatePresenter
 
 	/** Keeps a reference to the list of topics being displayed */
 	private List<RESTImageV1> currentList;
+	
+	/** The currently selected image in the search results */
+	private RESTImageV1 selectedSearchImage;
 	
 	/** used to keep a track of how many rest calls are active */
 	int count = 0;
@@ -69,6 +74,8 @@ public class ImagesFilteredResultsAndImagePresenter extends TemplatePresenter
 		display.getResultsActionButtonsPanel().setWidget(imageFilteredResultsDisplay.getTopActionPanel());
 		display.getResultsPanel().setWidget(imageFilteredResultsDisplay.getPanel());
 		
+		getLocales();
+		
 		bind();
 	}
 
@@ -79,6 +86,10 @@ public class ImagesFilteredResultsAndImagePresenter extends TemplatePresenter
 	{
 		final AsyncDataProvider<RESTImageV1> provider = generateListProvider();
 		imageFilteredResultsDisplay.setProvider(provider);
+		
+		bindListRowClicks();
+		
+		bindImageViewButtons(imageDisplay);
 	}
 
 	/**
@@ -138,6 +149,79 @@ public class ImagesFilteredResultsAndImagePresenter extends TemplatePresenter
 		};
 		return provider;
 	}
+	
+	/**
+	 * Bind the button click events for the topic editor screens
+	 */
+	private void bindListRowClicks()
+	{
+		imageFilteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTImageV1>()
+		{
+			@Override
+			public void onCellPreview(final CellPreviewEvent<RESTImageV1> event)
+			{
+				/* Check to see if this was a click event */
+				final boolean isClick = "click".equals(event.getNativeEvent().getType());
+
+				if (isClick)
+				{
+					/* selectedSearchImage will be null until an image is selected for the first time */
+					final boolean needToAddImageView = selectedSearchImage == null;
+					
+					selectedSearchImage = event.getValue();
+					displayedImage = null;
+
+					final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>()
+					{
+						@Override
+						public void begin()
+						{
+							startProcessing();
+						}
+
+						@Override
+						public void generalException(final Exception ex)
+						{
+							stopProcessing();
+							Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+						}
+
+						@Override
+						public void success(final RESTImageV1 retValue)
+						{
+							try
+							{
+								displayedImage = retValue;
+								reInitialiseImageView();
+								
+								/* If this is the first image selected, display the image view */
+								if (needToAddImageView)
+								{
+									display.getViewPanel().setWidget(imageDisplay.getPanel());
+									display.getViewActionButtonsPanel().setWidget(imageDisplay.getTopActionPanel());
+								}
+							}
+							finally
+							{
+								stopProcessing();
+							}
+
+						}
+
+						@Override
+						public void failed()
+						{
+							stopProcessing();
+							Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+						}
+
+					};
+
+					RESTCalls.getImage(callback, selectedSearchImage.getId());
+				}
+			}
+		});
+	}
 
 	@Override
 	public void parseToken(final String historyToken)
@@ -147,16 +231,24 @@ public class ImagesFilteredResultsAndImagePresenter extends TemplatePresenter
 			queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
 	}
 	
-	private void stopProcessing()
+	protected void stopProcessing()
 	{
 		--count;
 		if (count == 0)
 			display.setSpinnerVisible(false);
 	}
 
-	private void startProcessing()
+	protected void startProcessing()
 	{
 		++count;
 		display.setSpinnerVisible(true);
+	}
+
+	@Override
+	protected void reInitialiseImageView()
+	{
+		imageDisplay.initialize(displayedImage, getUnassignedLocales().toArray(new String[0]));
+
+		bindImageUploadButtons(imageDisplay);
 	}
 }
