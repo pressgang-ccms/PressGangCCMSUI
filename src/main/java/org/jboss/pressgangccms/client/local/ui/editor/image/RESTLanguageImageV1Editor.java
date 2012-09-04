@@ -2,15 +2,18 @@ package org.jboss.pressgangccms.client.local.ui.editor.image;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgangccms.client.local.utilities.GWTStringUtilities;
+import org.jboss.pressgangccms.client.local.ui.UIUtilities;
+import org.jboss.pressgangccms.client.local.utilities.GWTUtilities;
 import org.jboss.pressgangccms.rest.v1.entities.RESTLanguageImageV1;
+import org.vectomatic.file.FileUploadExt;
 
 import com.google.gwt.editor.client.EditorDelegate;
 import com.google.gwt.editor.client.ValueAwareEditor;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
@@ -48,9 +51,36 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
 
 	private final TextBox filename = new TextBox();
 	private final Image imageDataBase64 = new Image();
+	private final FileUploadExt upload = new FileUploadExt(false);
+	private final PushButton uploadButton = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Upload());
 
 	private final Label filenameLabel = new Label(PressGangCCMSUI.INSTANCE.ImageFilename());
 	private final Label imageLabel = new Label(PressGangCCMSUI.INSTANCE.ImageSample());
+	private final Label newFileLabel = new Label(PressGangCCMSUI.INSTANCE.UploadFile());
+
+	@Ignore
+	public TextBox getFilename()
+	{
+		return filename;
+	}
+	
+	@Ignore
+	public Image getImageDataBase64()
+	{
+		return imageDataBase64;
+	}
+
+	@Ignore
+	public FileUploadExt getUpload()
+	{
+		return upload;
+	}
+	
+	@Ignore
+	public PushButton getUploadButton()
+	{
+		return uploadButton;
+	}
 
 	public RESTLanguageImageV1Editor(final TabLayoutPanel parentPanel, final int parentIndex)
 	{
@@ -58,21 +88,29 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
 		
 		this.parentPanel = parentPanel;
 		this.parentIndex = parentIndex;
+		
+		final HorizontalPanel uploadPanel = new HorizontalPanel();
+		uploadPanel.add(upload);
+		uploadPanel.add(uploadButton);
 
-		this.setWidget(0, 0, filenameLabel);
-		this.setWidget(0, 1, filename);
-		this.setWidget(1, 0, imageLabel);
-		this.setWidget(1, 1, imageDataBase64);
+		this.setWidget(0, 0, newFileLabel);
+		this.setWidget(0, 1, uploadPanel);
+		this.setWidget(1, 0, filenameLabel);
+		this.setWidget(1, 1, filename);
+		this.setWidget(2, 0, imageLabel);
+		this.setWidget(2, 1, imageDataBase64);
 		
 		filenameLabel.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMELABEL);
 		filename.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMETEXT);
 		imageLabel.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYLABEL);
 		imageDataBase64.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGE);
 		
-		this.getCellFormatter().addStyleName(0,  0, CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMELABELCELL);
-		this.getCellFormatter().addStyleName(0,  1, CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMETEXTCELL);
-		this.getCellFormatter().addStyleName(1,  0, CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYLABELCELL);
-		this.getCellFormatter().addStyleName(1,  1, CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGECELL);
+		this.getCellFormatter().addStyleName(0,  0, CSSConstants.IMAGEVIEWLANGUAGEIMAGEUPLOADLABELCELL);
+		this.getCellFormatter().addStyleName(0,  1, CSSConstants.IMAGEVIEWLANGUAGEIMAGEUPLOADBUTTONSCELL);
+		this.getCellFormatter().addStyleName(1,  0, CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMELABELCELL);
+		this.getCellFormatter().addStyleName(1,  1, CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMETEXTCELL);
+		this.getCellFormatter().addStyleName(2,  0, CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYLABELCELL);
+		this.getCellFormatter().addStyleName(2,  1, CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGECELL);
 	}
 
 	@Override
@@ -103,7 +141,7 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
 		
 		if (value.getImageDataBase64() != null)
 		{
-			final String base64 = GWTStringUtilities.getStringUTF8(value.getImageDataBase64());
+			final String base64 = GWTUtilities.getStringUTF8(value.getImageDataBase64());
 			this.imageDataBase64.setUrl(JPG_BASE64_PREFIX + base64);
 		}
 

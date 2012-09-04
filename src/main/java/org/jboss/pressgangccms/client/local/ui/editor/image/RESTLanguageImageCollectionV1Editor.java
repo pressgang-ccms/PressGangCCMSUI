@@ -21,7 +21,7 @@ public class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel implemen
 	/**
 	 * The collection of language image editors
 	 */
-	final ListEditor<RESTLanguageImageV1, RESTLanguageImageV1Editor> items = ListEditor.of(new LanguageImageEditorSource());
+	private final ListEditor<RESTLanguageImageV1, RESTLanguageImageV1Editor> items = ListEditor.of(new LanguageImageEditorSource());
 	
 	/**
 	 * The EditorSource is used to create and orgainse the Editors that go into
@@ -53,6 +53,11 @@ public class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel implemen
 		}
 	}
 	
+	public ListEditor<RESTLanguageImageV1, RESTLanguageImageV1Editor> itemsEditor()
+	{
+		return items;
+	}
+
 	public RESTLanguageImageCollectionV1Editor()
 	{
 		super(2, Unit.EM);

@@ -144,4 +144,12 @@ public interface PressGangCCMSUI extends Constants
 	String Locales();
 	
 	String NotSpecified();
+	
+	String UploadFile();
+	
+	String Upload();
+	
+	String PleaseUseFirefox();
+	
+	String ConnectionError();
 }

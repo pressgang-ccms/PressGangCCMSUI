@@ -11,7 +11,7 @@ package org.jboss.pressgangccms.client.local.utilities;
  * @author Matthew Casperson
  * 
  */
-final public class GWTStringUtilities
+final public class GWTUtilities
 {
 	public static byte[] getBytesUTF8(final String string)
 	{
@@ -53,5 +53,26 @@ final public class GWTStringUtilities
 			}
 		}
 		return new String(chars);
+	}
+	
+	/**
+	 * Replacement for String.toByteArray()
+	 * 
+	 * @param string
+	 *            The string to convert
+	 * @param bytesPerChar
+	 *            The number of bytes per character
+	 * @return the same as the standard Java String.toByteArray() method
+	 */
+	public static byte[] getByteArray(final String string, final int bytesPerChar)
+	{
+		char[] chars = string.toCharArray();
+		byte[] toReturn = new byte[chars.length * bytesPerChar];
+		for (int i = 0; i < chars.length; i++)
+		{
+			for (int j = 0; j < bytesPerChar; j++)
+				toReturn[i * bytesPerChar + j] = (byte) (chars[i] >>> (8 * (bytesPerChar - 1 - j)));
+		}
+		return toReturn;
 	}
 }

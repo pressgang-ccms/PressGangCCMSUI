@@ -15,6 +15,12 @@
 	border-spacing: 4px;
 }
 
+.ImageViewLanguageImageUploadButtonsCell
+{
+	height: 3em;
+}
+
+
 .ImageViewLanguageImageFilenameTextCell
 {
 	width: 100%;

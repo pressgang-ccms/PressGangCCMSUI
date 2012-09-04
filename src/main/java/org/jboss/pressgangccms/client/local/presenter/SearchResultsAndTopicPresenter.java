@@ -378,6 +378,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 					public void failed()
 					{
 						stopProcessing();
+						Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
 					}
 
 				};
@@ -434,6 +435,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 					public void failed()
 					{
 						stopProcessing();
+						Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
 					}
 
 				};
@@ -522,6 +524,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			public void failed()
 			{
 				stopProcessing();
+				Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
 			}
 		};
 
@@ -682,8 +685,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 					@Override
 					public void failed()
 					{
-						Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopics());
 						stopProcessing();
+						Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
 					}
 				};
 
@@ -754,6 +757,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 						public void failed()
 						{
 							stopProcessing();
+							Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
 						}
 
 					};

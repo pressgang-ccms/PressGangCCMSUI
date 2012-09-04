@@ -223,6 +223,11 @@
 			<artifactId>acegwt-client</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.vectomatic</groupId>
+			<artifactId>lib-gwt-file</artifactId>
+			<version>0.3.1</version>
+		</dependency>
 	</dependencies>
 
 	<profiles>

@@ -134,4 +134,8 @@ final public class CSSConstants
 	static public final String ALERTBUTTON = "AlertButton";
 	/** Assigned to the panel that holds the OK and Cancel buttons in a popup dialog box */
 	static public final String DIALOGBOXOKCANCELPANEL = "DialogBoxOKCancelPanel";
+	/** Assigned to the cell that holds the image upload label */
+	static public final String IMAGEVIEWLANGUAGEIMAGEUPLOADLABELCELL = "ImageViewLanguageImageUploadLabelCell";
+	/** Assigned to the cell that holds the image upload buttons */
+	static public final String IMAGEVIEWLANGUAGEIMAGEUPLOADBUTTONSCELL = "ImageViewLanguageImageUploadButtonsCell";
 }

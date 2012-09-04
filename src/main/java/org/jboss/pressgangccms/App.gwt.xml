@@ -13,4 +13,5 @@
 	<inherits name='edu.ycp.cs.dh.acegwt.AceGWT'/>
 	<inherits name="com.google.gwt.user.client.ui"/>
 	<inherits name='com.google.web.bindery.requestfactory.RequestFactory' />
+	<inherits name="org.vectomatic.libgwtfile" />
 </module>

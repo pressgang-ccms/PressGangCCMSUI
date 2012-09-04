@@ -1,6 +1,5 @@
 package org.jboss.pressgangccms.client.local.view;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -92,6 +91,16 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
 		}
 	}
 	
+	public RESTImageV1Editor getEditor()
+	{
+		return editor;
+	}
+
+	public void setEditor(RESTImageV1Editor editor)
+	{
+		this.editor = editor;
+	}
+
 	public AddLocaleDialog getAddLocaleDialog()
 	{
 		return addLocaleDialog;

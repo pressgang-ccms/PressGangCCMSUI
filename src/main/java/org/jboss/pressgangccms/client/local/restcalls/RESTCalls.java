@@ -149,6 +149,40 @@ public final class RESTCalls
 		}
 	}
 	
+	static public void getImageWithoutLanguageImages(final RESTCallback<RESTImageV1> callback, final Integer id)
+	{
+		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
+		/* Expand the language images */
+		final String expand = "{\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"languageimages\"}}]}";
+
+		try
+		{
+			callback.begin();
+			restMethod.getJSONImage(id, expand);
+		}
+		catch (final Exception ex)
+		{
+			callback.generalException(ex);
+		}
+	}
+	
+	static public void saveImage(final RESTCallback<RESTImageV1> callback, final RESTImageV1 image)
+	{
+		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
+		/* Expand the language images */
+		final String expand = "{\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"languageimages\"},\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"imageDataBase64\"}}]}]}";
+
+		try
+		{
+			callback.begin();
+			restMethod.updateJSONImage(expand, image);
+		}
+		catch (final Exception ex)
+		{
+			callback.generalException(ex);
+		}
+	}
+	
 	static public void getTopicRevision(final RESTCallback<RESTTopicV1> callback, final Integer id, final Integer revision)
 	{
 		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));

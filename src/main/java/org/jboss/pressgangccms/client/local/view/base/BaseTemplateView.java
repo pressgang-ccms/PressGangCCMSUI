@@ -154,6 +154,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		
 		/* Iinitialize the loading spinner */
 		waiting.setGlassEnabled(true);
+		waiting.setText(PressGangCCMSUI.INSTANCE.PleaseWait());
 		waiting.setWidget(spinner);
 		
 		/* Set the heading */

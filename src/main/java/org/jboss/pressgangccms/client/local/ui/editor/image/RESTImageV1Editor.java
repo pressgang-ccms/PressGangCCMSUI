@@ -15,7 +15,7 @@ public class RESTImageV1Editor extends DockPanel implements Editor<RESTImageV1>
 	/**
 	 * A text area to represent the description field
 	 */
-	final TextArea description = new TextArea();
+	private final TextArea description = new TextArea();
 	
 	private final Label descriptionLabel = new Label(PressGangCCMSUI.INSTANCE.ImageDescription()) ;
 	
@@ -24,7 +24,17 @@ public class RESTImageV1Editor extends DockPanel implements Editor<RESTImageV1>
 	/**
 	 * The editor representing a collection of language image editors
 	 */
-	final RESTLanguageImageCollectionV1Editor languageImages_OTM = new RESTLanguageImageCollectionV1Editor();
+	private final RESTLanguageImageCollectionV1Editor languageImages_OTM = new RESTLanguageImageCollectionV1Editor();	
+
+	public TextArea descriptionEditor()
+	{
+		return description;
+	}
+
+	public RESTLanguageImageCollectionV1Editor languageImages_OTMEditor()
+	{
+		return languageImages_OTM;
+	}
 	
 	public RESTImageV1Editor()
 	{
@@ -43,4 +53,5 @@ public class RESTImageV1Editor extends DockPanel implements Editor<RESTImageV1>
 		this.add(imageDetails, DockPanel.NORTH);
 		this.add(languageImages_OTM, DockPanel.CENTER);
 	}
+
 }
