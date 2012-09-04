@@ -26,6 +26,11 @@
 	width: 100%;
 }
 
+.ImageViewDocbookFileNameLabelCell
+{
+	white-space: nowrap;
+}
+
 .ImageViewLanguageImageFilenameLabel, .ImageViewLanguageImageDisplayLabel
 {
 	white-space: nowrap;
