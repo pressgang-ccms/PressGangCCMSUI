@@ -152,4 +152,6 @@ public interface PressGangCCMSUI extends Constants
 	String PleaseUseFirefox();
 	
 	String ConnectionError();
+	
+	String ConfirmDelete();
 }

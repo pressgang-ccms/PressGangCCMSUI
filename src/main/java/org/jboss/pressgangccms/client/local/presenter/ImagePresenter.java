@@ -162,6 +162,76 @@ public class ImagePresenter extends TemplatePresenter
 			}
 		});
 
+		display.getRemoveLocale().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				if (Window.confirm(PressGangCCMSUI.INSTANCE.ConfirmDelete()))
+				{
+
+					final int selectedTab = display.getEditor().languageImages_OTMEditor().getSelectedIndex();
+					if (selectedTab != -1)
+					{
+						final RESTLanguageImageV1 selectedImage = display.getEditor().languageImages_OTMEditor().itemsEditor().getList().get(selectedTab);
+
+						/*
+						 * Create the image to be modified. This is so we don't
+						 * send off unnessessary data.
+						 */
+						final RESTImageV1 updateImage = new RESTImageV1();
+						updateImage.setId(image.getId());
+
+						/* Create the language image */
+						final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
+						languageImage.setRemoveItem(true);
+						languageImage.setId(selectedImage.getId());
+
+						/* Add the langauge image */
+						updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
+						updateImage.getLanguageImages_OTM().addItem(languageImage);
+
+						final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>()
+						{
+							@Override
+							public void begin()
+							{
+								startProcessing();
+							}
+
+							@Override
+							public void generalException(final Exception ex)
+							{
+								stopProcessing();
+							}
+
+							@Override
+							public void success(final RESTImageV1 retValue)
+							{
+								try
+								{
+									image = retValue;
+									reInitialise();
+								}
+								finally
+								{
+									stopProcessing();
+								}
+							}
+
+							@Override
+							public void failed()
+							{
+								stopProcessing();
+							}
+						};
+
+						RESTCalls.saveImage(callback, updateImage);
+					}
+				}
+			}
+		});
+
 		display.getAddLocaleDialog().getOk().addClickHandler(new ClickHandler()
 		{
 			@Override
@@ -377,7 +447,8 @@ public class ImagePresenter extends TemplatePresenter
 	private void getImage()
 	{
 		/*
-		 * Create a call back that resets the exception handler on any normal error or exception
+		 * Create a call back that resets the exception handler on any normal
+		 * error or exception
 		 */
 		final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>()
 		{
@@ -423,9 +494,10 @@ public class ImagePresenter extends TemplatePresenter
 	{
 		final List<String> newLocales = Arrays.asList(locales);
 
+		/* Make it so you can't add a locale if it already exists */
 		if (image.getLanguageImages_OTM() != null && image.getLanguageImages_OTM().getItems() != null)
 			for (final RESTLanguageImageV1 langImage : image.getLanguageImages_OTM().getItems())
-				newLocales.remove(langImage);
+				newLocales.remove(langImage.getLocale());
 
 		display.initialize(image, newLocales.toArray(new String[0]));
 

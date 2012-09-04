@@ -86,6 +86,8 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
 	{
 		this.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGETAB);
 		
+		filename.setReadOnly(true);
+		
 		this.parentPanel = parentPanel;
 		this.parentIndex = parentIndex;
 		

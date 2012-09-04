@@ -436,8 +436,8 @@ html {
 	height: 100%;
 }
 
-.ImageViewLanguageImageTabPanel div {
-	overflow-y: auto !important;
+.ImageViewLanguageImageTabPanel>div:nth-child(3)>div>div {
+	overflow: auto !important;
 }
 
 .ImageViewDescriptionText {
