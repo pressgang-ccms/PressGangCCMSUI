@@ -3,8 +3,8 @@ package org.jboss.pressgangccms.client.local.mvp.presenter.base;
 import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.constants.Constants;
-import org.jboss.pressgangccms.client.local.events.ImagesViewEvent;
-import org.jboss.pressgangccms.client.local.events.SearchViewEvent;
+import org.jboss.pressgangccms.client.local.mvp.events.ImagesViewEvent;
+import org.jboss.pressgangccms.client.local.mvp.events.SearchViewEvent;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
 
 import com.google.gwt.event.dom.client.ClickEvent;

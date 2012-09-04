@@ -1,4 +1,4 @@
-package org.jboss.pressgangccms.client.local.events;
+package org.jboss.pressgangccms.client.local.mvp.events;
 
 import com.google.gwt.event.shared.EventHandler;
 

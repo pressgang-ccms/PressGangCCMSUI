@@ -6,7 +6,8 @@ import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import org.jboss.pressgangccms.client.local.events.SearchResultsAndTopicViewEvent;
+import org.jboss.pressgangccms.client.local.constants.Constants;
+import org.jboss.pressgangccms.client.local.mvp.events.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.SearchResultsAndTopicView;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -1216,6 +1217,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 		}
 		
 		queryString = queryString.replace(SPLIT_TOKEN_HORIZONTAL, "").replace(SPLIT_TOKEN_VERTICAL, "");
+		
+		if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX))
+			queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
 	}
 
 	private void stopProcessing()

@@ -9,6 +9,11 @@ package org.jboss.pressgangccms.client.local.constants;
 public final class Constants
 {
 	/**
+	 * All path segments that define a query must start with this string
+	 */
+	public static final String QUERY_PATH_SEGMENT_PREFIX = "query;";
+	
+	/**
 	 * The size of the split panels
 	 */
 	public static final int SPLIT_PANEL_SIZE = 300;

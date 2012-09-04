@@ -57,12 +57,13 @@ public class ImageFilteredResultsView extends BaseTemplateView implements ImageF
 
 	public AsyncDataProvider<RESTImageV1> getProvider()
 	{
-		return provider;
+		return provider;		
 	}
 
 	public void setProvider(AsyncDataProvider<RESTImageV1> provider)
 	{
 		this.provider = provider;
+		provider.addDataDisplay(results);
 	}
 
 	public ImageFilteredResultsView()

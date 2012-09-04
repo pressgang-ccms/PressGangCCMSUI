@@ -3,7 +3,7 @@ package org.jboss.pressgangccms.client.local.mvp.presenter;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import org.jboss.pressgangccms.client.local.events.SearchResultsAndTopicViewEvent;
+import org.jboss.pressgangccms.client.local.mvp.events.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;

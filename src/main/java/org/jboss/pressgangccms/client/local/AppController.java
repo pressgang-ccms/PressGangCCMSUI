@@ -4,15 +4,18 @@ import javax.enterprise.context.ApplicationScoped;
 
 import org.jboss.errai.ioc.client.container.IOCBeanDef;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
-import org.jboss.pressgangccms.client.local.events.ImagesViewEvent;
-import org.jboss.pressgangccms.client.local.events.ImagesViewEventHandler;
-import org.jboss.pressgangccms.client.local.events.SearchResultsAndTopicViewEvent;
-import org.jboss.pressgangccms.client.local.events.SearchResultsAndTopicViewEventHandler;
-import org.jboss.pressgangccms.client.local.events.SearchResultsViewEvent;
-import org.jboss.pressgangccms.client.local.events.SearchResultsViewEventHandler;
-import org.jboss.pressgangccms.client.local.events.SearchViewEvent;
-import org.jboss.pressgangccms.client.local.events.SearchViewEventHandler;
+import org.jboss.pressgangccms.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
+import org.jboss.pressgangccms.client.local.mvp.events.ImagesFilteredResultsViewAndImageEventHandler;
+import org.jboss.pressgangccms.client.local.mvp.events.ImagesViewEvent;
+import org.jboss.pressgangccms.client.local.mvp.events.ImagesViewEventHandler;
+import org.jboss.pressgangccms.client.local.mvp.events.SearchResultsAndTopicViewEvent;
+import org.jboss.pressgangccms.client.local.mvp.events.SearchResultsAndTopicViewEventHandler;
+import org.jboss.pressgangccms.client.local.mvp.events.SearchResultsViewEvent;
+import org.jboss.pressgangccms.client.local.mvp.events.SearchResultsViewEventHandler;
+import org.jboss.pressgangccms.client.local.mvp.events.SearchViewEvent;
+import org.jboss.pressgangccms.client.local.mvp.events.SearchViewEventHandler;
 import org.jboss.pressgangccms.client.local.mvp.presenter.ImagePresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.ImagesFilteredResultsAndImagePresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.SearchPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.SearchResultsAndTopicPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.SearchResultsPresenter;
@@ -21,6 +24,7 @@ import org.jboss.pressgangccms.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.Presenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.ImageView;
+import org.jboss.pressgangccms.client.local.mvp.view.ImagesFilteredResultsAndImageView;
 import org.jboss.pressgangccms.client.local.mvp.view.SearchResultsAndTopicView;
 import org.jboss.pressgangccms.client.local.mvp.view.SearchResultsView;
 import org.jboss.pressgangccms.client.local.mvp.view.SearchView;
@@ -82,6 +86,15 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 			public void onImagesViewOpen(final ImagesViewEvent event)
 			{
 				History.newItem(ImageView.HISTORY_TOKEN);
+			}
+		});
+		
+		eventBus.addHandler(ImagesFilteredResultsAndImageViewEvent.TYPE, new ImagesFilteredResultsViewAndImageEventHandler()
+		{
+			@Override
+			public void onImagesFilteredResultsAndImageViewOpen(final ImagesFilteredResultsAndImageViewEvent event)
+			{
+				History.newItem(ImagesFilteredResultsAndImageView.HISTORY_TOKEN);
 			}
 		});
 	}
@@ -153,6 +166,14 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 			else if (token.startsWith(ImageView.HISTORY_TOKEN))
 			{
 				final IOCBeanDef<ImagePresenter> bean = manager.lookupBean(ImagePresenter.class);
+				if (bean != null)
+				{
+					presenter = bean.getInstance();
+				}
+			}
+			else if (token.startsWith(ImagesFilteredResultsAndImageView.HISTORY_TOKEN))
+			{
+				final IOCBeanDef<ImagesFilteredResultsAndImagePresenter> bean = manager.lookupBean(ImagesFilteredResultsAndImagePresenter.class);
 				if (bean != null)
 				{
 					presenter = bean.getInstance();

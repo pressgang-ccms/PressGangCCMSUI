@@ -5,6 +5,7 @@ import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.ImagesFilteredResultsAndImageView;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -62,6 +63,12 @@ public class ImagesFilteredResultsAndImagePresenter extends TemplatePresenter
 	@Override
 	public void go(final HasWidgets container)
 	{
+		container.clear();
+		container.add(display.getTopLevelPanel());
+
+		display.getResultsActionButtonsPanel().setWidget(imageFilteredResultsDisplay.getTopActionPanel());
+		display.getResultsPanel().setWidget(imageFilteredResultsDisplay.getPanel());
+		
 		bind();
 	}
 
@@ -99,7 +106,7 @@ public class ImagesFilteredResultsAndImagePresenter extends TemplatePresenter
 					@Override
 					public void generalException(final Exception ex)
 					{
-						Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopics());
+						Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
 						stopProcessing();
 					}
 
@@ -136,6 +143,8 @@ public class ImagesFilteredResultsAndImagePresenter extends TemplatePresenter
 	public void parseToken(final String historyToken)
 	{
 		queryString = historyToken.replace(ImagesFilteredResultsAndImageView.HISTORY_TOKEN + ";", "");
+		if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX))
+			queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
 	}
 	
 	private void stopProcessing()
