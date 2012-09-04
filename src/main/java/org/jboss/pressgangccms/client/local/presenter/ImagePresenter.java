@@ -377,17 +377,6 @@ public class ImagePresenter extends TemplatePresenter
 	private void getImage()
 	{
 		/*
-		 * Chrome has an issue decoding large byte arrays from the REST
-		 * interface. These manifest as "Maximum call stack size exceeded"
-		 * exceptions, thrown behind the scenes by Errai. Since this is
-		 * predictable, we can account for this situation by temporarily
-		 * overriding the uncaught exception handler.
-		 */
-
-		/* Make a note of the original exception handler */
-		final UncaughtExceptionHandler originalHandler = GWT.getUncaughtExceptionHandler();
-
-		/*
 		 * Create a call back that resets the exception handler on any normal error or exception
 		 */
 		final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>()
@@ -401,7 +390,6 @@ public class ImagePresenter extends TemplatePresenter
 			@Override
 			public void generalException(final Exception ex)
 			{
-				GWT.setUncaughtExceptionHandler(originalHandler);
 				stopProcessing();
 			}
 
@@ -410,8 +398,6 @@ public class ImagePresenter extends TemplatePresenter
 			{
 				try
 				{
-					GWT.setUncaughtExceptionHandler(originalHandler);
-
 					image = retValue;
 					finishLoading();
 				}
@@ -424,33 +410,10 @@ public class ImagePresenter extends TemplatePresenter
 			@Override
 			public void failed()
 			{
-				GWT.setUncaughtExceptionHandler(originalHandler);
 				stopProcessing();
 				Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
 			}
 		};
-
-		/*
-		 * Override the Uncaught Exception Handler to get a copy of the image
-		 * without the byte arrays.
-		 */
-		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler()
-		{
-			@Override
-			public void onUncaughtException(Throwable e)
-			{
-				/* Stop any recursive uncaught errors */
-				GWT.setUncaughtExceptionHandler(originalHandler);
-
-				if (imageId != null)
-				{
-					RESTCalls.getImageWithoutLanguageImages(callback, imageId);
-					
-					/* Inform the user of the limitation with Chrome */
-					Window.alert(PressGangCCMSUI.INSTANCE.PleaseUseFirefox());
-				}
-			}
-		});
 
 		if (imageId != null)
 			RESTCalls.getImage(callback, imageId);

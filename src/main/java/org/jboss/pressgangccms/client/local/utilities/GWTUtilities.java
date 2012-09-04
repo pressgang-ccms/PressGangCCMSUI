@@ -43,16 +43,23 @@ final public class GWTUtilities
 		if (bytes == null) throw new IllegalArgumentException("bytes cannot be null");
 		if (bytesPerChar < 1) throw new IllegalArgumentException("bytesPerChar must be greater than 1");
 		
-		char[] chars = new char[bytes.length / bytesPerChar];
-		for (int i = 0; i < chars.length; i++)
+		final int length = bytes.length / bytesPerChar;
+		final StringBuilder retValue = new StringBuilder();
+		
+		for (int i = 0; i < length; i++)
 		{
+			char thisChar = 0;
+			
 			for (int j = 0; j < bytesPerChar; j++)
 			{
 				int shift = (bytesPerChar - 1 - j) * 8;
-				chars[i] |= (0x000000FF << shift) & (((int) bytes[i * bytesPerChar + j]) << shift);
+				thisChar |= (0x000000FF << shift) & (((int) bytes[i * bytesPerChar + j]) << shift);
 			}
+			
+			retValue.append(thisChar);
 		}
-		return new String(chars);
+		
+		return retValue.toString();
 	}
 	
 	/**
