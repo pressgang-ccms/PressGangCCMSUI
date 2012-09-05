@@ -14,6 +14,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FourTextAndImageButtonSearchUIProjectEditor;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.ScrollPanel;
 
 public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<SearchUIProject>
 {
@@ -24,6 +25,7 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
 	final FourTextAndImageButtonSearchUIProjectEditor summary = new FourTextAndImageButtonSearchUIProjectEditor();
 	final ListEditor<SearchUICategory, SearchUICategoryEditor> categories = ListEditor.of(new SearchUICategoryEditorSource());
 	private final FlexTable categoriesButtonPanel = new FlexTable();
+	private final ScrollPanel scroll = new ScrollPanel();
 	
 	/**
 	 * The EditorSource is used to create and orgainse the Editors that go into
@@ -85,11 +87,14 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
 		this.driver = driver;
 		this.searchUIProjects = searchUIProjects;
 		
-		this.addStyleName(CSSConstants.PROJECTSLAYOUT);
+		this.addStyleName(CSSConstants.CATEGORIESLAYOUT);
 		summary.addStyleName(CSSConstants.CUSTOMBUTTON);
 		
 		categoriesButtonPanel.addStyleName(CSSConstants.CATEGORIESBUTTONSLAYOUT);
-		this.setWidget(0,  0, categoriesButtonPanel);
+		scroll.addStyleName(CSSConstants.CATEGORIESSCROLLPANEL);
+		
+		scroll.setWidget(categoriesButtonPanel);
+		this.setWidget(0,  0, scroll);
 
 		summary.addClickHandler(new ClickHandler()
 		{

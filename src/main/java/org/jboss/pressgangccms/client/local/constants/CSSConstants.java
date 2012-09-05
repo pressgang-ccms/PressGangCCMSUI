@@ -1,12 +1,25 @@
 package org.jboss.pressgangccms.client.local.constants;
 
 /**
- * This class lists all of the CSS class names used by the application
+ * This class lists all of the CSS class names used by the application. The
+ * nested classes are just used to group the styles assigned to particular views.
+ * 
  * @author Matthew Casperson
- *
+ * 
  */
 final public class CSSConstants
 {
+	final public class TagView
+	{
+		static public final String TAGVIEWPANEL = "TagViewPanel";
+		static public final String TAGVIEWIDLABEL = "TagViewIDLabel";
+		static public final String TAGVIEWIDTEXT = "TagViewIDText";
+		static public final String TAGVIEWNAMELABEL = "TagViewNameLabel";
+		static public final String TAGVIEWNAMETEXT = "TagViewNameText";
+		static public final String TAGVIEWDESCRIPTIONLABEL = "TagViewDescriptionLabel";
+		static public final String TAGVIEWDESCRIPTIONTEXT = "TagViewDescriptionText";
+	}
+
 	/**
 	 * The class assigned to the page title label.
 	 */
@@ -20,6 +33,10 @@ final public class CSSConstants
 	static public final String CONTENTLAYOUTPANEL = "ContentLayoutPanel";
 	static public final String TOPACTIONPANEL = "TopActionPanel";
 	static public final String SHORTCUTPANEL = "ShortcutPanel";
+	/**
+	 * Assigned to the panel that holds the shortcut panels
+	 */
+	static public final String SHORTCUTPANELPARENT = "ShortcutPanelParent";
 	static public final String FOOTERPANEL = "FooterPanel";
 	static public final String RIGHTALIGNEDACTIONBUTTONS = "RightAlignedActionButtons";
 	static public final String PAGETITLEPARENTLAYOUTPANEL = "PageTitleParentLayoutPanel";
@@ -30,7 +47,7 @@ final public class CSSConstants
 	static public final String TOPICSEARCHRESULTSANDVIEWPARENTPANEL = "TopicSearchResultsAndViewParentPanel";
 	static public final String TOPICRENDEREDVIEWDIV = "TopicRenderedViewDiv";
 	static public final String SEARCHRESULTSPANEL = "SearchResultsPanel";
-	static public final String TOPICVIEWPANEL ="TopicViewPanel";
+	static public final String TOPICVIEWPANEL = "TopicViewPanel";
 	static public final String TOPICVIEWIDFIELD = "TopicViewIDField";
 	static public final String TOPICVIEWREVISIONNUMBERFIELD = "TopicViewRevisionNumberField";
 	static public final String TOPICVIEWTITLEFIELD = "TopicViewTitleField";
@@ -43,10 +60,14 @@ final public class CSSConstants
 	static public final String PROJECTSLAYOUT = "ProjectsLayout";
 	static public final String PROJECTLAYOUT = "ProjectLayout";
 	static public final String PROJECTSBUTTONSLAYOUT = "ProjectsButtonsLayout";
+	static public final String PROJECTSSCROLLPANEL = "ProjectsScrollPanel";
 	static public final String CUSTOMBUTTON = "CustomButton";
 	static public final String CUSTOMBUTTONDOWN = "CustomButtonDown";
 	static public final String CATEGORIESBUTTONSLAYOUT = "CategoriesButtonsLayout";
+	static public final String CATEGORIESLAYOUT = "CategoriesLayout";
+	static public final String CATEGORIESSCROLLPANEL = "CategoriesScrollPanel";
 	static public final String CATEGORYTAGLAYOUT = "CategoryTagLayout";
+	static public final String CATEGORYTAGSCROLL = "CategoryTagScroll";
 	static public final String TAGLABEL = "TagLabel";
 	static public final String CUSTOMBUTTONTEXT = "CustomButtonText";
 	static public final String CUSTOMBUTTONTAGSINCLUDED = "CustomButtonTagsInclued";
@@ -58,37 +79,65 @@ final public class CSSConstants
 	static public final String TOPICXMLERRORSVIEWPANEL = "TopicXMLErrorsViewPanel";
 	static public final String TOPICXMLERRORSVIEWFIELD = "TopicXMLErrorsViewField";
 	static public final String TOPICVIEWTAGLABEL = "TopicViewTagLabel";
-	/** Assigned to the FlexTable rows that list a category in the topic tags view */
+	/**
+	 * Assigned to the FlexTable rows that list a category in the topic tags
+	 * view
+	 */
 	static public final String TOPICTAGVIEWCATEGORYROW = "TopicTagViewCategoryRow";
-	/** Assigned to the FlexTable rows that list a project in the topic tags view */
+	/**
+	 * Assigned to the FlexTable rows that list a project in the topic tags view
+	 */
 	static public final String TOPICTAGVIEWPROJECTROW = "TopicTagViewProjectRow";
 	/** Assigned to the FlexTable rows that list a tag in the topic tags view */
 	static public final String TOPICTAGVIEWTAGROW = "TopicTagViewTagRow";
-	/** Assigned to the panel that holds all the TOPICTAGVIEWPROJECTSTABLE element in the topic tags view */
+	/**
+	 * Assigned to the panel that holds all the TOPICTAGVIEWPROJECTSTABLE
+	 * element in the topic tags view
+	 */
 	static public final String TOPICTAGVIEWPARENTPROJECTSTABLE = "TopicTagViewParentProjectsTable";
-	/** Assigned to the table that holds all the projects, categories and tags in the topic tags view */
+	/**
+	 * Assigned to the table that holds all the projects, categories and tags in
+	 * the topic tags view
+	 */
 	static public final String TOPICTAGVIEWPROJECTSTABLE = "TopicTagViewProjectsTable";
 	/** Assigned to the table that holds a project in the topic tags view */
 	static public final String TOPICTAGVIEWPROJECTTABLE = "TopicTagViewProjectTable";
-	/** Assigned to the table that holds multiple categories in the topic tags view */
+	/**
+	 * Assigned to the table that holds multiple categories in the topic tags
+	 * view
+	 */
 	static public final String TOPICTAGVIEWCATEGORIESTABLE = "TopicTagViewCategoriesTable";
 	/** Assigned to the table that holds a category in the topic tags view */
 	static public final String TOPICTAGVIEWCATEGORYTABLE = "TopicTagViewCategoryTable";
 	/** Assigned to the table that holds multiple tags in the topic tags view */
 	static public final String TOPICTAGVIEWTAGSTABLE = "TopicTagViewTagsTable";
-	/** Assigned to the table that holds the new tag project, category and tag lists */
+	/**
+	 * Assigned to the table that holds the new tag project, category and tag
+	 * lists
+	 */
 	static public final String TOPICTAGVIEWNEWTAGTABLE = "TopicTagViewNewTagTable";
 	/** Assigned to the panel that holds the topic tag view */
 	static public final String TOPICTAGVIEWCONTENTPANEL = "TopicTagViewContentPanel";
-	/** Assigned to the list that holds the available projects in the topic tags view */
+	/**
+	 * Assigned to the list that holds the available projects in the topic tags
+	 * view
+	 */
 	static public final String TOPICTAGVIEWNEWTAGPROJECTSLIST = "TopicTagViewNewTagProjectsList";
-	/** Assigned to the list that holds the available categories in the topic tags view */
+	/**
+	 * Assigned to the list that holds the available categories in the topic
+	 * tags view
+	 */
 	static public final String TOPICTAGVIEWNEWTAGCATEGORIESLIST = "TopicTagViewNewTagCategoriesList";
-	/** Assigned to the list that holds the available tags in the topic tags view */
+	/**
+	 * Assigned to the list that holds the available tags in the topic tags view
+	 */
 	static public final String TOPICTAGVIEWNEWTAGTAGSLIST = "TopicTagViewNewTagTagsList";
 	/** Assigned to the panel that holds the new tag ui elements */
 	static public final String TOPICTAGVIEWNEWNEWTAGPARENTPANEL = "TopicTagViewNewTagParentPanel";
-	/** Assigned to the dock panel that hosts the image description and the tab view of specific language images */
+	/**
+	 * Assigned to the dock panel that hosts the image description and the tab
+	 * view of specific language images
+	 */
 	static public final String IMAGEVIEWPARENTDOCKPANEL = "ImageViewParentDockPanel";
 	/** Assigned to the tab panel of specific language images */
 	static public final String IMAGEVIEWLANGUAGEIMAGETABPANEL = "ImageViewLanguageImageTabPanel";
@@ -118,15 +167,15 @@ final public class CSSConstants
 	static public final String IMAGEVIEWTEMPLATETEXT = "ImageViewTemplateText";
 	/** Assigned to the image description label cell */
 	static public final String IMAGEVIEWDESCRIPTIONLABELCELL = "ImageViewDescriptionLabelCell";
-	/** Assigned to the image description text cell*/
+	/** Assigned to the image description text cell */
 	static public final String IMAGEVIEWDESCRIPTIONTEXTCELL = "ImageViewDescriptionTextCell";
 	/** Assigned to the cell that holds the image template label */
 	static public final String IMAGEVIEWTEMPLATELABELCELL = "ImageViewTemplateLabelCell";
 	/** Assigned to the cell that holds the image template text */
-	static public final String IMAGEVIEWTEMPLATETEXTCELL = "ImageViewTemplateTextCell";	
-	/** Assigned to the image docbook file name label cell*/
+	static public final String IMAGEVIEWTEMPLATETEXTCELL = "ImageViewTemplateTextCell";
+	/** Assigned to the image docbook file name label cell */
 	public static final String IMAGEVIEWDOCBOOKFILENAMELABELCELL = "ImageViewDocbookFileNameLabelCell";
-	/** Assigned to the image docbook file name text cell*/
+	/** Assigned to the image docbook file name text cell */
 	public static final String IMAGEVIEWDOCBOOKFILENAMETEXTCELL = "ImageViewDocbookFileNameTextCell";
 	/** Assigned to the table that holds the image details */
 	static public final String IMAGEVIEWDETAILSTABLE = "ImageViewDetailsTable";
@@ -142,7 +191,10 @@ final public class CSSConstants
 	static public final String SUBMENU = "SubMenu";
 	/** Assigned to buttons that need to show some kind of alert status */
 	static public final String ALERTBUTTON = "AlertButton";
-	/** Assigned to the panel that holds the OK and Cancel buttons in a popup dialog box */
+	/**
+	 * Assigned to the panel that holds the OK and Cancel buttons in a popup
+	 * dialog box
+	 */
 	static public final String DIALOGBOXOKCANCELPANEL = "DialogBoxOKCancelPanel";
 	/** Assigned to the cell that holds the image upload label */
 	static public final String IMAGEVIEWLANGUAGEIMAGEUPLOADLABELCELL = "ImageViewLanguageImageUploadLabelCell";

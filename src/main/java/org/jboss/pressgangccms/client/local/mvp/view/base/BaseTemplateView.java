@@ -283,6 +283,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 
 		/* Set the shortcut bar */
 		shortCutPanelParent.setWidget(getShortcutPanel());
+		shortCutPanelParent.addStyleName(CSSConstants.SHORTCUTPANELPARENT);
 		getShortcutPanel().addStyleName(CSSConstants.SHORTCUTPANEL);
 
 		thirdLevelLayoutPanel.addWest(shortCutPanelParent, Constants.SHORTCUT_BAR_WIDTH);
@@ -370,7 +371,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		propertyTagCategories.setEnabled(false);
 		addShortcutButton(propertyTagCategories, advancedShortcutPanel);
 		
-		close = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Close());
+		close = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CloseSubMenu());
 		addShortcutButton(close, advancedShortcutPanel);
 	}
 

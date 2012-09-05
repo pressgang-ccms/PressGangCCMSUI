@@ -113,7 +113,7 @@ public interface PressGangCCMSUI extends Constants
 	
 	String NoSplit();
 	
-	String Close();
+	String CloseSubMenu();
 	
 	String Save();
 	
@@ -184,4 +184,10 @@ public interface PressGangCCMSUI extends Constants
 	String Categories();
 	
 	String Advanced();
+	
+	String TagID();
+	
+	String TagName();
+	
+	String TagDescription();
 }

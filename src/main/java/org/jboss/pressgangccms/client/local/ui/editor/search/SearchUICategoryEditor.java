@@ -14,14 +14,16 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FourTextAndImageButtonSearchUICategoryEditor;
+import com.google.gwt.user.client.ui.ScrollPanel;
 
 
-public class SearchUICategoryEditor extends FlexTable implements ValueAwareEditor<SearchUICategory>
+public class SearchUICategoryEditor extends ScrollPanel implements ValueAwareEditor<SearchUICategory>
 {
 	private static final int COLUMNS = 2;
 	private final SearchPresenterDriver driver;
 	private final SearchUIProjects searchUIProjects;
 	private SearchUICategory value;
+	private final FlexTable tagsTable = new FlexTable();
 	
 	final FourTextAndImageButtonSearchUICategoryEditor summary = new FourTextAndImageButtonSearchUICategoryEditor();
 	final ListEditor<SearchUITag, SearchUITagEditor> myTags = ListEditor.of(new SearchUITagEditorSource());
@@ -41,8 +43,8 @@ public class SearchUICategoryEditor extends FlexTable implements ValueAwareEdito
 			final int column = index % COLUMNS;
 			
 			final SearchUITagEditor subEditor = new SearchUITagEditor(driver, searchUIProjects);
-			SearchUICategoryEditor.this.setWidget(fixedIndex, column * 2, subEditor.name);
-			SearchUICategoryEditor.this.setWidget(fixedIndex, (column * 2) + 1, subEditor.state);
+			tagsTable.setWidget(fixedIndex, column * 2, subEditor.name);
+			tagsTable.setWidget(fixedIndex, (column * 2) + 1, subEditor.state);
 			return subEditor;
 		}
 
@@ -59,8 +61,8 @@ public class SearchUICategoryEditor extends FlexTable implements ValueAwareEdito
 			final int fixedIndex = index / COLUMNS;
 			final int column = index % COLUMNS;
 			
-			SearchUICategoryEditor.this.setWidget(fixedIndex, column * 2, subEditor.name);
-			SearchUICategoryEditor.this.setWidget(fixedIndex, (column * 2) + 1, subEditor.state);
+			tagsTable.setWidget(fixedIndex, column * 2, subEditor.name);
+			tagsTable.setWidget(fixedIndex, (column * 2) + 1, subEditor.state);
 		}
 	}
 
@@ -70,7 +72,10 @@ public class SearchUICategoryEditor extends FlexTable implements ValueAwareEdito
 		this.searchUIProjects = searchUIProjects;
 		
 		this.summary.addStyleName(CSSConstants.CUSTOMBUTTON);
-		this.addStyleName(CSSConstants.CATEGORYTAGLAYOUT);
+		tagsTable.addStyleName(CSSConstants.CATEGORYTAGLAYOUT);
+		this.addStyleName(CSSConstants.CATEGORYTAGSCROLL);
+		
+		this.setWidget(tagsTable);
 		
 		summary.addClickHandler(new ClickHandler()
 		{

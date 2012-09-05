@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.ScrollPanel;
 
 public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProjects>
 {
@@ -19,6 +20,7 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
 	final SearchUIProjects searchUIProjects;
 	final ListEditor<SearchUIProject, SearchUIProjectEditor> projects = ListEditor.of(new SearchUIProjectEditorSource());
 	private final FlexTable projectButtonPanel = new FlexTable();
+	private final ScrollPanel scrollPanel = new ScrollPanel();
 	
 	/**
 	 * The EditorSource is used to create and orgainse the Editors that go into
@@ -81,8 +83,11 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
 		
 		this.addStyleName(CSSConstants.PROJECTSLAYOUT);
 		projectButtonPanel.addStyleName(CSSConstants.PROJECTSBUTTONSLAYOUT);
+		scrollPanel.addStyleName(CSSConstants.PROJECTSSCROLLPANEL);
 		
-		this.setWidget(0, 0, projectButtonPanel);
+		scrollPanel.setWidget(projectButtonPanel);
+		
+		this.setWidget(0, 0, scrollPanel);
 	}
 
 }

@@ -201,7 +201,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 		renderedVerticalSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.VerticalSplit());
 		renderedHorizontalSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HorizontalSplit());
 		renderedHorizontalSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.HorizontalSplit());
-		renderedSplitClose = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Close());
+		renderedSplitClose = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CloseSubMenu());
 		
 		
 

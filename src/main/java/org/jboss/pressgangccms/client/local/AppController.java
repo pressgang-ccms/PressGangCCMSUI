@@ -19,6 +19,7 @@ import org.jboss.pressgangccms.client.local.mvp.presenter.ImagesFilteredResultsA
 import org.jboss.pressgangccms.client.local.mvp.presenter.SearchPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.SearchResultsAndTopicPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.SearchResultsPresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.TagPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.TopicPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.Presenter;
@@ -28,6 +29,7 @@ import org.jboss.pressgangccms.client.local.mvp.view.ImagesFilteredResultsAndIma
 import org.jboss.pressgangccms.client.local.mvp.view.SearchResultsAndTopicView;
 import org.jboss.pressgangccms.client.local.mvp.view.SearchResultsView;
 import org.jboss.pressgangccms.client.local.mvp.view.SearchView;
+import org.jboss.pressgangccms.client.local.mvp.view.TagView;
 import org.jboss.pressgangccms.client.local.mvp.view.TopicView;
 import org.jboss.pressgangccms.client.local.mvp.view.WelcomeView;
 
@@ -150,6 +152,14 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 			else if (token.startsWith(TopicView.HISTORY_TOKEN))
 			{
 				final IOCBeanDef<TopicPresenter> bean = manager.lookupBean(TopicPresenter.class);
+				if (bean != null)
+				{
+					presenter = bean.getInstance();
+				}
+			}
+			else if (token.startsWith(TagView.HISTORY_TOKEN))
+			{
+				final IOCBeanDef<TagPresenter> bean = manager.lookupBean(TagPresenter.class);
 				if (bean != null)
 				{
 					presenter = bean.getInstance();

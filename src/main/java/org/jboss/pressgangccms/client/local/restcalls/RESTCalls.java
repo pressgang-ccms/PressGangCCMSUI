@@ -117,6 +117,23 @@ public final class RESTCalls
 			callback.generalException(ex);
 		}
 	}
+	
+	static public void getTag(final RESTCallback<RESTTagV1> callback, final Integer id)
+	{
+		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
+		/* Expand the categories and projects in the tags */
+		final String expand = "{\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTagV1.PROJECTS_NAME + "\"}}, {\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}]}";
+
+		try
+		{
+			callback.begin();
+			restMethod.getJSONTag(id, expand);
+		}
+		catch (final Exception ex)
+		{
+			callback.generalException(ex);
+		}
+	}
 
 	static public void getTopic(final RESTCallback<RESTTopicV1> callback, final Integer id)
 	{

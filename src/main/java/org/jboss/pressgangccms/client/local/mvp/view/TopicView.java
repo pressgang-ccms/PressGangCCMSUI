@@ -1,10 +1,8 @@
 package org.jboss.pressgangccms.client.local.mvp.view;
 
-import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.TopicPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.TopicPresenter.TopicPresenterDriver;
 import org.jboss.pressgangccms.client.local.mvp.view.base.TopicViewBase;
-import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
@@ -12,7 +10,6 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.ui.Image;
 
 public class TopicView extends TopicViewBase implements TopicPresenter.Display
 {

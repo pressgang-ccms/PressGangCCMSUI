@@ -9,6 +9,12 @@
 	cursor: row-resize;
 }
 
+.ProjectsScrollPanel, .CategoriesScrollPanel, .CategoryTagScroll
+{
+	width: 100%;
+	height: 100%
+}
+
 .ImageFilteredOptionsPanel
 {
 	margin-bottom: 8px;
@@ -77,7 +83,7 @@ html {
 
 
 
-.ShortcutPanel {
+.ShortcutPanelParent {
 	margin-right: 8px;
 }
 
@@ -143,9 +149,19 @@ html {
 	height: 100%;
 }
 
+.ProjectsLayout, .CategoriesLayout
+{
+	height: 100%;
+}
+
 .ProjectsLayout td {
 	vertical-align: top;
 	padding: 0px;
+}
+
+.ProjectsButtonsLayout, .CategoriesButtonsLayout, .CategoryTagLayout
+{
+	margin-right: 16px;
 }
 
 .ProjectsButtonsLayout td {
@@ -450,7 +466,7 @@ html {
 	overflow: auto !important;
 }
 
-.ImageViewDescriptionText, .ImageViewTemplateText {
+.ImageViewDescriptionText, .ImageViewTemplateText, .TagViewDescriptionText {
 	width: 100%;
 	height: 5em;
 	box-sizing: border-box;
