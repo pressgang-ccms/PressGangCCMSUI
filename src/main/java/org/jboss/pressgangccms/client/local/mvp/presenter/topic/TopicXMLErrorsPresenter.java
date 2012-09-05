@@ -1,23 +1,23 @@
-package org.jboss.pressgangccms.client.local.mvp.presenter;
+package org.jboss.pressgangccms.client.local.mvp.presenter.topic;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgangccms.client.local.mvp.view.TopicView;
 import org.jboss.pressgangccms.client.local.mvp.view.base.TopicViewInterface;
+import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicXMLErrorsView;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
-import org.jboss.pressgangccms.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
+import org.jboss.pressgangccms.client.local.ui.editor.topicview.RESTTopicV1XMLErrorsEditor;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
-public class TopicPresenter extends TemplatePresenter
+public class TopicXMLErrorsPresenter extends TemplatePresenter
 {
 	// Empty interface declaration, similar to UiBinder
-	public interface TopicPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1BasicDetailsEditor>
+	public interface TopicXMLErrorsPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1XMLErrorsEditor>
 	{
 	}
 
@@ -34,7 +34,7 @@ public class TopicPresenter extends TemplatePresenter
 	@Override
 	public void parseToken(final String searchToken)
 	{
-		topicId = searchToken.replace(TopicView.HISTORY_TOKEN + ";", "");
+		topicId = searchToken.replace(TopicXMLErrorsView.HISTORY_TOKEN + ";", "");
 	}
 
 	@Override

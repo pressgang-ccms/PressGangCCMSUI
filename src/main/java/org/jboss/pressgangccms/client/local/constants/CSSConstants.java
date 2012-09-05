@@ -19,6 +19,14 @@ final public class CSSConstants
 		static public final String TAGVIEWDESCRIPTIONLABEL = "TagViewDescriptionLabel";
 		static public final String TAGVIEWDESCRIPTIONTEXT = "TagViewDescriptionText";
 	}
+	
+	final public class TagFilteredResultsView
+	{
+		/** Assigned to the panel that holds the list of images */
+		static public final String TAGFILTEREDRESULTSPANEL = "TagFilteredResultsPanel";
+		/** Assigned to the panel that holds the filter options for images */
+		static public final String TAGFILTEREDOPTIONSPANEL = "TagFilteredOptionsPanel";
+	}
 
 	/**
 	 * The class assigned to the page title label.

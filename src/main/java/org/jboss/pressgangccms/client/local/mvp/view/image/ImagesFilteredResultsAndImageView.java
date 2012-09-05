@@ -1,9 +1,9 @@
-package org.jboss.pressgangccms.client.local.mvp.view;
+package org.jboss.pressgangccms.client.local.mvp.view.image;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.constants.Constants;
-import org.jboss.pressgangccms.client.local.mvp.presenter.ImagesFilteredResultsAndImagePresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.SearchResultsAndTopicPresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;

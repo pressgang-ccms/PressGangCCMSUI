@@ -1,11 +1,11 @@
-package org.jboss.pressgangccms.client.local.mvp.presenter;
+package org.jboss.pressgangccms.client.local.mvp.presenter.tag;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgangccms.client.local.mvp.view.TagView;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgangccms.client.local.mvp.view.tag.TagView;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;

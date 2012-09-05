@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.constants.ServiceConstants;
-import org.jboss.pressgangccms.client.local.mvp.presenter.ImageFilteredResultsPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.ImagePresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagePresenter;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.client.local.ui.editor.image.RESTLanguageImageV1Editor;
@@ -40,6 +40,9 @@ abstract public class ImagePresenterBase extends TemplatePresenter
 			retValue.append(";imageIds=" + imageSearchDisplay.getImageIdFilter().getText());
 		if (!imageSearchDisplay.getImageDescriptionFilter().getText().isEmpty())
 			retValue.append(";imageDesc=" + imageSearchDisplay.getImageDescriptionFilter().getText());
+		if (!imageSearchDisplay.getImageOriginalFileNameFilter().getText().isEmpty())
+			retValue.append(";imageOrigName=" + imageSearchDisplay.getImageOriginalFileNameFilter().getText());
+		
 		return retValue.toString();
 	}
 	

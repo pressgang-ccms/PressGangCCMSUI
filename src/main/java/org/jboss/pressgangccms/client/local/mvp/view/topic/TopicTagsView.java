@@ -1,10 +1,10 @@
-package org.jboss.pressgangccms.client.local.mvp.view;
+package org.jboss.pressgangccms.client.local.mvp.view.topic;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
-import org.jboss.pressgangccms.client.local.mvp.presenter.TopicTagsPresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicTagsPresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.TopicViewBase;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;

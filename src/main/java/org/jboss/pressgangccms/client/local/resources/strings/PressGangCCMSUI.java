@@ -190,4 +190,6 @@ public interface PressGangCCMSUI extends Constants
 	String TagName();
 	
 	String TagDescription();
+	
+	String ImageOriginalFileName();
 }

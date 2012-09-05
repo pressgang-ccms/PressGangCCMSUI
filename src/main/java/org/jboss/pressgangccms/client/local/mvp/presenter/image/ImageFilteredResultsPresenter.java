@@ -1,4 +1,4 @@
-package org.jboss.pressgangccms.client.local.mvp.presenter;
+package org.jboss.pressgangccms.client.local.mvp.presenter.image;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgangccms.client.local.mvp.view.ImageFilteredResultsView;
 import org.jboss.pressgangccms.client.local.mvp.view.SearchResultsView;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgangccms.client.local.mvp.view.image.ImageFilteredResultsView;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
@@ -45,6 +45,8 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter
 		TextBox getImageDescriptionFilter();
 		
 		PushButton getSearch();
+		
+		TextBox getImageOriginalFileNameFilter();
 	}
 
 	@Inject

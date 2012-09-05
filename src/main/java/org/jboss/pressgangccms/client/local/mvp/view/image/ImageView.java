@@ -1,4 +1,4 @@
-package org.jboss.pressgangccms.client.local.mvp.view;
+package org.jboss.pressgangccms.client.local.mvp.view.image;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
-import org.jboss.pressgangccms.client.local.mvp.presenter.ImagePresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagePresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.UIUtilities;

@@ -1,4 +1,4 @@
-package org.jboss.pressgangccms.client.local.mvp.presenter;
+package org.jboss.pressgangccms.client.local.mvp.presenter.topic;
 
 import javax.enterprise.context.Dependent;
 

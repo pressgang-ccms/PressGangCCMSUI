@@ -1,8 +1,8 @@
-package org.jboss.pressgangccms.client.local.mvp.view;
+package org.jboss.pressgangccms.client.local.mvp.view.topic;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.constants.Constants;
-import org.jboss.pressgangccms.client.local.mvp.presenter.TopicBugsPresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicBugsPresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.TopicViewBase;
 import org.jboss.pressgangccms.client.local.resources.css.TableResources;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;

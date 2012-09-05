@@ -1,4 +1,4 @@
-package org.jboss.pressgangccms.client.local.mvp.presenter;
+package org.jboss.pressgangccms.client.local.mvp.presenter.tag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,13 +8,21 @@ import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
+import org.jboss.pressgangccms.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.ImagePresenterBase;
-import org.jboss.pressgangccms.client.local.mvp.view.ImagesFilteredResultsAndImageView;
+import org.jboss.pressgangccms.client.local.mvp.presenter.base.TagPresenterBase;
+import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagePresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImageFilteredResultsPresenter.Display;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgangccms.client.local.mvp.view.image.ImagesFilteredResultsAndImageView;
+import org.jboss.pressgangccms.client.local.mvp.view.tag.TagView;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.rest.v1.collections.RESTImageCollectionV1;
+import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTImageV1;
+import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -29,7 +37,7 @@ import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
 
 @Dependent
-public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
+public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 {
 	public interface Display extends BaseTemplateViewInterface
 	{
@@ -50,10 +58,10 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 	private Display display;
 
 	@Inject
-	private ImageFilteredResultsPresenter.Display imageFilteredResultsDisplay;
+	private TagFilteredResultsPresenter.Display filteredResultsDisplay;
 
 	@Inject
-	private ImagePresenter.Display imageDisplay;
+	private TagPresenter.Display resultDisplay;
 
 	private String queryString;
 
@@ -61,10 +69,13 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 	private Integer tableStartRow;
 
 	/** Keeps a reference to the list of topics being displayed */
-	private List<RESTImageV1> currentList;
+	private List<RESTTagV1> currentList;
 
-	/** The currently selected image in the search results */
-	private RESTImageV1 selectedSearchImage;
+	/** The currently selected item in the search results */
+	private RESTTagV1 selectedSearchItem;
+	
+	/** The currently selected item in the search results */
+	private RESTTagV1 displayedItem;
 
 	/** used to keep a track of how many rest calls are active */
 	int count = 0;
@@ -75,10 +86,8 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 		container.clear();
 		container.add(display.getTopLevelPanel());
 
-		display.getResultsActionButtonsPanel().setWidget(imageFilteredResultsDisplay.getTopActionPanel());
-		display.getResultsPanel().setWidget(imageFilteredResultsDisplay.getPanel());
-
-		getLocales();
+		display.getResultsActionButtonsPanel().setWidget(filteredResultsDisplay.getTopActionPanel());
+		display.getResultsPanel().setWidget(filteredResultsDisplay.getPanel());
 
 		bind();
 	}
@@ -90,24 +99,24 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 	{
 		super.bind(display);
 
-		final AsyncDataProvider<RESTImageV1> provider = generateListProvider();
-		imageFilteredResultsDisplay.setProvider(provider);
+		final AsyncDataProvider<RESTTagV1> provider = generateListProvider();
+		filteredResultsDisplay.setProvider(provider);
 
 		bindListRowClicks();
 
-		bindImageViewButtons(imageDisplay);
+		bindViewButtons(resultDisplay);
 
-		bindImageSearchButtons();
+		bindSearchButtons();
 	}
 
-	protected void bindImageSearchButtons()
+	protected void bindSearchButtons()
 	{
-		imageFilteredResultsDisplay.getSearch().addClickHandler(new ClickHandler()
+		filteredResultsDisplay.getSearch().addClickHandler(new ClickHandler()
 		{
 			@Override
 			public void onClick(final ClickEvent event)
 			{
-				eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(getQuery(imageFilteredResultsDisplay)));
+				eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(getQuery(filteredResultsDisplay)));
 			}
 		});
 	}
@@ -115,18 +124,18 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 	/**
 	 * @return A provider to be used for the topic display list
 	 */
-	private AsyncDataProvider<RESTImageV1> generateListProvider()
+	private AsyncDataProvider<RESTTagV1> generateListProvider()
 	{
-		final AsyncDataProvider<RESTImageV1> provider = new AsyncDataProvider<RESTImageV1>()
+		final AsyncDataProvider<RESTTagV1> provider = new AsyncDataProvider<RESTTagV1>()
 		{
 			@Override
-			protected void onRangeChanged(final HasData<RESTImageV1> display)
+			protected void onRangeChanged(final HasData<RESTTagV1> display)
 			{
 				tableStartRow = display.getVisibleRange().getStart();
 				final int length = display.getVisibleRange().getLength();
 				final int end = tableStartRow + length;
 
-				final RESTCalls.RESTCallback<RESTImageCollectionV1> callback = new RESTCalls.RESTCallback<RESTImageCollectionV1>()
+				final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>()
 				{
 					@Override
 					public void begin()
@@ -142,12 +151,12 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 					}
 
 					@Override
-					public void success(final RESTImageCollectionV1 retValue)
+					public void success(final RESTTagCollectionV1 retValue)
 					{
 						try
 						{
 							/* Zero results can be a null list */
-							currentList = retValue.getItems() == null ? new ArrayList<RESTImageV1>() : retValue.getItems();
+							currentList = retValue.getItems() == null ? new ArrayList<RESTTagV1>() : retValue.getItems();
 							updateRowData(tableStartRow, currentList);
 							updateRowCount(retValue.getSize(), true);
 						}
@@ -165,7 +174,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 					}
 				};
 
-				RESTCalls.getImagesFromQuery(callback, queryString, tableStartRow, end);
+				RESTCalls.getTagsFromQuery(callback, queryString, tableStartRow, end);
 			}
 		};
 		return provider;
@@ -176,10 +185,10 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 	 */
 	private void bindListRowClicks()
 	{
-		imageFilteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTImageV1>()
+		filteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTTagV1>()
 		{
 			@Override
-			public void onCellPreview(final CellPreviewEvent<RESTImageV1> event)
+			public void onCellPreview(final CellPreviewEvent<RESTTagV1> event)
 			{
 				/* Check to see if this was a click event */
 				final boolean isClick = "click".equals(event.getNativeEvent().getType());
@@ -190,12 +199,12 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 					 * selectedSearchImage will be null until an image is
 					 * selected for the first time
 					 */
-					final boolean needToAddImageView = selectedSearchImage == null;
+					final boolean needToAddImageView = selectedSearchItem == null;
 
-					selectedSearchImage = event.getValue();
-					displayedImage = null;
+					selectedSearchItem = event.getValue();
+					displayedItem = null;
 
-					final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>()
+					final RESTCalls.RESTCallback<RESTTagV1> callback = new RESTCalls.RESTCallback<RESTTagV1>()
 					{
 						@Override
 						public void begin()
@@ -211,12 +220,12 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 						}
 
 						@Override
-						public void success(final RESTImageV1 retValue)
+						public void success(final RESTTagV1 retValue)
 						{
 							try
 							{
-								displayedImage = retValue;
-								reInitialiseImageView();
+								displayedItem = retValue;
+								reInitialiseView();
 
 								/*
 								 * If this is the first image selected, display
@@ -224,8 +233,8 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 								 */
 								if (needToAddImageView)
 								{
-									display.getViewPanel().setWidget(imageDisplay.getPanel());
-									display.getViewActionButtonsPanel().setWidget(imageDisplay.getTopActionPanel());
+									display.getViewPanel().setWidget(resultDisplay.getPanel());
+									display.getViewActionButtonsPanel().setWidget(resultDisplay.getTopActionPanel());
 								}
 							}
 							finally
@@ -244,7 +253,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 
 					};
 
-					RESTCalls.getImage(callback, selectedSearchImage.getId());
+					RESTCalls.getTag(callback, selectedSearchItem.getId());
 				}
 			}
 		});
@@ -264,13 +273,17 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 
 			if (queryElements.length == 2)
 			{
-				if (queryElements[0].equals("imageIds"))
+				if (queryElements[0].equals("tagIds"))
 				{
-					this.imageFilteredResultsDisplay.getImageIdFilter().setText(queryElements[1]);
+					this.filteredResultsDisplay.getIdFilter().setText(queryElements[1]);
 				}
-				else if (queryElements[0].equals("imageDesc"))
+				else if (queryElements[0].equals("tagName"))
 				{
-					this.imageFilteredResultsDisplay.getImageDescriptionFilter().setText(queryElements[1]);
+					this.filteredResultsDisplay.getNameFilter().setText(queryElements[1]);
+				}
+				else if (queryElements[0].equals("tagDesc"))
+				{
+					this.filteredResultsDisplay.getDescriptionFilter().setText(queryElements[1]);
 				}
 			}
 		}
@@ -290,10 +303,8 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 	}
 
 	@Override
-	protected void reInitialiseImageView()
+	protected void reInitialiseView()
 	{
-		imageDisplay.initialize(displayedImage, getUnassignedLocales().toArray(new String[0]));
-
-		bindImageUploadButtons(imageDisplay);
+		resultDisplay.initialize(displayedItem, false);
 	}
 }

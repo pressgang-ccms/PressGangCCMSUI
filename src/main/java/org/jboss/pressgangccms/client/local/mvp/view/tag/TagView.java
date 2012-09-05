@@ -1,8 +1,8 @@
-package org.jboss.pressgangccms.client.local.mvp.view;
+package org.jboss.pressgangccms.client.local.mvp.view.tag;
 
-import org.jboss.pressgangccms.client.local.mvp.presenter.TagPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.TagPresenter.TagPresenterDriver;
-import org.jboss.pressgangccms.client.local.mvp.presenter.TopicPresenter.TopicPresenterDriver;
+import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagPresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagPresenter.TagPresenterDriver;
+import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicPresenter.TopicPresenterDriver;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;

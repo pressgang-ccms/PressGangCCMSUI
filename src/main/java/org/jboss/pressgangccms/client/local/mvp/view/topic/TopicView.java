@@ -1,7 +1,7 @@
-package org.jboss.pressgangccms.client.local.mvp.view;
+package org.jboss.pressgangccms.client.local.mvp.view.topic;
 
-import org.jboss.pressgangccms.client.local.mvp.presenter.TopicPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.TopicPresenter.TopicPresenterDriver;
+import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicPresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicPresenter.TopicPresenterDriver;
 import org.jboss.pressgangccms.client.local.mvp.view.base.TopicViewBase;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;

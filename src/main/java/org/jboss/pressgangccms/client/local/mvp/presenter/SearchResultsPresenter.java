@@ -4,6 +4,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.SearchResultsView;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
