@@ -35,7 +35,7 @@ public class FourTextAndImageButtonSearchUIProjectEditor extends FourTextAndImag
 				details = value;
 				
 				setText(value.getName());
-				setText2(PressGangCCMSUI.INSTANCE.Categories() + ": " + value.getCategoryCount());
+				setText2(PressGangCCMSUI.INSTANCE.CategoryCount() + ": " + value.getCategoryCount());
 				setText3(PressGangCCMSUI.INSTANCE.Included() + ": " + value.getIncludedTags());
 				setText4(PressGangCCMSUI.INSTANCE.Excluded() + ": " + value.getExcludedTags());
 				

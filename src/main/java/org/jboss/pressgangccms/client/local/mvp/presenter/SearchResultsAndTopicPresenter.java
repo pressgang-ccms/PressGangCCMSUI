@@ -466,7 +466,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	 */
 	private void bindNewTagListBoxes()
 	{
-		topicTagsDisplay.getProjects().addValueChangeHandler(new ValueChangeHandler<SearchUIProject>()
+		topicTagsDisplay.getProjectsList().addValueChangeHandler(new ValueChangeHandler<SearchUIProject>()
 		{
 			@Override
 			public void onValueChange(final ValueChangeEvent<SearchUIProject> event)
@@ -475,7 +475,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			}
 		});
 
-		topicTagsDisplay.getCategories().addValueChangeHandler(new ValueChangeHandler<SearchUICategory>()
+		topicTagsDisplay.getCategoriesList().addValueChangeHandler(new ValueChangeHandler<SearchUICategory>()
 		{
 			@Override
 			public void onValueChange(final ValueChangeEvent<SearchUICategory> event)

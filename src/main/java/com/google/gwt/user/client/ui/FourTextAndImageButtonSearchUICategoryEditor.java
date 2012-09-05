@@ -33,7 +33,7 @@ public class FourTextAndImageButtonSearchUICategoryEditor extends FourTextAndIma
 				details = value;
 
 				setText(value.getName());
-				setText2(PressGangCCMSUI.INSTANCE.Tags() + ": " + value.getTagCount());
+				setText2(PressGangCCMSUI.INSTANCE.TagCount() + ": " + value.getTagCount());
 				setText3(PressGangCCMSUI.INSTANCE.Included() + ": " + value.getIncludedTags());
 				setText4(PressGangCCMSUI.INSTANCE.Excluded() + ": " + value.getExcludedTags());
 				

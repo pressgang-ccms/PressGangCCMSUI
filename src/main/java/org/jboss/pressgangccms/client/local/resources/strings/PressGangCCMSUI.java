@@ -25,13 +25,13 @@ public interface PressGangCCMSUI extends Constants
 
 	String PleaseWait();
 
-	String Categories();
+	String CategoryCount();
 
 	String Included();
 
 	String Excluded();
 
-	String Tags();
+	String TagCount();
 
 	String SearchResults();
 
@@ -160,4 +160,28 @@ public interface PressGangCCMSUI extends Constants
 	String ImageID();
 	
 	String DocbookImageTemplate();
+	
+	String Projects();
+	
+	String StringConstants();
+	
+	String BlobConstants();
+	
+	String IntegerConstants();
+	
+	String Users();
+	
+	String Roles();
+	
+	String PropertyTags();
+	
+	String PropertyTagCategories();
+	
+	String CreateTopic();
+	
+	String Tags();
+	
+	String Categories();
+	
+	String Advanced();
 }

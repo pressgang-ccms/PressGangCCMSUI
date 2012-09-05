@@ -32,20 +32,24 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	private final String applicationName;
 	/** The name of the current page */
 	private final String pageName;
-	
+
 	/** Defines the top level layout that holds the header and the other content */
 	private final DockLayoutPanel topLevelLayoutPanel = new DockLayoutPanel(Unit.PX);
-	
+
 	/** Defines the panel that holds the page title and the other content */
 	private final DockLayoutPanel secondLevelLayoutPanel = new DockLayoutPanel(Unit.EM);
-	
+
 	/** Defines the panel that holds the shortcut bar, content and footer */
 	private final DockLayoutPanel thirdLevelLayoutPanel = new DockLayoutPanel(Unit.PX);
-	
+
 	private final SimplePanel headingBanner = new SimplePanel();
 	private final VerticalPanel pageTitleParentLayoutPanel = new VerticalPanel();
 	private final Label pageTitle = new Label();
-	private final VerticalPanel shortcutPanel = new VerticalPanel();
+	
+	private final SimplePanel shortCutPanelParent = new SimplePanel();
+	private final FlexTable shortcutPanel = new FlexTable();
+	private final FlexTable advancedShortcutPanel = new FlexTable();
+	
 	private SimpleLayoutPanel panel = new SimpleLayoutPanel();
 
 	/** This panel holds the buttons currently displayed in the top action bar */
@@ -57,12 +61,101 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	private final DialogBox waiting = new DialogBox();
 
 	private final PushButton home;
+	private final PushButton createTopic;
 	private final PushButton search;
 	private final PushButton searchTranslations;
 	private final PushButton images;
+	private final PushButton tags;
+	private final PushButton categories;
+	private final PushButton projects;
+	private final PushButton stringConstants;
+	private final PushButton blobConstants;
+	private final PushButton integerConstants;
+	private final PushButton users;
+	private final PushButton roles;
+	private final PushButton propertyTags;
+	private final PushButton propertyTagCategories;
 	private final PushButton bug;
 	private final PushButton reports;
-	
+	private final PushButton advanced;
+	private final PushButton advancedOpen;
+	private final PushButton close;
+
+	public PushButton getClose()
+	{
+		return close;
+	}
+
+	public PushButton getAdvancedOpen()
+	{
+		return advancedOpen;
+	}
+
+	public SimplePanel getShortCutPanelParent()
+	{
+		return shortCutPanelParent;
+	}
+
+	public FlexTable getAdvancedShortcutPanel()
+	{
+		return advancedShortcutPanel;
+	}
+
+	public PushButton getAdvanced()
+	{
+		return advanced;
+	}
+
+	public PushButton getPropertyTagCategories()
+	{
+		return propertyTagCategories;
+	}
+
+	public PushButton getPropertyTags()
+	{
+		return propertyTags;
+	}
+
+	public PushButton getRoles()
+	{
+		return roles;
+	}
+
+	public PushButton getUsers()
+	{
+		return users;
+	}
+
+	public PushButton getIntegerConstants()
+	{
+		return integerConstants;
+	}
+
+	public PushButton getBlobConstants()
+	{
+		return blobConstants;
+	}
+
+	public PushButton getStringConstants()
+	{
+		return stringConstants;
+	}
+
+	public PushButton getProjects()
+	{
+		return projects;
+	}
+
+	public PushButton getCategories()
+	{
+		return categories;
+	}
+
+	public PushButton getTags()
+	{
+		return tags;
+	}
+
 	public PushButton getImages()
 	{
 		return images;
@@ -88,17 +181,17 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		return topActionParentPanel;
 	}
 
-	public VerticalPanel getShortcutPanel()
+	public FlexTable getShortcutPanel()
 	{
 		return shortcutPanel;
 	}
-	
+
 	@Override
 	public DockLayoutPanel getTopLevelPanel()
 	{
 		return topLevelLayoutPanel;
 	}
-	
+
 	@Override
 	public SimpleLayoutPanel getPanel()
 	{
@@ -151,92 +244,147 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	{
 		this.applicationName = applicationName;
 		this.pageName = pageName;
-		
+
 		/* Iinitialize the loading spinner */
 		waiting.setGlassEnabled(true);
 		waiting.setText(PressGangCCMSUI.INSTANCE.PleaseWait());
 		waiting.setWidget(spinner);
-		
+
 		/* Set the heading */
 		headingBanner.addStyleName(CSSResources.INSTANCE.App().ApplicationHeadingPanel());
 		headingBanner.add(new Image(ImageResources.INSTANCE.headingBanner()));
-		
+
 		topLevelLayoutPanel.addStyleName(CSSConstants.TOPLEVELLAYOUTPANEL);
 		topLevelLayoutPanel.addNorth(headingBanner, 110);
-		
+
 		/* Set the second level layout */
 		secondLevelLayoutPanel.addStyleName(CSSConstants.SECONDLEVELLAYOUTPANEL);
 		topLevelLayoutPanel.add(secondLevelLayoutPanel);
-		
+
 		/* Set the page title */
 		pageTitle.setText(pageName);
 		pageTitle.addStyleName(CSSConstants.PAGETITLE);
 		pageTitleParentLayoutPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		pageTitleParentLayoutPanel.add(pageTitle);
-		
+
 		pageTitleParentLayoutPanel.addStyleName(CSSConstants.PAGETITLEPARENTLAYOUTPANEL);
 		secondLevelLayoutPanel.addNorth(pageTitleParentLayoutPanel, 3);
-		
+
 		/* Set the remaining content */
 		thirdLevelLayoutPanel.addStyleName(CSSConstants.THIRDLEVELLAYOUTPANEL);
 		secondLevelLayoutPanel.add(thirdLevelLayoutPanel);
-		
+
 		/* Set the action bar panel */
 		topActionPanel.addStyleName(CSSConstants.TOPACTIONPANEL);
-		
+
 		topActionParentPanel.add(topActionPanel);
-		
+
 		thirdLevelLayoutPanel.addNorth(topActionParentPanel, Constants.ACTION_BAR_HEIGHT);
-		
+
 		/* Set the shortcut bar */
+		shortCutPanelParent.setWidget(getShortcutPanel());
 		getShortcutPanel().addStyleName(CSSConstants.SHORTCUTPANEL);
-		
-		thirdLevelLayoutPanel.addWest(getShortcutPanel(), Constants.SHORTCUT_BAR_WIDTH);
-		
+
+		thirdLevelLayoutPanel.addWest(shortCutPanelParent, Constants.SHORTCUT_BAR_WIDTH);
+
 		/* Set the footer panel */
 		footerPanel.addStyleName(CSSConstants.FOOTERPANEL);
-		
-		thirdLevelLayoutPanel.addSouth(footerPanel, 0);	
-		
+
+		thirdLevelLayoutPanel.addSouth(footerPanel, 0);
+
 		/* Add the content panel */
 		panel.addStyleName(CSSConstants.CONTENTLAYOUTPANEL);
-		
+
 		thirdLevelLayoutPanel.add(panel);
-		
+
 		/* Build the shortcut panel */
 
 		home = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Home());
-		getShortcutPanel().add(home);
+		addShortcutButton(home);
 
+		createTopic = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CreateTopic());
+		createTopic.setEnabled(false);
+		addShortcutButton(createTopic);
+		
 		search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
-		getShortcutPanel().add(search);
+		addShortcutButton(search);
 
 		searchTranslations = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.SearchTranslations());
 		searchTranslations.setEnabled(false);
-		getShortcutPanel().add(searchTranslations);
-		
-		images = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Images());
-		getShortcutPanel().add(images);
+		addShortcutButton(searchTranslations);
 
+		images = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Images());
+		addShortcutButton(images);
+
+		tags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Tags());
+		tags.setEnabled(false);
+		addShortcutButton(tags);
+
+		categories = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Categories());
+		categories.setEnabled(false);
+		addShortcutButton(categories);
+
+		projects = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Projects());
+		projects.setEnabled(false);
+		addShortcutButton(projects);
+		
 		reports = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Reports());
 		reports.setEnabled(false);
-		getShortcutPanel().add(reports);
+		addShortcutButton(reports);
 
 		bug = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CreateBug());
-		getShortcutPanel().add(bug);
-	}
+		addShortcutButton(bug);
+
+		advanced = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Advanced(), true);
+		addShortcutButton(advanced);
+		
+		advancedOpen = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Advanced(), true);
+		addShortcutButton(advancedOpen, advancedShortcutPanel);
 	
+
+		users = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Users());
+		users.setEnabled(false);
+		addShortcutButton(users, advancedShortcutPanel);
+
+		roles = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Roles());
+		roles.setEnabled(false);
+		addShortcutButton(roles, advancedShortcutPanel);
+
+		stringConstants = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.StringConstants());
+		stringConstants.setEnabled(false);
+		addShortcutButton(stringConstants, advancedShortcutPanel);
+
+		blobConstants = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.BlobConstants());
+		blobConstants.setEnabled(false);
+		addShortcutButton(blobConstants, advancedShortcutPanel);
+
+		integerConstants = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.IntegerConstants());
+		integerConstants.setEnabled(false);
+		addShortcutButton(integerConstants, advancedShortcutPanel);
+
+		propertyTags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.PropertyTags());
+		propertyTags.setEnabled(false);
+		addShortcutButton(propertyTags, advancedShortcutPanel);
+
+		propertyTagCategories = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.PropertyTagCategories());
+		propertyTagCategories.setEnabled(false);
+		addShortcutButton(propertyTagCategories, advancedShortcutPanel);
+		
+		close = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Close());
+		addShortcutButton(close, advancedShortcutPanel);
+	}
+
 	public void showRegularMenu()
 	{
 		topActionParentPanel.clear();
 		topActionParentPanel.add(topActionPanel);
 	}
-	
+
 	protected void addRightAlignedActionButtonPaddingPanel()
 	{
 		addRightAlignedActionButtonPaddingPanel(this.getTopActionPanel());
 	}
-	
+
 	protected void addRightAlignedActionButtonPaddingPanel(final FlexTable table)
 	{
 		final int rows = table.getRowCount();
@@ -260,5 +408,16 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		}
 
 		this.getTopActionPanel().setWidget(0, columns, widget);
+	}
+
+	private void addShortcutButton(final Widget widget)
+	{
+		addShortcutButton(widget, this.getShortcutPanel());
+	}
+	
+	private void addShortcutButton(final Widget widget, final FlexTable table)
+	{
+		final int rows = table.getRowCount();
+		table.setWidget(rows, 0, widget);
 	}
 }

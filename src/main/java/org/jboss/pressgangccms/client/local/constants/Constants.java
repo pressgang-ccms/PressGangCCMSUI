@@ -11,7 +11,12 @@ public final class Constants
 	/**
 	 * All path segments that define a query must start with this string
 	 */
-	public static final String QUERY_PATH_SEGMENT_PREFIX = "query;";
+	public static final String QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON = "query";
+	
+	/**
+	 * All path segments that define a query must start with this string
+	 */
+	public static final String QUERY_PATH_SEGMENT_PREFIX = QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + ";";
 	
 	/**
 	 * The size of the split panels

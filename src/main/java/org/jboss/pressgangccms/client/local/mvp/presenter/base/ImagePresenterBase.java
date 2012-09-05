@@ -3,7 +3,9 @@ package org.jboss.pressgangccms.client.local.mvp.presenter.base;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.constants.ServiceConstants;
+import org.jboss.pressgangccms.client.local.mvp.presenter.ImageFilteredResultsPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.ImagePresenter;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
@@ -30,6 +32,16 @@ abstract public class ImagePresenterBase extends TemplatePresenter
 	
 	/** A reference to the StringConstants that holds the locales */
 	protected String[] locales;
+	
+	protected String getQuery(final ImageFilteredResultsPresenter.Display imageSearchDisplay)
+	{
+		final StringBuilder retValue = new StringBuilder(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON);
+		if (!imageSearchDisplay.getImageIdFilter().getText().isEmpty())
+			retValue.append(";imageIds=" + imageSearchDisplay.getImageIdFilter().getText());
+		if (!imageSearchDisplay.getImageDescriptionFilter().getText().isEmpty())
+			retValue.append(";imageDesc=" + imageSearchDisplay.getImageDescriptionFilter().getText());
+		return retValue.toString();
+	}
 	
 	protected List<String> getUnassignedLocales()
 	{

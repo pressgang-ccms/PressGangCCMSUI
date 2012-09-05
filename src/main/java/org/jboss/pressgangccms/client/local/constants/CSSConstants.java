@@ -120,6 +120,10 @@ final public class CSSConstants
 	static public final String IMAGEVIEWDESCRIPTIONLABELCELL = "ImageViewDescriptionLabelCell";
 	/** Assigned to the image description text cell*/
 	static public final String IMAGEVIEWDESCRIPTIONTEXTCELL = "ImageViewDescriptionTextCell";
+	/** Assigned to the cell that holds the image template label */
+	static public final String IMAGEVIEWTEMPLATELABELCELL = "ImageViewTemplateLabelCell";
+	/** Assigned to the cell that holds the image template text */
+	static public final String IMAGEVIEWTEMPLATETEXTCELL = "ImageViewTemplateTextCell";	
 	/** Assigned to the image docbook file name label cell*/
 	public static final String IMAGEVIEWDOCBOOKFILENAMELABELCELL = "ImageViewDocbookFileNameLabelCell";
 	/** Assigned to the image docbook file name text cell*/
@@ -146,4 +150,6 @@ final public class CSSConstants
 	static public final String IMAGEVIEWLANGUAGEIMAGEUPLOADBUTTONSCELL = "ImageViewLanguageImageUploadButtonsCell";
 	/** Assigned to the panel that holds the list of images */
 	static public final String IMAGEFILTEREDRESULTSPANEL = "ImageFilteredResultsPanel";
+	/** Assigned to the panel that holds the filter options for images */
+	static public final String IMAGEFILTEREDOPTIONSPANEL = "ImageFilteredOptionsPanel";
 }

@@ -9,6 +9,11 @@
 	cursor: row-resize;
 }
 
+.ImageFilteredOptionsPanel
+{
+	margin-bottom: 8px;
+}
+
 .DialogBoxOKCancelPanel
 {
 	margin-left: auto;

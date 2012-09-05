@@ -33,8 +33,8 @@ public class TopicTagsPresenter extends TemplatePresenter
 		void updateNewTagCategoriesDisplay();
 		void updateNewTagTagDisplay();
 		ValueListBox<SearchUITag> getMyTags();
-		ValueListBox<SearchUICategory> getCategories();
-		ValueListBox<SearchUIProject> getProjects();
+		ValueListBox<SearchUICategory> getCategoriesList();
+		ValueListBox<SearchUIProject> getProjectsList();
 		TopicTagViewProjectsEditor getEditor();
 		PushButton getAdd();
 	}

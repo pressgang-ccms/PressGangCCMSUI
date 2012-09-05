@@ -37,7 +37,7 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
-
+ 
 @ApplicationScoped
 public class AppController implements Presenter, ValueChangeHandler<String>
 {
@@ -94,7 +94,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 			@Override
 			public void onImagesFilteredResultsAndImageViewOpen(final ImagesFilteredResultsAndImageViewEvent event)
 			{
-				History.newItem(ImagesFilteredResultsAndImageView.HISTORY_TOKEN);
+				History.newItem(ImagesFilteredResultsAndImageView.HISTORY_TOKEN + ";" + event.getQuery());
 			}
 		});
 	}

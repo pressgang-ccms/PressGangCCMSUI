@@ -70,6 +70,8 @@ public class RESTImageV1Editor extends DockPanel implements ValueAwareEditor<RES
 		
 		imageDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.IMAGEVIEWDESCRIPTIONLABELCELL);
 		imageDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.IMAGEVIEWDESCRIPTIONTEXTCELL);
+		imageDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.IMAGEVIEWTEMPLATELABELCELL);
+		imageDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.IMAGEVIEWTEMPLATETEXTCELL);
 		imageDetails.getCellFormatter().addStyleName(2, 0, CSSConstants.IMAGEVIEWDOCBOOKFILENAMELABELCELL);
 		imageDetails.getCellFormatter().addStyleName(2, 1, CSSConstants.IMAGEVIEWDOCBOOKFILENAMETEXTCELL);
 		

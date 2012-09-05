@@ -57,12 +57,12 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 		return myTags;
 	}
 
-	public ValueListBox<SearchUICategory> getCategories()
+	public ValueListBox<SearchUICategory> getCategoriesList()
 	{
 		return categories;
 	}
 
-	public ValueListBox<SearchUIProject> getProjects()
+	public ValueListBox<SearchUIProject> getProjectsList()
 	{
 		return projects;
 	}

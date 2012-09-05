@@ -1,11 +1,13 @@
 package org.jboss.pressgangccms.client.local.mvp.presenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.constants.Constants;
+import org.jboss.pressgangccms.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.ImagePresenterBase;
 import org.jboss.pressgangccms.client.local.mvp.view.ImagesFilteredResultsAndImageView;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -14,6 +16,8 @@ import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTImageV1;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
@@ -47,7 +51,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 
 	@Inject
 	private ImageFilteredResultsPresenter.Display imageFilteredResultsDisplay;
-	
+
 	@Inject
 	private ImagePresenter.Display imageDisplay;
 
@@ -58,10 +62,10 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 
 	/** Keeps a reference to the list of topics being displayed */
 	private List<RESTImageV1> currentList;
-	
+
 	/** The currently selected image in the search results */
 	private RESTImageV1 selectedSearchImage;
-	
+
 	/** used to keep a track of how many rest calls are active */
 	int count = 0;
 
@@ -73,9 +77,9 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 
 		display.getResultsActionButtonsPanel().setWidget(imageFilteredResultsDisplay.getTopActionPanel());
 		display.getResultsPanel().setWidget(imageFilteredResultsDisplay.getPanel());
-		
+
 		getLocales();
-		
+
 		bind();
 	}
 
@@ -85,13 +89,27 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 	private void bind()
 	{
 		super.bind(display);
-		
+
 		final AsyncDataProvider<RESTImageV1> provider = generateListProvider();
 		imageFilteredResultsDisplay.setProvider(provider);
-		
+
 		bindListRowClicks();
-		
+
 		bindImageViewButtons(imageDisplay);
+
+		bindImageSearchButtons();
+	}
+
+	protected void bindImageSearchButtons()
+	{
+		imageFilteredResultsDisplay.getSearch().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(getQuery(imageFilteredResultsDisplay)));
+			}
+		});
 	}
 
 	/**
@@ -128,7 +146,8 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 					{
 						try
 						{
-							currentList = retValue.getItems();
+							/* Zero results can be a null list */
+							currentList = retValue.getItems() == null ? new ArrayList<RESTImageV1>() : retValue.getItems();
 							updateRowData(tableStartRow, currentList);
 							updateRowCount(retValue.getSize(), true);
 						}
@@ -151,7 +170,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 		};
 		return provider;
 	}
-	
+
 	/**
 	 * Bind the button click events for the topic editor screens
 	 */
@@ -167,9 +186,12 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 
 				if (isClick)
 				{
-					/* selectedSearchImage will be null until an image is selected for the first time */
+					/*
+					 * selectedSearchImage will be null until an image is
+					 * selected for the first time
+					 */
 					final boolean needToAddImageView = selectedSearchImage == null;
-					
+
 					selectedSearchImage = event.getValue();
 					displayedImage = null;
 
@@ -195,8 +217,11 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 							{
 								displayedImage = retValue;
 								reInitialiseImageView();
-								
-								/* If this is the first image selected, display the image view */
+
+								/*
+								 * If this is the first image selected, display
+								 * the image view
+								 */
 								if (needToAddImageView)
 								{
 									display.getViewPanel().setWidget(imageDisplay.getPanel());
@@ -231,8 +256,26 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 		queryString = historyToken.replace(ImagesFilteredResultsAndImageView.HISTORY_TOKEN + ";", "");
 		if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX))
 			queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
+
+		final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
+		for (final String queryStringElement : queryStringElements)
+		{
+			final String[] queryElements = queryStringElement.split("=");
+
+			if (queryElements.length == 2)
+			{
+				if (queryElements[0].equals("imageIds"))
+				{
+					this.imageFilteredResultsDisplay.getImageIdFilter().setText(queryElements[1]);
+				}
+				else if (queryElements[0].equals("imageDesc"))
+				{
+					this.imageFilteredResultsDisplay.getImageDescriptionFilter().setText(queryElements[1]);
+				}
+			}
+		}
 	}
-	
+
 	protected void stopProcessing()
 	{
 		--count;

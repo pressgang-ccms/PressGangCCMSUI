@@ -20,6 +20,8 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
@@ -37,6 +39,12 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter
 		CellTable<RESTImageV1> getResults();
 
 		SimplePager getPager();
+		
+		TextBox getImageIdFilter();
+
+		TextBox getImageDescriptionFilter();
+		
+		PushButton getSearch();
 	}
 
 	@Inject

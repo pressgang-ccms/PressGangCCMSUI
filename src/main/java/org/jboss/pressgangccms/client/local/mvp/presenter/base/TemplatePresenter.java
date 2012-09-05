@@ -52,9 +52,30 @@ abstract public class TemplatePresenter implements Presenter
 			@Override
 			public void onClick(final ClickEvent event)
 			{
-				eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent());
+				eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
 			}
 		});
+
+		display.getAdvanced().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				display.getShortCutPanelParent().setWidget(display.getAdvancedShortcutPanel());
+			}
+		});
+		
+		final ClickHandler closeAdvancedMenu = new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				display.getShortCutPanelParent().setWidget(display.getShortcutPanel());
+			}
+		};
+		
+		display.getAdvancedOpen().addClickHandler(closeAdvancedMenu);
+		display.getClose().addClickHandler(closeAdvancedMenu);
 	}
 
 	/**
