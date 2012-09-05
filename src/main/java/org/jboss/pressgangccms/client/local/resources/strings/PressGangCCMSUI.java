@@ -158,4 +158,6 @@ public interface PressGangCCMSUI extends Constants
 	String DocbookFilename();
 	
 	String ImageID();
+	
+	String DocbookImageTemplate();
 }

@@ -3,6 +3,7 @@ package org.jboss.pressgangccms.client.local.mvp.presenter.base;
 import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.constants.Constants;
+import org.jboss.pressgangccms.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgangccms.client.local.mvp.events.ImagesViewEvent;
 import org.jboss.pressgangccms.client.local.mvp.events.SearchViewEvent;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -51,7 +52,7 @@ abstract public class TemplatePresenter implements Presenter
 			@Override
 			public void onClick(final ClickEvent event)
 			{
-				eventBus.fireEvent(new ImagesViewEvent());
+				eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent());
 			}
 		});
 	}

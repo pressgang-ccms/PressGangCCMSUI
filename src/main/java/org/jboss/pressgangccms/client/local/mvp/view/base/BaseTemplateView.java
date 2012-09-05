@@ -216,7 +216,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		getShortcutPanel().add(searchTranslations);
 		
 		images = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Images());
-		images.setEnabled(false);
 		getShortcutPanel().add(images);
 
 		reports = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Reports());

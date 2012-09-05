@@ -30,6 +30,10 @@ public class RESTImageV1Editor extends DockPanel implements ValueAwareEditor<RES
 	
 	private final FlexTable imageDetails = new FlexTable();
 	
+	private final TextArea xmlTemplate = new TextArea();
+	
+	private final Label xmlTemplateLabel = new Label(PressGangCCMSUI.INSTANCE.DocbookImageTemplate());
+	
 	/**
 	 * The editor representing a collection of language image editors
 	 */
@@ -50,20 +54,24 @@ public class RESTImageV1Editor extends DockPanel implements ValueAwareEditor<RES
 		this.addStyleName(CSSConstants.IMAGEVIEWPARENTDOCKPANEL);
 		
 		docbookFileName.setReadOnly(true);
+		xmlTemplate.setReadOnly(true);
 		
 		imageDetails.addStyleName(CSSConstants.IMAGEVIEWDETAILSTABLE);
 		descriptionLabel.addStyleName(CSSConstants.IMAGEVIEWDESCRIPTIONLABEL);
 		description.addStyleName(CSSConstants.IMAGEVIEWDESCRIPTIONTEXT);
+		xmlTemplate.addStyleName(CSSConstants.IMAGEVIEWTEMPLATETEXT);
 		
 		imageDetails.setWidget(0, 0, descriptionLabel);
 		imageDetails.setWidget(0, 1, description);
-		imageDetails.setWidget(1, 0, docbookFileNameLabel);
-		imageDetails.setWidget(1, 1, docbookFileName);
+		imageDetails.setWidget(1, 0, xmlTemplateLabel);
+		imageDetails.setWidget(1, 1, xmlTemplate);
+		imageDetails.setWidget(2, 0, docbookFileNameLabel);
+		imageDetails.setWidget(2, 1, docbookFileName);
 		
 		imageDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.IMAGEVIEWDESCRIPTIONLABELCELL);
 		imageDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.IMAGEVIEWDESCRIPTIONTEXTCELL);
-		imageDetails.getCellFormatter().addStyleName(1, 0, CSSConstants.IMAGEVIEWDOCBOOKFILENAMELABELCELL);
-		imageDetails.getCellFormatter().addStyleName(1, 1, CSSConstants.IMAGEVIEWDOCBOOKFILENAMETEXTCELL);
+		imageDetails.getCellFormatter().addStyleName(2, 0, CSSConstants.IMAGEVIEWDOCBOOKFILENAMELABELCELL);
+		imageDetails.getCellFormatter().addStyleName(2, 1, CSSConstants.IMAGEVIEWDOCBOOKFILENAMETEXTCELL);
 		
 		this.add(imageDetails, DockPanel.NORTH);
 		this.add(languageImages_OTM, DockPanel.CENTER);
@@ -92,7 +100,8 @@ public class RESTImageV1Editor extends DockPanel implements ValueAwareEditor<RES
 	public void setValue(final RESTImageV1 value)
 	{
 		this.value = value;
-		this.docbookFileName.setText(ComponentImageV1.getDocbookFileName(value));		
+		this.docbookFileName.setText(ComponentImageV1.getDocbookFileName(value));	
+		this.xmlTemplate.setText(ComponentImageV1.getXMLTemplate(value));
 	}
 
 }

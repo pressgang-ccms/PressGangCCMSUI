@@ -114,6 +114,8 @@ final public class CSSConstants
 	static public final String IMAGEVIEWDESCRIPTIONLABEL = "ImageViewDescriptionLabel";
 	/** Assigned to the image description text */
 	static public final String IMAGEVIEWDESCRIPTIONTEXT = "ImageViewDescriptionText";
+	/** Assigned to the image template text */
+	static public final String IMAGEVIEWTEMPLATETEXT = "ImageViewTemplateText";
 	/** Assigned to the image description label cell */
 	static public final String IMAGEVIEWDESCRIPTIONLABELCELL = "ImageViewDescriptionLabelCell";
 	/** Assigned to the image description text cell*/

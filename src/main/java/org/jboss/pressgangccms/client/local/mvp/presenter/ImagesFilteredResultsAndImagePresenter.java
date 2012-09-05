@@ -84,6 +84,8 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 	 */
 	private void bind()
 	{
+		super.bind(display);
+		
 		final AsyncDataProvider<RESTImageV1> provider = generateListProvider();
 		imageFilteredResultsDisplay.setProvider(provider);
 		
