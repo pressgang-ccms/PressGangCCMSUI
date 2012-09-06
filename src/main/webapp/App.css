@@ -1,12 +1,17 @@
-.gwt-SplitLayoutPanel-HDragger {
-	background: #EFEFEF url(images/thumb_vertical.png) center center
-		no-repeat;
-	cursor: col-resize;
+.TagCategoriesListPanel
+{
+	margin-right: 8px;
 }
 
-.gwt-SplitLayoutPanel-VDragger {
-	background: #EFEFEF url(images/thumb_horz.png) center center no-repeat;
-	cursor: row-resize;
+.TagCategoryTagsListPanel
+{
+	margin-right: 8px;
+	margin-left: 8px;
+}
+
+.TagCategoryTagsListPanel
+{
+	margin-left: 8px;
 }
 
 .TagViewPanel

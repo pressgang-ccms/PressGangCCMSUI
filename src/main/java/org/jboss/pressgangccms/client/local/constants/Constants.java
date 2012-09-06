@@ -9,6 +9,11 @@ package org.jboss.pressgangccms.client.local.constants;
 public final class Constants
 {
 	/**
+	 * The name of a javascript click event
+	 */
+	public static final String JAVASCRIPT_CLICK_EVENT = "click";
+	
+	/**
 	 * All path segments that define a query must start with this string
 	 */
 	public static final String QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON = "query";

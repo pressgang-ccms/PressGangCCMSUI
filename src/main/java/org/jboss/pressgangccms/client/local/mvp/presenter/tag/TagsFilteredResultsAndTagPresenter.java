@@ -1,7 +1,6 @@
 package org.jboss.pressgangccms.client.local.mvp.presenter.tag;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -71,7 +70,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 			reInitialiseView();
 		}
 	};
-	
+
 	private final ClickHandler tagCategoriesClickHandler = new ClickHandler()
 	{
 		@Override
@@ -151,11 +150,11 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 	TagCategoriesPresenter.Display categoriesDisplay;
 
 	private String queryString;
-	
+
 	private ProviderUpdateData<RESTTagV1> tagProviderData = new ProviderUpdateData<RESTTagV1>();
 	private ProviderUpdateData<RESTProjectV1> projectProviderData = new ProviderUpdateData<RESTProjectV1>();
 	private ProviderUpdateData<RESTCategoryV1> categoryProviderData = new ProviderUpdateData<RESTCategoryV1>();
-	private ProviderUpdateData<RESTCategoryV1> categoryTagsProviderData = new ProviderUpdateData<RESTCategoryV1>();
+	private ProviderUpdateData<RESTTagV1> categoryTagsProviderData = new ProviderUpdateData<RESTTagV1>();
 
 	/** The currently displayed view */
 	private TagViewInterface displayedView;
@@ -187,9 +186,11 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 
 		filteredResultsDisplay.setProvider(generateListProvider());
 		projectsDisplay.setProvider(generateProjectListProvider());
-		categoriesDisplay.setProvider(generateCategoriesListProvider());
+		categoriesDisplay.setProvider(generateCategoriesListProvider());		
 
-		bindListRowClicks();
+		bindTagListRowClicks();
+
+		bindCategoryListRowClicks();
 
 		bindSearchButtons();
 
@@ -275,6 +276,27 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 	/**
 	 * @return A provider to be used for the tag display list
 	 */
+	private AsyncDataProvider<RESTTagV1> generateCategoriesTagListProvider()
+	{
+		final AsyncDataProvider<RESTTagV1> provider = new AsyncDataProvider<RESTTagV1>()
+		{
+			@Override
+			protected void onRangeChanged(final HasData<RESTTagV1> display)
+			{
+				categoryTagsProviderData.setStartRow(0);
+
+				/* Zero results can be a null list */
+				categoryTagsProviderData.setItems(categoryProviderData.getDisplayedItem() == null ? new ArrayList<RESTTagV1>() : categoryProviderData.getDisplayedItem().getTags().getItems());
+				updateRowData(categoryTagsProviderData.getStartRow(), categoryTagsProviderData.getItems());
+				updateRowCount(categoryProviderData.getDisplayedItem() == null ? 0 : categoryProviderData.getDisplayedItem().getTags().getItems().size(), true);
+			}
+		};
+		return provider;
+	}
+
+	/**
+	 * @return A provider to be used for the category display list
+	 */
 	private AsyncDataProvider<RESTCategoryV1> generateCategoriesListProvider()
 	{
 		final AsyncDataProvider<RESTCategoryV1> provider = new AsyncDataProvider<RESTCategoryV1>()
@@ -282,7 +304,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 			@Override
 			protected void onRangeChanged(final HasData<RESTCategoryV1> display)
 			{
-				categoryProviderData.setStartRow(display.getVisibleRange().getStart());
+				categoryProviderData.setStartRow(0);
 				final int length = display.getVisibleRange().getLength();
 				final int end = categoryProviderData.getStartRow() + length;
 
@@ -341,7 +363,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 			@Override
 			protected void onRangeChanged(final HasData<RESTProjectV1> display)
 			{
-				projectProviderData.setStartRow(display.getVisibleRange().getStart());
+				projectProviderData.setStartRow(0);
 				final int length = display.getVisibleRange().getLength();
 				final int end = projectProviderData.getStartRow() + length;
 
@@ -400,7 +422,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 			@Override
 			protected void onRangeChanged(final HasData<RESTTagV1> display)
 			{
-				tagProviderData.setStartRow(display.getVisibleRange().getStart());
+				tagProviderData.setStartRow(0);
 				final int length = display.getVisibleRange().getLength();
 				final int end = tagProviderData.getStartRow() + length;
 
@@ -449,10 +471,86 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 		return provider;
 	}
 
+	private void bindCategoryListRowClicks()
+	{
+		this.categoriesDisplay.getResults().addCellPreviewHandler(new Handler<RESTCategoryV1>()
+		{
+			@Override
+			public void onCellPreview(final CellPreviewEvent<RESTCategoryV1> event)
+			{
+				/* Check to see if this was a click event */
+				final boolean isClick = Constants.JAVASCRIPT_CLICK_EVENT.equals(event.getNativeEvent().getType());
+
+				if (isClick)
+				{
+					/*
+					 * categoryProviderData.getSelectedItem() will be null until a category is
+					 * selected for the first time
+					 */
+					final boolean needToAddImageView = categoryProviderData.getSelectedItem() == null;
+
+					categoryProviderData.setSelectedItem(event.getValue());
+					categoryProviderData.setDisplayedItem(null);
+
+					final RESTCalls.RESTCallback<RESTCategoryV1> callback = new RESTCalls.RESTCallback<RESTCategoryV1>()
+					{
+						@Override
+						public void begin()
+						{
+							startProcessing();
+						}
+
+						@Override
+						public void generalException(final Exception ex)
+						{
+							stopProcessing();
+							Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+						}
+
+						@Override
+						public void success(final RESTCategoryV1 retValue)
+						{
+							try
+							{
+								/*
+								 * If this is the first category selected, display
+								 * the tags list
+								 */
+								if (needToAddImageView)
+								{
+									categoriesDisplay.getSplit().add(categoriesDisplay.getTagsResultsPanel());
+								}
+
+								categoryProviderData.setDisplayedItem(retValue);
+								
+								/* reset the provider, which will refresh the list of tags */
+								categoriesDisplay.setTagsProvider(generateCategoriesTagListProvider());
+							}
+							finally
+							{
+								stopProcessing();
+							}
+						}
+
+						@Override
+						public void failed()
+						{
+							stopProcessing();
+							Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+						}
+
+					};
+
+					RESTCalls.getCategory(callback, categoryProviderData.getSelectedItem().getId());
+				}
+			}
+		});
+	}
+
 	/**
 	 * Bind the button click events for the topic editor screens
 	 */
-	private void bindListRowClicks()
+	private void bindTagListRowClicks()
 	{
 		filteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTTagV1>()
 		{
@@ -460,7 +558,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 			public void onCellPreview(final CellPreviewEvent<RESTTagV1> event)
 			{
 				/* Check to see if this was a click event */
-				final boolean isClick = "click".equals(event.getNativeEvent().getType());
+				final boolean isClick = Constants.JAVASCRIPT_CLICK_EVENT.equals(event.getNativeEvent().getType());
 
 				if (isClick)
 				{
@@ -469,7 +567,6 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 					 * selected for the first time
 					 */
 					final boolean needToAddImageView = tagProviderData.getSelectedItem() == null;
-					
 
 					tagProviderData.setSelectedItem(event.getValue());
 					tagProviderData.setDisplayedItem(null);
@@ -584,8 +681,8 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 		}
 
 		/*
-		 * Update the projects and categories list to show the buttons as they apply to a new
-		 * tag
+		 * Update the projects and categories list to show the buttons as they
+		 * apply to a new tag
 		 */
 		if (displayedView == projectsDisplay)
 			projectsDisplay.getProvider().updateRowData(projectProviderData.getStartRow(), projectProviderData.getItems());

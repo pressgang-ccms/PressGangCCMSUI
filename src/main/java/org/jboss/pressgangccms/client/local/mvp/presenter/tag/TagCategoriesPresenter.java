@@ -17,9 +17,16 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 
+/**
+ * The presenter that provides the logic for the tag category relationships.
+ * @author matthew
+ *
+ */
 @Dependent
 public class TagCategoriesPresenter extends TemplatePresenter
 {
@@ -42,6 +49,10 @@ public class TagCategoriesPresenter extends TemplatePresenter
 		AsyncDataProvider<RESTTagV1> getTagsProvider();
 
 		void setTagsProvider(AsyncDataProvider<RESTTagV1> tagsProvider);
+		
+		VerticalPanel getTagsResultsPanel();
+		
+		SplitLayoutPanel getSplit();
 	}
 
 	@Inject

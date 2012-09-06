@@ -1,5 +1,6 @@
 package org.jboss.pressgangccms.client.local.mvp.view.tag;
 
+import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagCategoriesPresenter;
 import org.jboss.pressgangccms.client.local.resources.css.TableResources;
@@ -133,6 +134,21 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
 		}
 	};
 
+	public SplitLayoutPanel getSplit()
+	{
+		return split;
+	}
+
+	public void setSplit(SplitLayoutPanel split)
+	{
+		this.split = split;
+	}
+
+	public VerticalPanel getTagsResultsPanel()
+	{
+		return tagsResultsPanel;
+	}
+
 	public Column<RESTTagV1, String> getTagDownButtonColumn()
 	{
 		return tagDownButtonColumn;
@@ -191,6 +207,8 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
 		searchResultsPanel.add(results);
 		searchResultsPanel.add(pager);
 		
+		searchResultsPanel.addStyleName(CSSConstants.TagCategoryView.TAGCATEGORIESLISTPANEL);
+		
 		pager.setDisplay(results);
 
 		split.addWest(searchResultsPanel, Constants.SPLIT_PANEL_SIZE);
@@ -204,9 +222,12 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
 		tagsResultsPanel.add(tagsResults);
 		tagsResultsPanel.add(tagsPager);
 		
+		searchResultsPanel.addStyleName(CSSConstants.TagCategoryView.TAGCATEGORYTAGSLISTPANEL);
+		
 		tagsPager.setDisplay(tagsResults);
 		
-		split.add(tagsResultsPanel);
+		/* Add this later once a category has been selected */ 
+		//split.add(tagsResultsPanel);
 
 		this.getPanel().setWidget(split);
 	}

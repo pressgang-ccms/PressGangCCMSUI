@@ -34,6 +34,12 @@ final public class CSSConstants
 		/** Assigned to the panel that holds the filter options for images */
 		static public final String TAGFILTEREDOPTIONSPANEL = "TagFilteredOptionsPanel";
 	}
+	
+	final public class TagCategoryView
+	{
+		static public final String TAGCATEGORIESLISTPANEL = "TagCategoriesListPanel";
+		static public final String TAGCATEGORYTAGSLISTPANEL = "TagCategoryTagsListPanel";
+	}
 
 	/**
 	 * The class assigned to the page title label.

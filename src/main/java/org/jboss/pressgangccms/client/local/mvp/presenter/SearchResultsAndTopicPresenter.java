@@ -715,7 +715,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 			public void onCellPreview(final CellPreviewEvent<RESTTopicV1> event)
 			{
 				/* Check to see if this was a click event */
-				final boolean isClick = "click".equals(event.getNativeEvent().getType());
+				final boolean isClick = Constants.JAVASCRIPT_CLICK_EVENT.equals(event.getNativeEvent().getType());
 
 				if (isClick)
 				{

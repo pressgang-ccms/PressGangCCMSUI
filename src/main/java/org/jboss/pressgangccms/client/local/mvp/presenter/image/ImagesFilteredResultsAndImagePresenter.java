@@ -181,7 +181,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 			public void onCellPreview(final CellPreviewEvent<RESTImageV1> event)
 			{
 				/* Check to see if this was a click event */
-				final boolean isClick = "click".equals(event.getNativeEvent().getType());
+				final boolean isClick = Constants.JAVASCRIPT_CLICK_EVENT.equals(event.getNativeEvent().getType());
 
 				if (isClick)
 				{

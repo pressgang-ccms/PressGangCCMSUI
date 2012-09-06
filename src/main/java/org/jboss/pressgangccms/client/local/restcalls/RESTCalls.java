@@ -32,6 +32,8 @@ public final class RESTCalls
 	private static final String TOPIC_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTopicV1.BUGZILLABUGS_NAME + "\"}}, {\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"}}, {\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTopicV1.TAGS_NAME + "\"},\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTagV1.PROJECTS_NAME + "\"}},{\"trunk\":{\"showSize\":true,\"name\":\"" + RESTTagV1.CATEGORIES_NAME + "\"}}]}";
 	/** The required expansion details for the tags */
 	private static final String TAG_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTagV1.PROJECTS_NAME + "\"}}, {\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}";
+	/** The required expansion details for the categories */
+	private static final String CATEGORY_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTCategoryV1.TAGS_NAME + "\"}}";
 	
 	abstract public interface RESTCallback<T>
 	{
@@ -277,12 +279,29 @@ public final class RESTCalls
 		}
 	}
 	
+	static public void getCategory(final RESTCallback<RESTCategoryV1> callback, Integer id)
+	{
+		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
+		/* Expand the categories and projects in the tags */		
+		final String expand = "{\"branches\":[" + CATEGORY_EXPANSION + "]}";
+
+		try
+		{
+			callback.begin();
+			restMethod.getJSONCategory(id, expand);
+		}
+		catch (final Exception ex)
+		{
+			callback.generalException(ex);
+		}
+	}
+	
 	static public void getCategoriesFromQuery(final RESTCallback<RESTCategoryCollectionV1> callback, final String queryString, int start, int end)
 	{
 		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
 		/* Expand the categories and projects in the tags */
-		final String tagsExpand = "\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"showSize\":true,\"name\": \"" + RESTCategoryV1.TAGS_NAME + "\"}}]";
-		final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"showSize\":true,\"name\": \"categories\"}, " + tagsExpand + "}]}";
+		
+		final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"showSize\":true,\"name\": \"categories\"}, \"branches\":[" + CATEGORY_EXPANSION + "]}]}";
 
 		try
 		{

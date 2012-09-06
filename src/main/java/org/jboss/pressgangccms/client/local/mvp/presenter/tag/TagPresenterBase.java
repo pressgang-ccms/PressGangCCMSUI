@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 
 abstract public class TagPresenterBase extends TemplatePresenter
 {
+	/** Called when a new "tab" is selected */
 	abstract protected void reInitialiseView();
 
 	protected String getQuery(final TagFilteredResultsPresenter.Display searchDisplay)
