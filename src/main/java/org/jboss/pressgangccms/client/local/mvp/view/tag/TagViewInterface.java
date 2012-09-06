@@ -11,4 +11,5 @@ public interface TagViewInterface extends BaseTemplateViewInterface
 	PushButton getTagProjects();
 	PushButton getTagDetails();
 	PushButton getSave();
+	PushButton getTagCategories();
 }

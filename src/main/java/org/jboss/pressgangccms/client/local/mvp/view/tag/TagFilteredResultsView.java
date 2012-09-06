@@ -2,13 +2,11 @@ package org.jboss.pressgangccms.client.local.mvp.view.tag;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.constants.Constants;
-import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagFilteredResultsPresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.client.local.resources.css.TableResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.UIUtilities;
-import org.jboss.pressgangccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
 
 import com.google.gwt.core.client.GWT;

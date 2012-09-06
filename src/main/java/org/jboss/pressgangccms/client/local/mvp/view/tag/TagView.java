@@ -42,6 +42,7 @@ public class TagView extends TagViewBase implements TagPresenter.Display
 	{
 		this.addActionButton(this.getTagDetails());
 		this.addActionButton(this.getTagProjects());
+		this.addActionButton(this.getTagCategories());
 		this.addActionButton(this.getSave());
 		addRightAlignedActionButtonPaddingPanel();
 	}

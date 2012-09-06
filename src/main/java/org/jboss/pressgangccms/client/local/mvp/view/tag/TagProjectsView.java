@@ -115,6 +115,8 @@ public class TagProjectsView extends TagViewBase implements TagProjectsPresenter
 		results.addColumn(nameColumn, PressGangCCMSUI.INSTANCE.ProjectName());
 		results.addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.ProjectName());
 		results.addColumn(buttonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
+		
+		pager.setDisplay(results);
 
 		searchResultsPanel.add(results);
 		searchResultsPanel.add(pager);
@@ -131,6 +133,7 @@ public class TagProjectsView extends TagViewBase implements TagProjectsPresenter
 	{
 		this.addActionButton(this.getTagDetails());
 		this.addActionButton(this.getTagProjects());
+		this.addActionButton(this.getTagCategories());
 		this.addActionButton(this.getSave());
 		addRightAlignedActionButtonPaddingPanel();
 	}
