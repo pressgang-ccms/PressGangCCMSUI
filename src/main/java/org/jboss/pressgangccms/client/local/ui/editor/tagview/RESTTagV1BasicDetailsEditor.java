@@ -57,5 +57,12 @@ public class RESTTagV1BasicDetailsEditor extends FlexTable implements Editor<RES
 		name.addStyleName(CSSConstants.TagView.TAGVIEWNAMETEXT);
 		descriptionLabel.addStyleName(CSSConstants.TagView.TAGVIEWDESCRIPTIONLABEL);
 		description.addStyleName(CSSConstants.TagView.TAGVIEWDESCRIPTIONTEXT);
+		
+		this.getCellFormatter().addStyleName(0, 0, CSSConstants.TagView.TAGVIEWIDLABELCELL);
+		this.getCellFormatter().addStyleName(0, 1, CSSConstants.TagView.TAGVIEWIDTEXTCELL);
+		this.getCellFormatter().addStyleName(1, 0, CSSConstants.TagView.TAGVIEWNAMELABELCELL);
+		this.getCellFormatter().addStyleName(1, 1, CSSConstants.TagView.TAGVIEWNAMETEXTCELL);
+		this.getCellFormatter().addStyleName(2, 0, CSSConstants.TagView.TAGVIEWDESCRIPTIONLABELCELL);
+		this.getCellFormatter().addStyleName(2, 1, CSSConstants.TagView.TAGVIEWDESCRIPTIONTEXTCELL);
 	}
 }

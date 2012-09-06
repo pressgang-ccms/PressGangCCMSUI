@@ -18,6 +18,13 @@ final public class CSSConstants
 		static public final String TAGVIEWNAMETEXT = "TagViewNameText";
 		static public final String TAGVIEWDESCRIPTIONLABEL = "TagViewDescriptionLabel";
 		static public final String TAGVIEWDESCRIPTIONTEXT = "TagViewDescriptionText";
+		
+		static public final String TAGVIEWIDLABELCELL = "TagViewIDLabelCell";
+		static public final String TAGVIEWIDTEXTCELL = "TagViewIDTextCell";
+		static public final String TAGVIEWNAMELABELCELL = "TagViewNameLabelCell";
+		static public final String TAGVIEWNAMETEXTCELL = "TagViewNameTextCell";
+		static public final String TAGVIEWDESCRIPTIONLABELCELL = "TagViewDescriptionLabelCell";
+		static public final String TAGVIEWDESCRIPTIONTEXTCELL = "TagViewDescriptionTextCell";
 	}
 	
 	final public class TagFilteredResultsView

@@ -6,6 +6,7 @@ import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgangccms.client.local.mvp.events.ImagesViewEvent;
 import org.jboss.pressgangccms.client.local.mvp.events.SearchViewEvent;
+import org.jboss.pressgangccms.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -53,6 +54,15 @@ abstract public class TemplatePresenter implements Presenter
 			public void onClick(final ClickEvent event)
 			{
 				eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
+			}
+		});
+		
+		display.getTags().addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(final ClickEvent event)
+			{
+				eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
 			}
 		});
 

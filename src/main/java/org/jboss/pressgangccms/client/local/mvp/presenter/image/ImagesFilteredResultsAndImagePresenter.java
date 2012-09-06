@@ -272,6 +272,10 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 				{
 					this.imageFilteredResultsDisplay.getImageDescriptionFilter().setText(queryElements[1]);
 				}
+				else if (queryElements[0].equals("imageOrigName"))
+				{
+					this.imageFilteredResultsDisplay.getImageOriginalFileNameFilter().setText(queryElements[1]);
+				}
 			}
 		}
 	}

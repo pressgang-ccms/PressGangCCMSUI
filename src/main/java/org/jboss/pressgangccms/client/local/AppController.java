@@ -14,6 +14,8 @@ import org.jboss.pressgangccms.client.local.mvp.events.SearchResultsViewEvent;
 import org.jboss.pressgangccms.client.local.mvp.events.SearchResultsViewEventHandler;
 import org.jboss.pressgangccms.client.local.mvp.events.SearchViewEvent;
 import org.jboss.pressgangccms.client.local.mvp.events.SearchViewEventHandler;
+import org.jboss.pressgangccms.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
+import org.jboss.pressgangccms.client.local.mvp.events.TagsFilteredResultsAndTagViewEventHandler;
 import org.jboss.pressgangccms.client.local.mvp.presenter.SearchPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.SearchResultsAndTopicPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.SearchResultsPresenter;
@@ -23,6 +25,7 @@ import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter
 import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagePresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagPresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.SearchResultsAndTopicView;
 import org.jboss.pressgangccms.client.local.mvp.view.SearchResultsView;
@@ -31,6 +34,7 @@ import org.jboss.pressgangccms.client.local.mvp.view.WelcomeView;
 import org.jboss.pressgangccms.client.local.mvp.view.image.ImageView;
 import org.jboss.pressgangccms.client.local.mvp.view.image.ImagesFilteredResultsAndImageView;
 import org.jboss.pressgangccms.client.local.mvp.view.tag.TagView;
+import org.jboss.pressgangccms.client.local.mvp.view.tag.TagsFilteredResultsAndTagView;
 import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicView;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -99,6 +103,17 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 				History.newItem(ImagesFilteredResultsAndImageView.HISTORY_TOKEN + ";" + event.getQuery());
 			}
 		});
+		
+		eventBus.addHandler(TagsFilteredResultsAndTagViewEvent.TYPE, new TagsFilteredResultsAndTagViewEventHandler()
+		{
+			@Override
+			public void onTagsFilteredResultsViewAndTagOpen(TagsFilteredResultsAndTagViewEvent event)
+			{
+				History.newItem(TagsFilteredResultsAndTagView.HISTORY_TOKEN + ";" + event.getQuery());				
+			}
+		});
+		
+		
 	}
 
 	@Override
@@ -189,6 +204,16 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 					presenter = bean.getInstance();
 				}
 			}
+			else if (token.startsWith(TagsFilteredResultsAndTagView.HISTORY_TOKEN))
+			{
+				final IOCBeanDef<TagsFilteredResultsAndTagPresenter> bean = manager.lookupBean(TagsFilteredResultsAndTagPresenter.class);
+				if (bean != null)
+				{
+					presenter = bean.getInstance();
+				}
+			}
+			
+			
 
 			if (presenter != null)
 			{

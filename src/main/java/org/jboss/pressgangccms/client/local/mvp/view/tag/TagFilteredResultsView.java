@@ -51,12 +51,12 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
 		}
 	};
 
-	private final TextColumn<RESTTagV1> descriptionColumn = new TextColumn<RESTTagV1>()
+	private final TextColumn<RESTTagV1> nameColumn = new TextColumn<RESTTagV1>()
 	{
 		@Override
 		public String getValue(final RESTTagV1 object)
 		{
-			return object.getDescription();
+			return object.getName();
 		}
 	};
 
@@ -103,8 +103,8 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
 		this.addActionButton(search);
 		this.addRightAlignedActionButtonPaddingPanel();
 		
-		results.addColumn(idColumn, PressGangCCMSUI.INSTANCE.ImageID());
-		results.addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.ImageDescription());
+		results.addColumn(idColumn, PressGangCCMSUI.INSTANCE.TagID());
+		results.addColumn(nameColumn, PressGangCCMSUI.INSTANCE.TagName());
 		
 		searchResultsPanel.addStyleName(CSSConstants.TagFilteredResultsView.TAGFILTEREDRESULTSPANEL);
 		filterTable.addStyleName(CSSConstants.TagFilteredResultsView.TAGFILTEREDOPTIONSPANEL);

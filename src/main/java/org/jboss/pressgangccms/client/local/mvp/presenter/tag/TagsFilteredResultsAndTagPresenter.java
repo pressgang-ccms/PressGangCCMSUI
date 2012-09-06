@@ -17,6 +17,7 @@ import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImageFilteredRes
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.client.local.mvp.view.image.ImagesFilteredResultsAndImageView;
 import org.jboss.pressgangccms.client.local.mvp.view.tag.TagView;
+import org.jboss.pressgangccms.client.local.mvp.view.tag.TagsFilteredResultsAndTagView;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.rest.v1.collections.RESTImageCollectionV1;
@@ -262,7 +263,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 	@Override
 	public void parseToken(final String historyToken)
 	{
-		queryString = historyToken.replace(ImagesFilteredResultsAndImageView.HISTORY_TOKEN + ";", "");
+		queryString = historyToken.replace(TagsFilteredResultsAndTagView.HISTORY_TOKEN + ";", "");
 		if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX))
 			queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
 
