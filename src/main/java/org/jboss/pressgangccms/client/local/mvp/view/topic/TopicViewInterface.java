@@ -1,5 +1,6 @@
-package org.jboss.pressgangccms.client.local.mvp.view.base;
+package org.jboss.pressgangccms.client.local.mvp.view.topic;
 
+import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 

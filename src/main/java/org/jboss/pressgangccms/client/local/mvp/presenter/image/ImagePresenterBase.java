@@ -1,12 +1,11 @@
-package org.jboss.pressgangccms.client.local.mvp.presenter.base;
+package org.jboss.pressgangccms.client.local.mvp.presenter.image;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.constants.ServiceConstants;
-import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagePresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.client.local.ui.editor.image.RESTLanguageImageV1Editor;

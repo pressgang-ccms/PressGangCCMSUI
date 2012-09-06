@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.client.local.mvp.view.tag.TagView;
+import org.jboss.pressgangccms.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
@@ -22,12 +23,10 @@ public class TagPresenter extends TemplatePresenter
 	{
 	}
 
-	public interface Display extends BaseTemplateViewInterface
-	{
-		void initialize(final RESTTagV1 tag, final boolean readOnly);
+	public interface Display extends TagViewInterface
+	{		
 		@SuppressWarnings("rawtypes")
 		SimpleBeanEditorDriver getDriver();		
-		PushButton getSave();
 	}
 
 	private String tagId;

@@ -17,7 +17,7 @@ import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.PushButton;
 
-public class TagView extends BaseTemplateView implements TagPresenter.Display
+public class TagView extends TagViewBase implements TagPresenter.Display
 {
 	public static final String HISTORY_TOKEN = "TagView";
 	
@@ -25,13 +25,6 @@ public class TagView extends BaseTemplateView implements TagPresenter.Display
 	private final TagPresenterDriver driver = GWT.create(TagPresenterDriver.class);
 	
 	private boolean readOnly = false;
-	
-	private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-	
-	public PushButton getSave()
-	{
-		return save;
-	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -43,13 +36,13 @@ public class TagView extends BaseTemplateView implements TagPresenter.Display
 	public TagView()
 	{
 		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Tags());
-		
-		populateTopActionBar();
 	}
 
 	protected void populateTopActionBar()
 	{
-		addActionButton(this.getSave());
+		this.addActionButton(this.getTagDetails());
+		this.addActionButton(this.getTagProjects());
+		this.addActionButton(this.getSave());
 		addRightAlignedActionButtonPaddingPanel();
 	}
 

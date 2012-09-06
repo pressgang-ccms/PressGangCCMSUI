@@ -1,6 +1,7 @@
-package org.jboss.pressgangccms.client.local.mvp.view.base;
+package org.jboss.pressgangccms.client.local.mvp.view.topic;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
+import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.client.local.preferences.Preferences;
 import org.jboss.pressgangccms.client.local.preferences.Preferences.ButtonView;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
@@ -203,8 +204,6 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 		renderedHorizontalSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.HorizontalSplit());
 		renderedSplitClose = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CloseSubMenu());
 		
-		
-
 		populateTopActionBar();		
 	}
 

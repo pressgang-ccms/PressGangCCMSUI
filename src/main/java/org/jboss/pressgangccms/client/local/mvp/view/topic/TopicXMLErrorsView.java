@@ -3,7 +3,6 @@ package org.jboss.pressgangccms.client.local.mvp.view.topic;
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter.TopicXMLErrorsPresenterDriver;
-import org.jboss.pressgangccms.client.local.mvp.view.base.TopicViewBase;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;

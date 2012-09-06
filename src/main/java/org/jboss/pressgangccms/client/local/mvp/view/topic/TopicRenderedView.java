@@ -5,7 +5,6 @@ import hu.szaboaz.gwt.xslt.client.XsltProcessor;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicRenderedPresenter;
-import org.jboss.pressgangccms.client.local.mvp.view.base.TopicViewBase;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.resources.xsl.DocbookToHTML;

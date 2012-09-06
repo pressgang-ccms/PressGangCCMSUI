@@ -6,10 +6,12 @@ import org.jboss.errai.bus.client.api.RemoteCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.pressgangccms.rest.v1.collections.RESTImageCollectionV1;
+import org.jboss.pressgangccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTLanguageImageV1;
+import org.jboss.pressgangccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
@@ -70,6 +72,23 @@ public final class RESTCalls
 
 	}
 	
+	static public void saveTag(final RESTCallback<RESTTagV1> callback, final RESTTagV1 tag)
+	{
+		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
+		/* Expand the categories and projects in the tags */
+		final String expand = "{\"branches\":[" + TAG_EXPANSION + "]}";
+
+		try
+		{
+			callback.begin();
+			restMethod.updateJSONTag(expand, tag);
+		}
+		catch (final Exception ex)
+		{
+			callback.generalException(ex);
+		}
+	}
+	
 	static public void saveTopic(final RESTCallback<RESTTopicV1> callback, final RESTTopicV1 topic)
 	{
 		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
@@ -107,7 +126,7 @@ public final class RESTCalls
 	{
 		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
 		/* Expand the categories and projects in the tags */
-		final String expand = "{\"branches\":[{\"branches\":[{\"trunk\":{\"showSize\":true,\"name\":\"" + RESTTagV1.CATEGORIES_NAME +"\"}},{\"trunk\":{\"showSize\":true,\"name\":\"" + RESTTagV1.PROJECTS_NAME + "\"}}],\"trunk\":{\"showSize\":true,\"name\":\"tags\"}}]}";
+		final String expand = "{\"branches\":[{\"branches\":[" + TAG_EXPANSION + "],\"trunk\":{\"showSize\":true,\"name\":\"tags\"}}]}";
 		
 		try
 		{
@@ -249,6 +268,24 @@ public final class RESTCalls
 		{
 			callback.begin();
 			restMethod.getJSONTagsWithQuery(new PathSegmentImpl(queryString), expand);
+		}
+		catch (final Exception ex)
+		{
+			callback.generalException(ex);
+		}
+	}
+	
+	static public void getProjectsFromQuery(final RESTCallback<RESTProjectCollectionV1> callback, final String queryString, int start, int end)
+	{
+		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
+		/* Expand the categories and projects in the tags */
+		final String tagsExpand = "\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"showSize\":true,\"name\": \"" + RESTProjectV1.TAGS_NAME + "\"}}]";
+		final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"showSize\":true,\"name\": \"projects\"}, " + tagsExpand + "}]}";
+
+		try
+		{
+			callback.begin();
+			restMethod.getJSONProjectsWithQuery(new PathSegmentImpl(queryString), expand);
 		}
 		catch (final Exception ex)
 		{

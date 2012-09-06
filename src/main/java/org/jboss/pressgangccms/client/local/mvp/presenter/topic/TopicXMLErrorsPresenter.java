@@ -4,7 +4,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgangccms.client.local.mvp.view.base.TopicViewInterface;
+import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicViewInterface;
 import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicXMLErrorsView;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.client.local.ui.SplitType;

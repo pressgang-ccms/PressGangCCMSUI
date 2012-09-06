@@ -18,7 +18,7 @@ import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicXMLErrorsPr
 import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.SearchResultsAndTopicView;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgangccms.client.local.mvp.view.base.TopicViewInterface;
+import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicViewInterface;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.client.local.ui.SplitType;

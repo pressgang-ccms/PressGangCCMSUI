@@ -192,4 +192,18 @@ public interface PressGangCCMSUI extends Constants
 	String TagDescription();
 	
 	String ImageOriginalFileName();
+	
+	String ProjectName();
+	
+	String ProjectID();
+	
+	String ProjectDescription();
+	
+	String NoAction();
+	
+	String AddRemove();
+	
+	String TagDetails();
+	
+	String TagProjects();
 }

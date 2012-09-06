@@ -8,7 +8,6 @@ import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
-import org.jboss.pressgangccms.client.local.mvp.presenter.base.ImagePresenterBase;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.client.local.mvp.view.image.ImagesFilteredResultsAndImageView;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
