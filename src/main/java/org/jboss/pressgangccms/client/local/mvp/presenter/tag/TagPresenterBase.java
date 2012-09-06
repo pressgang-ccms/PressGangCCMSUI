@@ -17,9 +17,9 @@ abstract public class TagPresenterBase extends TemplatePresenter
 		if (!searchDisplay.getIdFilter().getText().isEmpty())
 			retValue.append(";tagIds=" + searchDisplay.getIdFilter().getText());
 		if (!searchDisplay.getDescriptionFilter().getText().isEmpty())
-			retValue.append(";tagName=" + searchDisplay.getDescriptionFilter().getText());
+			retValue.append(";tagName=" + searchDisplay.getNameFilter().getText());
 		if (!searchDisplay.getNameFilter().getText().isEmpty())
-			retValue.append(";tagDesc=" + searchDisplay.getNameFilter().getText());
+			retValue.append(";tagDesc=" + searchDisplay.getDescriptionFilter().getText());
 
 		return retValue.toString();
 	}
