@@ -5,7 +5,7 @@ import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagProjectsPresent
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.client.local.resources.css.TableResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgangccms.rest.v1.components.ComponentTagV1;
+import org.jboss.pressgangccms.rest.v1.components.ComponentProjectV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
 
@@ -67,7 +67,7 @@ public class TagProjectsView extends TagViewBase implements TagProjectsPresenter
 		{
 			if (tag != null)
 			{
-				if (ComponentTagV1.containedInProject(tag, object.getId()))
+				if (ComponentProjectV1.containsTag(object, tag.getId()))
 				{
 					return PressGangCCMSUI.INSTANCE.Remove();
 				}

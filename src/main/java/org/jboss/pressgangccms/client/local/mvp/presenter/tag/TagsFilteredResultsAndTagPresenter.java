@@ -19,6 +19,7 @@ import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgangccms.rest.v1.components.ComponentRESTBaseEntityV1;
 
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -39,7 +40,6 @@ import com.google.gwt.view.client.HasData;
  * edit the properties and relationships of a tag.
  * 
  * @author Matthew Casperson
- * 
  */
 @Dependent
 public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
@@ -64,9 +64,11 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 		@Override
 		public void onClick(ClickEvent event)
 		{
+
 			displayedView = resultDisplay;
 			reInitialiseView();
 		}
+
 	};
 
 	private final ClickHandler tagProjectsClickHandler = new ClickHandler()
@@ -74,6 +76,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 		@Override
 		public void onClick(ClickEvent event)
 		{
+
 			displayedView = projectsDisplay;
 			reInitialiseView();
 		}
@@ -84,6 +87,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 		@Override
 		public void onClick(ClickEvent event)
 		{
+
 			displayedView = categoriesDisplay;
 			reInitialiseView();
 		}
@@ -94,6 +98,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 		@Override
 		public void onClick(final ClickEvent event)
 		{
+			/* Save any changes made to the tag entity itself */
 			final RESTCalls.RESTCallback<RESTTagV1> callback = new RESTCalls.RESTCallback<RESTTagV1>()
 			{
 				@Override
@@ -115,6 +120,12 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 					try
 					{
 						tagProviderData.setDisplayedItem(retValue);
+
+						/* repopulate the categories and tags */
+						getCategories();
+						getProjects();
+
+						/* refresh the display */
 						reInitialiseView();
 					}
 					finally
@@ -132,11 +143,74 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 				}
 			};
 
+			/* Sync changes from the tag view */
 			final RESTTagV1 updateTag = new RESTTagV1();
 			updateTag.setId(tagProviderData.getDisplayedItem().getId());
 			updateTag.explicitSetDescription(tagProviderData.getDisplayedItem().getDescription());
 			updateTag.explicitSetName(tagProviderData.getDisplayedItem().getName());
-			updateTag.explicitSetProjects(tagProviderData.getDisplayedItem().getProjects());
+
+			/*
+			 * Sync changes from the categories. categoryProviderData.getItems()
+			 * contains a collection of all the categories, and their tags
+			 * collections contain any added or removed tag relationships. Here
+			 * we copy those modified relationships into the updateTag, so the
+			 * changes are all done in one transaction.
+			 */
+			updateTag.explicitSetCategories(new RESTCategoryCollectionV1());
+			for (final RESTCategoryV1 category : categoryProviderData.getItems())
+			{
+				for (final RESTTagV1 tag : category.getTags().getItems())
+				{
+					/*
+					 * It should only be possible to add the currently displayed
+					 * tag to the categories
+					 */
+					if (tag.getId().equals(updateTag.getId()))
+					{
+
+						final RESTCategoryV1 addedCategory = new RESTCategoryV1();
+						addedCategory.setId(category.getId());
+
+						if (tag.getAddItem())
+						{
+							addedCategory.setAddItem(true);
+						}
+						else if (tag.getRemoveItem())
+						{
+							addedCategory.setRemoveItem(true);
+						}
+
+						updateTag.getCategories().addItem(addedCategory);
+					}
+				}
+			}
+
+			/*
+			 * Sync changes from the projects.
+			 */
+			updateTag.explicitSetProjects(new RESTProjectCollectionV1());
+			for (final RESTProjectV1 project : projectProviderData.getItems())
+			{
+				for (final RESTTagV1 tag : project.getTags().getItems())
+				{
+					if (tag.getId().equals(updateTag.getId()))
+					{
+						final RESTProjectV1 addedProject = new RESTProjectV1();
+						addedProject.setId(project.getId());
+
+						if (tag.getAddItem())
+						{
+							addedProject.setAddItem(true);
+						}
+						else if (tag.getRemoveItem())
+						{
+							addedProject.setRemoveItem(true);
+						}
+
+						updateTag.getProjects().addItem(addedProject);
+					}
+				}
+			}
 
 			RESTCalls.saveTag(callback, updateTag);
 		}
@@ -155,7 +229,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 	private TagProjectsPresenter.Display projectsDisplay;
 
 	@Inject
-	TagCategoriesPresenter.Display categoriesDisplay;
+	private TagCategoriesPresenter.Display categoriesDisplay;
 
 	/** The tag query string extracted from the history token */
 	private String queryString;
@@ -196,10 +270,6 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 	{
 		super.bind(display);
 
-		getCategories();
-
-		getProjects();
-
 		filteredResultsDisplay.setProvider(generateListProvider());
 
 		bindTagListRowClicks();
@@ -215,6 +285,14 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 		bindCategoryColumnButtons();
 	}
 
+	/**
+	 * Get the collection of projects, to which we will add or remove the
+	 * currently selected tag. Note that the changes made to this collection
+	 * will be synced in reverse to the tag when the save button is clicked i.e.
+	 * where the displayed tag is added to a project, that will actually be
+	 * persisted through the REST interface as a project added to the displayed
+	 * tag.
+	 */
 	private void getProjects()
 	{
 		final RESTCalls.RESTCallback<RESTProjectCollectionV1> callback = new RESTCalls.RESTCallback<RESTProjectCollectionV1>()
@@ -259,8 +337,12 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 	}
 
 	/**
-	 * Gets the categories that will be displayed by the tag/category view
-	 * screen, and then populates the categories provider
+	 * Get the collection of categories, to which we will add or remove the
+	 * currently selected tag. Note that the changes made to this collection
+	 * will be synced in reverse to the tag when the save button is clicked i.e.
+	 * where the displayed tag is added to a project, that will actually be
+	 * persisted through the REST interface as a category added to the displayed
+	 * tag.
 	 */
 	private void getCategories()
 	{
@@ -322,7 +404,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 						/* Tag was added and then removed */
 						if (tag.getAddItem())
 						{
-							categoryProviderData.getDisplayedItem().getTags().getItems().remove(tag);
+							object.getTags().getItems().remove(tag);
 						}
 
 						/* Tag existed, was removed and then was added again */
@@ -345,7 +427,13 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 				{
 					final RESTTagV1 newTag = tagProviderData.getDisplayedItem().clone(true);
 					newTag.setAddItem(true);
-					categoryProviderData.getDisplayedItem().getTags().addItem(newTag);
+					object.getTags().addItem(newTag);
+					/*
+					 * Need to mark the tags collection as dirty. The
+					 * explicitSetTags provides a convenient way to set the
+					 * appropriate configured paramater value
+					 */
+					object.explicitSetTags(object.getTags());
 				}
 
 				/* refresh the category list */
@@ -367,25 +455,25 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 			public void update(final int index, final RESTProjectV1 object, final String value)
 			{
 				boolean found = false;
-				for (final RESTProjectV1 project : tagProviderData.getDisplayedItem().getProjects().getItems())
+				for (final RESTTagV1 tag : object.getTags().getItems())
 				{
-					if (project.getId().equals(object.getId()))
+					if (tag.getId().equals(tagProviderData.getDisplayedItem().getId()))
 					{
 						/* Project was added and then removed */
-						if (project.getAddItem())
+						if (tag.getAddItem())
 						{
-							tagProviderData.getDisplayedItem().getProjects().getItems().remove(project);
+							object.getTags().getItems().remove(tag);
 						}
 
 						/* Project existed, was removed and then was added again */
-						if (project.getRemoveItem())
+						if (tag.getRemoveItem())
 						{
-							project.setRemoveItem(false);
+							tag.setRemoveItem(false);
 						}
 						/* Project existed and was removed */
 						else
 						{
-							project.setRemoveItem(true);
+							tag.setRemoveItem(true);
 						}
 
 						found = true;
@@ -395,10 +483,15 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 
 				if (!found)
 				{
-					final RESTProjectV1 newProject = new RESTProjectV1();
-					newProject.setId(object.getId());
-					newProject.setAddItem(true);
-					tagProviderData.getDisplayedItem().getProjects().addItem(newProject);
+					final RESTTagV1 newTag = tagProviderData.getDisplayedItem().clone(true);
+					newTag.setAddItem(true);
+					object.getTags().addItem(newTag);
+					/*
+					 * Need to mark the tags collection as dirty. The
+					 * explicitSetTags provides a convenient way to set the
+					 * appropriate configured paramater value
+					 */
+					object.explicitSetTags(object.getTags());
 				}
 
 				/* refresh the project list */
@@ -492,7 +585,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 			@Override
 			protected void onRangeChanged(final HasData<RESTProjectV1> display)
 			{
-				projectProviderData.setStartRow(0);				
+				projectProviderData.setStartRow(0);
 				updateRowData(projectProviderData.getStartRow(), projectProviderData.getItems());
 				updateRowCount(projectProviderData.getItems().size(), true);
 			}
@@ -624,6 +717,9 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 
 				if (isClick)
 				{
+					if (!checkForUnsavedChanges())
+						return;
+
 					/*
 					 * selectedSearchImage will be null until an image is
 					 * selected for the first time
@@ -631,56 +727,26 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 					final boolean needToAddImageView = tagProviderData.getSelectedItem() == null;
 
 					tagProviderData.setSelectedItem(event.getValue());
-					tagProviderData.setDisplayedItem(null);
+					tagProviderData.setDisplayedItem(event.getValue());
 
-					final RESTCalls.RESTCallback<RESTTagV1> callback = new RESTCalls.RESTCallback<RESTTagV1>()
+					/*
+					 * If this is the first image selected, display the image
+					 * view
+					 */
+					if (needToAddImageView)
 					{
-						@Override
-						public void begin()
-						{
-							startProcessing();
-						}
+						displayedView = resultDisplay;
+					}
 
-						@Override
-						public void generalException(final Exception ex)
-						{
-							stopProcessing();
-							Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-						}
+					reInitialiseView();
 
-						@Override
-						public void success(final RESTTagV1 retValue)
-						{
-							try
-							{
-								/*
-								 * If this is the first image selected, display
-								 * the image view
-								 */
-								if (needToAddImageView)
-								{
-									displayedView = resultDisplay;
-								}
-
-								tagProviderData.setDisplayedItem(retValue);
-								reInitialiseView();
-							}
-							finally
-							{
-								stopProcessing();
-							}
-						}
-
-						@Override
-						public void failed()
-						{
-							stopProcessing();
-							Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-						}
-
-					};
-
-					RESTCalls.getTag(callback, tagProviderData.getSelectedItem().getId());
+					/*
+					 * Get a fresh collection of projects and categories. This
+					 * is to clear out any added tags. Maybe cache this info if
+					 * reloading is too slow.
+					 */
+					getCategories();
+					getProjects();
 				}
 			}
 		});
@@ -759,5 +825,30 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 		}
 
 		lastDisplayedView = displayedView;
+	}
+
+	private boolean checkForUnsavedChanges()
+	{
+		/* sync the UI with the underlying tag */
+		if (tagProviderData.getSelectedItem() != null)
+		{
+			resultDisplay.getDriver().flush();
+
+			/*
+			 * See if any items have been added or removed from the project and
+			 * category lists
+			 */
+			final boolean unsavedCategoryChanges = ComponentRESTBaseEntityV1.returnDirtyState(categoryProviderData.getItems());
+			final boolean unsavedProjectChanges = ComponentRESTBaseEntityV1.returnDirtyState(projectProviderData.getItems());
+
+			final boolean unsavedTagChanges = !tagProviderData.getSelectedItem().getDescription().equals(tagProviderData.getDisplayedItem().getDescription()) || !tagProviderData.getSelectedItem().getName().equals(tagProviderData.getDisplayedItem().getName());
+
+			if (unsavedCategoryChanges || unsavedProjectChanges || unsavedTagChanges)
+			{
+				return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
+			}
+		}
+
+		return true;
 	}
 }

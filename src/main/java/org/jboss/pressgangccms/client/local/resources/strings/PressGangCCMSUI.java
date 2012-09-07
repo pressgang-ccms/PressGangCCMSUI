@@ -222,4 +222,6 @@ public interface PressGangCCMSUI extends Constants
 	String Top();
 	
 	String Bottom();
+	
+	String UnsavedChangesPrompt();
 }
