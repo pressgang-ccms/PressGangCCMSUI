@@ -121,9 +121,9 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 					{
 						tagProviderData.setDisplayedItem(retValue);
 
-						/* repopulate the categories and tags */
-						getCategories();
-						getProjects();
+						/* clear the categories and tags */
+						categoryProviderData = new ProviderUpdateData<RESTCategoryV1>();
+						projectProviderData = new ProviderUpdateData<RESTProjectV1>();
 
 						/* refresh the display */
 						reInitialiseView();
@@ -737,16 +737,16 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 					{
 						displayedView = resultDisplay;
 					}
-
-					reInitialiseView();
-
+					
 					/*
-					 * Get a fresh collection of projects and categories. This
+					 * Reset the category and projects data. This
 					 * is to clear out any added tags. Maybe cache this info if
 					 * reloading is too slow.
 					 */
-					getCategories();
-					getProjects();
+					categoryProviderData = new ProviderUpdateData<RESTCategoryV1>();
+					projectProviderData = new ProviderUpdateData<RESTProjectV1>();
+
+					reInitialiseView();
 				}
 			}
 		});
@@ -813,9 +813,19 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 		 * apply to a new tag
 		 */
 		if (displayedView == projectsDisplay)
-			projectsDisplay.getProvider().updateRowData(projectProviderData.getStartRow(), projectProviderData.getItems());
+		{
+			if (projectProviderData.getItems() == null)
+			{
+				getProjects();
+			}
+		}
 		else if (displayedView == categoriesDisplay)
-			categoriesDisplay.getProvider().updateRowData(categoryProviderData.getStartRow(), categoryProviderData.getItems());
+		{
+			if (categoryProviderData.getItems() == null)
+			{
+				getCategories();
+			}
+		}
 
 		/* update the display widgets if we have changed displays */
 		if (lastDisplayedView != displayedView)
@@ -838,8 +848,8 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 			 * See if any items have been added or removed from the project and
 			 * category lists
 			 */
-			final boolean unsavedCategoryChanges = ComponentRESTBaseEntityV1.returnDirtyState(categoryProviderData.getItems());
-			final boolean unsavedProjectChanges = ComponentRESTBaseEntityV1.returnDirtyState(projectProviderData.getItems());
+			final boolean unsavedCategoryChanges = categoryProviderData.getItems() != null && ComponentRESTBaseEntityV1.returnDirtyState(categoryProviderData.getItems());
+			final boolean unsavedProjectChanges = projectProviderData.getItems() != null && ComponentRESTBaseEntityV1.returnDirtyState(projectProviderData.getItems());
 
 			final boolean unsavedTagChanges = !tagProviderData.getSelectedItem().getDescription().equals(tagProviderData.getDisplayedItem().getDescription()) || !tagProviderData.getSelectedItem().getName().equals(tagProviderData.getDisplayedItem().getName());
 
