@@ -510,7 +510,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 			@Override
 			protected void onRangeChanged(final HasData<RESTTagV1> display)
 			{
-				tagProviderData.setStartRow(0);
+				tagProviderData.setStartRow(display.getVisibleRange().getStart());
 				final int length = display.getVisibleRange().getLength();
 				final int end = tagProviderData.getStartRow() + length;
 
