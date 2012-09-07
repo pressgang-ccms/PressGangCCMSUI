@@ -39,6 +39,7 @@ final public class CSSConstants
 	{
 		static public final String TAGCATEGORIESLISTPANEL = "TagCategoriesListPanel";
 		static public final String TAGCATEGORYTAGSLISTPANEL = "TagCategoryTagsListPanel";
+		static public final String TAGCATEGORIESSPLITPANEL = "TagCategoriesSplitPanel";
 	}
 
 	/**

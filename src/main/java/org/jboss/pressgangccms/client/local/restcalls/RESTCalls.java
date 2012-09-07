@@ -296,6 +296,24 @@ public final class RESTCalls
 		}
 	}
 	
+	static public void getCategories(final RESTCallback<RESTCategoryCollectionV1> callback)
+	{
+		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
+		/* Expand the categories and projects in the tags */
+		
+		final String expand = "{\"branches\":[{\"trunk\":{ \"showSize\":true,\"name\": \"categories\"}, \"branches\":[" + CATEGORY_EXPANSION + "]}]}";
+
+		try
+		{
+			callback.begin();
+			restMethod.getJSONCategories(expand);
+		}
+		catch (final Exception ex)
+		{
+			callback.generalException(ex);
+		}
+	}
+	
 	static public void getCategoriesFromQuery(final RESTCallback<RESTCategoryCollectionV1> callback, final String queryString, int start, int end)
 	{
 		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
@@ -318,13 +336,31 @@ public final class RESTCalls
 	{
 		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
 		/* Expand the categories and projects in the tags */
-		final String tagsExpand = "\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"showSize\":true,\"name\": \"" + RESTProjectV1.TAGS_NAME + "\"}}]";
+		final String tagsExpand = "\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTProjectV1.TAGS_NAME + "\"}}]";
 		final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"showSize\":true,\"name\": \"projects\"}, " + tagsExpand + "}]}";
 
 		try
 		{
 			callback.begin();
 			restMethod.getJSONProjectsWithQuery(new PathSegmentImpl(queryString), expand);
+		}
+		catch (final Exception ex)
+		{
+			callback.generalException(ex);
+		}
+	}
+	
+	static public void getProjects(final RESTCallback<RESTProjectCollectionV1> callback)
+	{
+		final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
+		/* Expand the categories and projects in the tags */
+		final String tagsExpand = "\"branches\":[\"showSize\":true,\"name\": \"" + RESTProjectV1.TAGS_NAME + "\"}}]";
+		final String expand = "{\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"projects\"}, " + tagsExpand + "}]}";
+
+		try
+		{
+			callback.begin();
+			restMethod.getJSONProjects(expand);
 		}
 		catch (final Exception ex)
 		{

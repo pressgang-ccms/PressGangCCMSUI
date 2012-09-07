@@ -5,6 +5,7 @@ import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagCategoriesPresenter;
 import org.jboss.pressgangccms.client.local.resources.css.TableResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgangccms.rest.v1.components.ComponentCategoryV1;
 import org.jboss.pressgangccms.rest.v1.components.ComponentTagV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
@@ -74,7 +75,7 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
 		{
 			if (tag != null)
 			{
-				if (ComponentTagV1.containedInCategory(tag, object.getId()))
+				if (ComponentCategoryV1.containsTag(object, tag.getId()))
 				{
 					return PressGangCCMSUI.INSTANCE.Remove();
 				}
@@ -167,6 +168,7 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
 	public void setTagsProvider(AsyncDataProvider<RESTTagV1> tagsProvider)
 	{
 		this.tagsProvider = tagsProvider;
+		tagsProvider.addDataDisplay(tagsResults);
 	}
 
 	public Column<RESTCategoryV1, String> getButtonColumn()
@@ -199,7 +201,8 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
 	{
 		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Tags());
 
-		results.addColumn(idColumn, PressGangCCMSUI.INSTANCE.CategoryID());
+		split.addStyleName(CSSConstants.TagCategoryView.TAGCATEGORIESSPLITPANEL);
+
 		results.addColumn(nameColumn, PressGangCCMSUI.INSTANCE.CategoryName());
 		results.addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.CategoryDescription());
 		results.addColumn(buttonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
@@ -222,7 +225,7 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
 		tagsResultsPanel.add(tagsResults);
 		tagsResultsPanel.add(tagsPager);
 		
-		searchResultsPanel.addStyleName(CSSConstants.TagCategoryView.TAGCATEGORYTAGSLISTPANEL);
+		tagsResultsPanel.addStyleName(CSSConstants.TagCategoryView.TAGCATEGORYTAGSLISTPANEL);
 		
 		tagsPager.setDisplay(tagsResults);
 		
