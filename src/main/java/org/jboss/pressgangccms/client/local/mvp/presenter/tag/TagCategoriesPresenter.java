@@ -22,119 +22,103 @@ import com.google.gwt.view.client.HasData;
 
 /**
  * The presenter that provides the logic for the tag category relationships.
+ * 
  * @author matthew
- *
+ * 
  */
 @Dependent
-public class TagCategoriesPresenter extends TemplatePresenter
-{
-	public interface Display extends TagViewInterface
-	{
-		AsyncDataProvider<RESTCategoryV1> getProvider();
+public class TagCategoriesPresenter extends TemplatePresenter {
+    public interface Display extends TagViewInterface {
+        AsyncDataProvider<RESTCategoryV1> getProvider();
 
-		void setProvider(final AsyncDataProvider<RESTCategoryV1> provider);
+        void setProvider(final AsyncDataProvider<RESTCategoryV1> provider);
 
-		CellTable<RESTCategoryV1> getResults();
+        CellTable<RESTCategoryV1> getResults();
 
-		SimplePager getPager();
-		
-		Column<RESTCategoryV1, String> getButtonColumn();
-		
-		Column<RESTTagV1, String> getTagDownButtonColumn();
+        SimplePager getPager();
 
-		Column<RESTTagV1, String> getTagUpButtonColumn();
+        Column<RESTCategoryV1, String> getButtonColumn();
 
-		AsyncDataProvider<RESTTagV1> getTagsProvider();
+        Column<RESTTagV1, String> getTagDownButtonColumn();
 
-		void setTagsProvider(AsyncDataProvider<RESTTagV1> tagsProvider);
-		
-		VerticalPanel getTagsResultsPanel();
-		
-		SplitLayoutPanel getSplit();
-	}
+        Column<RESTTagV1, String> getTagUpButtonColumn();
 
-	@Inject
-	private Display display;
-	
-	private String queryString;
+        AsyncDataProvider<RESTTagV1> getTagsProvider();
 
-	@Override
-	public void parseToken(final String searchToken)
-	{
-		queryString = searchToken.replace(TagProjectsView.HISTORY_TOKEN + ";", "");
-	}
+        void setTagsProvider(AsyncDataProvider<RESTTagV1> tagsProvider);
 
-	@Override
-	public void go(final HasWidgets container)
-	{
-		container.clear();
-		container.add(display.getTopLevelPanel());
+        VerticalPanel getTagsResultsPanel();
 
-		bind();
-	}
+        SplitLayoutPanel getSplit();
+    }
 
-	private void bind()
-	{
-		super.bind(display);
+    @Inject
+    private Display display;
 
-		final AsyncDataProvider<RESTCategoryV1> provider = new AsyncDataProvider<RESTCategoryV1>()
-		{
-			@Override
-			protected void onRangeChanged(final HasData<RESTCategoryV1> display)
-			{
-				final int start = display.getVisibleRange().getStart();
-				final int length = display.getVisibleRange().getLength();
-				final int end = start + length;
+    private String queryString;
 
-				final RESTCalls.RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>()
-				{
-					@Override
-					public void begin()
-					{
-						startProcessing();
-					}
+    @Override
+    public void parseToken(final String searchToken) {
+        queryString = searchToken.replace(TagProjectsView.HISTORY_TOKEN + ";", "");
+    }
 
-					@Override
-					public void generalException(final Exception ex)
-					{
-						stopProcessing();
-					}
+    @Override
+    public void go(final HasWidgets container) {
+        container.clear();
+        container.add(display.getTopLevelPanel());
 
-					@Override
-					public void success(final RESTCategoryCollectionV1 retValue)
-					{
-						try
-						{
-							updateRowData(start, retValue.getItems());
-							updateRowCount(retValue.getSize(), true);
-						}
-						finally
-						{
-							stopProcessing();
-						}
-					}	
+        bind();
+    }
 
-					@Override
-					public void failed()
-					{
-						stopProcessing();
-					}
-				};
-				
-				RESTCalls.getCategoriesFromQuery(callback, queryString, start, end);
-			}
-		};
+    private void bind() {
+        super.bind(display);
 
-		display.setProvider(provider);
-	}
+        final AsyncDataProvider<RESTCategoryV1> provider = new AsyncDataProvider<RESTCategoryV1>() {
+            @Override
+            protected void onRangeChanged(final HasData<RESTCategoryV1> display) {
+                final int start = display.getVisibleRange().getStart();
+                final int length = display.getVisibleRange().getLength();
+                final int end = start + length;
 
-	private void stopProcessing()
-	{
-		display.setSpinnerVisible(false);
-	}
+                final RESTCalls.RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
+                    @Override
+                    public void begin() {
+                        startProcessing();
+                    }
 
-	private void startProcessing()
-	{
-		display.setSpinnerVisible(true);
-	}
+                    @Override
+                    public void generalException(final Exception ex) {
+                        stopProcessing();
+                    }
+
+                    @Override
+                    public void success(final RESTCategoryCollectionV1 retValue) {
+                        try {
+                            updateRowData(start, retValue.getItems());
+                            updateRowCount(retValue.getSize(), true);
+                        } finally {
+                            stopProcessing();
+                        }
+                    }
+
+                    @Override
+                    public void failed() {
+                        stopProcessing();
+                    }
+                };
+
+                RESTCalls.getCategoriesFromQuery(callback, queryString, start, end);
+            }
+        };
+
+        display.setProvider(provider);
+    }
+
+    private void stopProcessing() {
+        display.setSpinnerVisible(false);
+    }
+
+    private void startProcessing() {
+        display.setSpinnerVisible(true);
+    }
 }

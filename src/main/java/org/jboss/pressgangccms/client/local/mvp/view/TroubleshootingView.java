@@ -4,11 +4,9 @@ import org.jboss.pressgangccms.client.local.mvp.presenter.TroubleshootingPresent
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 
-public class TroubleshootingView extends BaseTemplateView implements TroubleshootingPresenter.Display
-{
+public class TroubleshootingView extends BaseTemplateView implements TroubleshootingPresenter.Display {
 
-	public TroubleshootingView(String applicationName, String pageName)
-	{
-		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Troubleshooting());
-	}
+    public TroubleshootingView(String applicationName, String pageName) {
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Troubleshooting());
+    }
 }

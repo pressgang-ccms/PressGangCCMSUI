@@ -24,415 +24,346 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 
-abstract public class ImagePresenterBase extends TemplatePresenter
-{
-	/** The currently displayed image */
-	protected RESTImageV1 displayedImage;
-	
-	/** A reference to the StringConstants that holds the locales */
-	protected String[] locales;
-	
-	protected String getQuery(final ImageFilteredResultsPresenter.Display imageSearchDisplay)
-	{
-		final StringBuilder retValue = new StringBuilder(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON);
-		if (!imageSearchDisplay.getImageIdFilter().getText().isEmpty())
-			retValue.append(";imageIds=" + imageSearchDisplay.getImageIdFilter().getText());
-		if (!imageSearchDisplay.getImageDescriptionFilter().getText().isEmpty())
-			retValue.append(";imageDesc=" + imageSearchDisplay.getImageDescriptionFilter().getText());
-		if (!imageSearchDisplay.getImageOriginalFileNameFilter().getText().isEmpty())
-			retValue.append(";imageOrigName=" + imageSearchDisplay.getImageOriginalFileNameFilter().getText());
-		
-		return retValue.toString();
-	}
-	
-	protected List<String> getUnassignedLocales()
-	{
-		final List<String> newLocales = Arrays.asList(locales);
+abstract public class ImagePresenterBase extends TemplatePresenter {
+    /** The currently displayed image */
+    protected RESTImageV1 displayedImage;
 
-		/* Make it so you can't add a locale if it already exists */
-		if (displayedImage.getLanguageImages_OTM() != null && displayedImage.getLanguageImages_OTM().getItems() != null)
-			for (final RESTLanguageImageV1 langImage : displayedImage.getLanguageImages_OTM().getItems())
-				newLocales.remove(langImage.getLocale());
-		
-		return newLocales;
-	}
-	
-	protected void getLocales()
-	{
-		final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new RESTCalls.RESTCallback<RESTStringConstantV1>()
-		{
-			@Override
-			public void begin()
-			{
-				startProcessing();
-			}
+    /** A reference to the StringConstants that holds the locales */
+    protected String[] locales;
 
-			@Override
-			public void generalException(final Exception ex)
-			{
-				stopProcessing();
-			}
+    protected String getQuery(final ImageFilteredResultsPresenter.Display imageSearchDisplay) {
+        final StringBuilder retValue = new StringBuilder(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON);
+        if (!imageSearchDisplay.getImageIdFilter().getText().isEmpty())
+            retValue.append(";imageIds=" + imageSearchDisplay.getImageIdFilter().getText());
+        if (!imageSearchDisplay.getImageDescriptionFilter().getText().isEmpty())
+            retValue.append(";imageDesc=" + imageSearchDisplay.getImageDescriptionFilter().getText());
+        if (!imageSearchDisplay.getImageOriginalFileNameFilter().getText().isEmpty())
+            retValue.append(";imageOrigName=" + imageSearchDisplay.getImageOriginalFileNameFilter().getText());
 
-			@Override
-			public void success(final RESTStringConstantV1 retValue)
-			{
-				try
-				{
-					/* Get the list of locales from the StringConstant */
-					locales = retValue.getValue().replaceAll("\\n", "").replaceAll(" ", "").split(",");
-				}
-				finally
-				{
-					stopProcessing();
-				}
-			}
+        return retValue.toString();
+    }
 
-			@Override
-			public void failed()
-			{
-				stopProcessing();
-			}
-		};
+    protected List<String> getUnassignedLocales() {
+        final List<String> newLocales = Arrays.asList(locales);
 
-		RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRINGCONSTANT);
-	}
-	
-	protected void bindImageViewButtons(final ImagePresenter.Display imageDisplay)
-	{
-		imageDisplay.getSave().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				imageDisplay.getEditor().flush();
+        /* Make it so you can't add a locale if it already exists */
+        if (displayedImage.getLanguageImages_OTM() != null && displayedImage.getLanguageImages_OTM().getItems() != null)
+            for (final RESTLanguageImageV1 langImage : displayedImage.getLanguageImages_OTM().getItems())
+                newLocales.remove(langImage.getLocale());
 
-				/*
-				 * Create the image to be modified. This is so we don't send off
-				 * unnessessary data.
-				 */
-				final RESTImageV1 updateImage = new RESTImageV1();
-				updateImage.setId(displayedImage.getId());
-				updateImage.explicitSetDescription(displayedImage.getDescription());
+        return newLocales;
+    }
 
-				final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>()
-				{
-					@Override
-					public void begin()
-					{
-						startProcessing();
-					}
+    protected void getLocales() {
+        final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new RESTCalls.RESTCallback<RESTStringConstantV1>() {
+            @Override
+            public void begin() {
+                startProcessing();
+            }
 
-					@Override
-					public void generalException(final Exception ex)
-					{
-						stopProcessing();
-					}
+            @Override
+            public void generalException(final Exception ex) {
+                stopProcessing();
+            }
 
-					@Override
-					public void success(final RESTImageV1 retValue)
-					{
-						try
-						{
-							displayedImage = retValue;
-							reInitialiseImageView();
-						}
-						finally
-						{
-							stopProcessing();
-						}
-					}
+            @Override
+            public void success(final RESTStringConstantV1 retValue) {
+                try {
+                    /* Get the list of locales from the StringConstant */
+                    locales = retValue.getValue().replaceAll("\\n", "").replaceAll(" ", "").split(",");
+                } finally {
+                    stopProcessing();
+                }
+            }
 
-					@Override
-					public void failed()
-					{
-						stopProcessing();
-					}
-				};
+            @Override
+            public void failed() {
+                stopProcessing();
+            }
+        };
 
-				RESTCalls.saveImage(callback, updateImage);
+        RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRINGCONSTANT);
+    }
 
-			}
-		});
+    protected void bindImageViewButtons(final ImagePresenter.Display imageDisplay) {
+        imageDisplay.getSave().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                imageDisplay.getEditor().flush();
 
-		imageDisplay.getAddLocale().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				imageDisplay.getAddLocaleDialog().getDialogBox().center();
-				imageDisplay.getAddLocaleDialog().getDialogBox().show();
-			}
-		});
+                /*
+                 * Create the image to be modified. This is so we don't send off unnessessary data.
+                 */
+                final RESTImageV1 updateImage = new RESTImageV1();
+                updateImage.setId(displayedImage.getId());
+                updateImage.explicitSetDescription(displayedImage.getDescription());
 
-		imageDisplay.getRemoveLocale().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				if (Window.confirm(PressGangCCMSUI.INSTANCE.ConfirmDelete()))
-				{
+                final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
+                    @Override
+                    public void begin() {
+                        startProcessing();
+                    }
 
-					final int selectedTab = imageDisplay.getEditor().languageImages_OTMEditor().getSelectedIndex();
-					if (selectedTab != -1)
-					{
-						final RESTLanguageImageV1 selectedImage = imageDisplay.getEditor().languageImages_OTMEditor().itemsEditor().getList().get(selectedTab);
+                    @Override
+                    public void generalException(final Exception ex) {
+                        stopProcessing();
+                    }
 
-						/*
-						 * Create the image to be modified. This is so we don't
-						 * send off unnessessary data.
-						 */
-						final RESTImageV1 updateImage = new RESTImageV1();
-						updateImage.setId(displayedImage.getId());
+                    @Override
+                    public void success(final RESTImageV1 retValue) {
+                        try {
+                            displayedImage = retValue;
+                            reInitialiseImageView();
+                        } finally {
+                            stopProcessing();
+                        }
+                    }
 
-						/* Create the language image */
-						final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
-						languageImage.setRemoveItem(true);
-						languageImage.setId(selectedImage.getId());
+                    @Override
+                    public void failed() {
+                        stopProcessing();
+                    }
+                };
 
-						/* Add the langauge image */
-						updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
-						updateImage.getLanguageImages_OTM().addItem(languageImage);
+                RESTCalls.saveImage(callback, updateImage);
 
-						final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>()
-						{
-							@Override
-							public void begin()
-							{
-								startProcessing();
-							}
+            }
+        });
 
-							@Override
-							public void generalException(final Exception ex)
-							{
-								stopProcessing();
-							}
+        imageDisplay.getAddLocale().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                imageDisplay.getAddLocaleDialog().getDialogBox().center();
+                imageDisplay.getAddLocaleDialog().getDialogBox().show();
+            }
+        });
 
-							@Override
-							public void success(final RESTImageV1 retValue)
-							{
-								try
-								{
-									displayedImage = retValue;
-									reInitialiseImageView();
-								}
-								finally
-								{
-									stopProcessing();
-								}
-							}
+        imageDisplay.getRemoveLocale().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                if (Window.confirm(PressGangCCMSUI.INSTANCE.ConfirmDelete())) {
 
-							@Override
-							public void failed()
-							{
-								stopProcessing();
-							}
-						};
+                    final int selectedTab = imageDisplay.getEditor().languageImages_OTMEditor().getSelectedIndex();
+                    if (selectedTab != -1) {
+                        final RESTLanguageImageV1 selectedImage = imageDisplay.getEditor().languageImages_OTMEditor()
+                                .itemsEditor().getList().get(selectedTab);
 
-						RESTCalls.saveImage(callback, updateImage);
-					}
-				}
-			}
-		});
+                        /*
+                         * Create the image to be modified. This is so we don't send off unnessessary data.
+                         */
+                        final RESTImageV1 updateImage = new RESTImageV1();
+                        updateImage.setId(displayedImage.getId());
 
-		imageDisplay.getAddLocaleDialog().getOk().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				imageDisplay.getAddLocaleDialog().getDialogBox().hide();
+                        /* Create the language image */
+                        final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
+                        languageImage.setRemoveItem(true);
+                        languageImage.setId(selectedImage.getId());
 
-				final String selectedLocale = imageDisplay.getAddLocaleDialog().getLocales().getItemText(imageDisplay.getAddLocaleDialog().getLocales().getSelectedIndex());
+                        /* Add the langauge image */
+                        updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
+                        updateImage.getLanguageImages_OTM().addItem(languageImage);
 
-				/* Don't add locales twice */
-				if (displayedImage.getLanguageImages_OTM() != null && displayedImage.getLanguageImages_OTM().getItems() != null)
-					for (final RESTLanguageImageV1 langImage : displayedImage.getLanguageImages_OTM().getItems())
-						if (langImage.getLocale().equals(selectedLocale))
-							return;
+                        final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
+                            @Override
+                            public void begin() {
+                                startProcessing();
+                            }
 
-				/*
-				 * Create the image to be modified. This is so we don't send off
-				 * unnessessary data.
-				 */
-				final RESTImageV1 updateImage = new RESTImageV1();
-				updateImage.setId(displayedImage.getId());
+                            @Override
+                            public void generalException(final Exception ex) {
+                                stopProcessing();
+                            }
 
-				/* Create the language image */
-				final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
-				languageImage.setAddItem(true);
-				languageImage.explicitSetLocale(selectedLocale);
+                            @Override
+                            public void success(final RESTImageV1 retValue) {
+                                try {
+                                    displayedImage = retValue;
+                                    reInitialiseImageView();
+                                } finally {
+                                    stopProcessing();
+                                }
+                            }
 
-				/* Add the langauge image */
-				updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
-				updateImage.getLanguageImages_OTM().addItem(languageImage);
+                            @Override
+                            public void failed() {
+                                stopProcessing();
+                            }
+                        };
 
-				final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>()
-				{
-					@Override
-					public void begin()
-					{
-						startProcessing();
-					}
+                        RESTCalls.saveImage(callback, updateImage);
+                    }
+                }
+            }
+        });
 
-					@Override
-					public void generalException(final Exception ex)
-					{
-						stopProcessing();
-					}
+        imageDisplay.getAddLocaleDialog().getOk().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                imageDisplay.getAddLocaleDialog().getDialogBox().hide();
 
-					@Override
-					public void success(final RESTImageV1 retValue)
-					{
-						try
-						{
-							displayedImage = retValue;
-							reInitialiseImageView();
-						}
-						finally
-						{
-							stopProcessing();
-						}
-					}
+                final String selectedLocale = imageDisplay.getAddLocaleDialog().getLocales()
+                        .getItemText(imageDisplay.getAddLocaleDialog().getLocales().getSelectedIndex());
 
-					@Override
-					public void failed()
-					{
-						stopProcessing();
-					}
-				};
+                /* Don't add locales twice */
+                if (displayedImage.getLanguageImages_OTM() != null && displayedImage.getLanguageImages_OTM().getItems() != null)
+                    for (final RESTLanguageImageV1 langImage : displayedImage.getLanguageImages_OTM().getItems())
+                        if (langImage.getLocale().equals(selectedLocale))
+                            return;
 
-				RESTCalls.saveImage(callback, updateImage);
-			}
-		});
+                /*
+                 * Create the image to be modified. This is so we don't send off unnessessary data.
+                 */
+                final RESTImageV1 updateImage = new RESTImageV1();
+                updateImage.setId(displayedImage.getId());
 
-		imageDisplay.getAddLocaleDialog().getCancel().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				imageDisplay.getAddLocaleDialog().getDialogBox().hide();
-			}
-		});
-	}
-	
-	/**
-	 * Each Language Image has an upload button that needs to be bound to some
-	 * behaviour.
-	 */
-	protected void bindImageUploadButtons(final ImagePresenter.Display imageDisplay)
-	{
-		if (imageDisplay.getEditor() == null)
-			throw new IllegalStateException("display.getEditor() cannot be null");
+                /* Create the language image */
+                final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
+                languageImage.setAddItem(true);
+                languageImage.explicitSetLocale(selectedLocale);
 
-		for (final RESTLanguageImageV1Editor editor : imageDisplay.getEditor().languageImages_OTMEditor().itemsEditor().getEditors())
-		{
-			editor.getUploadButton().addClickHandler(new ClickHandler()
-			{
-				@Override
-				public void onClick(final ClickEvent event)
-				{
-					for (final File file : editor.getUpload().getFiles())
-					{
-						startProcessing();
+                /* Add the langauge image */
+                updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
+                updateImage.getLanguageImages_OTM().addItem(languageImage);
 
-						final FileReader reader = new FileReader();
+                final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
+                    @Override
+                    public void begin() {
+                        startProcessing();
+                    }
 
-						reader.addErrorHandler(new ErrorHandler()
-						{
-							@Override
-							public void onError(final org.vectomatic.file.events.ErrorEvent event)
-							{
-								stopProcessing();
-							}
-						});
+                    @Override
+                    public void generalException(final Exception ex) {
+                        stopProcessing();
+                    }
 
-						reader.addLoadEndHandler(new LoadEndHandler()
-						{
-							@Override
-							public void onLoadEnd(final LoadEndEvent event)
-							{
-								try
-								{
-									final String result = reader.getStringResult();
-									final byte[] buffer = GWTUtilities.getByteArray(result, 1);
+                    @Override
+                    public void success(final RESTImageV1 retValue) {
+                        try {
+                            displayedImage = retValue;
+                            reInitialiseImageView();
+                        } finally {
+                            stopProcessing();
+                        }
+                    }
 
-									/*
-									 * Create the image to be modified. This is
-									 * so we don't send off unnessessary data.
-									 */
-									final RESTImageV1 updateImage = new RESTImageV1();
-									updateImage.setId(displayedImage.getId());
+                    @Override
+                    public void failed() {
+                        stopProcessing();
+                    }
+                };
 
-									/* Create the language image */
-									final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
-									languageImage.setAddItem(true);
-									languageImage.explicitSetLocale(editor.self.getLocale());
-									languageImage.explicitSetImageData(buffer);
-									languageImage.explicitSetFilename(file.getName());
+                RESTCalls.saveImage(callback, updateImage);
+            }
+        });
 
-									/* Delete the old language image */
-									final RESTLanguageImageV1 deleteLanguageImage = new RESTLanguageImageV1();
-									deleteLanguageImage.setRemoveItem(true);
-									deleteLanguageImage.setId(editor.self.getId());
+        imageDisplay.getAddLocaleDialog().getCancel().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                imageDisplay.getAddLocaleDialog().getDialogBox().hide();
+            }
+        });
+    }
 
-									/* Add the langauge image */
-									updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
-									updateImage.getLanguageImages_OTM().addItem(languageImage);
-									updateImage.getLanguageImages_OTM().addItem(deleteLanguageImage);
+    /**
+     * Each Language Image has an upload button that needs to be bound to some behaviour.
+     */
+    protected void bindImageUploadButtons(final ImagePresenter.Display imageDisplay) {
+        if (imageDisplay.getEditor() == null)
+            throw new IllegalStateException("display.getEditor() cannot be null");
 
-									final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>()
-									{
-										@Override
-										public void begin()
-										{
-											startProcessing();
-										}
+        for (final RESTLanguageImageV1Editor editor : imageDisplay.getEditor().languageImages_OTMEditor().itemsEditor()
+                .getEditors()) {
+            editor.getUploadButton().addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(final ClickEvent event) {
+                    for (final File file : editor.getUpload().getFiles()) {
+                        startProcessing();
 
-										@Override
-										public void generalException(final Exception ex)
-										{
-											stopProcessing();
-										}
+                        final FileReader reader = new FileReader();
 
-										@Override
-										public void success(final RESTImageV1 retValue)
-										{
-											try
-											{
-												displayedImage = retValue;
-												reInitialiseImageView();
-											}
-											finally
-											{
-												stopProcessing();
-											}
-										}
+                        reader.addErrorHandler(new ErrorHandler() {
+                            @Override
+                            public void onError(final org.vectomatic.file.events.ErrorEvent event) {
+                                stopProcessing();
+                            }
+                        });
 
-										@Override
-										public void failed()
-										{
-											stopProcessing();
-											Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-										}
-									};
+                        reader.addLoadEndHandler(new LoadEndHandler() {
+                            @Override
+                            public void onLoadEnd(final LoadEndEvent event) {
+                                try {
+                                    final String result = reader.getStringResult();
+                                    final byte[] buffer = GWTUtilities.getByteArray(result, 1);
 
-									RESTCalls.saveImage(callback, updateImage);
-								}
-								finally
-								{
-									stopProcessing();
-								}
-							}
-						});
+                                    /*
+                                     * Create the image to be modified. This is so we don't send off unnessessary data.
+                                     */
+                                    final RESTImageV1 updateImage = new RESTImageV1();
+                                    updateImage.setId(displayedImage.getId());
 
-						reader.readAsBinaryString(file);
-					}
-				}
-			});
-		}
+                                    /* Create the language image */
+                                    final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
+                                    languageImage.setAddItem(true);
+                                    languageImage.explicitSetLocale(editor.self.getLocale());
+                                    languageImage.explicitSetImageData(buffer);
+                                    languageImage.explicitSetFilename(file.getName());
 
-	}
-	
-	abstract protected void stopProcessing();
-	abstract protected void startProcessing();
-	abstract protected void reInitialiseImageView();
+                                    /* Delete the old language image */
+                                    final RESTLanguageImageV1 deleteLanguageImage = new RESTLanguageImageV1();
+                                    deleteLanguageImage.setRemoveItem(true);
+                                    deleteLanguageImage.setId(editor.self.getId());
+
+                                    /* Add the langauge image */
+                                    updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
+                                    updateImage.getLanguageImages_OTM().addItem(languageImage);
+                                    updateImage.getLanguageImages_OTM().addItem(deleteLanguageImage);
+
+                                    final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
+                                        @Override
+                                        public void begin() {
+                                            startProcessing();
+                                        }
+
+                                        @Override
+                                        public void generalException(final Exception ex) {
+                                            stopProcessing();
+                                        }
+
+                                        @Override
+                                        public void success(final RESTImageV1 retValue) {
+                                            try {
+                                                displayedImage = retValue;
+                                                reInitialiseImageView();
+                                            } finally {
+                                                stopProcessing();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void failed() {
+                                            stopProcessing();
+                                            Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+                                        }
+                                    };
+
+                                    RESTCalls.saveImage(callback, updateImage);
+                                } finally {
+                                    stopProcessing();
+                                }
+                            }
+                        });
+
+                        reader.readAsBinaryString(file);
+                    }
+                }
+            });
+        }
+
+    }
+
+    abstract protected void stopProcessing();
+
+    abstract protected void startProcessing();
+
+    abstract protected void reInitialiseImageView();
 }

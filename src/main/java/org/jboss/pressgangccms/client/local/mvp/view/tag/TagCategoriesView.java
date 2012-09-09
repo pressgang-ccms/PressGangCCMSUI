@@ -20,244 +20,208 @@ import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.AsyncDataProvider;
 
-public class TagCategoriesView extends TagViewBase implements TagCategoriesPresenter.Display
-{
-	public static final String HISTORY_TOKEN = "TagCategoriesView";
+public class TagCategoriesView extends TagViewBase implements TagCategoriesPresenter.Display {
+    public static final String HISTORY_TOKEN = "TagCategoriesView";
 
-	/** A reference to the tag that this view will be modifying */
-	private RESTTagV1 tag;
+    /** A reference to the tag that this view will be modifying */
+    private RESTTagV1 tag;
 
-	private SplitLayoutPanel split = new SplitLayoutPanel();
+    private SplitLayoutPanel split = new SplitLayoutPanel();
 
-	private final VerticalPanel searchResultsPanel = new VerticalPanel();
-	private final SimplePager pager = new SimplePager();
-	private final CellTable<RESTCategoryV1> results = new CellTable<RESTCategoryV1>(Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
-	private AsyncDataProvider<RESTCategoryV1> provider;
+    private final VerticalPanel searchResultsPanel = new VerticalPanel();
+    private final SimplePager pager = new SimplePager();
+    private final CellTable<RESTCategoryV1> results = new CellTable<RESTCategoryV1>(Constants.MAX_SEARCH_RESULTS,
+            (Resources) GWT.create(TableResources.class));
+    private AsyncDataProvider<RESTCategoryV1> provider;
 
-	private final VerticalPanel tagsResultsPanel = new VerticalPanel();
-	private final SimplePager tagsPager = new SimplePager();
-	private final CellTable<RESTTagV1> tagsResults = new CellTable<RESTTagV1>(Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
-	private AsyncDataProvider<RESTTagV1> tagsProvider;
+    private final VerticalPanel tagsResultsPanel = new VerticalPanel();
+    private final SimplePager tagsPager = new SimplePager();
+    private final CellTable<RESTTagV1> tagsResults = new CellTable<RESTTagV1>(Constants.MAX_SEARCH_RESULTS,
+            (Resources) GWT.create(TableResources.class));
+    private AsyncDataProvider<RESTTagV1> tagsProvider;
 
-	private final TextColumn<RESTCategoryV1> idColumn = new TextColumn<RESTCategoryV1>()
-	{
-		@Override
-		public String getValue(final RESTCategoryV1 object)
-		{
-			return object.getId().toString();
+    private final TextColumn<RESTCategoryV1> idColumn = new TextColumn<RESTCategoryV1>() {
+        @Override
+        public String getValue(final RESTCategoryV1 object) {
+            return object.getId().toString();
 
-		}
-	};
+        }
+    };
 
-	private final TextColumn<RESTCategoryV1> nameColumn = new TextColumn<RESTCategoryV1>()
-	{
-		@Override
-		public String getValue(final RESTCategoryV1 object)
-		{
-			return object.getName();
-		}
-	};
+    private final TextColumn<RESTCategoryV1> nameColumn = new TextColumn<RESTCategoryV1>() {
+        @Override
+        public String getValue(final RESTCategoryV1 object) {
+            return object.getName();
+        }
+    };
 
-	private final TextColumn<RESTCategoryV1> descriptionColumn = new TextColumn<RESTCategoryV1>()
-	{
-		@Override
-		public String getValue(final RESTCategoryV1 object)
-		{
-			return object.getDescription();
-		}
-	};
+    private final TextColumn<RESTCategoryV1> descriptionColumn = new TextColumn<RESTCategoryV1>() {
+        @Override
+        public String getValue(final RESTCategoryV1 object) {
+            return object.getDescription();
+        }
+    };
 
-	private final Column<RESTCategoryV1, String> buttonColumn = new Column<RESTCategoryV1, String>(new ButtonCell())
-	{
-		@Override
-		public String getValue(final RESTCategoryV1 object)
-		{
-			if (tag != null)
-			{
-				if (ComponentCategoryV1.containsTag(object, tag.getId()))
-				{
-					return PressGangCCMSUI.INSTANCE.Remove();
-				}
-				else
-				{
-					return PressGangCCMSUI.INSTANCE.Add();
-				}
-			}
+    private final Column<RESTCategoryV1, String> buttonColumn = new Column<RESTCategoryV1, String>(new ButtonCell()) {
+        @Override
+        public String getValue(final RESTCategoryV1 object) {
+            if (tag != null) {
+                if (ComponentCategoryV1.containsTag(object, tag.getId())) {
+                    return PressGangCCMSUI.INSTANCE.Remove();
+                } else {
+                    return PressGangCCMSUI.INSTANCE.Add();
+                }
+            }
 
-			return PressGangCCMSUI.INSTANCE.NoAction();
-		}
-	};
+            return PressGangCCMSUI.INSTANCE.NoAction();
+        }
+    };
 
-	private final TextColumn<RESTTagV1> tagIdColumn = new TextColumn<RESTTagV1>()
-	{
-		@Override
-		public String getValue(final RESTTagV1 object)
-		{
-			return object.getId().toString();
+    private final TextColumn<RESTTagV1> tagIdColumn = new TextColumn<RESTTagV1>() {
+        @Override
+        public String getValue(final RESTTagV1 object) {
+            return object.getId().toString();
 
-		}
-	};
+        }
+    };
 
-	private final TextColumn<RESTTagV1> tagNameColumn = new TextColumn<RESTTagV1>()
-	{
-		@Override
-		public String getValue(final RESTTagV1 object)
-		{
-			return object.getName();
-		}
-	};
+    private final TextColumn<RESTTagV1> tagNameColumn = new TextColumn<RESTTagV1>() {
+        @Override
+        public String getValue(final RESTTagV1 object) {
+            return object.getName();
+        }
+    };
 
-	private final TextColumn<RESTTagV1> tagDescriptionColumn = new TextColumn<RESTTagV1>()
-	{
-		@Override
-		public String getValue(final RESTTagV1 object)
-		{
-			return object.getDescription();
-		}
-	};
+    private final TextColumn<RESTTagV1> tagDescriptionColumn = new TextColumn<RESTTagV1>() {
+        @Override
+        public String getValue(final RESTTagV1 object) {
+            return object.getDescription();
+        }
+    };
 
-	private final Column<RESTTagV1, String> tagUpButtonColumn = new Column<RESTTagV1, String>(new ButtonCell())
-	{
-		@Override
-		public String getValue(final RESTTagV1 object)
-		{
-			return PressGangCCMSUI.INSTANCE.Up();
-		}
-	};
-	
-	private final Column<RESTTagV1, String> tagDownButtonColumn = new Column<RESTTagV1, String>(new ButtonCell())
-	{
-		@Override
-		public String getValue(final RESTTagV1 object)
-		{
-			return PressGangCCMSUI.INSTANCE.Down();
-		}
-	};
+    private final Column<RESTTagV1, String> tagUpButtonColumn = new Column<RESTTagV1, String>(new ButtonCell()) {
+        @Override
+        public String getValue(final RESTTagV1 object) {
+            return PressGangCCMSUI.INSTANCE.Up();
+        }
+    };
 
-	@Override
-	public SplitLayoutPanel getSplit()
-	{
-		return split;
-	}
+    private final Column<RESTTagV1, String> tagDownButtonColumn = new Column<RESTTagV1, String>(new ButtonCell()) {
+        @Override
+        public String getValue(final RESTTagV1 object) {
+            return PressGangCCMSUI.INSTANCE.Down();
+        }
+    };
 
-	public void setSplit(SplitLayoutPanel split)
-	{
-		this.split = split;
-	}
+    @Override
+    public SplitLayoutPanel getSplit() {
+        return split;
+    }
 
-	@Override
-	public VerticalPanel getTagsResultsPanel()
-	{
-		return tagsResultsPanel;
-	}
+    public void setSplit(SplitLayoutPanel split) {
+        this.split = split;
+    }
 
-	@Override
-	public Column<RESTTagV1, String> getTagDownButtonColumn()
-	{
-		return tagDownButtonColumn;
-	}
+    @Override
+    public VerticalPanel getTagsResultsPanel() {
+        return tagsResultsPanel;
+    }
 
-	@Override
-	public Column<RESTTagV1, String> getTagUpButtonColumn()
-	{
-		return tagUpButtonColumn;
-	}
+    @Override
+    public Column<RESTTagV1, String> getTagDownButtonColumn() {
+        return tagDownButtonColumn;
+    }
 
-	@Override
-	public AsyncDataProvider<RESTTagV1> getTagsProvider()
-	{
-		return tagsProvider;
-	}
+    @Override
+    public Column<RESTTagV1, String> getTagUpButtonColumn() {
+        return tagUpButtonColumn;
+    }
 
-	@Override
-	public void setTagsProvider(final AsyncDataProvider<RESTTagV1> tagsProvider)
-	{
-		this.tagsProvider = tagsProvider;
-		tagsProvider.addDataDisplay(tagsResults);
-	}
+    @Override
+    public AsyncDataProvider<RESTTagV1> getTagsProvider() {
+        return tagsProvider;
+    }
 
-	@Override
-	public Column<RESTCategoryV1, String> getButtonColumn()
-	{
-		return buttonColumn;
-	}
+    @Override
+    public void setTagsProvider(final AsyncDataProvider<RESTTagV1> tagsProvider) {
+        this.tagsProvider = tagsProvider;
+        tagsProvider.addDataDisplay(tagsResults);
+    }
 
-	@Override
-	public AsyncDataProvider<RESTCategoryV1> getProvider()
-	{
-		return provider;
-	}
+    @Override
+    public Column<RESTCategoryV1, String> getButtonColumn() {
+        return buttonColumn;
+    }
 
-	@Override
-	public void setProvider(final AsyncDataProvider<RESTCategoryV1> provider)
-	{
-		this.provider = provider;
-		provider.addDataDisplay(results);
-	}
+    @Override
+    public AsyncDataProvider<RESTCategoryV1> getProvider() {
+        return provider;
+    }
 
-	@Override
-	public CellTable<RESTCategoryV1> getResults()
-	{
-		return results;
-	}
+    @Override
+    public void setProvider(final AsyncDataProvider<RESTCategoryV1> provider) {
+        this.provider = provider;
+        provider.addDataDisplay(results);
+    }
 
-	@Override
-	public SimplePager getPager()
-	{
-		return pager;
-	}
+    @Override
+    public CellTable<RESTCategoryV1> getResults() {
+        return results;
+    }
 
-	public TagCategoriesView()
-	{
-		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Tags());
+    @Override
+    public SimplePager getPager() {
+        return pager;
+    }
 
-		split.addStyleName(CSSConstants.TagCategoryView.TAGCATEGORIESSPLITPANEL);
+    public TagCategoriesView() {
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Tags());
 
-		results.addColumn(nameColumn, PressGangCCMSUI.INSTANCE.CategoryName());
-		results.addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.CategoryDescription());
-		results.addColumn(buttonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
+        split.addStyleName(CSSConstants.TagCategoryView.TAGCATEGORIESSPLITPANEL);
 
-		searchResultsPanel.add(results);
-		searchResultsPanel.add(pager);
-		
-		searchResultsPanel.addStyleName(CSSConstants.TagCategoryView.TAGCATEGORIESLISTPANEL);
-		
-		pager.setDisplay(results);
+        results.addColumn(nameColumn, PressGangCCMSUI.INSTANCE.CategoryName());
+        results.addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.CategoryDescription());
+        results.addColumn(buttonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
 
-		split.addWest(searchResultsPanel, Constants.SPLIT_PANEL_SIZE);
-		
-		tagsResults.addColumn(tagIdColumn, PressGangCCMSUI.INSTANCE.TagID());
-		tagsResults.addColumn(tagNameColumn, PressGangCCMSUI.INSTANCE.TagName());
-		tagsResults.addColumn(tagDescriptionColumn, PressGangCCMSUI.INSTANCE.TagDescription());
-		tagsResults.addColumn(tagUpButtonColumn, PressGangCCMSUI.INSTANCE.Up());
-		tagsResults.addColumn(tagDownButtonColumn, PressGangCCMSUI.INSTANCE.Down());
-		
-		tagsResultsPanel.add(tagsResults);
-		tagsResultsPanel.add(tagsPager);
-		
-		tagsResultsPanel.addStyleName(CSSConstants.TagCategoryView.TAGCATEGORYTAGSLISTPANEL);
-		
-		tagsPager.setDisplay(tagsResults);
-		
-		/* Add this later once a category has been selected */ 
-		//split.add(tagsResultsPanel);
+        searchResultsPanel.add(results);
+        searchResultsPanel.add(pager);
 
-		this.getPanel().setWidget(split);
-	}
+        searchResultsPanel.addStyleName(CSSConstants.TagCategoryView.TAGCATEGORIESLISTPANEL);
 
-	@Override
-	public void initialize(final RESTTagV1 tag, final boolean readOnly)
-	{
-		this.tag = tag;
-	}
+        pager.setDisplay(results);
 
-	@Override
-	protected void populateTopActionBar()
-	{
-		this.addActionButton(this.getTagDetails());
-		this.addActionButton(this.getTagProjects());
-		this.addActionButton(this.getTagCategories());
-		this.addActionButton(this.getSave());
-		addRightAlignedActionButtonPaddingPanel();
-	}
+        split.addWest(searchResultsPanel, Constants.SPLIT_PANEL_SIZE);
+
+        tagsResults.addColumn(tagIdColumn, PressGangCCMSUI.INSTANCE.TagID());
+        tagsResults.addColumn(tagNameColumn, PressGangCCMSUI.INSTANCE.TagName());
+        tagsResults.addColumn(tagDescriptionColumn, PressGangCCMSUI.INSTANCE.TagDescription());
+        tagsResults.addColumn(tagUpButtonColumn, PressGangCCMSUI.INSTANCE.Up());
+        tagsResults.addColumn(tagDownButtonColumn, PressGangCCMSUI.INSTANCE.Down());
+
+        tagsResultsPanel.add(tagsResults);
+        tagsResultsPanel.add(tagsPager);
+
+        tagsResultsPanel.addStyleName(CSSConstants.TagCategoryView.TAGCATEGORYTAGSLISTPANEL);
+
+        tagsPager.setDisplay(tagsResults);
+
+        /* Add this later once a category has been selected */
+        // split.add(tagsResultsPanel);
+
+        this.getPanel().setWidget(split);
+    }
+
+    @Override
+    public void initialize(final RESTTagV1 tag, final boolean readOnly) {
+        this.tag = tag;
+    }
+
+    @Override
+    protected void populateTopActionBar() {
+        this.addActionButton(this.getTagDetails());
+        this.addActionButton(this.getTagProjects());
+        this.addActionButton(this.getTagCategories());
+        this.addActionButton(this.getSave());
+        addRightAlignedActionButtonPaddingPanel();
+    }
 }

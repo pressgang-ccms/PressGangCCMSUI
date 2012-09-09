@@ -20,100 +20,88 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ValueListBox;
 
 @Dependent
-public class TopicTagsPresenter extends TemplatePresenter
-{
-	private String topicId;
+public class TopicTagsPresenter extends TemplatePresenter {
+    private String topicId;
 
-	@Inject
-	private Display display;
-	
-	public interface Display extends TopicViewInterface
-	{
-		void initializeNewTags(final SearchUIProjects tags);
-		void updateNewTagCategoriesDisplay();
-		void updateNewTagTagDisplay();
-		ValueListBox<SearchUITag> getMyTags();
-		ValueListBox<SearchUICategory> getCategoriesList();
-		ValueListBox<SearchUIProject> getProjectsList();
-		TopicTagViewProjectsEditor getEditor();
-		PushButton getAdd();
-	}
+    @Inject
+    private Display display;
 
-	@Override
-	public void parseToken(final String searchToken)
-	{
-		topicId = searchToken.replace(TopicXMLErrorsView.HISTORY_TOKEN + ";", "");
-	}
-	
-	@Override
-	public void go(final HasWidgets container)
-	{
-		container.clear();
-		container.add(display.getTopLevelPanel());
+    public interface Display extends TopicViewInterface {
+        void initializeNewTags(final SearchUIProjects tags);
 
-		getTopic();
+        void updateNewTagCategoriesDisplay();
 
-		bind();
-	}
-	
-	private void getTopic()
-	{
-		final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>()
-		{
-			@Override
-			public void begin()
-			{
-				startProcessing();
-			}
+        void updateNewTagTagDisplay();
 
-			@Override
-			public void generalException(final Exception ex)
-			{
-				stopProcessing();
-			}
+        ValueListBox<SearchUITag> getMyTags();
 
-			@Override
-			public void success(final RESTTopicV1 retValue)
-			{
-				try
-				{
-					display.initialize(retValue, false, SplitType.DISABLED);
-				}
-				finally
-				{
-					stopProcessing();
-				}
-			}
+        ValueListBox<SearchUICategory> getCategoriesList();
 
-			@Override
-			public void failed()
-			{
-				stopProcessing();
-			}
-		};
-		
-		try
-		{
-			RESTCalls.getTopic(callback, Integer.parseInt(topicId));
-		}
-		catch (final NumberFormatException ex)
-		{
-			stopProcessing();
-		}
-	}
-	
-	private void bind()
-	{
+        ValueListBox<SearchUIProject> getProjectsList();
 
-	}
+        TopicTagViewProjectsEditor getEditor();
 
-	private void stopProcessing()
-	{
-		display.setSpinnerVisible(false);
-	}
+        PushButton getAdd();
+    }
 
-	private void startProcessing()
-	{
-		display.setSpinnerVisible(true);
-	}
+    @Override
+    public void parseToken(final String searchToken) {
+        topicId = searchToken.replace(TopicXMLErrorsView.HISTORY_TOKEN + ";", "");
+    }
+
+    @Override
+    public void go(final HasWidgets container) {
+        container.clear();
+        container.add(display.getTopLevelPanel());
+
+        getTopic();
+
+        bind();
+    }
+
+    private void getTopic() {
+        final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
+            @Override
+            public void begin() {
+                startProcessing();
+            }
+
+            @Override
+            public void generalException(final Exception ex) {
+                stopProcessing();
+            }
+
+            @Override
+            public void success(final RESTTopicV1 retValue) {
+                try {
+                    display.initialize(retValue, false, SplitType.DISABLED);
+                } finally {
+                    stopProcessing();
+                }
+            }
+
+            @Override
+            public void failed() {
+                stopProcessing();
+            }
+        };
+
+        try {
+            RESTCalls.getTopic(callback, Integer.parseInt(topicId));
+        } catch (final NumberFormatException ex) {
+            stopProcessing();
+        }
+    }
+
+    private void bind() {
+
+    }
+
+    private void stopProcessing() {
+        display.setSpinnerVisible(false);
+    }
+
+    private void startProcessing() {
+        display.setSpinnerVisible(true);
+    }
 }

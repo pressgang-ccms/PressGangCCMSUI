@@ -16,51 +16,45 @@ import com.google.gwt.user.client.ui.TabLayoutPanel;
  * 
  * @author Matthew Casperson
  */
-public class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel implements Editor<RESTLanguageImageCollectionV1>
-{
-	/**
-	 * The collection of language image editors
-	 */
-	private final ListEditor<RESTLanguageImageV1, RESTLanguageImageV1Editor> items = ListEditor.of(new LanguageImageEditorSource());
-	
-	/**
-	 * The EditorSource is used to create and orgainse the Editors that go into
-	 * a ListEditor
-	 * 
-	 * @author Matthew Casperson
-	 */
-	private class LanguageImageEditorSource extends EditorSource<RESTLanguageImageV1Editor>
-	{
-		@Override
-		public RESTLanguageImageV1Editor create(final int index)
-		{
-			final RESTLanguageImageV1Editor editor = new RESTLanguageImageV1Editor(RESTLanguageImageCollectionV1Editor.this, index);
-			RESTLanguageImageCollectionV1Editor.this.add(editor, PressGangCCMSUI.INSTANCE.ImagePlaceholder());
-			return editor;
-		}
+public class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel implements Editor<RESTLanguageImageCollectionV1> {
+    /**
+     * The collection of language image editors
+     */
+    private final ListEditor<RESTLanguageImageV1, RESTLanguageImageV1Editor> items = ListEditor
+            .of(new LanguageImageEditorSource());
 
-		@Override
-		public void dispose(final RESTLanguageImageV1Editor subEditor)
-		{
-			subEditor.removeFromParent();
-		}
+    /**
+     * The EditorSource is used to create and orgainse the Editors that go into a ListEditor
+     * 
+     * @author Matthew Casperson
+     */
+    private class LanguageImageEditorSource extends EditorSource<RESTLanguageImageV1Editor> {
+        @Override
+        public RESTLanguageImageV1Editor create(final int index) {
+            final RESTLanguageImageV1Editor editor = new RESTLanguageImageV1Editor(RESTLanguageImageCollectionV1Editor.this,
+                    index);
+            RESTLanguageImageCollectionV1Editor.this.add(editor, PressGangCCMSUI.INSTANCE.ImagePlaceholder());
+            return editor;
+        }
 
-		@Override
-		public void setIndex(final RESTLanguageImageV1Editor subEditor, final int index)
-		{
-			subEditor.removeFromParent();
-			RESTLanguageImageCollectionV1Editor.this.insert(subEditor, index);
-		}
-	}
-	
-	public ListEditor<RESTLanguageImageV1, RESTLanguageImageV1Editor> itemsEditor()
-	{
-		return items;
-	}
+        @Override
+        public void dispose(final RESTLanguageImageV1Editor subEditor) {
+            subEditor.removeFromParent();
+        }
 
-	public RESTLanguageImageCollectionV1Editor()
-	{
-		super(2, Unit.EM);
-		this.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGETABPANEL);
-	}
+        @Override
+        public void setIndex(final RESTLanguageImageV1Editor subEditor, final int index) {
+            subEditor.removeFromParent();
+            RESTLanguageImageCollectionV1Editor.this.insert(subEditor, index);
+        }
+    }
+
+    public ListEditor<RESTLanguageImageV1, RESTLanguageImageV1Editor> itemsEditor() {
+        return items;
+    }
+
+    public RESTLanguageImageCollectionV1Editor() {
+        super(2, Unit.EM);
+        this.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGETABPANEL);
+    }
 }

@@ -18,129 +18,109 @@ import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.AsyncDataProvider;
 
-public class TagProjectsView extends TagViewBase implements TagProjectsPresenter.Display
-{
-	public static final String HISTORY_TOKEN = "TagProjectsView";
-	
-	/** A reference to the tag that this view will be modifying */
-	private RESTTagV1 tag;
+public class TagProjectsView extends TagViewBase implements TagProjectsPresenter.Display {
+    public static final String HISTORY_TOKEN = "TagProjectsView";
 
-	private final VerticalPanel searchResultsPanel = new VerticalPanel();
+    /** A reference to the tag that this view will be modifying */
+    private RESTTagV1 tag;
 
-	private final SimplePager pager = new SimplePager();
-	private final CellTable<RESTProjectV1> results = new CellTable<RESTProjectV1>(Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
-	private AsyncDataProvider<RESTProjectV1> provider;
+    private final VerticalPanel searchResultsPanel = new VerticalPanel();
 
-	private final TextColumn<RESTProjectV1> idColumn = new TextColumn<RESTProjectV1>()
-	{
-		@Override
-		public String getValue(final RESTProjectV1 object)
-		{
-			return object.getId().toString();
+    private final SimplePager pager = new SimplePager();
+    private final CellTable<RESTProjectV1> results = new CellTable<RESTProjectV1>(Constants.MAX_SEARCH_RESULTS,
+            (Resources) GWT.create(TableResources.class));
+    private AsyncDataProvider<RESTProjectV1> provider;
 
-		}
-	};
+    private final TextColumn<RESTProjectV1> idColumn = new TextColumn<RESTProjectV1>() {
+        @Override
+        public String getValue(final RESTProjectV1 object) {
+            return object.getId().toString();
 
-	private final TextColumn<RESTProjectV1> nameColumn = new TextColumn<RESTProjectV1>()
-	{
-		@Override
-		public String getValue(final RESTProjectV1 object)
-		{
-			return object.getName();
-		}
-	};
+        }
+    };
 
-	private final TextColumn<RESTProjectV1> descriptionColumn = new TextColumn<RESTProjectV1>()
-	{
-		@Override
-		public String getValue(final RESTProjectV1 object)
-		{
-			return object.getDescription();
-		}
-	};
+    private final TextColumn<RESTProjectV1> nameColumn = new TextColumn<RESTProjectV1>() {
+        @Override
+        public String getValue(final RESTProjectV1 object) {
+            return object.getName();
+        }
+    };
 
-	private final Column<RESTProjectV1, String> buttonColumn = new Column<RESTProjectV1, String>(new ButtonCell())
-	{
-		@Override
-		public String getValue(final RESTProjectV1 object)
-		{
-			if (tag != null)
-			{
-				if (ComponentProjectV1.containsTag(object, tag.getId()))
-				{
-					return PressGangCCMSUI.INSTANCE.Remove();
-				}
-				else
-				{
-					return PressGangCCMSUI.INSTANCE.Add();
-				}
-			}
-			
-			return PressGangCCMSUI.INSTANCE.NoAction();
-		}
-	};
+    private final TextColumn<RESTProjectV1> descriptionColumn = new TextColumn<RESTProjectV1>() {
+        @Override
+        public String getValue(final RESTProjectV1 object) {
+            return object.getDescription();
+        }
+    };
 
-	@Override
-	public Column<RESTProjectV1, String> getButtonColumn()
-	{
-		return buttonColumn;
-	}
+    private final Column<RESTProjectV1, String> buttonColumn = new Column<RESTProjectV1, String>(new ButtonCell()) {
+        @Override
+        public String getValue(final RESTProjectV1 object) {
+            if (tag != null) {
+                if (ComponentProjectV1.containsTag(object, tag.getId())) {
+                    return PressGangCCMSUI.INSTANCE.Remove();
+                } else {
+                    return PressGangCCMSUI.INSTANCE.Add();
+                }
+            }
 
-	@Override
-	public AsyncDataProvider<RESTProjectV1> getProvider()
-	{
-		return provider;
-	}
+            return PressGangCCMSUI.INSTANCE.NoAction();
+        }
+    };
 
-	@Override
-	public void setProvider(final AsyncDataProvider<RESTProjectV1> provider)
-	{
-		this.provider = provider;
-		provider.addDataDisplay(results);
-	}
+    @Override
+    public Column<RESTProjectV1, String> getButtonColumn() {
+        return buttonColumn;
+    }
 
-	@Override
-	public CellTable<RESTProjectV1> getResults()
-	{
-		return results;
-	}
+    @Override
+    public AsyncDataProvider<RESTProjectV1> getProvider() {
+        return provider;
+    }
 
-	@Override
-	public SimplePager getPager()
-	{
-		return pager;
-	}
+    @Override
+    public void setProvider(final AsyncDataProvider<RESTProjectV1> provider) {
+        this.provider = provider;
+        provider.addDataDisplay(results);
+    }
 
-	public TagProjectsView()
-	{
-		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Tags());
+    @Override
+    public CellTable<RESTProjectV1> getResults() {
+        return results;
+    }
 
-		results.addColumn(idColumn, PressGangCCMSUI.INSTANCE.ProjectID());
-		results.addColumn(nameColumn, PressGangCCMSUI.INSTANCE.ProjectName());
-		results.addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.ProjectDescription());
-		results.addColumn(buttonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
-		
-		pager.setDisplay(results);
+    @Override
+    public SimplePager getPager() {
+        return pager;
+    }
 
-		searchResultsPanel.add(results);
-		searchResultsPanel.add(pager);
-		
-		this.getPanel().setWidget(searchResultsPanel);
-	}
-	
-	@Override
-	public void initialize(final RESTTagV1 tag, final boolean readOnly)
-	{
-		this.tag = tag;
-	}
-	
-	@Override
-	protected void populateTopActionBar()
-	{
-		this.addActionButton(this.getTagDetails());
-		this.addActionButton(this.getTagProjects());
-		this.addActionButton(this.getTagCategories());
-		this.addActionButton(this.getSave());
-		addRightAlignedActionButtonPaddingPanel();
-	}
+    public TagProjectsView() {
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Tags());
+
+        results.addColumn(idColumn, PressGangCCMSUI.INSTANCE.ProjectID());
+        results.addColumn(nameColumn, PressGangCCMSUI.INSTANCE.ProjectName());
+        results.addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.ProjectDescription());
+        results.addColumn(buttonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
+
+        pager.setDisplay(results);
+
+        searchResultsPanel.add(results);
+        searchResultsPanel.add(pager);
+
+        this.getPanel().setWidget(searchResultsPanel);
+    }
+
+    @Override
+    public void initialize(final RESTTagV1 tag, final boolean readOnly) {
+        this.tag = tag;
+    }
+
+    @Override
+    protected void populateTopActionBar() {
+        this.addActionButton(this.getTagDetails());
+        this.addActionButton(this.getTagProjects());
+        this.addActionButton(this.getTagCategories());
+        this.addActionButton(this.getSave());
+        addRightAlignedActionButtonPaddingPanel();
+    }
 }

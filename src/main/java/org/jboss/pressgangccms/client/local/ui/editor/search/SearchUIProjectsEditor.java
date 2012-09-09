@@ -14,80 +14,69 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.ScrollPanel;
 
-public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProjects>
-{
-	private final SearchPresenterDriver driver;
-	final SearchUIProjects searchUIProjects;
-	final ListEditor<SearchUIProject, SearchUIProjectEditor> projects = ListEditor.of(new SearchUIProjectEditorSource());
-	private final FlexTable projectButtonPanel = new FlexTable();
-	private final ScrollPanel scrollPanel = new ScrollPanel();
-	
-	/**
-	 * The EditorSource is used to create and orgainse the Editors that go into
-	 * a ListEditor
-	 * 
-	 * @author Matthew Casperson
-	 */
-	private class SearchUIProjectEditorSource extends EditorSource<SearchUIProjectEditor>
-	{
-		@Override
-		public SearchUIProjectEditor create(final int index)
-		{
-			final SearchUIProjectEditor subEditor = new SearchUIProjectEditor(driver, searchUIProjects);
-			projectButtonPanel.setWidget(index, 0, subEditor.summary);
+public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProjects> {
+    private final SearchPresenterDriver driver;
+    final SearchUIProjects searchUIProjects;
+    final ListEditor<SearchUIProject, SearchUIProjectEditor> projects = ListEditor.of(new SearchUIProjectEditorSource());
+    private final FlexTable projectButtonPanel = new FlexTable();
+    private final ScrollPanel scrollPanel = new ScrollPanel();
 
-			subEditor.summary.addClickHandler(new ClickHandler()
-			{
-				@Override
-				public void onClick(final ClickEvent event)
-				{
-					SearchUIProjectsEditor.this.setWidget(0, 1, subEditor);
-					
-					/* Untoggle the other buttons */
-					for (final SearchUIProjectEditor projectEditor : projects.getEditors())
-					{
-						if (projectEditor.summary != subEditor.summary)
-						{
-							projectEditor.summary.removeStyleName(CSSConstants.CUSTOMBUTTONDOWN);
-							projectEditor.summary.removeStyleName(CSSConstants.CUSTOMBUTTON);
-							
-							projectEditor.summary.addStyleName(CSSConstants.CUSTOMBUTTON);
-						}
-					}
-				}
-			});
+    /**
+     * The EditorSource is used to create and orgainse the Editors that go into a ListEditor
+     * 
+     * @author Matthew Casperson
+     */
+    private class SearchUIProjectEditorSource extends EditorSource<SearchUIProjectEditor> {
+        @Override
+        public SearchUIProjectEditor create(final int index) {
+            final SearchUIProjectEditor subEditor = new SearchUIProjectEditor(driver, searchUIProjects);
+            projectButtonPanel.setWidget(index, 0, subEditor.summary);
 
-			return subEditor;
-		}
+            subEditor.summary.addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(final ClickEvent event) {
+                    SearchUIProjectsEditor.this.setWidget(0, 1, subEditor);
 
-		@Override
-		public void dispose(final SearchUIProjectEditor subEditor)
-		{
-			subEditor.summary.removeFromParent();
-			subEditor.removeFromParent();
-		}
+                    /* Untoggle the other buttons */
+                    for (final SearchUIProjectEditor projectEditor : projects.getEditors()) {
+                        if (projectEditor.summary != subEditor.summary) {
+                            projectEditor.summary.removeStyleName(CSSConstants.CUSTOMBUTTONDOWN);
+                            projectEditor.summary.removeStyleName(CSSConstants.CUSTOMBUTTON);
 
-		@Override
-		public void setIndex(final SearchUIProjectEditor subEditor, final int index)
-		{
-			projectButtonPanel.setWidget(index, 0, subEditor);
-		}
-	}
+                            projectEditor.summary.addStyleName(CSSConstants.CUSTOMBUTTON);
+                        }
+                    }
+                }
+            });
 
-	public SearchUIProjectsEditor(final SearchPresenterDriver driver, final SearchUIProjects searchUIProjects)
-	{
-		super(1, 2);
-		
-		this.driver = driver;
-		this.searchUIProjects = searchUIProjects;
-		
-		this.addStyleName(CSSConstants.PROJECTSLAYOUT);
-		projectButtonPanel.addStyleName(CSSConstants.PROJECTSBUTTONSLAYOUT);
-		scrollPanel.addStyleName(CSSConstants.PROJECTSSCROLLPANEL);
-		
-		scrollPanel.setWidget(projectButtonPanel);
-		
-		this.setWidget(0, 0, scrollPanel);
-	}
+            return subEditor;
+        }
+
+        @Override
+        public void dispose(final SearchUIProjectEditor subEditor) {
+            subEditor.summary.removeFromParent();
+            subEditor.removeFromParent();
+        }
+
+        @Override
+        public void setIndex(final SearchUIProjectEditor subEditor, final int index) {
+            projectButtonPanel.setWidget(index, 0, subEditor);
+        }
+    }
+
+    public SearchUIProjectsEditor(final SearchPresenterDriver driver, final SearchUIProjects searchUIProjects) {
+        super(1, 2);
+
+        this.driver = driver;
+        this.searchUIProjects = searchUIProjects;
+
+        this.addStyleName(CSSConstants.PROJECTSLAYOUT);
+        projectButtonPanel.addStyleName(CSSConstants.PROJECTSBUTTONSLAYOUT);
+        scrollPanel.addStyleName(CSSConstants.PROJECTSSCROLLPANEL);
+
+        scrollPanel.setWidget(projectButtonPanel);
+
+        this.setWidget(0, 0, scrollPanel);
+    }
 
 }

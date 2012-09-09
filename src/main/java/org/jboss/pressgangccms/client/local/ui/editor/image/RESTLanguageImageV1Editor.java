@@ -20,133 +20,119 @@ import com.google.gwt.user.client.ui.TextBox;
 /**
  * Provides a UI for viewing and editing a RESTLanguageImageV1 object.
  * 
- * We can't bind to a byte array directly
- * (http://code.google.com/p/google-web-toolkit/issues/detail?id=6600), so we
- * need to use the ValueAwareEditor to do some manual binding.
+ * We can't bind to a byte array directly (http://code.google.com/p/google-web-toolkit/issues/detail?id=6600), so we need to use
+ * the ValueAwareEditor to do some manual binding.
  * 
  * @author Matthew Casperson
  * 
  */
-public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEditor<RESTLanguageImageV1>
-{
-	private static final String JPG_BASE64_PREFIX = "data:image/jpg;base64,";
-	
-	/** Keep a reference to the object this editor gets its values from */
-	public RESTLanguageImageV1 self;
+public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEditor<RESTLanguageImageV1> {
+    private static final String JPG_BASE64_PREFIX = "data:image/jpg;base64,";
 
-	/**
-	 * To set the name of a tab based on the object that initializes this editor
-	 * we need to keep a track of the tab layout and the index that this editor
-	 * is assigned to. See
-	 * http://stackoverflow.com/questions/10463782/adding-list
-	 * -sub-editors-to-tab-panel for an explanation. This is the reference to the 
-	 * tab panel
-	 */
-	private final TabLayoutPanel parentPanel;
-	
-	/**
-	 * This is a reference to the tab index
-	 */
-	private final int parentIndex;
+    /** Keep a reference to the object this editor gets its values from */
+    public RESTLanguageImageV1 self;
 
-	private final TextBox filename = new TextBox();
-	private final Image imageDataBase64 = new Image();
-	private final FileUploadExt upload = new FileUploadExt(false);
-	private final PushButton uploadButton = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Upload());
+    /**
+     * To set the name of a tab based on the object that initializes this editor we need to keep a track of the tab layout and
+     * the index that this editor is assigned to. See http://stackoverflow.com/questions/10463782/adding-list
+     * -sub-editors-to-tab-panel for an explanation. This is the reference to the tab panel
+     */
+    private final TabLayoutPanel parentPanel;
 
-	private final Label filenameLabel = new Label(PressGangCCMSUI.INSTANCE.ImageFilename());
-	private final Label imageLabel = new Label(PressGangCCMSUI.INSTANCE.ImageSample());
-	private final Label newFileLabel = new Label(PressGangCCMSUI.INSTANCE.UploadFile());
+    /**
+     * This is a reference to the tab index
+     */
+    private final int parentIndex;
 
-	@Ignore
-	public TextBox getFilename()
-	{
-		return filename;
-	}
-	
-	@Ignore
-	public Image getImageDataBase64()
-	{
-		return imageDataBase64;
-	}
+    private final TextBox filename = new TextBox();
+    private final Image imageDataBase64 = new Image();
+    private final FileUploadExt upload = new FileUploadExt(false);
+    private final PushButton uploadButton = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Upload());
 
-	@Ignore
-	public FileUploadExt getUpload()
-	{
-		return upload;
-	}
-	
-	@Ignore
-	public PushButton getUploadButton()
-	{
-		return uploadButton;
-	}
+    private final Label filenameLabel = new Label(PressGangCCMSUI.INSTANCE.ImageFilename());
+    private final Label imageLabel = new Label(PressGangCCMSUI.INSTANCE.ImageSample());
+    private final Label newFileLabel = new Label(PressGangCCMSUI.INSTANCE.UploadFile());
 
-	public RESTLanguageImageV1Editor(final TabLayoutPanel parentPanel, final int parentIndex)
-	{
-		this.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGETAB);
-		
-		filename.setReadOnly(true);
-		
-		this.parentPanel = parentPanel;
-		this.parentIndex = parentIndex;
-		
-		final HorizontalPanel uploadPanel = new HorizontalPanel();
-		uploadPanel.add(upload);
-		uploadPanel.add(uploadButton);
+    @Ignore
+    public TextBox getFilename() {
+        return filename;
+    }
 
-		this.setWidget(0, 0, newFileLabel);
-		this.setWidget(0, 1, uploadPanel);
-		this.setWidget(1, 0, filenameLabel);
-		this.setWidget(1, 1, filename);
-		this.setWidget(2, 0, imageLabel);
-		this.setWidget(2, 1, imageDataBase64);
-		
-		filenameLabel.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMELABEL);
-		filename.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMETEXT);
-		imageLabel.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYLABEL);
-		imageDataBase64.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGE);
-		
-		this.getCellFormatter().addStyleName(0,  0, CSSConstants.IMAGEVIEWLANGUAGEIMAGEUPLOADLABELCELL);
-		this.getCellFormatter().addStyleName(0,  1, CSSConstants.IMAGEVIEWLANGUAGEIMAGEUPLOADBUTTONSCELL);
-		this.getCellFormatter().addStyleName(1,  0, CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMELABELCELL);
-		this.getCellFormatter().addStyleName(1,  1, CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMETEXTCELL);
-		this.getCellFormatter().addStyleName(2,  0, CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYLABELCELL);
-		this.getCellFormatter().addStyleName(2,  1, CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGECELL);
-	}
+    @Ignore
+    public Image getImageDataBase64() {
+        return imageDataBase64;
+    }
 
-	@Override
-	public void setDelegate(final EditorDelegate<RESTLanguageImageV1> delegate)
-	{
-		// TODO Auto-generated method stub
-	}
+    @Ignore
+    public FileUploadExt getUpload() {
+        return upload;
+    }
 
-	@Override
-	public void flush()
-	{
-		// TODO Auto-generated method stub
-	}
+    @Ignore
+    public PushButton getUploadButton() {
+        return uploadButton;
+    }
 
-	@Override
-	public void onPropertyChange(final String... paths)
-	{
-		// TODO Auto-generated method stub
-	}
+    public RESTLanguageImageV1Editor(final TabLayoutPanel parentPanel, final int parentIndex) {
+        this.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGETAB);
 
-	@Override
-	public void setValue(final RESTLanguageImageV1 value)
-	{
-		this.self = value;
-		
-		if (value.getFilename() != null)
-			this.filename.setText(value.getFilename());
-		
-		if (value.getImageDataBase64() != null)
-		{
-			final String base64 = GWTUtilities.getStringUTF8(value.getImageDataBase64());
-			this.imageDataBase64.setUrl(JPG_BASE64_PREFIX + base64);
-		}
+        filename.setReadOnly(true);
 
-		parentPanel.setTabText(parentIndex, this.self.getLocale() == null ? PressGangCCMSUI.INSTANCE.NotSpecified() : this.self.getLocale());
-	}
+        this.parentPanel = parentPanel;
+        this.parentIndex = parentIndex;
+
+        final HorizontalPanel uploadPanel = new HorizontalPanel();
+        uploadPanel.add(upload);
+        uploadPanel.add(uploadButton);
+
+        this.setWidget(0, 0, newFileLabel);
+        this.setWidget(0, 1, uploadPanel);
+        this.setWidget(1, 0, filenameLabel);
+        this.setWidget(1, 1, filename);
+        this.setWidget(2, 0, imageLabel);
+        this.setWidget(2, 1, imageDataBase64);
+
+        filenameLabel.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMELABEL);
+        filename.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMETEXT);
+        imageLabel.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYLABEL);
+        imageDataBase64.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGE);
+
+        this.getCellFormatter().addStyleName(0, 0, CSSConstants.IMAGEVIEWLANGUAGEIMAGEUPLOADLABELCELL);
+        this.getCellFormatter().addStyleName(0, 1, CSSConstants.IMAGEVIEWLANGUAGEIMAGEUPLOADBUTTONSCELL);
+        this.getCellFormatter().addStyleName(1, 0, CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMELABELCELL);
+        this.getCellFormatter().addStyleName(1, 1, CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMETEXTCELL);
+        this.getCellFormatter().addStyleName(2, 0, CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYLABELCELL);
+        this.getCellFormatter().addStyleName(2, 1, CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGECELL);
+    }
+
+    @Override
+    public void setDelegate(final EditorDelegate<RESTLanguageImageV1> delegate) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void flush() {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void onPropertyChange(final String... paths) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void setValue(final RESTLanguageImageV1 value) {
+        this.self = value;
+
+        if (value.getFilename() != null)
+            this.filename.setText(value.getFilename());
+
+        if (value.getImageDataBase64() != null) {
+            final String base64 = GWTUtilities.getStringUTF8(value.getImageDataBase64());
+            this.imageDataBase64.setUrl(JPG_BASE64_PREFIX + base64);
+        }
+
+        parentPanel.setTabText(parentIndex,
+                this.self.getLocale() == null ? PressGangCCMSUI.INSTANCE.NotSpecified() : this.self.getLocale());
+    }
 }

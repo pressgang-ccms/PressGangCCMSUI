@@ -11,49 +11,42 @@ import com.google.gwt.user.client.ui.ToggleButton;
  * @author Matthew Casperson
  * 
  */
-final public class UIUtilities
-{
-	private UIUtilities()
-	{
-		
-	}
-	
-	public static PushButton createPushButton(final String text)
-	{
-		return createPushButton(text, false);
-	}
-	
-	public static PushButton createPushButton(final String text, boolean subMenu)
-	{
-		final PushButton retvalue = new PushButton(text);
-		retvalue.addStyleName(CSSConstants.TEXTBUTTON);
-		
-		if (subMenu)
-			retvalue.addStyleName(CSSConstants.SUBMENU);
+final public class UIUtilities {
+    private UIUtilities() {
 
-		return retvalue;
-	}
+    }
 
-	public static ToggleButton createToggleButton(final String text, final boolean subMenu)
-	{
-		final ToggleButton retvalue  = new ToggleButton(text);
-			retvalue.addStyleName(CSSConstants.TEXTBUTTON);
-		
-		if (subMenu)
-			retvalue.addStyleName(CSSConstants.SUBMENU);
+    public static PushButton createPushButton(final String text) {
+        return createPushButton(text, false);
+    }
 
-		return retvalue;
-	}
-	
-	public static ToggleButton createToggleButton(final String text)
-	{
-		return createToggleButton(text, false);
-	}
-	
-	public static Label createDownLabel(final String text)
-	{
-		final Label retvalue = new Label(text);
-		retvalue.addStyleName(CSSConstants.DOWNLABEL);
-		return retvalue;
-	}
+    public static PushButton createPushButton(final String text, boolean subMenu) {
+        final PushButton retvalue = new PushButton(text);
+        retvalue.addStyleName(CSSConstants.TEXTBUTTON);
+
+        if (subMenu)
+            retvalue.addStyleName(CSSConstants.SUBMENU);
+
+        return retvalue;
+    }
+
+    public static ToggleButton createToggleButton(final String text, final boolean subMenu) {
+        final ToggleButton retvalue = new ToggleButton(text);
+        retvalue.addStyleName(CSSConstants.TEXTBUTTON);
+
+        if (subMenu)
+            retvalue.addStyleName(CSSConstants.SUBMENU);
+
+        return retvalue;
+    }
+
+    public static ToggleButton createToggleButton(final String text) {
+        return createToggleButton(text, false);
+    }
+
+    public static Label createDownLabel(final String text) {
+        final Label retvalue = new Label(text);
+        retvalue.addStyleName(CSSConstants.DOWNLABEL);
+        return retvalue;
+    }
 }

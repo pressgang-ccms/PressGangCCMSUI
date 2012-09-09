@@ -14,98 +14,78 @@ import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
-public class TopicPresenter extends TemplatePresenter
-{
-	// Empty interface declaration, similar to UiBinder
-	public interface TopicPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1BasicDetailsEditor>
-	{
-	}
+public class TopicPresenter extends TemplatePresenter {
+    // Empty interface declaration, similar to UiBinder
+    public interface TopicPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1BasicDetailsEditor> {
+    }
 
-	public interface Display extends TopicViewInterface
-	{
+    public interface Display extends TopicViewInterface {
 
-	}
+    }
 
-	private String topicId;
+    private String topicId;
 
-	@Inject
-	private Display display;
+    @Inject
+    private Display display;
 
-	@Override
-	public void parseToken(final String searchToken)
-	{
-		topicId = searchToken.replace(TopicView.HISTORY_TOKEN + ";", "");
-	}
+    @Override
+    public void parseToken(final String searchToken) {
+        topicId = searchToken.replace(TopicView.HISTORY_TOKEN + ";", "");
+    }
 
-	@Override
-	public void go(final HasWidgets container)
-	{
-		container.clear();
-		container.add(display.getTopLevelPanel());
+    @Override
+    public void go(final HasWidgets container) {
+        container.clear();
+        container.add(display.getTopLevelPanel());
 
-		getTopic();
+        getTopic();
 
-		bind();
-	}
+        bind();
+    }
 
-	private void getTopic()
-	{
-		final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>()
-		{
-			@Override
-			public void begin()
-			{
-				startProcessing();
-			}
+    private void getTopic() {
+        final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
+            @Override
+            public void begin() {
+                startProcessing();
+            }
 
-			@Override
-			public void generalException(final Exception ex)
-			{
-				stopProcessing();
-			}
+            @Override
+            public void generalException(final Exception ex) {
+                stopProcessing();
+            }
 
-			@Override
-			public void success(final RESTTopicV1 retValue)
-			{
-				try
-				{
-					display.initialize(retValue, false, SplitType.DISABLED);
-				}
-				finally
-				{
-					stopProcessing();
-				}
-			}
+            @Override
+            public void success(final RESTTopicV1 retValue) {
+                try {
+                    display.initialize(retValue, false, SplitType.DISABLED);
+                } finally {
+                    stopProcessing();
+                }
+            }
 
-			@Override
-			public void failed()
-			{
-				stopProcessing();
-			}
-		};
-		
-		try
-		{
-			RESTCalls.getTopic(callback, Integer.parseInt(topicId));
-		}
-		catch (final NumberFormatException ex)
-		{
-			stopProcessing();
-		}
-	}
+            @Override
+            public void failed() {
+                stopProcessing();
+            }
+        };
 
-	private void bind()
-	{
+        try {
+            RESTCalls.getTopic(callback, Integer.parseInt(topicId));
+        } catch (final NumberFormatException ex) {
+            stopProcessing();
+        }
+    }
 
-	}
+    private void bind() {
 
-	private void stopProcessing()
-	{
-		display.setSpinnerVisible(false);
-	}
+    }
 
-	private void startProcessing()
-	{
-		display.setSpinnerVisible(true);
-	}
+    private void stopProcessing() {
+        display.setSpinnerVisible(false);
+    }
+
+    private void startProcessing() {
+        display.setSpinnerVisible(true);
+    }
 }

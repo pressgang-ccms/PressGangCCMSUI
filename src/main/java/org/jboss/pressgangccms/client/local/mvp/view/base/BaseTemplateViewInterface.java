@@ -7,35 +7,58 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 
-public interface BaseTemplateViewInterface
-{
-	FlexTable getTopActionPanel();
-	SimpleLayoutPanel getPanel();
-	DockLayoutPanel getTopLevelPanel();
-	void setSpinnerVisible(final boolean enabled);
-	void showRegularMenu();
-	Label getPageTitle();
-	String getPageName();
-	String getApplicationName();
-	
-	FlexTable getAdvancedShortcutPanel();
-	FlexTable getShortcutPanel();
-	SimplePanel getShortCutPanelParent();
-	
-	PushButton getBug();
-	PushButton getSearch();
-	PushButton getImages();
-	PushButton getAdvanced();
-	PushButton getPropertyTagCategories();
-	PushButton getPropertyTags();
-	PushButton getRoles();
-	PushButton getUsers();
-	PushButton getIntegerConstants();
-	PushButton getBlobConstants();
-	PushButton getStringConstants();
-	PushButton getProjects();
-	PushButton getCategories();
-	PushButton getTags();
-	PushButton getAdvancedOpen();
-	PushButton getClose();
+public interface BaseTemplateViewInterface {
+    FlexTable getTopActionPanel();
+
+    SimpleLayoutPanel getPanel();
+
+    DockLayoutPanel getTopLevelPanel();
+
+    void setSpinnerVisible(final boolean enabled);
+
+    void showRegularMenu();
+
+    Label getPageTitle();
+
+    String getPageName();
+
+    String getApplicationName();
+
+    FlexTable getAdvancedShortcutPanel();
+
+    FlexTable getShortcutPanel();
+
+    SimplePanel getShortCutPanelParent();
+
+    PushButton getBug();
+
+    PushButton getSearch();
+
+    PushButton getImages();
+
+    PushButton getAdvanced();
+
+    PushButton getPropertyTagCategories();
+
+    PushButton getPropertyTags();
+
+    PushButton getRoles();
+
+    PushButton getUsers();
+
+    PushButton getIntegerConstants();
+
+    PushButton getBlobConstants();
+
+    PushButton getStringConstants();
+
+    PushButton getProjects();
+
+    PushButton getCategories();
+
+    PushButton getTags();
+
+    PushButton getAdvancedOpen();
+
+    PushButton getClose();
 }

@@ -48,25 +48,25 @@ import hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl;
  */
 public class XsltProcessor {
 
-  private XsltProcessorImpl impl;
+    private XsltProcessorImpl impl;
 
-  public XsltProcessor() {
-    impl = GWT.create(XsltProcessorImpl.class);
-  }
+    public XsltProcessor() {
+        impl = GWT.create(XsltProcessorImpl.class);
+    }
 
-  public void importSource(String source) throws XsltProcessingException {
-    impl.importSource(source);
-  }
+    public void importSource(String source) throws XsltProcessingException {
+        impl.importSource(source);
+    }
 
-  public void importStyleSheet(String styleSheet) throws XsltProcessingException {
-    impl.importStyleSheet(styleSheet);
-  }
+    public void importStyleSheet(String styleSheet) throws XsltProcessingException {
+        impl.importStyleSheet(styleSheet);
+    }
 
-  public void setParameter(String name, String value) throws XsltProcessingException {
-    impl.setParameter(name, value);
-  }
+    public void setParameter(String name, String value) throws XsltProcessingException {
+        impl.setParameter(name, value);
+    }
 
-  public String transform() throws XsltProcessingException {
-    return impl.transform();
-  }
+    public String transform() throws XsltProcessingException {
+        return impl.transform();
+    }
 }

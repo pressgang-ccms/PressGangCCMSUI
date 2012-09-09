@@ -20,150 +20,123 @@ import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
 
 @Dependent
-public class SearchResultsPresenter extends TemplatePresenter
-{
-	public interface Display extends BaseTemplateViewInterface
-	{
-		AsyncDataProvider<RESTTopicV1> getProvider();
+public class SearchResultsPresenter extends TemplatePresenter {
+    public interface Display extends BaseTemplateViewInterface {
+        AsyncDataProvider<RESTTopicV1> getProvider();
 
-		void setProvider(final AsyncDataProvider<RESTTopicV1> provider);
+        void setProvider(final AsyncDataProvider<RESTTopicV1> provider);
 
-		CellTable<RESTTopicV1> getResults();
+        CellTable<RESTTopicV1> getResults();
 
-		SimplePager getPager();
-	}
+        SimplePager getPager();
+    }
 
-	@Inject
-	private Display display;
+    @Inject
+    private Display display;
 
-	@Inject
-	private TopicPresenter.Display topicViewDisplay;
+    @Inject
+    private TopicPresenter.Display topicViewDisplay;
 
-	private String queryString;
+    private String queryString;
 
-	@Override
-	public void parseToken(final String searchToken)
-	{
-		queryString = searchToken.replace(SearchResultsView.HISTORY_TOKEN + ";", "");
-	}
+    @Override
+    public void parseToken(final String searchToken) {
+        queryString = searchToken.replace(SearchResultsView.HISTORY_TOKEN + ";", "");
+    }
 
-	@Override
-	public void go(final HasWidgets container)
-	{
-		container.clear();
-		container.add(display.getTopLevelPanel());
+    @Override
+    public void go(final HasWidgets container) {
+        container.clear();
+        container.add(display.getTopLevelPanel());
 
-		bind();
-	}
+        bind();
+    }
 
-	private void bind()
-	{
-		super.bind(display);
+    private void bind() {
+        super.bind(display);
 
-		final AsyncDataProvider<RESTTopicV1> provider = new AsyncDataProvider<RESTTopicV1>()
-		{
-			@Override
-			protected void onRangeChanged(final HasData<RESTTopicV1> display)
-			{
-				final int start = display.getVisibleRange().getStart();
-				final int length = display.getVisibleRange().getLength();
-				final int end = start + length;
+        final AsyncDataProvider<RESTTopicV1> provider = new AsyncDataProvider<RESTTopicV1>() {
+            @Override
+            protected void onRangeChanged(final HasData<RESTTopicV1> display) {
+                final int start = display.getVisibleRange().getStart();
+                final int length = display.getVisibleRange().getLength();
+                final int end = start + length;
 
-				final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>()
-				{
-					@Override
-					public void begin()
-					{
-						startProcessing();
-					}
+                final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
+                    @Override
+                    public void begin() {
+                        startProcessing();
+                    }
 
-					@Override
-					public void generalException(final Exception ex)
-					{
-						stopProcessing();
-					}
+                    @Override
+                    public void generalException(final Exception ex) {
+                        stopProcessing();
+                    }
 
-					@Override
-					public void success(final RESTTopicCollectionV1 retValue)
-					{
-						try
-						{
-							updateRowData(start, retValue.getItems());
-							updateRowCount(retValue.getSize(), true);
-						}
-						finally
-						{
-							stopProcessing();
-						}
-					}	
+                    @Override
+                    public void success(final RESTTopicCollectionV1 retValue) {
+                        try {
+                            updateRowData(start, retValue.getItems());
+                            updateRowCount(retValue.getSize(), true);
+                        } finally {
+                            stopProcessing();
+                        }
+                    }
 
-					@Override
-					public void failed()
-					{
-						stopProcessing();
-					}
-				};
-				
-				RESTCalls.getTopicsFromQuery(callback, queryString, start, end);
-			}
-		};
+                    @Override
+                    public void failed() {
+                        stopProcessing();
+                    }
+                };
 
-		/* Respone to row clicks */
-		display.getResults().addCellPreviewHandler(new Handler<RESTTopicV1>()
-		{
-			@Override
-			public void onCellPreview(final CellPreviewEvent<RESTTopicV1> event)
-			{
-				final Integer id = event.getValue().getId();
+                RESTCalls.getTopicsFromQuery(callback, queryString, start, end);
+            }
+        };
 
-				final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>()
-				{
-					@Override
-					public void begin()
-					{
-						startProcessing();
-					}
+        /* Respone to row clicks */
+        display.getResults().addCellPreviewHandler(new Handler<RESTTopicV1>() {
+            @Override
+            public void onCellPreview(final CellPreviewEvent<RESTTopicV1> event) {
+                final Integer id = event.getValue().getId();
 
-					@Override
-					public void generalException(final Exception ex)
-					{
-						stopProcessing();
-					}
+                final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
+                    @Override
+                    public void begin() {
+                        startProcessing();
+                    }
 
-					@Override
-					public void success(final RESTTopicV1 retValue)
-					{
-						try
-						{
-							topicViewDisplay.initialize(retValue, false, SplitType.NONE);
-						}
-						finally
-						{
-							stopProcessing();
-						}
-					}
+                    @Override
+                    public void generalException(final Exception ex) {
+                        stopProcessing();
+                    }
 
-					@Override
-					public void failed()
-					{
-						stopProcessing();
-					}
-				};
+                    @Override
+                    public void success(final RESTTopicV1 retValue) {
+                        try {
+                            topicViewDisplay.initialize(retValue, false, SplitType.NONE);
+                        } finally {
+                            stopProcessing();
+                        }
+                    }
 
-				RESTCalls.getTopic(callback, id);
-			}
-		});
+                    @Override
+                    public void failed() {
+                        stopProcessing();
+                    }
+                };
 
-		display.setProvider(provider);
-	}
+                RESTCalls.getTopic(callback, id);
+            }
+        });
 
-	private void stopProcessing()
-	{
-		display.setSpinnerVisible(false);
-	}
+        display.setProvider(provider);
+    }
 
-	private void startProcessing()
-	{
-		display.setSpinnerVisible(true);
-	}
+    private void stopProcessing() {
+        display.setSpinnerVisible(false);
+    }
+
+    private void startProcessing() {
+        display.setSpinnerVisible(true);
+    }
 }

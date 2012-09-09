@@ -21,116 +21,99 @@ import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 
 @Dependent
-public class TagFilteredResultsPresenter extends TemplatePresenter
-{
-	public interface Display extends BaseTemplateViewInterface
-	{
-		AsyncDataProvider<RESTTagV1> getProvider();
+public class TagFilteredResultsPresenter extends TemplatePresenter {
+    public interface Display extends BaseTemplateViewInterface {
+        AsyncDataProvider<RESTTagV1> getProvider();
 
-		void setProvider(final AsyncDataProvider<RESTTagV1> provider);
+        void setProvider(final AsyncDataProvider<RESTTagV1> provider);
 
-		CellTable<RESTTagV1> getResults();
+        CellTable<RESTTagV1> getResults();
 
-		SimplePager getPager();
-		
-		TextBox getIdFilter();
+        SimplePager getPager();
 
-		TextBox getDescriptionFilter();
-		
-		TextBox getNameFilter();
-		
-		@Override
-		PushButton getSearch();
-	}
+        TextBox getIdFilter();
 
-	@Inject
-	private Display display;
-	
-	private String queryString;
-	
-	/** Keeps a reference to the start row */
-	private Integer tableStartRow;
-	
-	/** Keeps a reference to the list of topics being displayed */
-	private List<RESTImageV1> currentList;
+        TextBox getDescriptionFilter();
 
-	@Override
-	public void parseToken(final String searchToken)
-	{
-		queryString = searchToken.replace(TagFilteredResultsView.HISTORY_TOKEN + ";", "");
-	}
+        TextBox getNameFilter();
 
-	@Override
-	public void go(final HasWidgets container)
-	{
-		container.clear();
-		container.add(display.getTopLevelPanel());
+        @Override
+        PushButton getSearch();
+    }
 
-		bind();
-	}
+    @Inject
+    private Display display;
 
-	private void bind()
-	{
-		super.bind(display);
+    private String queryString;
 
-		final AsyncDataProvider<RESTTagV1> provider = new AsyncDataProvider<RESTTagV1>()
-		{
-			@Override
-			protected void onRangeChanged(final HasData<RESTTagV1> display)
-			{
-				final int start = display.getVisibleRange().getStart();
-				final int length = display.getVisibleRange().getLength();
-				final int end = start + length;
+    /** Keeps a reference to the start row */
+    private Integer tableStartRow;
 
-				final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>()
-				{
-					@Override
-					public void begin()
-					{
-						startProcessing();
-					}
+    /** Keeps a reference to the list of topics being displayed */
+    private List<RESTImageV1> currentList;
 
-					@Override
-					public void generalException(final Exception ex)
-					{
-						stopProcessing();
-					}
+    @Override
+    public void parseToken(final String searchToken) {
+        queryString = searchToken.replace(TagFilteredResultsView.HISTORY_TOKEN + ";", "");
+    }
 
-					@Override
-					public void success(final RESTTagCollectionV1 retValue)
-					{
-						try
-						{
-							updateRowData(start, retValue.getItems());
-							updateRowCount(retValue.getSize(), true);
-						}
-						finally
-						{
-							stopProcessing();
-						}
-					}	
+    @Override
+    public void go(final HasWidgets container) {
+        container.clear();
+        container.add(display.getTopLevelPanel());
 
-					@Override
-					public void failed()
-					{
-						stopProcessing();
-					}
-				};
-				
-				RESTCalls.getTagsFromQuery(callback, queryString, start, end);
-			}
-		};
+        bind();
+    }
 
-		display.setProvider(provider);
-	}
+    private void bind() {
+        super.bind(display);
 
-	private void stopProcessing()
-	{
-		display.setSpinnerVisible(false);
-	}
+        final AsyncDataProvider<RESTTagV1> provider = new AsyncDataProvider<RESTTagV1>() {
+            @Override
+            protected void onRangeChanged(final HasData<RESTTagV1> display) {
+                final int start = display.getVisibleRange().getStart();
+                final int length = display.getVisibleRange().getLength();
+                final int end = start + length;
 
-	private void startProcessing()
-	{
-		display.setSpinnerVisible(true);
-	}
+                final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
+                    @Override
+                    public void begin() {
+                        startProcessing();
+                    }
+
+                    @Override
+                    public void generalException(final Exception ex) {
+                        stopProcessing();
+                    }
+
+                    @Override
+                    public void success(final RESTTagCollectionV1 retValue) {
+                        try {
+                            updateRowData(start, retValue.getItems());
+                            updateRowCount(retValue.getSize(), true);
+                        } finally {
+                            stopProcessing();
+                        }
+                    }
+
+                    @Override
+                    public void failed() {
+                        stopProcessing();
+                    }
+                };
+
+                RESTCalls.getTagsFromQuery(callback, queryString, start, end);
+            }
+        };
+
+        display.setProvider(provider);
+    }
+
+    private void stopProcessing() {
+        display.setSpinnerVisible(false);
+    }
+
+    private void startProcessing() {
+        display.setSpinnerVisible(true);
+    }
 }

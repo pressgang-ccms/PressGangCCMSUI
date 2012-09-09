@@ -16,26 +16,22 @@ import com.google.gwt.user.client.ui.TriStatePushButton;
  * 
  * @author Matthew Casperson
  */
-public class SearchUITagEditor implements Editor<SearchUITag>
-{
-	private final SearchUIProjects searchUIProjects;
-	
-	final Label name = new Label();
-	final TriStatePushButton state = new TriStatePushButton();
+public class SearchUITagEditor implements Editor<SearchUITag> {
+    private final SearchUIProjects searchUIProjects;
 
-	public SearchUITagEditor(final SearchPresenterDriver driver, final SearchUIProjects searchUIProjects)
-	{
-		this.searchUIProjects = searchUIProjects;
-		
-		name.addStyleName(CSSConstants.TAGLABEL);
+    final Label name = new Label();
+    final TriStatePushButton state = new TriStatePushButton();
 
-		state.addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				driver.flush();
-			}
-		});
-	}
+    public SearchUITagEditor(final SearchPresenterDriver driver, final SearchUIProjects searchUIProjects) {
+        this.searchUIProjects = searchUIProjects;
+
+        name.addStyleName(CSSConstants.TAGLABEL);
+
+        state.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                driver.flush();
+            }
+        });
+    }
 }

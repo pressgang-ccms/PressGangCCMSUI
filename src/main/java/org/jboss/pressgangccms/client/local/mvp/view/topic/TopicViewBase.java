@@ -11,263 +11,230 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 
 /**
- * The base class for all views that display some details of a topic. This class
- * creates and exposes all the common UI elements.
+ * The base class for all views that display some details of a topic. This class creates and exposes all the common UI elements.
  * 
  * @author Matthew Casperson
  */
-abstract public class TopicViewBase extends BaseTemplateView implements TopicViewInterface
-{
-	private final PushButton fields;
-	private final PushButton xml;
-	private final PushButton xmlErrors;
-	private final PushButton rendered;
-	private final PushButton tags;
-	private final PushButton save;
-	private final PushButton bugs;
-	private final PushButton history;
-	
-	private final Label fieldsDown;
-	private final Label xmlDown;
-	private final Label xmlErrorsDown;
-	private final Label renderedDown;
-	private final Label tagsDown;
-	private final Label bugsDown;
-	private final Label historyDown;
+abstract public class TopicViewBase extends BaseTemplateView implements TopicViewInterface {
+    private final PushButton fields;
+    private final PushButton xml;
+    private final PushButton xmlErrors;
+    private final PushButton rendered;
+    private final PushButton tags;
+    private final PushButton save;
+    private final PushButton bugs;
+    private final PushButton history;
 
-	private final FlexTable renderedSplitViewMenu = new FlexTable();
-	private final PushButton renderedSplit;
-	private final PushButton renderedNoSplit;
-	private final PushButton renderedVerticalSplit;
-	private final PushButton renderedHorizontalSplit;
-	private final Label renderedNoSplitDown;
-	private final Label renderedVerticalSplitDown;
-	private final Label renderedHorizontalSplitDown;
-	private final PushButton renderedSplitClose;
-	private final PushButton renderedSplitOpen;
+    private final Label fieldsDown;
+    private final Label xmlDown;
+    private final Label xmlErrorsDown;
+    private final Label renderedDown;
+    private final Label tagsDown;
+    private final Label bugsDown;
+    private final Label historyDown;
 
-	protected boolean readOnly = false;
-	
-	public Label getFieldsDown()
-	{
-		return fieldsDown;
-	}
+    private final FlexTable renderedSplitViewMenu = new FlexTable();
+    private final PushButton renderedSplit;
+    private final PushButton renderedNoSplit;
+    private final PushButton renderedVerticalSplit;
+    private final PushButton renderedHorizontalSplit;
+    private final Label renderedNoSplitDown;
+    private final Label renderedVerticalSplitDown;
+    private final Label renderedHorizontalSplitDown;
+    private final PushButton renderedSplitClose;
+    private final PushButton renderedSplitOpen;
 
-	public Label getXmlDown()
-	{
-		return xmlDown;
-	}
+    protected boolean readOnly = false;
 
-	public Label getXmlErrorsDown()
-	{
-		return xmlErrorsDown;
-	}
+    public Label getFieldsDown() {
+        return fieldsDown;
+    }
 
-	public Label getRenderedDown()
-	{
-		return renderedDown;
-	}
+    public Label getXmlDown() {
+        return xmlDown;
+    }
 
-	public Label getTagsDown()
-	{
-		return tagsDown;
-	}
+    public Label getXmlErrorsDown() {
+        return xmlErrorsDown;
+    }
 
-	public Label getBugsDown()
-	{
-		return bugsDown;
-	}
+    public Label getRenderedDown() {
+        return renderedDown;
+    }
 
-	public Label getHistoryDown()
-	{
-		return historyDown;
-	}
-	
-	@Override
-	public PushButton getRenderedSplitOpen()
-	{
-		return renderedSplitOpen;
-	}
+    public Label getTagsDown() {
+        return tagsDown;
+    }
 
-	@Override
-	public PushButton getRenderedHorizontalSplit()
-	{
-		return renderedHorizontalSplit;
-	}
+    public Label getBugsDown() {
+        return bugsDown;
+    }
 
-	@Override
-	public FlexTable getRenderedSplitViewMenu()
-	{
-		return renderedSplitViewMenu;
-	}
+    public Label getHistoryDown() {
+        return historyDown;
+    }
 
-	@Override
-	public PushButton getRenderedSplitClose()
-	{
-		return renderedSplitClose;
-	}
+    @Override
+    public PushButton getRenderedSplitOpen() {
+        return renderedSplitOpen;
+    }
 
-	@Override
-	public PushButton getRenderedVerticalSplit()
-	{
-		return renderedVerticalSplit;
-	}
+    @Override
+    public PushButton getRenderedHorizontalSplit() {
+        return renderedHorizontalSplit;
+    }
 
-	@Override
-	public PushButton getRenderedNoSplit()
-	{
-		return renderedNoSplit;
-	}
+    @Override
+    public FlexTable getRenderedSplitViewMenu() {
+        return renderedSplitViewMenu;
+    }
 
-	@Override
-	public PushButton getRenderedSplit()
-	{
-		return renderedSplit;
-	}
+    @Override
+    public PushButton getRenderedSplitClose() {
+        return renderedSplitClose;
+    }
 
-	@Override
-	public PushButton getHistory()
-	{
-		return history;
-	}
+    @Override
+    public PushButton getRenderedVerticalSplit() {
+        return renderedVerticalSplit;
+    }
 
-	@Override
-	public PushButton getBugs()
-	{
-		return bugs;
-	}
+    @Override
+    public PushButton getRenderedNoSplit() {
+        return renderedNoSplit;
+    }
 
-	@Override
-	public PushButton getTags()
-	{
-		return tags;
-	}
+    @Override
+    public PushButton getRenderedSplit() {
+        return renderedSplit;
+    }
 
-	@Override
-	public PushButton getXmlErrors()
-	{
-		return xmlErrors;
-	}
+    @Override
+    public PushButton getHistory() {
+        return history;
+    }
 
-	@Override
-	public PushButton getSave()
-	{
-		return save;
-	}
+    @Override
+    public PushButton getBugs() {
+        return bugs;
+    }
 
-	@Override
-	public PushButton getRendered()
-	{
-		return rendered;
-	}
+    @Override
+    public PushButton getTags() {
+        return tags;
+    }
 
-	@Override
-	public PushButton getXml()
-	{
-		return xml;
-	}
+    @Override
+    public PushButton getXmlErrors() {
+        return xmlErrors;
+    }
 
-	@Override
-	public PushButton getFields()
-	{
-		return fields;
-	}
+    @Override
+    public PushButton getSave() {
+        return save;
+    }
 
-	public TopicViewBase(final String applicationName, final String pageName)
-	{
-		super(applicationName, pageName);
-		
-		renderedSplitViewMenu.addStyleName(CSSConstants.RENDEREDSPLITVIEWMENUTABLE);
+    @Override
+    public PushButton getRendered() {
+        return rendered;
+    }
 
-		/* Build the action bar icons */
-		renderedSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
-		rendered = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedView());
-		xml = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.XMLEditing());
-		xmlErrors = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
-		fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Properties());
-		save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-		tags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TopicTags());
-		bugs = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Bugs());
-		history = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Revisions());
-		
-		fieldsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Properties());
-		xmlDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.XMLEditing());
-		xmlErrorsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
-		renderedDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.RenderedView());
-		tagsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TopicTags());
-		bugsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Bugs());
-		historyDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
+    @Override
+    public PushButton getXml() {
+        return xml;
+    }
 
-		renderedSplitOpen = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
-		renderedNoSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.NoSplit());
-		renderedNoSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.NoSplit());
-		renderedVerticalSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.VerticalSplit());
-		renderedVerticalSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.VerticalSplit());
-		renderedHorizontalSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HorizontalSplit());
-		renderedHorizontalSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.HorizontalSplit());
-		renderedSplitClose = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CloseSubMenu());
-		
-		populateTopActionBar();		
-	}
+    @Override
+    public PushButton getFields() {
+        return fields;
+    }
 
-	/**
-	 * This method enables or disables the save button based on the read only
-	 * state, and also highlights the history button if needed.
-	 */
-	protected void fixReadOnlyButtons()
-	{
-		this.getSave().setEnabled(!readOnly);
+    public TopicViewBase(final String applicationName, final String pageName) {
+        super(applicationName, pageName);
 
-		if (readOnly)
-		{
-			this.getHistory().addStyleName(CSSConstants.ALERTBUTTON);
-		}
-		else
-		{
-			this.getHistory().removeStyleName(CSSConstants.ALERTBUTTON);
-		}
-	}
+        renderedSplitViewMenu.addStyleName(CSSConstants.RENDEREDSPLITVIEWMENUTABLE);
 
-	protected void buildSplitViewButtons(final SplitType splitType)
-	{
-		renderedSplitViewMenu.clear();
+        /* Build the action bar icons */
+        renderedSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
+        rendered = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedView());
+        xml = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.XMLEditing());
+        xmlErrors = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
+        fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Properties());
+        save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+        tags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TopicTags());
+        bugs = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Bugs());
+        history = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Revisions());
 
-		if (splitType != SplitType.DISABLED)
-		{
-			renderedSplitViewMenu.setWidget(0, 0, renderedSplitOpen);
-			
-			if (splitType == SplitType.NONE)
-				renderedSplitViewMenu.setWidget(0, 1, renderedNoSplitDown);
-			else
-				renderedSplitViewMenu.setWidget(0, 1, renderedNoSplit);
+        fieldsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Properties());
+        xmlDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.XMLEditing());
+        xmlErrorsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
+        renderedDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.RenderedView());
+        tagsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TopicTags());
+        bugsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Bugs());
+        historyDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
 
-			if (splitType == SplitType.VERTICAL)
-				renderedSplitViewMenu.setWidget(0, 2, renderedVerticalSplitDown);
-			else
-				renderedSplitViewMenu.setWidget(0, 2, renderedVerticalSplit);
+        renderedSplitOpen = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
+        renderedNoSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.NoSplit());
+        renderedNoSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.NoSplit());
+        renderedVerticalSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.VerticalSplit());
+        renderedVerticalSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.VerticalSplit());
+        renderedHorizontalSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HorizontalSplit());
+        renderedHorizontalSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.HorizontalSplit());
+        renderedSplitClose = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CloseSubMenu());
 
-			if (splitType == SplitType.HORIZONTAL)
-				renderedSplitViewMenu.setWidget(0, 3, renderedHorizontalSplitDown);
-			else
-				renderedSplitViewMenu.setWidget(0, 3, renderedHorizontalSplit);
+        populateTopActionBar();
+    }
 
-			renderedSplitViewMenu.setWidget(0, 4, renderedSplitClose);
-		}
-		
-		addRightAlignedActionButtonPaddingPanel(this.renderedSplitViewMenu);
-	}
-	
-	/** Show the rendered split view menu */
-	@Override
-	public void showSplitViewButtons()
-	{
-		getTopActionParentPanel().clear();
-		getTopActionParentPanel().add(renderedSplitViewMenu);
-	}
+    /**
+     * This method enables or disables the save button based on the read only state, and also highlights the history button if
+     * needed.
+     */
+    protected void fixReadOnlyButtons() {
+        this.getSave().setEnabled(!readOnly);
 
-	/**
-	 * This method is called to initialize the buttons that should appear in the
-	 * top action bar
-	 */
-	abstract protected void populateTopActionBar();
+        if (readOnly) {
+            this.getHistory().addStyleName(CSSConstants.ALERTBUTTON);
+        } else {
+            this.getHistory().removeStyleName(CSSConstants.ALERTBUTTON);
+        }
+    }
+
+    protected void buildSplitViewButtons(final SplitType splitType) {
+        renderedSplitViewMenu.clear();
+
+        if (splitType != SplitType.DISABLED) {
+            renderedSplitViewMenu.setWidget(0, 0, renderedSplitOpen);
+
+            if (splitType == SplitType.NONE)
+                renderedSplitViewMenu.setWidget(0, 1, renderedNoSplitDown);
+            else
+                renderedSplitViewMenu.setWidget(0, 1, renderedNoSplit);
+
+            if (splitType == SplitType.VERTICAL)
+                renderedSplitViewMenu.setWidget(0, 2, renderedVerticalSplitDown);
+            else
+                renderedSplitViewMenu.setWidget(0, 2, renderedVerticalSplit);
+
+            if (splitType == SplitType.HORIZONTAL)
+                renderedSplitViewMenu.setWidget(0, 3, renderedHorizontalSplitDown);
+            else
+                renderedSplitViewMenu.setWidget(0, 3, renderedHorizontalSplit);
+
+            renderedSplitViewMenu.setWidget(0, 4, renderedSplitClose);
+        }
+
+        addRightAlignedActionButtonPaddingPanel(this.renderedSplitViewMenu);
+    }
+
+    /** Show the rendered split view menu */
+    @Override
+    public void showSplitViewButtons() {
+        getTopActionParentPanel().clear();
+        getTopActionParentPanel().add(renderedSplitViewMenu);
+    }
+
+    /**
+     * This method is called to initialize the buttons that should appear in the top action bar
+     */
+    abstract protected void populateTopActionBar();
 }

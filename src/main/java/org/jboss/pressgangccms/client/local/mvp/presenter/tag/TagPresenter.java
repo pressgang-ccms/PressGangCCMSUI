@@ -14,99 +14,79 @@ import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
-public class TagPresenter extends TemplatePresenter
-{
-	// Empty interface declaration, similar to UiBinder
-	public interface TagPresenterDriver extends SimpleBeanEditorDriver<RESTTagV1, RESTTagV1BasicDetailsEditor>
-	{
-	}
+public class TagPresenter extends TemplatePresenter {
+    // Empty interface declaration, similar to UiBinder
+    public interface TagPresenterDriver extends SimpleBeanEditorDriver<RESTTagV1, RESTTagV1BasicDetailsEditor> {
+    }
 
-	public interface Display extends TagViewInterface
-	{		
-		@SuppressWarnings("rawtypes")
-		SimpleBeanEditorDriver getDriver();		
-	}
+    public interface Display extends TagViewInterface {
+        @SuppressWarnings("rawtypes")
+        SimpleBeanEditorDriver getDriver();
+    }
 
-	private String tagId;
+    private String tagId;
 
-	@Inject
-	private Display display;
+    @Inject
+    private Display display;
 
-	@Override
-	public void parseToken(final String searchToken)
-	{
-		tagId = searchToken.replace(TagView.HISTORY_TOKEN + ";", "");
-	}
+    @Override
+    public void parseToken(final String searchToken) {
+        tagId = searchToken.replace(TagView.HISTORY_TOKEN + ";", "");
+    }
 
-	@Override
-	public void go(final HasWidgets container)
-	{
-		container.clear();
-		container.add(display.getTopLevelPanel());
+    @Override
+    public void go(final HasWidgets container) {
+        container.clear();
+        container.add(display.getTopLevelPanel());
 
-		getTag();
+        getTag();
 
-		bind();
-	}
+        bind();
+    }
 
-	private void getTag()
-	{
-		final RESTCalls.RESTCallback<RESTTagV1> callback = new RESTCalls.RESTCallback<RESTTagV1>()
-		{
-			@Override
-			public void begin()
-			{
-				startProcessing();
-			}
+    private void getTag() {
+        final RESTCalls.RESTCallback<RESTTagV1> callback = new RESTCalls.RESTCallback<RESTTagV1>() {
+            @Override
+            public void begin() {
+                startProcessing();
+            }
 
-			@Override
-			public void generalException(final Exception ex)
-			{
-				stopProcessing();
-			}
+            @Override
+            public void generalException(final Exception ex) {
+                stopProcessing();
+            }
 
-			@Override
-			public void success(final RESTTagV1 retValue)
-			{
-				try
-				{
-					display.initialize(retValue, false);
-				}
-				finally
-				{
-					stopProcessing();
-				}
-			}
+            @Override
+            public void success(final RESTTagV1 retValue) {
+                try {
+                    display.initialize(retValue, false);
+                } finally {
+                    stopProcessing();
+                }
+            }
 
-			@Override
-			public void failed()
-			{
-				stopProcessing();
-			}
-		};
-		
-		try
-		{
-			RESTCalls.getTag(callback, Integer.parseInt(tagId));
-		}
-		catch (final NumberFormatException ex)
-		{
-			stopProcessing();
-		}
-	}
+            @Override
+            public void failed() {
+                stopProcessing();
+            }
+        };
 
-	private void bind()
-	{
-		super.bind(display);
-	}
+        try {
+            RESTCalls.getTag(callback, Integer.parseInt(tagId));
+        } catch (final NumberFormatException ex) {
+            stopProcessing();
+        }
+    }
 
-	private void stopProcessing()
-	{
-		display.setSpinnerVisible(false);
-	}
+    private void bind() {
+        super.bind(display);
+    }
 
-	private void startProcessing()
-	{
-		display.setSpinnerVisible(true);
-	}
+    private void stopProcessing() {
+        display.setSpinnerVisible(false);
+    }
+
+    private void startProcessing() {
+        display.setSpinnerVisible(true);
+    }
 }

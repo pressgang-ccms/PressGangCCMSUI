@@ -14,87 +14,84 @@ import com.google.gwt.user.client.ui.PushButton;
  * @author Matthew Casperson
  * 
  */
-public interface TopicViewInterface extends BaseTemplateViewInterface
-{
-	FlexTable getRenderedSplitViewMenu();
-	
-	PushButton getRenderedSplitOpen();
-	
-	PushButton getRenderedHorizontalSplit();
-	
-	PushButton getRenderedSplitClose();
+public interface TopicViewInterface extends BaseTemplateViewInterface {
+    FlexTable getRenderedSplitViewMenu();
 
-	PushButton getRenderedVerticalSplit();
+    PushButton getRenderedSplitOpen();
 
-	PushButton getRenderedNoSplit();
+    PushButton getRenderedHorizontalSplit();
 
-	PushButton getRenderedSplit();
-	
-	/**
-	 * @return The button that is used to switch to the history view
-	 */
-	PushButton getHistory();
-	
-	/**
-	 * @return The button that is used to switch to the rendered view
-	 */
-	PushButton getRendered();
+    PushButton getRenderedSplitClose();
 
-	/**
-	 * 
-	 * @return The button that is used to switch to the XML view
-	 */
-	PushButton getXml();
+    PushButton getRenderedVerticalSplit();
 
-	/**
-	 * 
-	 * @return The button that is used to switch to the topic fields view
-	 */
-	PushButton getFields();
+    PushButton getRenderedNoSplit();
 
-	/**
-	 * 
-	 * @return The button that is used to save the topic
-	 */
-	PushButton getSave();
+    PushButton getRenderedSplit();
 
-	/**
-	 * 
-	 * @return The button that is used to switch to the XML errors view
-	 */
-	PushButton getXmlErrors();
+    /**
+     * @return The button that is used to switch to the history view
+     */
+    PushButton getHistory();
 
-	/**
-	 * 
-	 * @return The button that is used to switch to the tags view
-	 */
-	@Override
-	PushButton getTags();
+    /**
+     * @return The button that is used to switch to the rendered view
+     */
+    PushButton getRendered();
 
-	/**
-	 * 
-	 * @return The button that is used to switch to the bugs view
-	 */
-	PushButton getBugs();
+    /**
+     * 
+     * @return The button that is used to switch to the XML view
+     */
+    PushButton getXml();
 
-	/**
-	 * 
-	 * @return The GWT Editor Framework driver that is used to sync the data
-	 *         between the underlying POJOs and the UI Editor elements
-	 */
-	@SuppressWarnings("rawtypes")
-	SimpleBeanEditorDriver getDriver();
+    /**
+     * 
+     * @return The button that is used to switch to the topic fields view
+     */
+    PushButton getFields();
 
-	/**
-	 * Initialize the view with the details in the supplied topic
-	 * 
-	 * @param topic
-	 *            The topic that is used to initialize the view
-	 * @param readOnly
-	 * 				true if the display is to be read only, false otherwise
-	 */
-	void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType);
-	
-	/** Show the rendered split view menu */
-	void showSplitViewButtons();
+    /**
+     * 
+     * @return The button that is used to save the topic
+     */
+    PushButton getSave();
+
+    /**
+     * 
+     * @return The button that is used to switch to the XML errors view
+     */
+    PushButton getXmlErrors();
+
+    /**
+     * 
+     * @return The button that is used to switch to the tags view
+     */
+    @Override
+    PushButton getTags();
+
+    /**
+     * 
+     * @return The button that is used to switch to the bugs view
+     */
+    PushButton getBugs();
+
+    /**
+     * 
+     * @return The GWT Editor Framework driver that is used to sync the data between the underlying POJOs and the UI Editor
+     *         elements
+     */
+    @SuppressWarnings("rawtypes")
+    SimpleBeanEditorDriver getDriver();
+
+    /**
+     * Initialize the view with the details in the supplied topic
+     * 
+     * @param topic The topic that is used to initialize the view
+     * @param readOnly true if the display is to be read only, false otherwise
+     */
+    void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType);
+
+    /** Show the rendered split view menu */
+    void showSplitViewButtons();
 }

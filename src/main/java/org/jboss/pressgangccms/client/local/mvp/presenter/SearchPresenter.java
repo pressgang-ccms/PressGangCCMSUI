@@ -21,114 +21,95 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 
 @Dependent
-public class SearchPresenter extends TemplatePresenter
-{
-	public interface Display extends BaseTemplateViewInterface
-	{
-		// Empty interface declaration, similar to UiBinder
-		public interface SearchPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor>
-		{
-		}
+public class SearchPresenter extends TemplatePresenter {
+    public interface Display extends BaseTemplateViewInterface {
+        // Empty interface declaration, similar to UiBinder
+        public interface SearchPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor> {
+        }
 
-		SearchUIProjects getSearchUIProjects();
+        SearchUIProjects getSearchUIProjects();
 
-		@Override
-		PushButton getSearch();
+        @Override
+        PushButton getSearch();
 
-		SearchPresenterDriver getDriver();
+        SearchPresenterDriver getDriver();
 
-		void initialise(final RESTTagCollectionV1 tags);
-	}
+        void initialise(final RESTTagCollectionV1 tags);
+    }
 
-	@Inject
-	private HandlerManager eventBus;
+    @Inject
+    private HandlerManager eventBus;
 
-	@Inject
-	private Display display;
+    @Inject
+    private Display display;
 
-	@Override
-	public void go(final HasWidgets container)
-	{
-		container.clear();
-		container.add(display.getTopLevelPanel());
+    @Override
+    public void go(final HasWidgets container) {
+        container.clear();
+        container.add(display.getTopLevelPanel());
 
-		getProjects();
+        getProjects();
 
-		bind();
-	}
+        bind();
+    }
 
-	protected void bind()
-	{
-		super.bind(display);
+    protected void bind() {
+        super.bind(display);
 
-		display.getSearch().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				eventBus.fireEvent(new SearchResultsAndTopicViewEvent(display.getSearchUIProjects().getRESTQueryString()));
-			}
-		});
-	}
+        display.getSearch().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(display.getSearchUIProjects().getRESTQueryString()));
+            }
+        });
+    }
 
-	private void stopProcessing()
-	{
-		display.setSpinnerVisible(false);
-	}
+    private void stopProcessing() {
+        display.setSpinnerVisible(false);
+    }
 
-	private void startProcessing()
-	{
-		display.setSpinnerVisible(true);
-	}
+    private void startProcessing() {
+        display.setSpinnerVisible(true);
+    }
 
-	private void getProjects()
-	{
-		final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>()
-		{
+    private void getProjects() {
+        final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
 
-			@Override
-			public void begin()
-			{
-				startProcessing();
-			}
+            @Override
+            public void begin() {
+                startProcessing();
+            }
 
-			@Override
-			public void generalException(final Exception ex)
-			{
-				Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTags());
-				stopProcessing();
-			}
+            @Override
+            public void generalException(final Exception ex) {
+                Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTags());
+                stopProcessing();
+            }
 
-			@Override
-			public void success(final RESTTagCollectionV1 retValue)
-			{
-				try
-				{
-					final String message = retValue.getItems().size() + " tags returned.";
-					System.out.println(message);
+            @Override
+            public void success(final RESTTagCollectionV1 retValue) {
+                try {
+                    final String message = retValue.getItems().size() + " tags returned.";
+                    System.out.println(message);
 
-					display.initialise(retValue);
-				}
-				finally
-				{
-					stopProcessing();
-				}
-			}
+                    display.initialise(retValue);
+                } finally {
+                    stopProcessing();
+                }
+            }
 
-			@Override
-			public void failed()
-			{
-				Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTags());
-				stopProcessing();
-			}
-		};
+            @Override
+            public void failed() {
+                Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTags());
+                stopProcessing();
+            }
+        };
 
-		RESTCalls.getTags(callback);
-	}
+        RESTCalls.getTags(callback);
+    }
 
-	@Override
-	public void parseToken(String historyToken)
-	{
-		// TODO Auto-generated method stub
-	}
+    @Override
+    public void parseToken(String historyToken) {
+        // TODO Auto-generated method stub
+    }
 }

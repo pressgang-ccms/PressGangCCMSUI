@@ -21,56 +21,52 @@ import com.google.gwt.core.client.JavaScriptObject;
 import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
 
 /**
- * Abstraction for native implementations associated with
- * {@link hu.szaboaz.gwt.xslt.client.XSLTProcessor}.
+ * Abstraction for native implementations associated with {@link hu.szaboaz.gwt.xslt.client.XSLTProcessor}.
+ * 
  * @author Szabó Árpád Zoltán, szabo.arpad.zoltan at gmail.com
  */
 public abstract class XsltProcessorImpl {
 
-  protected JavaScriptObject processor;
-  protected JavaScriptObject sourceJsObject;
+    protected JavaScriptObject processor;
+    protected JavaScriptObject sourceJsObject;
 
-  public void importSource(String source) throws XsltProcessingException {
-    try {
-      sourceJsObject = parseImpl(source);
+    public void importSource(String source) throws XsltProcessingException {
+        try {
+            sourceJsObject = parseImpl(source);
+        } catch (JavaScriptException e) {
+            throw new XsltProcessingException(e.getMessage(), e);
+        }
     }
-    catch(JavaScriptException e) {
-      throw new XsltProcessingException(e.getMessage(), e);
-    }
-  }
 
-  public void importStyleSheet(String styleSheet) throws XsltProcessingException {
-    try {
-      importStyleSheetImpl(styleSheet);
+    public void importStyleSheet(String styleSheet) throws XsltProcessingException {
+        try {
+            importStyleSheetImpl(styleSheet);
+        } catch (JavaScriptException e) {
+            throw new XsltProcessingException(e.getMessage(), e);
+        }
     }
-    catch(JavaScriptException e) {
-      throw new XsltProcessingException(e.getMessage(), e);
-    }
-  }
-  
-  public void setParameter(String name, String value) throws XsltProcessingException {
-    try {
-      setParameterImpl(name,value);
-    }
-    catch (JavaScriptException e) {
-      throw new XsltProcessingException(e.getMessage(), e.getCause());
-    }
-  }
 
-  public String transform() throws XsltProcessingException {
-    try {
-      return transformImpl();
+    public void setParameter(String name, String value) throws XsltProcessingException {
+        try {
+            setParameterImpl(name, value);
+        } catch (JavaScriptException e) {
+            throw new XsltProcessingException(e.getMessage(), e.getCause());
+        }
     }
-    catch (JavaScriptException e) {
-      throw new XsltProcessingException(e.getMessage(), e.getCause());
+
+    public String transform() throws XsltProcessingException {
+        try {
+            return transformImpl();
+        } catch (JavaScriptException e) {
+            throw new XsltProcessingException(e.getMessage(), e.getCause());
+        }
     }
-  }
-  
-  protected abstract void importStyleSheetImpl(String styleSheet);
-  
-  protected abstract JavaScriptObject parseImpl(String source);
-  
-  protected abstract void setParameterImpl(String name, String value);
-  
-  protected abstract String transformImpl();
+
+    protected abstract void importStyleSheetImpl(String styleSheet);
+
+    protected abstract JavaScriptObject parseImpl(String source);
+
+    protected abstract void setParameterImpl(String name, String value);
+
+    protected abstract String transformImpl();
 }

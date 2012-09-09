@@ -18,103 +18,86 @@ import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 
 @Dependent
-public class TagProjectsPresenter extends TemplatePresenter
-{
-	public interface Display extends TagViewInterface
-	{
-		AsyncDataProvider<RESTProjectV1> getProvider();
+public class TagProjectsPresenter extends TemplatePresenter {
+    public interface Display extends TagViewInterface {
+        AsyncDataProvider<RESTProjectV1> getProvider();
 
-		void setProvider(final AsyncDataProvider<RESTProjectV1> provider);
+        void setProvider(final AsyncDataProvider<RESTProjectV1> provider);
 
-		CellTable<RESTProjectV1> getResults();
+        CellTable<RESTProjectV1> getResults();
 
-		SimplePager getPager();
-		
-		Column<RESTProjectV1, String> getButtonColumn();
-	}
+        SimplePager getPager();
 
-	@Inject
-	private Display display;
-	
-	private String queryString;
+        Column<RESTProjectV1, String> getButtonColumn();
+    }
 
-	@Override
-	public void parseToken(final String searchToken)
-	{
-		queryString = searchToken.replace(TagProjectsView.HISTORY_TOKEN + ";", "");
-	}
+    @Inject
+    private Display display;
 
-	@Override
-	public void go(final HasWidgets container)
-	{
-		container.clear();
-		container.add(display.getTopLevelPanel());
+    private String queryString;
 
-		bind();
-	}
+    @Override
+    public void parseToken(final String searchToken) {
+        queryString = searchToken.replace(TagProjectsView.HISTORY_TOKEN + ";", "");
+    }
 
-	private void bind()
-	{
-		super.bind(display);
+    @Override
+    public void go(final HasWidgets container) {
+        container.clear();
+        container.add(display.getTopLevelPanel());
 
-		final AsyncDataProvider<RESTProjectV1> provider = new AsyncDataProvider<RESTProjectV1>()
-		{
-			@Override
-			protected void onRangeChanged(final HasData<RESTProjectV1> display)
-			{
-				final int start = display.getVisibleRange().getStart();
-				final int length = display.getVisibleRange().getLength();
-				final int end = start + length;
+        bind();
+    }
 
-				final RESTCalls.RESTCallback<RESTProjectCollectionV1> callback = new RESTCalls.RESTCallback<RESTProjectCollectionV1>()
-				{
-					@Override
-					public void begin()
-					{
-						startProcessing();
-					}
+    private void bind() {
+        super.bind(display);
 
-					@Override
-					public void generalException(final Exception ex)
-					{
-						stopProcessing();
-					}
+        final AsyncDataProvider<RESTProjectV1> provider = new AsyncDataProvider<RESTProjectV1>() {
+            @Override
+            protected void onRangeChanged(final HasData<RESTProjectV1> display) {
+                final int start = display.getVisibleRange().getStart();
+                final int length = display.getVisibleRange().getLength();
+                final int end = start + length;
 
-					@Override
-					public void success(final RESTProjectCollectionV1 retValue)
-					{
-						try
-						{
-							updateRowData(start, retValue.getItems());
-							updateRowCount(retValue.getSize(), true);
-						}
-						finally
-						{
-							stopProcessing();
-						}
-					}	
+                final RESTCalls.RESTCallback<RESTProjectCollectionV1> callback = new RESTCalls.RESTCallback<RESTProjectCollectionV1>() {
+                    @Override
+                    public void begin() {
+                        startProcessing();
+                    }
 
-					@Override
-					public void failed()
-					{
-						stopProcessing();
-					}
-				};
-				
-				RESTCalls.getProjectsFromQuery(callback, queryString, start, end);
-			}
-		};
+                    @Override
+                    public void generalException(final Exception ex) {
+                        stopProcessing();
+                    }
 
-		display.setProvider(provider);
-	}
+                    @Override
+                    public void success(final RESTProjectCollectionV1 retValue) {
+                        try {
+                            updateRowData(start, retValue.getItems());
+                            updateRowCount(retValue.getSize(), true);
+                        } finally {
+                            stopProcessing();
+                        }
+                    }
 
-	private void stopProcessing()
-	{
-		display.setSpinnerVisible(false);
-	}
+                    @Override
+                    public void failed() {
+                        stopProcessing();
+                    }
+                };
 
-	private void startProcessing()
-	{
-		display.setSpinnerVisible(true);
-	}
+                RESTCalls.getProjectsFromQuery(callback, queryString, start, end);
+            }
+        };
+
+        display.setProvider(provider);
+    }
+
+    private void stopProcessing() {
+        display.setSpinnerVisible(false);
+    }
+
+    private void startProcessing() {
+        display.setSpinnerVisible(true);
+    }
 }

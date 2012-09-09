@@ -17,42 +17,38 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 @EntryPoint
-public class App
-{
-	private HandlerManager eventBus = new HandlerManager(null);
+public class App {
+    private HandlerManager eventBus = new HandlerManager(null);
 
-	@Inject
-	private AppController appController;
+    @Inject
+    private AppController appController;
 
-	@AfterInitialization
-	public void startApp()
-	{
-		GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler()
-		{
-			@Override
-			public void onUncaughtException(final Throwable ex)
-			{
-				ex.printStackTrace();
-				Window.alert("Uncaught exception was detected. Redirecting you to the home page.\nException: " + ex.getMessage());
-				History.newItem(WelcomeView.HISTORY_TOKEN);
-			}
-		});
-		
-		/* Setup the REST client */
-		RestClient.setApplicationRoot(Constants.REST_SERVER);
-		RestClient.setJacksonMarshallingActive(true);
-		
-		final RootLayoutPanel root = RootLayoutPanel.get();
-		
-		/* Inject the CSS file */		
-		CSSResources.INSTANCE.App().ensureInjected();
-		
-		appController.go(root);
-	}
+    @AfterInitialization
+    public void startApp() {
+        GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
+            @Override
+            public void onUncaughtException(final Throwable ex) {
+                ex.printStackTrace();
+                Window.alert("Uncaught exception was detected. Redirecting you to the home page.\nException: "
+                        + ex.getMessage());
+                History.newItem(WelcomeView.HISTORY_TOKEN);
+            }
+        });
 
-	@Produces
-	private HandlerManager produceEventBus()
-	{
-		return eventBus;
-	}	
+        /* Setup the REST client */
+        RestClient.setApplicationRoot(Constants.REST_SERVER);
+        RestClient.setJacksonMarshallingActive(true);
+
+        final RootLayoutPanel root = RootLayoutPanel.get();
+
+        /* Inject the CSS file */
+        CSSResources.INSTANCE.App().ensureInjected();
+
+        appController.go(root);
+    }
+
+    @Produces
+    private HandlerManager produceEventBus() {
+        return eventBus;
+    }
 }

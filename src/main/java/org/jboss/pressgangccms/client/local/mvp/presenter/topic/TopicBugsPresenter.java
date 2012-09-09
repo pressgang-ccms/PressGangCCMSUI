@@ -14,34 +14,30 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.AsyncDataProvider;
 
 @Dependent
-public class TopicBugsPresenter extends TemplatePresenter
-{
-	private String topicId;
+public class TopicBugsPresenter extends TemplatePresenter {
+    private String topicId;
 
-	public interface Display extends TopicViewInterface
-	{
-		@Override
-		void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType);
-		
-		AsyncDataProvider<RESTBugzillaBugV1> getProvider();
+    public interface Display extends TopicViewInterface {
+        @Override
+        void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType);
 
-		void setProvider(final AsyncDataProvider<RESTBugzillaBugV1> provider);
+        AsyncDataProvider<RESTBugzillaBugV1> getProvider();
 
-		CellTable<RESTBugzillaBugV1> getResults();
+        void setProvider(final AsyncDataProvider<RESTBugzillaBugV1> provider);
 
-		SimplePager getPager();
-	}
+        CellTable<RESTBugzillaBugV1> getResults();
 
-	@Override
-	public void go(final HasWidgets container)
-	{
-		// TODO Auto-generated method stub
-		
-	}
+        SimplePager getPager();
+    }
 
-	@Override
-	public void parseToken(final String historyToken)
-	{
-		// TODO Auto-generated method stub		
-	}
+    @Override
+    public void go(final HasWidgets container) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void parseToken(final String historyToken) {
+        // TODO Auto-generated method stub
+    }
 }

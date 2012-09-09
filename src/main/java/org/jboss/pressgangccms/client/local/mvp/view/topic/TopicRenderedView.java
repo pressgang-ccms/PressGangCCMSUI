@@ -13,81 +13,73 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HTML;
 
-public class TopicRenderedView extends TopicViewBase implements TopicRenderedPresenter.Display
-{
-	public static final String HISTORY_TOKEN = "TopicRenderedView";
-	
-	private final HTML div = new HTML("div");
-	
-	@SuppressWarnings("rawtypes")
-	@Override
-	public SimpleBeanEditorDriver getDriver()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+public class TopicRenderedView extends TopicViewBase implements TopicRenderedPresenter.Display {
+    public static final String HISTORY_TOKEN = "TopicRenderedView";
 
-	public TopicRenderedView()
-	{
-		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - " + PressGangCCMSUI.INSTANCE.RenderedView());
-		
-		div.addStyleName(CSSConstants.TOPICRENDEREDVIEWDIV);
-	}
-	
-	@Override
-	protected void populateTopActionBar()
-	{
-		addActionButton(this.getRenderedSplit());
-		addActionButton(this.getRenderedDown());
-		addActionButton(this.getXml());
-		addActionButton(this.getXmlErrors());
-		addActionButton(this.getFields());
-		addActionButton(this.getTags());
-		addActionButton(this.getBugs());
-		addActionButton(this.getHistory());
-		addActionButton(this.getSave());
-		
-		fixReadOnlyButtons();
-		
-		addRightAlignedActionButtonPaddingPanel();
-	}
+    private final HTML div = new HTML("div");
 
-	@Override
-	public void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType)
-	{
-		this.readOnly = readOnly;
-		fixReadOnlyButtons();
-		buildSplitViewButtons(splitType);
-		
-		try
-		{
-			// Any number of processors can be created, they will behave
-			// independently. Every stylesheet have to have its own processor.
-			final XsltProcessor processor = new XsltProcessor();
+    @SuppressWarnings("rawtypes")
+    @Override
+    public SimpleBeanEditorDriver getDriver() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-			// Setting the stylesheet to transform with
+    public TopicRenderedView() {
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
+                + PressGangCCMSUI.INSTANCE.RenderedView());
 
-			processor.importStyleSheet(DocbookToHTML.XSL);
+        div.addStyleName(CSSConstants.TOPICRENDEREDVIEWDIV);
+    }
 
-			// Setting the document to be transformed
-			processor.importSource(topic.getXml());
+    @Override
+    protected void populateTopActionBar() {
+        addActionButton(this.getRenderedSplit());
+        addActionButton(this.getRenderedDown());
+        addActionButton(this.getXml());
+        addActionButton(this.getXmlErrors());
+        addActionButton(this.getFields());
+        addActionButton(this.getTags());
+        addActionButton(this.getBugs());
+        addActionButton(this.getHistory());
+        addActionButton(this.getSave());
 
-			// Order of setting the stylesheet and document is indifferent.
+        fixReadOnlyButtons();
 
-			// Optional, must be called after importStyleSheet
-			// processor.setParameter(paramNameString, paramValueString);
+        addRightAlignedActionButtonPaddingPanel();
+    }
 
-			// Getting the result
-			String resultString = processor.transform();
-			div.setHTML(resultString);
-			
-			this.getPanel().setWidget(div);
-		}
-		catch (final XsltProcessingException ex)
-		{
-			div.setHTML(PressGangCCMSUI.INSTANCE.TopicCouldNotBeRendered());
-		}
-	}
+    @Override
+    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType) {
+        this.readOnly = readOnly;
+        fixReadOnlyButtons();
+        buildSplitViewButtons(splitType);
 
+        try {
+            // Any number of processors can be created, they will behave
+            // independently. Every stylesheet have to have its own processor.
+            final XsltProcessor processor = new XsltProcessor();
+
+            // Setting the stylesheet to transform with
+
+            processor.importStyleSheet(DocbookToHTML.XSL);
+
+            // Setting the document to be transformed
+            processor.importSource(topic.getXml());
+
+            // Order of setting the stylesheet and document is indifferent.
+
+            // Optional, must be called after importStyleSheet
+            // processor.setParameter(paramNameString, paramValueString);
+
+            // Getting the result
+            String resultString = processor.transform();
+            div.setHTML(resultString);
+
+            this.getPanel().setWidget(div);
+        } catch (final XsltProcessingException ex) {
+            div.setHTML(PressGangCCMSUI.INSTANCE.TopicCouldNotBeRendered());
+        }
+    }
 
 }

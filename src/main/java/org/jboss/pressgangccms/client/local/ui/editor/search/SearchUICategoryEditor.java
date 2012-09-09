@@ -16,99 +16,85 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FourTextAndImageButtonSearchUICategoryEditor;
 import com.google.gwt.user.client.ui.ScrollPanel;
 
+public class SearchUICategoryEditor extends ScrollPanel implements ValueAwareEditor<SearchUICategory> {
+    private static final int COLUMNS = 2;
+    private final SearchPresenterDriver driver;
+    private final SearchUIProjects searchUIProjects;
+    private SearchUICategory value;
+    private final FlexTable tagsTable = new FlexTable();
 
-public class SearchUICategoryEditor extends ScrollPanel implements ValueAwareEditor<SearchUICategory>
-{
-	private static final int COLUMNS = 2;
-	private final SearchPresenterDriver driver;
-	private final SearchUIProjects searchUIProjects;
-	private SearchUICategory value;
-	private final FlexTable tagsTable = new FlexTable();
-	
-	final FourTextAndImageButtonSearchUICategoryEditor summary = new FourTextAndImageButtonSearchUICategoryEditor();
-	final ListEditor<SearchUITag, SearchUITagEditor> myTags = ListEditor.of(new SearchUITagEditorSource());
-	
-	/**
-	 * The EditorSource is used to create and orgainse the Editors that go into
-	 * a ListEditor
-	 * 
-	 * @author Matthew Casperson
-	 */
-	private class SearchUITagEditorSource extends EditorSource<SearchUITagEditor>
-	{
-		@Override
-		public SearchUITagEditor create(final int index)
-		{
-			final int fixedIndex = index / COLUMNS;
-			final int column = index % COLUMNS;
-			
-			final SearchUITagEditor subEditor = new SearchUITagEditor(driver, searchUIProjects);
-			tagsTable.setWidget(fixedIndex, column * 2, subEditor.name);
-			tagsTable.setWidget(fixedIndex, (column * 2) + 1, subEditor.state);
-			return subEditor;
-		}
+    final FourTextAndImageButtonSearchUICategoryEditor summary = new FourTextAndImageButtonSearchUICategoryEditor();
+    final ListEditor<SearchUITag, SearchUITagEditor> myTags = ListEditor.of(new SearchUITagEditorSource());
 
-		@Override
-		public void dispose(final SearchUITagEditor subEditor)
-		{
-			subEditor.name.removeFromParent();
-			subEditor.state.removeFromParent();
-		}
+    /**
+     * The EditorSource is used to create and orgainse the Editors that go into a ListEditor
+     * 
+     * @author Matthew Casperson
+     */
+    private class SearchUITagEditorSource extends EditorSource<SearchUITagEditor> {
+        @Override
+        public SearchUITagEditor create(final int index) {
+            final int fixedIndex = index / COLUMNS;
+            final int column = index % COLUMNS;
 
-		@Override
-		public void setIndex(final SearchUITagEditor subEditor, final int index)
-		{
-			final int fixedIndex = index / COLUMNS;
-			final int column = index % COLUMNS;
-			
-			tagsTable.setWidget(fixedIndex, column * 2, subEditor.name);
-			tagsTable.setWidget(fixedIndex, (column * 2) + 1, subEditor.state);
-		}
-	}
+            final SearchUITagEditor subEditor = new SearchUITagEditor(driver, searchUIProjects);
+            tagsTable.setWidget(fixedIndex, column * 2, subEditor.name);
+            tagsTable.setWidget(fixedIndex, (column * 2) + 1, subEditor.state);
+            return subEditor;
+        }
 
-	public SearchUICategoryEditor(final SearchPresenterDriver driver, final SearchUIProjects searchUIProjects)
-	{
-		this.driver = driver;
-		this.searchUIProjects = searchUIProjects;
-		
-		this.summary.addStyleName(CSSConstants.CUSTOMBUTTON);
-		tagsTable.addStyleName(CSSConstants.CATEGORYTAGLAYOUT);
-		this.addStyleName(CSSConstants.CATEGORYTAGSCROLL);
-		
-		this.setWidget(tagsTable);
-		
-		summary.addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event)
-			{
-				summary.removeStyleName(CSSConstants.CUSTOMBUTTON);
-				summary.addStyleName(CSSConstants.CUSTOMBUTTONDOWN);
-			}
-		});
-	}
+        @Override
+        public void dispose(final SearchUITagEditor subEditor) {
+            subEditor.name.removeFromParent();
+            subEditor.state.removeFromParent();
+        }
 
-	@Override
-	public void setDelegate(final EditorDelegate<SearchUICategory> delegate)
-	{
+        @Override
+        public void setIndex(final SearchUITagEditor subEditor, final int index) {
+            final int fixedIndex = index / COLUMNS;
+            final int column = index % COLUMNS;
 
-	}
+            tagsTable.setWidget(fixedIndex, column * 2, subEditor.name);
+            tagsTable.setWidget(fixedIndex, (column * 2) + 1, subEditor.state);
+        }
+    }
 
-	@Override
-	public void flush()
-	{
-		this.summary.asEditor().setValue(value.getSummary());
-	}
+    public SearchUICategoryEditor(final SearchPresenterDriver driver, final SearchUIProjects searchUIProjects) {
+        this.driver = driver;
+        this.searchUIProjects = searchUIProjects;
 
-	@Override
-	public void onPropertyChange(final String... paths)
-	{
+        this.summary.addStyleName(CSSConstants.CUSTOMBUTTON);
+        tagsTable.addStyleName(CSSConstants.CATEGORYTAGLAYOUT);
+        this.addStyleName(CSSConstants.CATEGORYTAGSCROLL);
 
-	}
+        this.setWidget(tagsTable);
 
-	@Override
-	public void setValue(final SearchUICategory value)
-	{
-		this.value = value;
-	}
+        summary.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                summary.removeStyleName(CSSConstants.CUSTOMBUTTON);
+                summary.addStyleName(CSSConstants.CUSTOMBUTTONDOWN);
+            }
+        });
+    }
+
+    @Override
+    public void setDelegate(final EditorDelegate<SearchUICategory> delegate) {
+
+    }
+
+    @Override
+    public void flush() {
+        this.summary.asEditor().setValue(value.getSummary());
+    }
+
+    @Override
+    public void onPropertyChange(final String... paths) {
+
+    }
+
+    @Override
+    public void setValue(final SearchUICategory value) {
+        this.value = value;
+    }
 }

@@ -14,32 +14,29 @@ import com.google.gwt.user.client.ui.ToggleButton;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 
 @Dependent
-public class TopicXMLPresenter extends TemplatePresenter
-{
-	private String topicId;
-	
-	// Empty interface declaration, similar to UiBinder
-	public interface TopicXMLPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1XMLEditor>
-	{
-	}
+public class TopicXMLPresenter extends TemplatePresenter {
+    private String topicId;
 
-	public interface Display extends TopicViewInterface
-	{
-		ToggleButton getLineWrap();
-		ToggleButton getShowInvisibles();
-		AceEditor getEditor();
-	}
+    // Empty interface declaration, similar to UiBinder
+    public interface TopicXMLPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1XMLEditor> {
+    }
 
-	@Override
-	public void go(HasWidgets container)
-	{
-		// TODO Auto-generated method stub
-		
-	}
+    public interface Display extends TopicViewInterface {
+        ToggleButton getLineWrap();
 
-	@Override
-	public void parseToken(final String historyToken)
-	{
-		// TODO Auto-generated method stub		
-	}
+        ToggleButton getShowInvisibles();
+
+        AceEditor getEditor();
+    }
+
+    @Override
+    public void go(HasWidgets container) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void parseToken(final String historyToken) {
+        // TODO Auto-generated method stub
+    }
 }

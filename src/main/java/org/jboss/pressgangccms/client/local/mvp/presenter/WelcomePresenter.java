@@ -9,29 +9,25 @@ import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterf
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
-public class WelcomePresenter extends TemplatePresenter
-{
-	public interface Display extends BaseTemplateViewInterface
-	{
-		
-	}
+public class WelcomePresenter extends TemplatePresenter {
+    public interface Display extends BaseTemplateViewInterface {
 
-	@Inject
-	private Display display;
+    }
 
-	@Override
-	public void go(final HasWidgets container)
-	{
-		container.clear();
-		container.add(display.getTopLevelPanel());
-		
-		bind(display);
-	}
+    @Inject
+    private Display display;
 
-	@Override
-	public void parseToken(String historyToken)
-	{
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void go(final HasWidgets container) {
+        container.clear();
+        container.add(display.getTopLevelPanel());
+
+        bind(display);
+    }
+
+    @Override
+    public void parseToken(String historyToken) {
+        // TODO Auto-generated method stub
+
+    }
 }

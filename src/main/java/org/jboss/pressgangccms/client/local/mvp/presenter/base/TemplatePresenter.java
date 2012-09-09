@@ -19,79 +19,64 @@ import com.google.gwt.user.client.Window;
  * @author Matthew Casperson
  * 
  */
-public abstract class TemplatePresenter implements Presenter
-{
-	@Inject
-	protected HandlerManager eventBus;
+public abstract class TemplatePresenter implements Presenter {
+    @Inject
+    protected HandlerManager eventBus;
 
-	/**
-	 * Called to bind the UI elements to event handlers
-	 */
-	protected void bind(final BaseTemplateViewInterface display)
-	{
-		display.getSearch().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				eventBus.fireEvent(new SearchViewEvent());
-			}
-		});
+    /**
+     * Called to bind the UI elements to event handlers
+     */
+    protected void bind(final BaseTemplateViewInterface display) {
+        display.getSearch().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                eventBus.fireEvent(new SearchViewEvent());
+            }
+        });
 
-		display.getBug().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				Window.open(Constants.BUGZILLA_URL, "_blank", "");
-			}
-		});
+        display.getBug().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                Window.open(Constants.BUGZILLA_URL, "_blank", "");
+            }
+        });
 
-		display.getImages().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
-			}
-		});
-		
-		display.getTags().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
-			}
-		});
+        display.getImages().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
+            }
+        });
 
-		display.getAdvanced().addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				display.getShortCutPanelParent().setWidget(display.getAdvancedShortcutPanel());
-			}
-		});
-		
-		final ClickHandler closeAdvancedMenu = new ClickHandler()
-		{
-			@Override
-			public void onClick(final ClickEvent event)
-			{
-				display.getShortCutPanelParent().setWidget(display.getShortcutPanel());
-			}
-		};
-		
-		display.getAdvancedOpen().addClickHandler(closeAdvancedMenu);
-		display.getClose().addClickHandler(closeAdvancedMenu);
-	}
+        display.getTags().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
+            }
+        });
 
-	/**
-	 * Parse the history token to extract some state from it
-	 * 
-	 * @param historyToken
-	 *            The history token in the URL
-	 */
-	abstract public void parseToken(final String historyToken);
+        display.getAdvanced().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                display.getShortCutPanelParent().setWidget(display.getAdvancedShortcutPanel());
+            }
+        });
+
+        final ClickHandler closeAdvancedMenu = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                display.getShortCutPanelParent().setWidget(display.getShortcutPanel());
+            }
+        };
+
+        display.getAdvancedOpen().addClickHandler(closeAdvancedMenu);
+        display.getClose().addClickHandler(closeAdvancedMenu);
+    }
+
+    /**
+     * Parse the history token to extract some state from it
+     * 
+     * @param historyToken The history token in the URL
+     */
+    abstract public void parseToken(final String historyToken);
 }

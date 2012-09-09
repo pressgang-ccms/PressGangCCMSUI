@@ -2,30 +2,25 @@ package org.jboss.pressgangccms.client.local.mvp.events;
 
 import com.google.gwt.event.shared.GwtEvent;
 
-public class SearchResultsAndTopicViewEvent extends GwtEvent<SearchResultsAndTopicViewEventHandler>
-{
-	public static Type<SearchResultsAndTopicViewEventHandler> TYPE = new Type<SearchResultsAndTopicViewEventHandler>();
-	private final String query;
-	
-	public String getQuery()
-	{
-		return query;
-	}
+public class SearchResultsAndTopicViewEvent extends GwtEvent<SearchResultsAndTopicViewEventHandler> {
+    public static Type<SearchResultsAndTopicViewEventHandler> TYPE = new Type<SearchResultsAndTopicViewEventHandler>();
+    private final String query;
 
-	public SearchResultsAndTopicViewEvent(final String query)
-	{
-		this.query = query;
-	}
+    public String getQuery() {
+        return query;
+    }
 
-	@Override
-	public Type<SearchResultsAndTopicViewEventHandler> getAssociatedType()
-	{
-		return TYPE;
-	}
+    public SearchResultsAndTopicViewEvent(final String query) {
+        this.query = query;
+    }
 
-	@Override
-	protected void dispatch(final SearchResultsAndTopicViewEventHandler handler)
-	{
-		handler.onSearchResultsViewOpen(this);
-	}
+    @Override
+    public Type<SearchResultsAndTopicViewEventHandler> getAssociatedType() {
+        return TYPE;
+    }
+
+    @Override
+    protected void dispatch(final SearchResultsAndTopicViewEventHandler handler) {
+        handler.onSearchResultsViewOpen(this);
+    }
 }

@@ -43,183 +43,136 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
- 
+
 @ApplicationScoped
-public class AppController implements Presenter, ValueChangeHandler<String>
-{
-	@Inject
-	private IOCBeanManager manager;
+public class AppController implements Presenter, ValueChangeHandler<String> {
+    @Inject
+    private IOCBeanManager manager;
 
-	@Inject
-	private HandlerManager eventBus;
+    @Inject
+    private HandlerManager eventBus;
 
-	private HasWidgets container;
+    private HasWidgets container;
 
-	public void bind()
-	{
-		History.addValueChangeHandler(this);
+    public void bind() {
+        History.addValueChangeHandler(this);
 
-		eventBus.addHandler(SearchViewEvent.TYPE, new SearchViewEventHandler()
-		{
-			@Override
-			public void onSearchViewOpen(final SearchViewEvent event)
-			{
-				History.newItem(SearchView.HISTORY_TOKEN);
-			}
-		});
-		
-		eventBus.addHandler(SearchResultsViewEvent.TYPE, new SearchResultsViewEventHandler()
-		{
-			@Override
-			public void onSearchResultsViewOpen(final SearchResultsViewEvent event)
-			{
-				History.newItem(SearchResultsView.HISTORY_TOKEN);
-			}
-		});
-		
-		eventBus.addHandler(SearchResultsAndTopicViewEvent.TYPE, new SearchResultsAndTopicViewEventHandler()
-		{
-			@Override
-			public void onSearchResultsViewOpen(final SearchResultsAndTopicViewEvent event)
-			{
-				History.newItem(SearchResultsAndTopicView.HISTORY_TOKEN + ";" + event.getQuery());
-			}
-		});
-		
-		eventBus.addHandler(ImagesViewEvent.TYPE, new ImagesViewEventHandler()
-		{
-			@Override
-			public void onImagesViewOpen(final ImagesViewEvent event)
-			{
-				History.newItem(ImageView.HISTORY_TOKEN);
-			}
-		});
-		
-		eventBus.addHandler(ImagesFilteredResultsAndImageViewEvent.TYPE, new ImagesFilteredResultsViewAndImageEventHandler()
-		{
-			@Override
-			public void onImagesFilteredResultsAndImageViewOpen(final ImagesFilteredResultsAndImageViewEvent event)
-			{
-				History.newItem(ImagesFilteredResultsAndImageView.HISTORY_TOKEN + ";" + event.getQuery());
-			}
-		});
-		
-		eventBus.addHandler(TagsFilteredResultsAndTagViewEvent.TYPE, new TagsFilteredResultsAndTagViewEventHandler()
-		{
-			@Override
-			public void onTagsFilteredResultsViewAndTagOpen(final TagsFilteredResultsAndTagViewEvent event)
-			{
-				History.newItem(TagsFilteredResultsAndTagView.HISTORY_TOKEN + ";" + event.getQuery());				
-			}
-		});
-		
-		
-	}
+        eventBus.addHandler(SearchViewEvent.TYPE, new SearchViewEventHandler() {
+            @Override
+            public void onSearchViewOpen(final SearchViewEvent event) {
+                History.newItem(SearchView.HISTORY_TOKEN);
+            }
+        });
 
-	@Override
-	public void go(final HasWidgets container)
-	{
-		this.container = container;
-		bind();
+        eventBus.addHandler(SearchResultsViewEvent.TYPE, new SearchResultsViewEventHandler() {
+            @Override
+            public void onSearchResultsViewOpen(final SearchResultsViewEvent event) {
+                History.newItem(SearchResultsView.HISTORY_TOKEN);
+            }
+        });
 
-		if ("".equals(History.getToken()))
-		{
-			History.newItem(WelcomeView.HISTORY_TOKEN);
-		}
-		else
-		{
-			History.fireCurrentHistoryState();
-		}
-	}
+        eventBus.addHandler(SearchResultsAndTopicViewEvent.TYPE, new SearchResultsAndTopicViewEventHandler() {
+            @Override
+            public void onSearchResultsViewOpen(final SearchResultsAndTopicViewEvent event) {
+                History.newItem(SearchResultsAndTopicView.HISTORY_TOKEN + ";" + event.getQuery());
+            }
+        });
 
-	@Override
-	public void onValueChange(final ValueChangeEvent<String> event)
-	{
-		final String token = event.getValue();
-		if (token != null)
-		{
-			TemplatePresenter presenter = null;
+        eventBus.addHandler(ImagesViewEvent.TYPE, new ImagesViewEventHandler() {
+            @Override
+            public void onImagesViewOpen(final ImagesViewEvent event) {
+                History.newItem(ImageView.HISTORY_TOKEN);
+            }
+        });
 
-			if (token.startsWith(WelcomeView.HISTORY_TOKEN))
-			{
-				final IOCBeanDef<WelcomePresenter> bean = manager.lookupBean(WelcomePresenter.class);
-				if (bean != null)
-				{
-					presenter = bean.getInstance();
-				}
-			}
-			else if (token.startsWith(SearchView.HISTORY_TOKEN))
-			{
-				final IOCBeanDef<SearchPresenter> bean = manager.lookupBean(SearchPresenter.class);
-				if (bean != null)
-				{
-					presenter = bean.getInstance();
-				}
-			}
-			else if (token.startsWith(SearchResultsView.HISTORY_TOKEN))
-			{
-				final IOCBeanDef<SearchResultsPresenter> bean = manager.lookupBean(SearchResultsPresenter.class);
-				if (bean != null)
-				{
-					presenter = bean.getInstance();
-				}
-			}
-			else if (token.startsWith(TopicView.HISTORY_TOKEN))
-			{
-				final IOCBeanDef<TopicPresenter> bean = manager.lookupBean(TopicPresenter.class);
-				if (bean != null)
-				{
-					presenter = bean.getInstance();
-				}
-			}
-			else if (token.startsWith(TagView.HISTORY_TOKEN))
-			{
-				final IOCBeanDef<TagPresenter> bean = manager.lookupBean(TagPresenter.class);
-				if (bean != null)
-				{
-					presenter = bean.getInstance();
-				}
-			}
-			else if (token.startsWith(SearchResultsAndTopicView.HISTORY_TOKEN))
-			{
-				final IOCBeanDef<SearchResultsAndTopicPresenter> bean = manager.lookupBean(SearchResultsAndTopicPresenter.class);
-				if (bean != null)
-				{
-					presenter = bean.getInstance();
-				}
-			}
-			else if (token.startsWith(ImageView.HISTORY_TOKEN))
-			{
-				final IOCBeanDef<ImagePresenter> bean = manager.lookupBean(ImagePresenter.class);
-				if (bean != null)
-				{
-					presenter = bean.getInstance();
-				}
-			}
-			else if (token.startsWith(ImagesFilteredResultsAndImageView.HISTORY_TOKEN))
-			{
-				final IOCBeanDef<ImagesFilteredResultsAndImagePresenter> bean = manager.lookupBean(ImagesFilteredResultsAndImagePresenter.class);
-				if (bean != null)
-				{
-					presenter = bean.getInstance();
-				}
-			}
-			else if (token.startsWith(TagsFilteredResultsAndTagView.HISTORY_TOKEN))
-			{
-				final IOCBeanDef<TagsFilteredResultsAndTagPresenter> bean = manager.lookupBean(TagsFilteredResultsAndTagPresenter.class);
-				if (bean != null)
-				{
-					presenter = bean.getInstance();
-				}
-			}
-			
-			
+        eventBus.addHandler(ImagesFilteredResultsAndImageViewEvent.TYPE, new ImagesFilteredResultsViewAndImageEventHandler() {
+            @Override
+            public void onImagesFilteredResultsAndImageViewOpen(final ImagesFilteredResultsAndImageViewEvent event) {
+                History.newItem(ImagesFilteredResultsAndImageView.HISTORY_TOKEN + ";" + event.getQuery());
+            }
+        });
 
-			if (presenter != null)
-			{
-				presenter.parseToken(token);
-				presenter.go(container);
-			}
-		}
-	}
+        eventBus.addHandler(TagsFilteredResultsAndTagViewEvent.TYPE, new TagsFilteredResultsAndTagViewEventHandler() {
+            @Override
+            public void onTagsFilteredResultsViewAndTagOpen(final TagsFilteredResultsAndTagViewEvent event) {
+                History.newItem(TagsFilteredResultsAndTagView.HISTORY_TOKEN + ";" + event.getQuery());
+            }
+        });
+
+    }
+
+    @Override
+    public void go(final HasWidgets container) {
+        this.container = container;
+        bind();
+
+        if ("".equals(History.getToken())) {
+            History.newItem(WelcomeView.HISTORY_TOKEN);
+        } else {
+            History.fireCurrentHistoryState();
+        }
+    }
+
+    @Override
+    public void onValueChange(final ValueChangeEvent<String> event) {
+        final String token = event.getValue();
+        if (token != null) {
+            TemplatePresenter presenter = null;
+
+            if (token.startsWith(WelcomeView.HISTORY_TOKEN)) {
+                final IOCBeanDef<WelcomePresenter> bean = manager.lookupBean(WelcomePresenter.class);
+                if (bean != null) {
+                    presenter = bean.getInstance();
+                }
+            } else if (token.startsWith(SearchView.HISTORY_TOKEN)) {
+                final IOCBeanDef<SearchPresenter> bean = manager.lookupBean(SearchPresenter.class);
+                if (bean != null) {
+                    presenter = bean.getInstance();
+                }
+            } else if (token.startsWith(SearchResultsView.HISTORY_TOKEN)) {
+                final IOCBeanDef<SearchResultsPresenter> bean = manager.lookupBean(SearchResultsPresenter.class);
+                if (bean != null) {
+                    presenter = bean.getInstance();
+                }
+            } else if (token.startsWith(TopicView.HISTORY_TOKEN)) {
+                final IOCBeanDef<TopicPresenter> bean = manager.lookupBean(TopicPresenter.class);
+                if (bean != null) {
+                    presenter = bean.getInstance();
+                }
+            } else if (token.startsWith(TagView.HISTORY_TOKEN)) {
+                final IOCBeanDef<TagPresenter> bean = manager.lookupBean(TagPresenter.class);
+                if (bean != null) {
+                    presenter = bean.getInstance();
+                }
+            } else if (token.startsWith(SearchResultsAndTopicView.HISTORY_TOKEN)) {
+                final IOCBeanDef<SearchResultsAndTopicPresenter> bean = manager
+                        .lookupBean(SearchResultsAndTopicPresenter.class);
+                if (bean != null) {
+                    presenter = bean.getInstance();
+                }
+            } else if (token.startsWith(ImageView.HISTORY_TOKEN)) {
+                final IOCBeanDef<ImagePresenter> bean = manager.lookupBean(ImagePresenter.class);
+                if (bean != null) {
+                    presenter = bean.getInstance();
+                }
+            } else if (token.startsWith(ImagesFilteredResultsAndImageView.HISTORY_TOKEN)) {
+                final IOCBeanDef<ImagesFilteredResultsAndImagePresenter> bean = manager
+                        .lookupBean(ImagesFilteredResultsAndImagePresenter.class);
+                if (bean != null) {
+                    presenter = bean.getInstance();
+                }
+            } else if (token.startsWith(TagsFilteredResultsAndTagView.HISTORY_TOKEN)) {
+                final IOCBeanDef<TagsFilteredResultsAndTagPresenter> bean = manager
+                        .lookupBean(TagsFilteredResultsAndTagPresenter.class);
+                if (bean != null) {
+                    presenter = bean.getInstance();
+                }
+            }
+
+            if (presenter != null) {
+                presenter.parseToken(token);
+                presenter.go(container);
+            }
+        }
+    }
 }

@@ -22,174 +22,146 @@ import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 
 @Dependent
-public class ImageFilteredResultsPresenter extends TemplatePresenter
-{
-	public interface Display extends BaseTemplateViewInterface
-	{
-		AsyncDataProvider<RESTImageV1> getProvider();
+public class ImageFilteredResultsPresenter extends TemplatePresenter {
+    public interface Display extends BaseTemplateViewInterface {
+        AsyncDataProvider<RESTImageV1> getProvider();
 
-		void setProvider(final AsyncDataProvider<RESTImageV1> provider);
+        void setProvider(final AsyncDataProvider<RESTImageV1> provider);
 
-		CellTable<RESTImageV1> getResults();
+        CellTable<RESTImageV1> getResults();
 
-		SimplePager getPager();
-		
-		TextBox getImageIdFilter();
+        SimplePager getPager();
 
-		TextBox getImageDescriptionFilter();
-		
-		@Override
-		PushButton getSearch();
-		
-		TextBox getImageOriginalFileNameFilter();
-	}
+        TextBox getImageIdFilter();
 
-	@Inject
-	private Display display;
-	
-	private String queryString;
-	
-	/** Keeps a reference to the start row */
-	private Integer tableStartRow;
-	
-	/** Keeps a reference to the list of topics being displayed */
-	private List<RESTImageV1> currentList;
+        TextBox getImageDescriptionFilter();
 
-	@Override
-	public void parseToken(final String searchToken)
-	{
-		queryString = searchToken.replace(ImageFilteredResultsView.HISTORY_TOKEN + ";", "");
-	}
+        @Override
+        PushButton getSearch();
 
-	@Override
-	public void go(final HasWidgets container)
-	{
-		container.clear();
-		container.add(display.getTopLevelPanel());
+        TextBox getImageOriginalFileNameFilter();
+    }
 
-		bind();
-	}
+    @Inject
+    private Display display;
 
-	private void bind()
-	{
-		super.bind(display);
+    private String queryString;
 
-		final AsyncDataProvider<RESTImageV1> provider = new AsyncDataProvider<RESTImageV1>()
-		{
-			@Override
-			protected void onRangeChanged(final HasData<RESTImageV1> display)
-			{
-				final int start = display.getVisibleRange().getStart();
-				final int length = display.getVisibleRange().getLength();
-				final int end = start + length;
+    /** Keeps a reference to the start row */
+    private Integer tableStartRow;
 
-				final RESTCalls.RESTCallback<RESTImageCollectionV1> callback = new RESTCalls.RESTCallback<RESTImageCollectionV1>()
-				{
-					@Override
-					public void begin()
-					{
-						startProcessing();
-					}
+    /** Keeps a reference to the list of topics being displayed */
+    private List<RESTImageV1> currentList;
 
-					@Override
-					public void generalException(final Exception ex)
-					{
-						stopProcessing();
-					}
+    @Override
+    public void parseToken(final String searchToken) {
+        queryString = searchToken.replace(ImageFilteredResultsView.HISTORY_TOKEN + ";", "");
+    }
 
-					@Override
-					public void success(final RESTImageCollectionV1 retValue)
-					{
-						try
-						{
-							updateRowData(start, retValue.getItems());
-							updateRowCount(retValue.getSize(), true);
-						}
-						finally
-						{
-							stopProcessing();
-						}
-					}	
+    @Override
+    public void go(final HasWidgets container) {
+        container.clear();
+        container.add(display.getTopLevelPanel());
 
-					@Override
-					public void failed()
-					{
-						stopProcessing();
-					}
-				};
-				
-				RESTCalls.getImagesFromQuery(callback, queryString, start, end);
-			}
-		};
+        bind();
+    }
 
-		display.setProvider(provider);
-	}
-	
-	/**
-	 * @return A provider to be used for the topic display list
-	 */
-	private AsyncDataProvider<RESTImageV1> generateListProvider()
-	{
-		final AsyncDataProvider<RESTImageV1> provider = new AsyncDataProvider<RESTImageV1>()
-		{
-			@Override
-			protected void onRangeChanged(final HasData<RESTImageV1> display)
-			{
-				tableStartRow = display.getVisibleRange().getStart();
-				final int length = display.getVisibleRange().getLength();
-				final int end = tableStartRow + length;
+    private void bind() {
+        super.bind(display);
 
-				final RESTCalls.RESTCallback<RESTImageCollectionV1> callback = new RESTCalls.RESTCallback<RESTImageCollectionV1>()
-				{
-					@Override
-					public void begin()
-					{
-						startProcessing();
-					}
+        final AsyncDataProvider<RESTImageV1> provider = new AsyncDataProvider<RESTImageV1>() {
+            @Override
+            protected void onRangeChanged(final HasData<RESTImageV1> display) {
+                final int start = display.getVisibleRange().getStart();
+                final int length = display.getVisibleRange().getLength();
+                final int end = start + length;
 
-					@Override
-					public void generalException(final Exception ex)
-					{
-						Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopics());
-						stopProcessing();
-					}
+                final RESTCalls.RESTCallback<RESTImageCollectionV1> callback = new RESTCalls.RESTCallback<RESTImageCollectionV1>() {
+                    @Override
+                    public void begin() {
+                        startProcessing();
+                    }
 
-					@Override
-					public void success(final RESTImageCollectionV1 retValue)
-					{
-						try
-						{
-							currentList = retValue.getItems();
-							updateRowData(tableStartRow, currentList);
-							updateRowCount(retValue.getSize(), true);
-						}
-						finally
-						{
-							stopProcessing();
-						}
-					}
+                    @Override
+                    public void generalException(final Exception ex) {
+                        stopProcessing();
+                    }
 
-					@Override
-					public void failed()
-					{
-						stopProcessing();
-						Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-					}
-				};
+                    @Override
+                    public void success(final RESTImageCollectionV1 retValue) {
+                        try {
+                            updateRowData(start, retValue.getItems());
+                            updateRowCount(retValue.getSize(), true);
+                        } finally {
+                            stopProcessing();
+                        }
+                    }
 
-				RESTCalls.getImagesFromQuery(callback, queryString, tableStartRow, end);
-			}
-		};
-		return provider;
-	}
+                    @Override
+                    public void failed() {
+                        stopProcessing();
+                    }
+                };
 
-	private void stopProcessing()
-	{
-		display.setSpinnerVisible(false);
-	}
+                RESTCalls.getImagesFromQuery(callback, queryString, start, end);
+            }
+        };
 
-	private void startProcessing()
-	{
-		display.setSpinnerVisible(true);
-	}
+        display.setProvider(provider);
+    }
+
+    /**
+     * @return A provider to be used for the topic display list
+     */
+    private AsyncDataProvider<RESTImageV1> generateListProvider() {
+        final AsyncDataProvider<RESTImageV1> provider = new AsyncDataProvider<RESTImageV1>() {
+            @Override
+            protected void onRangeChanged(final HasData<RESTImageV1> display) {
+                tableStartRow = display.getVisibleRange().getStart();
+                final int length = display.getVisibleRange().getLength();
+                final int end = tableStartRow + length;
+
+                final RESTCalls.RESTCallback<RESTImageCollectionV1> callback = new RESTCalls.RESTCallback<RESTImageCollectionV1>() {
+                    @Override
+                    public void begin() {
+                        startProcessing();
+                    }
+
+                    @Override
+                    public void generalException(final Exception ex) {
+                        Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopics());
+                        stopProcessing();
+                    }
+
+                    @Override
+                    public void success(final RESTImageCollectionV1 retValue) {
+                        try {
+                            currentList = retValue.getItems();
+                            updateRowData(tableStartRow, currentList);
+                            updateRowCount(retValue.getSize(), true);
+                        } finally {
+                            stopProcessing();
+                        }
+                    }
+
+                    @Override
+                    public void failed() {
+                        stopProcessing();
+                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+                    }
+                };
+
+                RESTCalls.getImagesFromQuery(callback, queryString, tableStartRow, end);
+            }
+        };
+        return provider;
+    }
+
+    private void stopProcessing() {
+        display.setSpinnerVisible(false);
+    }
+
+    private void startProcessing() {
+        display.setSpinnerVisible(true);
+    }
 }

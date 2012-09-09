@@ -11,53 +11,45 @@ import com.google.gwt.user.client.Element;
  * 
  * @author Matthew Casperson
  */
-public class TextAndImageButton extends Button 
-{
-	private String text;
-	private final Element div = DOM.createElement("div");
+public class TextAndImageButton extends Button {
+    private String text;
+    private final Element div = DOM.createElement("div");
 
-	public TextAndImageButton()
-	{
-		super();
-		initialize(CSSConstants.CUSTOMBUTTONTEXT);	
-	}
-	
-	public TextAndImageButton(final String divClass)
-	{
-		super();
-		initialize(divClass);	
-	}
-	
-	private void initialize(final String divClass)
-	{
-		div.setAttribute("class", divClass);
-		DOM.insertChild(getElement(), div, 0);		
-	}
+    public TextAndImageButton() {
+        super();
+        initialize(CSSConstants.CUSTOMBUTTONTEXT);
+    }
 
-	public TextAndImageButton(final String text, final ImageResource imageResource)
-	{
-		setText(text);
-		setResource(imageResource);
-	}
+    public TextAndImageButton(final String divClass) {
+        super();
+        initialize(divClass);
+    }
 
-	public void setResource(final ImageResource imageResource)
-	{
-		final Image img = new Image(imageResource);
-		final String definedStyles = img.getElement().getAttribute("style");
-		img.getElement().setAttribute("style", definedStyles + "; vertical-align:middle;");
-		DOM.insertBefore(getElement(), img.getElement(), DOM.getFirstChild(getElement()));
-	}
+    private void initialize(final String divClass) {
+        div.setAttribute("class", divClass);
+        DOM.insertChild(getElement(), div, 0);
+    }
 
-	@Override
-	public void setText(final String text)
-	{
-		this.text = text;
-		div.setInnerText(text);
-	}
+    public TextAndImageButton(final String text, final ImageResource imageResource) {
+        setText(text);
+        setResource(imageResource);
+    }
 
-	@Override
-	public String getText()
-	{
-		return this.text;
-	}
+    public void setResource(final ImageResource imageResource) {
+        final Image img = new Image(imageResource);
+        final String definedStyles = img.getElement().getAttribute("style");
+        img.getElement().setAttribute("style", definedStyles + "; vertical-align:middle;");
+        DOM.insertBefore(getElement(), img.getElement(), DOM.getFirstChild(getElement()));
+    }
+
+    @Override
+    public void setText(final String text) {
+        this.text = text;
+        div.setInnerText(text);
+    }
+
+    @Override
+    public String getText() {
+        return this.text;
+    }
 }

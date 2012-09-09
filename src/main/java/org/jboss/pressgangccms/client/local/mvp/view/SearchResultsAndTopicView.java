@@ -15,113 +15,100 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 
-public class SearchResultsAndTopicView extends BaseTemplateView implements SearchResultsAndTopicPresenter.Display
-{
-	public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
-	private final HanldedSplitLayoutPanel splitPanel = new HanldedSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
-	private final DockLayoutPanel resultsViewLayoutPanel = new DockLayoutPanel(Unit.PX);
-	private final DockLayoutPanel topicViewLayoutPanel = new DockLayoutPanel(Unit.PX);
-	private final SimpleLayoutPanel topicResultsPanel = new SimpleLayoutPanel();
-	private final SimpleLayoutPanel topicViewPanel = new SimpleLayoutPanel();
-	private final SimpleLayoutPanel topicResultsActionButtonsPanel = new SimpleLayoutPanel();
-	private final SimpleLayoutPanel topicViewActionButtonsPanel = new SimpleLayoutPanel();
-	
-	private SplitType splitType = SplitType.NONE;
-	
-	@Override
-	public SplitType getSplitType()
-	{
-		return splitType;
-	}
+public class SearchResultsAndTopicView extends BaseTemplateView implements SearchResultsAndTopicPresenter.Display {
+    public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
+    private final HanldedSplitLayoutPanel splitPanel = new HanldedSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
+    private final DockLayoutPanel resultsViewLayoutPanel = new DockLayoutPanel(Unit.PX);
+    private final DockLayoutPanel topicViewLayoutPanel = new DockLayoutPanel(Unit.PX);
+    private final SimpleLayoutPanel topicResultsPanel = new SimpleLayoutPanel();
+    private final SimpleLayoutPanel topicViewPanel = new SimpleLayoutPanel();
+    private final SimpleLayoutPanel topicResultsActionButtonsPanel = new SimpleLayoutPanel();
+    private final SimpleLayoutPanel topicViewActionButtonsPanel = new SimpleLayoutPanel();
 
-	@Override
-	public DockLayoutPanel getTopicViewLayoutPanel()
-	{
-		return topicViewLayoutPanel;
-	}
+    private SplitType splitType = SplitType.NONE;
 
-	@Override
-	public HanldedSplitLayoutPanel getSplitPanel()
-	{
-		return splitPanel;
-	}
+    @Override
+    public SplitType getSplitType() {
+        return splitType;
+    }
 
-	@Override
-	public SimpleLayoutPanel getTopicResultsActionButtonsPanel()
-	{
-		return topicResultsActionButtonsPanel;
-	}
+    @Override
+    public DockLayoutPanel getTopicViewLayoutPanel() {
+        return topicViewLayoutPanel;
+    }
 
-	@Override
-	public SimpleLayoutPanel getTopicResultsPanel()
-	{
-		return topicResultsPanel;
-	}
+    @Override
+    public HanldedSplitLayoutPanel getSplitPanel() {
+        return splitPanel;
+    }
 
-	@Override
-	public SimpleLayoutPanel getTopicViewPanel()
-	{
-		return topicViewPanel;
-	}
+    @Override
+    public SimpleLayoutPanel getTopicResultsActionButtonsPanel() {
+        return topicResultsActionButtonsPanel;
+    }
 
-	@Override
-	public SimpleLayoutPanel getTopicViewActionButtonsPanel()
-	{
-		return topicViewActionButtonsPanel;
-	}
+    @Override
+    public SimpleLayoutPanel getTopicResultsPanel() {
+        return topicResultsPanel;
+    }
 
-	public SearchResultsAndTopicView()
-	{
-		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
+    @Override
+    public SimpleLayoutPanel getTopicViewPanel() {
+        return topicViewPanel;
+    }
 
-		/* We have own own top action panels */
-		this.getTopActionParentPanel().removeFromParent();
-		
-		final HTML spacer = new HTML("<div style=\"height: " + Constants.ACTION_BAR_HEIGHT + "px;\"></div>");		
-		this.getShortcutPanel().insertRow(0);
-		this.getShortcutPanel().setWidget(0, 0, spacer);
+    @Override
+    public SimpleLayoutPanel getTopicViewActionButtonsPanel() {
+        return topicViewActionButtonsPanel;
+    }
 
-		resultsViewLayoutPanel.addStyleName(CSSConstants.RESULTSVIEWLAYOUTPANEL);
-		topicViewLayoutPanel.addStyleName(CSSConstants.TOPICVIEWLAYOUTPANEL);
+    public SearchResultsAndTopicView() {
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
 
-		resultsViewLayoutPanel.addNorth(topicResultsActionButtonsPanel, Constants.ACTION_BAR_HEIGHT);
-		topicViewLayoutPanel.addNorth(topicViewActionButtonsPanel, Constants.ACTION_BAR_HEIGHT);
+        /* We have own own top action panels */
+        this.getTopActionParentPanel().removeFromParent();
 
-		resultsViewLayoutPanel.add(topicResultsPanel);
-		topicViewLayoutPanel.add(topicViewPanel);
+        final HTML spacer = new HTML("<div style=\"height: " + Constants.ACTION_BAR_HEIGHT + "px;\"></div>");
+        this.getShortcutPanel().insertRow(0);
+        this.getShortcutPanel().setWidget(0, 0, spacer);
 
-		splitPanel.addWest(resultsViewLayoutPanel, Constants.SPLIT_PANEL_SIZE);
+        resultsViewLayoutPanel.addStyleName(CSSConstants.RESULTSVIEWLAYOUTPANEL);
+        topicViewLayoutPanel.addStyleName(CSSConstants.TOPICVIEWLAYOUTPANEL);
 
-		topicViewActionButtonsPanel.addStyleName(CSSConstants.TOPICSEARCHTOPICVIEWBUTTONSPANEL);
-		topicViewPanel.addStyleName(CSSConstants.TOPICSEARCHTOPICVIEWDETAILSPANEL);
+        resultsViewLayoutPanel.addNorth(topicResultsActionButtonsPanel, Constants.ACTION_BAR_HEIGHT);
+        topicViewLayoutPanel.addNorth(topicViewActionButtonsPanel, Constants.ACTION_BAR_HEIGHT);
 
-		splitPanel.addStyleName(CSSConstants.TOPICSEARCHRESULTSANDVIEWPARENTPANEL);
+        resultsViewLayoutPanel.add(topicResultsPanel);
+        topicViewLayoutPanel.add(topicViewPanel);
 
-		this.getPanel().add(splitPanel);
-	}
-	
-	/**
-	 * The split panel needs to have the center widget added last, which we need to do after
-	 * optionally added a east or south widget for the rendered view.
-	 */
-	@Override
-	public void initialize(final SplitType splitType, final Panel panel)
-	{
-		this.splitType = splitType;
-		
-		final SimplePanel renderedPanelParent = new SimplePanel();
-		renderedPanelParent.addStyleName(CSSConstants.TOPICVIEWLAYOUTPANEL);
-		renderedPanelParent.add(panel);
-		
-		if (splitType == SplitType.HORIZONTAL)
-		{			
-			splitPanel.addSouth(renderedPanelParent, Constants.SPLIT_PANEL_SIZE);
-		}
-		else if (splitType == SplitType.VERTICAL)
-		{
-			splitPanel.addEast(renderedPanelParent, Constants.SPLIT_PANEL_SIZE);
-		}
-		
-		splitPanel.add(topicViewLayoutPanel);
-	}
+        splitPanel.addWest(resultsViewLayoutPanel, Constants.SPLIT_PANEL_SIZE);
+
+        topicViewActionButtonsPanel.addStyleName(CSSConstants.TOPICSEARCHTOPICVIEWBUTTONSPANEL);
+        topicViewPanel.addStyleName(CSSConstants.TOPICSEARCHTOPICVIEWDETAILSPANEL);
+
+        splitPanel.addStyleName(CSSConstants.TOPICSEARCHRESULTSANDVIEWPARENTPANEL);
+
+        this.getPanel().add(splitPanel);
+    }
+
+    /**
+     * The split panel needs to have the center widget added last, which we need to do after optionally added a east or south
+     * widget for the rendered view.
+     */
+    @Override
+    public void initialize(final SplitType splitType, final Panel panel) {
+        this.splitType = splitType;
+
+        final SimplePanel renderedPanelParent = new SimplePanel();
+        renderedPanelParent.addStyleName(CSSConstants.TOPICVIEWLAYOUTPANEL);
+        renderedPanelParent.add(panel);
+
+        if (splitType == SplitType.HORIZONTAL) {
+            splitPanel.addSouth(renderedPanelParent, Constants.SPLIT_PANEL_SIZE);
+        } else if (splitType == SplitType.VERTICAL) {
+            splitPanel.addEast(renderedPanelParent, Constants.SPLIT_PANEL_SIZE);
+        }
+
+        splitPanel.add(topicViewLayoutPanel);
+    }
 }

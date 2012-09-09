@@ -17,23 +17,24 @@ package hu.szaboaz.gwt.xslt.client;
 
 /**
  * This is the exception to throw when something is wrong with the transformation.
+ * 
  * @author Szabó Árpád Zoltán, szabo.arpad.zoltan at gmail.com
  */
 public class XsltProcessingException extends Exception {
-  
-  public XsltProcessingException() {
-    super();
-  }
-  
-  public XsltProcessingException(String message) {
-    super(message);
-  }
-  
-  public XsltProcessingException(Throwable cause) {
-    super(cause);
-  }
-  
-  public XsltProcessingException(String message, Throwable cause) {
-    super(message, cause);
-  }
+
+    public XsltProcessingException() {
+        super();
+    }
+
+    public XsltProcessingException(String message) {
+        super(message);
+    }
+
+    public XsltProcessingException(Throwable cause) {
+        super(cause);
+    }
+
+    public XsltProcessingException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
