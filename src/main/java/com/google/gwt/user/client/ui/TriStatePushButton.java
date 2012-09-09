@@ -6,8 +6,6 @@ import com.google.gwt.editor.client.IsEditor;
 import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.PushButton;
 
 /**
  * A PushButton to perform the functionality of a tristate checkbox.
@@ -26,7 +24,7 @@ public class TriStatePushButton extends PushButton implements IsEditor<LeafValue
 		this.addClickHandler(new ClickHandler()
 		{
 			@Override
-			public void onClick(ClickEvent event)
+			public void onClick(final ClickEvent event)
 			{
 				if (state == TriStateSelectionState.NONE)
 				{

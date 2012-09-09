@@ -38,7 +38,7 @@ public class TopicXMLPresenter extends TemplatePresenter
 	}
 
 	@Override
-	public void parseToken(String historyToken)
+	public void parseToken(final String historyToken)
 	{
 		// TODO Auto-generated method stub		
 	}

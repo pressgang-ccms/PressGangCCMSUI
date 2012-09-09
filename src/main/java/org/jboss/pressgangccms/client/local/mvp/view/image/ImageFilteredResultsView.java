@@ -58,36 +58,43 @@ public class ImageFilteredResultsView extends BaseTemplateView implements ImageF
 		}
 	};
 
+	@Override
 	public TextBox getImageOriginalFileNameFilter()
 	{
 		return imageOriginalFileNameFilter;
 	}
 
+	@Override
 	public TextBox getImageIdFilter()
 	{
 		return imageIdFilter;
 	}
 
+	@Override
 	public TextBox getImageDescriptionFilter()
 	{
 		return imageDescriptionFilter;
 	}
 
+	@Override
 	public SimplePager getPager()
 	{
 		return pager;
 	}
 
+	@Override
 	public CellTable<RESTImageV1> getResults()
 	{
 		return results;
 	}
 
+	@Override
 	public AsyncDataProvider<RESTImageV1> getProvider()
 	{
 		return provider;		
 	}
 
+	@Override
 	public void setProvider(AsyncDataProvider<RESTImageV1> provider)
 	{
 		this.provider = provider;
@@ -123,6 +130,7 @@ public class ImageFilteredResultsView extends BaseTemplateView implements ImageF
 		this.getPanel().add(searchResultsPanel);
 	}
 
+	@Override
 	public PushButton getSearch()
 	{
 		return search;

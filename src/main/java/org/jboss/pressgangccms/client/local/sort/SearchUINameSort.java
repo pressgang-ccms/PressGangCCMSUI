@@ -3,7 +3,6 @@ package org.jboss.pressgangccms.client.local.sort;
 import java.util.Comparator;
 
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIBase;
-import org.jboss.pressgangccms.client.local.ui.search.SearchUIProject;
 
 public class SearchUINameSort implements Comparator<SearchUIBase>
 {

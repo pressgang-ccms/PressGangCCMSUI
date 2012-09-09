@@ -7,223 +7,223 @@ package org.jboss.pressgangccms.client.local.constants;
  * @author Matthew Casperson
  * 
  */
-final public class CSSConstants
+public interface CSSConstants
 {
-	final public class TagView
+	public interface TagView
 	{
-		static public final String TAGVIEWPANEL = "TagViewPanel";
-		static public final String TAGVIEWIDLABEL = "TagViewIDLabel";
-		static public final String TAGVIEWIDTEXT = "TagViewIDText";
-		static public final String TAGVIEWNAMELABEL = "TagViewNameLabel";
-		static public final String TAGVIEWNAMETEXT = "TagViewNameText";
-		static public final String TAGVIEWDESCRIPTIONLABEL = "TagViewDescriptionLabel";
-		static public final String TAGVIEWDESCRIPTIONTEXT = "TagViewDescriptionText";
+		String TAGVIEWPANEL = "TagViewPanel";
+		String TAGVIEWIDLABEL = "TagViewIDLabel";
+		String TAGVIEWIDTEXT = "TagViewIDText";
+		String TAGVIEWNAMELABEL = "TagViewNameLabel";
+		String TAGVIEWNAMETEXT = "TagViewNameText";
+		String TAGVIEWDESCRIPTIONLABEL = "TagViewDescriptionLabel";
+		String TAGVIEWDESCRIPTIONTEXT = "TagViewDescriptionText";
 		
-		static public final String TAGVIEWIDLABELCELL = "TagViewIDLabelCell";
-		static public final String TAGVIEWIDTEXTCELL = "TagViewIDTextCell";
-		static public final String TAGVIEWNAMELABELCELL = "TagViewNameLabelCell";
-		static public final String TAGVIEWNAMETEXTCELL = "TagViewNameTextCell";
-		static public final String TAGVIEWDESCRIPTIONLABELCELL = "TagViewDescriptionLabelCell";
-		static public final String TAGVIEWDESCRIPTIONTEXTCELL = "TagViewDescriptionTextCell";
+		String TAGVIEWIDLABELCELL = "TagViewIDLabelCell";
+		String TAGVIEWIDTEXTCELL = "TagViewIDTextCell";
+		String TAGVIEWNAMELABELCELL = "TagViewNameLabelCell";
+		String TAGVIEWNAMETEXTCELL = "TagViewNameTextCell";
+		String TAGVIEWDESCRIPTIONLABELCELL = "TagViewDescriptionLabelCell";
+		String TAGVIEWDESCRIPTIONTEXTCELL = "TagViewDescriptionTextCell";
 	}
 	
-	final public class TagFilteredResultsView
+	public interface TagFilteredResultsView
 	{
 		/** Assigned to the panel that holds the list of images */
-		static public final String TAGFILTEREDRESULTSPANEL = "TagFilteredResultsPanel";
+		String TAGFILTEREDRESULTSPANEL = "TagFilteredResultsPanel";
 		/** Assigned to the panel that holds the filter options for images */
-		static public final String TAGFILTEREDOPTIONSPANEL = "TagFilteredOptionsPanel";
+		String TAGFILTEREDOPTIONSPANEL = "TagFilteredOptionsPanel";
 	}
 	
-	final public class TagCategoryView
+	public interface TagCategoryView
 	{
-		static public final String TAGCATEGORIESLISTPANEL = "TagCategoriesListPanel";
-		static public final String TAGCATEGORYTAGSLISTPANEL = "TagCategoryTagsListPanel";
-		static public final String TAGCATEGORIESSPLITPANEL = "TagCategoriesSplitPanel";
+		String TAGCATEGORIESLISTPANEL = "TagCategoriesListPanel";
+		String TAGCATEGORYTAGSLISTPANEL = "TagCategoryTagsListPanel";
+		String TAGCATEGORIESSPLITPANEL = "TagCategoriesSplitPanel";
 	}
 
 	/**
 	 * The class assigned to the page title label.
 	 */
-	static public final String PAGETITLE = "PageTitle";
+	String PAGETITLE = "PageTitle";
 	/**
 	 * The class assigned to the top level DockLayoutPanel.
 	 */
-	static public final String TOPLEVELLAYOUTPANEL = "TopLevelLayoutPanel";
-	static public final String SECONDLEVELLAYOUTPANEL = "SecondLevelLayoutPanel";
-	static public final String THIRDLEVELLAYOUTPANEL = "ThirdLevelLayoutPanel";
-	static public final String CONTENTLAYOUTPANEL = "ContentLayoutPanel";
-	static public final String TOPACTIONPANEL = "TopActionPanel";
-	static public final String SHORTCUTPANEL = "ShortcutPanel";
+	String TOPLEVELLAYOUTPANEL = "TopLevelLayoutPanel";
+	String SECONDLEVELLAYOUTPANEL = "SecondLevelLayoutPanel";
+	String THIRDLEVELLAYOUTPANEL = "ThirdLevelLayoutPanel";
+	String CONTENTLAYOUTPANEL = "ContentLayoutPanel";
+	String TOPACTIONPANEL = "TopActionPanel";
+	String SHORTCUTPANEL = "ShortcutPanel";
 	/**
 	 * Assigned to the panel that holds the shortcut panels
 	 */
-	static public final String SHORTCUTPANELPARENT = "ShortcutPanelParent";
-	static public final String FOOTERPANEL = "FooterPanel";
-	static public final String RIGHTALIGNEDACTIONBUTTONS = "RightAlignedActionButtons";
-	static public final String PAGETITLEPARENTLAYOUTPANEL = "PageTitleParentLayoutPanel";
-	static public final String RESULTSVIEWLAYOUTPANEL = "ResultsViewLayoutPanel";
-	static public final String TOPICVIEWLAYOUTPANEL = "TopicViewLayoutPanel";
-	static public final String TOPICSEARCHTOPICVIEWBUTTONSPANEL = "TopicSearchTopicViewButtonsPanel";
-	static public final String TOPICSEARCHTOPICVIEWDETAILSPANEL = "TopicSearchTopicViewDetailsPanel";
-	static public final String TOPICSEARCHRESULTSANDVIEWPARENTPANEL = "TopicSearchResultsAndViewParentPanel";
-	static public final String TOPICRENDEREDVIEWDIV = "TopicRenderedViewDiv";
-	static public final String SEARCHRESULTSPANEL = "SearchResultsPanel";
-	static public final String TOPICVIEWPANEL = "TopicViewPanel";
-	static public final String TOPICVIEWIDFIELD = "TopicViewIDField";
-	static public final String TOPICVIEWREVISIONNUMBERFIELD = "TopicViewRevisionNumberField";
-	static public final String TOPICVIEWTITLEFIELD = "TopicViewTitleField";
-	static public final String TOPICVIEWLOCALEFIELD = "TopicViewLocaleField";
-	static public final String TOPICVIEWDESCRIPTIONFIELD = "TopicViewDescriptionField";
-	static public final String TOPICVIEWLABEL = "TopicViewLabel";
-	static public final String TOPICVIEWDETAIL = "TopicViewDetail";
-	static public final String TOPICVIEWDESCRIPTIONDETAIL = "TopicViewDescriptionDetail";
-	static public final String SPACEDBUTTON = "SpacedButton";
-	static public final String PROJECTSLAYOUT = "ProjectsLayout";
-	static public final String PROJECTLAYOUT = "ProjectLayout";
-	static public final String PROJECTSBUTTONSLAYOUT = "ProjectsButtonsLayout";
-	static public final String PROJECTSSCROLLPANEL = "ProjectsScrollPanel";
-	static public final String CUSTOMBUTTON = "CustomButton";
-	static public final String CUSTOMBUTTONDOWN = "CustomButtonDown";
-	static public final String CATEGORIESBUTTONSLAYOUT = "CategoriesButtonsLayout";
-	static public final String CATEGORIESLAYOUT = "CategoriesLayout";
-	static public final String CATEGORIESSCROLLPANEL = "CategoriesScrollPanel";
-	static public final String CATEGORYTAGLAYOUT = "CategoryTagLayout";
-	static public final String CATEGORYTAGSCROLL = "CategoryTagScroll";
-	static public final String TAGLABEL = "TagLabel";
-	static public final String CUSTOMBUTTONTEXT = "CustomButtonText";
-	static public final String CUSTOMBUTTONTAGSINCLUDED = "CustomButtonTagsInclued";
-	static public final String CUSTOMBUTTONTAGSEXCLUDED = "CustomButtonTagsExcluded";
-	static public final String CUSTOMBUTTONTEXTBOLD = "CustomButtonTextBold";
-	static public final String TOPICXMLVIEWPANEL = "TopicXMLViewPanel";
-	static public final String TOPICXMLVIEWACEPANEL = "TopicXMLViewACEPanel";
-	static public final String TOPICXMLVIEWXMLFIELD = "TopicXMLViewXMLField";
-	static public final String TOPICXMLERRORSVIEWPANEL = "TopicXMLErrorsViewPanel";
-	static public final String TOPICXMLERRORSVIEWFIELD = "TopicXMLErrorsViewField";
-	static public final String TOPICVIEWTAGLABEL = "TopicViewTagLabel";
+	String SHORTCUTPANELPARENT = "ShortcutPanelParent";
+	String FOOTERPANEL = "FooterPanel";
+	String RIGHTALIGNEDACTIONBUTTONS = "RightAlignedActionButtons";
+	String PAGETITLEPARENTLAYOUTPANEL = "PageTitleParentLayoutPanel";
+	String RESULTSVIEWLAYOUTPANEL = "ResultsViewLayoutPanel";
+	String TOPICVIEWLAYOUTPANEL = "TopicViewLayoutPanel";
+	String TOPICSEARCHTOPICVIEWBUTTONSPANEL = "TopicSearchTopicViewButtonsPanel";
+	String TOPICSEARCHTOPICVIEWDETAILSPANEL = "TopicSearchTopicViewDetailsPanel";
+	String TOPICSEARCHRESULTSANDVIEWPARENTPANEL = "TopicSearchResultsAndViewParentPanel";
+	String TOPICRENDEREDVIEWDIV = "TopicRenderedViewDiv";
+	String SEARCHRESULTSPANEL = "SearchResultsPanel";
+	String TOPICVIEWPANEL = "TopicViewPanel";
+	String TOPICVIEWIDFIELD = "TopicViewIDField";
+	String TOPICVIEWREVISIONNUMBERFIELD = "TopicViewRevisionNumberField";
+	String TOPICVIEWTITLEFIELD = "TopicViewTitleField";
+	String TOPICVIEWLOCALEFIELD = "TopicViewLocaleField";
+	String TOPICVIEWDESCRIPTIONFIELD = "TopicViewDescriptionField";
+	String TOPICVIEWLABEL = "TopicViewLabel";
+	String TOPICVIEWDETAIL = "TopicViewDetail";
+	String TOPICVIEWDESCRIPTIONDETAIL = "TopicViewDescriptionDetail";
+	String SPACEDBUTTON = "SpacedButton";
+	String PROJECTSLAYOUT = "ProjectsLayout";
+	String PROJECTLAYOUT = "ProjectLayout";
+	String PROJECTSBUTTONSLAYOUT = "ProjectsButtonsLayout";
+	String PROJECTSSCROLLPANEL = "ProjectsScrollPanel";
+	String CUSTOMBUTTON = "CustomButton";
+	String CUSTOMBUTTONDOWN = "CustomButtonDown";
+	String CATEGORIESBUTTONSLAYOUT = "CategoriesButtonsLayout";
+	String CATEGORIESLAYOUT = "CategoriesLayout";
+	String CATEGORIESSCROLLPANEL = "CategoriesScrollPanel";
+	String CATEGORYTAGLAYOUT = "CategoryTagLayout";
+	String CATEGORYTAGSCROLL = "CategoryTagScroll";
+	String TAGLABEL = "TagLabel";
+	String CUSTOMBUTTONTEXT = "CustomButtonText";
+	String CUSTOMBUTTONTAGSINCLUDED = "CustomButtonTagsInclued";
+	String CUSTOMBUTTONTAGSEXCLUDED = "CustomButtonTagsExcluded";
+	String CUSTOMBUTTONTEXTBOLD = "CustomButtonTextBold";
+	String TOPICXMLVIEWPANEL = "TopicXMLViewPanel";
+	String TOPICXMLVIEWACEPANEL = "TopicXMLViewACEPanel";
+	String TOPICXMLVIEWXMLFIELD = "TopicXMLViewXMLField";
+	String TOPICXMLERRORSVIEWPANEL = "TopicXMLErrorsViewPanel";
+	String TOPICXMLERRORSVIEWFIELD = "TopicXMLErrorsViewField";
+	String TOPICVIEWTAGLABEL = "TopicViewTagLabel";
 	/**
 	 * Assigned to the FlexTable rows that list a category in the topic tags
-	 * view
+	 * view.
 	 */
-	static public final String TOPICTAGVIEWCATEGORYROW = "TopicTagViewCategoryRow";
+	String TOPICTAGVIEWCATEGORYROW = "TopicTagViewCategoryRow";
 	/**
-	 * Assigned to the FlexTable rows that list a project in the topic tags view
+	 * Assigned to the FlexTable rows that list a project in the topic tags view.
 	 */
-	static public final String TOPICTAGVIEWPROJECTROW = "TopicTagViewProjectRow";
-	/** Assigned to the FlexTable rows that list a tag in the topic tags view */
-	static public final String TOPICTAGVIEWTAGROW = "TopicTagViewTagRow";
+	String TOPICTAGVIEWPROJECTROW = "TopicTagViewProjectRow";
+	/** Assigned to the FlexTable rows that list a tag in the topic tags view. */
+	String TOPICTAGVIEWTAGROW = "TopicTagViewTagRow";
 	/**
 	 * Assigned to the panel that holds all the TOPICTAGVIEWPROJECTSTABLE
 	 * element in the topic tags view
 	 */
-	static public final String TOPICTAGVIEWPARENTPROJECTSTABLE = "TopicTagViewParentProjectsTable";
+	String TOPICTAGVIEWPARENTPROJECTSTABLE = "TopicTagViewParentProjectsTable";
 	/**
 	 * Assigned to the table that holds all the projects, categories and tags in
-	 * the topic tags view
+	 * the topic tags view.
 	 */
-	static public final String TOPICTAGVIEWPROJECTSTABLE = "TopicTagViewProjectsTable";
-	/** Assigned to the table that holds a project in the topic tags view */
-	static public final String TOPICTAGVIEWPROJECTTABLE = "TopicTagViewProjectTable";
+	String TOPICTAGVIEWPROJECTSTABLE = "TopicTagViewProjectsTable";
+	/** Assigned to the table that holds a project in the topic tags view. */
+	String TOPICTAGVIEWPROJECTTABLE = "TopicTagViewProjectTable";
 	/**
 	 * Assigned to the table that holds multiple categories in the topic tags
-	 * view
+	 * view.
 	 */
-	static public final String TOPICTAGVIEWCATEGORIESTABLE = "TopicTagViewCategoriesTable";
-	/** Assigned to the table that holds a category in the topic tags view */
-	static public final String TOPICTAGVIEWCATEGORYTABLE = "TopicTagViewCategoryTable";
-	/** Assigned to the table that holds multiple tags in the topic tags view */
-	static public final String TOPICTAGVIEWTAGSTABLE = "TopicTagViewTagsTable";
+	String TOPICTAGVIEWCATEGORIESTABLE = "TopicTagViewCategoriesTable";
+	/** Assigned to the table that holds a category in the topic tags view. */
+	String TOPICTAGVIEWCATEGORYTABLE = "TopicTagViewCategoryTable";
+	/** Assigned to the table that holds multiple tags in the topic tags view. */
+	String TOPICTAGVIEWTAGSTABLE = "TopicTagViewTagsTable";
 	/**
 	 * Assigned to the table that holds the new tag project, category and tag
-	 * lists
+	 * lists.
 	 */
-	static public final String TOPICTAGVIEWNEWTAGTABLE = "TopicTagViewNewTagTable";
-	/** Assigned to the panel that holds the topic tag view */
-	static public final String TOPICTAGVIEWCONTENTPANEL = "TopicTagViewContentPanel";
+	String TOPICTAGVIEWNEWTAGTABLE = "TopicTagViewNewTagTable";
+	/** Assigned to the panel that holds the topic tag view. */
+	String TOPICTAGVIEWCONTENTPANEL = "TopicTagViewContentPanel";
 	/**
 	 * Assigned to the list that holds the available projects in the topic tags
-	 * view
+	 * view.
 	 */
-	static public final String TOPICTAGVIEWNEWTAGPROJECTSLIST = "TopicTagViewNewTagProjectsList";
+	String TOPICTAGVIEWNEWTAGPROJECTSLIST = "TopicTagViewNewTagProjectsList";
 	/**
 	 * Assigned to the list that holds the available categories in the topic
-	 * tags view
+	 * tags view.
 	 */
-	static public final String TOPICTAGVIEWNEWTAGCATEGORIESLIST = "TopicTagViewNewTagCategoriesList";
+	String TOPICTAGVIEWNEWTAGCATEGORIESLIST = "TopicTagViewNewTagCategoriesList";
 	/**
-	 * Assigned to the list that holds the available tags in the topic tags view
+	 * Assigned to the list that holds the available tags in the topic tags view.
 	 */
-	static public final String TOPICTAGVIEWNEWTAGTAGSLIST = "TopicTagViewNewTagTagsList";
-	/** Assigned to the panel that holds the new tag ui elements */
-	static public final String TOPICTAGVIEWNEWNEWTAGPARENTPANEL = "TopicTagViewNewTagParentPanel";
+	String TOPICTAGVIEWNEWTAGTAGSLIST = "TopicTagViewNewTagTagsList";
+	/** Assigned to the panel that holds the new tag ui elements. */
+	String TOPICTAGVIEWNEWNEWTAGPARENTPANEL = "TopicTagViewNewTagParentPanel";
 	/**
 	 * Assigned to the dock panel that hosts the image description and the tab
-	 * view of specific language images
+	 * view of specific language images.
 	 */
-	static public final String IMAGEVIEWPARENTDOCKPANEL = "ImageViewParentDockPanel";
-	/** Assigned to the tab panel of specific language images */
-	static public final String IMAGEVIEWLANGUAGEIMAGETABPANEL = "ImageViewLanguageImageTabPanel";
-	/** Assigned to the tab that shows a specific language image */
-	static public final String IMAGEVIEWLANGUAGEIMAGETAB = "ImageViewLanguageImageTab";
-	/** Assigned to the cell that holds the language file name label */
-	static public final String IMAGEVIEWLANGUAGEIMAGEFILENAMELABEL = "ImageViewLanguageImageFilenameLabel";
-	/** Assigned to the cell that holds the language file name text */
-	static public final String IMAGEVIEWLANGUAGEIMAGEFILENAMETEXT = "ImageViewLanguageImageFilenameText";
-	/** Assigned to the cell that holds the language display label */
-	static public final String IMAGEVIEWLANGUAGEIMAGEDISPLAYLABEL = "ImageViewLanguageImageDisplayLabel";
-	/** Assigned to the cell that holds the language display image */
-	static public final String IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGE = "ImageViewLanguageImageDisplayImage";
-	/** Assigned to the cell that holds the language file name label cell */
-	static public final String IMAGEVIEWLANGUAGEIMAGEFILENAMELABELCELL = "ImageViewLanguageImageFilenameLabelCell";
-	/** Assigned to the cell that holds the language file name text cell */
-	static public final String IMAGEVIEWLANGUAGEIMAGEFILENAMETEXTCELL = "ImageViewLanguageImageFilenameTextCell";
-	/** Assigned to the cell that holds the language display label cell */
-	static public final String IMAGEVIEWLANGUAGEIMAGEDISPLAYLABELCELL = "ImageViewLanguageImageDisplayLabelCell";
-	/** Assigned to the cell that holds the language display image cell */
-	static public final String IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGECELL = "ImageViewLanguageImageDisplayImageCell";
-	/** Assigned to the image description label */
-	static public final String IMAGEVIEWDESCRIPTIONLABEL = "ImageViewDescriptionLabel";
-	/** Assigned to the image description text */
-	static public final String IMAGEVIEWDESCRIPTIONTEXT = "ImageViewDescriptionText";
-	/** Assigned to the image template text */
-	static public final String IMAGEVIEWTEMPLATETEXT = "ImageViewTemplateText";
-	/** Assigned to the image description label cell */
-	static public final String IMAGEVIEWDESCRIPTIONLABELCELL = "ImageViewDescriptionLabelCell";
-	/** Assigned to the image description text cell */
-	static public final String IMAGEVIEWDESCRIPTIONTEXTCELL = "ImageViewDescriptionTextCell";
-	/** Assigned to the cell that holds the image template label */
-	static public final String IMAGEVIEWTEMPLATELABELCELL = "ImageViewTemplateLabelCell";
-	/** Assigned to the cell that holds the image template text */
-	static public final String IMAGEVIEWTEMPLATETEXTCELL = "ImageViewTemplateTextCell";
-	/** Assigned to the image docbook file name label cell */
-	public static final String IMAGEVIEWDOCBOOKFILENAMELABELCELL = "ImageViewDocbookFileNameLabelCell";
-	/** Assigned to the image docbook file name text cell */
-	public static final String IMAGEVIEWDOCBOOKFILENAMETEXTCELL = "ImageViewDocbookFileNameTextCell";
-	/** Assigned to the table that holds the image details */
-	static public final String IMAGEVIEWDETAILSTABLE = "ImageViewDetailsTable";
-	/** Assigned to image buttons */
-	static public final String TEXTBUTTON = "TextButton";
-	/** Assigned to text buttons */
-	static public final String IMAGEBUTTON = "ImageButton";
-	/** Assigned to the table that holds the split view menu */
-	static public final String RENDEREDSPLITVIEWMENUTABLE = "RenderedSplitViewMenuTable";
-	/** Assigned to labels that represent down pushbuttons */
-	static public final String DOWNLABEL = "DownLabel";
-	/** Assigned to push buttons that are sub menus */
-	static public final String SUBMENU = "SubMenu";
-	/** Assigned to buttons that need to show some kind of alert status */
-	static public final String ALERTBUTTON = "AlertButton";
+	String IMAGEVIEWPARENTDOCKPANEL = "ImageViewParentDockPanel";
+	/** Assigned to the tab panel of specific language images. */
+	String IMAGEVIEWLANGUAGEIMAGETABPANEL = "ImageViewLanguageImageTabPanel";
+	/** Assigned to the tab that shows a specific language image. */
+	String IMAGEVIEWLANGUAGEIMAGETAB = "ImageViewLanguageImageTab";
+	/** Assigned to the cell that holds the language file name label. */
+	String IMAGEVIEWLANGUAGEIMAGEFILENAMELABEL = "ImageViewLanguageImageFilenameLabel";
+	/** Assigned to the cell that holds the language file name text. */
+	String IMAGEVIEWLANGUAGEIMAGEFILENAMETEXT = "ImageViewLanguageImageFilenameText";
+	/** Assigned to the cell that holds the language display label. */
+	String IMAGEVIEWLANGUAGEIMAGEDISPLAYLABEL = "ImageViewLanguageImageDisplayLabel";
+	/** Assigned to the cell that holds the language display image. */
+	String IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGE = "ImageViewLanguageImageDisplayImage";
+	/** Assigned to the cell that holds the language file name label cell. */
+	String IMAGEVIEWLANGUAGEIMAGEFILENAMELABELCELL = "ImageViewLanguageImageFilenameLabelCell";
+	/** Assigned to the cell that holds the language file name text cell. */
+	String IMAGEVIEWLANGUAGEIMAGEFILENAMETEXTCELL = "ImageViewLanguageImageFilenameTextCell";
+	/** Assigned to the cell that holds the language display label cell. */
+	String IMAGEVIEWLANGUAGEIMAGEDISPLAYLABELCELL = "ImageViewLanguageImageDisplayLabelCell";
+	/** Assigned to the cell that holds the language display image cell. */
+	String IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGECELL = "ImageViewLanguageImageDisplayImageCell";
+	/** Assigned to the image description label. */
+	String IMAGEVIEWDESCRIPTIONLABEL = "ImageViewDescriptionLabel";
+	/** Assigned to the image description text. */
+	String IMAGEVIEWDESCRIPTIONTEXT = "ImageViewDescriptionText";
+	/** Assigned to the image template text. */
+	String IMAGEVIEWTEMPLATETEXT = "ImageViewTemplateText";
+	/** Assigned to the image description label cell. */
+	String IMAGEVIEWDESCRIPTIONLABELCELL = "ImageViewDescriptionLabelCell";
+	/** Assigned to the image description text cell. */
+	String IMAGEVIEWDESCRIPTIONTEXTCELL = "ImageViewDescriptionTextCell";
+	/** Assigned to the cell that holds the image template label. */
+	String IMAGEVIEWTEMPLATELABELCELL = "ImageViewTemplateLabelCell";
+	/** Assigned to the cell that holds the image template text. */
+	String IMAGEVIEWTEMPLATETEXTCELL = "ImageViewTemplateTextCell";
+	/** Assigned to the image docbook file name label cell. */
+	String IMAGEVIEWDOCBOOKFILENAMELABELCELL = "ImageViewDocbookFileNameLabelCell";
+	/** Assigned to the image docbook file name text cell. */
+	String IMAGEVIEWDOCBOOKFILENAMETEXTCELL = "ImageViewDocbookFileNameTextCell";
+	/** Assigned to the table that holds the image details. */
+	String IMAGEVIEWDETAILSTABLE = "ImageViewDetailsTable";
+	/** Assigned to image buttons. */
+	String TEXTBUTTON = "TextButton";
+	/** Assigned to text buttons. */
+	String IMAGEBUTTON = "ImageButton";
+	/** Assigned to the table that holds the split view menu. */
+	String RENDEREDSPLITVIEWMENUTABLE = "RenderedSplitViewMenuTable";
+	/** Assigned to labels that represent down pushbuttons. */
+	String DOWNLABEL = "DownLabel";
+	/** Assigned to push buttons that are sub menus. */
+	String SUBMENU = "SubMenu";
+	/** Assigned to buttons that need to show some kind of alert status. */
+	String ALERTBUTTON = "AlertButton";
 	/**
 	 * Assigned to the panel that holds the OK and Cancel buttons in a popup
-	 * dialog box
+	 * dialog box.
 	 */
-	static public final String DIALOGBOXOKCANCELPANEL = "DialogBoxOKCancelPanel";
-	/** Assigned to the cell that holds the image upload label */
-	static public final String IMAGEVIEWLANGUAGEIMAGEUPLOADLABELCELL = "ImageViewLanguageImageUploadLabelCell";
-	/** Assigned to the cell that holds the image upload buttons */
-	static public final String IMAGEVIEWLANGUAGEIMAGEUPLOADBUTTONSCELL = "ImageViewLanguageImageUploadButtonsCell";
-	/** Assigned to the panel that holds the list of images */
-	static public final String IMAGEFILTEREDRESULTSPANEL = "ImageFilteredResultsPanel";
-	/** Assigned to the panel that holds the filter options for images */
-	static public final String IMAGEFILTEREDOPTIONSPANEL = "ImageFilteredOptionsPanel";
+	String DIALOGBOXOKCANCELPANEL = "DialogBoxOKCancelPanel";
+	/** Assigned to the cell that holds the image upload label. */
+	String IMAGEVIEWLANGUAGEIMAGEUPLOADLABELCELL = "ImageViewLanguageImageUploadLabelCell";
+	/** Assigned to the cell that holds the image upload buttons. */
+	String IMAGEVIEWLANGUAGEIMAGEUPLOADBUTTONSCELL = "ImageViewLanguageImageUploadButtonsCell";
+	/** Assigned to the panel that holds the list of images. */
+	String IMAGEFILTEREDRESULTSPANEL = "ImageFilteredResultsPanel";
+	/** Assigned to the panel that holds the filter options for images. */
+	String IMAGEFILTEREDOPTIONSPANEL = "ImageFilteredOptionsPanel";
 }

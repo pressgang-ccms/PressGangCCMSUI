@@ -68,6 +68,7 @@ public interface TopicViewInterface extends BaseTemplateViewInterface
 	 * 
 	 * @return The button that is used to switch to the tags view
 	 */
+	@Override
 	PushButton getTags();
 
 	/**

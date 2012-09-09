@@ -1,11 +1,6 @@
 package org.jboss.pressgangccms.client.local.ui;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
-import org.jboss.pressgangccms.client.local.preferences.Preferences;
-import org.jboss.pressgangccms.client.local.preferences.Preferences.ButtonView;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ToggleButton;
@@ -18,6 +13,11 @@ import com.google.gwt.user.client.ui.ToggleButton;
  */
 final public class UIUtilities
 {
+	private UIUtilities()
+	{
+		
+	}
+	
 	public static PushButton createPushButton(final String text)
 	{
 		return createPushButton(text, false);

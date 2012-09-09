@@ -13,21 +13,25 @@ abstract public class TagViewBase extends BaseTemplateView implements TagViewInt
 	private final PushButton tagProjects = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagProjects());
 	private final PushButton tagCategories = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagCategories());
 	
+	@Override
 	public PushButton getTagCategories()
 	{
 		return tagCategories;
 	}
 
+	@Override
 	public PushButton getSave()
 	{
 		return save;
 	}
 
+	@Override
 	public PushButton getTagProjects()
 	{
 		return tagProjects;
 	}
 
+	@Override
 	public PushButton getTagDetails()
 	{
 		return tagDetails;

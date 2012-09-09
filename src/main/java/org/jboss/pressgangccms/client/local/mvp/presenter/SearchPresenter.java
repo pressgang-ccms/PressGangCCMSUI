@@ -32,6 +32,7 @@ public class SearchPresenter extends TemplatePresenter
 
 		SearchUIProjects getSearchUIProjects();
 
+		@Override
 		PushButton getSearch();
 
 		SearchPresenterDriver getDriver();

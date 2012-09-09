@@ -34,7 +34,7 @@ public class SearchUIBase
 		if (!(other instanceof SearchUIBase))
 			return false;
 		
-		final SearchUIBase otherCasted = (SearchUIBase)other;
+		final SearchUIBase otherCasted = (SearchUIBase) other;
 		
 		if (this.name == null && otherCasted.name == null)
 			return true;

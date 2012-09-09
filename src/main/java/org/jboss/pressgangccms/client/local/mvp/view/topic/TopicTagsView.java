@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicTagsPresenter;
-import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.client.local.ui.UIUtilities;
@@ -20,7 +19,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.view.client.ProvidesKey;
@@ -46,21 +44,25 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 	{
 	}
 
+	@Override
 	public PushButton getAdd()
 	{
 		return add;
 	}
 
+	@Override
 	public ValueListBox<SearchUITag> getMyTags()
 	{
 		return myTags;
 	}
 
+	@Override
 	public ValueListBox<SearchUICategory> getCategoriesList()
 	{
 		return categories;
 	}
 
+	@Override
 	public ValueListBox<SearchUIProject> getProjectsList()
 	{
 		return projects;
@@ -229,6 +231,7 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 		}
 	}
 
+	@Override
 	public void initializeNewTags(final SearchUIProjects tags)
 	{
 		if (!tags.getProjects().isEmpty())

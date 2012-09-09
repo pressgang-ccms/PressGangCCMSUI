@@ -6,7 +6,6 @@ import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagCategoriesPrese
 import org.jboss.pressgangccms.client.local.resources.css.TableResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.rest.v1.components.ComponentCategoryV1;
-import org.jboss.pressgangccms.rest.v1.components.ComponentTagV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
 
@@ -135,6 +134,7 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
 		}
 	};
 
+	@Override
 	public SplitLayoutPanel getSplit()
 	{
 		return split;
@@ -145,53 +145,63 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
 		this.split = split;
 	}
 
+	@Override
 	public VerticalPanel getTagsResultsPanel()
 	{
 		return tagsResultsPanel;
 	}
 
+	@Override
 	public Column<RESTTagV1, String> getTagDownButtonColumn()
 	{
 		return tagDownButtonColumn;
 	}
 
+	@Override
 	public Column<RESTTagV1, String> getTagUpButtonColumn()
 	{
 		return tagUpButtonColumn;
 	}
 
+	@Override
 	public AsyncDataProvider<RESTTagV1> getTagsProvider()
 	{
 		return tagsProvider;
 	}
 
-	public void setTagsProvider(AsyncDataProvider<RESTTagV1> tagsProvider)
+	@Override
+	public void setTagsProvider(final AsyncDataProvider<RESTTagV1> tagsProvider)
 	{
 		this.tagsProvider = tagsProvider;
 		tagsProvider.addDataDisplay(tagsResults);
 	}
 
+	@Override
 	public Column<RESTCategoryV1, String> getButtonColumn()
 	{
 		return buttonColumn;
 	}
 
+	@Override
 	public AsyncDataProvider<RESTCategoryV1> getProvider()
 	{
 		return provider;
 	}
 
+	@Override
 	public void setProvider(final AsyncDataProvider<RESTCategoryV1> provider)
 	{
 		this.provider = provider;
 		provider.addDataDisplay(results);
 	}
 
+	@Override
 	public CellTable<RESTCategoryV1> getResults()
 	{
 		return results;
 	}
 
+	@Override
 	public SimplePager getPager()
 	{
 		return pager;
@@ -235,11 +245,13 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
 		this.getPanel().setWidget(split);
 	}
 
+	@Override
 	public void initialize(final RESTTagV1 tag, final boolean readOnly)
 	{
 		this.tag = tag;
 	}
 
+	@Override
 	protected void populateTopActionBar()
 	{
 		this.addActionButton(this.getTagDetails());

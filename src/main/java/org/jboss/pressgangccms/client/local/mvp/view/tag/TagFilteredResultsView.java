@@ -58,36 +58,43 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
 		}
 	};
 
+	@Override
 	public TextBox getNameFilter()
 	{
 		return nameFilter;
 	}
 
+	@Override
 	public TextBox getIdFilter()
 	{
 		return idFilter;
 	}
 
+	@Override
 	public TextBox getDescriptionFilter()
 	{
 		return descriptionFilter;
 	}
 
+	@Override
 	public SimplePager getPager()
 	{
 		return pager;
 	}
 
+	@Override
 	public CellTable<RESTTagV1> getResults()
 	{
 		return results;
 	}
 
+	@Override
 	public AsyncDataProvider<RESTTagV1> getProvider()
 	{
 		return provider;		
 	}
 
+	@Override
 	public void setProvider(AsyncDataProvider<RESTTagV1> provider)
 	{
 		this.provider = provider;
@@ -123,6 +130,7 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
 		this.getPanel().add(searchResultsPanel);
 	}
 
+	@Override
 	public PushButton getSearch()
 	{
 		return search;

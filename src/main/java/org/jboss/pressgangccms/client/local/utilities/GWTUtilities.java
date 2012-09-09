@@ -13,6 +13,11 @@ package org.jboss.pressgangccms.client.local.utilities;
  */
 final public class GWTUtilities
 {
+	private GWTUtilities()
+	{
+		
+	}
+	
 	public static byte[] getBytesUTF8(final String string)
 	{
 		return getBytes(string, 1);
@@ -53,7 +58,7 @@ final public class GWTUtilities
 			for (int j = 0; j < bytesPerChar; j++)
 			{
 				int shift = (bytesPerChar - 1 - j) * 8;
-				thisChar |= (0x000000FF << shift) & (((int) bytes[i * bytesPerChar + j]) << shift);
+				thisChar |= (0x000000FF << shift) & (bytes[i * bytesPerChar + j] << shift);
 			}
 			
 			retValue.append(thisChar);

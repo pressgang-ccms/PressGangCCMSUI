@@ -46,21 +46,25 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
 		private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
 		private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
 		
+		@Override
 		public DialogBox getDialogBox()
 		{
 			return this;
 		}
 		
+		@Override
 		public PushButton getCancel()
 		{
 			return cancel;
 		}
 
+		@Override
 		public PushButton getOk()
 		{
 			return ok;
 		}
 
+		@Override
 		public ListBox getLocales()
 		{
 			return locales;
@@ -94,31 +98,36 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
 		
 	}
 	
+	@Override
 	public PushButton getSave()
 	{
 		return save;
 	}
 	
+	@Override
 	public RESTImageV1Editor getEditor()
 	{
 		return editor;
 	}
 
-	public void setEditor(RESTImageV1Editor editor)
+	public void setEditor(final RESTImageV1Editor editor)
 	{
 		this.editor = editor;
 	}
 
+	@Override
 	public AddLocaleDialog getAddLocaleDialog()
 	{
 		return addLocaleDialog;
 	}
 
+	@Override
 	public PushButton getRemoveLocale()
 	{
 		return removeLocale;
 	}
 
+	@Override
 	public PushButton getAddLocale()
 	{
 		return addLocale;
@@ -134,6 +143,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
 		this.addRightAlignedActionButtonPaddingPanel();
 	}
 	
+	@Override
 	public void initialize(final RESTImageV1 image, final String[] locales)
 	{
 		if (image == null) throw new IllegalArgumentException("image cannot be null");

@@ -2,10 +2,6 @@ package org.jboss.pressgangccms.client.local.mvp.presenter.tag;
 
 import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgangccms.client.local.mvp.view.tag.TagViewInterface;
-
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 
 abstract public class TagPresenterBase extends TemplatePresenter
 {

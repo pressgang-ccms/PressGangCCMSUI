@@ -107,7 +107,7 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 		eventBus.addHandler(TagsFilteredResultsAndTagViewEvent.TYPE, new TagsFilteredResultsAndTagViewEventHandler()
 		{
 			@Override
-			public void onTagsFilteredResultsViewAndTagOpen(TagsFilteredResultsAndTagViewEvent event)
+			public void onTagsFilteredResultsViewAndTagOpen(final TagsFilteredResultsAndTagViewEvent event)
 			{
 				History.newItem(TagsFilteredResultsAndTagView.HISTORY_TOKEN + ";" + event.getQuery());				
 			}

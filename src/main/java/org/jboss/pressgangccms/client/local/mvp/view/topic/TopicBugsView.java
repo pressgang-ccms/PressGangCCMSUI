@@ -4,7 +4,6 @@ import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicBugsPresenter;
 import org.jboss.pressgangccms.client.local.resources.css.TableResources;
-import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.rest.v1.entities.RESTBugzillaBugV1;
@@ -20,7 +19,6 @@ import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.AnchorCell;
 import com.google.gwt.user.client.ui.DisableableCheckboxCell;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.AsyncDataProvider;
 
@@ -36,7 +34,7 @@ public class TopicBugsView extends TopicViewBase implements TopicBugsPresenter.D
 	private final VerticalPanel searchResultsPanel = new VerticalPanel();
 
 	private final SimplePager pager = new SimplePager();
-	private final CellTable<RESTBugzillaBugV1> results = new CellTable<RESTBugzillaBugV1>(Constants.MAX_SEARCH_RESULTS, (Resources)GWT.create(TableResources.class));
+	private final CellTable<RESTBugzillaBugV1> results = new CellTable<RESTBugzillaBugV1>(Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
 	private AsyncDataProvider<RESTBugzillaBugV1> provider;
 	
 

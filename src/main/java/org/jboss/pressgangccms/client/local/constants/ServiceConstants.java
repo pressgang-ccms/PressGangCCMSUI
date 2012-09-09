@@ -8,4 +8,9 @@ final public class ServiceConstants
 {
 	/** The StringConstant that holds the locales */
 	static public final int LOCALE_STRINGCONSTANT = 38;
+	
+	private ServiceConstants()
+	{
+		
+	}
 }

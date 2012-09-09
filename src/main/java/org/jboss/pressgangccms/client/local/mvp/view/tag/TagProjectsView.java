@@ -2,7 +2,6 @@ package org.jboss.pressgangccms.client.local.mvp.view.tag;
 
 import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagProjectsPresenter;
-import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.client.local.resources.css.TableResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.rest.v1.components.ComponentProjectV1;
@@ -81,27 +80,32 @@ public class TagProjectsView extends TagViewBase implements TagProjectsPresenter
 		}
 	};
 
+	@Override
 	public Column<RESTProjectV1, String> getButtonColumn()
 	{
 		return buttonColumn;
 	}
 
+	@Override
 	public AsyncDataProvider<RESTProjectV1> getProvider()
 	{
 		return provider;
 	}
 
+	@Override
 	public void setProvider(final AsyncDataProvider<RESTProjectV1> provider)
 	{
 		this.provider = provider;
 		provider.addDataDisplay(results);
 	}
 
+	@Override
 	public CellTable<RESTProjectV1> getResults()
 	{
 		return results;
 	}
 
+	@Override
 	public SimplePager getPager()
 	{
 		return pager;
@@ -124,11 +128,13 @@ public class TagProjectsView extends TagViewBase implements TagProjectsPresenter
 		this.getPanel().setWidget(searchResultsPanel);
 	}
 	
+	@Override
 	public void initialize(final RESTTagV1 tag, final boolean readOnly)
 	{
 		this.tag = tag;
 	}
 	
+	@Override
 	protected void populateTopActionBar()
 	{
 		this.addActionButton(this.getTagDetails());

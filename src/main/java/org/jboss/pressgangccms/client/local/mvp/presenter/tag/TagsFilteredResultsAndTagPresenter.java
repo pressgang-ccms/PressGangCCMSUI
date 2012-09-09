@@ -394,6 +394,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 	{
 		categoriesDisplay.getButtonColumn().setFieldUpdater(new FieldUpdater<RESTCategoryV1, String>()
 		{
+			@Override
 			public void update(final int index, final RESTCategoryV1 object, final String value)
 			{
 				boolean found = false;
@@ -452,6 +453,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase
 	{
 		projectsDisplay.getButtonColumn().setFieldUpdater(new FieldUpdater<RESTProjectV1, String>()
 		{
+			@Override
 			public void update(final int index, final RESTProjectV1 object, final String value)
 			{
 				boolean found = false;

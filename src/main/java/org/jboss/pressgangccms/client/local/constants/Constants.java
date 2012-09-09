@@ -28,6 +28,12 @@ public final class Constants
 	 */
 	public static final int SPLIT_PANEL_SIZE = 300;
 	
+	
+	/**
+	 * The height of the header banner in the template.
+	 */
+	public static final int HEADING_BANNER_HEIGHT = 110;
+	
 	/**
 	 * The size of the split panel dividers
 	 */
@@ -70,4 +76,9 @@ public final class Constants
 	 * View Bugzilla bug URL
 	 */
 	public static final String BUGZILLA_VIEW_BUG_URL = BUGZILLA_BASE_URL + "/show_bug.cgi?id=";
+	
+	private Constants()
+	{
+		
+	}
 }

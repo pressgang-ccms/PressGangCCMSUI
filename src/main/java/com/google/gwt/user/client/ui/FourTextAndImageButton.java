@@ -55,7 +55,7 @@ public class FourTextAndImageButton extends TextAndImageButton
 		return text4;
 	}
 
-	public void setText4(String text4)
+	public void setText4(final String text4)
 	{
 		this.text4 = text4;
 		div4.setInnerText(text4);

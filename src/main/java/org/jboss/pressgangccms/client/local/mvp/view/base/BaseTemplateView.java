@@ -81,96 +81,115 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 	private final PushButton advancedOpen;
 	private final PushButton close;
 
+	@Override
 	public PushButton getClose()
 	{
 		return close;
 	}
 
+	@Override
 	public PushButton getAdvancedOpen()
 	{
 		return advancedOpen;
 	}
 
+	@Override
 	public SimplePanel getShortCutPanelParent()
 	{
 		return shortCutPanelParent;
 	}
 
+	@Override
 	public FlexTable getAdvancedShortcutPanel()
 	{
 		return advancedShortcutPanel;
 	}
 
+	@Override
 	public PushButton getAdvanced()
 	{
 		return advanced;
 	}
 
+	@Override
 	public PushButton getPropertyTagCategories()
 	{
 		return propertyTagCategories;
 	}
 
+	@Override
 	public PushButton getPropertyTags()
 	{
 		return propertyTags;
 	}
 
+	@Override
 	public PushButton getRoles()
 	{
 		return roles;
 	}
 
+	@Override
 	public PushButton getUsers()
 	{
 		return users;
 	}
 
+	@Override
 	public PushButton getIntegerConstants()
 	{
 		return integerConstants;
 	}
 
+	@Override
 	public PushButton getBlobConstants()
 	{
 		return blobConstants;
 	}
 
+	@Override
 	public PushButton getStringConstants()
 	{
 		return stringConstants;
 	}
 
+	@Override
 	public PushButton getProjects()
 	{
 		return projects;
 	}
 
+	@Override
 	public PushButton getCategories()
 	{
 		return categories;
 	}
 
+	@Override
 	public PushButton getTags()
 	{
 		return tags;
 	}
 
+	@Override
 	public PushButton getImages()
 	{
 		return images;
 	}
 
+	@Override
 	public Label getPageTitle()
 	{
 		return pageTitle;
 	}
 
+	@Override
 	public String getPageName()
 	{
 		return pageName;
 	}
 
+	@Override
 	public String getApplicationName()
 	{
 		return applicationName;
@@ -181,6 +200,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		return topActionParentPanel;
 	}
 
+	@Override
 	public FlexTable getShortcutPanel()
 	{
 		return shortcutPanel;
@@ -255,7 +275,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		headingBanner.add(new Image(ImageResources.INSTANCE.headingBanner()));
 
 		topLevelLayoutPanel.addStyleName(CSSConstants.TOPLEVELLAYOUTPANEL);
-		topLevelLayoutPanel.addNorth(headingBanner, 110);
+		topLevelLayoutPanel.addNorth(headingBanner, Constants.HEADING_BANNER_HEIGHT);
 
 		/* Set the second level layout */
 		secondLevelLayoutPanel.addStyleName(CSSConstants.SECONDLEVELLAYOUTPANEL);
@@ -374,6 +394,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface
 		addShortcutButton(close, advancedShortcutPanel);
 	}
 
+	@Override
 	public void showRegularMenu()
 	{
 		topActionParentPanel.clear();

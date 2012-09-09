@@ -5,7 +5,7 @@ import com.google.gwt.i18n.client.Constants;
 
 public interface PressGangCCMSUI extends Constants
 {
-	public static final PressGangCCMSUI INSTANCE = GWT.create(PressGangCCMSUI.class);
+	PressGangCCMSUI INSTANCE = GWT.create(PressGangCCMSUI.class);
 
 	String OK();
 	

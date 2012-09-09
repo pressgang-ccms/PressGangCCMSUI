@@ -1,6 +1,5 @@
 package com.google.gwt.user.client.ui;
 
-import com.google.common.collect.Table.Cell;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;

@@ -20,6 +20,7 @@ public class TopicBugsPresenter extends TemplatePresenter
 
 	public interface Display extends TopicViewInterface
 	{
+		@Override
 		void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType);
 		
 		AsyncDataProvider<RESTBugzillaBugV1> getProvider();

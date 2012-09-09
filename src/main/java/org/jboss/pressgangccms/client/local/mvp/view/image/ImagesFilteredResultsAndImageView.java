@@ -2,19 +2,14 @@ package org.jboss.pressgangccms.client.local.mvp.view.image;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.constants.Constants;
-import org.jboss.pressgangccms.client.local.mvp.presenter.SearchResultsAndTopicPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgangccms.client.local.ui.SplitType;
-
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
 
 public class ImagesFilteredResultsAndImageView extends BaseTemplateView implements ImagesFilteredResultsAndImagePresenter.Display
 {

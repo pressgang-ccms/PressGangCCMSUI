@@ -98,6 +98,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	/** Setup automatic flushing and rendering */
 	final Timer timer = new Timer()
 	{
+		@Override
 		public void run()
 		{
 			if (selectedView == topicXMLDisplay)
@@ -803,7 +804,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter
 	}
 
 	/**
-	 * Bind the button click events for the various topic views
+	 * Bind the button click events for the various topic views.
 	 * 
 	 * @param provider
 	 *            The provider created by the generateTopicListProvider() method

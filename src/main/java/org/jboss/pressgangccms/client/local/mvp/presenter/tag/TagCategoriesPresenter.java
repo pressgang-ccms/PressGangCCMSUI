@@ -8,9 +8,7 @@ import org.jboss.pressgangccms.client.local.mvp.view.tag.TagProjectsView;
 import org.jboss.pressgangccms.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.rest.v1.collections.RESTCategoryCollectionV1;
-import org.jboss.pressgangccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTCategoryV1;
-import org.jboss.pressgangccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
 
 import com.google.gwt.user.cellview.client.CellTable;

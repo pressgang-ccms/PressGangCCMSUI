@@ -2,20 +2,11 @@ package org.jboss.pressgangccms.client.local.mvp.view.tag;
 
 import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagPresenter.TagPresenterDriver;
-import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicPresenter.TopicPresenterDriver;
-import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgangccms.client.local.ui.SplitType;
-import org.jboss.pressgangccms.client.local.ui.UIUtilities;
 import org.jboss.pressgangccms.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
-import org.jboss.pressgangccms.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
-import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.PushButton;
 
 public class TagView extends TagViewBase implements TagPresenter.Display
 {
@@ -38,6 +29,7 @@ public class TagView extends TagViewBase implements TagPresenter.Display
 		super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Tags());
 	}
 
+	@Override
 	protected void populateTopActionBar()
 	{
 		this.addActionButton(this.getTagDetails());
@@ -47,6 +39,7 @@ public class TagView extends TagViewBase implements TagPresenter.Display
 		addRightAlignedActionButtonPaddingPanel();
 	}
 
+	@Override
 	public void initialize(final RESTTagV1 tag, final boolean readOnly)
 	{
 		this.readOnly = readOnly;

@@ -4,7 +4,6 @@ import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
 import org.jboss.pressgangccms.client.local.resources.css.TableResources;
-import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
@@ -20,7 +19,6 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.DisableableCheckboxCell;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.AsyncDataProvider;
 
@@ -114,21 +112,25 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 		}
 	};
 
+	@Override
 	public Column<RESTTopicV1, String> getDiffButton()
 	{
 		return diffButton;
 	}
 
+	@Override
 	public RESTTopicV1 getRevisionTopic()
 	{
 		return revisionTopic;
 	}
 
+	@Override
 	public void setRevisionTopic(RESTTopicV1 revisionTopic)
 	{
 		this.revisionTopic = revisionTopic;
 	}
 
+	@Override
 	public Column<RESTTopicV1, String> getViewButton()
 	{
 		return viewButton;

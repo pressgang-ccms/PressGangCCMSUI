@@ -4,7 +4,6 @@ import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
-import org.jboss.pressgangccms.client.local.mvp.events.ImagesViewEvent;
 import org.jboss.pressgangccms.client.local.mvp.events.SearchViewEvent;
 import org.jboss.pressgangccms.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -20,7 +19,7 @@ import com.google.gwt.user.client.Window;
  * @author Matthew Casperson
  * 
  */
-abstract public class TemplatePresenter implements Presenter
+public abstract class TemplatePresenter implements Presenter
 {
 	@Inject
 	protected HandlerManager eventBus;

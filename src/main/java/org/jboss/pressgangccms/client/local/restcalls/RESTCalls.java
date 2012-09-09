@@ -45,6 +45,11 @@ public final class RESTCalls
 
 		void failed();
 	}
+	
+	private RESTCalls()
+	{
+		
+	}
 
 	static private <T> RemoteCallback<T> constructSuccessCallback(final RESTCallback<T> callback)
 	{

@@ -5,7 +5,6 @@ import hu.szaboaz.gwt.xslt.client.XsltProcessor;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicRenderedPresenter;
-import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.resources.xsl.DocbookToHTML;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
@@ -13,7 +12,6 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Image;
 
 public class TopicRenderedView extends TopicViewBase implements TopicRenderedPresenter.Display
 {

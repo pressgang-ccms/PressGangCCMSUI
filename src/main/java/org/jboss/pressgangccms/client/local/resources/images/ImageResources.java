@@ -21,7 +21,7 @@ import com.google.gwt.resources.client.ImageResource;
  */
 public interface ImageResources extends ClientBundle
 {
-	public static final ImageResources INSTANCE = GWT.create(ImageResources.class);
+	ImageResources INSTANCE = GWT.create(ImageResources.class);
 	
 	@Source("spinner.gif")
 	ImageResource spinner();

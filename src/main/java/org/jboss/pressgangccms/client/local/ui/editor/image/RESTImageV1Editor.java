@@ -24,9 +24,9 @@ public class RESTImageV1Editor extends DockPanel implements ValueAwareEditor<RES
 	
 	private final TextBox docbookFileName = new TextBox();
 	
-	private final Label descriptionLabel = new Label(PressGangCCMSUI.INSTANCE.ImageDescription()) ;
+	private final Label descriptionLabel = new Label(PressGangCCMSUI.INSTANCE.ImageDescription());
 	
-	private final Label docbookFileNameLabel = new Label(PressGangCCMSUI.INSTANCE.DocbookFilename()) ;
+	private final Label docbookFileNameLabel = new Label(PressGangCCMSUI.INSTANCE.DocbookFilename());
 	
 	private final FlexTable imageDetails = new FlexTable();
 	

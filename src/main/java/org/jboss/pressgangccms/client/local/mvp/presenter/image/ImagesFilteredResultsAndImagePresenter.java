@@ -279,6 +279,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 		}
 	}
 
+	@Override
 	protected void stopProcessing()
 	{
 		--count;
@@ -286,6 +287,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase
 			display.setSpinnerVisible(false);
 	}
 
+	@Override
 	protected void startProcessing()
 	{
 		++count;

@@ -2,15 +2,11 @@ package org.jboss.pressgangccms.client.local.mvp.view.topic;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
-import org.jboss.pressgangccms.client.local.preferences.Preferences;
-import org.jboss.pressgangccms.client.local.preferences.Preferences.ButtonView;
-import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.client.local.ui.UIUtilities;
 
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 
@@ -87,36 +83,43 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 		return historyDown;
 	}
 	
+	@Override
 	public PushButton getRenderedSplitOpen()
 	{
 		return renderedSplitOpen;
 	}
 
+	@Override
 	public PushButton getRenderedHorizontalSplit()
 	{
 		return renderedHorizontalSplit;
 	}
 
+	@Override
 	public FlexTable getRenderedSplitViewMenu()
 	{
 		return renderedSplitViewMenu;
 	}
 
+	@Override
 	public PushButton getRenderedSplitClose()
 	{
 		return renderedSplitClose;
 	}
 
+	@Override
 	public PushButton getRenderedVerticalSplit()
 	{
 		return renderedVerticalSplit;
 	}
 
+	@Override
 	public PushButton getRenderedNoSplit()
 	{
 		return renderedNoSplit;
 	}
 
+	@Override
 	public PushButton getRenderedSplit()
 	{
 		return renderedSplit;
@@ -190,7 +193,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 		fieldsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Properties());
 		xmlDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.XMLEditing());
 		xmlErrorsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
-		renderedDown= UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.RenderedView());
+		renderedDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.RenderedView());
 		tagsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TopicTags());
 		bugsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Bugs());
 		historyDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
@@ -255,6 +258,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
 	}
 	
 	/** Show the rendered split view menu */
+	@Override
 	public void showSplitViewButtons()
 	{
 		getTopActionParentPanel().clear();

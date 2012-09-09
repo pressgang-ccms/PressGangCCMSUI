@@ -1,35 +1,15 @@
 package org.jboss.pressgangccms.client.local.mvp.presenter.image;
 
-import java.util.Arrays;
-import java.util.List;
-
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import org.jboss.pressgangccms.client.local.constants.ServiceConstants;
-import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.client.local.mvp.view.image.ImageView;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.client.local.ui.editor.image.RESTImageV1Editor;
-import org.jboss.pressgangccms.client.local.ui.editor.image.RESTLanguageImageV1Editor;
-import org.jboss.pressgangccms.client.local.utilities.GWTUtilities;
-import org.jboss.pressgangccms.rest.v1.collections.RESTLanguageImageCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTImageV1;
-import org.jboss.pressgangccms.rest.v1.entities.RESTLanguageImageV1;
-import org.jboss.pressgangccms.rest.v1.entities.RESTStringConstantV1;
-import org.vectomatic.file.File;
-import org.vectomatic.file.FileReader;
-import org.vectomatic.file.events.ErrorHandler;
-import org.vectomatic.file.events.LoadEndEvent;
-import org.vectomatic.file.events.LoadEndHandler;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -170,6 +150,7 @@ public class ImagePresenter extends ImagePresenterBase
 			RESTCalls.getImage(callback, imageId);
 	}
 
+	@Override
 	protected void reInitialiseImageView()
 	{
 		display.initialize(displayedImage, getUnassignedLocales().toArray(new String[0]));
@@ -177,6 +158,7 @@ public class ImagePresenter extends ImagePresenterBase
 		bindImageUploadButtons(display);
 	}
 
+	@Override
 	protected void stopProcessing()
 	{
 		--count;
@@ -184,6 +166,7 @@ public class ImagePresenter extends ImagePresenterBase
 			display.setSpinnerVisible(false);
 	}
 
+	@Override
 	protected void startProcessing()
 	{
 		++count;

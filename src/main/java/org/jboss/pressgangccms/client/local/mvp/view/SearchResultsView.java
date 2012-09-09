@@ -23,7 +23,7 @@ public class SearchResultsView extends BaseTemplateView implements SearchResults
 	private final VerticalPanel searchResultsPanel = new VerticalPanel();
 	
 	private final SimplePager pager = new SimplePager();
-	private final CellTable<RESTTopicV1> results = new CellTable<RESTTopicV1>(Constants.MAX_SEARCH_RESULTS, (Resources)GWT.create(TableResources.class));
+	private final CellTable<RESTTopicV1> results = new CellTable<RESTTopicV1>(Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
 	private AsyncDataProvider<RESTTopicV1> provider;
 	private final TextColumn<RESTTopicV1> idColumn = new TextColumn<RESTTopicV1>()
 	{

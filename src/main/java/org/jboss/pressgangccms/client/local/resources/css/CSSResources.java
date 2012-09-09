@@ -7,11 +7,11 @@ import com.google.gwt.resources.client.ImageResource;
 
 public interface CSSResources extends ClientBundle
 {
-	public static CSSResources INSTANCE = GWT.create(CSSResources.class);
+	CSSResources INSTANCE = GWT.create(CSSResources.class);
 
 	@Source("App.css")
-	public MyCssResource App();
+	MyCssResource App();
 
 	@Source("headingBackground.png")
-	public ImageResource headingBackground();
+	ImageResource headingBackground();
 }
