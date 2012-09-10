@@ -39,18 +39,6 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
     private RESTTopicV1 revisionTopic;
     private RESTTopicV1 mainTopic;
 
-    private final Column<RESTTopicV1, Boolean> viewing = new Column<RESTTopicV1, Boolean>(new DisableableCheckboxCell(false,
-            true, false)) {
-        @Override
-        public Boolean getValue(final RESTTopicV1 object) {
-            if (revisionTopic == null) {
-                return false;
-            }
-
-            return object.getRevision().equals(revisionTopic.getRevision());
-        }
-    };
-
     private final TextColumn<RESTTopicV1> revisionNumber = new TextColumn<RESTTopicV1>() {
         @Override
         public String getValue(final RESTTopicV1 object) {
@@ -62,6 +50,17 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
         @Override
         public String getValue(final RESTTopicV1 object) {
             return DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG).format(object.getLastModified());
+        }
+    };
+
+    private final TextColumn<RESTTopicV1> revisionMessage = new TextColumn<RESTTopicV1>() {
+        @Override
+        public String getValue(final RESTTopicV1 object) {
+            if (object.getLogDetails() != null) {
+                return object.getLogDetails().getMessage();
+            }
+            
+            return "";
         }
     };
 
@@ -152,9 +151,9 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
                 + PressGangCCMSUI.INSTANCE.Revisions());
 
-        results.addColumn(viewing, PressGangCCMSUI.INSTANCE.CurrentlyViewing());
         results.addColumn(revisionNumber, PressGangCCMSUI.INSTANCE.RevisionNumber());
         results.addColumn(revisionDate, PressGangCCMSUI.INSTANCE.RevisionDate());
+        results.addColumn(revisionMessage, PressGangCCMSUI.INSTANCE.RevisionMessage());
         results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.View() + " / " + PressGangCCMSUI.INSTANCE.Edit());
         results.addColumn(diffButton, PressGangCCMSUI.INSTANCE.Diff());
 

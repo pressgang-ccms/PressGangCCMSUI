@@ -1,7 +1,7 @@
 package org.jboss.pressgangccms.client.local.ui.editor.search;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
-import org.jboss.pressgangccms.client.local.mvp.presenter.SearchPresenter.Display.SearchPresenterDriver;
+import org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUITag;

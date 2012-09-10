@@ -95,7 +95,7 @@ public class TagProjectsView extends TagViewBase implements TagProjectsPresenter
     }
 
     public TagProjectsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Tags());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.TagProjects());
 
         results.addColumn(idColumn, PressGangCCMSUI.INSTANCE.ProjectID());
         results.addColumn(nameColumn, PressGangCCMSUI.INSTANCE.ProjectName());

@@ -738,6 +738,12 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
             display.getViewPanel().setWidget(displayedView.getPanel());
             display.getViewActionButtonsPanel().setWidget(displayedView.getTopActionPanel());
         }
+        
+        /* Update the page name */
+        final StringBuilder title = new StringBuilder(displayedView.getPageName());
+        if (this.tagProviderData.getSelectedItem() != null)
+            title.append(": " + this.tagProviderData.getSelectedItem().getName());
+        display.getPageTitle().setText(title.toString());
 
         lastDisplayedView = displayedView;
     }

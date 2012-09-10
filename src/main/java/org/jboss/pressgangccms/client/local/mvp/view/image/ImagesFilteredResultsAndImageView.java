@@ -58,9 +58,7 @@ public class ImagesFilteredResultsAndImageView extends BaseTemplateView implemen
         /* We have own own top action panels */
         this.getTopActionParentPanel().removeFromParent();
 
-        final HTML spacer = new HTML("<div style=\"height: " + Constants.ACTION_BAR_HEIGHT + "px;\"></div>");
-        this.getShortcutPanel().insertRow(0);
-        this.getShortcutPanel().setWidget(0, 0, spacer);
+        addSpacerToShortcutPanels();
 
         resultsViewLayoutPanel.addStyleName(CSSConstants.RESULTSVIEWLAYOUTPANEL);
         viewLayoutPanel.addStyleName(CSSConstants.TOPICVIEWLAYOUTPANEL);

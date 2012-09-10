@@ -1,6 +1,6 @@
 package org.jboss.pressgangccms.client.local.mvp.view;
 
-import org.jboss.pressgangccms.client.local.mvp.presenter.SearchPresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchPresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.UIUtilities;

@@ -11,6 +11,7 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -396,5 +397,18 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private void addShortcutButton(final Widget widget, final FlexTable table) {
         final int rows = table.getRowCount();
         table.setWidget(rows, 0, widget);
+    }
+    
+    /**
+     * When combining views into a single merged view, the shortcuit panels need to have a spacer
+     * placed above them to replace the template action bar, which is removed.
+     */
+    protected void addSpacerToShortcutPanels()
+    {
+        final HTML spacer = new HTML("<div style=\"height: " + Constants.ACTION_BAR_HEIGHT + "px;\"></div>");
+        this.getShortcutPanel().insertRow(0);
+        this.getShortcutPanel().setWidget(0, 0, spacer);
+        this.getAdvancedShortcutPanel().insertRow(0);
+        this.getAdvancedShortcutPanel().setWidget(0, 0, spacer);
     }
 }

@@ -161,7 +161,7 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
     }
 
     public TagCategoriesView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Tags());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.TagCategories());
 
         split.addStyleName(CSSConstants.TagCategoryView.TAGCATEGORIESSPLITPANEL);
 

@@ -23,7 +23,7 @@ public class TagView extends TagViewBase implements TagPresenter.Display {
     }
 
     public TagView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Tags());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.TagDetails());
     }
 
     @Override

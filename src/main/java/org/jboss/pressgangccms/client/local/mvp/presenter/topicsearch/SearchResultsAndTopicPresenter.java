@@ -1,4 +1,4 @@
-package org.jboss.pressgangccms.client.local.mvp.presenter;
+package org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -949,7 +949,11 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
      */
     private void updateDisplayedTopicView() {
         /* Update the page name */
-        display.getPageTitle().setText(selectedView.getPageName());
+        final StringBuilder title = new StringBuilder(selectedView.getPageName());
+        if (this.selectedTopic != null) {
+            title.append(": " + selectedTopic.getTitle());
+        }
+        display.getPageTitle().setText(title.toString());
 
         /*
          * Here we use the initialize function to copy the topic data into the GWT Editors. To save some data being retreived

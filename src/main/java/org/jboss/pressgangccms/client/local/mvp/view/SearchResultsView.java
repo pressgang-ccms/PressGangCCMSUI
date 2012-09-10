@@ -2,7 +2,7 @@ package org.jboss.pressgangccms.client.local.mvp.view;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.constants.Constants;
-import org.jboss.pressgangccms.client.local.mvp.presenter.SearchResultsPresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsPresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.client.local.resources.css.TableResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;

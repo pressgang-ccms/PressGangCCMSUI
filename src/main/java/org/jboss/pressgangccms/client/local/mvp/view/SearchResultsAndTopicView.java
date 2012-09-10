@@ -2,7 +2,7 @@ package org.jboss.pressgangccms.client.local.mvp.view;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.constants.Constants;
-import org.jboss.pressgangccms.client.local.mvp.presenter.SearchResultsAndTopicPresenter;
+import org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
@@ -68,9 +68,7 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
         /* We have own own top action panels */
         this.getTopActionParentPanel().removeFromParent();
 
-        final HTML spacer = new HTML("<div style=\"height: " + Constants.ACTION_BAR_HEIGHT + "px;\"></div>");
-        this.getShortcutPanel().insertRow(0);
-        this.getShortcutPanel().setWidget(0, 0, spacer);
+        addSpacerToShortcutPanels();
 
         resultsViewLayoutPanel.addStyleName(CSSConstants.RESULTSVIEWLAYOUTPANEL);
         topicViewLayoutPanel.addStyleName(CSSConstants.TOPICVIEWLAYOUTPANEL);
