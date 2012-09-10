@@ -33,7 +33,7 @@ public class RESTTagV1BasicDetailsEditor extends FlexTable implements Editor<RES
     }
 
     public RESTTagV1BasicDetailsEditor(final boolean readOnly) {
-        id.setReadOnly(readOnly);
+        id.setReadOnly(true);
         name.setReadOnly(readOnly);
         description.setReadOnly(readOnly);
 

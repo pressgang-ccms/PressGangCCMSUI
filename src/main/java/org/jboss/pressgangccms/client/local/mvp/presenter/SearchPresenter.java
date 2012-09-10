@@ -24,7 +24,7 @@ import com.google.gwt.user.client.ui.PushButton;
 public class SearchPresenter extends TemplatePresenter {
     public interface Display extends BaseTemplateViewInterface {
         // Empty interface declaration, similar to UiBinder
-        public interface SearchPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor> {
+        interface SearchPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor> {
         }
 
         SearchUIProjects getSearchUIProjects();
@@ -109,7 +109,7 @@ public class SearchPresenter extends TemplatePresenter {
     }
 
     @Override
-    public void parseToken(String historyToken) {
+    public void parseToken(final String historyToken) {
         // TODO Auto-generated method stub
     }
 }

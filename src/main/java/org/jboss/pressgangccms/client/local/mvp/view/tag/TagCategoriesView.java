@@ -180,7 +180,7 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
         split.addStyleName(CSSConstants.TagCategoryView.TAGCATEGORIESSPLITPANEL);
 
         results.addColumn(nameColumn, PressGangCCMSUI.INSTANCE.CategoryName());
-        results.addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.CategoryDescription());
+        //results.addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.CategoryDescription());
         results.addColumn(buttonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
 
         searchResultsPanel.add(results);
@@ -194,7 +194,7 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
 
         tagsResults.addColumn(tagIdColumn, PressGangCCMSUI.INSTANCE.TagID());
         tagsResults.addColumn(tagNameColumn, PressGangCCMSUI.INSTANCE.TagName());
-        tagsResults.addColumn(tagDescriptionColumn, PressGangCCMSUI.INSTANCE.TagDescription());
+        //tagsResults.addColumn(tagDescriptionColumn, PressGangCCMSUI.INSTANCE.TagDescription());
         tagsResults.addColumn(tagUpButtonColumn, PressGangCCMSUI.INSTANCE.Up());
         tagsResults.addColumn(tagDownButtonColumn, PressGangCCMSUI.INSTANCE.Down());
 

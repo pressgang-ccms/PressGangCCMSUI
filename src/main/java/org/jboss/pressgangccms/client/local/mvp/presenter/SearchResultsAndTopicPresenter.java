@@ -98,7 +98,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
         public void run() {
             if (selectedView == topicXMLDisplay) {
                 topicXMLDisplay.getDriver().flush();
-                topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic(), getReadOnlyMode(), display.getSplitType());
+                topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic(), isReadOnlyMode(), display.getSplitType());
             }
         }
     };
@@ -734,7 +734,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
                                 }
 
                                 /* Update the edit window */
-                                selectedView.initialize(getTopicOrRevisionTopic(), getReadOnlyMode(), display.getSplitType());
+                                selectedView.initialize(getTopicOrRevisionTopic(), isReadOnlyMode(), display.getSplitType());
 
                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                             } finally {
@@ -952,7 +952,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
         /*
          * Need to do an initial call to initialize for the rendered view in the split pane
          */
-        topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic(), getReadOnlyMode(), display.getSplitType());
+        topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic(), isReadOnlyMode(), display.getSplitType());
         /* By default, stop the automatic updating of the rendered view panel */
         timer.cancel();
 
@@ -960,10 +960,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
             /*
              * The revisions always come from the parent topic (this saves us expanding the revisions when loading a revision
              */
-            selectedView.initialize(selectedTopic, getReadOnlyMode(), display.getSplitType());
+            selectedView.initialize(selectedTopic, isReadOnlyMode(), display.getSplitType());
         } else {
             /* All other details come from the revision topic */
-            selectedView.initialize(getTopicOrRevisionTopic(), getReadOnlyMode(), display.getSplitType());
+            selectedView.initialize(getTopicOrRevisionTopic(), isReadOnlyMode(), display.getSplitType());
         }
 
         /* Need to redisplay to work around a bug in the ACE editor */
@@ -974,7 +974,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
 
             /* While editing the XML, we need to setup a refresh of the rendered view */
             if (display.getSplitType() != SplitType.NONE) {
-                if (!getReadOnlyMode())
+                if (!isReadOnlyMode())
                     timer.scheduleRepeating(REFRESH_RATE);
             }
         }
@@ -1080,7 +1080,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
      * 
      * @return true if the UI is in readonly mode, and false otherwise
      */
-    private boolean getReadOnlyMode() {
+    private boolean isReadOnlyMode() {
         return topicRevisionsDisplay.getRevisionTopic() != null;
     }
 

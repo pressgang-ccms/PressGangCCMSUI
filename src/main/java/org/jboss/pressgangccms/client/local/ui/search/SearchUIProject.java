@@ -86,7 +86,7 @@ public class SearchUIProject extends SearchUIBase {
 
     public void populateCategories(final RESTProjectV1 project, final RESTTagCollectionV1 tags) {
         if (tags == null)
-            throw new NullPointerException("tags parameter cannot be null");
+            throw new IllegalArgumentException("tags parameter cannot be null");
         if (tags.getItems() == null)
             throw new IllegalArgumentException("tags.getItems() cannot be null");
         if (project == null)
@@ -117,7 +117,7 @@ public class SearchUIProject extends SearchUIBase {
 
     public void populateCategoriesWithoutProject(final RESTTagCollectionV1 tags) {
         if (tags == null)
-            throw new NullPointerException("tags parameter cannot be null");
+            throw new IllegalArgumentException("tags parameter cannot be null");
         if (tags.getItems() == null)
             throw new IllegalArgumentException("tags.getItems() cannot be null");
 
