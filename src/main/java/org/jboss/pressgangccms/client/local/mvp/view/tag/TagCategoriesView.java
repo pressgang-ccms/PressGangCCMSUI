@@ -26,7 +26,7 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
     /** A reference to the tag that this view will be modifying. */
     private RESTTagV1 tag;
 
-    private SplitLayoutPanel split = new SplitLayoutPanel();
+    private SplitLayoutPanel split = new SplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
     private final SimplePager pager = new SimplePager();

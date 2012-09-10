@@ -25,14 +25,15 @@ public class TextAndImageButton extends Button {
         initialize(divClass);
     }
 
+    public TextAndImageButton(final String text, final ImageResource imageResource) {
+        super();
+        this.text = text;
+        setResource(imageResource);
+    }
+    
     private void initialize(final String divClass) {
         div.setAttribute("class", divClass);
         DOM.insertChild(getElement(), div, 0);
-    }
-
-    public TextAndImageButton(final String text, final ImageResource imageResource) {
-        this.text = text;
-        setResource(imageResource);
     }
 
     final public void setResource(final ImageResource imageResource) {

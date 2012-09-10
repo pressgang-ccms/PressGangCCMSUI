@@ -135,24 +135,26 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
              * and their tags collections contain any added or removed tag relationships. Here we copy those modified
              * relationships into the updateTag, so the changes are all done in one transaction.
              */
-            updateTag.explicitSetCategories(new RESTCategoryCollectionV1());
-            for (final RESTCategoryV1 category : categoryProviderData.getItems()) {
-                for (final RESTTagV1 tag : category.getTags().getItems()) {
-                    /*
-                     * It should only be possible to add the currently displayed tag to the categories
-                     */
-                    if (tag.getId().equals(updateTag.getId())) {
+            if (categoryProviderData.getItems() != null) {
+                updateTag.explicitSetCategories(new RESTCategoryCollectionV1());
+                for (final RESTCategoryV1 category : categoryProviderData.getItems()) {
+                    for (final RESTTagV1 tag : category.getTags().getItems()) {
+                        /*
+                         * It should only be possible to add the currently displayed tag to the categories
+                         */
+                        if (tag.getId().equals(updateTag.getId())) {
 
-                        final RESTCategoryV1 addedCategory = new RESTCategoryV1();
-                        addedCategory.setId(category.getId());
+                            final RESTCategoryV1 addedCategory = new RESTCategoryV1();
+                            addedCategory.setId(category.getId());
 
-                        if (tag.getAddItem()) {
-                            addedCategory.setAddItem(true);
-                        } else if (tag.getRemoveItem()) {
-                            addedCategory.setRemoveItem(true);
+                            if (tag.getAddItem()) {
+                                addedCategory.setAddItem(true);
+                            } else if (tag.getRemoveItem()) {
+                                addedCategory.setRemoveItem(true);
+                            }
+
+                            updateTag.getCategories().addItem(addedCategory);
                         }
-
-                        updateTag.getCategories().addItem(addedCategory);
                     }
                 }
             }
@@ -160,20 +162,22 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
             /*
              * Sync changes from the projects.
              */
-            updateTag.explicitSetProjects(new RESTProjectCollectionV1());
-            for (final RESTProjectV1 project : projectProviderData.getItems()) {
-                for (final RESTTagV1 tag : project.getTags().getItems()) {
-                    if (tag.getId().equals(updateTag.getId())) {
-                        final RESTProjectV1 addedProject = new RESTProjectV1();
-                        addedProject.setId(project.getId());
+            if (projectProviderData.getItems() != null) {
+                updateTag.explicitSetProjects(new RESTProjectCollectionV1());
+                for (final RESTProjectV1 project : projectProviderData.getItems()) {
+                    for (final RESTTagV1 tag : project.getTags().getItems()) {
+                        if (tag.getId().equals(updateTag.getId())) {
+                            final RESTProjectV1 addedProject = new RESTProjectV1();
+                            addedProject.setId(project.getId());
 
-                        if (tag.getAddItem()) {
-                            addedProject.setAddItem(true);
-                        } else if (tag.getRemoveItem()) {
-                            addedProject.setRemoveItem(true);
+                            if (tag.getAddItem()) {
+                                addedProject.setAddItem(true);
+                            } else if (tag.getRemoveItem()) {
+                                addedProject.setRemoveItem(true);
+                            }
+
+                            updateTag.getProjects().addItem(addedProject);
                         }
-
-                        updateTag.getProjects().addItem(addedProject);
                     }
                 }
             }
@@ -362,20 +366,40 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                     final RESTTagV1 newTag = tagProviderData.getDisplayedItem().clone(true);
                     newTag.setAddItem(true);
                     object.getTags().addItem(newTag);
-                    /*
-                     * Need to mark the tags collection as dirty. The explicitSetTags provides a convenient way to set the
-                     * appropriate configured paramater value
-                     */
-                    object.explicitSetTags(object.getTags());
+                }
+
+                /*
+                 * In order for the warning to appear if selecting a new tag when unsaved changes exist, we need to set the
+                 * configured parameters to reflect the fact that the category contains tags that will modify the database. So
+                 * here we check to see if any tags have been added or removed. If there are none (i.e. a tag was added and then
+                 * removed again without persisting the change in the database, or there were just no changes made) we remove
+                 * the tags collection from the configured parameters.
+                 */
+                boolean collectionContainsDirtyTags = false;
+                for (final RESTTagV1 tag : object.getTags().getItems()) {
+                    if (tag.getAddItem() || tag.getRemoveItem()) {
+                        /*
+                         * Need to mark the tags collection as dirty. The explicitSetTags provides a convenient way to set the
+                         * appropriate configured parameter value
+                         */
+                        object.explicitSetTags(object.getTags());
+                        collectionContainsDirtyTags = true;
+                        break;
+                    }
+                }
+
+                if (!collectionContainsDirtyTags) {
+                    object.getConfiguredParameters().remove(RESTCategoryV1.TAGS_NAME);
                 }
 
                 /* refresh the category list */
                 categoriesDisplay.getProvider().updateRowData(categoryProviderData.getStartRow(),
                         categoryProviderData.getItems());
 
-                /* refresh the tag list */
-                categoriesDisplay.getTagsProvider().updateRowData(categoryTagsProviderData.getStartRow(),
-                        categoryTagsProviderData.getItems());
+                /*
+                 * reset the provider, which will refresh the list of tags
+                 */
+                categoriesDisplay.setTagsProvider(generateCategoriesTagListProvider());
             }
         });
     }
@@ -459,9 +483,20 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
             protected void onRangeChanged(final HasData<RESTTagV1> display) {
                 categoryTagsProviderData.setStartRow(0);
 
-                /* Zero results can be a null list */
-                categoryTagsProviderData.setItems(categoryProviderData.getDisplayedItem() == null ? new ArrayList<RESTTagV1>()
-                        : categoryProviderData.getDisplayedItem().getTags().getItems());
+                categoryTagsProviderData.setItems(new ArrayList<RESTTagV1>());
+
+                /* Zero results can be a null list. Also selecting a new tag will reset categoryProviderData.  */
+                if (categoryProviderData.getDisplayedItem() != null
+                        && categoryProviderData.getDisplayedItem().getTags() != null
+                        && categoryProviderData.getDisplayedItem().getTags().getItems() != null) {
+                    /* Don't display removed tags */
+                    for (final RESTTagV1 tagInCategory : categoryProviderData.getDisplayedItem().getTags().getItems()) {
+                        if (!tagInCategory.getRemoveItem()) {
+                            categoryTagsProviderData.getItems().add(tagInCategory);
+                        }
+                    }
+                }
+
                 updateRowData(categoryTagsProviderData.getStartRow(), categoryTagsProviderData.getItems());
                 updateRowCount(categoryTagsProviderData.getItems().size(), true);
             }
@@ -628,6 +663,9 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                      */
                     categoryProviderData = new ProviderUpdateData<RESTCategoryV1>();
                     projectProviderData = new ProviderUpdateData<RESTProjectV1>();
+
+                    /* remove the category tags list */
+                    categoriesDisplay.getSplit().remove(categoriesDisplay.getTagsResultsPanel());
 
                     reInitialiseView();
                 }

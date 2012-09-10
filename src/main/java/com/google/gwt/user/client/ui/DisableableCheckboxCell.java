@@ -44,23 +44,13 @@ public class DisableableCheckboxCell extends CheckboxCell {
 
     @Override
     public void render(final Context context, final Boolean value, final SafeHtmlBuilder sb) {
-        // Get the view data.
-        final Object key = context.getKey();
-        Boolean viewData = getViewData(key);
-        if (viewData != null && viewData.equals(value)) {
-            clearViewData(key);
-            viewData = null;
-        }
-
-        final Boolean checked = value && (viewData != null ? viewData : value);
-
-        if (checked && !enabled) {
+        if (value && !enabled) {
             sb.append(INPUT_CHECKED_DISABLED);
-        } else if (!checked && !enabled) {
+        } else if (!value && !enabled) {
             sb.append(INPUT_UNCHECKED_DISABLED);
-        } else if (checked && enabled) {
+        } else if (value && enabled) {
             sb.append(INPUT_CHECKED);
-        } else if (!checked && enabled) {
+        } else if (!value && enabled) {
             sb.append(INPUT_UNCHECKED);
         }
     }

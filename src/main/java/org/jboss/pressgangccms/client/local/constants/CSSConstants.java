@@ -1,13 +1,14 @@
 package org.jboss.pressgangccms.client.local.constants;
 
 /**
- * This class lists all of the CSS class names used by the application. The nested classes are just used to group the styles
- * assigned to particular views.
+ * This interface lists all of the CSS class names used by the application. The nested interfaces are just used to group the
+ * styles assigned to particular views.
  * 
  * @author Matthew Casperson
  * 
  */
 public interface CSSConstants {
+
     public interface TagView {
         String TAGVIEWPANEL = "TagViewPanel";
         String TAGVIEWIDLABEL = "TagViewIDLabel";

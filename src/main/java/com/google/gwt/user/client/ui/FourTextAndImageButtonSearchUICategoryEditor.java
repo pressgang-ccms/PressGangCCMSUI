@@ -16,10 +16,6 @@ public class FourTextAndImageButtonSearchUICategoryEditor extends FourTextAndIma
         IsEditor<LeafValueEditor<SearchUICategory.TagSummary>> {
     private SearchUICategory.TagSummary details;
 
-    public FourTextAndImageButtonSearchUICategoryEditor() {
-
-    }
-
     @Override
     public LeafValueEditor<SearchUICategory.TagSummary> asEditor() {
         return new LeafValueEditor<SearchUICategory.TagSummary>() {
