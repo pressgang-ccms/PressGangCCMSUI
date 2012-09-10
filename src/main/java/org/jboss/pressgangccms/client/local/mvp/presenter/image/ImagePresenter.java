@@ -21,10 +21,10 @@ public class ImagePresenter extends ImagePresenterBase {
     @Inject
     private Display display;
 
-    /** The id of the image to display, extracted from the history token */
+    /** The id of the image to display, extracted from the history token. */
     private Integer imageId;
 
-    /** used to keep a track of how many rest calls are active */
+    /** used to keep a track of how many rest calls are active. */
     int count = 0;
 
     public interface Display extends BaseTemplateViewInterface {
@@ -123,8 +123,9 @@ public class ImagePresenter extends ImagePresenterBase {
             }
         };
 
-        if (imageId != null)
+        if (imageId != null) {
             RESTCalls.getImage(callback, imageId);
+        }
     }
 
     @Override
@@ -138,7 +139,9 @@ public class ImagePresenter extends ImagePresenterBase {
     protected void stopProcessing() {
         --count;
         if (count == 0)
+        {
             display.setSpinnerVisible(false);
+        }
     }
 
     @Override

@@ -12,7 +12,7 @@ import com.google.gwt.editor.client.adapters.ListEditor;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 
 /**
- * This class provides a UI object to represent the collection of language images in an image
+ * This class provides a UI object to represent the collection of language images in an image.
  * 
  * @author Matthew Casperson
  */
@@ -24,7 +24,7 @@ public class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel implemen
             .of(new LanguageImageEditorSource());
 
     /**
-     * The EditorSource is used to create and orgainse the Editors that go into a ListEditor
+     * The EditorSource is used to create and orgainse the Editors that go into a ListEditor.
      * 
      * @author Matthew Casperson
      */

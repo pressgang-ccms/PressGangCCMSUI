@@ -94,6 +94,9 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
     /**
      * The split panel needs to have the center widget added last, which we need to do after optionally added a east or south
      * widget for the rendered view.
+     * 
+     * @param splitType How the parent panel should be split
+     * @param panel The rendered view panel itself
      */
     @Override
     public void initialize(final SplitType splitType, final Panel panel) {

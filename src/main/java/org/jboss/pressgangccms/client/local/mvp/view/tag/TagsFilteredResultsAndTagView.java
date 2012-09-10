@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 
 public class TagsFilteredResultsAndTagView extends BaseTemplateView implements TagsFilteredResultsAndTagPresenter.Display {
-    public TagsFilteredResultsAndTagView(String applicationName, String pageName) {
+    public TagsFilteredResultsAndTagView(final String applicationName, final String pageName) {
         super(applicationName, pageName);
         // TODO Auto-generated constructor stub
     }

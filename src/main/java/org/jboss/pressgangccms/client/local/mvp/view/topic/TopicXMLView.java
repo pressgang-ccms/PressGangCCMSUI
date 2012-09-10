@@ -44,8 +44,9 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
     @Override
     public AceEditor getEditor() {
-        if (editor != null)
+        if (editor != null) {
             return editor.xml;
+        }
         return null;
     }
 

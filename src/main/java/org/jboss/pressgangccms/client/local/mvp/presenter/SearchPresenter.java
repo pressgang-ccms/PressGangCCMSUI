@@ -89,9 +89,6 @@ public class SearchPresenter extends TemplatePresenter {
             @Override
             public void success(final RESTTagCollectionV1 retValue) {
                 try {
-                    final String message = retValue.getItems().size() + " tags returned.";
-                    System.out.println(message);
-
                     display.initialise(retValue);
                 } finally {
                     stopProcessing();

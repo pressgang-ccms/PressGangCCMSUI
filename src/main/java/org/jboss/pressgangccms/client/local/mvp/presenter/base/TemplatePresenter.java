@@ -24,7 +24,8 @@ public abstract class TemplatePresenter implements Presenter {
     protected HandlerManager eventBus;
 
     /**
-     * Called to bind the UI elements to event handlers
+     * Called to bind the UI elements to event handlers.
+     * @param display The main template display
      */
     protected void bind(final BaseTemplateViewInterface display) {
         display.getSearch().addClickHandler(new ClickHandler() {

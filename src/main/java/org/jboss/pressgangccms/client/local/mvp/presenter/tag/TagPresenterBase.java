@@ -9,12 +9,15 @@ abstract public class TagPresenterBase extends TemplatePresenter {
 
     protected String getQuery(final TagFilteredResultsPresenter.Display searchDisplay) {
         final StringBuilder retValue = new StringBuilder(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON);
-        if (!searchDisplay.getIdFilter().getText().isEmpty())
+        if (!searchDisplay.getIdFilter().getText().isEmpty()) {
             retValue.append(";tagIds=" + searchDisplay.getIdFilter().getText());
-        if (!searchDisplay.getDescriptionFilter().getText().isEmpty())
+        }
+        if (!searchDisplay.getDescriptionFilter().getText().isEmpty()) {
             retValue.append(";tagName=" + searchDisplay.getNameFilter().getText());
-        if (!searchDisplay.getNameFilter().getText().isEmpty())
+        }
+        if (!searchDisplay.getNameFilter().getText().isEmpty()) {
             retValue.append(";tagDesc=" + searchDisplay.getDescriptionFilter().getText());
+        }
 
         return retValue.toString();
     }

@@ -23,7 +23,7 @@ import com.google.gwt.view.client.AsyncDataProvider;
 public class TagCategoriesView extends TagViewBase implements TagCategoriesPresenter.Display {
     public static final String HISTORY_TOKEN = "TagCategoriesView";
 
-    /** A reference to the tag that this view will be modifying */
+    /** A reference to the tag that this view will be modifying. */
     private RESTTagV1 tag;
 
     private SplitLayoutPanel split = new SplitLayoutPanel();
@@ -52,13 +52,6 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
         @Override
         public String getValue(final RESTCategoryV1 object) {
             return object.getName();
-        }
-    };
-
-    private final TextColumn<RESTCategoryV1> descriptionColumn = new TextColumn<RESTCategoryV1>() {
-        @Override
-        public String getValue(final RESTCategoryV1 object) {
-            return object.getDescription();
         }
     };
 
@@ -92,13 +85,6 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
         }
     };
 
-    private final TextColumn<RESTTagV1> tagDescriptionColumn = new TextColumn<RESTTagV1>() {
-        @Override
-        public String getValue(final RESTTagV1 object) {
-            return object.getDescription();
-        }
-    };
-
     private final Column<RESTTagV1, String> tagUpButtonColumn = new Column<RESTTagV1, String>(new ButtonCell()) {
         @Override
         public String getValue(final RESTTagV1 object) {
@@ -118,7 +104,7 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
         return split;
     }
 
-    public void setSplit(SplitLayoutPanel split) {
+    public void setSplit(final SplitLayoutPanel split) {
         this.split = split;
     }
 
@@ -179,8 +165,8 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
 
         split.addStyleName(CSSConstants.TagCategoryView.TAGCATEGORIESSPLITPANEL);
 
+        results.addColumn(idColumn, PressGangCCMSUI.INSTANCE.CategoryID());
         results.addColumn(nameColumn, PressGangCCMSUI.INSTANCE.CategoryName());
-        //results.addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.CategoryDescription());
         results.addColumn(buttonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
 
         searchResultsPanel.add(results);
@@ -194,7 +180,6 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
 
         tagsResults.addColumn(tagIdColumn, PressGangCCMSUI.INSTANCE.TagID());
         tagsResults.addColumn(tagNameColumn, PressGangCCMSUI.INSTANCE.TagName());
-        //tagsResults.addColumn(tagDescriptionColumn, PressGangCCMSUI.INSTANCE.TagDescription());
         tagsResults.addColumn(tagUpButtonColumn, PressGangCCMSUI.INSTANCE.Up());
         tagsResults.addColumn(tagDownButtonColumn, PressGangCCMSUI.INSTANCE.Down());
 

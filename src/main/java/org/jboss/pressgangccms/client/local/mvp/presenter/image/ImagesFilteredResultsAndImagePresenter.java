@@ -54,16 +54,16 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
 
     private String queryString;
 
-    /** Keeps a reference to the start row */
+    /** Keeps a reference to the start row. */
     private Integer tableStartRow;
 
-    /** Keeps a reference to the list of topics being displayed */
+    /** Keeps a reference to the list of topics being displayed. */
     private List<RESTImageV1> currentList;
 
-    /** The currently selected image in the search results */
+    /** The currently selected image in the search results.*/
     private RESTImageV1 selectedSearchImage;
 
-    /** used to keep a track of how many rest calls are active */
+    /** used to keep a track of how many rest calls are active. */
     int count = 0;
 
     @Override
@@ -80,7 +80,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
     }
 
     /**
-     * Add behaviour to the UI elements exposed by the views
+     * Add behaviour to the UI elements exposed by the views.
      */
     private void bind() {
         super.bind(display);
@@ -153,7 +153,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
     }
 
     /**
-     * Bind the button click events for the topic editor screens
+     * Bind the button click events for the topic editor screens.
      */
     private void bindListRowClicks() {
         imageFilteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTImageV1>() {
@@ -219,8 +219,9 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
     @Override
     public void parseToken(final String historyToken) {
         queryString = historyToken.replace(ImagesFilteredResultsAndImageView.HISTORY_TOKEN + ";", "");
-        if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX))
+        if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
+        }
 
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
         for (final String queryStringElement : queryStringElements) {
@@ -241,8 +242,9 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
     @Override
     protected void stopProcessing() {
         --count;
-        if (count == 0)
+        if (count == 0) {
             display.setSpinnerVisible(false);
+        }
     }
 
     @Override

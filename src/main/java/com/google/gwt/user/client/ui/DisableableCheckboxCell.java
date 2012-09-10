@@ -6,10 +6,9 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 
 /**
- * A version of CheckboxCell that can display a disabled checkbox
+ * A version of CheckboxCell that can display a disabled checkbox.
  * 
  * @author Matthew Casperson
- * 
  */
 public class DisableableCheckboxCell extends CheckboxCell {
     /**

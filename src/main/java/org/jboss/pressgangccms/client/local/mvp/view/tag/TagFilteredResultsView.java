@@ -85,7 +85,7 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
     }
 
     @Override
-    public void setProvider(AsyncDataProvider<RESTTagV1> provider) {
+    public void setProvider(final AsyncDataProvider<RESTTagV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }

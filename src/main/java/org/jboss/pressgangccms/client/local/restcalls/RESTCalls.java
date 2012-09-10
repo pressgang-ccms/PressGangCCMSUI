@@ -26,16 +26,16 @@ import org.jboss.pressgangccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
  * 
  */
 public final class RESTCalls {
-    /** The required expansion details for the topics */
+    /** The required expansion details for the topics. */
     private static final String TOPIC_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTopicV1.BUGZILLABUGS_NAME
             + "\"}}, {\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTopicV1.REVISIONS_NAME
             + "\"}}, {\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTopicV1.TAGS_NAME
             + "\"},\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTagV1.PROJECTS_NAME
             + "\"}},{\"trunk\":{\"showSize\":true,\"name\":\"" + RESTTagV1.CATEGORIES_NAME + "\"}}]}";
-    /** The required expansion details for the tags */
+    /** The required expansion details for the tags. */
     private static final String TAG_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTagV1.PROJECTS_NAME
             + "\"}}, {\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}";
-    /** The required expansion details for the categories */
+    /** The required expansion details for the categories. */
     private static final String CATEGORY_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTCategoryV1.TAGS_NAME
             + "\"}}";
 

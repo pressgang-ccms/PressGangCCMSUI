@@ -58,7 +58,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
     private final ClickHandler tagDetailsClickHandler = new ClickHandler() {
         @Override
-        public void onClick(ClickEvent event) {
+        public void onClick(final ClickEvent event) {
 
             displayedView = resultDisplay;
             reInitialiseView();
@@ -68,7 +68,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
     private final ClickHandler tagProjectsClickHandler = new ClickHandler() {
         @Override
-        public void onClick(ClickEvent event) {
+        public void onClick(final ClickEvent event) {
 
             displayedView = projectsDisplay;
             reInitialiseView();
@@ -77,7 +77,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
     private final ClickHandler tagCategoriesClickHandler = new ClickHandler() {
         @Override
-        public void onClick(ClickEvent event) {
+        public void onClick(final ClickEvent event) {
 
             displayedView = categoriesDisplay;
             reInitialiseView();
@@ -603,8 +603,9 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                 final boolean isClick = Constants.JAVASCRIPT_CLICK_EVENT.equals(event.getNativeEvent().getType());
 
                 if (isClick) {
-                    if (!checkForUnsavedChanges())
+                    if (!checkForUnsavedChanges()) {
                         return;
+                    }
 
                     /*
                      * selectedSearchImage will be null until an image is selected for the first time
@@ -637,8 +638,9 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
     @Override
     public void parseToken(final String historyToken) {
         queryString = historyToken.replace(TagsFilteredResultsAndTagView.HISTORY_TOKEN + ";", "");
-        if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX))
+        if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
+        }
 
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
         for (final String queryStringElement : queryStringElements) {
@@ -658,8 +660,9 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
     protected void stopProcessing() {
         --count;
-        if (count == 0)
+        if (count == 0) {
             display.setSpinnerVisible(false);
+        }
     }
 
     protected void startProcessing() {
@@ -670,8 +673,9 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
     @Override
     protected void reInitialiseView() {
         /* save any changes as we move between views */
-        if (lastDisplayedView == resultDisplay)
+        if (lastDisplayedView == resultDisplay) {
             resultDisplay.getDriver().flush();
+        }
 
         /* update the new view */
         if (displayedView != null) {

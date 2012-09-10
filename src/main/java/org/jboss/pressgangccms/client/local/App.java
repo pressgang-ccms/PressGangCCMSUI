@@ -16,13 +16,22 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 
+/**
+ * The entry point to the GWT application.
+ * @author Matthew Casperson
+ */
 @EntryPoint
 public class App {
+    /** The Errai event bus. */
     private HandlerManager eventBus = new HandlerManager(null);
 
+    /** The controller that handles the transitions between views. */
     @Inject
     private AppController appController;
 
+    /**
+     * Called once GWT has initialized.
+     */
     @AfterInitialization
     public void startApp() {
         GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
@@ -42,7 +51,7 @@ public class App {
         final RootLayoutPanel root = RootLayoutPanel.get();
 
         /* Inject the CSS file */
-        CSSResources.INSTANCE.App().ensureInjected();
+        CSSResources.INSTANCE.appCss().ensureInjected();
 
         appController.go(root);
     }

@@ -3,7 +3,7 @@ package org.jboss.pressgangccms.client.local.mvp.events;
 import com.google.gwt.event.shared.GwtEvent;
 
 public class ImagesFilteredResultsAndImageViewEvent extends GwtEvent<ImagesFilteredResultsViewAndImageEventHandler> {
-    public static Type<ImagesFilteredResultsViewAndImageEventHandler> TYPE = new Type<ImagesFilteredResultsViewAndImageEventHandler>();
+    public static final Type<ImagesFilteredResultsViewAndImageEventHandler> TYPE = new Type<ImagesFilteredResultsViewAndImageEventHandler>();
     private final String query;
 
     public String getQuery() {

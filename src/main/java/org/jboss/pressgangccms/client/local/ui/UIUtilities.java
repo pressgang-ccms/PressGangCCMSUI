@@ -20,12 +20,13 @@ final public class UIUtilities {
         return createPushButton(text, false);
     }
 
-    public static PushButton createPushButton(final String text, boolean subMenu) {
+    public static PushButton createPushButton(final String text, final boolean subMenu) {
         final PushButton retvalue = new PushButton(text);
         retvalue.addStyleName(CSSConstants.TEXTBUTTON);
 
-        if (subMenu)
+        if (subMenu) {
             retvalue.addStyleName(CSSConstants.SUBMENU);
+        }
 
         return retvalue;
     }
@@ -34,8 +35,9 @@ final public class UIUtilities {
         final ToggleButton retvalue = new ToggleButton(text);
         retvalue.addStyleName(CSSConstants.TEXTBUTTON);
 
-        if (subMenu)
+        if (subMenu) {
             retvalue.addStyleName(CSSConstants.SUBMENU);
+        }
 
         return retvalue;
     }

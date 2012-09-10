@@ -82,17 +82,17 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
     }
 
     /**
-     * How long to wait before refreshing the rendered view (in milliseconds)
+     * How long to wait before refreshing the rendered view (in milliseconds).
      */
     private static final int REFRESH_RATE = 1000;
 
-    /** The history token that identifies the a horizontal rendered view split */
+    /** The history token that identifies the a horizontal rendered view split. */
     private static final String SPLIT_TOKEN_HORIZONTAL = "split=h;";
 
-    /** The history token that identifies the a horizontal rendered view split */
+    /** The history token that identifies the a horizontal rendered view split. */
     private static final String SPLIT_TOKEN_VERTICAL = "split=v;";
 
-    /** Setup automatic flushing and rendering */
+    /** Setup automatic flushing and rendering. */
     final Timer timer = new Timer() {
         @Override
         public void run() {
@@ -154,16 +154,18 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
         private final RESTTagV1 tag;
 
         public DeleteTagClickHandler(final RESTTagV1 tag) {
-            if (tag == null)
+            if (tag == null) {
                 throw new IllegalArgumentException("tag cannot be null");
+            }
 
             this.tag = tag;
         }
 
         @Override
         public void onClick(final ClickEvent event) {
-            if (selectedTopic == null)
+            if (selectedTopic == null) {
                 throw new IllegalStateException("selectedTopic cannot be null");
+            }
 
             if (tag.getAddItem()) {
                 /* Tag was added and then removed, so we just delete the tag */
@@ -303,11 +305,11 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
         + ", height=" + (screen.height - 200)); // a window object
     if (win != null)
     {
-        win.document.open("text/html", "replace");
-        win.document
-            .write("<HTML><HEAD><TITLE>PressGangCCMS XML Diff</TITLE><link rel=\"stylesheet\" type=\"text/css\" href=\"../prettydiff.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"prettydiff.css\"></HEAD><BODY>"
-                + diffTable + "</BODY></HTML>");
-        win.document.close();
+	    win.document.open("text/html", "replace");
+	    win.document
+	        .write("<HTML><HEAD><TITLE>PressGangCCMS XML Diff</TITLE><link rel=\"stylesheet\" type=\"text/css\" href=\"../prettydiff.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"prettydiff.css\"></HEAD><BODY>"
+	            + diffTable + "</BODY></HTML>");
+	    win.document.close();
     }
     }-*/;
 
@@ -503,8 +505,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
         display.getSplitPanel().addResizeHandler(new ResizeHandler() {
             @Override
             public void onResize(final ResizeEvent event) {
-                if (topicXMLDisplay.getEditor() != null)
+                if (topicXMLDisplay.getEditor() != null) {
                     topicXMLDisplay.getEditor().redisplay();
+                }
             }
         });
     }
@@ -517,10 +520,12 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
             @Override
             protected void onRangeChanged(final HasData<RESTTopicV1> display) {
                 if (selectedTopic != null) {
-                    if (selectedTopic.getRevisions() == null)
+                    if (selectedTopic.getRevisions() == null) {
                         throw new IllegalStateException("selectedTopic.getRevisions() cannot be null");
-                    if (selectedTopic.getRevisions().getItems() == null)
+                    }
+                    if (selectedTopic.getRevisions().getItems() == null) {
                         throw new IllegalStateException("selectedTopic.getRevisions().getItems() cannot be null");
+                    }
 
                     final int bugzillaCount = selectedTopic.getRevisions().getItems().size();
                     final int tableStartRow = display.getVisibleRange().getStart();
@@ -547,10 +552,12 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
             @Override
             protected void onRangeChanged(final HasData<RESTBugzillaBugV1> display) {
                 if (selectedTopic != null) {
-                    if (selectedTopic.getBugzillaBugs_OTM() == null)
+                    if (selectedTopic.getBugzillaBugs_OTM() == null) {
                         throw new IllegalStateException("selectedTopic.getBugzillaBugs_OTM() cannot be null");
-                    if (selectedTopic.getBugzillaBugs_OTM().getItems() == null)
+                    }
+                    if (selectedTopic.getBugzillaBugs_OTM().getItems() == null) {
                         throw new IllegalStateException("selectedTopic.getBugzillaBugs_OTM().getItems() cannot be null");
+                    }
 
                     final int bugzillaCount = selectedTopic.getBugzillaBugs_OTM().getItems().size();
                     final int tableStartRow = display.getVisibleRange().getStart();
@@ -739,8 +746,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                             } finally {
                                 stopProcessing();
-                                if (topicXMLDisplay.getEditor() != null)
+                                if (topicXMLDisplay.getEditor() != null) {
                                     topicXMLDisplay.getEditor().redisplay();
+                                }
                             }
                         }
 
@@ -974,8 +982,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
 
             /* While editing the XML, we need to setup a refresh of the rendered view */
             if (display.getSplitType() != SplitType.NONE) {
-                if (!isReadOnlyMode())
+                if (!isReadOnlyMode()) {
                     timer.scheduleRepeating(REFRESH_RATE);
+                }
             }
         }
 
@@ -1025,12 +1034,14 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
      * Sync any changes back to the underlying object
      */
     private void flushChanges() {
-        if (selectedView == null || selectedView.getDriver() == null)
+        if (selectedView == null || selectedView.getDriver() == null) {
             return;
+        }
 
         /* These are read only views */
-        if (selectedView == topicXMLErrorsDisplay || selectedView == topicTagsDisplay)
+        if (selectedView == topicXMLErrorsDisplay || selectedView == topicTagsDisplay) {
             return;
+        }
 
         selectedView.getDriver().flush();
     }
@@ -1049,14 +1060,16 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
 
         queryString = queryString.replace(SPLIT_TOKEN_HORIZONTAL, "").replace(SPLIT_TOKEN_VERTICAL, "");
 
-        if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX))
+        if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
+        }
     }
 
     private void stopProcessing() {
         --count;
-        if (count == 0)
+        if (count == 0) {
             display.setSpinnerVisible(false);
+        }
     }
 
     private void startProcessing() {

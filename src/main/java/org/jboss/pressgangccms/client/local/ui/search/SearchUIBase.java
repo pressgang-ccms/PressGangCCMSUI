@@ -27,24 +27,28 @@ public class SearchUIBase {
 
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof SearchUIBase))
+        if (!(other instanceof SearchUIBase)) {
             return false;
+        }
 
         final SearchUIBase otherCasted = (SearchUIBase) other;
 
-        if (this.name == null && otherCasted.name == null)
+        if (this.name == null && otherCasted.name == null) {
             return true;
+        }
 
-        if (this.name == null || otherCasted.name == null)
+        if (this.name == null || otherCasted.name == null) {
             return false;
+        }
 
         return (this.name.equals(otherCasted.name));
     }
 
     @Override
     public int hashCode() {
-        if (this.name == null)
+        if (this.name == null) {
             return 0;
+        }
         return name.hashCode();
     }
 }

@@ -40,17 +40,21 @@ public class SearchUIProjects {
         initialize(tags);
     }
 
-    public void initialize(final RESTTagCollectionV1 tags) {
-        if (tags == null)
-            throw new NullPointerException("tags parameter cannot be null");
-        if (tags.getItems() == null)
+    final public void initialize(final RESTTagCollectionV1 tags) {
+        if (tags == null) {
+            throw new IllegalArgumentException("tags parameter cannot be null");
+        }
+        if (tags.getItems() == null) {
             throw new IllegalArgumentException("tags.getItems() cannot be null");
+        }
 
         for (final RESTTagV1 tag : tags.getItems()) {
-            if (tag.getProjects() == null)
+            if (tag.getProjects() == null) {
                 throw new IllegalArgumentException("tag.getProjects() cannot be null");
-            if (tag.getProjects().getItems() == null)
+            }
+            if (tag.getProjects().getItems() == null) {
                 throw new IllegalArgumentException("tag.getProjects().getItems() cannot be null");
+            }
 
             /* Tags to be removed should not show up */
             if (!tag.getRemoveItem()) {
@@ -72,8 +76,9 @@ public class SearchUIProjects {
          */
         final SearchUIProject common = new SearchUIProject(PressGangCCMSUI.INSTANCE.Common());
         common.populateCategoriesWithoutProject(tags);
-        if (common.getChildCount() != 0)
+        if (common.getChildCount() != 0) {
             projects.addFirst(common);
+        }
     }
 
     public String getRESTQueryString() {

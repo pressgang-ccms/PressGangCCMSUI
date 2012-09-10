@@ -43,8 +43,9 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
             true, false)) {
         @Override
         public Boolean getValue(final RESTTopicV1 object) {
-            if (revisionTopic == null)
+            if (revisionTopic == null) {
                 return false;
+            }
 
             return object.getRevision().equals(revisionTopic.getRevision());
         }
@@ -74,14 +75,16 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
             if (mainTopic != null && object.getRevision().equals(mainTopic.getRevision()))
 
             {
-                if (revisionTopic == null || revisionTopic.getRevision().equals(mainTopic.getRevision()))
+                if (revisionTopic == null || revisionTopic.getRevision().equals(mainTopic.getRevision())) {
                     return PressGangCCMSUI.INSTANCE.CurrentlyEditing();
-                else
+                } else {
                     return PressGangCCMSUI.INSTANCE.Edit();
+                }
             }
 
-            if (revisionTopic == null || !revisionTopic.getRevision().equals(object.getRevision()))
+            if (revisionTopic == null || !revisionTopic.getRevision().equals(object.getRevision())) {
                 return PressGangCCMSUI.INSTANCE.View();
+            }
 
             return PressGangCCMSUI.INSTANCE.CurrentlyViewing();
         }
@@ -91,12 +94,14 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
         @Override
         public String getValue(final RESTTopicV1 object) {
             if (mainTopic != null && object.getRevision().equals(mainTopic.getRevision())) {
-                if (revisionTopic == null || revisionTopic.getRevision().equals(mainTopic.getRevision()))
+                if (revisionTopic == null || revisionTopic.getRevision().equals(mainTopic.getRevision())) {
                     return PressGangCCMSUI.INSTANCE.CurrentlyEditing();
+                }
             }
 
-            if (revisionTopic == null || !revisionTopic.getRevision().equals(object.getRevision()))
+            if (revisionTopic == null || !revisionTopic.getRevision().equals(object.getRevision())) {
                 return PressGangCCMSUI.INSTANCE.Diff();
+            }
 
             return PressGangCCMSUI.INSTANCE.CurrentlyViewing();
         }
@@ -113,7 +118,7 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
     }
 
     @Override
-    public void setRevisionTopic(RESTTopicV1 revisionTopic) {
+    public void setRevisionTopic(final RESTTopicV1 revisionTopic) {
         this.revisionTopic = revisionTopic;
     }
 

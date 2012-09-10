@@ -22,22 +22,22 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * This class is used to build the standard page template
+ * This class is used to build the standard page template.
  * @author Matthew Casperson
  */
 public abstract class BaseTemplateView implements BaseTemplateViewInterface {
-    /** The name of the application */
+    /** The name of the application. */
     private final String applicationName;
-    /** The name of the current page */
+    /** The name of the current page. */
     private final String pageName;
 
-    /** Defines the top level layout that holds the header and the other content */
+    /** Defines the top level layout that holds the header and the other content. */
     private final DockLayoutPanel topLevelLayoutPanel = new DockLayoutPanel(Unit.PX);
 
-    /** Defines the panel that holds the page title and the other content */
+    /** Defines the panel that holds the page title and the other content. */
     private final DockLayoutPanel secondLevelLayoutPanel = new DockLayoutPanel(Unit.EM);
 
-    /** Defines the panel that holds the shortcut bar, content and footer */
+    /** Defines the panel that holds the shortcut bar, content and footer. */
     private final DockLayoutPanel thirdLevelLayoutPanel = new DockLayoutPanel(Unit.PX);
 
     private final SimplePanel headingBanner = new SimplePanel();
@@ -50,9 +50,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     private SimpleLayoutPanel panel = new SimpleLayoutPanel();
 
-    /** This panel holds the buttons currently displayed in the top action bar */
+    /** This panel holds the buttons currently displayed in the top action bar. */
     private final SimplePanel topActionParentPanel = new SimplePanel();
-    /** This is the default collection of top action bar items */
+    /** This is the default collection of top action bar items. */
     private final FlexTable topActionPanel = new FlexTable();
     private final HorizontalPanel footerPanel = new HorizontalPanel();
     private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
@@ -236,7 +236,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         waiting.setWidget(spinner);
 
         /* Set the heading */
-        headingBanner.addStyleName(CSSResources.INSTANCE.App().ApplicationHeadingPanel());
+        headingBanner.addStyleName(CSSResources.INSTANCE.appCss().ApplicationHeadingPanel());
         headingBanner.add(new Image(ImageResources.INSTANCE.headingBanner()));
 
         topLevelLayoutPanel.addStyleName(CSSConstants.TOPLEVELLAYOUTPANEL);
@@ -253,7 +253,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         pageTitleParentLayoutPanel.add(pageTitle);
 
         pageTitleParentLayoutPanel.addStyleName(CSSConstants.PAGETITLEPARENTLAYOUTPANEL);
-        secondLevelLayoutPanel.addNorth(pageTitleParentLayoutPanel, 3);
+        secondLevelLayoutPanel.addNorth(pageTitleParentLayoutPanel, Constants.PAGE_TITLE_BAR_HEIGHT);
 
         /* Set the remaining content */
         thirdLevelLayoutPanel.addStyleName(CSSConstants.THIRDLEVELLAYOUTPANEL);
@@ -267,9 +267,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         thirdLevelLayoutPanel.addNorth(topActionParentPanel, Constants.ACTION_BAR_HEIGHT);
 
         /* Set the shortcut bar */
-        shortCutPanelParent.setWidget(getShortcutPanel());
+        shortCutPanelParent.setWidget(shortcutPanel);
         shortCutPanelParent.addStyleName(CSSConstants.SHORTCUTPANELPARENT);
-        getShortcutPanel().addStyleName(CSSConstants.SHORTCUTPANEL);
+        shortcutPanel.addStyleName(CSSConstants.SHORTCUTPANEL);
 
         thirdLevelLayoutPanel.addWest(shortCutPanelParent, Constants.SHORTCUT_BAR_WIDTH);
 
@@ -390,7 +390,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     }
 
     private void addShortcutButton(final Widget widget) {
-        addShortcutButton(widget, this.getShortcutPanel());
+        addShortcutButton(widget, this.shortcutPanel);
     }
 
     private void addShortcutButton(final Widget widget, final FlexTable table) {

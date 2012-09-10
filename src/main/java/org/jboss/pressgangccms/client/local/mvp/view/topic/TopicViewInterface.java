@@ -89,6 +89,7 @@ public interface TopicViewInterface extends BaseTemplateViewInterface {
      * 
      * @param topic The topic that is used to initialize the view
      * @param readOnly true if the display is to be read only, false otherwise
+     * @param splitType How the panel should be split to display the rendered veiw
      */
     void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType);
 

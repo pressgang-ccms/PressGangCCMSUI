@@ -22,8 +22,9 @@ public class TopicTagViewTagEditor implements Editor<SearchUITag> {
 
     /** @return a reference to the SearchUITag that was used to bind this Editor */
     public SearchUITag getTag() {
-        if (self != null)
+        if (self != null) {
             return self.getValue();
+        }
         return null;
     }
 

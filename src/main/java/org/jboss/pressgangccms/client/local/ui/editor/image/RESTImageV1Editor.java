@@ -17,7 +17,7 @@ public class RESTImageV1Editor extends DockPanel implements ValueAwareEditor<RES
     private RESTImageV1 value;
 
     /**
-     * A text area to represent the description field
+     * A text area to represent the description field.
      */
     private final TextArea description = new TextArea();
 
@@ -34,7 +34,7 @@ public class RESTImageV1Editor extends DockPanel implements ValueAwareEditor<RES
     private final Label xmlTemplateLabel = new Label(PressGangCCMSUI.INSTANCE.DocbookImageTemplate());
 
     /**
-     * The editor representing a collection of language image editors
+     * The editor representing a collection of language image editors.
      */
     private final RESTLanguageImageCollectionV1Editor languageImages_OTM = new RESTLanguageImageCollectionV1Editor();
 

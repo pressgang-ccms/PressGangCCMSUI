@@ -55,10 +55,11 @@ public class SearchUIProject extends SearchUIBase {
         int excludedTags = 0;
         for (final SearchUICategory category : categories) {
             for (final SearchUITag tag : category.getMyTags()) {
-                if (tag.getState() == TriStateSelectionState.SELECTED)
+                if (tag.getState() == TriStateSelectionState.SELECTED) {
                     ++includedTags;
-                else if (tag.getState() == TriStateSelectionState.UNSELECTED)
+                } else if (tag.getState() == TriStateSelectionState.UNSELECTED) {
                     ++excludedTags;
+                }
             }
         }
 
@@ -71,8 +72,9 @@ public class SearchUIProject extends SearchUIBase {
 
     public int getChildCount() {
         int retValue = 0;
-        for (final SearchUICategory category : categories)
+        for (final SearchUICategory category : categories) {
             retValue += category.getChildCount();
+        }
         return retValue;
     }
 
@@ -85,21 +87,26 @@ public class SearchUIProject extends SearchUIBase {
     }
 
     public void populateCategories(final RESTProjectV1 project, final RESTTagCollectionV1 tags) {
-        if (tags == null)
+        if (tags == null) {
             throw new IllegalArgumentException("tags parameter cannot be null");
-        if (tags.getItems() == null)
+        }
+        if (tags.getItems() == null) {
             throw new IllegalArgumentException("tags.getItems() cannot be null");
-        if (project == null)
+        }
+        if (project == null) {
             throw new IllegalArgumentException("project cannot be null");
+        }
 
         for (final RESTTagV1 tag : tags.getItems()) {
-            if (tag.getProjects().getItems() == null)
+            if (tag.getProjects().getItems() == null) {
                 throw new IllegalArgumentException("tag.getProjects().getItems() cannot be null");
+            }
 
             if (!tag.getRemoveItem()) {
                 if (tag.getProjects().getItems().contains(project)) {
-                    if (tag.getCategories().getItems() == null)
+                    if (tag.getCategories().getItems() == null) {
                         throw new IllegalArgumentException("tag.getCategories().getItems() cannot be null");
+                    }
 
                     for (final RESTCategoryV1 category : tag.getCategories().getItems()) {
                         final SearchUICategory searchUICategory = new SearchUICategory(this, category);
@@ -116,19 +123,23 @@ public class SearchUIProject extends SearchUIBase {
     }
 
     public void populateCategoriesWithoutProject(final RESTTagCollectionV1 tags) {
-        if (tags == null)
+        if (tags == null) {
             throw new IllegalArgumentException("tags parameter cannot be null");
-        if (tags.getItems() == null)
+        }
+        if (tags.getItems() == null) {
             throw new IllegalArgumentException("tags.getItems() cannot be null");
+        }
 
         for (final RESTTagV1 tag : tags.getItems()) {
-            if (tag.getProjects().getItems() == null)
+            if (tag.getProjects().getItems() == null) {
                 throw new IllegalArgumentException("tag.getProjects().getItems() cannot be null");
+            }
 
             if (!tag.getRemoveItem()) {
                 if (tag.getProjects().getItems().isEmpty()) {
-                    if (tag.getCategories().getItems() == null)
+                    if (tag.getCategories().getItems() == null) {
                         throw new IllegalArgumentException("tag.getCategories().getItems() cannot be null");
+                    }
 
                     for (final RESTCategoryV1 category : tag.getCategories().getItems()) {
                         final SearchUICategory searchUICategory = new SearchUICategory(this, category);

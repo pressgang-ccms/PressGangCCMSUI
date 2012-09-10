@@ -125,7 +125,9 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
         this.self = value;
 
         if (value.getFilename() != null)
+        {
             this.filename.setText(value.getFilename());
+        }
 
         if (value.getImageDataBase64() != null) {
             final String base64 = GWTUtilities.getStringUTF8(value.getImageDataBase64());

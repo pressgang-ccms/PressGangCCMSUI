@@ -25,20 +25,23 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 
 abstract public class ImagePresenterBase extends TemplatePresenter {
-    /** The currently displayed image */
+    /** The currently displayed image. */
     protected RESTImageV1 displayedImage;
 
-    /** A reference to the StringConstants that holds the locales */
+    /** A reference to the StringConstants that holds the locales. */
     protected String[] locales;
 
     protected String getQuery(final ImageFilteredResultsPresenter.Display imageSearchDisplay) {
         final StringBuilder retValue = new StringBuilder(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON);
-        if (!imageSearchDisplay.getImageIdFilter().getText().isEmpty())
+        if (!imageSearchDisplay.getImageIdFilter().getText().isEmpty()) {
             retValue.append(";imageIds=" + imageSearchDisplay.getImageIdFilter().getText());
-        if (!imageSearchDisplay.getImageDescriptionFilter().getText().isEmpty())
+        }
+        if (!imageSearchDisplay.getImageDescriptionFilter().getText().isEmpty()) {
             retValue.append(";imageDesc=" + imageSearchDisplay.getImageDescriptionFilter().getText());
-        if (!imageSearchDisplay.getImageOriginalFileNameFilter().getText().isEmpty())
+        }
+        if (!imageSearchDisplay.getImageOriginalFileNameFilter().getText().isEmpty()) {
             retValue.append(";imageOrigName=" + imageSearchDisplay.getImageOriginalFileNameFilter().getText());
+        }
 
         return retValue.toString();
     }
@@ -47,9 +50,11 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
         final List<String> newLocales = Arrays.asList(locales);
 
         /* Make it so you can't add a locale if it already exists */
-        if (displayedImage.getLanguageImages_OTM() != null && displayedImage.getLanguageImages_OTM().getItems() != null)
-            for (final RESTLanguageImageV1 langImage : displayedImage.getLanguageImages_OTM().getItems())
+        if (displayedImage.getLanguageImages_OTM() != null && displayedImage.getLanguageImages_OTM().getItems() != null) {
+            for (final RESTLanguageImageV1 langImage : displayedImage.getLanguageImages_OTM().getItems()) {
                 newLocales.remove(langImage.getLocale());
+            }
+        }
 
         return newLocales;
     }
@@ -205,10 +210,13 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                         .getItemText(imageDisplay.getAddLocaleDialog().getLocales().getSelectedIndex());
 
                 /* Don't add locales twice */
-                if (displayedImage.getLanguageImages_OTM() != null && displayedImage.getLanguageImages_OTM().getItems() != null)
-                    for (final RESTLanguageImageV1 langImage : displayedImage.getLanguageImages_OTM().getItems())
-                        if (langImage.getLocale().equals(selectedLocale))
+                if (displayedImage.getLanguageImages_OTM() != null && displayedImage.getLanguageImages_OTM().getItems() != null) {
+                    for (final RESTLanguageImageV1 langImage : displayedImage.getLanguageImages_OTM().getItems()) {
+                        if (langImage.getLocale().equals(selectedLocale)) {
                             return;
+                        }
+                    }
+                }
 
                 /*
                  * Create the image to be modified. This is so we don't send off unnessessary data.
@@ -266,10 +274,13 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
 
     /**
      * Each Language Image has an upload button that needs to be bound to some behaviour.
+     * 
+     * @param imageDisplay The view that displays the image details.
      */
     protected void bindImageUploadButtons(final ImagePresenter.Display imageDisplay) {
-        if (imageDisplay.getEditor() == null)
+        if (imageDisplay.getEditor() == null) {
             throw new IllegalStateException("display.getEditor() cannot be null");
+        }
 
         for (final RESTLanguageImageV1Editor editor : imageDisplay.getEditor().languageImages_OTMEditor().itemsEditor()
                 .getEditors()) {

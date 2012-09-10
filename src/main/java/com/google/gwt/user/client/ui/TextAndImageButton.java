@@ -31,11 +31,11 @@ public class TextAndImageButton extends Button {
     }
 
     public TextAndImageButton(final String text, final ImageResource imageResource) {
-        setText(text);
+        this.text = text;
         setResource(imageResource);
     }
 
-    public void setResource(final ImageResource imageResource) {
+    final public void setResource(final ImageResource imageResource) {
         final Image img = new Image(imageResource);
         final String definedStyles = img.getElement().getAttribute("style");
         img.getElement().setAttribute("style", definedStyles + "; vertical-align:middle;");

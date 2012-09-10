@@ -6,7 +6,7 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
- * A SplitLayoutPanel that manages resize event listeners
+ * A SplitLayoutPanel that manages resize event listeners.
  * 
  * @author Matthew Casperson
  */

@@ -10,20 +10,20 @@ import java.util.List;
  * 
  */
 public class ProviderUpdateData<T> {
-    /** References the providers start row */
+    /** References the providers start row. */
     private Integer startRow;
-    /** References the items that the provider will display */
+    /** References the items that the provider will display. */
     private List<T> items;
-    /** References the currently selected item */
+    /** References the currently selected item. */
     private T selectedItem;
-    /** References the currently displayed item */
+    /** References the currently displayed item. */
     private T displayedItem;
 
     public T getSelectedItem() {
         return selectedItem;
     }
 
-    public void setSelectedItem(T selectedItem) {
+    public void setSelectedItem(final T selectedItem) {
         this.selectedItem = selectedItem;
     }
 
@@ -31,7 +31,7 @@ public class ProviderUpdateData<T> {
         return startRow;
     }
 
-    public void setStartRow(Integer startRow) {
+    public void setStartRow(final Integer startRow) {
         this.startRow = startRow;
     }
 
@@ -39,7 +39,7 @@ public class ProviderUpdateData<T> {
         return items;
     }
 
-    public void setItems(List<T> items) {
+    public void setItems(final List<T> items) {
         this.items = items;
     }
 
@@ -56,7 +56,7 @@ public class ProviderUpdateData<T> {
         return displayedItem;
     }
 
-    public void setDisplayedItem(T displayedItem) {
+    public void setDisplayedItem(final T displayedItem) {
         this.displayedItem = displayedItem;
     }
 }

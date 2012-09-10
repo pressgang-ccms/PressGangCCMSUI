@@ -26,9 +26,9 @@ public interface CSSConstants {
     }
 
     public interface TagFilteredResultsView {
-        /** Assigned to the panel that holds the list of images */
+        /** Assigned to the panel that holds the list of images. */
         String TAGFILTEREDRESULTSPANEL = "TagFilteredResultsPanel";
-        /** Assigned to the panel that holds the filter options for images */
+        /** Assigned to the panel that holds the filter options for images. */
         String TAGFILTEREDOPTIONSPANEL = "TagFilteredOptionsPanel";
     }
 
@@ -52,7 +52,7 @@ public interface CSSConstants {
     String TOPACTIONPANEL = "TopActionPanel";
     String SHORTCUTPANEL = "ShortcutPanel";
     /**
-     * Assigned to the panel that holds the shortcut panels
+     * Assigned to the panel that holds the shortcut panels.
      */
     String SHORTCUTPANELPARENT = "ShortcutPanelParent";
     String FOOTERPANEL = "FooterPanel";
@@ -108,7 +108,7 @@ public interface CSSConstants {
     /** Assigned to the FlexTable rows that list a tag in the topic tags view. */
     String TOPICTAGVIEWTAGROW = "TopicTagViewTagRow";
     /**
-     * Assigned to the panel that holds all the TOPICTAGVIEWPROJECTSTABLE element in the topic tags view
+     * Assigned to the panel that holds all the TOPICTAGVIEWPROJECTSTABLE element in the topic tags view.
      */
     String TOPICTAGVIEWPARENTPROJECTSTABLE = "TopicTagViewParentProjectsTable";
     /**

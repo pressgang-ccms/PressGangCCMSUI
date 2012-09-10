@@ -231,8 +231,9 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
         /* reset the layout */
         layout.clear();
 
-        if (!readOnly)
+        if (!readOnly) {
             layout.setWidget(0, 0, newTagUIElementsPanel);
+        }
 
         /* Build up a hierarchy of tags assigned to the topic */
         final SearchUIProjects projects = new SearchUIProjects(topic.getTags());

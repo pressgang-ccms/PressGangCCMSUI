@@ -205,20 +205,23 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
         if (splitType != SplitType.DISABLED) {
             renderedSplitViewMenu.setWidget(0, 0, renderedSplitOpen);
 
-            if (splitType == SplitType.NONE)
+            if (splitType == SplitType.NONE) {
                 renderedSplitViewMenu.setWidget(0, 1, renderedNoSplitDown);
-            else
+            } else {
                 renderedSplitViewMenu.setWidget(0, 1, renderedNoSplit);
+            }
 
-            if (splitType == SplitType.VERTICAL)
+            if (splitType == SplitType.VERTICAL) {
                 renderedSplitViewMenu.setWidget(0, 2, renderedVerticalSplitDown);
-            else
+            } else {
                 renderedSplitViewMenu.setWidget(0, 2, renderedVerticalSplit);
+            }
 
-            if (splitType == SplitType.HORIZONTAL)
+            if (splitType == SplitType.HORIZONTAL) {
                 renderedSplitViewMenu.setWidget(0, 3, renderedHorizontalSplitDown);
-            else
+            } else {
                 renderedSplitViewMenu.setWidget(0, 3, renderedHorizontalSplit);
+            }
 
             renderedSplitViewMenu.setWidget(0, 4, renderedSplitClose);
         }

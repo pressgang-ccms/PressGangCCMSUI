@@ -11,6 +11,8 @@ package org.jboss.pressgangccms.client.local.utilities;
  * 
  */
 final public class GWTUtilities {
+    private static final int BITS_PER_BYTE = 8;
+
     private GWTUtilities() {
 
     }
@@ -20,16 +22,19 @@ final public class GWTUtilities {
     }
 
     public static byte[] getBytes(final String string, final int bytesPerChar) {
-        if (string == null)
+        if (string == null) {
             throw new IllegalArgumentException("string cannot be null");
-        if (bytesPerChar < 1)
+        }
+        if (bytesPerChar < 1) {
             throw new IllegalArgumentException("bytesPerChar must be greater than 1");
+        }
 
         char[] chars = string.toCharArray();
         byte[] toReturn = new byte[chars.length * bytesPerChar];
         for (int i = 0; i < chars.length; i++) {
-            for (int j = 0; j < bytesPerChar; j++)
-                toReturn[i * bytesPerChar + j] = (byte) (chars[i] >>> (8 * (bytesPerChar - 1 - j)));
+            for (int j = 0; j < bytesPerChar; j++) {
+                toReturn[i * bytesPerChar + j] = (byte) (chars[i] >>> (BITS_PER_BYTE * (bytesPerChar - 1 - j)));
+            }
         }
         return toReturn;
     }
@@ -39,10 +44,12 @@ final public class GWTUtilities {
     }
 
     public static String getString(byte[] bytes, int bytesPerChar) {
-        if (bytes == null)
+        if (bytes == null) {
             throw new IllegalArgumentException("bytes cannot be null");
-        if (bytesPerChar < 1)
+        }
+        if (bytesPerChar < 1) {
             throw new IllegalArgumentException("bytesPerChar must be greater than 1");
+        }
 
         final int length = bytes.length / bytesPerChar;
         final StringBuilder retValue = new StringBuilder();
@@ -51,7 +58,7 @@ final public class GWTUtilities {
             char thisChar = 0;
 
             for (int j = 0; j < bytesPerChar; j++) {
-                int shift = (bytesPerChar - 1 - j) * 8;
+                final int shift = (bytesPerChar - 1 - j) * BITS_PER_BYTE;
                 thisChar |= (0x000000FF << shift) & (bytes[i * bytesPerChar + j] << shift);
             }
 
@@ -62,7 +69,7 @@ final public class GWTUtilities {
     }
 
     /**
-     * Replacement for String.toByteArray()
+     * Replacement for String.toByteArray().
      * 
      * @param string The string to convert
      * @param bytesPerChar The number of bytes per character
@@ -72,8 +79,9 @@ final public class GWTUtilities {
         char[] chars = string.toCharArray();
         byte[] toReturn = new byte[chars.length * bytesPerChar];
         for (int i = 0; i < chars.length; i++) {
-            for (int j = 0; j < bytesPerChar; j++)
-                toReturn[i * bytesPerChar + j] = (byte) (chars[i] >>> (8 * (bytesPerChar - 1 - j)));
+            for (int j = 0; j < bytesPerChar; j++) {
+                toReturn[i * bytesPerChar + j] = (byte) (chars[i] >>> (BITS_PER_BYTE * (bytesPerChar - 1 - j)));
+            }
         }
         return toReturn;
     }

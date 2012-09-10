@@ -47,10 +47,10 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter {
 
     private String queryString;
 
-    /** Keeps a reference to the start row */
+    /** Keeps a reference to the start row. */
     private Integer tableStartRow;
 
-    /** Keeps a reference to the list of topics being displayed */
+    /** Keeps a reference to the list of topics being displayed. */
     private List<RESTImageV1> currentList;
 
     @Override
@@ -111,7 +111,7 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter {
     }
 
     /**
-     * @return A provider to be used for the topic display list
+     * @return A provider to be used for the topic display list.
      */
     private AsyncDataProvider<RESTImageV1> generateListProvider() {
         final AsyncDataProvider<RESTImageV1> provider = new AsyncDataProvider<RESTImageV1>() {

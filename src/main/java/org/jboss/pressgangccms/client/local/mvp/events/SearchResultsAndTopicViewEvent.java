@@ -3,7 +3,7 @@ package org.jboss.pressgangccms.client.local.mvp.events;
 import com.google.gwt.event.shared.GwtEvent;
 
 public class SearchResultsAndTopicViewEvent extends GwtEvent<SearchResultsAndTopicViewEventHandler> {
-    public static Type<SearchResultsAndTopicViewEventHandler> TYPE = new Type<SearchResultsAndTopicViewEventHandler>();
+    public static final Type<SearchResultsAndTopicViewEventHandler> TYPE = new Type<SearchResultsAndTopicViewEventHandler>();
     private final String query;
 
     public String getQuery() {

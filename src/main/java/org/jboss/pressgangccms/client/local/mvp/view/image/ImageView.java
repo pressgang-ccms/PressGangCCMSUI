@@ -33,10 +33,9 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
     private final AddLocaleDialog addLocaleDialog = new AddLocaleDialog();
 
     /**
-     * The dialog box that presents the list of locales for the user to select from
+     * The dialog box that presents the list of locales for the user to select from.
      * 
      * @author Matthew Casperson
-     * 
      */
     public class AddLocaleDialog extends DialogBox implements ImagePresenter.Display.AddLocaleInterface {
         private final FlexTable layout = new FlexTable();
@@ -130,10 +129,12 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
 
     @Override
     public void initialize(final RESTImageV1 image, final String[] locales) {
-        if (image == null)
+        if (image == null) {
             throw new IllegalArgumentException("image cannot be null");
-        if (locales == null)
+        }
+        if (locales == null) {
             throw new IllegalArgumentException("locales cannot be null");
+        }
 
         /* SearchUIProjectsEditor is a grid */
         editor = new RESTImageV1Editor(); /* Initialize the driver with the top-level editor */
@@ -149,8 +150,9 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
 
         /* populate the locales listbox */
         this.addLocaleDialog.locales.clear();
-        for (final String locale : localesList)
+        for (final String locale : localesList) {
             this.addLocaleDialog.locales.addItem(locale);
+        }
 
         /* Make sure the dialog box is closed */
         addLocaleDialog.hide();
