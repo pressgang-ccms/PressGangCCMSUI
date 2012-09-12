@@ -91,13 +91,13 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
             final RESTCalls.RESTCallback<RESTTagV1> callback = new RESTCalls.RESTCallback<RESTTagV1>() {
                 @Override
                 public void begin() {
-                    startProcessing();
+                    display.getWaiting().addWaitOperation();
                 }
 
                 @Override
                 public void generalException(final Exception ex) {
                     Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                    stopProcessing();
+                    display.getWaiting().removeWaitOperation();
                 }
 
                 @Override
@@ -112,7 +112,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                         /* refresh the display */
                         reInitialiseView();
                     } finally {
-                        stopProcessing();
+                        display.getWaiting().removeWaitOperation();
                     }
 
                 }
@@ -120,7 +120,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                 @Override
                 public void failed() {
                     Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                    stopProcessing();
+                    display.getWaiting().removeWaitOperation();
                 }
             };
 
@@ -218,9 +218,6 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
     /** The last displayed view */
     private TagViewInterface lastDisplayedView;
 
-    /** used to keep a track of how many rest calls are active */
-    int count = 0;
-
     @Override
     public void go(final HasWidgets container) {
         container.clear();
@@ -262,13 +259,13 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         final RESTCalls.RESTCallback<RESTProjectCollectionV1> callback = new RESTCalls.RESTCallback<RESTProjectCollectionV1>() {
             @Override
             public void begin() {
-                startProcessing();
+                projectsDisplay.getWaiting().addWaitOperation();             
             }
 
             @Override
             public void generalException(final Exception ex) {
                 Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                stopProcessing();
+                projectsDisplay.getWaiting().removeWaitOperation();
             }
 
             @Override
@@ -279,13 +276,13 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                             .getItems());
                     projectsDisplay.setProvider(generateProjectListProvider());
                 } finally {
-                    stopProcessing();
+                    projectsDisplay.getWaiting().removeWaitOperation();
                 }
             }
 
             @Override
             public void failed() {
-                stopProcessing();
+                projectsDisplay.getWaiting().removeWaitOperation();
                 Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
             }
         };
@@ -302,13 +299,13 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         final RESTCalls.RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
             @Override
             public void begin() {
-                startProcessing();
+                categoriesDisplay.getWaiting().addWaitOperation();
             }
 
             @Override
             public void generalException(final Exception ex) {
                 Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                stopProcessing();
+                categoriesDisplay.getWaiting().removeWaitOperation();
             }
 
             @Override
@@ -319,13 +316,13 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                             .getItems());
                     categoriesDisplay.setProvider(generateCategoriesListProvider());
                 } finally {
-                    stopProcessing();
+                    categoriesDisplay.getWaiting().removeWaitOperation();
                 }
             }
 
             @Override
             public void failed() {
-                stopProcessing();
+                categoriesDisplay.getWaiting().removeWaitOperation();
                 Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
             }
         };
@@ -552,13 +549,13 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                 final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
                     @Override
                     public void begin() {
-                        startProcessing();
+                        filteredResultsDisplay.getWaiting().addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        stopProcessing();
+                        filteredResultsDisplay.getWaiting().removeWaitOperation();
                     }
 
                     @Override
@@ -570,13 +567,13 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                             updateRowData(tagProviderData.getStartRow(), tagProviderData.getItems());
                             updateRowCount(retValue.getSize(), true);
                         } finally {
-                            stopProcessing();
+                            filteredResultsDisplay.getWaiting().removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        stopProcessing();
+                        filteredResultsDisplay.getWaiting().removeWaitOperation();
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
                 };
@@ -694,18 +691,6 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                 }
             }
         }
-    }
-
-    protected void stopProcessing() {
-        --count;
-        if (count == 0) {
-            display.setSpinnerVisible(false);
-        }
-    }
-
-    protected void startProcessing() {
-        ++count;
-        display.setSpinnerVisible(true);
     }
 
     @Override

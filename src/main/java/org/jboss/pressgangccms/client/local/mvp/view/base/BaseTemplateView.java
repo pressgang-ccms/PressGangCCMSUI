@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * This class is used to build the standard page template.
+ * 
  * @author Matthew Casperson
  */
 public abstract class BaseTemplateView implements BaseTemplateViewInterface {
@@ -56,8 +57,10 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     /** This is the default collection of top action bar items. */
     private final FlexTable topActionPanel = new FlexTable();
     private final HorizontalPanel footerPanel = new HorizontalPanel();
-    private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
-    private final DialogBox waiting = new DialogBox();
+   
+    /** The wait screen */
+    private final WaitingDialog waiting = new WaitingDialog();
+    
 
     private final PushButton home;
     private final PushButton createTopic;
@@ -79,6 +82,10 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private final PushButton advanced;
     private final PushButton advancedOpen;
     private final PushButton close;
+
+    public WaitingDialog getWaiting() {
+        return waiting;
+    }
 
     @Override
     public PushButton getClose() {
@@ -216,25 +223,10 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     public PushButton getSearch() {
         return search;
     }
-
-    @Override
-    public void setSpinnerVisible(final boolean enabled) {
-        if (enabled) {
-            waiting.center();
-            waiting.show();
-        } else {
-            waiting.hide();
-        }
-    }
-
+    
     public BaseTemplateView(final String applicationName, final String pageName) {
         this.applicationName = applicationName;
         this.pageName = pageName;
-
-        /* Iinitialize the loading spinner */
-        waiting.setGlassEnabled(true);
-        waiting.setText(PressGangCCMSUI.INSTANCE.PleaseWait());
-        waiting.setWidget(spinner);
 
         /* Set the heading */
         headingBanner.addStyleName(CSSResources.INSTANCE.appCss().ApplicationHeadingPanel());
@@ -398,17 +390,18 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         final int rows = table.getRowCount();
         table.setWidget(rows, 0, widget);
     }
-    
+
     /**
-     * When combining views into a single merged view, the shortcuit panels need to have a spacer
-     * placed above them to replace the template action bar, which is removed.
+     * When combining views into a single merged view, the shortcuit panels need to have a spacer placed above them to replace
+     * the template action bar, which is removed.
      */
-    protected void addSpacerToShortcutPanels()
-    {
-        final HTML spacer = new HTML("<div style=\"height: " + Constants.ACTION_BAR_HEIGHT + "px;\"></div>");
+    protected void addSpacerToShortcutPanels() {
+        final String spacerDiv = "<div style=\"height: " + Constants.ACTION_BAR_HEIGHT + "px;\"></div>";
+        final HTML spacer = new HTML(spacerDiv);
+        final HTML spacer2 = new HTML(spacerDiv);
         this.getShortcutPanel().insertRow(0);
         this.getShortcutPanel().setWidget(0, 0, spacer);
         this.getAdvancedShortcutPanel().insertRow(0);
-        this.getAdvancedShortcutPanel().setWidget(0, 0, spacer);
+        this.getAdvancedShortcutPanel().setWidget(0, 0, spacer2);
     }
 }

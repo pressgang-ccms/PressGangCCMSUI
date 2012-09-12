@@ -24,9 +24,6 @@ public class ImagePresenter extends ImagePresenterBase {
     /** The id of the image to display, extracted from the history token. */
     private Integer imageId;
 
-    /** used to keep a track of how many rest calls are active. */
-    int count = 0;
-
     public interface Display extends BaseTemplateViewInterface {
         // Empty interface declaration, similar to UiBinder
         public interface ImagePresenterDriver extends SimpleBeanEditorDriver<RESTImageV1, RESTImageV1Editor> {
@@ -62,7 +59,7 @@ public class ImagePresenter extends ImagePresenterBase {
 
         bind();
 
-        getLocales();
+        getLocales(display);
 
         getImage();
     }
@@ -98,12 +95,12 @@ public class ImagePresenter extends ImagePresenterBase {
         final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
             @Override
             public void begin() {
-                startProcessing();
+                display.getWaiting().addWaitOperation();
             }
 
             @Override
             public void generalException(final Exception ex) {
-                stopProcessing();
+                display.getWaiting().removeWaitOperation();
             }
 
             @Override
@@ -112,13 +109,13 @@ public class ImagePresenter extends ImagePresenterBase {
                     displayedImage = retValue;
                     finishLoading();
                 } finally {
-                    stopProcessing();
+                    display.getWaiting().removeWaitOperation();
                 }
             }
 
             @Override
             public void failed() {
-                stopProcessing();
+                display.getWaiting().removeWaitOperation();
                 Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
             }
         };
@@ -133,21 +130,6 @@ public class ImagePresenter extends ImagePresenterBase {
         display.initialize(displayedImage, getUnassignedLocales().toArray(new String[0]));
 
         bindImageUploadButtons(display);
-    }
-
-    @Override
-    protected void stopProcessing() {
-        --count;
-        if (count == 0)
-        {
-            display.setSpinnerVisible(false);
-        }
-    }
-
-    @Override
-    protected void startProcessing() {
-        ++count;
-        display.setSpinnerVisible(true);
     }
 
 }

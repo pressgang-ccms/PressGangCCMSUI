@@ -14,7 +14,7 @@ public interface BaseTemplateViewInterface {
 
     DockLayoutPanel getTopLevelPanel();
 
-    void setSpinnerVisible(final boolean enabled);
+    WaitingDialog getWaiting();
 
     void showRegularMenu();
 

@@ -63,9 +63,6 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
     /** The currently selected image in the search results.*/
     private RESTImageV1 selectedSearchImage;
 
-    /** used to keep a track of how many rest calls are active. */
-    int count = 0;
-
     @Override
     public void go(final HasWidgets container) {
         container.clear();
@@ -74,7 +71,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
         display.getResultsActionButtonsPanel().setWidget(imageFilteredResultsDisplay.getTopActionPanel());
         display.getResultsPanel().setWidget(imageFilteredResultsDisplay.getPanel());
 
-        getLocales();
+        getLocales(display);
 
         bind();
     }
@@ -118,13 +115,13 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
                 final RESTCalls.RESTCallback<RESTImageCollectionV1> callback = new RESTCalls.RESTCallback<RESTImageCollectionV1>() {
                     @Override
                     public void begin() {
-                        startProcessing();
+                        imageFilteredResultsDisplay.getWaiting().addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        stopProcessing();
+                        imageFilteredResultsDisplay.getWaiting().removeWaitOperation();
                     }
 
                     @Override
@@ -135,13 +132,13 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
                             updateRowData(tableStartRow, currentList);
                             updateRowCount(retValue.getSize(), true);
                         } finally {
-                            stopProcessing();
+                            imageFilteredResultsDisplay.getWaiting().removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        stopProcessing();
+                        imageFilteredResultsDisplay.getWaiting().removeWaitOperation();
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
                 };
@@ -174,12 +171,12 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
                     final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
                         @Override
                         public void begin() {
-                            startProcessing();
+                            imageFilteredResultsDisplay.getWaiting().addWaitOperation();
                         }
 
                         @Override
                         public void generalException(final Exception ex) {
-                            stopProcessing();
+                            imageFilteredResultsDisplay.getWaiting().removeWaitOperation();
                             Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                         }
 
@@ -197,14 +194,14 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
                                     display.getViewActionButtonsPanel().setWidget(imageDisplay.getTopActionPanel());
                                 }
                             } finally {
-                                stopProcessing();
+                                imageFilteredResultsDisplay.getWaiting().removeWaitOperation();
                             }
 
                         }
 
                         @Override
                         public void failed() {
-                            stopProcessing();
+                            imageFilteredResultsDisplay.getWaiting().removeWaitOperation();
                             Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                         }
 
@@ -237,20 +234,6 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
                 }
             }
         }
-    }
-
-    @Override
-    protected void stopProcessing() {
-        --count;
-        if (count == 0) {
-            display.setSpinnerVisible(false);
-        }
-    }
-
-    @Override
-    protected void startProcessing() {
-        ++count;
-        display.setSpinnerVisible(true);
     }
 
     @Override

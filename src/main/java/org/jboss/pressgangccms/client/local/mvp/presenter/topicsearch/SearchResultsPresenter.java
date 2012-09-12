@@ -57,20 +57,20 @@ public class SearchResultsPresenter extends TemplatePresenter {
 
         final AsyncDataProvider<RESTTopicV1> provider = new AsyncDataProvider<RESTTopicV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTopicV1> display) {
-                final int start = display.getVisibleRange().getStart();
-                final int length = display.getVisibleRange().getLength();
+            protected void onRangeChanged(final HasData<RESTTopicV1> item) {
+                final int start = item.getVisibleRange().getStart();
+                final int length = item.getVisibleRange().getLength();
                 final int end = start + length;
 
                 final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
                     @Override
                     public void begin() {
-                        startProcessing();
+                        display.getWaiting().addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
-                        stopProcessing();
+                        display.getWaiting().removeWaitOperation();
                     }
 
                     @Override
@@ -79,13 +79,13 @@ public class SearchResultsPresenter extends TemplatePresenter {
                             updateRowData(start, retValue.getItems());
                             updateRowCount(retValue.getSize(), true);
                         } finally {
-                            stopProcessing();
+                            display.getWaiting().removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        stopProcessing();
+                        display.getWaiting().removeWaitOperation();
                     }
                 };
 
@@ -102,12 +102,12 @@ public class SearchResultsPresenter extends TemplatePresenter {
                 final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
                     @Override
                     public void begin() {
-                        startProcessing();
+                        display.getWaiting().addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
-                        stopProcessing();
+                        display.getWaiting().removeWaitOperation();
                     }
 
                     @Override
@@ -115,13 +115,13 @@ public class SearchResultsPresenter extends TemplatePresenter {
                         try {
                             topicViewDisplay.initialize(retValue, false, SplitType.NONE);
                         } finally {
-                            stopProcessing();
+                            display.getWaiting().removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        stopProcessing();
+                        display.getWaiting().removeWaitOperation();
                     }
                 };
 
@@ -130,13 +130,5 @@ public class SearchResultsPresenter extends TemplatePresenter {
         });
 
         display.setProvider(provider);
-    }
-
-    private void stopProcessing() {
-        display.setSpinnerVisible(false);
-    }
-
-    private void startProcessing() {
-        display.setSpinnerVisible(true);
     }
 }

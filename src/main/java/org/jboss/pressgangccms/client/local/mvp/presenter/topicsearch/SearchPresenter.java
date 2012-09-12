@@ -64,26 +64,18 @@ public class SearchPresenter extends TemplatePresenter {
         });
     }
 
-    private void stopProcessing() {
-        display.setSpinnerVisible(false);
-    }
-
-    private void startProcessing() {
-        display.setSpinnerVisible(true);
-    }
-
     private void getProjects() {
         final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
 
             @Override
             public void begin() {
-                startProcessing();
+                display.getWaiting().addWaitOperation();
             }
 
             @Override
             public void generalException(final Exception ex) {
                 Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTags());
-                stopProcessing();
+                display.getWaiting().removeWaitOperation();
             }
 
             @Override
@@ -91,14 +83,14 @@ public class SearchPresenter extends TemplatePresenter {
                 try {
                     display.initialise(retValue);
                 } finally {
-                    stopProcessing();
+                    display.getWaiting().removeWaitOperation();
                 }
             }
 
             @Override
             public void failed() {
                 Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTags());
-                stopProcessing();
+                display.getWaiting().removeWaitOperation();
             }
         };
 

@@ -54,20 +54,20 @@ public class TagProjectsPresenter extends TemplatePresenter {
 
         final AsyncDataProvider<RESTProjectV1> provider = new AsyncDataProvider<RESTProjectV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTProjectV1> display) {
-                final int start = display.getVisibleRange().getStart();
-                final int length = display.getVisibleRange().getLength();
+            protected void onRangeChanged(final HasData<RESTProjectV1> item) {
+                final int start = item.getVisibleRange().getStart();
+                final int length = item.getVisibleRange().getLength();
                 final int end = start + length;
 
                 final RESTCalls.RESTCallback<RESTProjectCollectionV1> callback = new RESTCalls.RESTCallback<RESTProjectCollectionV1>() {
                     @Override
                     public void begin() {
-                        startProcessing();
+                        display.getWaiting().addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
-                        stopProcessing();
+                        display.getWaiting().removeWaitOperation();
                     }
 
                     @Override
@@ -76,13 +76,13 @@ public class TagProjectsPresenter extends TemplatePresenter {
                             updateRowData(start, retValue.getItems());
                             updateRowCount(retValue.getSize(), true);
                         } finally {
-                            stopProcessing();
+                            display.getWaiting().removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        stopProcessing();
+                        display.getWaiting().removeWaitOperation();
                     }
                 };
 
@@ -91,13 +91,5 @@ public class TagProjectsPresenter extends TemplatePresenter {
         };
 
         display.setProvider(provider);
-    }
-
-    private void stopProcessing() {
-        display.setSpinnerVisible(false);
-    }
-
-    private void startProcessing() {
-        display.setSpinnerVisible(true);
     }
 }
