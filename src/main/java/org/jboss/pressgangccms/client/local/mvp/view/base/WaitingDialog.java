@@ -48,6 +48,7 @@ public class WaitingDialog {
     public void addWaitOperation()
     {
         ++waitingCount;
+        updateDisplay();
     }
     
     public void removeWaitOperation()
@@ -55,6 +56,7 @@ public class WaitingDialog {
         if (waitingCount < 1) throw new IllegalStateException("waitingCount should never be less than one when removeWaitOperation() is called.");
         
         --waitingCount;
+        updateDisplay();
     }
 
     private void updateDisplay() {

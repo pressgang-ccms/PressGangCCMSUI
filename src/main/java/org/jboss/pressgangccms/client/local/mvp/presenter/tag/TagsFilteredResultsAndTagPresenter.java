@@ -226,6 +226,9 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         display.getResultsActionButtonsPanel().setWidget(filteredResultsDisplay.getTopActionPanel());
         display.getResultsPanel().setWidget(filteredResultsDisplay.getPanel());
 
+        filteredResultsDisplay.getWaiting().setViewShown(true);
+        display.getWaiting().setViewShown(true);
+
         bind();
     }
 
@@ -236,6 +239,10 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         super.bind(display);
 
         filteredResultsDisplay.setProvider(generateListProvider());
+
+        getProjects();
+
+        getCategories();
 
         bindTagListRowClicks();
 
@@ -259,7 +266,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         final RESTCalls.RESTCallback<RESTProjectCollectionV1> callback = new RESTCalls.RESTCallback<RESTProjectCollectionV1>() {
             @Override
             public void begin() {
-                projectsDisplay.getWaiting().addWaitOperation();             
+                projectsDisplay.getWaiting().addWaitOperation();
             }
 
             @Override
@@ -482,7 +489,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
                 categoryTagsProviderData.setItems(new ArrayList<RESTTagV1>());
 
-                /* Zero results can be a null list. Also selecting a new tag will reset categoryProviderData.  */
+                /* Zero results can be a null list. Also selecting a new tag will reset categoryProviderData. */
                 if (categoryProviderData.getDisplayedItem() != null
                         && categoryProviderData.getDisplayedItem().getTags() != null
                         && categoryProviderData.getDisplayedItem().getTags().getItems() != null) {
@@ -695,6 +702,11 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
     @Override
     protected void reInitialiseView() {
+        /* Show/Hide any localised loading dialogs */
+        if (lastDisplayedView != null)
+            lastDisplayedView.getWaiting().setViewShown(false);
+        displayedView.getWaiting().setViewShown(true);
+
         /* save any changes as we move between views */
         if (lastDisplayedView == resultDisplay) {
             resultDisplay.getDriver().flush();
@@ -705,16 +717,19 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
             displayedView.initialize(tagProviderData.getDisplayedItem(), false);
         }
 
-        /*
-         * Update the projects and categories list to show the buttons as they apply to a new tag
-         */
+        /* refresh the project list */
         if (displayedView == projectsDisplay) {
-            if (projectProviderData.getItems() == null) {
-                getProjects();
+            /* If we switch to this view before the projects have been downloaded, there is no provider to update */
+            if (projectsDisplay.getProvider() != null) {
+                projectsDisplay.getProvider().updateRowData(projectProviderData.getStartRow(), projectProviderData.getItems());
             }
-        } else if (displayedView == categoriesDisplay) {
-            if (categoryProviderData.getItems() == null) {
-                getCategories();
+        }
+        /* refresh the category list */
+        else if (displayedView == categoriesDisplay) {
+            /* If we switch to this view before the categories have been downloaded, there is no provider to update */
+            if (categoriesDisplay.getProvider() != null) {
+                categoriesDisplay.getProvider().updateRowData(categoryProviderData.getStartRow(),
+                        categoryProviderData.getItems());
             }
         }
 
@@ -723,7 +738,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
             display.getViewPanel().setWidget(displayedView.getPanel());
             display.getViewActionButtonsPanel().setWidget(displayedView.getTopActionPanel());
         }
-        
+
         /* Update the page name */
         final StringBuilder title = new StringBuilder(displayedView.getPageName());
         if (this.tagProviderData.getSelectedItem() != null)
