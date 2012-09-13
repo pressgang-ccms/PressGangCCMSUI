@@ -238,10 +238,6 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
         filteredResultsDisplay.setProvider(generateListProvider());
 
-        getProjects();
-
-        getCategories();
-
         bindTagListRowClicks();
 
         bindCategoryListRowClicks();
