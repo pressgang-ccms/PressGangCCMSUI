@@ -105,9 +105,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                     try {
                         tagProviderData.setDisplayedItem(retValue);
 
-                        /* clear the categories and tags */
-                        categoryProviderData = new ProviderUpdateData<RESTCategoryV1>();
-                        projectProviderData = new ProviderUpdateData<RESTProjectV1>();
+                        resetCategoryAndProjectsLists(false);
 
                         /* refresh the display */
                         reInitialiseView();
@@ -519,7 +517,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         final AsyncDataProvider<RESTCategoryV1> provider = new AsyncDataProvider<RESTCategoryV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTCategoryV1> display) {
-                categoryProviderData.setStartRow(0);
+                categoryProviderData.setStartRow(display.getVisibleRange().getStart());
                 updateRowData(categoryProviderData.getStartRow(), categoryProviderData.getItems());
                 updateRowCount(categoryProviderData.getItems().size(), true);
             }
@@ -534,7 +532,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         final AsyncDataProvider<RESTProjectV1> provider = new AsyncDataProvider<RESTProjectV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTProjectV1> display) {
-                projectProviderData.setStartRow(0);
+                projectProviderData.setStartRow(display.getVisibleRange().getStart());
                 updateRowData(projectProviderData.getStartRow(), projectProviderData.getItems());
                 updateRowCount(projectProviderData.getItems().size(), true);
             }
@@ -661,15 +659,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                         displayedView = resultDisplay;
                     }
 
-                    /*
-                     * Reset the category and projects data. This is to clear out any added tags. Maybe cache this info if
-                     * reloading is too slow.
-                     */
-                    categoryProviderData = new ProviderUpdateData<RESTCategoryV1>();
-                    projectProviderData = new ProviderUpdateData<RESTProjectV1>();
-
-                    /* remove the category tags list */
-                    categoriesDisplay.getSplit().remove(categoriesDisplay.getTagsResultsPanel());
+                    resetCategoryAndProjectsLists(false);
 
                     reInitialiseView();
                 }
@@ -719,15 +709,15 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
         /* refresh the project list */
         if (displayedView == projectsDisplay) {
-            /* If we switch to this view before the projects have been downloaded, there is no provider to update */
-            if (projectsDisplay.getProvider() != null) {
+            /* If we switch to this view before the projects have been downloaded, there is nothing to update */
+            if (projectsDisplay.getProvider() != null && projectProviderData.getItems() != null) {
                 projectsDisplay.getProvider().updateRowData(projectProviderData.getStartRow(), projectProviderData.getItems());
             }
         }
         /* refresh the category list */
         else if (displayedView == categoriesDisplay) {
-            /* If we switch to this view before the categories have been downloaded, there is no provider to update */
-            if (categoriesDisplay.getProvider() != null) {
+            /* If we switch to this view before the categories have been downloaded, there is nothing to update */
+            if (categoriesDisplay.getProvider() != null && categoryProviderData.getItems() != null) {
                 categoriesDisplay.getProvider().updateRowData(categoryProviderData.getStartRow(),
                         categoryProviderData.getItems());
             }
@@ -771,5 +761,22 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         }
 
         return true;
+    }
+
+    private void resetCategoryAndProjectsLists(final boolean removeCatgeoryTagListFromScreen) {
+        /*
+         * Reset the category and projects data. This is to clear out any added tags. Maybe cache this info if reloading is too
+         * slow.
+         */
+        categoryProviderData = new ProviderUpdateData<RESTCategoryV1>();
+        projectProviderData = new ProviderUpdateData<RESTProjectV1>();
+
+        getProjects();
+        getCategories();
+
+        /* remove the category tags list */
+        if (removeCatgeoryTagListFromScreen) {
+            categoriesDisplay.getSplit().remove(categoriesDisplay.getTagsResultsPanel());
+        }
     }
 }
