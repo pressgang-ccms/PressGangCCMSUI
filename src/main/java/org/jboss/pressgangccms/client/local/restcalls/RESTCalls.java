@@ -33,6 +33,11 @@ public final class RESTCalls {
             + "\"}}]}, {\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTopicV1.TAGS_NAME
             + "\"},\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTagV1.PROJECTS_NAME
             + "\"}},{\"trunk\":{\"showSize\":true,\"name\":\"" + RESTTagV1.CATEGORIES_NAME + "\"}}]}";
+    private static final String TOPIC_REVISIONS_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTopicV1.REVISIONS_NAME
+            + "\"}}";
+    private static final String TOPIC_TAGS_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTopicV1.TAGS_NAME
+            + "\"},\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTagV1.PROJECTS_NAME
+            + "\"}},{\"trunk\":{\"showSize\":true,\"name\":\"" + RESTTagV1.CATEGORIES_NAME + "\"}}]}";
     /** The required expansion details for the tags. */
     private static final String TAG_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTagV1.PROJECTS_NAME
             + "\"}}, {\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}";
@@ -143,6 +148,34 @@ public final class RESTCalls {
         try {
             callback.begin();
             restMethod.getJSONTag(id, expand);
+        } catch (final Exception ex) {
+            callback.generalException(ex);
+        }
+    }
+    
+    static public void getTopicWithRevisions(final RESTCallback<RESTTopicV1> callback, final Integer id) {
+        final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
+                constructErrorCallback(callback));
+        /* Expand the categories and projects in the tags */
+        final String expand = "{\"branches\":[" + TOPIC_REVISIONS_EXPANSION + "]}";
+
+        try {
+            callback.begin();
+            restMethod.getJSONTopic(id, expand);
+        } catch (final Exception ex) {
+            callback.generalException(ex);
+        }
+    }
+    
+    static public void getTopicWithTags(final RESTCallback<RESTTopicV1> callback, final Integer id) {
+        final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
+                constructErrorCallback(callback));
+        /* Expand the categories and projects in the tags */
+        final String expand = "{\"branches\":[" + TOPIC_TAGS_EXPANSION + "]}";
+
+        try {
+            callback.begin();
+            restMethod.getJSONTopic(id, expand);
         } catch (final Exception ex) {
             callback.generalException(ex);
         }

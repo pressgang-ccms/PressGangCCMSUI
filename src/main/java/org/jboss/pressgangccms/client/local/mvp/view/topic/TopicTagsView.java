@@ -235,15 +235,18 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
             layout.setWidget(0, 0, newTagUIElementsPanel);
         }
 
-        /* Build up a hierarchy of tags assigned to the topic */
-        final SearchUIProjects projects = new SearchUIProjects(topic.getTags());
-        /* SearchUIProjectsEditor is a simple panel */
-        editor = new TopicTagViewProjectsEditor(readOnly);
-        /* Initialize the driver with the top-level editor */
-        driver.initialize(editor);
-        /* Copy the data in the object into the UI */
-        driver.edit(projects);
-        /* Add the projects */
-        layout.setWidget(layout.getRowCount(), 0, editor);
+        /* We can't assume the tags have been loaded by the time we initialize the view */
+        if (topic.getTags() != null && topic.getTags().getItems() != null) {
+            /* Build up a hierarchy of tags assigned to the topic */
+            final SearchUIProjects projects = new SearchUIProjects(topic.getTags());
+            /* SearchUIProjectsEditor is a simple panel */
+            editor = new TopicTagViewProjectsEditor(readOnly);
+            /* Initialize the driver with the top-level editor */
+            driver.initialize(editor);
+            /* Copy the data in the object into the UI */
+            driver.edit(projects);
+            /* Add the projects */
+            layout.setWidget(layout.getRowCount(), 0, editor);
+        }
     }
 }

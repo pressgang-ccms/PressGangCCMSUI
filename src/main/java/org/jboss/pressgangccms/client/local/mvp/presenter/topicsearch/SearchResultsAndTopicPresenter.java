@@ -63,8 +63,8 @@ import com.google.gwt.view.client.HasData;
  * @author Matthew Casperson
  */
 @Dependent
-public class SearchResultsAndTopicPresenter extends TemplatePresenter implements EditableView  {
-   
+public class SearchResultsAndTopicPresenter extends TemplatePresenter implements EditableView {
+
     public interface Display extends BaseTemplateViewInterface {
         SplitType getSplitType();
 
@@ -217,7 +217,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
      * This will reference the selected view, so as to maintain the view between clicks
      */
     private TopicViewInterface selectedView;
-    
+
     /**
      * This will reference the previously selected view,
      */
@@ -242,7 +242,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
     @Override
     public void go(final HasWidgets container) {
         searchResultsDisplay.setViewShown(true);
-        
+
         container.clear();
         container.add(display.getTopLevelPanel());
 
@@ -256,13 +256,17 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
      * Add behaviour to the UI elements exposed by the views
      */
     private void bind() {
-        
+
         super.bind(display, this);
 
         bindSplitPanelResize();
 
         final AsyncDataProvider<RESTTopicV1> provider = generateTopicListProvider();
-        searchResultsDisplay.setProvider(provider);
+        searchResultsDisplay.setProvider(provider);     
+        
+        /* set the provider, which will update the list */
+        final AsyncDataProvider<RESTTopicV1> revisionsPropvider = generateTopicRevisionsListProvider();
+        topicRevisionsDisplay.setProvider(revisionsPropvider);
 
         bindTopicListRowClicks();
 
@@ -484,12 +488,15 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
      */
     private void bindTagEditingButtons() {
 
-        for (final TopicTagViewProjectEditor topicTagViewProjectEditor : topicTagsDisplay.getEditor().projects.getEditors()) {
-            for (final TopicTagViewCategoryEditor topicTagViewCategoryEditor : topicTagViewProjectEditor.categories
-                    .getEditors()) {
-                for (final TopicTagViewTagEditor topicTagViewTagEditor : topicTagViewCategoryEditor.myTags.getEditors()) {
-                    topicTagViewTagEditor.getDelete().addClickHandler(
-                            new DeleteTagClickHandler(topicTagViewTagEditor.getTag().getTag()));
+        /* This will be null if the tags have not been downloaded */
+        if (topicTagsDisplay.getEditor() != null) {
+            for (final TopicTagViewProjectEditor topicTagViewProjectEditor : topicTagsDisplay.getEditor().projects.getEditors()) {
+                for (final TopicTagViewCategoryEditor topicTagViewCategoryEditor : topicTagViewProjectEditor.categories
+                        .getEditors()) {
+                    for (final TopicTagViewTagEditor topicTagViewTagEditor : topicTagViewCategoryEditor.myTags.getEditors()) {
+                        topicTagViewTagEditor.getDelete().addClickHandler(
+                                new DeleteTagClickHandler(topicTagViewTagEditor.getTag().getTag()));
+                    }
                 }
             }
         }
@@ -516,25 +523,20 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
         final AsyncDataProvider<RESTTopicV1> provider = new AsyncDataProvider<RESTTopicV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTopicV1> display) {
-                if (topicProviderData.getDisplayedItem() != null) {
-                    if (topicProviderData.getDisplayedItem().getRevisions() == null) {
-                        throw new IllegalStateException("topicProviderData.getDisplayedItem().getRevisions() cannot be null");
-                    }
-                    if (topicProviderData.getDisplayedItem().getRevisions().getItems() == null) {
-                        throw new IllegalStateException("topicProviderData.getDisplayedItem().getRevisions().getItems() cannot be null");
-                    }
-
-                    final int bugzillaCount = topicProviderData.getDisplayedItem().getRevisions().getItems().size();
+                if (topicProviderData.getDisplayedItem() != null && topicProviderData.getDisplayedItem().getRevisions() != null
+                        && topicProviderData.getDisplayedItem().getRevisions().getItems() != null) {
+                   
+                    final int count = topicProviderData.getDisplayedItem().getRevisions().getItems().size();
                     final int tableStartRow = display.getVisibleRange().getStart();
                     final int length = display.getVisibleRange().getLength();
                     final int end = tableStartRow + length;
-                    final int fixedEnd = end > bugzillaCount ? bugzillaCount : end;
+                    final int fixedEnd = end > count ? count : end;
 
-                    updateRowData(tableStartRow, topicProviderData.getDisplayedItem().getRevisions().getItems().subList(tableStartRow, fixedEnd));
-                    updateRowCount(bugzillaCount, true);
+                    updateRowData(tableStartRow,
+                            topicProviderData.getDisplayedItem().getRevisions().getItems().subList(tableStartRow, fixedEnd));
+                    updateRowCount(count, true);                    
                 } else {
-                    updateRowData(0, new ArrayList<RESTTopicV1>());
-                    updateRowCount(0, true);
+                    updateRowCount(0, false);
                 }
             }
         };
@@ -550,10 +552,12 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
             protected void onRangeChanged(final HasData<RESTBugzillaBugV1> display) {
                 if (topicProviderData.getDisplayedItem() != null) {
                     if (topicProviderData.getDisplayedItem().getBugzillaBugs_OTM() == null) {
-                        throw new IllegalStateException("topicProviderData.getDisplayedItem().getBugzillaBugs_OTM() cannot be null");
+                        throw new IllegalStateException(
+                                "topicProviderData.getDisplayedItem().getBugzillaBugs_OTM() cannot be null");
                     }
                     if (topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getItems() == null) {
-                        throw new IllegalStateException("topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getItems() cannot be null");
+                        throw new IllegalStateException(
+                                "topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getItems() cannot be null");
                     }
 
                     final int bugzillaCount = topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getItems().size();
@@ -562,8 +566,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                     final int end = tableStartRow + length;
                     final int fixedEnd = end > bugzillaCount ? bugzillaCount : end;
 
-                    updateRowData(tableStartRow, topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getItems()
-                            .subList(tableStartRow, fixedEnd));
+                    updateRowData(
+                            tableStartRow,
+                            topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getItems()
+                                    .subList(tableStartRow, fixedEnd));
                     updateRowCount(bugzillaCount, true);
                 } else {
                     updateRowData(0, new ArrayList<RESTBugzillaBugV1>());
@@ -633,46 +639,95 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
 
                 if (isClick) {
                     topicProviderData.setSelectedItem(event.getValue());
-                    topicProviderData.setDisplayedItem(null);
+                    topicProviderData.setDisplayedItem(event.getValue().clone(true));
                     topicRevisionsDisplay.setRevisionTopic(null);
 
-                    final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
+                    /* Update the current view, or display the default */
+                    if (selectedView == null) {
+                        /* Switch to the default view if none was selected */
+                        selectedView = topicRenderedDisplay;
+                        changeDisplayedTopicView();
+                    } else {
+                        /* Otherwise update the display with the new topic */
+                        updateDisplayedTopicView();
+                    }
+
+                    /* set the revisions to show the loading widget */
+                    if (topicRevisionsDisplay.getProvider() != null)
+                        topicRevisionsDisplay.getProvider().updateRowCount(0, false);
+
+                    /* A callback to respond to a request for a topic with the revisions expanded */
+                    final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new RESTCalls.RESTCallback<RESTTopicV1>() {
                         @Override
                         public void begin() {
-                            display.addWaitOperation();
+                            topicRevisionsDisplay.addWaitOperation();
                         }
 
                         @Override
                         public void generalException(final Exception ex) {
-                            display.removeWaitOperation();
+                            topicRevisionsDisplay.removeWaitOperation();
                         }
 
                         @Override
                         public void success(final RESTTopicV1 retValue) {
                             try {
-                                topicProviderData.setDisplayedItem(retValue);
-                                /* default to the rendered view */
-                                if (selectedView == null) {
-                                    selectedView = topicRenderedDisplay;
-                                    changeDisplayedTopicView();
-                                } else {
-                                    updateDisplayedTopicView();
-                                }
+                                topicProviderData.getDisplayedItem().setRevisions(retValue.getRevisions());
+                                
+                                /* refresh the list */
+                                topicRevisionsDisplay.getProvider().updateRowData(0, retValue.getRevisions().getItems());
+                                topicRevisionsDisplay.getProvider().updateRowCount(retValue.getRevisions().getItems().size(), true);
+                                
                             } finally {
-                                display.removeWaitOperation();
+                                topicRevisionsDisplay.removeWaitOperation();
                             }
 
                         }
 
                         @Override
                         public void failed() {
-                            display.removeWaitOperation();
+                            topicRevisionsDisplay.removeWaitOperation();
                             Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                         }
-
                     };
 
-                    RESTCalls.getTopic(callback, topicProviderData.getSelectedItem().getId());
+                    /* A callback to respond to a request for a topic with the tags expanded */
+                    final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new RESTCalls.RESTCallback<RESTTopicV1>() {
+                        @Override
+                        public void begin() {
+                            topicTagsDisplay.addWaitOperation();
+                        }
+
+                        @Override
+                        public void generalException(final Exception ex) {
+                            topicTagsDisplay.removeWaitOperation();
+                        }
+
+                        @Override
+                        public void success(final RESTTopicV1 retValue) {
+                            try {
+                                /* copy the revisions into the displayed Topic */
+                                topicProviderData.getDisplayedItem().setTags(retValue.getTags());
+
+                                /* If we are looking at the rendered view, update it */
+                                if (selectedView == topicTagsDisplay) {
+                                    updateDisplayedTopicView();
+                                }
+                            } finally {
+                                topicTagsDisplay.removeWaitOperation();
+                            }
+
+                        }
+
+                        @Override
+                        public void failed() {
+                            topicTagsDisplay.removeWaitOperation();
+                            Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+                        }
+                    };
+
+                    /* Initiate the REST calls */
+                    RESTCalls.getTopicWithTags(topicWithTagsCallback, topicProviderData.getSelectedItem().getId());
+                    RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, topicProviderData.getSelectedItem().getId());
                 }
             }
         });
@@ -730,11 +785,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                                 retValue.cloneInto(topicProviderData.getDisplayedItem(), true);
 
                                 /* The title may have been updated */
-                                if (!topicProviderData.getSelectedItem().getTitle().equals(topicProviderData.getDisplayedItem().getTitle())) {
+                                if (!topicProviderData.getSelectedItem().getTitle()
+                                        .equals(topicProviderData.getDisplayedItem().getTitle())) {
                                     /* Update the title */
-                                    topicProviderData.getSelectedItem().setTitle(topicProviderData.getDisplayedItem().getTitle());
+                                    topicProviderData.getSelectedItem().setTitle(
+                                            topicProviderData.getDisplayedItem().getTitle());
                                     /* Update the list of topics */
-                                    provider.updateRowData(tableStartRow, topicProviderData.getItems());                                                                      
+                                    provider.updateRowData(tableStartRow, topicProviderData.getItems());
                                 }
 
                                 /* Update the edit window */
@@ -1009,13 +1066,6 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
             topicBugsDisplay.setProvider(bugzillaProvider);
         }
 
-        /*
-         * We need to hook up the revisions list
-         */
-        else if (selectedView == this.topicRevisionsDisplay) {
-            final AsyncDataProvider<RESTTopicV1> revisionsPropvider = generateTopicRevisionsListProvider();
-            topicRevisionsDisplay.setProvider(revisionsPropvider);
-        }
     }
 
     /**
@@ -1027,10 +1077,12 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
 
         display.getTopicViewActionButtonsPanel().setWidget(selectedView.getTopActionPanel());
         display.getTopicViewPanel().setWidget(selectedView.getPanel());
-        
-        previousView.setViewShown(false);
+
+        if (previousView != null) {
+            previousView.setViewShown(false);
+        }
         selectedView.setViewShown(true);
-        
+
         previousView = selectedView;
 
         updateDisplayedTopicView();
@@ -1072,7 +1124,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
     }
 
     /**
-     * The currently displayed topic is topicRevisionsDisplay.getRevisionTopic() if it is not null, or topicProviderData.getDisplayedItem() otherwise.
+     * The currently displayed topic is topicRevisionsDisplay.getRevisionTopic() if it is not null, or
+     * topicProviderData.getDisplayedItem() otherwise.
      * 
      * @return The currently displayed topic
      */
