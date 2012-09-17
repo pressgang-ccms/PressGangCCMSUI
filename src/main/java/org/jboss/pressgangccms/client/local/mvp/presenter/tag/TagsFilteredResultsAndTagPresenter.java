@@ -17,16 +17,15 @@ import org.jboss.pressgangccms.client.local.utilities.GWTUtilities;
 import org.jboss.pressgangccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgangccms.rest.v1.components.ComponentRESTBaseEntityV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
-import org.jboss.pressgangccms.rest.v1.components.ComponentRESTBaseEntityV1;
 
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
@@ -43,20 +42,44 @@ import com.google.gwt.view.client.HasData;
  */
 @Dependent
 public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
+
+    /**
+     * This interface describes the required UI elements for the parent view (i.e. the view that holds the four views
+     * TagFilteredResults view to provide a list of tags, and the TagView, TagProjectsView and TagCategoriesView.
+     * 
+     * @author Matthew Casperson
+     * 
+     */
     public interface Display extends BaseTemplateViewInterface {
+        /**
+         * @return The panel used to hold the list of tags
+         */
         SimpleLayoutPanel getResultsPanel();
 
+        /**
+         * @return The panel used to hold the views that display the tag details
+         */
         SimpleLayoutPanel getViewPanel();
 
+        /**
+         * @return The panel that holds the action buttons for the tag detail views
+         */
         SimpleLayoutPanel getViewActionButtonsPanel();
-
+        
+        /**
+         * @return The panel that holds the action buttons for the list of tags
+         */
         SimpleLayoutPanel getResultsActionButtonsPanel();
 
+        /**
+         * @return The split panel that separates the tag list from the tag details views
+         */
         HanldedSplitLayoutPanel getSplitPanel();
-
-        DockLayoutPanel getViewLayoutPanel();
     }
 
+    /**
+     * A click handler used to display the tag fields view
+     */
     private final ClickHandler tagDetailsClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
@@ -67,6 +90,9 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
     };
 
+    /**
+     * A click handler used to display the tag projects view
+     */
     private final ClickHandler tagProjectsClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
@@ -76,6 +102,9 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         }
     };
 
+    /**
+     * A click handler used to display the tag categories view
+     */
     private final ClickHandler tagCategoriesClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
@@ -85,6 +114,9 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         }
     };
 
+    /**
+     * A click handler used to save any changes to the tag
+     */
     private final ClickHandler saveClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
@@ -104,8 +136,16 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                 @Override
                 public void success(final RESTTagV1 retValue) {
                     try {
+                        /* we are noew viewing the object returned by the save */
                         tagProviderData.setDisplayedItem(retValue);
+                        
+                        /* Update the list of tags with any saved changes */
+                        retValue.cloneInto(tagProviderData.getSelectedItem(), true);
+                        
+                        /* refresh the list of tags */
+                        filteredResultsDisplay.getProvider().updateRowData(tagProviderData.getStartRow(), tagProviderData.getItems());
 
+                        /* reload the list of categoires and projects */
                         resetCategoryAndProjectsLists(false);
 
                         /* refresh the display */
@@ -122,6 +162,9 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                     display.removeWaitOperation();
                 }
             };
+
+            /* Sync the UI to the underlying object */
+            resultDisplay.getDriver().flush();
 
             /* Sync changes from the tag view */
             final RESTTagV1 updateTag = new RESTTagV1();
@@ -185,18 +228,38 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         }
     };
 
+    /**
+     * An Errai injected instance of a class that implements Display. This is the view
+     * that holds all other views
+     */
     @Inject
     private Display display;
 
+    /**
+     * An Errai injected instance of a class that implements TagFilteredResultsPresenter.Display. This
+     * is the view that displays the list of tags.
+     */
     @Inject
     private TagFilteredResultsPresenter.Display filteredResultsDisplay;
 
+    /**
+     * An Errai injected instance of a class that implements TagPresenter.Display. This is the view
+     * that displays the fields of the tag (name, description etc)
+     */
     @Inject
     private TagPresenter.Display resultDisplay;
 
+    /**
+     * An Errai injected instance of a class that implements TagProjectsPresenter.Display. This is the view
+     * that lists all the projects that the tag can be added to or removed from.
+     */
     @Inject
     private TagProjectsPresenter.Display projectsDisplay;
 
+    /**
+     * An Errai injected instance of a class that implements TagCategoriesPresenter.Display. This is the view
+     * that lists all the categories that the tag can be added to or removed from.
+     */
     @Inject
     private TagCategoriesPresenter.Display categoriesDisplay;
 
@@ -620,6 +683,9 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         return provider;
     }
 
+    /**
+     * Bind behaviour to the buttons found in the celltable listing the categories
+     */
     private void bindCategoryListRowClicks() {
         this.categoriesDisplay.getResults().addCellPreviewHandler(new Handler<RESTCategoryV1>() {
             @Override
@@ -718,6 +784,9 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         }
     }
 
+    /**
+     * Called when the selected tag is changed, or the selected view is changed.
+     */
     @Override
     protected void reInitialiseView() {
         /* save any changes as we move between views */
@@ -766,8 +835,10 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         lastDisplayedView = displayedView;
     }
 
-    /** Compare the displayed tag (the one that is edited) with the selected tag (the one that exists in the collection 
-     * used to build the tag list). If there are unsaved changes, prompt the user.
+    /**
+     * Compare the displayed tag (the one that is edited) with the selected tag (the one that exists in the collection used to
+     * build the tag list). If there are unsaved changes, prompt the user.
+     * 
      * @return true if the user wants to ignore the unsaved changes, false otherwise
      */
     private boolean checkForUnsavedChanges() {
@@ -797,13 +868,18 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         return true;
     }
 
+    /**
+     * Called when a new tag is selected or the tag is saved. This refreshes the list of categories and projects.
+     * 
+     * @param removeCatgeoryTagListFromScreen true if the list of tags within a category is to be removed from the screen 
+     */
     private void resetCategoryAndProjectsLists(final boolean removeCatgeoryTagListFromScreen) {
         /*
          * Reset the category and projects data. This is to clear out any added tags. Maybe cache this info if reloading is too
          * slow.
          */
-        categoryProviderData = new ProviderUpdateData<RESTCategoryV1>();
-        projectProviderData = new ProviderUpdateData<RESTProjectV1>();
+        categoryProviderData.reset();
+        projectProviderData.reset();
 
         getProjects();
         getCategories();

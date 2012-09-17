@@ -5,10 +5,7 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="pressgang-ccms-utils-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pressgang-ccms-utils/pressgang-ccms-utils">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="gozirra-extended-0.5-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/gozirra-extended/gozirra-extended">
+        <dependent-module archiveName="pressgang-ccms-rest-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pressgang-ccms-rest/pressgang-ccms-rest">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="pressgang-ccms-ui"/>

@@ -73,7 +73,7 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
 
         waiting.setWidget(spinner);
-        waiting.setTitle(PressGangCCMSUI.INSTANCE.PleaseWait());
+        waiting.setText(PressGangCCMSUI.INSTANCE.PleaseWait());
         
         /* We have own own top action panels */
         this.getTopActionParentPanel().removeFromParent();

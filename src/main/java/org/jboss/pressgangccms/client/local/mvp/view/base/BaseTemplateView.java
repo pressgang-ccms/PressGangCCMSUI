@@ -8,7 +8,6 @@ import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.UIUtilities;
 
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
@@ -28,14 +27,11 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Matthew Casperson
  */
 public abstract class BaseTemplateView implements BaseTemplateViewInterface {
-    /** true when the waiting dialog box should be displayed, false otherwise */
-    private boolean isWaiting = false;
     /** true when the view is visible, false otherwise */
     private boolean isViewShown = false;
     /** Maintains a count of how many waiting operations are in progress */
     private int waitingCount = 0;
 
-    
     /** The name of the application. */
     private final String applicationName;
     /** The name of the current page. */
