@@ -3,6 +3,7 @@ package org.jboss.pressgangccms.client.local.mvp.presenter.tag;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgangccms.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.tag.TagView;
 import org.jboss.pressgangccms.client.local.mvp.view.tag.TagViewInterface;
@@ -14,7 +15,7 @@ import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
-public class TagPresenter extends TemplatePresenter {
+public class TagPresenter extends TemplatePresenter implements EditableView {
     // Empty interface declaration, similar to UiBinder
     public interface TagPresenterDriver extends SimpleBeanEditorDriver<RESTTagV1, RESTTagV1BasicDetailsEditor> {
     }
@@ -79,6 +80,11 @@ public class TagPresenter extends TemplatePresenter {
     }
 
     private void bind() {
-        super.bind(display);
+        super.bind(display, this);
+    }
+
+    @Override
+    public boolean checkForUnsavedChanges() {
+        return true;
     }
 }

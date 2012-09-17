@@ -4,6 +4,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.mvp.events.SearchResultsAndTopicViewEvent;
+import org.jboss.pressgangccms.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
@@ -21,7 +22,8 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 
 @Dependent
-public class SearchPresenter extends TemplatePresenter {
+public class SearchPresenter extends TemplatePresenter implements EditableView {
+    
     public interface Display extends BaseTemplateViewInterface {
         // Empty interface declaration, similar to UiBinder
         interface SearchPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor> {
@@ -54,7 +56,7 @@ public class SearchPresenter extends TemplatePresenter {
     }
 
     protected void bind() {
-        super.bind(display);
+        super.bind(display, this);
 
         display.getSearch().addClickHandler(new ClickHandler() {
             @Override
@@ -100,5 +102,10 @@ public class SearchPresenter extends TemplatePresenter {
     @Override
     public void parseToken(final String historyToken) {
         // TODO Auto-generated method stub
+    }
+
+    @Override
+    public boolean checkForUnsavedChanges() {
+        return true;
     }
 }

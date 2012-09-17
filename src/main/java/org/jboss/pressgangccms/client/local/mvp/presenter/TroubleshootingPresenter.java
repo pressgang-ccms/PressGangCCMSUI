@@ -2,12 +2,13 @@ package org.jboss.pressgangccms.client.local.mvp.presenter;
 
 import javax.inject.Inject;
 
+import org.jboss.pressgangccms.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 
-public class TroubleshootingPresenter extends TemplatePresenter {
+public class TroubleshootingPresenter extends TemplatePresenter implements EditableView {
     public interface Display extends BaseTemplateViewInterface {
 
     }
@@ -20,12 +21,17 @@ public class TroubleshootingPresenter extends TemplatePresenter {
         container.clear();
         container.add(display.getTopLevelPanel());
 
-        bind(display);
+        bind(display, this);
     }
 
     @Override
     public void parseToken(final String historyToken) {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public boolean checkForUnsavedChanges() {
+        return true;
     }
 }

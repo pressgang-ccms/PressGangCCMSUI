@@ -1,13 +1,13 @@
 package org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.events.SearchResultsAndTopicViewEvent;
+import org.jboss.pressgangccms.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicBugsPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicPresenter;
@@ -63,7 +63,8 @@ import com.google.gwt.view.client.HasData;
  * @author Matthew Casperson
  */
 @Dependent
-public class SearchResultsAndTopicPresenter extends TemplatePresenter {
+public class SearchResultsAndTopicPresenter extends TemplatePresenter implements EditableView  {
+   
     public interface Display extends BaseTemplateViewInterface {
         SplitType getSplitType();
 
@@ -255,7 +256,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
      * Add behaviour to the UI elements exposed by the views
      */
     private void bind() {
-        super.bind(display);
+        
+        super.bind(display, this);
 
         bindSplitPanelResize();
 
@@ -1097,5 +1099,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
     private void showRenderedSplitPanelMenu() {
         display.getTopicViewActionButtonsPanel().clear();
         display.getTopicViewActionButtonsPanel().add(selectedView.getRenderedSplitViewMenu());
+    }
+
+    @Override
+    public boolean checkForUnsavedChanges() {
+        return true;
     }
 }

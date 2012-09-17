@@ -1,9 +1,10 @@
 package org.jboss.pressgangccms.client.local.mvp.presenter.tag;
 
 import org.jboss.pressgangccms.client.local.constants.Constants;
+import org.jboss.pressgangccms.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
 
-abstract public class TagPresenterBase extends TemplatePresenter {
+abstract public class TagPresenterBase extends TemplatePresenter implements EditableView {
     /** Called when a new "tab" is selected */
     abstract protected void reInitialiseView();
 

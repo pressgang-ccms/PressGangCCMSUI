@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
+import org.jboss.pressgangccms.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.client.local.mvp.view.image.ImagesFilteredResultsAndImageView;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
@@ -28,7 +29,7 @@ import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
 
 @Dependent
-public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
+public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase implements EditableView {
     public interface Display extends BaseTemplateViewInterface {
         SimpleLayoutPanel getResultsPanel();
 
@@ -80,7 +81,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
      * Add behaviour to the UI elements exposed by the views.
      */
     private void bind() {
-        super.bind(display);
+        super.bind(display, this);
 
         final AsyncDataProvider<RESTImageV1> provider = generateListProvider();
         imageFilteredResultsDisplay.setProvider(provider);
@@ -241,5 +242,10 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
         imageDisplay.initialize(displayedImage, getUnassignedLocales().toArray(new String[0]));
 
         bindImageUploadButtons(imageDisplay);
+    }
+
+    @Override
+    public boolean checkForUnsavedChanges() {
+        return true;
     }
 }

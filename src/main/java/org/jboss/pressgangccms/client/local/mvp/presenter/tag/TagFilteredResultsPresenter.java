@@ -5,6 +5,7 @@ import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgangccms.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.client.local.mvp.view.tag.TagFilteredResultsView;
@@ -21,7 +22,7 @@ import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 
 @Dependent
-public class TagFilteredResultsPresenter extends TemplatePresenter {
+public class TagFilteredResultsPresenter extends TemplatePresenter implements EditableView {
     public interface Display extends BaseTemplateViewInterface {
         AsyncDataProvider<RESTTagV1> getProvider();
 
@@ -66,7 +67,7 @@ public class TagFilteredResultsPresenter extends TemplatePresenter {
     }
 
     private void bind() {
-        super.bind(display);
+        super.bind(display, this);
 
         final AsyncDataProvider<RESTTagV1> provider = new AsyncDataProvider<RESTTagV1>() {
             @Override
@@ -107,5 +108,10 @@ public class TagFilteredResultsPresenter extends TemplatePresenter {
         };
 
         display.setProvider(provider);
+    }
+
+    @Override
+    public boolean checkForUnsavedChanges() {
+        return true;
     }
 }

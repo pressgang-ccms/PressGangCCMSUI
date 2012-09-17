@@ -3,6 +3,7 @@ package org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgangccms.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -20,7 +21,7 @@ import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
 
 @Dependent
-public class SearchResultsPresenter extends TemplatePresenter {
+public class SearchResultsPresenter extends TemplatePresenter implements EditableView {
     public interface Display extends BaseTemplateViewInterface {
         AsyncDataProvider<RESTTopicV1> getProvider();
 
@@ -53,7 +54,8 @@ public class SearchResultsPresenter extends TemplatePresenter {
     }
 
     private void bind() {
-        super.bind(display);
+        
+        super.bind(display, this);
 
         final AsyncDataProvider<RESTTopicV1> provider = new AsyncDataProvider<RESTTopicV1>() {
             @Override
@@ -130,5 +132,10 @@ public class SearchResultsPresenter extends TemplatePresenter {
         });
 
         display.setProvider(provider);
+    }
+
+    @Override
+    public boolean checkForUnsavedChanges() {
+        return true;
     }
 }

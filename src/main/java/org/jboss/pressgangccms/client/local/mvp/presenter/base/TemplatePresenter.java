@@ -27,11 +27,12 @@ public abstract class TemplatePresenter implements Presenter {
      * Called to bind the UI elements to event handlers.
      * @param display The main template display
      */
-    protected void bind(final BaseTemplateViewInterface display) {
+    protected void bind(final BaseTemplateViewInterface display, final EditableView editableView) {
         display.getSearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                eventBus.fireEvent(new SearchViewEvent());
+                if (editableView.checkForUnsavedChanges())
+                    eventBus.fireEvent(new SearchViewEvent());
             }
         });
 
@@ -45,14 +46,16 @@ public abstract class TemplatePresenter implements Presenter {
         display.getImages().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
+                if (editableView.checkForUnsavedChanges())
+                    eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
             }
         });
 
         display.getTags().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
+                if (editableView.checkForUnsavedChanges())
+                    eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
             }
         });
 

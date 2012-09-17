@@ -298,7 +298,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
      * Add behaviour to the UI elements exposed by the views
      */
     private void bind() {
-        super.bind(display);
+        super.bind(display, this);
 
         filteredResultsDisplay.setProvider(generateListProvider());
         projectsDisplay.setProvider(generateProjectListProvider());
@@ -552,7 +552,8 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         filteredResultsDisplay.getSearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(getQuery(filteredResultsDisplay)));
+                if (checkForUnsavedChanges())
+                    eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(getQuery(filteredResultsDisplay)));
             }
         });
     }
@@ -841,7 +842,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
      * 
      * @return true if the user wants to ignore the unsaved changes, false otherwise
      */
-    private boolean checkForUnsavedChanges() {
+    public boolean checkForUnsavedChanges() {
         /* sync the UI with the underlying tag */
         if (tagProviderData.getDisplayedItem() != null) {
             resultDisplay.getDriver().flush();
