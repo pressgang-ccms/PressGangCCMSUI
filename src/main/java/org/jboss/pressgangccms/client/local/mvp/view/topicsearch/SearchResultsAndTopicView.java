@@ -4,6 +4,7 @@ import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgangccms.client.local.mvp.view.base.WaitingDialog;
 import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
@@ -27,10 +28,8 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
     private final SimpleLayoutPanel topicResultsActionButtonsPanel = new SimpleLayoutPanel();
     private final SimpleLayoutPanel topicViewActionButtonsPanel = new SimpleLayoutPanel();
     
-    /** The image to display in the waiting dialog. */
-    private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
     /** The dialog that is presented when the view is unavailable. */
-    private final DialogBox waiting = new DialogBox();
+    private final WaitingDialog waiting = new WaitingDialog();
 
     private SplitType splitType = SplitType.NONE;
 
@@ -71,9 +70,6 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
 
     public SearchResultsAndTopicView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
-
-        waiting.setWidget(spinner);
-        waiting.setText(PressGangCCMSUI.INSTANCE.PleaseWait());
         
         /* We have own own top action panels */
         this.getTopActionParentPanel().removeFromParent();

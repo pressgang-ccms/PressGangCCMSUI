@@ -887,6 +887,8 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
         /* remove the category tags list */
         if (removeCatgeoryTagListFromScreen) {
+            categoryProviderData.setSelectedItem(null);
+            categoryProviderData.setDisplayedItem(null);
             categoriesDisplay.getSplit().remove(categoriesDisplay.getTagsResultsPanel());
         }
     }

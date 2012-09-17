@@ -75,7 +75,7 @@ public class ImagePresenter extends ImagePresenterBase {
     }
 
     private void bind() {
-        bindImageViewButtons(display);
+        bindImageViewButtons(display, display);
     }
 
     @Override

@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.PushButton;
 
 @Dependent
 public class SearchPresenter extends TemplatePresenter implements EditableView {
-    
+
     public interface Display extends BaseTemplateViewInterface {
         // Empty interface declaration, similar to UiBinder
         interface SearchPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor> {
@@ -47,6 +47,8 @@ public class SearchPresenter extends TemplatePresenter implements EditableView {
 
     @Override
     public void go(final HasWidgets container) {
+        display.setViewShown(true);
+
         container.clear();
         container.add(display.getTopLevelPanel());
 

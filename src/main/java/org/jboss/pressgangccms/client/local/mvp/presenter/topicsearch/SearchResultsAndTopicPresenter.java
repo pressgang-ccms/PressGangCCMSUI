@@ -1,7 +1,5 @@
 package org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch;
 
-import java.util.ArrayList;
-
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
@@ -243,6 +241,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
     @Override
     public void go(final HasWidgets container) {
         searchResultsDisplay.setViewShown(true);
+        display.setViewShown(true);
 
         container.clear();
         container.add(display.getTopLevelPanel());
@@ -266,12 +265,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
         searchResultsDisplay.setProvider(provider);
 
         /* set the provider, which will update the list */
-        final AsyncDataProvider<RESTTopicV1> revisionsPropvider = generateTopicRevisionsListProvider();
-        topicRevisionsDisplay.setProvider(revisionsPropvider);
+        topicRevisionsDisplay.setProvider(generateTopicRevisionsListProvider());
 
         /* setup the bugs provider */
-        final AsyncDataProvider<RESTBugzillaBugV1> bugzillaProvider = generateTopicBugListProvider();
-        topicBugsDisplay.setProvider(bugzillaProvider);
+        topicBugsDisplay.setProvider(generateTopicBugListProvider());
 
         bindTopicListRowClicks();
 

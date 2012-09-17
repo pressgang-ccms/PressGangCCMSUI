@@ -30,6 +30,7 @@ import com.google.gwt.view.client.HasData;
 
 @Dependent
 public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase implements EditableView {
+    
     public interface Display extends BaseTemplateViewInterface {
         SimpleLayoutPanel getResultsPanel();
 
@@ -66,6 +67,8 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
 
     @Override
     public void go(final HasWidgets container) {
+        display.setViewShown(true);
+        
         container.clear();
         container.add(display.getTopLevelPanel());
 
@@ -88,7 +91,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
 
         bindListRowClicks();
 
-        bindImageViewButtons(imageDisplay);
+        bindImageViewButtons(imageDisplay, display);
 
         bindImageSearchButtons();
     }
@@ -172,12 +175,12 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
                     final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
                         @Override
                         public void begin() {
-                            imageFilteredResultsDisplay.addWaitOperation();
+                            display.addWaitOperation();
                         }
 
                         @Override
                         public void generalException(final Exception ex) {
-                            imageFilteredResultsDisplay.removeWaitOperation();
+                            display.removeWaitOperation();
                             Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                         }
 
@@ -195,14 +198,14 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
                                     display.getViewActionButtonsPanel().setWidget(imageDisplay.getTopActionPanel());
                                 }
                             } finally {
-                                imageFilteredResultsDisplay.removeWaitOperation();
+                                display.removeWaitOperation();
                             }
 
                         }
 
                         @Override
                         public void failed() {
-                            imageFilteredResultsDisplay.removeWaitOperation();
+                            display.removeWaitOperation();
                             Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                         }
 

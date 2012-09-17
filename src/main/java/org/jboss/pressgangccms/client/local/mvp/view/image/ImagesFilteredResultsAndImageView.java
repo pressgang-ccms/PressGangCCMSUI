@@ -4,6 +4,7 @@ import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgangccms.client.local.mvp.view.base.WaitingDialog;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
@@ -21,6 +22,9 @@ public class ImagesFilteredResultsAndImageView extends BaseTemplateView implemen
     private final SimpleLayoutPanel viewPanel = new SimpleLayoutPanel();
     private final SimpleLayoutPanel resultsActionButtonsPanel = new SimpleLayoutPanel();
     private final SimpleLayoutPanel viewActionButtonsPanel = new SimpleLayoutPanel();
+    
+    /** The dialog that is presented when the view is unavailable. */
+    private final WaitingDialog waiting = new WaitingDialog();
 
     @Override
     public DockLayoutPanel getViewLayoutPanel() {
@@ -83,13 +87,12 @@ public class ImagesFilteredResultsAndImageView extends BaseTemplateView implemen
 
     @Override
     protected void showWaiting() {
-        // TODO Auto-generated method stub
-        
+        waiting.center();
+        waiting.show();        
     }
 
     @Override
     protected void hideWaiting() {
-        // TODO Auto-generated method stub
-        
+        waiting.hide();        
     }
 }

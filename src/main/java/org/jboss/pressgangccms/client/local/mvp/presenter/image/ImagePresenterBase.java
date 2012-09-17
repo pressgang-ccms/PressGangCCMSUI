@@ -91,7 +91,8 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
         RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRINGCONSTANT);
     }
 
-    protected void bindImageViewButtons(final ImagePresenter.Display imageDisplay) {
+    protected void bindImageViewButtons(final ImagePresenter.Display imageDisplay, final BaseTemplateViewInterface waitDisplay) {
+        
         imageDisplay.getSave().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
@@ -107,12 +108,12 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                 final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
                     @Override
                     public void begin() {
-                        imageDisplay.addWaitOperation();
+                        waitDisplay.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
-                        imageDisplay.removeWaitOperation();
+                        waitDisplay.removeWaitOperation();
                     }
 
                     @Override
@@ -120,14 +121,15 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                         try {
                             displayedImage = retValue;
                             reInitialiseImageView();
+                            Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                         } finally {
-                            imageDisplay.removeWaitOperation();
+                            waitDisplay.removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        imageDisplay.removeWaitOperation();
+                        waitDisplay.removeWaitOperation();
                     }
                 };
 
@@ -172,12 +174,12 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                         final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
                             @Override
                             public void begin() {
-                                imageDisplay.addWaitOperation();
+                                waitDisplay.addWaitOperation();
                             }
 
                             @Override
                             public void generalException(final Exception ex) {
-                                imageDisplay.removeWaitOperation();
+                                waitDisplay.removeWaitOperation();
                             }
 
                             @Override
@@ -186,13 +188,13 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                                     displayedImage = retValue;
                                     reInitialiseImageView();
                                 } finally {
-                                    imageDisplay.removeWaitOperation();
+                                    waitDisplay.removeWaitOperation();
                                 }
                             }
 
                             @Override
                             public void failed() {
-                                imageDisplay.removeWaitOperation();
+                                waitDisplay.removeWaitOperation();
                             }
                         };
 
@@ -237,12 +239,12 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                 final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
                     @Override
                     public void begin() {
-                        imageDisplay.addWaitOperation();
+                        waitDisplay.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
-                        imageDisplay.removeWaitOperation();
+                        waitDisplay.removeWaitOperation();
                     }
 
                     @Override
@@ -251,13 +253,13 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                             displayedImage = retValue;
                             reInitialiseImageView();
                         } finally {
-                            imageDisplay.removeWaitOperation();
+                            waitDisplay.removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        imageDisplay.removeWaitOperation();
+                        waitDisplay.removeWaitOperation();
                     }
                 };
 
