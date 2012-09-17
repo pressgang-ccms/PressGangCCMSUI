@@ -29,6 +29,7 @@ import org.jboss.pressgangccms.client.local.ui.editor.topicview.assignedtags.Top
 import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProject;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
+import org.jboss.pressgangccms.rest.v1.collections.RESTBugzillaBugCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTBugzillaBugV1;
@@ -262,11 +263,15 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
         bindSplitPanelResize();
 
         final AsyncDataProvider<RESTTopicV1> provider = generateTopicListProvider();
-        searchResultsDisplay.setProvider(provider);     
-        
+        searchResultsDisplay.setProvider(provider);
+
         /* set the provider, which will update the list */
         final AsyncDataProvider<RESTTopicV1> revisionsPropvider = generateTopicRevisionsListProvider();
         topicRevisionsDisplay.setProvider(revisionsPropvider);
+
+        /* setup the bugs provider */
+        final AsyncDataProvider<RESTBugzillaBugV1> bugzillaProvider = generateTopicBugListProvider();
+        topicBugsDisplay.setProvider(bugzillaProvider);
 
         bindTopicListRowClicks();
 
@@ -525,7 +530,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
             protected void onRangeChanged(final HasData<RESTTopicV1> display) {
                 if (topicProviderData.getDisplayedItem() != null && topicProviderData.getDisplayedItem().getRevisions() != null
                         && topicProviderData.getDisplayedItem().getRevisions().getItems() != null) {
-                   
+
                     final int count = topicProviderData.getDisplayedItem().getRevisions().getItems().size();
                     final int tableStartRow = display.getVisibleRange().getStart();
                     final int length = display.getVisibleRange().getLength();
@@ -534,7 +539,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
 
                     updateRowData(tableStartRow,
                             topicProviderData.getDisplayedItem().getRevisions().getItems().subList(tableStartRow, fixedEnd));
-                    updateRowCount(count, true);                    
+                    updateRowCount(count, true);
                 } else {
                     updateRowCount(0, false);
                 }
@@ -550,15 +555,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
         final AsyncDataProvider<RESTBugzillaBugV1> provider = new AsyncDataProvider<RESTBugzillaBugV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTBugzillaBugV1> display) {
-                if (topicProviderData.getDisplayedItem() != null) {
-                    if (topicProviderData.getDisplayedItem().getBugzillaBugs_OTM() == null) {
-                        throw new IllegalStateException(
-                                "topicProviderData.getDisplayedItem().getBugzillaBugs_OTM() cannot be null");
-                    }
-                    if (topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getItems() == null) {
-                        throw new IllegalStateException(
-                                "topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getItems() cannot be null");
-                    }
+                if (topicProviderData.getDisplayedItem() != null
+                        && topicProviderData.getDisplayedItem().getBugzillaBugs_OTM() != null
+                        && topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getItems() != null) {
 
                     final int bugzillaCount = topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getItems().size();
                     final int tableStartRow = display.getVisibleRange().getStart();
@@ -572,8 +571,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                                     .subList(tableStartRow, fixedEnd));
                     updateRowCount(bugzillaCount, true);
                 } else {
-                    updateRowData(0, new ArrayList<RESTBugzillaBugV1>());
-                    updateRowCount(0, true);
+                    updateRowCount(0, false);
                 }
             }
         };
@@ -656,6 +654,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                     if (topicRevisionsDisplay.getProvider() != null)
                         topicRevisionsDisplay.getProvider().updateRowCount(0, false);
 
+                    /* set the bugs to show the loading widget */
+                    if (topicBugsDisplay.getProvider() != null)
+                        topicBugsDisplay.getProvider().updateRowCount(0, false);
+
                     /* A callback to respond to a request for a topic with the revisions expanded */
                     final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new RESTCalls.RESTCallback<RESTTopicV1>() {
                         @Override
@@ -672,11 +674,12 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                         public void success(final RESTTopicV1 retValue) {
                             try {
                                 topicProviderData.getDisplayedItem().setRevisions(retValue.getRevisions());
-                                
+
                                 /* refresh the list */
                                 topicRevisionsDisplay.getProvider().updateRowData(0, retValue.getRevisions().getItems());
-                                topicRevisionsDisplay.getProvider().updateRowCount(retValue.getRevisions().getItems().size(), true);
-                                
+                                topicRevisionsDisplay.getProvider().updateRowCount(retValue.getRevisions().getItems().size(),
+                                        true);
+
                             } finally {
                                 topicRevisionsDisplay.removeWaitOperation();
                             }
@@ -725,9 +728,46 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                         }
                     };
 
+                    /* A callback to respond to a request for a topic with the bugzilla bugs expanded */
+                    final RESTCalls.RESTCallback<RESTTopicV1> topicWithBugsCallback = new RESTCalls.RESTCallback<RESTTopicV1>() {
+                        @Override
+                        public void begin() {
+                            topicBugsDisplay.addWaitOperation();
+                        }
+
+                        @Override
+                        public void generalException(final Exception ex) {
+                            topicBugsDisplay.removeWaitOperation();
+                        }
+
+                        @Override
+                        public void success(final RESTTopicV1 retValue) {
+                            try {
+                                final RESTBugzillaBugCollectionV1 collection = retValue.getBugzillaBugs_OTM();
+
+                                /* copy the revisions into the displayed Topic */
+                                topicProviderData.getDisplayedItem().setBugzillaBugs_OTM(collection);
+
+                                /* refresh the celltable */
+                                topicBugsDisplay.getProvider().updateRowData(0, collection.getItems());
+                                topicBugsDisplay.getProvider().updateRowCount(collection.getItems().size(), true);
+                            } finally {
+                                topicBugsDisplay.removeWaitOperation();
+                            }
+
+                        }
+
+                        @Override
+                        public void failed() {
+                            topicBugsDisplay.removeWaitOperation();
+                            Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+                        }
+                    };
+
                     /* Initiate the REST calls */
                     RESTCalls.getTopicWithTags(topicWithTagsCallback, topicProviderData.getSelectedItem().getId());
                     RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, topicProviderData.getSelectedItem().getId());
+                    RESTCalls.getTopicWithBugs(topicWithBugsCallback, topicProviderData.getSelectedItem().getId());
                 }
             }
         });
@@ -1057,15 +1097,6 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
         else if (selectedView == this.topicTagsDisplay) {
             bindTagEditingButtons();
         }
-
-        /*
-         * We need to hook up the bug list
-         */
-        else if (selectedView == this.topicBugsDisplay) {
-            final AsyncDataProvider<RESTBugzillaBugV1> bugzillaProvider = generateTopicBugListProvider();
-            topicBugsDisplay.setProvider(bugzillaProvider);
-        }
-
     }
 
     /**
