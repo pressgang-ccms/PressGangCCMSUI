@@ -83,12 +83,12 @@ public class TagCategoriesPresenter extends TemplatePresenter {
                 final RESTCalls.RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
                     @Override
                     public void begin() {
-                        display.getWaiting().addWaitOperation();
+                        display.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
-                        display.getWaiting().removeWaitOperation();
+                        display.removeWaitOperation();
                     }
 
                     @Override
@@ -97,13 +97,13 @@ public class TagCategoriesPresenter extends TemplatePresenter {
                             updateRowData(start, retValue.getItems());
                             updateRowCount(retValue.getSize(), true);
                         } finally {
-                            display.getWaiting().removeWaitOperation();
+                            display.removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        display.getWaiting().removeWaitOperation();
+                        display.removeWaitOperation();
                     }
                 };
 

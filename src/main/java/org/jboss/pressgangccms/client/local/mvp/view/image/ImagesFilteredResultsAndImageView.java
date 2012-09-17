@@ -80,4 +80,16 @@ public class ImagesFilteredResultsAndImageView extends BaseTemplateView implemen
 
         this.getPanel().add(splitPanel);
     }
+
+    @Override
+    protected void showWaiting() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    protected void hideWaiting() {
+        // TODO Auto-generated method stub
+        
+    }
 }

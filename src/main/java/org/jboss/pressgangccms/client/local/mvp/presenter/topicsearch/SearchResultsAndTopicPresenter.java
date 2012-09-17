@@ -16,9 +16,9 @@ import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicRevisionsPr
 import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicTagsPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicXMLPresenter;
-import org.jboss.pressgangccms.client.local.mvp.view.SearchResultsAndTopicView;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgangccms.client.local.mvp.view.topicsearch.SearchResultsAndTopicView;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.client.local.ui.ProviderUpdateData;
@@ -216,6 +216,11 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
      * This will reference the selected view, so as to maintain the view between clicks
      */
     private TopicViewInterface selectedView;
+    
+    /**
+     * This will reference the previously selected view,
+     */
+    private TopicViewInterface previousView;
 
     /**
      * The query string to be sent to the REST interface, as extracted from the History Token
@@ -235,6 +240,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
 
     @Override
     public void go(final HasWidgets container) {
+        searchResultsDisplay.setViewShown(true);
+        
         container.clear();
         container.add(display.getTopLevelPanel());
 
@@ -311,12 +318,12 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
                 final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
                     @Override
                     public void begin() {
-                        topicRevisionsDisplay.getWaiting().addWaitOperation();
+                        topicRevisionsDisplay.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
-                        topicRevisionsDisplay.getWaiting().removeWaitOperation();
+                        topicRevisionsDisplay.removeWaitOperation();
                     }
 
                     @Override
@@ -341,13 +348,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
                                             .format(sourceTopic.getLastModified());
                             displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getXml(), sourceTopicLabel);
                         } finally {
-                            topicRevisionsDisplay.getWaiting().removeWaitOperation();
+                            topicRevisionsDisplay.removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        topicRevisionsDisplay.getWaiting().removeWaitOperation();
+                        topicRevisionsDisplay.removeWaitOperation();
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
 
@@ -364,12 +371,12 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
                 final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
                     @Override
                     public void begin() {
-                        topicRevisionsDisplay.getWaiting().addWaitOperation();
+                        topicRevisionsDisplay.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
-                        topicRevisionsDisplay.getWaiting().removeWaitOperation();
+                        topicRevisionsDisplay.removeWaitOperation();
                     }
 
                     @Override
@@ -385,13 +392,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
                                 updateDisplayedTopicView();
                             }
                         } finally {
-                            topicRevisionsDisplay.getWaiting().removeWaitOperation();
+                            topicRevisionsDisplay.removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        topicRevisionsDisplay.getWaiting().removeWaitOperation();
+                        topicRevisionsDisplay.removeWaitOperation();
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
 
@@ -442,12 +449,12 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
 
             @Override
             public void begin() {
-                topicTagsDisplay.getWaiting().addWaitOperation();
+                topicTagsDisplay.addWaitOperation();
             }
 
             @Override
             public void generalException(final Exception ex) {
-                topicTagsDisplay.getWaiting().removeWaitOperation();
+                topicTagsDisplay.removeWaitOperation();
             }
 
             @Override
@@ -456,13 +463,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
                     searchUIProjects.initialize(retValue);
                     topicTagsDisplay.initializeNewTags(searchUIProjects);
                 } finally {
-                    topicTagsDisplay.getWaiting().removeWaitOperation();
+                    topicTagsDisplay.removeWaitOperation();
                 }
             }
 
             @Override
             public void failed() {
-                topicTagsDisplay.getWaiting().removeWaitOperation();
+                topicTagsDisplay.removeWaitOperation();
                 Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
             }
         };
@@ -579,13 +586,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
                 final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
                     @Override
                     public void begin() {
-                        searchResultsDisplay.getWaiting().addWaitOperation();
+                        searchResultsDisplay.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
                         Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopics());
-                        searchResultsDisplay.getWaiting().removeWaitOperation();
+                        searchResultsDisplay.removeWaitOperation();
                     }
 
                     @Override
@@ -595,13 +602,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
                             updateRowData(tableStartRow, topicProviderData.getItems());
                             updateRowCount(retValue.getSize(), true);
                         } finally {
-                            searchResultsDisplay.getWaiting().removeWaitOperation();
+                            searchResultsDisplay.removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        searchResultsDisplay.getWaiting().removeWaitOperation();
+                        searchResultsDisplay.removeWaitOperation();
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
                 };
@@ -630,12 +637,12 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
                     final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
                         @Override
                         public void begin() {
-                            display.getWaiting().addWaitOperation();
+                            display.addWaitOperation();
                         }
 
                         @Override
                         public void generalException(final Exception ex) {
-                            display.getWaiting().removeWaitOperation();
+                            display.removeWaitOperation();
                         }
 
                         @Override
@@ -650,14 +657,14 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
                                     updateDisplayedTopicView();
                                 }
                             } finally {
-                                display.getWaiting().removeWaitOperation();
+                                display.removeWaitOperation();
                             }
 
                         }
 
                         @Override
                         public void failed() {
-                            display.getWaiting().removeWaitOperation();
+                            display.removeWaitOperation();
                             Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                         }
 
@@ -704,13 +711,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
                     final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
                         @Override
                         public void begin() {
-                            display.getWaiting().addWaitOperation();
+                            display.addWaitOperation();
                         }
 
                         @Override
                         public void generalException(final Exception ex) {
                             Window.alert(PressGangCCMSUI.INSTANCE.ErrorSavingTopic());
-                            display.getWaiting().removeWaitOperation();
+                            display.removeWaitOperation();
                             topicXMLDisplay.getEditor().redisplay();
                         }
 
@@ -733,7 +740,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
 
                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                             } finally {
-                                display.getWaiting().removeWaitOperation();
+                                display.removeWaitOperation();
                                 if (topicXMLDisplay.getEditor() != null) {
                                     topicXMLDisplay.getEditor().redisplay();
                                 }
@@ -743,7 +750,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
                         @Override
                         public void failed() {
                             Window.alert(PressGangCCMSUI.INSTANCE.ErrorSavingTopic());
-                            display.getWaiting().removeWaitOperation();
+                            display.removeWaitOperation();
                             topicXMLDisplay.getEditor().redisplay();
                         }
                     };
@@ -1018,6 +1025,11 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter {
 
         display.getTopicViewActionButtonsPanel().setWidget(selectedView.getTopActionPanel());
         display.getTopicViewPanel().setWidget(selectedView.getPanel());
+        
+        previousView.setViewShown(false);
+        selectedView.setViewShown(true);
+        
+        previousView = selectedView;
 
         updateDisplayedTopicView();
     }

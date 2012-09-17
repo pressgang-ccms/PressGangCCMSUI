@@ -85,4 +85,21 @@ final public class GWTUtilities {
         }
         return toReturn;
     }
+    
+    /**
+     * Compares two strings
+     * @param a The first string
+     * @param b The second string
+     * @return true if both strings are null, or if both strings are equal
+     */
+    public static boolean compareStrings(final String a, final String b)
+    {
+        if (a == null && b == null)
+            return true;
+        
+        if (a != null)
+            return a.equals(b);
+        
+        return b.equals(a);
+    }
 }

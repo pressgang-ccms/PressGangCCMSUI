@@ -1,4 +1,4 @@
-package org.jboss.pressgangccms.client.local.mvp.view;
+package org.jboss.pressgangccms.client.local.mvp.view.topicsearch;
 
 import org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchPresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
@@ -58,5 +58,17 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
         driver.edit(searchUIProjects);
         /* Add the projects */
         this.getPanel().setWidget(editor);
+    }
+
+    @Override
+    protected void showWaiting() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    protected void hideWaiting() {
+        // TODO Auto-generated method stub
+        
     }
 }

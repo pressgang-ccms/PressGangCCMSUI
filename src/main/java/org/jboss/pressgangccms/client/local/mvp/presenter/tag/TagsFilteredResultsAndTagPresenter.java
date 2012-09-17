@@ -13,6 +13,7 @@ import org.jboss.pressgangccms.client.local.mvp.view.tag.TagsFilteredResultsAndT
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.client.local.ui.ProviderUpdateData;
+import org.jboss.pressgangccms.client.local.utilities.GWTUtilities;
 import org.jboss.pressgangccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
@@ -91,13 +92,13 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
             final RESTCalls.RESTCallback<RESTTagV1> callback = new RESTCalls.RESTCallback<RESTTagV1>() {
                 @Override
                 public void begin() {
-                    display.getWaiting().addWaitOperation();
+                    display.addWaitOperation();
                 }
 
                 @Override
                 public void generalException(final Exception ex) {
                     Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                    display.getWaiting().removeWaitOperation();
+                    display.removeWaitOperation();
                 }
 
                 @Override
@@ -110,7 +111,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                         /* refresh the display */
                         reInitialiseView();
                     } finally {
-                        display.getWaiting().removeWaitOperation();
+                        display.removeWaitOperation();
                     }
 
                 }
@@ -118,7 +119,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                 @Override
                 public void failed() {
                     Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                    display.getWaiting().removeWaitOperation();
+                    display.removeWaitOperation();
                 }
             };
 
@@ -224,8 +225,8 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         display.getResultsActionButtonsPanel().setWidget(filteredResultsDisplay.getTopActionPanel());
         display.getResultsPanel().setWidget(filteredResultsDisplay.getPanel());
 
-        filteredResultsDisplay.getWaiting().setViewShown(true);
-        display.getWaiting().setViewShown(true);
+        filteredResultsDisplay.setViewShown(true);
+        display.setViewShown(true);
 
         bind();
     }
@@ -237,6 +238,8 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         super.bind(display);
 
         filteredResultsDisplay.setProvider(generateListProvider());
+        projectsDisplay.setProvider(generateProjectListProvider());
+        categoriesDisplay.setProvider(generateCategoriesListProvider());
 
         bindTagListRowClicks();
 
@@ -260,33 +263,43 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         final RESTCalls.RESTCallback<RESTProjectCollectionV1> callback = new RESTCalls.RESTCallback<RESTProjectCollectionV1>() {
             @Override
             public void begin() {
-                projectsDisplay.getWaiting().addWaitOperation();
+                projectsDisplay.addWaitOperation();
             }
 
             @Override
             public void generalException(final Exception ex) {
                 Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                projectsDisplay.getWaiting().removeWaitOperation();
+                projectsDisplay.removeWaitOperation();
             }
 
             @Override
             public void success(final RESTProjectCollectionV1 retValue) {
                 try {
                     /* Zero results can be a null list */
+                    projectProviderData.setStartRow(0);
                     projectProviderData.setItems(retValue.getItems() == null ? new ArrayList<RESTProjectV1>() : retValue
                             .getItems());
-                    projectsDisplay.setProvider(generateProjectListProvider());
+
+                    /* Refresh the list */
+                    projectsDisplay.getProvider().updateRowData(projectProviderData.getStartRow(),
+                            projectProviderData.getItems());
+                    projectsDisplay.getProvider().updateRowCount(projectProviderData.getItems().size(), true);
+
                 } finally {
-                    projectsDisplay.getWaiting().removeWaitOperation();
+                    projectsDisplay.removeWaitOperation();
                 }
             }
 
             @Override
             public void failed() {
-                projectsDisplay.getWaiting().removeWaitOperation();
+                projectsDisplay.removeWaitOperation();
                 Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
             }
         };
+
+        /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
+        projectProviderData.reset();
+        projectsDisplay.getProvider().updateRowCount(0, false);
 
         RESTCalls.getProjects(callback);
     }
@@ -300,33 +313,42 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         final RESTCalls.RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
             @Override
             public void begin() {
-                categoriesDisplay.getWaiting().addWaitOperation();
+                categoriesDisplay.addWaitOperation();
             }
 
             @Override
             public void generalException(final Exception ex) {
                 Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                categoriesDisplay.getWaiting().removeWaitOperation();
+                categoriesDisplay.removeWaitOperation();
             }
 
             @Override
             public void success(final RESTCategoryCollectionV1 retValue) {
                 try {
+                    categoryProviderData.setStartRow(0);
                     /* Zero results can be a null list */
                     categoryProviderData.setItems(retValue.getItems() == null ? new ArrayList<RESTCategoryV1>() : retValue
                             .getItems());
-                    categoriesDisplay.setProvider(generateCategoriesListProvider());
+
+                    categoriesDisplay.getProvider().updateRowData(categoryProviderData.getStartRow(),
+                            categoryProviderData.getItems());
+                    categoriesDisplay.getProvider().updateRowCount(categoryProviderData.getItems().size(), false);
+
                 } finally {
-                    categoriesDisplay.getWaiting().removeWaitOperation();
+                    categoriesDisplay.removeWaitOperation();
                 }
             }
 
             @Override
             public void failed() {
-                categoriesDisplay.getWaiting().removeWaitOperation();
+                categoriesDisplay.removeWaitOperation();
                 Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
             }
         };
+
+        /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
+        categoryProviderData.reset();
+        categoriesDisplay.getProvider().updateRowCount(0, false);
 
         RESTCalls.getCategories(callback);
     }
@@ -513,9 +535,15 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         final AsyncDataProvider<RESTCategoryV1> provider = new AsyncDataProvider<RESTCategoryV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTCategoryV1> display) {
+                final int count = projectProviderData.getItems() == null ? 0 : projectProviderData.getItems().size();
+                final boolean exactMacth = projectProviderData.getItems() != null;
+
                 categoryProviderData.setStartRow(display.getVisibleRange().getStart());
-                updateRowData(categoryProviderData.getStartRow(), categoryProviderData.getItems());
-                updateRowCount(categoryProviderData.getItems().size(), true);
+
+                if (categoryProviderData.getItems() != null)
+                    updateRowData(categoryProviderData.getStartRow(), categoryProviderData.getItems());
+
+                updateRowCount(count, exactMacth);
             }
         };
         return provider;
@@ -528,9 +556,16 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         final AsyncDataProvider<RESTProjectV1> provider = new AsyncDataProvider<RESTProjectV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTProjectV1> display) {
+
+                final int count = projectProviderData.getItems() == null ? 0 : projectProviderData.getItems().size();
+                final boolean exactMacth = projectProviderData.getItems() != null;
+
                 projectProviderData.setStartRow(display.getVisibleRange().getStart());
-                updateRowData(projectProviderData.getStartRow(), projectProviderData.getItems());
-                updateRowCount(projectProviderData.getItems().size(), true);
+
+                if (projectProviderData.getItems() != null)
+                    updateRowData(projectProviderData.getStartRow(), projectProviderData.getItems());
+
+                updateRowCount(count, exactMacth);
             }
         };
         return provider;
@@ -550,13 +585,13 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                 final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
                     @Override
                     public void begin() {
-                        filteredResultsDisplay.getWaiting().addWaitOperation();
+                        filteredResultsDisplay.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        filteredResultsDisplay.getWaiting().removeWaitOperation();
+                        filteredResultsDisplay.removeWaitOperation();
                     }
 
                     @Override
@@ -568,13 +603,13 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                             updateRowData(tagProviderData.getStartRow(), tagProviderData.getItems());
                             updateRowCount(retValue.getSize(), true);
                         } finally {
-                            filteredResultsDisplay.getWaiting().removeWaitOperation();
+                            filteredResultsDisplay.removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        filteredResultsDisplay.getWaiting().removeWaitOperation();
+                        filteredResultsDisplay.removeWaitOperation();
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
                 };
@@ -640,22 +675,19 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                         return;
                     }
 
-                    /*
-                     * selectedSearchImage will be null until an image is selected for the first time
-                     */
-                    final boolean needToAddImageView = tagProviderData.getSelectedItem() == null;
-
+                    /* The selected item will be the tag from the list. This is the unedited, unexpanded copy of the tag */
                     tagProviderData.setSelectedItem(event.getValue());
-                    tagProviderData.setDisplayedItem(event.getValue());
+                    /* All editing is done in a clone of the selected tag. Any expanded collections will be copied into this tag */
+                    tagProviderData.setDisplayedItem(event.getValue().clone(true));
 
                     /*
                      * If this is the first image selected, display the image view
                      */
-                    if (needToAddImageView) {
+                    if (displayedView == null) {
                         displayedView = resultDisplay;
                     }
 
-                    resetCategoryAndProjectsLists(false);
+                    resetCategoryAndProjectsLists(true);
 
                     reInitialiseView();
                 }
@@ -688,19 +720,19 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
     @Override
     protected void reInitialiseView() {
-        /* Show/Hide any localised loading dialogs */
-        if (lastDisplayedView != null)
-            lastDisplayedView.getWaiting().setViewShown(false);
-        displayedView.getWaiting().setViewShown(true);
-
         /* save any changes as we move between views */
         if (lastDisplayedView == resultDisplay) {
             resultDisplay.getDriver().flush();
         }
 
+        /* Show/Hide any localised loading dialogs */
+        if (lastDisplayedView != null)
+            lastDisplayedView.setViewShown(false);
+
         /* update the new view */
         if (displayedView != null) {
             displayedView.initialize(tagProviderData.getDisplayedItem(), false);
+            displayedView.setViewShown(true);
         }
 
         /* refresh the project list */
@@ -727,16 +759,20 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
         /* Update the page name */
         final StringBuilder title = new StringBuilder(displayedView.getPageName());
-        if (this.tagProviderData.getSelectedItem() != null)
-            title.append(": " + this.tagProviderData.getSelectedItem().getName());
+        if (this.tagProviderData.getDisplayedItem() != null)
+            title.append(": " + this.tagProviderData.getDisplayedItem().getName());
         display.getPageTitle().setText(title.toString());
 
         lastDisplayedView = displayedView;
     }
 
+    /** Compare the displayed tag (the one that is edited) with the selected tag (the one that exists in the collection 
+     * used to build the tag list). If there are unsaved changes, prompt the user.
+     * @return true if the user wants to ignore the unsaved changes, false otherwise
+     */
     private boolean checkForUnsavedChanges() {
         /* sync the UI with the underlying tag */
-        if (tagProviderData.getSelectedItem() != null) {
+        if (tagProviderData.getDisplayedItem() != null) {
             resultDisplay.getDriver().flush();
 
             /*
@@ -747,11 +783,13 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
             final boolean unsavedProjectChanges = projectProviderData.getItems() != null
                     && ComponentRESTBaseEntityV1.returnDirtyState(projectProviderData.getItems());
 
-            final boolean unsavedTagChanges = !tagProviderData.getSelectedItem().getDescription()
-                    .equals(tagProviderData.getDisplayedItem().getDescription())
-                    || !tagProviderData.getSelectedItem().getName().equals(tagProviderData.getDisplayedItem().getName());
+            /* See if any of the fields were changed */
+            final boolean unsavedDescriptionChanges = !GWTUtilities.compareStrings(tagProviderData.getSelectedItem()
+                    .getDescription(), tagProviderData.getDisplayedItem().getDescription());
+            final boolean unsavedNameChanges = !GWTUtilities.compareStrings(tagProviderData.getSelectedItem().getName(),
+                    tagProviderData.getDisplayedItem().getName());
 
-            if (unsavedCategoryChanges || unsavedProjectChanges || unsavedTagChanges) {
+            if (unsavedCategoryChanges || unsavedProjectChanges || unsavedDescriptionChanges || unsavedNameChanges) {
                 return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
             }
         }

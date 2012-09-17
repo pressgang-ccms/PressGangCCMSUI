@@ -2,11 +2,14 @@ package org.jboss.pressgangccms.client.local.mvp.view.topic;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.client.local.ui.UIUtilities;
 
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 
@@ -240,4 +243,20 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
      * This method is called to initialize the buttons that should appear in the top action bar
      */
     abstract protected void populateTopActionBar();
+    
+    /**
+     * The view can show a waiting widget when this method is called.
+     */
+    protected void showWaiting()
+    {
+        
+    }
+    
+    /**
+     * The view can hide a waiting widget when this method is called.
+     */
+    protected void hideWaiting()
+    {
+        
+    }
 }

@@ -1,4 +1,4 @@
-package org.jboss.pressgangccms.client.local.mvp.view;
+package org.jboss.pressgangccms.client.local.mvp.view.topicsearch;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.constants.Constants;
@@ -75,6 +75,18 @@ public class SearchResultsView extends BaseTemplateView implements SearchResults
         pager.setDisplay(results);
 
         this.getPanel().add(searchResultsPanel);
+    }
+
+    @Override
+    protected void showWaiting() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    protected void hideWaiting() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

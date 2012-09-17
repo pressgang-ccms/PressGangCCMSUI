@@ -10,4 +10,16 @@ public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Di
     public WelcomeView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Welcome());
     }
+
+    @Override
+    protected void showWaiting() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    protected void hideWaiting() {
+        // TODO Auto-generated method stub
+        
+    }
 }

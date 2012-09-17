@@ -63,12 +63,12 @@ public class TopicTagsPresenter extends TemplatePresenter {
         final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
             @Override
             public void begin() {
-                display.getWaiting().addWaitOperation();
+                display.addWaitOperation();
             }
 
             @Override
             public void generalException(final Exception ex) {
-                display.getWaiting().removeWaitOperation();
+                display.removeWaitOperation();
             }
 
             @Override
@@ -76,20 +76,20 @@ public class TopicTagsPresenter extends TemplatePresenter {
                 try {
                     display.initialize(retValue, false, SplitType.DISABLED);
                 } finally {
-                    display.getWaiting().removeWaitOperation();
+                    display.removeWaitOperation();
                 }
             }
 
             @Override
             public void failed() {
-                display.getWaiting().removeWaitOperation();
+                display.removeWaitOperation();
             }
         };
 
         try {
             RESTCalls.getTopic(callback, Integer.parseInt(topicId));
         } catch (final NumberFormatException ex) {
-            display.getWaiting().removeWaitOperation();
+            display.removeWaitOperation();
         }
     }
 

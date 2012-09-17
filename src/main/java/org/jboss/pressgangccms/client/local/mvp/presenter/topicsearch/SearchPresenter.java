@@ -69,13 +69,13 @@ public class SearchPresenter extends TemplatePresenter {
 
             @Override
             public void begin() {
-                display.getWaiting().addWaitOperation();
+                display.addWaitOperation();
             }
 
             @Override
             public void generalException(final Exception ex) {
                 Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTags());
-                display.getWaiting().removeWaitOperation();
+                display.removeWaitOperation();
             }
 
             @Override
@@ -83,14 +83,14 @@ public class SearchPresenter extends TemplatePresenter {
                 try {
                     display.initialise(retValue);
                 } finally {
-                    display.getWaiting().removeWaitOperation();
+                    display.removeWaitOperation();
                 }
             }
 
             @Override
             public void failed() {
                 Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTags());
-                display.getWaiting().removeWaitOperation();
+                display.removeWaitOperation();
             }
         };
 

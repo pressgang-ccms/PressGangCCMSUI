@@ -4,17 +4,19 @@ import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 
 public class TagsFilteredResultsAndTagView extends BaseTemplateView implements TagsFilteredResultsAndTagPresenter.Display {
     public TagsFilteredResultsAndTagView(final String applicationName, final String pageName) {
         super(applicationName, pageName);
-        // TODO Auto-generated constructor stub
     }
 
     public static final String HISTORY_TOKEN = "TagFilteredResultsAndImageView";
@@ -25,6 +27,11 @@ public class TagsFilteredResultsAndTagView extends BaseTemplateView implements T
     private final SimpleLayoutPanel viewPanel = new SimpleLayoutPanel();
     private final SimpleLayoutPanel resultsActionButtonsPanel = new SimpleLayoutPanel();
     private final SimpleLayoutPanel viewActionButtonsPanel = new SimpleLayoutPanel();
+    
+    /** The image to display in the waiting dialog. */
+    private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
+    /** The dialog that is presented when the view is unavailable. */
+    private final DialogBox waiting = new DialogBox();
 
     @Override
     public DockLayoutPanel getViewLayoutPanel() {
@@ -83,5 +90,17 @@ public class TagsFilteredResultsAndTagView extends BaseTemplateView implements T
         splitPanel.add(viewLayoutPanel);
 
         this.getPanel().add(splitPanel);
+    }
+
+    @Override
+    protected void showWaiting() {
+        waiting.center();
+        waiting.show();
+        
+    }
+
+    @Override
+    protected void hideWaiting() {
+        waiting.hide();        
     }
 }

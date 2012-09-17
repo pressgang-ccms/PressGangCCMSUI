@@ -27,15 +27,15 @@ import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsPresenter;
-import org.jboss.pressgangccms.client.local.mvp.view.SearchResultsAndTopicView;
-import org.jboss.pressgangccms.client.local.mvp.view.SearchResultsView;
-import org.jboss.pressgangccms.client.local.mvp.view.SearchView;
 import org.jboss.pressgangccms.client.local.mvp.view.WelcomeView;
 import org.jboss.pressgangccms.client.local.mvp.view.image.ImageView;
 import org.jboss.pressgangccms.client.local.mvp.view.image.ImagesFilteredResultsAndImageView;
 import org.jboss.pressgangccms.client.local.mvp.view.tag.TagView;
 import org.jboss.pressgangccms.client.local.mvp.view.tag.TagsFilteredResultsAndTagView;
 import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicView;
+import org.jboss.pressgangccms.client.local.mvp.view.topicsearch.SearchResultsAndTopicView;
+import org.jboss.pressgangccms.client.local.mvp.view.topicsearch.SearchResultsView;
+import org.jboss.pressgangccms.client.local.mvp.view.topicsearch.SearchView;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;

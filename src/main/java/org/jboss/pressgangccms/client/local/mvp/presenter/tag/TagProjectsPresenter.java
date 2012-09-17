@@ -62,12 +62,12 @@ public class TagProjectsPresenter extends TemplatePresenter {
                 final RESTCalls.RESTCallback<RESTProjectCollectionV1> callback = new RESTCalls.RESTCallback<RESTProjectCollectionV1>() {
                     @Override
                     public void begin() {
-                        display.getWaiting().addWaitOperation();
+                        display.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
-                        display.getWaiting().removeWaitOperation();
+                        display.removeWaitOperation();
                     }
 
                     @Override
@@ -76,13 +76,13 @@ public class TagProjectsPresenter extends TemplatePresenter {
                             updateRowData(start, retValue.getItems());
                             updateRowCount(retValue.getSize(), true);
                         } finally {
-                            display.getWaiting().removeWaitOperation();
+                            display.removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        display.getWaiting().removeWaitOperation();
+                        display.removeWaitOperation();
                     }
                 };
 

@@ -64,12 +64,12 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
         final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new RESTCalls.RESTCallback<RESTStringConstantV1>() {
             @Override
             public void begin() {
-                imageDisplay.getWaiting().addWaitOperation();
+                imageDisplay.addWaitOperation();
             }
 
             @Override
             public void generalException(final Exception ex) {
-                imageDisplay.getWaiting().removeWaitOperation();
+                imageDisplay.removeWaitOperation();
             }
 
             @Override
@@ -78,13 +78,13 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                     /* Get the list of locales from the StringConstant */
                     locales = retValue.getValue().replaceAll("\\n", "").replaceAll(" ", "").split(",");
                 } finally {
-                    imageDisplay.getWaiting().removeWaitOperation();
+                    imageDisplay.removeWaitOperation();
                 }
             }
 
             @Override
             public void failed() {
-                imageDisplay.getWaiting().removeWaitOperation();
+                imageDisplay.removeWaitOperation();
             }
         };
 
@@ -107,12 +107,12 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                 final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
                     @Override
                     public void begin() {
-                        imageDisplay.getWaiting().addWaitOperation();
+                        imageDisplay.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
-                        imageDisplay.getWaiting().removeWaitOperation();
+                        imageDisplay.removeWaitOperation();
                     }
 
                     @Override
@@ -121,13 +121,13 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                             displayedImage = retValue;
                             reInitialiseImageView();
                         } finally {
-                            imageDisplay.getWaiting().removeWaitOperation();
+                            imageDisplay.removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        imageDisplay.getWaiting().removeWaitOperation();
+                        imageDisplay.removeWaitOperation();
                     }
                 };
 
@@ -172,12 +172,12 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                         final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
                             @Override
                             public void begin() {
-                                imageDisplay.getWaiting().addWaitOperation();
+                                imageDisplay.addWaitOperation();
                             }
 
                             @Override
                             public void generalException(final Exception ex) {
-                                imageDisplay.getWaiting().removeWaitOperation();
+                                imageDisplay.removeWaitOperation();
                             }
 
                             @Override
@@ -186,13 +186,13 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                                     displayedImage = retValue;
                                     reInitialiseImageView();
                                 } finally {
-                                    imageDisplay.getWaiting().removeWaitOperation();
+                                    imageDisplay.removeWaitOperation();
                                 }
                             }
 
                             @Override
                             public void failed() {
-                                imageDisplay.getWaiting().removeWaitOperation();
+                                imageDisplay.removeWaitOperation();
                             }
                         };
 
@@ -237,12 +237,12 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                 final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
                     @Override
                     public void begin() {
-                        imageDisplay.getWaiting().addWaitOperation();
+                        imageDisplay.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
-                        imageDisplay.getWaiting().removeWaitOperation();
+                        imageDisplay.removeWaitOperation();
                     }
 
                     @Override
@@ -251,13 +251,13 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                             displayedImage = retValue;
                             reInitialiseImageView();
                         } finally {
-                            imageDisplay.getWaiting().removeWaitOperation();
+                            imageDisplay.removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        imageDisplay.getWaiting().removeWaitOperation();
+                        imageDisplay.removeWaitOperation();
                     }
                 };
 
@@ -289,14 +289,14 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                 @Override
                 public void onClick(final ClickEvent event) {
                     for (final File file : editor.getUpload().getFiles()) {
-                        imageDisplay.getWaiting().addWaitOperation();
+                        imageDisplay.addWaitOperation();
 
                         final FileReader reader = new FileReader();
 
                         reader.addErrorHandler(new ErrorHandler() {
                             @Override
                             public void onError(final org.vectomatic.file.events.ErrorEvent event) {
-                                imageDisplay.getWaiting().removeWaitOperation();
+                                imageDisplay.removeWaitOperation();
                             }
                         });
 
@@ -333,12 +333,12 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                                     final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
                                         @Override
                                         public void begin() {
-                                            imageDisplay.getWaiting().addWaitOperation();
+                                            imageDisplay.addWaitOperation();
                                         }
 
                                         @Override
                                         public void generalException(final Exception ex) {
-                                            imageDisplay.getWaiting().removeWaitOperation();
+                                            imageDisplay.removeWaitOperation();
                                         }
 
                                         @Override
@@ -347,20 +347,20 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                                                 displayedImage = retValue;
                                                 reInitialiseImageView();
                                             } finally {
-                                                imageDisplay.getWaiting().removeWaitOperation();
+                                                imageDisplay.removeWaitOperation();
                                             }
                                         }
 
                                         @Override
                                         public void failed() {
-                                            imageDisplay.getWaiting().removeWaitOperation();
+                                            imageDisplay.removeWaitOperation();
                                             Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                                         }
                                     };
 
                                     RESTCalls.saveImage(callback, updateImage);
                                 } finally {
-                                    imageDisplay.getWaiting().removeWaitOperation();
+                                    imageDisplay.removeWaitOperation();
                                 }
                             }
                         });

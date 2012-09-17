@@ -14,8 +14,6 @@ public interface BaseTemplateViewInterface {
 
     DockLayoutPanel getTopLevelPanel();
 
-    WaitingDialog getWaiting();
-
     void showRegularMenu();
 
     Label getPageTitle();
@@ -61,4 +59,12 @@ public interface BaseTemplateViewInterface {
     PushButton getAdvancedOpen();
 
     PushButton getClose();
+    
+    void removeWaitOperation();
+    
+    void addWaitOperation();
+    
+    boolean isViewShown();
+
+    void setViewShown(boolean isViewShown);
 }

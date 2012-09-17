@@ -59,4 +59,10 @@ public class ProviderUpdateData<T> {
     public void setDisplayedItem(final T displayedItem) {
         this.displayedItem = displayedItem;
     }
+    
+    public void reset()
+    {
+        this.items = null;
+        this.startRow = null;
+    }
 }

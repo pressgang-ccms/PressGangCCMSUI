@@ -1,16 +1,18 @@
-package org.jboss.pressgangccms.client.local.mvp.view;
+package org.jboss.pressgangccms.client.local.mvp.view.topicsearch;
 
 import org.jboss.pressgangccms.client.local.constants.CSSConstants;
 import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
 
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -24,6 +26,11 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
     private final SimpleLayoutPanel topicViewPanel = new SimpleLayoutPanel();
     private final SimpleLayoutPanel topicResultsActionButtonsPanel = new SimpleLayoutPanel();
     private final SimpleLayoutPanel topicViewActionButtonsPanel = new SimpleLayoutPanel();
+    
+    /** The image to display in the waiting dialog. */
+    private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
+    /** The dialog that is presented when the view is unavailable. */
+    private final DialogBox waiting = new DialogBox();
 
     private SplitType splitType = SplitType.NONE;
 
@@ -65,6 +72,9 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
     public SearchResultsAndTopicView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
 
+        waiting.setWidget(spinner);
+        waiting.setTitle(PressGangCCMSUI.INSTANCE.PleaseWait());
+        
         /* We have own own top action panels */
         this.getTopActionParentPanel().removeFromParent();
 
@@ -111,5 +121,17 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
         }
 
         splitPanel.add(topicViewLayoutPanel);
+    }
+
+    @Override
+    protected void showWaiting() {
+        waiting.center();
+        waiting.show();
+        
+    }
+
+    @Override
+    protected void hideWaiting() {
+        waiting.hide();        
     }
 }

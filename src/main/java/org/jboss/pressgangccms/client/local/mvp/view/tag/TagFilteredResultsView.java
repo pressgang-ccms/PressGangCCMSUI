@@ -122,4 +122,16 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
     public PushButton getSearch() {
         return search;
     }
+
+    @Override
+    protected void showWaiting() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    protected void hideWaiting() {
+        // TODO Auto-generated method stub
+        
+    }
 }

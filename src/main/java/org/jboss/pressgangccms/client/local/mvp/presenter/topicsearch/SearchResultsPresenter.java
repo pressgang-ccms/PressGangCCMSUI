@@ -5,8 +5,8 @@ import javax.inject.Inject;
 
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicPresenter;
-import org.jboss.pressgangccms.client.local.mvp.view.SearchResultsView;
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgangccms.client.local.mvp.view.topicsearch.SearchResultsView;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTopicCollectionV1;
@@ -65,12 +65,12 @@ public class SearchResultsPresenter extends TemplatePresenter {
                 final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
                     @Override
                     public void begin() {
-                        display.getWaiting().addWaitOperation();
+                        display.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
-                        display.getWaiting().removeWaitOperation();
+                        display.removeWaitOperation();
                     }
 
                     @Override
@@ -79,13 +79,13 @@ public class SearchResultsPresenter extends TemplatePresenter {
                             updateRowData(start, retValue.getItems());
                             updateRowCount(retValue.getSize(), true);
                         } finally {
-                            display.getWaiting().removeWaitOperation();
+                            display.removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        display.getWaiting().removeWaitOperation();
+                        display.removeWaitOperation();
                     }
                 };
 
@@ -102,12 +102,12 @@ public class SearchResultsPresenter extends TemplatePresenter {
                 final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
                     @Override
                     public void begin() {
-                        display.getWaiting().addWaitOperation();
+                        display.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
-                        display.getWaiting().removeWaitOperation();
+                        display.removeWaitOperation();
                     }
 
                     @Override
@@ -115,13 +115,13 @@ public class SearchResultsPresenter extends TemplatePresenter {
                         try {
                             topicViewDisplay.initialize(retValue, false, SplitType.NONE);
                         } finally {
-                            display.getWaiting().removeWaitOperation();
+                            display.removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        display.getWaiting().removeWaitOperation();
+                        display.removeWaitOperation();
                     }
                 };
 

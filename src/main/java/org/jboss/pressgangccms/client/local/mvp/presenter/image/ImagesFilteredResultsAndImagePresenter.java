@@ -115,13 +115,13 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
                 final RESTCalls.RESTCallback<RESTImageCollectionV1> callback = new RESTCalls.RESTCallback<RESTImageCollectionV1>() {
                     @Override
                     public void begin() {
-                        imageFilteredResultsDisplay.getWaiting().addWaitOperation();
+                        imageFilteredResultsDisplay.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        imageFilteredResultsDisplay.getWaiting().removeWaitOperation();
+                        imageFilteredResultsDisplay.removeWaitOperation();
                     }
 
                     @Override
@@ -132,13 +132,13 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
                             updateRowData(tableStartRow, currentList);
                             updateRowCount(retValue.getSize(), true);
                         } finally {
-                            imageFilteredResultsDisplay.getWaiting().removeWaitOperation();
+                            imageFilteredResultsDisplay.removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        imageFilteredResultsDisplay.getWaiting().removeWaitOperation();
+                        imageFilteredResultsDisplay.removeWaitOperation();
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
                 };
@@ -171,12 +171,12 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
                     final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
                         @Override
                         public void begin() {
-                            imageFilteredResultsDisplay.getWaiting().addWaitOperation();
+                            imageFilteredResultsDisplay.addWaitOperation();
                         }
 
                         @Override
                         public void generalException(final Exception ex) {
-                            imageFilteredResultsDisplay.getWaiting().removeWaitOperation();
+                            imageFilteredResultsDisplay.removeWaitOperation();
                             Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                         }
 
@@ -194,14 +194,14 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase {
                                     display.getViewActionButtonsPanel().setWidget(imageDisplay.getTopActionPanel());
                                 }
                             } finally {
-                                imageFilteredResultsDisplay.getWaiting().removeWaitOperation();
+                                imageFilteredResultsDisplay.removeWaitOperation();
                             }
 
                         }
 
                         @Override
                         public void failed() {
-                            imageFilteredResultsDisplay.getWaiting().removeWaitOperation();
+                            imageFilteredResultsDisplay.removeWaitOperation();
                             Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                         }
 

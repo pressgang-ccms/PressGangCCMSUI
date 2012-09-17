@@ -28,6 +28,14 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Matthew Casperson
  */
 public abstract class BaseTemplateView implements BaseTemplateViewInterface {
+    /** true when the waiting dialog box should be displayed, false otherwise */
+    private boolean isWaiting = false;
+    /** true when the view is visible, false otherwise */
+    private boolean isViewShown = false;
+    /** Maintains a count of how many waiting operations are in progress */
+    private int waitingCount = 0;
+
+    
     /** The name of the application. */
     private final String applicationName;
     /** The name of the current page. */
@@ -57,9 +65,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     /** This is the default collection of top action bar items. */
     private final FlexTable topActionPanel = new FlexTable();
     private final HorizontalPanel footerPanel = new HorizontalPanel();
-   
-    /** The wait screen */
-    private final WaitingDialog waiting = new WaitingDialog();
     
 
     private final PushButton home;
@@ -82,9 +87,20 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private final PushButton advanced;
     private final PushButton advancedOpen;
     private final PushButton close;
+    
+    /**
+     * @return true when the view is visible, false otherwise
+     */
+    public boolean isViewShown() {
+        return isViewShown;
+    }
 
-    public WaitingDialog getWaiting() {
-        return waiting;
+    /**
+     * @param isViewShown true if the view is visible, false otherwise
+     */
+    public void setViewShown(boolean isViewShown) {
+        this.isViewShown = isViewShown;
+        updateDisplay();
     }
 
     @Override
@@ -404,4 +420,46 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         this.getAdvancedShortcutPanel().insertRow(0);
         this.getAdvancedShortcutPanel().setWidget(0, 0, spacer2);
     }
+    
+    /**
+     * Called when some background operation that would cause this view to be locked is started.
+     */
+    public void addWaitOperation()
+    {
+        ++waitingCount;
+        updateDisplay();
+    }
+    
+    /**
+     * Called when some background operation that would cause this view to be locked is ended.
+     */
+    public void removeWaitOperation()
+    {
+        if (waitingCount < 1) throw new IllegalStateException("waitingCount should never be less than one when removeWaitOperation() is called.");
+        
+        --waitingCount;
+        updateDisplay();
+    }
+
+    /**
+     * Hide or display the waiting state depending on the views visibility and any 
+     * pending background operations.
+     */
+    private void updateDisplay() {
+        if (!isViewShown || waitingCount == 0) {
+            hideWaiting();
+        } else if (isViewShown && waitingCount != 0) {
+            showWaiting();
+        }
+    }
+    
+    /**
+     * The view can show a waiting widget when this method is called.
+     */
+    abstract protected void showWaiting();
+    
+    /**
+     * The view can hide a waiting widget when this method is called.
+     */
+    abstract protected void hideWaiting();
 }

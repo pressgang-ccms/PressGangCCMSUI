@@ -79,12 +79,12 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter {
                 final RESTCalls.RESTCallback<RESTImageCollectionV1> callback = new RESTCalls.RESTCallback<RESTImageCollectionV1>() {
                     @Override
                     public void begin() {
-                        display.getWaiting().addWaitOperation();
+                        display.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
-                        display.getWaiting().removeWaitOperation();
+                        display.removeWaitOperation();
                     }
 
                     @Override
@@ -93,13 +93,13 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter {
                             updateRowData(start, retValue.getItems());
                             updateRowCount(retValue.getSize(), true);
                         } finally {
-                            display.getWaiting().removeWaitOperation();
+                            display.removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        display.getWaiting().removeWaitOperation();
+                        display.removeWaitOperation();
                     }
                 };
 
@@ -124,13 +124,13 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter {
                 final RESTCalls.RESTCallback<RESTImageCollectionV1> callback = new RESTCalls.RESTCallback<RESTImageCollectionV1>() {
                     @Override
                     public void begin() {
-                        display.getWaiting().addWaitOperation();
+                        display.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
                         Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopics());
-                        display.getWaiting().removeWaitOperation();
+                        display.removeWaitOperation();
                     }
 
                     @Override
@@ -140,13 +140,13 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter {
                             updateRowData(tableStartRow, currentList);
                             updateRowCount(retValue.getSize(), true);
                         } finally {
-                            display.getWaiting().removeWaitOperation();
+                            display.removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        display.getWaiting().removeWaitOperation();
+                        display.removeWaitOperation();
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
                 };

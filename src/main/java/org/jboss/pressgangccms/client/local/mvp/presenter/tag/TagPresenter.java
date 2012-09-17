@@ -48,12 +48,12 @@ public class TagPresenter extends TemplatePresenter {
         final RESTCalls.RESTCallback<RESTTagV1> callback = new RESTCalls.RESTCallback<RESTTagV1>() {
             @Override
             public void begin() {
-                display.getWaiting().addWaitOperation();
+                display.addWaitOperation();
             }
 
             @Override
             public void generalException(final Exception ex) {
-                display.getWaiting().removeWaitOperation();
+                display.removeWaitOperation();
             }
 
             @Override
@@ -61,20 +61,20 @@ public class TagPresenter extends TemplatePresenter {
                 try {
                     display.initialize(retValue, false);
                 } finally {
-                    display.getWaiting().removeWaitOperation();
+                    display.removeWaitOperation();
                 }
             }
 
             @Override
             public void failed() {
-                display.getWaiting().removeWaitOperation();
+                display.removeWaitOperation();
             }
         };
 
         try {
             RESTCalls.getTag(callback, Integer.parseInt(tagId));
         } catch (final NumberFormatException ex) {
-            display.getWaiting().removeWaitOperation();
+            display.removeWaitOperation();
         }
     }
 
