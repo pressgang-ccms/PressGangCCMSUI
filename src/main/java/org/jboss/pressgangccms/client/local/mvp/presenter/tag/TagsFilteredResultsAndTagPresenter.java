@@ -637,6 +637,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                 final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
                     @Override
                     public void begin() {
+                        resetProvider();
                         filteredResultsDisplay.addWaitOperation();
                     }
 

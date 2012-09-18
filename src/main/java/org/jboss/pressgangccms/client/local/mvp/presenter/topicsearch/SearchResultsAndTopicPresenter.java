@@ -566,6 +566,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                 final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
                     @Override
                     public void begin() {
+                        resetProvider();
                         searchResultsDisplay.addWaitOperation();
                     }
 
