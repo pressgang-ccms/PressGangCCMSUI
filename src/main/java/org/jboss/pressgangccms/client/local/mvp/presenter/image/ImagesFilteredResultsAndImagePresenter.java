@@ -119,6 +119,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
                 final RESTCalls.RESTCallback<RESTImageCollectionV1> callback = new RESTCalls.RESTCallback<RESTImageCollectionV1>() {
                     @Override
                     public void begin() {
+                        resetProvider();
                         imageFilteredResultsDisplay.addWaitOperation();
                     }
 
@@ -133,8 +134,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
                         try {
                             /* Zero results can be a null list */
                             currentList = retValue.getItems() == null ? new ArrayList<RESTImageV1>() : retValue.getItems();
-                            updateRowData(tableStartRow, currentList);
-                            updateRowCount(retValue.getSize(), true);
+                            displayAsynchronousList(currentList, retValue.getSize(), tableStartRow);
                         } finally {
                             imageFilteredResultsDisplay.removeWaitOperation();
                         }
