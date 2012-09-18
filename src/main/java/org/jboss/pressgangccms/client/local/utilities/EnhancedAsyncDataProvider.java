@@ -5,7 +5,7 @@ import java.util.List;
 import com.google.gwt.view.client.AsyncDataProvider;
 
 /**
- * An extension of the EnhancedAsyncDataProvider class that provides methods for common procedures such as resetting the list,
+ * An extension of the AsyncDataProvider class that provides methods for common procedures such as resetting the list,
  * displaying newly loaded data.
  * 
  * The EnhancedAsyncDataProvider exposes two methods, updateRowData() and updateRowCount(), that are best called together. If you
