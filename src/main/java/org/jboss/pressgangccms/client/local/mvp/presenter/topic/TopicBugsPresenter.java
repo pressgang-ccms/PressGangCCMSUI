@@ -5,13 +5,13 @@ import javax.enterprise.context.Dependent;
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicViewInterface;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
+import org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgangccms.rest.v1.entities.RESTBugzillaBugV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.view.client.AsyncDataProvider;
 
 @Dependent
 public class TopicBugsPresenter extends TemplatePresenter {
@@ -21,9 +21,9 @@ public class TopicBugsPresenter extends TemplatePresenter {
         @Override
         void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType);
 
-        AsyncDataProvider<RESTBugzillaBugV1> getProvider();
+        EnhancedAsyncDataProvider<RESTBugzillaBugV1> getProvider();
 
-        void setProvider(final AsyncDataProvider<RESTBugzillaBugV1> provider);
+        void setProvider(final EnhancedAsyncDataProvider<RESTBugzillaBugV1> provider);
 
         CellTable<RESTBugzillaBugV1> getResults();
 

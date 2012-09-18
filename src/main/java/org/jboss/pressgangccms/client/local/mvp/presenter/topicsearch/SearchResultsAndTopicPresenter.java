@@ -51,7 +51,6 @@ import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
-import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
@@ -262,7 +261,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
 
         bindSplitPanelResize();
 
-        final AsyncDataProvider<RESTTopicV1> provider = generateTopicListProvider();
+        final EnhancedAsyncDataProvider<RESTTopicV1> provider = generateTopicListProvider();
         searchResultsDisplay.setProvider(provider);
 
         /* set the provider, which will update the list */
@@ -522,8 +521,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
     /**
      * @return A provider to be used for the topic revisions display list
      */
-    private AsyncDataProvider<RESTTopicV1> generateTopicRevisionsListProvider() {
-        final AsyncDataProvider<RESTTopicV1> provider = new EnhancedAsyncDataProvider<RESTTopicV1>() {
+    private EnhancedAsyncDataProvider<RESTTopicV1> generateTopicRevisionsListProvider() {
+        final EnhancedAsyncDataProvider<RESTTopicV1> provider = new EnhancedAsyncDataProvider<RESTTopicV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTopicV1> display) {
                 if (topicProviderData.getDisplayedItem() != null && topicProviderData.getDisplayedItem().getRevisions() != null
@@ -540,8 +539,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
     /**
      * @return A provider to be used for the topic display list
      */
-    private AsyncDataProvider<RESTBugzillaBugV1> generateTopicBugListProvider() {
-        final AsyncDataProvider<RESTBugzillaBugV1> provider = new EnhancedAsyncDataProvider<RESTBugzillaBugV1>() {
+    private EnhancedAsyncDataProvider<RESTBugzillaBugV1> generateTopicBugListProvider() {
+        final EnhancedAsyncDataProvider<RESTBugzillaBugV1> provider = new EnhancedAsyncDataProvider<RESTBugzillaBugV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTBugzillaBugV1> display) {
                 if (topicProviderData.getDisplayedItem() != null
@@ -559,8 +558,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
     /**
      * @return A provider to be used for the topic display list
      */
-    private AsyncDataProvider<RESTTopicV1> generateTopicListProvider() {
-        final AsyncDataProvider<RESTTopicV1> provider = new EnhancedAsyncDataProvider<RESTTopicV1>() {
+    private EnhancedAsyncDataProvider<RESTTopicV1> generateTopicListProvider() {
+        final EnhancedAsyncDataProvider<RESTTopicV1> provider = new EnhancedAsyncDataProvider<RESTTopicV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTopicV1> display) {
 
@@ -631,11 +630,11 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
 
                     /* set the revisions to show the loading widget */
                     if (topicRevisionsDisplay.getProvider() != null)
-                        topicRevisionsDisplay.getProvider().updateRowCount(0, false);
+                        topicRevisionsDisplay.getProvider().resetProvider();
 
                     /* set the bugs to show the loading widget */
                     if (topicBugsDisplay.getProvider() != null)
-                        topicBugsDisplay.getProvider().updateRowCount(0, false);
+                        topicBugsDisplay.getProvider().resetProvider();
 
                     /* A callback to respond to a request for a topic with the revisions expanded */
                     final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new RESTCalls.RESTCallback<RESTTopicV1>() {
@@ -655,9 +654,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                                 topicProviderData.getDisplayedItem().setRevisions(retValue.getRevisions());
 
                                 /* refresh the list */
-                                topicRevisionsDisplay.getProvider().updateRowData(0, retValue.getRevisions().getItems());
-                                topicRevisionsDisplay.getProvider().updateRowCount(retValue.getRevisions().getItems().size(),
-                                        true);
+                                topicRevisionsDisplay.getProvider().displayNewFixedList(retValue.getRevisions().getItems());
 
                             } finally {
                                 topicRevisionsDisplay.removeWaitOperation();
@@ -728,8 +725,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                                 topicProviderData.getDisplayedItem().setBugzillaBugs_OTM(collection);
 
                                 /* refresh the celltable */
-                                topicBugsDisplay.getProvider().updateRowData(0, collection.getItems());
-                                topicBugsDisplay.getProvider().updateRowCount(collection.getItems().size(), true);
+                                topicBugsDisplay.getProvider().displayNewFixedList(collection.getItems());
                             } finally {
                                 topicBugsDisplay.removeWaitOperation();
                             }
@@ -778,7 +774,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
      * 
      * @param provider The provider created by the generateTopicListProvider() method
      */
-    private void bindTopicEditButtons(final AsyncDataProvider<RESTTopicV1> provider) {
+    private void bindTopicEditButtons(final EnhancedAsyncDataProvider<RESTTopicV1> provider) {
         /* Build up a click handler to save the topic */
         final ClickHandler saveClickHandler = new ClickHandler() {
             @Override

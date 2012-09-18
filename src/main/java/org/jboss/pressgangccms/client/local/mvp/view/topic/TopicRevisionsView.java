@@ -6,6 +6,7 @@ import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicRevisionsPr
 import org.jboss.pressgangccms.client.local.resources.css.TableResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
+import org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.cell.client.ButtonCell;
@@ -18,9 +19,7 @@ import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.DisableableCheckboxCell;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.view.client.AsyncDataProvider;
 
 /**
  * A MVP view for displaying a topic's revision history
@@ -35,7 +34,7 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
     private final SimplePager pager = new SimplePager();
     private final CellTable<RESTTopicV1> results = new CellTable<RESTTopicV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
-    private AsyncDataProvider<RESTTopicV1> provider;
+    private EnhancedAsyncDataProvider<RESTTopicV1> provider;
     private RESTTopicV1 revisionTopic;
     private RESTTopicV1 mainTopic;
 
@@ -127,13 +126,13 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
     }
 
     @Override
-    public void setProvider(final AsyncDataProvider<RESTTopicV1> provider) {
+    public void setProvider(final EnhancedAsyncDataProvider<RESTTopicV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }
 
     @Override
-    public AsyncDataProvider<RESTTopicV1> getProvider() {
+    public EnhancedAsyncDataProvider<RESTTopicV1> getProvider() {
         return provider;
     }
 

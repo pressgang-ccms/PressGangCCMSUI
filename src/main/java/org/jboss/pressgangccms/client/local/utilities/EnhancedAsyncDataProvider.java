@@ -5,14 +5,14 @@ import java.util.List;
 import com.google.gwt.view.client.AsyncDataProvider;
 
 /**
- * An extension of the AsyncDataProvider class that provides methods for common procedures such as resetting the list,
+ * An extension of the EnhancedAsyncDataProvider class that provides methods for common procedures such as resetting the list,
  * displaying newly loaded data.
  * 
- * The AsyncDataProvider exposes two methods, updateRowData() and updateRowCount(), that are best called together. If you
+ * The EnhancedAsyncDataProvider exposes two methods, updateRowData() and updateRowCount(), that are best called together. If you
  * call only updateRowData(), the CellTable will show the loading bar when there are zero rows, and will not remove rows when
  * you delete them in the provider. This class provides methods that group calls to these two methods for convenience.
  * 
- * This class is also used to fill the middle ground between the AsyncDataProvider and ListDataProvider classes. There are times
+ * This class is also used to fill the middle ground between the EnhancedAsyncDataProvider and ListDataProvider classes. There are times
  * when you can use a memory backed list of all the items available, but that list may not be immediately available.
  * Unfortunately, to display the loading widget in the UI element while the list is being retrieved, you need to get access to
  * the updateRowCount() method, which is not exposed by the ListDataProvider class. So in these cases you can use the

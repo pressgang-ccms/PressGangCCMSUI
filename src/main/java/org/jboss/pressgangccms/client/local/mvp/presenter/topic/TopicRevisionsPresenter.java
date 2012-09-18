@@ -4,22 +4,22 @@ import javax.enterprise.context.Dependent;
 
 import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.view.client.AsyncDataProvider;
 
 @Dependent
 public class TopicRevisionsPresenter extends TemplatePresenter {
     private String topicId;
 
     public interface Display extends TopicViewInterface {
-        AsyncDataProvider<RESTTopicV1> getProvider();
+        EnhancedAsyncDataProvider<RESTTopicV1> getProvider();
 
-        void setProvider(final AsyncDataProvider<RESTTopicV1> provider);
+        void setProvider(final EnhancedAsyncDataProvider<RESTTopicV1> provider);
 
         CellTable<RESTTopicV1> getResults();
 

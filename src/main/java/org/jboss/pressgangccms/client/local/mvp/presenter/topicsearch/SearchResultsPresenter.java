@@ -10,12 +10,13 @@ import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterf
 import org.jboss.pressgangccms.client.local.mvp.view.topicsearch.SearchResultsView;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
+import org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
+
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
@@ -23,9 +24,9 @@ import com.google.gwt.view.client.HasData;
 @Dependent
 public class SearchResultsPresenter extends TemplatePresenter implements EditableView {
     public interface Display extends BaseTemplateViewInterface {
-        AsyncDataProvider<RESTTopicV1> getProvider();
+        EnhancedAsyncDataProvider<RESTTopicV1> getProvider();
 
-        void setProvider(final AsyncDataProvider<RESTTopicV1> provider);
+        void setProvider(final EnhancedAsyncDataProvider<RESTTopicV1> provider);
 
         CellTable<RESTTopicV1> getResults();
 
@@ -57,7 +58,7 @@ public class SearchResultsPresenter extends TemplatePresenter implements Editabl
         
         super.bind(display, this);
 
-        final AsyncDataProvider<RESTTopicV1> provider = new AsyncDataProvider<RESTTopicV1>() {
+        final EnhancedAsyncDataProvider<RESTTopicV1> provider = new EnhancedAsyncDataProvider<RESTTopicV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTopicV1> item) {
                 final int start = item.getVisibleRange().getStart();

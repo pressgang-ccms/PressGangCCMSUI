@@ -6,6 +6,7 @@ import org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResu
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.client.local.resources.css.TableResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.core.client.GWT;
@@ -14,7 +15,6 @@ import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.view.client.AsyncDataProvider;
 
 public class SearchResultsView extends BaseTemplateView implements SearchResultsPresenter.Display {
     public static final String HISTORY_TOKEN = "SearchResultsView";
@@ -24,7 +24,7 @@ public class SearchResultsView extends BaseTemplateView implements SearchResults
     private final SimplePager pager = new SimplePager();
     private final CellTable<RESTTopicV1> results = new CellTable<RESTTopicV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
-    private AsyncDataProvider<RESTTopicV1> provider;
+    private EnhancedAsyncDataProvider<RESTTopicV1> provider;
     private final TextColumn<RESTTopicV1> idColumn = new TextColumn<RESTTopicV1>() {
         @Override
         public String getValue(final RESTTopicV1 object) {
@@ -41,12 +41,12 @@ public class SearchResultsView extends BaseTemplateView implements SearchResults
     };
 
     @Override
-    public AsyncDataProvider<RESTTopicV1> getProvider() {
+    public EnhancedAsyncDataProvider<RESTTopicV1> getProvider() {
         return provider;
     }
 
     @Override
-    public void setProvider(AsyncDataProvider<RESTTopicV1> provider) {
+    public void setProvider(EnhancedAsyncDataProvider<RESTTopicV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }

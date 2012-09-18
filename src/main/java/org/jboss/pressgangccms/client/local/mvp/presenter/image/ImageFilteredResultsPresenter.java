@@ -11,23 +11,24 @@ import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterf
 import org.jboss.pressgangccms.client.local.mvp.view.image.ImageFilteredResultsView;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
+import org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgangccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTImageV1;
+
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 
 @Dependent
 public class ImageFilteredResultsPresenter extends TemplatePresenter implements EditableView {
     public interface Display extends BaseTemplateViewInterface {
-        AsyncDataProvider<RESTImageV1> getProvider();
+        org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider<RESTImageV1> getProvider();
 
-        void setProvider(final AsyncDataProvider<RESTImageV1> provider);
+        void setProvider(final org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider<RESTImageV1> provider);
 
         CellTable<RESTImageV1> getResults();
 
@@ -70,7 +71,7 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter implements 
     private void bind() {
         super.bind(display, this);
 
-        final AsyncDataProvider<RESTImageV1> provider = new AsyncDataProvider<RESTImageV1>() {
+        final EnhancedAsyncDataProvider<RESTImageV1> provider = new EnhancedAsyncDataProvider<RESTImageV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTImageV1> item) {
                 final int start = item.getVisibleRange().getStart();
@@ -114,8 +115,8 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter implements 
     /**
      * @return A provider to be used for the topic display list.
      */
-    private AsyncDataProvider<RESTImageV1> generateListProvider() {
-        final AsyncDataProvider<RESTImageV1> provider = new AsyncDataProvider<RESTImageV1>() {
+    private EnhancedAsyncDataProvider<RESTImageV1> generateListProvider() {
+        final EnhancedAsyncDataProvider<RESTImageV1> provider = new EnhancedAsyncDataProvider<RESTImageV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTImageV1> item) {
                 tableStartRow = item.getVisibleRange().getStart();

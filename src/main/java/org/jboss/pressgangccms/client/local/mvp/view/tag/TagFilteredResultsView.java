@@ -7,6 +7,7 @@ import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgangccms.client.local.resources.css.TableResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.UIUtilities;
+import org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
 
 import com.google.gwt.core.client.GWT;
@@ -19,8 +20,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.view.client.AbstractDataProvider;
-import com.google.gwt.view.client.AsyncDataProvider;
 
 public class TagFilteredResultsView extends BaseTemplateView implements TagFilteredResultsPresenter.Display {
     public static final String HISTORY_TOKEN = "ImageFilteredResultsView";
@@ -38,7 +37,7 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
     private final SimplePager pager = new SimplePager();
     private final CellTable<RESTTagV1> results = new CellTable<RESTTagV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
-    private AsyncDataProvider<RESTTagV1> provider;
+    private EnhancedAsyncDataProvider<RESTTagV1> provider;
 
     private final TextColumn<RESTTagV1> idColumn = new TextColumn<RESTTagV1>() {
         @Override
@@ -81,12 +80,12 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
     }
 
     @Override
-    public AsyncDataProvider<RESTTagV1> getProvider() {
+    public EnhancedAsyncDataProvider<RESTTagV1> getProvider() {
         return provider;
     }
 
     @Override
-    public void setProvider(final AsyncDataProvider<RESTTagV1> provider) {
+    public void setProvider(final EnhancedAsyncDataProvider<RESTTagV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }

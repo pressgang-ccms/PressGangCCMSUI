@@ -10,24 +10,24 @@ import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter
 import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgangccms.client.local.mvp.view.tag.TagFilteredResultsView;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
+import org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
+
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.view.client.AbstractDataProvider;
-import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 
 @Dependent
 public class TagFilteredResultsPresenter extends TemplatePresenter implements EditableView {
     public interface Display extends BaseTemplateViewInterface {
-        AsyncDataProvider<RESTTagV1> getProvider();
+        EnhancedAsyncDataProvider<RESTTagV1> getProvider();
 
-        void setProvider(final AsyncDataProvider<RESTTagV1> provider);
+        void setProvider(final EnhancedAsyncDataProvider<RESTTagV1> provider);
 
         CellTable<RESTTagV1> getResults();
 
@@ -70,7 +70,7 @@ public class TagFilteredResultsPresenter extends TemplatePresenter implements Ed
     private void bind() {
         super.bind(display, this);
 
-        final AsyncDataProvider<RESTTagV1> provider = new AsyncDataProvider<RESTTagV1>() {
+        final EnhancedAsyncDataProvider<RESTTagV1> provider = new EnhancedAsyncDataProvider<RESTTagV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTagV1> item) {
                 final int start = item.getVisibleRange().getStart();

@@ -8,6 +8,7 @@ import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter
 import org.jboss.pressgangccms.client.local.mvp.view.tag.TagProjectsView;
 import org.jboss.pressgangccms.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
+import org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgangccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTProjectV1;
 
@@ -15,16 +16,14 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.view.client.AbstractDataProvider;
-import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 
 @Dependent
 public class TagProjectsPresenter extends TemplatePresenter implements EditableView {
     public interface Display extends TagViewInterface {
-        AsyncDataProvider<RESTProjectV1> getProvider();
+        EnhancedAsyncDataProvider<RESTProjectV1> getProvider();
 
-        void setProvider(final AsyncDataProvider<RESTProjectV1> provider);
+        void setProvider(final EnhancedAsyncDataProvider<RESTProjectV1> provider);
 
         CellTable<RESTProjectV1> getResults();
 
@@ -54,7 +53,7 @@ public class TagProjectsPresenter extends TemplatePresenter implements EditableV
     private void bind() {
         super.bind(display, this);
 
-        final AsyncDataProvider<RESTProjectV1> provider = new AsyncDataProvider<RESTProjectV1>() {
+        final EnhancedAsyncDataProvider<RESTProjectV1> provider = new EnhancedAsyncDataProvider<RESTProjectV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTProjectV1> item) {
                 final int start = item.getVisibleRange().getStart();

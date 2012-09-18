@@ -5,6 +5,7 @@ import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagCategoriesPresenter;
 import org.jboss.pressgangccms.client.local.resources.css.TableResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgangccms.rest.v1.components.ComponentCategoryV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
@@ -18,8 +19,6 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.view.client.AbstractDataProvider;
-import com.google.gwt.view.client.AsyncDataProvider;
 
 public class TagCategoriesView extends TagViewBase implements TagCategoriesPresenter.Display {
     public static final String HISTORY_TOKEN = "TagCategoriesView";
@@ -33,13 +32,13 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
     private final SimplePager pager = new SimplePager();
     private final CellTable<RESTCategoryV1> results = new CellTable<RESTCategoryV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
-    private AsyncDataProvider<RESTCategoryV1> provider;
+    private EnhancedAsyncDataProvider<RESTCategoryV1> provider;
 
     private final VerticalPanel tagsResultsPanel = new VerticalPanel();
     private final SimplePager tagsPager = new SimplePager();
     private final CellTable<RESTTagV1> tagsResults = new CellTable<RESTTagV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
-    private AsyncDataProvider<RESTTagV1> tagsProvider;
+    private EnhancedAsyncDataProvider<RESTTagV1> tagsProvider;
 
     private final TextColumn<RESTCategoryV1> idColumn = new TextColumn<RESTCategoryV1>() {
         @Override
@@ -125,12 +124,12 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
     }
 
     @Override
-    public AsyncDataProvider<RESTTagV1> getTagsProvider() {
+    public EnhancedAsyncDataProvider<RESTTagV1> getTagsProvider() {
         return tagsProvider;
     }
 
     @Override
-    public void setTagsProvider(final AsyncDataProvider<RESTTagV1> tagsProvider) {
+    public void setTagsProvider(final EnhancedAsyncDataProvider<RESTTagV1> tagsProvider) {
         this.tagsProvider = tagsProvider;
         tagsProvider.addDataDisplay(tagsResults);
     }
@@ -141,12 +140,12 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
     }
 
     @Override
-    public AsyncDataProvider<RESTCategoryV1> getProvider() {
+    public EnhancedAsyncDataProvider<RESTCategoryV1> getProvider() {
         return provider;
     }
 
     @Override
-    public void setProvider(final AsyncDataProvider<RESTCategoryV1> provider) {
+    public void setProvider(final EnhancedAsyncDataProvider<RESTCategoryV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }

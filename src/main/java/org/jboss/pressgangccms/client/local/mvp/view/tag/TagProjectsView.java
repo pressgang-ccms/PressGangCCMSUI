@@ -4,6 +4,7 @@ import org.jboss.pressgangccms.client.local.constants.Constants;
 import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagProjectsPresenter;
 import org.jboss.pressgangccms.client.local.resources.css.TableResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgangccms.rest.v1.components.ComponentProjectV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
@@ -11,13 +12,11 @@ import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.view.client.AbstractDataProvider;
-import com.google.gwt.view.client.AsyncDataProvider;
 
 public class TagProjectsView extends TagViewBase implements TagProjectsPresenter.Display {
     public static final String HISTORY_TOKEN = "TagProjectsView";
@@ -30,7 +29,7 @@ public class TagProjectsView extends TagViewBase implements TagProjectsPresenter
     private final SimplePager pager = new SimplePager();
     private final CellTable<RESTProjectV1> results = new CellTable<RESTProjectV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
-    private AsyncDataProvider<RESTProjectV1> provider;
+    private EnhancedAsyncDataProvider<RESTProjectV1> provider;
 
     private final TextColumn<RESTProjectV1> idColumn = new TextColumn<RESTProjectV1>() {
         @Override
@@ -75,12 +74,12 @@ public class TagProjectsView extends TagViewBase implements TagProjectsPresenter
     }
 
     @Override
-    public AsyncDataProvider<RESTProjectV1> getProvider() {
+    public EnhancedAsyncDataProvider<RESTProjectV1> getProvider() {
         return provider;
     }
 
     @Override
-    public void setProvider(final AsyncDataProvider<RESTProjectV1> provider) {
+    public void setProvider(final EnhancedAsyncDataProvider<RESTProjectV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }

@@ -8,6 +8,7 @@ import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter
 import org.jboss.pressgangccms.client.local.mvp.view.tag.TagProjectsView;
 import org.jboss.pressgangccms.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
+import org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgangccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTagV1;
@@ -18,8 +19,6 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.view.client.AbstractDataProvider;
-import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 
 /**
@@ -31,9 +30,9 @@ import com.google.gwt.view.client.HasData;
 @Dependent
 public class TagCategoriesPresenter extends TemplatePresenter implements EditableView {
     public interface Display extends TagViewInterface {
-        AsyncDataProvider<RESTCategoryV1> getProvider();
+        EnhancedAsyncDataProvider<RESTCategoryV1> getProvider();
 
-        void setProvider(final AsyncDataProvider<RESTCategoryV1> provider);
+        void setProvider(final EnhancedAsyncDataProvider<RESTCategoryV1> provider);
 
         CellTable<RESTCategoryV1> getResults();
 
@@ -45,9 +44,9 @@ public class TagCategoriesPresenter extends TemplatePresenter implements Editabl
 
         Column<RESTTagV1, String> getTagUpButtonColumn();
 
-        AsyncDataProvider<RESTTagV1> getTagsProvider();
+        EnhancedAsyncDataProvider<RESTTagV1> getTagsProvider();
 
-        void setTagsProvider(AsyncDataProvider<RESTTagV1> tagsProvider);
+        void setTagsProvider(EnhancedAsyncDataProvider<RESTTagV1> tagsProvider);
 
         VerticalPanel getTagsResultsPanel();
 
@@ -75,7 +74,7 @@ public class TagCategoriesPresenter extends TemplatePresenter implements Editabl
     private void bind() {
         super.bind(display, this);
 
-        final AsyncDataProvider<RESTCategoryV1> provider = new AsyncDataProvider<RESTCategoryV1>() {
+        final EnhancedAsyncDataProvider<RESTCategoryV1> provider = new EnhancedAsyncDataProvider<RESTCategoryV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTCategoryV1> item) {
                 final int start = item.getVisibleRange().getStart();

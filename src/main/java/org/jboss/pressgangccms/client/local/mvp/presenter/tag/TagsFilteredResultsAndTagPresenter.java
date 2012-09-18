@@ -1,7 +1,6 @@
 package org.jboss.pressgangccms.client.local.mvp.presenter.tag;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -31,11 +30,9 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
-import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.ListDataProvider;
 
 /**
  * This presenter takes the TagFilteredResults view to provide a list of tags, and the TagView, TagProjectsView and
@@ -146,7 +143,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                         retValue.cloneInto(tagProviderData.getSelectedItem(), true);
                         
                         /* refresh the list of tags */
-                        filteredResultsDisplay.getProvider().updateRowData(tagProviderData.getStartRow(), tagProviderData.getItems());
+                        filteredResultsDisplay.getProvider().displayNewFixedList(tagProviderData.getItems());
 
                         /* reload the list of categoires and projects */
                         resetCategoryAndProjectsLists(false);
@@ -347,9 +344,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                             .getItems());
 
                     /* Refresh the list */
-                    projectsDisplay.getProvider().updateRowData(projectProviderData.getStartRow(),
-                            projectProviderData.getItems());
-                    projectsDisplay.getProvider().updateRowCount(projectProviderData.getItems().size(), true);
+                    projectsDisplay.getProvider().displayNewFixedList(projectProviderData.getItems());
 
                 } finally {
                     projectsDisplay.removeWaitOperation();
@@ -365,7 +360,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
         /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
         projectProviderData.reset();
-        projectsDisplay.getProvider().updateRowCount(0, false);
+        projectsDisplay.getProvider().resetProvider();
 
         RESTCalls.getProjects(callback);
     }
@@ -396,9 +391,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                     categoryProviderData.setItems(retValue.getItems() == null ? new ArrayList<RESTCategoryV1>() : retValue
                             .getItems());
 
-                    categoriesDisplay.getProvider().updateRowData(categoryProviderData.getStartRow(),
-                            categoryProviderData.getItems());
-                    categoriesDisplay.getProvider().updateRowCount(categoryProviderData.getItems().size(), false);
+                    categoriesDisplay.getProvider().displayNewFixedList(categoryProviderData.getItems());
 
                 } finally {
                     categoriesDisplay.removeWaitOperation();
@@ -414,7 +407,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
         /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
         categoryProviderData.reset();
-        categoriesDisplay.getProvider().updateRowCount(0, false);
+        categoriesDisplay.getProvider().resetProvider();
 
         RESTCalls.getCategories(callback);
     }
@@ -479,8 +472,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                 }
 
                 /* refresh the category list */
-                categoriesDisplay.getProvider().updateRowData(categoryProviderData.getStartRow(),
-                        categoryProviderData.getItems());
+                categoriesDisplay.getProvider().displayNewFixedList(categoryProviderData.getItems());
 
                 /*
                  * reset the provider, which will refresh the list of tags
@@ -531,7 +523,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                 }
 
                 /* refresh the project list */
-                projectsDisplay.getProvider().updateRowData(projectProviderData.getStartRow(), projectProviderData.getItems());
+                projectsDisplay.getProvider().displayNewFixedList(projectProviderData.getItems());
             }
         });
     }
@@ -564,8 +556,8 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
     /**
      * @return A provider to be used for the tag display list
      */
-    private AsyncDataProvider<RESTTagV1> generateCategoriesTagListProvider() {
-        final AsyncDataProvider<RESTTagV1> provider = new EnhancedAsyncDataProvider<RESTTagV1>() {
+    private EnhancedAsyncDataProvider<RESTTagV1> generateCategoriesTagListProvider() {
+        final EnhancedAsyncDataProvider<RESTTagV1> provider = new EnhancedAsyncDataProvider<RESTTagV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTagV1> display) {
                 categoryTagsProviderData.setStartRow(display.getVisibleRange().getStart());
@@ -596,8 +588,8 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
      * 
      * @return A provider to be used for the category display list.
      */
-    private AsyncDataProvider<RESTCategoryV1> generateCategoriesListProvider() {
-        final AsyncDataProvider<RESTCategoryV1> provider = new EnhancedAsyncDataProvider<RESTCategoryV1>() {
+    private EnhancedAsyncDataProvider<RESTCategoryV1> generateCategoriesListProvider() {
+        final EnhancedAsyncDataProvider<RESTCategoryV1> provider = new EnhancedAsyncDataProvider<RESTCategoryV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTCategoryV1> display) {
 
@@ -616,9 +608,9 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
     /**
      * @return A provider to be used for the project display list
      */
-    private AsyncDataProvider<RESTProjectV1> generateProjectListProvider() {
+    private EnhancedAsyncDataProvider<RESTProjectV1> generateProjectListProvider() {
         
-        final AsyncDataProvider<RESTProjectV1> provider = new EnhancedAsyncDataProvider<RESTProjectV1>() {
+        final EnhancedAsyncDataProvider<RESTProjectV1> provider = new EnhancedAsyncDataProvider<RESTProjectV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTProjectV1> display) {
 
@@ -637,8 +629,8 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
     /**
      * @return A provider to be used for the tag display list
      */
-    private AsyncDataProvider<RESTTagV1> generateListProvider() {
-        final AsyncDataProvider<RESTTagV1> provider = new EnhancedAsyncDataProvider<RESTTagV1>() {
+    private EnhancedAsyncDataProvider<RESTTagV1> generateListProvider() {
+        final EnhancedAsyncDataProvider<RESTTagV1> provider = new EnhancedAsyncDataProvider<RESTTagV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTagV1> display) {
 
@@ -808,15 +800,14 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         if (displayedView == projectsDisplay) {
             /* If we switch to this view before the projects have been downloaded, there is nothing to update */
             if (projectsDisplay.getProvider() != null && projectProviderData.getItems() != null) {
-                projectsDisplay.getProvider().updateRowData(projectProviderData.getStartRow(), projectProviderData.getItems());
+                projectsDisplay.getProvider().displayNewFixedList(projectProviderData.getItems());
             }
         }
         /* refresh the category list */
         else if (displayedView == categoriesDisplay) {
             /* If we switch to this view before the categories have been downloaded, there is nothing to update */
             if (categoriesDisplay.getProvider() != null && categoryProviderData.getItems() != null) {
-                categoriesDisplay.getProvider().updateRowData(categoryProviderData.getStartRow(),
-                        categoryProviderData.getItems());
+                categoriesDisplay.getProvider().displayNewFixedList(categoryProviderData.getItems());
             }
         }
 

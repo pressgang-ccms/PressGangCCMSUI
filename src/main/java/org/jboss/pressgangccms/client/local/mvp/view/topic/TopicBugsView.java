@@ -6,21 +6,21 @@ import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicBugsPresent
 import org.jboss.pressgangccms.client.local.resources.css.TableResources;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.ui.SplitType;
+import org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgangccms.rest.v1.entities.RESTBugzillaBugV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTTopicV1;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.AnchorCell;
 import com.google.gwt.user.client.ui.DisableableCheckboxCell;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.view.client.AsyncDataProvider;
 
 /**
  * A MVP view for displaying a topic's Bugzilla Bugs
@@ -35,7 +35,7 @@ public class TopicBugsView extends TopicViewBase implements TopicBugsPresenter.D
     private final SimplePager pager = new SimplePager();
     private final CellTable<RESTBugzillaBugV1> results = new CellTable<RESTBugzillaBugV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
-    private AsyncDataProvider<RESTBugzillaBugV1> provider;
+    private EnhancedAsyncDataProvider<RESTBugzillaBugV1> provider;
 
     private final TextColumn<RESTBugzillaBugV1> summaryColumn = new TextColumn<RESTBugzillaBugV1>() {
         @Override
@@ -65,12 +65,12 @@ public class TopicBugsView extends TopicViewBase implements TopicBugsPresenter.D
     };
 
     @Override
-    public AsyncDataProvider<RESTBugzillaBugV1> getProvider() {
+    public EnhancedAsyncDataProvider<RESTBugzillaBugV1> getProvider() {
         return provider;
     }
 
     @Override
-    public void setProvider(final AsyncDataProvider<RESTBugzillaBugV1> provider) {
+    public void setProvider(final EnhancedAsyncDataProvider<RESTBugzillaBugV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }

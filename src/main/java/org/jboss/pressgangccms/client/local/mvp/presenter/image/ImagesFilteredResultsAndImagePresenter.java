@@ -13,6 +13,7 @@ import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterf
 import org.jboss.pressgangccms.client.local.mvp.view.image.ImagesFilteredResultsAndImageView;
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
+import org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgangccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgangccms.rest.v1.entities.RESTImageV1;
 
@@ -23,7 +24,6 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
-import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
@@ -86,7 +86,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
     private void bind() {
         super.bind(display, this);
 
-        final AsyncDataProvider<RESTImageV1> provider = generateListProvider();
+        final EnhancedAsyncDataProvider<RESTImageV1> provider = generateListProvider();
         imageFilteredResultsDisplay.setProvider(provider);
 
         bindListRowClicks();
@@ -108,8 +108,8 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
     /**
      * @return A provider to be used for the topic display list
      */
-    private AsyncDataProvider<RESTImageV1> generateListProvider() {
-        final AsyncDataProvider<RESTImageV1> provider = new AsyncDataProvider<RESTImageV1>() {
+    private EnhancedAsyncDataProvider<RESTImageV1> generateListProvider() {
+        final EnhancedAsyncDataProvider<RESTImageV1> provider = new EnhancedAsyncDataProvider<RESTImageV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTImageV1> display) {
                 tableStartRow = display.getVisibleRange().getStart();
