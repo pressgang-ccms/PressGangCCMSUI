@@ -64,6 +64,8 @@ import com.google.gwt.view.client.HasData;
 @Dependent
 public class SearchResultsAndTopicPresenter extends TemplatePresenter implements EditableView {
 
+    public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
+    
     public interface Display extends BaseTemplateViewInterface {
         SplitType getSplitType();
 
@@ -1113,7 +1115,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
 
     @Override
     public void parseToken(final String historyToken) {
-        queryString = historyToken.replace(SearchResultsAndTopicView.HISTORY_TOKEN + ";", "");
+        queryString = historyToken.replace(HISTORY_TOKEN + ";", "");
 
         if (queryString.startsWith(SPLIT_TOKEN_HORIZONTAL)) {
             display.initialize(SplitType.HORIZONTAL, topicSplitPanelRenderedDisplay.getPanel());

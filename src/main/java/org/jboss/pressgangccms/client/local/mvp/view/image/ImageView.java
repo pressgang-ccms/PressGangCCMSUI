@@ -22,7 +22,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 
 public class ImageView extends BaseTemplateView implements ImagePresenter.Display {
-    public static final String HISTORY_TOKEN = "ImageView";
+    
 
     private RESTImageV1Editor editor;
     private ImagePresenterDriver driver = GWT.create(ImagePresenterDriver.class);

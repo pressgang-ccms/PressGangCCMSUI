@@ -25,6 +25,8 @@ import com.google.gwt.view.client.HasData;
 
 @Dependent
 public class ImageFilteredResultsPresenter extends TemplatePresenter implements EditableView {
+    public static final String HISTORY_TOKEN = "ImageFilteredResultsView";
+    
     public interface Display extends BaseTemplateViewInterface {
         org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider<RESTImageV1> getProvider();
 

@@ -21,6 +21,8 @@ import com.google.gwt.user.client.ui.ValueListBox;
 
 @Dependent
 public class TopicTagsPresenter extends TemplatePresenter {
+    public static final String HISTORY_TOKEN = "TopicTagsView";
+    
     private String topicId;
 
     @Inject

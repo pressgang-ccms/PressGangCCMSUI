@@ -30,6 +30,8 @@ import com.google.gwt.view.client.HasData;
 
 @Dependent
 public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase implements EditableView {
+   
+    public static final String HISTORY_TOKEN = "ImageFilteredResultsAndImageView";
     
     public interface Display extends BaseTemplateViewInterface {
         SimpleLayoutPanel getResultsPanel();
@@ -219,7 +221,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
 
     @Override
     public void parseToken(final String historyToken) {
-        queryString = historyToken.replace(ImagesFilteredResultsAndImageView.HISTORY_TOKEN + ";", "");
+        queryString = historyToken.replace(HISTORY_TOKEN + ";", "");
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
         }

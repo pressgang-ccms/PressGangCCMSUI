@@ -24,6 +24,8 @@ import com.google.gwt.view.client.HasData;
 
 @Dependent
 public class TagFilteredResultsPresenter extends TemplatePresenter implements EditableView {
+    public static final String HISTORY_TOKEN = "ImageFilteredResultsView";
+    
     public interface Display extends BaseTemplateViewInterface {
         EnhancedAsyncDataProvider<RESTTagV1> getProvider();
 

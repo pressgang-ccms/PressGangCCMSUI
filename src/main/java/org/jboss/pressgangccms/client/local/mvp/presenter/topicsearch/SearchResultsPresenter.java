@@ -23,6 +23,9 @@ import com.google.gwt.view.client.HasData;
 
 @Dependent
 public class SearchResultsPresenter extends TemplatePresenter implements EditableView {
+    
+    public static final String HISTORY_TOKEN = "SearchResultsView";
+    
     public interface Display extends BaseTemplateViewInterface {
         EnhancedAsyncDataProvider<RESTTopicV1> getProvider();
 
@@ -43,7 +46,7 @@ public class SearchResultsPresenter extends TemplatePresenter implements Editabl
 
     @Override
     public void parseToken(final String searchToken) {
-        queryString = searchToken.replace(SearchResultsView.HISTORY_TOKEN + ";", "");
+        queryString = searchToken.replace(HISTORY_TOKEN + ";", "");
     }
 
     @Override

@@ -18,6 +18,8 @@ import com.google.gwt.user.client.ui.PushButton;
 
 @Dependent
 public class ImagePresenter extends ImagePresenterBase {
+    public static final String HISTORY_TOKEN = "ImageView";
+    
     @Inject
     private Display display;
 
@@ -81,7 +83,7 @@ public class ImagePresenter extends ImagePresenterBase {
     @Override
     public void parseToken(final String historyToken) {
         try {
-            imageId = Integer.parseInt(historyToken.replace(ImageView.HISTORY_TOKEN + ";", ""));
+            imageId = Integer.parseInt(historyToken.replace(HISTORY_TOKEN + ";", ""));
         } catch (final Exception ex) {
             // bad history token. silently fail
             imageId = null;

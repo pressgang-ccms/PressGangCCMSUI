@@ -20,6 +20,8 @@ import com.google.gwt.view.client.HasData;
 
 @Dependent
 public class TagProjectsPresenter extends TemplatePresenter implements EditableView {
+    public static final String HISTORY_TOKEN = "TagProjectsView";
+    
     public interface Display extends TagViewInterface {
         EnhancedAsyncDataProvider<RESTProjectV1> getProvider();
 
@@ -39,7 +41,7 @@ public class TagProjectsPresenter extends TemplatePresenter implements EditableV
 
     @Override
     public void parseToken(final String searchToken) {
-        queryString = searchToken.replace(TagProjectsView.HISTORY_TOKEN + ";", "");
+        queryString = searchToken.replace(HISTORY_TOKEN + ";", "");
     }
 
     @Override

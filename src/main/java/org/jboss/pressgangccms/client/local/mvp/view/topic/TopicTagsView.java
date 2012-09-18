@@ -25,7 +25,7 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.web.bindery.requestfactory.gwt.ui.client.ProxyRenderer;
 
 public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.Display {
-    public static final String HISTORY_TOKEN = "TopicTagsView";
+    
 
     final FlexTable layout = new FlexTable();
 

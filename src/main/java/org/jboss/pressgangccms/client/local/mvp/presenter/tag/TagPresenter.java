@@ -16,6 +16,9 @@ import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
 public class TagPresenter extends TemplatePresenter implements EditableView {
+   
+    public static final String HISTORY_TOKEN = "TagView";
+    
     // Empty interface declaration, similar to UiBinder
     public interface TagPresenterDriver extends SimpleBeanEditorDriver<RESTTagV1, RESTTagV1BasicDetailsEditor> {
     }
@@ -32,7 +35,7 @@ public class TagPresenter extends TemplatePresenter implements EditableView {
 
     @Override
     public void parseToken(final String searchToken) {
-        tagId = searchToken.replace(TagView.HISTORY_TOKEN + ";", "");
+        tagId = searchToken.replace(HISTORY_TOKEN + ";", "");
     }
 
     @Override

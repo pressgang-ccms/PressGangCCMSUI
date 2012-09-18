@@ -19,7 +19,7 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TagProjectsView extends TagViewBase implements TagProjectsPresenter.Display {
-    public static final String HISTORY_TOKEN = "TagProjectsView";
+    
 
     /** A reference to the tag that this view will be modifying */
     private RESTTagV1 tag;

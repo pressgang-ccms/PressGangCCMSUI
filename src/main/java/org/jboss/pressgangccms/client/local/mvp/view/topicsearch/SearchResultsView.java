@@ -17,7 +17,7 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class SearchResultsView extends BaseTemplateView implements SearchResultsPresenter.Display {
-    public static final String HISTORY_TOKEN = "SearchResultsView";
+    
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
 

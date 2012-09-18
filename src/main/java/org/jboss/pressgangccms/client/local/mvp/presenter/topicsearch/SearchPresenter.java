@@ -24,6 +24,8 @@ import com.google.gwt.user.client.ui.PushButton;
 @Dependent
 public class SearchPresenter extends TemplatePresenter implements EditableView {
 
+    public static final String HISTORY_TOKEN = "SearchView";
+    
     public interface Display extends BaseTemplateViewInterface {
         // Empty interface declaration, similar to UiBinder
         interface SearchPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor> {

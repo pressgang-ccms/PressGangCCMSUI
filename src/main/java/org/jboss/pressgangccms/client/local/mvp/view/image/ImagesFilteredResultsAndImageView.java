@@ -14,7 +14,9 @@ import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 
 public class ImagesFilteredResultsAndImageView extends BaseTemplateView implements
         ImagesFilteredResultsAndImagePresenter.Display {
-    public static final String HISTORY_TOKEN = "ImageFilteredResultsAndImageView";
+    
+    
+    
     private final HanldedSplitLayoutPanel splitPanel = new HanldedSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
     private final DockLayoutPanel resultsViewLayoutPanel = new DockLayoutPanel(Unit.PX);
     private final DockLayoutPanel viewLayoutPanel = new DockLayoutPanel(Unit.PX);

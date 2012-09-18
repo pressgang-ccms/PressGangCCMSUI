@@ -11,7 +11,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 
 public class TopicView extends TopicViewBase implements TopicPresenter.Display {
-    public static final String HISTORY_TOKEN = "TopicView";
 
     /** The GWT Editor Driver */
     private final TopicPresenterDriver driver = GWT.create(TopicPresenterDriver.class);

@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TagCategoriesView extends TagViewBase implements TagCategoriesPresenter.Display {
-    public static final String HISTORY_TOKEN = "TagCategoriesView";
+    
 
     /** A reference to the tag that this view will be modifying. */
     private RESTTagV1 tag;

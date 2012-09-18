@@ -43,6 +43,9 @@ import com.google.gwt.view.client.HasData;
 @Dependent
 public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
+    /** The history token used to identify this view */
+    public static final String HISTORY_TOKEN = "TagFilteredResultsAndImageView";
+    
     /**
      * This interface describes the required UI elements for the parent view (i.e. the view that holds the four views
      * TagFilteredResults view to provide a list of tags, and the TagView, TagProjectsView and TagCategoriesView.
@@ -756,7 +759,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
     @Override
     public void parseToken(final String historyToken) {
-        queryString = historyToken.replace(TagsFilteredResultsAndTagView.HISTORY_TOKEN + ";", "");
+        queryString = historyToken.replace(HISTORY_TOKEN + ";", "");
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
         }

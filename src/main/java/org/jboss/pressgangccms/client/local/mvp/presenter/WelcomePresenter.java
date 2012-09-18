@@ -11,6 +11,9 @@ import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
 public class WelcomePresenter extends TemplatePresenter implements EditableView {
+    
+    public static final String HISTORY_TOKEN = "WelcomeView";
+    
     public interface Display extends BaseTemplateViewInterface {
 
     }

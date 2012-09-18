@@ -7,6 +7,7 @@ import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.errai.ioc.client.api.AfterInitialization;
 import org.jboss.errai.ioc.client.api.EntryPoint;
 import org.jboss.pressgangccms.client.local.constants.Constants;
+import org.jboss.pressgangccms.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgangccms.client.local.mvp.view.WelcomeView;
 import org.jboss.pressgangccms.client.local.resources.css.CSSResources;
 
@@ -40,7 +41,7 @@ public class App {
                 ex.printStackTrace();
                 Window.alert("Uncaught exception was detected. Redirecting you to the home page.\nException: "
                         + ex.getMessage());
-                History.newItem(WelcomeView.HISTORY_TOKEN);
+                History.newItem(WelcomePresenter.HISTORY_TOKEN);
             }
         });
 

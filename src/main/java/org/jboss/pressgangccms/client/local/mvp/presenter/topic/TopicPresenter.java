@@ -15,6 +15,9 @@ import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
 public class TopicPresenter extends TemplatePresenter {
+   
+    public static final String HISTORY_TOKEN = "TopicView";
+    
     // Empty interface declaration, similar to UiBinder
     public interface TopicPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1BasicDetailsEditor> {
     }
@@ -30,7 +33,7 @@ public class TopicPresenter extends TemplatePresenter {
 
     @Override
     public void parseToken(final String searchToken) {
-        topicId = searchToken.replace(TopicView.HISTORY_TOKEN + ";", "");
+        topicId = searchToken.replace(HISTORY_TOKEN + ";", "");
     }
 
     @Override

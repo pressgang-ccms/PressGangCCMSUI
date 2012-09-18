@@ -9,7 +9,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 
 public class TagView extends TagViewBase implements TagPresenter.Display {
-    public static final String HISTORY_TOKEN = "TagView";
+    
 
     /** The GWT Editor Driver */
     private final TagPresenterDriver driver = GWT.create(TagPresenterDriver.class);

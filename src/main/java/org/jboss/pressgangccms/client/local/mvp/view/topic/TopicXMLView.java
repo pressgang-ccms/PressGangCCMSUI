@@ -16,7 +16,7 @@ import com.google.gwt.user.client.ui.ToggleButton;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 
 public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Display {
-    public static final String HISTORY_TOKEN = "TopicXMLView";
+   
 
     /** The GWT Editor Driver */
     private final TopicXMLPresenterDriver driver = GWT.create(TopicXMLPresenterDriver.class);

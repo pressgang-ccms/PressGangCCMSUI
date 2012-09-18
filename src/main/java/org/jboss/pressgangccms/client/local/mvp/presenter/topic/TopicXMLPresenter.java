@@ -15,6 +15,8 @@ import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 
 @Dependent
 public class TopicXMLPresenter extends TemplatePresenter {
+    public static final String HISTORY_TOKEN = "TopicXMLView";
+    
     private String topicId;
 
     // Empty interface declaration, similar to UiBinder

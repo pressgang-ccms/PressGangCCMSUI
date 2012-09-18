@@ -15,8 +15,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PushButton;
 
-public class SearchView extends BaseTemplateView implements SearchPresenter.Display {
-    public static final String HISTORY_TOKEN = "SearchView";
+public class SearchView extends BaseTemplateView implements SearchPresenter.Display {    
 
     private final PushButton search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
 

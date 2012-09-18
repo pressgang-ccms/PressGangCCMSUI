@@ -16,8 +16,7 @@ public class TagsFilteredResultsAndTagView extends BaseTemplateView implements T
     public TagsFilteredResultsAndTagView(final String applicationName, final String pageName) {
         super(applicationName, pageName);
     }
-
-    public static final String HISTORY_TOKEN = "TagFilteredResultsAndImageView";
+    
     private final HanldedSplitLayoutPanel splitPanel = new HanldedSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
     private final DockLayoutPanel resultsViewLayoutPanel = new DockLayoutPanel(Unit.PX);
     private final DockLayoutPanel viewLayoutPanel = new DockLayoutPanel(Unit.PX);

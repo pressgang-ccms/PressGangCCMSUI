@@ -14,6 +14,8 @@ import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
 public class TopicRevisionsPresenter extends TemplatePresenter {
+    public static final String HISTORY_TOKEN = "TopicHistoryView";
+    
     private String topicId;
 
     public interface Display extends TopicViewInterface {

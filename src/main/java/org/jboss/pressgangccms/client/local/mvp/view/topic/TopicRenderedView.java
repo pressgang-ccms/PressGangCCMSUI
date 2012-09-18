@@ -14,7 +14,7 @@ import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HTML;
 
 public class TopicRenderedView extends TopicViewBase implements TopicRenderedPresenter.Display {
-    public static final String HISTORY_TOKEN = "TopicRenderedView";
+    
 
     private final HTML div = new HTML("div");
 

@@ -29,6 +29,8 @@ import com.google.gwt.view.client.HasData;
  */
 @Dependent
 public class TagCategoriesPresenter extends TemplatePresenter implements EditableView {
+    public static final String HISTORY_TOKEN = "TagCategoriesView";
+    
     public interface Display extends TagViewInterface {
         EnhancedAsyncDataProvider<RESTCategoryV1> getProvider();
 

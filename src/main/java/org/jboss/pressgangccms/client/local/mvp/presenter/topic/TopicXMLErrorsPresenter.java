@@ -15,6 +15,8 @@ import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
 public class TopicXMLErrorsPresenter extends TemplatePresenter {
+    public static final String HISTORY_TOKEN = "TopicXMLErrorsView";
+    
     // Empty interface declaration, similar to UiBinder
     public interface TopicXMLErrorsPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1XMLErrorsEditor> {
     }
@@ -30,7 +32,7 @@ public class TopicXMLErrorsPresenter extends TemplatePresenter {
 
     @Override
     public void parseToken(final String searchToken) {
-        topicId = searchToken.replace(TopicXMLErrorsView.HISTORY_TOKEN + ";", "");
+        topicId = searchToken.replace(HISTORY_TOKEN + ";", "");
     }
 
     @Override

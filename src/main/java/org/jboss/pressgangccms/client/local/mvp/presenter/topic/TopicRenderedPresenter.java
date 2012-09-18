@@ -8,6 +8,8 @@ import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
 public class TopicRenderedPresenter extends TemplatePresenter {
+    public static final String HISTORY_TOKEN = "TopicRenderedView";
+    
     private String topicId;
 
     public interface Display extends TopicViewInterface {

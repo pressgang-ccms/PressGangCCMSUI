@@ -11,7 +11,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 
 public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsPresenter.Display {
-    public static final String HISTORY_TOKEN = "TopicXMLErrorsView";
+    
 
     /** The GWT Editor Driver */
     private final TopicXMLErrorsPresenterDriver driver = GWT.create(TopicXMLErrorsPresenterDriver.class);

@@ -22,7 +22,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TagFilteredResultsView extends BaseTemplateView implements TagFilteredResultsPresenter.Display {
-    public static final String HISTORY_TOKEN = "ImageFilteredResultsView";
+    
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
     private final FlexTable filterTable = new FlexTable();

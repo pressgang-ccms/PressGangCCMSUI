@@ -27,7 +27,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * @author Matthew Casperson
  */
 public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsPresenter.Display {
-    public static final String HISTORY_TOKEN = "TopicHistoryView";
+    
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
 
