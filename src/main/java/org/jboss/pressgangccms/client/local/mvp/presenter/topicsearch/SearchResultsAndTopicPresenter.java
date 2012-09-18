@@ -27,6 +27,7 @@ import org.jboss.pressgangccms.client.local.ui.editor.topicview.assignedtags.Top
 import org.jboss.pressgangccms.client.local.ui.search.SearchUICategory;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProject;
 import org.jboss.pressgangccms.client.local.ui.search.SearchUIProjects;
+import org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgangccms.rest.v1.collections.RESTBugzillaBugCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTTopicCollectionV1;
@@ -522,23 +523,14 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
      * @return A provider to be used for the topic revisions display list
      */
     private AsyncDataProvider<RESTTopicV1> generateTopicRevisionsListProvider() {
-        final AsyncDataProvider<RESTTopicV1> provider = new AsyncDataProvider<RESTTopicV1>() {
+        final AsyncDataProvider<RESTTopicV1> provider = new EnhancedAsyncDataProvider<RESTTopicV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTopicV1> display) {
                 if (topicProviderData.getDisplayedItem() != null && topicProviderData.getDisplayedItem().getRevisions() != null
                         && topicProviderData.getDisplayedItem().getRevisions().getItems() != null) {
-
-                    final int count = topicProviderData.getDisplayedItem().getRevisions().getItems().size();
-                    final int tableStartRow = display.getVisibleRange().getStart();
-                    final int length = display.getVisibleRange().getLength();
-                    final int end = tableStartRow + length;
-                    final int fixedEnd = end > count ? count : end;
-
-                    updateRowData(tableStartRow,
-                            topicProviderData.getDisplayedItem().getRevisions().getItems().subList(tableStartRow, fixedEnd));
-                    updateRowCount(count, true);
+                    displayNewFixedList(topicProviderData.getDisplayedItem().getRevisions().getItems());
                 } else {
-                    updateRowCount(0, false);
+                    resetProvider();
                 }
             }
         };
@@ -549,26 +541,15 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
      * @return A provider to be used for the topic display list
      */
     private AsyncDataProvider<RESTBugzillaBugV1> generateTopicBugListProvider() {
-        final AsyncDataProvider<RESTBugzillaBugV1> provider = new AsyncDataProvider<RESTBugzillaBugV1>() {
+        final AsyncDataProvider<RESTBugzillaBugV1> provider = new EnhancedAsyncDataProvider<RESTBugzillaBugV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTBugzillaBugV1> display) {
                 if (topicProviderData.getDisplayedItem() != null
                         && topicProviderData.getDisplayedItem().getBugzillaBugs_OTM() != null
                         && topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getItems() != null) {
-
-                    final int bugzillaCount = topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getItems().size();
-                    final int tableStartRow = display.getVisibleRange().getStart();
-                    final int length = display.getVisibleRange().getLength();
-                    final int end = tableStartRow + length;
-                    final int fixedEnd = end > bugzillaCount ? bugzillaCount : end;
-
-                    updateRowData(
-                            tableStartRow,
-                            topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getItems()
-                                    .subList(tableStartRow, fixedEnd));
-                    updateRowCount(bugzillaCount, true);
+                    displayNewFixedList(topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getItems());
                 } else {
-                    updateRowCount(0, false);
+                    resetProvider();
                 }
             }
         };
@@ -579,12 +560,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
      * @return A provider to be used for the topic display list
      */
     private AsyncDataProvider<RESTTopicV1> generateTopicListProvider() {
-        final AsyncDataProvider<RESTTopicV1> provider = new AsyncDataProvider<RESTTopicV1>() {
+        final AsyncDataProvider<RESTTopicV1> provider = new EnhancedAsyncDataProvider<RESTTopicV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTopicV1> display) {
-                tableStartRow = display.getVisibleRange().getStart();
-                final int length = display.getVisibleRange().getLength();
-                final int end = tableStartRow + length;
 
                 final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
                     @Override
@@ -602,8 +580,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                     public void success(final RESTTopicCollectionV1 retValue) {
                         try {
                             topicProviderData.setItems(retValue.getItems());
-                            updateRowData(tableStartRow, topicProviderData.getItems());
-                            updateRowCount(retValue.getSize(), true);
+                            displayAsynchronousList(topicProviderData.getItems(), retValue.getSize(), display.getVisibleRange()
+                                    .getStart());
                         } finally {
                             searchResultsDisplay.removeWaitOperation();
                         }
@@ -615,6 +593,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
                 };
+
+                tableStartRow = display.getVisibleRange().getStart();
+                final int length = display.getVisibleRange().getLength();
+                final int end = tableStartRow + length;
 
                 RESTCalls.getTopicsFromQuery(callback, queryString, tableStartRow, end);
             }

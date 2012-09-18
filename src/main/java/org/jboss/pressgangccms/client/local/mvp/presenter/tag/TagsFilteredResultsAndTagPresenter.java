@@ -1,6 +1,7 @@
 package org.jboss.pressgangccms.client.local.mvp.presenter.tag;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -13,6 +14,7 @@ import org.jboss.pressgangccms.client.local.mvp.view.tag.TagsFilteredResultsAndT
 import org.jboss.pressgangccms.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgangccms.client.local.restcalls.RESTCalls;
 import org.jboss.pressgangccms.client.local.ui.ProviderUpdateData;
+import org.jboss.pressgangccms.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgangccms.client.local.utilities.GWTUtilities;
 import org.jboss.pressgangccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgangccms.rest.v1.collections.RESTProjectCollectionV1;
@@ -33,6 +35,7 @@ import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
+import com.google.gwt.view.client.ListDataProvider;
 
 /**
  * This presenter takes the TagFilteredResults view to provide a list of tags, and the TagView, TagProjectsView and
@@ -562,12 +565,11 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
      * @return A provider to be used for the tag display list
      */
     private AsyncDataProvider<RESTTagV1> generateCategoriesTagListProvider() {
-        final AsyncDataProvider<RESTTagV1> provider = new AsyncDataProvider<RESTTagV1>() {
+        final AsyncDataProvider<RESTTagV1> provider = new EnhancedAsyncDataProvider<RESTTagV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTagV1> display) {
-                categoryTagsProviderData.setStartRow(0);
-
-                categoryTagsProviderData.setItems(new ArrayList<RESTTagV1>());
+                categoryTagsProviderData.setStartRow(display.getVisibleRange().getStart());
+                categoryTagsProviderData.setItems(new ArrayList<RESTTagV1>());                                          
 
                 /* Zero results can be a null list. Also selecting a new tag will reset categoryProviderData. */
                 if (categoryProviderData.getDisplayedItem() != null
@@ -580,9 +582,8 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                         }
                     }
                 }
-
-                updateRowData(categoryTagsProviderData.getStartRow(), categoryTagsProviderData.getItems());
-                updateRowCount(categoryTagsProviderData.getItems().size(), true);
+                
+                displayNewFixedList(categoryTagsProviderData.getItems());
             }
         };
         return provider;
@@ -596,18 +597,17 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
      * @return A provider to be used for the category display list.
      */
     private AsyncDataProvider<RESTCategoryV1> generateCategoriesListProvider() {
-        final AsyncDataProvider<RESTCategoryV1> provider = new AsyncDataProvider<RESTCategoryV1>() {
+        final AsyncDataProvider<RESTCategoryV1> provider = new EnhancedAsyncDataProvider<RESTCategoryV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTCategoryV1> display) {
-                final int count = projectProviderData.getItems() == null ? 0 : projectProviderData.getItems().size();
-                final boolean exactMacth = projectProviderData.getItems() != null;
 
                 categoryProviderData.setStartRow(display.getVisibleRange().getStart());
-
+                
                 if (categoryProviderData.getItems() != null)
-                    updateRowData(categoryProviderData.getStartRow(), categoryProviderData.getItems());
+                    displayNewFixedList(categoryProviderData.getItems());
+                else
+                    resetProvider();
 
-                updateRowCount(count, exactMacth);
             }
         };
         return provider;
@@ -617,19 +617,18 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
      * @return A provider to be used for the project display list
      */
     private AsyncDataProvider<RESTProjectV1> generateProjectListProvider() {
-        final AsyncDataProvider<RESTProjectV1> provider = new AsyncDataProvider<RESTProjectV1>() {
+        
+        final AsyncDataProvider<RESTProjectV1> provider = new EnhancedAsyncDataProvider<RESTProjectV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTProjectV1> display) {
 
-                final int count = projectProviderData.getItems() == null ? 0 : projectProviderData.getItems().size();
-                final boolean exactMacth = projectProviderData.getItems() != null;
-
                 projectProviderData.setStartRow(display.getVisibleRange().getStart());
-
+                
                 if (projectProviderData.getItems() != null)
-                    updateRowData(projectProviderData.getStartRow(), projectProviderData.getItems());
+                    displayNewFixedList(projectProviderData.getItems());
+                else
+                    resetProvider();
 
-                updateRowCount(count, exactMacth);
             }
         };
         return provider;
@@ -639,12 +638,9 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
      * @return A provider to be used for the tag display list
      */
     private AsyncDataProvider<RESTTagV1> generateListProvider() {
-        final AsyncDataProvider<RESTTagV1> provider = new AsyncDataProvider<RESTTagV1>() {
+        final AsyncDataProvider<RESTTagV1> provider = new EnhancedAsyncDataProvider<RESTTagV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTagV1> display) {
-                tagProviderData.setStartRow(display.getVisibleRange().getStart());
-                final int length = display.getVisibleRange().getLength();
-                final int end = tagProviderData.getStartRow() + length;
 
                 final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
                     @Override
@@ -664,8 +660,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                             /* Zero results can be a null list */
                             tagProviderData.setItems(retValue.getItems() == null ? new ArrayList<RESTTagV1>() : retValue
                                     .getItems());
-                            updateRowData(tagProviderData.getStartRow(), tagProviderData.getItems());
-                            updateRowCount(retValue.getSize(), true);
+                            displayAsynchronousList(tagProviderData.getItems(), retValue.getSize(), tagProviderData.getStartRow());
                         } finally {
                             filteredResultsDisplay.removeWaitOperation();
                         }
@@ -677,6 +672,10 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
                 };
+                
+                tagProviderData.setStartRow(display.getVisibleRange().getStart());
+                final int length = display.getVisibleRange().getLength();
+                final int end = tagProviderData.getStartRow() + length;
 
                 RESTCalls.getTagsFromQuery(callback, queryString, tagProviderData.getStartRow(), end);
             }
