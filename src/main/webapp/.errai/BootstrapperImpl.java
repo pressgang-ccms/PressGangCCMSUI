@@ -32,57 +32,57 @@ import org.jboss.errai.ioc.client.container.CreationalCallback;
 import org.jboss.errai.ioc.client.container.CreationalContext;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
 import org.jboss.errai.ioc.client.container.ProxyResolver;
-import org.jboss.pressgangccms.client.local.App;
-import org.jboss.pressgangccms.client.local.AppController;
-import org.jboss.pressgangccms.client.local.mvp.presenter.WelcomePresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.base.Presenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagePresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagePresenterBase;
-import org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagCategoriesPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagCategoriesPresenter.Display;
-import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagFilteredResultsPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagPresenterBase;
-import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagProjectsPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicBugsPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicRenderedPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicTagsPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicXMLPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter;
-import org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsPresenter;
-import org.jboss.pressgangccms.client.local.mvp.view.WelcomeView;
-import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateView;
-import org.jboss.pressgangccms.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgangccms.client.local.mvp.view.image.ImageFilteredResultsView;
-import org.jboss.pressgangccms.client.local.mvp.view.image.ImageView;
-import org.jboss.pressgangccms.client.local.mvp.view.image.ImagesFilteredResultsAndImageView;
-import org.jboss.pressgangccms.client.local.mvp.view.tag.TagCategoriesView;
-import org.jboss.pressgangccms.client.local.mvp.view.tag.TagFilteredResultsView;
-import org.jboss.pressgangccms.client.local.mvp.view.tag.TagProjectsView;
-import org.jboss.pressgangccms.client.local.mvp.view.tag.TagView;
-import org.jboss.pressgangccms.client.local.mvp.view.tag.TagViewBase;
-import org.jboss.pressgangccms.client.local.mvp.view.tag.TagViewInterface;
-import org.jboss.pressgangccms.client.local.mvp.view.tag.TagsFilteredResultsAndTagView;
-import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicBugsView;
-import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicRenderedView;
-import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicRevisionsView;
-import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicTagsView;
-import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicView;
-import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicViewBase;
-import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicViewInterface;
-import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicXMLErrorsView;
-import org.jboss.pressgangccms.client.local.mvp.view.topic.TopicXMLView;
-import org.jboss.pressgangccms.client.local.mvp.view.topicsearch.SearchResultsAndTopicView;
-import org.jboss.pressgangccms.client.local.mvp.view.topicsearch.SearchResultsView;
-import org.jboss.pressgangccms.client.local.mvp.view.topicsearch.SearchView;
+import org.jboss.pressgang.ccms.client.local.App;
+import org.jboss.pressgang.ccms.client.local.AppController;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.WelcomePresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.base.Presenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.image.ImagePresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.image.ImagePresenterBase;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagCategoriesPresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagCategoriesPresenter.Display;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagFilteredResultsPresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagPresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagPresenterBase;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagProjectsPresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicBugsPresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicPresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicRenderedPresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicTagsPresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicXMLPresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchPresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsPresenter;
+import org.jboss.pressgang.ccms.client.local.mvp.view.WelcomeView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.client.local.mvp.view.image.ImageFilteredResultsView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.image.ImageView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.image.ImagesFilteredResultsAndImageView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.tag.TagCategoriesView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.tag.TagFilteredResultsView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.tag.TagProjectsView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.tag.TagView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.tag.TagViewBase;
+import org.jboss.pressgang.ccms.client.local.mvp.view.tag.TagViewInterface;
+import org.jboss.pressgang.ccms.client.local.mvp.view.tag.TagsFilteredResultsAndTagView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.topic.TopicBugsView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.topic.TopicRenderedView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.topic.TopicRevisionsView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.topic.TopicTagsView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.topic.TopicView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.topic.TopicViewBase;
+import org.jboss.pressgang.ccms.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.client.local.mvp.view.topic.TopicXMLErrorsView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.topic.TopicXMLView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.topicsearch.SearchResultsAndTopicView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.topicsearch.SearchResultsView;
+import org.jboss.pressgang.ccms.client.local.mvp.view.topicsearch.SearchView;
 
 public class BootstrapperImpl implements Bootstrapper {
   {
@@ -757,7 +757,7 @@ public class BootstrapperImpl implements Bootstrapper {
     injContext.addBean(MessageBusProvider.class, MessageBusProvider.class, inj2037_MessageBusProvider_creationalCallback, inj2017_MessageBusProvider, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
     injContext.addBean(Provider.class, MessageBusProvider.class, inj2037_MessageBusProvider_creationalCallback, inj2017_MessageBusProvider, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicXMLErrorsView.class, TopicXMLErrorsView.class, inj2040_TopicXMLErrorsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter.Display.class, TopicXMLErrorsView.class, inj2040_TopicXMLErrorsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter.Display.class, TopicXMLErrorsView.class, inj2040_TopicXMLErrorsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicViewInterface.class, TopicXMLErrorsView.class, inj2040_TopicXMLErrorsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, TopicXMLErrorsView.class, inj2040_TopicXMLErrorsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicViewBase.class, TopicXMLErrorsView.class, inj2040_TopicXMLErrorsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
@@ -766,7 +766,7 @@ public class BootstrapperImpl implements Bootstrapper {
     injContext.addBean(TemplatePresenter.class, TopicXMLErrorsPresenter.class, inj2039_TopicXMLErrorsPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(Presenter.class, TopicXMLErrorsPresenter.class, inj2039_TopicXMLErrorsPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TagView.class, TagView.class, inj2043_TagView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagPresenter.Display.class, TagView.class, inj2043_TagView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagPresenter.Display.class, TagView.class, inj2043_TagView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TagViewInterface.class, TagView.class, inj2043_TagView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, TagView.class, inj2043_TagView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TagViewBase.class, TagView.class, inj2043_TagView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
@@ -775,7 +775,7 @@ public class BootstrapperImpl implements Bootstrapper {
     injContext.addBean(TemplatePresenter.class, TagPresenter.class, inj2042_TagPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(Presenter.class, TagPresenter.class, inj2042_TagPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(ImageView.class, ImageView.class, inj2046_ImageView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagePresenter.Display.class, ImageView.class, inj2046_ImageView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.image.ImagePresenter.Display.class, ImageView.class, inj2046_ImageView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, ImageView.class, inj2046_ImageView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateView.class, ImageView.class, inj2046_ImageView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(ImagePresenter.class, ImagePresenter.class, inj2045_ImagePresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
@@ -783,11 +783,11 @@ public class BootstrapperImpl implements Bootstrapper {
     injContext.addBean(TemplatePresenter.class, ImagePresenter.class, inj2045_ImagePresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(Presenter.class, ImagePresenter.class, inj2045_ImagePresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(ImagesFilteredResultsAndImageView.class, ImagesFilteredResultsAndImageView.class, inj2049_ImagesFilteredResultsAndImageView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.Display.class, ImagesFilteredResultsAndImageView.class, inj2049_ImagesFilteredResultsAndImageView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.Display.class, ImagesFilteredResultsAndImageView.class, inj2049_ImagesFilteredResultsAndImageView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, ImagesFilteredResultsAndImageView.class, inj2049_ImagesFilteredResultsAndImageView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateView.class, ImagesFilteredResultsAndImageView.class, inj2049_ImagesFilteredResultsAndImageView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(ImageFilteredResultsView.class, ImageFilteredResultsView.class, inj2050_ImageFilteredResultsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.image.ImageFilteredResultsPresenter.Display.class, ImageFilteredResultsView.class, inj2050_ImageFilteredResultsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.image.ImageFilteredResultsPresenter.Display.class, ImageFilteredResultsView.class, inj2050_ImageFilteredResultsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, ImageFilteredResultsView.class, inj2050_ImageFilteredResultsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateView.class, ImageFilteredResultsView.class, inj2050_ImageFilteredResultsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(ImagesFilteredResultsAndImagePresenter.class, ImagesFilteredResultsAndImagePresenter.class, inj2048_ImagesFilteredResultsAndImagePresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
@@ -799,14 +799,14 @@ public class BootstrapperImpl implements Bootstrapper {
     injContext.addBean(InitBallotProvider.class, InitBallotProvider.class, inj2052_InitBallotProvider_creationalCallback, inj2015_InitBallotProvider, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
     injContext.addBean(ContextualTypeProvider.class, InitBallotProvider.class, inj2052_InitBallotProvider_creationalCallback, inj2015_InitBallotProvider, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(SearchView.class, SearchView.class, inj2055_SearchView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchPresenter.Display.class, SearchView.class, inj2055_SearchView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchPresenter.Display.class, SearchView.class, inj2055_SearchView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, SearchView.class, inj2055_SearchView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateView.class, SearchView.class, inj2055_SearchView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(SearchPresenter.class, SearchPresenter.class, inj2054_SearchPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
     injContext.addBean(TemplatePresenter.class, SearchPresenter.class, inj2054_SearchPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(Presenter.class, SearchPresenter.class, inj2054_SearchPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TagProjectsView.class, TagProjectsView.class, inj2058_TagProjectsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagProjectsPresenter.Display.class, TagProjectsView.class, inj2058_TagProjectsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagProjectsPresenter.Display.class, TagProjectsView.class, inj2058_TagProjectsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TagViewInterface.class, TagProjectsView.class, inj2058_TagProjectsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, TagProjectsView.class, inj2058_TagProjectsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TagViewBase.class, TagProjectsView.class, inj2058_TagProjectsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
@@ -822,7 +822,7 @@ public class BootstrapperImpl implements Bootstrapper {
     injContext.addBean(RootPanelProvider.class, RootPanelProvider.class, inj2062_RootPanelProvider_creationalCallback, inj2013_RootPanelProvider, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
     injContext.addBean(Provider.class, RootPanelProvider.class, inj2062_RootPanelProvider_creationalCallback, inj2013_RootPanelProvider, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicTagsView.class, TopicTagsView.class, inj2065_TopicTagsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicTagsPresenter.Display.class, TopicTagsView.class, inj2065_TopicTagsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicTagsPresenter.Display.class, TopicTagsView.class, inj2065_TopicTagsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicViewInterface.class, TopicTagsView.class, inj2065_TopicTagsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, TopicTagsView.class, inj2065_TopicTagsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicViewBase.class, TopicTagsView.class, inj2065_TopicTagsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
@@ -831,7 +831,7 @@ public class BootstrapperImpl implements Bootstrapper {
     injContext.addBean(TemplatePresenter.class, TopicTagsPresenter.class, inj2064_TopicTagsPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(Presenter.class, TopicTagsPresenter.class, inj2064_TopicTagsPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(WelcomeView.class, WelcomeView.class, inj2068_WelcomeView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.WelcomePresenter.Display.class, WelcomeView.class, inj2068_WelcomeView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.WelcomePresenter.Display.class, WelcomeView.class, inj2068_WelcomeView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, WelcomeView.class, inj2068_WelcomeView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateView.class, WelcomeView.class, inj2068_WelcomeView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(WelcomePresenter.class, WelcomePresenter.class, inj2067_WelcomePresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
@@ -844,11 +844,11 @@ public class BootstrapperImpl implements Bootstrapper {
     injContext.addBean(TemplatePresenter.class, TopicRevisionsPresenter.class, inj2072_TopicRevisionsPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(Presenter.class, TopicRevisionsPresenter.class, inj2072_TopicRevisionsPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TagsFilteredResultsAndTagView.class, TagsFilteredResultsAndTagView.class, inj2075_TagsFilteredResultsAndTagView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.Display.class, TagsFilteredResultsAndTagView.class, inj2075_TagsFilteredResultsAndTagView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.Display.class, TagsFilteredResultsAndTagView.class, inj2075_TagsFilteredResultsAndTagView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, TagsFilteredResultsAndTagView.class, inj2075_TagsFilteredResultsAndTagView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateView.class, TagsFilteredResultsAndTagView.class, inj2075_TagsFilteredResultsAndTagView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TagFilteredResultsView.class, TagFilteredResultsView.class, inj2076_TagFilteredResultsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagFilteredResultsPresenter.Display.class, TagFilteredResultsView.class, inj2076_TagFilteredResultsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagFilteredResultsPresenter.Display.class, TagFilteredResultsView.class, inj2076_TagFilteredResultsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, TagFilteredResultsView.class, inj2076_TagFilteredResultsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateView.class, TagFilteredResultsView.class, inj2076_TagFilteredResultsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TagsFilteredResultsAndTagPresenter.class, TagsFilteredResultsAndTagPresenter.class, inj2074_TagsFilteredResultsAndTagPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
@@ -856,11 +856,11 @@ public class BootstrapperImpl implements Bootstrapper {
     injContext.addBean(TemplatePresenter.class, TagsFilteredResultsAndTagPresenter.class, inj2074_TagsFilteredResultsAndTagPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(Presenter.class, TagsFilteredResultsAndTagPresenter.class, inj2074_TagsFilteredResultsAndTagPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(SearchResultsView.class, SearchResultsView.class, inj2079_SearchResultsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsPresenter.Display.class, SearchResultsView.class, inj2079_SearchResultsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsPresenter.Display.class, SearchResultsView.class, inj2079_SearchResultsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, SearchResultsView.class, inj2079_SearchResultsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateView.class, SearchResultsView.class, inj2079_SearchResultsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicView.class, TopicView.class, inj2080_TopicView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicPresenter.Display.class, TopicView.class, inj2080_TopicView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicPresenter.Display.class, TopicView.class, inj2080_TopicView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicViewInterface.class, TopicView.class, inj2080_TopicView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, TopicView.class, inj2080_TopicView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicViewBase.class, TopicView.class, inj2080_TopicView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
@@ -877,29 +877,29 @@ public class BootstrapperImpl implements Bootstrapper {
     injContext.addBean(TemplatePresenter.class, ImageFilteredResultsPresenter.class, inj2085_ImageFilteredResultsPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(Presenter.class, ImageFilteredResultsPresenter.class, inj2085_ImageFilteredResultsPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(SearchResultsAndTopicView.class, SearchResultsAndTopicView.class, inj2088_SearchResultsAndTopicView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.Display.class, SearchResultsAndTopicView.class, inj2088_SearchResultsAndTopicView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.Display.class, SearchResultsAndTopicView.class, inj2088_SearchResultsAndTopicView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, SearchResultsAndTopicView.class, inj2088_SearchResultsAndTopicView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateView.class, SearchResultsAndTopicView.class, inj2088_SearchResultsAndTopicView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicXMLView.class, TopicXMLView.class, inj2089_TopicXMLView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicXMLPresenter.Display.class, TopicXMLView.class, inj2089_TopicXMLView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicXMLPresenter.Display.class, TopicXMLView.class, inj2089_TopicXMLView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicViewInterface.class, TopicXMLView.class, inj2089_TopicXMLView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, TopicXMLView.class, inj2089_TopicXMLView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicViewBase.class, TopicXMLView.class, inj2089_TopicXMLView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateView.class, TopicXMLView.class, inj2089_TopicXMLView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicRenderedView.class, TopicRenderedView.class, inj2090_TopicRenderedView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicRenderedPresenter.Display.class, TopicRenderedView.class, inj2090_TopicRenderedView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicRenderedPresenter.Display.class, TopicRenderedView.class, inj2090_TopicRenderedView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicViewInterface.class, TopicRenderedView.class, inj2090_TopicRenderedView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, TopicRenderedView.class, inj2090_TopicRenderedView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicViewBase.class, TopicRenderedView.class, inj2090_TopicRenderedView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateView.class, TopicRenderedView.class, inj2090_TopicRenderedView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicBugsView.class, TopicBugsView.class, inj2091_TopicBugsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicBugsPresenter.Display.class, TopicBugsView.class, inj2091_TopicBugsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicBugsPresenter.Display.class, TopicBugsView.class, inj2091_TopicBugsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicViewInterface.class, TopicBugsView.class, inj2091_TopicBugsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, TopicBugsView.class, inj2091_TopicBugsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicViewBase.class, TopicBugsView.class, inj2091_TopicBugsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateView.class, TopicBugsView.class, inj2091_TopicBugsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicRevisionsView.class, TopicRevisionsView.class, inj2092_TopicRevisionsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, true);
-    injContext.addBean(org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicRevisionsPresenter.Display.class, TopicRevisionsView.class, inj2092_TopicRevisionsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
+    injContext.addBean(org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicRevisionsPresenter.Display.class, TopicRevisionsView.class, inj2092_TopicRevisionsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicViewInterface.class, TopicRevisionsView.class, inj2092_TopicRevisionsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(BaseTemplateViewInterface.class, TopicRevisionsView.class, inj2092_TopicRevisionsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
     injContext.addBean(TopicViewBase.class, TopicRevisionsView.class, inj2092_TopicRevisionsView_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
@@ -915,156 +915,156 @@ public class BootstrapperImpl implements Bootstrapper {
     injContext.addBean(Presenter.class, TagFilteredResultsPresenter.class, inj2096_TagFilteredResultsPresenter_creationalCallback, null, arrayOf_java_lang_annotation_Annotation_30791554, null, false);
   }
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_image_ImagePresenter_display(ImagePresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagePresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagePresenter::display = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_image_ImagePresenter_display(ImagePresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.image.ImagePresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.image.ImagePresenter::display = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_tag_TagsFilteredResultsAndTagPresenter_display(TagsFilteredResultsAndTagPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter::display = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_tag_TagsFilteredResultsAndTagPresenter_display(TagsFilteredResultsAndTagPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter::display = value;
   }-*/;
 
   private native static void org_jboss_pressgangccms_client_local_mvp_presenter_tag_TagsFilteredResultsAndTagPresenter_categoriesDisplay(TagsFilteredResultsAndTagPresenter instance, Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter::categoriesDisplay = value;
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter::categoriesDisplay = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_searchResultsDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::searchResultsDisplay = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_searchResultsDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::searchResultsDisplay = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topic_TopicXMLErrorsPresenter_display(TopicXMLErrorsPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter::display = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topic_TopicXMLErrorsPresenter_display(TopicXMLErrorsPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter::display = value;
   }-*/;
 
   private native static void org_jboss_errai_ioc_client_api_builtin_DisposerProvider_beanManager(DisposerProvider instance, IOCBeanManager value) /*-{
     instance.@org.jboss.errai.ioc.client.api.builtin.DisposerProvider::beanManager = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_image_ImageFilteredResultsPresenter_display(ImageFilteredResultsPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.image.ImageFilteredResultsPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.image.ImageFilteredResultsPresenter::display = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_image_ImageFilteredResultsPresenter_display(ImageFilteredResultsPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.image.ImageFilteredResultsPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.image.ImageFilteredResultsPresenter::display = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_topicXMLDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicXMLPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicXMLDisplay = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_topicXMLDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicXMLPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicXMLDisplay = value;
   }-*/;
 
   private native static void org_jboss_pressgangccms_client_local_AppController_eventBus(AppController instance, HandlerManager value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.AppController::eventBus = value;
+    instance.@org.jboss.pressgang.ccms.client.local.AppController::eventBus = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_topicViewDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicViewDisplay = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_topicViewDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicViewDisplay = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_image_ImagesFilteredResultsAndImagePresenter_imageFilteredResultsDisplay(ImagesFilteredResultsAndImagePresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.image.ImageFilteredResultsPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter::imageFilteredResultsDisplay = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_image_ImagesFilteredResultsAndImagePresenter_imageFilteredResultsDisplay(ImagesFilteredResultsAndImagePresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.image.ImageFilteredResultsPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter::imageFilteredResultsDisplay = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsPresenter_display(SearchResultsPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsPresenter::display = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsPresenter_display(SearchResultsPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsPresenter::display = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsPresenter_topicViewDisplay(SearchResultsPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsPresenter::topicViewDisplay = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsPresenter_topicViewDisplay(SearchResultsPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsPresenter::topicViewDisplay = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_tag_TagPresenter_display(TagPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagPresenter::display = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_tag_TagPresenter_display(TagPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagPresenter::display = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topic_TopicPresenter_display(TopicPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicPresenter::display = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topic_TopicPresenter_display(TopicPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicPresenter::display = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_tag_TagFilteredResultsPresenter_display(TagFilteredResultsPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagFilteredResultsPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagFilteredResultsPresenter::display = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_tag_TagFilteredResultsPresenter_display(TagFilteredResultsPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagFilteredResultsPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagFilteredResultsPresenter::display = value;
   }-*/;
 
   private native static void org_jboss_pressgangccms_client_local_mvp_presenter_base_TemplatePresenter_eventBus(TemplatePresenter instance, HandlerManager value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.base.TemplatePresenter::eventBus = value;
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.base.TemplatePresenter::eventBus = value;
   }-*/;
 
   private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchPresenter_eventBus(SearchPresenter instance, HandlerManager value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchPresenter::eventBus = value;
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchPresenter::eventBus = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_tag_TagProjectsPresenter_display(TagProjectsPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagProjectsPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagProjectsPresenter::display = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_tag_TagProjectsPresenter_display(TagProjectsPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagProjectsPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagProjectsPresenter::display = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_image_ImagesFilteredResultsAndImagePresenter_display(ImagesFilteredResultsAndImagePresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter::display = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_image_ImagesFilteredResultsAndImagePresenter_display(ImagesFilteredResultsAndImagePresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter::display = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_topicTagsDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicTagsPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicTagsDisplay = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_topicTagsDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicTagsPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicTagsDisplay = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_topicRenderedDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicRenderedPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicRenderedDisplay = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_topicRenderedDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicRenderedPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicRenderedDisplay = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_tag_TagsFilteredResultsAndTagPresenter_filteredResultsDisplay(TagsFilteredResultsAndTagPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagFilteredResultsPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter::filteredResultsDisplay = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_tag_TagsFilteredResultsAndTagPresenter_filteredResultsDisplay(TagsFilteredResultsAndTagPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagFilteredResultsPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter::filteredResultsDisplay = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_topicXMLErrorsDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicXMLErrorsDisplay = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_topicXMLErrorsDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicXMLErrorsDisplay = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchPresenter_display(SearchPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchPresenter::display = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchPresenter_display(SearchPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchPresenter::display = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_tag_TagsFilteredResultsAndTagPresenter_resultDisplay(TagsFilteredResultsAndTagPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter::resultDisplay = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_tag_TagsFilteredResultsAndTagPresenter_resultDisplay(TagsFilteredResultsAndTagPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter::resultDisplay = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_topicSplitPanelRenderedDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicRenderedPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicSplitPanelRenderedDisplay = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_topicSplitPanelRenderedDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicRenderedPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicSplitPanelRenderedDisplay = value;
   }-*/;
 
   private native static void org_jboss_pressgangccms_client_local_mvp_presenter_tag_TagCategoriesPresenter_display(TagCategoriesPresenter instance, Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagCategoriesPresenter::display = value;
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagCategoriesPresenter::display = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topic_TopicTagsPresenter_display(TopicTagsPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicTagsPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicTagsPresenter::display = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topic_TopicTagsPresenter_display(TopicTagsPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicTagsPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicTagsPresenter::display = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_WelcomePresenter_display(WelcomePresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.WelcomePresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.WelcomePresenter::display = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_WelcomePresenter_display(WelcomePresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.WelcomePresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.WelcomePresenter::display = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_display(SearchResultsAndTopicPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::display = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_display(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::display = value;
   }-*/;
 
   private native static void org_jboss_pressgangccms_client_local_App_appController(App instance, AppController value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.App::appController = value;
+    instance.@org.jboss.pressgang.ccms.client.local.App::appController = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_topicBugsDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicBugsPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicBugsDisplay = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_topicBugsDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicBugsPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicBugsDisplay = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_tag_TagsFilteredResultsAndTagPresenter_projectsDisplay(TagsFilteredResultsAndTagPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagProjectsPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter::projectsDisplay = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_tag_TagsFilteredResultsAndTagPresenter_projectsDisplay(TagsFilteredResultsAndTagPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagProjectsPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter::projectsDisplay = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_topicRevisionsDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.topic.TopicRevisionsPresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicRevisionsDisplay = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_topicsearch_SearchResultsAndTopicPresenter_topicRevisionsDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.topic.TopicRevisionsPresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicRevisionsDisplay = value;
   }-*/;
 
   private native static void org_jboss_pressgangccms_client_local_AppController_manager(AppController instance, IOCBeanManager value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.AppController::manager = value;
+    instance.@org.jboss.pressgang.ccms.client.local.AppController::manager = value;
   }-*/;
 
-  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_image_ImagesFilteredResultsAndImagePresenter_imageDisplay(ImagesFilteredResultsAndImagePresenter instance, org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagePresenter.Display value) /*-{
-    instance.@org.jboss.pressgangccms.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter::imageDisplay = value;
+  private native static void org_jboss_pressgangccms_client_local_mvp_presenter_image_ImagesFilteredResultsAndImagePresenter_imageDisplay(ImagesFilteredResultsAndImagePresenter instance, org.jboss.pressgang.ccms.client.local.mvp.presenter.image.ImagePresenter.Display value) /*-{
+    instance.@org.jboss.pressgang.ccms.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter::imageDisplay = value;
   }-*/;
 
   public native static HandlerManager org_jboss_pressgangccms_client_local_App_produceEventBus(App instance) /*-{
-    return instance.@org.jboss.pressgangccms.client.local.App::produceEventBus()();
+    return instance.@org.jboss.pressgang.ccms.client.local.App::produceEventBus()();
   }-*/;
 
   // The main IOC bootstrap method.

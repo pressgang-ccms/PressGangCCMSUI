@@ -1,6 +1,6 @@
 package com.google.gwt.user.client.ui;
 
-import org.jboss.pressgangccms.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.DOM;

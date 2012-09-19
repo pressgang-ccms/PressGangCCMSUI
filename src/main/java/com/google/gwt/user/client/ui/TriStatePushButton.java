@@ -1,6 +1,6 @@
 package com.google.gwt.user.client.ui;
 
-import org.jboss.pressgangccms.client.local.resources.images.ImageResources;
+import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 
 import com.google.gwt.editor.client.IsEditor;
 import com.google.gwt.editor.client.LeafValueEditor;
