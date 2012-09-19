@@ -93,8 +93,7 @@ public class TagFilteredResultsPresenter extends TemplatePresenter implements Ed
                     @Override
                     public void success(final RESTTagCollectionV1 retValue) {
                         try {
-                            updateRowData(start, retValue.getItems());
-                            updateRowCount(retValue.getSize(), true);
+                            displayNewFixedList(retValue.getExistingItems());
                         } finally {
                             display.removeWaitOperation();
                         }

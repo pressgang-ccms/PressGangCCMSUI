@@ -76,8 +76,7 @@ public class TagProjectsPresenter extends TemplatePresenter implements EditableV
                     @Override
                     public void success(final RESTProjectCollectionV1 retValue) {
                         try {
-                            updateRowData(start, retValue.getItems());
-                            updateRowCount(retValue.getSize(), true);
+                            displayNewFixedList(retValue.getExistingItems());
                         } finally {
                             display.removeWaitOperation();
                         }

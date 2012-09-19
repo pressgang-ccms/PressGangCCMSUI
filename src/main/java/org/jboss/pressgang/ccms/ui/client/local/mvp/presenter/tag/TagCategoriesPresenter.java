@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagProjectsView;
@@ -48,7 +49,7 @@ public class TagCategoriesPresenter extends TemplatePresenter implements Editabl
 
         EnhancedAsyncDataProvider<RESTTagV1> getTagsProvider();
 
-        void setTagsProvider(EnhancedAsyncDataProvider<RESTTagV1> tagsProvider);
+        void setTagsProvider(EnhancedAsyncDataProvider<RESTTagCategoryV1> tagsProvider);
 
         VerticalPanel getTagsResultsPanel();
 
@@ -97,8 +98,7 @@ public class TagCategoriesPresenter extends TemplatePresenter implements Editabl
                     @Override
                     public void success(final RESTCategoryCollectionV1 retValue) {
                         try {
-                            updateRowData(start, retValue.getItems());
-                            updateRowCount(retValue.getSize(), true);
+                            displayNewFixedList(retValue.getExistingItems());
                         } finally {
                             display.removeWaitOperation();
                         }
