@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter;
@@ -36,9 +37,9 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
 
     private final VerticalPanel tagsResultsPanel = new VerticalPanel();
     private final SimplePager tagsPager = new SimplePager();
-    private final CellTable<RESTTagV1> tagsResults = new CellTable<RESTTagV1>(Constants.MAX_SEARCH_RESULTS,
+    private final CellTable<RESTTagCategoryV1> tagsResults = new CellTable<RESTTagCategoryV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
-    private EnhancedAsyncDataProvider<RESTTagV1> tagsProvider;
+    private EnhancedAsyncDataProvider<RESTTagCategoryV1> tagsProvider;
 
     private final TextColumn<RESTCategoryV1> idColumn = new TextColumn<RESTCategoryV1>() {
         @Override
@@ -70,31 +71,31 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
         }
     };
 
-    private final TextColumn<RESTTagV1> tagIdColumn = new TextColumn<RESTTagV1>() {
+    private final TextColumn<RESTTagCategoryV1> tagIdColumn = new TextColumn<RESTTagCategoryV1>() {
         @Override
-        public String getValue(final RESTTagV1 object) {
+        public String getValue(final RESTTagCategoryV1 object) {
             return object.getId().toString();
 
         }
     };
 
-    private final TextColumn<RESTTagV1> tagNameColumn = new TextColumn<RESTTagV1>() {
+    private final TextColumn<RESTTagCategoryV1> tagNameColumn = new TextColumn<RESTTagCategoryV1>() {
         @Override
-        public String getValue(final RESTTagV1 object) {
+        public String getValue(final RESTTagCategoryV1 object) {
             return object.getName();
         }
     };
 
-    private final Column<RESTTagV1, String> tagUpButtonColumn = new Column<RESTTagV1, String>(new ButtonCell()) {
+    private final Column<RESTTagCategoryV1, String> tagUpButtonColumn = new Column<RESTTagCategoryV1, String>(new ButtonCell()) {
         @Override
-        public String getValue(final RESTTagV1 object) {
+        public String getValue(final RESTTagCategoryV1 object) {
             return PressGangCCMSUI.INSTANCE.Up();
         }
     };
 
-    private final Column<RESTTagV1, String> tagDownButtonColumn = new Column<RESTTagV1, String>(new ButtonCell()) {
+    private final Column<RESTTagCategoryV1, String> tagDownButtonColumn = new Column<RESTTagCategoryV1, String>(new ButtonCell()) {
         @Override
-        public String getValue(final RESTTagV1 object) {
+        public String getValue(final RESTTagCategoryV1 object) {
             return PressGangCCMSUI.INSTANCE.Down();
         }
     };
@@ -114,22 +115,22 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
     }
 
     @Override
-    public Column<RESTTagV1, String> getTagDownButtonColumn() {
+    public Column<RESTTagCategoryV1, String> getTagDownButtonColumn() {
         return tagDownButtonColumn;
     }
 
     @Override
-    public Column<RESTTagV1, String> getTagUpButtonColumn() {
+    public Column<RESTTagCategoryV1, String> getTagUpButtonColumn() {
         return tagUpButtonColumn;
     }
 
     @Override
-    public EnhancedAsyncDataProvider<RESTTagV1> getTagsProvider() {
+    public EnhancedAsyncDataProvider<RESTTagCategoryV1> getTagsProvider() {
         return tagsProvider;
     }
 
     @Override
-    public void setTagsProvider(final EnhancedAsyncDataProvider<RESTTagV1> tagsProvider) {
+    public void setTagsProvider(final EnhancedAsyncDataProvider<RESTTagCategoryV1> tagsProvider) {
         this.tagsProvider = tagsProvider;
         tagsProvider.addDataDisplay(tagsResults);
     }
@@ -212,13 +213,11 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
 
     @Override
     protected void showWaiting() {
-        // TODO Auto-generated method stub
-        
+ 
     }
 
     @Override
     protected void hideWaiting() {
-        // TODO Auto-generated method stub
-        
+
     }
 }

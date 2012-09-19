@@ -136,7 +136,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
                     public void success(final RESTImageCollectionV1 retValue) {
                         try {
                             /* Zero results can be a null list */
-                            currentList = retValue.getItems() == null ? new ArrayList<RESTImageV1>() : retValue.getItems();
+                            currentList = retValue.getItems() == null ? new ArrayList<RESTImageV1>() : retValue.getExistingItems();
                             displayAsynchronousList(currentList, retValue.getSize(), tableStartRow);
                         } finally {
                             imageFilteredResultsDisplay.removeWaitOperation();

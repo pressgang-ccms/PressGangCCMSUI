@@ -43,11 +43,11 @@ public class TagCategoriesPresenter extends TemplatePresenter implements Editabl
 
         Column<RESTCategoryV1, String> getButtonColumn();
 
-        Column<RESTTagV1, String> getTagDownButtonColumn();
+        Column<RESTTagCategoryV1, String> getTagDownButtonColumn();
 
-        Column<RESTTagV1, String> getTagUpButtonColumn();
+        Column<RESTTagCategoryV1, String> getTagUpButtonColumn();
 
-        EnhancedAsyncDataProvider<RESTTagV1> getTagsProvider();
+        EnhancedAsyncDataProvider<RESTTagCategoryV1> getTagsProvider();
 
         void setTagsProvider(EnhancedAsyncDataProvider<RESTTagCategoryV1> tagsProvider);
 

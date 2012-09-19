@@ -51,8 +51,8 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
         final List<String> newLocales = Arrays.asList(locales);
 
         /* Make it so you can't add a locale if it already exists */
-        if (displayedImage.getLanguageImages_OTM() != null && displayedImage.getLanguageImages_OTM().getItems() != null) {
-            for (final RESTLanguageImageV1 langImage : displayedImage.getLanguageImages_OTM().getItems()) {
+        if (displayedImage.getLanguageImages_OTM() != null) {
+            for (final RESTLanguageImageV1 langImage : displayedImage.getLanguageImages_OTM().getExistingAndAddedItems()) {
                 newLocales.remove(langImage.getLocale());
             }
         }
@@ -164,12 +164,11 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
 
                         /* Create the language image */
                         final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
-                        languageImage.setRemoveItem(true);
                         languageImage.setId(selectedImage.getId());
 
                         /* Add the langauge image */
                         updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
-                        updateImage.getLanguageImages_OTM().addItem(languageImage);
+                        updateImage.getLanguageImages_OTM().addRemoveItem(languageImage);
 
                         final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
                             @Override
@@ -213,8 +212,8 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                         .getItemText(imageDisplay.getAddLocaleDialog().getLocales().getSelectedIndex());
 
                 /* Don't add locales twice */
-                if (displayedImage.getLanguageImages_OTM() != null && displayedImage.getLanguageImages_OTM().getItems() != null) {
-                    for (final RESTLanguageImageV1 langImage : displayedImage.getLanguageImages_OTM().getItems()) {
+                if (displayedImage.getLanguageImages_OTM() != null) {
+                    for (final RESTLanguageImageV1 langImage : displayedImage.getLanguageImages_OTM().getExistingAndAddedItems()) {
                         if (langImage.getLocale().equals(selectedLocale)) {
                             return;
                         }
@@ -229,12 +228,11 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
 
                 /* Create the language image */
                 final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
-                languageImage.setAddItem(true);
                 languageImage.explicitSetLocale(selectedLocale);
 
                 /* Add the langauge image */
                 updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
-                updateImage.getLanguageImages_OTM().addItem(languageImage);
+                updateImage.getLanguageImages_OTM().addNewItem(languageImage);
 
                 final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
                     @Override
@@ -314,23 +312,16 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                                      */
                                     final RESTImageV1 updateImage = new RESTImageV1();
                                     updateImage.setId(displayedImage.getId());
-
+                                    
                                     /* Create the language image */
-                                    final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
-                                    languageImage.setAddItem(true);
-                                    languageImage.explicitSetLocale(editor.self.getLocale());
-                                    languageImage.explicitSetImageData(buffer);
-                                    languageImage.explicitSetFilename(file.getName());
-
-                                    /* Delete the old language image */
-                                    final RESTLanguageImageV1 deleteLanguageImage = new RESTLanguageImageV1();
-                                    deleteLanguageImage.setRemoveItem(true);
-                                    deleteLanguageImage.setId(editor.self.getId());
+                                    final RESTLanguageImageV1 updatedLanguageImage = new RESTLanguageImageV1();
+                                    updatedLanguageImage.setId(editor.self.getId());
+                                    updatedLanguageImage.explicitSetImageData(buffer);
+                                    updatedLanguageImage.explicitSetFilename(file.getName());
 
                                     /* Add the langauge image */
                                     updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
-                                    updateImage.getLanguageImages_OTM().addItem(languageImage);
-                                    updateImage.getLanguageImages_OTM().addItem(deleteLanguageImage);
+                                    updateImage.getLanguageImages_OTM().addUpdateItem(updatedLanguageImage);
 
                                     final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
                                         @Override

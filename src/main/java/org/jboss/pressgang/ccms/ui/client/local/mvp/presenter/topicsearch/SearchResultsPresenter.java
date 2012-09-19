@@ -82,7 +82,7 @@ public class SearchResultsPresenter extends TemplatePresenter implements Editabl
                     @Override
                     public void success(final RESTTopicCollectionV1 retValue) {
                         try {
-                            updateRowData(start, retValue.getItems());
+                            updateRowData(start, retValue.getExistingItems());
                             updateRowCount(retValue.getSize(), true);
                         } finally {
                             display.removeWaitOperation();

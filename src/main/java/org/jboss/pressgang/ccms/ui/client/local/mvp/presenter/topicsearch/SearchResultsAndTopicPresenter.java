@@ -6,6 +6,8 @@ import javax.inject.Inject;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
@@ -115,13 +117,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
 
         @Override
         public void onClick(final ClickEvent event) {
-            final RESTTagV1 selectedTag = topicTagsDisplay.getMyTags().getValue().getTag();
+            final RESTTagV1 selectedTag = topicTagsDisplay.getMyTags().getValue().getTag().getItem();
 
             /* Need to deal with re-adding removed tags */
-            for (final RESTTagV1 tag : topicProviderData.getDisplayedItem().getTags().getItems()) {
-                if (tag.getId().equals(selectedTag.getId())) {
-                    if (tag.getRemoveItem()) {
-                        tag.setRemoveItem(false);
+            for (final RESTTagCollectionItemV1 tag : topicProviderData.getDisplayedItem().getTags().getItems()) {
+                if (tag.getItem().getId().equals(selectedTag.getId())) {
+                    if (tag.getState() == RESTBaseCollectionItemV1.REMOVE_STATE) {
+                        tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
                         /* Redisplay the view */
                         updateDisplayedTopicView();
@@ -137,12 +139,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
 
             /* Get the selected tag, and clone it */
             final RESTTagV1 selectedTagClone = selectedTag.clone(true);
-            /*
-             * Set the add item property to true, to indicate that we need at add this tag to the topic
-             */
-            selectedTagClone.setAddItem(true);
             /* Add the tag to the topic */
-            topicProviderData.getDisplayedItem().getTags().addItem(selectedTagClone);
+            topicProviderData.getDisplayedItem().getTags().addNewItem(selectedTagClone);
             /* Redisplay the view */
             updateDisplayedTopicView();
         }
@@ -154,9 +152,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
      * @author Matthew Casperson
      */
     private class DeleteTagClickHandler implements ClickHandler {
-        private final RESTTagV1 tag;
+        private final RESTTagCollectionItemV1 tag;
 
-        public DeleteTagClickHandler(final RESTTagV1 tag) {
+        public DeleteTagClickHandler(final RESTTagCollectionItemV1 tag) {
             if (tag == null) {
                 throw new IllegalArgumentException("tag cannot be null");
             }
@@ -170,12 +168,12 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                 throw new IllegalStateException("topicProviderData.getDisplayedItem() cannot be null");
             }
 
-            if (tag.getAddItem()) {
+            if (tag.getState() == RESTBaseCollectionItemV1.ADD_STATE) {
                 /* Tag was added and then removed, so we just delete the tag */
                 topicProviderData.getDisplayedItem().getTags().getItems().remove(tag);
             } else {
                 /* Otherwise we set the tag as removed */
-                tag.setRemoveItem(true);
+                tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
             }
 
             updateDisplayedTopicView();
@@ -531,7 +529,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
             protected void onRangeChanged(final HasData<RESTTopicV1> display) {
                 if (topicProviderData.getDisplayedItem() != null && topicProviderData.getDisplayedItem().getRevisions() != null
                         && topicProviderData.getDisplayedItem().getRevisions().getItems() != null) {
-                    displayNewFixedList(topicProviderData.getDisplayedItem().getRevisions().getItems());
+                    displayNewFixedList(topicProviderData.getDisplayedItem().getRevisions().getExistingItems());
                 } else {
                     resetProvider();
                 }
@@ -550,7 +548,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                 if (topicProviderData.getDisplayedItem() != null
                         && topicProviderData.getDisplayedItem().getBugzillaBugs_OTM() != null
                         && topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getItems() != null) {
-                    displayNewFixedList(topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getItems());
+                    displayNewFixedList(topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getExistingItems());
                 } else {
                     resetProvider();
                 }
@@ -583,7 +581,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                     @Override
                     public void success(final RESTTopicCollectionV1 retValue) {
                         try {
-                            topicProviderData.setItems(retValue.getItems());
+                            topicProviderData.setItems(retValue.getExistingItems());
                             displayAsynchronousList(topicProviderData.getItems(), retValue.getSize(), display.getVisibleRange()
                                     .getStart());
                         } finally {
@@ -659,7 +657,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                                 topicProviderData.getDisplayedItem().setRevisions(retValue.getRevisions());
 
                                 /* refresh the list */
-                                topicRevisionsDisplay.getProvider().displayNewFixedList(retValue.getRevisions().getItems());
+                                topicRevisionsDisplay.getProvider().displayNewFixedList(retValue.getRevisions().getExistingItems());
 
                             } finally {
                                 topicRevisionsDisplay.removeWaitOperation();
@@ -730,7 +728,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                                 topicProviderData.getDisplayedItem().setBugzillaBugs_OTM(collection);
 
                                 /* refresh the celltable */
-                                topicBugsDisplay.getProvider().displayNewFixedList(collection.getItems());
+                                topicBugsDisplay.getProvider().displayNewFixedList(collection.getExistingItems());
                             } finally {
                                 topicBugsDisplay.removeWaitOperation();
                             }

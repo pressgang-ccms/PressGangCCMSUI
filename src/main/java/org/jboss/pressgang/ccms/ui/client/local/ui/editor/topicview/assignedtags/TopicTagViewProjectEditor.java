@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.Label;
 public class TopicTagViewProjectEditor extends Grid implements Editor<SearchUIProject> {
     private final boolean readOnly;
     private final FlexTable categoriesLabelPanel = new FlexTable();
-    final Label name = new Label();
+    private final Label name = new Label();
     public final ListEditor<SearchUICategory, TopicTagViewCategoryEditor> categories = ListEditor
             .of(new TopicTagViewCategoryEditorSource());
 
@@ -42,6 +42,13 @@ public class TopicTagViewProjectEditor extends Grid implements Editor<SearchUIPr
         public void setIndex(final TopicTagViewCategoryEditor subEditor, final int index) {
             categoriesLabelPanel.setWidget(index, 0, subEditor);
         }
+    }
+
+    /**
+     * @return The name label exposed to the GWT Editor framework
+     */
+    public Label nameEditor() {
+        return name;
     }
 
     public TopicTagViewProjectEditor(final boolean readOnly) {

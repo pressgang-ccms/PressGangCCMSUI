@@ -94,8 +94,7 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter implements 
                     @Override
                     public void success(final RESTImageCollectionV1 retValue) {
                         try {
-                            updateRowData(start, retValue.getItems());
-                            updateRowCount(retValue.getSize(), true);
+                            displayNewFixedList(retValue.getExistingItems());
                         } finally {
                             display.removeWaitOperation();
                         }
@@ -140,9 +139,8 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter implements 
                     @Override
                     public void success(final RESTImageCollectionV1 retValue) {
                         try {
-                            currentList = retValue.getItems();
-                            updateRowData(tableStartRow, currentList);
-                            updateRowCount(retValue.getSize(), true);
+                            currentList = retValue.getExistingItems();
+                            displayAsynchronousList(currentList, tableStartRow, retValue.getSize());
                         } finally {
                             display.removeWaitOperation();
                         }

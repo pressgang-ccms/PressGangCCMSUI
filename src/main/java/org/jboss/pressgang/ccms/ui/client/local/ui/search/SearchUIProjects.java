@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -44,27 +45,20 @@ public class SearchUIProjects {
         if (tags == null) {
             throw new IllegalArgumentException("tags parameter cannot be null");
         }
-        if (tags.getItems() == null) {
-            throw new IllegalArgumentException("tags.getItems() cannot be null");
-        }
 
         for (final RESTTagV1 tag : tags.getExistingAndAddedItems()) {
             if (tag.getProjects() == null) {
                 throw new IllegalArgumentException("tag.getProjects() cannot be null");
             }
-            if (tag.getProjects().getItems() == null) {
-                throw new IllegalArgumentException("tag.getProjects().getItems() cannot be null");
-            }
 
             /* Tags to be removed should not show up */
-            for (final RESTProjectV1 project : tag.getProjects().getExistingItems()) {
+            for (final RESTProjectCollectionItemV1 project : tag.getProjects().getExistingCollectionItems()) {
                 final SearchUIProject searchUIProject = new SearchUIProject(project);
                 if (!projects.contains(searchUIProject)) {
                     searchUIProject.populateCategories(project, tags);
                     projects.add(searchUIProject);
                 }
             }
-
         }
 
         Collections.sort(projects, new SearchUINameSort());
@@ -90,9 +84,9 @@ public class SearchUIProjects {
                         builder.append(";");
 
                         if (tag.getState() == TriStateSelectionState.SELECTED) {
-                            builder.append(TAG_PREFIX + tag.getTag().getId() + "=" + TAG_INCLUDED);
+                            builder.append(TAG_PREFIX + tag.getTag().getItem().getId() + "=" + TAG_INCLUDED);
                         } else if (tag.getState() == TriStateSelectionState.UNSELECTED) {
-                            builder.append(TAG_PREFIX + tag.getTag().getId() + "=" + TAG_EXCLUDED);
+                            builder.append(TAG_PREFIX + tag.getTag().getItem().getId() + "=" + TAG_EXCLUDED);
                         }
                     }
                 }
