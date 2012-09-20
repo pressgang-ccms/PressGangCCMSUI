@@ -6,6 +6,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
@@ -28,11 +29,11 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter implements 
     public static final String HISTORY_TOKEN = "ImageFilteredResultsView";
     
     public interface Display extends BaseTemplateViewInterface {
-        org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider<RESTImageV1> getProvider();
+        EnhancedAsyncDataProvider<RESTImageCollectionItemV1> getProvider();
 
-        void setProvider(final org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider<RESTImageV1> provider);
+        void setProvider(final EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider);
 
-        CellTable<RESTImageV1> getResults();
+        CellTable<RESTImageCollectionItemV1> getResults();
 
         SimplePager getPager();
 
@@ -55,7 +56,7 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter implements 
     private Integer tableStartRow;
 
     /** Keeps a reference to the list of topics being displayed. */
-    private List<RESTImageV1> currentList;
+    private List<RESTImageCollectionItemV1> currentList;
 
     @Override
     public void parseToken(final String searchToken) {
@@ -73,9 +74,9 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter implements 
     private void bind() {
         super.bind(display, this);
 
-        final EnhancedAsyncDataProvider<RESTImageV1> provider = new EnhancedAsyncDataProvider<RESTImageV1>() {
+        final EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTImageCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTImageV1> item) {
+            protected void onRangeChanged(final HasData<RESTImageCollectionItemV1> item) {
                 final int start = item.getVisibleRange().getStart();
                 final int length = item.getVisibleRange().getLength();
                 final int end = start + length;
@@ -94,7 +95,7 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter implements 
                     @Override
                     public void success(final RESTImageCollectionV1 retValue) {
                         try {
-                            displayNewFixedList(retValue.getExistingItems());
+                            displayNewFixedList(retValue.getItems());
                         } finally {
                             display.removeWaitOperation();
                         }
@@ -116,10 +117,10 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter implements 
     /**
      * @return A provider to be used for the topic display list.
      */
-    private EnhancedAsyncDataProvider<RESTImageV1> generateListProvider() {
-        final EnhancedAsyncDataProvider<RESTImageV1> provider = new EnhancedAsyncDataProvider<RESTImageV1>() {
+    private EnhancedAsyncDataProvider<RESTImageCollectionItemV1> generateListProvider() {
+        final EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTImageCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTImageV1> item) {
+            protected void onRangeChanged(final HasData<RESTImageCollectionItemV1> item) {
                 tableStartRow = item.getVisibleRange().getStart();
                 final int length = item.getVisibleRange().getLength();
                 final int end = tableStartRow + length;
@@ -139,7 +140,7 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter implements 
                     @Override
                     public void success(final RESTImageCollectionV1 retValue) {
                         try {
-                            currentList = retValue.getExistingItems();
+                            currentList = retValue.getItems();
                             displayAsynchronousList(currentList, tableStartRow, retValue.getSize());
                         } finally {
                             display.removeWaitOperation();

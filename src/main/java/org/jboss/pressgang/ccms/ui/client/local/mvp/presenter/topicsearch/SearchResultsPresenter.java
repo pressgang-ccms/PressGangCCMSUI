@@ -4,12 +4,12 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topicsearch.SearchResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -27,11 +27,11 @@ public class SearchResultsPresenter extends TemplatePresenter implements Editabl
     public static final String HISTORY_TOKEN = "SearchResultsView";
     
     public interface Display extends BaseTemplateViewInterface {
-        EnhancedAsyncDataProvider<RESTTopicV1> getProvider();
+        EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> getProvider();
 
-        void setProvider(final EnhancedAsyncDataProvider<RESTTopicV1> provider);
+        void setProvider(final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider);
 
-        CellTable<RESTTopicV1> getResults();
+        CellTable<RESTTopicCollectionItemV1> getResults();
 
         SimplePager getPager();
     }
@@ -61,9 +61,9 @@ public class SearchResultsPresenter extends TemplatePresenter implements Editabl
         
         super.bind(display, this);
 
-        final EnhancedAsyncDataProvider<RESTTopicV1> provider = new EnhancedAsyncDataProvider<RESTTopicV1>() {
+        final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTopicV1> item) {
+            protected void onRangeChanged(final HasData<RESTTopicCollectionItemV1> item) {
                 final int start = item.getVisibleRange().getStart();
                 final int length = item.getVisibleRange().getLength();
                 final int end = start + length;
@@ -82,7 +82,7 @@ public class SearchResultsPresenter extends TemplatePresenter implements Editabl
                     @Override
                     public void success(final RESTTopicCollectionV1 retValue) {
                         try {
-                            updateRowData(start, retValue.getExistingItems());
+                            updateRowData(start, retValue.getItems());
                             updateRowCount(retValue.getSize(), true);
                         } finally {
                             display.removeWaitOperation();
@@ -100,10 +100,10 @@ public class SearchResultsPresenter extends TemplatePresenter implements Editabl
         };
 
         /* Respone to row clicks */
-        display.getResults().addCellPreviewHandler(new Handler<RESTTopicV1>() {
+        display.getResults().addCellPreviewHandler(new Handler<RESTTopicCollectionItemV1>() {
             @Override
-            public void onCellPreview(final CellPreviewEvent<RESTTopicV1> event) {
-                final Integer id = event.getValue().getId();
+            public void onCellPreview(final CellPreviewEvent<RESTTopicCollectionItemV1> event) {
+                final Integer id = event.getValue().getItem().getId();
 
                 final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
                     @Override

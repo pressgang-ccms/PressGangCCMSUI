@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
@@ -27,37 +28,37 @@ public class TagProjectsView extends TagViewBase implements TagProjectsPresenter
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
 
     private final SimplePager pager = new SimplePager();
-    private final CellTable<RESTProjectV1> results = new CellTable<RESTProjectV1>(Constants.MAX_SEARCH_RESULTS,
+    private final CellTable<RESTProjectCollectionItemV1> results = new CellTable<RESTProjectCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
-    private EnhancedAsyncDataProvider<RESTProjectV1> provider;
+    private EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider;
 
-    private final TextColumn<RESTProjectV1> idColumn = new TextColumn<RESTProjectV1>() {
+    private final TextColumn<RESTProjectCollectionItemV1> idColumn = new TextColumn<RESTProjectCollectionItemV1>() {
         @Override
-        public String getValue(final RESTProjectV1 object) {
-            return object.getId().toString();
+        public String getValue(final RESTProjectCollectionItemV1 object) {
+            return object.getItem().getId().toString();
 
         }
     };
 
-    private final TextColumn<RESTProjectV1> nameColumn = new TextColumn<RESTProjectV1>() {
+    private final TextColumn<RESTProjectCollectionItemV1> nameColumn = new TextColumn<RESTProjectCollectionItemV1>() {
         @Override
-        public String getValue(final RESTProjectV1 object) {
-            return object.getName();
+        public String getValue(final RESTProjectCollectionItemV1 object) {
+            return object.getItem().getName();
         }
     };
 
-    private final TextColumn<RESTProjectV1> descriptionColumn = new TextColumn<RESTProjectV1>() {
+    private final TextColumn<RESTProjectCollectionItemV1> descriptionColumn = new TextColumn<RESTProjectCollectionItemV1>() {
         @Override
-        public String getValue(final RESTProjectV1 object) {
-            return object.getDescription();
+        public String getValue(final RESTProjectCollectionItemV1 object) {
+            return object.getItem().getDescription();
         }
     };
 
-    private final Column<RESTProjectV1, String> buttonColumn = new Column<RESTProjectV1, String>(new ButtonCell()) {
+    private final Column<RESTProjectCollectionItemV1, String> buttonColumn = new Column<RESTProjectCollectionItemV1, String>(new ButtonCell()) {
         @Override
-        public String getValue(final RESTProjectV1 object) {
+        public String getValue(final RESTProjectCollectionItemV1 object) {
             if (tag != null) {
-                if (ComponentProjectV1.containsTag(object, tag.getId())) {
+                if (ComponentProjectV1.containsTag(object.getItem(), tag.getId())) {
                     return PressGangCCMSUI.INSTANCE.Remove();
                 } else {
                     return PressGangCCMSUI.INSTANCE.Add();
@@ -69,23 +70,23 @@ public class TagProjectsView extends TagViewBase implements TagProjectsPresenter
     };
 
     @Override
-    public Column<RESTProjectV1, String> getButtonColumn() {
+    public Column<RESTProjectCollectionItemV1, String> getButtonColumn() {
         return buttonColumn;
     }
 
     @Override
-    public EnhancedAsyncDataProvider<RESTProjectV1> getProvider() {
+    public EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> getProvider() {
         return provider;
     }
 
     @Override
-    public void setProvider(final EnhancedAsyncDataProvider<RESTProjectV1> provider) {
+    public void setProvider(final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }
 
     @Override
-    public CellTable<RESTProjectV1> getResults() {
+    public CellTable<RESTProjectCollectionItemV1> getResults() {
         return results;
     }
 

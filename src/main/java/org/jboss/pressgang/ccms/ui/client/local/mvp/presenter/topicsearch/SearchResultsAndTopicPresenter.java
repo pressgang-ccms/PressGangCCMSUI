@@ -7,7 +7,9 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
@@ -103,7 +105,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
         public void run() {
             if (selectedView == topicXMLDisplay) {
                 topicXMLDisplay.getDriver().flush();
-                topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic(), isReadOnlyMode(), display.getSplitType());
+                topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), display.getSplitType());
             }
         }
     };
@@ -120,7 +122,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
             final RESTTagV1 selectedTag = topicTagsDisplay.getMyTags().getValue().getTag().getItem();
 
             /* Need to deal with re-adding removed tags */
-            for (final RESTTagCollectionItemV1 tag : topicProviderData.getDisplayedItem().getTags().getItems()) {
+            for (final RESTTagCollectionItemV1 tag : topicProviderData.getDisplayedItem().getItem().getTags().getItems()) {
                 if (tag.getItem().getId().equals(selectedTag.getId())) {
                     if (tag.getState() == RESTBaseCollectionItemV1.REMOVE_STATE) {
                         tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
@@ -140,7 +142,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
             /* Get the selected tag, and clone it */
             final RESTTagV1 selectedTagClone = selectedTag.clone(true);
             /* Add the tag to the topic */
-            topicProviderData.getDisplayedItem().getTags().addNewItem(selectedTagClone);
+            topicProviderData.getDisplayedItem().getItem().getTags().addNewItem(selectedTagClone);
             /* Redisplay the view */
             updateDisplayedTopicView();
         }
@@ -170,7 +172,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
 
             if (tag.getState() == RESTBaseCollectionItemV1.ADD_STATE) {
                 /* Tag was added and then removed, so we just delete the tag */
-                topicProviderData.getDisplayedItem().getTags().getItems().remove(tag);
+                topicProviderData.getDisplayedItem().getItem().getTags().getItems().remove(tag);
             } else {
                 /* Otherwise we set the tag as removed */
                 tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
@@ -228,7 +230,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
     private String queryString;
 
     /** Holds the data required to populate and refresh the topic list */
-    private ProviderUpdateData<RESTTopicV1> topicProviderData = new ProviderUpdateData<RESTTopicV1>();
+    private ProviderUpdateData<RESTTopicCollectionItemV1> topicProviderData = new ProviderUpdateData<RESTTopicCollectionItemV1>();
 
     /**
      * A copy of all the tags in the system, broken down into project->category->tag. Used when adding new tags to a topic.
@@ -263,7 +265,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
 
         bindSplitPanelResize();
 
-        final EnhancedAsyncDataProvider<RESTTopicV1> provider = generateTopicListProvider();
+        final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = generateTopicListProvider();
         searchResultsDisplay.setProvider(provider);
 
         /* set the provider, which will update the list */
@@ -322,9 +324,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
      * Bind behaviour to the view buttons in the topic revisions cell table
      */
     private void bindViewTopicRevisionButton() {
-        topicRevisionsDisplay.getDiffButton().setFieldUpdater(new FieldUpdater<RESTTopicV1, String>() {
+        topicRevisionsDisplay.getDiffButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
             @Override
-            public void update(final int index, final RESTTopicV1 revisionTopic, final String value) {
+            public void update(final int index, final RESTTopicCollectionItemV1 revisionTopic, final String value) {
                 final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
                     @Override
                     public void begin() {
@@ -339,24 +341,24 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                     @Override
                     public void success(final RESTTopicV1 retValue) {
                         try {
-                            final RESTTopicV1 sourceTopic = getTopicOrRevisionTopic();
+                            final RESTTopicCollectionItemV1 sourceTopic = getTopicOrRevisionTopic();
                             final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID() + ": " + retValue.getId() + " "
                                     + PressGangCCMSUI.INSTANCE.TopicRevision() + ": " + retValue.getRevision().toString() + " "
                                     + PressGangCCMSUI.INSTANCE.RevisionDate() + ": "
                                     + DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL).format(retValue.getLastModified());
                             final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID()
                                     + ": "
-                                    + sourceTopic.getId()
+                                    + sourceTopic.getItem().getId()
                                     + " "
                                     + PressGangCCMSUI.INSTANCE.TopicRevision()
                                     + ": "
-                                    + sourceTopic.getRevision().toString()
+                                    + sourceTopic.getItem().getRevision().toString()
                                     + " "
                                     + PressGangCCMSUI.INSTANCE.RevisionDate()
                                     + ": "
                                     + DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL)
-                                            .format(sourceTopic.getLastModified());
-                            displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getXml(), sourceTopicLabel);
+                                            .format(sourceTopic.getItem().getLastModified());
+                            displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getItem().getXml(), sourceTopicLabel);
                         } finally {
                             topicRevisionsDisplay.removeWaitOperation();
                         }
@@ -370,61 +372,35 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
 
                 };
 
-                RESTCalls.getTopicRevision(callback, revisionTopic.getId(), revisionTopic.getRevision());
+                RESTCalls.getTopicRevision(callback, revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision());
 
             }
         });
 
-        topicRevisionsDisplay.getViewButton().setFieldUpdater(new FieldUpdater<RESTTopicV1, String>() {
+        topicRevisionsDisplay.getViewButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
             @Override
-            public void update(final int index, final RESTTopicV1 revisionTopic, final String value) {
-                final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
-                    @Override
-                    public void begin() {
-                        topicRevisionsDisplay.addWaitOperation();
-                    }
-
-                    @Override
-                    public void generalException(final Exception ex) {
-                        topicRevisionsDisplay.removeWaitOperation();
-                    }
-
-                    @Override
-                    public void success(final RESTTopicV1 retValue) {
-                        try {
-                            topicRevisionsDisplay.setRevisionTopic(retValue);
-
-                            /* default to the rendered view */
-                            if (selectedView == null) {
-                                selectedView = topicRevisionsDisplay;
-                                changeDisplayedTopicView();
-                            } else {
-                                updateDisplayedTopicView();
-                            }
-                        } finally {
-                            topicRevisionsDisplay.removeWaitOperation();
-                        }
-                    }
-
-                    @Override
-                    public void failed() {
-                        topicRevisionsDisplay.removeWaitOperation();
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                    }
-
-                };
-
+            public void update(final int index, final RESTTopicCollectionItemV1 revisionTopic, final String value) {
+                
                 /* Reset the reference to the revision topic */
                 topicRevisionsDisplay.setRevisionTopic(null);
 
-                if (revisionTopic.getRevision().equals(topicProviderData.getDisplayedItem().getRevision())) {
+                if (revisionTopic.getItem().getRevision().equals(topicProviderData.getDisplayedItem().getItem().getRevision())) {
                     /*
                      * The latest revision is actually the same as the main topic, so if that is clicked, we want to edit the
                      * main topic
                      */
                     updateDisplayedTopicView();
                 } else {
-                    RESTCalls.getTopicRevision(callback, revisionTopic.getId(), revisionTopic.getRevision());
+                    /* Reset the reference to the revision topic */
+                    topicRevisionsDisplay.setRevisionTopic(revisionTopic);
+                }
+                
+                /* default to the rendered view */
+                if (selectedView == null) {
+                    selectedView = topicRevisionsDisplay;
+                    changeDisplayedTopicView();
+                } else {
+                    updateDisplayedTopicView();
                 }
             }
         });
@@ -523,13 +499,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
     /**
      * @return A provider to be used for the topic revisions display list
      */
-    private EnhancedAsyncDataProvider<RESTTopicV1> generateTopicRevisionsListProvider() {
-        final EnhancedAsyncDataProvider<RESTTopicV1> provider = new EnhancedAsyncDataProvider<RESTTopicV1>() {
+    private EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateTopicRevisionsListProvider() {
+        final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTopicV1> display) {
-                if (topicProviderData.getDisplayedItem() != null && topicProviderData.getDisplayedItem().getRevisions() != null
-                        && topicProviderData.getDisplayedItem().getRevisions().getItems() != null) {
-                    displayNewFixedList(topicProviderData.getDisplayedItem().getRevisions().getExistingItems());
+            protected void onRangeChanged(final HasData<RESTTopicCollectionItemV1> display) {
+                if (topicProviderData.getDisplayedItem() != null && topicProviderData.getDisplayedItem().getItem().getRevisions() != null
+                        && topicProviderData.getDisplayedItem().getItem().getRevisions().getItems() != null) {
+                    displayNewFixedList(topicProviderData.getDisplayedItem().getItem().getRevisions().getItems());
                 } else {
                     resetProvider();
                 }
@@ -541,14 +517,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
     /**
      * @return A provider to be used for the topic display list
      */
-    private EnhancedAsyncDataProvider<RESTBugzillaBugV1> generateTopicBugListProvider() {
-        final EnhancedAsyncDataProvider<RESTBugzillaBugV1> provider = new EnhancedAsyncDataProvider<RESTBugzillaBugV1>() {
+    private EnhancedAsyncDataProvider<RESTBugzillaBugCollectionItemV1> generateTopicBugListProvider() {
+        final EnhancedAsyncDataProvider<RESTBugzillaBugCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTBugzillaBugCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTBugzillaBugV1> display) {
+            protected void onRangeChanged(final HasData<RESTBugzillaBugCollectionItemV1> display) {
                 if (topicProviderData.getDisplayedItem() != null
-                        && topicProviderData.getDisplayedItem().getBugzillaBugs_OTM() != null
-                        && topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getItems() != null) {
-                    displayNewFixedList(topicProviderData.getDisplayedItem().getBugzillaBugs_OTM().getExistingItems());
+                        && topicProviderData.getDisplayedItem().getItem().getBugzillaBugs_OTM() != null) {
+                    displayNewFixedList(topicProviderData.getDisplayedItem().getItem().getBugzillaBugs_OTM().getItems());
                 } else {
                     resetProvider();
                 }
@@ -560,10 +535,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
     /**
      * @return A provider to be used for the topic display list
      */
-    private EnhancedAsyncDataProvider<RESTTopicV1> generateTopicListProvider() {
-        final EnhancedAsyncDataProvider<RESTTopicV1> provider = new EnhancedAsyncDataProvider<RESTTopicV1>() {
+    private EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateTopicListProvider() {
+        final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTopicV1> display) {
+            protected void onRangeChanged(final HasData<RESTTopicCollectionItemV1> display) {
 
                 final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
                     @Override
@@ -581,7 +556,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                     @Override
                     public void success(final RESTTopicCollectionV1 retValue) {
                         try {
-                            topicProviderData.setItems(retValue.getExistingItems());
+                            topicProviderData.setItems(retValue.getItems());
                             displayAsynchronousList(topicProviderData.getItems(), retValue.getSize(), display.getVisibleRange()
                                     .getStart());
                         } finally {
@@ -610,9 +585,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
      * Bind the button click events for the topic editor screens
      */
     private void bindTopicListRowClicks() {
-        searchResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTTopicV1>() {
+        searchResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTTopicCollectionItemV1>() {
             @Override
-            public void onCellPreview(final CellPreviewEvent<RESTTopicV1> event) {
+            public void onCellPreview(final CellPreviewEvent<RESTTopicCollectionItemV1> event) {
                 /* Check to see if this was a click event */
                 final boolean isClick = Constants.JAVASCRIPT_CLICK_EVENT.equals(event.getNativeEvent().getType());
 
@@ -654,10 +629,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                         @Override
                         public void success(final RESTTopicV1 retValue) {
                             try {
-                                topicProviderData.getDisplayedItem().setRevisions(retValue.getRevisions());
+                                topicProviderData.getDisplayedItem().getItem().setRevisions(retValue.getRevisions());
 
                                 /* refresh the list */
-                                topicRevisionsDisplay.getProvider().displayNewFixedList(retValue.getRevisions().getExistingItems());
+                                topicRevisionsDisplay.getProvider().displayNewFixedList(retValue.getRevisions().getItems());
 
                             } finally {
                                 topicRevisionsDisplay.removeWaitOperation();
@@ -688,7 +663,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                         public void success(final RESTTopicV1 retValue) {
                             try {
                                 /* copy the revisions into the displayed Topic */
-                                topicProviderData.getDisplayedItem().setTags(retValue.getTags());
+                                topicProviderData.getDisplayedItem().getItem().setTags(retValue.getTags());
 
                                 /* If we are looking at the rendered view, update it */
                                 if (selectedView == topicTagsDisplay) {
@@ -725,10 +700,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                                 final RESTBugzillaBugCollectionV1 collection = retValue.getBugzillaBugs_OTM();
 
                                 /* copy the revisions into the displayed Topic */
-                                topicProviderData.getDisplayedItem().setBugzillaBugs_OTM(collection);
+                                topicProviderData.getDisplayedItem().getItem().setBugzillaBugs_OTM(collection);
 
                                 /* refresh the celltable */
-                                topicBugsDisplay.getProvider().displayNewFixedList(collection.getExistingItems());
+                                topicBugsDisplay.getProvider().displayNewFixedList(collection.getItems());
                             } finally {
                                 topicBugsDisplay.removeWaitOperation();
                             }
@@ -743,9 +718,9 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                     };
 
                     /* Initiate the REST calls */
-                    RESTCalls.getTopicWithTags(topicWithTagsCallback, topicProviderData.getSelectedItem().getId());
-                    RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, topicProviderData.getSelectedItem().getId());
-                    RESTCalls.getTopicWithBugs(topicWithBugsCallback, topicProviderData.getSelectedItem().getId());
+                    RESTCalls.getTopicWithTags(topicWithTagsCallback, topicProviderData.getSelectedItem().getItem().getId());
+                    RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, topicProviderData.getSelectedItem().getItem().getId());
+                    RESTCalls.getTopicWithBugs(topicWithBugsCallback, topicProviderData.getSelectedItem().getItem().getId());
                 }
             }
         });
@@ -777,7 +752,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
      * 
      * @param provider The provider created by the generateTopicListProvider() method
      */
-    private void bindTopicEditButtons(final EnhancedAsyncDataProvider<RESTTopicV1> provider) {
+    private void bindTopicEditButtons(final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider) {
         /* Build up a click handler to save the topic */
         final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
@@ -800,20 +775,20 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                         public void success(final RESTTopicV1 retValue) {
                             try {
                                 /* Update the local collection of topics */
-                                retValue.cloneInto(topicProviderData.getDisplayedItem(), true);
+                                retValue.cloneInto(topicProviderData.getDisplayedItem().getItem(), true);
 
                                 /* The title may have been updated */
-                                if (!topicProviderData.getSelectedItem().getTitle()
-                                        .equals(topicProviderData.getDisplayedItem().getTitle())) {
+                                if (!topicProviderData.getSelectedItem().getItem().getTitle()
+                                        .equals(topicProviderData.getDisplayedItem().getItem().getTitle())) {
                                     /* Update the title */
-                                    topicProviderData.getSelectedItem().setTitle(
-                                            topicProviderData.getDisplayedItem().getTitle());
+                                    topicProviderData.getSelectedItem().getItem().setTitle(
+                                            topicProviderData.getDisplayedItem().getItem().getTitle());
                                     /* Update the list of topics */
                                     provider.updateRowData(tableStartRow, topicProviderData.getItems());
                                 }
 
                                 /* Update the edit window */
-                                selectedView.initialize(getTopicOrRevisionTopic(), isReadOnlyMode(), display.getSplitType());
+                                selectedView.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), display.getSplitType());
 
                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                             } finally {
@@ -838,7 +813,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                     /*
                      * Create a new instance of the topic, with all the properties set to explicitly update
                      */
-                    final RESTTopicV1 updateTopic = topicProviderData.getDisplayedItem().clone(true);
+                    final RESTTopicV1 updateTopic = topicProviderData.getDisplayedItem().getItem().clone(true);
                     updateTopic.explicitSetBugzillaBugs_OTM(updateTopic.getBugzillaBugs_OTM());
                     updateTopic.explicitSetProperties(updateTopic.getProperties());
                     updateTopic.explicitSetSourceUrls_OTM(updateTopic.getSourceUrls_OTM());
@@ -1023,7 +998,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
         /* Update the page name */
         final StringBuilder title = new StringBuilder(selectedView.getPageName());
         if (this.topicProviderData.getDisplayedItem() != null) {
-            title.append(": " + topicProviderData.getDisplayedItem().getTitle());
+            title.append(": " + topicProviderData.getDisplayedItem().getItem().getTitle());
         }
         display.getPageTitle().setText(title.toString());
 
@@ -1036,7 +1011,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
         /*
          * Need to do an initial call to initialize for the rendered view in the split pane
          */
-        topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic(), isReadOnlyMode(), display.getSplitType());
+        topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), display.getSplitType());
         /* By default, stop the automatic updating of the rendered view panel */
         timer.cancel();
 
@@ -1044,10 +1019,10 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
             /*
              * The revisions always come from the parent topic (this saves us expanding the revisions when loading a revision
              */
-            selectedView.initialize(topicProviderData.getDisplayedItem(), isReadOnlyMode(), display.getSplitType());
+            selectedView.initialize(topicProviderData.getDisplayedItem().getItem(), isReadOnlyMode(), display.getSplitType());
         } else {
             /* All other details come from the revision topic */
-            selectedView.initialize(getTopicOrRevisionTopic(), isReadOnlyMode(), display.getSplitType());
+            selectedView.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), display.getSplitType());
         }
 
         /* Need to redisplay to work around a bug in the ACE editor */
@@ -1138,8 +1113,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
      * 
      * @return The currently displayed topic
      */
-    private RESTTopicV1 getTopicOrRevisionTopic() {
-        final RESTTopicV1 sourceTopic = topicRevisionsDisplay.getRevisionTopic() == null ? topicProviderData.getDisplayedItem()
+    private RESTTopicCollectionItemV1 getTopicOrRevisionTopic() {
+        final RESTTopicCollectionItemV1 sourceTopic = topicRevisionsDisplay.getRevisionTopic() == null ? topicProviderData.getDisplayedItem()
                 : topicRevisionsDisplay.getRevisionTopic();
         return sourceTopic;
     }

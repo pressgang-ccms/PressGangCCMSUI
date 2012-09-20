@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -32,55 +33,55 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
 
     private final SimplePager pager = new SimplePager();
-    private final CellTable<RESTTopicV1> results = new CellTable<RESTTopicV1>(Constants.MAX_SEARCH_RESULTS,
+    private final CellTable<RESTTopicCollectionItemV1> results = new CellTable<RESTTopicCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
-    private EnhancedAsyncDataProvider<RESTTopicV1> provider;
-    private RESTTopicV1 revisionTopic;
+    private EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider;
+    private RESTTopicCollectionItemV1 revisionTopic;
     private RESTTopicV1 mainTopic;
 
-    private final TextColumn<RESTTopicV1> revisionNumber = new TextColumn<RESTTopicV1>() {
+    private final TextColumn<RESTTopicCollectionItemV1> revisionNumber = new TextColumn<RESTTopicCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTopicV1 object) {
-            return object.getRevision().toString();
+        public String getValue(final RESTTopicCollectionItemV1 object) {
+            return object.getItem().getRevision().toString();
         }
     };
 
-    private final TextColumn<RESTTopicV1> revisionDate = new TextColumn<RESTTopicV1>() {
+    private final TextColumn<RESTTopicCollectionItemV1> revisionDate = new TextColumn<RESTTopicCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTopicV1 object) {
-            return DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG).format(object.getLastModified());
+        public String getValue(final RESTTopicCollectionItemV1 object) {
+            return DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG).format(object.getItem().getLastModified());
         }
     };
 
-    private final TextColumn<RESTTopicV1> revisionMessage = new TextColumn<RESTTopicV1>() {
+    private final TextColumn<RESTTopicCollectionItemV1> revisionMessage = new TextColumn<RESTTopicCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTopicV1 object) {
-            if (object.getLogDetails() != null) {
-                return object.getLogDetails().getMessage();
+        public String getValue(final RESTTopicCollectionItemV1 object) {
+            if (object.getItem().getLogDetails() != null) {
+                return object.getItem().getLogDetails().getMessage();
             }
             
             return "";
         }
     };
 
-    private final Column<RESTTopicV1, String> viewButton = new Column<RESTTopicV1, String>(new ButtonCell()) {
+    private final Column<RESTTopicCollectionItemV1, String> viewButton = new Column<RESTTopicCollectionItemV1, String>(new ButtonCell()) {
         @Override
-        public String getValue(final RESTTopicV1 object) {
+        public String getValue(final RESTTopicCollectionItemV1 object) {
             /*
              * The last revision is the same as the topic in the main database. We indicate that by showing the last revision as
              * editable instead of read only.
              */
-            if (mainTopic != null && object.getRevision().equals(mainTopic.getRevision()))
+            if (mainTopic != null && object.getItem().getRevision().equals(mainTopic.getRevision()))
 
             {
-                if (revisionTopic == null || revisionTopic.getRevision().equals(mainTopic.getRevision())) {
+                if (revisionTopic == null || revisionTopic.getItem().getRevision().equals(mainTopic.getRevision())) {
                     return PressGangCCMSUI.INSTANCE.CurrentlyEditing();
                 } else {
                     return PressGangCCMSUI.INSTANCE.Edit();
                 }
             }
 
-            if (revisionTopic == null || !revisionTopic.getRevision().equals(object.getRevision())) {
+            if (revisionTopic == null || !revisionTopic.getItem().getRevision().equals(object.getItem().getRevision())) {
                 return PressGangCCMSUI.INSTANCE.View();
             }
 
@@ -88,16 +89,16 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
         }
     };
 
-    private final Column<RESTTopicV1, String> diffButton = new Column<RESTTopicV1, String>(new ButtonCell()) {
+    private final Column<RESTTopicCollectionItemV1, String> diffButton = new Column<RESTTopicCollectionItemV1, String>(new ButtonCell()) {
         @Override
-        public String getValue(final RESTTopicV1 object) {
-            if (mainTopic != null && object.getRevision().equals(mainTopic.getRevision())) {
-                if (revisionTopic == null || revisionTopic.getRevision().equals(mainTopic.getRevision())) {
+        public String getValue(final RESTTopicCollectionItemV1 object) {
+            if (mainTopic != null && object.getItem().getRevision().equals(mainTopic.getRevision())) {
+                if (revisionTopic == null || revisionTopic.getItem().getRevision().equals(mainTopic.getRevision())) {
                     return PressGangCCMSUI.INSTANCE.CurrentlyEditing();
                 }
             }
 
-            if (revisionTopic == null || !revisionTopic.getRevision().equals(object.getRevision())) {
+            if (revisionTopic == null || !revisionTopic.getItem().getRevision().equals(object.getItem().getRevision())) {
                 return PressGangCCMSUI.INSTANCE.Diff();
             }
 
@@ -106,38 +107,38 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
     };
 
     @Override
-    public Column<RESTTopicV1, String> getDiffButton() {
+    public Column<RESTTopicCollectionItemV1, String> getDiffButton() {
         return diffButton;
     }
 
     @Override
-    public RESTTopicV1 getRevisionTopic() {
+    public RESTTopicCollectionItemV1 getRevisionTopic() {
         return revisionTopic;
     }
 
     @Override
-    public void setRevisionTopic(final RESTTopicV1 revisionTopic) {
+    public void setRevisionTopic(final RESTTopicCollectionItemV1 revisionTopic) {
         this.revisionTopic = revisionTopic;
     }
 
     @Override
-    public Column<RESTTopicV1, String> getViewButton() {
+    public Column<RESTTopicCollectionItemV1, String> getViewButton() {
         return viewButton;
     }
 
     @Override
-    public void setProvider(final EnhancedAsyncDataProvider<RESTTopicV1> provider) {
+    public void setProvider(final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }
 
     @Override
-    public EnhancedAsyncDataProvider<RESTTopicV1> getProvider() {
+    public EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> getProvider() {
         return provider;
     }
 
     @Override
-    public CellTable<RESTTopicV1> getResults() {
+    public CellTable<RESTTopicCollectionItemV1> getResults() {
         return results;
     }
 

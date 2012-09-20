@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -46,13 +47,13 @@ public class SearchUIProjects {
             throw new IllegalArgumentException("tags parameter cannot be null");
         }
 
-        for (final RESTTagV1 tag : tags.getExistingAndAddedItems()) {
-            if (tag.getProjects() == null) {
-                throw new IllegalArgumentException("tag.getProjects() cannot be null");
+        for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
+            if (tag.getItem().getProjects() == null) {
+                throw new IllegalArgumentException("tag.getItem().getProjects() cannot be null");
             }
 
             /* Tags to be removed should not show up */
-            for (final RESTProjectCollectionItemV1 project : tag.getProjects().getExistingCollectionItems()) {
+            for (final RESTProjectCollectionItemV1 project : tag.getItem().getProjects().returnExistingCollectionItems()) {
                 final SearchUIProject searchUIProject = new SearchUIProject(project);
                 if (!projects.contains(searchUIProject)) {
                     searchUIProject.populateCategories(project, tags);

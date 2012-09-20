@@ -109,7 +109,7 @@ public class ImagePresenter extends ImagePresenterBase {
             @Override
             public void success(final RESTImageV1 retValue) {
                 try {
-                    displayedImage = retValue;
+                    retValue.cloneInto(displayedImage.getItem(), true);
                     finishLoading();
                 } finally {
                     display.removeWaitOperation();
@@ -130,7 +130,7 @@ public class ImagePresenter extends ImagePresenterBase {
 
     @Override
     protected void reInitialiseImageView() {
-        display.initialize(displayedImage, getUnassignedLocales().toArray(new String[0]));
+        display.initialize(displayedImage.getItem(), getUnassignedLocales().toArray(new String[0]));
 
         bindImageUploadButtons(display);
     }

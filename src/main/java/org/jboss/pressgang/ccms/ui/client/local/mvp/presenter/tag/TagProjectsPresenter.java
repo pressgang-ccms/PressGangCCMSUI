@@ -4,6 +4,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
@@ -23,15 +24,15 @@ public class TagProjectsPresenter extends TemplatePresenter implements EditableV
     public static final String HISTORY_TOKEN = "TagProjectsView";
     
     public interface Display extends TagViewInterface {
-        EnhancedAsyncDataProvider<RESTProjectV1> getProvider();
+        EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> getProvider();
 
-        void setProvider(final EnhancedAsyncDataProvider<RESTProjectV1> provider);
+        void setProvider(final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider);
 
-        CellTable<RESTProjectV1> getResults();
+        CellTable<RESTProjectCollectionItemV1> getResults();
 
         SimplePager getPager();
 
-        Column<RESTProjectV1, String> getButtonColumn();
+        Column<RESTProjectCollectionItemV1, String> getButtonColumn();
     }
 
     @Inject
@@ -55,9 +56,9 @@ public class TagProjectsPresenter extends TemplatePresenter implements EditableV
     private void bind() {
         super.bind(display, this);
 
-        final EnhancedAsyncDataProvider<RESTProjectV1> provider = new EnhancedAsyncDataProvider<RESTProjectV1>() {
+        final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTProjectCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTProjectV1> item) {
+            protected void onRangeChanged(final HasData<RESTProjectCollectionItemV1> item) {
                 final int start = item.getVisibleRange().getStart();
                 final int length = item.getVisibleRange().getLength();
                 final int end = start + length;
@@ -76,7 +77,7 @@ public class TagProjectsPresenter extends TemplatePresenter implements EditableV
                     @Override
                     public void success(final RESTProjectCollectionV1 retValue) {
                         try {
-                            displayNewFixedList(retValue.getExistingItems());
+                            displayNewFixedList(retValue.getItems());
                         } finally {
                             display.removeWaitOperation();
                         }

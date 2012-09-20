@@ -6,6 +6,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
@@ -27,11 +28,11 @@ public class TagFilteredResultsPresenter extends TemplatePresenter implements Ed
     public static final String HISTORY_TOKEN = "ImageFilteredResultsView";
     
     public interface Display extends BaseTemplateViewInterface {
-        EnhancedAsyncDataProvider<RESTTagV1> getProvider();
+        EnhancedAsyncDataProvider<RESTTagCollectionItemV1> getProvider();
 
-        void setProvider(final EnhancedAsyncDataProvider<RESTTagV1> provider);
+        void setProvider(final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider);
 
-        CellTable<RESTTagV1> getResults();
+        CellTable<RESTTagCollectionItemV1> getResults();
 
         SimplePager getPager();
 
@@ -72,9 +73,9 @@ public class TagFilteredResultsPresenter extends TemplatePresenter implements Ed
     private void bind() {
         super.bind(display, this);
 
-        final EnhancedAsyncDataProvider<RESTTagV1> provider = new EnhancedAsyncDataProvider<RESTTagV1>() {
+        final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTagV1> item) {
+            protected void onRangeChanged(final HasData<RESTTagCollectionItemV1> item) {
                 final int start = item.getVisibleRange().getStart();
                 final int length = item.getVisibleRange().getLength();
                 final int end = start + length;
@@ -93,7 +94,7 @@ public class TagFilteredResultsPresenter extends TemplatePresenter implements Ed
                     @Override
                     public void success(final RESTTagCollectionV1 retValue) {
                         try {
-                            displayNewFixedList(retValue.getExistingItems());
+                            displayNewFixedList(retValue.getItems());
                         } finally {
                             display.removeWaitOperation();
                         }

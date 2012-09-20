@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
@@ -27,7 +29,7 @@ import com.google.gwt.user.client.Window;
 
 abstract public class ImagePresenterBase extends TemplatePresenter {
     /** The currently displayed image. */
-    protected RESTImageV1 displayedImage;
+    protected RESTImageCollectionItemV1 displayedImage;
 
     /** A reference to the StringConstants that holds the locales. */
     protected String[] locales;
@@ -51,9 +53,9 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
         final List<String> newLocales = Arrays.asList(locales);
 
         /* Make it so you can't add a locale if it already exists */
-        if (displayedImage.getLanguageImages_OTM() != null) {
-            for (final RESTLanguageImageV1 langImage : displayedImage.getLanguageImages_OTM().getExistingAndAddedItems()) {
-                newLocales.remove(langImage.getLocale());
+        if (displayedImage.getItem().getLanguageImages_OTM() != null) {
+            for (final RESTLanguageImageCollectionItemV1 langImage : displayedImage.getItem().getLanguageImages_OTM().returnExistingAndAddedCollectionItems()) {
+                newLocales.remove(langImage.getItem().getLocale());
             }
         }
 
@@ -102,8 +104,8 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                  * Create the image to be modified. This is so we don't send off unnessessary data.
                  */
                 final RESTImageV1 updateImage = new RESTImageV1();
-                updateImage.setId(displayedImage.getId());
-                updateImage.explicitSetDescription(displayedImage.getDescription());
+                updateImage.setId(displayedImage.getItem().getId());
+                updateImage.explicitSetDescription(displayedImage.getItem().getDescription());
 
                 final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
                     @Override
@@ -119,7 +121,7 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                     @Override
                     public void success(final RESTImageV1 retValue) {
                         try {
-                            displayedImage = retValue;
+                            retValue.cloneInto(displayedImage.getItem(), true);
                             reInitialiseImageView();
                             Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                         } finally {
@@ -153,18 +155,18 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
 
                     final int selectedTab = imageDisplay.getEditor().languageImages_OTMEditor().getSelectedIndex();
                     if (selectedTab != -1) {
-                        final RESTLanguageImageV1 selectedImage = imageDisplay.getEditor().languageImages_OTMEditor()
+                        final RESTLanguageImageCollectionItemV1 selectedImage = imageDisplay.getEditor().languageImages_OTMEditor()
                                 .itemsEditor().getList().get(selectedTab);
 
                         /*
                          * Create the image to be modified. This is so we don't send off unnessessary data.
                          */
                         final RESTImageV1 updateImage = new RESTImageV1();
-                        updateImage.setId(displayedImage.getId());
+                        updateImage.setId(displayedImage.getItem().getId());
 
                         /* Create the language image */
                         final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
-                        languageImage.setId(selectedImage.getId());
+                        languageImage.setId(selectedImage.getItem().getId());
 
                         /* Add the langauge image */
                         updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
@@ -184,7 +186,7 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                             @Override
                             public void success(final RESTImageV1 retValue) {
                                 try {
-                                    displayedImage = retValue;
+                                    retValue.cloneInto(displayedImage.getItem(), true);
                                     reInitialiseImageView();
                                 } finally {
                                     waitDisplay.removeWaitOperation();
@@ -212,9 +214,9 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                         .getItemText(imageDisplay.getAddLocaleDialog().getLocales().getSelectedIndex());
 
                 /* Don't add locales twice */
-                if (displayedImage.getLanguageImages_OTM() != null) {
-                    for (final RESTLanguageImageV1 langImage : displayedImage.getLanguageImages_OTM().getExistingAndAddedItems()) {
-                        if (langImage.getLocale().equals(selectedLocale)) {
+                if (displayedImage.getItem().getLanguageImages_OTM() != null) {
+                    for (final RESTLanguageImageCollectionItemV1 langImage : displayedImage.getItem().getLanguageImages_OTM().returnExistingAndAddedCollectionItems()) {
+                        if (langImage.getItem().getLocale().equals(selectedLocale)) {
                             return;
                         }
                     }
@@ -224,7 +226,7 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                  * Create the image to be modified. This is so we don't send off unnessessary data.
                  */
                 final RESTImageV1 updateImage = new RESTImageV1();
-                updateImage.setId(displayedImage.getId());
+                updateImage.setId(displayedImage.getItem().getId());
 
                 /* Create the language image */
                 final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
@@ -248,7 +250,7 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                     @Override
                     public void success(final RESTImageV1 retValue) {
                         try {
-                            displayedImage = retValue;
+                            retValue.cloneInto(displayedImage.getItem(), true);
                             reInitialiseImageView();
                         } finally {
                             waitDisplay.removeWaitOperation();
@@ -308,14 +310,14 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                                     final byte[] buffer = GWTUtilities.getByteArray(result, 1);
 
                                     /*
-                                     * Create the image to be modified. This is so we don't send off unnessessary data.
+                                     * Create the image to be modified. This is so we don't send off unnecessary data.
                                      */
                                     final RESTImageV1 updateImage = new RESTImageV1();
-                                    updateImage.setId(displayedImage.getId());
+                                    updateImage.setId(displayedImage.getItem().getId());
                                     
                                     /* Create the language image */
                                     final RESTLanguageImageV1 updatedLanguageImage = new RESTLanguageImageV1();
-                                    updatedLanguageImage.setId(editor.self.getId());
+                                    updatedLanguageImage.setId(editor.self.getItem().getId());
                                     updatedLanguageImage.explicitSetImageData(buffer);
                                     updatedLanguageImage.explicitSetFilename(file.getName());
 
@@ -337,7 +339,7 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                                         @Override
                                         public void success(final RESTImageV1 retValue) {
                                             try {
-                                                displayedImage = retValue;
+                                                retValue.cloneInto(displayedImage.getItem(), true);
                                                 reInitialiseImageView();
                                             } finally {
                                                 imageDisplay.removeWaitOperation();

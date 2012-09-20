@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -35,22 +36,22 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
     private final PushButton search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
 
     private final SimplePager pager = new SimplePager();
-    private final CellTable<RESTTagV1> results = new CellTable<RESTTagV1>(Constants.MAX_SEARCH_RESULTS,
+    private final CellTable<RESTTagCollectionItemV1> results = new CellTable<RESTTagCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
-    private EnhancedAsyncDataProvider<RESTTagV1> provider;
+    private EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider;
 
-    private final TextColumn<RESTTagV1> idColumn = new TextColumn<RESTTagV1>() {
+    private final TextColumn<RESTTagCollectionItemV1> idColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTagV1 object) {
-            return object.getId().toString();
+        public String getValue(final RESTTagCollectionItemV1 object) {
+            return object.getItem().getId().toString();
 
         }
     };
 
-    private final TextColumn<RESTTagV1> nameColumn = new TextColumn<RESTTagV1>() {
+    private final TextColumn<RESTTagCollectionItemV1> nameColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTagV1 object) {
-            return object.getName();
+        public String getValue(final RESTTagCollectionItemV1 object) {
+            return object.getItem().getName();
         }
     };
 
@@ -75,17 +76,17 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
     }
 
     @Override
-    public CellTable<RESTTagV1> getResults() {
+    public CellTable<RESTTagCollectionItemV1> getResults() {
         return results;
     }
 
     @Override
-    public EnhancedAsyncDataProvider<RESTTagV1> getProvider() {
+    public EnhancedAsyncDataProvider<RESTTagCollectionItemV1> getProvider() {
         return provider;
     }
 
     @Override
-    public void setProvider(final EnhancedAsyncDataProvider<RESTTagV1> provider) {
+    public void setProvider(final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }

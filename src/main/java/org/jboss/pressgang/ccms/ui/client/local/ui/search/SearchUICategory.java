@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
@@ -75,11 +76,11 @@ public class SearchUICategory extends SearchUIBase {
         return myTags.size();
     }
 
-    public SearchUICategory(final SearchUIProject project, final RESTCategoryTagV1 category) {
-        super(category.getName(), project.getId() + "-" + category.getId());
+    public SearchUICategory(final SearchUIProject project, final RESTCategoryTagCollectionItemV1 category) {
+        super(category.getItem().getName(), project.getId() + "-" + category.getItem().getId());
     }
 
-    public void populateCategories(final RESTProjectCollectionItemV1 project, final RESTCategoryTagV1 category,
+    public void populateCategories(final RESTProjectCollectionItemV1 project, final RESTCategoryTagCollectionItemV1 category,
             final RESTTagCollectionV1 tags) {
         if (tags == null) {
             throw new IllegalArgumentException("tags parameter cannot be null");
@@ -91,7 +92,7 @@ public class SearchUICategory extends SearchUIBase {
             throw new IllegalArgumentException("category cannot be null");
         }
 
-        for (final RESTTagCollectionItemV1 tag : tags.getExistingAndAddedCollectionItems()) {
+        for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
             if (tag.getItem().getProjects() == null) {
                 throw new IllegalArgumentException("tag.getItem().getProjects() cannot be null");
             }
@@ -111,7 +112,7 @@ public class SearchUICategory extends SearchUIBase {
         Collections.sort(myTags, new SearchUINameSort());
     }
 
-    public void populateCategoriesWithoutProject(final RESTCategoryTagV1 category, final RESTTagCollectionV1 tags) {
+    public void populateCategoriesWithoutProject(final RESTCategoryTagCollectionItemV1 category, final RESTTagCollectionV1 tags) {
         if (tags == null) {
             throw new IllegalArgumentException("tags parameter cannot be null");
         }
@@ -119,7 +120,7 @@ public class SearchUICategory extends SearchUIBase {
             throw new IllegalArgumentException("category cannot be null");
         }
 
-        for (final RESTTagCollectionItemV1 tag : tags.getExistingAndAddedCollectionItems()) {
+        for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
             if (tag.getItem().getProjects() == null) {
                 throw new IllegalArgumentException("tag.getItem().getProjects() cannot be null");
             }

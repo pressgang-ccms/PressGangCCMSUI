@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
 import javax.enterprise.context.Dependent;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
@@ -19,27 +20,27 @@ public class TopicRevisionsPresenter extends TemplatePresenter {
     private String topicId;
 
     public interface Display extends TopicViewInterface {
-        EnhancedAsyncDataProvider<RESTTopicV1> getProvider();
+        EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> getProvider();
 
-        void setProvider(final EnhancedAsyncDataProvider<RESTTopicV1> provider);
+        void setProvider(final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider);
 
-        CellTable<RESTTopicV1> getResults();
+        CellTable<RESTTopicCollectionItemV1> getResults();
 
         SimplePager getPager();
 
-        Column<RESTTopicV1, String> getViewButton();
+        Column<RESTTopicCollectionItemV1, String> getViewButton();
 
-        Column<RESTTopicV1, String> getDiffButton();
+        Column<RESTTopicCollectionItemV1, String> getDiffButton();
 
         /**
          * @return The currently selected revision topic.
          */
-        RESTTopicV1 getRevisionTopic();
+        RESTTopicCollectionItemV1 getRevisionTopic();
 
         /**
          * @param revisionTopic The currently selected revision topic.
          */
-        void setRevisionTopic(RESTTopicV1 revisionTopic);
+        void setRevisionTopic(RESTTopicCollectionItemV1 revisionTopic);
     }
 
     @Override

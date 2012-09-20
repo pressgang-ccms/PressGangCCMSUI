@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.image;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -35,22 +36,22 @@ public class ImageFilteredResultsView extends BaseTemplateView implements ImageF
     private final PushButton search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
 
     private final SimplePager pager = new SimplePager();
-    private final CellTable<RESTImageV1> results = new CellTable<RESTImageV1>(Constants.MAX_SEARCH_RESULTS,
+    private final CellTable<RESTImageCollectionItemV1> results = new CellTable<RESTImageCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
-    private org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider<RESTImageV1> provider;
+    private org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider;
 
-    private final TextColumn<RESTImageV1> idColumn = new TextColumn<RESTImageV1>() {
+    private final TextColumn<RESTImageCollectionItemV1> idColumn = new TextColumn<RESTImageCollectionItemV1>() {
         @Override
-        public String getValue(final RESTImageV1 object) {
-            return object.getId().toString();
+        public String getValue(final RESTImageCollectionItemV1 object) {
+            return object.getItem().getId().toString();
 
         }
     };
 
-    private final TextColumn<RESTImageV1> descriptionColumn = new TextColumn<RESTImageV1>() {
+    private final TextColumn<RESTImageCollectionItemV1> descriptionColumn = new TextColumn<RESTImageCollectionItemV1>() {
         @Override
-        public String getValue(final RESTImageV1 object) {
-            return object.getDescription();
+        public String getValue(final RESTImageCollectionItemV1 object) {
+            return object.getItem().getDescription();
         }
     };
 
@@ -75,17 +76,17 @@ public class ImageFilteredResultsView extends BaseTemplateView implements ImageF
     }
 
     @Override
-    public CellTable<RESTImageV1> getResults() {
+    public CellTable<RESTImageCollectionItemV1> getResults() {
         return results;
     }
 
     @Override
-    public EnhancedAsyncDataProvider<RESTImageV1> getProvider() {
+    public EnhancedAsyncDataProvider<RESTImageCollectionItemV1> getProvider() {
         return provider;
     }
 
     @Override
-    public void setProvider(EnhancedAsyncDataProvider<RESTImageV1> provider) {
+    public void setProvider(EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }

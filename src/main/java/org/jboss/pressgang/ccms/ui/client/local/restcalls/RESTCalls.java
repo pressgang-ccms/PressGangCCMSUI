@@ -27,33 +27,59 @@ import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
  */
 public final class RESTCalls {
     /** The required expansion details for the topics. */
-    private static final String TOPIC_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTopicV1.BUGZILLABUGS_NAME
-            + "\"}}, {\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTopicV1.REVISIONS_NAME
-            + "\"},\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTopicV1.LOG_DETAILS_NAME 
-            + "\"}}]}, {\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTopicV1.TAGS_NAME
-            + "\"},\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTagV1.PROJECTS_NAME
-            + "\"}},{\"trunk\":{\"showSize\":true,\"name\":\"" + RESTTagV1.CATEGORIES_NAME + "\"}}]}";
-    private static final String TOPIC_REVISIONS_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTopicV1.REVISIONS_NAME
-            + "\"}}";
-    private static final String TOPIC_BUGS_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTopicV1.BUGZILLABUGS_NAME
-            + "\"}}";
-    private static final String TOPIC_TAGS_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTopicV1.TAGS_NAME
-            + "\"},\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTagV1.PROJECTS_NAME
-            + "\"}},{\"trunk\":{\"showSize\":true,\"name\":\"" + RESTTagV1.CATEGORIES_NAME + "\"}}]}";
+    private static final String TOPIC_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.BUGZILLABUGS_NAME
+            + "\"}}, {\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"},\"branches\":[{\"trunk\":{\"name\": \""
+            + RESTTopicV1.LOG_DETAILS_NAME + "\"}}]}, {\"trunk\":{\"name\": \"" + RESTTopicV1.TAGS_NAME
+            + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTTagV1.PROJECTS_NAME + "\"}},{\"trunk\":{\"name\":\""
+            + RESTTagV1.CATEGORIES_NAME + "\"}}]}";
+    /** A topic with expanded revisions */
+    private static final String TOPIC_REVISIONS_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"}}";
+    /** A topic with expanded bugs */
+    private static final String TOPIC_BUGS_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.BUGZILLABUGS_NAME + "\"}}";
+    /** A topic with expanded tags */
+    private static final String TOPIC_TAGS_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.TAGS_NAME
+            + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTTagV1.PROJECTS_NAME + "\"}},{\"trunk\":{\"name\":\""
+            + RESTTagV1.CATEGORIES_NAME + "\"}}]}";
     /** The required expansion details for the tags. */
-    private static final String TAG_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTagV1.PROJECTS_NAME
-            + "\"}}, {\"trunk\":{\"showSize\":true,\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}";
+    private static final String TAG_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTagV1.PROJECTS_NAME
+            + "\"}}, {\"trunk\":{\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}";
     /** The required expansion details for the categories. */
-    private static final String CATEGORY_EXPANSION = "{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTCategoryV1.TAGS_NAME
-            + "\"}}";
+    private static final String CATEGORY_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTCategoryV1.TAGS_NAME + "\"}}";
 
+    /**
+     * All REST calls follow a similar pattern:
+     * Before it starts
+     * An Exception may be thrown
+     * The call succeeds or
+     * The call fails
+     * 
+     * This interface defines callbacks for these events.
+     * 
+     * @author Matthew Casperson
+     *
+     * @param <T> The type that is returned by the REST call
+     */
     abstract public interface RESTCallback<T> {
+        /**
+         * Called before the REST methods is called
+         */
         void begin();
 
+        /**
+         * Called if an exception is thrown when attempting to call the REST service
+         * @param ex
+         */
         void generalException(final Exception ex);
 
+        /**
+         * Called if the REST call was successful
+         * @param retValue The value returned from the REST service
+         */
         void success(final T retValue);
 
+        /**
+         * Called if the REST call was unsuccessful
+         */
         void failed();
     }
 
@@ -130,8 +156,7 @@ public final class RESTCalls {
         final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
                 constructErrorCallback(callback));
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"branches\":[" + TAG_EXPANSION
-                + "],\"trunk\":{\"showSize\":true,\"name\":\"tags\"}}]}";
+        final String expand = "{\"branches\":[{\"branches\":[" + TAG_EXPANSION + "],\"trunk\":{\"name\":\"tags\"}}]}";
 
         try {
             callback.begin();
@@ -154,7 +179,7 @@ public final class RESTCalls {
             callback.generalException(ex);
         }
     }
-    
+
     static public void getTopicWithRevisions(final RESTCallback<RESTTopicV1> callback, final Integer id) {
         final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
                 constructErrorCallback(callback));
@@ -168,7 +193,7 @@ public final class RESTCalls {
             callback.generalException(ex);
         }
     }
-    
+
     static public void getTopicWithBugs(final RESTCallback<RESTTopicV1> callback, final Integer id) {
         final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
                 constructErrorCallback(callback));
@@ -182,7 +207,7 @@ public final class RESTCalls {
             callback.generalException(ex);
         }
     }
-    
+
     static public void getTopicWithTags(final RESTCallback<RESTTopicV1> callback, final Integer id) {
         final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
                 constructErrorCallback(callback));
@@ -215,9 +240,8 @@ public final class RESTCalls {
         final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
                 constructErrorCallback(callback));
         /* Expand the language images */
-        final String expand = "{\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
-                + "\"},\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME
-                + "\"}}]}]}";
+        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
+                + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
 
         try {
             callback.begin();
@@ -231,8 +255,7 @@ public final class RESTCalls {
         final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
                 constructErrorCallback(callback));
         /* Expand the language images */
-        final String expand = "{\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
-                + "\"}}]}";
+        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}}]}";
 
         try {
             callback.begin();
@@ -246,9 +269,8 @@ public final class RESTCalls {
         final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
                 constructErrorCallback(callback));
         /* Expand the language images */
-        final String expand = "{\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
-                + "\"},\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME
-                + "\"}}]}]}";
+        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
+                + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
 
         try {
             callback.begin();
@@ -278,7 +300,7 @@ public final class RESTCalls {
                 constructErrorCallback(callback));
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
-                + ", \"showSize\":true,\"name\": \"topics\"}}]}";
+                + ", \"name\": \"topics\"}}]}";
 
         try {
             callback.begin();
@@ -294,7 +316,7 @@ public final class RESTCalls {
                 constructErrorCallback(callback));
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
-                + ", \"showSize\":true,\"name\": \"tags\"}}]}";
+                + ", \"name\": \"tags\"}}]}";
 
         try {
             callback.begin();
@@ -323,8 +345,8 @@ public final class RESTCalls {
                 constructErrorCallback(callback));
         /* Expand the categories and projects in the tags */
 
-        final String expand = "{\"branches\":[{\"trunk\":{ \"showSize\":true,\"name\": \"categories\"}, \"branches\":["
-                + CATEGORY_EXPANSION + "]}]}";
+        final String expand = "{\"branches\":[{\"trunk\":{ \"name\": \"categories\"}, \"branches\":[" + CATEGORY_EXPANSION
+                + "]}]}";
 
         try {
             callback.begin();
@@ -341,7 +363,7 @@ public final class RESTCalls {
         /* Expand the categories and projects in the tags */
 
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
-                + ", \"showSize\":true,\"name\": \"categories\"}, \"branches\":[" + CATEGORY_EXPANSION + "]}]}";
+                + ", \"name\": \"categories\"}, \"branches\":[" + CATEGORY_EXPANSION + "]}]}";
 
         try {
             callback.begin();
@@ -356,10 +378,9 @@ public final class RESTCalls {
         final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
                 constructErrorCallback(callback));
         /* Expand the categories and projects in the tags */
-        final String tagsExpand = "\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTProjectV1.TAGS_NAME
-                + "\"}}]";
+        final String tagsExpand = "\"branches\":[{\"trunk\":{\"name\": \"" + RESTProjectV1.TAGS_NAME + "\"}}]";
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
-                + ", \"showSize\":true,\"name\": \"projects\"}, " + tagsExpand + "}]}";
+                + ", \"name\": \"projects\"}, " + tagsExpand + "}]}";
 
         try {
             callback.begin();
@@ -373,9 +394,8 @@ public final class RESTCalls {
         final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
                 constructErrorCallback(callback));
         /* Expand the categories and projects in the tags */
-        final String tagsExpand = "\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"" + RESTProjectV1.TAGS_NAME
-                + "\"}}]";
-        final String expand = "{\"branches\":[{\"trunk\":{\"showSize\":true,\"name\": \"projects\"}, " + tagsExpand + "}]}";
+        final String tagsExpand = "\"branches\":[{\"trunk\":{\"name\": \"" + RESTProjectV1.TAGS_NAME + "\"}}]";
+        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"projects\"}, " + tagsExpand + "}]}";
 
         try {
             callback.begin();
@@ -390,8 +410,8 @@ public final class RESTCalls {
         final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
                 constructErrorCallback(callback));
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
-                + ", \"showSize\":true,\"name\": \"images\"}}]}";
+        final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end
+                + ",\"name\": \"images\"}}]}";
 
         try {
             callback.begin();

@@ -1,7 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.image;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
@@ -20,7 +20,7 @@ public class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel implemen
     /**
      * The collection of language image editors
      */
-    private final ListEditor<RESTLanguageImageV1, RESTLanguageImageV1Editor> items = ListEditor
+    private final ListEditor<RESTLanguageImageCollectionItemV1, RESTLanguageImageV1Editor> items = ListEditor
             .of(new LanguageImageEditorSource());
 
     /**
@@ -49,7 +49,7 @@ public class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel implemen
         }
     }
 
-    public ListEditor<RESTLanguageImageV1, RESTLanguageImageV1Editor> itemsEditor() {
+    public ListEditor<RESTLanguageImageCollectionItemV1, RESTLanguageImageV1Editor> itemsEditor() {
         return items;
     }
 

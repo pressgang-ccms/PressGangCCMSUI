@@ -7,6 +7,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
@@ -62,7 +63,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
     private Integer tableStartRow;
 
     /** Keeps a reference to the list of topics being displayed. */
-    private List<RESTImageV1> currentList;
+    private List<RESTImageCollectionItemV1> currentList;
 
     /** The currently selected image in the search results.*/
     private RESTImageV1 selectedSearchImage;
@@ -89,7 +90,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
     private void bind() {
         super.bind(display, this);
 
-        final EnhancedAsyncDataProvider<RESTImageV1> provider = generateListProvider();
+        final EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider = generateListProvider();
         imageFilteredResultsDisplay.setProvider(provider);
 
         bindListRowClicks();
@@ -111,10 +112,10 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
     /**
      * @return A provider to be used for the topic display list
      */
-    private EnhancedAsyncDataProvider<RESTImageV1> generateListProvider() {
-        final EnhancedAsyncDataProvider<RESTImageV1> provider = new EnhancedAsyncDataProvider<RESTImageV1>() {
+    private EnhancedAsyncDataProvider<RESTImageCollectionItemV1> generateListProvider() {
+        final EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTImageCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTImageV1> display) {
+            protected void onRangeChanged(final HasData<RESTImageCollectionItemV1> display) {
                 tableStartRow = display.getVisibleRange().getStart();
                 final int length = display.getVisibleRange().getLength();
                 final int end = tableStartRow + length;
@@ -136,7 +137,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
                     public void success(final RESTImageCollectionV1 retValue) {
                         try {
                             /* Zero results can be a null list */
-                            currentList = retValue.getItems() == null ? new ArrayList<RESTImageV1>() : retValue.getExistingItems();
+                            currentList = retValue.getItems() == null ? new ArrayList<RESTImageCollectionItemV1>() : retValue.getItems();
                             displayAsynchronousList(currentList, retValue.getSize(), tableStartRow);
                         } finally {
                             imageFilteredResultsDisplay.removeWaitOperation();
@@ -160,9 +161,9 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
      * Bind the button click events for the topic editor screens.
      */
     private void bindListRowClicks() {
-        imageFilteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTImageV1>() {
+        imageFilteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTImageCollectionItemV1>() {
             @Override
-            public void onCellPreview(final CellPreviewEvent<RESTImageV1> event) {
+            public void onCellPreview(final CellPreviewEvent<RESTImageCollectionItemV1> event) {
                 /* Check to see if this was a click event */
                 final boolean isClick = Constants.JAVASCRIPT_CLICK_EVENT.equals(event.getNativeEvent().getType());
 
@@ -172,7 +173,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
                      */
                     final boolean needToAddImageView = selectedSearchImage == null;
 
-                    selectedSearchImage = event.getValue();
+                    selectedSearchImage = event.getValue().getItem();
                     displayedImage = null;
 
                     final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
@@ -190,7 +191,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
                         @Override
                         public void success(final RESTImageV1 retValue) {
                             try {
-                                displayedImage = retValue;
+                                retValue.cloneInto(displayedImage.getItem(), true);
                                 reInitialiseImageView();
 
                                 /*
@@ -245,7 +246,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
 
     @Override
     protected void reInitialiseImageView() {
-        imageDisplay.initialize(displayedImage, getUnassignedLocales().toArray(new String[0]));
+        imageDisplay.initialize(displayedImage.getItem(), getUnassignedLocales().toArray(new String[0]));
 
         bindImageUploadButtons(imageDisplay);
     }

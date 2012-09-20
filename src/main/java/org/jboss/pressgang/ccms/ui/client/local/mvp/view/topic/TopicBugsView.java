@@ -1,6 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -33,50 +33,50 @@ public class TopicBugsView extends TopicViewBase implements TopicBugsPresenter.D
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
 
     private final SimplePager pager = new SimplePager();
-    private final CellTable<RESTBugzillaBugV1> results = new CellTable<RESTBugzillaBugV1>(Constants.MAX_SEARCH_RESULTS,
+    private final CellTable<RESTBugzillaBugCollectionItemV1> results = new CellTable<RESTBugzillaBugCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
-    private EnhancedAsyncDataProvider<RESTBugzillaBugV1> provider;
+    private EnhancedAsyncDataProvider<RESTBugzillaBugCollectionItemV1> provider;
 
-    private final TextColumn<RESTBugzillaBugV1> summaryColumn = new TextColumn<RESTBugzillaBugV1>() {
+    private final TextColumn<RESTBugzillaBugCollectionItemV1> summaryColumn = new TextColumn<RESTBugzillaBugCollectionItemV1>() {
         @Override
-        public String getValue(final RESTBugzillaBugV1 object) {
-            return object.getSummary();
+        public String getValue(final RESTBugzillaBugCollectionItemV1 object) {
+            return object.getItem().getSummary();
         }
     };
 
-    private final Column<RESTBugzillaBugV1, Boolean> checkColumn = new Column<RESTBugzillaBugV1, Boolean>(
+    private final Column<RESTBugzillaBugCollectionItemV1, Boolean> checkColumn = new Column<RESTBugzillaBugCollectionItemV1, Boolean>(
             new DisableableCheckboxCell(false, true, false)) {
         @Override
-        public Boolean getValue(final RESTBugzillaBugV1 object) {
+        public Boolean getValue(final RESTBugzillaBugCollectionItemV1 object) {
             // Get the value from the selection model.
-            return object.getIsOpen();
+            return object.getItem().getIsOpen();
         }
     };
 
     /**
      * The column that renders a link to Bugzilla
      */
-    private final Column<RESTBugzillaBugV1, Anchor> linkColumn = new Column<RESTBugzillaBugV1, Anchor>(new AnchorCell()) {
+    private final Column<RESTBugzillaBugCollectionItemV1, Anchor> linkColumn = new Column<RESTBugzillaBugCollectionItemV1, Anchor>(new AnchorCell()) {
         @Override
-        public Anchor getValue(final RESTBugzillaBugV1 bug) {
-            final Anchor link = new Anchor(bug.getBugId().toString(), Constants.BUGZILLA_VIEW_BUG_URL + bug.getBugId());
+        public Anchor getValue(final RESTBugzillaBugCollectionItemV1 bug) {
+            final Anchor link = new Anchor(bug.getItem().getBugId().toString(), Constants.BUGZILLA_VIEW_BUG_URL + bug.getItem().getBugId());
             return link;
         }
     };
 
     @Override
-    public EnhancedAsyncDataProvider<RESTBugzillaBugV1> getProvider() {
+    public EnhancedAsyncDataProvider<RESTBugzillaBugCollectionItemV1> getProvider() {
         return provider;
     }
 
     @Override
-    public void setProvider(final EnhancedAsyncDataProvider<RESTBugzillaBugV1> provider) {
+    public void setProvider(final EnhancedAsyncDataProvider<RESTBugzillaBugCollectionItemV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }
 
     @Override
-    public CellTable<RESTBugzillaBugV1> getResults() {
+    public CellTable<RESTBugzillaBugCollectionItemV1> getResults() {
         return results;
     }
 

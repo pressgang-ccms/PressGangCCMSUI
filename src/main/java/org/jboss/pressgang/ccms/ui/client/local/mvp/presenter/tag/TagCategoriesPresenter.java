@@ -4,6 +4,8 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagCategoryV1;
@@ -33,23 +35,23 @@ public class TagCategoriesPresenter extends TemplatePresenter implements Editabl
     public static final String HISTORY_TOKEN = "TagCategoriesView";
     
     public interface Display extends TagViewInterface {
-        EnhancedAsyncDataProvider<RESTCategoryV1> getProvider();
+        EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> getProvider();
 
-        void setProvider(final EnhancedAsyncDataProvider<RESTCategoryV1> provider);
+        void setProvider(final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider);
 
-        CellTable<RESTCategoryV1> getResults();
+        CellTable<RESTCategoryCollectionItemV1> getResults();
 
         SimplePager getPager();
 
-        Column<RESTCategoryV1, String> getButtonColumn();
+        Column<RESTCategoryCollectionItemV1, String> getButtonColumn();
 
-        Column<RESTTagCategoryV1, String> getTagDownButtonColumn();
+        Column<RESTTagCategoryCollectionItemV1, String> getTagDownButtonColumn();
 
-        Column<RESTTagCategoryV1, String> getTagUpButtonColumn();
+        Column<RESTTagCategoryCollectionItemV1, String> getTagUpButtonColumn();
 
-        EnhancedAsyncDataProvider<RESTTagCategoryV1> getTagsProvider();
+        EnhancedAsyncDataProvider<RESTTagCategoryCollectionItemV1> getTagsProvider();
 
-        void setTagsProvider(EnhancedAsyncDataProvider<RESTTagCategoryV1> tagsProvider);
+        void setTagsProvider(EnhancedAsyncDataProvider<RESTTagCategoryCollectionItemV1> tagsProvider);
 
         VerticalPanel getTagsResultsPanel();
 
@@ -77,9 +79,9 @@ public class TagCategoriesPresenter extends TemplatePresenter implements Editabl
     private void bind() {
         super.bind(display, this);
 
-        final EnhancedAsyncDataProvider<RESTCategoryV1> provider = new EnhancedAsyncDataProvider<RESTCategoryV1>() {
+        final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTCategoryV1> item) {
+            protected void onRangeChanged(final HasData<RESTCategoryCollectionItemV1> item) {
                 final int start = item.getVisibleRange().getStart();
                 final int length = item.getVisibleRange().getLength();
                 final int end = start + length;
@@ -98,7 +100,7 @@ public class TagCategoriesPresenter extends TemplatePresenter implements Editabl
                     @Override
                     public void success(final RESTCategoryCollectionV1 retValue) {
                         try {
-                            displayNewFixedList(retValue.getExistingItems());
+                            displayNewFixedList(retValue.getItems());
                         } finally {
                             display.removeWaitOperation();
                         }

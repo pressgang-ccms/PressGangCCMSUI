@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.image;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -26,11 +27,11 @@ import com.google.gwt.user.client.ui.TextBox;
  * @author Matthew Casperson
  * 
  */
-public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEditor<RESTLanguageImageV1> {
+public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEditor<RESTLanguageImageCollectionItemV1> {
     private static final String JPG_BASE64_PREFIX = "data:image/jpg;base64,";
 
     /** Keep a reference to the object this editor gets its values from */
-    public RESTLanguageImageV1 self;
+    public RESTLanguageImageCollectionItemV1 self;
 
     /**
      * To set the name of a tab based on the object that initializes this editor we need to keep a track of the tab layout and
@@ -106,7 +107,7 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
     }
 
     @Override
-    public void setDelegate(final EditorDelegate<RESTLanguageImageV1> delegate) {
+    public void setDelegate(final EditorDelegate<RESTLanguageImageCollectionItemV1> delegate) {
         // TODO Auto-generated method stub
     }
 
@@ -121,20 +122,20 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
     }
 
     @Override
-    public void setValue(final RESTLanguageImageV1 value) {
+    public void setValue(final RESTLanguageImageCollectionItemV1 value) {
         this.self = value;
 
-        if (value.getFilename() != null)
+        if (value.getItem().getFilename() != null)
         {
-            this.filename.setText(value.getFilename());
+            this.filename.setText(value.getItem().getFilename());
         }
 
-        if (value.getImageDataBase64() != null) {
-            final String base64 = GWTUtilities.getStringUTF8(value.getImageDataBase64());
+        if (value.getItem().getImageDataBase64() != null) {
+            final String base64 = GWTUtilities.getStringUTF8(value.getItem().getImageDataBase64());
             this.imageDataBase64.setUrl(JPG_BASE64_PREFIX + base64);
         }
 
         parentPanel.setTabText(parentIndex,
-                this.self.getLocale() == null ? PressGangCCMSUI.INSTANCE.NotSpecified() : this.self.getLocale());
+                this.self.getItem().getLocale() == null ? PressGangCCMSUI.INSTANCE.NotSpecified() : this.self.getItem().getLocale());
     }
 }

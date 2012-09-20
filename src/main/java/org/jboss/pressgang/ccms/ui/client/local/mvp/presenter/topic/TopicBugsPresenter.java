@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
 import javax.enterprise.context.Dependent;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
@@ -23,11 +24,11 @@ public class TopicBugsPresenter extends TemplatePresenter {
         @Override
         void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType);
 
-        EnhancedAsyncDataProvider<RESTBugzillaBugV1> getProvider();
+        EnhancedAsyncDataProvider<RESTBugzillaBugCollectionItemV1> getProvider();
 
-        void setProvider(final EnhancedAsyncDataProvider<RESTBugzillaBugV1> provider);
+        void setProvider(final EnhancedAsyncDataProvider<RESTBugzillaBugCollectionItemV1> provider);
 
-        CellTable<RESTBugzillaBugV1> getResults();
+        CellTable<RESTBugzillaBugCollectionItemV1> getResults();
 
         SimplePager getPager();
     }

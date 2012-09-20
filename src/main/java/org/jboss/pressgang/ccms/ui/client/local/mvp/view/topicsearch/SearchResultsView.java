@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topicsearch;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -22,37 +23,37 @@ public class SearchResultsView extends BaseTemplateView implements SearchResults
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
 
     private final SimplePager pager = new SimplePager();
-    private final CellTable<RESTTopicV1> results = new CellTable<RESTTopicV1>(Constants.MAX_SEARCH_RESULTS,
+    private final CellTable<RESTTopicCollectionItemV1> results = new CellTable<RESTTopicCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
-    private EnhancedAsyncDataProvider<RESTTopicV1> provider;
-    private final TextColumn<RESTTopicV1> idColumn = new TextColumn<RESTTopicV1>() {
+    private EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider;
+    private final TextColumn<RESTTopicCollectionItemV1> idColumn = new TextColumn<RESTTopicCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTopicV1 object) {
-            return object.getId().toString();
+        public String getValue(final RESTTopicCollectionItemV1 object) {
+            return object.getItem().getId().toString();
 
         }
     };
 
-    private final TextColumn<RESTTopicV1> titleColumn = new TextColumn<RESTTopicV1>() {
+    private final TextColumn<RESTTopicCollectionItemV1> titleColumn = new TextColumn<RESTTopicCollectionItemV1>() {
         @Override
-        public String getValue(RESTTopicV1 object) {
-            return object.getTitle();
+        public String getValue(final RESTTopicCollectionItemV1 object) {
+            return object.getItem().getTitle();
         }
     };
 
     @Override
-    public EnhancedAsyncDataProvider<RESTTopicV1> getProvider() {
+    public EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> getProvider() {
         return provider;
     }
 
     @Override
-    public void setProvider(EnhancedAsyncDataProvider<RESTTopicV1> provider) {
+    public void setProvider(EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }
 
     @Override
-    public CellTable<RESTTopicV1> getResults() {
+    public CellTable<RESTTopicCollectionItemV1> getResults() {
         return results;
     }
 

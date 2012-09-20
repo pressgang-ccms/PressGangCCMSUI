@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
@@ -23,7 +25,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TagCategoriesView extends TagViewBase implements TagCategoriesPresenter.Display {
     
-
     /** A reference to the tag that this view will be modifying. */
     private RESTTagV1 tag;
 
@@ -31,36 +32,36 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
     private final SimplePager pager = new SimplePager();
-    private final CellTable<RESTCategoryV1> results = new CellTable<RESTCategoryV1>(Constants.MAX_SEARCH_RESULTS,
+    private final CellTable<RESTCategoryCollectionItemV1> results = new CellTable<RESTCategoryCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
-    private EnhancedAsyncDataProvider<RESTCategoryV1> provider;
+    private EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider;
 
     private final VerticalPanel tagsResultsPanel = new VerticalPanel();
     private final SimplePager tagsPager = new SimplePager();
-    private final CellTable<RESTTagCategoryV1> tagsResults = new CellTable<RESTTagCategoryV1>(Constants.MAX_SEARCH_RESULTS,
+    private final CellTable<RESTTagCategoryCollectionItemV1> tagsResults = new CellTable<RESTTagCategoryCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
-    private EnhancedAsyncDataProvider<RESTTagCategoryV1> tagsProvider;
+    private EnhancedAsyncDataProvider<RESTTagCategoryCollectionItemV1> tagsProvider;
 
-    private final TextColumn<RESTCategoryV1> idColumn = new TextColumn<RESTCategoryV1>() {
+    private final TextColumn<RESTCategoryCollectionItemV1> idColumn = new TextColumn<RESTCategoryCollectionItemV1>() {
         @Override
-        public String getValue(final RESTCategoryV1 object) {
-            return object.getId().toString();
+        public String getValue(final RESTCategoryCollectionItemV1 object) {
+            return object.getItem().getId().toString();
 
         }
     };
 
-    private final TextColumn<RESTCategoryV1> nameColumn = new TextColumn<RESTCategoryV1>() {
+    private final TextColumn<RESTCategoryCollectionItemV1> nameColumn = new TextColumn<RESTCategoryCollectionItemV1>() {
         @Override
-        public String getValue(final RESTCategoryV1 object) {
-            return object.getName();
+        public String getValue(final RESTCategoryCollectionItemV1 object) {
+            return object.getItem().getName();
         }
     };
 
-    private final Column<RESTCategoryV1, String> buttonColumn = new Column<RESTCategoryV1, String>(new ButtonCell()) {
+    private final Column<RESTCategoryCollectionItemV1, String> buttonColumn = new Column<RESTCategoryCollectionItemV1, String>(new ButtonCell()) {
         @Override
-        public String getValue(final RESTCategoryV1 object) {
+        public String getValue(final RESTCategoryCollectionItemV1 object) {
             if (tag != null) {
-                if (ComponentCategoryV1.containsTag(object, tag.getId())) {
+                if (ComponentCategoryV1.containsTag(object.getItem(), tag.getId())) {
                     return PressGangCCMSUI.INSTANCE.Remove();
                 } else {
                     return PressGangCCMSUI.INSTANCE.Add();
@@ -71,31 +72,31 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
         }
     };
 
-    private final TextColumn<RESTTagCategoryV1> tagIdColumn = new TextColumn<RESTTagCategoryV1>() {
+    private final TextColumn<RESTTagCategoryCollectionItemV1> tagIdColumn = new TextColumn<RESTTagCategoryCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTagCategoryV1 object) {
-            return object.getId().toString();
+        public String getValue(final RESTTagCategoryCollectionItemV1 object) {
+            return object.getItem().getId().toString();
 
         }
     };
 
-    private final TextColumn<RESTTagCategoryV1> tagNameColumn = new TextColumn<RESTTagCategoryV1>() {
+    private final TextColumn<RESTTagCategoryCollectionItemV1> tagNameColumn = new TextColumn<RESTTagCategoryCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTagCategoryV1 object) {
-            return object.getName();
+        public String getValue(final RESTTagCategoryCollectionItemV1 object) {
+            return object.getItem().getName();
         }
     };
 
-    private final Column<RESTTagCategoryV1, String> tagUpButtonColumn = new Column<RESTTagCategoryV1, String>(new ButtonCell()) {
+    private final Column<RESTTagCategoryCollectionItemV1, String> tagUpButtonColumn = new Column<RESTTagCategoryCollectionItemV1, String>(new ButtonCell()) {
         @Override
-        public String getValue(final RESTTagCategoryV1 object) {
+        public String getValue(final RESTTagCategoryCollectionItemV1 object) {
             return PressGangCCMSUI.INSTANCE.Up();
         }
     };
 
-    private final Column<RESTTagCategoryV1, String> tagDownButtonColumn = new Column<RESTTagCategoryV1, String>(new ButtonCell()) {
+    private final Column<RESTTagCategoryCollectionItemV1, String> tagDownButtonColumn = new Column<RESTTagCategoryCollectionItemV1, String>(new ButtonCell()) {
         @Override
-        public String getValue(final RESTTagCategoryV1 object) {
+        public String getValue(final RESTTagCategoryCollectionItemV1 object) {
             return PressGangCCMSUI.INSTANCE.Down();
         }
     };
@@ -115,44 +116,44 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
     }
 
     @Override
-    public Column<RESTTagCategoryV1, String> getTagDownButtonColumn() {
+    public Column<RESTTagCategoryCollectionItemV1, String> getTagDownButtonColumn() {
         return tagDownButtonColumn;
     }
 
     @Override
-    public Column<RESTTagCategoryV1, String> getTagUpButtonColumn() {
+    public Column<RESTTagCategoryCollectionItemV1, String> getTagUpButtonColumn() {
         return tagUpButtonColumn;
     }
 
     @Override
-    public EnhancedAsyncDataProvider<RESTTagCategoryV1> getTagsProvider() {
+    public EnhancedAsyncDataProvider<RESTTagCategoryCollectionItemV1> getTagsProvider() {
         return tagsProvider;
     }
 
     @Override
-    public void setTagsProvider(final EnhancedAsyncDataProvider<RESTTagCategoryV1> tagsProvider) {
+    public void setTagsProvider(final EnhancedAsyncDataProvider<RESTTagCategoryCollectionItemV1> tagsProvider) {
         this.tagsProvider = tagsProvider;
         tagsProvider.addDataDisplay(tagsResults);
     }
 
     @Override
-    public Column<RESTCategoryV1, String> getButtonColumn() {
+    public Column<RESTCategoryCollectionItemV1, String> getButtonColumn() {
         return buttonColumn;
     }
 
     @Override
-    public EnhancedAsyncDataProvider<RESTCategoryV1> getProvider() {
+    public EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> getProvider() {
         return provider;
     }
 
     @Override
-    public void setProvider(final EnhancedAsyncDataProvider<RESTCategoryV1> provider) {
+    public void setProvider(final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }
 
     @Override
-    public CellTable<RESTCategoryV1> getResults() {
+    public CellTable<RESTCategoryCollectionItemV1> getResults() {
         return results;
     }
 
