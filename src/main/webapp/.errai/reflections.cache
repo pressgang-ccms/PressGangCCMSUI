@@ -1024,6 +1024,12 @@
       </values>
     </entry>
     <entry>
+      <key>org.jboss.errai.marshalling.client.api.MarshallerFactory</key>
+      <values>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl</value>
+      </values>
+    </entry>
+    <entry>
       <key>org.jboss.errai.bus.client.api.builder.MessageBuildSendableWithReply</key>
       <values>
         <value>org.jboss.errai.bus.client.api.builder.MessageReplySendable</value>
@@ -1653,7 +1659,6 @@
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenterBase$7$2$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter$1$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter$2$1</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter$3$1</value>
       </values>
     </entry>
     <entry>
@@ -1736,8 +1741,8 @@
         <value>org.jboss.errai.bus.server.service.bootstrap.BusConfiguration</value>
         <value>org.jboss.errai.bus.server.service.bootstrap.DiscoverServices</value>
         <value>org.jboss.errai.bus.server.service.bootstrap.RegisterEntities</value>
-        <value>org.jboss.errai.bus.server.service.bootstrap.LoadExtensions</value>
         <value>org.jboss.errai.bus.server.service.bootstrap.LockDownServices</value>
+        <value>org.jboss.errai.bus.server.service.bootstrap.LoadExtensions</value>
         <value>org.jboss.errai.bus.server.service.bootstrap.DefaultServices</value>
         <value>org.jboss.errai.bus.server.service.bootstrap.DefaultComponents</value>
         <value>org.jboss.errai.bus.server.service.bootstrap.AuthenticationRules</value>
@@ -2338,16 +2343,87 @@
     <entry>
       <key>org.jboss.errai.marshalling.client.api.Marshaller</key>
       <values>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$30</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$32</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$31</value>
+        <value>org.jboss.errai.marshalling.client.util.MarshallUtil$1</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$34</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.MapMarshaller</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$33</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$36</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$35</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$71</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$70</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$37</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$38</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$39</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$21</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$20</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$25</value>
+        <value>org.jboss.errai.marshalling.server.marshallers.DefaultArrayMarshaller</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$24</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$23</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$22</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$8</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$9</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$4</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.AbstractBackReferencingMarshaller</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$5</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$6</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$60</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$7</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$61</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$62</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$28</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$29</value>
+        <value>org.jboss.errai.marshalling.server.api.ServerMarshaller</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$1</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$63</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$2</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$64</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$26</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$3</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$65</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$27</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$66</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$67</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$68</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$69</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$56</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$55</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$58</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$57</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$52</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$51</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$54</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$53</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$11</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$12</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$13</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$50</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$14</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$10</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$19</value>
+        <value>org.jboss.errai.marshalling.server.marshallers.DefaultEnumMarshaller</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$16</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$15</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$18</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$17</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$59</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$47</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$46</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$45</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$44</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$43</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$42</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$41</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$40</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.ErraiProtocolEnvelopeMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.ErraiProtocolEnvelopeNoAutoMarshaller</value>
         <value>org.jboss.errai.marshalling.client.api.AbstractMarshallingSession$1</value>
-        <value>org.jboss.errai.marshalling.client.util.MarshallUtil$1</value>
-        <value>org.jboss.errai.marshalling.server.marshallers.DefaultEnumMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.AbstractBackReferencingMarshaller</value>
-        <value>org.jboss.errai.marshalling.server.marshallers.DefaultArrayMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.MapMarshaller</value>
-        <value>org.jboss.errai.marshalling.server.api.ServerMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.ErraiProtocolEnvelopeMarshaller</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$48</value>
         <value>org.jboss.errai.marshalling.client.marshallers.AbstractNullableMarshaller</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$49</value>
       </values>
     </entry>
     <entry>
@@ -2765,63 +2841,6 @@
       </values>
     </entry>
   </org.jboss.errai.reflections.scanners.SubTypesScanner>
-  <org.jboss.errai.reflections.scanners.FieldAnnotationsScanner>
-    <entry>
-      <key>com.google.inject.Inject</key>
-      <values>
-        <value>org.jboss.pressgang.ccms.ui.client.local.AppController.eventBus</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.AppController.manager</value>
-      </values>
-    </entry>
-    <entry>
-      <key>javax.inject.Inject</key>
-      <values>
-        <value>org.jboss.errai.ioc.client.api.builtin.DisposerProvider.beanManager</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.projectsDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicRevisionsDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter.topicViewDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicBugsDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicViewDisplay</value>
-        <value>org.jboss.errai.cdi.server.BusInitializationBean.bm</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchPresenter.eventBus</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.searchResultsDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.imageFilteredResultsDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.imageDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicXMLDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicXMLErrorsDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter.eventBus</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.resultDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicRenderedDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicTagsDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.filteredResultsDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicSplitPanelRenderedDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.TroubleshootingPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.App.appController</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.categoriesDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.display</value>
-      </values>
-    </entry>
-    <entry>
-      <key>com.google.gwt.editor.client.Editor$Path</key>
-      <values>
-        <value>org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor.self</value>
-      </values>
-    </entry>
-  </org.jboss.errai.reflections.scanners.FieldAnnotationsScanner>
   <org.jboss.errai.common.metadata.ErraiPropertyScanner>
     <entry>
       <key>NotSpecified</key>
@@ -3531,6 +3550,63 @@
       </values>
     </entry>
   </org.jboss.errai.common.metadata.ErraiPropertyScanner>
+  <org.jboss.errai.reflections.scanners.FieldAnnotationsScanner>
+    <entry>
+      <key>com.google.inject.Inject</key>
+      <values>
+        <value>org.jboss.pressgang.ccms.ui.client.local.AppController.eventBus</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.AppController.manager</value>
+      </values>
+    </entry>
+    <entry>
+      <key>javax.inject.Inject</key>
+      <values>
+        <value>org.jboss.errai.ioc.client.api.builtin.DisposerProvider.beanManager</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.projectsDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicRevisionsDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter.topicViewDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicBugsDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicViewDisplay</value>
+        <value>org.jboss.errai.cdi.server.BusInitializationBean.bm</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchPresenter.eventBus</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.searchResultsDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.imageFilteredResultsDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.imageDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicXMLDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicXMLErrorsDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter.eventBus</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.resultDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicRenderedDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicTagsDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.filteredResultsDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicSplitPanelRenderedDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.TroubleshootingPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.App.appController</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.categoriesDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.display</value>
+      </values>
+    </entry>
+    <entry>
+      <key>com.google.gwt.editor.client.Editor$Path</key>
+      <values>
+        <value>org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor.self</value>
+      </values>
+    </entry>
+  </org.jboss.errai.reflections.scanners.FieldAnnotationsScanner>
   <org.jboss.errai.reflections.scanners.TypeAnnotationsScanner>
     <entry>
       <key>org.jboss.errai.marshalling.client.api.annotations.ImplementationAliases</key>
@@ -3585,6 +3661,7 @@
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter</value>
@@ -3893,9 +3970,10 @@
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter</value>

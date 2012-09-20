@@ -208,13 +208,9 @@
 
 		<!-- Custom libraries -->
 
-		<!-- <dependency> <groupId>org.jboss.pressgang.ccms</groupId> <artifactId>rest</artifactId> 
-			<version>1</version> <scope>system</scope> <systemPath>${project.basedir}/lib/pressgang-ccms-rest.jar</systemPath> 
-			</dependency> -->
-
 		<dependency>
 			<groupId>org.jboss.pressgang.ccms</groupId>
-			<artifactId>pressgang-ccms-rest</artifactId>
+			<artifactId>pressgang-ccms-restv1</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 

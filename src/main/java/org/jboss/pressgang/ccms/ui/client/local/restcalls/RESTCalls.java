@@ -226,7 +226,8 @@ public final class RESTCalls {
         final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
                 constructErrorCallback(callback));
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[" + TOPIC_EXPANSION + "]}";
+        //final String expand = "{\"branches\":[" + TOPIC_EXPANSION + "]}";
+        final String expand = "";
 
         try {
             callback.begin();
