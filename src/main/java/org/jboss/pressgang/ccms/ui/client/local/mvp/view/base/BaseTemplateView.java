@@ -7,7 +7,6 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 
-import com.google.gwt.dom.client.LinkElement;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
@@ -16,7 +15,6 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
@@ -64,7 +62,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private final SimplePanel topActionParentPanel = new SimplePanel();
     /** This is the default collection of top action bar items. */
     private final FlexTable topActionPanel = new FlexTable();
-    private final HorizontalPanel footerPanel = new HorizontalPanel();
+    private final FlexTable footerPanel = new FlexTable();
     
     private final Anchor feedback = new Anchor(PressGangCCMSUI.INSTANCE.Feedback());
     
@@ -289,8 +287,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         thirdLevelLayoutPanel.addSouth(footerPanel, Constants.FOOTER_HEIGHT);
         
         /* Add the feedback link */
-        footerPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-        footerPanel.add(feedback);
+        addRightAlignedActionButtonPaddingPanel(footerPanel);
+        footerPanel.setWidget(0, 1, feedback);
 
         /* Add the content panel */
         panel.addStyleName(CSSConstants.CONTENTLAYOUTPANEL);

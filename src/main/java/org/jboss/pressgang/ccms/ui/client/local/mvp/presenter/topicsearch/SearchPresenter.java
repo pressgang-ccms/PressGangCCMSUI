@@ -4,6 +4,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
@@ -49,6 +50,8 @@ public class SearchPresenter extends TemplatePresenter implements EditableView {
 
     @Override
     public void go(final HasWidgets container) {
+        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
+        
         display.setViewShown(true);
 
         container.clear();

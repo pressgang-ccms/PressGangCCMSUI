@@ -205,7 +205,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                             collectionItem.setState(tag.getState());
                             collectionItem.setItem(addedCategory);
 
-                            updateTag.getCategories().addItem(addedCategory);
+                            updateTag.getCategories().getItems().add(collectionItem);
                         }
                     }
                 }
@@ -227,7 +227,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                             collectionItem.setState(tag.getState());
                             collectionItem.setItem(addedProject);
 
-                            updateTag.getProjects().addItem(addedProject);
+                            updateTag.getProjects().getItems().add(collectionItem);
                         }
                     }
                 }
@@ -433,12 +433,12 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                         .returnDeletedAndAddedCollectionItems()) {
                     if (tag.getItem().getId().equals(tagProviderData.getDisplayedItem().getItem().getId())) {
                         /* Tag was added and then removed */
-                        if (tag.getState() == RESTBaseCollectionItemV1.ADD_STATE) {
+                        if (tag.returnIsAddItem()) {
                             object.getItem().getTags().getItems().remove(tag);
                         }
 
                         /* Tag existed, was removed and then was added again */
-                        if (tag.getState() == RESTBaseCollectionItemV1.REMOVE_STATE) {
+                        if (tag.returnIsRemoveItem()) {
                             tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
                         }
                         /* Tag existed and was removed */
@@ -453,7 +453,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
                 if (!found) {
                     final RESTTagCategoryV1 newTag = new RESTTagCategoryV1();
-                    tagProviderData.getDisplayedItem().getItem().cloneInto(newTag, true);
+                    newTag.setId(tagProviderData.getDisplayedItem().getItem().getId());
 
                     object.getItem().getTags().addNewItem(newTag);
                 }

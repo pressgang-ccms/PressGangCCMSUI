@@ -27,7 +27,13 @@ import org.jboss.errai.marshalling.client.marshallers.StringMarshaller;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTBlobConstantCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterLocaleCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTIntegerConstantCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1;
@@ -39,16 +45,47 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollection
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicStringCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTUserCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTAssignedPropertyTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBlobConstantCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterLocaleCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTIntegerConstantCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTRoleCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTStringConstantCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicStringCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTUserCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterLocaleV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTRoleV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicSourceUrlV1;
@@ -57,63 +94,106 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicStringV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTUserV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagCategoryV1;
 @Dependent public class MarshallerFactoryImpl implements MarshallerFactory {
   private Map<String, Marshaller> marshallers = new HashMap<String, Marshaller>();
   private FloatMarshaller java_lang_Float;
   private LinkedListMarshaller java_util_LinkedList;
   private LongMarshaller java_lang_Long;
   private ShortMarshaller java_lang_Short;
+  private QualifyingMarshallerWrapper<Map> java_util_Map;
+  private IntegerMarshaller java_lang_Integer;
+  private ObjectMarshaller java_lang_Object;
+  private DateMarshaller java_util_Date;
+  private CharacterMarshaller java_lang_Character;
   private ListMarshaller java_util_List;
   private StringBuilderMarshaller java_lang_StringBuilder;
   private DoubleMarshaller java_lang_Double;
-  private QualifyingMarshallerWrapper<Map> java_util_Map;
-  private IntegerMarshaller java_lang_Integer;
   private BooleanMarshaller java_lang_Boolean;
-  private ObjectMarshaller java_lang_Object;
   private StringMarshaller java_lang_String;
-  private DateMarshaller java_util_Date;
-  private CharacterMarshaller java_lang_Character;
   private SetMarshaller java_util_Set;
   private ListMarshaller java_util_ArrayList;
   private ByteMarshaller java_lang_Byte;
-  private Marshaller<RESTCategoryCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTCategoryCollectionV1;
-  private QualifyingMarshallerWrapper<StackTraceElement[]> arrayOf_java_lang_StackTraceElement_D1;
-  private Marshaller<Throwable> java_lang_Throwable;
-  private Marshaller<IllegalArgumentException> java_lang_IllegalArgumentException;
-  private Marshaller<RESTTranslatedTopicStringCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTTranslatedTopicStringCollectionV1;
-  private Marshaller<RESTBugzillaBugCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTBugzillaBugCollectionV1;
-  private Marshaller<RESTTranslatedTopicCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTTranslatedTopicCollectionV1;
-  private Marshaller<RESTTopicCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTTopicCollectionV1;
-  private Marshaller<RESTTagCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1;
-  private Marshaller<RESTTopicSourceUrlCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTTopicSourceUrlCollectionV1;
   private Marshaller<RESTAssignedPropertyTagCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_join_RESTAssignedPropertyTagCollectionV1;
   private Marshaller<RESTRoleCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTRoleCollectionV1;
   private Marshaller<RESTUserCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTUserCollectionV1;
   private Marshaller<RESTUserV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTUserV1;
   private Marshaller<RESTLogDetailsV1> org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1;
-  private Marshaller<RESTTopicV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTTopicV1;
-  private Marshaller<RESTTranslatedTopicV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTTranslatedTopicV1;
-  private Marshaller<RESTLanguageImageCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTLanguageImageCollectionV1;
-  private Marshaller<RESTProjectCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTProjectCollectionV1;
-  private Marshaller<RESTProjectV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTProjectV1;
+  private Marshaller<RESTAssignedPropertyTagV1> org_jboss_pressgang_ccms_rest_v1_entities_join_RESTAssignedPropertyTagV1;
+  private Marshaller<RESTAssignedPropertyTagCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTAssignedPropertyTagCollectionItemV1;
+  private Marshaller<RESTTagCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1;
   private Marshaller<RESTCategoryTagCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_join_RESTCategoryTagCollectionV1;
-  private Marshaller<RESTTopicSourceUrlV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTTopicSourceUrlV1;
+  private Marshaller<RESTProjectCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTProjectCollectionV1;
+  private Marshaller<RESTTagV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTTagV1;
+  private Marshaller<RESTFilterTagCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterTagCollectionV1;
+  private Marshaller<RESTFilterLocaleCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterLocaleCollectionV1;
+  private Marshaller<RESTFilterCategoryCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterCategoryCollectionV1;
+  private Marshaller<RESTFilterFieldCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterFieldCollectionV1;
+  private Marshaller<RESTFilterCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterCollectionV1;
+  private Marshaller<RESTFilterV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterV1;
+  private Marshaller<RESTFilterTagV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterTagV1;
+  private QualifyingMarshallerWrapper<StackTraceElement[]> arrayOf_java_lang_StackTraceElement_D1;
+  private Marshaller<Throwable> java_lang_Throwable;
+  private Marshaller<IllegalArgumentException> java_lang_IllegalArgumentException;
+  private Marshaller<RESTRoleV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTRoleV1;
+  private Marshaller<RESTStringConstantCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTStringConstantCollectionV1;
+  private Marshaller<RESTStringConstantV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTStringConstantV1;
+  private Marshaller<RESTStringConstantCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTStringConstantCollectionItemV1;
+  private Marshaller<RESTLanguageImageCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTLanguageImageCollectionV1;
+  private Marshaller<RESTProjectV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTProjectV1;
+  private Marshaller<RESTFilterTagCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTFilterTagCollectionItemV1;
+  private Marshaller<RESTPropertyTagCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTPropertyTagCollectionV1;
+  private Marshaller<RESTPropertyTagV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTPropertyTagV1;
+  private Marshaller<RESTPropertyTagCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTPropertyTagCollectionItemV1;
+  private Marshaller<RESTBugzillaBugCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTBugzillaBugCollectionV1;
+  private Marshaller<RESTBugzillaBugV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTBugzillaBugV1;
+  private Marshaller<RESTBugzillaBugCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTBugzillaBugCollectionItemV1;
+  private Marshaller<RESTTranslatedTopicCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTTranslatedTopicCollectionV1;
+  private Marshaller<RESTIntegerConstantCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTIntegerConstantCollectionV1;
+  private Marshaller<RESTTopicCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTTopicCollectionV1;
+  private Marshaller<StackTraceElement> java_lang_StackTraceElement;
+  private Marshaller<RESTProjectCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTProjectCollectionItemV1;
+  private Marshaller<RESTFilterFieldV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterFieldV1;
   private Marshaller<RESTImageCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTImageCollectionV1;
+  private Marshaller<RESTTopicSourceUrlCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTTopicSourceUrlCollectionV1;
+  private Marshaller<RESTTopicV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTTopicV1;
+  private Marshaller<RESTTranslatedTopicStringCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTTranslatedTopicStringCollectionV1;
+  private Marshaller<RESTTranslatedTopicV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTTranslatedTopicV1;
+  private Marshaller<RESTTranslatedTopicCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTranslatedTopicCollectionItemV1;
+  private Marshaller<RESTFilterLocaleV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterLocaleV1;
+  private Marshaller<RESTTagCategoryCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_join_RESTTagCategoryCollectionV1;
+  private Marshaller<RESTTagCategoryV1> org_jboss_pressgang_ccms_rest_v1_entities_join_RESTTagCategoryV1;
+  private Marshaller<RESTTopicCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTopicCollectionItemV1;
+  private Marshaller<RESTRoleCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTRoleCollectionItemV1;
+  private Marshaller<RESTTopicSourceUrlV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTTopicSourceUrlV1;
+  private Marshaller<RESTTopicSourceUrlCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTopicSourceUrlCollectionItemV1;
+  private Marshaller<RESTCategoryTagV1> org_jboss_pressgang_ccms_rest_v1_entities_join_RESTCategoryTagV1;
+  private Marshaller<RESTFilterLocaleCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTFilterLocaleCollectionItemV1;
+  private Marshaller<RESTCategoryCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTCategoryCollectionV1;
+  private Marshaller<RESTCategoryV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTCategoryV1;
+  private Marshaller<RESTFilterCategoryV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterCategoryV1;
+  private Marshaller<RESTFilterCategoryCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTFilterCategoryCollectionItemV1;
   private Marshaller<RESTImageV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTImageV1;
   private QualifyingMarshallerWrapper<byte[]> arrayOf_byte_D1;
   private Marshaller<RESTLanguageImageV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTLanguageImageV1;
-  private Marshaller<StackTraceElement> java_lang_StackTraceElement;
-  private Marshaller<RESTTagV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTTagV1;
+  private Marshaller<RESTLanguageImageCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTLanguageImageCollectionItemV1;
+  private Marshaller<RESTTagCategoryCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTagCategoryCollectionItemV1;
+  private Marshaller<RESTImageCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTImageCollectionItemV1;
+  private Marshaller<RESTCategoryCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTCategoryCollectionItemV1;
+  private Marshaller<RESTIntegerConstantV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTIntegerConstantV1;
+  private Marshaller<RESTIntegerConstantCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTIntegerConstantCollectionItemV1;
   private Marshaller<RESTBlobConstantCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTBlobConstantCollectionV1;
   private Marshaller<RESTBlobConstantV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTBlobConstantV1;
-  private Marshaller<RESTPropertyTagCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTPropertyTagCollectionV1;
-  private Marshaller<RESTPropertyTagV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTPropertyTagV1;
   private Marshaller<RESTTranslatedTopicStringV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTTranslatedTopicStringV1;
-  private Marshaller<RESTStringConstantCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_RESTStringConstantCollectionV1;
-  private Marshaller<RESTStringConstantV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTStringConstantV1;
-  private Marshaller<RESTTagCategoryCollectionV1> org_jboss_pressgang_ccms_rest_v1_collections_join_RESTTagCategoryCollectionV1;
-  private Marshaller<RESTCategoryV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTCategoryV1;
-  private Marshaller<RESTBugzillaBugV1> org_jboss_pressgang_ccms_rest_v1_entities_RESTBugzillaBugV1;
+  private Marshaller<RESTFilterCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTFilterCollectionItemV1;
+  private Marshaller<RESTTagCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTagCollectionItemV1;
+  private Marshaller<RESTFilterFieldCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTFilterFieldCollectionItemV1;
+  private Marshaller<RESTUserCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTUserCollectionItemV1;
+  private Marshaller<RESTBlobConstantCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTBlobConstantCollectionItemV1;
+  private Marshaller<RESTTranslatedTopicStringCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTranslatedTopicStringCollectionItemV1;
+  private Marshaller<RESTCategoryTagCollectionItemV1> org_jboss_pressgang_ccms_rest_v1_collections_items_RESTCategoryTagCollectionItemV1;
   private QualifyingMarshallerWrapper<Object[]> arrayOf_java_lang_Object_D1;
   private QualifyingMarshallerWrapper<String[]> arrayOf_java_lang_String_D1;
   private QualifyingMarshallerWrapper<int[]> arrayOf_int_D1;
@@ -140,6 +220,22 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
     marshallers.put("java.lang.Long", java_lang_Long);
     java_lang_Short = new ShortMarshaller();
     marshallers.put("java.lang.Short", java_lang_Short);
+    java_util_Map = new QualifyingMarshallerWrapper(new MapMarshaller());
+    marshallers.put("java.util.Map", java_util_Map);
+    marshallers.put("java.util.Collections$SingletonMap", java_util_Map);
+    marshallers.put("java.util.AbstractMap", java_util_Map);
+    marshallers.put("java.util.Collections$SynchronizedMap", java_util_Map);
+    marshallers.put("java.util.HashMap", java_util_Map);
+    marshallers.put("java.util.Collections$UnmodifiableMap", java_util_Map);
+    marshallers.put("java.util.Collections$EmptyMap", java_util_Map);
+    java_lang_Integer = new IntegerMarshaller();
+    marshallers.put("java.lang.Integer", java_lang_Integer);
+    java_lang_Object = new ObjectMarshaller();
+    marshallers.put("java.lang.Object", java_lang_Object);
+    java_util_Date = new DateMarshaller();
+    marshallers.put("java.util.Date", java_util_Date);
+    java_lang_Character = new CharacterMarshaller();
+    marshallers.put("java.lang.Character", java_lang_Character);
     java_util_List = new ListMarshaller();
     marshallers.put("java.util.List", java_util_List);
     marshallers.put("java.util.Collections$SynchronizedRandomAccessList", java_util_List);
@@ -157,26 +253,10 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
     marshallers.put("java.lang.StringBuilder", java_lang_StringBuilder);
     java_lang_Double = new DoubleMarshaller();
     marshallers.put("java.lang.Double", java_lang_Double);
-    java_util_Map = new QualifyingMarshallerWrapper(new MapMarshaller());
-    marshallers.put("java.util.Map", java_util_Map);
-    marshallers.put("java.util.Collections$SingletonMap", java_util_Map);
-    marshallers.put("java.util.AbstractMap", java_util_Map);
-    marshallers.put("java.util.Collections$SynchronizedMap", java_util_Map);
-    marshallers.put("java.util.HashMap", java_util_Map);
-    marshallers.put("java.util.Collections$UnmodifiableMap", java_util_Map);
-    marshallers.put("java.util.Collections$EmptyMap", java_util_Map);
-    java_lang_Integer = new IntegerMarshaller();
-    marshallers.put("java.lang.Integer", java_lang_Integer);
     java_lang_Boolean = new BooleanMarshaller();
     marshallers.put("java.lang.Boolean", java_lang_Boolean);
-    java_lang_Object = new ObjectMarshaller();
-    marshallers.put("java.lang.Object", java_lang_Object);
     java_lang_String = new StringMarshaller();
     marshallers.put("java.lang.String", java_lang_String);
-    java_util_Date = new DateMarshaller();
-    marshallers.put("java.util.Date", java_util_Date);
-    java_lang_Character = new CharacterMarshaller();
-    marshallers.put("java.lang.Character", java_lang_Character);
     java_util_Set = new SetMarshaller();
     marshallers.put("java.util.Set", java_util_Set);
     marshallers.put("java.util.Collections$SynchronizedSet", java_util_Set);
@@ -189,539 +269,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
     marshallers.put("java.util.ArrayList", java_util_ArrayList);
     java_lang_Byte = new ByteMarshaller();
     marshallers.put("java.lang.Byte", java_lang_Byte);
-    org_jboss_pressgang_ccms_rest_v1_collections_RESTCategoryCollectionV1 = new Marshaller<RESTCategoryCollectionV1>() {
-      private RESTCategoryCollectionV1[] EMPTY_ARRAY = new RESTCategoryCollectionV1[0];
-      public RESTCategoryCollectionV1[] getEmptyArray() {
-        return EMPTY_ARRAY;
-      }
-      public Class getTypeHandled() {
-        return RESTCategoryCollectionV1.class;
-      }
-      public RESTCategoryCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
-        try {
-          if (a0.isNull()) {
-            return null;
-          }
-          EJObject obj = a0.isObject();
-          String objId = obj.get("^ObjectID").isString().stringValue();
-          if (a1.hasObject(objId)) {
-            return a1.getObject(RESTCategoryCollectionV1.class, objId);
-          }
-          RESTCategoryCollectionV1 entity = new RESTCategoryCollectionV1();
-          a1.recordObject(objId, entity);
-          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
-            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1");
-            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
-            a1.setAssumedElementType(null);
-          }
-          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
-            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
-          }
-          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
-            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
-          }
-          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
-            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
-          }
-          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
-            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
-          }
-          return entity;
-        } catch (Throwable t) {
-          t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1", t);
-        }
-      }
-      public String marshall(RESTCategoryCollectionV1 a0, MarshallingSession a1) {
-        if (a0 == null) {
-          return "null";
-        }
-        if (a1.hasObject(a0)) {
-          String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
-        }
-        String objId = a1.getObject(a0);
-        a1.recordObject(objId, objId);
-        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
-      }
-    };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTCategoryCollectionV1);
-    arrayOf_java_lang_StackTraceElement_D1 = new QualifyingMarshallerWrapper(new Marshaller<StackTraceElement[]>() {
-      public java.lang.StackTraceElement[][] getEmptyArray() {
-        throw new UnsupportedOperationException("Not implemented!");
-      }
-
-      private StackTraceElement[] _demarshall1(EJArray a0, MarshallingSession a1) {
-        StackTraceElement[] newArray = new StackTraceElement[a0.size()];
-        for (int i = 0; i < newArray.length; i++) {
-          newArray[i] = java_lang_StackTraceElement.demarshall(a0.get(i), a1);
-        }
-        return newArray;
-      }
-
-      private String _marshall1(StackTraceElement[] a0, MarshallingSession a1) {
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < a0.length; i++) {
-          if (i > 0) {
-            sb.append(",");
-          }
-          sb.append(java_lang_Object.marshall(a0[i], a1));
-        }
-        return sb.append("]").toString();
-      }
-      public Class getTypeHandled() {
-        return StackTraceElement.class;
-      }
-      public StackTraceElement[] demarshall(EJValue a0, MarshallingSession a1) {
-        if (a0 == null) {
-          return null;
-        } else {
-          return this._demarshall1(a0.isArray(), a1);
-        }
-      }
-      public String marshall(StackTraceElement[] a0, MarshallingSession a1) {
-        if (a0 == null) {
-          return null;
-        } else {
-          return this._marshall1(a0, a1);
-        }
-      }
-    });
-    marshallers.put("[Ljava.lang.StackTraceElement;", arrayOf_java_lang_StackTraceElement_D1);
-    java_lang_Throwable = new Marshaller<Throwable>() {
-      private Throwable[] EMPTY_ARRAY = new Throwable[0];
-      public Throwable[] getEmptyArray() {
-        return EMPTY_ARRAY;
-      }
-      public Class getTypeHandled() {
-        return Throwable.class;
-      }
-      public Throwable demarshall(EJValue a0, MarshallingSession a1) {
-        try {
-          if (a0.isNull()) {
-            return null;
-          }
-          EJObject obj = a0.isObject();
-          String objId = obj.get("^ObjectID").isString().stringValue();
-          if (a1.hasObject(objId)) {
-            return a1.getObject(Throwable.class, objId);
-          }
-          Throwable entity = new Throwable(java_lang_String.demarshall(obj.get("message"), a1));
-          a1.recordObject(objId, entity);
-          if ((obj.containsKey("cause")) && (!obj.get("cause").isNull())) {
-            entity.initCause((Throwable) java_lang_Object.demarshall(Throwable.class, obj.get("cause"), a1));
-          }
-          if ((obj.containsKey("stackTrace")) && (!obj.get("stackTrace").isNull())) {
-            entity.setStackTrace((StackTraceElement[]) arrayOf_java_lang_StackTraceElement_D1.demarshall(obj.get("stackTrace"), a1));
-          }
-          return entity;
-        } catch (Throwable t) {
-          t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: java.lang.Throwable", t);
-        }
-      }
-      public String marshall(Throwable a0, MarshallingSession a1) {
-        if (a0 == null) {
-          return "null";
-        }
-        if (a1.hasObject(a0)) {
-          String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"java.lang.Throwable\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
-        }
-        String objId = a1.getObject(a0);
-        a1.recordObject(objId, objId);
-        return new StringBuilder(3072).append("{\"^EncodedType\":\"java.lang.Throwable\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"stackTrace\" : ").append(arrayOf_java_lang_StackTraceElement_D1.marshall(a0.getStackTrace(), a1)).append(",").append("\"message\" : ").append(java_lang_String.marshall(a0.getMessage(), a1)).append(",").append("\"cause\" : ").append(java_lang_Object.marshall(a0.getCause(), a1)).append("}").toString();
-      }
-    };
-    marshallers.put("java.lang.Throwable", java_lang_Throwable);
-    java_lang_IllegalArgumentException = new Marshaller<IllegalArgumentException>() {
-      private IllegalArgumentException[] EMPTY_ARRAY = new IllegalArgumentException[0];
-      public IllegalArgumentException[] getEmptyArray() {
-        return EMPTY_ARRAY;
-      }
-      public Class getTypeHandled() {
-        return IllegalArgumentException.class;
-      }
-      public IllegalArgumentException demarshall(EJValue a0, MarshallingSession a1) {
-        try {
-          if (a0.isNull()) {
-            return null;
-          }
-          EJObject obj = a0.isObject();
-          String objId = obj.get("^ObjectID").isString().stringValue();
-          if (a1.hasObject(objId)) {
-            return a1.getObject(IllegalArgumentException.class, objId);
-          }
-          IllegalArgumentException entity = new IllegalArgumentException(java_lang_String.demarshall(obj.get("message"), a1));
-          a1.recordObject(objId, entity);
-          if ((obj.containsKey("cause")) && (!obj.get("cause").isNull())) {
-            entity.initCause((Throwable) java_lang_Object.demarshall(Throwable.class, obj.get("cause"), a1));
-          }
-          if ((obj.containsKey("stackTrace")) && (!obj.get("stackTrace").isNull())) {
-            entity.setStackTrace((StackTraceElement[]) arrayOf_java_lang_StackTraceElement_D1.demarshall(obj.get("stackTrace"), a1));
-          }
-          return entity;
-        } catch (Throwable t) {
-          t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: java.lang.IllegalArgumentException", t);
-        }
-      }
-      public String marshall(IllegalArgumentException a0, MarshallingSession a1) {
-        if (a0 == null) {
-          return "null";
-        }
-        if (a1.hasObject(a0)) {
-          String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"java.lang.IllegalArgumentException\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
-        }
-        String objId = a1.getObject(a0);
-        a1.recordObject(objId, objId);
-        return new StringBuilder(3072).append("{\"^EncodedType\":\"java.lang.IllegalArgumentException\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"stackTrace\" : ").append(arrayOf_java_lang_StackTraceElement_D1.marshall(a0.getStackTrace(), a1)).append(",").append("\"message\" : ").append(java_lang_String.marshall(a0.getMessage(), a1)).append(",").append("\"cause\" : ").append(java_lang_Object.marshall(a0.getCause(), a1)).append("}").toString();
-      }
-    };
-    marshallers.put("java.lang.IllegalArgumentException", java_lang_IllegalArgumentException);
-    org_jboss_pressgang_ccms_rest_v1_collections_RESTTranslatedTopicStringCollectionV1 = new Marshaller<RESTTranslatedTopicStringCollectionV1>() {
-      private RESTTranslatedTopicStringCollectionV1[] EMPTY_ARRAY = new RESTTranslatedTopicStringCollectionV1[0];
-      public RESTTranslatedTopicStringCollectionV1[] getEmptyArray() {
-        return EMPTY_ARRAY;
-      }
-      public Class getTypeHandled() {
-        return RESTTranslatedTopicStringCollectionV1.class;
-      }
-      public RESTTranslatedTopicStringCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
-        try {
-          if (a0.isNull()) {
-            return null;
-          }
-          EJObject obj = a0.isObject();
-          String objId = obj.get("^ObjectID").isString().stringValue();
-          if (a1.hasObject(objId)) {
-            return a1.getObject(RESTTranslatedTopicStringCollectionV1.class, objId);
-          }
-          RESTTranslatedTopicStringCollectionV1 entity = new RESTTranslatedTopicStringCollectionV1();
-          a1.recordObject(objId, entity);
-          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
-            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicStringCollectionItemV1");
-            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
-            a1.setAssumedElementType(null);
-          }
-          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
-            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
-          }
-          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
-            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
-          }
-          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
-            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
-          }
-          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
-            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
-          }
-          return entity;
-        } catch (Throwable t) {
-          t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicStringCollectionV1", t);
-        }
-      }
-      public String marshall(RESTTranslatedTopicStringCollectionV1 a0, MarshallingSession a1) {
-        if (a0 == null) {
-          return "null";
-        }
-        if (a1.hasObject(a0)) {
-          String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicStringCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
-        }
-        String objId = a1.getObject(a0);
-        a1.recordObject(objId, objId);
-        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicStringCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
-      }
-    };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicStringCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTTranslatedTopicStringCollectionV1);
-    org_jboss_pressgang_ccms_rest_v1_collections_RESTBugzillaBugCollectionV1 = new Marshaller<RESTBugzillaBugCollectionV1>() {
-      private RESTBugzillaBugCollectionV1[] EMPTY_ARRAY = new RESTBugzillaBugCollectionV1[0];
-      public RESTBugzillaBugCollectionV1[] getEmptyArray() {
-        return EMPTY_ARRAY;
-      }
-      public Class getTypeHandled() {
-        return RESTBugzillaBugCollectionV1.class;
-      }
-      public RESTBugzillaBugCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
-        try {
-          if (a0.isNull()) {
-            return null;
-          }
-          EJObject obj = a0.isObject();
-          String objId = obj.get("^ObjectID").isString().stringValue();
-          if (a1.hasObject(objId)) {
-            return a1.getObject(RESTBugzillaBugCollectionV1.class, objId);
-          }
-          RESTBugzillaBugCollectionV1 entity = new RESTBugzillaBugCollectionV1();
-          a1.recordObject(objId, entity);
-          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
-            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1");
-            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
-            a1.setAssumedElementType(null);
-          }
-          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
-            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
-          }
-          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
-            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
-          }
-          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
-            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
-          }
-          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
-            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
-          }
-          return entity;
-        } catch (Throwable t) {
-          t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1", t);
-        }
-      }
-      public String marshall(RESTBugzillaBugCollectionV1 a0, MarshallingSession a1) {
-        if (a0 == null) {
-          return "null";
-        }
-        if (a1.hasObject(a0)) {
-          String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
-        }
-        String objId = a1.getObject(a0);
-        a1.recordObject(objId, objId);
-        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
-      }
-    };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTBugzillaBugCollectionV1);
-    org_jboss_pressgang_ccms_rest_v1_collections_RESTTranslatedTopicCollectionV1 = new Marshaller<RESTTranslatedTopicCollectionV1>() {
-      private RESTTranslatedTopicCollectionV1[] EMPTY_ARRAY = new RESTTranslatedTopicCollectionV1[0];
-      public RESTTranslatedTopicCollectionV1[] getEmptyArray() {
-        return EMPTY_ARRAY;
-      }
-      public Class getTypeHandled() {
-        return RESTTranslatedTopicCollectionV1.class;
-      }
-      public RESTTranslatedTopicCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
-        try {
-          if (a0.isNull()) {
-            return null;
-          }
-          EJObject obj = a0.isObject();
-          String objId = obj.get("^ObjectID").isString().stringValue();
-          if (a1.hasObject(objId)) {
-            return a1.getObject(RESTTranslatedTopicCollectionV1.class, objId);
-          }
-          RESTTranslatedTopicCollectionV1 entity = new RESTTranslatedTopicCollectionV1();
-          a1.recordObject(objId, entity);
-          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
-            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1");
-            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
-            a1.setAssumedElementType(null);
-          }
-          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
-            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
-          }
-          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
-            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
-          }
-          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
-            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
-          }
-          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
-            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
-          }
-          return entity;
-        } catch (Throwable t) {
-          t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1", t);
-        }
-      }
-      public String marshall(RESTTranslatedTopicCollectionV1 a0, MarshallingSession a1) {
-        if (a0 == null) {
-          return "null";
-        }
-        if (a1.hasObject(a0)) {
-          String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
-        }
-        String objId = a1.getObject(a0);
-        a1.recordObject(objId, objId);
-        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
-      }
-    };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTTranslatedTopicCollectionV1);
-    org_jboss_pressgang_ccms_rest_v1_collections_RESTTopicCollectionV1 = new Marshaller<RESTTopicCollectionV1>() {
-      private RESTTopicCollectionV1[] EMPTY_ARRAY = new RESTTopicCollectionV1[0];
-      public RESTTopicCollectionV1[] getEmptyArray() {
-        return EMPTY_ARRAY;
-      }
-      public Class getTypeHandled() {
-        return RESTTopicCollectionV1.class;
-      }
-      public RESTTopicCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
-        try {
-          if (a0.isNull()) {
-            return null;
-          }
-          EJObject obj = a0.isObject();
-          String objId = obj.get("^ObjectID").isString().stringValue();
-          if (a1.hasObject(objId)) {
-            return a1.getObject(RESTTopicCollectionV1.class, objId);
-          }
-          RESTTopicCollectionV1 entity = new RESTTopicCollectionV1();
-          a1.recordObject(objId, entity);
-          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
-            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1");
-            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
-            a1.setAssumedElementType(null);
-          }
-          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
-            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
-          }
-          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
-            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
-          }
-          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
-            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
-          }
-          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
-            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
-          }
-          return entity;
-        } catch (Throwable t) {
-          t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1", t);
-        }
-      }
-      public String marshall(RESTTopicCollectionV1 a0, MarshallingSession a1) {
-        if (a0 == null) {
-          return "null";
-        }
-        if (a1.hasObject(a0)) {
-          String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
-        }
-        String objId = a1.getObject(a0);
-        a1.recordObject(objId, objId);
-        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
-      }
-    };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTTopicCollectionV1);
-    org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1 = new Marshaller<RESTTagCollectionV1>() {
-      private RESTTagCollectionV1[] EMPTY_ARRAY = new RESTTagCollectionV1[0];
-      public RESTTagCollectionV1[] getEmptyArray() {
-        return EMPTY_ARRAY;
-      }
-      public Class getTypeHandled() {
-        return RESTTagCollectionV1.class;
-      }
-      public RESTTagCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
-        try {
-          if (a0.isNull()) {
-            return null;
-          }
-          EJObject obj = a0.isObject();
-          String objId = obj.get("^ObjectID").isString().stringValue();
-          if (a1.hasObject(objId)) {
-            return a1.getObject(RESTTagCollectionV1.class, objId);
-          }
-          RESTTagCollectionV1 entity = new RESTTagCollectionV1();
-          a1.recordObject(objId, entity);
-          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
-            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1");
-            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
-            a1.setAssumedElementType(null);
-          }
-          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
-            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
-          }
-          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
-            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
-          }
-          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
-            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
-          }
-          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
-            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
-          }
-          return entity;
-        } catch (Throwable t) {
-          t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1", t);
-        }
-      }
-      public String marshall(RESTTagCollectionV1 a0, MarshallingSession a1) {
-        if (a0 == null) {
-          return "null";
-        }
-        if (a1.hasObject(a0)) {
-          String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
-        }
-        String objId = a1.getObject(a0);
-        a1.recordObject(objId, objId);
-        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
-      }
-    };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1);
-    org_jboss_pressgang_ccms_rest_v1_collections_RESTTopicSourceUrlCollectionV1 = new Marshaller<RESTTopicSourceUrlCollectionV1>() {
-      private RESTTopicSourceUrlCollectionV1[] EMPTY_ARRAY = new RESTTopicSourceUrlCollectionV1[0];
-      public RESTTopicSourceUrlCollectionV1[] getEmptyArray() {
-        return EMPTY_ARRAY;
-      }
-      public Class getTypeHandled() {
-        return RESTTopicSourceUrlCollectionV1.class;
-      }
-      public RESTTopicSourceUrlCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
-        try {
-          if (a0.isNull()) {
-            return null;
-          }
-          EJObject obj = a0.isObject();
-          String objId = obj.get("^ObjectID").isString().stringValue();
-          if (a1.hasObject(objId)) {
-            return a1.getObject(RESTTopicSourceUrlCollectionV1.class, objId);
-          }
-          RESTTopicSourceUrlCollectionV1 entity = new RESTTopicSourceUrlCollectionV1();
-          a1.recordObject(objId, entity);
-          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
-            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1");
-            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
-            a1.setAssumedElementType(null);
-          }
-          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
-            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
-          }
-          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
-            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
-          }
-          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
-            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
-          }
-          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
-            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
-          }
-          return entity;
-        } catch (Throwable t) {
-          t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1", t);
-        }
-      }
-      public String marshall(RESTTopicSourceUrlCollectionV1 a0, MarshallingSession a1) {
-        if (a0 == null) {
-          return "null";
-        }
-        if (a1.hasObject(a0)) {
-          String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
-        }
-        String objId = a1.getObject(a0);
-        a1.recordObject(objId, objId);
-        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
-      }
-    };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTTopicSourceUrlCollectionV1);
     org_jboss_pressgang_ccms_rest_v1_collections_join_RESTAssignedPropertyTagCollectionV1 = new Marshaller<RESTAssignedPropertyTagCollectionV1>() {
       private RESTAssignedPropertyTagCollectionV1[] EMPTY_ARRAY = new RESTAssignedPropertyTagCollectionV1[0];
       public RESTAssignedPropertyTagCollectionV1[] getEmptyArray() {
@@ -1033,6 +580,2267 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
       }
     };
     marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1", org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1);
+    org_jboss_pressgang_ccms_rest_v1_entities_join_RESTAssignedPropertyTagV1 = new Marshaller<RESTAssignedPropertyTagV1>() {
+      private RESTAssignedPropertyTagV1[] EMPTY_ARRAY = new RESTAssignedPropertyTagV1[0];
+      public RESTAssignedPropertyTagV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTAssignedPropertyTagV1.class;
+      }
+      public RESTAssignedPropertyTagV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTAssignedPropertyTagV1.class, objId);
+          }
+          RESTAssignedPropertyTagV1 entity = new RESTAssignedPropertyTagV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("relationshipId")) && (!obj.get("relationshipId").isNull())) {
+            entity.setRelationshipId(java_lang_Integer.demarshall(obj.get("relationshipId"), a1));
+          }
+          if ((obj.containsKey("value")) && (!obj.get("value").isNull())) {
+            entity.setValue(java_lang_String.demarshall(obj.get("value"), a1));
+          }
+          if ((obj.containsKey("valid")) && (!obj.get("valid").isNull())) {
+            entity.setValid((boolean) java_lang_Boolean.demarshall(obj.get("valid"), a1));
+          }
+          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
+            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTAssignedPropertyTagCollectionV1.demarshall(obj.get("revisions"), a1));
+          }
+          if ((obj.containsKey("name")) && (!obj.get("name").isNull())) {
+            entity.setName(java_lang_String.demarshall(obj.get("name"), a1));
+          }
+          if ((obj.containsKey("description")) && (!obj.get("description").isNull())) {
+            entity.setDescription(java_lang_String.demarshall(obj.get("description"), a1));
+          }
+          if ((obj.containsKey("regex")) && (!obj.get("regex").isNull())) {
+            entity.setRegex(java_lang_String.demarshall(obj.get("regex"), a1));
+          }
+          if ((obj.containsKey("canBeNull")) && (!obj.get("canBeNull").isNull())) {
+            entity.setCanBeNull((boolean) java_lang_Boolean.demarshall(obj.get("canBeNull"), a1));
+          }
+          if ((obj.containsKey("isUnique")) && (!obj.get("isUnique").isNull())) {
+            entity.setIsUnique((boolean) java_lang_Boolean.demarshall(obj.get("isUnique"), a1));
+          }
+          if ((obj.containsKey("selfLink")) && (!obj.get("selfLink").isNull())) {
+            entity.setSelfLink(java_lang_String.demarshall(obj.get("selfLink"), a1));
+          }
+          if ((obj.containsKey("editLink")) && (!obj.get("editLink").isNull())) {
+            entity.setEditLink(java_lang_String.demarshall(obj.get("editLink"), a1));
+          }
+          if ((obj.containsKey("deleteLink")) && (!obj.get("deleteLink").isNull())) {
+            entity.setDeleteLink(java_lang_String.demarshall(obj.get("deleteLink"), a1));
+          }
+          if ((obj.containsKey("addLink")) && (!obj.get("addLink").isNull())) {
+            entity.setAddLink(java_lang_String.demarshall(obj.get("addLink"), a1));
+          }
+          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
+            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
+          }
+          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
+            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
+          }
+          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
+            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1", t);
+        }
+      }
+      public String marshall(RESTAssignedPropertyTagV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(6656).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"relationshipId\" : ").append(java_lang_Integer.marshall(a0.getRelationshipId(), a1)).append(",").append("\"value\" : ").append(java_lang_String.marshall(a0.getValue(), a1)).append(",").append("\"valid\" : ").append(java_lang_Boolean.marshall(a0.getValid(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTAssignedPropertyTagCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"name\" : ").append(java_lang_String.marshall(a0.getName(), a1)).append(",").append("\"description\" : ").append(java_lang_String.marshall(a0.getDescription(), a1)).append(",").append("\"regex\" : ").append(java_lang_String.marshall(a0.getRegex(), a1)).append(",").append("\"canBeNull\" : ").append(java_lang_Boolean.marshall(a0.getCanBeNull(), a1)).append(",").append("\"isUnique\" : ").append(java_lang_Boolean.marshall(a0.getIsUnique(), a1)).append(",").append("\"selfLink\" : ").append(java_lang_String.marshall(a0.getSelfLink(), a1)).append(",").append("\"editLink\" : ").append(java_lang_String.marshall(a0.getEditLink(), a1)).append(",").append("\"deleteLink\" : ").append(java_lang_String.marshall(a0.getDeleteLink(), a1)).append(",").append("\"addLink\" : ").append(java_lang_String.marshall(a0.getAddLink(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1", org_jboss_pressgang_ccms_rest_v1_entities_join_RESTAssignedPropertyTagV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTAssignedPropertyTagCollectionItemV1 = new Marshaller<RESTAssignedPropertyTagCollectionItemV1>() {
+      private RESTAssignedPropertyTagCollectionItemV1[] EMPTY_ARRAY = new RESTAssignedPropertyTagCollectionItemV1[0];
+      public RESTAssignedPropertyTagCollectionItemV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTAssignedPropertyTagCollectionItemV1.class;
+      }
+      public RESTAssignedPropertyTagCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTAssignedPropertyTagCollectionItemV1.class, objId);
+          }
+          RESTAssignedPropertyTagCollectionItemV1 entity = new RESTAssignedPropertyTagCollectionItemV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_join_RESTAssignedPropertyTagV1.demarshall(obj.get("item"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTAssignedPropertyTagCollectionItemV1", t);
+        }
+      }
+      public String marshall(RESTAssignedPropertyTagCollectionItemV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTAssignedPropertyTagCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(6912).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTAssignedPropertyTagCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_join_RESTAssignedPropertyTagV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTAssignedPropertyTagCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTAssignedPropertyTagCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1 = new Marshaller<RESTTagCollectionV1>() {
+      private RESTTagCollectionV1[] EMPTY_ARRAY = new RESTTagCollectionV1[0];
+      public RESTTagCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTTagCollectionV1.class;
+      }
+      public RESTTagCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTTagCollectionV1.class, objId);
+          }
+          RESTTagCollectionV1 entity = new RESTTagCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1", t);
+        }
+      }
+      public String marshall(RESTTagCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_join_RESTCategoryTagCollectionV1 = new Marshaller<RESTCategoryTagCollectionV1>() {
+      private RESTCategoryTagCollectionV1[] EMPTY_ARRAY = new RESTCategoryTagCollectionV1[0];
+      public RESTCategoryTagCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTCategoryTagCollectionV1.class;
+      }
+      public RESTCategoryTagCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTCategoryTagCollectionV1.class, objId);
+          }
+          RESTCategoryTagCollectionV1 entity = new RESTCategoryTagCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryTagCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryTagCollectionV1", t);
+        }
+      }
+      public String marshall(RESTCategoryTagCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryTagCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryTagCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryTagCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_join_RESTCategoryTagCollectionV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTProjectCollectionV1 = new Marshaller<RESTProjectCollectionV1>() {
+      private RESTProjectCollectionV1[] EMPTY_ARRAY = new RESTProjectCollectionV1[0];
+      public RESTProjectCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTProjectCollectionV1.class;
+      }
+      public RESTProjectCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTProjectCollectionV1.class, objId);
+          }
+          RESTProjectCollectionV1 entity = new RESTProjectCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1", t);
+        }
+      }
+      public String marshall(RESTProjectCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTProjectCollectionV1);
+    org_jboss_pressgang_ccms_rest_v1_entities_RESTTagV1 = new Marshaller<RESTTagV1>() {
+      private RESTTagV1[] EMPTY_ARRAY = new RESTTagV1[0];
+      public RESTTagV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTTagV1.class;
+      }
+      public RESTTagV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTTagV1.class, objId);
+          }
+          RESTTagV1 entity = new RESTTagV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
+            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.demarshall(obj.get("revisions"), a1));
+          }
+          if ((obj.containsKey("name")) && (!obj.get("name").isNull())) {
+            entity.setName(java_lang_String.demarshall(obj.get("name"), a1));
+          }
+          if ((obj.containsKey("description")) && (!obj.get("description").isNull())) {
+            entity.setDescription(java_lang_String.demarshall(obj.get("description"), a1));
+          }
+          if ((obj.containsKey("categories")) && (!obj.get("categories").isNull())) {
+            entity.setCategories(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTCategoryTagCollectionV1.demarshall(obj.get("categories"), a1));
+          }
+          if ((obj.containsKey("parentTags")) && (!obj.get("parentTags").isNull())) {
+            entity.setParentTags(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.demarshall(obj.get("parentTags"), a1));
+          }
+          if ((obj.containsKey("childTags")) && (!obj.get("childTags").isNull())) {
+            entity.setChildTags(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.demarshall(obj.get("childTags"), a1));
+          }
+          if ((obj.containsKey("projects")) && (!obj.get("projects").isNull())) {
+            entity.setProjects(org_jboss_pressgang_ccms_rest_v1_collections_RESTProjectCollectionV1.demarshall(obj.get("projects"), a1));
+          }
+          if ((obj.containsKey("properties")) && (!obj.get("properties").isNull())) {
+            entity.setProperties(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTAssignedPropertyTagCollectionV1.demarshall(obj.get("properties"), a1));
+          }
+          if ((obj.containsKey("selfLink")) && (!obj.get("selfLink").isNull())) {
+            entity.setSelfLink(java_lang_String.demarshall(obj.get("selfLink"), a1));
+          }
+          if ((obj.containsKey("editLink")) && (!obj.get("editLink").isNull())) {
+            entity.setEditLink(java_lang_String.demarshall(obj.get("editLink"), a1));
+          }
+          if ((obj.containsKey("deleteLink")) && (!obj.get("deleteLink").isNull())) {
+            entity.setDeleteLink(java_lang_String.demarshall(obj.get("deleteLink"), a1));
+          }
+          if ((obj.containsKey("addLink")) && (!obj.get("addLink").isNull())) {
+            entity.setAddLink(java_lang_String.demarshall(obj.get("addLink"), a1));
+          }
+          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
+            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
+          }
+          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
+            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
+          }
+          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
+            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1", t);
+        }
+      }
+      public String marshall(RESTTagV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(8448).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"name\" : ").append(java_lang_String.marshall(a0.getName(), a1)).append(",").append("\"description\" : ").append(java_lang_String.marshall(a0.getDescription(), a1)).append(",").append("\"categories\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTCategoryTagCollectionV1.marshall(a0.getCategories(), a1)).append(",").append("\"parentTags\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.marshall(a0.getParentTags(), a1)).append(",").append("\"childTags\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.marshall(a0.getChildTags(), a1)).append(",").append("\"projects\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTProjectCollectionV1.marshall(a0.getProjects(), a1)).append(",").append("\"properties\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTAssignedPropertyTagCollectionV1.marshall(a0.getProperties(), a1)).append(",").append("\"selfLink\" : ").append(java_lang_String.marshall(a0.getSelfLink(), a1)).append(",").append("\"editLink\" : ").append(java_lang_String.marshall(a0.getEditLink(), a1)).append(",").append("\"deleteLink\" : ").append(java_lang_String.marshall(a0.getDeleteLink(), a1)).append(",").append("\"addLink\" : ").append(java_lang_String.marshall(a0.getAddLink(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTTagV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterTagCollectionV1 = new Marshaller<RESTFilterTagCollectionV1>() {
+      private RESTFilterTagCollectionV1[] EMPTY_ARRAY = new RESTFilterTagCollectionV1[0];
+      public RESTFilterTagCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTFilterTagCollectionV1.class;
+      }
+      public RESTFilterTagCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTFilterTagCollectionV1.class, objId);
+          }
+          RESTFilterTagCollectionV1 entity = new RESTFilterTagCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1", t);
+        }
+      }
+      public String marshall(RESTFilterTagCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterTagCollectionV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterLocaleCollectionV1 = new Marshaller<RESTFilterLocaleCollectionV1>() {
+      private RESTFilterLocaleCollectionV1[] EMPTY_ARRAY = new RESTFilterLocaleCollectionV1[0];
+      public RESTFilterLocaleCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTFilterLocaleCollectionV1.class;
+      }
+      public RESTFilterLocaleCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTFilterLocaleCollectionV1.class, objId);
+          }
+          RESTFilterLocaleCollectionV1 entity = new RESTFilterLocaleCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterLocaleCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterLocaleCollectionV1", t);
+        }
+      }
+      public String marshall(RESTFilterLocaleCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterLocaleCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterLocaleCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterLocaleCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterLocaleCollectionV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterCategoryCollectionV1 = new Marshaller<RESTFilterCategoryCollectionV1>() {
+      private RESTFilterCategoryCollectionV1[] EMPTY_ARRAY = new RESTFilterCategoryCollectionV1[0];
+      public RESTFilterCategoryCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTFilterCategoryCollectionV1.class;
+      }
+      public RESTFilterCategoryCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTFilterCategoryCollectionV1.class, objId);
+          }
+          RESTFilterCategoryCollectionV1 entity = new RESTFilterCategoryCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1", t);
+        }
+      }
+      public String marshall(RESTFilterCategoryCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterCategoryCollectionV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterFieldCollectionV1 = new Marshaller<RESTFilterFieldCollectionV1>() {
+      private RESTFilterFieldCollectionV1[] EMPTY_ARRAY = new RESTFilterFieldCollectionV1[0];
+      public RESTFilterFieldCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTFilterFieldCollectionV1.class;
+      }
+      public RESTFilterFieldCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTFilterFieldCollectionV1.class, objId);
+          }
+          RESTFilterFieldCollectionV1 entity = new RESTFilterFieldCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1", t);
+        }
+      }
+      public String marshall(RESTFilterFieldCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterFieldCollectionV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterCollectionV1 = new Marshaller<RESTFilterCollectionV1>() {
+      private RESTFilterCollectionV1[] EMPTY_ARRAY = new RESTFilterCollectionV1[0];
+      public RESTFilterCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTFilterCollectionV1.class;
+      }
+      public RESTFilterCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTFilterCollectionV1.class, objId);
+          }
+          RESTFilterCollectionV1 entity = new RESTFilterCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1", t);
+        }
+      }
+      public String marshall(RESTFilterCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterCollectionV1);
+    org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterV1 = new Marshaller<RESTFilterV1>() {
+      private RESTFilterV1[] EMPTY_ARRAY = new RESTFilterV1[0];
+      public RESTFilterV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTFilterV1.class;
+      }
+      public RESTFilterV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTFilterV1.class, objId);
+          }
+          RESTFilterV1 entity = new RESTFilterV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("name")) && (!obj.get("name").isNull())) {
+            entity.setName(java_lang_String.demarshall(obj.get("name"), a1));
+          }
+          if ((obj.containsKey("description")) && (!obj.get("description").isNull())) {
+            entity.setDescription(java_lang_String.demarshall(obj.get("description"), a1));
+          }
+          if ((obj.containsKey("filterTags_OTM")) && (!obj.get("filterTags_OTM").isNull())) {
+            entity.setFilterTags_OTM(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterTagCollectionV1.demarshall(obj.get("filterTags_OTM"), a1));
+          }
+          if ((obj.containsKey("filterLocales_OTM")) && (!obj.get("filterLocales_OTM").isNull())) {
+            entity.setFilterLocales_OTM(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterLocaleCollectionV1.demarshall(obj.get("filterLocales_OTM"), a1));
+          }
+          if ((obj.containsKey("filterCategories_OTM")) && (!obj.get("filterCategories_OTM").isNull())) {
+            entity.setFilterCategories_OTM(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterCategoryCollectionV1.demarshall(obj.get("filterCategories_OTM"), a1));
+          }
+          if ((obj.containsKey("filterFields_OTM")) && (!obj.get("filterFields_OTM").isNull())) {
+            entity.setFilterFields_OTM(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterFieldCollectionV1.demarshall(obj.get("filterFields_OTM"), a1));
+          }
+          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
+            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterCollectionV1.demarshall(obj.get("revisions"), a1));
+          }
+          if ((obj.containsKey("selfLink")) && (!obj.get("selfLink").isNull())) {
+            entity.setSelfLink(java_lang_String.demarshall(obj.get("selfLink"), a1));
+          }
+          if ((obj.containsKey("editLink")) && (!obj.get("editLink").isNull())) {
+            entity.setEditLink(java_lang_String.demarshall(obj.get("editLink"), a1));
+          }
+          if ((obj.containsKey("deleteLink")) && (!obj.get("deleteLink").isNull())) {
+            entity.setDeleteLink(java_lang_String.demarshall(obj.get("deleteLink"), a1));
+          }
+          if ((obj.containsKey("addLink")) && (!obj.get("addLink").isNull())) {
+            entity.setAddLink(java_lang_String.demarshall(obj.get("addLink"), a1));
+          }
+          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
+            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
+          }
+          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
+            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
+          }
+          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
+            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1", t);
+        }
+      }
+      public String marshall(RESTFilterV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(8960).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"name\" : ").append(java_lang_String.marshall(a0.getName(), a1)).append(",").append("\"description\" : ").append(java_lang_String.marshall(a0.getDescription(), a1)).append(",").append("\"filterTags_OTM\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterTagCollectionV1.marshall(a0.getFilterTags_OTM(), a1)).append(",").append("\"filterLocales_OTM\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterLocaleCollectionV1.marshall(a0.getFilterLocales_OTM(), a1)).append(",").append("\"filterCategories_OTM\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterCategoryCollectionV1.marshall(a0.getFilterCategories_OTM(), a1)).append(",").append("\"filterFields_OTM\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterFieldCollectionV1.marshall(a0.getFilterFields_OTM(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"selfLink\" : ").append(java_lang_String.marshall(a0.getSelfLink(), a1)).append(",").append("\"editLink\" : ").append(java_lang_String.marshall(a0.getEditLink(), a1)).append(",").append("\"deleteLink\" : ").append(java_lang_String.marshall(a0.getDeleteLink(), a1)).append(",").append("\"addLink\" : ").append(java_lang_String.marshall(a0.getAddLink(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterV1);
+    org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterTagV1 = new Marshaller<RESTFilterTagV1>() {
+      private RESTFilterTagV1[] EMPTY_ARRAY = new RESTFilterTagV1[0];
+      public RESTFilterTagV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTFilterTagV1.class;
+      }
+      public RESTFilterTagV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTFilterTagV1.class, objId);
+          }
+          RESTFilterTagV1 entity = new RESTFilterTagV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("tag")) && (!obj.get("tag").isNull())) {
+            entity.setTag(org_jboss_pressgang_ccms_rest_v1_entities_RESTTagV1.demarshall(obj.get("tag"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          if ((obj.containsKey("filter")) && (!obj.get("filter").isNull())) {
+            entity.setFilter(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterV1.demarshall(obj.get("filter"), a1));
+          }
+          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
+            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterTagCollectionV1.demarshall(obj.get("revisions"), a1));
+          }
+          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
+            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
+          }
+          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
+            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
+          }
+          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
+            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1", t);
+        }
+      }
+      public String marshall(RESTFilterTagV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(14848).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"tag\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTTagV1.marshall(a0.getTag(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append(",").append("\"filter\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterV1.marshall(a0.getFilter(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterTagCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterTagV1);
+    arrayOf_java_lang_StackTraceElement_D1 = new QualifyingMarshallerWrapper(new Marshaller<StackTraceElement[]>() {
+      public java.lang.StackTraceElement[][] getEmptyArray() {
+        throw new UnsupportedOperationException("Not implemented!");
+      }
+
+      private StackTraceElement[] _demarshall1(EJArray a0, MarshallingSession a1) {
+        StackTraceElement[] newArray = new StackTraceElement[a0.size()];
+        for (int i = 0; i < newArray.length; i++) {
+          newArray[i] = java_lang_StackTraceElement.demarshall(a0.get(i), a1);
+        }
+        return newArray;
+      }
+
+      private String _marshall1(StackTraceElement[] a0, MarshallingSession a1) {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < a0.length; i++) {
+          if (i > 0) {
+            sb.append(",");
+          }
+          sb.append(java_lang_Object.marshall(a0[i], a1));
+        }
+        return sb.append("]").toString();
+      }
+      public Class getTypeHandled() {
+        return StackTraceElement.class;
+      }
+      public StackTraceElement[] demarshall(EJValue a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return null;
+        } else {
+          return this._demarshall1(a0.isArray(), a1);
+        }
+      }
+      public String marshall(StackTraceElement[] a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return null;
+        } else {
+          return this._marshall1(a0, a1);
+        }
+      }
+    });
+    marshallers.put("[Ljava.lang.StackTraceElement;", arrayOf_java_lang_StackTraceElement_D1);
+    java_lang_Throwable = new Marshaller<Throwable>() {
+      private Throwable[] EMPTY_ARRAY = new Throwable[0];
+      public Throwable[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return Throwable.class;
+      }
+      public Throwable demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(Throwable.class, objId);
+          }
+          Throwable entity = new Throwable(java_lang_String.demarshall(obj.get("message"), a1));
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("cause")) && (!obj.get("cause").isNull())) {
+            entity.initCause((Throwable) java_lang_Object.demarshall(Throwable.class, obj.get("cause"), a1));
+          }
+          if ((obj.containsKey("stackTrace")) && (!obj.get("stackTrace").isNull())) {
+            entity.setStackTrace((StackTraceElement[]) arrayOf_java_lang_StackTraceElement_D1.demarshall(obj.get("stackTrace"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: java.lang.Throwable", t);
+        }
+      }
+      public String marshall(Throwable a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"java.lang.Throwable\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(3072).append("{\"^EncodedType\":\"java.lang.Throwable\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"stackTrace\" : ").append(arrayOf_java_lang_StackTraceElement_D1.marshall(a0.getStackTrace(), a1)).append(",").append("\"message\" : ").append(java_lang_String.marshall(a0.getMessage(), a1)).append(",").append("\"cause\" : ").append(java_lang_Object.marshall(a0.getCause(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("java.lang.Throwable", java_lang_Throwable);
+    java_lang_IllegalArgumentException = new Marshaller<IllegalArgumentException>() {
+      private IllegalArgumentException[] EMPTY_ARRAY = new IllegalArgumentException[0];
+      public IllegalArgumentException[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return IllegalArgumentException.class;
+      }
+      public IllegalArgumentException demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(IllegalArgumentException.class, objId);
+          }
+          IllegalArgumentException entity = new IllegalArgumentException(java_lang_String.demarshall(obj.get("message"), a1));
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("cause")) && (!obj.get("cause").isNull())) {
+            entity.initCause((Throwable) java_lang_Object.demarshall(Throwable.class, obj.get("cause"), a1));
+          }
+          if ((obj.containsKey("stackTrace")) && (!obj.get("stackTrace").isNull())) {
+            entity.setStackTrace((StackTraceElement[]) arrayOf_java_lang_StackTraceElement_D1.demarshall(obj.get("stackTrace"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: java.lang.IllegalArgumentException", t);
+        }
+      }
+      public String marshall(IllegalArgumentException a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"java.lang.IllegalArgumentException\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(3072).append("{\"^EncodedType\":\"java.lang.IllegalArgumentException\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"stackTrace\" : ").append(arrayOf_java_lang_StackTraceElement_D1.marshall(a0.getStackTrace(), a1)).append(",").append("\"message\" : ").append(java_lang_String.marshall(a0.getMessage(), a1)).append(",").append("\"cause\" : ").append(java_lang_Object.marshall(a0.getCause(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("java.lang.IllegalArgumentException", java_lang_IllegalArgumentException);
+    org_jboss_pressgang_ccms_rest_v1_entities_RESTRoleV1 = new Marshaller<RESTRoleV1>() {
+      private RESTRoleV1[] EMPTY_ARRAY = new RESTRoleV1[0];
+      public RESTRoleV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTRoleV1.class;
+      }
+      public RESTRoleV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTRoleV1.class, objId);
+          }
+          RESTRoleV1 entity = new RESTRoleV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("name")) && (!obj.get("name").isNull())) {
+            entity.setName(java_lang_String.demarshall(obj.get("name"), a1));
+          }
+          if ((obj.containsKey("description")) && (!obj.get("description").isNull())) {
+            entity.setDescription(java_lang_String.demarshall(obj.get("description"), a1));
+          }
+          if ((obj.containsKey("users")) && (!obj.get("users").isNull())) {
+            entity.setUsers(org_jboss_pressgang_ccms_rest_v1_collections_RESTUserCollectionV1.demarshall(obj.get("users"), a1));
+          }
+          if ((obj.containsKey("childRoles")) && (!obj.get("childRoles").isNull())) {
+            entity.setChildRoles(org_jboss_pressgang_ccms_rest_v1_collections_RESTRoleCollectionV1.demarshall(obj.get("childRoles"), a1));
+          }
+          if ((obj.containsKey("parentRoles")) && (!obj.get("parentRoles").isNull())) {
+            entity.setParentRoles(org_jboss_pressgang_ccms_rest_v1_collections_RESTRoleCollectionV1.demarshall(obj.get("parentRoles"), a1));
+          }
+          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
+            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTRoleCollectionV1.demarshall(obj.get("revisions"), a1));
+          }
+          if ((obj.containsKey("selfLink")) && (!obj.get("selfLink").isNull())) {
+            entity.setSelfLink(java_lang_String.demarshall(obj.get("selfLink"), a1));
+          }
+          if ((obj.containsKey("editLink")) && (!obj.get("editLink").isNull())) {
+            entity.setEditLink(java_lang_String.demarshall(obj.get("editLink"), a1));
+          }
+          if ((obj.containsKey("deleteLink")) && (!obj.get("deleteLink").isNull())) {
+            entity.setDeleteLink(java_lang_String.demarshall(obj.get("deleteLink"), a1));
+          }
+          if ((obj.containsKey("addLink")) && (!obj.get("addLink").isNull())) {
+            entity.setAddLink(java_lang_String.demarshall(obj.get("addLink"), a1));
+          }
+          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
+            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
+          }
+          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
+            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
+          }
+          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
+            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTRoleV1", t);
+        }
+      }
+      public String marshall(RESTRoleV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTRoleV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(5632).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTRoleV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"name\" : ").append(java_lang_String.marshall(a0.getName(), a1)).append(",").append("\"description\" : ").append(java_lang_String.marshall(a0.getDescription(), a1)).append(",").append("\"users\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTUserCollectionV1.marshall(a0.getUsers(), a1)).append(",").append("\"childRoles\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTRoleCollectionV1.marshall(a0.getChildRoles(), a1)).append(",").append("\"parentRoles\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTRoleCollectionV1.marshall(a0.getParentRoles(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTRoleCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"selfLink\" : ").append(java_lang_String.marshall(a0.getSelfLink(), a1)).append(",").append("\"editLink\" : ").append(java_lang_String.marshall(a0.getEditLink(), a1)).append(",").append("\"deleteLink\" : ").append(java_lang_String.marshall(a0.getDeleteLink(), a1)).append(",").append("\"addLink\" : ").append(java_lang_String.marshall(a0.getAddLink(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTRoleV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTRoleV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTStringConstantCollectionV1 = new Marshaller<RESTStringConstantCollectionV1>() {
+      private RESTStringConstantCollectionV1[] EMPTY_ARRAY = new RESTStringConstantCollectionV1[0];
+      public RESTStringConstantCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTStringConstantCollectionV1.class;
+      }
+      public RESTStringConstantCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTStringConstantCollectionV1.class, objId);
+          }
+          RESTStringConstantCollectionV1 entity = new RESTStringConstantCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTStringConstantCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1", t);
+        }
+      }
+      public String marshall(RESTStringConstantCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTStringConstantCollectionV1);
+    org_jboss_pressgang_ccms_rest_v1_entities_RESTStringConstantV1 = new Marshaller<RESTStringConstantV1>() {
+      private RESTStringConstantV1[] EMPTY_ARRAY = new RESTStringConstantV1[0];
+      public RESTStringConstantV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTStringConstantV1.class;
+      }
+      public RESTStringConstantV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTStringConstantV1.class, objId);
+          }
+          RESTStringConstantV1 entity = new RESTStringConstantV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("name")) && (!obj.get("name").isNull())) {
+            entity.setName(java_lang_String.demarshall(obj.get("name"), a1));
+          }
+          if ((obj.containsKey("value")) && (!obj.get("value").isNull())) {
+            entity.setValue(java_lang_String.demarshall(obj.get("value"), a1));
+          }
+          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
+            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTStringConstantCollectionV1.demarshall(obj.get("revisions"), a1));
+          }
+          if ((obj.containsKey("selfLink")) && (!obj.get("selfLink").isNull())) {
+            entity.setSelfLink(java_lang_String.demarshall(obj.get("selfLink"), a1));
+          }
+          if ((obj.containsKey("editLink")) && (!obj.get("editLink").isNull())) {
+            entity.setEditLink(java_lang_String.demarshall(obj.get("editLink"), a1));
+          }
+          if ((obj.containsKey("deleteLink")) && (!obj.get("deleteLink").isNull())) {
+            entity.setDeleteLink(java_lang_String.demarshall(obj.get("deleteLink"), a1));
+          }
+          if ((obj.containsKey("addLink")) && (!obj.get("addLink").isNull())) {
+            entity.setAddLink(java_lang_String.demarshall(obj.get("addLink"), a1));
+          }
+          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
+            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
+          }
+          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
+            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
+          }
+          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
+            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1", t);
+        }
+      }
+      public String marshall(RESTStringConstantV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(5888).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"name\" : ").append(java_lang_String.marshall(a0.getName(), a1)).append(",").append("\"value\" : ").append(java_lang_String.marshall(a0.getValue(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTStringConstantCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"selfLink\" : ").append(java_lang_String.marshall(a0.getSelfLink(), a1)).append(",").append("\"editLink\" : ").append(java_lang_String.marshall(a0.getEditLink(), a1)).append(",").append("\"deleteLink\" : ").append(java_lang_String.marshall(a0.getDeleteLink(), a1)).append(",").append("\"addLink\" : ").append(java_lang_String.marshall(a0.getAddLink(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTStringConstantV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTStringConstantCollectionItemV1 = new Marshaller<RESTStringConstantCollectionItemV1>() {
+      private RESTStringConstantCollectionItemV1[] EMPTY_ARRAY = new RESTStringConstantCollectionItemV1[0];
+      public RESTStringConstantCollectionItemV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTStringConstantCollectionItemV1.class;
+      }
+      public RESTStringConstantCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTStringConstantCollectionItemV1.class, objId);
+          }
+          RESTStringConstantCollectionItemV1 entity = new RESTStringConstantCollectionItemV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTStringConstantV1.demarshall(obj.get("item"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTStringConstantCollectionItemV1", t);
+        }
+      }
+      public String marshall(RESTStringConstantCollectionItemV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTStringConstantCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(6144).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTStringConstantCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTStringConstantV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTStringConstantCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTStringConstantCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTLanguageImageCollectionV1 = new Marshaller<RESTLanguageImageCollectionV1>() {
+      private RESTLanguageImageCollectionV1[] EMPTY_ARRAY = new RESTLanguageImageCollectionV1[0];
+      public RESTLanguageImageCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTLanguageImageCollectionV1.class;
+      }
+      public RESTLanguageImageCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTLanguageImageCollectionV1.class, objId);
+          }
+          RESTLanguageImageCollectionV1 entity = new RESTLanguageImageCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1", t);
+        }
+      }
+      public String marshall(RESTLanguageImageCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTLanguageImageCollectionV1);
+    org_jboss_pressgang_ccms_rest_v1_entities_RESTProjectV1 = new Marshaller<RESTProjectV1>() {
+      private RESTProjectV1[] EMPTY_ARRAY = new RESTProjectV1[0];
+      public RESTProjectV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTProjectV1.class;
+      }
+      public RESTProjectV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTProjectV1.class, objId);
+          }
+          RESTProjectV1 entity = new RESTProjectV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("name")) && (!obj.get("name").isNull())) {
+            entity.setName(java_lang_String.demarshall(obj.get("name"), a1));
+          }
+          if ((obj.containsKey("description")) && (!obj.get("description").isNull())) {
+            entity.setDescription(java_lang_String.demarshall(obj.get("description"), a1));
+          }
+          if ((obj.containsKey("tags")) && (!obj.get("tags").isNull())) {
+            entity.setTags(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.demarshall(obj.get("tags"), a1));
+          }
+          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
+            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTProjectCollectionV1.demarshall(obj.get("revisions"), a1));
+          }
+          if ((obj.containsKey("selfLink")) && (!obj.get("selfLink").isNull())) {
+            entity.setSelfLink(java_lang_String.demarshall(obj.get("selfLink"), a1));
+          }
+          if ((obj.containsKey("editLink")) && (!obj.get("editLink").isNull())) {
+            entity.setEditLink(java_lang_String.demarshall(obj.get("editLink"), a1));
+          }
+          if ((obj.containsKey("deleteLink")) && (!obj.get("deleteLink").isNull())) {
+            entity.setDeleteLink(java_lang_String.demarshall(obj.get("deleteLink"), a1));
+          }
+          if ((obj.containsKey("addLink")) && (!obj.get("addLink").isNull())) {
+            entity.setAddLink(java_lang_String.demarshall(obj.get("addLink"), a1));
+          }
+          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
+            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
+          }
+          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
+            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
+          }
+          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
+            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1", t);
+        }
+      }
+      public String marshall(RESTProjectV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(6656).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"name\" : ").append(java_lang_String.marshall(a0.getName(), a1)).append(",").append("\"description\" : ").append(java_lang_String.marshall(a0.getDescription(), a1)).append(",").append("\"tags\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.marshall(a0.getTags(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTProjectCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"selfLink\" : ").append(java_lang_String.marshall(a0.getSelfLink(), a1)).append(",").append("\"editLink\" : ").append(java_lang_String.marshall(a0.getEditLink(), a1)).append(",").append("\"deleteLink\" : ").append(java_lang_String.marshall(a0.getDeleteLink(), a1)).append(",").append("\"addLink\" : ").append(java_lang_String.marshall(a0.getAddLink(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTProjectV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTFilterTagCollectionItemV1 = new Marshaller<RESTFilterTagCollectionItemV1>() {
+      private RESTFilterTagCollectionItemV1[] EMPTY_ARRAY = new RESTFilterTagCollectionItemV1[0];
+      public RESTFilterTagCollectionItemV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTFilterTagCollectionItemV1.class;
+      }
+      public RESTFilterTagCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTFilterTagCollectionItemV1.class, objId);
+          }
+          RESTFilterTagCollectionItemV1 entity = new RESTFilterTagCollectionItemV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterTagV1.demarshall(obj.get("item"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1", t);
+        }
+      }
+      public String marshall(RESTFilterTagCollectionItemV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(15104).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterTagV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTFilterTagCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTPropertyTagCollectionV1 = new Marshaller<RESTPropertyTagCollectionV1>() {
+      private RESTPropertyTagCollectionV1[] EMPTY_ARRAY = new RESTPropertyTagCollectionV1[0];
+      public RESTPropertyTagCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTPropertyTagCollectionV1.class;
+      }
+      public RESTPropertyTagCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTPropertyTagCollectionV1.class, objId);
+          }
+          RESTPropertyTagCollectionV1 entity = new RESTPropertyTagCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1", t);
+        }
+      }
+      public String marshall(RESTPropertyTagCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTPropertyTagCollectionV1);
+    org_jboss_pressgang_ccms_rest_v1_entities_RESTPropertyTagV1 = new Marshaller<RESTPropertyTagV1>() {
+      private RESTPropertyTagV1[] EMPTY_ARRAY = new RESTPropertyTagV1[0];
+      public RESTPropertyTagV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTPropertyTagV1.class;
+      }
+      public RESTPropertyTagV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTPropertyTagV1.class, objId);
+          }
+          RESTPropertyTagV1 entity = new RESTPropertyTagV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
+            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTPropertyTagCollectionV1.demarshall(obj.get("revisions"), a1));
+          }
+          if ((obj.containsKey("name")) && (!obj.get("name").isNull())) {
+            entity.setName(java_lang_String.demarshall(obj.get("name"), a1));
+          }
+          if ((obj.containsKey("description")) && (!obj.get("description").isNull())) {
+            entity.setDescription(java_lang_String.demarshall(obj.get("description"), a1));
+          }
+          if ((obj.containsKey("regex")) && (!obj.get("regex").isNull())) {
+            entity.setRegex(java_lang_String.demarshall(obj.get("regex"), a1));
+          }
+          if ((obj.containsKey("canBeNull")) && (!obj.get("canBeNull").isNull())) {
+            entity.setCanBeNull((boolean) java_lang_Boolean.demarshall(obj.get("canBeNull"), a1));
+          }
+          if ((obj.containsKey("isUnique")) && (!obj.get("isUnique").isNull())) {
+            entity.setIsUnique((boolean) java_lang_Boolean.demarshall(obj.get("isUnique"), a1));
+          }
+          if ((obj.containsKey("selfLink")) && (!obj.get("selfLink").isNull())) {
+            entity.setSelfLink(java_lang_String.demarshall(obj.get("selfLink"), a1));
+          }
+          if ((obj.containsKey("editLink")) && (!obj.get("editLink").isNull())) {
+            entity.setEditLink(java_lang_String.demarshall(obj.get("editLink"), a1));
+          }
+          if ((obj.containsKey("deleteLink")) && (!obj.get("deleteLink").isNull())) {
+            entity.setDeleteLink(java_lang_String.demarshall(obj.get("deleteLink"), a1));
+          }
+          if ((obj.containsKey("addLink")) && (!obj.get("addLink").isNull())) {
+            entity.setAddLink(java_lang_String.demarshall(obj.get("addLink"), a1));
+          }
+          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
+            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
+          }
+          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
+            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
+          }
+          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
+            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1", t);
+        }
+      }
+      public String marshall(RESTPropertyTagV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(6272).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTPropertyTagCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"name\" : ").append(java_lang_String.marshall(a0.getName(), a1)).append(",").append("\"description\" : ").append(java_lang_String.marshall(a0.getDescription(), a1)).append(",").append("\"regex\" : ").append(java_lang_String.marshall(a0.getRegex(), a1)).append(",").append("\"canBeNull\" : ").append(java_lang_Boolean.marshall(a0.getCanBeNull(), a1)).append(",").append("\"isUnique\" : ").append(java_lang_Boolean.marshall(a0.getIsUnique(), a1)).append(",").append("\"selfLink\" : ").append(java_lang_String.marshall(a0.getSelfLink(), a1)).append(",").append("\"editLink\" : ").append(java_lang_String.marshall(a0.getEditLink(), a1)).append(",").append("\"deleteLink\" : ").append(java_lang_String.marshall(a0.getDeleteLink(), a1)).append(",").append("\"addLink\" : ").append(java_lang_String.marshall(a0.getAddLink(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTPropertyTagV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTPropertyTagCollectionItemV1 = new Marshaller<RESTPropertyTagCollectionItemV1>() {
+      private RESTPropertyTagCollectionItemV1[] EMPTY_ARRAY = new RESTPropertyTagCollectionItemV1[0];
+      public RESTPropertyTagCollectionItemV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTPropertyTagCollectionItemV1.class;
+      }
+      public RESTPropertyTagCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTPropertyTagCollectionItemV1.class, objId);
+          }
+          RESTPropertyTagCollectionItemV1 entity = new RESTPropertyTagCollectionItemV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTPropertyTagV1.demarshall(obj.get("item"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1", t);
+        }
+      }
+      public String marshall(RESTPropertyTagCollectionItemV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(6528).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTPropertyTagV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTPropertyTagCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTBugzillaBugCollectionV1 = new Marshaller<RESTBugzillaBugCollectionV1>() {
+      private RESTBugzillaBugCollectionV1[] EMPTY_ARRAY = new RESTBugzillaBugCollectionV1[0];
+      public RESTBugzillaBugCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTBugzillaBugCollectionV1.class;
+      }
+      public RESTBugzillaBugCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTBugzillaBugCollectionV1.class, objId);
+          }
+          RESTBugzillaBugCollectionV1 entity = new RESTBugzillaBugCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1", t);
+        }
+      }
+      public String marshall(RESTBugzillaBugCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTBugzillaBugCollectionV1);
+    org_jboss_pressgang_ccms_rest_v1_entities_RESTBugzillaBugV1 = new Marshaller<RESTBugzillaBugV1>() {
+      private RESTBugzillaBugV1[] EMPTY_ARRAY = new RESTBugzillaBugV1[0];
+      public RESTBugzillaBugV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTBugzillaBugV1.class;
+      }
+      public RESTBugzillaBugV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTBugzillaBugV1.class, objId);
+          }
+          RESTBugzillaBugV1 entity = new RESTBugzillaBugV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("bugId")) && (!obj.get("bugId").isNull())) {
+            entity.setBugId(java_lang_Integer.demarshall(obj.get("bugId"), a1));
+          }
+          if ((obj.containsKey("isOpen")) && (!obj.get("isOpen").isNull())) {
+            entity.setIsOpen(java_lang_Boolean.demarshall(obj.get("isOpen"), a1));
+          }
+          if ((obj.containsKey("summary")) && (!obj.get("summary").isNull())) {
+            entity.setSummary(java_lang_String.demarshall(obj.get("summary"), a1));
+          }
+          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
+            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTBugzillaBugCollectionV1.demarshall(obj.get("revisions"), a1));
+          }
+          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
+            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
+          }
+          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
+            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
+          }
+          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
+            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1", t);
+        }
+      }
+      public String marshall(RESTBugzillaBugV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(5504).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"bugId\" : ").append(java_lang_Integer.marshall(a0.getBugId(), a1)).append(",").append("\"isOpen\" : ").append(java_lang_Boolean.marshall(a0.getIsOpen(), a1)).append(",").append("\"summary\" : ").append(java_lang_String.marshall(a0.getSummary(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTBugzillaBugCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTBugzillaBugV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTBugzillaBugCollectionItemV1 = new Marshaller<RESTBugzillaBugCollectionItemV1>() {
+      private RESTBugzillaBugCollectionItemV1[] EMPTY_ARRAY = new RESTBugzillaBugCollectionItemV1[0];
+      public RESTBugzillaBugCollectionItemV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTBugzillaBugCollectionItemV1.class;
+      }
+      public RESTBugzillaBugCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTBugzillaBugCollectionItemV1.class, objId);
+          }
+          RESTBugzillaBugCollectionItemV1 entity = new RESTBugzillaBugCollectionItemV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTBugzillaBugV1.demarshall(obj.get("item"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1", t);
+        }
+      }
+      public String marshall(RESTBugzillaBugCollectionItemV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(5760).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTBugzillaBugV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTBugzillaBugCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTTranslatedTopicCollectionV1 = new Marshaller<RESTTranslatedTopicCollectionV1>() {
+      private RESTTranslatedTopicCollectionV1[] EMPTY_ARRAY = new RESTTranslatedTopicCollectionV1[0];
+      public RESTTranslatedTopicCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTTranslatedTopicCollectionV1.class;
+      }
+      public RESTTranslatedTopicCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTTranslatedTopicCollectionV1.class, objId);
+          }
+          RESTTranslatedTopicCollectionV1 entity = new RESTTranslatedTopicCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1", t);
+        }
+      }
+      public String marshall(RESTTranslatedTopicCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTTranslatedTopicCollectionV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTIntegerConstantCollectionV1 = new Marshaller<RESTIntegerConstantCollectionV1>() {
+      private RESTIntegerConstantCollectionV1[] EMPTY_ARRAY = new RESTIntegerConstantCollectionV1[0];
+      public RESTIntegerConstantCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTIntegerConstantCollectionV1.class;
+      }
+      public RESTIntegerConstantCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTIntegerConstantCollectionV1.class, objId);
+          }
+          RESTIntegerConstantCollectionV1 entity = new RESTIntegerConstantCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTIntegerConstantCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTIntegerConstantCollectionV1", t);
+        }
+      }
+      public String marshall(RESTIntegerConstantCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTIntegerConstantCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTIntegerConstantCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTIntegerConstantCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTIntegerConstantCollectionV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTTopicCollectionV1 = new Marshaller<RESTTopicCollectionV1>() {
+      private RESTTopicCollectionV1[] EMPTY_ARRAY = new RESTTopicCollectionV1[0];
+      public RESTTopicCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTTopicCollectionV1.class;
+      }
+      public RESTTopicCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTTopicCollectionV1.class, objId);
+          }
+          RESTTopicCollectionV1 entity = new RESTTopicCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1", t);
+        }
+      }
+      public String marshall(RESTTopicCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTTopicCollectionV1);
+    java_lang_StackTraceElement = new Marshaller<StackTraceElement>() {
+      private StackTraceElement[] EMPTY_ARRAY = new StackTraceElement[0];
+      public StackTraceElement[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return StackTraceElement.class;
+      }
+      public StackTraceElement demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(StackTraceElement.class, objId);
+          }
+          StackTraceElement entity = new StackTraceElement(java_lang_String.demarshall(obj.get("declaringClass"), a1), java_lang_String.demarshall(obj.get("methodName"), a1), java_lang_String.demarshall(obj.get("fileName"), a1), java_lang_Integer.demarshall(obj.get("lineNumber"), a1));
+          a1.recordObject(objId, entity);
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: java.lang.StackTraceElement", t);
+        }
+      }
+      public String marshall(StackTraceElement a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"java.lang.StackTraceElement\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(640).append("{\"^EncodedType\":\"java.lang.StackTraceElement\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"fileName\" : ").append(java_lang_String.marshall(a0.getFileName(), a1)).append(",").append("\"methodName\" : ").append(java_lang_String.marshall(a0.getMethodName(), a1)).append(",").append("\"lineNumber\" : ").append(java_lang_Integer.marshall(a0.getLineNumber(), a1)).append(",").append("\"declaringClass\" : ").append(java_lang_String.marshall(a0.getClassName(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("java.lang.StackTraceElement", java_lang_StackTraceElement);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTProjectCollectionItemV1 = new Marshaller<RESTProjectCollectionItemV1>() {
+      private RESTProjectCollectionItemV1[] EMPTY_ARRAY = new RESTProjectCollectionItemV1[0];
+      public RESTProjectCollectionItemV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTProjectCollectionItemV1.class;
+      }
+      public RESTProjectCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTProjectCollectionItemV1.class, objId);
+          }
+          RESTProjectCollectionItemV1 entity = new RESTProjectCollectionItemV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTProjectV1.demarshall(obj.get("item"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1", t);
+        }
+      }
+      public String marshall(RESTProjectCollectionItemV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(6912).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTProjectV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTProjectCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterFieldV1 = new Marshaller<RESTFilterFieldV1>() {
+      private RESTFilterFieldV1[] EMPTY_ARRAY = new RESTFilterFieldV1[0];
+      public RESTFilterFieldV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTFilterFieldV1.class;
+      }
+      public RESTFilterFieldV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTFilterFieldV1.class, objId);
+          }
+          RESTFilterFieldV1 entity = new RESTFilterFieldV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("name")) && (!obj.get("name").isNull())) {
+            entity.setName(java_lang_String.demarshall(obj.get("name"), a1));
+          }
+          if ((obj.containsKey("value")) && (!obj.get("value").isNull())) {
+            entity.setValue(java_lang_String.demarshall(obj.get("value"), a1));
+          }
+          if ((obj.containsKey("description")) && (!obj.get("description").isNull())) {
+            entity.setDescription(java_lang_String.demarshall(obj.get("description"), a1));
+          }
+          if ((obj.containsKey("filter")) && (!obj.get("filter").isNull())) {
+            entity.setFilter(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterV1.demarshall(obj.get("filter"), a1));
+          }
+          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
+            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterFieldCollectionV1.demarshall(obj.get("revisions"), a1));
+          }
+          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
+            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
+          }
+          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
+            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
+          }
+          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
+            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1", t);
+        }
+      }
+      public String marshall(RESTFilterFieldV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(10240).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"name\" : ").append(java_lang_String.marshall(a0.getName(), a1)).append(",").append("\"value\" : ").append(java_lang_String.marshall(a0.getValue(), a1)).append(",").append("\"description\" : ").append(java_lang_String.marshall(a0.getDescription(), a1)).append(",").append("\"filter\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterV1.marshall(a0.getFilter(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterFieldCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterFieldV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTImageCollectionV1 = new Marshaller<RESTImageCollectionV1>() {
+      private RESTImageCollectionV1[] EMPTY_ARRAY = new RESTImageCollectionV1[0];
+      public RESTImageCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTImageCollectionV1.class;
+      }
+      public RESTImageCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTImageCollectionV1.class, objId);
+          }
+          RESTImageCollectionV1 entity = new RESTImageCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1", t);
+        }
+      }
+      public String marshall(RESTImageCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTImageCollectionV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTTopicSourceUrlCollectionV1 = new Marshaller<RESTTopicSourceUrlCollectionV1>() {
+      private RESTTopicSourceUrlCollectionV1[] EMPTY_ARRAY = new RESTTopicSourceUrlCollectionV1[0];
+      public RESTTopicSourceUrlCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTTopicSourceUrlCollectionV1.class;
+      }
+      public RESTTopicSourceUrlCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTTopicSourceUrlCollectionV1.class, objId);
+          }
+          RESTTopicSourceUrlCollectionV1 entity = new RESTTopicSourceUrlCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1", t);
+        }
+      }
+      public String marshall(RESTTopicSourceUrlCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTTopicSourceUrlCollectionV1);
     org_jboss_pressgang_ccms_rest_v1_entities_RESTTopicV1 = new Marshaller<RESTTopicV1>() {
       private RESTTopicV1[] EMPTY_ARRAY = new RESTTopicV1[0];
       public RESTTopicV1[] getEmptyArray() {
@@ -1152,6 +2960,63 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
       }
     };
     marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTTopicV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTTranslatedTopicStringCollectionV1 = new Marshaller<RESTTranslatedTopicStringCollectionV1>() {
+      private RESTTranslatedTopicStringCollectionV1[] EMPTY_ARRAY = new RESTTranslatedTopicStringCollectionV1[0];
+      public RESTTranslatedTopicStringCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTTranslatedTopicStringCollectionV1.class;
+      }
+      public RESTTranslatedTopicStringCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTTranslatedTopicStringCollectionV1.class, objId);
+          }
+          RESTTranslatedTopicStringCollectionV1 entity = new RESTTranslatedTopicStringCollectionV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicStringCollectionItemV1");
+            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
+            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          }
+          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
+            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
+          }
+          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
+            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicStringCollectionV1", t);
+        }
+      }
+      public String marshall(RESTTranslatedTopicStringCollectionV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicStringCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicStringCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicStringCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTTranslatedTopicStringCollectionV1);
     org_jboss_pressgang_ccms_rest_v1_entities_RESTTranslatedTopicV1 = new Marshaller<RESTTranslatedTopicV1>() {
       private RESTTranslatedTopicV1[] EMPTY_ARRAY = new RESTTranslatedTopicV1[0];
       public RESTTranslatedTopicV1[] getEmptyArray() {
@@ -1286,15 +3151,15 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
       }
     };
     marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTTranslatedTopicV1);
-    org_jboss_pressgang_ccms_rest_v1_collections_RESTLanguageImageCollectionV1 = new Marshaller<RESTLanguageImageCollectionV1>() {
-      private RESTLanguageImageCollectionV1[] EMPTY_ARRAY = new RESTLanguageImageCollectionV1[0];
-      public RESTLanguageImageCollectionV1[] getEmptyArray() {
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTranslatedTopicCollectionItemV1 = new Marshaller<RESTTranslatedTopicCollectionItemV1>() {
+      private RESTTranslatedTopicCollectionItemV1[] EMPTY_ARRAY = new RESTTranslatedTopicCollectionItemV1[0];
+      public RESTTranslatedTopicCollectionItemV1[] getEmptyArray() {
         return EMPTY_ARRAY;
       }
       public Class getTypeHandled() {
-        return RESTLanguageImageCollectionV1.class;
+        return RESTTranslatedTopicCollectionItemV1.class;
       }
-      public RESTLanguageImageCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+      public RESTTranslatedTopicCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
         try {
           if (a0.isNull()) {
             return null;
@@ -1302,12 +3167,129 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
           EJObject obj = a0.isObject();
           String objId = obj.get("^ObjectID").isString().stringValue();
           if (a1.hasObject(objId)) {
-            return a1.getObject(RESTLanguageImageCollectionV1.class, objId);
+            return a1.getObject(RESTTranslatedTopicCollectionItemV1.class, objId);
           }
-          RESTLanguageImageCollectionV1 entity = new RESTLanguageImageCollectionV1();
+          RESTTranslatedTopicCollectionItemV1 entity = new RESTTranslatedTopicCollectionItemV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTTranslatedTopicV1.demarshall(obj.get("item"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1", t);
+        }
+      }
+      public String marshall(RESTTranslatedTopicCollectionItemV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(15488).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTTranslatedTopicV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTranslatedTopicCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterLocaleV1 = new Marshaller<RESTFilterLocaleV1>() {
+      private RESTFilterLocaleV1[] EMPTY_ARRAY = new RESTFilterLocaleV1[0];
+      public RESTFilterLocaleV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTFilterLocaleV1.class;
+      }
+      public RESTFilterLocaleV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTFilterLocaleV1.class, objId);
+          }
+          RESTFilterLocaleV1 entity = new RESTFilterLocaleV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("locale")) && (!obj.get("locale").isNull())) {
+            entity.setLocale(java_lang_String.demarshall(obj.get("locale"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          if ((obj.containsKey("filter")) && (!obj.get("filter").isNull())) {
+            entity.setFilter(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterV1.demarshall(obj.get("filter"), a1));
+          }
+          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
+            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterLocaleCollectionV1.demarshall(obj.get("revisions"), a1));
+          }
+          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
+            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
+          }
+          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
+            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
+          }
+          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
+            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterLocaleV1", t);
+        }
+      }
+      public String marshall(RESTFilterLocaleV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterLocaleV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(10112).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterLocaleV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"locale\" : ").append(java_lang_String.marshall(a0.getLocale(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append(",").append("\"filter\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterV1.marshall(a0.getFilter(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterLocaleCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterLocaleV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterLocaleV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_join_RESTTagCategoryCollectionV1 = new Marshaller<RESTTagCategoryCollectionV1>() {
+      private RESTTagCategoryCollectionV1[] EMPTY_ARRAY = new RESTTagCategoryCollectionV1[0];
+      public RESTTagCategoryCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTTagCategoryCollectionV1.class;
+      }
+      public RESTTagCategoryCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTTagCategoryCollectionV1.class, objId);
+          }
+          RESTTagCategoryCollectionV1 entity = new RESTTagCategoryCollectionV1();
           a1.recordObject(objId, entity);
           if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
-            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1");
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCategoryCollectionItemV1");
             entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
             a1.setAssumedElementType(null);
           }
@@ -1326,32 +3308,32 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
           return entity;
         } catch (Throwable t) {
           t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1", t);
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagCategoryCollectionV1", t);
         }
       }
-      public String marshall(RESTLanguageImageCollectionV1 a0, MarshallingSession a1) {
+      public String marshall(RESTTagCategoryCollectionV1 a0, MarshallingSession a1) {
         if (a0 == null) {
           return "null";
         }
         if (a1.hasObject(a0)) {
           String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagCategoryCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
         }
         String objId = a1.getObject(a0);
         a1.recordObject(objId, objId);
-        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagCategoryCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
       }
     };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTLanguageImageCollectionV1);
-    org_jboss_pressgang_ccms_rest_v1_collections_RESTProjectCollectionV1 = new Marshaller<RESTProjectCollectionV1>() {
-      private RESTProjectCollectionV1[] EMPTY_ARRAY = new RESTProjectCollectionV1[0];
-      public RESTProjectCollectionV1[] getEmptyArray() {
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagCategoryCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_join_RESTTagCategoryCollectionV1);
+    org_jboss_pressgang_ccms_rest_v1_entities_join_RESTTagCategoryV1 = new Marshaller<RESTTagCategoryV1>() {
+      private RESTTagCategoryV1[] EMPTY_ARRAY = new RESTTagCategoryV1[0];
+      public RESTTagCategoryV1[] getEmptyArray() {
         return EMPTY_ARRAY;
       }
       public Class getTypeHandled() {
-        return RESTProjectCollectionV1.class;
+        return RESTTagCategoryV1.class;
       }
-      public RESTProjectCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+      public RESTTagCategoryV1 demarshall(EJValue a0, MarshallingSession a1) {
         try {
           if (a0.isNull()) {
             return null;
@@ -1359,78 +3341,39 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
           EJObject obj = a0.isObject();
           String objId = obj.get("^ObjectID").isString().stringValue();
           if (a1.hasObject(objId)) {
-            return a1.getObject(RESTProjectCollectionV1.class, objId);
+            return a1.getObject(RESTTagCategoryV1.class, objId);
           }
-          RESTProjectCollectionV1 entity = new RESTProjectCollectionV1();
+          RESTTagCategoryV1 entity = new RESTTagCategoryV1();
           a1.recordObject(objId, entity);
-          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
-            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1");
-            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
-            a1.setAssumedElementType(null);
+          if ((obj.containsKey("relationshipId")) && (!obj.get("relationshipId").isNull())) {
+            entity.setRelationshipId(java_lang_Integer.demarshall(obj.get("relationshipId"), a1));
           }
-          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
-            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
+          if ((obj.containsKey("relationshipSort")) && (!obj.get("relationshipSort").isNull())) {
+            entity.setRelationshipSort(java_lang_Integer.demarshall(obj.get("relationshipSort"), a1));
           }
-          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
-            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
+          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
+            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTTagCategoryCollectionV1.demarshall(obj.get("revisions"), a1));
           }
-          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
-            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
-          }
-          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
-            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
-          }
-          return entity;
-        } catch (Throwable t) {
-          t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1", t);
-        }
-      }
-      public String marshall(RESTProjectCollectionV1 a0, MarshallingSession a1) {
-        if (a0 == null) {
-          return "null";
-        }
-        if (a1.hasObject(a0)) {
-          String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
-        }
-        String objId = a1.getObject(a0);
-        a1.recordObject(objId, objId);
-        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
-      }
-    };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTProjectCollectionV1);
-    org_jboss_pressgang_ccms_rest_v1_entities_RESTProjectV1 = new Marshaller<RESTProjectV1>() {
-      private RESTProjectV1[] EMPTY_ARRAY = new RESTProjectV1[0];
-      public RESTProjectV1[] getEmptyArray() {
-        return EMPTY_ARRAY;
-      }
-      public Class getTypeHandled() {
-        return RESTProjectV1.class;
-      }
-      public RESTProjectV1 demarshall(EJValue a0, MarshallingSession a1) {
-        try {
-          if (a0.isNull()) {
-            return null;
-          }
-          EJObject obj = a0.isObject();
-          String objId = obj.get("^ObjectID").isString().stringValue();
-          if (a1.hasObject(objId)) {
-            return a1.getObject(RESTProjectV1.class, objId);
-          }
-          RESTProjectV1 entity = new RESTProjectV1();
-          a1.recordObject(objId, entity);
           if ((obj.containsKey("name")) && (!obj.get("name").isNull())) {
             entity.setName(java_lang_String.demarshall(obj.get("name"), a1));
           }
           if ((obj.containsKey("description")) && (!obj.get("description").isNull())) {
             entity.setDescription(java_lang_String.demarshall(obj.get("description"), a1));
           }
-          if ((obj.containsKey("tags")) && (!obj.get("tags").isNull())) {
-            entity.setTags(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.demarshall(obj.get("tags"), a1));
+          if ((obj.containsKey("categories")) && (!obj.get("categories").isNull())) {
+            entity.setCategories(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTCategoryTagCollectionV1.demarshall(obj.get("categories"), a1));
           }
-          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
-            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTProjectCollectionV1.demarshall(obj.get("revisions"), a1));
+          if ((obj.containsKey("parentTags")) && (!obj.get("parentTags").isNull())) {
+            entity.setParentTags(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.demarshall(obj.get("parentTags"), a1));
+          }
+          if ((obj.containsKey("childTags")) && (!obj.get("childTags").isNull())) {
+            entity.setChildTags(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.demarshall(obj.get("childTags"), a1));
+          }
+          if ((obj.containsKey("projects")) && (!obj.get("projects").isNull())) {
+            entity.setProjects(org_jboss_pressgang_ccms_rest_v1_collections_RESTProjectCollectionV1.demarshall(obj.get("projects"), a1));
+          }
+          if ((obj.containsKey("properties")) && (!obj.get("properties").isNull())) {
+            entity.setProperties(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTAssignedPropertyTagCollectionV1.demarshall(obj.get("properties"), a1));
           }
           if ((obj.containsKey("selfLink")) && (!obj.get("selfLink").isNull())) {
             entity.setSelfLink(java_lang_String.demarshall(obj.get("selfLink"), a1));
@@ -1466,32 +3409,32 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
           return entity;
         } catch (Throwable t) {
           t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1", t);
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagCategoryV1", t);
         }
       }
-      public String marshall(RESTProjectV1 a0, MarshallingSession a1) {
+      public String marshall(RESTTagCategoryV1 a0, MarshallingSession a1) {
         if (a0 == null) {
           return "null";
         }
         if (a1.hasObject(a0)) {
           String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagCategoryV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
         }
         String objId = a1.getObject(a0);
         a1.recordObject(objId, objId);
-        return new StringBuilder(6656).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"name\" : ").append(java_lang_String.marshall(a0.getName(), a1)).append(",").append("\"description\" : ").append(java_lang_String.marshall(a0.getDescription(), a1)).append(",").append("\"tags\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.marshall(a0.getTags(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTProjectCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"selfLink\" : ").append(java_lang_String.marshall(a0.getSelfLink(), a1)).append(",").append("\"editLink\" : ").append(java_lang_String.marshall(a0.getEditLink(), a1)).append(",").append("\"deleteLink\" : ").append(java_lang_String.marshall(a0.getDeleteLink(), a1)).append(",").append("\"addLink\" : ").append(java_lang_String.marshall(a0.getAddLink(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+        return new StringBuilder(9344).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagCategoryV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"relationshipId\" : ").append(java_lang_Integer.marshall(a0.getRelationshipId(), a1)).append(",").append("\"relationshipSort\" : ").append(java_lang_Integer.marshall(a0.getRelationshipSort(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTTagCategoryCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"name\" : ").append(java_lang_String.marshall(a0.getName(), a1)).append(",").append("\"description\" : ").append(java_lang_String.marshall(a0.getDescription(), a1)).append(",").append("\"categories\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTCategoryTagCollectionV1.marshall(a0.getCategories(), a1)).append(",").append("\"parentTags\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.marshall(a0.getParentTags(), a1)).append(",").append("\"childTags\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.marshall(a0.getChildTags(), a1)).append(",").append("\"projects\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTProjectCollectionV1.marshall(a0.getProjects(), a1)).append(",").append("\"properties\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTAssignedPropertyTagCollectionV1.marshall(a0.getProperties(), a1)).append(",").append("\"selfLink\" : ").append(java_lang_String.marshall(a0.getSelfLink(), a1)).append(",").append("\"editLink\" : ").append(java_lang_String.marshall(a0.getEditLink(), a1)).append(",").append("\"deleteLink\" : ").append(java_lang_String.marshall(a0.getDeleteLink(), a1)).append(",").append("\"addLink\" : ").append(java_lang_String.marshall(a0.getAddLink(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
       }
     };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTProjectV1);
-    org_jboss_pressgang_ccms_rest_v1_collections_join_RESTCategoryTagCollectionV1 = new Marshaller<RESTCategoryTagCollectionV1>() {
-      private RESTCategoryTagCollectionV1[] EMPTY_ARRAY = new RESTCategoryTagCollectionV1[0];
-      public RESTCategoryTagCollectionV1[] getEmptyArray() {
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagCategoryV1", org_jboss_pressgang_ccms_rest_v1_entities_join_RESTTagCategoryV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTopicCollectionItemV1 = new Marshaller<RESTTopicCollectionItemV1>() {
+      private RESTTopicCollectionItemV1[] EMPTY_ARRAY = new RESTTopicCollectionItemV1[0];
+      public RESTTopicCollectionItemV1[] getEmptyArray() {
         return EMPTY_ARRAY;
       }
       public Class getTypeHandled() {
-        return RESTCategoryTagCollectionV1.class;
+        return RESTTopicCollectionItemV1.class;
       }
-      public RESTCategoryTagCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+      public RESTTopicCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
         try {
           if (a0.isNull()) {
             return null;
@@ -1499,47 +3442,82 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
           EJObject obj = a0.isObject();
           String objId = obj.get("^ObjectID").isString().stringValue();
           if (a1.hasObject(objId)) {
-            return a1.getObject(RESTCategoryTagCollectionV1.class, objId);
+            return a1.getObject(RESTTopicCollectionItemV1.class, objId);
           }
-          RESTCategoryTagCollectionV1 entity = new RESTCategoryTagCollectionV1();
+          RESTTopicCollectionItemV1 entity = new RESTTopicCollectionItemV1();
           a1.recordObject(objId, entity);
-          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
-            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryTagCollectionItemV1");
-            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
-            a1.setAssumedElementType(null);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTTopicV1.demarshall(obj.get("item"), a1));
           }
-          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
-            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
-          }
-          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
-            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
-          }
-          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
-            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
-          }
-          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
-            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
           }
           return entity;
         } catch (Throwable t) {
           t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryTagCollectionV1", t);
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1", t);
         }
       }
-      public String marshall(RESTCategoryTagCollectionV1 a0, MarshallingSession a1) {
+      public String marshall(RESTTopicCollectionItemV1 a0, MarshallingSession a1) {
         if (a0 == null) {
           return "null";
         }
         if (a1.hasObject(a0)) {
           String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryTagCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
         }
         String objId = a1.getObject(a0);
         a1.recordObject(objId, objId);
-        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryTagCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+        return new StringBuilder(11008).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTTopicV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
       }
     };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryTagCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_join_RESTCategoryTagCollectionV1);
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTopicCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTRoleCollectionItemV1 = new Marshaller<RESTRoleCollectionItemV1>() {
+      private RESTRoleCollectionItemV1[] EMPTY_ARRAY = new RESTRoleCollectionItemV1[0];
+      public RESTRoleCollectionItemV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTRoleCollectionItemV1.class;
+      }
+      public RESTRoleCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTRoleCollectionItemV1.class, objId);
+          }
+          RESTRoleCollectionItemV1 entity = new RESTRoleCollectionItemV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTRoleV1.demarshall(obj.get("item"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTRoleCollectionItemV1", t);
+        }
+      }
+      public String marshall(RESTRoleCollectionItemV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTRoleCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(5888).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTRoleCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTRoleV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTRoleCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTRoleCollectionItemV1);
     org_jboss_pressgang_ccms_rest_v1_entities_RESTTopicSourceUrlV1 = new Marshaller<RESTTopicSourceUrlV1>() {
       private RESTTopicSourceUrlV1[] EMPTY_ARRAY = new RESTTopicSourceUrlV1[0];
       public RESTTopicSourceUrlV1[] getEmptyArray() {
@@ -1611,15 +3589,15 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
       }
     };
     marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicSourceUrlV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTTopicSourceUrlV1);
-    org_jboss_pressgang_ccms_rest_v1_collections_RESTImageCollectionV1 = new Marshaller<RESTImageCollectionV1>() {
-      private RESTImageCollectionV1[] EMPTY_ARRAY = new RESTImageCollectionV1[0];
-      public RESTImageCollectionV1[] getEmptyArray() {
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTopicSourceUrlCollectionItemV1 = new Marshaller<RESTTopicSourceUrlCollectionItemV1>() {
+      private RESTTopicSourceUrlCollectionItemV1[] EMPTY_ARRAY = new RESTTopicSourceUrlCollectionItemV1[0];
+      public RESTTopicSourceUrlCollectionItemV1[] getEmptyArray() {
         return EMPTY_ARRAY;
       }
       public Class getTypeHandled() {
-        return RESTImageCollectionV1.class;
+        return RESTTopicSourceUrlCollectionItemV1.class;
       }
-      public RESTImageCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+      public RESTTopicSourceUrlCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
         try {
           if (a0.isNull()) {
             return null;
@@ -1627,12 +3605,199 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
           EJObject obj = a0.isObject();
           String objId = obj.get("^ObjectID").isString().stringValue();
           if (a1.hasObject(objId)) {
-            return a1.getObject(RESTImageCollectionV1.class, objId);
+            return a1.getObject(RESTTopicSourceUrlCollectionItemV1.class, objId);
           }
-          RESTImageCollectionV1 entity = new RESTImageCollectionV1();
+          RESTTopicSourceUrlCollectionItemV1 entity = new RESTTopicSourceUrlCollectionItemV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTTopicSourceUrlV1.demarshall(obj.get("item"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1", t);
+        }
+      }
+      public String marshall(RESTTopicSourceUrlCollectionItemV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(5760).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTTopicSourceUrlV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTopicSourceUrlCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_entities_join_RESTCategoryTagV1 = new Marshaller<RESTCategoryTagV1>() {
+      private RESTCategoryTagV1[] EMPTY_ARRAY = new RESTCategoryTagV1[0];
+      public RESTCategoryTagV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTCategoryTagV1.class;
+      }
+      public RESTCategoryTagV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTCategoryTagV1.class, objId);
+          }
+          RESTCategoryTagV1 entity = new RESTCategoryTagV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("relationshipId")) && (!obj.get("relationshipId").isNull())) {
+            entity.setRelationshipId(java_lang_Integer.demarshall(obj.get("relationshipId"), a1));
+          }
+          if ((obj.containsKey("relationshipSort")) && (!obj.get("relationshipSort").isNull())) {
+            entity.setRelationshipSort(java_lang_Integer.demarshall(obj.get("relationshipSort"), a1));
+          }
+          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
+            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTCategoryTagCollectionV1.demarshall(obj.get("revisions"), a1));
+          }
+          if ((obj.containsKey("name")) && (!obj.get("name").isNull())) {
+            entity.setName(java_lang_String.demarshall(obj.get("name"), a1));
+          }
+          if ((obj.containsKey("description")) && (!obj.get("description").isNull())) {
+            entity.setDescription(java_lang_String.demarshall(obj.get("description"), a1));
+          }
+          if ((obj.containsKey("mutuallyExclusive")) && (!obj.get("mutuallyExclusive").isNull())) {
+            entity.setMutuallyExclusive((boolean) java_lang_Boolean.demarshall(obj.get("mutuallyExclusive"), a1));
+          }
+          if ((obj.containsKey("sort")) && (!obj.get("sort").isNull())) {
+            entity.setSort(java_lang_Integer.demarshall(obj.get("sort"), a1));
+          }
+          if ((obj.containsKey("tags")) && (!obj.get("tags").isNull())) {
+            entity.setTags(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTTagCategoryCollectionV1.demarshall(obj.get("tags"), a1));
+          }
+          if ((obj.containsKey("selfLink")) && (!obj.get("selfLink").isNull())) {
+            entity.setSelfLink(java_lang_String.demarshall(obj.get("selfLink"), a1));
+          }
+          if ((obj.containsKey("editLink")) && (!obj.get("editLink").isNull())) {
+            entity.setEditLink(java_lang_String.demarshall(obj.get("editLink"), a1));
+          }
+          if ((obj.containsKey("deleteLink")) && (!obj.get("deleteLink").isNull())) {
+            entity.setDeleteLink(java_lang_String.demarshall(obj.get("deleteLink"), a1));
+          }
+          if ((obj.containsKey("addLink")) && (!obj.get("addLink").isNull())) {
+            entity.setAddLink(java_lang_String.demarshall(obj.get("addLink"), a1));
+          }
+          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
+            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
+          }
+          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
+            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
+          }
+          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
+            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryTagV1", t);
+        }
+      }
+      public String marshall(RESTCategoryTagV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryTagV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(7168).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryTagV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"relationshipId\" : ").append(java_lang_Integer.marshall(a0.getRelationshipId(), a1)).append(",").append("\"relationshipSort\" : ").append(java_lang_Integer.marshall(a0.getRelationshipSort(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTCategoryTagCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"name\" : ").append(java_lang_String.marshall(a0.getName(), a1)).append(",").append("\"description\" : ").append(java_lang_String.marshall(a0.getDescription(), a1)).append(",").append("\"mutuallyExclusive\" : ").append(java_lang_Boolean.marshall(a0.getMutuallyExclusive(), a1)).append(",").append("\"sort\" : ").append(java_lang_Integer.marshall(a0.getSort(), a1)).append(",").append("\"tags\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTTagCategoryCollectionV1.marshall(a0.getTags(), a1)).append(",").append("\"selfLink\" : ").append(java_lang_String.marshall(a0.getSelfLink(), a1)).append(",").append("\"editLink\" : ").append(java_lang_String.marshall(a0.getEditLink(), a1)).append(",").append("\"deleteLink\" : ").append(java_lang_String.marshall(a0.getDeleteLink(), a1)).append(",").append("\"addLink\" : ").append(java_lang_String.marshall(a0.getAddLink(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryTagV1", org_jboss_pressgang_ccms_rest_v1_entities_join_RESTCategoryTagV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTFilterLocaleCollectionItemV1 = new Marshaller<RESTFilterLocaleCollectionItemV1>() {
+      private RESTFilterLocaleCollectionItemV1[] EMPTY_ARRAY = new RESTFilterLocaleCollectionItemV1[0];
+      public RESTFilterLocaleCollectionItemV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTFilterLocaleCollectionItemV1.class;
+      }
+      public RESTFilterLocaleCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTFilterLocaleCollectionItemV1.class, objId);
+          }
+          RESTFilterLocaleCollectionItemV1 entity = new RESTFilterLocaleCollectionItemV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterLocaleV1.demarshall(obj.get("item"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterLocaleCollectionItemV1", t);
+        }
+      }
+      public String marshall(RESTFilterLocaleCollectionItemV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterLocaleCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(10368).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterLocaleCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterLocaleV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterLocaleCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTFilterLocaleCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_RESTCategoryCollectionV1 = new Marshaller<RESTCategoryCollectionV1>() {
+      private RESTCategoryCollectionV1[] EMPTY_ARRAY = new RESTCategoryCollectionV1[0];
+      public RESTCategoryCollectionV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTCategoryCollectionV1.class;
+      }
+      public RESTCategoryCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTCategoryCollectionV1.class, objId);
+          }
+          RESTCategoryCollectionV1 entity = new RESTCategoryCollectionV1();
           a1.recordObject(objId, entity);
           if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
-            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1");
+            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1");
             entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
             a1.setAssumedElementType(null);
           }
@@ -1651,23 +3816,232 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
           return entity;
         } catch (Throwable t) {
           t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1", t);
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1", t);
         }
       }
-      public String marshall(RESTImageCollectionV1 a0, MarshallingSession a1) {
+      public String marshall(RESTCategoryCollectionV1 a0, MarshallingSession a1) {
         if (a0 == null) {
           return "null";
         }
         if (a1.hasObject(a0)) {
           String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
         }
         String objId = a1.getObject(a0);
         a1.recordObject(objId, objId);
-        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
       }
     };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTImageCollectionV1);
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTCategoryCollectionV1);
+    org_jboss_pressgang_ccms_rest_v1_entities_RESTCategoryV1 = new Marshaller<RESTCategoryV1>() {
+      private RESTCategoryV1[] EMPTY_ARRAY = new RESTCategoryV1[0];
+      public RESTCategoryV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTCategoryV1.class;
+      }
+      public RESTCategoryV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTCategoryV1.class, objId);
+          }
+          RESTCategoryV1 entity = new RESTCategoryV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
+            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTCategoryCollectionV1.demarshall(obj.get("revisions"), a1));
+          }
+          if ((obj.containsKey("name")) && (!obj.get("name").isNull())) {
+            entity.setName(java_lang_String.demarshall(obj.get("name"), a1));
+          }
+          if ((obj.containsKey("description")) && (!obj.get("description").isNull())) {
+            entity.setDescription(java_lang_String.demarshall(obj.get("description"), a1));
+          }
+          if ((obj.containsKey("mutuallyExclusive")) && (!obj.get("mutuallyExclusive").isNull())) {
+            entity.setMutuallyExclusive((boolean) java_lang_Boolean.demarshall(obj.get("mutuallyExclusive"), a1));
+          }
+          if ((obj.containsKey("sort")) && (!obj.get("sort").isNull())) {
+            entity.setSort(java_lang_Integer.demarshall(obj.get("sort"), a1));
+          }
+          if ((obj.containsKey("tags")) && (!obj.get("tags").isNull())) {
+            entity.setTags(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTTagCategoryCollectionV1.demarshall(obj.get("tags"), a1));
+          }
+          if ((obj.containsKey("selfLink")) && (!obj.get("selfLink").isNull())) {
+            entity.setSelfLink(java_lang_String.demarshall(obj.get("selfLink"), a1));
+          }
+          if ((obj.containsKey("editLink")) && (!obj.get("editLink").isNull())) {
+            entity.setEditLink(java_lang_String.demarshall(obj.get("editLink"), a1));
+          }
+          if ((obj.containsKey("deleteLink")) && (!obj.get("deleteLink").isNull())) {
+            entity.setDeleteLink(java_lang_String.demarshall(obj.get("deleteLink"), a1));
+          }
+          if ((obj.containsKey("addLink")) && (!obj.get("addLink").isNull())) {
+            entity.setAddLink(java_lang_String.demarshall(obj.get("addLink"), a1));
+          }
+          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
+            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
+          }
+          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
+            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
+          }
+          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
+            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1", t);
+        }
+      }
+      public String marshall(RESTCategoryV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(6912).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTCategoryCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"name\" : ").append(java_lang_String.marshall(a0.getName(), a1)).append(",").append("\"description\" : ").append(java_lang_String.marshall(a0.getDescription(), a1)).append(",").append("\"mutuallyExclusive\" : ").append(java_lang_Boolean.marshall(a0.getMutuallyExclusive(), a1)).append(",").append("\"sort\" : ").append(java_lang_Integer.marshall(a0.getSort(), a1)).append(",").append("\"tags\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTTagCategoryCollectionV1.marshall(a0.getTags(), a1)).append(",").append("\"selfLink\" : ").append(java_lang_String.marshall(a0.getSelfLink(), a1)).append(",").append("\"editLink\" : ").append(java_lang_String.marshall(a0.getEditLink(), a1)).append(",").append("\"deleteLink\" : ").append(java_lang_String.marshall(a0.getDeleteLink(), a1)).append(",").append("\"addLink\" : ").append(java_lang_String.marshall(a0.getAddLink(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTCategoryV1);
+    org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterCategoryV1 = new Marshaller<RESTFilterCategoryV1>() {
+      private RESTFilterCategoryV1[] EMPTY_ARRAY = new RESTFilterCategoryV1[0];
+      public RESTFilterCategoryV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTFilterCategoryV1.class;
+      }
+      public RESTFilterCategoryV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTFilterCategoryV1.class, objId);
+          }
+          RESTFilterCategoryV1 entity = new RESTFilterCategoryV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("category")) && (!obj.get("category").isNull())) {
+            entity.setCategory(org_jboss_pressgang_ccms_rest_v1_entities_RESTCategoryV1.demarshall(obj.get("category"), a1));
+          }
+          if ((obj.containsKey("project")) && (!obj.get("project").isNull())) {
+            entity.setProject(org_jboss_pressgang_ccms_rest_v1_entities_RESTProjectV1.demarshall(obj.get("project"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          if ((obj.containsKey("filter")) && (!obj.get("filter").isNull())) {
+            entity.setFilter(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterV1.demarshall(obj.get("filter"), a1));
+          }
+          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
+            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterCategoryCollectionV1.demarshall(obj.get("revisions"), a1));
+          }
+          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
+            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
+          }
+          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
+            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
+          }
+          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
+            a1.setAssumedElementType("java.lang.String");
+            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
+            a1.setAssumedElementType(null);
+          }
+          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
+            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterCategoryV1", t);
+        }
+      }
+      public String marshall(RESTFilterCategoryV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterCategoryV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(16384).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterCategoryV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"category\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTCategoryV1.marshall(a0.getCategory(), a1)).append(",").append("\"project\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTProjectV1.marshall(a0.getProject(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append(",").append("\"filter\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterV1.marshall(a0.getFilter(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterCategoryCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterCategoryV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterCategoryV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTFilterCategoryCollectionItemV1 = new Marshaller<RESTFilterCategoryCollectionItemV1>() {
+      private RESTFilterCategoryCollectionItemV1[] EMPTY_ARRAY = new RESTFilterCategoryCollectionItemV1[0];
+      public RESTFilterCategoryCollectionItemV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTFilterCategoryCollectionItemV1.class;
+      }
+      public RESTFilterCategoryCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTFilterCategoryCollectionItemV1.class, objId);
+          }
+          RESTFilterCategoryCollectionItemV1 entity = new RESTFilterCategoryCollectionItemV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterCategoryV1.demarshall(obj.get("item"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1", t);
+        }
+      }
+      public String marshall(RESTFilterCategoryCollectionItemV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(16640).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterCategoryV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTFilterCategoryCollectionItemV1);
     org_jboss_pressgang_ccms_rest_v1_entities_RESTImageV1 = new Marshaller<RESTImageV1>() {
       private RESTImageV1[] EMPTY_ARRAY = new RESTImageV1[0];
       public RESTImageV1[] getEmptyArray() {
@@ -1873,15 +4247,15 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
       }
     };
     marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTLanguageImageV1);
-    java_lang_StackTraceElement = new Marshaller<StackTraceElement>() {
-      private StackTraceElement[] EMPTY_ARRAY = new StackTraceElement[0];
-      public StackTraceElement[] getEmptyArray() {
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTLanguageImageCollectionItemV1 = new Marshaller<RESTLanguageImageCollectionItemV1>() {
+      private RESTLanguageImageCollectionItemV1[] EMPTY_ARRAY = new RESTLanguageImageCollectionItemV1[0];
+      public RESTLanguageImageCollectionItemV1[] getEmptyArray() {
         return EMPTY_ARRAY;
       }
       public Class getTypeHandled() {
-        return StackTraceElement.class;
+        return RESTLanguageImageCollectionItemV1.class;
       }
-      public StackTraceElement demarshall(EJValue a0, MarshallingSession a1) {
+      public RESTLanguageImageCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
         try {
           if (a0.isNull()) {
             return null;
@@ -1889,39 +4263,45 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
           EJObject obj = a0.isObject();
           String objId = obj.get("^ObjectID").isString().stringValue();
           if (a1.hasObject(objId)) {
-            return a1.getObject(StackTraceElement.class, objId);
+            return a1.getObject(RESTLanguageImageCollectionItemV1.class, objId);
           }
-          StackTraceElement entity = new StackTraceElement(java_lang_String.demarshall(obj.get("declaringClass"), a1), java_lang_String.demarshall(obj.get("methodName"), a1), java_lang_String.demarshall(obj.get("fileName"), a1), java_lang_Integer.demarshall(obj.get("lineNumber"), a1));
+          RESTLanguageImageCollectionItemV1 entity = new RESTLanguageImageCollectionItemV1();
           a1.recordObject(objId, entity);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTLanguageImageV1.demarshall(obj.get("item"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
           return entity;
         } catch (Throwable t) {
           t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: java.lang.StackTraceElement", t);
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1", t);
         }
       }
-      public String marshall(StackTraceElement a0, MarshallingSession a1) {
+      public String marshall(RESTLanguageImageCollectionItemV1 a0, MarshallingSession a1) {
         if (a0 == null) {
           return "null";
         }
         if (a1.hasObject(a0)) {
           String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"java.lang.StackTraceElement\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
         }
         String objId = a1.getObject(a0);
         a1.recordObject(objId, objId);
-        return new StringBuilder(640).append("{\"^EncodedType\":\"java.lang.StackTraceElement\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"fileName\" : ").append(java_lang_String.marshall(a0.getFileName(), a1)).append(",").append("\"methodName\" : ").append(java_lang_String.marshall(a0.getMethodName(), a1)).append(",").append("\"lineNumber\" : ").append(java_lang_Integer.marshall(a0.getLineNumber(), a1)).append(",").append("\"declaringClass\" : ").append(java_lang_String.marshall(a0.getClassName(), a1)).append("}").toString();
+        return new StringBuilder(9600).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTLanguageImageV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
       }
     };
-    marshallers.put("java.lang.StackTraceElement", java_lang_StackTraceElement);
-    org_jboss_pressgang_ccms_rest_v1_entities_RESTTagV1 = new Marshaller<RESTTagV1>() {
-      private RESTTagV1[] EMPTY_ARRAY = new RESTTagV1[0];
-      public RESTTagV1[] getEmptyArray() {
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTLanguageImageCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTagCategoryCollectionItemV1 = new Marshaller<RESTTagCategoryCollectionItemV1>() {
+      private RESTTagCategoryCollectionItemV1[] EMPTY_ARRAY = new RESTTagCategoryCollectionItemV1[0];
+      public RESTTagCategoryCollectionItemV1[] getEmptyArray() {
         return EMPTY_ARRAY;
       }
       public Class getTypeHandled() {
-        return RESTTagV1.class;
+        return RESTTagCategoryCollectionItemV1.class;
       }
-      public RESTTagV1 demarshall(EJValue a0, MarshallingSession a1) {
+      public RESTTagCategoryCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
         try {
           if (a0.isNull()) {
             return null;
@@ -1929,33 +4309,156 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
           EJObject obj = a0.isObject();
           String objId = obj.get("^ObjectID").isString().stringValue();
           if (a1.hasObject(objId)) {
-            return a1.getObject(RESTTagV1.class, objId);
+            return a1.getObject(RESTTagCategoryCollectionItemV1.class, objId);
           }
-          RESTTagV1 entity = new RESTTagV1();
+          RESTTagCategoryCollectionItemV1 entity = new RESTTagCategoryCollectionItemV1();
           a1.recordObject(objId, entity);
-          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
-            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.demarshall(obj.get("revisions"), a1));
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_join_RESTTagCategoryV1.demarshall(obj.get("item"), a1));
           }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCategoryCollectionItemV1", t);
+        }
+      }
+      public String marshall(RESTTagCategoryCollectionItemV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCategoryCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(9600).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCategoryCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_join_RESTTagCategoryV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCategoryCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTagCategoryCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTImageCollectionItemV1 = new Marshaller<RESTImageCollectionItemV1>() {
+      private RESTImageCollectionItemV1[] EMPTY_ARRAY = new RESTImageCollectionItemV1[0];
+      public RESTImageCollectionItemV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTImageCollectionItemV1.class;
+      }
+      public RESTImageCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTImageCollectionItemV1.class, objId);
+          }
+          RESTImageCollectionItemV1 entity = new RESTImageCollectionItemV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTImageV1.demarshall(obj.get("item"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1", t);
+        }
+      }
+      public String marshall(RESTImageCollectionItemV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(6784).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTImageV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTImageCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTCategoryCollectionItemV1 = new Marshaller<RESTCategoryCollectionItemV1>() {
+      private RESTCategoryCollectionItemV1[] EMPTY_ARRAY = new RESTCategoryCollectionItemV1[0];
+      public RESTCategoryCollectionItemV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTCategoryCollectionItemV1.class;
+      }
+      public RESTCategoryCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTCategoryCollectionItemV1.class, objId);
+          }
+          RESTCategoryCollectionItemV1 entity = new RESTCategoryCollectionItemV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTCategoryV1.demarshall(obj.get("item"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1", t);
+        }
+      }
+      public String marshall(RESTCategoryCollectionItemV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(7168).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTCategoryV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTCategoryCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_entities_RESTIntegerConstantV1 = new Marshaller<RESTIntegerConstantV1>() {
+      private RESTIntegerConstantV1[] EMPTY_ARRAY = new RESTIntegerConstantV1[0];
+      public RESTIntegerConstantV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTIntegerConstantV1.class;
+      }
+      public RESTIntegerConstantV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTIntegerConstantV1.class, objId);
+          }
+          RESTIntegerConstantV1 entity = new RESTIntegerConstantV1();
+          a1.recordObject(objId, entity);
           if ((obj.containsKey("name")) && (!obj.get("name").isNull())) {
             entity.setName(java_lang_String.demarshall(obj.get("name"), a1));
           }
-          if ((obj.containsKey("description")) && (!obj.get("description").isNull())) {
-            entity.setDescription(java_lang_String.demarshall(obj.get("description"), a1));
+          if ((obj.containsKey("value")) && (!obj.get("value").isNull())) {
+            entity.setValue(java_lang_Integer.demarshall(obj.get("value"), a1));
           }
-          if ((obj.containsKey("categories")) && (!obj.get("categories").isNull())) {
-            entity.setCategories(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTCategoryTagCollectionV1.demarshall(obj.get("categories"), a1));
-          }
-          if ((obj.containsKey("parentTags")) && (!obj.get("parentTags").isNull())) {
-            entity.setParentTags(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.demarshall(obj.get("parentTags"), a1));
-          }
-          if ((obj.containsKey("childTags")) && (!obj.get("childTags").isNull())) {
-            entity.setChildTags(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.demarshall(obj.get("childTags"), a1));
-          }
-          if ((obj.containsKey("projects")) && (!obj.get("projects").isNull())) {
-            entity.setProjects(org_jboss_pressgang_ccms_rest_v1_collections_RESTProjectCollectionV1.demarshall(obj.get("projects"), a1));
-          }
-          if ((obj.containsKey("properties")) && (!obj.get("properties").isNull())) {
-            entity.setProperties(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTAssignedPropertyTagCollectionV1.demarshall(obj.get("properties"), a1));
+          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
+            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTIntegerConstantCollectionV1.demarshall(obj.get("revisions"), a1));
           }
           if ((obj.containsKey("selfLink")) && (!obj.get("selfLink").isNull())) {
             entity.setSelfLink(java_lang_String.demarshall(obj.get("selfLink"), a1));
@@ -1991,23 +4494,69 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
           return entity;
         } catch (Throwable t) {
           t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1", t);
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1", t);
         }
       }
-      public String marshall(RESTTagV1 a0, MarshallingSession a1) {
+      public String marshall(RESTIntegerConstantV1 a0, MarshallingSession a1) {
         if (a0 == null) {
           return "null";
         }
         if (a1.hasObject(a0)) {
           String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
         }
         String objId = a1.getObject(a0);
         a1.recordObject(objId, objId);
-        return new StringBuilder(8448).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"name\" : ").append(java_lang_String.marshall(a0.getName(), a1)).append(",").append("\"description\" : ").append(java_lang_String.marshall(a0.getDescription(), a1)).append(",").append("\"categories\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTCategoryTagCollectionV1.marshall(a0.getCategories(), a1)).append(",").append("\"parentTags\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.marshall(a0.getParentTags(), a1)).append(",").append("\"childTags\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTTagCollectionV1.marshall(a0.getChildTags(), a1)).append(",").append("\"projects\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTProjectCollectionV1.marshall(a0.getProjects(), a1)).append(",").append("\"properties\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTAssignedPropertyTagCollectionV1.marshall(a0.getProperties(), a1)).append(",").append("\"selfLink\" : ").append(java_lang_String.marshall(a0.getSelfLink(), a1)).append(",").append("\"editLink\" : ").append(java_lang_String.marshall(a0.getEditLink(), a1)).append(",").append("\"deleteLink\" : ").append(java_lang_String.marshall(a0.getDeleteLink(), a1)).append(",").append("\"addLink\" : ").append(java_lang_String.marshall(a0.getAddLink(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+        return new StringBuilder(5888).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"name\" : ").append(java_lang_String.marshall(a0.getName(), a1)).append(",").append("\"value\" : ").append(java_lang_Integer.marshall(a0.getValue(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTIntegerConstantCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"selfLink\" : ").append(java_lang_String.marshall(a0.getSelfLink(), a1)).append(",").append("\"editLink\" : ").append(java_lang_String.marshall(a0.getEditLink(), a1)).append(",").append("\"deleteLink\" : ").append(java_lang_String.marshall(a0.getDeleteLink(), a1)).append(",").append("\"addLink\" : ").append(java_lang_String.marshall(a0.getAddLink(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
       }
     };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTTagV1);
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTIntegerConstantV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTIntegerConstantCollectionItemV1 = new Marshaller<RESTIntegerConstantCollectionItemV1>() {
+      private RESTIntegerConstantCollectionItemV1[] EMPTY_ARRAY = new RESTIntegerConstantCollectionItemV1[0];
+      public RESTIntegerConstantCollectionItemV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTIntegerConstantCollectionItemV1.class;
+      }
+      public RESTIntegerConstantCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTIntegerConstantCollectionItemV1.class, objId);
+          }
+          RESTIntegerConstantCollectionItemV1 entity = new RESTIntegerConstantCollectionItemV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTIntegerConstantV1.demarshall(obj.get("item"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTIntegerConstantCollectionItemV1", t);
+        }
+      }
+      public String marshall(RESTIntegerConstantCollectionItemV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTIntegerConstantCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(6144).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTIntegerConstantCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTIntegerConstantV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTIntegerConstantCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTIntegerConstantCollectionItemV1);
     org_jboss_pressgang_ccms_rest_v1_collections_RESTBlobConstantCollectionV1 = new Marshaller<RESTBlobConstantCollectionV1>() {
       private RESTBlobConstantCollectionV1[] EMPTY_ARRAY = new RESTBlobConstantCollectionV1[0];
       public RESTBlobConstantCollectionV1[] getEmptyArray() {
@@ -2145,152 +4694,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
       }
     };
     marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTBlobConstantV1);
-    org_jboss_pressgang_ccms_rest_v1_collections_RESTPropertyTagCollectionV1 = new Marshaller<RESTPropertyTagCollectionV1>() {
-      private RESTPropertyTagCollectionV1[] EMPTY_ARRAY = new RESTPropertyTagCollectionV1[0];
-      public RESTPropertyTagCollectionV1[] getEmptyArray() {
-        return EMPTY_ARRAY;
-      }
-      public Class getTypeHandled() {
-        return RESTPropertyTagCollectionV1.class;
-      }
-      public RESTPropertyTagCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
-        try {
-          if (a0.isNull()) {
-            return null;
-          }
-          EJObject obj = a0.isObject();
-          String objId = obj.get("^ObjectID").isString().stringValue();
-          if (a1.hasObject(objId)) {
-            return a1.getObject(RESTPropertyTagCollectionV1.class, objId);
-          }
-          RESTPropertyTagCollectionV1 entity = new RESTPropertyTagCollectionV1();
-          a1.recordObject(objId, entity);
-          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
-            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1");
-            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
-            a1.setAssumedElementType(null);
-          }
-          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
-            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
-          }
-          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
-            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
-          }
-          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
-            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
-          }
-          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
-            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
-          }
-          return entity;
-        } catch (Throwable t) {
-          t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1", t);
-        }
-      }
-      public String marshall(RESTPropertyTagCollectionV1 a0, MarshallingSession a1) {
-        if (a0 == null) {
-          return "null";
-        }
-        if (a1.hasObject(a0)) {
-          String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
-        }
-        String objId = a1.getObject(a0);
-        a1.recordObject(objId, objId);
-        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
-      }
-    };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTPropertyTagCollectionV1);
-    org_jboss_pressgang_ccms_rest_v1_entities_RESTPropertyTagV1 = new Marshaller<RESTPropertyTagV1>() {
-      private RESTPropertyTagV1[] EMPTY_ARRAY = new RESTPropertyTagV1[0];
-      public RESTPropertyTagV1[] getEmptyArray() {
-        return EMPTY_ARRAY;
-      }
-      public Class getTypeHandled() {
-        return RESTPropertyTagV1.class;
-      }
-      public RESTPropertyTagV1 demarshall(EJValue a0, MarshallingSession a1) {
-        try {
-          if (a0.isNull()) {
-            return null;
-          }
-          EJObject obj = a0.isObject();
-          String objId = obj.get("^ObjectID").isString().stringValue();
-          if (a1.hasObject(objId)) {
-            return a1.getObject(RESTPropertyTagV1.class, objId);
-          }
-          RESTPropertyTagV1 entity = new RESTPropertyTagV1();
-          a1.recordObject(objId, entity);
-          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
-            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTPropertyTagCollectionV1.demarshall(obj.get("revisions"), a1));
-          }
-          if ((obj.containsKey("name")) && (!obj.get("name").isNull())) {
-            entity.setName(java_lang_String.demarshall(obj.get("name"), a1));
-          }
-          if ((obj.containsKey("description")) && (!obj.get("description").isNull())) {
-            entity.setDescription(java_lang_String.demarshall(obj.get("description"), a1));
-          }
-          if ((obj.containsKey("regex")) && (!obj.get("regex").isNull())) {
-            entity.setRegex(java_lang_String.demarshall(obj.get("regex"), a1));
-          }
-          if ((obj.containsKey("canBeNull")) && (!obj.get("canBeNull").isNull())) {
-            entity.setCanBeNull((boolean) java_lang_Boolean.demarshall(obj.get("canBeNull"), a1));
-          }
-          if ((obj.containsKey("isUnique")) && (!obj.get("isUnique").isNull())) {
-            entity.setIsUnique((boolean) java_lang_Boolean.demarshall(obj.get("isUnique"), a1));
-          }
-          if ((obj.containsKey("selfLink")) && (!obj.get("selfLink").isNull())) {
-            entity.setSelfLink(java_lang_String.demarshall(obj.get("selfLink"), a1));
-          }
-          if ((obj.containsKey("editLink")) && (!obj.get("editLink").isNull())) {
-            entity.setEditLink(java_lang_String.demarshall(obj.get("editLink"), a1));
-          }
-          if ((obj.containsKey("deleteLink")) && (!obj.get("deleteLink").isNull())) {
-            entity.setDeleteLink(java_lang_String.demarshall(obj.get("deleteLink"), a1));
-          }
-          if ((obj.containsKey("addLink")) && (!obj.get("addLink").isNull())) {
-            entity.setAddLink(java_lang_String.demarshall(obj.get("addLink"), a1));
-          }
-          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
-            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
-          }
-          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
-            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
-          }
-          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
-            a1.setAssumedElementType("java.lang.String");
-            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
-            a1.setAssumedElementType(null);
-          }
-          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
-            a1.setAssumedElementType("java.lang.String");
-            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
-            a1.setAssumedElementType(null);
-          }
-          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
-            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
-          }
-          return entity;
-        } catch (Throwable t) {
-          t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1", t);
-        }
-      }
-      public String marshall(RESTPropertyTagV1 a0, MarshallingSession a1) {
-        if (a0 == null) {
-          return "null";
-        }
-        if (a1.hasObject(a0)) {
-          String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
-        }
-        String objId = a1.getObject(a0);
-        a1.recordObject(objId, objId);
-        return new StringBuilder(6272).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTPropertyTagCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"name\" : ").append(java_lang_String.marshall(a0.getName(), a1)).append(",").append("\"description\" : ").append(java_lang_String.marshall(a0.getDescription(), a1)).append(",").append("\"regex\" : ").append(java_lang_String.marshall(a0.getRegex(), a1)).append(",").append("\"canBeNull\" : ").append(java_lang_Boolean.marshall(a0.getCanBeNull(), a1)).append(",").append("\"isUnique\" : ").append(java_lang_Boolean.marshall(a0.getIsUnique(), a1)).append(",").append("\"selfLink\" : ").append(java_lang_String.marshall(a0.getSelfLink(), a1)).append(",").append("\"editLink\" : ").append(java_lang_String.marshall(a0.getEditLink(), a1)).append(",").append("\"deleteLink\" : ").append(java_lang_String.marshall(a0.getDeleteLink(), a1)).append(",").append("\"addLink\" : ").append(java_lang_String.marshall(a0.getAddLink(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
-      }
-    };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTPropertyTagV1);
     org_jboss_pressgang_ccms_rest_v1_entities_RESTTranslatedTopicStringV1 = new Marshaller<RESTTranslatedTopicStringV1>() {
       private RESTTranslatedTopicStringV1[] EMPTY_ARRAY = new RESTTranslatedTopicStringV1[0];
       public RESTTranslatedTopicStringV1[] getEmptyArray() {
@@ -2365,15 +4768,15 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
       }
     };
     marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicStringV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTTranslatedTopicStringV1);
-    org_jboss_pressgang_ccms_rest_v1_collections_RESTStringConstantCollectionV1 = new Marshaller<RESTStringConstantCollectionV1>() {
-      private RESTStringConstantCollectionV1[] EMPTY_ARRAY = new RESTStringConstantCollectionV1[0];
-      public RESTStringConstantCollectionV1[] getEmptyArray() {
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTFilterCollectionItemV1 = new Marshaller<RESTFilterCollectionItemV1>() {
+      private RESTFilterCollectionItemV1[] EMPTY_ARRAY = new RESTFilterCollectionItemV1[0];
+      public RESTFilterCollectionItemV1[] getEmptyArray() {
         return EMPTY_ARRAY;
       }
       public Class getTypeHandled() {
-        return RESTStringConstantCollectionV1.class;
+        return RESTFilterCollectionItemV1.class;
       }
-      public RESTStringConstantCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+      public RESTFilterCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
         try {
           if (a0.isNull()) {
             return null;
@@ -2381,56 +4784,45 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
           EJObject obj = a0.isObject();
           String objId = obj.get("^ObjectID").isString().stringValue();
           if (a1.hasObject(objId)) {
-            return a1.getObject(RESTStringConstantCollectionV1.class, objId);
+            return a1.getObject(RESTFilterCollectionItemV1.class, objId);
           }
-          RESTStringConstantCollectionV1 entity = new RESTStringConstantCollectionV1();
+          RESTFilterCollectionItemV1 entity = new RESTFilterCollectionItemV1();
           a1.recordObject(objId, entity);
-          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
-            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTStringConstantCollectionItemV1");
-            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
-            a1.setAssumedElementType(null);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterV1.demarshall(obj.get("item"), a1));
           }
-          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
-            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
-          }
-          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
-            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
-          }
-          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
-            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
-          }
-          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
-            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
           }
           return entity;
         } catch (Throwable t) {
           t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1", t);
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1", t);
         }
       }
-      public String marshall(RESTStringConstantCollectionV1 a0, MarshallingSession a1) {
+      public String marshall(RESTFilterCollectionItemV1 a0, MarshallingSession a1) {
         if (a0 == null) {
           return "null";
         }
         if (a1.hasObject(a0)) {
           String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
         }
         String objId = a1.getObject(a0);
         a1.recordObject(objId, objId);
-        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+        return new StringBuilder(9216).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
       }
     };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_RESTStringConstantCollectionV1);
-    org_jboss_pressgang_ccms_rest_v1_entities_RESTStringConstantV1 = new Marshaller<RESTStringConstantV1>() {
-      private RESTStringConstantV1[] EMPTY_ARRAY = new RESTStringConstantV1[0];
-      public RESTStringConstantV1[] getEmptyArray() {
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTFilterCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTagCollectionItemV1 = new Marshaller<RESTTagCollectionItemV1>() {
+      private RESTTagCollectionItemV1[] EMPTY_ARRAY = new RESTTagCollectionItemV1[0];
+      public RESTTagCollectionItemV1[] getEmptyArray() {
         return EMPTY_ARRAY;
       }
       public Class getTypeHandled() {
-        return RESTStringConstantV1.class;
+        return RESTTagCollectionItemV1.class;
       }
-      public RESTStringConstantV1 demarshall(EJValue a0, MarshallingSession a1) {
+      public RESTTagCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
         try {
           if (a0.isNull()) {
             return null;
@@ -2438,79 +4830,45 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
           EJObject obj = a0.isObject();
           String objId = obj.get("^ObjectID").isString().stringValue();
           if (a1.hasObject(objId)) {
-            return a1.getObject(RESTStringConstantV1.class, objId);
+            return a1.getObject(RESTTagCollectionItemV1.class, objId);
           }
-          RESTStringConstantV1 entity = new RESTStringConstantV1();
+          RESTTagCollectionItemV1 entity = new RESTTagCollectionItemV1();
           a1.recordObject(objId, entity);
-          if ((obj.containsKey("name")) && (!obj.get("name").isNull())) {
-            entity.setName(java_lang_String.demarshall(obj.get("name"), a1));
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTTagV1.demarshall(obj.get("item"), a1));
           }
-          if ((obj.containsKey("value")) && (!obj.get("value").isNull())) {
-            entity.setValue(java_lang_String.demarshall(obj.get("value"), a1));
-          }
-          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
-            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTStringConstantCollectionV1.demarshall(obj.get("revisions"), a1));
-          }
-          if ((obj.containsKey("selfLink")) && (!obj.get("selfLink").isNull())) {
-            entity.setSelfLink(java_lang_String.demarshall(obj.get("selfLink"), a1));
-          }
-          if ((obj.containsKey("editLink")) && (!obj.get("editLink").isNull())) {
-            entity.setEditLink(java_lang_String.demarshall(obj.get("editLink"), a1));
-          }
-          if ((obj.containsKey("deleteLink")) && (!obj.get("deleteLink").isNull())) {
-            entity.setDeleteLink(java_lang_String.demarshall(obj.get("deleteLink"), a1));
-          }
-          if ((obj.containsKey("addLink")) && (!obj.get("addLink").isNull())) {
-            entity.setAddLink(java_lang_String.demarshall(obj.get("addLink"), a1));
-          }
-          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
-            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
-          }
-          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
-            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
-          }
-          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
-            a1.setAssumedElementType("java.lang.String");
-            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
-            a1.setAssumedElementType(null);
-          }
-          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
-            a1.setAssumedElementType("java.lang.String");
-            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
-            a1.setAssumedElementType(null);
-          }
-          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
-            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
           }
           return entity;
         } catch (Throwable t) {
           t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1", t);
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1", t);
         }
       }
-      public String marshall(RESTStringConstantV1 a0, MarshallingSession a1) {
+      public String marshall(RESTTagCollectionItemV1 a0, MarshallingSession a1) {
         if (a0 == null) {
           return "null";
         }
         if (a1.hasObject(a0)) {
           String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
         }
         String objId = a1.getObject(a0);
         a1.recordObject(objId, objId);
-        return new StringBuilder(5888).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"name\" : ").append(java_lang_String.marshall(a0.getName(), a1)).append(",").append("\"value\" : ").append(java_lang_String.marshall(a0.getValue(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTStringConstantCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"selfLink\" : ").append(java_lang_String.marshall(a0.getSelfLink(), a1)).append(",").append("\"editLink\" : ").append(java_lang_String.marshall(a0.getEditLink(), a1)).append(",").append("\"deleteLink\" : ").append(java_lang_String.marshall(a0.getDeleteLink(), a1)).append(",").append("\"addLink\" : ").append(java_lang_String.marshall(a0.getAddLink(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+        return new StringBuilder(8704).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTTagV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
       }
     };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTStringConstantV1);
-    org_jboss_pressgang_ccms_rest_v1_collections_join_RESTTagCategoryCollectionV1 = new Marshaller<RESTTagCategoryCollectionV1>() {
-      private RESTTagCategoryCollectionV1[] EMPTY_ARRAY = new RESTTagCategoryCollectionV1[0];
-      public RESTTagCategoryCollectionV1[] getEmptyArray() {
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTagCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTFilterFieldCollectionItemV1 = new Marshaller<RESTFilterFieldCollectionItemV1>() {
+      private RESTFilterFieldCollectionItemV1[] EMPTY_ARRAY = new RESTFilterFieldCollectionItemV1[0];
+      public RESTFilterFieldCollectionItemV1[] getEmptyArray() {
         return EMPTY_ARRAY;
       }
       public Class getTypeHandled() {
-        return RESTTagCategoryCollectionV1.class;
+        return RESTFilterFieldCollectionItemV1.class;
       }
-      public RESTTagCategoryCollectionV1 demarshall(EJValue a0, MarshallingSession a1) {
+      public RESTFilterFieldCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
         try {
           if (a0.isNull()) {
             return null;
@@ -2518,56 +4876,45 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
           EJObject obj = a0.isObject();
           String objId = obj.get("^ObjectID").isString().stringValue();
           if (a1.hasObject(objId)) {
-            return a1.getObject(RESTTagCategoryCollectionV1.class, objId);
+            return a1.getObject(RESTFilterFieldCollectionItemV1.class, objId);
           }
-          RESTTagCategoryCollectionV1 entity = new RESTTagCategoryCollectionV1();
+          RESTFilterFieldCollectionItemV1 entity = new RESTFilterFieldCollectionItemV1();
           a1.recordObject(objId, entity);
-          if ((obj.containsKey("items")) && (!obj.get("items").isNull())) {
-            a1.setAssumedElementType("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCategoryCollectionItemV1");
-            entity.setItems(java_util_List.demarshall(obj.get("items"), a1));
-            a1.setAssumedElementType(null);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterFieldV1.demarshall(obj.get("item"), a1));
           }
-          if ((obj.containsKey("size")) && (!obj.get("size").isNull())) {
-            entity.setSize(java_lang_Integer.demarshall(obj.get("size"), a1));
-          }
-          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
-            entity.setExpand(java_lang_String.demarshall(obj.get("expand"), a1));
-          }
-          if ((obj.containsKey("startExpandIndex")) && (!obj.get("startExpandIndex").isNull())) {
-            entity.setStartExpandIndex(java_lang_Integer.demarshall(obj.get("startExpandIndex"), a1));
-          }
-          if ((obj.containsKey("endExpandIndex")) && (!obj.get("endExpandIndex").isNull())) {
-            entity.setEndExpandIndex(java_lang_Integer.demarshall(obj.get("endExpandIndex"), a1));
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
           }
           return entity;
         } catch (Throwable t) {
           t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagCategoryCollectionV1", t);
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1", t);
         }
       }
-      public String marshall(RESTTagCategoryCollectionV1 a0, MarshallingSession a1) {
+      public String marshall(RESTFilterFieldCollectionItemV1 a0, MarshallingSession a1) {
         if (a0 == null) {
           return "null";
         }
         if (a1.hasObject(a0)) {
           String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagCategoryCollectionV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
         }
         String objId = a1.getObject(a0);
         a1.recordObject(objId, objId);
-        return new StringBuilder(768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagCategoryCollectionV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"items\" : ").append(java_util_List.marshall(a0.getItems(), a1)).append(",").append("\"size\" : ").append(java_lang_Integer.marshall(a0.getSize(), a1)).append(",").append("\"expand\" : ").append(java_lang_String.marshall(a0.getExpand(), a1)).append(",").append("\"startExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getStartExpandIndex(), a1)).append(",").append("\"endExpandIndex\" : ").append(java_lang_Integer.marshall(a0.getEndExpandIndex(), a1)).append("}").toString();
+        return new StringBuilder(10496).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterFieldV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
       }
     };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagCategoryCollectionV1", org_jboss_pressgang_ccms_rest_v1_collections_join_RESTTagCategoryCollectionV1);
-    org_jboss_pressgang_ccms_rest_v1_entities_RESTCategoryV1 = new Marshaller<RESTCategoryV1>() {
-      private RESTCategoryV1[] EMPTY_ARRAY = new RESTCategoryV1[0];
-      public RESTCategoryV1[] getEmptyArray() {
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTFilterFieldCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTUserCollectionItemV1 = new Marshaller<RESTUserCollectionItemV1>() {
+      private RESTUserCollectionItemV1[] EMPTY_ARRAY = new RESTUserCollectionItemV1[0];
+      public RESTUserCollectionItemV1[] getEmptyArray() {
         return EMPTY_ARRAY;
       }
       public Class getTypeHandled() {
-        return RESTCategoryV1.class;
+        return RESTUserCollectionItemV1.class;
       }
-      public RESTCategoryV1 demarshall(EJValue a0, MarshallingSession a1) {
+      public RESTUserCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
         try {
           if (a0.isNull()) {
             return null;
@@ -2575,88 +4922,45 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
           EJObject obj = a0.isObject();
           String objId = obj.get("^ObjectID").isString().stringValue();
           if (a1.hasObject(objId)) {
-            return a1.getObject(RESTCategoryV1.class, objId);
+            return a1.getObject(RESTUserCollectionItemV1.class, objId);
           }
-          RESTCategoryV1 entity = new RESTCategoryV1();
+          RESTUserCollectionItemV1 entity = new RESTUserCollectionItemV1();
           a1.recordObject(objId, entity);
-          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
-            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTCategoryCollectionV1.demarshall(obj.get("revisions"), a1));
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTUserV1.demarshall(obj.get("item"), a1));
           }
-          if ((obj.containsKey("name")) && (!obj.get("name").isNull())) {
-            entity.setName(java_lang_String.demarshall(obj.get("name"), a1));
-          }
-          if ((obj.containsKey("description")) && (!obj.get("description").isNull())) {
-            entity.setDescription(java_lang_String.demarshall(obj.get("description"), a1));
-          }
-          if ((obj.containsKey("mutuallyExclusive")) && (!obj.get("mutuallyExclusive").isNull())) {
-            entity.setMutuallyExclusive((boolean) java_lang_Boolean.demarshall(obj.get("mutuallyExclusive"), a1));
-          }
-          if ((obj.containsKey("sort")) && (!obj.get("sort").isNull())) {
-            entity.setSort(java_lang_Integer.demarshall(obj.get("sort"), a1));
-          }
-          if ((obj.containsKey("tags")) && (!obj.get("tags").isNull())) {
-            entity.setTags(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTTagCategoryCollectionV1.demarshall(obj.get("tags"), a1));
-          }
-          if ((obj.containsKey("selfLink")) && (!obj.get("selfLink").isNull())) {
-            entity.setSelfLink(java_lang_String.demarshall(obj.get("selfLink"), a1));
-          }
-          if ((obj.containsKey("editLink")) && (!obj.get("editLink").isNull())) {
-            entity.setEditLink(java_lang_String.demarshall(obj.get("editLink"), a1));
-          }
-          if ((obj.containsKey("deleteLink")) && (!obj.get("deleteLink").isNull())) {
-            entity.setDeleteLink(java_lang_String.demarshall(obj.get("deleteLink"), a1));
-          }
-          if ((obj.containsKey("addLink")) && (!obj.get("addLink").isNull())) {
-            entity.setAddLink(java_lang_String.demarshall(obj.get("addLink"), a1));
-          }
-          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
-            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
-          }
-          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
-            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
-          }
-          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
-            a1.setAssumedElementType("java.lang.String");
-            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
-            a1.setAssumedElementType(null);
-          }
-          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
-            a1.setAssumedElementType("java.lang.String");
-            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
-            a1.setAssumedElementType(null);
-          }
-          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
-            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
           }
           return entity;
         } catch (Throwable t) {
           t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1", t);
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTUserCollectionItemV1", t);
         }
       }
-      public String marshall(RESTCategoryV1 a0, MarshallingSession a1) {
+      public String marshall(RESTUserCollectionItemV1 a0, MarshallingSession a1) {
         if (a0 == null) {
           return "null";
         }
         if (a1.hasObject(a0)) {
           String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTUserCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
         }
         String objId = a1.getObject(a0);
         a1.recordObject(objId, objId);
-        return new StringBuilder(6912).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTCategoryCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"name\" : ").append(java_lang_String.marshall(a0.getName(), a1)).append(",").append("\"description\" : ").append(java_lang_String.marshall(a0.getDescription(), a1)).append(",").append("\"mutuallyExclusive\" : ").append(java_lang_Boolean.marshall(a0.getMutuallyExclusive(), a1)).append(",").append("\"sort\" : ").append(java_lang_Integer.marshall(a0.getSort(), a1)).append(",").append("\"tags\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_join_RESTTagCategoryCollectionV1.marshall(a0.getTags(), a1)).append(",").append("\"selfLink\" : ").append(java_lang_String.marshall(a0.getSelfLink(), a1)).append(",").append("\"editLink\" : ").append(java_lang_String.marshall(a0.getEditLink(), a1)).append(",").append("\"deleteLink\" : ").append(java_lang_String.marshall(a0.getDeleteLink(), a1)).append(",").append("\"addLink\" : ").append(java_lang_String.marshall(a0.getAddLink(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+        return new StringBuilder(3968).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTUserCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTUserV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
       }
     };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTCategoryV1);
-    org_jboss_pressgang_ccms_rest_v1_entities_RESTBugzillaBugV1 = new Marshaller<RESTBugzillaBugV1>() {
-      private RESTBugzillaBugV1[] EMPTY_ARRAY = new RESTBugzillaBugV1[0];
-      public RESTBugzillaBugV1[] getEmptyArray() {
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTUserCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTUserCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTBlobConstantCollectionItemV1 = new Marshaller<RESTBlobConstantCollectionItemV1>() {
+      private RESTBlobConstantCollectionItemV1[] EMPTY_ARRAY = new RESTBlobConstantCollectionItemV1[0];
+      public RESTBlobConstantCollectionItemV1[] getEmptyArray() {
         return EMPTY_ARRAY;
       }
       public Class getTypeHandled() {
-        return RESTBugzillaBugV1.class;
+        return RESTBlobConstantCollectionItemV1.class;
       }
-      public RESTBugzillaBugV1 demarshall(EJValue a0, MarshallingSession a1) {
+      public RESTBlobConstantCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
         try {
           if (a0.isNull()) {
             return null;
@@ -2664,61 +4968,128 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
           EJObject obj = a0.isObject();
           String objId = obj.get("^ObjectID").isString().stringValue();
           if (a1.hasObject(objId)) {
-            return a1.getObject(RESTBugzillaBugV1.class, objId);
+            return a1.getObject(RESTBlobConstantCollectionItemV1.class, objId);
           }
-          RESTBugzillaBugV1 entity = new RESTBugzillaBugV1();
+          RESTBlobConstantCollectionItemV1 entity = new RESTBlobConstantCollectionItemV1();
           a1.recordObject(objId, entity);
-          if ((obj.containsKey("bugId")) && (!obj.get("bugId").isNull())) {
-            entity.setBugId(java_lang_Integer.demarshall(obj.get("bugId"), a1));
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTBlobConstantV1.demarshall(obj.get("item"), a1));
           }
-          if ((obj.containsKey("isOpen")) && (!obj.get("isOpen").isNull())) {
-            entity.setIsOpen(java_lang_Boolean.demarshall(obj.get("isOpen"), a1));
-          }
-          if ((obj.containsKey("summary")) && (!obj.get("summary").isNull())) {
-            entity.setSummary(java_lang_String.demarshall(obj.get("summary"), a1));
-          }
-          if ((obj.containsKey("revisions")) && (!obj.get("revisions").isNull())) {
-            entity.setRevisions(org_jboss_pressgang_ccms_rest_v1_collections_RESTBugzillaBugCollectionV1.demarshall(obj.get("revisions"), a1));
-          }
-          if ((obj.containsKey("id")) && (!obj.get("id").isNull())) {
-            entity.setId(java_lang_Integer.demarshall(obj.get("id"), a1));
-          }
-          if ((obj.containsKey("revision")) && (!obj.get("revision").isNull())) {
-            entity.setRevision(java_lang_Integer.demarshall(obj.get("revision"), a1));
-          }
-          if ((obj.containsKey("configuredParameters")) && (!obj.get("configuredParameters").isNull())) {
-            a1.setAssumedElementType("java.lang.String");
-            entity.setConfiguredParameters(java_util_List.demarshall(obj.get("configuredParameters"), a1));
-            a1.setAssumedElementType(null);
-          }
-          if ((obj.containsKey("expand")) && (!obj.get("expand").isNull())) {
-            a1.setAssumedElementType("java.lang.String");
-            entity.setExpand(java_util_List.demarshall(obj.get("expand"), a1));
-            a1.setAssumedElementType(null);
-          }
-          if ((obj.containsKey("logDetails")) && (!obj.get("logDetails").isNull())) {
-            entity.setLogDetails(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.demarshall(obj.get("logDetails"), a1));
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
           }
           return entity;
         } catch (Throwable t) {
           t.printStackTrace();
-          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1", t);
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBlobConstantCollectionItemV1", t);
         }
       }
-      public String marshall(RESTBugzillaBugV1 a0, MarshallingSession a1) {
+      public String marshall(RESTBlobConstantCollectionItemV1 a0, MarshallingSession a1) {
         if (a0 == null) {
           return "null";
         }
         if (a1.hasObject(a0)) {
           String objId = a1.getObject(a0);
-          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBlobConstantCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
         }
         String objId = a1.getObject(a0);
         a1.recordObject(objId, objId);
-        return new StringBuilder(5504).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"bugId\" : ").append(java_lang_Integer.marshall(a0.getBugId(), a1)).append(",").append("\"isOpen\" : ").append(java_lang_Boolean.marshall(a0.getIsOpen(), a1)).append(",").append("\"summary\" : ").append(java_lang_String.marshall(a0.getSummary(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTBugzillaBugCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+        return new StringBuilder(6528).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBlobConstantCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTBlobConstantV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
       }
     };
-    marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTBugzillaBugV1);
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBlobConstantCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTBlobConstantCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTranslatedTopicStringCollectionItemV1 = new Marshaller<RESTTranslatedTopicStringCollectionItemV1>() {
+      private RESTTranslatedTopicStringCollectionItemV1[] EMPTY_ARRAY = new RESTTranslatedTopicStringCollectionItemV1[0];
+      public RESTTranslatedTopicStringCollectionItemV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTTranslatedTopicStringCollectionItemV1.class;
+      }
+      public RESTTranslatedTopicStringCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTTranslatedTopicStringCollectionItemV1.class, objId);
+          }
+          RESTTranslatedTopicStringCollectionItemV1 entity = new RESTTranslatedTopicStringCollectionItemV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_RESTTranslatedTopicStringV1.demarshall(obj.get("item"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicStringCollectionItemV1", t);
+        }
+      }
+      public String marshall(RESTTranslatedTopicStringCollectionItemV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicStringCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(16768).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicStringCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTTranslatedTopicStringV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicStringCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTTranslatedTopicStringCollectionItemV1);
+    org_jboss_pressgang_ccms_rest_v1_collections_items_RESTCategoryTagCollectionItemV1 = new Marshaller<RESTCategoryTagCollectionItemV1>() {
+      private RESTCategoryTagCollectionItemV1[] EMPTY_ARRAY = new RESTCategoryTagCollectionItemV1[0];
+      public RESTCategoryTagCollectionItemV1[] getEmptyArray() {
+        return EMPTY_ARRAY;
+      }
+      public Class getTypeHandled() {
+        return RESTCategoryTagCollectionItemV1.class;
+      }
+      public RESTCategoryTagCollectionItemV1 demarshall(EJValue a0, MarshallingSession a1) {
+        try {
+          if (a0.isNull()) {
+            return null;
+          }
+          EJObject obj = a0.isObject();
+          String objId = obj.get("^ObjectID").isString().stringValue();
+          if (a1.hasObject(objId)) {
+            return a1.getObject(RESTCategoryTagCollectionItemV1.class, objId);
+          }
+          RESTCategoryTagCollectionItemV1 entity = new RESTCategoryTagCollectionItemV1();
+          a1.recordObject(objId, entity);
+          if ((obj.containsKey("item")) && (!obj.get("item").isNull())) {
+            entity.setItem(org_jboss_pressgang_ccms_rest_v1_entities_join_RESTCategoryTagV1.demarshall(obj.get("item"), a1));
+          }
+          if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
+            entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
+          }
+          return entity;
+        } catch (Throwable t) {
+          t.printStackTrace();
+          throw new RuntimeException("error demarshalling entity: org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryTagCollectionItemV1", t);
+        }
+      }
+      public String marshall(RESTCategoryTagCollectionItemV1 a0, MarshallingSession a1) {
+        if (a0 == null) {
+          return "null";
+        }
+        if (a1.hasObject(a0)) {
+          String objId = a1.getObject(a0);
+          return new StringBuilder(128).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryTagCollectionItemV1\"").append(",").append("\"^ObjectID\":\"").append(objId).append("\"}").toString();
+        }
+        String objId = a1.getObject(a0);
+        a1.recordObject(objId, objId);
+        return new StringBuilder(7424).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryTagCollectionItemV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"item\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_join_RESTCategoryTagV1.marshall(a0.getItem(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append("}").toString();
+      }
+    };
+    marshallers.put("org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryTagCollectionItemV1", org_jboss_pressgang_ccms_rest_v1_collections_items_RESTCategoryTagCollectionItemV1);
     arrayOf_java_lang_Object_D1 = new QualifyingMarshallerWrapper(new Marshaller<Object[]>() {
       public java.lang.Object[][] getEmptyArray() {
         throw new UnsupportedOperationException("Not implemented!");

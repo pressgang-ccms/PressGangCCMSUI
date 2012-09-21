@@ -14,6 +14,9 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.gwt.user.client.ui.TriStateSelectionState;
 
 /**
@@ -100,8 +103,15 @@ public class SearchUICategory extends SearchUIBase {
                 throw new IllegalArgumentException("tag.getItem().getCategories() cannot be null");
             }
             
-            if (tag.getItem().getProjects().getItems().contains(project)
-                    && tag.getItem().getCategories().getItems().contains(category)) {
+            final Optional<RESTCategoryTagCollectionItemV1> matchingCategory = Iterables.tryFind( tag.getItem().getCategories().getItems(), new Predicate<RESTCategoryTagCollectionItemV1>() {
+                public boolean apply(final RESTCategoryTagCollectionItemV1 arg) { return arg.getItem().getId().equals(category.getItem().getId()); }
+            });
+            
+            final Optional<RESTProjectCollectionItemV1> matchingProject = Iterables.tryFind( tag.getItem().getProjects().getItems(), new Predicate<RESTProjectCollectionItemV1>() {
+                public boolean apply(final RESTProjectCollectionItemV1 arg) { return arg.getItem().getId().equals(project.getItem().getId()); }
+            });
+                            
+            if (matchingCategory.isPresent() && matchingProject.isPresent()) {
                 final SearchUITag searchUITag = new SearchUITag(this, tag);
                 if (!myTags.contains(searchUITag)) {
                     myTags.add(searchUITag);
@@ -128,13 +138,20 @@ public class SearchUICategory extends SearchUIBase {
                 throw new IllegalArgumentException("tag.getItem().getCategories() cannot be null");
             }
 
-            if (tag.getItem().getProjects().getItems().isEmpty() && tag.getItem().getCategories().getItems().contains(category)) {
-                final SearchUITag searchUITag = new SearchUITag(this, tag);
-                if (!myTags.contains(searchUITag)) {
-                    myTags.add(searchUITag);
-                }
-            }
+            if (tag.getItem().getProjects().getItems().isEmpty()) {
 
+                final Optional<RESTCategoryTagCollectionItemV1> matchingCategory = Iterables.tryFind( tag.getItem().getCategories().getItems(), new Predicate<RESTCategoryTagCollectionItemV1>() {
+                    public boolean apply(final RESTCategoryTagCollectionItemV1 arg) { return arg.getItem().getId().equals(category.getItem().getId()); }
+                });
+                                
+                if (matchingCategory.isPresent()) {
+                    final SearchUITag searchUITag = new SearchUITag(this, tag);
+                    if (!myTags.contains(searchUITag)) {
+                        myTags.add(searchUITag);
+                    }
+                }
+                            
+            }
         }
 
         Collections.sort(myTags, new SearchUINameSort());

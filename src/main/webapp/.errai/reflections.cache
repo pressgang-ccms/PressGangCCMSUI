@@ -1741,8 +1741,8 @@
         <value>org.jboss.errai.bus.server.service.bootstrap.BusConfiguration</value>
         <value>org.jboss.errai.bus.server.service.bootstrap.DiscoverServices</value>
         <value>org.jboss.errai.bus.server.service.bootstrap.RegisterEntities</value>
-        <value>org.jboss.errai.bus.server.service.bootstrap.LockDownServices</value>
         <value>org.jboss.errai.bus.server.service.bootstrap.LoadExtensions</value>
+        <value>org.jboss.errai.bus.server.service.bootstrap.LockDownServices</value>
         <value>org.jboss.errai.bus.server.service.bootstrap.DefaultServices</value>
         <value>org.jboss.errai.bus.server.service.bootstrap.DefaultComponents</value>
         <value>org.jboss.errai.bus.server.service.bootstrap.AuthenticationRules</value>
@@ -2306,8 +2306,8 @@
       <key>org.jboss.errai.marshalling.client.marshallers.AbstractNumberMarshaller</key>
       <values>
         <value>org.jboss.errai.marshalling.client.marshallers.LongMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.FloatMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.DoubleMarshaller</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.FloatMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.ByteMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.IntegerMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.ShortMarshaller</value>
@@ -2346,50 +2346,47 @@
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$30</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$32</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$31</value>
-        <value>org.jboss.errai.marshalling.client.util.MarshallUtil$1</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$34</value>
         <value>org.jboss.errai.marshalling.client.marshallers.MapMarshaller</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$33</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$36</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$35</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$71</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$70</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$37</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$38</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$39</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$21</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$20</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$102</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$25</value>
-        <value>org.jboss.errai.marshalling.server.marshallers.DefaultArrayMarshaller</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$24</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$101</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$23</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$100</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$22</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$106</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$105</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$104</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$103</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$109</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$108</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$107</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$8</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$9</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$4</value>
         <value>org.jboss.errai.marshalling.client.marshallers.AbstractBackReferencingMarshaller</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$5</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$6</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$60</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$7</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$61</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$62</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$28</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$29</value>
-        <value>org.jboss.errai.marshalling.server.api.ServerMarshaller</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$1</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$63</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$2</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$64</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$29</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$26</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$2</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$3</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$65</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$27</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$66</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$67</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$68</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$69</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$56</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$111</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$110</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$55</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$58</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$57</value>
@@ -2397,18 +2394,7 @@
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$51</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$54</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$53</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$11</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$12</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$13</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$50</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$14</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$10</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$19</value>
-        <value>org.jboss.errai.marshalling.server.marshallers.DefaultEnumMarshaller</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$16</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$15</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$18</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$17</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$59</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$47</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$46</value>
@@ -2418,12 +2404,66 @@
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$42</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$41</value>
         <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$40</value>
+        <value>org.jboss.errai.marshalling.client.api.AbstractMarshallingSession$1</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.AbstractNullableMarshaller</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$48</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$49</value>
+        <value>org.jboss.errai.marshalling.client.util.MarshallUtil$1</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$71</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$72</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$70</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$75</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$76</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$73</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$74</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$79</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$77</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$78</value>
+        <value>org.jboss.errai.marshalling.server.marshallers.DefaultArrayMarshaller</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$60</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$61</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$62</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$63</value>
+        <value>org.jboss.errai.marshalling.server.api.ServerMarshaller</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$64</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$65</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$66</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$67</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$68</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$69</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$11</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$12</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$13</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$14</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$10</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$93</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$94</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$19</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$91</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$92</value>
+        <value>org.jboss.errai.marshalling.server.marshallers.DefaultEnumMarshaller</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$16</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$90</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$15</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$18</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$17</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$99</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$97</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$98</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$95</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$96</value>
         <value>org.jboss.errai.marshalling.client.marshallers.ErraiProtocolEnvelopeMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.ErraiProtocolEnvelopeNoAutoMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.api.AbstractMarshallingSession$1</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$48</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.AbstractNullableMarshaller</value>
-        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$49</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$80</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$81</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$82</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$83</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$88</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$89</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$84</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$85</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$86</value>
+        <value>org.jboss.errai.marshalling.server.impl.ServerMarshallingFactoryImpl$87</value>
       </values>
     </entry>
     <entry>
@@ -2841,715 +2881,6 @@
       </values>
     </entry>
   </org.jboss.errai.reflections.scanners.SubTypesScanner>
-  <org.jboss.errai.common.metadata.ErraiPropertyScanner>
-    <entry>
-      <key>NotSpecified</key>
-      <values>
-        <value>Not Specified</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Users</key>
-      <values>
-        <value>Users</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Locales</key>
-      <values>
-        <value>Locales</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Search</key>
-      <values>
-        <value>Search</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Up</key>
-      <values>
-        <value>Up</value>
-      </values>
-    </entry>
-    <entry>
-      <key>PropertyTags</key>
-      <values>
-        <value>Property Tags</value>
-      </values>
-    </entry>
-    <entry>
-      <key>PleaseUseFirefox</key>
-      <values>
-        <value>You have attempted to view an image that is too large for Chrome to decode. Please use Firefox to view these images.</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Diff</key>
-      <values>
-        <value>Diff</value>
-      </values>
-    </entry>
-    <entry>
-      <key>CategoryCount</key>
-      <values>
-        <value>Category Count</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Images</key>
-      <values>
-        <value>Images</value>
-      </values>
-    </entry>
-    <entry>
-      <key>TopicXML</key>
-      <values>
-        <value>Topic XML</value>
-      </values>
-    </entry>
-    <entry>
-      <key>HorizontalSplit</key>
-      <values>
-        <value>Horizontal Split</value>
-      </values>
-    </entry>
-    <entry>
-      <key>RenderedPane</key>
-      <values>
-        <value>Rendered Pane</value>
-      </values>
-    </entry>
-    <entry>
-      <key>TagAlreadyExists</key>
-      <values>
-        <value>The tag was not added because it is already assigned to the topic.</value>
-      </values>
-    </entry>
-    <entry>
-      <key>UploadFile</key>
-      <values>
-        <value>Upload File</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Excluded</key>
-      <values>
-        <value>Tags Excluded</value>
-      </values>
-    </entry>
-    <entry>
-      <key>ProjectID</key>
-      <values>
-        <value>Project ID</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Top</key>
-      <values>
-        <value>Top</value>
-      </values>
-    </entry>
-    <entry>
-      <key>CategoryName</key>
-      <values>
-        <value>Category Name</value>
-      </values>
-    </entry>
-    <entry>
-      <key>CreateBug</key>
-      <values>
-        <value>Create Bug</value>
-      </values>
-    </entry>
-    <entry>
-      <key>ImageID</key>
-      <values>
-        <value>Image ID</value>
-      </values>
-    </entry>
-    <entry>
-      <key>ProjectName</key>
-      <values>
-        <value>Project Name</value>
-      </values>
-    </entry>
-    <entry>
-      <key>TopicCouldNotBeRendered</key>
-      <values>
-        <value>The topic could not be rendered. Please make sure the XML is valid.</value>
-      </values>
-    </entry>
-    <entry>
-      <key>TagName</key>
-      <values>
-        <value>Tag Name</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Bottom</key>
-      <values>
-        <value>Bottom</value>
-      </values>
-    </entry>
-    <entry>
-      <key>errai.marshalling.serializableTypes</key>
-      <values>
-        <value>org.jboss.pressgang.ccms.rest.v1.entities.RESTUserV1 org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicSourceUrlV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicStringV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTRoleCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicStringCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTUserCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTBlobConstantCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagCategoryCollectionV1</value>
-      </values>
-    </entry>
-    <entry>
-      <key>TagCount</key>
-      <values>
-        <value>Tag Count</value>
-      </values>
-    </entry>
-    <entry>
-      <key>CategoryDescription</key>
-      <values>
-        <value>Category Description</value>
-      </values>
-    </entry>
-    <entry>
-      <key>CategoryID</key>
-      <values>
-        <value>Category ID</value>
-      </values>
-    </entry>
-    <entry>
-      <key>SearchTranslations</key>
-      <values>
-        <value>Search Translations</value>
-      </values>
-    </entry>
-    <entry>
-      <key>TopicLocale</key>
-      <values>
-        <value>Topic Locale</value>
-      </values>
-    </entry>
-    <entry>
-      <key>TopicDescription</key>
-      <values>
-        <value>Topic Description</value>
-      </values>
-    </entry>
-    <entry>
-      <key>DocbookImageTemplate</key>
-      <values>
-        <value>Docbook Image Template</value>
-      </values>
-    </entry>
-    <entry>
-      <key>CurrentlyViewing</key>
-      <values>
-        <value>Currently Viewing</value>
-      </values>
-    </entry>
-    <entry>
-      <key>ShowHiddenCharacters</key>
-      <values>
-        <value>Show Hidden Characters</value>
-      </values>
-    </entry>
-    <entry>
-      <key>ImageLocale</key>
-      <values>
-        <value>Image Locale</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Common</key>
-      <values>
-        <value>Common</value>
-      </values>
-    </entry>
-    <entry>
-      <key>ImagePlaceholder</key>
-      <values>
-        <value>Image</value>
-      </values>
-    </entry>
-    <entry>
-      <key>version</key>
-      <values>
-        <value>2.1.0-SNAPSHOT</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Properties</key>
-      <values>
-        <value>Properties</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Down</key>
-      <values>
-        <value>Down</value>
-      </values>
-    </entry>
-    <entry>
-      <key>OK</key>
-      <values>
-        <value>OK</value>
-      </values>
-    </entry>
-    <entry>
-      <key>ErrorGettingTopics</key>
-      <values>
-        <value>There was an error retrieving the topics from the server. The server may not be active, or you may have a network or internet connection issue. If this problem persists, please log a bug.</value>
-      </values>
-    </entry>
-    <entry>
-      <key>CurrentlyEditing</key>
-      <values>
-        <value>Currently Editing</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Roles</key>
-      <values>
-        <value>Roles</value>
-      </values>
-    </entry>
-    <entry>
-      <key>ErrorGettingTags</key>
-      <values>
-        <value>There was an error retrieving the tags from the server. The server may not be active, or you may have a network or internet connection issue. If this problem persists, please log a bug.</value>
-      </values>
-    </entry>
-    <entry>
-      <key>SaveSuccess</key>
-      <values>
-        <value>Your changes were successfully saved</value>
-      </values>
-    </entry>
-    <entry>
-      <key>errai.require_authentication_for_all</key>
-      <values>
-        <value>false</value>
-      </values>
-    </entry>
-    <entry>
-      <key>RevisionMessage</key>
-      <values>
-        <value>Revision Message</value>
-      </values>
-    </entry>
-    <entry>
-      <key>RevisionNumber</key>
-      <values>
-        <value>Revision Number</value>
-      </values>
-    </entry>
-    <entry>
-      <key>ErrorGettingTopic</key>
-      <values>
-        <value>There was an error retrieving the topic from the server. The server may not be active, or you may have a network or internet connection issue. If this problem persists, please log a bug.</value>
-      </values>
-    </entry>
-    <entry>
-      <key>artifactId</key>
-      <values>
-        <value>errai-cdi-client</value>
-        <value>errai-marshalling</value>
-        <value>errai-ioc</value>
-        <value>errai-tools</value>
-        <value>errai-weld-integration</value>
-        <value>errai-bus</value>
-      </values>
-    </entry>
-    <entry>
-      <key>NoAction</key>
-      <values>
-        <value>No Action</value>
-      </values>
-    </entry>
-    <entry>
-      <key>CloseSubMenu</key>
-      <values>
-        <value>Close Sub-menu</value>
-      </values>
-    </entry>
-    <entry>
-      <key>TopicID</key>
-      <values>
-        <value>Topic ID</value>
-      </values>
-    </entry>
-    <entry>
-      <key>NoSplit</key>
-      <values>
-        <value>No Split</value>
-      </values>
-    </entry>
-    <entry>
-      <key>groupId</key>
-      <values>
-        <value>org.jboss.errai</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Advanced</key>
-      <values>
-        <value>Advanced</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Link</key>
-      <values>
-        <value>Link</value>
-      </values>
-    </entry>
-    <entry>
-      <key>PleaseWait</key>
-      <values>
-        <value>Please Wait</value>
-      </values>
-    </entry>
-    <entry>
-      <key>VerticalSplit</key>
-      <values>
-        <value>Vertical Split</value>
-      </values>
-    </entry>
-    <entry>
-      <key>ImageSample</key>
-      <values>
-        <value>Image Sample</value>
-      </values>
-    </entry>
-    <entry>
-      <key>XMLEditing</key>
-      <values>
-        <value>XML Editing</value>
-      </values>
-    </entry>
-    <entry>
-      <key>AddLocale</key>
-      <values>
-        <value>Add Locale</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Upload</key>
-      <values>
-        <value>Upload</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Projects</key>
-      <values>
-        <value>Projects</value>
-      </values>
-    </entry>
-    <entry>
-      <key>errai.marshalling.mappingAliases</key>
-      <values>
-        <value>java.util.Arrays$ArrayList-&gt;java.util.List java.util.Collections$UnmodifiableList-&gt;java.util.List java.util.Collections$UnmodifiableSet-&gt;java.util.Set java.util.Collections$UnmodifiableMap-&gt;java.util.Map java.util.Collections$UnmodifiableRandomAccessList-&gt;java.util.List java.util.Collections$SynchronizedList-&gt;java.util.List java.util.Collections$SynchronizedSet-&gt;java.util.Set java.util.Collections$SynchronizedMap-&gt;java.util.Map java.util.Collections$SynchronizedRandomAccessList-&gt;java.util.List java.util.Collections$UnmodifiableSortedMap-&gt;java.util.SortedMap java.util.Collections$SynchronizedSortedMap-&gt;java.util.SortedMap java.util.Collections$UnmodifiableSortedSet-&gt;java.util.SortedSet java.util.Collections$SynchronizedSortedSet-&gt;java.util.SortedSet java.util.Collections$EmptySet-&gt;java.util.Set java.util.Collections$EmptyList-&gt;java.util.List java.util.Collections$EmptyMap-&gt;java.util.Map java.util.Collections$SingletonSet-&gt;java.util.Set java.util.Collections$SingletonList-&gt;java.util.List java.util.Collections$SingletonMap-&gt;java.util.Map</value>
-      </values>
-    </entry>
-    <entry>
-      <key>IntegerConstants</key>
-      <values>
-        <value>Integer Constants</value>
-      </values>
-    </entry>
-    <entry>
-      <key>BugzillaSummary</key>
-      <values>
-        <value>Bugzilla Summary</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Add</key>
-      <values>
-        <value>Add</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Revisions</key>
-      <values>
-        <value>Revisions</value>
-      </values>
-    </entry>
-    <entry>
-      <key>RenderedView</key>
-      <values>
-        <value>Rendered View</value>
-      </values>
-    </entry>
-    <entry>
-      <key>UnsavedChangesPrompt</key>
-      <values>
-        <value>You have unsaved changes that will be lost if you continue. Do you wish to continue?</value>
-      </values>
-    </entry>
-    <entry>
-      <key>TagDescription</key>
-      <values>
-        <value>Tag Description</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Home</key>
-      <values>
-        <value>Home</value>
-      </values>
-    </entry>
-    <entry>
-      <key>TagCategories</key>
-      <values>
-        <value>Tag Categories</value>
-      </values>
-    </entry>
-    <entry>
-      <key>RemoveLocale</key>
-      <values>
-        <value>Remove Locale</value>
-      </values>
-    </entry>
-    <entry>
-      <key>PropertyTagCategories</key>
-      <values>
-        <value>Property Tag Categories</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Tags</key>
-      <values>
-        <value>Tags</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Reports</key>
-      <values>
-        <value>Reports</value>
-      </values>
-    </entry>
-    <entry>
-      <key>ConnectionError</key>
-      <values>
-        <value>There was an error connecting to the server. The server may not be active, or you may have a network or internet connection issue. If this problem persists, please log a bug.</value>
-      </values>
-    </entry>
-    <entry>
-      <key>StringConstants</key>
-      <values>
-        <value>String Constants</value>
-      </values>
-    </entry>
-    <entry>
-      <key>BugzillaID</key>
-      <values>
-        <value>Bugzilla ID</value>
-      </values>
-    </entry>
-    <entry>
-      <key>ImageDescription</key>
-      <values>
-        <value>Image Description</value>
-      </values>
-    </entry>
-    <entry>
-      <key>LineWrap</key>
-      <values>
-        <value>Line Wrap</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Bugs</key>
-      <values>
-        <value>Bugs</value>
-      </values>
-    </entry>
-    <entry>
-      <key>TopicRevision</key>
-      <values>
-        <value>Topic Revision</value>
-      </values>
-    </entry>
-    <entry>
-      <key>ErrorSavingTopic</key>
-      <values>
-        <value>There was an error saving the topic to the server. The server may not be active, or you may have a network or internet connection issue. If this problem persists, please log a bug.</value>
-      </values>
-    </entry>
-    <entry>
-      <key>ImageOriginalFileName</key>
-      <values>
-        <value>Image Original File Name</value>
-      </values>
-    </entry>
-    <entry>
-      <key>TagDetails</key>
-      <values>
-        <value>Tag Details</value>
-      </values>
-    </entry>
-    <entry>
-      <key>TagID</key>
-      <values>
-        <value>Tag ID</value>
-      </values>
-    </entry>
-    <entry>
-      <key>ConfirmDelete</key>
-      <values>
-        <value>Are you sure you want to delete this item?</value>
-      </values>
-    </entry>
-    <entry>
-      <key>TagProjects</key>
-      <values>
-        <value>Tag Projects</value>
-      </values>
-    </entry>
-    <entry>
-      <key>RevisionDate</key>
-      <values>
-        <value>Revision Date</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Categories</key>
-      <values>
-        <value>Categories</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Welcome</key>
-      <values>
-        <value>Welcome</value>
-      </values>
-    </entry>
-    <entry>
-      <key>ProjectDescription</key>
-      <values>
-        <value>Project Description</value>
-      </values>
-    </entry>
-    <entry>
-      <key>View</key>
-      <values>
-        <value>View</value>
-      </values>
-    </entry>
-    <entry>
-      <key>TopicTitle</key>
-      <values>
-        <value>Topic Title</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Cancel</key>
-      <values>
-        <value>Cancel</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Remove</key>
-      <values>
-        <value>Remove</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Feedback</key>
-      <values>
-        <value>Feedback</value>
-      </values>
-    </entry>
-    <entry>
-      <key>DocbookFilename</key>
-      <values>
-        <value>Docbook Filename</value>
-      </values>
-    </entry>
-    <entry>
-      <key>CreateTopic</key>
-      <values>
-        <value>Create Topic</value>
-      </values>
-    </entry>
-    <entry>
-      <key>TopicView</key>
-      <values>
-        <value>Topic View</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Edit</key>
-      <values>
-        <value>Edit</value>
-      </values>
-    </entry>
-    <entry>
-      <key>TopicTags</key>
-      <values>
-        <value>Tags</value>
-      </values>
-    </entry>
-    <entry>
-      <key>PressGangCCMS</key>
-      <values>
-        <value>PressGang CCMS</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Included</key>
-      <values>
-        <value>Tags Included</value>
-      </values>
-    </entry>
-    <entry>
-      <key>AddRemove</key>
-      <values>
-        <value>Add / Remove</value>
-      </values>
-    </entry>
-    <entry>
-      <key>XMLValidationErrors</key>
-      <values>
-        <value>XML Validation Errors</value>
-      </values>
-    </entry>
-    <entry>
-      <key>IsOpen</key>
-      <values>
-        <value>Bug Is Open</value>
-      </values>
-    </entry>
-    <entry>
-      <key>BlobConstants</key>
-      <values>
-        <value>Blob Constants</value>
-      </values>
-    </entry>
-    <entry>
-      <key>SearchResults</key>
-      <values>
-        <value>Search Results</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Troubleshooting</key>
-      <values>
-        <value>Troubleshooting</value>
-      </values>
-    </entry>
-    <entry>
-      <key>ImageFilename</key>
-      <values>
-        <value>Image Filename</value>
-      </values>
-    </entry>
-    <entry>
-      <key>Save</key>
-      <values>
-        <value>Save</value>
-      </values>
-    </entry>
-  </org.jboss.errai.common.metadata.ErraiPropertyScanner>
   <org.jboss.errai.reflections.scanners.FieldAnnotationsScanner>
     <entry>
       <key>com.google.inject.Inject</key>
@@ -3607,6 +2938,49 @@
       </values>
     </entry>
   </org.jboss.errai.reflections.scanners.FieldAnnotationsScanner>
+  <org.jboss.errai.common.metadata.ErraiPropertyScanner>
+    <entry>
+      <key>groupId</key>
+      <values>
+        <value>org.jboss.errai</value>
+      </values>
+    </entry>
+    <entry>
+      <key>errai.require_authentication_for_all</key>
+      <values>
+        <value>false</value>
+      </values>
+    </entry>
+    <entry>
+      <key>errai.marshalling.serializableTypes</key>
+      <values>
+        <value>org.jboss.pressgang.ccms.rest.v1.collections.RESTBlobConstantCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterLocaleCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTIntegerConstantCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTRoleCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicStringCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTUserCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagCategoryCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTAssignedPropertyTagCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBlobConstantCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryTagCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterLocaleCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTIntegerConstantCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTRoleCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTStringConstantCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCategoryCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicStringCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTUserCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterCategoryV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterLocaleV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTRoleV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicSourceUrlV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicStringV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTUserV1 org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1 org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryTagV1 org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagCategoryV1 org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1</value>
+      </values>
+    </entry>
+    <entry>
+      <key>errai.marshalling.mappingAliases</key>
+      <values>
+        <value>java.util.Arrays$ArrayList-&gt;java.util.List java.util.Collections$UnmodifiableList-&gt;java.util.List java.util.Collections$UnmodifiableSet-&gt;java.util.Set java.util.Collections$UnmodifiableMap-&gt;java.util.Map java.util.Collections$UnmodifiableRandomAccessList-&gt;java.util.List java.util.Collections$SynchronizedList-&gt;java.util.List java.util.Collections$SynchronizedSet-&gt;java.util.Set java.util.Collections$SynchronizedMap-&gt;java.util.Map java.util.Collections$SynchronizedRandomAccessList-&gt;java.util.List java.util.Collections$UnmodifiableSortedMap-&gt;java.util.SortedMap java.util.Collections$SynchronizedSortedMap-&gt;java.util.SortedMap java.util.Collections$UnmodifiableSortedSet-&gt;java.util.SortedSet java.util.Collections$SynchronizedSortedSet-&gt;java.util.SortedSet java.util.Collections$EmptySet-&gt;java.util.Set java.util.Collections$EmptyList-&gt;java.util.List java.util.Collections$EmptyMap-&gt;java.util.Map java.util.Collections$SingletonSet-&gt;java.util.Set java.util.Collections$SingletonList-&gt;java.util.List java.util.Collections$SingletonMap-&gt;java.util.Map</value>
+      </values>
+    </entry>
+    <entry>
+      <key>artifactId</key>
+      <values>
+        <value>errai-cdi-client</value>
+        <value>errai-marshalling</value>
+        <value>errai-ioc</value>
+        <value>errai-tools</value>
+        <value>errai-weld-integration</value>
+        <value>errai-bus</value>
+      </values>
+    </entry>
+    <entry>
+      <key>version</key>
+      <values>
+        <value>2.1.0-SNAPSHOT</value>
+      </values>
+    </entry>
+  </org.jboss.errai.common.metadata.ErraiPropertyScanner>
   <org.jboss.errai.reflections.scanners.TypeAnnotationsScanner>
     <entry>
       <key>org.jboss.errai.marshalling.client.api.annotations.ImplementationAliases</key>
@@ -3666,8 +3040,8 @@
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter</value>
@@ -3726,8 +3100,8 @@
         <value>org.jboss.errai.marshalling.client.marshallers.StringBuilderMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.DateMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.SortedSetMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.FloatMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.DoubleMarshaller</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.FloatMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.ListMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.CharacterMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.TimestampMarshaller</value>
@@ -3839,8 +3213,8 @@
         <value>org.jboss.errai.marshalling.client.marshallers.StringBuilderMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.DateMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.SortedSetMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.FloatMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.DoubleMarshaller</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.FloatMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.ListMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.CharacterMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.TimestampMarshaller</value>
@@ -3923,8 +3297,8 @@
         <value>org.jboss.errai.marshalling.client.marshallers.ListMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.MapMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.SetMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.SortedMapMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.QueueMarshaller</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.SortedMapMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.SortedSetMarshaller</value>
       </values>
     </entry>
@@ -3975,8 +3349,8 @@
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter</value>
@@ -4017,8 +3391,8 @@
         <value>org.jboss.errai.marshalling.client.marshallers.MapMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.StringMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.SetMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.QueueMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.SortedMapMarshaller</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.QueueMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.ShortMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.LongMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.StringBufferMarshaller</value>
@@ -4035,8 +3409,8 @@
         <value>org.jboss.errai.marshalling.client.marshallers.StringBuilderMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.DateMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.SortedSetMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.FloatMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.DoubleMarshaller</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.FloatMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.ListMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.CharacterMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.TimestampMarshaller</value>
@@ -4130,8 +3504,8 @@
         <value>org.jboss.errai.marshalling.client.marshallers.MapMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.StringMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.SetMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.QueueMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.SortedMapMarshaller</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.QueueMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.ShortMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.LongMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.StringBufferMarshaller</value>
@@ -4148,8 +3522,8 @@
         <value>org.jboss.errai.marshalling.client.marshallers.StringBuilderMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.DateMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.SortedSetMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.FloatMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.DoubleMarshaller</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.FloatMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.ListMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.CharacterMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.TimestampMarshaller</value>
