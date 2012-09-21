@@ -594,136 +594,141 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                 if (isClick) {
                     topicProviderData.setSelectedItem(event.getValue());
                     topicProviderData.setDisplayedItem(event.getValue().clone(true));
-                    topicRevisionsDisplay.setRevisionTopic(null);
-
-                    /* Update the current view, or display the default */
-                    if (selectedView == null) {
-                        /* Switch to the default view if none was selected */
-                        selectedView = topicRenderedDisplay;
-                        changeDisplayedTopicView();
-                    } else {
-                        /* Otherwise update the display with the new topic */
-                        updateDisplayedTopicView();
-                    }
-
-                    /* set the revisions to show the loading widget */
-                    if (topicRevisionsDisplay.getProvider() != null)
-                        topicRevisionsDisplay.getProvider().resetProvider();
-
-                    /* set the bugs to show the loading widget */
-                    if (topicBugsDisplay.getProvider() != null)
-                        topicBugsDisplay.getProvider().resetProvider();
-
-                    /* A callback to respond to a request for a topic with the revisions expanded */
-                    final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new RESTCalls.RESTCallback<RESTTopicV1>() {
-                        @Override
-                        public void begin() {
-                            topicRevisionsDisplay.addWaitOperation();
-                        }
-
-                        @Override
-                        public void generalException(final Exception ex) {
-                            topicRevisionsDisplay.removeWaitOperation();
-                        }
-
-                        @Override
-                        public void success(final RESTTopicV1 retValue) {
-                            try {
-                                topicProviderData.getDisplayedItem().getItem().setRevisions(retValue.getRevisions());
-
-                                /* refresh the list */
-                                topicRevisionsDisplay.getProvider().displayNewFixedList(retValue.getRevisions().getItems());
-
-                            } finally {
-                                topicRevisionsDisplay.removeWaitOperation();
-                            }
-
-                        }
-
-                        @Override
-                        public void failed() {
-                            topicRevisionsDisplay.removeWaitOperation();
-                            Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        }
-                    };
-
-                    /* A callback to respond to a request for a topic with the tags expanded */
-                    final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new RESTCalls.RESTCallback<RESTTopicV1>() {
-                        @Override
-                        public void begin() {
-                            topicTagsDisplay.addWaitOperation();
-                        }
-
-                        @Override
-                        public void generalException(final Exception ex) {
-                            topicTagsDisplay.removeWaitOperation();
-                        }
-
-                        @Override
-                        public void success(final RESTTopicV1 retValue) {
-                            try {
-                                /* copy the revisions into the displayed Topic */
-                                topicProviderData.getDisplayedItem().getItem().setTags(retValue.getTags());
-
-                                /* If we are looking at the rendered view, update it */
-                                if (selectedView == topicTagsDisplay) {
-                                    updateDisplayedTopicView();
-                                }
-                            } finally {
-                                topicTagsDisplay.removeWaitOperation();
-                            }
-
-                        }
-
-                        @Override
-                        public void failed() {
-                            topicTagsDisplay.removeWaitOperation();
-                            Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        }
-                    };
-
-                    /* A callback to respond to a request for a topic with the bugzilla bugs expanded */
-                    final RESTCalls.RESTCallback<RESTTopicV1> topicWithBugsCallback = new RESTCalls.RESTCallback<RESTTopicV1>() {
-                        @Override
-                        public void begin() {
-                            topicBugsDisplay.addWaitOperation();
-                        }
-
-                        @Override
-                        public void generalException(final Exception ex) {
-                            topicBugsDisplay.removeWaitOperation();
-                        }
-
-                        @Override
-                        public void success(final RESTTopicV1 retValue) {
-                            try {
-                                final RESTBugzillaBugCollectionV1 collection = retValue.getBugzillaBugs_OTM();
-
-                                /* copy the revisions into the displayed Topic */
-                                topicProviderData.getDisplayedItem().getItem().setBugzillaBugs_OTM(collection);
-
-                                /* refresh the celltable */
-                                topicBugsDisplay.getProvider().displayNewFixedList(collection.getItems());
-                            } finally {
-                                topicBugsDisplay.removeWaitOperation();
-                            }
-
-                        }
-
-                        @Override
-                        public void failed() {
-                            topicBugsDisplay.removeWaitOperation();
-                            Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        }
-                    };
-
-                    /* Initiate the REST calls */
-                    RESTCalls.getTopicWithTags(topicWithTagsCallback, topicProviderData.getSelectedItem().getItem().getId());
-                    RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, topicProviderData.getSelectedItem().getItem().getId());
-                    RESTCalls.getTopicWithBugs(topicWithBugsCallback, topicProviderData.getSelectedItem().getItem().getId());
+                    loadNewTopicDetails();                    
                 }
             }
         });
+    }
+    
+    private void loadNewTopicDetails()
+    {
+        topicRevisionsDisplay.setRevisionTopic(null);
+
+        /* Update the current view, or display the default */
+        if (selectedView == null) {
+            /* Switch to the default view if none was selected */
+            selectedView = topicRenderedDisplay;
+            changeDisplayedTopicView();
+        } else {
+            /* Otherwise update the display with the new topic */
+            updateDisplayedTopicView();
+        }
+
+        /* set the revisions to show the loading widget */
+        if (topicRevisionsDisplay.getProvider() != null)
+            topicRevisionsDisplay.getProvider().resetProvider();
+
+        /* set the bugs to show the loading widget */
+        if (topicBugsDisplay.getProvider() != null)
+            topicBugsDisplay.getProvider().resetProvider();
+
+        /* A callback to respond to a request for a topic with the revisions expanded */
+        final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new RESTCalls.RESTCallback<RESTTopicV1>() {
+            @Override
+            public void begin() {
+                topicRevisionsDisplay.addWaitOperation();
+            }
+
+            @Override
+            public void generalException(final Exception ex) {
+                topicRevisionsDisplay.removeWaitOperation();
+            }
+
+            @Override
+            public void success(final RESTTopicV1 retValue) {
+                try {
+                    topicProviderData.getDisplayedItem().getItem().setRevisions(retValue.getRevisions());
+
+                    /* refresh the list */
+                    topicRevisionsDisplay.getProvider().displayNewFixedList(retValue.getRevisions().getItems());
+
+                } finally {
+                    topicRevisionsDisplay.removeWaitOperation();
+                }
+
+            }
+
+            @Override
+            public void failed() {
+                topicRevisionsDisplay.removeWaitOperation();
+                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+            }
+        };
+
+        /* A callback to respond to a request for a topic with the tags expanded */
+        final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new RESTCalls.RESTCallback<RESTTopicV1>() {
+            @Override
+            public void begin() {
+                topicTagsDisplay.addWaitOperation();
+            }
+
+            @Override
+            public void generalException(final Exception ex) {
+                topicTagsDisplay.removeWaitOperation();
+            }
+
+            @Override
+            public void success(final RESTTopicV1 retValue) {
+                try {
+                    /* copy the revisions into the displayed Topic */
+                    topicProviderData.getDisplayedItem().getItem().setTags(retValue.getTags());
+
+                    /* If we are looking at the rendered view, update it */
+                    if (selectedView == topicTagsDisplay) {
+                        updateDisplayedTopicView();
+                    }
+                } finally {
+                    topicTagsDisplay.removeWaitOperation();
+                }
+
+            }
+
+            @Override
+            public void failed() {
+                topicTagsDisplay.removeWaitOperation();
+                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+            }
+        };
+
+        /* A callback to respond to a request for a topic with the bugzilla bugs expanded */
+        final RESTCalls.RESTCallback<RESTTopicV1> topicWithBugsCallback = new RESTCalls.RESTCallback<RESTTopicV1>() {
+            @Override
+            public void begin() {
+                topicBugsDisplay.addWaitOperation();
+            }
+
+            @Override
+            public void generalException(final Exception ex) {
+                topicBugsDisplay.removeWaitOperation();
+            }
+
+            @Override
+            public void success(final RESTTopicV1 retValue) {
+                try {
+                    final RESTBugzillaBugCollectionV1 collection = retValue.getBugzillaBugs_OTM();
+
+                    /* copy the revisions into the displayed Topic */
+                    topicProviderData.getDisplayedItem().getItem().setBugzillaBugs_OTM(collection);
+
+                    /* refresh the celltable */
+                    topicBugsDisplay.getProvider().displayNewFixedList(collection.getItems());
+                } finally {
+                    topicBugsDisplay.removeWaitOperation();
+                }
+
+            }
+
+            @Override
+            public void failed() {
+                topicBugsDisplay.removeWaitOperation();
+                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+            }
+        };
+
+        /* Initiate the REST calls */
+        RESTCalls.getTopicWithTags(topicWithTagsCallback, topicProviderData.getSelectedItem().getItem().getId());
+        RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, topicProviderData.getSelectedItem().getItem().getId());
+        RESTCalls.getTopicWithBugs(topicWithBugsCallback, topicProviderData.getSelectedItem().getItem().getId());
     }
 
     /**
@@ -786,9 +791,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                                     /* Update the list of topics */
                                     provider.updateRowData(tableStartRow, topicProviderData.getItems());
                                 }
-
-                                /* Update the edit window */
-                                selectedView.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), display.getSplitType());
+                                
+                                loadNewTopicDetails();
 
                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                             } finally {
