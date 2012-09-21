@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter;

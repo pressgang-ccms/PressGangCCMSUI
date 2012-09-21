@@ -19,6 +19,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.TagsFilteredResultsAn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.Presenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter;
@@ -27,16 +28,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresent
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.WelcomeView;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.image.ImageView;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.image.ImagesFilteredResultsAndImageView;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagView;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagsFilteredResultsAndTagView;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicView;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topicsearch.SearchResultsAndTopicView;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topicsearch.SearchResultsView;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topicsearch.SearchView;
-
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
@@ -167,8 +158,14 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 if (bean != null) {
                     presenter = bean.getInstance();
                 }
+            } else if (token.startsWith(ImageFilteredResultsPresenter.HISTORY_TOKEN)) {
+                final IOCBeanDef<ImageFilteredResultsPresenter> bean = manager
+                        .lookupBean(ImageFilteredResultsPresenter.class);
+                if (bean != null) {
+                    presenter = bean.getInstance();
+                }
             }
-
+            
             if (presenter != null) {
                 presenter.parseToken(token);
                 presenter.go(container);

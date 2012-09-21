@@ -8,7 +8,6 @@ import org.jboss.errai.ioc.client.api.AfterInitialization;
 import org.jboss.errai.ioc.client.api.EntryPoint;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.WelcomeView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
 
 import com.google.gwt.core.client.GWT;

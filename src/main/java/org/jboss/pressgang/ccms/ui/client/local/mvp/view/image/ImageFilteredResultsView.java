@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.image;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;

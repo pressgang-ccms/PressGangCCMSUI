@@ -13,7 +13,6 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.image.ImagesFilteredResultsAndImageView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -66,7 +65,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
     private List<RESTImageCollectionItemV1> currentList;
 
     /** The currently selected image in the search results.*/
-    private RESTImageV1 selectedSearchImage;
+    private RESTImageCollectionItemV1 selectedSearchImage;
 
     @Override
     public void go(final HasWidgets container) {
@@ -173,8 +172,8 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
                      */
                     final boolean needToAddImageView = selectedSearchImage == null;
 
-                    selectedSearchImage = event.getValue().getItem();
-                    displayedImage = null;
+                    selectedSearchImage = event.getValue();
+                    displayedImage = event.getValue().clone(true);
 
                     final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
                         @Override
@@ -215,7 +214,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
 
                     };
 
-                    RESTCalls.getImage(callback, selectedSearchImage.getId());
+                    RESTCalls.getImage(callback, selectedSearchImage.getItem().getId());
                 }
             }
         });

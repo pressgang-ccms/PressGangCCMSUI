@@ -8,10 +8,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
 
 import com.google.common.base.Optional;
@@ -104,10 +100,12 @@ public class SearchUICategory extends SearchUIBase {
             }
             
             final Optional<RESTCategoryTagCollectionItemV1> matchingCategory = Iterables.tryFind( tag.getItem().getCategories().getItems(), new Predicate<RESTCategoryTagCollectionItemV1>() {
+                @Override
                 public boolean apply(final RESTCategoryTagCollectionItemV1 arg) { return arg.getItem().getId().equals(category.getItem().getId()); }
             });
             
             final Optional<RESTProjectCollectionItemV1> matchingProject = Iterables.tryFind( tag.getItem().getProjects().getItems(), new Predicate<RESTProjectCollectionItemV1>() {
+                @Override
                 public boolean apply(final RESTProjectCollectionItemV1 arg) { return arg.getItem().getId().equals(project.getItem().getId()); }
             });
                             
@@ -141,6 +139,7 @@ public class SearchUICategory extends SearchUIBase {
             if (tag.getItem().getProjects().getItems().isEmpty()) {
 
                 final Optional<RESTCategoryTagCollectionItemV1> matchingCategory = Iterables.tryFind( tag.getItem().getCategories().getItems(), new Predicate<RESTCategoryTagCollectionItemV1>() {
+                    @Override
                     public boolean apply(final RESTCategoryTagCollectionItemV1 arg) { return arg.getItem().getId().equals(category.getItem().getId()); }
                 });
                                 

@@ -19,6 +19,7 @@ import org.jboss.pressgang.ccms.rest.v1.components.ComponentRESTBaseEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -473,7 +474,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                      */
                     object.getItem().explicitSetTags(object.getItem().getTags());
                 } else {
-                    object.getItem().getConfiguredParameters().remove(RESTCategoryV1.TAGS_NAME);
+                    object.getItem().getConfiguredParameters().remove(RESTBaseCategoryV1.TAGS_NAME);
                 }
 
                 /* refresh the category list */
@@ -537,7 +538,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                      */
                     object.getItem().explicitSetTags(object.getItem().getTags());
                 } else {
-                    object.getItem().getConfiguredParameters().remove(RESTCategoryV1.TAGS_NAME);
+                    object.getItem().getConfiguredParameters().remove(RESTBaseCategoryV1.TAGS_NAME);
                 }
 
                 /* refresh the project list */
@@ -850,6 +851,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
      * 
      * @return true if the user wants to ignore the unsaved changes, false otherwise
      */
+    @Override
     public boolean checkForUnsavedChanges() {
         /* sync the UI with the underlying tag */
         if (tagProviderData.getDisplayedItem() != null) {

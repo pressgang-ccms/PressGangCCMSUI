@@ -12,9 +12,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
@@ -90,6 +88,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     /**
      * @return true when the view is visible, false otherwise
      */
+    @Override
     public boolean isViewShown() {
         return isViewShown;
     }
@@ -97,6 +96,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     /**
      * @param isViewShown true if the view is visible, false otherwise
      */
+    @Override
     public void setViewShown(boolean isViewShown) {
         this.isViewShown = isViewShown;
         updateDisplay();
@@ -427,6 +427,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     /**
      * Called when some background operation that would cause this view to be locked is started.
      */
+    @Override
     public void addWaitOperation()
     {
         ++waitingCount;
@@ -436,6 +437,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     /**
      * Called when some background operation that would cause this view to be locked is ended.
      */
+    @Override
     public void removeWaitOperation()
     {
         if (waitingCount < 1) throw new IllegalStateException("waitingCount should never be less than one when removeWaitOperation() is called.");

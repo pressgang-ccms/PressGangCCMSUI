@@ -9,7 +9,6 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 

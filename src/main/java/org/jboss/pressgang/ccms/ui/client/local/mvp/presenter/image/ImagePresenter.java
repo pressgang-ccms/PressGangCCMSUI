@@ -3,9 +3,9 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.image.ImageView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
@@ -20,7 +20,7 @@ import com.google.gwt.user.client.ui.PushButton;
 @Dependent
 public class ImagePresenter extends ImagePresenterBase {
     public static final String HISTORY_TOKEN = "ImageView";
-    
+
     @Inject
     private Display display;
 
@@ -59,6 +59,14 @@ public class ImagePresenter extends ImagePresenterBase {
     public void go(final HasWidgets container) {
         container.clear();
         container.add(display.getTopLevelPanel());
+
+        /*
+         * normally the displayedImage would be from a collection, but as this presenter only works with one specified entity,
+         * we just create the wrapper RESTImageCollectionItemV1 object manually.
+         */
+        displayedImage = new RESTImageCollectionItemV1();
+        displayedImage.setState(RESTImageCollectionItemV1.UNCHANGED_STATE);
+        displayedImage.setItem(new RESTImageV1());
 
         bind();
 
