@@ -18,7 +18,7 @@ import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.SplitLayoutPanel;
+import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TagCategoriesView extends TagViewBase implements TagCategoriesPresenter.Display {
@@ -26,7 +26,7 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
     /** A reference to the tag that this view will be modifying. */
     private RESTTagV1 tag;
 
-    private SplitLayoutPanel split = new SplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
+    private HanldedSplitLayoutPanel split = new HanldedSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
     private final SimplePager pager = new SimplePager();
@@ -99,12 +99,16 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
         }
     };
 
+    public VerticalPanel getSearchResultsPanel() {
+        return searchResultsPanel;
+    }
+
     @Override
-    public SplitLayoutPanel getSplit() {
+    public HanldedSplitLayoutPanel getSplit() {
         return split;
     }
 
-    public void setSplit(final SplitLayoutPanel split) {
+    public void setSplit(final HanldedSplitLayoutPanel split) {
         this.split = split;
     }
 

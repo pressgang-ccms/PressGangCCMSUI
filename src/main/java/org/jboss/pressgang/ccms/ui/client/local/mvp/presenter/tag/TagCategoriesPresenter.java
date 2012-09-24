@@ -15,8 +15,8 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.HasData;
 
@@ -51,7 +51,9 @@ public class TagCategoriesPresenter extends TemplatePresenter implements Editabl
 
         VerticalPanel getTagsResultsPanel();
 
-        SplitLayoutPanel getSplit();
+        HanldedSplitLayoutPanel getSplit();
+        
+        VerticalPanel getSearchResultsPanel();
     }
 
     @Inject

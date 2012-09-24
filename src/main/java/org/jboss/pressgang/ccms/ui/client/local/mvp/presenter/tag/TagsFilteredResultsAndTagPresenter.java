@@ -30,6 +30,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
@@ -41,6 +42,8 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.Holder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -405,6 +408,9 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         display.setViewShown(true);
 
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
+        
+        display.getSplitPanel().setSplitPosition(display.getResultsPanel(), Preferences.INSTANCE.getInt(Preferences.TAG_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
+        categoriesDisplay.getSplit().setSplitPosition(categoriesDisplay.getSearchResultsPanel(), Preferences.INSTANCE.getInt(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
 
         bind();
     }
@@ -432,6 +438,38 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         bindCategoryColumnButtons();
 
         bindCategoryTagsColumnButtons();
+        
+        bindMainSplitResize();
+        
+        bindCategorySplitResize();
+    }
+    
+    /**
+     * Saves the width of the split screen in the category view
+     */
+    private void bindCategorySplitResize()
+    {
+        categoriesDisplay.getSplit().addResizeHandler(new ResizeHandler() {
+            
+            @Override
+            public void onResize(final ResizeEvent event) {
+                Preferences.INSTANCE.saveSetting(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, categoriesDisplay.getSplit().getSplitPosition(categoriesDisplay.getSearchResultsPanel()) + "");              
+            }
+        });
+    }
+    
+    /**
+     * Saves the width of the split screen
+     */
+    private void bindMainSplitResize()
+    {
+        display.getSplitPanel().addResizeHandler(new ResizeHandler() {
+            
+            @Override
+            public void onResize(final ResizeEvent event) {
+                Preferences.INSTANCE.saveSetting(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display.getSplitPanel().getSplitPosition(display.getResultsPanel()) + "");            
+            }
+        });
     }
 
     /**

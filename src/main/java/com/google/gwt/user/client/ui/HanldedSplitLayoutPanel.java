@@ -25,4 +25,20 @@ public class HanldedSplitLayoutPanel extends SplitLayoutPanel implements HasResi
     public HandlerRegistration addResizeHandler(final ResizeHandler handler) {
         return ensureHandlers().addHandler(ResizeEvent.getType(), handler);
     }
+
+    public void setSplitPosition(final Widget widgetBeforeTheSplitter, final double size, final boolean animate) {
+        final LayoutData layout = (LayoutData) widgetBeforeTheSplitter.getLayoutData();
+        layout.oldSize = layout.size;
+        layout.size = size;
+        if (animate)
+            animate(500);
+        else
+            forceLayout();
+    }
+    
+    public double getSplitPosition(final Widget widgetBeforeTheSplitter)
+    {
+        final LayoutData layout = (LayoutData) widgetBeforeTheSplitter.getLayoutData();
+        return layout.size;
+    }
 }
