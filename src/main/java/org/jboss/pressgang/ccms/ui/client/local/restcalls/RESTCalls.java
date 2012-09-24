@@ -124,6 +124,20 @@ public final class RESTCalls {
             callback.generalException(ex);
         }
     }
+    
+    static public void saveCategories(final RESTCallback<RESTCategoryCollectionV1> callback, final RESTCategoryCollectionV1 categories) {
+        final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
+                constructErrorCallback(callback));
+
+        final String expand = "";
+
+        try {
+            callback.begin();
+            restMethod.updateJSONCategories(expand, categories);
+        } catch (final Exception ex) {
+            callback.generalException(ex);
+        }
+    }
 
     static public void saveTopic(final RESTCallback<RESTTopicV1> callback, final RESTTopicV1 topic) {
         final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
