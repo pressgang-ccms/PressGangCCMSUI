@@ -5,7 +5,7 @@ import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;

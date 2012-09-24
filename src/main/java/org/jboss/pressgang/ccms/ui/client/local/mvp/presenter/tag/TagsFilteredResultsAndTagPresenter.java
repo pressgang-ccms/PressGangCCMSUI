@@ -12,10 +12,10 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentRESTBaseEntityV1;
@@ -25,6 +25,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.sort.RESTTagCategoryCollectionItemV1SortComparator;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -32,7 +33,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
-import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTagCategoryCollectionItemV1SortComparator;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -559,7 +559,8 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                     existingTagInCatgeory.getItem().setRelationshipSort(j);
 
                     /* we need to mark the joiner entity as updated */
-                    existingTagInCatgeory.setState(RESTTagCategoryCollectionItemV1.UPDATE_STATE);
+                    if (!existingTagInCatgeory.returnIsAddItem())
+                        existingTagInCatgeory.setState(RESTTagCategoryCollectionItemV1.UPDATE_STATE);
                 }
 
                 /* The next item is either the item before (if moving up) of the item after (if moving down) */
@@ -667,7 +668,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                 /*
                  * refresh the list of tags in the category
                  */
-                categoriesDisplay.getTagsProvider().displayNewFixedList(categoryTagsProviderData.getItems());
+                categoriesDisplay.setTagsProvider(generateCategoriesTagListProvider());
             }
         });
     }

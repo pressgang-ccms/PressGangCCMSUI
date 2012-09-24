@@ -1,7 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
