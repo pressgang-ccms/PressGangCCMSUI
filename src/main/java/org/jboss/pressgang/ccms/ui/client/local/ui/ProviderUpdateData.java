@@ -7,7 +7,7 @@ import java.util.List;
  * keeps those pieces of information.
  * 
  * @author Matthew Casperson
- * 
+ * TODO: save total list size.
  */
 public class ProviderUpdateData<T> {
     /** References the providers start row. */

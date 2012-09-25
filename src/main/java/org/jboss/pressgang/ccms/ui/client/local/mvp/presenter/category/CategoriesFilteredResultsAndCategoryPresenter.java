@@ -163,7 +163,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter extends TemplatePrese
 
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
-        //display.getSplitPanel().setSplitPosition(display.getResultsPanel(), Preferences.INSTANCE.getInt(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
+        display.getSplitPanel().setSplitPosition(display.getResultsPanel(), Preferences.INSTANCE.getInt(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
 
         bind();
     }

@@ -19,6 +19,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
@@ -129,6 +130,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 presenter = getBeanInstance(CategoryPresenter.class);
             } else if (token.startsWith(CategoriesFilteredResultsAndCategoryPresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(CategoriesFilteredResultsAndCategoryPresenter.class);
+            } else if (token.startsWith(TagFilteredResultsPresenter.HISTORY_TOKEN)){
+                presenter = getBeanInstance(TagFilteredResultsPresenter.class);
             }
             
             if (presenter.isPresent()) {

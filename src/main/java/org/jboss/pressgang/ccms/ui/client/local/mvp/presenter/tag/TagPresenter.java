@@ -74,7 +74,7 @@ public class TagPresenter extends TemplatePresenter implements EditableView {
             }
         };
 
-        RESTCalls.getTag(callback, Integer.parseInt(tagId));
+        RESTCalls.getUnexpandedTag(callback, Integer.parseInt(tagId));
     }
 
     private void bind() {

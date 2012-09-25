@@ -75,7 +75,7 @@ public class CategoryPresenter extends TemplatePresenter implements EditableView
             }
         };
 
-        RESTCalls.getCategory(callback, Integer.parseInt(categoryId));
+        RESTCalls.getUnexpandedCategory(callback, Integer.parseInt(categoryId));
     }
 
     private void bind() {

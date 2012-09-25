@@ -208,6 +208,20 @@ public final class RESTCalls {
             callback.generalException(ex);
         }
     }
+    
+    static public void getUnexpandedTag(final RESTCallback<RESTTagV1> callback, final Integer id) {
+        final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
+                constructErrorCallback(callback));
+        /* Expand the categories and projects in the tags */
+        final String expand = "";
+
+        try {
+            callback.begin();
+            restMethod.getJSONTag(id, expand);
+        } catch (final Exception ex) {
+            callback.generalException(ex);
+        }
+    }
 
     static public void getTopicWithRevisions(final RESTCallback<RESTTopicV1> callback, final Integer id) {
         final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
@@ -369,6 +383,20 @@ public final class RESTCalls {
             callback.generalException(ex);
         }
     }
+    
+    static public void getUnexpandedCategory(final RESTCallback<RESTCategoryV1> callback, Integer id) {
+        final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
+                constructErrorCallback(callback));
+        /* Expand the categories and projects in the tags */
+        final String expand = "";
+
+        try {
+            callback.begin();
+            restMethod.getJSONCategory(id, expand);
+        } catch (final Exception ex) {
+            callback.generalException(ex);
+        }
+    }
 
     static public void getCategories(final RESTCallback<RESTCategoryCollectionV1> callback) {
         final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
@@ -386,6 +414,23 @@ public final class RESTCalls {
         }
     }
 
+    static public void getUnexpandedCategoriesFromQuery(final RESTCallback<RESTCategoryCollectionV1> callback, final String queryString,
+            int start, int end) {
+        final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
+                constructErrorCallback(callback));
+        /* Expand the categories and projects in the tags */
+
+        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
+                + ", \"name\": \"categories\"}}]}";
+
+        try {
+            callback.begin();
+            restMethod.getJSONCategoriesWithQuery(new PathSegmentImpl(queryString), expand);
+        } catch (final Exception ex) {
+            callback.generalException(ex);
+        }
+    }
+    
     static public void getCategoriesFromQuery(final RESTCallback<RESTCategoryCollectionV1> callback, final String queryString,
             int start, int end) {
         final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),

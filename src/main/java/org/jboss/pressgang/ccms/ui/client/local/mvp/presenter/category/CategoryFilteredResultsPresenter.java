@@ -94,7 +94,7 @@ public class CategoryFilteredResultsPresenter extends TemplatePresenter implemen
                     }
                 };
 
-                RESTCalls.getCategoriesFromQuery(callback, queryString, start, end);
+                RESTCalls.getUnexpandedCategoriesFromQuery(callback, queryString, start, end);
             }
         };
 
