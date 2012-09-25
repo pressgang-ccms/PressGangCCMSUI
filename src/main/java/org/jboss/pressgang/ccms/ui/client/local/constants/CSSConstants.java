@@ -33,10 +33,28 @@ public interface CSSConstants {
         String TAGFILTEREDOPTIONSPANEL = "TagFilteredOptionsPanel";
     }
 
+    public interface CategoryFilteredResultsView {
+        /** Assigned to the panel that holds the list of images. */
+        String CATEGORY_FILTERED_RESULTS_PANEL = "CategoryFilteredResultsPanel";
+        /** Assigned to the panel that holds the filter options for images. */
+        String CATEGORY_FILTERED_OPTIONS_PANEL = "CategoryFilteredOptionsPanel";
+    }
+
     public interface TagCategoryView {
         String TAGCATEGORIESLISTPANEL = "TagCategoriesListPanel";
         String TAGCATEGORYTAGSLISTPANEL = "TagCategoryTagsListPanel";
         String TAGCATEGORIESSPLITPANEL = "TagCategoriesSplitPanel";
+    }
+
+    public interface CategoryView {
+        String CATEGORY_VIEW_PANEL = "CategoryViewPanel";
+        String CATEGORY_VIEW_ID_LABEL = "CategoryViewIDLabel";
+        String CATEGORY_VIEW_ID_TEXT = "CategoryViewIDText";
+        String CATEGORY_VIEW_NAME_LABEL = "CategoryViewNameLabel";
+        String CATEGORY_VIEW_NAME_TEXT = "CategoryViewNameText";
+        String CATEGORY_VIEW_DESCRIPTION_LABEL = "CategoryViewDescriptionLabel";
+        String CATEGORY_VIEW_DESCRIPTION_TEXT = "CategoryViewDescriptionText";
+        String CATEGORY_VIEW_ID_LABEL_CELL = "CategoryViewIDLabelCell";
     }
 
     /**

@@ -59,7 +59,7 @@ import com.google.gwt.view.client.HasData;
  * @author Matthew Casperson
  */
 @Dependent
-public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
+public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
 
     /** The history token used to identify this view */
     public static final String HISTORY_TOKEN = "TagFilteredResultsAndImageView";

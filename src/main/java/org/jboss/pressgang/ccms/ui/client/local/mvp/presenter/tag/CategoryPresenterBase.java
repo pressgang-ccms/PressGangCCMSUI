@@ -4,7 +4,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 
-abstract public class TagPresenterBase extends TemplatePresenter implements EditableView {
+abstract public class CategoryPresenterBase extends TemplatePresenter implements EditableView {
     /** Called when a new "tab" is selected */
     abstract protected void reInitialiseView();
 

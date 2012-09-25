@@ -52,19 +52,19 @@ public final class RESTCalls {
      * An Exception may be thrown
      * The call succeeds or
      * The call fails
-     * 
+     *
      * This interface defines callbacks for these events.
-     * 
+     *
      * @author Matthew Casperson
      *
      * @param <T> The type that is returned by the REST call
      */
     abstract public interface RESTCallback<T> {
+
         /**
          * Called before the REST methods is called
          */
         void begin();
-
         /**
          * Called if an exception is thrown when attempting to call the REST service
          * @param ex
@@ -81,8 +81,8 @@ public final class RESTCalls {
          * Called if the REST call was unsuccessful
          */
         void failed();
-    }
 
+    }
     private RESTCalls() {
 
     }
@@ -124,7 +124,21 @@ public final class RESTCalls {
             callback.generalException(ex);
         }
     }
-    
+
+    public static void saveCategory(final RESTCallback<RESTCategoryV1> callback, final RESTCategoryV1 category) {
+        final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
+                constructErrorCallback(callback));
+        /* Expand the categories and projects in the tags */
+        final String expand = "";
+
+        try {
+            callback.begin();
+            restMethod.updateJSONCategory(expand, category);
+        } catch (final Exception ex) {
+            callback.generalException(ex);
+        }
+    }
+
     static public void saveCategories(final RESTCallback<RESTCategoryCollectionV1> callback, final RESTCategoryCollectionV1 categories) {
         final RESTInterfaceV1 restMethod = RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback),
                 constructErrorCallback(callback));

@@ -29,12 +29,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFiltere
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenterBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenterBase;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.*;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.CategoryPresenterBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter.Display;
@@ -541,7 +537,7 @@ public class BootstrapperImpl implements Bootstrapper {
     injContext.addBean(TagViewBase.class, TagCategoriesView.class, inj2089_TagCategoriesView_creational, null, arrayOf_19635043Annotation_20149639, null, false);
     injContext.addBean(BaseTemplateView.class, TagCategoriesView.class, inj2089_TagCategoriesView_creational, null, arrayOf_19635043Annotation_20149639, null, false);
     injContext.addBean(TagsFilteredResultsAndTagPresenter.class, TagsFilteredResultsAndTagPresenter.class, inj2084_TagsFilteredResultsAndTagPresenter_creational, null, arrayOf_19635043Annotation_20149639, null, true);
-    injContext.addBean(TagPresenterBase.class, TagsFilteredResultsAndTagPresenter.class, inj2084_TagsFilteredResultsAndTagPresenter_creational, null, arrayOf_19635043Annotation_20149639, null, false);
+    injContext.addBean(CategoryPresenterBase.class, TagsFilteredResultsAndTagPresenter.class, inj2084_TagsFilteredResultsAndTagPresenter_creational, null, arrayOf_19635043Annotation_20149639, null, false);
     injContext.addBean(EditableView.class, TagsFilteredResultsAndTagPresenter.class, inj2084_TagsFilteredResultsAndTagPresenter_creational, null, arrayOf_19635043Annotation_20149639, null, false);
     injContext.addBean(TemplatePresenter.class, TagsFilteredResultsAndTagPresenter.class, inj2084_TagsFilteredResultsAndTagPresenter_creational, null, arrayOf_19635043Annotation_20149639, null, false);
     injContext.addBean(Presenter.class, TagsFilteredResultsAndTagPresenter.class, inj2084_TagsFilteredResultsAndTagPresenter_creational, null, arrayOf_19635043Annotation_20149639, null, false);
