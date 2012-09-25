@@ -32,8 +32,8 @@
       <key>com.google.gwt.editor.client.Editor$Ignore</key>
       <values>
         <value>org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTLanguageImageV1Editor.getUpload()</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTLanguageImageV1Editor.getImageDataBase64()</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTLanguageImageV1Editor.getUploadButton()</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTLanguageImageV1Editor.getImageDataBase64()</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTLanguageImageV1Editor.getFilename()</value>
       </values>
     </entry>
@@ -51,10 +51,10 @@
         <value>org.jboss.errai.bus.server.service.ErraiServiceConfiguratorImpl.&lt;init&gt;()</value>
         <value>org.jboss.errai.bus.server.ServerMessageBusImpl.&lt;init&gt;(org.jboss.errai.bus.server.service.ErraiServiceConfigurator)</value>
         <value>org.jboss.errai.tools.monitoring.MonitorExtension.&lt;init&gt;(org.jboss.errai.bus.client.framework.MessageBus)</value>
-        <value>org.jboss.errai.bus.server.service.ErraiServiceImpl.&lt;init&gt;(org.jboss.errai.bus.server.api.ServerMessageBus, org.jboss.errai.bus.server.service.ErraiServiceConfigurator)</value>
         <value>org.jboss.errai.bus.server.security.auth.JAASAdapter.&lt;init&gt;(org.jboss.errai.bus.client.framework.MessageBus)</value>
-        <value>org.jboss.errai.bus.server.AsyncDispatcher.&lt;init&gt;(org.jboss.errai.bus.server.service.ErraiService)</value>
+        <value>org.jboss.errai.bus.server.service.ErraiServiceImpl.&lt;init&gt;(org.jboss.errai.bus.server.api.ServerMessageBus, org.jboss.errai.bus.server.service.ErraiServiceConfigurator)</value>
         <value>org.jboss.errai.bus.server.SimpleDispatcher.&lt;init&gt;(org.jboss.errai.bus.server.service.ErraiService)</value>
+        <value>org.jboss.errai.bus.server.AsyncDispatcher.&lt;init&gt;(org.jboss.errai.bus.server.service.ErraiService)</value>
       </values>
     </entry>
     <entry>
@@ -165,8 +165,8 @@
     <entry>
       <key>org.jboss.errai.bus.client.framework.Subscription</key>
       <values>
-        <value>org.jboss.errai.bus.server.ServerMessageBusImpl$8</value>
         <value>org.jboss.errai.enterprise.client.cdi.api.CDI$2</value>
+        <value>org.jboss.errai.bus.server.ServerMessageBusImpl$8</value>
         <value>org.jboss.errai.bus.client.framework.ClientMessageBusImpl$3</value>
         <value>org.jboss.errai.bus.server.service.MessageBusProxy$1</value>
         <value>org.jboss.errai.bus.server.service.MessageBusProxy$2</value>
@@ -310,16 +310,16 @@
       </values>
     </entry>
     <entry>
-      <key>org.jboss.errai.marshalling.client.marshallers.AbstractBackReferencingMarshaller</key>
-      <values>
-        <value>org.jboss.errai.marshalling.client.marshallers.AbstractCollectionMarshaller</value>
-      </values>
-    </entry>
-    <entry>
       <key>javax.swing.AbstractAction</key>
       <values>
         <value>org.jboss.errai.tools.monitoring.ServiceActivityMonitor$4</value>
         <value>org.jboss.errai.tools.monitoring.ServiceActivityMonitor$SearchDialog$1</value>
+      </values>
+    </entry>
+    <entry>
+      <key>org.jboss.errai.marshalling.client.marshallers.AbstractBackReferencingMarshaller</key>
+      <values>
+        <value>org.jboss.errai.marshalling.client.marshallers.AbstractCollectionMarshaller</value>
       </values>
     </entry>
     <entry>
@@ -347,6 +347,7 @@
       <values>
         <value>org.jboss.errai.enterprise.client.cdi.AbstractErraiCDITest</value>
         <value>org.jboss.errai.ioc.client.IOCClientTestCase</value>
+        <value>org.jboss.errai.enterprise.client.jaxrs.test.AbstractErraiJaxrsTest</value>
         <value>org.jboss.errai.bus.client.tests.AbstractErraiTest</value>
       </values>
     </entry>
@@ -398,45 +399,6 @@
       </values>
     </entry>
     <entry>
-      <key>java.lang.Runnable</key>
-      <values>
-        <value>org.jboss.errai.bus.server.async.scheduling.ThreadWorker</value>
-        <value>org.jboss.errai.bus.server.ServerMessageBusImpl$7</value>
-        <value>org.jboss.errai.bus.server.ServerMessageBusImpl$5</value>
-        <value>org.jboss.errai.bus.server.async.TimedTask</value>
-        <value>org.jboss.errai.bus.server.ServerMessageBusImpl$6</value>
-        <value>org.jboss.errai.tools.monitoring.ServiceActivityMonitor$2$1</value>
-        <value>org.jboss.errai.bus.server.service.bootstrap.DefaultComponents$1</value>
-        <value>org.jboss.errai.marshalling.rebind.MarshallerGeneratorFactory$1</value>
-        <value>org.jboss.errai.enterprise.client.cdi.CDIClientBootstrap$3</value>
-        <value>org.jboss.errai.ioc.rebind.ioc.injector.AbstractInjector$1</value>
-        <value>org.jboss.errai.bus.client.api.base.DefaultMessageBuilder$1$3</value>
-        <value>org.jboss.errai.enterprise.client.cdi.CDIClientBootstrap$1</value>
-        <value>org.jboss.errai.tools.monitoring.ServiceActivityMonitor$SearchDialog$2$1</value>
-        <value>org.jboss.errai.bus.server.ServerMessageBusImpl$4</value>
-        <value>org.jboss.errai.cdi.server.CDIExtensionPoints$StartupCallback</value>
-        <value>org.jboss.errai.tools.monitoring.ObjectExplorer$2</value>
-        <value>org.jboss.errai.tools.monitoring.ServiceActivityMonitor$4$1</value>
-        <value>org.jboss.errai.bus.server.AsyncDispatcher$1</value>
-        <value>org.jboss.errai.bus.server.service.bootstrap.LoadExtensions$2</value>
-        <value>org.jboss.errai.tools.monitoring.ServerMonitorPanel$6</value>
-        <value>org.jboss.errai.tools.monitoring.ServerMonitorPanel$7</value>
-        <value>org.jboss.errai.bus.client.api.base.DefaultMessageBuilder$1$1$3</value>
-        <value>org.jboss.errai.ioc.rebind.ioc.injector.ProducerInjector$1$1</value>
-        <value>org.jboss.errai.bus.client.framework.ClientMessageBusImpl$2</value>
-        <value>org.jboss.errai.tools.monitoring.ActivityProcessor$2</value>
-        <value>org.jboss.errai.bus.client.framework.ClientMessageBusImpl$8</value>
-        <value>org.jboss.errai.bus.client.tests.AbstractErraiTest$1</value>
-        <value>org.jboss.errai.bus.server.WorkerFactory$1</value>
-        <value>org.jboss.errai.bus.client.api.base.DefaultMessageBuilder$1$1$1</value>
-        <value>org.jboss.errai.bus.client.api.base.DefaultMessageBuilder$1$1$2</value>
-        <value>org.jboss.errai.ioc.rebind.ioc.bootstrapper.IOCBootstrapGenerator$1</value>
-        <value>org.jboss.errai.enterprise.client.cdi.CDIClientBootstrap$2$1</value>
-        <value>org.jboss.errai.tools.monitoring.ObjectExplorer$2$1</value>
-        <value>org.jboss.errai.bus.server.io.websockets.WebSocketServer$1</value>
-      </values>
-    </entry>
-    <entry>
       <key>org.jboss.errai.tools.monitoring.MessageMonitor</key>
       <values>
         <value>org.jboss.errai.tools.monitoring.Dataservice$4</value>
@@ -450,6 +412,46 @@
       </values>
     </entry>
     <entry>
+      <key>java.lang.Runnable</key>
+      <values>
+        <value>org.jboss.errai.enterprise.client.jaxrs.JaxrsModuleBootstrapper</value>
+        <value>org.jboss.errai.bus.server.async.scheduling.ThreadWorker</value>
+        <value>org.jboss.errai.bus.server.ServerMessageBusImpl$7</value>
+        <value>org.jboss.errai.bus.server.ServerMessageBusImpl$5</value>
+        <value>org.jboss.errai.bus.server.async.TimedTask</value>
+        <value>org.jboss.errai.bus.server.ServerMessageBusImpl$6</value>
+        <value>org.jboss.errai.tools.monitoring.ServiceActivityMonitor$2$1</value>
+        <value>org.jboss.errai.bus.server.service.bootstrap.DefaultComponents$1</value>
+        <value>org.jboss.errai.marshalling.rebind.MarshallerGeneratorFactory$1</value>
+        <value>org.jboss.errai.enterprise.client.cdi.CDIClientBootstrap$3</value>
+        <value>org.jboss.errai.ioc.rebind.ioc.injector.AbstractInjector$1</value>
+        <value>org.jboss.errai.enterprise.client.cdi.CDIClientBootstrap$1</value>
+        <value>org.jboss.errai.bus.client.api.base.DefaultMessageBuilder$1$3</value>
+        <value>org.jboss.errai.tools.monitoring.ServiceActivityMonitor$SearchDialog$2$1</value>
+        <value>org.jboss.errai.bus.server.ServerMessageBusImpl$4</value>
+        <value>org.jboss.errai.cdi.server.CDIExtensionPoints$StartupCallback</value>
+        <value>org.jboss.errai.tools.monitoring.ObjectExplorer$2</value>
+        <value>org.jboss.errai.tools.monitoring.ServiceActivityMonitor$4$1</value>
+        <value>org.jboss.errai.bus.server.service.bootstrap.LoadExtensions$2</value>
+        <value>org.jboss.errai.bus.server.AsyncDispatcher$1</value>
+        <value>org.jboss.errai.tools.monitoring.ServerMonitorPanel$6</value>
+        <value>org.jboss.errai.tools.monitoring.ServerMonitorPanel$7</value>
+        <value>org.jboss.errai.bus.client.api.base.DefaultMessageBuilder$1$1$3</value>
+        <value>org.jboss.errai.ioc.rebind.ioc.injector.ProducerInjector$1$1</value>
+        <value>org.jboss.errai.bus.client.framework.ClientMessageBusImpl$2</value>
+        <value>org.jboss.errai.tools.monitoring.ActivityProcessor$2</value>
+        <value>org.jboss.errai.bus.client.framework.ClientMessageBusImpl$8</value>
+        <value>org.jboss.errai.bus.server.WorkerFactory$1</value>
+        <value>org.jboss.errai.bus.client.tests.AbstractErraiTest$1</value>
+        <value>org.jboss.errai.bus.client.api.base.DefaultMessageBuilder$1$1$1</value>
+        <value>org.jboss.errai.ioc.rebind.ioc.bootstrapper.IOCBootstrapGenerator$1</value>
+        <value>org.jboss.errai.bus.client.api.base.DefaultMessageBuilder$1$1$2</value>
+        <value>org.jboss.errai.enterprise.client.cdi.CDIClientBootstrap$2$1</value>
+        <value>org.jboss.errai.tools.monitoring.ObjectExplorer$2$1</value>
+        <value>org.jboss.errai.bus.server.io.websockets.WebSocketServer$1</value>
+      </values>
+    </entry>
+    <entry>
       <key>io.netty.channel.ChannelPipelineFactory</key>
       <values>
         <value>org.jboss.errai.bus.server.io.websockets.WebSocketServerPipelineFactory</value>
@@ -460,8 +462,8 @@
       <values>
         <value>org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTLanguageImageV1Editor</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUICategoryEditor</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUIProjectEditor</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUICategoryEditor</value>
       </values>
     </entry>
     <entry>
@@ -478,13 +480,6 @@
       </values>
     </entry>
     <entry>
-      <key>org.jboss.errai.marshalling.rebind.api.model.MappingDefinition</key>
-      <values>
-        <value>org.jboss.errai.marshalling.rebind.mappings.builtin.StackTraceElementDefinition</value>
-        <value>org.jboss.errai.marshalling.rebind.mappings.builtin.ThrowableDefinition</value>
-      </values>
-    </entry>
-    <entry>
       <key>org.jboss.errai.ioc.rebind.ioc.extension.JSR330AnnotationHandler</key>
       <values>
         <value>org.jboss.errai.ioc.rebind.ioc.bootstrapper.IOCProcessorFactory$1</value>
@@ -495,15 +490,29 @@
       </values>
     </entry>
     <entry>
+      <key>org.jboss.errai.marshalling.rebind.api.model.MappingDefinition</key>
+      <values>
+        <value>org.jboss.errai.marshalling.rebind.mappings.builtin.StackTraceElementDefinition</value>
+        <value>org.jboss.errai.marshalling.rebind.mappings.builtin.ThrowableDefinition</value>
+      </values>
+    </entry>
+    <entry>
       <key>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.TroubleshootingPresenter$Display</key>
       <values>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.view.TroubleshootingView</value>
       </values>
     </entry>
     <entry>
+      <key>java.util.HashMap</key>
+      <values>
+        <value>org.jboss.errai.enterprise.rebind.JaxrsGwtRequestMethodMapper$1</value>
+      </values>
+    </entry>
+    <entry>
       <key>org.jboss.errai.bus.client.api.interceptor.RemoteCallInterceptor</key>
       <values>
         <value>org.jboss.errai.bus.client.api.interceptor.RpcInterceptor</value>
+        <value>org.jboss.errai.enterprise.client.jaxrs.api.interceptor.RestClientInterceptor</value>
       </values>
     </entry>
     <entry>
@@ -530,6 +539,7 @@
       <key>org.jboss.errai.bus.client.api.ErrorCallback</key>
       <values>
         <value>org.jboss.errai.bus.server.security.auth.rules.RolesRequiredRule$1</value>
+        <value>org.jboss.errai.enterprise.client.jaxrs.test.AbstractErraiJaxrsTest$TestErrorCallback</value>
         <value>org.jboss.errai.bus.client.api.base.AsyncDelegateErrorCallback</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls$2</value>
         <value>org.jboss.errai.bus.client.api.base.DefaultErrorCallback</value>
@@ -743,19 +753,19 @@
       </values>
     </entry>
     <entry>
-      <key>org.jboss.errai.ioc.rebind.ioc.bootstrapper.IOCProcessorFactory$ProcessingDelegate</key>
-      <values>
-        <value>org.jboss.errai.ioc.rebind.ioc.bootstrapper.IOCProcessorFactory$8</value>
-        <value>org.jboss.errai.ioc.rebind.ioc.bootstrapper.IOCProcessorFactory$6</value>
-        <value>org.jboss.errai.ioc.rebind.ioc.bootstrapper.IOCProcessorFactory$7</value>
-      </values>
-    </entry>
-    <entry>
       <key>javax.swing.event.ListSelectionListener</key>
       <values>
         <value>org.jboss.errai.tools.monitoring.ServiceActivityMonitor$1</value>
         <value>org.jboss.errai.tools.monitoring.ServiceActivityMonitor$2</value>
         <value>org.jboss.errai.tools.monitoring.ServerMonitorPanel$1</value>
+      </values>
+    </entry>
+    <entry>
+      <key>org.jboss.errai.ioc.rebind.ioc.bootstrapper.IOCProcessorFactory$ProcessingDelegate</key>
+      <values>
+        <value>org.jboss.errai.ioc.rebind.ioc.bootstrapper.IOCProcessorFactory$8</value>
+        <value>org.jboss.errai.ioc.rebind.ioc.bootstrapper.IOCProcessorFactory$6</value>
+        <value>org.jboss.errai.ioc.rebind.ioc.bootstrapper.IOCProcessorFactory$7</value>
       </values>
     </entry>
     <entry>
@@ -768,6 +778,12 @@
       <key>javax.enterprise.context.Dependent</key>
       <values>
         <value>org.jboss.errai.marshalling.rebind.MarshallerGeneratorFactory$3</value>
+      </values>
+    </entry>
+    <entry>
+      <key>javax.enterprise.event.Event</key>
+      <values>
+        <value>org.jboss.errai.enterprise.client.cdi.EventProvider$EventImpl</value>
       </values>
     </entry>
     <entry>
@@ -788,12 +804,6 @@
       <values>
         <value>org.jboss.errai.marshalling.server.json.impl.ErraiJSONValue</value>
         <value>org.jboss.errai.marshalling.client.api.json.impl.gwt.GWTJSONValue</value>
-      </values>
-    </entry>
-    <entry>
-      <key>javax.enterprise.event.Event</key>
-      <values>
-        <value>org.jboss.errai.enterprise.client.cdi.EventProvider$EventImpl</value>
       </values>
     </entry>
     <entry>
@@ -964,6 +974,7 @@
         <value>org.jboss.errai.ioc.rebind.ioc.bootstrapper.QualifierEqualityFactoryGenerator</value>
         <value>org.jboss.errai.ioc.rebind.ioc.bootstrapper.IOCGenerator</value>
         <value>org.jboss.errai.bus.rebind.RpcProxyLoaderGenerator</value>
+        <value>org.jboss.errai.enterprise.rebind.JaxrsProxyLoaderGenerator</value>
       </values>
     </entry>
     <entry>
@@ -1024,6 +1035,12 @@
       </values>
     </entry>
     <entry>
+      <key>org.jboss.errai.bus.client.api.interceptor.RemoteCallContext</key>
+      <values>
+        <value>org.jboss.errai.enterprise.client.jaxrs.api.interceptor.RestCallContext</value>
+      </values>
+    </entry>
+    <entry>
       <key>org.jboss.errai.bus.client.api.builder.MessageBuildSendableWithReply</key>
       <values>
         <value>org.jboss.errai.bus.client.api.builder.MessageReplySendable</value>
@@ -1037,30 +1054,30 @@
         <value>org.jboss.errai.ioc.client.api.TestMock</value>
         <value>org.jboss.errai.ioc.client.api.IOCBootstrapTask</value>
         <value>org.jboss.errai.marshalling.client.api.annotations.AlwaysQualify</value>
-        <value>org.jboss.errai.ioc.client.api.LoadAsync</value>
         <value>org.jboss.errai.bus.server.annotations.Remote</value>
+        <value>org.jboss.errai.ioc.client.api.LoadAsync</value>
         <value>org.jboss.errai.ioc.client.api.IOCExtension</value>
         <value>org.jboss.errai.ioc.client.api.AfterInitialization</value>
         <value>org.jboss.errai.ioc.client.api.Callback</value>
         <value>org.jboss.errai.marshalling.client.api.annotations.MapsTo</value>
         <value>org.jboss.errai.ioc.client.api.EntryPoint</value>
-        <value>org.jboss.errai.marshalling.client.api.annotations.ClientMarshaller</value>
         <value>org.jboss.errai.bus.server.annotations.Command</value>
+        <value>org.jboss.errai.marshalling.client.api.annotations.ClientMarshaller</value>
         <value>org.jboss.errai.enterprise.client.cdi.internal.ObserverModel</value>
         <value>org.jboss.errai.marshalling.rebind.api.InheritedMappings</value>
         <value>org.jboss.errai.ioc.client.api.CreatePanel</value>
         <value>org.jboss.errai.ioc.client.container.BeanRef$AnnotationHashWrapper</value>
-        <value>org.jboss.errai.marshalling.rebind.api.CustomMapping</value>
         <value>org.jboss.errai.ioc.client.api.ToSubject</value>
+        <value>org.jboss.errai.marshalling.rebind.api.CustomMapping</value>
         <value>org.jboss.errai.bus.client.api.interceptor.InterceptedCall</value>
         <value>org.jboss.errai.marshalling.rebind.api.MarshallingExtension</value>
-        <value>org.jboss.errai.marshalling.client.api.annotations.Key</value>
-        <value>org.jboss.errai.ioc.client.api.CodeDecorator</value>
         <value>org.jboss.errai.cdi.server.events.DynamicEventObserverMethod$AnnotationWrapper</value>
+        <value>org.jboss.errai.ioc.client.api.CodeDecorator</value>
+        <value>org.jboss.errai.marshalling.client.api.annotations.Key</value>
         <value>org.jboss.errai.ioc.client.api.ReplyTo</value>
         <value>org.jboss.errai.marshalling.client.api.annotations.ServerMarshaller</value>
-        <value>org.jboss.errai.ioc.client.api.PackageTarget</value>
         <value>org.jboss.errai.bus.server.annotations.security.RequireRoles</value>
+        <value>org.jboss.errai.ioc.client.api.PackageTarget</value>
         <value>org.jboss.errai.cdi.server.CDIServerUtil$AnnotationHolder</value>
         <value>org.jboss.errai.bus.client.api.Local</value>
         <value>org.jboss.errai.bus.server.annotations.security.RequireAuthentication</value>
@@ -1074,6 +1091,8 @@
       <key>com.google.gwt.event.logical.shared.ResizeHandler</key>
       <values>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter$7</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$5</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$6</value>
       </values>
     </entry>
     <entry>
@@ -1168,15 +1187,15 @@
       </values>
     </entry>
     <entry>
-      <key>org.jboss.errai.bus.client.api.base.CommandMessage</key>
-      <values>
-        <value>org.jboss.errai.bus.client.api.base.ConversationMessage</value>
-      </values>
-    </entry>
-    <entry>
       <key>org.jboss.servlet.http.HttpEventServlet</key>
       <values>
         <value>org.jboss.errai.bus.server.servlet.JBossCometServlet</value>
+      </values>
+    </entry>
+    <entry>
+      <key>org.jboss.errai.bus.client.api.base.CommandMessage</key>
+      <values>
+        <value>org.jboss.errai.bus.client.api.base.ConversationMessage</value>
       </values>
     </entry>
     <entry>
@@ -1189,6 +1208,12 @@
       <key>org.jboss.errai.marshalling.client.api.exceptions.MarshallingException</key>
       <values>
         <value>org.jboss.errai.marshalling.client.api.exceptions.NoAvailableMarshallerException</value>
+      </values>
+    </entry>
+    <entry>
+      <key>javax.ws.rs.core.MultivaluedMap</key>
+      <values>
+        <value>org.jboss.errai.enterprise.client.jaxrs.api.MultivaluedMapImpl</value>
       </values>
     </entry>
     <entry>
@@ -1219,6 +1244,7 @@
       <key>java.util.Map</key>
       <values>
         <value>org.jboss.errai.cdi.server.events.RoutingMap</value>
+        <value>javax.ws.rs.core.MultivaluedMap</value>
       </values>
     </entry>
     <entry>
@@ -1246,6 +1272,8 @@
       <key>javax.enterprise.util.TypeLiteral</key>
       <values>
         <value>org.jboss.errai.marshalling.rebind.MarshallerGeneratorFactory$4</value>
+        <value>org.jboss.errai.enterprise.rebind.JaxrsProxyGenerator$2</value>
+        <value>org.jboss.errai.enterprise.rebind.JaxrsProxyGenerator$1</value>
       </values>
     </entry>
     <entry>
@@ -1313,7 +1341,6 @@
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter$DeleteTagClickHandler</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter$24</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$9</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter$16</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter$17</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter$18</value>
@@ -1328,6 +1355,7 @@
         <value>org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUITagEditor$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUICategoryEditor$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenterBase$7</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$13</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenterBase$5</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter$6</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenterBase$6</value>
@@ -1372,16 +1400,16 @@
       </values>
     </entry>
     <entry>
+      <key>javax.swing.JTree</key>
+      <values>
+        <value>org.jboss.errai.tools.monitoring.ObjectExplorer</value>
+      </values>
+    </entry>
+    <entry>
       <key>org.jboss.errai.marshalling.client.api.Parser</key>
       <values>
         <value>org.jboss.errai.marshalling.server.MappingContextSingleton$1</value>
         <value>org.jboss.errai.marshalling.client.api.MarshallerFramework$1</value>
-      </values>
-    </entry>
-    <entry>
-      <key>javax.swing.JTree</key>
-      <values>
-        <value>org.jboss.errai.tools.monitoring.ObjectExplorer</value>
       </values>
     </entry>
     <entry>
@@ -1397,13 +1425,6 @@
       </values>
     </entry>
     <entry>
-      <key>org.jboss.errai.ioc.client.IOCClientTestCase$ContainerBootstrapper</key>
-      <values>
-        <value>org.jboss.errai.ioc.rebind.ioc.test.harness.IOCSimulatedTestRunner$4</value>
-        <value>org.jboss.errai.ioc.client.IOCClientTestCase$1</value>
-      </values>
-    </entry>
-    <entry>
       <key>org.jboss.errai.tools.monitoring.ValRenderer</key>
       <values>
         <value>org.jboss.errai.tools.monitoring.ObjectExplorer$4</value>
@@ -1413,6 +1434,13 @@
         <value>org.jboss.errai.tools.monitoring.ObjectExplorer$7</value>
         <value>org.jboss.errai.tools.monitoring.ObjectExplorer$8</value>
         <value>org.jboss.errai.tools.monitoring.ObjectExplorer$9</value>
+      </values>
+    </entry>
+    <entry>
+      <key>org.jboss.errai.ioc.client.IOCClientTestCase$ContainerBootstrapper</key>
+      <values>
+        <value>org.jboss.errai.ioc.rebind.ioc.test.harness.IOCSimulatedTestRunner$4</value>
+        <value>org.jboss.errai.ioc.client.IOCClientTestCase$1</value>
       </values>
     </entry>
     <entry>
@@ -1469,15 +1497,15 @@
       </values>
     </entry>
     <entry>
-      <key>org.jboss.errai.bus.client.api.HasEncoded</key>
-      <values>
-        <value>org.jboss.errai.bus.client.api.base.HasEncodedConvMessageWrapper</value>
-      </values>
-    </entry>
-    <entry>
       <key>org.jboss.errai.ioc.rebind.ioc.injector.Injector</key>
       <values>
         <value>org.jboss.errai.ioc.rebind.ioc.injector.AbstractInjector</value>
+      </values>
+    </entry>
+    <entry>
+      <key>org.jboss.errai.bus.client.api.HasEncoded</key>
+      <values>
+        <value>org.jboss.errai.bus.client.api.base.HasEncodedConvMessageWrapper</value>
       </values>
     </entry>
     <entry>
@@ -1507,25 +1535,26 @@
       </values>
     </entry>
     <entry>
+      <key>java.lang.RuntimeException</key>
+      <values>
+        <value>org.jboss.errai.bus.client.api.BadlyFormedMessageException</value>
+        <value>org.jboss.errai.marshalling.client.api.exceptions.MarshallingException</value>
+        <value>org.jboss.errai.ioc.client.container.IOCResolutionException</value>
+        <value>org.jboss.errai.bus.server.ErraiBootstrapFailure</value>
+        <value>org.jboss.errai.ioc.rebind.ioc.exception.UnsatisfiedDependenciesException</value>
+        <value>org.jboss.errai.enterprise.client.jaxrs.api.ResponseException</value>
+        <value>org.jboss.errai.ioc.client.api.InjectionException</value>
+        <value>org.jboss.errai.bus.client.api.base.MessageDeliveryFailure</value>
+        <value>org.jboss.errai.bus.server.security.auth.AuthenticationFailedException</value>
+        <value>org.jboss.errai.marshalling.client.api.exceptions.InvalidMappingException</value>
+        <value>org.jboss.errai.bus.server.QueueUnavailableException</value>
+      </values>
+    </entry>
+    <entry>
       <key>java.util.HashSet</key>
       <values>
         <value>org.jboss.errai.bus.server.ServerMessageBusImpl$10</value>
         <value>org.jboss.errai.enterprise.rebind.ObserversMarshallingExtension$3</value>
-      </values>
-    </entry>
-    <entry>
-      <key>java.lang.RuntimeException</key>
-      <values>
-        <value>org.jboss.errai.marshalling.client.api.exceptions.MarshallingException</value>
-        <value>org.jboss.errai.bus.client.api.BadlyFormedMessageException</value>
-        <value>org.jboss.errai.ioc.client.container.IOCResolutionException</value>
-        <value>org.jboss.errai.bus.server.ErraiBootstrapFailure</value>
-        <value>org.jboss.errai.ioc.rebind.ioc.exception.UnsatisfiedDependenciesException</value>
-        <value>org.jboss.errai.ioc.client.api.InjectionException</value>
-        <value>org.jboss.errai.bus.client.api.base.MessageDeliveryFailure</value>
-        <value>org.jboss.errai.marshalling.client.api.exceptions.InvalidMappingException</value>
-        <value>org.jboss.errai.bus.server.security.auth.AuthenticationFailedException</value>
-        <value>org.jboss.errai.bus.server.QueueUnavailableException</value>
       </values>
     </entry>
     <entry>
@@ -1583,17 +1612,16 @@
         <value>org.jboss.errai.bus.client.protocols.MonitorParts</value>
         <value>org.jboss.errai.bus.client.security.CredentialTypes</value>
         <value>org.jboss.errai.bus.client.api.base.Capabilities</value>
-        <value>org.jboss.errai.bus.server.WorkerFactory$SaturationPolicy</value>
         <value>org.jboss.errai.bus.client.protocols.SerializationCommands</value>
+        <value>org.jboss.errai.bus.server.WorkerFactory$SaturationPolicy</value>
         <value>org.jboss.errai.bus.server.async.scheduling.PooledExecutorService$SaturationPolicy</value>
         <value>org.jboss.errai.bus.server.servlet.ServletInitAttribs</value>
         <value>org.jboss.errai.bus.client.framework.BuiltInServices</value>
         <value>org.jboss.errai.ioc.rebind.ioc.extension.RelativeOrder</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences$ButtonView</value>
         <value>org.jboss.errai.bus.client.protocols.SecurityParts</value>
         <value>org.jboss.errai.enterprise.client.cdi.CDICommands</value>
-        <value>org.jboss.errai.bus.client.framework.RoutingFlag</value>
         <value>org.jboss.errai.marshalling.server.JSONStreamDecoder$State</value>
+        <value>org.jboss.errai.bus.client.framework.RoutingFlag</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.ui.SplitType</value>
         <value>org.jboss.errai.enterprise.client.cdi.CDIProtocol</value>
         <value>org.jboss.errai.bus.client.protocols.MonitorCommands</value>
@@ -1622,12 +1650,11 @@
     <entry>
       <key>org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls$RESTCallback</key>
       <values>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$13$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter$1</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$5</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$6</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$7</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter$6</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$8</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter$3$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenterBase$5$1</value>
@@ -1641,11 +1668,13 @@
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter$14</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter$2$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenterBase$1</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$4$2</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$4$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter$2$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter$17$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter$1$1</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$17$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter$1$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter$2$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter$1</value>
@@ -1753,7 +1782,9 @@
     <entry>
       <key>org.jboss.errai.bus.client.api.RemoteCallback</key>
       <values>
+        <value>org.jboss.errai.enterprise.client.jaxrs.test.AbstractErraiJaxrsTest$AssertionCallback</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls$1</value>
+        <value>org.jboss.errai.enterprise.client.jaxrs.api.ResponseCallback</value>
       </values>
     </entry>
     <entry>
@@ -1799,11 +1830,11 @@
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter$1</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter$2</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$17</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$16</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$15</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$14</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter$1</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$13</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$12</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$11</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$10</value>
       </values>
     </entry>
     <entry>
@@ -1942,13 +1973,6 @@
       </values>
     </entry>
     <entry>
-      <key>org.jboss.errai.marshalling.rebind.api.model.Mapping</key>
-      <values>
-        <value>org.jboss.errai.marshalling.rebind.api.model.impl.SimpleMapping</value>
-        <value>org.jboss.errai.marshalling.rebind.api.model.MemberMapping</value>
-      </values>
-    </entry>
-    <entry>
       <key>org.jboss.errai.ioc.rebind.ioc.injector.api.InjectionTask</key>
       <values>
         <value>org.jboss.errai.ioc.rebind.ioc.injector.api.DecoratorTask</value>
@@ -1958,6 +1982,13 @@
       <key>org.jboss.errai.ioc.rebind.ioc.injector.api.TypeDiscoveryListener</key>
       <values>
         <value>org.jboss.errai.ioc.rebind.ioc.injector.ProducerInjector$2</value>
+      </values>
+    </entry>
+    <entry>
+      <key>org.jboss.errai.marshalling.rebind.api.model.Mapping</key>
+      <values>
+        <value>org.jboss.errai.marshalling.rebind.api.model.impl.SimpleMapping</value>
+        <value>org.jboss.errai.marshalling.rebind.api.model.MemberMapping</value>
       </values>
     </entry>
     <entry>
@@ -2081,17 +2112,17 @@
       </values>
     </entry>
     <entry>
-      <key>org.jboss.errai.common.client.api.tasks.HasAsyncTaskRef</key>
-      <values>
-        <value>org.jboss.errai.bus.client.api.base.DefaultMessageBuilder$1$1</value>
-        <value>org.jboss.errai.bus.client.api.base.DefaultMessageBuilder$1$4</value>
-      </values>
-    </entry>
-    <entry>
       <key>org.jboss.errai.bus.client.api.laundry.Laundry</key>
       <values>
         <value>org.jboss.errai.bus.client.api.base.DefaultMessageBuilder$1$2</value>
         <value>org.jboss.errai.cdi.server.events.EventRoutingTable$1</value>
+      </values>
+    </entry>
+    <entry>
+      <key>org.jboss.errai.common.client.api.tasks.HasAsyncTaskRef</key>
+      <values>
+        <value>org.jboss.errai.bus.client.api.base.DefaultMessageBuilder$1$1</value>
+        <value>org.jboss.errai.bus.client.api.base.DefaultMessageBuilder$1$4</value>
       </values>
     </entry>
     <entry>
@@ -2121,15 +2152,21 @@
       </values>
     </entry>
     <entry>
+      <key>org.jboss.errai.common.server.api.ErraiConfigExtension</key>
+      <values>
+        <value>org.jboss.errai.tools.monitoring.MonitorExtension</value>
+      </values>
+    </entry>
+    <entry>
       <key>org.jboss.errai.bus.client.api.builder.MessageBuildParms</key>
       <values>
         <value>org.jboss.errai.bus.client.api.builder.MessageBuildCommand</value>
       </values>
     </entry>
     <entry>
-      <key>org.jboss.errai.common.server.api.ErraiConfigExtension</key>
+      <key>javax.ws.rs.core.PathSegment</key>
       <values>
-        <value>org.jboss.errai.tools.monitoring.MonitorExtension</value>
+        <value>org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl</value>
       </values>
     </entry>
     <entry>
@@ -2360,6 +2397,8 @@
     <entry>
       <key>org.jboss.errai.codegen.Statement</key>
       <values>
+        <value>org.jboss.errai.enterprise.rebind.JaxrsResourceMethodParameters$2</value>
+        <value>org.jboss.errai.enterprise.rebind.JaxrsResourceMethodParameters$1</value>
         <value>org.jboss.errai.ioc.rebind.ioc.bootstrapper.IOCBootstrapGenerator$2$1</value>
       </values>
     </entry>
@@ -2506,9 +2545,11 @@
       <key>com.google.gwt.cell.client.FieldUpdater</key>
       <values>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter$3</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$7</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$8</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$9</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter$2</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$12</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$11</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$10</value>
       </values>
     </entry>
     <entry>
@@ -2579,6 +2620,12 @@
       </values>
     </entry>
     <entry>
+      <key>org.jboss.errai.bus.client.framework.RpcStub</key>
+      <values>
+        <value>org.jboss.errai.enterprise.client.jaxrs.JaxrsProxy</value>
+      </values>
+    </entry>
+    <entry>
       <key>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter$Display</key>
       <values>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicXMLView</value>
@@ -2637,8 +2684,8 @@
     <entry>
       <key>com.google.gwt.view.client.CellPreviewEvent$Handler</key>
       <values>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$15</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$14</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$18</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter$19</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter$11</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter$3</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter$2</value>
@@ -2666,8 +2713,8 @@
         <value>org.jboss.errai.bus.server.io.CommandBindingsCallback</value>
         <value>org.jboss.errai.bus.client.framework.ClientMessageBusImpl$RemoteMessageCallback</value>
         <value>org.jboss.errai.enterprise.client.cdi.CDIClientBootstrap$2</value>
-        <value>org.jboss.errai.cdi.server.CDIExtensionPoints$1</value>
         <value>org.jboss.errai.bus.server.io.ConversationalEndpointCallback</value>
+        <value>org.jboss.errai.cdi.server.CDIExtensionPoints$1</value>
         <value>org.jboss.errai.enterprise.client.cdi.AbstractCDIEventCallback</value>
         <value>org.jboss.errai.bus.server.ServerMessageBusImpl$1</value>
         <value>org.jboss.errai.cdi.server.CDIExtensionPoints$3</value>
@@ -2686,8 +2733,8 @@
         <value>org.jboss.errai.bus.server.service.bootstrap.DefaultServices$1</value>
         <value>org.jboss.errai.bus.server.service.bootstrap.DefaultServices$3</value>
         <value>org.jboss.errai.bus.client.framework.ClientMessageBusImpl$9$1$3</value>
-        <value>org.jboss.errai.bus.server.ServerMessageBusImpl$RemoteMessageCallback</value>
         <value>org.jboss.errai.bus.client.framework.ClientMessageBusImpl$9</value>
+        <value>org.jboss.errai.bus.server.ServerMessageBusImpl$RemoteMessageCallback</value>
       </values>
     </entry>
     <entry>
@@ -2734,6 +2781,12 @@
       </values>
     </entry>
     <entry>
+      <key>org.jboss.errai.enterprise.client.jaxrs.api.ResponseCallback</key>
+      <values>
+        <value>org.jboss.errai.enterprise.client.jaxrs.test.AbstractErraiJaxrsTest$AssertionResponseCallback</value>
+      </values>
+    </entry>
+    <entry>
       <key>java.util.concurrent.RejectedExecutionHandler</key>
       <values>
         <value>org.jboss.errai.tools.monitoring.ActivityProcessor$1</value>
@@ -2772,63 +2825,6 @@
       </values>
     </entry>
   </org.jboss.errai.reflections.scanners.SubTypesScanner>
-  <org.jboss.errai.reflections.scanners.FieldAnnotationsScanner>
-    <entry>
-      <key>com.google.inject.Inject</key>
-      <values>
-        <value>org.jboss.pressgang.ccms.ui.client.local.AppController.eventBus</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.AppController.manager</value>
-      </values>
-    </entry>
-    <entry>
-      <key>javax.inject.Inject</key>
-      <values>
-        <value>org.jboss.errai.ioc.client.api.builtin.DisposerProvider.beanManager</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.projectsDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicRevisionsDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter.topicViewDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicBugsDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicViewDisplay</value>
-        <value>org.jboss.errai.cdi.server.BusInitializationBean.bm</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchPresenter.eventBus</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.searchResultsDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.imageFilteredResultsDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.imageDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicXMLDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicXMLErrorsDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter.eventBus</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.resultDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicRenderedDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicTagsDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.filteredResultsDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicSplitPanelRenderedDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.TroubleshootingPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.App.appController</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.categoriesDisplay</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter.display</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.display</value>
-      </values>
-    </entry>
-    <entry>
-      <key>com.google.gwt.editor.client.Editor$Path</key>
-      <values>
-        <value>org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor.self</value>
-      </values>
-    </entry>
-  </org.jboss.errai.reflections.scanners.FieldAnnotationsScanner>
   <org.jboss.errai.common.metadata.ErraiPropertyScanner>
     <entry>
       <key>NotSpecified</key>
@@ -2927,6 +2923,12 @@
       </values>
     </entry>
     <entry>
+      <key>errai.dispatcher_implementation</key>
+      <values>
+        <value>org.jboss.errai.bus.server.SimpleDispatcher</value>
+      </values>
+    </entry>
+    <entry>
       <key>ProjectID</key>
       <values>
         <value>Project ID</value>
@@ -2983,7 +2985,8 @@
     <entry>
       <key>errai.marshalling.serializableTypes</key>
       <values>
-        <value>org.jboss.pressgang.ccms.rest.v1.collections.RESTBlobConstantCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterLocaleCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTIntegerConstantCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTRoleCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicStringCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTUserCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagCategoryCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTAssignedPropertyTagCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBlobConstantCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryTagCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterLocaleCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTIntegerConstantCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTRoleCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTStringConstantCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCategoryCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicStringCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTUserCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterCategoryV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterLocaleV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTRoleV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicSourceUrlV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicStringV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTUserV1 org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1 org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryTagV1 org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagCategoryV1 org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1</value>
+        <value>org.jboss.pressgang.ccms.rest.v1.collections.RESTBlobConstantCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterLocaleCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTIntegerConstantCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTRoleCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicStringCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTUserCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryInTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTAssignedPropertyTagCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBlobConstantCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterLocaleCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTIntegerConstantCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTRoleCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTStringConstantCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicStringCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.RESTUserCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterCategoryV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterLocaleV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTRoleV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicSourceUrlV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicStringV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTUserV1 org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1 org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryInTagV1 org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1 org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1 org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyCategoryTagCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyTagCategoryCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1 org.jboss.pressgang.ccms.rest.v1.collections.join.RESTPropertyCategoryTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.entities.join.RESTPropertyTagCategoryV1 org.jboss.pressgang.ccms.rest.v1.collections.join.RESTPropertyTagCategoryCollectionV1 org.jboss.pressgang.ccms.rest.v1.entities.join.RESTPropertyCategoryTagV1</value>
+        <value>org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTBugzillaBugV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicSourceUrlV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicStringV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1 org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTRoleCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicStringCollectionV1 org.jboss.pressgang.ccms.rest.v1.collections.RESTUserCollectionV1</value>
       </values>
     </entry>
     <entry>
@@ -3141,9 +3144,10 @@
       <values>
         <value>errai-cdi-client</value>
         <value>errai-marshalling</value>
-        <value>errai-ioc</value>
+        <value>errai-jaxrs-client</value>
         <value>errai-tools</value>
         <value>errai-weld-integration</value>
+        <value>errai-ioc</value>
         <value>errai-bus</value>
       </values>
     </entry>
@@ -3199,6 +3203,12 @@
       <key>VerticalSplit</key>
       <values>
         <value>Vertical Split</value>
+      </values>
+    </entry>
+    <entry>
+      <key>java.naming.factory.url.pkgs</key>
+      <values>
+        <value>org.mortbay.naming</value>
       </values>
     </entry>
     <entry>
@@ -3424,6 +3434,12 @@
       </values>
     </entry>
     <entry>
+      <key>java.naming.factory.initial</key>
+      <values>
+        <value>org.mortbay.naming.InitialContextFactory</value>
+      </values>
+    </entry>
+    <entry>
       <key>TopicTitle</key>
       <values>
         <value>Topic Title</value>
@@ -3538,7 +3554,72 @@
       </values>
     </entry>
   </org.jboss.errai.common.metadata.ErraiPropertyScanner>
+  <org.jboss.errai.reflections.scanners.FieldAnnotationsScanner>
+    <entry>
+      <key>com.google.inject.Inject</key>
+      <values>
+        <value>org.jboss.pressgang.ccms.ui.client.local.AppController.eventBus</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.AppController.manager</value>
+      </values>
+    </entry>
+    <entry>
+      <key>javax.inject.Inject</key>
+      <values>
+        <value>org.jboss.errai.ioc.client.api.builtin.DisposerProvider.beanManager</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.projectsDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicRevisionsDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter.topicViewDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicBugsDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicViewDisplay</value>
+        <value>org.jboss.errai.cdi.server.BusInitializationBean.bm</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchPresenter.eventBus</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.searchResultsDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.imageFilteredResultsDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.imageDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicXMLDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicXMLErrorsDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter.eventBus</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.resultDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicRenderedDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicTagsDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.filteredResultsDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.topicSplitPanelRenderedDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.TroubleshootingPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.App.appController</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.categoriesDisplay</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter.display</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.display</value>
+      </values>
+    </entry>
+    <entry>
+      <key>com.google.gwt.editor.client.Editor$Path</key>
+      <values>
+        <value>org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor.self</value>
+      </values>
+    </entry>
+  </org.jboss.errai.reflections.scanners.FieldAnnotationsScanner>
   <org.jboss.errai.reflections.scanners.TypeAnnotationsScanner>
+    <entry>
+      <key>org.jboss.errai.ioc.client.api.CodeDecorator</key>
+      <values>
+        <value>org.jboss.errai.ioc.rebind.ioc.builtin.AfterInitializationExtension</value>
+        <value>org.jboss.errai.enterprise.rebind.ObservesExtension</value>
+        <value>org.jboss.errai.ioc.rebind.ioc.builtin.ServiceIOCExtension</value>
+      </values>
+    </entry>
     <entry>
       <key>org.jboss.errai.marshalling.client.api.annotations.ImplementationAliases</key>
       <values>
@@ -3551,14 +3632,6 @@
       </values>
     </entry>
     <entry>
-      <key>org.jboss.errai.ioc.client.api.CodeDecorator</key>
-      <values>
-        <value>org.jboss.errai.ioc.rebind.ioc.builtin.AfterInitializationExtension</value>
-        <value>org.jboss.errai.enterprise.rebind.ObservesExtension</value>
-        <value>org.jboss.errai.ioc.rebind.ioc.builtin.ServiceIOCExtension</value>
-      </values>
-    </entry>
-    <entry>
       <key>com.google.inject.Singleton</key>
       <values>
         <value>org.jboss.errai.bus.server.SimpleDispatcher</value>
@@ -3568,11 +3641,9 @@
       </values>
     </entry>
     <entry>
-      <key>org.jboss.errai.marshalling.client.api.annotations.AlwaysQualify</key>
+      <key>org.jboss.errai.ioc.client.api.IOCBootstrapTask</key>
       <values>
-        <value>org.jboss.errai.marshalling.client.marshallers.LinkedMapMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.MapMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.SortedMapMarshaller</value>
+        <value>org.jboss.errai.enterprise.client.jaxrs.JaxrsModuleBootstrapper</value>
       </values>
     </entry>
     <entry>
@@ -3583,6 +3654,14 @@
         <value>org.jboss.errai.ioc.client.api.ReplyTo</value>
         <value>org.jboss.errai.ioc.client.api.LoadAsync</value>
         <value>org.jboss.errai.ioc.client.api.ToSubject</value>
+      </values>
+    </entry>
+    <entry>
+      <key>org.jboss.errai.marshalling.client.api.annotations.AlwaysQualify</key>
+      <values>
+        <value>org.jboss.errai.marshalling.client.marshallers.LinkedMapMarshaller</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.MapMarshaller</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.SortedMapMarshaller</value>
       </values>
     </entry>
     <entry>
@@ -3617,17 +3696,17 @@
       </values>
     </entry>
     <entry>
+      <key>org.jboss.errai.ioc.client.api.IOCExtension</key>
+      <values>
+        <value>org.jboss.errai.enterprise.rebind.JSR299IOCExtensionConfigurator</value>
+      </values>
+    </entry>
+    <entry>
       <key>javax.enterprise.context.ApplicationScoped</key>
       <values>
         <value>org.jboss.errai.cdi.server.events.ConversationEventGatewayBean</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.AppController</value>
         <value>org.jboss.errai.cdi.server.BusInitializationBean</value>
-      </values>
-    </entry>
-    <entry>
-      <key>org.jboss.errai.ioc.client.api.IOCExtension</key>
-      <values>
-        <value>org.jboss.errai.enterprise.rebind.JSR299IOCExtensionConfigurator</value>
       </values>
     </entry>
     <entry>
@@ -3671,27 +3750,27 @@
         <value>org.jboss.errai.ioc.client.api.TestMock</value>
         <value>org.jboss.errai.ioc.client.api.IOCBootstrapTask</value>
         <value>org.jboss.errai.marshalling.client.api.annotations.AlwaysQualify</value>
-        <value>org.jboss.errai.ioc.client.api.LoadAsync</value>
         <value>org.jboss.errai.bus.server.annotations.Remote</value>
+        <value>org.jboss.errai.ioc.client.api.LoadAsync</value>
         <value>org.jboss.errai.ioc.client.api.IOCExtension</value>
         <value>org.jboss.errai.ioc.client.api.AfterInitialization</value>
         <value>org.jboss.errai.ioc.client.api.Callback</value>
         <value>org.jboss.errai.marshalling.client.api.annotations.MapsTo</value>
         <value>org.jboss.errai.ioc.client.api.EntryPoint</value>
-        <value>org.jboss.errai.marshalling.client.api.annotations.ClientMarshaller</value>
         <value>org.jboss.errai.bus.server.annotations.Command</value>
+        <value>org.jboss.errai.marshalling.client.api.annotations.ClientMarshaller</value>
         <value>org.jboss.errai.marshalling.rebind.api.InheritedMappings</value>
         <value>org.jboss.errai.ioc.client.api.CreatePanel</value>
-        <value>org.jboss.errai.marshalling.rebind.api.CustomMapping</value>
         <value>org.jboss.errai.ioc.client.api.ToSubject</value>
+        <value>org.jboss.errai.marshalling.rebind.api.CustomMapping</value>
         <value>org.jboss.errai.bus.client.api.interceptor.InterceptedCall</value>
         <value>org.jboss.errai.marshalling.rebind.api.MarshallingExtension</value>
         <value>org.jboss.errai.ioc.client.api.CodeDecorator</value>
         <value>org.jboss.errai.marshalling.client.api.annotations.Key</value>
         <value>org.jboss.errai.ioc.client.api.ReplyTo</value>
         <value>org.jboss.errai.marshalling.client.api.annotations.ServerMarshaller</value>
-        <value>org.jboss.errai.ioc.client.api.PackageTarget</value>
         <value>org.jboss.errai.bus.server.annotations.security.RequireRoles</value>
+        <value>org.jboss.errai.ioc.client.api.PackageTarget</value>
         <value>org.jboss.errai.bus.client.api.Local</value>
         <value>org.jboss.errai.bus.server.annotations.security.RequireAuthentication</value>
         <value>org.jboss.errai.bus.server.annotations.Service</value>
@@ -3708,27 +3787,27 @@
         <value>org.jboss.errai.ioc.client.api.TestMock</value>
         <value>org.jboss.errai.ioc.client.api.IOCBootstrapTask</value>
         <value>org.jboss.errai.marshalling.client.api.annotations.AlwaysQualify</value>
-        <value>org.jboss.errai.ioc.client.api.LoadAsync</value>
         <value>org.jboss.errai.bus.server.annotations.Remote</value>
+        <value>org.jboss.errai.ioc.client.api.LoadAsync</value>
         <value>org.jboss.errai.ioc.client.api.IOCExtension</value>
         <value>org.jboss.errai.ioc.client.api.AfterInitialization</value>
         <value>org.jboss.errai.ioc.client.api.Callback</value>
         <value>org.jboss.errai.marshalling.client.api.annotations.MapsTo</value>
         <value>org.jboss.errai.ioc.client.api.EntryPoint</value>
-        <value>org.jboss.errai.marshalling.client.api.annotations.ClientMarshaller</value>
         <value>org.jboss.errai.bus.server.annotations.Command</value>
+        <value>org.jboss.errai.marshalling.client.api.annotations.ClientMarshaller</value>
         <value>org.jboss.errai.enterprise.client.cdi.internal.ObserverModel</value>
         <value>org.jboss.errai.marshalling.rebind.api.InheritedMappings</value>
         <value>org.jboss.errai.ioc.client.api.CreatePanel</value>
-        <value>org.jboss.errai.marshalling.rebind.api.CustomMapping</value>
         <value>org.jboss.errai.ioc.client.api.ToSubject</value>
+        <value>org.jboss.errai.marshalling.rebind.api.CustomMapping</value>
         <value>org.jboss.errai.marshalling.rebind.api.MarshallingExtension</value>
         <value>org.jboss.errai.ioc.client.api.CodeDecorator</value>
         <value>org.jboss.errai.marshalling.client.api.annotations.Key</value>
         <value>org.jboss.errai.ioc.client.api.ReplyTo</value>
         <value>org.jboss.errai.marshalling.client.api.annotations.ServerMarshaller</value>
-        <value>org.jboss.errai.ioc.client.api.PackageTarget</value>
         <value>org.jboss.errai.bus.server.annotations.security.RequireRoles</value>
+        <value>org.jboss.errai.ioc.client.api.PackageTarget</value>
         <value>org.jboss.errai.bus.client.api.Local</value>
         <value>org.jboss.errai.bus.server.annotations.security.RequireAuthentication</value>
         <value>org.jboss.errai.bus.server.annotations.Service</value>
@@ -3741,6 +3820,14 @@
       <key>org.jboss.errai.ioc.client.api.EntryPoint</key>
       <values>
         <value>org.jboss.pressgang.ccms.ui.client.local.App</value>
+      </values>
+    </entry>
+    <entry>
+      <key>org.jboss.errai.common.client.api.annotations.Portable</key>
+      <values>
+        <value>org.jboss.errai.bus.client.api.base.MessageDeliveryFailure</value>
+        <value>org.jboss.errai.bus.client.api.base.TransportIOException</value>
+        <value>org.jboss.errai.enterprise.client.cdi.events.BusReadyEvent</value>
       </values>
     </entry>
     <entry>
@@ -3777,23 +3864,15 @@
       </values>
     </entry>
     <entry>
-      <key>org.jboss.errai.common.client.api.annotations.Portable</key>
+      <key>org.jboss.errai.common.server.api.annotations.ExtensionComponent</key>
       <values>
-        <value>org.jboss.errai.bus.client.api.base.MessageDeliveryFailure</value>
-        <value>org.jboss.errai.bus.client.api.base.TransportIOException</value>
-        <value>org.jboss.errai.enterprise.client.cdi.events.BusReadyEvent</value>
+        <value>org.jboss.errai.tools.monitoring.MonitorExtension</value>
       </values>
     </entry>
     <entry>
       <key>org.jboss.errai.marshalling.rebind.api.InheritedMappings</key>
       <values>
         <value>org.jboss.errai.marshalling.rebind.mappings.builtin.ThrowableDefinition</value>
-      </values>
-    </entry>
-    <entry>
-      <key>org.jboss.errai.common.server.api.annotations.ExtensionComponent</key>
-      <values>
-        <value>org.jboss.errai.tools.monitoring.MonitorExtension</value>
       </values>
     </entry>
     <entry>
@@ -3812,10 +3891,16 @@
         <value>org.jboss.errai.ioc.client.api.builtin.RequestDispatcherProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.SenderProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.DisposerProvider</value>
-        <value>org.jboss.errai.ioc.client.api.builtin.InitBallotProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.RootPanelProvider</value>
+        <value>org.jboss.errai.ioc.client.api.builtin.InitBallotProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.IOCBeanManagerProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.MessageBusProvider</value>
+      </values>
+    </entry>
+    <entry>
+      <key>org.jboss.errai.marshalling.rebind.api.MarshallingExtension</key>
+      <values>
+        <value>org.jboss.errai.enterprise.rebind.ObserversMarshallingExtension</value>
       </values>
     </entry>
     <entry>
@@ -3827,8 +3912,8 @@
         <value>org.jboss.errai.ioc.client.api.builtin.RequestDispatcherProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.SenderProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.DisposerProvider</value>
-        <value>org.jboss.errai.ioc.client.api.builtin.InitBallotProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.RootPanelProvider</value>
+        <value>org.jboss.errai.ioc.client.api.builtin.InitBallotProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.IOCBeanManagerProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.MessageBusProvider</value>
       </values>
@@ -3837,17 +3922,19 @@
       <key>javax.inject.Scope</key>
       <values>
         <value>org.jboss.errai.ioc.client.api.EntryPoint</value>
-      </values>
-    </entry>
-    <entry>
-      <key>org.jboss.errai.marshalling.rebind.api.MarshallingExtension</key>
-      <values>
-        <value>org.jboss.errai.enterprise.rebind.ObserversMarshallingExtension</value>
       </values>
     </entry>
   </org.jboss.errai.reflections.scanners.TypeAnnotationsScanner>
   <org.jboss.errai.common.metadata.ExtendedTypeAnnotationScanner>
     <entry>
+      <key>org.jboss.errai.ioc.client.api.CodeDecorator</key>
+      <values>
+        <value>org.jboss.errai.ioc.rebind.ioc.builtin.AfterInitializationExtension</value>
+        <value>org.jboss.errai.enterprise.rebind.ObservesExtension</value>
+        <value>org.jboss.errai.ioc.rebind.ioc.builtin.ServiceIOCExtension</value>
+      </values>
+    </entry>
+    <entry>
       <key>org.jboss.errai.marshalling.client.api.annotations.ImplementationAliases</key>
       <values>
         <value>org.jboss.errai.marshalling.client.marshallers.ListMarshaller</value>
@@ -3859,28 +3946,18 @@
       </values>
     </entry>
     <entry>
-      <key>org.jboss.errai.ioc.client.api.CodeDecorator</key>
-      <values>
-        <value>org.jboss.errai.ioc.rebind.ioc.builtin.AfterInitializationExtension</value>
-        <value>org.jboss.errai.enterprise.rebind.ObservesExtension</value>
-        <value>org.jboss.errai.ioc.rebind.ioc.builtin.ServiceIOCExtension</value>
-      </values>
-    </entry>
-    <entry>
       <key>com.google.inject.Singleton</key>
       <values>
-        <value>org.jboss.errai.bus.server.ServerMessageBusImpl</value>
         <value>org.jboss.errai.bus.server.SimpleDispatcher</value>
+        <value>org.jboss.errai.bus.server.ServerMessageBusImpl</value>
         <value>org.jboss.errai.bus.server.AsyncDispatcher</value>
         <value>org.jboss.errai.bus.server.service.ErraiServiceImpl</value>
       </values>
     </entry>
     <entry>
-      <key>org.jboss.errai.marshalling.client.api.annotations.AlwaysQualify</key>
+      <key>org.jboss.errai.ioc.client.api.IOCBootstrapTask</key>
       <values>
-        <value>org.jboss.errai.marshalling.client.marshallers.LinkedMapMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.MapMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.SortedMapMarshaller</value>
+        <value>org.jboss.errai.enterprise.client.jaxrs.JaxrsModuleBootstrapper</value>
       </values>
     </entry>
     <entry>
@@ -3894,6 +3971,14 @@
       </values>
     </entry>
     <entry>
+      <key>org.jboss.errai.marshalling.client.api.annotations.AlwaysQualify</key>
+      <values>
+        <value>org.jboss.errai.marshalling.client.marshallers.LinkedMapMarshaller</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.MapMarshaller</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.SortedMapMarshaller</value>
+      </values>
+    </entry>
+    <entry>
       <key>javax.enterprise.context.Dependent</key>
       <values>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter</value>
@@ -3901,8 +3986,8 @@
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter</value>
-        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter</value>
+        <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter</value>
         <value>org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter</value>
@@ -3925,6 +4010,12 @@
       </values>
     </entry>
     <entry>
+      <key>org.jboss.errai.ioc.client.api.IOCExtension</key>
+      <values>
+        <value>org.jboss.errai.enterprise.rebind.JSR299IOCExtensionConfigurator</value>
+      </values>
+    </entry>
+    <entry>
       <key>javax.enterprise.context.ApplicationScoped</key>
       <values>
         <value>org.jboss.errai.cdi.server.events.ConversationEventGatewayBean</value>
@@ -3933,21 +4024,15 @@
       </values>
     </entry>
     <entry>
-      <key>org.jboss.errai.ioc.client.api.IOCExtension</key>
-      <values>
-        <value>org.jboss.errai.enterprise.rebind.JSR299IOCExtensionConfigurator</value>
-      </values>
-    </entry>
-    <entry>
       <key>org.jboss.errai.marshalling.client.api.annotations.ServerMarshaller</key>
       <values>
         <value>org.jboss.errai.marshalling.client.marshallers.BooleanMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.SQLDateMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.MapMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.StringMarshaller</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.MapMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.SetMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.QueueMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.SortedMapMarshaller</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.QueueMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.ShortMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.LongMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.StringBufferMarshaller</value>
@@ -3986,20 +4071,20 @@
         <value>org.jboss.errai.ioc.client.api.Callback</value>
         <value>org.jboss.errai.marshalling.client.api.annotations.MapsTo</value>
         <value>org.jboss.errai.ioc.client.api.EntryPoint</value>
-        <value>org.jboss.errai.marshalling.client.api.annotations.ClientMarshaller</value>
         <value>org.jboss.errai.bus.server.annotations.Command</value>
+        <value>org.jboss.errai.marshalling.client.api.annotations.ClientMarshaller</value>
         <value>org.jboss.errai.marshalling.rebind.api.InheritedMappings</value>
         <value>org.jboss.errai.ioc.client.api.CreatePanel</value>
-        <value>org.jboss.errai.marshalling.rebind.api.CustomMapping</value>
         <value>org.jboss.errai.ioc.client.api.ToSubject</value>
+        <value>org.jboss.errai.marshalling.rebind.api.CustomMapping</value>
         <value>org.jboss.errai.bus.client.api.interceptor.InterceptedCall</value>
         <value>org.jboss.errai.marshalling.rebind.api.MarshallingExtension</value>
         <value>org.jboss.errai.ioc.client.api.CodeDecorator</value>
         <value>org.jboss.errai.marshalling.client.api.annotations.Key</value>
         <value>org.jboss.errai.ioc.client.api.ReplyTo</value>
         <value>org.jboss.errai.marshalling.client.api.annotations.ServerMarshaller</value>
-        <value>org.jboss.errai.ioc.client.api.PackageTarget</value>
         <value>org.jboss.errai.bus.server.annotations.security.RequireRoles</value>
+        <value>org.jboss.errai.ioc.client.api.PackageTarget</value>
         <value>org.jboss.errai.bus.client.api.Local</value>
         <value>org.jboss.errai.bus.server.annotations.security.RequireAuthentication</value>
         <value>org.jboss.errai.bus.server.annotations.Service</value>
@@ -4023,20 +4108,20 @@
         <value>org.jboss.errai.ioc.client.api.Callback</value>
         <value>org.jboss.errai.marshalling.client.api.annotations.MapsTo</value>
         <value>org.jboss.errai.ioc.client.api.EntryPoint</value>
-        <value>org.jboss.errai.marshalling.client.api.annotations.ClientMarshaller</value>
         <value>org.jboss.errai.bus.server.annotations.Command</value>
+        <value>org.jboss.errai.marshalling.client.api.annotations.ClientMarshaller</value>
         <value>org.jboss.errai.enterprise.client.cdi.internal.ObserverModel</value>
         <value>org.jboss.errai.marshalling.rebind.api.InheritedMappings</value>
         <value>org.jboss.errai.ioc.client.api.CreatePanel</value>
-        <value>org.jboss.errai.marshalling.rebind.api.CustomMapping</value>
         <value>org.jboss.errai.ioc.client.api.ToSubject</value>
+        <value>org.jboss.errai.marshalling.rebind.api.CustomMapping</value>
         <value>org.jboss.errai.marshalling.rebind.api.MarshallingExtension</value>
         <value>org.jboss.errai.ioc.client.api.CodeDecorator</value>
         <value>org.jboss.errai.marshalling.client.api.annotations.Key</value>
         <value>org.jboss.errai.ioc.client.api.ReplyTo</value>
         <value>org.jboss.errai.marshalling.client.api.annotations.ServerMarshaller</value>
-        <value>org.jboss.errai.ioc.client.api.PackageTarget</value>
         <value>org.jboss.errai.bus.server.annotations.security.RequireRoles</value>
+        <value>org.jboss.errai.ioc.client.api.PackageTarget</value>
         <value>org.jboss.errai.bus.client.api.Local</value>
         <value>org.jboss.errai.bus.server.annotations.security.RequireAuthentication</value>
         <value>org.jboss.errai.bus.server.annotations.Service</value>
@@ -4052,15 +4137,23 @@
       </values>
     </entry>
     <entry>
+      <key>org.jboss.errai.common.client.api.annotations.Portable</key>
+      <values>
+        <value>org.jboss.errai.bus.client.api.base.MessageDeliveryFailure</value>
+        <value>org.jboss.errai.bus.client.api.base.TransportIOException</value>
+        <value>org.jboss.errai.enterprise.client.cdi.events.BusReadyEvent</value>
+      </values>
+    </entry>
+    <entry>
       <key>org.jboss.errai.marshalling.client.api.annotations.ClientMarshaller</key>
       <values>
         <value>org.jboss.errai.marshalling.client.marshallers.BooleanMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.SQLDateMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.MapMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.StringMarshaller</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.MapMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.SetMarshaller</value>
-        <value>org.jboss.errai.marshalling.client.marshallers.QueueMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.SortedMapMarshaller</value>
+        <value>org.jboss.errai.marshalling.client.marshallers.QueueMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.ShortMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.LongMarshaller</value>
         <value>org.jboss.errai.marshalling.client.marshallers.StringBufferMarshaller</value>
@@ -4085,23 +4178,15 @@
       </values>
     </entry>
     <entry>
-      <key>org.jboss.errai.common.client.api.annotations.Portable</key>
+      <key>org.jboss.errai.common.server.api.annotations.ExtensionComponent</key>
       <values>
-        <value>org.jboss.errai.bus.client.api.base.MessageDeliveryFailure</value>
-        <value>org.jboss.errai.bus.client.api.base.TransportIOException</value>
-        <value>org.jboss.errai.enterprise.client.cdi.events.BusReadyEvent</value>
+        <value>org.jboss.errai.tools.monitoring.MonitorExtension</value>
       </values>
     </entry>
     <entry>
       <key>org.jboss.errai.marshalling.rebind.api.InheritedMappings</key>
       <values>
         <value>org.jboss.errai.marshalling.rebind.mappings.builtin.ThrowableDefinition</value>
-      </values>
-    </entry>
-    <entry>
-      <key>org.jboss.errai.common.server.api.annotations.ExtensionComponent</key>
-      <values>
-        <value>org.jboss.errai.tools.monitoring.MonitorExtension</value>
       </values>
     </entry>
     <entry>
@@ -4120,10 +4205,16 @@
         <value>org.jboss.errai.ioc.client.api.builtin.RequestDispatcherProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.SenderProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.DisposerProvider</value>
-        <value>org.jboss.errai.ioc.client.api.builtin.InitBallotProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.RootPanelProvider</value>
+        <value>org.jboss.errai.ioc.client.api.builtin.InitBallotProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.IOCBeanManagerProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.MessageBusProvider</value>
+      </values>
+    </entry>
+    <entry>
+      <key>org.jboss.errai.marshalling.rebind.api.MarshallingExtension</key>
+      <values>
+        <value>org.jboss.errai.enterprise.rebind.ObserversMarshallingExtension</value>
       </values>
     </entry>
     <entry>
@@ -4135,8 +4226,8 @@
         <value>org.jboss.errai.ioc.client.api.builtin.RequestDispatcherProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.SenderProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.DisposerProvider</value>
-        <value>org.jboss.errai.ioc.client.api.builtin.InitBallotProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.RootPanelProvider</value>
+        <value>org.jboss.errai.ioc.client.api.builtin.InitBallotProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.IOCBeanManagerProvider</value>
         <value>org.jboss.errai.ioc.client.api.builtin.MessageBusProvider</value>
       </values>
@@ -4145,12 +4236,6 @@
       <key>javax.inject.Scope</key>
       <values>
         <value>org.jboss.errai.ioc.client.api.EntryPoint</value>
-      </values>
-    </entry>
-    <entry>
-      <key>org.jboss.errai.marshalling.rebind.api.MarshallingExtension</key>
-      <values>
-        <value>org.jboss.errai.enterprise.rebind.ObserversMarshallingExtension</value>
       </values>
     </entry>
   </org.jboss.errai.common.metadata.ExtendedTypeAnnotationScanner>

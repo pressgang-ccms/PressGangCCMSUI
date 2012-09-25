@@ -24,6 +24,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTIntegerConstantCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTRoleCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1;
@@ -37,6 +38,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTRoleV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
@@ -5245,6 +5247,1026 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
                     RESTInterfaceV1Impl.this.remoteCallback.callback(null);
                   } else {
                     RESTInterfaceV1Impl.this.remoteCallback.callback(MarshallingWrapper.fromJSON(response.getText(), RESTPropertyTagCollectionV1.class, null));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public String getJSONPPropertyCategory(final Integer a0, final String a1, final String a2) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategory/get/jsonp/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "*");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(String.valueOf(response.getText()));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public String getJSONPPropertyCategories(final String a0, final String a1) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategories/get/jsonp/all").append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a1).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "*");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(String.valueOf(response.getText()));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public String getJSONPPropertyCategoriesWithQuery(final PathSegment a0, final String a1, final String a2) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategories/get/jsonp/{query}".replace("{query}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "*");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(String.valueOf(response.getText()));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public String updateJSONPPropertyCategory(final String a0, final RESTPropertyCategoryV1 a1, final String a2) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategory/update/jsonp").append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("data").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1))).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(String.valueOf(response.getText()));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public String updateJSONPPropertyCategory(final String a0, final RESTPropertyCategoryV1 a1, final RESTLogDetailsV1 a2, final String a3) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategory/update/jsonp").append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a3).toString())).append("&").append("data").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1))).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a2)));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(String.valueOf(response.getText()));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public String updateJSONPPropertyCategories(final String a0, final RESTPropertyCategoryCollectionV1 a1, final String a2) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategories/update/jsonp").append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("data").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1))).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(String.valueOf(response.getText()));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public String updateJSONPPropertyCategories(final String a0, final RESTPropertyCategoryCollectionV1 a1, final RESTLogDetailsV1 a2, final String a3) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategories/update/jsonp").append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a3).toString())).append("&").append("data").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1))).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a2)));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(String.valueOf(response.getText()));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public String createJSONPPropertyCategory(final String a0, final RESTPropertyCategoryV1 a1, final String a2) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategory/create/jsonp").append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("data").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1))).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(String.valueOf(response.getText()));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public String createJSONPPropertyCategory(final String a0, final RESTPropertyCategoryV1 a1, final RESTLogDetailsV1 a2, final String a3) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategory/create/jsonp").append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a3).toString())).append("&").append("data").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1))).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a2)));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(String.valueOf(response.getText()));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public String createJSONPPropertyCategories(final String a0, final RESTPropertyCategoryCollectionV1 a1, final String a2) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategories/create/jsonp").append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("data").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1))).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(String.valueOf(response.getText()));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public String createJSONPPropertyCategories(final String a0, final RESTPropertyCategoryCollectionV1 a1, final RESTLogDetailsV1 a2, final String a3) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategories/create/jsonp").append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a3).toString())).append("&").append("data").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1))).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a2)));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(String.valueOf(response.getText()));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public String deleteJSONPPropertyCategory(final Integer a0, final String a1, final String a2) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategory/delete/jsonp/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "*");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(String.valueOf(response.getText()));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public String deleteJSONPPropertyCategory(final Integer a0, final RESTLogDetailsV1 a1, final String a2, final String a3) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategory/delete/jsonp/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a3).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1)));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "*");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(String.valueOf(response.getText()));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public String deleteJSONPPropertyCategories(final PathSegment a0, final String a1, final String a2) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategories/delete/jsonp/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "*");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(String.valueOf(response.getText()));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public String deleteJSONPPropertyCategories(final PathSegment a0, final RESTLogDetailsV1 a1, final String a2, final String a3) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategories/delete/jsonp/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a3).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1)));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "*");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(String.valueOf(response.getText()));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public RESTPropertyCategoryV1 getJSONPropertyCategory(final Integer a0, final String a1) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategory/get/json/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "*");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(MarshallingWrapper.fromJSON(response.getText(), RESTPropertyCategoryV1.class, null));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public RESTPropertyCategoryCollectionV1 getJSONPropertyCategories(final String a0) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategories/get/json/all").append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "*");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(MarshallingWrapper.fromJSON(response.getText(), RESTPropertyCategoryCollectionV1.class, null));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public RESTPropertyCategoryCollectionV1 getJSONPropertyCategoriesWithQuery(final PathSegment a0, final String a1) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategories/get/json/{query}".replace("{query}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "*");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(MarshallingWrapper.fromJSON(response.getText(), RESTPropertyCategoryCollectionV1.class, null));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public RESTPropertyCategoryV1 updateJSONPropertyCategory(final String a0, final RESTPropertyCategoryV1 a1) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategory/update/json").append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+          requestBuilder.sendRequest(MarshallingWrapper.toJSON(a1), new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(MarshallingWrapper.fromJSON(response.getText(), RESTPropertyCategoryV1.class, null));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public RESTPropertyCategoryV1 updateJSONPropertyCategory(final String a0, final RESTPropertyCategoryV1 a1, final RESTLogDetailsV1 a2) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategory/update/json").append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a2)));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+          requestBuilder.sendRequest(MarshallingWrapper.toJSON(a1), new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(MarshallingWrapper.fromJSON(response.getText(), RESTPropertyCategoryV1.class, null));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public RESTPropertyCategoryCollectionV1 updateJSONPropertyCategories(final String a0, final RESTPropertyCategoryCollectionV1 a1) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategories/update/json").append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+          requestBuilder.sendRequest(MarshallingWrapper.toJSON(a1), new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(MarshallingWrapper.fromJSON(response.getText(), RESTPropertyCategoryCollectionV1.class, null));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public RESTPropertyCategoryCollectionV1 updateJSONPropertyCategories(final String a0, final RESTPropertyCategoryCollectionV1 a1, final RESTLogDetailsV1 a2) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategories/update/json").append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a2)));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+          requestBuilder.sendRequest(MarshallingWrapper.toJSON(a1), new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(MarshallingWrapper.fromJSON(response.getText(), RESTPropertyCategoryCollectionV1.class, null));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public RESTPropertyCategoryV1 createJSONPropertyCategory(final String a0, final RESTPropertyCategoryV1 a1) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategory/create/json").append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+          requestBuilder.sendRequest(MarshallingWrapper.toJSON(a1), new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(MarshallingWrapper.fromJSON(response.getText(), RESTPropertyCategoryV1.class, null));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public RESTPropertyCategoryV1 createJSONPropertyCategory(final String a0, final RESTPropertyCategoryV1 a1, final RESTLogDetailsV1 a2) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategory/create/json").append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a2)));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+          requestBuilder.sendRequest(MarshallingWrapper.toJSON(a1), new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(MarshallingWrapper.fromJSON(response.getText(), RESTPropertyCategoryV1.class, null));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public RESTPropertyCategoryCollectionV1 createJSONPropertyCategories(final String a0, final RESTPropertyCategoryCollectionV1 a1) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategories/create/json").append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+          requestBuilder.sendRequest(MarshallingWrapper.toJSON(a1), new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(MarshallingWrapper.fromJSON(response.getText(), RESTPropertyCategoryCollectionV1.class, null));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public RESTPropertyCategoryCollectionV1 createJSONPropertyCategories(final String a0, final RESTPropertyCategoryCollectionV1 a1, final RESTLogDetailsV1 a2) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategories/create/json").append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a2)));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "application/json");
+        try {
+          requestBuilder.sendRequest(MarshallingWrapper.toJSON(a1), new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(MarshallingWrapper.fromJSON(response.getText(), RESTPropertyCategoryCollectionV1.class, null));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public RESTPropertyCategoryV1 deleteJSONPropertyCategory(final Integer a0, final String a1) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategory/delete/json/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "*");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(MarshallingWrapper.fromJSON(response.getText(), RESTPropertyCategoryV1.class, null));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public RESTPropertyCategoryV1 deleteJSONPropertyCategory(final Integer a0, final RESTLogDetailsV1 a1, final String a2) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategory/delete/json/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1)));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "*");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(MarshallingWrapper.fromJSON(response.getText(), RESTPropertyCategoryV1.class, null));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public RESTPropertyCategoryCollectionV1 deleteJSONPropertyCategories(final PathSegment a0, final String a1) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategories/delete/json/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "*");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(MarshallingWrapper.fromJSON(response.getText(), RESTPropertyCategoryCollectionV1.class, null));
+                  }
+                }
+              } else {
+                ResponseException throwable = new ResponseException(response.getStatusText(), response);
+                RESTInterfaceV1Impl.this.handleError(throwable, response);
+              }
+            }
+          });
+        } catch (RequestException throwable) {
+          RESTInterfaceV1Impl.this.handleError(throwable, null);
+        }
+        return null;
+      }
+
+      public RESTPropertyCategoryCollectionV1 deleteJSONPropertyCategories(final PathSegment a0, final RESTLogDetailsV1 a1, final String a2) {
+        StringBuilder url = new StringBuilder(getBaseUrl());
+        url.append("1/propertycategories/delete/json/{ids}".replace("{ids}", ((PathSegmentImpl) a0).getEncodedPathWithParameters())).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1)));
+        RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
+        requestBuilder.setHeader("Accept", "application/json");
+        requestBuilder.setHeader("Content-Type", "*");
+        try {
+          requestBuilder.sendRequest(null, new RequestCallback() {
+            public void onError(Request request, Throwable throwable) {
+              RESTInterfaceV1Impl.this.handleError(throwable, null);
+            }
+            public void onResponseReceived(Request request, Response response) {
+              if (((RESTInterfaceV1Impl.this.successCodes == null) || RESTInterfaceV1Impl.this.successCodes.contains(response.getStatusCode())) && ((response.getStatusCode() >= 200) && (response.getStatusCode() < 300))) {
+                if (RESTInterfaceV1Impl.this.remoteCallback instanceof ResponseCallback) {
+                  RESTInterfaceV1Impl.this.remoteCallback.callback(response);
+                } else {
+                  if (response.getStatusCode() == 204) {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(null);
+                  } else {
+                    RESTInterfaceV1Impl.this.remoteCallback.callback(MarshallingWrapper.fromJSON(response.getText(), RESTPropertyCategoryCollectionV1.class, null));
                   }
                 }
               } else {

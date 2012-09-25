@@ -7,7 +7,7 @@ import java.util.List;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
 
 import com.google.gwt.user.client.ui.TriStateSelectionState;
@@ -105,7 +105,7 @@ public class SearchUIProject extends SearchUIBase {
                         throw new IllegalArgumentException("tag.getItem().getCategories().getItems() cannot be null");
                     }
 
-                    for (final RESTCategoryTagCollectionItemV1 category : tag.getItem().getCategories().returnExistingAndAddedCollectionItems()) {
+                    for (final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories().returnExistingAndAddedCollectionItems()) {
                         final SearchUICategory searchUICategory = new SearchUICategory(this, category);
                         if (!categories.contains(searchUICategory)) {
                             searchUICategory.populateCategories(project, category, tags);
@@ -138,7 +138,7 @@ public class SearchUIProject extends SearchUIBase {
                         throw new IllegalArgumentException("tag.getItem().getCategories().getItems() cannot be null");
                     }
 
-                    for (final RESTCategoryTagCollectionItemV1 category : tag.getItem().getCategories().returnExistingAndAddedCollectionItems()) {
+                    for (final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories().returnExistingAndAddedCollectionItems()) {
                         final SearchUICategory searchUICategory = new SearchUICategory(this, category);
                         if (!categories.contains(searchUICategory)) {
                             searchUICategory.populateCategoriesWithoutProject(category, tags);

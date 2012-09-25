@@ -124,8 +124,7 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
     public void setValue(final RESTLanguageImageCollectionItemV1 value) {
         this.self = value;
 
-        if (value.getItem().getFilename() != null)
-        {
+        if (value.getItem().getFilename() != null) {
             this.filename.setText(value.getItem().getFilename());
         }
 
@@ -134,7 +133,8 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
             this.imageDataBase64.setUrl(JPG_BASE64_PREFIX + base64);
         }
 
-        parentPanel.setTabText(parentIndex,
-                this.self.getItem().getLocale() == null ? PressGangCCMSUI.INSTANCE.NotSpecified() : this.self.getItem().getLocale());
+        if (value.getItem().getLocale() != null) {
+            parentPanel.setTabText(parentIndex, value.getItem().getLocale());
+        }
     }
 }

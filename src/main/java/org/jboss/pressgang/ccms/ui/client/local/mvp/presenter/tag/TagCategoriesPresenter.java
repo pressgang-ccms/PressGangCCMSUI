@@ -5,7 +5,7 @@ import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
@@ -41,13 +41,13 @@ public class TagCategoriesPresenter extends TemplatePresenter implements Editabl
 
         Column<RESTCategoryCollectionItemV1, String> getButtonColumn();
 
-        Column<RESTTagCategoryCollectionItemV1, String> getTagDownButtonColumn();
+        Column<RESTTagInCategoryCollectionItemV1, String> getTagDownButtonColumn();
 
-        Column<RESTTagCategoryCollectionItemV1, String> getTagUpButtonColumn();
+        Column<RESTTagInCategoryCollectionItemV1, String> getTagUpButtonColumn();
 
-        EnhancedAsyncDataProvider<RESTTagCategoryCollectionItemV1> getTagsProvider();
+        EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> getTagsProvider();
 
-        void setTagsProvider(EnhancedAsyncDataProvider<RESTTagCategoryCollectionItemV1> tagsProvider);
+        void setTagsProvider(EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> tagsProvider);
 
         VerticalPanel getTagsResultsPanel();
 

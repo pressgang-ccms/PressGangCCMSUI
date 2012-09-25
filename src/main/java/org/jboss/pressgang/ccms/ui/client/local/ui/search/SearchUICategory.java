@@ -7,7 +7,7 @@ import java.util.List;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
 
 import com.google.common.base.Optional;
@@ -75,11 +75,11 @@ public class SearchUICategory extends SearchUIBase {
         return myTags.size();
     }
 
-    public SearchUICategory(final SearchUIProject project, final RESTCategoryTagCollectionItemV1 category) {
+    public SearchUICategory(final SearchUIProject project, final RESTCategoryInTagCollectionItemV1 category) {
         super(category.getItem().getName(), project.getId() + "-" + category.getItem().getId());
     }
 
-    public void populateCategories(final RESTProjectCollectionItemV1 project, final RESTCategoryTagCollectionItemV1 category,
+    public void populateCategories(final RESTProjectCollectionItemV1 project, final RESTCategoryInTagCollectionItemV1 category,
             final RESTTagCollectionV1 tags) {
         if (tags == null) {
             throw new IllegalArgumentException("tags parameter cannot be null");
@@ -99,9 +99,9 @@ public class SearchUICategory extends SearchUIBase {
                 throw new IllegalArgumentException("tag.getItem().getCategories() cannot be null");
             }
             
-            final Optional<RESTCategoryTagCollectionItemV1> matchingCategory = Iterables.tryFind( tag.getItem().getCategories().getItems(), new Predicate<RESTCategoryTagCollectionItemV1>() {
+            final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory = Iterables.tryFind( tag.getItem().getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
                 @Override
-                public boolean apply(final RESTCategoryTagCollectionItemV1 arg) { return arg.getItem().getId().equals(category.getItem().getId()); }
+                public boolean apply(final RESTCategoryInTagCollectionItemV1 arg) { return arg.getItem().getId().equals(category.getItem().getId()); }
             });
             
             final Optional<RESTProjectCollectionItemV1> matchingProject = Iterables.tryFind( tag.getItem().getProjects().getItems(), new Predicate<RESTProjectCollectionItemV1>() {
@@ -120,7 +120,7 @@ public class SearchUICategory extends SearchUIBase {
         Collections.sort(myTags, new SearchUINameSort());
     }
 
-    public void populateCategoriesWithoutProject(final RESTCategoryTagCollectionItemV1 category, final RESTTagCollectionV1 tags) {
+    public void populateCategoriesWithoutProject(final RESTCategoryInTagCollectionItemV1 category, final RESTTagCollectionV1 tags) {
         if (tags == null) {
             throw new IllegalArgumentException("tags parameter cannot be null");
         }
@@ -138,9 +138,9 @@ public class SearchUICategory extends SearchUIBase {
 
             if (tag.getItem().getProjects().getItems().isEmpty()) {
 
-                final Optional<RESTCategoryTagCollectionItemV1> matchingCategory = Iterables.tryFind( tag.getItem().getCategories().getItems(), new Predicate<RESTCategoryTagCollectionItemV1>() {
+                final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory = Iterables.tryFind( tag.getItem().getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
                     @Override
-                    public boolean apply(final RESTCategoryTagCollectionItemV1 arg) { return arg.getItem().getId().equals(category.getItem().getId()); }
+                    public boolean apply(final RESTCategoryInTagCollectionItemV1 arg) { return arg.getItem().getId().equals(category.getItem().getId()); }
                 });
                                 
                 if (matchingCategory.isPresent()) {

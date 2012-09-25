@@ -777,18 +777,12 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                         @Override
                         public void success(final RESTTopicV1 retValue) {
                             try {
-                                /* Update the local collection of topics */
+                                /* Update the displayed topic */
                                 retValue.cloneInto(topicProviderData.getDisplayedItem().getItem(), true);
-
-                                /* The title may have been updated */
-                                if (!topicProviderData.getSelectedItem().getItem().getTitle()
-                                        .equals(topicProviderData.getDisplayedItem().getItem().getTitle())) {
-                                    /* Update the title */
-                                    topicProviderData.getSelectedItem().getItem().setTitle(
-                                            topicProviderData.getDisplayedItem().getItem().getTitle());
-                                    /* Update the list of topics */
-                                    provider.updateRowData(tableStartRow, topicProviderData.getItems());
-                                }
+                                /* Update the selected topic */
+                                retValue.cloneInto(topicProviderData.getSelectedItem().getItem(), true);
+                                /* Update the topic list */
+                                provider.updateRowData(tableStartRow, topicProviderData.getItems());                              
                                 
                                 loadNewTopicDetails();
 

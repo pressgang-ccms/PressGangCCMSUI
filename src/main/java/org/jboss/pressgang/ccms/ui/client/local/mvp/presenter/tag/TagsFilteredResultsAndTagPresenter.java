@@ -14,17 +14,17 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagCategoryCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryInTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentRESTBaseEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseCategoryV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryInTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.sort.RESTTagCategoryCollectionItemV1SortComparator;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
@@ -220,19 +220,19 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                  * modified relationships into the updateTag, so the changes are all done in one transaction.
                  */
                 if (categoryProviderData.getItems() != null) {
-                    updateTag.explicitSetCategories(new RESTCategoryTagCollectionV1());
+                    updateTag.explicitSetCategories(new RESTCategoryInTagCollectionV1());
                     for (final RESTCategoryCollectionItemV1 category : categoryProviderData.getItems()) {
-                        for (final RESTTagCategoryCollectionItemV1 tag : category.getItem().getTags()
+                        for (final RESTTagInCategoryCollectionItemV1 tag : category.getItem().getTags()
                                 .returnDeletedAndAddedCollectionItems()) {
                             /*
                              * It should only be possible to add the currently displayed tag to the categories
                              */
                             if (tag.getItem().getId().equals(updateTag.getId())) {
 
-                                final RESTCategoryTagV1 addedCategory = new RESTCategoryTagV1();
+                                final RESTCategoryInTagV1 addedCategory = new RESTCategoryInTagV1();
                                 addedCategory.setId(category.getItem().getId());
 
-                                final RESTCategoryTagCollectionItemV1 collectionItem = new RESTCategoryTagCollectionItemV1();
+                                final RESTCategoryInTagCollectionItemV1 collectionItem = new RESTCategoryInTagCollectionItemV1();
                                 collectionItem.setState(tag.getState());
                                 collectionItem.setItem(addedCategory);
 
@@ -314,7 +314,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                 final RESTCategoryCollectionV1 updatedCategories = new RESTCategoryCollectionV1();
 
                 for (final RESTCategoryCollectionItemV1 category : categoryProviderData.getItems()) {
-                    final List<RESTTagCategoryCollectionItemV1> updatedItems = category.getItem().getTags()
+                    final List<RESTTagInCategoryCollectionItemV1> updatedItems = category.getItem().getTags()
                             .returnUpdatedCollectionItems();
                     
                     /* this should always be greater than 0 */
@@ -322,14 +322,14 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                         /* Create the category that we are updating */
                         final RESTCategoryV1 updatedCategory = new RESTCategoryV1();
                         updatedCategory.setId(category.getItem().getId());
-                        updatedCategory.explicitSetTags(new RESTTagCategoryCollectionV1());
+                        updatedCategory.explicitSetTags(new RESTTagInCategoryCollectionV1());
 
                         /* Add it to the collection */
                         updatedCategories.addItem(updatedCategory);
 
-                        for (final RESTTagCategoryCollectionItemV1 tag : updatedItems) {
+                        for (final RESTTagInCategoryCollectionItemV1 tag : updatedItems) {
                             /* create a new tag to represent the one that we are updaing */
-                            final RESTTagCategoryV1 updatedTag = new RESTTagCategoryV1();
+                            final RESTTagInCategoryV1 updatedTag = new RESTTagInCategoryV1();
                             updatedTag.explicitSetRelationshipId(tag.getItem().getRelationshipId());
                             updatedTag.explicitSetRelationshipSort(tag.getItem().getRelationshipSort());
                             updatedTag.setId(tag.getItem().getId());
@@ -388,7 +388,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
     /** Holds the data required to populate and refresh the categories list */
     private ProviderUpdateData<RESTCategoryCollectionItemV1> categoryProviderData = new ProviderUpdateData<RESTCategoryCollectionItemV1>();
     /** Holds the data required to populate and refresh the category tags list */
-    private ProviderUpdateData<RESTTagCategoryCollectionItemV1> categoryTagsProviderData = new ProviderUpdateData<RESTTagCategoryCollectionItemV1>();
+    private ProviderUpdateData<RESTTagInCategoryCollectionItemV1> categoryTagsProviderData = new ProviderUpdateData<RESTTagInCategoryCollectionItemV1>();
 
     /** The currently displayed view */
     private TagViewInterface displayedView;
@@ -566,7 +566,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         RESTCalls.getCategories(callback);
     }
 
-    private void moveTagsUpAndDown(final RESTTagCategoryCollectionItemV1 object, final boolean down) {
+    private void moveTagsUpAndDown(final RESTTagInCategoryCollectionItemV1 object, final boolean down) {
         
         final int size = categoryTagsProviderData.getItems().size();
 
@@ -576,7 +576,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
         for (int i = (down ? 0 : 1); i < (down ? size - 1 : size); ++i) {
 
             /* Get the item from the collection for convenience */
-            final RESTTagCategoryCollectionItemV1 tagInCatgeory = categoryTagsProviderData.getItems().get(i);
+            final RESTTagInCategoryCollectionItemV1 tagInCatgeory = categoryTagsProviderData.getItems().get(i);
 
             if (tagInCatgeory.getItem().getId().equals(object.getItem().getId())) {
 
@@ -591,21 +591,21 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
 
                 for (int j = 0; j < size; ++j) {
                     /* get the item from the collection */
-                    final RESTTagCategoryCollectionItemV1 existingTagInCatgeory = categoryTagsProviderData.getItems().get(j);
+                    final RESTTagInCategoryCollectionItemV1 existingTagInCatgeory = categoryTagsProviderData.getItems().get(j);
 
                     /* set the sort value (the list was previously sorted on this value) */
                     existingTagInCatgeory.getItem().setRelationshipSort(j);
 
                     /* we need to mark the joiner entity as updated */
                     if (!existingTagInCatgeory.returnIsAddItem())
-                        existingTagInCatgeory.setState(RESTTagCategoryCollectionItemV1.UPDATE_STATE);
+                        existingTagInCatgeory.setState(RESTTagInCategoryCollectionItemV1.UPDATE_STATE);
                 }
 
                 /* The next item is either the item before (if moving up) of the item after (if moving down) */
                 final int nextItemIndex = down ? i + 1 : i - 1;
 
                 /* get the next item in the list */
-                final RESTTagCategoryCollectionItemV1 nextTagInCatgeory = categoryTagsProviderData.getItems().get(nextItemIndex);
+                final RESTTagInCategoryCollectionItemV1 nextTagInCatgeory = categoryTagsProviderData.getItems().get(nextItemIndex);
 
                 /* swap the sort field */
                 tagInCatgeory.getItem().setRelationshipSort(nextItemIndex);
@@ -623,22 +623,22 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
     }
 
     private void bindCategoryTagsColumnButtons() {
-        categoriesDisplay.getTagUpButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagCategoryCollectionItemV1, String>() {
+        categoriesDisplay.getTagUpButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
             @Override
-            public void update(final int index, final RESTTagCategoryCollectionItemV1 object, final String value) {
+            public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
                 moveTagsUpAndDown(object, false);
             }
 
         });
 
-        categoriesDisplay.getTagDownButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagCategoryCollectionItemV1, String>() {
+        categoriesDisplay.getTagDownButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
             /**
              * Swap the sort value for the tag that was selected with the tag below it.
              */
             @Override
-            public void update(final int index, final RESTTagCategoryCollectionItemV1 object, final String value) {
+            public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
                 moveTagsUpAndDown(object, true);
             }
         });
@@ -652,7 +652,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
             @Override
             public void update(final int index, final RESTCategoryCollectionItemV1 object, final String value) {
                 boolean found = false;
-                for (final RESTTagCategoryCollectionItemV1 tag : object.getItem().getTags().getItems()) {
+                for (final RESTTagInCategoryCollectionItemV1 tag : object.getItem().getTags().getItems()) {
                     if (tag.getItem().getId().equals(tagProviderData.getDisplayedItem().getItem().getId())) {
                         /* Tag was added and then removed */
                         if (tag.returnIsAddItem()) {
@@ -674,7 +674,7 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
                 }
 
                 if (!found) {
-                    final RESTTagCategoryV1 newTag = new RESTTagCategoryV1();
+                    final RESTTagInCategoryV1 newTag = new RESTTagInCategoryV1();
                     newTag.setId(tagProviderData.getDisplayedItem().getItem().getId());
                     newTag.setName(tagProviderData.getDisplayedItem().getItem().getName());
                     newTag.setRelationshipSort(0);
@@ -798,18 +798,18 @@ public class TagsFilteredResultsAndTagPresenter extends TagPresenterBase {
     /**
      * @return A provider to be used for the tag display list
      */
-    private EnhancedAsyncDataProvider<RESTTagCategoryCollectionItemV1> generateCategoriesTagListProvider() {
-        final EnhancedAsyncDataProvider<RESTTagCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCategoryCollectionItemV1>() {
+    private EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> generateCategoriesTagListProvider() {
+        final EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTagCategoryCollectionItemV1> display) {
+            protected void onRangeChanged(final HasData<RESTTagInCategoryCollectionItemV1> display) {
                 categoryTagsProviderData.setStartRow(display.getVisibleRange().getStart());
-                categoryTagsProviderData.setItems(new ArrayList<RESTTagCategoryCollectionItemV1>());
+                categoryTagsProviderData.setItems(new ArrayList<RESTTagInCategoryCollectionItemV1>());
 
                 /* Zero results can be a null list. Also selecting a new tag will reset categoryProviderData. */
                 if (categoryProviderData.getDisplayedItem() != null
                         && categoryProviderData.getDisplayedItem().getItem().getTags() != null) {
                     /* Don't display removed tags */
-                    for (final RESTTagCategoryCollectionItemV1 tagInCategory : categoryProviderData.getDisplayedItem()
+                    for (final RESTTagInCategoryCollectionItemV1 tagInCategory : categoryProviderData.getDisplayedItem()
                             .getItem().getTags().returnExistingAddedAndUpdatedCollectionItems()) {
                         categoryTagsProviderData.getItems().add(tagInCategory);
                     }
