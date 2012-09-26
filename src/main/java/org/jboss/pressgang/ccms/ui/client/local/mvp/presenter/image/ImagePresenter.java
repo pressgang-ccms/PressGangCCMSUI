@@ -64,9 +64,9 @@ public class ImagePresenter extends ImagePresenterBase {
          * normally the displayedImage would be from a collection, but as this presenter only works with one specified entity,
          * we just create the wrapper RESTImageCollectionItemV1 object manually.
          */
-        displayedImage = new RESTImageCollectionItemV1();
-        displayedImage.setState(RESTImageCollectionItemV1.UNCHANGED_STATE);
-        displayedImage.setItem(new RESTImageV1());
+        imageData.setDisplayedItem(new RESTImageCollectionItemV1());
+        imageData.getDisplayedItem().setState(RESTImageCollectionItemV1.UNCHANGED_STATE);
+        imageData.getDisplayedItem().setItem(new RESTImageV1());
 
         bind();
 
@@ -80,7 +80,7 @@ public class ImagePresenter extends ImagePresenterBase {
      * finishes, and when all the information has been gathered, the page will be displayed.
      */
     private void finishLoading() {
-        if (locales != null && displayedImage != null) {
+        if (locales != null && imageData.getDisplayedItem() != null) {
             reInitialiseImageView();
         }
     }
@@ -117,7 +117,7 @@ public class ImagePresenter extends ImagePresenterBase {
             @Override
             public void success(final RESTImageV1 retValue) {
                 try {
-                    retValue.cloneInto(displayedImage.getItem(), true);
+                    retValue.cloneInto(imageData.getDisplayedItem().getItem(), true);
                     finishLoading();
                 } finally {
                     display.removeWaitOperation();
@@ -138,7 +138,7 @@ public class ImagePresenter extends ImagePresenterBase {
 
     @Override
     protected void reInitialiseImageView() {
-        display.initialize(displayedImage.getItem(), getUnassignedLocales().toArray(new String[0]));
+        display.initialize(imageData.getDisplayedItem().getItem(), getUnassignedLocales().toArray(new String[0]));
 
         bindImageUploadButtons(display, display);
     }
