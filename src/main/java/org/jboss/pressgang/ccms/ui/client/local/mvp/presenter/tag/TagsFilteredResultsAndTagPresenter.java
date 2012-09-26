@@ -316,7 +316,7 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
                 for (final RESTCategoryCollectionItemV1 category : categoryProviderData.getItems()) {
                     final List<RESTTagInCategoryCollectionItemV1> updatedItems = category.getItem().getTags()
                             .returnUpdatedCollectionItems();
-                    
+
                     /* this should always be greater than 0 */
                     if (updatedItems.size() != 0) {
                         /* Create the category that we are updating */
@@ -408,9 +408,11 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
         display.setViewShown(true);
 
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
-        
-        display.getSplitPanel().setSplitPosition(display.getResultsPanel(), Preferences.INSTANCE.getInt(Preferences.TAG_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
-        categoriesDisplay.getSplit().setSplitPosition(categoriesDisplay.getSearchResultsPanel(), Preferences.INSTANCE.getInt(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
+
+        display.getSplitPanel().setSplitPosition(display.getResultsPanel(),
+                Preferences.INSTANCE.getInt(Preferences.TAG_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
+        categoriesDisplay.getSplit().setSplitPosition(categoriesDisplay.getSearchResultsPanel(),
+                Preferences.INSTANCE.getInt(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
 
         bind();
     }
@@ -438,36 +440,36 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
         bindCategoryColumnButtons();
 
         bindCategoryTagsColumnButtons();
-        
+
         bindMainSplitResize();
-        
+
         bindCategorySplitResize();
     }
-    
+
     /**
      * Saves the width of the split screen in the category view
      */
-    private void bindCategorySplitResize()
-    {
+    private void bindCategorySplitResize() {
         categoriesDisplay.getSplit().addResizeHandler(new ResizeHandler() {
-            
+
             @Override
             public void onResize(final ResizeEvent event) {
-                Preferences.INSTANCE.saveSetting(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, categoriesDisplay.getSplit().getSplitPosition(categoriesDisplay.getSearchResultsPanel()) + "");              
+                Preferences.INSTANCE.saveSetting(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, categoriesDisplay.getSplit()
+                        .getSplitPosition(categoriesDisplay.getSearchResultsPanel()) + "");
             }
         });
     }
-    
+
     /**
      * Saves the width of the split screen
      */
-    private void bindMainSplitResize()
-    {
+    private void bindMainSplitResize() {
         display.getSplitPanel().addResizeHandler(new ResizeHandler() {
-            
+
             @Override
             public void onResize(final ResizeEvent event) {
-                Preferences.INSTANCE.saveSetting(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display.getSplitPanel().getSplitPosition(display.getResultsPanel()) + "");            
+                Preferences.INSTANCE.saveSetting(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display.getSplitPanel()
+                        .getSplitPosition(display.getResultsPanel()) + "");
             }
         });
     }
@@ -567,7 +569,7 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
     }
 
     private void moveTagsUpAndDown(final RESTTagInCategoryCollectionItemV1 object, final boolean down) {
-        
+
         final int size = categoryTagsProviderData.getItems().size();
 
         boolean modifiedSort = false;
@@ -605,7 +607,8 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
                 final int nextItemIndex = down ? i + 1 : i - 1;
 
                 /* get the next item in the list */
-                final RESTTagInCategoryCollectionItemV1 nextTagInCatgeory = categoryTagsProviderData.getItems().get(nextItemIndex);
+                final RESTTagInCategoryCollectionItemV1 nextTagInCatgeory = categoryTagsProviderData.getItems().get(
+                        nextItemIndex);
 
                 /* swap the sort field */
                 tagInCatgeory.getItem().setRelationshipSort(nextItemIndex);
@@ -632,16 +635,17 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
 
         });
 
-        categoriesDisplay.getTagDownButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
+        categoriesDisplay.getTagDownButtonColumn().setFieldUpdater(
+                new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
-            /**
-             * Swap the sort value for the tag that was selected with the tag below it.
-             */
-            @Override
-            public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
-                moveTagsUpAndDown(object, true);
-            }
-        });
+                    /**
+                     * Swap the sort value for the tag that was selected with the tag below it.
+                     */
+                    @Override
+                    public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
+                        moveTagsUpAndDown(object, true);
+                    }
+                });
     }
 
     /**
@@ -1116,9 +1120,11 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
      * @return true if the categories have any unsaved changes to their tags
      */
     private boolean unsavedCategoryChanges() {
-        for (final RESTCategoryCollectionItemV1 category : categoryProviderData.getItems()) {
-            if (category.getItem().getTags().returnDeletedAddedAndUpdatedCollectionItems().size() != 0) {
-                return true;
+        if (categoryProviderData.getItems() != null) {
+            for (final RESTCategoryCollectionItemV1 category : categoryProviderData.getItems()) {
+                if (category.getItem().getTags().returnDeletedAddedAndUpdatedCollectionItems().size() != 0) {
+                    return true;
+                }
             }
         }
 
