@@ -43,8 +43,8 @@ public class TopicTagViewProjectsEditor extends SimplePanel implements Editor<Se
 
     public TopicTagViewProjectsEditor(final boolean readOnly) {
         this.readOnly = readOnly;
-        projectLabelPanel.addStyleName(CSSConstants.TOPICTAGVIEWPROJECTSTABLE);
-        this.addStyleName(CSSConstants.TOPICTAGVIEWPARENTPROJECTSTABLE);
+        projectLabelPanel.addStyleName(CSSConstants.TOPIC_TAG_VIEW_PROJECT_STABLE);
+        this.addStyleName(CSSConstants.TOPIC_TAG_VIEW_PARENT_PROJECT_STABLE);
         this.setWidget(projectLabelPanel);
     }
 }

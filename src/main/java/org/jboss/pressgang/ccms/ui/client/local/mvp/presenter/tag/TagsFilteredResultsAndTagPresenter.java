@@ -7,6 +7,7 @@ import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
@@ -45,7 +46,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.view.client.CellPreviewEvent;
@@ -62,7 +62,7 @@ import com.google.gwt.view.client.HasData;
 public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
 
     /** The history token used to identify this view */
-    public static final String HISTORY_TOKEN = "TagFilteredResultsAndImageView";
+    public static final String HISTORY_TOKEN = "TagsFilteredResultsAndTagView";
 
     /**
      * This interface describes the required UI elements for the parent view (i.e. the view that holds the four views
@@ -95,7 +95,7 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
         /**
          * @return The split panel that separates the tag list from the tag details views
          */
-        HanldedSplitLayoutPanel getSplitPanel();
+        HandlerSplitLayoutPanel getSplitPanel();
     }
 
     /**

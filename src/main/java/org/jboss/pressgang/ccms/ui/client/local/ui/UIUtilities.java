@@ -23,10 +23,10 @@ final public class UIUtilities {
 
     public static PushButton createPushButton(final String text, final boolean subMenu) {
         final PushButton retvalue = new PushButton(text);
-        retvalue.addStyleName(CSSConstants.TEXTBUTTON);
+        retvalue.addStyleName(CSSConstants.TEXT_BUTTON);
 
         if (subMenu) {
-            retvalue.addStyleName(CSSConstants.SUBMENU);
+            retvalue.addStyleName(CSSConstants.SUB_MENU);
         }
 
         return retvalue;
@@ -34,10 +34,10 @@ final public class UIUtilities {
 
     public static ToggleButton createToggleButton(final String text, final boolean subMenu) {
         final ToggleButton retvalue = new ToggleButton(text);
-        retvalue.addStyleName(CSSConstants.TEXTBUTTON);
+        retvalue.addStyleName(CSSConstants.TEXT_BUTTON);
 
         if (subMenu) {
-            retvalue.addStyleName(CSSConstants.SUBMENU);
+            retvalue.addStyleName(CSSConstants.SUB_MENU);
         }
 
         return retvalue;
@@ -49,7 +49,7 @@ final public class UIUtilities {
 
     public static Label createDownLabel(final String text) {
         final Label retvalue = new Label(text);
-        retvalue.addStyleName(CSSConstants.DOWNLABEL);
+        retvalue.addStyleName(CSSConstants.DOWN_LABEL);
         return retvalue;
     }
 }

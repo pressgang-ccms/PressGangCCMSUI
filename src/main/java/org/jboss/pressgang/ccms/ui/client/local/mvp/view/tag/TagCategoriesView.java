@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag;
 
+import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentCategoryV1;
@@ -18,7 +19,6 @@ import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TagCategoriesView extends TagViewBase implements TagCategoriesPresenter.Display {
@@ -26,7 +26,7 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
     /** A reference to the tag that this view will be modifying. */
     private RESTTagV1 tag;
 
-    private HanldedSplitLayoutPanel split = new HanldedSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
+    private HandlerSplitLayoutPanel split = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
     private final SimplePager pager = new SimplePager();
@@ -104,11 +104,11 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
     }
 
     @Override
-    public HanldedSplitLayoutPanel getSplit() {
+    public HandlerSplitLayoutPanel getSplit() {
         return split;
     }
 
-    public void setSplit(final HanldedSplitLayoutPanel split) {
+    public void setSplit(final HandlerSplitLayoutPanel split) {
         this.split = split;
     }
 
@@ -167,7 +167,7 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
     public TagCategoriesView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.TagCategories());
 
-        split.addStyleName(CSSConstants.TagCategoryView.TAGCATEGORIESSPLITPANEL);
+        split.addStyleName(CSSConstants.TagCategoryView.TAG_CATEGORIES_SPLIT_PANEL);
 
         results.addColumn(idColumn, PressGangCCMSUI.INSTANCE.CategoryID());
         results.addColumn(nameColumn, PressGangCCMSUI.INSTANCE.CategoryName());
@@ -176,7 +176,7 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
         searchResultsPanel.add(results);
         searchResultsPanel.add(pager);
 
-        searchResultsPanel.addStyleName(CSSConstants.TagCategoryView.TAGCATEGORIESLISTPANEL);
+        searchResultsPanel.addStyleName(CSSConstants.TagCategoryView.TAG_CATEGORIES_LIST_PANEL);
 
         pager.setDisplay(results);
 
@@ -190,7 +190,7 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
         tagsResultsPanel.add(tagsResults);
         tagsResultsPanel.add(tagsPager);
 
-        tagsResultsPanel.addStyleName(CSSConstants.TagCategoryView.TAGCATEGORYTAGSLISTPANEL);
+        tagsResultsPanel.addStyleName(CSSConstants.TagCategoryView.TAG_CATEGORY_TAGS_LIST_PANEL);
 
         tagsPager.setDisplay(tagsResults);
 

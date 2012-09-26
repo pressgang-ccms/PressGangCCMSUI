@@ -10,8 +10,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * 
  * @author Matthew Casperson
  */
-public class HanldedSplitLayoutPanel extends SplitLayoutPanel implements HasResizeHandlers {
-    public HanldedSplitLayoutPanel(final int size) {
+public class HandlerSplitLayoutPanel extends SplitLayoutPanel implements HasResizeHandlers {
+    public HandlerSplitLayoutPanel(final int size) {
         super(size);
     }
 

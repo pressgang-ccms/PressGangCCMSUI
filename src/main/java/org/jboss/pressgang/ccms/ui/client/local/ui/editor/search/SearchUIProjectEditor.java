@@ -47,10 +47,10 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
                     /* Untoggle the other buttons */
                     for (final SearchUICategoryEditor editor : categories.getEditors()) {
                         if (editor.summary != subEditor.summary) {
-                            editor.summary.removeStyleName(CSSConstants.CUSTOMBUTTONDOWN);
-                            editor.summary.removeStyleName(CSSConstants.CUSTOMBUTTON);
+                            editor.summary.removeStyleName(CSSConstants.CUSTOM_BUTTON_DOWN);
+                            editor.summary.removeStyleName(CSSConstants.CUSTOM_BUTTON);
 
-                            editor.summary.addStyleName(CSSConstants.CUSTOMBUTTON);
+                            editor.summary.addStyleName(CSSConstants.CUSTOM_BUTTON);
                         }
                     }
                 }
@@ -77,11 +77,11 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
         this.driver = driver;
         this.searchUIProjects = searchUIProjects;
 
-        this.addStyleName(CSSConstants.CATEGORIESLAYOUT);
-        summary.addStyleName(CSSConstants.CUSTOMBUTTON);
+        this.addStyleName(CSSConstants.CATEGORIES_LAYOUT);
+        summary.addStyleName(CSSConstants.CUSTOM_BUTTON);
 
-        categoriesButtonPanel.addStyleName(CSSConstants.CATEGORIESBUTTONSLAYOUT);
-        scroll.addStyleName(CSSConstants.CATEGORIESSCROLLPANEL);
+        categoriesButtonPanel.addStyleName(CSSConstants.CATEGORIES_BUTTONS_LAYOUT);
+        scroll.addStyleName(CSSConstants.CATEGORIES_SCROLL_PANEL);
 
         scroll.setWidget(categoriesButtonPanel);
         this.setWidget(0, 0, scroll);
@@ -89,8 +89,8 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
         summary.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                summary.removeStyleName(CSSConstants.CUSTOMBUTTON);
-                summary.addStyleName(CSSConstants.CUSTOMBUTTONDOWN);
+                summary.removeStyleName(CSSConstants.CUSTOM_BUTTON);
+                summary.addStyleName(CSSConstants.CUSTOM_BUTTON_DOWN);
             }
         });
     }

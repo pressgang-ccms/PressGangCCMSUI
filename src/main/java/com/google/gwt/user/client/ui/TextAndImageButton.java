@@ -17,7 +17,7 @@ public class TextAndImageButton extends Button {
 
     public TextAndImageButton() {
         super();
-        initialize(CSSConstants.CUSTOMBUTTONTEXT);
+        initialize(CSSConstants.CUSTOM_BUTTON_TEXT);
     }
 
     public TextAndImageButton(final String divClass) {

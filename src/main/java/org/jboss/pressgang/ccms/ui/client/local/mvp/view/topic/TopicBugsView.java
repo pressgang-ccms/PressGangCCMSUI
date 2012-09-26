@@ -93,7 +93,7 @@ public class TopicBugsView extends TopicViewBase implements TopicBugsPresenter.D
         results.addColumn(summaryColumn, PressGangCCMSUI.INSTANCE.BugzillaSummary());
         results.addColumn(checkColumn, PressGangCCMSUI.INSTANCE.IsOpen());
 
-        searchResultsPanel.addStyleName(CSSConstants.SEARCHRESULTSPANEL);
+        searchResultsPanel.addStyleName(CSSConstants.SEARCH_RESULTS_PANEL);
 
         searchResultsPanel.add(results);
         searchResultsPanel.add(pager);

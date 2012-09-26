@@ -99,8 +99,8 @@ public class ImageFilteredResultsView extends BaseTemplateView implements ImageF
         results.addColumn(idColumn, PressGangCCMSUI.INSTANCE.ImageID());
         results.addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.ImageDescription());
 
-        searchResultsPanel.addStyleName(CSSConstants.IMAGEFILTEREDRESULTSPANEL);
-        filterTable.addStyleName(CSSConstants.IMAGEFILTEREDOPTIONSPANEL);
+        searchResultsPanel.addStyleName(CSSConstants.IMAGE_FILTERED_RESULTS_PANEL);
+        filterTable.addStyleName(CSSConstants.IMAGE_FILTERED_OPTIONS_PANEL);
 
         filterTable.setWidget(0, 0, imageIdFilterLabel);
         filterTable.setWidget(0, 1, imageIdFilter);

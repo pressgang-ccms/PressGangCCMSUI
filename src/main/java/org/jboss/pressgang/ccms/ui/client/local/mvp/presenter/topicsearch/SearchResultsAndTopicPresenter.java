@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
@@ -48,11 +49,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
@@ -79,7 +76,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
 
         SimpleLayoutPanel getTopicResultsActionButtonsPanel();
 
-        HanldedSplitLayoutPanel getSplitPanel();
+        HandlerSplitLayoutPanel getSplitPanel();
 
         DockLayoutPanel getTopicViewLayoutPanel();
 

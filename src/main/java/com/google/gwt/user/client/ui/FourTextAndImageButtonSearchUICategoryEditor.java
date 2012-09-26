@@ -29,10 +29,10 @@ public class FourTextAndImageButtonSearchUICategoryEditor extends FourTextAndIma
                 setText3(PressGangCCMSUI.INSTANCE.Included() + ": " + value.getIncludedTags());
                 setText4(PressGangCCMSUI.INSTANCE.Excluded() + ": " + value.getExcludedTags());
 
-                div3.setAttribute("class", value.getIncludedTags() != 0 ? CSSConstants.CUSTOMBUTTONTAGSINCLUDED + ""
-                        : CSSConstants.CUSTOMBUTTONTEXT);
-                div4.setAttribute("class", value.getExcludedTags() != 0 ? CSSConstants.CUSTOMBUTTONTAGSEXCLUDED + ""
-                        : CSSConstants.CUSTOMBUTTONTEXT);
+                div3.setAttribute("class", value.getIncludedTags() != 0 ? CSSConstants.CUSTOM_BUTTON_TAGS_INCLUDED + ""
+                        : CSSConstants.CUSTOM_BUTTON_TEXT);
+                div4.setAttribute("class", value.getExcludedTags() != 0 ? CSSConstants.CUSTOM_BUTTON_TAGS_EXCLUDED + ""
+                        : CSSConstants.CUSTOM_BUTTON_TEXT);
 
             }
 

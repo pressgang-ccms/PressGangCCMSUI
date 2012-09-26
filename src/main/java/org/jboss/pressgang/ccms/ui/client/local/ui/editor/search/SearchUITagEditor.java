@@ -25,7 +25,7 @@ public class SearchUITagEditor implements Editor<SearchUITag> {
     public SearchUITagEditor(final SearchPresenterDriver driver, final SearchUIProjects searchUIProjects) {
         this.searchUIProjects = searchUIProjects;
 
-        name.addStyleName(CSSConstants.TAGLABEL);
+        name.addStyleName(CSSConstants.TAG_LABEL);
 
         state.addClickHandler(new ClickHandler() {
             @Override

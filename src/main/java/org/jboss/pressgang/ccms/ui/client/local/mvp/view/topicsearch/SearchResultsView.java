@@ -67,7 +67,7 @@ public class SearchResultsView extends BaseTemplateView implements SearchResults
         results.addColumn(idColumn, PressGangCCMSUI.INSTANCE.TopicID());
         results.addColumn(titleColumn, PressGangCCMSUI.INSTANCE.TopicTitle());
 
-        searchResultsPanel.addStyleName(CSSConstants.SEARCHRESULTSPANEL);
+        searchResultsPanel.addStyleName(CSSConstants.SEARCH_RESULTS_PANEL);
 
         searchResultsPanel.add(results);
         searchResultsPanel.add(pager);

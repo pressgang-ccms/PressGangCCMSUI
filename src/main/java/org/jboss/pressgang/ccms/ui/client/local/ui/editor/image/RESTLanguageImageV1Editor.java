@@ -74,7 +74,7 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
     }
 
     public RESTLanguageImageV1Editor(final TabLayoutPanel parentPanel, final int parentIndex) {
-        this.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGETAB);
+        this.addStyleName(CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_TAB);
 
         filename.setReadOnly(true);
 
@@ -92,17 +92,17 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
         this.setWidget(2, 0, imageLabel);
         this.setWidget(2, 1, imageDataBase64);
 
-        filenameLabel.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMELABEL);
-        filename.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMETEXT);
-        imageLabel.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYLABEL);
-        imageDataBase64.addStyleName(CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGE);
+        filenameLabel.addStyleName(CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_LABEL);
+        filename.addStyleName(CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_TEXT);
+        imageLabel.addStyleName(CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_LABEL);
+        imageDataBase64.addStyleName(CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_IMAGE);
 
-        this.getCellFormatter().addStyleName(0, 0, CSSConstants.IMAGEVIEWLANGUAGEIMAGEUPLOADLABELCELL);
-        this.getCellFormatter().addStyleName(0, 1, CSSConstants.IMAGEVIEWLANGUAGEIMAGEUPLOADBUTTONSCELL);
-        this.getCellFormatter().addStyleName(1, 0, CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMELABELCELL);
-        this.getCellFormatter().addStyleName(1, 1, CSSConstants.IMAGEVIEWLANGUAGEIMAGEFILENAMETEXTCELL);
-        this.getCellFormatter().addStyleName(2, 0, CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYLABELCELL);
-        this.getCellFormatter().addStyleName(2, 1, CSSConstants.IMAGEVIEWLANGUAGEIMAGEDISPLAYIMAGECELL);
+        this.getCellFormatter().addStyleName(0, 0, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_UPLOAD_LABEL_CELL);
+        this.getCellFormatter().addStyleName(0, 1, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_UPLOAD_BUTTONS_CELL);
+        this.getCellFormatter().addStyleName(1, 0, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_LABEL_CELL);
+        this.getCellFormatter().addStyleName(1, 1, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_TEXT_CELL);
+        this.getCellFormatter().addStyleName(2, 0, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_LABEL_CELL);
+        this.getCellFormatter().addStyleName(2, 1, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_IMAGE_CELL);
     }
 
     @Override

@@ -1,22 +1,21 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.view.category;
 
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndCategoryPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.WaitingDialog;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
-
-public class TagsFilteredResultsAndTagView extends BaseTemplateView implements TagsFilteredResultsAndTagPresenter.Display {
-    public TagsFilteredResultsAndTagView(final String applicationName, final String pageName) {
+public class CategoriesFilteredResultsAndCategoryView extends BaseTemplateView implements CategoriesFilteredResultsAndCategoryPresenter.Display {
+    public CategoriesFilteredResultsAndCategoryView(final String applicationName, final String pageName) {
         super(applicationName, pageName);
     }
-    
+
     private final HandlerSplitLayoutPanel splitPanel = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
     private final DockLayoutPanel resultsViewLayoutPanel = new DockLayoutPanel(Unit.PX);
     private final DockLayoutPanel viewLayoutPanel = new DockLayoutPanel(Unit.PX);
@@ -24,7 +23,7 @@ public class TagsFilteredResultsAndTagView extends BaseTemplateView implements T
     private final SimpleLayoutPanel viewPanel = new SimpleLayoutPanel();
     private final SimpleLayoutPanel resultsActionButtonsPanel = new SimpleLayoutPanel();
     private final SimpleLayoutPanel viewActionButtonsPanel = new SimpleLayoutPanel();
-    
+
     /** The dialog that is presented when the view is unavailable. */
     private final WaitingDialog waiting = new WaitingDialog();
 
@@ -57,8 +56,8 @@ public class TagsFilteredResultsAndTagView extends BaseTemplateView implements T
         return viewActionButtonsPanel;
     }
 
-    public TagsFilteredResultsAndTagView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Tags());
+    public CategoriesFilteredResultsAndCategoryView() {
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Categories());
         
         /* We have own own top action panels */
         this.getTopActionParentPanel().removeFromParent();

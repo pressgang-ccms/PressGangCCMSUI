@@ -47,15 +47,15 @@ public class RESTImageV1Editor extends DockPanel implements ValueAwareEditor<RES
     }
 
     public RESTImageV1Editor() {
-        this.addStyleName(CSSConstants.IMAGEVIEWPARENTDOCKPANEL);
+        this.addStyleName(CSSConstants.IMAGE_VIEW_PARENT_DOCK_PANEL);
 
         docbookFileName.setReadOnly(true);
         xmlTemplate.setReadOnly(true);
 
-        imageDetails.addStyleName(CSSConstants.IMAGEVIEWDETAILSTABLE);
-        descriptionLabel.addStyleName(CSSConstants.IMAGEVIEWDESCRIPTIONLABEL);
-        description.addStyleName(CSSConstants.IMAGEVIEWDESCRIPTIONTEXT);
-        xmlTemplate.addStyleName(CSSConstants.IMAGEVIEWTEMPLATETEXT);
+        imageDetails.addStyleName(CSSConstants.IMAGE_VIEW_DETAILS_TABLE);
+        descriptionLabel.addStyleName(CSSConstants.IMAGE_VIEW_DESCRIPTION_LABEL);
+        description.addStyleName(CSSConstants.IMAGE_VIEW_DESCRIPTION_TEXT);
+        xmlTemplate.addStyleName(CSSConstants.IMAGE_VIEW_TEMPLATE_TEXT);
 
         imageDetails.setWidget(0, 0, descriptionLabel);
         imageDetails.setWidget(0, 1, description);
@@ -64,12 +64,12 @@ public class RESTImageV1Editor extends DockPanel implements ValueAwareEditor<RES
         imageDetails.setWidget(2, 0, docbookFileNameLabel);
         imageDetails.setWidget(2, 1, docbookFileName);
 
-        imageDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.IMAGEVIEWDESCRIPTIONLABELCELL);
-        imageDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.IMAGEVIEWDESCRIPTIONTEXTCELL);
-        imageDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.IMAGEVIEWTEMPLATELABELCELL);
-        imageDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.IMAGEVIEWTEMPLATETEXTCELL);
-        imageDetails.getCellFormatter().addStyleName(2, 0, CSSConstants.IMAGEVIEWDOCBOOKFILENAMELABELCELL);
-        imageDetails.getCellFormatter().addStyleName(2, 1, CSSConstants.IMAGEVIEWDOCBOOKFILENAMETEXTCELL);
+        imageDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.IMAGE_VIEW_DESCRIPTION_LABEL_CELL);
+        imageDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.IMAGE_VIEW_DESCRIPTION_TEXT_CELL);
+        imageDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.IMAGE_VIEW_TEMPLATE_LABEL_CELL);
+        imageDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.IMAGE_VIEW_TEMPLATE_TEXT_CELL);
+        imageDetails.getCellFormatter().addStyleName(2, 0, CSSConstants.IMAGE_VIEW_DOCBOOK_FILENAME_LABEL_CELL);
+        imageDetails.getCellFormatter().addStyleName(2, 1, CSSConstants.IMAGE_VIEW_DOCBOOK_FILENAME_TEXT_CELL);
 
         this.add(imageDetails, DockPanel.NORTH);
         this.add(languageImages_OTM, DockPanel.CENTER);

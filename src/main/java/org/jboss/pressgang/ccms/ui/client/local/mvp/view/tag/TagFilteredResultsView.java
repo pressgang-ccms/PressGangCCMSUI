@@ -99,8 +99,8 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
         results.addColumn(idColumn, PressGangCCMSUI.INSTANCE.TagID());
         results.addColumn(nameColumn, PressGangCCMSUI.INSTANCE.TagName());
 
-        searchResultsPanel.addStyleName(CSSConstants.TagFilteredResultsView.TAGFILTEREDRESULTSPANEL);
-        filterTable.addStyleName(CSSConstants.TagFilteredResultsView.TAGFILTEREDOPTIONSPANEL);
+        searchResultsPanel.addStyleName(CSSConstants.TagFilteredResultsView.TAG_FILTERED_RESULTS_PANEL);
+        filterTable.addStyleName(CSSConstants.TagFilteredResultsView.TAG_FILTERED_OPTIONS_PANEL);
 
         filterTable.setWidget(0, 0, idFilterLabel);
         filterTable.setWidget(0, 1, idFilter);

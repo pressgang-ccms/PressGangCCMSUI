@@ -13,8 +13,8 @@ public class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RESTTopi
     public final AceEditor xml = new AceEditor(false);
 
     public RESTTopicV1XMLEditor(final boolean readOnly) {
-        this.addStyleName(CSSConstants.TOPICXMLVIEWACEPANEL);
-        xml.addStyleName(CSSConstants.TOPICXMLVIEWXMLFIELD);
+        this.addStyleName(CSSConstants.TOPIC_XML_VIEW_ACE_PANEL);
+        xml.addStyleName(CSSConstants.TOPIC_XML_VIEW_XML_FIELD);
 
         xml.setReadOnly(readOnly);
         xml.setMode(AceEditorMode.XML);

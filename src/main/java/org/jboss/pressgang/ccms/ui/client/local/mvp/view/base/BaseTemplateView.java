@@ -247,28 +247,28 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         headingBanner.addStyleName(CSSResources.INSTANCE.appCss().ApplicationHeadingPanel());
         headingBanner.add(new Image(ImageResources.INSTANCE.headingBanner()));
 
-        topLevelLayoutPanel.addStyleName(CSSConstants.TOPLEVELLAYOUTPANEL);
+        topLevelLayoutPanel.addStyleName(CSSConstants.TOP_LEVEL_LAYOUT_PANEL);
         topLevelLayoutPanel.addNorth(headingBanner, Constants.HEADING_BANNER_HEIGHT);
 
         /* Set the second level layout */
-        secondLevelLayoutPanel.addStyleName(CSSConstants.SECONDLEVELLAYOUTPANEL);
+        secondLevelLayoutPanel.addStyleName(CSSConstants.SECOND_LEVEL_LAYOUT_PANEL);
         topLevelLayoutPanel.add(secondLevelLayoutPanel);
 
         /* Set the page title */
         pageTitle.setText(pageName);
-        pageTitle.addStyleName(CSSConstants.PAGETITLE);
+        pageTitle.addStyleName(CSSConstants.PAGE_TITLE);
         pageTitleParentLayoutPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         pageTitleParentLayoutPanel.add(pageTitle);
 
-        pageTitleParentLayoutPanel.addStyleName(CSSConstants.PAGETITLEPARENTLAYOUTPANEL);
+        pageTitleParentLayoutPanel.addStyleName(CSSConstants.PAGE_TITLE_PARENT_LAYOUT_PANEL);
         secondLevelLayoutPanel.addNorth(pageTitleParentLayoutPanel, Constants.PAGE_TITLE_BAR_HEIGHT);
 
         /* Set the remaining content */
-        thirdLevelLayoutPanel.addStyleName(CSSConstants.THIRDLEVELLAYOUTPANEL);
+        thirdLevelLayoutPanel.addStyleName(CSSConstants.THIRD_LEVEL_LAYOUT_PANEL);
         secondLevelLayoutPanel.add(thirdLevelLayoutPanel);
 
         /* Set the action bar panel */
-        topActionPanel.addStyleName(CSSConstants.TOPACTIONPANEL);
+        topActionPanel.addStyleName(CSSConstants.TOP_ACTION_PANEL);
 
         topActionParentPanel.add(topActionPanel);
 
@@ -276,13 +276,13 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         /* Set the shortcut bar */
         shortCutPanelParent.setWidget(shortcutPanel);
-        shortCutPanelParent.addStyleName(CSSConstants.SHORTCUTPANELPARENT);
-        shortcutPanel.addStyleName(CSSConstants.SHORTCUTPANEL);
+        shortCutPanelParent.addStyleName(CSSConstants.SHORTCUT_PANEL_PARENT);
+        shortcutPanel.addStyleName(CSSConstants.SHORTCUT_PANEL);
 
         thirdLevelLayoutPanel.addWest(shortCutPanelParent, Constants.SHORTCUT_BAR_WIDTH);
 
         /* Set the footer panel */
-        footerPanel.addStyleName(CSSConstants.FOOTERPANEL);
+        footerPanel.addStyleName(CSSConstants.FOOTER_PANEL);
 
         thirdLevelLayoutPanel.addSouth(footerPanel, Constants.FOOTER_HEIGHT);
         
@@ -291,7 +291,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         footerPanel.setWidget(0, 1, feedback);
 
         /* Add the content panel */
-        panel.addStyleName(CSSConstants.CONTENTLAYOUTPANEL);
+        panel.addStyleName(CSSConstants.CONTENT_LAYOUT_PANEL);
 
         thirdLevelLayoutPanel.add(panel);
 
@@ -388,7 +388,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         }
 
         table.setWidget(0, columns, new SimplePanel());
-        table.getCellFormatter().addStyleName(0, columns, CSSConstants.RIGHTALIGNEDACTIONBUTTONS);
+        table.getCellFormatter().addStyleName(0, columns, CSSConstants.RIGHT_ALIGNED_ACTION_BUTTONS);
     }
 
     protected void addActionButton(final Widget widget) {

@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topicsearch;
 
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter;
@@ -9,15 +10,11 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 
 public class SearchResultsAndTopicView extends BaseTemplateView implements SearchResultsAndTopicPresenter.Display {
 
-    private final HanldedSplitLayoutPanel splitPanel = new HanldedSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
+    private final HandlerSplitLayoutPanel splitPanel = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
     private final DockLayoutPanel resultsViewLayoutPanel = new DockLayoutPanel(Unit.PX);
     private final DockLayoutPanel topicViewLayoutPanel = new DockLayoutPanel(Unit.PX);
     private final SimpleLayoutPanel topicResultsPanel = new SimpleLayoutPanel();
@@ -41,7 +38,7 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
     }
 
     @Override
-    public HanldedSplitLayoutPanel getSplitPanel() {
+    public HandlerSplitLayoutPanel getSplitPanel() {
         return splitPanel;
     }
 
@@ -73,8 +70,8 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
 
         addSpacerToShortcutPanels();
 
-        resultsViewLayoutPanel.addStyleName(CSSConstants.RESULTSVIEWLAYOUTPANEL);
-        topicViewLayoutPanel.addStyleName(CSSConstants.TOPICVIEWLAYOUTPANEL);
+        resultsViewLayoutPanel.addStyleName(CSSConstants.RESULTS_VIEW_LAYOUT_PANEL);
+        topicViewLayoutPanel.addStyleName(CSSConstants.TOPIC_VIEW_LAYOUT_PANEL);
 
         resultsViewLayoutPanel.addNorth(topicResultsActionButtonsPanel, Constants.ACTION_BAR_HEIGHT);
         topicViewLayoutPanel.addNorth(topicViewActionButtonsPanel, Constants.ACTION_BAR_HEIGHT);
@@ -84,10 +81,10 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
 
         splitPanel.addWest(resultsViewLayoutPanel, Constants.SPLIT_PANEL_SIZE);
 
-        topicViewActionButtonsPanel.addStyleName(CSSConstants.TOPICSEARCHTOPICVIEWBUTTONSPANEL);
-        topicViewPanel.addStyleName(CSSConstants.TOPICSEARCHTOPICVIEWDETAILSPANEL);
+        topicViewActionButtonsPanel.addStyleName(CSSConstants.TOPIC_SEARCH_TOPIC_VIEW_BUTTONS_PANEL);
+        topicViewPanel.addStyleName(CSSConstants.TOPIC_SEARCH_TOPIC_VIEW_DETAILS_PANEL);
 
-        splitPanel.addStyleName(CSSConstants.TOPICSEARCHRESULTSANDVIEWPARENTPANEL);
+        splitPanel.addStyleName(CSSConstants.TOPIC_SEARCH_RESULTS_AND_VIEW_PARENT_PANEL);
 
         this.getPanel().add(splitPanel);
     }
@@ -104,7 +101,7 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
         this.splitType = splitType;
 
         final SimplePanel renderedPanelParent = new SimplePanel();
-        renderedPanelParent.addStyleName(CSSConstants.TOPICVIEWLAYOUTPANEL);
+        renderedPanelParent.addStyleName(CSSConstants.TOPIC_VIEW_LAYOUT_PANEL);
         renderedPanelParent.add(panel);
 
         if (splitType == SplitType.HORIZONTAL) {

@@ -157,7 +157,7 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
         results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.View() + " / " + PressGangCCMSUI.INSTANCE.Edit());
         results.addColumn(diffButton, PressGangCCMSUI.INSTANCE.Diff());
 
-        searchResultsPanel.addStyleName(CSSConstants.SEARCHRESULTSPANEL);
+        searchResultsPanel.addStyleName(CSSConstants.SEARCH_RESULTS_PANEL);
 
         searchResultsPanel.add(results);
         searchResultsPanel.add(pager);

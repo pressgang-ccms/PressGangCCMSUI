@@ -152,7 +152,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
     public TopicViewBase(final String applicationName, final String pageName) {
         super(applicationName, pageName);
 
-        renderedSplitViewMenu.addStyleName(CSSConstants.RENDEREDSPLITVIEWMENUTABLE);
+        renderedSplitViewMenu.addStyleName(CSSConstants.RENDERED_SPLIT_VIEW_MENU_TABLE);
 
         /* Build the action bar icons */
         renderedSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
@@ -193,9 +193,9 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
         this.getSave().setEnabled(!readOnly);
 
         if (readOnly) {
-            this.getHistory().addStyleName(CSSConstants.ALERTBUTTON);
+            this.getHistory().addStyleName(CSSConstants.ALERT_BUTTON);
         } else {
-            this.getHistory().removeStyleName(CSSConstants.ALERTBUTTON);
+            this.getHistory().removeStyleName(CSSConstants.ALERT_BUTTON);
         }
     }
 

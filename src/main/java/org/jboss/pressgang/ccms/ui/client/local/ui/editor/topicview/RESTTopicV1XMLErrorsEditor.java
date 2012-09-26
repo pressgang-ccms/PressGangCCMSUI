@@ -11,8 +11,8 @@ public class RESTTopicV1XMLErrorsEditor extends SimplePanel implements Editor<RE
     public final TextArea xmlErrors = new TextArea();
 
     public RESTTopicV1XMLErrorsEditor() {
-        this.addStyleName(CSSConstants.TOPICXMLERRORSVIEWPANEL);
-        xmlErrors.addStyleName(CSSConstants.TOPICXMLERRORSVIEWFIELD);
+        this.addStyleName(CSSConstants.TOPIC_XML_ERRORS_VIEW_PANEL);
+        xmlErrors.addStyleName(CSSConstants.TOPIC_XML_ERRORS_VIEW_FIELD);
         xmlErrors.setReadOnly(true);
 
         this.setWidget(xmlErrors);

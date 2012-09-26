@@ -40,10 +40,10 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
                     /* Untoggle the other buttons */
                     for (final SearchUIProjectEditor projectEditor : projects.getEditors()) {
                         if (projectEditor.summary != subEditor.summary) {
-                            projectEditor.summary.removeStyleName(CSSConstants.CUSTOMBUTTONDOWN);
-                            projectEditor.summary.removeStyleName(CSSConstants.CUSTOMBUTTON);
+                            projectEditor.summary.removeStyleName(CSSConstants.CUSTOM_BUTTON_DOWN);
+                            projectEditor.summary.removeStyleName(CSSConstants.CUSTOM_BUTTON);
 
-                            projectEditor.summary.addStyleName(CSSConstants.CUSTOMBUTTON);
+                            projectEditor.summary.addStyleName(CSSConstants.CUSTOM_BUTTON);
                         }
                     }
                 }
@@ -70,9 +70,9 @@ public class SearchUIProjectsEditor extends Grid implements Editor<SearchUIProje
         this.driver = driver;
         this.searchUIProjects = searchUIProjects;
 
-        this.addStyleName(CSSConstants.PROJECTSLAYOUT);
-        projectButtonPanel.addStyleName(CSSConstants.PROJECTSBUTTONSLAYOUT);
-        scrollPanel.addStyleName(CSSConstants.PROJECTSSCROLLPANEL);
+        this.addStyleName(CSSConstants.PROJECTS_LAYOUT);
+        projectButtonPanel.addStyleName(CSSConstants.PROJECTS_BUTTONS_LAYOUT);
+        scrollPanel.addStyleName(CSSConstants.PROJECTS_SCROLL_PANEL);
 
         scrollPanel.setWidget(projectButtonPanel);
 

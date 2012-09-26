@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.image;
 
+import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
@@ -9,7 +10,6 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 
 public class ImagesFilteredResultsAndImageView extends BaseTemplateView implements
@@ -17,7 +17,7 @@ public class ImagesFilteredResultsAndImageView extends BaseTemplateView implemen
     
     
     
-    private final HanldedSplitLayoutPanel splitPanel = new HanldedSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
+    private final HandlerSplitLayoutPanel splitPanel = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
     private final DockLayoutPanel resultsViewLayoutPanel = new DockLayoutPanel(Unit.PX);
     private final DockLayoutPanel viewLayoutPanel = new DockLayoutPanel(Unit.PX);
     private final SimpleLayoutPanel resultsPanel = new SimpleLayoutPanel();
@@ -34,7 +34,7 @@ public class ImagesFilteredResultsAndImageView extends BaseTemplateView implemen
     }
 
     @Override
-    public HanldedSplitLayoutPanel getSplitPanel() {
+    public HandlerSplitLayoutPanel getSplitPanel() {
         return splitPanel;
     }
 
@@ -66,8 +66,8 @@ public class ImagesFilteredResultsAndImageView extends BaseTemplateView implemen
 
         addSpacerToShortcutPanels();
 
-        resultsViewLayoutPanel.addStyleName(CSSConstants.RESULTSVIEWLAYOUTPANEL);
-        viewLayoutPanel.addStyleName(CSSConstants.TOPICVIEWLAYOUTPANEL);
+        resultsViewLayoutPanel.addStyleName(CSSConstants.RESULTS_VIEW_LAYOUT_PANEL);
+        viewLayoutPanel.addStyleName(CSSConstants.TOPIC_VIEW_LAYOUT_PANEL);
 
         resultsViewLayoutPanel.addNorth(resultsActionButtonsPanel, Constants.ACTION_BAR_HEIGHT);
         viewLayoutPanel.addNorth(viewActionButtonsPanel, Constants.ACTION_BAR_HEIGHT);
@@ -77,10 +77,10 @@ public class ImagesFilteredResultsAndImageView extends BaseTemplateView implemen
 
         splitPanel.addWest(resultsViewLayoutPanel, Constants.SPLIT_PANEL_SIZE);
 
-        viewActionButtonsPanel.addStyleName(CSSConstants.TOPICSEARCHTOPICVIEWBUTTONSPANEL);
-        viewPanel.addStyleName(CSSConstants.TOPICSEARCHTOPICVIEWDETAILSPANEL);
+        viewActionButtonsPanel.addStyleName(CSSConstants.TOPIC_SEARCH_TOPIC_VIEW_BUTTONS_PANEL);
+        viewPanel.addStyleName(CSSConstants.TOPIC_SEARCH_TOPIC_VIEW_DETAILS_PANEL);
 
-        splitPanel.addStyleName(CSSConstants.TOPICSEARCHRESULTSANDVIEWPARENTPANEL);
+        splitPanel.addStyleName(CSSConstants.TOPIC_SEARCH_RESULTS_AND_VIEW_PARENT_PANEL);
 
         splitPanel.add(viewLayoutPanel);
 

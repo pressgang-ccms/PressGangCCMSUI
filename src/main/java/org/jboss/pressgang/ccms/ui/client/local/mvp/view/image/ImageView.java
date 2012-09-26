@@ -76,7 +76,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
             layout.setWidget(0, 1, locales);
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
-            buttonPanel.addStyleName(CSSConstants.DIALOGBOXOKCANCELPANEL);
+            buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(cancel);
             buttonPanel.add(ok);
 

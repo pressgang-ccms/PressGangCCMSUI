@@ -63,17 +63,17 @@ public class SearchUICategoryEditor extends ScrollPanel implements ValueAwareEdi
         this.driver = driver;
         this.searchUIProjects = searchUIProjects;
 
-        this.summary.addStyleName(CSSConstants.CUSTOMBUTTON);
-        tagsTable.addStyleName(CSSConstants.CATEGORYTAGLAYOUT);
-        this.addStyleName(CSSConstants.CATEGORYTAGSCROLL);
+        this.summary.addStyleName(CSSConstants.CUSTOM_BUTTON);
+        tagsTable.addStyleName(CSSConstants.CATEGORY_TAG_LAYOUT);
+        this.addStyleName(CSSConstants.CATEGORY_TAG_SCROLL);
 
         this.setWidget(tagsTable);
 
         summary.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                summary.removeStyleName(CSSConstants.CUSTOMBUTTON);
-                summary.addStyleName(CSSConstants.CUSTOMBUTTONDOWN);
+                summary.removeStyleName(CSSConstants.CUSTOM_BUTTON);
+                summary.addStyleName(CSSConstants.CUSTOM_BUTTON_DOWN);
             }
         });
     }

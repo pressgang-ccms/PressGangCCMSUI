@@ -6,6 +6,7 @@ import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
@@ -21,7 +22,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.view.client.CellPreviewEvent;
@@ -42,7 +42,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
 
         SimpleLayoutPanel getResultsActionButtonsPanel();
 
-        HanldedSplitLayoutPanel getSplitPanel();
+        HandlerSplitLayoutPanel getSplitPanel();
 
         DockLayoutPanel getViewLayoutPanel();
     }

@@ -5,7 +5,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.HanldedSplitLayoutPanel;
+import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.view.client.CellPreviewEvent;
@@ -72,7 +72,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter extends TemplatePrese
         /**
          * @return The split panel that separates the tag list from the tag details views
          */
-        HanldedSplitLayoutPanel getSplitPanel();
+        HandlerSplitLayoutPanel getSplitPanel();
     }
 
     /**

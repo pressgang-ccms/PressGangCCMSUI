@@ -53,7 +53,7 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
     public TopicXMLView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
                 + PressGangCCMSUI.INSTANCE.XMLEditing());
-        this.getPanel().addStyleName(CSSConstants.TOPICXMLVIEWPANEL);
+        this.getPanel().addStyleName(CSSConstants.TOPIC_XML_VIEW_PANEL);
     }
 
     @Override
