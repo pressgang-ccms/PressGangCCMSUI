@@ -30,9 +30,9 @@ import com.google.gwt.view.client.HasData;
 
 @Dependent
 public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase implements EditableView {
-   
+
     public static final String HISTORY_TOKEN = "ImageFilteredResultsAndImageView";
-    
+
     public interface Display extends BaseTemplateViewInterface {
         SimpleLayoutPanel getResultsPanel();
 
@@ -58,20 +58,11 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
 
     private String queryString;
 
-    /** Keeps a reference to the start row. */
-    private Integer tableStartRow;
-
-    /** Keeps a reference to the list of topics being displayed. */
-    private List<RESTImageCollectionItemV1> currentList;
-
-    /** The currently selected image in the search results.*/
-    private RESTImageCollectionItemV1 selectedSearchImage;
-
     @Override
     public void go(final HasWidgets container) {
         display.setViewShown(true);
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
-        
+
         container.clear();
         container.add(display.getTopLevelPanel());
 
@@ -115,9 +106,9 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
         final EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTImageCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTImageCollectionItemV1> display) {
-                tableStartRow = display.getVisibleRange().getStart();
+                imageData.setStartRow(display.getVisibleRange().getStart());
                 final int length = display.getVisibleRange().getLength();
-                final int end = tableStartRow + length;
+                final int end = imageData.getStartRow() + length;
 
                 final RESTCalls.RESTCallback<RESTImageCollectionV1> callback = new RESTCalls.RESTCallback<RESTImageCollectionV1>() {
                     @Override
@@ -136,8 +127,9 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
                     public void success(final RESTImageCollectionV1 retValue) {
                         try {
                             /* Zero results can be a null list */
-                            currentList = retValue.getItems() == null ? new ArrayList<RESTImageCollectionItemV1>() : retValue.getItems();
-                            displayAsynchronousList(currentList, retValue.getSize(), tableStartRow);
+                            imageData.setItems(retValue.getItems() == null ? new ArrayList<RESTImageCollectionItemV1>()
+                                    : retValue.getItems());
+                            displayAsynchronousList(imageData.getItems(), retValue.getSize(), imageData.getStartRow());
                         } finally {
                             imageFilteredResultsDisplay.removeWaitOperation();
                         }
@@ -150,7 +142,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
                     }
                 };
 
-                RESTCalls.getImagesFromQuery(callback, queryString, tableStartRow, end);
+                RESTCalls.getImagesFromQuery(callback, queryString, imageData.getStartRow(), end);
             }
         };
         return provider;
@@ -170,10 +162,10 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
                     /*
                      * selectedSearchImage will be null until an image is selected for the first time
                      */
-                    final boolean needToAddImageView = selectedSearchImage == null;
+                    final boolean needToAddImageView = imageData.getSelectedItem() == null;
 
-                    selectedSearchImage = event.getValue();
-                    displayedImage = event.getValue().clone(true);
+                    imageData.setSelectedItem(event.getValue());
+                    imageData.setSelectedItem(event.getValue().clone(true));
 
                     final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
                         @Override
@@ -190,7 +182,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
                         @Override
                         public void success(final RESTImageV1 retValue) {
                             try {
-                                retValue.cloneInto(displayedImage.getItem(), true);
+                                retValue.cloneInto(imageData.getDisplayedItem().getItem(), true);
                                 reInitialiseImageView();
 
                                 /*
@@ -214,7 +206,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
 
                     };
 
-                    RESTCalls.getImage(callback, selectedSearchImage.getItem().getId());
+                    RESTCalls.getImage(callback, imageData.getSelectedItem().getItem().getId());
                 }
             }
         });
@@ -245,13 +237,19 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
 
     @Override
     protected void reInitialiseImageView() {
-        imageDisplay.initialize(displayedImage.getItem(), getUnassignedLocales().toArray(new String[0]));
+        imageDisplay.initialize(imageData.getDisplayedItem().getItem(), getUnassignedLocales().toArray(new String[0]));
 
-        bindImageUploadButtons(imageDisplay);
+        bindImageUploadButtons(imageDisplay, display);
     }
 
     @Override
     public boolean checkForUnsavedChanges() {
-        return true;
+        if (imageData.getSelectedItem() != null) {
+            if (!imageData.getSelectedItem().getItem().getDescription()
+                    .equals(imageData.getDisplayedItem().getItem().getDescription())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

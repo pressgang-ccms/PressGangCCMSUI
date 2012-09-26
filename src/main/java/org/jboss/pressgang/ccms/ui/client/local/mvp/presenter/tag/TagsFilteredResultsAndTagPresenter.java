@@ -1086,7 +1086,7 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
         if (tagProviderData.getDisplayedItem() != null) {
             resultDisplay.getDriver().flush();
 
-            if (unsavedTagChanged() || unsavedCategoryChanges()) {
+            if (unsavedTagChanged() || unsavedCategoryChanges() || unsavedProjectChanges()) {
                 return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
             }
         }
@@ -1124,6 +1124,22 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
         if (categoryProviderData.getItems() != null) {
             for (final RESTCategoryCollectionItemV1 category : categoryProviderData.getItems()) {
                 if (category.getItem().getTags().returnDeletedAddedAndUpdatedCollectionItems().size() != 0) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    
+    /**
+     * @return true if the categories have any unsaved changes to their tags
+     */
+    private boolean unsavedProjectChanges() {
+        /* It is possible that the list of categories has not loaded yet, in which case no changes could have been made */
+        if (projectProviderData.getItems() != null) {
+            for (final RESTProjectCollectionItemV1 project : projectProviderData.getItems()) {
+                if (project.getItem().getTags().returnDeletedAddedAndUpdatedCollectionItems().size() != 0) {
                     return true;
                 }
             }

@@ -140,7 +140,7 @@ public class ImagePresenter extends ImagePresenterBase {
     protected void reInitialiseImageView() {
         display.initialize(displayedImage.getItem(), getUnassignedLocales().toArray(new String[0]));
 
-        bindImageUploadButtons(display);
+        bindImageUploadButtons(display, display);
     }
 
 }
