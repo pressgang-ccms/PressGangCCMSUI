@@ -23,9 +23,10 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredRes
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.create.CreateTopicPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsAndTopicPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsPresenter;
 
 import javax.enterprise.context.ApplicationScoped;
 
@@ -132,6 +133,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 presenter = getBeanInstance(CategoriesFilteredResultsAndCategoryPresenter.class);
             } else if (token.startsWith(TagFilteredResultsPresenter.HISTORY_TOKEN)){
                 presenter = getBeanInstance(TagFilteredResultsPresenter.class);
+            }else if (token.startsWith(CreateTopicPresenter.HISTORY_TOKEN)){
+                presenter = getBeanInstance(CreateTopicPresenter.class);
             }
             
             if (presenter.isPresent()) {

@@ -10,6 +10,12 @@ import com.google.gwt.storage.client.Storage;
 final public class Preferences {
     /** The setting that saves the width of the split screen on the tag search screen */
     public static final String TAG_VIEW_MAIN_SPLIT_WIDTH = "TagViewMainSplitWidth";
+    /** The setting that saves the width of the split screen on the topic search screen */
+    public static final String TOPIC_VIEW_MAIN_SPLIT_WIDTH = "TopicViewMainSplitWidth";
+    /** The setting that saves the width of the horizontally split screen on the rendered topic search screen */
+    public static final String TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH = "TopicViewRenderedHorizontalSplitWidth";
+    /** The setting that saves the width of the vertically split screen on the rendered topic search screen */
+    public static final String TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH = "TopicViewRenderedVerticalSplitWidth";
     /** The setting that saves the width of the split screen on the tag search screen */
     public static final String TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH = "TagCategoryViewMainSplitWidth";
     /** The setting that saves the width of the split screen on the tag search screen */

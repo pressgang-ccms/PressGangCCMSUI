@@ -1,9 +1,10 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import com.google.gwt.user.client.ui.*;
+
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
@@ -26,6 +27,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErro
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
@@ -64,10 +66,12 @@ import com.google.gwt.view.client.HasData;
 public class SearchResultsAndTopicPresenter extends TemplatePresenter implements EditableView {
 
     public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
-    
+
     public interface Display extends BaseTemplateViewInterface {
         SplitType getSplitType();
 
+        DockLayoutPanel getResultsViewLayoutPanel();
+        
         SimpleLayoutPanel getTopicResultsPanel();
 
         SimpleLayoutPanel getTopicViewPanel();
@@ -83,16 +87,15 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
         void initialize(final SplitType splitType, final Panel panel);
     }
 
+    /** How the rendering panel is displayed */
+    private SplitType split = SplitType.NONE;
+
     /**
      * How long to wait before refreshing the rendered view (in milliseconds).
      */
     private static final int REFRESH_RATE = 1000;
 
-    /** The history token that identifies the a horizontal rendered view split. */
-    private static final String SPLIT_TOKEN_HORIZONTAL = "split=h;";
 
-    /** The history token that identifies the a horizontal rendered view split. */
-    private static final String SPLIT_TOKEN_VERTICAL = "split=v;";
 
     /** Setup automatic flushing and rendering. */
     final Timer timer = new Timer() {
@@ -100,7 +103,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
         public void run() {
             if (selectedView == topicXMLDisplay) {
                 topicXMLDisplay.getDriver().flush();
-                topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), display.getSplitType());
+                topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(),
+                        display.getSplitType());
             }
         }
     };
@@ -238,7 +242,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
     @Override
     public void go(final HasWidgets container) {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
-        
+
         searchResultsDisplay.setViewShown(true);
         display.setViewShown(true);
 
@@ -248,7 +252,29 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
         display.getTopicResultsActionButtonsPanel().setWidget(searchResultsDisplay.getTopActionPanel());
         display.getTopicResultsPanel().setWidget(searchResultsDisplay.getPanel());
 
+        loadSplitPanelSize();
+
         bind();
+    }
+    
+    /** Load the split panel sizes */
+    private void loadSplitPanelSize()
+    {
+        
+        display.getSplitPanel().setSplitPosition(display.getResultsViewLayoutPanel(),
+                Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
+
+        if (split == SplitType.HORIZONTAL) {
+            display.getSplitPanel().setSplitPosition(
+                    topicSplitPanelRenderedDisplay.getPanel().getParent(),
+                    Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH,
+                            Constants.SPLIT_PANEL_SIZE), false);
+        } else if (split == SplitType.VERTICAL) {
+            display.getSplitPanel().setSplitPosition(
+                    topicSplitPanelRenderedDisplay.getPanel().getParent(),
+                    Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH,
+                            Constants.SPLIT_PANEL_SIZE), false);
+        }
     }
 
     /**
@@ -279,7 +305,31 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
 
         bindViewTopicRevisionButton();
 
+        bindMainSplitResize();
+
         getTags();
+    }
+
+    /**
+     * Saves the width of the split screen
+     */
+    private void bindMainSplitResize() {
+        display.getSplitPanel().addResizeHandler(new ResizeHandler() {
+
+            @Override
+            public void onResize(final ResizeEvent event) {
+                Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, display.getSplitPanel()
+                        .getSplitPosition(display.getResultsViewLayoutPanel()) + "");
+
+                if (split == SplitType.HORIZONTAL) {
+                    Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH, display
+                            .getSplitPanel().getSplitPosition(topicSplitPanelRenderedDisplay.getPanel().getParent()) + "");
+                } else if (split == SplitType.VERTICAL) {
+                    Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH, display
+                            .getSplitPanel().getSplitPosition(topicSplitPanelRenderedDisplay.getPanel().getParent()) + "");
+                }
+            }
+        });
     }
 
     /**
@@ -351,8 +401,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                                     + " "
                                     + PressGangCCMSUI.INSTANCE.RevisionDate()
                                     + ": "
-                                    + DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL)
-                                            .format(sourceTopic.getItem().getLastModified());
+                                    + DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL).format(
+                                            sourceTopic.getItem().getLastModified());
                             displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getItem().getXml(), sourceTopicLabel);
                         } finally {
                             topicRevisionsDisplay.removeWaitOperation();
@@ -375,7 +425,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
         topicRevisionsDisplay.getViewButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
             @Override
             public void update(final int index, final RESTTopicCollectionItemV1 revisionTopic, final String value) {
-                
+
                 /* Reset the reference to the revision topic */
                 topicRevisionsDisplay.setRevisionTopic(null);
 
@@ -389,7 +439,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                     /* Reset the reference to the revision topic */
                     topicRevisionsDisplay.setRevisionTopic(revisionTopic);
                 }
-                
+
                 /* default to the rendered view */
                 if (selectedView == null) {
                     selectedView = topicRevisionsDisplay;
@@ -498,7 +548,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
         final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTopicCollectionItemV1> display) {
-                if (topicProviderData.getDisplayedItem() != null && topicProviderData.getDisplayedItem().getItem().getRevisions() != null
+                if (topicProviderData.getDisplayedItem() != null
+                        && topicProviderData.getDisplayedItem().getItem().getRevisions() != null
                         && topicProviderData.getDisplayedItem().getItem().getRevisions().getItems() != null) {
                     displayNewFixedList(topicProviderData.getDisplayedItem().getItem().getRevisions().getItems());
                 } else {
@@ -589,14 +640,13 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                 if (isClick) {
                     topicProviderData.setSelectedItem(event.getValue());
                     topicProviderData.setDisplayedItem(event.getValue().clone(true));
-                    loadNewTopicDetails();                    
+                    loadNewTopicDetails();
                 }
             }
         });
     }
-    
-    private void loadNewTopicDetails()
-    {
+
+    private void loadNewTopicDetails() {
         topicRevisionsDisplay.setRevisionTopic(null);
 
         /* Update the current view, or display the default */
@@ -779,8 +829,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                                 /* Update the selected topic */
                                 retValue.cloneInto(topicProviderData.getSelectedItem().getItem(), true);
                                 /* Update the topic list */
-                                provider.updateRowData(tableStartRow, topicProviderData.getItems());                              
-                                
+                                provider.updateRowData(tableStartRow, topicProviderData.getItems());
+
                                 loadNewTopicDetails();
 
                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
@@ -949,7 +999,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                 /* Sync any changes back to the underlying object */
                 flushChanges();
 
-                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(SPLIT_TOKEN_VERTICAL + queryString));
+                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.SPLIT_TOKEN_VERTICAL + queryString));
             }
         };
 
@@ -959,7 +1009,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                 /* Sync any changes back to the underlying object */
                 flushChanges();
 
-                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(SPLIT_TOKEN_HORIZONTAL + queryString));
+                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.SPLIT_TOKEN_HORIZONTAL + queryString));
             }
         };
 
@@ -1004,7 +1054,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
         /*
          * Need to do an initial call to initialize for the rendered view in the split pane
          */
-        topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), display.getSplitType());
+        topicSplitPanelRenderedDisplay
+                .initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), display.getSplitType());
         /* By default, stop the automatic updating of the rendered view panel */
         timer.cancel();
 
@@ -1085,15 +1136,15 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
     public void parseToken(final String historyToken) {
         queryString = historyToken.replace(HISTORY_TOKEN + ";", "");
 
-        if (queryString.startsWith(SPLIT_TOKEN_HORIZONTAL)) {
-            display.initialize(SplitType.HORIZONTAL, topicSplitPanelRenderedDisplay.getPanel());
-        } else if (queryString.startsWith(SPLIT_TOKEN_VERTICAL)) {
-            display.initialize(SplitType.VERTICAL, topicSplitPanelRenderedDisplay.getPanel());
-        } else {
-            display.initialize(SplitType.NONE, topicSplitPanelRenderedDisplay.getPanel());
+        if (queryString.startsWith(Constants.SPLIT_TOKEN_HORIZONTAL)) {
+            split = SplitType.HORIZONTAL;
+        } else if (queryString.startsWith(Constants.SPLIT_TOKEN_VERTICAL)) {
+            split = SplitType.VERTICAL;
         }
 
-        queryString = queryString.replace(SPLIT_TOKEN_HORIZONTAL, "").replace(SPLIT_TOKEN_VERTICAL, "");
+        display.initialize(split, topicSplitPanelRenderedDisplay.getPanel());
+
+        queryString = queryString.replace(Constants.SPLIT_TOKEN_HORIZONTAL, "").replace(Constants.SPLIT_TOKEN_VERTICAL, "");
 
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
@@ -1107,8 +1158,8 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
      * @return The currently displayed topic
      */
     private RESTTopicCollectionItemV1 getTopicOrRevisionTopic() {
-        final RESTTopicCollectionItemV1 sourceTopic = topicRevisionsDisplay.getRevisionTopic() == null ? topicProviderData.getDisplayedItem()
-                : topicRevisionsDisplay.getRevisionTopic();
+        final RESTTopicCollectionItemV1 sourceTopic = topicRevisionsDisplay.getRevisionTopic() == null ? topicProviderData
+                .getDisplayedItem() : topicRevisionsDisplay.getRevisionTopic();
         return sourceTopic;
     }
 
