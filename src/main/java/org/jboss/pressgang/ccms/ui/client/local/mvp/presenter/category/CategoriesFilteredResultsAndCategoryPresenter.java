@@ -28,6 +28,8 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.stringEqualsEquatingNullWithEmptyString;
+
 /**
  * This presenter takes the TagFilteredResults view to provide a list of tags, and the TagView, TagProjectsView and
  * TagCategoriesView to provide a way to edit the properties and relationships of a tag.
@@ -190,7 +192,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter extends TemplatePrese
 
             @Override
             public void onResize(final ResizeEvent event) {
-                Preferences.INSTANCE.saveSetting(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display.getSplitPanel().getSplitPosition(display.getResultsPanel()) + "");
+                Preferences.INSTANCE.saveSetting(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display.getSplitPanel().getSplitPosition(display.getResultsPanel()) + "");
             }
         });
     }
@@ -316,7 +318,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter extends TemplatePrese
     }
 
     private boolean unsavedCategoryChanged() {
-        return !(categoryProviderData.getSelectedItem().getItem().getName().equals(categoryProviderData.getDisplayedItem().getItem().getName())
-                && categoryProviderData.getSelectedItem().getItem().getDescription().equals(categoryProviderData.getDisplayedItem().getItem().getDescription()));
+        return !(stringEqualsEquatingNullWithEmptyString(categoryProviderData.getSelectedItem().getItem().getName(), categoryProviderData.getDisplayedItem().getItem().getName())
+                && stringEqualsEquatingNullWithEmptyString(categoryProviderData.getSelectedItem().getItem().getDescription(), categoryProviderData.getDisplayedItem().getItem().getDescription()));
     }
 }

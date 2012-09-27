@@ -54,7 +54,13 @@ public interface CSSConstants {
         String CATEGORY_VIEW_NAME_TEXT = "CategoryViewNameText";
         String CATEGORY_VIEW_DESCRIPTION_LABEL = "CategoryViewDescriptionLabel";
         String CATEGORY_VIEW_DESCRIPTION_TEXT = "CategoryViewDescriptionText";
+
         String CATEGORY_VIEW_ID_LABEL_CELL = "CategoryViewIDLabelCell";
+        String CATEGORY_VIEW_ID_TEXT_CELL = "CategoryViewIDTextCell";
+        String CATEGORY_VIEW_NAME_LABEL_CELL = "CategoryViewNameLabelCell";
+        String CATEGORY_VIEW_NAME_TEXT_CELL = "CategoryViewNameTextCell";
+        String CATEGORY_VIEW_DESCRIPTION_LABEL_CELL = "CategoryViewDescriptionLabelCell";
+        String CATEGORY_VIEW_DESCRIPTION_TEXT_CELL = "CategoryViewDescriptionTextCell";
     }
 
     /**

@@ -85,6 +85,12 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
             }
         });
 
+        eventBus.addHandler(CategoriesFilteredResultsAndCategoryViewEvent.TYPE, new CategoriesFilteredResultsAndCategoryViewEventHandler() {
+            @Override
+            public void onCategoriesFilteredResultsViewAndCategoryOpen(CategoriesFilteredResultsAndCategoryViewEvent event) {
+                History.newItem(CategoriesFilteredResultsAndCategoryPresenter.HISTORY_TOKEN + ";" + event.getQuery());
+            }
+        });
     }
 
     @Override
@@ -131,12 +137,12 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 presenter = getBeanInstance(CategoryPresenter.class);
             } else if (token.startsWith(CategoriesFilteredResultsAndCategoryPresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(CategoriesFilteredResultsAndCategoryPresenter.class);
-            } else if (token.startsWith(TagFilteredResultsPresenter.HISTORY_TOKEN)){
+            } else if (token.startsWith(TagFilteredResultsPresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(TagFilteredResultsPresenter.class);
             }else if (token.startsWith(CreateTopicPresenter.HISTORY_TOKEN)){
                 presenter = getBeanInstance(CreateTopicPresenter.class);
             }
-            
+
             if (presenter.isPresent()) {
                 presenter.get().parseToken(token);
                 presenter.get().go(container);

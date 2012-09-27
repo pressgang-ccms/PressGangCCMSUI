@@ -318,7 +318,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         addShortcutButton(tags);
 
         categories = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Categories());
-        categories.setEnabled(false);
         addShortcutButton(categories);
 
         projects = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Projects());

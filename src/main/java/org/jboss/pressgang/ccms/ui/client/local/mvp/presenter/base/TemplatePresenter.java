@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.CategoriesFilteredResultsAndCategoryViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
@@ -15,9 +16,8 @@ import com.google.gwt.user.client.Window;
 
 /**
  * The base class for all presenters that display the standard template
- * 
+ *
  * @author Matthew Casperson
- * 
  */
 public abstract class TemplatePresenter implements Presenter {
     @Inject
@@ -25,6 +25,7 @@ public abstract class TemplatePresenter implements Presenter {
 
     /**
      * Called to bind the UI elements to event handlers.
+     *
      * @param display The main template display
      */
     protected void bind(final BaseTemplateViewInterface display, final EditableView editableView) {
@@ -59,6 +60,14 @@ public abstract class TemplatePresenter implements Presenter {
             }
         });
 
+        display.getCategories().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                if (editableView.checkForUnsavedChanges())
+                    eventBus.fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
+            }
+        });
+
         display.getAdvanced().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
@@ -79,7 +88,7 @@ public abstract class TemplatePresenter implements Presenter {
 
     /**
      * Parse the history token to extract some state from it
-     * 
+     *
      * @param historyToken The history token in the URL
      */
     abstract public void parseToken(final String historyToken);

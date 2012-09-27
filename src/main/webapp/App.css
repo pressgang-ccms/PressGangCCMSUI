@@ -29,6 +29,15 @@
 	width: 100%;
 }
 
+.CategoryViewPanel
+{
+	width: 100%;
+}
+
+.CategoryViewDescriptionTextCell
+{
+	width: 100%;
+}
 
 .ProjectsScrollPanel, .CategoriesScrollPanel, .CategoryTagScroll
 {
@@ -483,7 +492,7 @@ html {
 	overflow: auto !important;
 }
 
-.ImageViewDescriptionText, .ImageViewTemplateText, .TagViewDescriptionText {
+.ImageViewDescriptionText, .ImageViewTemplateText, .TagViewDescriptionText, .CategoryViewDescriptionText {
 	width: 100%;
 	height: 5em;
 	box-sizing: border-box;

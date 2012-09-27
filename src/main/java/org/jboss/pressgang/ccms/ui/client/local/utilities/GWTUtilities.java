@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * GWT has some limitations, like not being able to bind an Editor to an array
  * (http://code.google.com/p/google-web-toolkit/issues/detail?id=6600) and not supporting conversion from a byte array to a
@@ -100,6 +102,23 @@ final public class GWTUtilities {
         if (a != null)
             return a.equals(b);
         
+        return b.equals(a);
+    }
+
+    /**
+     * Compares two strings for equality, considering null and empty string to be equal
+     * @param a The first string
+     * @param b The second string
+     * @return true if both strings are either null or empty string, or if both strings are equal
+     */
+    public static boolean stringEqualsEquatingNullWithEmptyString(final String a, final String b)
+    {
+        if ((a == null || a.isEmpty()) && (b == null || b.isEmpty()))
+            return true;
+
+        if (a != null)
+            return a.equals(b);
+
         return b.equals(a);
     }
 }

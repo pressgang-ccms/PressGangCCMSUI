@@ -91,7 +91,7 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
             }
         };
 
-        RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRINGCONSTANT);
+        RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
     }
 
     protected void bindImageViewButtons(final ImagePresenter.Display imageDisplay, final BaseTemplateViewInterface waitDisplay) {
