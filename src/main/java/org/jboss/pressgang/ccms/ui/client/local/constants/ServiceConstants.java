@@ -8,6 +8,8 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
 final public class ServiceConstants {
     /** The StringConstant that holds the locales */
     static public final int LOCALE_STRINGCONSTANT = 38;
+    /** The StringConstant that holds the concept XML template */
+    static public final int CONCEPT_TOPIC_TEMPLATE = 14;
 
     private ServiceConstants() {
 

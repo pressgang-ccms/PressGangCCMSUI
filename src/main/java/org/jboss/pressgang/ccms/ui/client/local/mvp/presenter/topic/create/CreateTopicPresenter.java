@@ -7,8 +7,10 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
@@ -18,10 +20,17 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPre
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 
+import com.google.common.util.concurrent.AbstractScheduledService.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.AttachEvent;
+import com.google.gwt.event.logical.shared.AttachEvent.Handler;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 /**
@@ -43,6 +52,8 @@ public class CreateTopicPresenter extends TemplatePresenter {
     private TopicViewInterface lastView;
     /** How the rendered view is displayed */
     private SplitType split = SplitType.NONE;
+    /** The initial topic template */
+    private RESTStringConstantV1 topicTemplate;
     // endregion Properties
 
     // region Click Handlers
@@ -53,7 +64,7 @@ public class CreateTopicPresenter extends TemplatePresenter {
 
         }
     };
-    
+
     private final ClickHandler viewClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
@@ -61,7 +72,7 @@ public class CreateTopicPresenter extends TemplatePresenter {
 
         }
     };
-    
+
     private final ClickHandler renderedClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
@@ -69,7 +80,7 @@ public class CreateTopicPresenter extends TemplatePresenter {
 
         }
     };
-    
+
     private final ClickHandler xmlErrorsClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
@@ -77,7 +88,7 @@ public class CreateTopicPresenter extends TemplatePresenter {
 
         }
     };
-    
+
     private final ClickHandler tagsClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
@@ -85,7 +96,7 @@ public class CreateTopicPresenter extends TemplatePresenter {
 
         }
     };
-    
+
     private final ClickHandler bugsClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
@@ -93,7 +104,7 @@ public class CreateTopicPresenter extends TemplatePresenter {
 
         }
     };
-    
+
     private final ClickHandler revisionClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
@@ -102,8 +113,7 @@ public class CreateTopicPresenter extends TemplatePresenter {
         }
     };
     // endregion Click Handlers
-    
-    
+
     // region Displays
     /** The topic fields display */
     @Inject
@@ -136,7 +146,7 @@ public class CreateTopicPresenter extends TemplatePresenter {
     /** The topic revisions display */
     @Inject
     private TopicRevisionsPresenter.Display topicRevisionsDisplay;
-    
+
     /** A list containing all the displays */
     private final List<TopicViewInterface> displays = new ArrayList<TopicViewInterface>();
 
@@ -160,7 +170,7 @@ public class CreateTopicPresenter extends TemplatePresenter {
 
         /* Display the rendered view by default */
         changeDisplayedTopicView(topicRenderedDisplay);
-        
+
         /* Populate the list of all the displays */
         displays.add(topicViewDisplay);
         displays.add(topicXMLDisplay);
@@ -170,7 +180,7 @@ public class CreateTopicPresenter extends TemplatePresenter {
         displays.add(topicTagsDisplay);
         displays.add(topicBugsDisplay);
         displays.add(topicRevisionsDisplay);
-        
+
         /* Add a tags collection to the topic */
         topic.explicitSetTags(new RESTTagCollectionV1());
 
@@ -182,30 +192,65 @@ public class CreateTopicPresenter extends TemplatePresenter {
     // region Data Binding and Event Handling
     private void bind() {
         bindTopicEditButtons();
+
+        getTopicTemplate();
+    }
+
+    private void getTopicTemplate() {
+        final RESTCallback<RESTStringConstantV1> callback = new RESTCallback<RESTStringConstantV1>() {
+
+            @Override
+            public void begin() {
+                lastView.addWaitOperation();
+            }
+
+            @Override
+            public void generalException(Exception ex) {
+                lastView.removeWaitOperation();
+            }
+
+            @Override
+            public void success(final RESTStringConstantV1 retValue) {
+                try {
+                    topicTemplate = retValue;
+                    topic.setXml(topicTemplate.getValue());
+                } finally {
+                    lastView.removeWaitOperation();
+                }
+
+            }
+
+            @Override
+            public void failed() {
+                lastView.removeWaitOperation();
+            }
+        };
+
+        RESTCalls.getStringConstant(callback, ServiceConstants.CONCEPT_TOPIC_TEMPLATE);
     }
 
     /**
      * Bind behaviour to the standard action buttons displayed by the views
      */
     private void bindTopicEditButtons() {
-        
-        for (final TopicViewInterface display : displays)
-        {
+
+        for (final TopicViewInterface display : displays) {
             display.getXml().addClickHandler(xmlEditingClickHandler);
             display.getFields().addClickHandler(viewClickHandler);
             display.getRendered().addClickHandler(renderedClickHandler);
             display.getXmlErrors().addClickHandler(xmlErrorsClickHandler);
             display.getTags().addClickHandler(tagsClickHandler);
-            display.getBug().addClickHandler(bugsClickHandler);
+            display.getBugs().addClickHandler(bugsClickHandler);
             display.getHistory().addClickHandler(revisionClickHandler);
         }
-        
+
     }
 
     // endregion Data Binding
 
     // region View Management
     private void changeDisplayedTopicView(final TopicViewInterface view) {
+
         /* If we are moving to a new view, initialize it */
         if (lastView != view) {
 
@@ -225,9 +270,22 @@ public class CreateTopicPresenter extends TemplatePresenter {
             view.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
             view.setViewShown(true);
         }
-
+        
         /* Update the displayed topic */
         view.initialize(this.topic, false, split);
+
+        /* The ACE editor needs to be redisplayed, but it has to be delayed slightly for some reason */
+        if (view == this.topicXMLDisplay) {
+            
+            final Timer refreshTimer = new Timer() {
+                @Override
+                public void run() {
+                    if (topicXMLDisplay.getEditor() != null)
+                        topicXMLDisplay.getEditor().redisplay();
+                }
+            };
+            refreshTimer.schedule(50);
+        }
 
         lastView = view;
     }
