@@ -75,7 +75,7 @@ public class SearchResultsPresenter extends TemplatePresenter implements Editabl
                     }
 
                     @Override
-                    public void generalException(final Exception ex) {
+                    public void generalException(final Exception e) {
                         display.removeWaitOperation();
                     }
 
@@ -112,7 +112,7 @@ public class SearchResultsPresenter extends TemplatePresenter implements Editabl
                     }
 
                     @Override
-                    public void generalException(final Exception ex) {
+                    public void generalException(final Exception e) {
                         display.removeWaitOperation();
                     }
 

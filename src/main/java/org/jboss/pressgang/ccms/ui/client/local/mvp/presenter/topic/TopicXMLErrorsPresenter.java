@@ -53,7 +53,7 @@ public class TopicXMLErrorsPresenter extends TemplatePresenter {
             }
 
             @Override
-            public void generalException(final Exception ex) {
+            public void generalException(final Exception e) {
                 display.removeWaitOperation();
             }
 

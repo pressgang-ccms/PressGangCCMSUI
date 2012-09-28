@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategory
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
@@ -22,14 +23,13 @@ import com.google.gwt.view.client.HasData;
 
 /**
  * The presenter that provides the logic for the tag category relationships.
- * 
+ *
  * @author matthew
- * 
  */
 @Dependent
 public class TagCategoriesPresenter extends TemplatePresenter implements EditableView {
     public static final String HISTORY_TOKEN = "TagCategoriesView";
-    
+
     public interface Display extends TagViewInterface {
         EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> getProvider();
 
@@ -52,7 +52,7 @@ public class TagCategoriesPresenter extends TemplatePresenter implements Editabl
         VerticalPanel getTagsResultsPanel();
 
         HandlerSplitLayoutPanel getSplit();
-        
+
         VerticalPanel getSearchResultsPanel();
     }
 
@@ -84,30 +84,13 @@ public class TagCategoriesPresenter extends TemplatePresenter implements Editabl
                 final int length = item.getVisibleRange().getLength();
                 final int end = start + length;
 
-                final RESTCalls.RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
+                final RESTCalls.RESTCallback<RESTCategoryCollectionV1> callback = new BaseRestCallback<RESTCategoryCollectionV1,
+                        Display>(display, new BaseRestCallback.SuccessAction<RESTCategoryCollectionV1, Display>() {
                     @Override
-                    public void begin() {
-                        display.addWaitOperation();
+                    public void doSuccessAction(RESTCategoryCollectionV1 retValue, Display display) {
+                        displayNewFixedList(retValue.getItems());
                     }
-
-                    @Override
-                    public void generalException(final Exception ex) {
-                        display.removeWaitOperation();
-                    }
-
-                    @Override
-                    public void success(final RESTCategoryCollectionV1 retValue) {
-                        try {
-                            displayNewFixedList(retValue.getItems());
-                        } finally {
-                            display.removeWaitOperation();
-                        }
-                    }
-
-                    @Override
-                    public void failed() {
-                        display.removeWaitOperation();
-                    }
+                }) {
                 };
 
                 RESTCalls.getCategoriesFromQuery(callback, queryString, start, end);

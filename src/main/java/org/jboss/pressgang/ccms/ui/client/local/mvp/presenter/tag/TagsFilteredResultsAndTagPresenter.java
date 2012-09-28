@@ -104,7 +104,6 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
     private final ClickHandler tagDetailsClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
-
             displayedView = resultDisplay;
             reInitialiseView();
         }
@@ -117,7 +116,6 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
     private final ClickHandler tagProjectsClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
-
             displayedView = projectsDisplay;
             reInitialiseView();
         }
@@ -129,7 +127,6 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
     private final ClickHandler tagCategoriesClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
-
             displayedView = categoriesDisplay;
             reInitialiseView();
         }
@@ -166,7 +163,7 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
                     }
 
                     @Override
-                    public void generalException(final Exception ex) {
+                    public void generalException(final Exception e) {
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                         display.removeWaitOperation();
                         tagSaveComplete.setValue(true);
@@ -197,7 +194,6 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
                         } finally {
                             display.removeWaitOperation();
                         }
-
                     }
 
                     @Override
@@ -279,7 +275,7 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
                     }
 
                     @Override
-                    public void generalException(final Exception ex) {
+                    public void generalException(final Exception e) {
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                         display.removeWaitOperation();
                         categorySaveComplete.setValue(true);
@@ -487,7 +483,7 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
             }
 
             @Override
-            public void generalException(final Exception ex) {
+            public void generalException(final Exception e) {
                 Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                 projectsDisplay.removeWaitOperation();
             }
@@ -534,7 +530,7 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
             }
 
             @Override
-            public void generalException(final Exception ex) {
+            public void generalException(final Exception e) {
                 Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                 categoriesDisplay.removeWaitOperation();
             }
@@ -889,7 +885,7 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
                     }
 
                     @Override
-                    public void generalException(final Exception ex) {
+                    public void generalException(final Exception e) {
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                         filteredResultsDisplay.removeWaitOperation();
                     }

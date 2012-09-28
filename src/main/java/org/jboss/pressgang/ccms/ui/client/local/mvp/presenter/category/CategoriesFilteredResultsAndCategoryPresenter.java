@@ -20,6 +20,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePrese
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
@@ -31,8 +32,8 @@ import javax.inject.Inject;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.stringEqualsEquatingNullWithEmptyString;
 
 /**
- * This presenter takes the TagFilteredResults view to provide a list of tags, and the TagView, TagProjectsView and
- * TagCategoriesView to provide a way to edit the properties and relationships of a tag.
+ * This presenter takes the CategoryFilteredResults view to provide a list of categories, and the CategoryView to provide
+ * a way to edit the properties of a category.
  *
  * @author Matthew Casperson
  */
@@ -45,40 +46,40 @@ public class CategoriesFilteredResultsAndCategoryPresenter extends TemplatePrese
     public static final String HISTORY_TOKEN = "CategoriesFilteredResultsAndCategoryView";
 
     /**
-     * This interface describes the required UI elements for the parent view (i.e. the view that holds the four views
-     * TagFilteredResults view to provide a list of tags, and the TagView, TagProjectsView and TagCategoriesView.
+     * This interface describes the required UI elements for the parent view (i.e. the view that holds the two views
+     * CategoryFilteredResults view to provide a list of categories and the CategoryView.
      *
      * @author Matthew Casperson
      */
     public interface Display extends BaseTemplateViewInterface {
         /**
-         * @return The panel used to hold the list of tags
+         * @return The panel used to hold the list of categories
          */
         SimpleLayoutPanel getResultsPanel();
 
         /**
-         * @return The panel used to hold the views that display the tag details
+         * @return The panel used to hold the views that display the category details
          */
         SimpleLayoutPanel getViewPanel();
 
         /**
-         * @return The panel that holds the action buttons for the tag detail views
+         * @return The panel that holds the action buttons for the category details view
          */
         SimpleLayoutPanel getViewActionButtonsPanel();
 
         /**
-         * @return The panel that holds the action buttons for the list of tags
+         * @return The panel that holds the action buttons for the list of categories
          */
         SimpleLayoutPanel getResultsActionButtonsPanel();
 
         /**
-         * @return The split panel that separates the tag list from the tag details views
+         * @return The split panel that separates the category list from the category details views
          */
         HandlerSplitLayoutPanel getSplitPanel();
     }
 
     /**
-     * A click handler used to save any changes to the tag
+     * A click handler used to save any changes to the category
      */
     private final ClickHandler saveClickHandler = new ClickHandler() {
         @Override
@@ -87,30 +88,17 @@ public class CategoriesFilteredResultsAndCategoryPresenter extends TemplatePrese
             /* Sync the UI to the underlying object */
             resultDisplay.getDriver().flush();
 
-            RESTCallback<RESTCategoryV1> callback = new RESTCallback<RESTCategoryV1>() {
-                @Override
-                public void begin() {
-                    display.addWaitOperation();
-                }
-
-                @Override
-                public void generalException(Exception ex) {
-                    display.removeWaitOperation();
-                }
-
-                @Override
-                public void success(RESTCategoryV1 retValue) {
-                    retValue.cloneInto(categoryProviderData.getSelectedItem().getItem(), true);
-                    retValue.cloneInto(categoryProviderData.getDisplayedItem().getItem(), true);
-                    filteredResultsDisplay.getProvider().updateRowData(categoryProviderData.getStartRow(), categoryProviderData.getItems());
-                    resultDisplay.initialize(categoryProviderData.getDisplayedItem().getItem(), false);
-                    display.removeWaitOperation();
-                }
-
-                @Override
-                public void failed() {
-                    display.removeWaitOperation();
-                }
+            RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, Display>(display,
+                    new BaseRestCallback.SuccessAction<RESTCategoryV1, Display>() {
+                        @Override
+                        public void doSuccessAction(RESTCategoryV1 retValue, Display display) {
+                            retValue.cloneInto(categoryProviderData.getSelectedItem().getItem(), true);
+                            retValue.cloneInto(categoryProviderData.getDisplayedItem().getItem(), true);
+                            filteredResultsDisplay.getProvider().updateRowData(categoryProviderData.getStartRow(),
+                                    categoryProviderData.getItems());
+                            resultDisplay.initialize(categoryProviderData.getDisplayedItem().getItem(), false);
+                        }
+                    }) {
             };
 
             RESTCategoryV1 category = new RESTCategoryV1();
@@ -128,25 +116,25 @@ public class CategoriesFilteredResultsAndCategoryPresenter extends TemplatePrese
     private Display display;
 
     /**
-     * An Errai injected instance of a class that implements TagFilteredResultsPresenter.Display. This is the view that displays
-     * the list of tags.
+     * An Errai injected instance of a class that implements CategoryFilteredResultsPresenter.Display. This is the view that displays
+     * the list of categories.
      */
     @Inject
     private CategoryFilteredResultsPresenter.Display filteredResultsDisplay;
 
     /**
-     * An Errai injected instance of a class that implements TagPresenter.Display. This is the view that displays the fields of
-     * the tag (name, description etc)
+     * An Errai injected instance of a class that implements CategoryPresenter.Display. This is the view that displays the fields of
+     * the category (name, description etc)
      */
     @Inject
     private CategoryPresenter.Display resultDisplay;
 
     /**
-     * The tag query string extracted from the history token
+     * The category query string extracted from the history token
      */
     private String queryString;
     /**
-     * Holds the data required to populate and refresh the tags list
+     * Holds the data required to populate and refresh the categories list
      */
     private ProviderUpdateData<RESTCategoryCollectionItemV1> categoryProviderData = new ProviderUpdateData<RESTCategoryCollectionItemV1>();
 
@@ -198,7 +186,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter extends TemplatePrese
     }
 
     /**
-     * @return A provider to be used for the tag display list
+     * @return A provider to be used for the category display list
      */
     private EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateListProvider() {
         final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
@@ -263,9 +251,9 @@ public class CategoriesFilteredResultsAndCategoryPresenter extends TemplatePrese
                         return;
                     }
 
-                    /* The selected item will be the tag from the list. This is the unedited, unexpanded copy of the tag */
+                    /* The selected item will be the category from the list. This is the unedited, unexpanded copy of the category */
                     categoryProviderData.setSelectedItem(event.getValue());
-                    /* All editing is done in a clone of the selected tag. Any expanded collections will be copied into this tag */
+                    /* All editing is done in a clone of the selected category. Any expanded collections will be copied into this category */
                     categoryProviderData.setDisplayedItem(event.getValue().clone(true));
 
                     resultDisplay.initialize(categoryProviderData.getDisplayedItem().getItem(), false);
@@ -298,8 +286,8 @@ public class CategoriesFilteredResultsAndCategoryPresenter extends TemplatePrese
     }
 
     /**
-     * Compare the displayed tag (the one that is edited) with the selected tag (the one that exists in the collection used to
-     * build the tag list). If there are unsaved changes, prompt the user.
+     * Compare the displayed category (the one that is edited) with the selected category (the one that exists in the collection used to
+     * build the category list). If there are unsaved changes, prompt the user.
      *
      * @return true if the user wants to ignore the unsaved changes, false otherwise
      */

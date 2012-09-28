@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionI
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
@@ -20,7 +21,7 @@ import com.google.gwt.view.client.HasData;
 @Dependent
 public class TagProjectsPresenter extends TemplatePresenter implements EditableView {
     public static final String HISTORY_TOKEN = "TagProjectsView";
-    
+
     public interface Display extends TagViewInterface {
         EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> getProvider();
 
@@ -47,7 +48,6 @@ public class TagProjectsPresenter extends TemplatePresenter implements EditableV
     public void go(final HasWidgets container) {
         container.clear();
         container.add(display.getTopLevelPanel());
-
         bind();
     }
 
@@ -61,32 +61,14 @@ public class TagProjectsPresenter extends TemplatePresenter implements EditableV
                 final int length = item.getVisibleRange().getLength();
                 final int end = start + length;
 
-                final RESTCalls.RESTCallback<RESTProjectCollectionV1> callback = new RESTCalls.RESTCallback<RESTProjectCollectionV1>() {
+                final RESTCalls.RESTCallback<RESTProjectCollectionV1> callback = new BaseRestCallback<RESTProjectCollectionV1,
+                        Display>(display, new BaseRestCallback.SuccessAction<RESTProjectCollectionV1, Display>() {
                     @Override
-                    public void begin() {
-                        display.addWaitOperation();
+                    public void doSuccessAction(RESTProjectCollectionV1 retValue, Display display) {
+                        displayNewFixedList(retValue.getItems());
                     }
-
-                    @Override
-                    public void generalException(final Exception ex) {
-                        display.removeWaitOperation();
-                    }
-
-                    @Override
-                    public void success(final RESTProjectCollectionV1 retValue) {
-                        try {
-                            displayNewFixedList(retValue.getItems());
-                        } finally {
-                            display.removeWaitOperation();
-                        }
-                    }
-
-                    @Override
-                    public void failed() {
-                        display.removeWaitOperation();
-                    }
+                }) {
                 };
-
                 RESTCalls.getProjectsFromQuery(callback, queryString, start, end);
             }
         };

@@ -379,7 +379,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                     }
 
                     @Override
-                    public void generalException(final Exception ex) {
+                    public void generalException(final Exception e) {
                         topicRevisionsDisplay.removeWaitOperation();
                     }
 
@@ -484,7 +484,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
             }
 
             @Override
-            public void generalException(final Exception ex) {
+            public void generalException(final Exception e) {
                 topicTagsDisplay.removeWaitOperation();
             }
 
@@ -594,7 +594,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                     }
 
                     @Override
-                    public void generalException(final Exception ex) {
+                    public void generalException(final Exception e) {
                         Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopics());
                         searchResultsDisplay.removeWaitOperation();
                     }
@@ -675,7 +675,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
             }
 
             @Override
-            public void generalException(final Exception ex) {
+            public void generalException(final Exception e) {
                 topicRevisionsDisplay.removeWaitOperation();
             }
 
@@ -708,7 +708,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
             }
 
             @Override
-            public void generalException(final Exception ex) {
+            public void generalException(final Exception e) {
                 topicTagsDisplay.removeWaitOperation();
             }
 
@@ -743,7 +743,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
             }
 
             @Override
-            public void generalException(final Exception ex) {
+            public void generalException(final Exception e) {
                 topicBugsDisplay.removeWaitOperation();
             }
 
@@ -815,7 +815,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
                         }
 
                         @Override
-                        public void generalException(final Exception ex) {
+                        public void generalException(final Exception e) {
                             Window.alert(PressGangCCMSUI.INSTANCE.ErrorSavingTopic());
                             display.removeWaitOperation();
                             topicXMLDisplay.getEditor().redisplay();

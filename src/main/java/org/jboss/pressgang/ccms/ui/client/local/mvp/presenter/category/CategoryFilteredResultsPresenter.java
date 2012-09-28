@@ -11,6 +11,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollection
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
@@ -20,7 +21,7 @@ import javax.inject.Inject;
 @Dependent
 public class CategoryFilteredResultsPresenter extends TemplatePresenter implements EditableView {
     public static final String HISTORY_TOKEN = "CategoryFilteredResultsView";
-    
+
     public interface Display extends BaseTemplateViewInterface {
         EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> getProvider();
 
@@ -54,7 +55,6 @@ public class CategoryFilteredResultsPresenter extends TemplatePresenter implemen
     public void go(final HasWidgets container) {
         container.clear();
         container.add(display.getTopLevelPanel());
-
         bind();
     }
 
@@ -68,36 +68,19 @@ public class CategoryFilteredResultsPresenter extends TemplatePresenter implemen
                 final int length = item.getVisibleRange().getLength();
                 final int end = start + length;
 
-                final RESTCalls.RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
+                final RESTCalls.RESTCallback<RESTCategoryCollectionV1> callback =
+                        new BaseRestCallback<RESTCategoryCollectionV1, Display>(display,
+                                new BaseRestCallback.SuccessAction<RESTCategoryCollectionV1, Display>() {
                     @Override
-                    public void begin() {
-                        display.addWaitOperation();
+                    public void doSuccessAction(RESTCategoryCollectionV1 retValue, Display display) {
+                        displayAsynchronousList(retValue.getItems(), retValue.getSize(), start);
                     }
-
-                    @Override
-                    public void generalException(final Exception ex) {
-                        display.removeWaitOperation();
-                    }
-
-                    @Override
-                    public void success(final RESTCategoryCollectionV1 retValue) {
-                        try {
-                            displayAsynchronousList(retValue.getItems(), retValue.getSize(), start);
-                        } finally {
-                            display.removeWaitOperation();
-                        }
-                    }
-
-                    @Override
-                    public void failed() {
-                        display.removeWaitOperation();
-                    }
+                }) {
                 };
 
                 RESTCalls.getUnexpandedCategoriesFromQuery(callback, queryString, start, end);
             }
         };
-
         display.setProvider(provider);
     }
 

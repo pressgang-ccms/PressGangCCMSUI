@@ -11,6 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
@@ -25,7 +26,7 @@ import com.google.gwt.view.client.HasData;
 @Dependent
 public class ImageFilteredResultsPresenter extends TemplatePresenter implements EditableView {
     public static final String HISTORY_TOKEN = "ImageFilteredResultsView";
-    
+
     public interface Display extends BaseTemplateViewInterface {
         EnhancedAsyncDataProvider<RESTImageCollectionItemV1> getProvider();
 
@@ -50,10 +51,14 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter implements 
 
     private String queryString;
 
-    /** Keeps a reference to the start row. */
+    /**
+     * Keeps a reference to the start row.
+     */
     private Integer tableStartRow;
 
-    /** Keeps a reference to the list of topics being displayed. */
+    /**
+     * Keeps a reference to the list of topics being displayed.
+     */
     private List<RESTImageCollectionItemV1> currentList;
 
     @Override
@@ -79,31 +84,15 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter implements 
                 final int length = item.getVisibleRange().getLength();
                 final int end = start + length;
 
-                final RESTCalls.RESTCallback<RESTImageCollectionV1> callback = new RESTCalls.RESTCallback<RESTImageCollectionV1>() {
-                    @Override
-                    public void begin() {
-                        display.addWaitOperation();
-                    }
-
-                    @Override
-                    public void generalException(final Exception ex) {
-                        display.removeWaitOperation();
-                    }
-
-                    @Override
-                    public void success(final RESTImageCollectionV1 retValue) {
-                        try {
-                            displayNewFixedList(retValue.getItems());
-                        } finally {
-                            display.removeWaitOperation();
-                        }
-                    }
-
-                    @Override
-                    public void failed() {
-                        display.removeWaitOperation();
-                    }
-                };
+                final RESTCalls.RESTCallback<RESTImageCollectionV1> callback =
+                        new BaseRestCallback<RESTImageCollectionV1, Display>(display,
+                                new BaseRestCallback.SuccessAction<RESTImageCollectionV1, Display>() {
+                            @Override
+                            public void doSuccessAction(RESTImageCollectionV1 retValue, Display display) {
+                                displayNewFixedList(retValue.getItems());
+                            }
+                        }) {
+                        };
 
                 RESTCalls.getImagesFromQuery(callback, queryString, start, end);
             }
@@ -113,7 +102,7 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter implements 
     }
 
     /**
-     * @return A provider to be used for the topic display list.
+     * @return A provider to be used for the image display list.
      */
     private EnhancedAsyncDataProvider<RESTImageCollectionItemV1> generateListProvider() {
         final EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTImageCollectionItemV1>() {
@@ -130,7 +119,7 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter implements 
                     }
 
                     @Override
-                    public void generalException(final Exception ex) {
+                    public void generalException(final Exception e) {
                         Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopics());
                         display.removeWaitOperation();
                     }

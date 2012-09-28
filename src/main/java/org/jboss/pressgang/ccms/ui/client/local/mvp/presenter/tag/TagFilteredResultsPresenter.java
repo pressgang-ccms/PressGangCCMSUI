@@ -11,6 +11,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
@@ -78,30 +79,13 @@ public class TagFilteredResultsPresenter extends TemplatePresenter implements Ed
                 final int length = item.getVisibleRange().getLength();
                 final int end = start + length;
 
-                final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
+                final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1,
+                        Display>(display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, Display>() {
                     @Override
-                    public void begin() {
-                        display.addWaitOperation();
+                    public void doSuccessAction(RESTTagCollectionV1 retValue, Display display) {
+                        displayNewFixedList(retValue.getItems());
                     }
-
-                    @Override
-                    public void generalException(final Exception ex) {
-                        display.removeWaitOperation();
-                    }
-
-                    @Override
-                    public void success(final RESTTagCollectionV1 retValue) {
-                        try {
-                            displayNewFixedList(retValue.getItems());
-                        } finally {
-                            display.removeWaitOperation();
-                        }
-                    }
-
-                    @Override
-                    public void failed() {
-                        display.removeWaitOperation();
-                    }
+                }) {
                 };
 
                 RESTCalls.getTagsFromQuery(callback, queryString, start, end);

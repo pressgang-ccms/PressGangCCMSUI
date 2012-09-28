@@ -7,6 +7,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionIte
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
 
@@ -24,7 +25,9 @@ public class ImagePresenter extends ImagePresenterBase {
     @Inject
     private Display display;
 
-    /** The id of the image to display, extracted from the history token. */
+    /**
+     * The id of the image to display, extracted from the history token.
+     */
     private Integer imageId;
 
     public interface Display extends BaseTemplateViewInterface {
@@ -59,7 +62,6 @@ public class ImagePresenter extends ImagePresenterBase {
     public void go(final HasWidgets container) {
         container.clear();
         container.add(display.getTopLevelPanel());
-
         /*
          * normally the displayedImage would be from a collection, but as this presenter only works with one specified entity,
          * we just create the wrapper RESTImageCollectionItemV1 object manually.
@@ -67,11 +69,8 @@ public class ImagePresenter extends ImagePresenterBase {
         imageData.setDisplayedItem(new RESTImageCollectionItemV1());
         imageData.getDisplayedItem().setState(RESTImageCollectionItemV1.UNCHANGED_STATE);
         imageData.getDisplayedItem().setItem(new RESTImageV1());
-
         bind();
-
         getLocales(display);
-
         getImage();
     }
 
@@ -103,26 +102,14 @@ public class ImagePresenter extends ImagePresenterBase {
         /*
          * Create a call back that resets the exception handler on any normal error or exception
          */
-        final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
-            @Override
-            public void begin() {
-                display.addWaitOperation();
-            }
-
-            @Override
-            public void generalException(final Exception ex) {
-                display.removeWaitOperation();
-            }
-
-            @Override
-            public void success(final RESTImageV1 retValue) {
-                try {
-                    retValue.cloneInto(imageData.getDisplayedItem().getItem(), true);
-                    finishLoading();
-                } finally {
-                    display.removeWaitOperation();
-                }
-            }
+        final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, Display>(display,
+                new BaseRestCallback.SuccessAction<RESTImageV1, Display>() {
+                    @Override
+                    public void doSuccessAction(RESTImageV1 retValue, Display display) {
+                        retValue.cloneInto(imageData.getDisplayedItem().getItem(), true);
+                        finishLoading();
+                    }
+                }) {
 
             @Override
             public void failed() {

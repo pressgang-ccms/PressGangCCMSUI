@@ -82,7 +82,7 @@ public class SearchPresenter extends TemplatePresenter implements EditableView {
             }
 
             @Override
-            public void generalException(final Exception ex) {
+            public void generalException(final Exception e) {
                 Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTags());
                 display.removeWaitOperation();
             }

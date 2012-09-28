@@ -14,6 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTLanguageImageV1Editor;
@@ -29,10 +30,14 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 
 abstract public class ImagePresenterBase extends TemplatePresenter {
-    /** The currently displayed image. */
+    /**
+     * The currently displayed image.
+     */
     protected ProviderUpdateData<RESTImageCollectionItemV1> imageData = new ProviderUpdateData<RESTImageCollectionItemV1>();
 
-    /** A reference to the StringConstants that holds the locales. */
+    /**
+     * A reference to the StringConstants that holds the locales.
+     */
     protected String[] locales;
 
     protected String getQuery(final ImageFilteredResultsPresenter.Display imageSearchDisplay) {
@@ -64,38 +69,21 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
     }
 
     protected void getLocales(final BaseTemplateViewInterface imageDisplay) {
-        final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new RESTCalls.RESTCallback<RESTStringConstantV1>() {
+        final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1,
+                BaseTemplateViewInterface>(imageDisplay, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
             @Override
-            public void begin() {
-                imageDisplay.addWaitOperation();
+            public void doSuccessAction(RESTStringConstantV1 retValue, BaseTemplateViewInterface display) {
+                /* Get the list of locales from the StringConstant */
+                locales = retValue.getValue().replaceAll("\\n", "").replaceAll(" ", "").split(",");
             }
-
-            @Override
-            public void generalException(final Exception ex) {
-                imageDisplay.removeWaitOperation();
-            }
-
-            @Override
-            public void success(final RESTStringConstantV1 retValue) {
-                try {
-                    /* Get the list of locales from the StringConstant */
-                    locales = retValue.getValue().replaceAll("\\n", "").replaceAll(" ", "").split(",");
-                } finally {
-                    imageDisplay.removeWaitOperation();
-                }
-            }
-
-            @Override
-            public void failed() {
-                imageDisplay.removeWaitOperation();
-            }
+        }) {
         };
 
         RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
     }
 
     protected void bindImageViewButtons(final ImagePresenter.Display imageDisplay, final BaseTemplateViewInterface waitDisplay) {
-        
+
         imageDisplay.getSave().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
@@ -108,32 +96,15 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                 updateImage.setId(imageData.getDisplayedItem().getItem().getId());
                 updateImage.explicitSetDescription(imageData.getDisplayedItem().getItem().getDescription());
 
-                final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
+                final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
+                        waitDisplay, new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
                     @Override
-                    public void begin() {
-                        waitDisplay.addWaitOperation();
+                    public void doSuccessAction(RESTImageV1 retValue, BaseTemplateViewInterface display) {
+                        retValue.cloneInto(imageData.getDisplayedItem().getItem(), true);
+                        reInitialiseImageView();
+                        Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                     }
-
-                    @Override
-                    public void generalException(final Exception ex) {
-                        waitDisplay.removeWaitOperation();
-                    }
-
-                    @Override
-                    public void success(final RESTImageV1 retValue) {
-                        try {
-                            retValue.cloneInto(imageData.getDisplayedItem().getItem(), true);
-                            reInitialiseImageView();
-                            Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                        } finally {
-                            waitDisplay.removeWaitOperation();
-                        }
-                    }
-
-                    @Override
-                    public void failed() {
-                        waitDisplay.removeWaitOperation();
-                    }
+                }) {
                 };
 
                 RESTCalls.saveImage(callback, updateImage);
@@ -173,31 +144,8 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                         updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                         updateImage.getLanguageImages_OTM().addRemoveItem(languageImage);
 
-                        final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
-                            @Override
-                            public void begin() {
-                                waitDisplay.addWaitOperation();
-                            }
-
-                            @Override
-                            public void generalException(final Exception ex) {
-                                waitDisplay.removeWaitOperation();
-                            }
-
-                            @Override
-                            public void success(final RESTImageV1 retValue) {
-                                try {
-                                    retValue.cloneInto(imageData.getDisplayedItem().getItem(), true);
-                                    reInitialiseImageView();
-                                } finally {
-                                    waitDisplay.removeWaitOperation();
-                                }
-                            }
-
-                            @Override
-                            public void failed() {
-                                waitDisplay.removeWaitOperation();
-                            }
+                        final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1,
+                                BaseTemplateViewInterface>(waitDisplay, getDefaultImageRestCallback()) {
                         };
 
                         RESTCalls.saveImage(callback, updateImage);
@@ -237,31 +185,8 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                 updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                 updateImage.getLanguageImages_OTM().addNewItem(languageImage);
 
-                final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
-                    @Override
-                    public void begin() {
-                        waitDisplay.addWaitOperation();
-                    }
-
-                    @Override
-                    public void generalException(final Exception ex) {
-                        waitDisplay.removeWaitOperation();
-                    }
-
-                    @Override
-                    public void success(final RESTImageV1 retValue) {
-                        try {
-                            retValue.cloneInto(imageData.getDisplayedItem().getItem(), true);
-                            reInitialiseImageView();
-                        } finally {
-                            waitDisplay.removeWaitOperation();
-                        }
-                    }
-
-                    @Override
-                    public void failed() {
-                        waitDisplay.removeWaitOperation();
-                    }
+                final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1,
+                        BaseTemplateViewInterface>(waitDisplay, getDefaultImageRestCallback()) {
                 };
 
                 RESTCalls.saveImage(callback, updateImage);
@@ -276,11 +201,21 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
         });
     }
 
+    private BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface> getDefaultImageRestCallback() {
+        return new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
+            @Override
+            public void doSuccessAction(RESTImageV1 retValue, BaseTemplateViewInterface display) {
+                retValue.cloneInto(imageData.getDisplayedItem().getItem(), true);
+                reInitialiseImageView();
+            }
+        };
+    }
+
     /**
      * Each Language Image has an upload button that needs to be bound to some behaviour.
-     * 
+     *
      * @param imageDisplay The view that displays the image details.
-     * @param waitDisplay The view that displays the waiting screen
+     * @param waitDisplay  The view that displays the waiting screen
      */
     protected void bindImageUploadButtons(final ImagePresenter.Display imageDisplay, final BaseTemplateViewInterface waitDisplay) {
         if (imageDisplay.getEditor() == null) {
@@ -292,11 +227,11 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
             editor.getUploadButton().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
-                    
+
                     /*
-                     * There should only be one file, but use a loop to accommodate any changes that might implement multiple
-                     * files
-                     */
+                    * There should only be one file, but use a loop to accommodate any changes that might implement multiple
+                    * files
+                    */
                     for (final File file : editor.getUpload().getFiles()) {
                         waitDisplay.addWaitOperation();
 
@@ -321,7 +256,7 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                                      */
                                     final RESTImageV1 updateImage = new RESTImageV1();
                                     updateImage.setId(imageData.getDisplayedItem().getItem().getId());
-                                    
+
                                     /* Create the language image */
                                     final RESTLanguageImageV1 updatedLanguageImage = new RESTLanguageImageV1();
                                     updatedLanguageImage.setId(editor.self.getItem().getId());
@@ -332,27 +267,14 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
                                     updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                                     updateImage.getLanguageImages_OTM().addUpdateItem(updatedLanguageImage);
 
-                                    final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
+                                    final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1,
+                                            BaseTemplateViewInterface>(waitDisplay, new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
                                         @Override
-                                        public void begin() {
-                                            waitDisplay.addWaitOperation();
+                                        public void doSuccessAction(RESTImageV1 retValue, BaseTemplateViewInterface display) {
+                                            retValue.cloneInto(imageData.getDisplayedItem().getItem(), true);
+                                            reInitialiseImageView();
                                         }
-
-                                        @Override
-                                        public void generalException(final Exception ex) {
-                                            waitDisplay.removeWaitOperation();
-                                        }
-
-                                        @Override
-                                        public void success(final RESTImageV1 retValue) {
-                                            try {
-                                                retValue.cloneInto(imageData.getDisplayedItem().getItem(), true);
-                                                reInitialiseImageView();
-                                            } finally {
-                                                waitDisplay.removeWaitOperation();
-                                            }
-                                        }
-
+                                    }) {
                                         @Override
                                         public void failed() {
                                             waitDisplay.removeWaitOperation();

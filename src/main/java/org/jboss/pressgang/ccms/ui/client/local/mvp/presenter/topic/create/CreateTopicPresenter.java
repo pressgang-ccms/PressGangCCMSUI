@@ -205,7 +205,7 @@ public class CreateTopicPresenter extends TemplatePresenter {
             }
 
             @Override
-            public void generalException(Exception ex) {
+            public void generalException(Exception e) {
                 lastView.removeWaitOperation();
             }
 

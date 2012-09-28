@@ -79,9 +79,9 @@ public final class RESTCalls {
         /**
          * Called if an exception is thrown when attempting to call the REST service
          *
-         * @param ex
+         * @param e
          */
-        void generalException(final Exception ex);
+        void generalException(final Exception e);
 
         /**
          * Called if the REST call was successful
@@ -104,7 +104,7 @@ public final class RESTCalls {
 
     }
 
-    static private <T> RemoteCallback<T> constructSuccessCallback(final RESTCallback<T> callback) {
+    private static <T> RemoteCallback<T> constructSuccessCallback(final RESTCallback<T> callback) {
         final RemoteCallback<T> successCallback = new RemoteCallback<T>() {
             @Override
             public void callback(final T retValue) {
@@ -114,7 +114,7 @@ public final class RESTCalls {
         return successCallback;
     }
 
-    static private <T> ErrorCallback constructErrorCallback(final RESTCallback<T> callback) {
+    private static <T> ErrorCallback constructErrorCallback(final RESTCallback<T> callback) {
         final ErrorCallback errorCallback = new ErrorCallback() {
             @Override
             public boolean error(final Message message, final Throwable throwable) {
