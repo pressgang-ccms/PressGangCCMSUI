@@ -9,16 +9,4 @@ public class TroubleshootingView extends BaseTemplateView implements Troubleshoo
     public TroubleshootingView(final String applicationName, final String pageName) {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Troubleshooting());
     }
-
-    @Override
-    protected void showWaiting() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    protected void hideWaiting() {
-        // TODO Auto-generated method stub
-        
-    }
 }

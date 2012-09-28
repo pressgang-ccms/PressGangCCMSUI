@@ -117,12 +117,5 @@ public class CategoryFilteredResultsView extends BaseTemplateView implements Cat
     public PushButton getSearch() {
         return search;
     }
-
-    @Override
-    protected void showWaiting() {
-    }
-
-    @Override
-    protected void hideWaiting() {
-    }
 }
+

@@ -213,14 +213,4 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
         this.addActionButton(this.getSave());
         addRightAlignedActionButtonPaddingPanel();
     }
-
-    @Override
-    protected void showWaiting() {
- 
-    }
-
-    @Override
-    protected void hideWaiting() {
-
-    }
 }

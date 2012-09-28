@@ -459,13 +459,19 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     
     /**
      * The view can show a waiting widget when this method is called.
+     * Override this method to provide implementation.
      */
-    abstract protected void showWaiting();
+    protected void showWaiting() {
+        // Do nothing by default
+    }
     
     /**
      * The view can hide a waiting widget when this method is called.
+     * Override this method to provide implementation.
      */
-    abstract protected void hideWaiting();
+    protected void hideWaiting() {
+        // Do nothing by default
+    }
     
     @Override
     public void setFeedbackLink(final String link)

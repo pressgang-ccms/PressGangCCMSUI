@@ -49,16 +49,4 @@ public class TagView extends TagViewBase implements TagPresenter.Display {
         /* Add the projects */
         this.getPanel().setWidget(editor);
     }
-
-    @Override
-    protected void showWaiting() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    protected void hideWaiting() {
-        // TODO Auto-generated method stub
-        
-    }
 }

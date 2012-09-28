@@ -41,14 +41,4 @@ public class CategoryView extends BaseTemplateView implements CategoryPresenter.
         /* Add the projects */
         this.getPanel().setWidget(editor);
     }
-
-    @Override
-    protected void showWaiting() {
-
-    }
-
-    @Override
-    protected void hideWaiting() {
-
-    }
 }

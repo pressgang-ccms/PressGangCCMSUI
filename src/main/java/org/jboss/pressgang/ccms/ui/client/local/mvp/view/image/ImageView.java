@@ -157,16 +157,4 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
         /* Make sure the dialog box is closed */
         addLocaleDialog.hide();
     }
-
-    @Override
-    protected void showWaiting() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    protected void hideWaiting() {
-        // TODO Auto-generated method stub
-        
-    }
 }

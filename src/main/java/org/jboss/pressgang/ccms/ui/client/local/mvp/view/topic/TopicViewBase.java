@@ -240,22 +240,4 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
      * This method is called to initialize the buttons that should appear in the top action bar
      */
     abstract protected void populateTopActionBar();
-    
-    /**
-     * The view can show a waiting widget when this method is called.
-     */
-    @Override
-    protected void showWaiting()
-    {
-        
-    }
-    
-    /**
-     * The view can hide a waiting widget when this method is called.
-     */
-    @Override
-    protected void hideWaiting()
-    {
-        
-    }
 }

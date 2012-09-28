@@ -122,16 +122,4 @@ public class ImageFilteredResultsView extends BaseTemplateView implements ImageF
     public PushButton getSearch() {
         return search;
     }
-
-    @Override
-    protected void showWaiting() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    protected void hideWaiting() {
-        // TODO Auto-generated method stub
-        
-    }
 }

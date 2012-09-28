@@ -76,17 +76,4 @@ public class SearchResultsView extends BaseTemplateView implements SearchResults
 
         this.getPanel().add(searchResultsPanel);
     }
-
-    @Override
-    protected void showWaiting() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    protected void hideWaiting() {
-        // TODO Auto-generated method stub
-        
-    }
-
 }
