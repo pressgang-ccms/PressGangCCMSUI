@@ -1,26 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.events;
 
-import com.google.gwt.event.shared.GwtEvent;
+public class TagsFilteredResultsAndTagViewEvent extends ViewOpenWithQueryEvent {
+    public static final Type<ViewOpenWithQueryEventHandler> TYPE = new Type<ViewOpenWithQueryEventHandler>();
 
-public class TagsFilteredResultsAndTagViewEvent extends GwtEvent<TagsFilteredResultsAndTagViewEventHandler> {
-    public static final Type<TagsFilteredResultsAndTagViewEventHandler> TYPE = new Type<TagsFilteredResultsAndTagViewEventHandler>();
-    private final String query;
-
-    public String getQuery() {
-        return query;
-    }
-
-    public TagsFilteredResultsAndTagViewEvent(final String query) {
-        this.query = query;
+    public TagsFilteredResultsAndTagViewEvent(String query) {
+        super(query);
     }
 
     @Override
-    public Type<TagsFilteredResultsAndTagViewEventHandler> getAssociatedType() {
+    public Type<ViewOpenWithQueryEventHandler> getAssociatedType() {
         return TYPE;
-    }
-
-    @Override
-    protected void dispatch(final TagsFilteredResultsAndTagViewEventHandler handler) {
-        handler.onTagsFilteredResultsViewAndTagOpen(this);
     }
 }

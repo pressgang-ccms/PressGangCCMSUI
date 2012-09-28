@@ -1,26 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.events;
 
-import com.google.gwt.event.shared.GwtEvent;
+public class ImagesFilteredResultsAndImageViewEvent extends ViewOpenWithQueryEvent {
+    public static final Type<ViewOpenWithQueryEventHandler> TYPE = new Type<ViewOpenWithQueryEventHandler>();
 
-public class ImagesFilteredResultsAndImageViewEvent extends GwtEvent<ImagesFilteredResultsViewAndImageEventHandler> {
-    public static final Type<ImagesFilteredResultsViewAndImageEventHandler> TYPE = new Type<ImagesFilteredResultsViewAndImageEventHandler>();
-    private final String query;
-
-    public String getQuery() {
-        return query;
-    }
-
-    public ImagesFilteredResultsAndImageViewEvent(final String query) {
-        this.query = query;
+    public ImagesFilteredResultsAndImageViewEvent(String query) {
+        super(query);
     }
 
     @Override
-    public Type<ImagesFilteredResultsViewAndImageEventHandler> getAssociatedType() {
+    public Type<ViewOpenWithQueryEventHandler> getAssociatedType() {
         return TYPE;
-    }
-
-    @Override
-    protected void dispatch(final ImagesFilteredResultsViewAndImageEventHandler handler) {
-        handler.onImagesFilteredResultsAndImageViewOpen(this);
     }
 }

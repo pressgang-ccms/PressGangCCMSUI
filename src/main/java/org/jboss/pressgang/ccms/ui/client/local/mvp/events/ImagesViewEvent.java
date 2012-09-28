@@ -1,17 +1,10 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.events;
 
-import com.google.gwt.event.shared.GwtEvent;
-
-public class ImagesViewEvent extends GwtEvent<ImagesViewEventHandler> {
-    public static final Type<ImagesViewEventHandler> TYPE = new Type<ImagesViewEventHandler>();
+public class ImagesViewEvent extends ViewOpenEvent<ViewOpenEventHandler> {
+    public static final Type<ViewOpenEventHandler> TYPE = new Type<ViewOpenEventHandler>();
 
     @Override
-    public Type<ImagesViewEventHandler> getAssociatedType() {
+    public Type<ViewOpenEventHandler> getAssociatedType() {
         return TYPE;
-    }
-
-    @Override
-    protected void dispatch(final ImagesViewEventHandler handler) {
-        handler.onImagesViewOpen(this);
     }
 }

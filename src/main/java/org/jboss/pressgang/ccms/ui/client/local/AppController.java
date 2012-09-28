@@ -42,55 +42,13 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
     public void bind() {
         History.addValueChangeHandler(this);
-
-        eventBus.addHandler(SearchViewEvent.TYPE, new SearchViewEventHandler() {
-            @Override
-            public void onSearchViewOpen(final SearchViewEvent event) {
-                History.newItem(SearchPresenter.HISTORY_TOKEN);
-            }
-        });
-
-        eventBus.addHandler(SearchResultsViewEvent.TYPE, new SearchResultsViewEventHandler() {
-            @Override
-            public void onSearchResultsViewOpen(final SearchResultsViewEvent event) {
-                History.newItem(SearchResultsPresenter.HISTORY_TOKEN);
-            }
-        });
-
-        eventBus.addHandler(SearchResultsAndTopicViewEvent.TYPE, new SearchResultsAndTopicViewEventHandler() {
-            @Override
-            public void onSearchResultsViewOpen(final SearchResultsAndTopicViewEvent event) {
-                History.newItem(SearchResultsAndTopicPresenter.HISTORY_TOKEN + ";" + event.getQuery());
-            }
-        });
-
-        eventBus.addHandler(ImagesViewEvent.TYPE, new ImagesViewEventHandler() {
-            @Override
-            public void onImagesViewOpen(final ImagesViewEvent event) {
-                History.newItem(ImagePresenter.HISTORY_TOKEN);
-            }
-        });
-
-        eventBus.addHandler(ImagesFilteredResultsAndImageViewEvent.TYPE, new ImagesFilteredResultsViewAndImageEventHandler() {
-            @Override
-            public void onImagesFilteredResultsAndImageViewOpen(final ImagesFilteredResultsAndImageViewEvent event) {
-                History.newItem(ImagesFilteredResultsAndImagePresenter.HISTORY_TOKEN + ";" + event.getQuery());
-            }
-        });
-
-        eventBus.addHandler(TagsFilteredResultsAndTagViewEvent.TYPE, new TagsFilteredResultsAndTagViewEventHandler() {
-            @Override
-            public void onTagsFilteredResultsViewAndTagOpen(final TagsFilteredResultsAndTagViewEvent event) {
-                History.newItem(TagsFilteredResultsAndTagPresenter.HISTORY_TOKEN + ";" + event.getQuery());
-            }
-        });
-
-        eventBus.addHandler(CategoriesFilteredResultsAndCategoryViewEvent.TYPE, new CategoriesFilteredResultsAndCategoryViewEventHandler() {
-            @Override
-            public void onCategoriesFilteredResultsViewAndCategoryOpen(CategoriesFilteredResultsAndCategoryViewEvent event) {
-                History.newItem(CategoriesFilteredResultsAndCategoryPresenter.HISTORY_TOKEN + ";" + event.getQuery());
-            }
-        });
+        eventBus.addHandler(SearchViewEvent.TYPE, new ViewOpenEventHandler(SearchPresenter.HISTORY_TOKEN));
+        eventBus.addHandler(SearchResultsViewEvent.TYPE, new ViewOpenEventHandler(SearchResultsPresenter.HISTORY_TOKEN));
+        eventBus.addHandler(SearchResultsAndTopicViewEvent.TYPE, new ViewOpenWithQueryEventHandler(SearchResultsPresenter.HISTORY_TOKEN));
+        eventBus.addHandler(ImagesViewEvent.TYPE, new ViewOpenEventHandler(ImagePresenter.HISTORY_TOKEN));
+        eventBus.addHandler(ImagesFilteredResultsAndImageViewEvent.TYPE, new ViewOpenWithQueryEventHandler(ImagesFilteredResultsAndImagePresenter.HISTORY_TOKEN));
+        eventBus.addHandler(TagsFilteredResultsAndTagViewEvent.TYPE, new ViewOpenWithQueryEventHandler(TagsFilteredResultsAndTagPresenter.HISTORY_TOKEN));
+        eventBus.addHandler(CategoriesFilteredResultsAndCategoryViewEvent.TYPE, new ViewOpenWithQueryEventHandler(CategoriesFilteredResultsAndCategoryPresenter.HISTORY_TOKEN));
     }
 
     @Override
