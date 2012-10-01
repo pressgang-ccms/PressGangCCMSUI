@@ -1,11 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.ValueListBox;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectsEditor;
@@ -14,14 +15,13 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchUIProjects;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchUITag;
 
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.ValueListBox;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class TopicTagsPresenter extends TemplatePresenter {
     public static final String HISTORY_TOKEN = "TopicTagsView";
-    
+
     private String topicId;
 
     @Inject
@@ -61,30 +61,13 @@ public class TopicTagsPresenter extends TemplatePresenter {
     }
 
     private void getTopic() {
-        final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
-            @Override
-            public void begin() {
-                display.addWaitOperation();
-            }
-
-            @Override
-            public void generalException(final Exception e) {
-                display.removeWaitOperation();
-            }
-
-            @Override
-            public void success(final RESTTopicV1 retValue) {
-                try {
-                    display.initialize(retValue, false, SplitType.DISABLED);
-                } finally {
-                    display.removeWaitOperation();
-                }
-            }
-
-            @Override
-            public void failed() {
-                display.removeWaitOperation();
-            }
+        final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, Display>(display,
+                new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
+                    @Override
+                    public void doSuccessAction(RESTTopicV1 retValue, Display display) {
+                        display.initialize(retValue, false, SplitType.DISABLED);
+                    }
+                }) {
         };
 
         try {

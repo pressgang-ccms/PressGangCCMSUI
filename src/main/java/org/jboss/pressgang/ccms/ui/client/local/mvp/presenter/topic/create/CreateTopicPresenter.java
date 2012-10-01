@@ -20,6 +20,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPre
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
@@ -35,7 +36,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 
 /**
  * The presenter that brings together all the topic views required to create a new topic
- * 
+ *
  * @author Matthew Casperson
  */
 @Dependent
@@ -44,15 +45,25 @@ public class CreateTopicPresenter extends TemplatePresenter {
     public static final String HISTORY_TOKEN = "CreateTopicView";
 
     // region Properties
-    /** The container into which all the views will be placed */
+    /**
+     * The container into which all the views will be placed
+     */
     private HasWidgets container;
-    /** The topic that is being edited */
+    /**
+     * The topic that is being edited
+     */
     private final RESTTopicV1 topic = new RESTTopicV1();
-    /** The view that was last displayed */
+    /**
+     * The view that was last displayed
+     */
     private TopicViewInterface lastView;
-    /** How the rendered view is displayed */
+    /**
+     * How the rendered view is displayed
+     */
     private SplitType split = SplitType.NONE;
-    /** The initial topic template */
+    /**
+     * The initial topic template
+     */
     private RESTStringConstantV1 topicTemplate;
     // endregion Properties
 
@@ -115,39 +126,57 @@ public class CreateTopicPresenter extends TemplatePresenter {
     // endregion Click Handlers
 
     // region Displays
-    /** The topic fields display */
+    /**
+     * The topic fields display
+     */
     @Inject
     private TopicPresenter.Display topicViewDisplay;
 
-    /** The topic XML display */
+    /**
+     * The topic XML display
+     */
     @Inject
     private TopicXMLPresenter.Display topicXMLDisplay;
 
-    /** The rendered topic view display */
+    /**
+     * The rendered topic view display
+     */
     @Inject
     private TopicRenderedPresenter.Display topicRenderedDisplay;
 
-    /** The rendered topic view display in a split panel */
+    /**
+     * The rendered topic view display in a split panel
+     */
     @Inject
     private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
 
-    /** The XML errors display */
+    /**
+     * The XML errors display
+     */
     @Inject
     private TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay;
 
-    /** The topic tags display */
+    /**
+     * The topic tags display
+     */
     @Inject
     private TopicTagsPresenter.Display topicTagsDisplay;
 
-    /** The topic bugs display */
+    /**
+     * The topic bugs display
+     */
     @Inject
     private TopicBugsPresenter.Display topicBugsDisplay;
 
-    /** The topic revisions display */
+    /**
+     * The topic revisions display
+     */
     @Inject
     private TopicRevisionsPresenter.Display topicRevisionsDisplay;
 
-    /** A list containing all the displays */
+    /**
+     * A list containing all the displays
+     */
     private final List<TopicViewInterface> displays = new ArrayList<TopicViewInterface>();
 
     // endregion Displays
@@ -197,35 +226,15 @@ public class CreateTopicPresenter extends TemplatePresenter {
     }
 
     private void getTopicTemplate() {
-        final RESTCallback<RESTStringConstantV1> callback = new RESTCallback<RESTStringConstantV1>() {
-
-            @Override
-            public void begin() {
-                lastView.addWaitOperation();
-            }
-
-            @Override
-            public void generalException(Exception e) {
-                lastView.removeWaitOperation();
-            }
-
-            @Override
-            public void success(final RESTStringConstantV1 retValue) {
-                try {
-                    topicTemplate = retValue;
-                    topic.setXml(topicTemplate.getValue());
-                } finally {
-                    lastView.removeWaitOperation();
-                }
-
-            }
-
-            @Override
-            public void failed() {
-                lastView.removeWaitOperation();
-            }
+        final RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1,
+                TopicViewInterface>(lastView, new BaseRestCallback.SuccessAction<RESTStringConstantV1, TopicViewInterface>() {
+                    @Override
+                    public void doSuccessAction(RESTStringConstantV1 retValue, TopicViewInterface display) {
+                        topicTemplate = retValue;
+                        topic.setXml(topicTemplate.getValue());
+                    }
+                }) {
         };
-
         RESTCalls.getStringConstant(callback, ServiceConstants.CONCEPT_TOPIC_TEMPLATE);
     }
 
@@ -270,13 +279,13 @@ public class CreateTopicPresenter extends TemplatePresenter {
             view.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
             view.setViewShown(true);
         }
-        
+
         /* Update the displayed topic */
         view.initialize(this.topic, false, split);
 
         /* The ACE editor needs to be redisplayed, but it has to be delayed slightly for some reason */
         if (view == this.topicXMLDisplay) {
-            
+
             final Timer refreshTimer = new Timer() {
                 @Override
                 public void run() {

@@ -1,19 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
-import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUIProjectsEditor;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchUIProjects;
-
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -21,12 +7,26 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUIProjectsEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchUIProjects;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SearchPresenter extends TemplatePresenter implements EditableView {
 
     public static final String HISTORY_TOKEN = "SearchView";
-    
+
     public interface Display extends BaseTemplateViewInterface {
         // Empty interface declaration, similar to UiBinder
         interface SearchPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor> {
@@ -51,7 +51,7 @@ public class SearchPresenter extends TemplatePresenter implements EditableView {
     @Override
     public void go(final HasWidgets container) {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
-        
+
         display.setViewShown(true);
 
         container.clear();
@@ -74,35 +74,24 @@ public class SearchPresenter extends TemplatePresenter implements EditableView {
     }
 
     private void getProjects() {
-        final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
-
+        final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, Display>(
+                display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, Display>() {
             @Override
-            public void begin() {
-                display.addWaitOperation();
+            public void doSuccessAction(RESTTagCollectionV1 retValue, Display display) {
+                display.initialise(retValue);
             }
-
+        }) {
             @Override
-            public void generalException(final Exception e) {
+            public void generalException(Exception e) {
                 Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTags());
-                display.removeWaitOperation();
-            }
-
-            @Override
-            public void success(final RESTTagCollectionV1 retValue) {
-                try {
-                    display.initialise(retValue);
-                } finally {
-                    display.removeWaitOperation();
-                }
+                super.generalException(e);
             }
 
             @Override
             public void failed() {
-                Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTags());
-                display.removeWaitOperation();
+                super.failed();
             }
         };
-
         RESTCalls.getTags(callback);
     }
 

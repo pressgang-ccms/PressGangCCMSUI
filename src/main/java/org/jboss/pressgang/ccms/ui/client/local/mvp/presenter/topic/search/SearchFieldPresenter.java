@@ -27,7 +27,6 @@ public class SearchFieldPresenter extends TemplatePresenter implements EditableV
     @Override
     public void parseToken(final String historyToken) {
         // TODO Auto-generated method stub
-        
     }
 
 }
