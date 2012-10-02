@@ -8,15 +8,13 @@ import com.google.gwt.user.client.ui.HasWidgets;
 
 public class SearchFieldPresenter extends TemplatePresenter implements EditableView {
     
-    public interface Display extends BaseTemplateViewInterface
-    {
+    public interface Display extends BaseTemplateViewInterface {
         
     }
 
     @Override
     public void go(final HasWidgets container) {
         // TODO Auto-generated method stub
-        
     }
 
     @Override

@@ -1,6 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
+import com.google.gwt.user.client.ui.HasWidgets;
 import org.apache.commons.lang.StringUtils;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 
 /**
  * GWT has some limitations, like not being able to bind an Editor to an array
@@ -16,7 +18,6 @@ final public class GWTUtilities {
     private static final int BITS_PER_BYTE = 8;
 
     private GWTUtilities() {
-
     }
 
     public static byte[] getBytesUTF8(final String string) {
@@ -120,5 +121,22 @@ final public class GWTUtilities {
             return a.equals(b);
 
         return b.equals(a);
+    }
+
+    /**
+     * Removes a history token and its postfix semicolon from a token string.
+     * For example,"TagsFilteredResultsAndTagView;query;" would become "query;".
+     *
+     * @param token The token string to remove the history token from
+     * @param historyToken The history token to remove
+     * @return
+     */
+    public static String removeHistoryToken(String token, String historyToken) {
+        return StringUtils.remove(token, historyToken + ";");
+    }
+
+    public static void clearContainerAndAddTopLevelPanel(HasWidgets container, BaseTemplateViewInterface display) {
+        container.clear();
+        container.add(display.getTopLevelPanel());
     }
 }

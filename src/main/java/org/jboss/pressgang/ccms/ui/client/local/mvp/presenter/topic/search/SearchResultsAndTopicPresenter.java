@@ -48,6 +48,9 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
 /**
  * This presenter is used to display and wire selection of views, including the topic search results view, and the topic XML,
  * details, tags and XML Errors views.
@@ -251,8 +254,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
         searchResultsDisplay.setViewShown(true);
         display.setViewShown(true);
 
-        container.clear();
-        container.add(display.getTopLevelPanel());
+        clearContainerAndAddTopLevelPanel(container, display);
 
         display.getTopicResultsActionButtonsPanel().setWidget(searchResultsDisplay.getTopActionPanel());
         display.getTopicResultsPanel().setWidget(searchResultsDisplay.getPanel());
@@ -1062,7 +1064,7 @@ public class SearchResultsAndTopicPresenter extends TemplatePresenter implements
 
     @Override
     public void parseToken(final String historyToken) {
-        queryString = historyToken.replace(HISTORY_TOKEN + ";", "");
+        queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
 
         if (queryString.startsWith(Constants.SPLIT_TOKEN_HORIZONTAL)) {
             split = SplitType.HORIZONTAL;

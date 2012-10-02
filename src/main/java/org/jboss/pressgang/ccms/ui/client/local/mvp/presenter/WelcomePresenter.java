@@ -10,13 +10,14 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 
 import com.google.gwt.user.client.ui.HasWidgets;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+
 @Dependent
 public class WelcomePresenter extends TemplatePresenter implements EditableView {
     
     public static final String HISTORY_TOKEN = "WelcomeView";
     
     public interface Display extends BaseTemplateViewInterface {
-
     }
 
     @Inject
@@ -26,17 +27,13 @@ public class WelcomePresenter extends TemplatePresenter implements EditableView 
     public void go(final HasWidgets container) {
         display.setViewShown(true);
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
-        
-        container.clear();
-        container.add(display.getTopLevelPanel());
-
+        clearContainerAndAddTopLevelPanel(container, display);
         bind(display, this);
     }
 
     @Override
     public void parseToken(final String historyToken) {
         // TODO Auto-generated method stub
-
     }
 
     @Override

@@ -29,6 +29,8 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.stringEqualsEquatingNullWithEmptyString;
 
 /**
@@ -140,8 +142,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter extends TemplatePrese
 
     @Override
     public void go(final HasWidgets container) {
-        container.clear();
-        container.add(display.getTopLevelPanel());
+        clearContainerAndAddTopLevelPanel(container, display);
 
         display.getResultsActionButtonsPanel().setWidget(filteredResultsDisplay.getTopActionPanel());
         display.getResultsPanel().setWidget(filteredResultsDisplay.getPanel());
@@ -163,13 +164,9 @@ public class CategoriesFilteredResultsAndCategoryPresenter extends TemplatePrese
      */
     private void bind() {
         super.bind(display, this);
-
         filteredResultsDisplay.setProvider(generateListProvider());
-
         bindCategoryListRowClicks();
-
         bindMainSplitResize();
-
     }
 
     /**
@@ -264,7 +261,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter extends TemplatePrese
 
     @Override
     public void parseToken(final String historyToken) {
-        queryString = historyToken.replace(HISTORY_TOKEN + ";", "");
+        queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
         }
@@ -301,7 +298,6 @@ public class CategoriesFilteredResultsAndCategoryPresenter extends TemplatePrese
                 return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
             }
         }
-
         return true;
     }
 

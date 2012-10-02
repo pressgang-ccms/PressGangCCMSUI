@@ -27,6 +27,10 @@ import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
 public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase implements EditableView {
@@ -63,8 +67,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
         display.setViewShown(true);
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
-        container.clear();
-        container.add(display.getTopLevelPanel());
+        clearContainerAndAddTopLevelPanel(container, display);
 
         display.getResultsActionButtonsPanel().setWidget(imageFilteredResultsDisplay.getTopActionPanel());
         display.getResultsPanel().setWidget(imageFilteredResultsDisplay.getPanel());
@@ -214,7 +217,8 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
 
     @Override
     public void parseToken(final String historyToken) {
-        queryString = historyToken.replace(HISTORY_TOKEN + ";", "");
+
+        queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
         }

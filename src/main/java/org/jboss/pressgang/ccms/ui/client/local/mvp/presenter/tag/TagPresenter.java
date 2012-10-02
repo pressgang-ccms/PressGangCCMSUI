@@ -1,8 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
+import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
@@ -10,9 +9,13 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
-import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.ui.HasWidgets;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
 public class TagPresenter extends TemplatePresenter implements EditableView {
@@ -35,16 +38,13 @@ public class TagPresenter extends TemplatePresenter implements EditableView {
 
     @Override
     public void parseToken(final String searchToken) {
-        tagId = searchToken.replace(HISTORY_TOKEN + ";", "");
+        tagId = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
     @Override
     public void go(final HasWidgets container) {
-        container.clear();
-        container.add(display.getTopLevelPanel());
-
+        clearContainerAndAddTopLevelPanel(container, display);
         getTag();
-
         bind();
     }
 

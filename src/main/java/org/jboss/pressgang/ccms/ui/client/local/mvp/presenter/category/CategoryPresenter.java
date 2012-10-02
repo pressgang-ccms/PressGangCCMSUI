@@ -13,6 +13,9 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCateg
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
 @Dependent
 public class CategoryPresenter extends TemplatePresenter implements EditableView {
 
@@ -36,13 +39,12 @@ public class CategoryPresenter extends TemplatePresenter implements EditableView
 
     @Override
     public void parseToken(final String searchToken) {
-        categoryId = searchToken.replace(HISTORY_TOKEN + ";", "");
+        categoryId = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
     @Override
     public void go(final HasWidgets container) {
-        container.clear();
-        container.add(display.getTopLevelPanel());
+        clearContainerAndAddTopLevelPanel(container, display);
         getCategory();
         bind();
     }

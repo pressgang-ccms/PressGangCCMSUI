@@ -22,6 +22,8 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchUIProjects;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+
 @Dependent
 public class SearchPresenter extends TemplatePresenter implements EditableView {
 
@@ -51,14 +53,9 @@ public class SearchPresenter extends TemplatePresenter implements EditableView {
     @Override
     public void go(final HasWidgets container) {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
-
         display.setViewShown(true);
-
-        container.clear();
-        container.add(display.getTopLevelPanel());
-
+        clearContainerAndAddTopLevelPanel(container, display);
         getProjects();
-
         bind();
     }
 

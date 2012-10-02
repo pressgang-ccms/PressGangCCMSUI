@@ -13,6 +13,9 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1B
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
 @Dependent
 public class TopicPresenter extends TemplatePresenter {
 
@@ -33,16 +36,13 @@ public class TopicPresenter extends TemplatePresenter {
 
     @Override
     public void parseToken(final String searchToken) {
-        topicId = searchToken.replace(HISTORY_TOKEN + ";", "");
+        topicId = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
     @Override
     public void go(final HasWidgets container) {
-        container.clear();
-        container.add(display.getTopLevelPanel());
-
+        clearContainerAndAddTopLevelPanel(container, display);
         getTopic();
-
         bind();
     }
 

@@ -18,6 +18,9 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
 @Dependent
 public class TagProjectsPresenter extends TemplatePresenter implements EditableView {
     public static final String HISTORY_TOKEN = "TagProjectsView";
@@ -41,13 +44,12 @@ public class TagProjectsPresenter extends TemplatePresenter implements EditableV
 
     @Override
     public void parseToken(final String searchToken) {
-        queryString = searchToken.replace(HISTORY_TOKEN + ";", "");
+        queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
     @Override
     public void go(final HasWidgets container) {
-        container.clear();
-        container.add(display.getTopLevelPanel());
+        clearContainerAndAddTopLevelPanel(container, display);
         bind();
     }
 

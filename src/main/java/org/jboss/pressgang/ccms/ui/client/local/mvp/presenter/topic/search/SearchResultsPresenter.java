@@ -21,6 +21,9 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
 @Dependent
 public class SearchResultsPresenter extends TemplatePresenter implements EditableView {
 
@@ -46,13 +49,12 @@ public class SearchResultsPresenter extends TemplatePresenter implements Editabl
 
     @Override
     public void parseToken(final String searchToken) {
-        queryString = searchToken.replace(HISTORY_TOKEN + ";", "");
+        queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
     @Override
     public void go(final HasWidgets container) {
-        container.clear();
-        container.add(display.getTopLevelPanel());
+        clearContainerAndAddTopLevelPanel(container, display);
         bind();
     }
 

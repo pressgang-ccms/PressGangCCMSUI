@@ -18,7 +18,6 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 
 public class CategoryFilteredResultsView extends BaseTemplateView implements CategoryFilteredResultsPresenter.Display {
 
-
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
     private final FlexTable filterTable = new FlexTable();
     private final Label idFilterLabel = new Label(PressGangCCMSUI.INSTANCE.CategoryID());

@@ -52,6 +52,9 @@ import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
 /**
  * This presenter takes the TagFilteredResults view to provide a list of tags, and the TagView, TagProjectsView and
  * TagCategoriesView to provide a way to edit the properties and relationships of a tag.
@@ -394,8 +397,7 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
 
     @Override
     public void go(final HasWidgets container) {
-        container.clear();
-        container.add(display.getTopLevelPanel());
+        clearContainerAndAddTopLevelPanel(container, display);
 
         display.getResultsActionButtonsPanel().setWidget(filteredResultsDisplay.getTopActionPanel());
         display.getResultsPanel().setWidget(filteredResultsDisplay.getPanel());
@@ -999,7 +1001,7 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
 
     @Override
     public void parseToken(final String historyToken) {
-        queryString = historyToken.replace(HISTORY_TOKEN + ";", "");
+        queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
         }

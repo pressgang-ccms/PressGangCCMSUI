@@ -8,6 +8,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 
 import com.google.gwt.user.client.ui.HasWidgets;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+
 public class TroubleshootingPresenter extends TemplatePresenter implements EditableView {
     public interface Display extends BaseTemplateViewInterface {
 
@@ -18,9 +20,7 @@ public class TroubleshootingPresenter extends TemplatePresenter implements Edita
 
     @Override
     public void go(final HasWidgets container) {
-        container.clear();
-        container.add(display.getTopLevelPanel());
-
+        clearContainerAndAddTopLevelPanel(container, display);
         bind(display, this);
     }
 

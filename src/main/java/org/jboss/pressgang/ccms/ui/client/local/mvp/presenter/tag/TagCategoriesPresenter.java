@@ -21,6 +21,9 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.HasData;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
 /**
  * The presenter that provides the logic for the tag category relationships.
  *
@@ -63,14 +66,12 @@ public class TagCategoriesPresenter extends TemplatePresenter implements Editabl
 
     @Override
     public void parseToken(final String searchToken) {
-        queryString = searchToken.replace(HISTORY_TOKEN + ";", "");
+        queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
     @Override
     public void go(final HasWidgets container) {
-        container.clear();
-        container.add(display.getTopLevelPanel());
-
+        clearContainerAndAddTopLevelPanel(container, display);
         bind();
     }
 

@@ -14,6 +14,9 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1X
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
 @Dependent
 public class TopicXMLErrorsPresenter extends TemplatePresenter {
     public static final String HISTORY_TOKEN = "TopicXMLErrorsView";
@@ -23,7 +26,6 @@ public class TopicXMLErrorsPresenter extends TemplatePresenter {
     }
 
     public interface Display extends TopicViewInterface {
-
     }
 
     private String topicId;
@@ -33,16 +35,13 @@ public class TopicXMLErrorsPresenter extends TemplatePresenter {
 
     @Override
     public void parseToken(final String searchToken) {
-        topicId = searchToken.replace(HISTORY_TOKEN + ";", "");
+        topicId = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
     @Override
     public void go(final HasWidgets container) {
-        container.clear();
-        container.add(display.getTopLevelPanel());
-
+        clearContainerAndAddTopLevelPanel(container, display);
         getTopic();
-
         bind();
     }
 
@@ -64,6 +63,5 @@ public class TopicXMLErrorsPresenter extends TemplatePresenter {
     }
 
     private void bind() {
-
     }
 }

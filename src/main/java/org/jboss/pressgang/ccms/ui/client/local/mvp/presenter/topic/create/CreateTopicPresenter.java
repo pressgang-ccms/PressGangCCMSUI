@@ -6,6 +6,7 @@ import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.apache.commons.lang.StringUtils;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
@@ -184,7 +185,7 @@ public class CreateTopicPresenter extends TemplatePresenter {
     // region Presenter Lifecycle
     @Override
     public void parseToken(final String historyToken) {
-        final String queryString = historyToken.replace(";", "");
+        final String queryString = StringUtils.remove(";", historyToken);
 
         if (queryString.startsWith(Constants.SPLIT_TOKEN_HORIZONTAL)) {
             split = SplitType.HORIZONTAL;

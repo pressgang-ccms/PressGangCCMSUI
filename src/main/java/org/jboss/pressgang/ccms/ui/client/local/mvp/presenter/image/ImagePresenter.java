@@ -18,6 +18,9 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
 @Dependent
 public class ImagePresenter extends ImagePresenterBase {
     public static final String HISTORY_TOKEN = "ImageView";
@@ -60,8 +63,7 @@ public class ImagePresenter extends ImagePresenterBase {
 
     @Override
     public void go(final HasWidgets container) {
-        container.clear();
-        container.add(display.getTopLevelPanel());
+        clearContainerAndAddTopLevelPanel(container, display);
         /*
          * normally the displayedImage would be from a collection, but as this presenter only works with one specified entity,
          * we just create the wrapper RESTImageCollectionItemV1 object manually.
@@ -91,7 +93,7 @@ public class ImagePresenter extends ImagePresenterBase {
     @Override
     public void parseToken(final String historyToken) {
         try {
-            imageId = Integer.parseInt(historyToken.replace(HISTORY_TOKEN + ";", ""));
+            imageId = Integer.parseInt(removeHistoryToken(historyToken, HISTORY_TOKEN));
         } catch (final Exception ex) {
             // bad history token. silently fail
             imageId = null;

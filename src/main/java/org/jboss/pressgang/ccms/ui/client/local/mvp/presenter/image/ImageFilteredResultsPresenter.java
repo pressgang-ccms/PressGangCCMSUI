@@ -23,6 +23,9 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.HasData;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
 @Dependent
 public class ImageFilteredResultsPresenter extends TemplatePresenter implements EditableView {
     public static final String HISTORY_TOKEN = "ImageFilteredResultsView";
@@ -63,14 +66,12 @@ public class ImageFilteredResultsPresenter extends TemplatePresenter implements 
 
     @Override
     public void parseToken(final String searchToken) {
-        queryString = searchToken.replace(HISTORY_TOKEN + ";", "");
+        queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
     @Override
     public void go(final HasWidgets container) {
-        container.clear();
-        container.add(display.getTopLevelPanel());
-
+        clearContainerAndAddTopLevelPanel(container, display);
         bind();
     }
 
