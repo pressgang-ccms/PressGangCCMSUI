@@ -185,7 +185,7 @@ public class CreateTopicPresenter extends TemplatePresenter {
     // region Presenter Lifecycle
     @Override
     public void parseToken(final String historyToken) {
-        final String queryString = StringUtils.remove(";", historyToken);
+        final String queryString = historyToken.replace(";", "");
 
         if (queryString.startsWith(Constants.SPLIT_TOKEN_HORIZONTAL)) {
             split = SplitType.HORIZONTAL;

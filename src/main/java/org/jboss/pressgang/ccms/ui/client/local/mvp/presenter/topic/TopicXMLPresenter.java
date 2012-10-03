@@ -34,7 +34,6 @@ public class TopicXMLPresenter extends TemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         // TODO Auto-generated method stub
-
     }
 
     @Override

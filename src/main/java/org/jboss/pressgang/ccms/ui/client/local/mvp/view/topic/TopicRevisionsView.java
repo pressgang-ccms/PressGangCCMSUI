@@ -59,7 +59,6 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
             if (object.getItem().getLogDetails() != null) {
                 return object.getItem().getLogDetails().getMessage();
             }
-            
             return "";
         }
     };

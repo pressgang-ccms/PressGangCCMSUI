@@ -132,9 +132,15 @@ final public class GWTUtilities {
      * @return
      */
     public static String removeHistoryToken(String token, String historyToken) {
-        return StringUtils.remove(token, historyToken + ";");
+        return token.replace(historyToken + ";", "");
     }
 
+    /**
+     * Clears the container and adds the display's top-level panel to the container, an often-repeated combination.
+     *
+     * @param container
+     * @param display
+     */
     public static void clearContainerAndAddTopLevelPanel(HasWidgets container, BaseTemplateViewInterface display) {
         container.clear();
         container.add(display.getTopLevelPanel());
