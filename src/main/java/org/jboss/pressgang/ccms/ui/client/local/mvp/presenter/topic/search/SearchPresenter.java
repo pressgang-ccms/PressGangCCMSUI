@@ -73,11 +73,11 @@ public class SearchPresenter extends TemplatePresenter implements EditableView {
     private void getProjects() {
         final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, Display>(
                 display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, Display>() {
-            @Override
-            public void doSuccessAction(RESTTagCollectionV1 retValue, Display display) {
-                display.initialise(retValue);
-            }
-        }) {
+                    @Override
+                    public void doSuccessAction(RESTTagCollectionV1 retValue, Display display) {
+                        display.initialise(retValue);
+                    }
+                }) {
             @Override
             public void generalException(Exception e) {
                 Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTags());

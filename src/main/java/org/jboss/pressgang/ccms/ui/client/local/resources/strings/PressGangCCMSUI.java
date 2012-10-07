@@ -17,6 +17,8 @@ public interface PressGangCCMSUI extends Constants {
     String Welcome();
 
     String Search();
+    
+    String SearchFields();
 
     String Common();
 
@@ -229,4 +231,38 @@ public interface PressGangCCMSUI extends Constants {
     String UnsavedChangesPrompt();
     
     String Feedback();
+    
+    String TopicsEditedInLastXDays();
+    
+    String TopicsNotEditedInLastXDays();
+    
+    String TopicCreatedAfter();
+    
+    String TopicCreatedBefore();
+    
+    String TopicEditedAfter();
+    
+    String TopicEditedBefore();
+    
+    String TopicIds();
+    
+    String NotTopicIds();
+    
+    String NotTopicTitle();
+    
+    String TopicContents();
+    
+    String NotTopicContents();
+    
+    String NotTopicDescription();
+    
+    String IncludedInContentSpec();
+    
+    String NotIncludedInContentSpec();
+    
+    String FreeTextSearch();
+    
+    String HasBugzillaBugs();
+    
+    String HasOpenBugzillaBugs();
 }
