@@ -72,7 +72,7 @@ public class ImagesFilteredResultsAndImagePresenter extends ImagePresenterBase i
         display.getResultsActionButtonsPanel().setWidget(imageFilteredResultsDisplay.getTopActionPanel());
         display.getResultsPanel().setWidget(imageFilteredResultsDisplay.getPanel());
 
-        getLocales(display);
+        getLocales(display);       
 
         bind();
     }

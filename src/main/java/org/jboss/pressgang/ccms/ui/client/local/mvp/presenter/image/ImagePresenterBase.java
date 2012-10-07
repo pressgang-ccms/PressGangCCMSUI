@@ -33,12 +33,19 @@ abstract public class ImagePresenterBase extends TemplatePresenter {
     /**
      * The currently displayed image.
      */
-    protected ProviderUpdateData<RESTImageCollectionItemV1> imageData = new ProviderUpdateData<RESTImageCollectionItemV1>();
+    protected ProviderUpdateData<RESTImageCollectionItemV1> imageData;
 
     /**
      * A reference to the StringConstants that holds the locales.
      */
     protected String[] locales;
+    
+    protected ImagePresenterBase()
+    {
+        final RESTImageCollectionItemV1 item = new RESTImageCollectionItemV1();
+        item.setItem(new RESTImageV1());
+        imageData = new ProviderUpdateData<RESTImageCollectionItemV1>(item);
+    }
 
     protected String getQuery(final ImageFilteredResultsPresenter.Display imageSearchDisplay) {
         final StringBuilder retValue = new StringBuilder(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON);

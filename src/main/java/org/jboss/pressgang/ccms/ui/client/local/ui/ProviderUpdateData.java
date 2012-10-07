@@ -44,7 +44,14 @@ public class ProviderUpdateData<T> {
     }
 
     public ProviderUpdateData() {
-
+        
+    }
+    
+    /**
+     * @param displayedItem The initially displayed item
+     */
+    public ProviderUpdateData(final T displayedItem) {
+        this.displayedItem = displayedItem;
     }
 
     public ProviderUpdateData(final Integer startRow, final List<T> items) {
