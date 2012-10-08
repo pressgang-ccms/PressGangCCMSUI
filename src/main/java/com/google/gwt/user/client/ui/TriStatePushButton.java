@@ -22,7 +22,7 @@ public class TriStatePushButton extends PushButton implements IsEditor<LeafValue
         this.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (state == TriStateSelectionState.NONE) {
+                if (state == TriStateSelectionState.NONE || state == null) {
                     state = TriStateSelectionState.SELECTED;
                 } else if (state == TriStateSelectionState.SELECTED) {
                     state = TriStateSelectionState.UNSELECTED;

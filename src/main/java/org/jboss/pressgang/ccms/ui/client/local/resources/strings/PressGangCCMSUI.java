@@ -265,4 +265,8 @@ public interface PressGangCCMSUI extends Constants {
     String HasBugzillaBugs();
     
     String HasOpenBugzillaBugs();
+    
+    String MatchAll();
+    
+    String MatchAny();
 }
