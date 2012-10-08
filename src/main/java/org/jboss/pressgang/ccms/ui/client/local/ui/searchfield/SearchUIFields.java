@@ -2,6 +2,8 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.searchfield;
 
 import java.util.Date;
 
+import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
+
 import com.google.gwt.user.client.ui.TriStateSelectionState;
 
 /**
@@ -190,5 +192,43 @@ public class SearchUIFields {
 
     public void setMatchAll(boolean matchAll) {
         this.matchAll = matchAll;
+    }
+    
+    public String getRESTQueryString() {
+        final StringBuilder retValue = new StringBuilder();
+        
+        retValue.append(";" + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids);
+        retValue.append(";" + CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR + "=" + notIds);
+        retValue.append(";" + CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + description);
+        retValue.append(";" + CommonFilterConstants.TOPIC_DESCRIPTION_NOT_FILTER_VAR + "=" + notDescription);
+        retValue.append(";" + CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + title);
+        retValue.append(";" + CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR + "=" + notTitle);
+        retValue.append(";" + CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS + "=" + editedInLastXDays);
+        retValue.append(";" + CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS + "=" + notEditedInLastXDays);
+        retValue.append(";" + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + contents);
+        retValue.append(";" + CommonFilterConstants.TOPIC_XML_NOT_FILTER_VAR + "=" + notContents);
+        retValue.append(";" + CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR + "=" + createdBefore);
+        retValue.append(";" + CommonFilterConstants.TOPIC_ENDEDITDATE_FILTER_VAR + "=" + editedBefore);
+        retValue.append(";" + CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR + "=" + editedAfter);
+        retValue.append(";" + CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR + "=" + createdAfter);
+        retValue.append(";" + CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR + "=" + createdAfter);
+        retValue.append(";" + CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC + "=" + includedInContentSpecs);
+        retValue.append(";" + CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC + "=" + notIncludedInContentSpecs);
+        retValue.append(";" + CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR + "=" + freeTextSearch);
+        if (hasBugzillaBugs == TriStateSelectionState.SELECTED)
+            retValue.append(";" + CommonFilterConstants.TOPIC_HAS_BUGZILLA_BUGS + "=true");
+        else if (hasBugzillaBugs == TriStateSelectionState.UNSELECTED)
+            retValue.append(";" + CommonFilterConstants.TOPIC_HAS_NOT_BUGZILLA_BUGS + "=true");
+        if (hasOpenBugzillaBugs == TriStateSelectionState.SELECTED)
+            retValue.append(";" + CommonFilterConstants.TOPIC_HAS_OPEN_BUGZILLA_BUGS + "=true");
+        else if (hasOpenBugzillaBugs == TriStateSelectionState.UNSELECTED)
+            retValue.append(";" + CommonFilterConstants.TOPIC_HAS_NOT_OPEN_BUGZILLA_BUGS + "=true");
+
+        if (matchAll)
+            retValue.append(";" + CommonFilterConstants.LOGIC_FILTER_VAR + "=" + CommonFilterConstants.AND_LOGIC);
+        else 
+            retValue.append(";" + CommonFilterConstants.LOGIC_FILTER_VAR + "=" + CommonFilterConstants.OR_LOGIC);
+        
+        return retValue.toString();
     }
 }
