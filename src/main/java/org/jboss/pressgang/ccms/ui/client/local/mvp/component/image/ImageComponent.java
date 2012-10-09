@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.component.image;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +12,10 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.Display;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.LogicComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -327,12 +330,44 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
         bindImageUploadButtons(display, display);
     }
 
-    @Override
-    public void bind(final Display display, final Display waitDisplay) {
+    public void bind(final ImagePresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
         super.bind(display, waitDisplay);
         bindImageViewButtons();     
         populateLocales();
     }
+    
+    public void getImage(final Integer imageId) {
+        /*
+         * Create a call back that resets the exception handler on any normal error or exception
+         */
+        final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, Display>(display,
+                new BaseRestCallback.SuccessAction<RESTImageV1, Display>() {
+                    @Override
+                    public void doSuccessAction(RESTImageV1 retValue, Display display) {
+                        retValue.cloneInto(imageData.getDisplayedItem().getItem(), true);
+                        finishLoading();
+                    }
+                }) {
 
+            @Override
+            public void failed() {
+                display.removeWaitOperation();
+                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+            }
+        };
 
+        if (imageId != null) {
+            RESTCalls.getImage(callback, imageId);
+        }
+    }
+    
+    /**
+     * Potentially two REST calls have to finish before we can display the page. This function will be called as each REST call
+     * finishes, and when all the information has been gathered, the page will be displayed.
+     */
+    private void finishLoading() {
+        if (locales != null && imageData.getDisplayedItem() != null) {
+            reInitialiseImageView();
+        }
+    }
 }

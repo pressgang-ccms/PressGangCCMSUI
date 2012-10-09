@@ -11,6 +11,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
@@ -51,15 +52,24 @@ public class ImagesFilteredResultsAndImagePresenter implements EditableView, Tem
 
         DockLayoutPanel getViewLayoutPanel();
     }
+    
+    public interface LogicComponent extends Component<Display>
+    {
+        
+    }
 
     @Inject
     private Display display;
+    
+    @Inject private LogicComponent component;
 
     @Inject
     private ImageFilteredResultsPresenter.Display imageFilteredResultsDisplay;
 
     @Inject
     private ImagePresenter.Display imageDisplay;
+    
+    @Inject private ImagePresenter.LogicComponent imageComponent;
 
     private String queryString;
 
@@ -73,7 +83,9 @@ public class ImagesFilteredResultsAndImagePresenter implements EditableView, Tem
         display.getResultsActionButtonsPanel().setWidget(imageFilteredResultsDisplay.getTopActionPanel());
         display.getResultsPanel().setWidget(imageFilteredResultsDisplay.getPanel());
 
-        getLocales(display);       
+        component.bind(display, display);
+        component.setFeedbackLink(HISTORY_TOKEN);
+        imageComponent.bind(imageDisplay, display);
 
         bind();
     }
@@ -82,7 +94,7 @@ public class ImagesFilteredResultsAndImagePresenter implements EditableView, Tem
      * Add behaviour to the UI elements exposed by the views.
      */
     private void bind() {
-        super.bind(display, this);
+
 
         final EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider = generateListProvider();
         imageFilteredResultsDisplay.setProvider(provider);
