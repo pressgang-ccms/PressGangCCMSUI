@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.ui.search;
+package org.jboss.pressgang.ccms.ui.client.local.ui.search.tag;
 
 import java.util.ArrayList;
 import java.util.Collections;

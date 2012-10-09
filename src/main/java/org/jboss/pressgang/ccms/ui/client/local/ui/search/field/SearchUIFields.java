@@ -1,9 +1,12 @@
-package org.jboss.pressgang.ccms.ui.client.local.ui.searchfield;
+package org.jboss.pressgang.ccms.ui.client.local.ui.search.field;
 
 import java.util.Date;
 
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchViewBase;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.TriStateSelectionState;
 
 /**
@@ -12,7 +15,7 @@ import com.google.gwt.user.client.ui.TriStateSelectionState;
  * @author Matthew Casperson
  * 
  */
-public class SearchUIFields {
+public class SearchUIFields implements SearchViewBase {
     private Date createdAfter;
     private Date createdBefore;
     private Date editedAfter;
@@ -33,6 +36,7 @@ public class SearchUIFields {
     private TriStateSelectionState hasBugzillaBugs = TriStateSelectionState.NONE;
     private TriStateSelectionState hasOpenBugzillaBugs = TriStateSelectionState.NONE;
     private boolean matchAll = true;
+    private final DateTimeFormat dateformat = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.ISO_8601);
 
     public Date getCreatedAfter() {
         return createdAfter;
@@ -193,10 +197,14 @@ public class SearchUIFields {
     public void setMatchAll(boolean matchAll) {
         this.matchAll = matchAll;
     }
-    
-    public String getRESTQueryString() {
-        final StringBuilder retValue = new StringBuilder();
+
+    /**
+     * @inheritDoc
+     */
+    public String getSearchQuery(final boolean includeQueryPrefix) {
         
+        final StringBuilder retValue = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
+
         retValue.append(";" + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids);
         retValue.append(";" + CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR + "=" + notIds);
         retValue.append(";" + CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + description);
@@ -207,11 +215,10 @@ public class SearchUIFields {
         retValue.append(";" + CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS + "=" + notEditedInLastXDays);
         retValue.append(";" + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + contents);
         retValue.append(";" + CommonFilterConstants.TOPIC_XML_NOT_FILTER_VAR + "=" + notContents);
-        retValue.append(";" + CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR + "=" + createdBefore);
-        retValue.append(";" + CommonFilterConstants.TOPIC_ENDEDITDATE_FILTER_VAR + "=" + editedBefore);
-        retValue.append(";" + CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR + "=" + editedAfter);
-        retValue.append(";" + CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR + "=" + createdAfter);
-        retValue.append(";" + CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR + "=" + createdAfter);
+        retValue.append(";" + CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR + "=" + dateformat.format(createdBefore));
+        retValue.append(";" + CommonFilterConstants.TOPIC_ENDEDITDATE_FILTER_VAR + "=" + dateformat.format(editedBefore));
+        retValue.append(";" + CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR + "=" + dateformat.format(editedAfter));
+        retValue.append(";" + CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR + "=" + dateformat.format(createdAfter));
         retValue.append(";" + CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC + "=" + includedInContentSpecs);
         retValue.append(";" + CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC + "=" + notIncludedInContentSpecs);
         retValue.append(";" + CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR + "=" + freeTextSearch);
@@ -226,9 +233,9 @@ public class SearchUIFields {
 
         if (matchAll)
             retValue.append(";" + CommonFilterConstants.LOGIC_FILTER_VAR + "=" + CommonFilterConstants.AND_LOGIC);
-        else 
+        else
             retValue.append(";" + CommonFilterConstants.LOGIC_FILTER_VAR + "=" + CommonFilterConstants.OR_LOGIC);
-        
+
         return retValue.toString();
     }
 }

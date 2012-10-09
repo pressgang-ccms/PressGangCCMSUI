@@ -1,28 +1,27 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.view.client.HasData;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class CategoryFilteredResultsPresenter extends TemplatePresenter implements EditableView {
+public class CategoryFilteredResultsPresenter implements EditableView, TemplatePresenter {
     public static final String HISTORY_TOKEN = "CategoryFilteredResultsView";
 
     public interface Display extends BaseTemplateViewInterface {
@@ -43,9 +42,20 @@ public class CategoryFilteredResultsPresenter extends TemplatePresenter implemen
         @Override
         PushButton getSearch();
     }
+    
+    public interface LogicCompnent extends Component<Display>
+    {
+        void bind(final String queryString, final CategoryFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
+        ProviderUpdateData<RESTCategoryCollectionItemV1> getCategoryProviderData();
+        void setCategoryProviderData(ProviderUpdateData<RESTCategoryCollectionItemV1> categoryProviderData);
+    }
+   
 
     @Inject
     private Display display;
+    
+    @Inject
+    private LogicCompnent component;
 
     private String queryString;
 
@@ -57,33 +67,7 @@ public class CategoryFilteredResultsPresenter extends TemplatePresenter implemen
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bind();
-    }
-
-    private void bind() {
-        super.bind(display, this);
-
-        final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
-            @Override
-            protected void onRangeChanged(final HasData<RESTCategoryCollectionItemV1> item) {
-                final int start = item.getVisibleRange().getStart();
-                final int length = item.getVisibleRange().getLength();
-                final int end = start + length;
-
-                final RESTCalls.RESTCallback<RESTCategoryCollectionV1> callback =
-                        new BaseRestCallback<RESTCategoryCollectionV1, Display>(display,
-                                new BaseRestCallback.SuccessAction<RESTCategoryCollectionV1, Display>() {
-                    @Override
-                    public void doSuccessAction(RESTCategoryCollectionV1 retValue, Display display) {
-                        displayAsynchronousList(retValue.getItems(), retValue.getSize(), start);
-                    }
-                }) {
-                };
-
-                RESTCalls.getUnexpandedCategoriesFromQuery(callback, queryString, start, end);
-            }
-        };
-        display.setProvider(provider);
+        component.bind(queryString, display, display);
     }
 
     @Override

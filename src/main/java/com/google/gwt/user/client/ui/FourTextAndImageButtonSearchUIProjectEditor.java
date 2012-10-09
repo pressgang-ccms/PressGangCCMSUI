@@ -2,7 +2,7 @@ package com.google.gwt.user.client.ui;
 
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchUIProject;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 
 import com.google.gwt.editor.client.IsEditor;
 import com.google.gwt.editor.client.LeafValueEditor;

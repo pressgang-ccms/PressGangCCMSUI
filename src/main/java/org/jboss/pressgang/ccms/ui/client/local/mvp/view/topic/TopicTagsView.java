@@ -10,10 +10,10 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectsEditor;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchUICategory;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchUIProject;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchUIProjects;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchUITag;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;

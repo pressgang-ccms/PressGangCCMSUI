@@ -28,6 +28,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.Searc
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsAndTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchTagsFieldsAndFiltersPresenter;
 
 import javax.enterprise.context.ApplicationScoped;
 
@@ -106,6 +107,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 presenter = getBeanInstance(CreateTopicPresenter.class);
             } else if (token.startsWith(SearchFieldPresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(SearchFieldPresenter.class);
+            }else if (token.startsWith(SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN)) {
+                presenter = getBeanInstance(SearchTagsFieldsAndFiltersPresenter.class);
             }
 
             if (presenter.isPresent()) {
@@ -118,7 +121,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
     private <T extends TemplatePresenter> Optional<TemplatePresenter> getBeanInstance(Class<T> presenterType) {
         final IOCBeanDef<T> bean = manager.lookupBean(presenterType);
         if (bean != null) {
-            TemplatePresenter presenter = bean.getInstance();
+            final TemplatePresenter presenter = bean.getInstance();
             return Optional.of(presenter);
         }
         return Optional.absent();

@@ -1,7 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.search;
 
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.ui.searchfield.SearchUIFields;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 
 import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.i18n.client.DateTimeFormat;

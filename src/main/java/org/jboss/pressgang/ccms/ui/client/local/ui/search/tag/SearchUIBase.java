@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.ui.search;
+package org.jboss.pressgang.ccms.ui.client.local.ui.search.tag;
 
 /**
  * The base class for all the entites that make up the tag search screen.

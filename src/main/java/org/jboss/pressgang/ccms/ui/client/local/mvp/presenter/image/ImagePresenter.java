@@ -5,10 +5,14 @@ import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
@@ -22,11 +26,14 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class ImagePresenter extends ImagePresenterBase {
+public class ImagePresenter implements EditableView, TemplatePresenter {
     public static final String HISTORY_TOKEN = "ImageView";
 
     @Inject
     private Display display;
+
+    @Inject
+    private LogicComponent component;
 
     /**
      * The id of the image to display, extracted from the history token.
@@ -61,6 +68,14 @@ public class ImagePresenter extends ImagePresenterBase {
         RESTImageV1Editor getEditor();
     }
 
+    public interface LogicComponent extends Component<Display> {
+        ProviderUpdateData<RESTImageCollectionItemV1> getImageData();
+        void setImageData(ProviderUpdateData<RESTImageCollectionItemV1> imageData);
+        void setLocales(final String[] locales);
+        String[] getLocales() ;
+        public void reInitialiseImageView();
+    }
+
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
@@ -68,11 +83,11 @@ public class ImagePresenter extends ImagePresenterBase {
          * normally the displayedImage would be from a collection, but as this presenter only works with one specified entity,
          * we just create the wrapper RESTImageCollectionItemV1 object manually.
          */
-        imageData.setDisplayedItem(new RESTImageCollectionItemV1());
-        imageData.getDisplayedItem().setState(RESTImageCollectionItemV1.UNCHANGED_STATE);
-        imageData.getDisplayedItem().setItem(new RESTImageV1());
+        component.getImageData().setDisplayedItem(new RESTImageCollectionItemV1());
+        component.getImageData().getDisplayedItem().setState(RESTImageCollectionItemV1.UNCHANGED_STATE);
+        component.getImageData().getDisplayedItem().setItem(new RESTImageV1());
         bind();
-        getLocales(display);
+
         getImage();
     }
 
@@ -81,13 +96,13 @@ public class ImagePresenter extends ImagePresenterBase {
      * finishes, and when all the information has been gathered, the page will be displayed.
      */
     private void finishLoading() {
-        if (locales != null && imageData.getDisplayedItem() != null) {
-            reInitialiseImageView();
+        if (component.getLocales() != null && component.getImageData().getDisplayedItem() != null) {
+            component.reInitialiseImageView();
         }
     }
 
     private void bind() {
-        bindImageViewButtons(display, display);
+        
     }
 
     @Override
@@ -108,7 +123,7 @@ public class ImagePresenter extends ImagePresenterBase {
                 new BaseRestCallback.SuccessAction<RESTImageV1, Display>() {
                     @Override
                     public void doSuccessAction(RESTImageV1 retValue, Display display) {
-                        retValue.cloneInto(imageData.getDisplayedItem().getItem(), true);
+                        retValue.cloneInto(component.getImageData().getDisplayedItem().getItem(), true);
                         finishLoading();
                     }
                 }) {
@@ -126,10 +141,8 @@ public class ImagePresenter extends ImagePresenterBase {
     }
 
     @Override
-    protected void reInitialiseImageView() {
-        display.initialize(imageData.getDisplayedItem().getItem(), getUnassignedLocales().toArray(new String[0]));
-
-        bindImageUploadButtons(display, display);
+    public boolean checkForUnsavedChanges() {
+        return true;
     }
 
 }

@@ -12,6 +12,8 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
@@ -41,7 +43,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
  * @author Matthew Casperson
  */
 @Dependent
-public class CreateTopicPresenter extends TemplatePresenter {
+public class CreateTopicPresenter implements EditableView, TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "CreateTopicView";
 

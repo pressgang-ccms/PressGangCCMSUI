@@ -1,7 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -10,18 +12,27 @@ import com.google.gwt.user.client.ui.HasWidgets;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
-public class TroubleshootingPresenter extends TemplatePresenter implements EditableView {
+@Dependent
+public class TroubleshootingPresenter implements TemplatePresenter, EditableView {
+    
     public interface Display extends BaseTemplateViewInterface {
 
+    }
+    
+    public interface LogicComponent extends Component<Display>
+    {
+        
     }
 
     @Inject
     private Display display;
+    
+    @Inject private LogicComponent component;
 
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bind(display, this);
+        component.bind(display, display);
     }
 
     @Override

@@ -2,8 +2,8 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.editor.search;
 
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter.Display.SearchPresenterDriver;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchUIProject;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchUIProjects;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.adapters.EditorSource;

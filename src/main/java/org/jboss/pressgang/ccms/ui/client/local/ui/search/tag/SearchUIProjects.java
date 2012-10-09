@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.ui.search;
+package org.jboss.pressgang.ccms.ui.client.local.ui.search.tag;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -7,8 +7,10 @@ import java.util.List;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchViewBase;
 
 import com.google.gwt.user.client.ui.TriStateSelectionState;
 
@@ -21,9 +23,12 @@ import com.google.gwt.user.client.ui.TriStateSelectionState;
  * 
  * @author Matthew Casperson
  */
-public class SearchUIProjects {
+public class SearchUIProjects implements SearchViewBase {
+    /** The string that appears in the query to indicate the presence or absence of a tag */
     private static final String TAG_PREFIX = "tag";
+    /** Indicates that a tag should be present in the returned topics */
     private static final int TAG_INCLUDED = 1;
+    /** Indicates that a tag should be absent in the returned topics */
     private static final int TAG_EXCLUDED = 0;
 
     private final LinkedList<SearchUIProject> projects = new LinkedList<SearchUIProject>();
@@ -73,8 +78,12 @@ public class SearchUIProjects {
         }
     }
 
-    public String getRESTQueryString() {
-        final StringBuilder builder = new StringBuilder("query");
+    /**
+     * @inheritDoc
+     */
+    public String getSearchQuery(final boolean includeQueryPrefix) {
+        
+        final StringBuilder builder = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
 
         for (final SearchUIProject project : projects) {
             for (final SearchUICategory category : project.getCategories()) {

@@ -4,7 +4,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.Searc
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchFieldEditor;
-import org.jboss.pressgang.ccms.ui.client.local.ui.searchfield.SearchUIFields;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 
 import com.google.gwt.core.client.GWT;
 

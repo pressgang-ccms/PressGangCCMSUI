@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.ui.search;
+package org.jboss.pressgang.ccms.ui.client.local.ui.search.tag;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import com.google.gwt.user.client.ui.TriStateSelectionState;

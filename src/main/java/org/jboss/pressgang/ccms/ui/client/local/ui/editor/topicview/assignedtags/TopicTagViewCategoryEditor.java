@@ -1,8 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags;
 
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchUICategory;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchUITag;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.adapters.EditorSource;
