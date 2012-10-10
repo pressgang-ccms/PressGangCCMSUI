@@ -20,6 +20,16 @@ public class SearchResultsComponent extends ComponentBase<SearchResultsPresenter
      * Holds the data required to populate and refresh the topic list
      */
     private ProviderUpdateData<RESTTopicCollectionItemV1> topicProviderData = new ProviderUpdateData<RESTTopicCollectionItemV1>();
+    
+    private EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider;
+
+    public EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> getProvider() {
+        return provider;
+    }
+
+    public void setProvider(EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider) {
+        this.provider = provider;
+    }
 
     @Override
     public ProviderUpdateData<RESTTopicCollectionItemV1> getTopicProviderData() {
@@ -34,7 +44,8 @@ public class SearchResultsComponent extends ComponentBase<SearchResultsPresenter
     @Override
     public void bind(final String queryString, final SearchResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
         super.bind(display, waitDisplay);
-        display.setProvider(generateTopicListProvider(queryString));
+        provider = generateTopicListProvider(queryString);
+        display.setProvider(provider);
     }
 
     /**

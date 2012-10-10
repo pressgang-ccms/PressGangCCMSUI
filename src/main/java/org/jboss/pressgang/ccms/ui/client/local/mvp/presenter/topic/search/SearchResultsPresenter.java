@@ -36,6 +36,8 @@ public class SearchResultsPresenter implements TemplatePresenter {
         void bind(final String queryString, final SearchResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
         ProviderUpdateData<RESTTopicCollectionItemV1> getTopicProviderData();
         void setTopicProviderData(ProviderUpdateData<RESTTopicCollectionItemV1> topicProviderData);
+        EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> getProvider();
+        void setProvider(EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider);
     }
 
     @Inject

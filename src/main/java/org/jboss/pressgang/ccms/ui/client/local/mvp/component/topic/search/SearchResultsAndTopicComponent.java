@@ -229,6 +229,11 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         /* Have to do this after the parseToken method has been called */
         display.initialize(split, topicSplitPanelRenderedDisplay.getPanel());
         
+        this.topicBugsDisplay.setProvider(generateTopicBugListProvider());
+        this.topicRevisionsDisplay.setProvider(generateTopicRevisionsListProvider());
+        
+        bindTopicEditButtons(this.searchResultsComponent.getProvider());
+        bindViewTopicRevisionButton();
         bindSplitPanelResize();
         bindTagEditingButtons();
         loadSplitPanelSize();
