@@ -1,5 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,10 +10,8 @@ import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
@@ -28,6 +29,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryInTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.sort.RESTTagCategoryCollectionItemV1SortComparator;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
@@ -46,14 +48,12 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
-
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
  * This presenter takes the TagFilteredResults view to provide a list of tags, and the TagView, TagProjectsView and
@@ -62,7 +62,9 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
  * @author Matthew Casperson
  */
 @Dependent
-public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
+public class TagsFilteredResultsAndTagPresenter extends TemplatePresenter {
+
+
 
     /** The history token used to identify this view */
     public static final String HISTORY_TOKEN = "TagsFilteredResultsAndTagView";
@@ -99,6 +101,10 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
          * @return The split panel that separates the tag list from the tag details views
          */
         HandlerSplitLayoutPanel getSplitPanel();
+    }
+    
+    public interface LogicComponent extends Component<Display> {
+
     }
 
     /**
@@ -349,6 +355,8 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
      */
     @Inject
     private Display display;
+    
+    @Inject private LogicComponent component;
 
     /**
      * An Errai injected instance of a class that implements TagFilteredResultsPresenter.Display. This is the view that displays
@@ -356,6 +364,8 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
      */
     @Inject
     private TagFilteredResultsPresenter.Display filteredResultsDisplay;
+    
+    @Inject TagFilteredResultsPresenter.LogicComponent filteredResultsComponent;
 
     /**
      * An Errai injected instance of a class that implements TagPresenter.Display. This is the view that displays the fields of
@@ -363,6 +373,8 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
      */
     @Inject
     private TagPresenter.Display resultDisplay;
+    
+    @Inject private TagPresenter.LogicComponent resultComponent;
 
     /**
      * An Errai injected instance of a class that implements TagProjectsPresenter.Display. This is the view that lists all the
@@ -370,6 +382,8 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
      */
     @Inject
     private TagProjectsPresenter.Display projectsDisplay;
+    
+    @Inject TagProjectsPresenter.LogicComponent projectsComponent;
 
     /**
      * An Errai injected instance of a class that implements TagCategoriesPresenter.Display. This is the view that lists all the
@@ -377,17 +391,14 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
      */
     @Inject
     private TagCategoriesPresenter.Display categoriesDisplay;
+    
+    @Inject TagCategoriesPresenter.LogicComponent categoriesComponent; 
 
     /** The tag query string extracted from the history token */
     private String queryString;
-    /** Holds the data required to populate and refresh the tags list */
-    private ProviderUpdateData<RESTTagCollectionItemV1> tagProviderData = new ProviderUpdateData<RESTTagCollectionItemV1>();
-    /** Holds the data required to populate and refresh the projects list */
-    private ProviderUpdateData<RESTProjectCollectionItemV1> projectProviderData = new ProviderUpdateData<RESTProjectCollectionItemV1>();
-    /** Holds the data required to populate and refresh the categories list */
-    private ProviderUpdateData<RESTCategoryCollectionItemV1> categoryProviderData = new ProviderUpdateData<RESTCategoryCollectionItemV1>();
-    /** Holds the data required to populate and refresh the category tags list */
-    private ProviderUpdateData<RESTTagInCategoryCollectionItemV1> categoryTagsProviderData = new ProviderUpdateData<RESTTagInCategoryCollectionItemV1>();
+
+    
+    
 
     /** The currently displayed view */
     private TagViewInterface displayedView;
@@ -411,6 +422,11 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
                 Preferences.INSTANCE.getInt(Preferences.TAG_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
         categoriesDisplay.getSplit().setSplitPosition(categoriesDisplay.getSearchResultsPanel(),
                 Preferences.INSTANCE.getInt(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
+        
+        component.bind(display,  display);
+        filteredResultsComponent.bind(filteredResultsDisplay, display);
+        projectsComponent.bind(projectsDisplay, display);
+        categoriesComponent.bind(categoriesDisplay,  display);
 
         bind();
     }
@@ -419,12 +435,7 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
      * Add behaviour to the UI elements exposed by the views
      */
     private void bind() {
-        super.bind(display, this);
-
-        filteredResultsDisplay.setProvider(generateListProvider());
-        projectsDisplay.setProvider(generateProjectListProvider());
-        categoriesDisplay.setProvider(generateCategoriesListProvider());
-
+ 
         bindTagListRowClicks();
 
         bindCategoryListRowClicks();
@@ -797,207 +808,17 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
         });
     }
 
-    /**
-     * @return A provider to be used for the tag display list
-     */
-    private EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> generateCategoriesTagListProvider() {
-        final EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1>() {
-            @Override
-            protected void onRangeChanged(final HasData<RESTTagInCategoryCollectionItemV1> display) {
-                categoryTagsProviderData.setStartRow(display.getVisibleRange().getStart());
-                categoryTagsProviderData.setItems(new ArrayList<RESTTagInCategoryCollectionItemV1>());
+    
 
-                /* Zero results can be a null list. Also selecting a new tag will reset categoryProviderData. */
-                if (categoryProviderData.getDisplayedItem() != null
-                        && categoryProviderData.getDisplayedItem().getItem().getTags() != null) {
-                    /* Don't display removed tags */
-                    for (final RESTTagInCategoryCollectionItemV1 tagInCategory : categoryProviderData.getDisplayedItem()
-                            .getItem().getTags().returnExistingAddedAndUpdatedCollectionItems()) {
-                        categoryTagsProviderData.getItems().add(tagInCategory);
-                    }
-                }
+    
 
-                Collections.sort(categoryTagsProviderData.getItems(), new RESTTagCategoryCollectionItemV1SortComparator());
+    
 
-                displayNewFixedList(categoryTagsProviderData.getItems());
-            }
-        };
+    
 
-        return provider;
-    }
+    
 
-    /**
-     * This provider pages over a collection of categories that was returned when the page was built. This is because changes to
-     * the tag category relationships are done to the categories, not to the tag. This means we need to keep a list of the
-     * categories instead of losing them when the table is paged through.
-     * 
-     * @return A provider to be used for the category display list.
-     */
-    private EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateCategoriesListProvider() {
-        final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
-            @Override
-            protected void onRangeChanged(final HasData<RESTCategoryCollectionItemV1> display) {
-
-                categoryProviderData.setStartRow(display.getVisibleRange().getStart());
-
-                if (categoryProviderData.getItems() != null)
-                    displayNewFixedList(categoryProviderData.getItems());
-                else
-                    resetProvider();
-
-            }
-        };
-        return provider;
-    }
-
-    /**
-     * @return A provider to be used for the project display list
-     */
-    private EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> generateProjectListProvider() {
-
-        final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTProjectCollectionItemV1>() {
-            @Override
-            protected void onRangeChanged(final HasData<RESTProjectCollectionItemV1> display) {
-
-                projectProviderData.setStartRow(display.getVisibleRange().getStart());
-
-                if (projectProviderData.getItems() != null)
-                    displayNewFixedList(projectProviderData.getItems());
-                else
-                    resetProvider();
-
-            }
-        };
-        return provider;
-    }
-
-    /**
-     * @return A provider to be used for the tag display list
-     */
-    private EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generateListProvider() {
-        final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
-            @Override
-            protected void onRangeChanged(final HasData<RESTTagCollectionItemV1> display) {
-
-                final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
-                    @Override
-                    public void begin() {
-                        resetProvider();
-                        filteredResultsDisplay.addWaitOperation();
-                    }
-
-                    @Override
-                    public void generalException(final Exception e) {
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        filteredResultsDisplay.removeWaitOperation();
-                    }
-
-                    @Override
-                    public void success(final RESTTagCollectionV1 retValue) {
-                        try {
-                            /* Zero results can be a null list */
-                            tagProviderData.setItems(retValue.getItems());
-                            displayAsynchronousList(tagProviderData.getItems(), retValue.getSize(),
-                                    tagProviderData.getStartRow());
-                        } finally {
-                            filteredResultsDisplay.removeWaitOperation();
-                        }
-                    }
-
-                    @Override
-                    public void failed() {
-                        filteredResultsDisplay.removeWaitOperation();
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                    }
-                };
-
-                tagProviderData.setStartRow(display.getVisibleRange().getStart());
-                final int length = display.getVisibleRange().getLength();
-                final int end = tagProviderData.getStartRow() + length;
-
-                RESTCalls.getTagsFromQuery(callback, queryString, tagProviderData.getStartRow(), end);
-            }
-        };
-        return provider;
-    }
-
-    /**
-     * Bind behaviour to the buttons found in the celltable listing the categories
-     */
-    private void bindCategoryListRowClicks() {
-        this.categoriesDisplay.getResults().addCellPreviewHandler(new Handler<RESTCategoryCollectionItemV1>() {
-            @Override
-            public void onCellPreview(final CellPreviewEvent<RESTCategoryCollectionItemV1> event) {
-                /* Check to see if this was a click event */
-                final boolean isClick = Constants.JAVASCRIPT_CLICK_EVENT.equals(event.getNativeEvent().getType());
-
-                if (isClick) {
-                    /*
-                     * categoryProviderData.getSelectedItem() will be null until a category is selected for the first time
-                     */
-                    final boolean needToAddImageView = categoryProviderData.getSelectedItem() == null;
-
-                    /*
-                     * Normally a list is populated with an un-expanded collection of entities. However, in this case we have
-                     * expanded the categories to include all the tags.
-                     * 
-                     * Because the categories that are displayed in the category list have all the expanded topics, we don't
-                     * need to get an expanded category in response to a category being selected. This means the displayed and
-                     * selected items are the same.
-                     */
-                    categoryProviderData.setSelectedItem(event.getValue());
-                    categoryProviderData.setDisplayedItem(event.getValue());
-
-                    /*
-                     * If this is the first category selected, display the tags list
-                     */
-                    if (needToAddImageView) {
-                        categoriesDisplay.getSplit().add(categoriesDisplay.getTagsResultsPanel());
-                    }
-
-                    /*
-                     * reset the provider, which will refresh the list of tags
-                     */
-                    categoriesDisplay.setTagsProvider(generateCategoriesTagListProvider());
-                }
-            }
-        });
-    }
-
-    /**
-     * Bind the button click events for the topic editor screens
-     */
-    private void bindTagListRowClicks() {
-        filteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTTagCollectionItemV1>() {
-            @Override
-            public void onCellPreview(final CellPreviewEvent<RESTTagCollectionItemV1> event) {
-                /* Check to see if this was a click event */
-                final boolean isClick = Constants.JAVASCRIPT_CLICK_EVENT.equals(event.getNativeEvent().getType());
-
-                if (isClick) {
-                    if (!checkForUnsavedChanges()) {
-                        return;
-                    }
-
-                    /* The selected item will be the tag from the list. This is the unedited, unexpanded copy of the tag */
-                    tagProviderData.setSelectedItem(event.getValue());
-                    /* All editing is done in a clone of the selected tag. Any expanded collections will be copied into this tag */
-                    tagProviderData.setDisplayedItem(event.getValue().clone(true));
-
-                    /*
-                     * If this is the first image selected, display the image view
-                     */
-                    if (displayedView == null) {
-                        displayedView = resultDisplay;
-                    }
-
-                    resetCategoryAndProjectsLists(true);
-
-                    reInitialiseView();
-                }
-            }
-        });
-    }
+    
 
     @Override
     public void parseToken(final String historyToken) {
@@ -1072,79 +893,7 @@ public class TagsFilteredResultsAndTagPresenter extends CategoryPresenterBase {
         lastDisplayedView = displayedView;
     }
 
-    /**
-     * Compare the displayed tag (the one that is edited) with the selected tag (the one that exists in the collection used to
-     * build the tag list). If there are unsaved changes, prompt the user.
-     * 
-     * @return true if the user wants to ignore the unsaved changes, false otherwise
-     */
-    @Override
-    public boolean checkForUnsavedChanges() {
-        /* sync the UI with the underlying tag */
-        if (tagProviderData.getDisplayedItem() != null) {
-            resultDisplay.getDriver().flush();
-
-            if (unsavedTagChanged() || unsavedCategoryChanges() || unsavedProjectChanges()) {
-                return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * 
-     * @return true if the tag has any unsaved changes
-     */
-    private boolean unsavedTagChanged() {
-        /*
-         * See if any items have been added or removed from the project and category lists
-         */
-        final boolean unsavedCategoryChanges = categoryProviderData.getItems() != null
-                && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems(categoryProviderData.getItems());
-        final boolean unsavedProjectChanges = projectProviderData.getItems() != null
-                && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems(projectProviderData.getItems());
-
-        /* See if any of the fields were changed */
-        final boolean unsavedDescriptionChanges = !GWTUtilities.compareStrings(tagProviderData.getSelectedItem().getItem()
-                .getDescription(), tagProviderData.getDisplayedItem().getItem().getDescription());
-        final boolean unsavedNameChanges = !GWTUtilities.compareStrings(tagProviderData.getSelectedItem().getItem().getName(),
-                tagProviderData.getDisplayedItem().getItem().getName());
-
-        return unsavedCategoryChanges || unsavedProjectChanges || unsavedDescriptionChanges || unsavedNameChanges;
-    }
-
-    /**
-     * @return true if the categories have any unsaved changes to their tags
-     */
-    private boolean unsavedCategoryChanges() {
-        /* It is possible that the list of categories has not loaded yet, in which case no changes could have been made */
-        if (categoryProviderData.getItems() != null) {
-            for (final RESTCategoryCollectionItemV1 category : categoryProviderData.getItems()) {
-                if (category.getItem().getTags().returnDeletedAddedAndUpdatedCollectionItems().size() != 0) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
     
-    /**
-     * @return true if the categories have any unsaved changes to their tags
-     */
-    private boolean unsavedProjectChanges() {
-        /* It is possible that the list of categories has not loaded yet, in which case no changes could have been made */
-        if (projectProviderData.getItems() != null) {
-            for (final RESTProjectCollectionItemV1 project : projectProviderData.getItems()) {
-                if (project.getItem().getTags().returnDeletedAddedAndUpdatedCollectionItems().size() != 0) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
 
     /**
      * Called when a new tag is selected or the tag is saved. This refreshes the list of categories and projects.

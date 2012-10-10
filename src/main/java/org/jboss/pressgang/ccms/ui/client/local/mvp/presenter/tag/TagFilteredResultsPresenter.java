@@ -1,19 +1,15 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag;
 
-import java.util.List;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 import com.google.gwt.user.cellview.client.CellTable;
@@ -21,12 +17,9 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.view.client.HasData;
-
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public class TagFilteredResultsPresenter implements EditableView, TemplatePresenter {
+public class TagFilteredResultsPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "TagFilteredResultsView";
     
     public interface Display extends BaseTemplateViewInterface {
@@ -47,17 +40,20 @@ public class TagFilteredResultsPresenter implements EditableView, TemplatePresen
         @Override
         PushButton getSearch();
     }
+    
+    public interface LogicComponent extends Component<Display>
+    {
+        void bind(final String queryString, final TagFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
+        ProviderUpdateData<RESTTagCollectionItemV1> getTagProviderData();
+        void setTagProviderData(final ProviderUpdateData<RESTTagCollectionItemV1> tagProviderData);
+    }
 
     @Inject
     private Display display;
+    
+    @Inject private LogicComponent component;
 
     private String queryString;
-
-    /** Keeps a reference to the start row */
-    private Integer tableStartRow;
-
-    /** Keeps a reference to the list of topics being displayed */
-    private List<RESTImageV1> currentList;
 
     @Override
     public void parseToken(final String searchToken) {
@@ -67,37 +63,8 @@ public class TagFilteredResultsPresenter implements EditableView, TemplatePresen
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bind();
+        component.bind(queryString, display, display);
     }
 
-    private void bind() {
-        super.bind(display, this);
-
-        final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
-            @Override
-            protected void onRangeChanged(final HasData<RESTTagCollectionItemV1> item) {
-                final int start = item.getVisibleRange().getStart();
-                final int length = item.getVisibleRange().getLength();
-                final int end = start + length;
-
-                final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1,
-                        Display>(display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, Display>() {
-                    @Override
-                    public void doSuccessAction(RESTTagCollectionV1 retValue, Display display) {
-                        displayNewFixedList(retValue.getItems());
-                    }
-                }) {
-                };
-
-                RESTCalls.getTagsFromQuery(callback, queryString, start, end);
-            }
-        };
-
-        display.setProvider(provider);
-    }
-
-    @Override
-    public boolean checkForUnsavedChanges() {
-        return true;
-    }
+    
 }

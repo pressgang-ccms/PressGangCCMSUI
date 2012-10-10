@@ -15,7 +15,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.Display;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.LogicComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -83,7 +82,7 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
         return retValue.toString();
     }
 
-    protected List<String> getUnassignedLocales() {
+    public List<String> getUnassignedLocales() {
         final List<String> newLocales = Arrays.asList(locales);
 
         /* Make it so you can't add a locale if it already exists */
@@ -245,7 +244,7 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
      * @param imageDisplay The view that displays the image details.
      * @param waitDisplay  The view that displays the waiting screen
      */
-    protected void bindImageUploadButtons(final ImagePresenter.Display imageDisplay, final BaseTemplateViewInterface waitDisplay) {
+    public void bindImageUploadButtons(final ImagePresenter.Display imageDisplay, final BaseTemplateViewInterface waitDisplay) {
         if (imageDisplay.getEditor() == null) {
             throw new IllegalStateException("display.getEditor() cannot be null");
         }

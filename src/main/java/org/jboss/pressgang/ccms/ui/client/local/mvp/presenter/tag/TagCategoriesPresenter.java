@@ -7,8 +7,10 @@ import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
@@ -30,7 +32,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
  * @author matthew
  */
 @Dependent
-public class TagCategoriesPresenter extends TemplatePresenter implements EditableView {
+public class TagCategoriesPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "TagCategoriesView";
 
     public interface Display extends TagViewInterface {
@@ -58,9 +60,16 @@ public class TagCategoriesPresenter extends TemplatePresenter implements Editabl
 
         VerticalPanel getSearchResultsPanel();
     }
+    
+    public interface LogicComponent extends Component<Display>
+    {
+        void bind(final String queryString, final TagCategoriesPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
+    }
 
     @Inject
     private Display display;
+    
+    @Inject private LogicComponent component;
 
     private String queryString;
 
@@ -72,37 +81,7 @@ public class TagCategoriesPresenter extends TemplatePresenter implements Editabl
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bind();
-    }
-
-    private void bind() {
-        super.bind(display, this);
-
-        final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
-            @Override
-            protected void onRangeChanged(final HasData<RESTCategoryCollectionItemV1> item) {
-                final int start = item.getVisibleRange().getStart();
-                final int length = item.getVisibleRange().getLength();
-                final int end = start + length;
-
-                final RESTCalls.RESTCallback<RESTCategoryCollectionV1> callback = new BaseRestCallback<RESTCategoryCollectionV1,
-                        Display>(display, new BaseRestCallback.SuccessAction<RESTCategoryCollectionV1, Display>() {
-                    @Override
-                    public void doSuccessAction(RESTCategoryCollectionV1 retValue, Display display) {
-                        displayNewFixedList(retValue.getItems());
-                    }
-                }) {
-                };
-
-                RESTCalls.getCategoriesFromQuery(callback, queryString, start, end);
-            }
-        };
-
-        display.setProvider(provider);
-    }
-
-    @Override
-    public boolean checkForUnsavedChanges() {
-        return true;
+        
+        component.bind(queryString, display, display);
     }
 }

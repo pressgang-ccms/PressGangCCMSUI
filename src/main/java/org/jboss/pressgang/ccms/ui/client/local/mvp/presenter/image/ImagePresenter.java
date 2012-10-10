@@ -3,6 +3,8 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
+import java.util.List;
+
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
@@ -67,6 +69,8 @@ public class ImagePresenter implements TemplatePresenter {
         ProviderUpdateData<RESTImageCollectionItemV1> getImageData();
         void setImageData(ProviderUpdateData<RESTImageCollectionItemV1> imageData);
         void getImage(final Integer imageId);
+        List<String> getUnassignedLocales();
+        void bindImageUploadButtons(final ImagePresenter.Display imageDisplay, final BaseTemplateViewInterface waitDisplay);
     }
 
     @Override

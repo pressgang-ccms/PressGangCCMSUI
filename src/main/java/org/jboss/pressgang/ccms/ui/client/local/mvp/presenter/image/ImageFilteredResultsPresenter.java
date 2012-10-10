@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionIte
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 import com.google.gwt.user.cellview.client.CellTable;
@@ -43,6 +44,8 @@ public class ImageFilteredResultsPresenter implements TemplatePresenter {
     
     public interface LogicComponent extends Component<Display>
     {
+        ProviderUpdateData<RESTImageCollectionItemV1> getProviderData();
+        void setProviderData(ProviderUpdateData<RESTImageCollectionItemV1> providerData);
         void bind(final String queryString, final ImageFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
     }
 
