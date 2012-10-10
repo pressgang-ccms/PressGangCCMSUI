@@ -5,10 +5,12 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 import com.google.gwt.user.cellview.client.CellTable;
@@ -33,7 +35,10 @@ public class TagProjectsPresenter implements TemplatePresenter {
     }
 
     public interface LogicComponent extends Component<Display> {
-
+        boolean unsavedProjectChanges();
+        ProviderUpdateData<RESTProjectCollectionItemV1> getProjectProviderData();
+        void setProjectProviderData(final ProviderUpdateData<RESTProjectCollectionItemV1> projectProviderData);
+        void getProjects();
     }
 
     @Inject

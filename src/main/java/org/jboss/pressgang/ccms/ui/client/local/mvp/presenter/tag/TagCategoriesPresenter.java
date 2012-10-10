@@ -14,6 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 import com.google.gwt.user.cellview.client.CellTable;
@@ -64,6 +65,12 @@ public class TagCategoriesPresenter implements TemplatePresenter {
     public interface LogicComponent extends Component<Display>
     {
         void bind(final String queryString, final TagCategoriesPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
+        boolean unsavedCategoryChanges();
+        ProviderUpdateData<RESTCategoryCollectionItemV1> getCategoryProviderData();
+        void setCategoryProviderData(ProviderUpdateData<RESTCategoryCollectionItemV1> categoryProviderData);
+        void getCategories();
+        EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateCategoriesListProvider();
+        EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> generateCategoriesTagListProvider();
     }
 
     @Inject
