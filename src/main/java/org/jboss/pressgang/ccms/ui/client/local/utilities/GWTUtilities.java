@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
 import com.google.gwt.user.client.ui.HasWidgets;
-import org.apache.commons.lang.StringUtils;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 
 /**

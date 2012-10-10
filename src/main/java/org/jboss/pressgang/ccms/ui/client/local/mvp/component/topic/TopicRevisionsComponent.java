@@ -1,14 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
-
-import com.google.gwt.view.client.HasData;
 
 public class TopicRevisionsComponent extends TopicViewComponent<TopicRevisionsPresenter.Display> implements TopicRevisionsPresenter.LogicComponent {
     
+    @Override
     public void bind(final TopicRevisionsPresenter.Display display, final BaseTemplateViewInterface waitDisplay)
     {
         super.bind(display, waitDisplay);
@@ -22,6 +19,7 @@ public class TopicRevisionsComponent extends TopicViewComponent<TopicRevisionsPr
      * @param diff The diff XML
      * @param diffLabel The diff XML label
      */
+    @Override
     native public void displayDiff(final String source, final String sourceLabel, final String diff, final String diffLabel)
     /*-{
         var diffTable = $wnd.prettydiff({

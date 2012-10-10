@@ -19,14 +19,17 @@ public class TagProjectsComponent extends ComponentBase<TagProjectsPresenter.Dis
     /** Holds the data required to populate and refresh the projects list */
     private ProviderUpdateData<RESTProjectCollectionItemV1> projectProviderData = new ProviderUpdateData<RESTProjectCollectionItemV1>();
     
+    @Override
     public ProviderUpdateData<RESTProjectCollectionItemV1> getProjectProviderData() {
         return projectProviderData;
     }
 
+    @Override
     public void setProjectProviderData(final ProviderUpdateData<RESTProjectCollectionItemV1> projectProviderData) {
         this.projectProviderData = projectProviderData;
     }
 
+    @Override
     public void bind(final TagProjectsPresenter.Display display, final BaseTemplateViewInterface waitDisplay)
     {
         super.bind(display, waitDisplay);
@@ -58,6 +61,7 @@ public class TagProjectsComponent extends ComponentBase<TagProjectsPresenter.Dis
     /**
      * @return true if the categories have any unsaved changes to their tags
      */
+    @Override
     public boolean unsavedProjectChanges() {
         /* It is possible that the list of categories has not loaded yet, in which case no changes could have been made */
         if (projectProviderData.getItems() != null) {
@@ -78,6 +82,7 @@ public class TagProjectsComponent extends ComponentBase<TagProjectsPresenter.Dis
      * this collection will be synced in reverse to the tag when the save button is clicked i.e. where the displayed tag is
      * added to a project, that will actually be persisted through the REST interface as a project added to the displayed tag.
      */
+    @Override
     public void getProjects() {
         final RESTCalls.RESTCallback<RESTProjectCollectionV1> callback = new RESTCalls.RESTCallback<RESTProjectCollectionV1>() {
             @Override

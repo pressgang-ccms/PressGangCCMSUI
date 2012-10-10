@@ -9,7 +9,6 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCategoryV1BasicDetailsEditor;
 
 import static org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter.CategoryPresenterDriver;
-import static org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter.Display;
 
 public class CategoryView extends BaseTemplateView implements CategoryPresenter.Display {
 

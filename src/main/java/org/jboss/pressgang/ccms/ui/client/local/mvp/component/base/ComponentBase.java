@@ -97,12 +97,14 @@ abstract public class ComponentBase<T extends BaseTemplateViewInterface> impleme
         display.getClose().addClickHandler(closeAdvancedMenu);
     }
     
+    @Override
     public void bind(final T display, final BaseTemplateViewInterface waitDisplay)
     {
         this.display = display;
         this.waitDisplay = waitDisplay;
     }
     
+    @Override
     public void setFeedbackLink(final String pageId)
     {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.sort.RESTTagCategoryCollectionItemV1SortComparator;
@@ -33,14 +34,17 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
     /** Holds the data required to populate and refresh the category tags list */
     private ProviderUpdateData<RESTTagInCategoryCollectionItemV1> categoryTagsProviderData = new ProviderUpdateData<RESTTagInCategoryCollectionItemV1>();
 
+    @Override
     public ProviderUpdateData<RESTCategoryCollectionItemV1> getCategoryProviderData() {
         return categoryProviderData;
     }
 
+    @Override
     public void setCategoryProviderData(ProviderUpdateData<RESTCategoryCollectionItemV1> categoryProviderData) {
         this.categoryProviderData = categoryProviderData;
     }
 
+    @Override
     public void bind(final String queryString, final TagCategoriesPresenter.Display display,
             final BaseTemplateViewInterface waitDisplay) {
 
@@ -61,6 +65,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
      * 
      * @return A provider to be used for the category display list.
      */
+    @Override
     public EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateCategoriesListProvider() {
         final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
@@ -81,6 +86,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
     /**
      * @return A provider to be used for the tag display list
      */
+    @Override
     public EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> generateCategoriesTagListProvider() {
         final EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1>() {
             @Override
@@ -153,6 +159,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
     /**
      * @return true if the categories have any unsaved changes to their tags
      */
+    @Override
     public boolean unsavedCategoryChanges() {
         /* It is possible that the list of categories has not loaded yet, in which case no changes could have been made */
         if (categoryProviderData.getItems() != null) {
@@ -198,7 +205,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
 
                     /* we need to mark the joiner entity as updated */
                     if (!existingTagInCatgeory.returnIsAddItem())
-                        existingTagInCatgeory.setState(RESTTagInCategoryCollectionItemV1.UPDATE_STATE);
+                        existingTagInCatgeory.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
                 }
 
                 /* The next item is either the item before (if moving up) of the item after (if moving down) */
@@ -252,6 +259,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
      * to this collection will be synced in reverse to the tag when the save button is clicked i.e. where the displayed tag is
      * added to a project, that will actually be persisted through the REST interface as a category added to the displayed tag.
      */
+    @Override
     public void getCategories() {
         final RESTCalls.RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
             @Override

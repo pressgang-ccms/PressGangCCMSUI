@@ -9,10 +9,8 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageColle
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
-import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.Display;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -32,8 +30,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 
-public class ImageComponent extends ComponentBase<ImagePresenter.Display> implements ImagePresenter.LogicComponent
-{
+public class ImageComponent extends ComponentBase<ImagePresenter.Display> implements ImagePresenter.LogicComponent {
     /**
      * The currently displayed image.
      */
@@ -43,15 +40,17 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
      * A reference to the StringConstants that holds the locales.
      */
     private String[] locales;
-    
+
+    @Override
     public ProviderUpdateData<RESTImageCollectionItemV1> getImageData() {
         return imageData;
     }
 
+    @Override
     public void setImageData(ProviderUpdateData<RESTImageCollectionItemV1> imageData) {
         this.imageData = imageData;
     }
-    
+
     public void setLocales(final String[] locales) {
         this.locales = locales;
     }
@@ -60,34 +59,20 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
         return locales;
     }
 
-    protected ImageComponent()
-    {
+    public ImageComponent() {
         final RESTImageCollectionItemV1 item = new RESTImageCollectionItemV1();
         item.setItem(new RESTImageV1());
         imageData = new ProviderUpdateData<RESTImageCollectionItemV1>(item);
     }
 
-    protected String getQuery(final ImageFilteredResultsPresenter.Display imageSearchDisplay) {
-        final StringBuilder retValue = new StringBuilder(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON);
-        if (!imageSearchDisplay.getImageIdFilter().getText().isEmpty()) {
-            retValue.append(";imageIds=" + imageSearchDisplay.getImageIdFilter().getText());
-        }
-        if (!imageSearchDisplay.getImageDescriptionFilter().getText().isEmpty()) {
-            retValue.append(";imageDesc=" + imageSearchDisplay.getImageDescriptionFilter().getText());
-        }
-        if (!imageSearchDisplay.getImageOriginalFileNameFilter().getText().isEmpty()) {
-            retValue.append(";imageOrigName=" + imageSearchDisplay.getImageOriginalFileNameFilter().getText());
-        }
-
-        return retValue.toString();
-    }
-
+    @Override
     public List<String> getUnassignedLocales() {
         final List<String> newLocales = Arrays.asList(locales);
 
         /* Make it so you can't add a locale if it already exists */
         if (imageData.getDisplayedItem().getItem().getLanguageImages_OTM() != null) {
-            for (final RESTLanguageImageCollectionItemV1 langImage : imageData.getDisplayedItem().getItem().getLanguageImages_OTM().returnExistingAndAddedCollectionItems()) {
+            for (final RESTLanguageImageCollectionItemV1 langImage : imageData.getDisplayedItem().getItem()
+                    .getLanguageImages_OTM().returnExistingAndAddedCollectionItems()) {
                 newLocales.remove(langImage.getItem().getLocale());
             }
         }
@@ -96,20 +81,20 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
     }
 
     private void populateLocales() {
-        final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1,
-                BaseTemplateViewInterface>(display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
-            @Override
-            public void doSuccessAction(RESTStringConstantV1 retValue, BaseTemplateViewInterface display) {
-                /* Get the list of locales from the StringConstant */
-                locales = retValue.getValue().replaceAll("\\n", "").replaceAll(" ", "").split(",");
-            }
-        }) {
+        final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+                display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
+                    @Override
+                    public void doSuccessAction(RESTStringConstantV1 retValue, BaseTemplateViewInterface display) {
+                        /* Get the list of locales from the StringConstant */
+                        locales = retValue.getValue().replaceAll("\\n", "").replaceAll(" ", "").split(",");
+                    }
+                }) {
         };
 
         RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
     }
 
-    protected void bindImageViewButtons() {
+    private void bindImageViewButtons() {
 
         display.getSave().addClickHandler(new ClickHandler() {
             @Override
@@ -125,13 +110,13 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
 
                 final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
                         waitDisplay, new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
-                    @Override
-                    public void doSuccessAction(RESTImageV1 retValue, BaseTemplateViewInterface display) {
-                        retValue.cloneInto(imageData.getDisplayedItem().getItem(), true);
-                        reInitialiseImageView();
-                        Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                    }
-                }) {
+                            @Override
+                            public void doSuccessAction(RESTImageV1 retValue, BaseTemplateViewInterface display) {
+                                retValue.cloneInto(imageData.getDisplayedItem().getItem(), true);
+                                reInitialiseImageView();
+                                Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                            }
+                        }) {
                 };
 
                 RESTCalls.saveImage(callback, updateImage);
@@ -171,8 +156,8 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
                         updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                         updateImage.getLanguageImages_OTM().addRemoveItem(languageImage);
 
-                        final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1,
-                                BaseTemplateViewInterface>(waitDisplay, getDefaultImageRestCallback()) {
+                        final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
+                                waitDisplay, getDefaultImageRestCallback()) {
                         };
 
                         RESTCalls.saveImage(callback, updateImage);
@@ -191,7 +176,8 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
 
                 /* Don't add locales twice */
                 if (imageData.getDisplayedItem().getItem().getLanguageImages_OTM() != null) {
-                    for (final RESTLanguageImageCollectionItemV1 langImage : imageData.getDisplayedItem().getItem().getLanguageImages_OTM().returnExistingAndAddedCollectionItems()) {
+                    for (final RESTLanguageImageCollectionItemV1 langImage : imageData.getDisplayedItem().getItem()
+                            .getLanguageImages_OTM().returnExistingAndAddedCollectionItems()) {
                         if (langImage.getItem().getLocale().equals(selectedLocale)) {
                             return;
                         }
@@ -212,8 +198,8 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
                 updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                 updateImage.getLanguageImages_OTM().addNewItem(languageImage);
 
-                final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1,
-                        BaseTemplateViewInterface>(waitDisplay, getDefaultImageRestCallback()) {
+                final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
+                        waitDisplay, getDefaultImageRestCallback()) {
                 };
 
                 RESTCalls.saveImage(callback, updateImage);
@@ -240,10 +226,11 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
 
     /**
      * Each Language Image has an upload button that needs to be bound to some behaviour.
-     *
+     * 
      * @param imageDisplay The view that displays the image details.
-     * @param waitDisplay  The view that displays the waiting screen
+     * @param waitDisplay The view that displays the waiting screen
      */
+    @Override
     public void bindImageUploadButtons(final ImagePresenter.Display imageDisplay, final BaseTemplateViewInterface waitDisplay) {
         if (imageDisplay.getEditor() == null) {
             throw new IllegalStateException("display.getEditor() cannot be null");
@@ -256,9 +243,9 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
                 public void onClick(final ClickEvent event) {
 
                     /*
-                    * There should only be one file, but use a loop to accommodate any changes that might implement multiple
-                    * files
-                    */
+                     * There should only be one file, but use a loop to accommodate any changes that might implement multiple
+                     * files
+                     */
                     for (final File file : editor.getUpload().getFiles()) {
                         waitDisplay.addWaitOperation();
 
@@ -294,14 +281,16 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
                                     updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                                     updateImage.getLanguageImages_OTM().addUpdateItem(updatedLanguageImage);
 
-                                    final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1,
-                                            BaseTemplateViewInterface>(waitDisplay, new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
-                                        @Override
-                                        public void doSuccessAction(RESTImageV1 retValue, BaseTemplateViewInterface display) {
-                                            retValue.cloneInto(imageData.getDisplayedItem().getItem(), true);
-                                            reInitialiseImageView();
-                                        }
-                                    }) {
+                                    final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
+                                            waitDisplay,
+                                            new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
+                                                @Override
+                                                public void doSuccessAction(RESTImageV1 retValue,
+                                                        BaseTemplateViewInterface display) {
+                                                    retValue.cloneInto(imageData.getDisplayedItem().getItem(), true);
+                                                    reInitialiseImageView();
+                                                }
+                                            }) {
                                         @Override
                                         public void failed() {
                                             waitDisplay.removeWaitOperation();
@@ -322,19 +311,21 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
             });
         }
     }
-    
+
     public void reInitialiseImageView() {
         display.initialize(imageData.getDisplayedItem().getItem(), getUnassignedLocales().toArray(new String[0]));
 
         bindImageUploadButtons(display, display);
     }
 
+    @Override
     public void bind(final ImagePresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
         super.bind(display, waitDisplay);
-        bindImageViewButtons();     
+        bindImageViewButtons();
         populateLocales();
     }
-    
+
+    @Override
     public void getImage(final Integer imageId) {
         /*
          * Create a call back that resets the exception handler on any normal error or exception
@@ -359,7 +350,7 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
             RESTCalls.getImage(callback, imageId);
         }
     }
-    
+
     /**
      * Potentially two REST calls have to finish before we can display the page. This function will be called as each REST call
      * finishes, and when all the information has been gathered, the page will be displayed.

@@ -22,14 +22,17 @@ public class CategoryFilteredResultsComponent extends ComponentBase<CategoryFilt
      */
     private ProviderUpdateData<RESTCategoryCollectionItemV1> categoryProviderData = new ProviderUpdateData<RESTCategoryCollectionItemV1>();
     
+    @Override
     public ProviderUpdateData<RESTCategoryCollectionItemV1> getCategoryProviderData() {
         return categoryProviderData;
     }
 
+    @Override
     public void setCategoryProviderData(ProviderUpdateData<RESTCategoryCollectionItemV1> categoryProviderData) {
         this.categoryProviderData = categoryProviderData;
     }
 
+    @Override
     public void bind(final String queryString, final CategoryFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay)
     {
         super.bind(display, waitDisplay);

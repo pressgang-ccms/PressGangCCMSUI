@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.image;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
@@ -26,14 +25,17 @@ public class ImageFilteredResultsComponent extends ComponentBase<ImageFilteredRe
      */
     private ProviderUpdateData<RESTImageCollectionItemV1> providerData = new ProviderUpdateData<RESTImageCollectionItemV1>();
     
+    @Override
     public ProviderUpdateData<RESTImageCollectionItemV1> getProviderData() {
         return providerData;
     }
 
+    @Override
     public void setProviderData(ProviderUpdateData<RESTImageCollectionItemV1> providerData) {
         this.providerData = providerData;
     }
     
+    @Override
     public void bind(final String queryString, final ImageFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay)
     {
         super.bind(display,  waitDisplay);

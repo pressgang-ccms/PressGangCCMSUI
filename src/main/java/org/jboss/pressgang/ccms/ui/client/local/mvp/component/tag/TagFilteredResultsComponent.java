@@ -20,14 +20,17 @@ public class TagFilteredResultsComponent extends ComponentBase<TagFilteredResult
     /** Holds the data required to populate and refresh the tags list */
     private ProviderUpdateData<RESTTagCollectionItemV1> tagProviderData = new ProviderUpdateData<RESTTagCollectionItemV1>();
     
+    @Override
     public ProviderUpdateData<RESTTagCollectionItemV1> getTagProviderData() {
         return tagProviderData;
     }
 
+    @Override
     public void setTagProviderData(final ProviderUpdateData<RESTTagCollectionItemV1> tagProviderData) {
         this.tagProviderData = tagProviderData;
     }
 
+    @Override
     public void bind(final String queryString, final TagFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
         super.bind(display, waitDisplay);
         display.setProvider(generateListProvider(queryString, display, waitDisplay));
