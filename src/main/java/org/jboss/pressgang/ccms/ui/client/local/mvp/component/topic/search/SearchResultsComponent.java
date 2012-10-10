@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.component.search;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.search;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;

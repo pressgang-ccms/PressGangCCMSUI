@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.component.search;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.search;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;

@@ -32,8 +32,8 @@ public class TopicPresenter implements TemplatePresenter {
 
     }
 
-    public interface LogicComponent extends Component<Display> {
-        void getTopic(final Integer topicId);
+    public interface LogicComponent extends TopicViewComponentInterface<Display> {
+
     }
 
     private Integer topicId;

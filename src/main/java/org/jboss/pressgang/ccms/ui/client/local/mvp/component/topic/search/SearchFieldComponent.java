@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.component.search;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.search;
 
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFieldPresenter;

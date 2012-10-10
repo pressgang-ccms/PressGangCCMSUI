@@ -4,6 +4,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ValueListBox;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -25,10 +26,13 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 public class TopicTagsPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "TopicTagsView";
 
-    private String topicId;
+    private Integer topicId;
 
     @Inject
     private Display display;
+
+    @Inject
+    private LogicComponent component;
 
     public interface Display extends TopicViewInterface {
         void initializeNewTags(final SearchUIProjects tags);
@@ -48,36 +52,24 @@ public class TopicTagsPresenter implements TemplatePresenter {
         PushButton getAdd();
     }
 
+    public interface LogicComponent extends TopicViewComponentInterface<Display> {
+
+    }
+
     @Override
     public void parseToken(final String searchToken) {
-        topicId = removeHistoryToken(searchToken, HISTORY_TOKEN);
+        try {
+            topicId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
+        } catch (final NumberFormatException ex) {
+            topicId = null;
+        }
     }
 
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        getTopic();
-        bind();
-    }
-
-    private void getTopic() {
-        final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, Display>(display,
-                new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
-                    @Override
-                    public void doSuccessAction(RESTTopicV1 retValue, Display display) {
-                        display.initialize(retValue, false, SplitType.DISABLED);
-                    }
-                }) {
-        };
-
-        try {
-            RESTCalls.getTopic(callback, Integer.parseInt(topicId));
-        } catch (final NumberFormatException ex) {
-            display.removeWaitOperation();
-        }
-    }
-
-    private void bind() {
-
+        component.bind(display, display);
+        if (topicId != null)
+            component.getTopic(topicId);
     }
 }

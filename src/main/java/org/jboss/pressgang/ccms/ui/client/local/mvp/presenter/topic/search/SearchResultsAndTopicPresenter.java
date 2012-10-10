@@ -1,5 +1,45 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewCategoryEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -11,51 +51,19 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
-import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
-import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
-import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewCategoryEditor;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectEditor;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
  * This presenter is used to display and wire selection of views, including the topic search results view, and the topic XML,
  * details, tags and XML Errors views.
- *
+ * 
  * @author Matthew Casperson
  */
 @Dependent
@@ -83,6 +91,10 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
         void initialize(final SplitType splitType, final Panel panel);
     }
 
+    public interface LogicComponent extends Component<Display> {
+
+    }
+
     /**
      * How the rendering panel is displayed
      */
@@ -92,7 +104,6 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
      * How long to wait before refreshing the rendered view (in milliseconds).
      */
     private static final int REFRESH_RATE = 1000;
-
 
     /**
      * Setup automatic flushing and rendering.
@@ -108,82 +119,11 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
         }
     };
 
-    /**
-     * A click handler to add a tag to a topic
-     *
-     * @author Matthew Casperson
-     */
-    private class AddTagClickhandler implements ClickHandler {
-
-        @Override
-        public void onClick(final ClickEvent event) {
-            final RESTTagV1 selectedTag = topicTagsDisplay.getMyTags().getValue().getTag().getItem();
-
-            /* Need to deal with re-adding removed tags */
-            for (final RESTTagCollectionItemV1 tag : topicProviderData.getDisplayedItem().getItem().getTags().getItems()) {
-                if (tag.getItem().getId().equals(selectedTag.getId())) {
-                    if (tag.getState() == RESTBaseCollectionItemV1.REMOVE_STATE) {
-                        tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
-
-                        /* Redisplay the view */
-                        updateDisplayedTopicView();
-
-                        return;
-                    } else {
-                        /* Don't add tags twice */
-                        Window.alert(PressGangCCMSUI.INSTANCE.TagAlreadyExists());
-                        return;
-                    }
-                }
-            }
-
-            /* Get the selected tag, and clone it */
-            final RESTTagV1 selectedTagClone = selectedTag.clone(true);
-            /* Add the tag to the topic */
-            topicProviderData.getDisplayedItem().getItem().getTags().addNewItem(selectedTagClone);
-            /* Redisplay the view */
-            updateDisplayedTopicView();
-        }
-    }
-
-    /**
-     * A click handler to remove a tag from a topic
-     *
-     * @author Matthew Casperson
-     */
-    private class DeleteTagClickHandler implements ClickHandler {
-        private final RESTTagCollectionItemV1 tag;
-
-        public DeleteTagClickHandler(final RESTTagCollectionItemV1 tag) {
-            if (tag == null) {
-                throw new IllegalArgumentException("tag cannot be null");
-            }
-
-            this.tag = tag;
-        }
-
-        @Override
-        public void onClick(final ClickEvent event) {
-            if (topicProviderData.getDisplayedItem() == null) {
-                throw new IllegalStateException("topicProviderData.getDisplayedItem() cannot be null");
-            }
-
-            if (tag.getState() == RESTBaseCollectionItemV1.ADD_STATE) {
-                /* Tag was added and then removed, so we just delete the tag */
-                topicProviderData.getDisplayedItem().getItem().getTags().getItems().remove(tag);
-            } else {
-                /* Otherwise we set the tag as removed */
-                tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
-            }
-
-            updateDisplayedTopicView();
-        }
-    }
-
-    ;
-
     @Inject
     private Display display;
+
+    @Inject
+    private LogicComponent component;
 
     @Inject
     private TopicPresenter.Display topicViewDisplay;
@@ -205,6 +145,9 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
 
     @Inject
     private SearchResultsPresenter.Display searchResultsDisplay;
+
+    @Inject
+    private SearchResultsPresenter.LogicComponent searchResultsComponent;
 
     @Inject
     private TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay;
@@ -233,13 +176,10 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
      */
     private String queryString;
 
-
-
     /**
      * A copy of all the tags in the system, broken down into project->category->tag. Used when adding new tags to a topic.
      */
     private final SearchUIProjects searchUIProjects = new SearchUIProjects();
-
 
     @Override
     public void go(final HasWidgets container) {
@@ -254,6 +194,9 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
         display.getTopicResultsPanel().setWidget(searchResultsDisplay.getPanel());
 
         loadSplitPanelSize();
+        
+        component.bind(display, display);
+        searchResultsComponent.bind(queryString, searchResultsDisplay, display);
 
         bind();
     }
@@ -283,13 +226,6 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
      * Add behaviour to the UI elements exposed by the views
      */
     private void bind() {
-
-        super.bind(display, this);
-
-        bindSplitPanelResize();
-
-        final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = generateTopicListProvider();
-        searchResultsDisplay.setProvider(provider);
 
         /* set the provider, which will update the list */
         topicRevisionsDisplay.setProvider(generateTopicRevisionsListProvider());
@@ -336,35 +272,33 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
 
     /**
      * Open a new window with the results of a prettydiff comparison
-     *
-     * @param source      The source XML
+     * 
+     * @param source The source XML
      * @param sourceLabel The source XML label
-     * @param diff        The diff XML
-     * @param diffLabel   The diff XML label
+     * @param diff The diff XML
+     * @param diffLabel The diff XML label
      */
     native private void displayDiff(final String source, final String sourceLabel, final String diff, final String diffLabel)
     /*-{
-    var diffTable = $wnd.prettydiff(
-    {
-      source : source,
-      sourcelabel : sourceLabel,
-      diff : diff,
-      difflabel : diffLabel,
-      lang : "markup",
-      mode : "diff",
-      diffview : "sidebyside"
-    })[0];
+		var diffTable = $wnd.prettydiff({
+			source : source,
+			sourcelabel : sourceLabel,
+			diff : diff,
+			difflabel : diffLabel,
+			lang : "markup",
+			mode : "diff",
+			diffview : "sidebyside"
+		})[0];
 
-    var win = $wnd.open("", "_blank", "width=" + (screen.width - 200)
-        + ", height=" + (screen.height - 200)); // a window object
-    if (win != null)
-    {
-	    win.document.open("text/html", "replace");
-	    win.document
-	        .write("<HTML><HEAD><TITLE>PressGangCCMS XML Diff</TITLE><link rel=\"stylesheet\" type=\"text/css\" href=\"../prettydiff.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"prettydiff.css\"></HEAD><BODY>"
-	            + diffTable + "</BODY></HTML>");
-	    win.document.close();
-    }
+		var win = $wnd.open("", "_blank", "width=" + (screen.width - 200)
+				+ ", height=" + (screen.height - 200)); // a window object
+		if (win != null) {
+			win.document.open("text/html", "replace");
+			win.document
+					.write("<HTML><HEAD><TITLE>PressGangCCMS XML Diff</TITLE><link rel=\"stylesheet\" type=\"text/css\" href=\"../prettydiff.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"prettydiff.css\"></HEAD><BODY>"
+							+ diffTable + "</BODY></HTML>");
+			win.document.close();
+		}
     }-*/;
 
     /**
@@ -375,29 +309,38 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
             @Override
             public void update(final int index, final RESTTopicCollectionItemV1 revisionTopic, final String value) {
                 final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
-                        topicRevisionsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
-                    @Override
-                    public void doSuccessAction(RESTTopicV1 retValue, TopicRevisionsPresenter.Display display) {
-                        final RESTTopicCollectionItemV1 sourceTopic = getTopicOrRevisionTopic();
-                        final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID() + ": " + retValue.getId() + " "
-                                + PressGangCCMSUI.INSTANCE.TopicRevision() + ": " + retValue.getRevision().toString() + " "
-                                + PressGangCCMSUI.INSTANCE.RevisionDate() + ": "
-                                + DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL).format(retValue.getLastModified());
-                        final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID()
-                                + ": "
-                                + sourceTopic.getItem().getId()
-                                + " "
-                                + PressGangCCMSUI.INSTANCE.TopicRevision()
-                                + ": "
-                                + sourceTopic.getItem().getRevision().toString()
-                                + " "
-                                + PressGangCCMSUI.INSTANCE.RevisionDate()
-                                + ": "
-                                + DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL).format(
-                                sourceTopic.getItem().getLastModified());
-                        displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getItem().getXml(), sourceTopicLabel);
-                    }
-                }) {
+                        topicRevisionsDisplay,
+                        new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
+                            @Override
+                            public void doSuccessAction(RESTTopicV1 retValue, TopicRevisionsPresenter.Display display) {
+                                final RESTTopicCollectionItemV1 sourceTopic = getTopicOrRevisionTopic();
+                                final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID()
+                                        + ": "
+                                        + retValue.getId()
+                                        + " "
+                                        + PressGangCCMSUI.INSTANCE.TopicRevision()
+                                        + ": "
+                                        + retValue.getRevision().toString()
+                                        + " "
+                                        + PressGangCCMSUI.INSTANCE.RevisionDate()
+                                        + ": "
+                                        + DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL).format(
+                                                retValue.getLastModified());
+                                final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID()
+                                        + ": "
+                                        + sourceTopic.getItem().getId()
+                                        + " "
+                                        + PressGangCCMSUI.INSTANCE.TopicRevision()
+                                        + ": "
+                                        + sourceTopic.getItem().getRevision().toString()
+                                        + " "
+                                        + PressGangCCMSUI.INSTANCE.RevisionDate()
+                                        + ": "
+                                        + DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL).format(
+                                                sourceTopic.getItem().getLastModified());
+                                displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getItem().getXml(), sourceTopicLabel);
+                            }
+                        }) {
                     @Override
                     public void failed() {
                         super.failed();
@@ -464,12 +407,12 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
     private void getTags() {
         final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, TopicTagsPresenter.Display>(
                 topicTagsDisplay, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, TopicTagsPresenter.Display>() {
-            @Override
-            public void doSuccessAction(RESTTagCollectionV1 retValue, TopicTagsPresenter.Display display) {
-                searchUIProjects.initialize(retValue);
-                topicTagsDisplay.initializeNewTags(searchUIProjects);
-            }
-        }) {
+                    @Override
+                    public void doSuccessAction(RESTTagCollectionV1 retValue, TopicTagsPresenter.Display display) {
+                        searchUIProjects.initialize(retValue);
+                        topicTagsDisplay.initializeNewTags(searchUIProjects);
+                    }
+                }) {
             @Override
             public void failed() {
                 super.failed();
@@ -498,19 +441,7 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
         }
     }
 
-    /**
-     * Respond to the split panel resizing by redisplaying the ACE editor component
-     */
-    private void bindSplitPanelResize() {
-        display.getSplitPanel().addResizeHandler(new ResizeHandler() {
-            @Override
-            public void onResize(final ResizeEvent event) {
-                if (topicXMLDisplay.getEditor() != null) {
-                    topicXMLDisplay.getEditor().redisplay();
-                }
-            }
-        });
-    }
+    
 
     /**
      * @return A provider to be used for the topic revisions display list
@@ -548,8 +479,6 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
         };
         return provider;
     }
-
-    
 
     /**
      * Bind the button click events for the topic editor screens
@@ -594,13 +523,13 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
         /* A callback to respond to a request for a topic with the revisions expanded */
         final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
                 topicRevisionsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
-            @Override
-            public void doSuccessAction(RESTTopicV1 retValue, TopicRevisionsPresenter.Display display) {
-                topicProviderData.getDisplayedItem().getItem().setRevisions(retValue.getRevisions());
-                /* refresh the list */
-                topicRevisionsDisplay.getProvider().displayNewFixedList(retValue.getRevisions().getItems());
-            }
-        }) {
+                    @Override
+                    public void doSuccessAction(RESTTopicV1 retValue, TopicRevisionsPresenter.Display display) {
+                        topicProviderData.getDisplayedItem().getItem().setRevisions(retValue.getRevisions());
+                        /* refresh the list */
+                        topicRevisionsDisplay.getProvider().displayNewFixedList(retValue.getRevisions().getItems());
+                    }
+                }) {
             @Override
             public void failed() {
                 super.failed();
@@ -611,16 +540,16 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
         /* A callback to respond to a request for a topic with the tags expanded */
         final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
                 topicTagsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
-            @Override
-            public void doSuccessAction(RESTTopicV1 retValue, TopicTagsPresenter.Display display) {
-                /* copy the revisions into the displayed Topic */
-                topicProviderData.getDisplayedItem().getItem().setTags(retValue.getTags());
-                /* If we are looking at the rendered view, update it */
-                if (selectedView == topicTagsDisplay) {
-                    updateDisplayedTopicView();
-                }
-            }
-        }) {
+                    @Override
+                    public void doSuccessAction(RESTTopicV1 retValue, TopicTagsPresenter.Display display) {
+                        /* copy the revisions into the displayed Topic */
+                        topicProviderData.getDisplayedItem().getItem().setTags(retValue.getTags());
+                        /* If we are looking at the rendered view, update it */
+                        if (selectedView == topicTagsDisplay) {
+                            updateDisplayedTopicView();
+                        }
+                    }
+                }) {
             @Override
             public void failed() {
                 super.failed();
@@ -631,15 +560,15 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
         /* A callback to respond to a request for a topic with the bugzilla bugs expanded */
         final RESTCalls.RESTCallback<RESTTopicV1> topicWithBugsCallback = new BaseRestCallback<RESTTopicV1, TopicBugsPresenter.Display>(
                 topicBugsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicBugsPresenter.Display>() {
-            @Override
-            public void doSuccessAction(RESTTopicV1 retValue, TopicBugsPresenter.Display display) {
-                final RESTBugzillaBugCollectionV1 collection = retValue.getBugzillaBugs_OTM();
-                /* copy the revisions into the displayed Topic */
-                topicProviderData.getDisplayedItem().getItem().setBugzillaBugs_OTM(collection);
-                /* refresh the celltable */
-                topicBugsDisplay.getProvider().displayNewFixedList(collection.getItems());
-            }
-        }) {
+                    @Override
+                    public void doSuccessAction(RESTTopicV1 retValue, TopicBugsPresenter.Display display) {
+                        final RESTBugzillaBugCollectionV1 collection = retValue.getBugzillaBugs_OTM();
+                        /* copy the revisions into the displayed Topic */
+                        topicProviderData.getDisplayedItem().getItem().setBugzillaBugs_OTM(collection);
+                        /* refresh the celltable */
+                        topicBugsDisplay.getProvider().displayNewFixedList(collection.getItems());
+                    }
+                }) {
             @Override
             public void failed() {
                 super.failed();
@@ -676,7 +605,7 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
 
     /**
      * Bind the button click events for the various topic views.
-     *
+     * 
      * @param provider The provider created by the generateTopicListProvider() method
      */
     private void bindTopicEditButtons(final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider) {
@@ -891,8 +820,8 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
         };
 
         /* Hook up the click listeners */
-        for (final TopicViewInterface view : new TopicViewInterface[]{topicViewDisplay, topicXMLDisplay,
-                topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay}) {
+        for (final TopicViewInterface view : new TopicViewInterface[] { topicViewDisplay, topicXMLDisplay,
+                topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay }) {
             view.getRenderedSplit().addClickHandler(splitMenuHandler);
             view.getFields().addClickHandler(topicViewClickHandler);
             view.getXml().addClickHandler(topicXMLClickHandler);
@@ -1031,7 +960,7 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
     /**
      * The currently displayed topic is topicRevisionsDisplay.getRevisionTopic() if it is not null, or
      * topicProviderData.getDisplayedItem() otherwise.
-     *
+     * 
      * @return The currently displayed topic
      */
     private RESTTopicCollectionItemV1 getTopicOrRevisionTopic() {
@@ -1042,7 +971,7 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
 
     /**
      * The UI is in a readonly mode if viewing a topic revision
-     *
+     * 
      * @return true if the UI is in readonly mode, and false otherwise
      */
     private boolean isReadOnlyMode() {

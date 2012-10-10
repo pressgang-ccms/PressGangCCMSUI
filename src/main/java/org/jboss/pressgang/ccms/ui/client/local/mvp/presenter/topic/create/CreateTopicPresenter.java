@@ -43,7 +43,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
  * @author Matthew Casperson
  */
 @Dependent
-public class CreateTopicPresenter implements EditableView, TemplatePresenter {
+public class CreateTopicPresenter implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "CreateTopicView";
 
