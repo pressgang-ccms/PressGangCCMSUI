@@ -22,7 +22,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class TopicTagsPresenter extends TemplatePresenter {
+public class TopicTagsPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "TopicTagsView";
 
     private String topicId;

@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
@@ -16,23 +17,30 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 
-
 @Dependent
 public class SearchFieldPresenter implements EditableView, TemplatePresenter {
-    
+
     public static final String HISTORY_TOKEN = "SearchFieldView";
-    
-    @Inject
-    private Display display;
-    
+
     public interface Display extends BaseTemplateViewInterface {
         interface SearchFieldPresenterDriver extends SimpleBeanEditorDriver<SearchUIFields, SearchFieldEditor> {
         }
     }
 
+    public interface LogicComponent extends Component<Display> {
+
+    }
+
+    @Inject
+    private Display display;
+
+    @Inject
+    private LogicComponent component;
+
     @Override
     public void go(final HasWidgets container) {
         GWTUtilities.clearContainerAndAddTopLevelPanel(container, display);
+        component.bind(display, display);
     }
 
     @Override
@@ -42,7 +50,7 @@ public class SearchFieldPresenter implements EditableView, TemplatePresenter {
 
     @Override
     public void parseToken(final String historyToken) {
-      
+
     }
 
 }

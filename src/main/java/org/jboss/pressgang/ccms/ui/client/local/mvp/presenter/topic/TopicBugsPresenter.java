@@ -16,7 +16,7 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
-public class TopicBugsPresenter implements EditableView, TemplatePresenter {
+public class TopicBugsPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "TopicBugsView";
     
     private String topicId;

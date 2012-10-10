@@ -1,32 +1,34 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
+import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
-import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class SearchResultsPresenter implements EditableView, TemplatePresenter {
+public class SearchResultsPresenter implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "SearchResultsView";
 
@@ -40,11 +42,17 @@ public class SearchResultsPresenter implements EditableView, TemplatePresenter {
         SimplePager getPager();
     }
 
+    public interface LogicComponent extends Component<Display> {
+        void bind(final String queryString, final SearchResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
+        ProviderUpdateData<RESTTopicCollectionItemV1> getTopicProviderData();
+        void setTopicProviderData(ProviderUpdateData<RESTTopicCollectionItemV1> topicProviderData);
+    }
+
     @Inject
     private Display display;
 
     @Inject
-    private TopicPresenter.Display topicViewDisplay;
+    private LogicComponent component;
 
     private String queryString;
 
@@ -56,56 +64,6 @@ public class SearchResultsPresenter implements EditableView, TemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bind();
-    }
-
-    private void bind() {
-
-        super.bind(display, this);
-
-        final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
-            @Override
-            protected void onRangeChanged(final HasData<RESTTopicCollectionItemV1> item) {
-                final int start = item.getVisibleRange().getStart();
-                final int length = item.getVisibleRange().getLength();
-                final int end = start + length;
-
-                final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new BaseRestCallback<RESTTopicCollectionV1, Display>(
-                        display, new BaseRestCallback.SuccessAction<RESTTopicCollectionV1, Display>() {
-                    @Override
-                    public void doSuccessAction(RESTTopicCollectionV1 retValue, Display display) {
-                        updateRowData(start, retValue.getItems());
-                        updateRowCount(retValue.getSize(), true);
-                    }
-                }) {
-                };
-                RESTCalls.getTopicsFromQuery(callback, queryString, start, end);
-            }
-        };
-
-        /* Respond to row clicks */
-        display.getResults().addCellPreviewHandler(new Handler<RESTTopicCollectionItemV1>() {
-            @Override
-            public void onCellPreview(final CellPreviewEvent<RESTTopicCollectionItemV1> event) {
-                final Integer id = event.getValue().getItem().getId();
-
-                final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, Display>(
-                        display, new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
-                    @Override
-                    public void doSuccessAction(RESTTopicV1 retValue, Display display) {
-                        topicViewDisplay.initialize(retValue, false, SplitType.NONE);
-                    }
-                }) {
-                };
-                RESTCalls.getTopic(callback, id);
-            }
-        });
-
-        display.setProvider(provider);
-    }
-
-    @Override
-    public boolean checkForUnsavedChanges() {
-        return true;
+        component.bind(queryString, display,  display);
     }
 }

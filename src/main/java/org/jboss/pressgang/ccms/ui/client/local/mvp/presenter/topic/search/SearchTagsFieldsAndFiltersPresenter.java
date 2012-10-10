@@ -17,7 +17,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
  * @author Matthew Casperson
  */
 @Dependent
-public class SearchTagsFieldsAndFiltersPresenter implements EditableView, TemplatePresenter {
+public class SearchTagsFieldsAndFiltersPresenter implements TemplatePresenter {
     
     /** The history token used to access this page */
     public static final String HISTORY_TOKEN = "SearchTagsFieldsAndFiltersView";
@@ -29,18 +29,7 @@ public class SearchTagsFieldsAndFiltersPresenter implements EditableView, Templa
     
     @Override
     public void go(final HasWidgets container) {
-        clearContainerAndAddTopLevelPanel(container, tagsDisplay);
-        bind();       
-    }
-    
-    private void bind()
-    {
-        
-    }
-    
-    @Override
-    public boolean checkForUnsavedChanges() {
-        return true;
+     
     }
     
     @Override

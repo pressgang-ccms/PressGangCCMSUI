@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.ToggleButton;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 
 @Dependent
-public class TopicXMLPresenter extends TemplatePresenter {
+public class TopicXMLPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "TopicXMLView";
     
     private String topicId;

@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.component.search;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -6,8 +6,10 @@ import javax.inject.Inject;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter.Display;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter.LogicComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.search.SearchView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -19,13 +21,16 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 
 @Dependent
-public class SearchComponent implements LogicComponent {
+public class SearchComponent extends ComponentBase<SearchPresenter.Display> implements SearchPresenter.LogicComponent {
 
     @Inject
     private HandlerManager eventBus;
 
     @Override
-    public void bind(final SearchPresenter.Display display) {
+    public void bind(final SearchPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
+        
+        super.bind(display, waitDisplay);
+        
         display.getSearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {

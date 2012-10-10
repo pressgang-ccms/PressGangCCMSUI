@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
@@ -19,7 +20,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class TopicPresenter implements EditableView, TemplatePresenter {
+public class TopicPresenter implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "TopicView";
 
@@ -31,41 +32,32 @@ public class TopicPresenter implements EditableView, TemplatePresenter {
 
     }
 
-    private String topicId;
+    public interface LogicComponent extends Component<Display> {
+        void getTopic(final Integer topicId);
+    }
+
+    private Integer topicId;
 
     @Inject
     private Display display;
 
+    @Inject
+    private LogicComponent component;
+
     @Override
     public void parseToken(final String searchToken) {
-        topicId = removeHistoryToken(searchToken, HISTORY_TOKEN);
+        try {
+            topicId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
+        } catch (final NumberFormatException ex) {
+            topicId = null;
+        }
+
     }
 
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        getTopic();
-        bind();
+        component.getTopic(topicId);
     }
 
-    private void getTopic() {
-        final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, Display>(display,
-                new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
-                    @Override
-                    public void doSuccessAction(RESTTopicV1 retValue, Display display) {
-                        display.initialize(retValue, false, SplitType.DISABLED);
-                    }
-                }) {
-        };
-
-        try {
-            RESTCalls.getTopic(callback, Integer.parseInt(topicId));
-        } catch (final NumberFormatException ex) {
-            display.removeWaitOperation();
-        }
-    }
-
-    private void bind() {
-
-    }
 }

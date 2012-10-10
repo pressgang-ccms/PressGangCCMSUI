@@ -10,7 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterfac
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
-public class TopicRenderedPresenter implements EditableView, TemplatePresenter {
+public class TopicRenderedPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "TopicRenderedView";
     
     private String topicId;

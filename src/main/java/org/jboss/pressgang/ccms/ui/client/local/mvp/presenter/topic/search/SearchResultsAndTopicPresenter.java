@@ -59,7 +59,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
  * @author Matthew Casperson
  */
 @Dependent
-public class SearchResultsAndTopicPresenter implements EditableView, TemplatePresenter {
+public class SearchResultsAndTopicPresenter implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
 
@@ -233,20 +233,13 @@ public class SearchResultsAndTopicPresenter implements EditableView, TemplatePre
      */
     private String queryString;
 
-    /**
-     * Holds the data required to populate and refresh the topic list
-     */
-    private ProviderUpdateData<RESTTopicCollectionItemV1> topicProviderData = new ProviderUpdateData<RESTTopicCollectionItemV1>();
+
 
     /**
      * A copy of all the tags in the system, broken down into project->category->tag. Used when adding new tags to a topic.
      */
     private final SearchUIProjects searchUIProjects = new SearchUIProjects();
 
-    /**
-     * Keeps a reference to the start row
-     */
-    private Integer tableStartRow;
 
     @Override
     public void go(final HasWidgets container) {
@@ -556,54 +549,7 @@ public class SearchResultsAndTopicPresenter implements EditableView, TemplatePre
         return provider;
     }
 
-    /**
-     * @return A provider to be used for the topic display list
-     */
-    private EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateTopicListProvider() {
-        final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
-            @Override
-            protected void onRangeChanged(final HasData<RESTTopicCollectionItemV1> display) {
-
-                final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
-                    @Override
-                    public void begin() {
-                        resetProvider();
-                        searchResultsDisplay.addWaitOperation();
-                    }
-
-                    @Override
-                    public void generalException(final Exception e) {
-                        Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopics());
-                        searchResultsDisplay.removeWaitOperation();
-                    }
-
-                    @Override
-                    public void success(final RESTTopicCollectionV1 retValue) {
-                        try {
-                            topicProviderData.setItems(retValue.getItems());
-                            displayAsynchronousList(topicProviderData.getItems(), retValue.getSize(), display.getVisibleRange()
-                                    .getStart());
-                        } finally {
-                            searchResultsDisplay.removeWaitOperation();
-                        }
-                    }
-
-                    @Override
-                    public void failed() {
-                        searchResultsDisplay.removeWaitOperation();
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                    }
-                };
-
-                tableStartRow = display.getVisibleRange().getStart();
-                final int length = display.getVisibleRange().getLength();
-                final int end = tableStartRow + length;
-
-                RESTCalls.getTopicsFromQuery(callback, queryString, tableStartRow, end);
-            }
-        };
-        return provider;
-    }
+    
 
     /**
      * Bind the button click events for the topic editor screens
@@ -1111,10 +1057,5 @@ public class SearchResultsAndTopicPresenter implements EditableView, TemplatePre
     private void showRenderedSplitPanelMenu() {
         display.getTopicViewActionButtonsPanel().clear();
         display.getTopicViewActionButtonsPanel().add(selectedView.getRenderedSplitViewMenu());
-    }
-
-    @Override
-    public boolean checkForUnsavedChanges() {
-        return true;
     }
 }

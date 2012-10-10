@@ -13,7 +13,7 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
-public class TopicRevisionsPresenter extends TemplatePresenter {
+public class TopicRevisionsPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "TopicHistoryView";
     
     private String topicId;
@@ -44,11 +44,11 @@ public class TopicRevisionsPresenter extends TemplatePresenter {
 
     @Override
     public void go(final HasWidgets container) {
-        // TODO Auto-generated method stub
+
     }
 
     @Override
     public void parseToken(final String historyToken) {
-        // TODO Auto-generated method stub
+
     }
 }
