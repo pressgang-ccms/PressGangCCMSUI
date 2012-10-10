@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
+
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
@@ -12,7 +14,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
  * used to build up all views.
  * @author Matthew Casperson
  */
-public interface BaseTemplateViewInterface {
+public interface BaseTemplateViewInterface extends EditableView {
     
     /**
      * @return The container that holds the actions buttons (i.e. the horizontal row of buttons that are specific to a view)

@@ -102,6 +102,7 @@ abstract public class ComponentBase<T extends BaseTemplateViewInterface> impleme
     {
         this.display = display;
         this.waitDisplay = waitDisplay;
+        bindStandardButtons(display, waitDisplay);
     }
     
     @Override
