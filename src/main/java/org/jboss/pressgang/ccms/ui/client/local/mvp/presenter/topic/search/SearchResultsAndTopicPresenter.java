@@ -56,10 +56,26 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
 
     public interface LogicComponent extends Component<Display> {
         SplitType getSplit();
+
         void setSplit(final SplitType split);
+
         void parseToken(final String historyToken);
+
         String getQueryString();
+
         void setQueryString(final String queryString);
+        
+        void bind(final SearchResultsAndTopicPresenter.Display display, final BaseTemplateViewInterface waitDisplay,
+                final TopicPresenter.Display topicViewDisplay, final TopicPresenter.LogicComponent topicViewComponent,
+                final TopicXMLPresenter.Display topicXMLDisplay, final TopicXMLPresenter.LogicComponent topicXMLComponent,
+                final TopicRenderedPresenter.Display topicRenderedDisplay,
+                final TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay,
+                final SearchResultsPresenter.Display searchResultsDisplay,
+                final SearchResultsPresenter.LogicComponent searchResultsComponent,
+                final TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay, final TopicTagsPresenter.Display topicTagsDisplay,
+                final TopicTagsPresenter.LogicComponent topicTagsComponent, final TopicBugsPresenter.Display topicBugsDisplay,
+                final TopicRevisionsPresenter.Display topicRevisionsDisplay,
+                final TopicRevisionsPresenter.LogicComponent topicrevisionsComponent);
     }
 
     @Inject
@@ -72,7 +88,13 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
     private TopicPresenter.Display topicViewDisplay;
 
     @Inject
+    private TopicPresenter.LogicComponent topicViewComponent;
+
+    @Inject
     private TopicXMLPresenter.Display topicXMLDisplay;
+
+    @Inject
+    private TopicXMLPresenter.LogicComponent topicXMLComponent;
 
     /**
      * The rendered topic view display
@@ -99,14 +121,20 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
     private TopicTagsPresenter.Display topicTagsDisplay;
 
     @Inject
+    private TopicTagsPresenter.LogicComponent topicTagsComponent;
+
+    @Inject
     private TopicBugsPresenter.Display topicBugsDisplay;
 
     @Inject
     private TopicRevisionsPresenter.Display topicRevisionsDisplay;
 
+    @Inject
+    private TopicRevisionsPresenter.LogicComponent topicrevisionsComponent;
+
     @Override
     public void go(final HasWidgets container) {
-        
+
         searchResultsDisplay.setViewShown(true);
         display.setViewShown(true);
 
@@ -114,11 +142,13 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
 
         display.getTopicResultsActionButtonsPanel().setWidget(searchResultsDisplay.getTopActionPanel());
         display.getTopicResultsPanel().setWidget(searchResultsDisplay.getPanel());
-        
-        component.bind(display, display);
+
+        component.bind(display, display, topicViewDisplay, topicViewComponent, topicXMLDisplay, topicXMLComponent,
+                topicRenderedDisplay, topicSplitPanelRenderedDisplay, searchResultsDisplay, searchResultsComponent,
+                topicXMLErrorsDisplay, topicTagsDisplay, topicTagsComponent, topicBugsDisplay, topicRevisionsDisplay,
+                topicrevisionsComponent);
         component.setFeedbackLink(HISTORY_TOKEN);
         searchResultsComponent.bind(component.getQueryString(), searchResultsDisplay, display);
-
     }
 
     @Override
@@ -126,5 +156,4 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
         component.parseToken(historyToken);
     }
 
-    
 }
