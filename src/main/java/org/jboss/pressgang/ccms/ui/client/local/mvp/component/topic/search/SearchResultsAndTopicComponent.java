@@ -234,6 +234,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         loadSplitPanelSize();
         bindMainSplitResize();
         bindNewTagListBoxes();
+        bindTopicListRowClicks();
     }
 
     /**
