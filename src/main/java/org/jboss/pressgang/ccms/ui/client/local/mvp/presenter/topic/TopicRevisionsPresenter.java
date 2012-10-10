@@ -41,6 +41,11 @@ public class TopicRevisionsPresenter implements TemplatePresenter {
          */
         void setRevisionTopic(RESTTopicCollectionItemV1 revisionTopic);
     }
+    
+    public interface LogicComponent extends TopicViewComponentInterface<Display>
+    {
+        void displayDiff(final String source, final String sourceLabel, final String diff, final String diffLabel);
+    }
 
     @Override
     public void go(final HasWidgets container) {

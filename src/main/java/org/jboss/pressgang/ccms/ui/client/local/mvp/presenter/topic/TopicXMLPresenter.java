@@ -30,6 +30,11 @@ public class TopicXMLPresenter implements TemplatePresenter {
 
         AceEditor getEditor();
     }
+    
+    public interface LogicComponent extends TopicViewComponentInterface<Display>
+    {
+        
+    }
 
     @Override
     public void go(final HasWidgets container) {

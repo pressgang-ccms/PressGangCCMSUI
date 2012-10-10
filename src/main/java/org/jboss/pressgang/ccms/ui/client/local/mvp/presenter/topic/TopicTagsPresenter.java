@@ -53,7 +53,7 @@ public class TopicTagsPresenter implements TemplatePresenter {
     }
 
     public interface LogicComponent extends TopicViewComponentInterface<Display> {
-
+        SearchUIProjects getSearchUIProjects();
     }
 
     @Override
