@@ -9,7 +9,7 @@ import com.google.gwt.event.shared.GwtEvent;
  */
 public abstract class ViewOpenEvent<T extends ViewOpenEventHandler> extends GwtEvent<T> {
     @Override
-    protected void dispatch(T handler) {
+    protected void dispatch(final T handler) {
         handler.onViewOpen(this);
     }
 }

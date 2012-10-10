@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 
 public class TagComponent extends ComponentBase<TagPresenter.Display> implements TagPresenter.LogicComponent {
+    @Override
     public void getTag(final Integer tagId) {
         final RESTCalls.RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, Display>(display,
                 new BaseRestCallback.SuccessAction<RESTTagV1, Display>() {

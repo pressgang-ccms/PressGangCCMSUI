@@ -12,6 +12,7 @@ public class CategoryComponent extends ComponentBase<CategoryPresenter.Display> 
 
    
 
+    @Override
     public void bind(final Integer categoryID, final Display display, final BaseTemplateViewInterface waitDisplay) {
         super.bind(display, waitDisplay);
         getCategory(categoryID);

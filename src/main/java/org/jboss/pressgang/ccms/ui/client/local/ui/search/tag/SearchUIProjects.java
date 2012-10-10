@@ -81,6 +81,7 @@ public class SearchUIProjects implements SearchViewBase {
     /**
      * @inheritDoc
      */
+    @Override
     public String getSearchQuery(final boolean includeQueryPrefix) {
         
         final StringBuilder builder = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");

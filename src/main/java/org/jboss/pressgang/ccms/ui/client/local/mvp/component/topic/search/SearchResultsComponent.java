@@ -2,7 +2,6 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.search;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
-import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -12,9 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 import com.google.gwt.user.client.Window;
-import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.CellPreviewEvent.Handler;
 
 public class SearchResultsComponent extends ComponentBase<SearchResultsPresenter.Display> implements
         SearchResultsPresenter.LogicComponent {
@@ -24,14 +21,17 @@ public class SearchResultsComponent extends ComponentBase<SearchResultsPresenter
      */
     private ProviderUpdateData<RESTTopicCollectionItemV1> topicProviderData = new ProviderUpdateData<RESTTopicCollectionItemV1>();
 
+    @Override
     public ProviderUpdateData<RESTTopicCollectionItemV1> getTopicProviderData() {
         return topicProviderData;
     }
 
+    @Override
     public void setTopicProviderData(ProviderUpdateData<RESTTopicCollectionItemV1> topicProviderData) {
         this.topicProviderData = topicProviderData;
     }
 
+    @Override
     public void bind(final String queryString, final SearchResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
         super.bind(display, waitDisplay);
         display.setProvider(generateTopicListProvider(queryString));

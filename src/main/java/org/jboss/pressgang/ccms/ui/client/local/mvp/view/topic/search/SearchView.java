@@ -67,8 +67,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
     @Override
     protected void showWaiting() {
         waiting.center();
-        waiting.show();
-        
+        waiting.show();        
     }
 
     @Override

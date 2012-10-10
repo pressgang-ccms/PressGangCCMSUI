@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 public class TopicXMLComponent extends TopicViewComponent<TopicXMLPresenter.Display> implements
         TopicXMLPresenter.LogicComponent {
 
+    @Override
     public void bind(final TopicXMLPresenter.Display display, final BaseTemplateViewInterface waitDisplay)
     {
         super.bind(display, waitDisplay);

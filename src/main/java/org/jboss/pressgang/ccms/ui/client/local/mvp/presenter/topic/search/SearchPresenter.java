@@ -47,8 +47,6 @@ public class SearchPresenter implements TemplatePresenter {
     
     @Inject
     private LogicComponent component;
-    
-    
 
     @Override
     public void go(final HasWidgets container) {

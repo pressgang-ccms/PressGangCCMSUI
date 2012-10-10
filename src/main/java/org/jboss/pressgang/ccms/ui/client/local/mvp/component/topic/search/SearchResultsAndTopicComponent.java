@@ -176,22 +176,27 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         }
     }
 
+    @Override
     public String getQueryString() {
         return queryString;
     }
 
+    @Override
     public void setQueryString(final String queryString) {
         this.queryString = queryString;
     }
 
+    @Override
     public SplitType getSplit() {
         return split;
     }
 
+    @Override
     public void setSplit(SplitType split) {
         this.split = split;
     }
 
+    @Override
     public void bind(final SearchResultsAndTopicPresenter.Display display, final BaseTemplateViewInterface waitDisplay,
             final TopicPresenter.Display topicViewDisplay, final TopicPresenter.LogicComponent topicViewComponent,
             final TopicXMLPresenter.Display topicXMLDisplay, final TopicXMLPresenter.LogicComponent topicXMLComponent,
@@ -220,6 +225,9 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         this.topicBugsDisplay = topicBugsDisplay;
         this.topicRevisionsDisplay = topicRevisionsDisplay;
         this.topicrevisionsComponent = topicrevisionsComponent;
+        
+        /* Have to do this after the parseToken method has been called */
+        display.initialize(split, topicSplitPanelRenderedDisplay.getPanel());
         
         bindSplitPanelResize();
         bindTagEditingButtons();
@@ -830,20 +838,22 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         topicTagsDisplay.getAdd().addClickHandler(new AddTagClickhandler());
     }
 
+    @Override
     public void parseToken(final String historyToken) {
 
         queryString = removeHistoryToken(historyToken, SearchResultsAndTopicPresenter.HISTORY_TOKEN);
 
+        /* Find the split method */ 
         if (queryString.startsWith(Constants.SPLIT_TOKEN_HORIZONTAL)) {
             split = SplitType.HORIZONTAL;
         } else if (queryString.startsWith(Constants.SPLIT_TOKEN_VERTICAL)) {
             split = SplitType.VERTICAL;
         }
 
-        display.initialize(split, topicSplitPanelRenderedDisplay.getPanel());
-
+        /* Remove the split method markers */
         queryString = queryString.replace(Constants.SPLIT_TOKEN_HORIZONTAL, "").replace(Constants.SPLIT_TOKEN_VERTICAL, "");
 
+        /* Make sure tha the query string has at least the prefix */
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
         }

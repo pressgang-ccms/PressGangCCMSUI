@@ -99,6 +99,7 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
         }
     };
 
+    @Override
     public VerticalPanel getSearchResultsPanel() {
         return searchResultsPanel;
     }

@@ -27,6 +27,7 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
 
     private SplitType splitType = SplitType.NONE;
 
+    @Override
     public DockLayoutPanel getResultsViewLayoutPanel() {
         return resultsViewLayoutPanel;
     }

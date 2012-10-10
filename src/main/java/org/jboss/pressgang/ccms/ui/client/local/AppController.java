@@ -45,9 +45,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
     public void bind() {
         History.addValueChangeHandler(this);
         eventBus.addHandler(SearchViewEvent.TYPE, new ViewOpenEventHandler(SearchPresenter.HISTORY_TOKEN));
-        eventBus.addHandler(SearchResultsViewEvent.TYPE, new ViewOpenEventHandler(SearchResultsPresenter.HISTORY_TOKEN));
+        eventBus.addHandler(SearchResultsViewEvent.TYPE, new ViewOpenWithQueryEventHandler(SearchResultsPresenter.HISTORY_TOKEN));
         eventBus.addHandler(SearchResultsAndTopicViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
-                SearchResultsPresenter.HISTORY_TOKEN));
+                SearchResultsAndTopicPresenter.HISTORY_TOKEN));
         eventBus.addHandler(ImagesViewEvent.TYPE, new ViewOpenEventHandler(ImagePresenter.HISTORY_TOKEN));
         eventBus.addHandler(ImagesFilteredResultsAndImageViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
                 ImagesFilteredResultsAndImagePresenter.HISTORY_TOKEN));

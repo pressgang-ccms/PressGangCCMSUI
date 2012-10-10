@@ -6,12 +6,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 
 public class TopicTagsComponent extends TopicViewComponent<TopicTagsPresenter.Display> implements
@@ -22,10 +18,12 @@ public class TopicTagsComponent extends TopicViewComponent<TopicTagsPresenter.Di
      */
     private final SearchUIProjects searchUIProjects = new SearchUIProjects();
 
+    @Override
     public SearchUIProjects getSearchUIProjects() {
         return searchUIProjects;
     }
 
+    @Override
     public void bind(final TopicTagsPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
         super.bind(display, waitDisplay);
         getTags();

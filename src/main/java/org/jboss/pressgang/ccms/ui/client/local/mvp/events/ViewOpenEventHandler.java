@@ -12,7 +12,7 @@ public class ViewOpenEventHandler implements EventHandler {
 
     protected String historyToken;
 
-    public ViewOpenEventHandler(String historyToken) {
+    public ViewOpenEventHandler(final String historyToken) {
         this.historyToken = historyToken;
     }
 

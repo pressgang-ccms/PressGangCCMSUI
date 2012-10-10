@@ -9,7 +9,7 @@ import com.google.gwt.user.client.History;
  */
 public class ViewOpenWithQueryEventHandler extends ViewOpenEventHandler {
 
-    public ViewOpenWithQueryEventHandler(String historyToken) {
+    public ViewOpenWithQueryEventHandler(final String historyToken) {
         super(historyToken);
     }
 
