@@ -24,7 +24,8 @@ public class ImagesFilteredResultsAndImageComponent extends ComponentBase<Images
             final ImagesFilteredResultsAndImagePresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
         super.bind(display, waitDisplay);
 
-        bindListRowClicks(imageFilteredResultsDisplay, imageFilteredResultsComponent, imageDisplay, imageComponent, display, waitDisplay);
+        bindListRowClicks(imageFilteredResultsDisplay, imageFilteredResultsComponent, imageDisplay, imageComponent, display,
+                waitDisplay);
     }
 
     /**
@@ -32,7 +33,7 @@ public class ImagesFilteredResultsAndImageComponent extends ComponentBase<Images
      */
     private void bindListRowClicks(final ImageFilteredResultsPresenter.Display imageFilteredResultsDisplay,
             final ImageFilteredResultsPresenter.LogicComponent imageFilteredResultsComponent,
-            final ImagePresenter.Display imageDisplay, final ImagePresenter.LogicComponent imageComponent, 
+            final ImagePresenter.Display imageDisplay, final ImagePresenter.LogicComponent imageComponent,
             final ImagesFilteredResultsAndImagePresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
 
         imageFilteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTImageCollectionItemV1>() {
@@ -47,7 +48,7 @@ public class ImagesFilteredResultsAndImageComponent extends ComponentBase<Images
                      */
                     final boolean needToAddImageView = imageFilteredResultsComponent.getProviderData().getSelectedItem() == null;
 
-                    imageFilteredResultsComponent.getProviderData().setSelectedItem(event.getValue());
+                    imageFilteredResultsComponent.getProviderData().setDisplayedItem(event.getValue());
                     imageFilteredResultsComponent.getProviderData().setSelectedItem(event.getValue().clone(true));
 
                     final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
@@ -65,10 +66,15 @@ public class ImagesFilteredResultsAndImageComponent extends ComponentBase<Images
                         @Override
                         public void success(final RESTImageV1 retValue) {
                             try {
+                                /*
+                                 * Do a shallow copy here, because Chrome has issues with System.arraycopy - see
+                                 * http://code.google.com/p/chromium/issues/detail?id=56588
+                                 */
                                 retValue.cloneInto(
-                                        imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
+                                        imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
 
-                                reInitialiseImageView(imageFilteredResultsDisplay, imageFilteredResultsComponent, imageDisplay, imageComponent, display, waitDisplay);
+                                reInitialiseImageView(imageFilteredResultsDisplay, imageFilteredResultsComponent, imageDisplay,
+                                        imageComponent, display, waitDisplay);
 
                                 /*
                                  * If this is the first image selected, display the image view
@@ -102,9 +108,9 @@ public class ImagesFilteredResultsAndImageComponent extends ComponentBase<Images
             final ImageFilteredResultsPresenter.LogicComponent imageFilteredResultsComponent,
             final ImagePresenter.Display imageDisplay, final ImagePresenter.LogicComponent imageComponent,
             final ImagesFilteredResultsAndImagePresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
-        
-        imageDisplay.initialize(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                imageComponent.getUnassignedLocales().toArray(new String[0]));
+
+        imageDisplay.initialize(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), imageComponent
+                .getUnassignedLocales().toArray(new String[0]));
 
         imageComponent.bindImageUploadButtons(imageDisplay, waitDisplay);
     }
