@@ -181,12 +181,6 @@ public class CreateTopicPresenter implements TemplatePresenter {
     @Override
     public void parseToken(final String historyToken) {
         final String queryString = historyToken.replace(";", "");
-
-        if (queryString.startsWith(Constants.SPLIT_TOKEN_HORIZONTAL)) {
-            split = SplitType.HORIZONTAL;
-        } else if (queryString.startsWith(Constants.SPLIT_TOKEN_VERTICAL)) {
-            split = SplitType.VERTICAL;
-        }
     }
 
     @Override

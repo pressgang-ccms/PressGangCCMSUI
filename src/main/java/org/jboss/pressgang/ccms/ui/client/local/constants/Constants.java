@@ -89,12 +89,6 @@ public final class Constants {
      * A link to the survey
      */
     public static final String KEY_SURVEY_LINK = "http://www.keysurvey.com/votingmodule/s180/f/457744/1909/?LQID=1&source=";
-
-    /** The history token that identifies the a horizontal rendered view split. */
-    public static final String SPLIT_TOKEN_HORIZONTAL = "split=h;";
-
-    /** The history token that identifies the a horizontal rendered view split. */
-    public static final String SPLIT_TOKEN_VERTICAL = "split=v;";
     
     private Constants() {
 

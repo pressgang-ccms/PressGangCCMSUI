@@ -62,7 +62,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
      * How long to wait before refreshing the rendered view (in milliseconds).
      */
     private static final int REFRESH_RATE = 1000;
-    
+
     @Inject
     private HandlerManager eventBus;
 
@@ -79,9 +79,9 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
             }
         }
     };
-    
+
     private String queryString;
-    
+
     private TopicPresenter.Display topicViewDisplay;
     private TopicPresenter.LogicComponent topicViewComponent;
     private TopicXMLPresenter.Display topicXMLDisplay;
@@ -96,6 +96,9 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
     private TopicBugsPresenter.Display topicBugsDisplay;
     private TopicRevisionsPresenter.Display topicRevisionsDisplay;
     private TopicRevisionsPresenter.LogicComponent topicrevisionsComponent;
+
+    private final TopicViewInterface[] topicViews = new TopicViewInterface[] { topicViewDisplay, topicXMLDisplay,
+            topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay };
 
     /**
      * This will reference the selected view, so as to maintain the view between clicks
@@ -124,7 +127,8 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
             final RESTTagV1 selectedTag = topicTagsDisplay.getMyTags().getValue().getTag().getItem();
 
             /* Need to deal with re-adding removed tags */
-            for (final RESTTagCollectionItemV1 tag :  searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem().getTags().getItems()) {
+            for (final RESTTagCollectionItemV1 tag : searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem()
+                    .getTags().getItems()) {
                 if (tag.getItem().getId().equals(selectedTag.getId())) {
                     if (tag.getState() == RESTBaseCollectionItemV1.REMOVE_STATE) {
                         tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
@@ -169,7 +173,8 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         @Override
         public void onClick(final ClickEvent event) {
             if (searchResultsComponent.getTopicProviderData().getDisplayedItem() == null) {
-                throw new IllegalStateException("searchResultsComponent.getTopicProviderData().getDisplayedItem() cannot be null");
+                throw new IllegalStateException(
+                        "searchResultsComponent.getTopicProviderData().getDisplayedItem() cannot be null");
             }
 
             if (tag.getState() == RESTBaseCollectionItemV1.ADD_STATE) {
@@ -216,9 +221,9 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
             final TopicTagsPresenter.LogicComponent topicTagsComponent, final TopicBugsPresenter.Display topicBugsDisplay,
             final TopicRevisionsPresenter.Display topicRevisionsDisplay,
             final TopicRevisionsPresenter.LogicComponent topicrevisionsComponent) {
-        
+
         super.bind(display, waitDisplay);
-        
+
         this.topicViewDisplay = topicViewDisplay;
         this.topicViewComponent = topicViewComponent;
         this.topicXMLDisplay = topicXMLDisplay;
@@ -233,13 +238,13 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         this.topicBugsDisplay = topicBugsDisplay;
         this.topicRevisionsDisplay = topicRevisionsDisplay;
         this.topicrevisionsComponent = topicrevisionsComponent;
-        
+
         initializeDisplay();
-        
+
         this.topicBugsDisplay.setProvider(generateTopicBugListProvider());
         this.topicRevisionsDisplay.setProvider(generateTopicRevisionsListProvider());
-        
-        bindTopicEditButtons(this.searchResultsComponent.getProvider());        
+
+        bindTopicEditButtons(this.searchResultsComponent.getProvider());
         bindViewTopicRevisionButton();
         bindSplitPanelResize();
         bindTagEditingButtons();
@@ -247,39 +252,37 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         bindMainSplitResize();
         bindNewTagListBoxes();
         bindTopicListRowClicks();
-        
+
         customizeTopicEditButtons();
     }
-    
+
     /**
      * (Re)Initialize the main display with the rendered view split pane (if selected).
      */
-    private void initializeDisplay()
-    {
+    private void initializeDisplay() {
         final String savedSplit = Preferences.INSTANCE.getString(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE, "");
-        if (!Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE.equals(savedSplit)) {
-
-            if (Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL.equals(savedSplit)) {
-                split = SplitType.VERTICAL;
-            } else {
-                split = SplitType.HORIZONTAL;
-            }
+        if (Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE.equals(savedSplit)) {
+            split = SplitType.NONE;
+        } else if (Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL.equals(savedSplit)) {
+            split = SplitType.VERTICAL;
+        } else {
+            split = SplitType.HORIZONTAL;
         }
-        
+
         /* Have to do this after the parseToken method has been called */
         display.initialize(split, topicSplitPanelRenderedDisplay.getPanel());
+
+        for (final TopicViewInterface view : topicViews) {
+            view.buildSplitViewButtons(split);
+        }
     }
-    
+
     /**
      * Removes the rendered view button if the rendered view is in the split panel
      */
-    private void customizeTopicEditButtons()
-    {
-        if (split != SplitType.NONE)
-        {
-            for (final TopicViewInterface view : new TopicViewInterface[] { topicViewDisplay, topicXMLDisplay,
-                    topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay }) 
-            {
+    private void customizeTopicEditButtons() {
+        if (split != SplitType.NONE) {
+            for (final TopicViewInterface view : topicViews) {
                 view.getTopActionPanel().remove(view.getRendered());
             }
         }
@@ -314,7 +317,8 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
             /*
              * The revisions always come from the parent topic (this saves us expanding the revisions when loading a revision
              */
-            selectedView.initialize(searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem(), isReadOnlyMode(), display.getSplitType());
+            selectedView.initialize(searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem(),
+                    isReadOnlyMode(), display.getSplitType());
         } else {
             /* All other details come from the revision topic */
             selectedView.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), display.getSplitType());
@@ -390,8 +394,8 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
      * @return The currently displayed topic
      */
     private RESTTopicCollectionItemV1 getTopicOrRevisionTopic() {
-        final RESTTopicCollectionItemV1 sourceTopic = topicRevisionsDisplay.getRevisionTopic() == null ? searchResultsComponent.getTopicProviderData()
-                .getDisplayedItem() : topicRevisionsDisplay.getRevisionTopic();
+        final RESTTopicCollectionItemV1 sourceTopic = topicRevisionsDisplay.getRevisionTopic() == null ? searchResultsComponent
+                .getTopicProviderData().getDisplayedItem() : topicRevisionsDisplay.getRevisionTopic();
         return sourceTopic;
     }
 
@@ -467,7 +471,8 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                 if (searchResultsComponent.getTopicProviderData().getDisplayedItem() != null
                         && searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem().getRevisions() != null
                         && searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem().getRevisions().getItems() != null) {
-                    displayNewFixedList(searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem().getRevisions().getItems());
+                    displayNewFixedList(searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem()
+                            .getRevisions().getItems());
                 } else {
                     resetProvider();
                 }
@@ -485,7 +490,8 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
             protected void onRangeChanged(final HasData<RESTBugzillaBugCollectionItemV1> display) {
                 if (searchResultsComponent.getTopicProviderData().getDisplayedItem() != null
                         && searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem().getBugzillaBugs_OTM() != null) {
-                    displayNewFixedList(searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem().getBugzillaBugs_OTM().getItems());
+                    displayNewFixedList(searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem()
+                            .getBugzillaBugs_OTM().getItems());
                 } else {
                     resetProvider();
                 }
@@ -553,7 +559,8 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                 topicRevisionsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
                     @Override
                     public void doSuccessAction(RESTTopicV1 retValue, TopicRevisionsPresenter.Display display) {
-                        searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem().setRevisions(retValue.getRevisions());
+                        searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem()
+                                .setRevisions(retValue.getRevisions());
                         /* refresh the list */
                         topicRevisionsDisplay.getProvider().displayNewFixedList(retValue.getRevisions().getItems());
                     }
@@ -592,7 +599,8 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                     public void doSuccessAction(RESTTopicV1 retValue, TopicBugsPresenter.Display display) {
                         final RESTBugzillaBugCollectionV1 collection = retValue.getBugzillaBugs_OTM();
                         /* copy the revisions into the displayed Topic */
-                        searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem().setBugzillaBugs_OTM(collection);
+                        searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem()
+                                .setBugzillaBugs_OTM(collection);
                         /* refresh the celltable */
                         topicBugsDisplay.getProvider().displayNewFixedList(collection.getItems());
                     }
@@ -605,9 +613,12 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         };
 
         /* Initiate the REST calls */
-        RESTCalls.getTopicWithTags(topicWithTagsCallback, searchResultsComponent.getTopicProviderData().getSelectedItem().getItem().getId());
-        RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, searchResultsComponent.getTopicProviderData().getSelectedItem().getItem().getId());
-        RESTCalls.getTopicWithBugs(topicWithBugsCallback, searchResultsComponent.getTopicProviderData().getSelectedItem().getItem().getId());
+        RESTCalls.getTopicWithTags(topicWithTagsCallback, searchResultsComponent.getTopicProviderData().getSelectedItem()
+                .getItem().getId());
+        RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, searchResultsComponent.getTopicProviderData()
+                .getSelectedItem().getItem().getId());
+        RESTCalls.getTopicWithBugs(topicWithBugsCallback, searchResultsComponent.getTopicProviderData().getSelectedItem()
+                .getItem().getId());
     }
 
     /**
@@ -638,11 +649,14 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                         public void success(final RESTTopicV1 retValue) {
                             try {
                                 /* Update the displayed topic */
-                                retValue.cloneInto(searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem(), true);
+                                retValue.cloneInto(searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem(),
+                                        true);
                                 /* Update the selected topic */
-                                retValue.cloneInto(searchResultsComponent.getTopicProviderData().getSelectedItem().getItem(), true);
+                                retValue.cloneInto(searchResultsComponent.getTopicProviderData().getSelectedItem().getItem(),
+                                        true);
                                 /* Update the topic list */
-                                provider.updateRowData(searchResultsComponent.getTopicProviderData().getStartRow(), searchResultsComponent.getTopicProviderData().getItems());
+                                provider.updateRowData(searchResultsComponent.getTopicProviderData().getStartRow(),
+                                        searchResultsComponent.getTopicProviderData().getItems());
 
                                 loadNewTopicDetails();
 
@@ -669,7 +683,8 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                     /*
                      * Create a new instance of the topic, with all the properties set to explicitly update
                      */
-                    final RESTTopicV1 updateTopic = searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem().clone(true);
+                    final RESTTopicV1 updateTopic = searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem()
+                            .clone(true);
                     updateTopic.explicitSetBugzillaBugs_OTM(updateTopic.getBugzillaBugs_OTM());
                     updateTopic.explicitSetProperties(updateTopic.getProperties());
                     updateTopic.explicitSetSourceUrls_OTM(updateTopic.getSourceUrls_OTM());
@@ -802,6 +817,9 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                 /* Sync any changes back to the underlying object */
                 flushChanges();
 
+                Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
+                        Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE);
+
                 initializeDisplay();
             }
         };
@@ -811,6 +829,9 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
             public void onClick(final ClickEvent event) {
                 /* Sync any changes back to the underlying object */
                 flushChanges();
+
+                Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
+                        Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL);
 
                 initializeDisplay();
             }
@@ -822,16 +843,15 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                 /* Sync any changes back to the underlying object */
                 flushChanges();
 
-                Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE, Preferences.TOPIC_RENDERED_VIEW_SPLIT_HOIRZONTAL);
+                Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
+                        Preferences.TOPIC_RENDERED_VIEW_SPLIT_HOIRZONTAL);
 
-                
                 initializeDisplay();
             }
         };
 
         /* Hook up the click listeners */
-        for (final TopicViewInterface view : new TopicViewInterface[] { topicViewDisplay, topicXMLDisplay,
-                topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay }) {
+        for (final TopicViewInterface view : topicViews) {
             view.getRenderedSplit().addClickHandler(splitMenuHandler);
             view.getFields().addClickHandler(topicViewClickHandler);
             view.getXml().addClickHandler(topicXMLClickHandler);
@@ -894,9 +914,6 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
     public void parseToken(final String historyToken) {
 
         queryString = removeHistoryToken(historyToken, SearchResultsAndTopicPresenter.HISTORY_TOKEN);
-        
-        /* Find the split method */ 
-
 
         /* Make sure that the query string has at least the prefix */
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
@@ -941,7 +958,8 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                                         + ": "
                                         + DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL).format(
                                                 sourceTopic.getItem().getLastModified());
-                                topicrevisionsComponent.displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getItem().getXml(), sourceTopicLabel);
+                                topicrevisionsComponent.displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getItem()
+                                        .getXml(), sourceTopicLabel);
                             }
                         }) {
                     @Override
@@ -961,7 +979,8 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                 /* Reset the reference to the revision topic */
                 topicRevisionsDisplay.setRevisionTopic(null);
 
-                if (revisionTopic.getItem().getRevision().equals(searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem().getRevision())) {
+                if (revisionTopic.getItem().getRevision()
+                        .equals(searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem().getRevision())) {
                     /*
                      * The latest revision is actually the same as the main topic, so if that is clicked, we want to edit the
                      * main topic

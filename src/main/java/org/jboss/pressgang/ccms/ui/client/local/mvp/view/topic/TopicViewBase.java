@@ -199,7 +199,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
         }
     }
 
-    protected void buildSplitViewButtons(final SplitType splitType) {
+    public void buildSplitViewButtons(final SplitType splitType) {
         renderedSplitViewMenu.clear();
 
         if (splitType != SplitType.DISABLED) {

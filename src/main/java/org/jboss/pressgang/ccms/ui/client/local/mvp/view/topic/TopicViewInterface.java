@@ -95,4 +95,10 @@ public interface TopicViewInterface extends BaseTemplateViewInterface {
 
     /** Show the rendered split view menu */
     void showSplitViewButtons();
+    
+    /**
+     * Rebuild the split view buttons
+     * @param splitType The screen split
+     */
+    void buildSplitViewButtons(final SplitType splitType);
 }
