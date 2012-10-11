@@ -36,7 +36,10 @@ public class ImagesFilteredResultsAndImagePresenter implements TemplatePresenter
     }
 
     public interface LogicComponent extends Component<Display> {
-
+        void bind(final ImageFilteredResultsPresenter.Display imageFilteredResultsDisplay,
+                final ImageFilteredResultsPresenter.LogicComponent imageFilteredResultsComponent,
+                final ImagePresenter.Display imageDisplay, final ImagePresenter.LogicComponent imageComponent,
+                final ImagesFilteredResultsAndImagePresenter.Display display, final BaseTemplateViewInterface waitDisplay);
     }
 
     @Inject
@@ -69,10 +72,11 @@ public class ImagesFilteredResultsAndImagePresenter implements TemplatePresenter
         display.getResultsActionButtonsPanel().setWidget(imageFilteredResultsDisplay.getTopActionPanel());
         display.getResultsPanel().setWidget(imageFilteredResultsDisplay.getPanel());
 
-        component.bind(display, display);
-        component.setFeedbackLink(HISTORY_TOKEN);
         imageComponent.bind(imageDisplay, display);
         imageFilteredResultsComponent.bind(queryString, imageFilteredResultsDisplay, display);
+                
+        component.bind(imageFilteredResultsDisplay, imageFilteredResultsComponent, imageDisplay, imageComponent, display, display);
+        component.setFeedbackLink(HISTORY_TOKEN);
     }
 
     @Override

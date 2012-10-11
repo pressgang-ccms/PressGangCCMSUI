@@ -94,23 +94,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
             } else if (token.startsWith(SearchResultsAndTopicPresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(SearchResultsAndTopicPresenter.class);
 
-                /* Modify the token based off the saved split preferences */
-                final String query = GWTUtilities.removeHistoryToken(token, SearchResultsAndTopicPresenter.HISTORY_TOKEN);
-                if (!(query.startsWith(Constants.SPLIT_TOKEN_HORIZONTAL) || query.startsWith(Constants.SPLIT_TOKEN_VERTICAL))) {
 
-                    final String savedSplit = Preferences.INSTANCE.getString(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE, null);
-
-                    if (!Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE.equals(savedSplit)) {
-
-                        if (Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL.equals(savedSplit)) {
-                            token = SearchResultsAndTopicPresenter.HISTORY_TOKEN + ";" + Constants.SPLIT_TOKEN_VERTICAL
-                                    + token.replace(SearchResultsAndTopicPresenter.HISTORY_TOKEN, "");
-                        } else {
-                            token = SearchResultsAndTopicPresenter.HISTORY_TOKEN + ";" + Constants.SPLIT_TOKEN_HORIZONTAL
-                                    + token.replace(SearchResultsAndTopicPresenter.HISTORY_TOKEN, "");
-                        }
-                    }
-                }
 
             } else if (token.startsWith(ImagePresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(ImagePresenter.class);

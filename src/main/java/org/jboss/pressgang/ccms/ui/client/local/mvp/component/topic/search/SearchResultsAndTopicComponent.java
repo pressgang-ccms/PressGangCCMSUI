@@ -863,18 +863,19 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
     public void parseToken(final String historyToken) {
 
         queryString = removeHistoryToken(historyToken, SearchResultsAndTopicPresenter.HISTORY_TOKEN);
-
+        
         /* Find the split method */ 
-        if (queryString.startsWith(Constants.SPLIT_TOKEN_HORIZONTAL)) {
-            split = SplitType.HORIZONTAL;
-        } else if (queryString.startsWith(Constants.SPLIT_TOKEN_VERTICAL)) {
-            split = SplitType.VERTICAL;
+        final String savedSplit = Preferences.INSTANCE.getString(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE, "");
+        if (!Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE.equals(savedSplit)) {
+
+            if (Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL.equals(savedSplit)) {
+                split = SplitType.VERTICAL;
+            } else {
+                split = SplitType.HORIZONTAL;
+            }
         }
 
-        /* Remove the split method markers */
-        queryString = queryString.replace(Constants.SPLIT_TOKEN_HORIZONTAL, "").replace(Constants.SPLIT_TOKEN_VERTICAL, "");
-
-        /* Make sure tha the query string has at least the prefix */
+        /* Make sure that the query string has at least the prefix */
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
         }
