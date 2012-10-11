@@ -101,7 +101,7 @@ public class ImageFilteredResultsComponent extends ComponentBase<ImageFilteredRe
                     public void success(final RESTImageCollectionV1 retValue) {
                         try {
                             providerData.setItems(retValue.getItems());
-                            displayAsynchronousList(providerData.getItems(), providerData.getStartRow(), retValue.getSize());
+                            displayAsynchronousList(providerData.getItems(), retValue.getSize(), providerData.getStartRow());
                         } finally {
                             display.removeWaitOperation();
                         }
