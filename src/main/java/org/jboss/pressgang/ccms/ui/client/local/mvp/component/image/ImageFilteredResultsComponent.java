@@ -1,5 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.image;
 
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -14,11 +17,15 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.HasData;
 
+@Dependent
 public class ImageFilteredResultsComponent extends ComponentBase<ImageFilteredResultsPresenter.Display> implements ImageFilteredResultsPresenter.LogicComponent{
    
+    @Inject
+    private HandlerManager eventBus;
     
     /**
      * Holds the data required to populate and refresh the categories list

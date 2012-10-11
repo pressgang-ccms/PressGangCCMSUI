@@ -143,12 +143,13 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
         display.getTopicResultsActionButtonsPanel().setWidget(searchResultsDisplay.getTopActionPanel());
         display.getTopicResultsPanel().setWidget(searchResultsDisplay.getPanel());
 
+        searchResultsComponent.bind(component.getQueryString(), searchResultsDisplay, display);
         component.bind(display, display, topicViewDisplay, topicViewComponent, topicXMLDisplay, topicXMLComponent,
                 topicRenderedDisplay, topicSplitPanelRenderedDisplay, searchResultsDisplay, searchResultsComponent,
                 topicXMLErrorsDisplay, topicTagsDisplay, topicTagsComponent, topicBugsDisplay, topicRevisionsDisplay,
                 topicrevisionsComponent);
         component.setFeedbackLink(HISTORY_TOKEN);
-        searchResultsComponent.bind(component.getQueryString(), searchResultsDisplay, display);
+        
     }
 
     @Override

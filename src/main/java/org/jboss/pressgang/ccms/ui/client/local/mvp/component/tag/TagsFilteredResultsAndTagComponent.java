@@ -2,6 +2,9 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.tag;
 
 import java.util.List;
 
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
@@ -41,13 +44,18 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 
+@Dependent
 public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilteredResultsAndTagPresenter.Display> implements
         TagsFilteredResultsAndTagPresenter.LogicComponent {
 
+    @Inject
+    private HandlerManager eventBus;
+    
     /** The currently displayed view */
     private TagViewInterface displayedView;
 

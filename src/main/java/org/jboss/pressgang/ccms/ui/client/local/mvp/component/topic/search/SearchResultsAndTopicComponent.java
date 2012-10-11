@@ -2,6 +2,9 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.search;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
@@ -42,6 +45,7 @@ import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.user.client.Timer;
@@ -50,6 +54,7 @@ import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
 
+@Dependent
 public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsAndTopicPresenter.Display> implements
         SearchResultsAndTopicPresenter.LogicComponent {
 
@@ -57,6 +62,9 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
      * How long to wait before refreshing the rendered view (in milliseconds).
      */
     private static final int REFRESH_RATE = 1000;
+    
+    @Inject
+    private HandlerManager eventBus;
 
     /**
      * Setup automatic flushing and rendering.
@@ -779,7 +787,8 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                 /* Sync any changes back to the underlying object */
                 flushChanges();
 
-                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.SPLIT_TOKEN_HORIZONTAL + queryString));
+                final SearchResultsAndTopicViewEvent myEvent = new SearchResultsAndTopicViewEvent(Constants.SPLIT_TOKEN_HORIZONTAL + queryString);
+                eventBus.fireEvent(myEvent);
             }
         };
 
