@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesFilteredResults
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchTagsFieldsAndFiltersViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ViewOpenEventHandler;
@@ -65,6 +66,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 TagsFilteredResultsAndTagPresenter.HISTORY_TOKEN));
         eventBus.addHandler(CategoriesFilteredResultsAndCategoryViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
                 CategoriesFilteredResultsAndCategoryPresenter.HISTORY_TOKEN));
+        eventBus.addHandler(SearchTagsFieldsAndFiltersViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
+                SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN));
     }
 
     @Override

@@ -41,6 +41,8 @@ public class SearchFieldEditor extends FlexTable implements LeafValueEditor<Sear
     private final TriStatePushButton hasOpenBugzillaBugs = new TriStatePushButton();
     private final RadioButton matchAll = new RadioButton(MATCH_GROUP, PressGangCCMSUI.INSTANCE.MatchAll());
     private final RadioButton matchAny = new RadioButton(MATCH_GROUP, PressGangCCMSUI.INSTANCE.MatchAny());
+    
+    private SearchUIFields value;
 
     public SearchFieldEditor() {
         final Label topicCreatedAfterLabel = new Label(PressGangCCMSUI.INSTANCE.TopicCreatedAfter());
@@ -133,6 +135,8 @@ public class SearchFieldEditor extends FlexTable implements LeafValueEditor<Sear
 
     @Override
     public void setValue(final SearchUIFields value) {
+        this.value = value;
+        
         createdAfter.setValue(value.getCreatedAfter());
         createdBefore.setValue(value.getCreatedBefore());
         editedAfter.setValue(value.getEditedAfter());
@@ -158,8 +162,7 @@ public class SearchFieldEditor extends FlexTable implements LeafValueEditor<Sear
 
     @Override
     public SearchUIFields getValue() {
-        final SearchUIFields value = new SearchUIFields();
-        
+                
         value.setCreatedAfter(createdAfter.getValue());
         value.setCreatedBefore(createdBefore.getValue());
         value.setEditedAfter(editedAfter.getValue());

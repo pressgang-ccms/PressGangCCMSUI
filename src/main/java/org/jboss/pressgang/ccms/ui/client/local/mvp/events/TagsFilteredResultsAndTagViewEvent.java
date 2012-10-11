@@ -1,6 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.events;
 
-public class TagsFilteredResultsAndTagViewEvent extends ViewOpenWithQueryEvent {
+public class TagsFilteredResultsAndTagViewEvent extends ViewOpenWithQueryEvent<ViewOpenWithQueryEventHandler> {
     public static final Type<ViewOpenWithQueryEventHandler> TYPE = new Type<ViewOpenWithQueryEventHandler>();
 
     public TagsFilteredResultsAndTagViewEvent(String query) {

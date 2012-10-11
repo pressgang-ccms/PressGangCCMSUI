@@ -1,6 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.events;
 
-public class SearchResultsAndTopicViewEvent extends ViewOpenWithQueryEvent {
+public class SearchResultsAndTopicViewEvent extends ViewOpenWithQueryEvent<ViewOpenWithQueryEventHandler> {
     public static final Type<ViewOpenWithQueryEventHandler> TYPE = new Type<ViewOpenWithQueryEventHandler>();
 
     public SearchResultsAndTopicViewEvent(final String query) {
