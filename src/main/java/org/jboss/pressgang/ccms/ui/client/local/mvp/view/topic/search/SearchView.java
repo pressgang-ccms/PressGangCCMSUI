@@ -10,11 +10,14 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUIProject
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 
 public class SearchView extends BaseTemplateView implements SearchPresenter.Display {    
 
     private final PushButton search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
+    private final Label tags = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Tags());
+    private final PushButton fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Fields());
 
     /** The GWT Editor Driver */
     private final SearchPresenterDriver driver = GWT.create(SearchPresenterDriver.class);
@@ -39,20 +42,27 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
         return search;
     }
 
+    @Override
+    public PushButton getFields() {
+        return fields;
+    }
+
     public SearchView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Search());
     }
 
     @Override
-    public void initialise(final RESTTagCollectionV1 tags) {
+    public void initialise(final RESTTagCollectionV1 tagCollection) {
        
         /* Build the action bar icons */
         addActionButton(search);
+        addActionButton(tags);
+        addActionButton(fields);
 
         addRightAlignedActionButtonPaddingPanel();
 
         /* Construct a hierarchy of tags from the tag collection */
-        getSearchUIProjects().initialize(tags);
+        getSearchUIProjects().initialize(tagCollection);
 
         /* SearchUIProjectsEditor is a grid */
         final SearchUIProjectsEditor editor = new SearchUIProjectsEditor(driver, searchUIProjects);

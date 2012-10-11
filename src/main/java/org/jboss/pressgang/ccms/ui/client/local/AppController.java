@@ -1,16 +1,18 @@
 package org.jboss.pressgang.ccms.ui.client.local;
 
-import com.google.common.base.Optional;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.inject.Inject;
+import javax.enterprise.context.ApplicationScoped;
+
 import org.jboss.errai.ioc.client.container.IOCBeanDef;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
-import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.*;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.CategoriesFilteredResultsAndCategoryViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ViewOpenEventHandler;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ViewOpenWithQueryEventHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.Presenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
@@ -30,10 +32,14 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.Searc
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsAndTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchTagsFieldsAndFiltersPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
-import javax.enterprise.context.ApplicationScoped;
+import com.google.common.base.Optional;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.inject.Inject;
 
 @ApplicationScoped
 public class AppController implements Presenter, ValueChangeHandler<String> {
@@ -93,9 +99,6 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 presenter = getBeanInstance(TagPresenter.class);
             } else if (token.startsWith(SearchResultsAndTopicPresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(SearchResultsAndTopicPresenter.class);
-
-
-
             } else if (token.startsWith(ImagePresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(ImagePresenter.class);
             } else if (token.startsWith(ImagesFilteredResultsAndImagePresenter.HISTORY_TOKEN)) {

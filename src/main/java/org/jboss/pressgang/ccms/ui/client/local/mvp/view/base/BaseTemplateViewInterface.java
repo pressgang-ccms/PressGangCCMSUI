@@ -70,6 +70,12 @@ public interface BaseTemplateViewInterface extends EditableView {
      * @return The panel that holds the standard and advanced shortcut panels
      */
     SimplePanel getShortCutPanelParent();
+    
+    /**
+     * 
+     * @return The panel that holds the top action buttons
+     */
+    SimplePanel getTopActionParentPanel();
 
     /**
      * 

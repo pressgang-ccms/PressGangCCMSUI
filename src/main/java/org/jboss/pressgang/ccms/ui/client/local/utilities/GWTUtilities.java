@@ -18,6 +18,14 @@ final public class GWTUtilities {
 
     private GWTUtilities() {
     }
+    
+    public static boolean IsStringNullOrEmpty(final String input)
+    {
+        if (input == null) return true;
+        if (input.trim().isEmpty()) return true;
+        return false;
+        
+    }
 
     public static byte[] getBytesUTF8(final String string) {
         return getBytes(string, 1);

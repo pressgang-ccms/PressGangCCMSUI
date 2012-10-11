@@ -5,6 +5,7 @@ import java.util.Date;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchViewBase;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.TriStateSelectionState;
@@ -203,26 +204,44 @@ public class SearchUIFields implements SearchViewBase {
      */
     @Override
     public String getSearchQuery(final boolean includeQueryPrefix) {
-        
-        final StringBuilder retValue = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
 
-        retValue.append(";" + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids);
-        retValue.append(";" + CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR + "=" + notIds);
-        retValue.append(";" + CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + description);
-        retValue.append(";" + CommonFilterConstants.TOPIC_DESCRIPTION_NOT_FILTER_VAR + "=" + notDescription);
-        retValue.append(";" + CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + title);
-        retValue.append(";" + CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR + "=" + notTitle);
-        retValue.append(";" + CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS + "=" + editedInLastXDays);
-        retValue.append(";" + CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS + "=" + notEditedInLastXDays);
-        retValue.append(";" + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + contents);
-        retValue.append(";" + CommonFilterConstants.TOPIC_XML_NOT_FILTER_VAR + "=" + notContents);
-        retValue.append(";" + CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR + "=" + dateformat.format(createdBefore));
-        retValue.append(";" + CommonFilterConstants.TOPIC_ENDEDITDATE_FILTER_VAR + "=" + dateformat.format(editedBefore));
-        retValue.append(";" + CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR + "=" + dateformat.format(editedAfter));
-        retValue.append(";" + CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR + "=" + dateformat.format(createdAfter));
-        retValue.append(";" + CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC + "=" + includedInContentSpecs);
-        retValue.append(";" + CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC + "=" + notIncludedInContentSpecs);
-        retValue.append(";" + CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR + "=" + freeTextSearch);
+        final StringBuilder retValue = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON
+                : "");
+
+        if (!GWTUtilities.IsStringNullOrEmpty(ids))
+            retValue.append(";" + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids);
+        if (!GWTUtilities.IsStringNullOrEmpty(notIds))
+            retValue.append(";" + CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR + "=" + notIds);
+        if (!GWTUtilities.IsStringNullOrEmpty(description))
+            retValue.append(";" + CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + description);
+        if (!GWTUtilities.IsStringNullOrEmpty(notDescription))
+            retValue.append(";" + CommonFilterConstants.TOPIC_DESCRIPTION_NOT_FILTER_VAR + "=" + notDescription);
+        if (!GWTUtilities.IsStringNullOrEmpty(title))
+            retValue.append(";" + CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + title);
+        if (!GWTUtilities.IsStringNullOrEmpty(notTitle))
+            retValue.append(";" + CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR + "=" + notTitle);
+        if (editedInLastXDays != null)
+            retValue.append(";" + CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS + "=" + editedInLastXDays);
+        if (notEditedInLastXDays != null)
+            retValue.append(";" + CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS + "=" + notEditedInLastXDays);
+        if (!GWTUtilities.IsStringNullOrEmpty(contents))
+            retValue.append(";" + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + contents);
+        if (!GWTUtilities.IsStringNullOrEmpty(notContents))
+            retValue.append(";" + CommonFilterConstants.TOPIC_XML_NOT_FILTER_VAR + "=" + notContents);
+        if (createdBefore != null)
+            retValue.append(";" + CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR + "=" + dateformat.format(createdBefore));
+        if (editedBefore != null)
+            retValue.append(";" + CommonFilterConstants.TOPIC_ENDEDITDATE_FILTER_VAR + "=" + dateformat.format(editedBefore));
+        if (editedAfter != null)
+            retValue.append(";" + CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR + "=" + dateformat.format(editedAfter));
+        if (createdAfter != null)
+            retValue.append(";" + CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR + "=" + dateformat.format(createdAfter));
+        if (!GWTUtilities.IsStringNullOrEmpty(includedInContentSpecs))
+            retValue.append(";" + CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC + "=" + includedInContentSpecs);
+        if (!GWTUtilities.IsStringNullOrEmpty(notIncludedInContentSpecs))
+            retValue.append(";" + CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC + "=" + notIncludedInContentSpecs);
+        if (!GWTUtilities.IsStringNullOrEmpty(freeTextSearch))
+            retValue.append(";" + CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR + "=" + freeTextSearch);
         if (hasBugzillaBugs == TriStateSelectionState.SELECTED)
             retValue.append(";" + CommonFilterConstants.TOPIC_HAS_BUGZILLA_BUGS + "=true");
         else if (hasBugzillaBugs == TriStateSelectionState.UNSELECTED)
@@ -239,4 +258,5 @@ public class SearchUIFields implements SearchViewBase {
 
         return retValue.toString();
     }
+
 }
