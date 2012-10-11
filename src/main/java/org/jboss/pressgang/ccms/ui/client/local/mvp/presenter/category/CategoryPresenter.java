@@ -33,7 +33,7 @@ public class CategoryPresenter implements EditableView, TemplatePresenter {
     }
 
     public interface LogicComponent extends Component<Display> {
-        void bind(final Integer categoryID, final Display display, final BaseTemplateViewInterface waitDisplay);
+        void getCategory(final Integer categoryId);
     }
 
     private Integer categoryId;
@@ -59,7 +59,8 @@ public class CategoryPresenter implements EditableView, TemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        component.bind(categoryId, display, display);
+        component.bind(display, display);
+        component.getCategory(categoryId);
     }
 
     @Override

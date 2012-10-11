@@ -60,22 +60,23 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
          */
         HandlerSplitLayoutPanel getSplitPanel();
     }
-    
-    public interface LogicComponent extends Component<Display>
-    {
-        
+
+    public interface LogicComponent extends Component<Display> {
+        void bind(final CategoryFilteredResultsPresenter.Display filteredResultsDisplay,
+                final CategoryFilteredResultsPresenter.LogicCompnent filteredResultsComponent,
+                final CategoryPresenter.Display resultDisplay,
+                final CategoriesFilteredResultsAndCategoryPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
     }
-
-
 
     /**
      * An Errai injected instance of a class that implements Display. This is the view that holds all other views
      */
     @Inject
     private Display display;
-    
+
     /** An Errai injected instance of a class that implements LogicCompnent */
-    @Inject private LogicComponent component;
+    @Inject
+    private LogicComponent component;
 
     /**
      * An Errai injected instance of a class that implements CategoryFilteredResultsPresenter.Display. This is the view that
@@ -94,9 +95,10 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
      */
     @Inject
     private CategoryPresenter.Display resultDisplay;
-    
+
     /** An Errai injected instance of a class that implements CategoryPresenter.LogicComponent */
-    @Inject private CategoryPresenter.LogicComponent resultComponent;
+    @Inject
+    private CategoryPresenter.LogicComponent resultComponent;
 
     /**
      * The category query string extracted from the history token
@@ -119,16 +121,11 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
 
         display.getSplitPanel().setSplitPosition(display.getResultsPanel(),
                 Preferences.INSTANCE.getInt(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
-        
-        component.bind(display, display);
+
+        component.bind(filteredResultsDisplay, filteredResultsComponent, resultDisplay, display, display);
         filteredResultsComponent.bind(queryString, filteredResultsDisplay, display);
         resultComponent.bind(resultDisplay, display);
     }
-
-
-
-
-
 
     @Override
     public void parseToken(final String historyToken) {
@@ -152,6 +149,5 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
             }
         }
     }
-
 
 }

@@ -46,19 +46,19 @@ public class CategoryFilteredResultsComponent extends ComponentBase<CategoryFilt
     private EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateListProvider(final String queryString) {
         final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTCategoryCollectionItemV1> display) {
+            protected void onRangeChanged(final HasData<RESTCategoryCollectionItemV1> list) {
 
                 final RESTCallback<RESTCategoryCollectionV1> callback = new RESTCallback<RESTCategoryCollectionV1>() {
                     @Override
                     public void begin() {
                         resetProvider();
-                        waitDisplay.addWaitOperation();
+                        display.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        waitDisplay.removeWaitOperation();
+                        display.removeWaitOperation();
                     }
 
                     @Override
@@ -69,19 +69,19 @@ public class CategoryFilteredResultsComponent extends ComponentBase<CategoryFilt
                             displayAsynchronousList(categoryProviderData.getItems(), retValue.getSize(),
                                     categoryProviderData.getStartRow());
                         } finally {
-                            waitDisplay.removeWaitOperation();
+                            display.removeWaitOperation();
                         }
                     }
 
                     @Override
                     public void failed() {
-                        waitDisplay.removeWaitOperation();
+                        display.removeWaitOperation();
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
                 };
 
-                categoryProviderData.setStartRow(display.getVisibleRange().getStart());
-                final int length = display.getVisibleRange().getLength();
+                categoryProviderData.setStartRow(list.getVisibleRange().getStart());
+                final int length = list.getVisibleRange().getLength();
                 final int end = categoryProviderData.getStartRow() + length;
 
                 RESTCalls.getCategoriesFromQuery(callback, queryString, categoryProviderData.getStartRow(), end);

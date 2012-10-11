@@ -10,14 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 
 public class CategoryComponent extends ComponentBase<CategoryPresenter.Display> implements CategoryPresenter.LogicComponent {
 
-    @Override
-    public void bind(final Integer categoryID, final Display display, final BaseTemplateViewInterface waitDisplay) {
-        super.bind(display, waitDisplay);
-        getCategory(categoryID);
-
-    }
-    
-    private void getCategory(final Integer categoryId) {
+    public void getCategory(final Integer categoryId) {
         final RESTCalls.RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, Display>(display,
                 new BaseRestCallback.SuccessAction<RESTCategoryV1, Display>() {
                     @Override
@@ -28,7 +21,4 @@ public class CategoryComponent extends ComponentBase<CategoryPresenter.Display> 
         };
         RESTCalls.getUnexpandedCategory(callback, categoryId);
     }
-    
-    
-
 }
