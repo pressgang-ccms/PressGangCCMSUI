@@ -1,6 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.base;
 
-import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -27,7 +26,6 @@ import com.google.gwt.user.client.Window;
  * @author Matthew Casperson
  * 
  */
-@Dependent
 abstract public class ComponentBase<T extends BaseTemplateViewInterface> implements Component<T>{
 
     @Inject
