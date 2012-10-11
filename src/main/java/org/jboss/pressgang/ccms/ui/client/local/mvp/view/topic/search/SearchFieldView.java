@@ -22,18 +22,22 @@ public class SearchFieldView extends BaseTemplateView implements SearchFieldPres
     private final PushButton tagsSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Tags());
     private final Label fields = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Fields());
     
+    @Override
     public SearchFieldPresenterDriver getDriver() {
         return driver;
     }
 
+    @Override
     public SearchUIFields getSearchUIFields() {
         return searchUIFields;
     }
 
+    @Override
     public PushButton getSearch() {
         return search;
     }
 
+    @Override
     public PushButton getTagsSearch() {
         return tagsSearch;
     }

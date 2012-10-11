@@ -234,13 +234,12 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         this.topicRevisionsDisplay = topicRevisionsDisplay;
         this.topicrevisionsComponent = topicrevisionsComponent;
         
-        /* Have to do this after the parseToken method has been called */
-        display.initialize(split, topicSplitPanelRenderedDisplay.getPanel());
+        initializeDisplay();
         
         this.topicBugsDisplay.setProvider(generateTopicBugListProvider());
         this.topicRevisionsDisplay.setProvider(generateTopicRevisionsListProvider());
         
-        bindTopicEditButtons(this.searchResultsComponent.getProvider());
+        bindTopicEditButtons(this.searchResultsComponent.getProvider());        
         bindViewTopicRevisionButton();
         bindSplitPanelResize();
         bindTagEditingButtons();
@@ -248,6 +247,42 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         bindMainSplitResize();
         bindNewTagListBoxes();
         bindTopicListRowClicks();
+        
+        customizeTopicEditButtons();
+    }
+    
+    /**
+     * (Re)Initialize the main display with the rendered view split pane (if selected).
+     */
+    private void initializeDisplay()
+    {
+        final String savedSplit = Preferences.INSTANCE.getString(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE, "");
+        if (!Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE.equals(savedSplit)) {
+
+            if (Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL.equals(savedSplit)) {
+                split = SplitType.VERTICAL;
+            } else {
+                split = SplitType.HORIZONTAL;
+            }
+        }
+        
+        /* Have to do this after the parseToken method has been called */
+        display.initialize(split, topicSplitPanelRenderedDisplay.getPanel());
+    }
+    
+    /**
+     * Removes the rendered view button if the rendered view is in the split panel
+     */
+    private void customizeTopicEditButtons()
+    {
+        if (split != SplitType.NONE)
+        {
+            for (final TopicViewInterface view : new TopicViewInterface[] { topicViewDisplay, topicXMLDisplay,
+                    topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay }) 
+            {
+                view.getTopActionPanel().remove(view.getRendered());
+            }
+        }
     }
 
     /**
@@ -498,7 +533,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         /* Update the current view, or display the default */
         if (selectedView == null) {
             /* Switch to the default view if none was selected */
-            selectedView = topicRenderedDisplay;
+            selectedView = topicXMLDisplay;
             changeDisplayedTopicView();
         } else {
             /* Otherwise update the display with the new topic */
@@ -767,9 +802,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                 /* Sync any changes back to the underlying object */
                 flushChanges();
 
-                Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE, Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE);
-                
-                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(queryString));
+                initializeDisplay();
             }
         };
 
@@ -779,9 +812,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                 /* Sync any changes back to the underlying object */
                 flushChanges();
 
-                Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE, Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL);
-                
-                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(queryString));
+                initializeDisplay();
             }
         };
 
@@ -792,9 +823,9 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                 flushChanges();
 
                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE, Preferences.TOPIC_RENDERED_VIEW_SPLIT_HOIRZONTAL);
+
                 
-                final SearchResultsAndTopicViewEvent myEvent = new SearchResultsAndTopicViewEvent(queryString);
-                eventBus.fireEvent(myEvent);
+                initializeDisplay();
             }
         };
 
@@ -865,15 +896,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         queryString = removeHistoryToken(historyToken, SearchResultsAndTopicPresenter.HISTORY_TOKEN);
         
         /* Find the split method */ 
-        final String savedSplit = Preferences.INSTANCE.getString(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE, "");
-        if (!Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE.equals(savedSplit)) {
 
-            if (Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL.equals(savedSplit)) {
-                split = SplitType.VERTICAL;
-            } else {
-                split = SplitType.HORIZONTAL;
-            }
-        }
 
         /* Make sure that the query string has at least the prefix */
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {

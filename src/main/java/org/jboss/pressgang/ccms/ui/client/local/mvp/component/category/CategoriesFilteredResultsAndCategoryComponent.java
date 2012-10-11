@@ -64,6 +64,7 @@ public class CategoriesFilteredResultsAndCategoryComponent extends
         }
     };
     
+    @Override
     public void bind(final CategoryFilteredResultsPresenter.Display filteredResultsDisplay, final CategoryFilteredResultsPresenter.LogicCompnent filteredResultsComponent, final CategoryPresenter.Display resultDisplay, final CategoriesFilteredResultsAndCategoryPresenter.Display display, final BaseTemplateViewInterface waitDisplay)
     {
         super.bind(display, waitDisplay);

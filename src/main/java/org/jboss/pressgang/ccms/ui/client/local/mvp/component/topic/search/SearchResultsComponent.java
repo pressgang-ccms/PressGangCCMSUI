@@ -23,10 +23,12 @@ public class SearchResultsComponent extends ComponentBase<SearchResultsPresenter
     
     private EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider;
 
+    @Override
     public EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> getProvider() {
         return provider;
     }
 
+    @Override
     public void setProvider(EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider) {
         this.provider = provider;
     }

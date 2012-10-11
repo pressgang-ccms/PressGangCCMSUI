@@ -18,6 +18,7 @@ import com.google.gwt.view.client.CellPreviewEvent.Handler;
 public class ImagesFilteredResultsAndImageComponent extends ComponentBase<ImagesFilteredResultsAndImagePresenter.Display>
         implements ImagesFilteredResultsAndImagePresenter.LogicComponent {
 
+    @Override
     public void bind(final ImageFilteredResultsPresenter.Display imageFilteredResultsDisplay,
             final ImageFilteredResultsPresenter.LogicComponent imageFilteredResultsComponent,
             final ImagePresenter.Display imageDisplay, final ImagePresenter.LogicComponent imageComponent,

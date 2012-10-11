@@ -17,7 +17,7 @@
 	<inherits name='com.google.web.bindery.requestfactory.RequestFactory' />
 	<inherits name="org.vectomatic.libgwtfile" />
 
-	<set-property name="user.agent" value="safari,gecko1_8" />
+	<!-- <set-property name="user.agent" value="safari,gecko1_8" /> -->
 
 	<!-- Super Dev Mode -->
 	<add-linker name="xsiframe" />

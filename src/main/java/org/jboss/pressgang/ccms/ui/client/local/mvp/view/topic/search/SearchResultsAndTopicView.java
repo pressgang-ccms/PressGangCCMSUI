@@ -84,8 +84,6 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
         resultsViewLayoutPanel.add(topicResultsPanel);
         topicViewLayoutPanel.add(topicViewPanel);
 
-        splitPanel.addWest(resultsViewLayoutPanel, Constants.SPLIT_PANEL_SIZE);
-
         topicViewActionButtonsPanel.addStyleName(CSSConstants.TOPIC_SEARCH_TOPIC_VIEW_BUTTONS_PANEL);
         topicViewPanel.addStyleName(CSSConstants.TOPIC_SEARCH_TOPIC_VIEW_DETAILS_PANEL);
 
@@ -104,6 +102,10 @@ public class SearchResultsAndTopicView extends BaseTemplateView implements Searc
     @Override
     public void initialize(final SplitType splitType, final Panel panel) {
         this.splitType = splitType;
+        
+        splitPanel.clear();
+        
+        splitPanel.addWest(resultsViewLayoutPanel, Constants.SPLIT_PANEL_SIZE);
 
         final SimplePanel renderedPanelParent = new SimplePanel();
         renderedPanelParent.addStyleName(CSSConstants.TOPIC_VIEW_LAYOUT_PANEL);

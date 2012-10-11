@@ -314,6 +314,7 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
         }
     };
 
+    @Override
     public void bind(final TagsFilteredResultsAndTagPresenter.Display display, BaseTemplateViewInterface waitDisplay,
             final TagFilteredResultsPresenter.Display filteredResultsDisplay,
             final TagFilteredResultsPresenter.LogicComponent filteredResultsComponent,

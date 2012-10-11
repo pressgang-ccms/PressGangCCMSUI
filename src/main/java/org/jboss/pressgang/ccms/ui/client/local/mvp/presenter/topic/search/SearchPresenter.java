@@ -29,6 +29,7 @@ public class SearchPresenter implements TemplatePresenter {
 
         SearchUIProjects getSearchUIProjects();
 
+        @Override
         PushButton getSearch();
         
         PushButton getFields();

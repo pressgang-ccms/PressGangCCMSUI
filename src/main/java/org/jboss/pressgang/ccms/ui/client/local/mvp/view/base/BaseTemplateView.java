@@ -197,6 +197,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         return applicationName;
     }
 
+    @Override
     public SimplePanel getTopActionParentPanel() {
         return topActionParentPanel;
     }
@@ -473,6 +474,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         // Do nothing by default
     }
     
+    @Override
     public boolean checkForUnsavedChanges()
     {
         /* Assume no changes have been made by default */

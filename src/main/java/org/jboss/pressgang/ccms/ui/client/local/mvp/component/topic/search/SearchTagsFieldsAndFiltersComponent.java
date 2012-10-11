@@ -26,6 +26,7 @@ public class SearchTagsFieldsAndFiltersComponent extends ComponentBase<SearchTag
     @Inject
     private HandlerManager eventBus;
 
+    @Override
     public void bind(final SearchPresenter.Display tagsDisplay, final SearchPresenter.LogicComponent tagsComponent,
             final SearchFieldPresenter.Display fieldsDisplay, final SearchFieldPresenter.LogicComponent fieldsComponent,
             final SearchTagsFieldsAndFiltersPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
