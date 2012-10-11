@@ -144,6 +144,7 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
         display.getTopicResultsPanel().setWidget(searchResultsDisplay.getPanel());
 
         searchResultsComponent.bind(component.getQueryString(), searchResultsDisplay, display);
+        topicTagsComponent.bind(topicTagsDisplay, display);
         component.bind(display, display, topicViewDisplay, topicViewComponent, topicXMLDisplay, topicXMLComponent,
                 topicRenderedDisplay, topicSplitPanelRenderedDisplay, searchResultsDisplay, searchResultsComponent,
                 topicXMLErrorsDisplay, topicTagsDisplay, topicTagsComponent, topicBugsDisplay, topicRevisionsDisplay,

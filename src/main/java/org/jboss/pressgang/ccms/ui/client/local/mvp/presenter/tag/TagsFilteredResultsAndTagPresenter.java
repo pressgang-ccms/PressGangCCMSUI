@@ -25,8 +25,6 @@ import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 @Dependent
 public class TagsFilteredResultsAndTagPresenter implements TemplatePresenter {
 
-
-
     /** The history token used to identify this view */
     public static final String HISTORY_TOKEN = "TagsFilteredResultsAndTagView";
 
@@ -63,20 +61,25 @@ public class TagsFilteredResultsAndTagPresenter implements TemplatePresenter {
          */
         HandlerSplitLayoutPanel getSplitPanel();
     }
-    
+
     public interface LogicComponent extends Component<Display> {
-
+        void bind(final TagsFilteredResultsAndTagPresenter.Display display, BaseTemplateViewInterface waitDisplay,
+                final TagFilteredResultsPresenter.Display filteredResultsDisplay,
+                final TagFilteredResultsPresenter.LogicComponent filteredResultsComponent,
+                final TagPresenter.Display resultDisplay, final TagPresenter.LogicComponent resultComponent,
+                final TagProjectsPresenter.Display projectsDisplay, final TagProjectsPresenter.LogicComponent projectsComponent,
+                final TagCategoriesPresenter.Display categoriesDisplay,           
+                final TagCategoriesPresenter.LogicComponent categoriesComponent);
     }
-
-    
 
     /**
      * An Errai injected instance of a class that implements Display. This is the view that holds all other views
      */
     @Inject
     private Display display;
-    
-    @Inject private LogicComponent component;
+
+    @Inject
+    private LogicComponent component;
 
     /**
      * An Errai injected instance of a class that implements TagFilteredResultsPresenter.Display. This is the view that displays
@@ -84,8 +87,9 @@ public class TagsFilteredResultsAndTagPresenter implements TemplatePresenter {
      */
     @Inject
     private TagFilteredResultsPresenter.Display filteredResultsDisplay;
-    
-    @Inject private TagFilteredResultsPresenter.LogicComponent filteredResultsComponent;
+
+    @Inject
+    private TagFilteredResultsPresenter.LogicComponent filteredResultsComponent;
 
     /**
      * An Errai injected instance of a class that implements TagPresenter.Display. This is the view that displays the fields of
@@ -93,8 +97,9 @@ public class TagsFilteredResultsAndTagPresenter implements TemplatePresenter {
      */
     @Inject
     private TagPresenter.Display resultDisplay;
-    
-    @Inject private TagPresenter.LogicComponent resultComponent;
+
+    @Inject
+    private TagPresenter.LogicComponent resultComponent;
 
     /**
      * An Errai injected instance of a class that implements TagProjectsPresenter.Display. This is the view that lists all the
@@ -102,8 +107,9 @@ public class TagsFilteredResultsAndTagPresenter implements TemplatePresenter {
      */
     @Inject
     private TagProjectsPresenter.Display projectsDisplay;
-    
-    @Inject private TagProjectsPresenter.LogicComponent projectsComponent;
+
+    @Inject
+    private TagProjectsPresenter.LogicComponent projectsComponent;
 
     /**
      * An Errai injected instance of a class that implements TagCategoriesPresenter.Display. This is the view that lists all the
@@ -111,8 +117,9 @@ public class TagsFilteredResultsAndTagPresenter implements TemplatePresenter {
      */
     @Inject
     private TagCategoriesPresenter.Display categoriesDisplay;
-    
-    @Inject TagCategoriesPresenter.LogicComponent categoriesComponent; 
+
+    @Inject
+    private TagCategoriesPresenter.LogicComponent categoriesComponent;
 
     /** The tag query string extracted from the history token */
     private String queryString;
@@ -134,11 +141,13 @@ public class TagsFilteredResultsAndTagPresenter implements TemplatePresenter {
         categoriesDisplay.getSplit().setSplitPosition(categoriesDisplay.getSearchResultsPanel(),
                 Preferences.INSTANCE.getInt(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
         
-        component.bind(display,  display);
-        filteredResultsComponent.bind(filteredResultsDisplay, display);
+        filteredResultsComponent.bind(queryString, filteredResultsDisplay, display);
         projectsComponent.bind(projectsDisplay, display);
-        categoriesComponent.bind(categoriesDisplay,  display);
+        categoriesComponent.bind(categoriesDisplay, display);
         resultComponent.bind(resultDisplay, display);
+        
+        component.bind(display, display, filteredResultsDisplay, filteredResultsComponent, resultDisplay, resultComponent,
+                projectsDisplay, projectsComponent, categoriesDisplay, categoriesComponent);
     }
 
     @Override
@@ -164,5 +173,4 @@ public class TagsFilteredResultsAndTagPresenter implements TemplatePresenter {
         }
     }
 
-    
 }

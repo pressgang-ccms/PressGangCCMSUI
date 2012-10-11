@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 import org.jboss.errai.ioc.client.container.IOCBeanDef;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.Presenter;
@@ -29,6 +30,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.Searc
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsAndTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchTagsFieldsAndFiltersPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 import javax.enterprise.context.ApplicationScoped;
 
@@ -45,7 +48,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
     public void bind() {
         History.addValueChangeHandler(this);
         eventBus.addHandler(SearchViewEvent.TYPE, new ViewOpenEventHandler(SearchPresenter.HISTORY_TOKEN));
-        eventBus.addHandler(SearchResultsViewEvent.TYPE, new ViewOpenWithQueryEventHandler(SearchResultsPresenter.HISTORY_TOKEN));
+        eventBus.addHandler(SearchResultsViewEvent.TYPE,
+                new ViewOpenWithQueryEventHandler(SearchResultsPresenter.HISTORY_TOKEN));
         eventBus.addHandler(SearchResultsAndTopicViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
                 SearchResultsAndTopicPresenter.HISTORY_TOKEN));
         eventBus.addHandler(ImagesViewEvent.TYPE, new ViewOpenEventHandler(ImagePresenter.HISTORY_TOKEN));
@@ -71,7 +75,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
     @Override
     public void onValueChange(final ValueChangeEvent<String> event) {
-        final String token = event.getValue();
+
+        String token = event.getValue();
+
         if (token != null) {
             Optional<TemplatePresenter> presenter = Optional.absent();
 
@@ -87,6 +93,25 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 presenter = getBeanInstance(TagPresenter.class);
             } else if (token.startsWith(SearchResultsAndTopicPresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(SearchResultsAndTopicPresenter.class);
+
+                /* Modify the token based off the saved split preferences */
+                final String query = GWTUtilities.removeHistoryToken(token, SearchResultsAndTopicPresenter.HISTORY_TOKEN);
+                if (!(query.startsWith(Constants.SPLIT_TOKEN_HORIZONTAL) || query.startsWith(Constants.SPLIT_TOKEN_VERTICAL))) {
+
+                    final String savedSplit = Preferences.INSTANCE.getString(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE, null);
+
+                    if (!Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE.equals(savedSplit)) {
+
+                        if (Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL.equals(savedSplit)) {
+                            token = SearchResultsAndTopicPresenter.HISTORY_TOKEN + ";" + Constants.SPLIT_TOKEN_VERTICAL
+                                    + token.replace(SearchResultsAndTopicPresenter.HISTORY_TOKEN, "");
+                        } else {
+                            token = SearchResultsAndTopicPresenter.HISTORY_TOKEN + ";" + Constants.SPLIT_TOKEN_HORIZONTAL
+                                    + token.replace(SearchResultsAndTopicPresenter.HISTORY_TOKEN, "");
+                        }
+                    }
+                }
+
             } else if (token.startsWith(ImagePresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(ImagePresenter.class);
             } else if (token.startsWith(ImagesFilteredResultsAndImagePresenter.HISTORY_TOKEN)) {
@@ -107,7 +132,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 presenter = getBeanInstance(CreateTopicPresenter.class);
             } else if (token.startsWith(SearchFieldPresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(SearchFieldPresenter.class);
-            }else if (token.startsWith(SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN)) {
+            } else if (token.startsWith(SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(SearchTagsFieldsAndFiltersPresenter.class);
             }
 

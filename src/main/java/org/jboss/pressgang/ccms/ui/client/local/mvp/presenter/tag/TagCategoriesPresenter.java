@@ -58,7 +58,6 @@ public class TagCategoriesPresenter implements TemplatePresenter {
     
     public interface LogicComponent extends Component<Display>
     {
-        void bind(final String queryString, final TagCategoriesPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
         boolean unsavedCategoryChanges();
         ProviderUpdateData<RESTCategoryCollectionItemV1> getCategoryProviderData();
         void setCategoryProviderData(ProviderUpdateData<RESTCategoryCollectionItemV1> categoryProviderData);
@@ -83,6 +82,6 @@ public class TagCategoriesPresenter implements TemplatePresenter {
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         
-        component.bind(queryString, display, display);
+        component.bind(display, display);
     }
 }

@@ -10,8 +10,6 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 
 public class CategoryComponent extends ComponentBase<CategoryPresenter.Display> implements CategoryPresenter.LogicComponent {
 
-   
-
     @Override
     public void bind(final Integer categoryID, final Display display, final BaseTemplateViewInterface waitDisplay) {
         super.bind(display, waitDisplay);

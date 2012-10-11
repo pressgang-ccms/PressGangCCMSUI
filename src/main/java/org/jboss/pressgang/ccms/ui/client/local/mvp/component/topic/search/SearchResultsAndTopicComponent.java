@@ -767,6 +767,8 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                 /* Sync any changes back to the underlying object */
                 flushChanges();
 
+                Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE, Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE);
+                
                 eventBus.fireEvent(new SearchResultsAndTopicViewEvent(queryString));
             }
         };
@@ -777,7 +779,9 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                 /* Sync any changes back to the underlying object */
                 flushChanges();
 
-                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.SPLIT_TOKEN_VERTICAL + queryString));
+                Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE, Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL);
+                
+                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(queryString));
             }
         };
 
@@ -787,7 +791,9 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                 /* Sync any changes back to the underlying object */
                 flushChanges();
 
-                final SearchResultsAndTopicViewEvent myEvent = new SearchResultsAndTopicViewEvent(Constants.SPLIT_TOKEN_HORIZONTAL + queryString);
+                Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE, Preferences.TOPIC_RENDERED_VIEW_SPLIT_HOIRZONTAL);
+                
+                final SearchResultsAndTopicViewEvent myEvent = new SearchResultsAndTopicViewEvent(queryString);
                 eventBus.fireEvent(myEvent);
             }
         };

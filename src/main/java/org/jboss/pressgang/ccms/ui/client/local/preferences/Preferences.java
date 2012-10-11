@@ -20,7 +20,14 @@ final public class Preferences {
     public static final String TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH = "TagCategoryViewMainSplitWidth";
     /** The setting that saves the width of the split screen on the tag search screen */
     public static final String  CATEGORY_VIEW_MAIN_SPLIT_WIDTH = "CategoryViewMainSplitWidth";
-
+    /** The setting that saves the type of split on the topic edit screen */
+    public static final String  TOPIC_RENDERED_VIEW_SPLIT_TYPE = "TopicRenderedViewSplitType";
+    /** The setting that saves defines a horizontal split */
+    public static final String  TOPIC_RENDERED_VIEW_SPLIT_HOIRZONTAL = "HorizontalSplit";
+    /** The setting that saves defines a vertical split */
+    public static final String  TOPIC_RENDERED_VIEW_SPLIT_VERTICAL = "VerticalSplit";
+    /** The setting that saves defines no split */
+    public static final String  TOPIC_RENDERED_VIEW_SPLIT_NONE = "NoSplit";
 
     
     /** A singelton instance of this class. */
@@ -37,6 +44,18 @@ final public class Preferences {
         if (storage != null) {
             storage.setItem(key, data);
         }
+    }
+    
+    public String getString(final String key, final String defaultValue)
+    {
+        if (storage != null) {
+            final String data = storage.getItem(key);
+            if (data != null) {
+                return data;
+            }
+        }
+        
+        return defaultValue;
     }
 
     public Integer getInt(final String key, final Integer defaultValue) {

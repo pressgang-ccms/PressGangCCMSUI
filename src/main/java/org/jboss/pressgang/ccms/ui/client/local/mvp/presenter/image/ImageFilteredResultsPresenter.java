@@ -41,18 +41,21 @@ public class ImageFilteredResultsPresenter implements TemplatePresenter {
 
         TextBox getImageOriginalFileNameFilter();
     }
-    
-    public interface LogicComponent extends Component<Display>
-    {
+
+    public interface LogicComponent extends Component<Display> {
         ProviderUpdateData<RESTImageCollectionItemV1> getProviderData();
+
         void setProviderData(ProviderUpdateData<RESTImageCollectionItemV1> providerData);
-        void bind(final String queryString, final ImageFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
+
+        void bind(final String queryString, final ImageFilteredResultsPresenter.Display display,
+                final BaseTemplateViewInterface waitDisplay);
     }
 
     @Inject
     private Display display;
-    
-    @Inject private LogicComponent component;
+
+    @Inject
+    private LogicComponent component;
 
     private String queryString;
 

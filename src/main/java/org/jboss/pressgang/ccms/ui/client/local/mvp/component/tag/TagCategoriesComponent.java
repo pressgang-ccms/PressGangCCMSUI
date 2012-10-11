@@ -45,7 +45,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
     }
 
     @Override
-    public void bind(final String queryString, final TagCategoriesPresenter.Display display,
+    public void bind(final TagCategoriesPresenter.Display display,
             final BaseTemplateViewInterface waitDisplay) {
 
         super.bind(display, waitDisplay);
@@ -278,8 +278,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
                 try {
                     categoryProviderData.setStartRow(0);
                     /* Zero results can be a null list */
-                    categoryProviderData.setItems(retValue.getItems() == null ? new ArrayList<RESTCategoryCollectionItemV1>()
-                            : retValue.getItems());
+                    categoryProviderData.setItems(retValue.getItems());
 
                     display.getProvider().displayNewFixedList(categoryProviderData.getItems());
 

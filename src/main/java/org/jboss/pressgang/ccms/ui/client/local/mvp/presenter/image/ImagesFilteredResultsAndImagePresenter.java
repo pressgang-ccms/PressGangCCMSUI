@@ -72,7 +72,7 @@ public class ImagesFilteredResultsAndImagePresenter implements TemplatePresenter
         component.bind(display, display);
         component.setFeedbackLink(HISTORY_TOKEN);
         imageComponent.bind(imageDisplay, display);
-        imageFilteredResultsComponent.bind(imageFilteredResultsDisplay, display);
+        imageFilteredResultsComponent.bind(queryString, imageFilteredResultsDisplay, display);
     }
 
     @Override
