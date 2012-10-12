@@ -210,6 +210,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
         } else {
             if (this.getRendered().getParent() != null) {
                 this.getTopActionPanel().remove(this.getRendered());
+                this.getTopActionPanel().removeCell(0, 1);
             }
 
         }

@@ -47,7 +47,7 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
             }
         } else {
             if (this.getRenderedDown().getParent() != null) {
-                this.getTopActionPanel().remove(this.getRendered());
+                this.getTopActionPanel().remove(this.getRenderedDown());
                 this.getTopActionPanel().removeCell(0, 1);
             }
 

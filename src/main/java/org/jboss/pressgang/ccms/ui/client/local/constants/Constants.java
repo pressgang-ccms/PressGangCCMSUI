@@ -44,7 +44,7 @@ public final class Constants {
     /**
      * The height of the action bars.
      */
-    public static final int ACTION_BAR_HEIGHT = 80;
+    public static final int ACTION_BAR_HEIGHT = 60;
 
     /**
      * The width of the shortcut bar.
