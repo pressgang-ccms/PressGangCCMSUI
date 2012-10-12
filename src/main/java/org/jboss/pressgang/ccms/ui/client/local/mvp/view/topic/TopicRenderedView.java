@@ -31,6 +31,27 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 
         div.addStyleName(CSSConstants.TOPIC_RENDERED_VIEW_DIV);
     }
+    
+    /**
+     * The rendered view will add or remove the rendered down label, instead 
+     * of the rendered view button.
+     */
+    @Override
+    protected void addOrRemoveRenderedButton(final SplitType splitType)
+    {
+        /* Add the rendered view button if there is no split screen, and remove if it there is a split screen */
+        if (splitType == SplitType.NONE || splitType == SplitType.DISABLED) {
+            if (this.getRenderedDown().getParent() == null) {
+                this.getTopActionPanel().insertCell(0, 1);
+                this.getTopActionPanel().setWidget(0, 1, this.getRenderedDown());
+            }
+        } else {
+            if (this.getRenderedDown().getParent() != null) {
+                this.getTopActionPanel().remove(this.getRendered());
+            }
+
+        }
+    }
 
     @Override
     protected void populateTopActionBar() {

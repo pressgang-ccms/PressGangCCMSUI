@@ -97,8 +97,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
     private TopicRevisionsPresenter.Display topicRevisionsDisplay;
     private TopicRevisionsPresenter.LogicComponent topicrevisionsComponent;
 
-    private final TopicViewInterface[] topicViews = new TopicViewInterface[] { topicViewDisplay, topicXMLDisplay,
-            topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay };
+    private TopicViewInterface[] topicViews;
 
     /**
      * This will reference the selected view, so as to maintain the view between clicks
@@ -238,6 +237,9 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         this.topicBugsDisplay = topicBugsDisplay;
         this.topicRevisionsDisplay = topicRevisionsDisplay;
         this.topicrevisionsComponent = topicrevisionsComponent;
+        
+        this.topicViews = new TopicViewInterface[] { topicViewDisplay, topicXMLDisplay,
+                topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay };
 
         initializeDisplay();
 
@@ -252,8 +254,6 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         bindMainSplitResize();
         bindNewTagListBoxes();
         bindTopicListRowClicks();
-
-        customizeTopicEditButtons();
     }
 
     /**
@@ -277,16 +277,6 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         }
     }
 
-    /**
-     * Removes the rendered view button if the rendered view is in the split panel
-     */
-    private void customizeTopicEditButtons() {
-        if (split != SplitType.NONE) {
-            for (final TopicViewInterface view : topicViews) {
-                view.getTopActionPanel().remove(view.getRendered());
-            }
-        }
-    }
 
     /**
      * Updates the current topic view

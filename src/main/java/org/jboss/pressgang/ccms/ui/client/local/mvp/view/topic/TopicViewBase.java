@@ -198,8 +198,27 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
             this.getHistory().removeStyleName(CSSConstants.ALERT_BUTTON);
         }
     }
+    
+    protected void addOrRemoveRenderedButton(final SplitType splitType)
+    {
+        /* Add the rendered view button if there is no split screen, and remove if it there is a split screen */
+        if (splitType == SplitType.NONE || splitType == SplitType.DISABLED) {
+            if (this.getRendered().getParent() == null) {
+                this.getTopActionPanel().insertCell(0, 1);
+                this.getTopActionPanel().setWidget(0, 1, this.getRendered());
+            }
+        } else {
+            if (this.getRendered().getParent() != null) {
+                this.getTopActionPanel().remove(this.getRendered());
+            }
+
+        }
+    }
 
     public void buildSplitViewButtons(final SplitType splitType) {
+
+        addOrRemoveRenderedButton(splitType);
+
         renderedSplitViewMenu.clear();
 
         if (splitType != SplitType.DISABLED) {
