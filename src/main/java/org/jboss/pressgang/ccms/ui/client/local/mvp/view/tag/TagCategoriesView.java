@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 import com.google.gwt.cell.client.ButtonCell;
@@ -210,7 +211,7 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
     protected void populateTopActionBar() {
         this.addActionButton(this.getTagDetails());
         this.addActionButton(this.getTagProjects());
-        this.addActionButton(this.getTagCategories());
+        this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TagCategories()));
         this.addActionButton(this.getSave());
         addRightAlignedActionButtonPaddingPanel();
     }

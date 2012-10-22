@@ -103,6 +103,7 @@ html {
 
 .TopActionPanel td, .RenderedSplitViewMenuTable td {
 	padding: 1px;
+	height: 100%;
 }
 
 .TopActionPanel

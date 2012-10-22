@@ -88,6 +88,12 @@ public interface BaseTemplateViewInterface extends EditableView {
      * @return The button that switches to the topic search view
      */
     PushButton getSearch();
+    
+    /**
+     * 
+     * @return The button that switches to the topic create view
+     */
+    PushButton getCreateTopic();
 
     /**
      * 

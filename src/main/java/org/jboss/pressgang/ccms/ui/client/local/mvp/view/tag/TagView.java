@@ -4,6 +4,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter.TagPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
 
 import com.google.gwt.core.client.GWT;
@@ -29,7 +30,7 @@ public class TagView extends TagViewBase implements TagPresenter.Display {
 
     @Override
     protected void populateTopActionBar() {
-        this.addActionButton(this.getTagDetails());
+        this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TagDetails()));
         this.addActionButton(this.getTagProjects());
         this.addActionButton(this.getTagCategories());
         this.addActionButton(this.getSave());

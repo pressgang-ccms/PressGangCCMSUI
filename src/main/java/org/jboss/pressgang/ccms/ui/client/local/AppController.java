@@ -5,6 +5,7 @@ import javax.enterprise.context.ApplicationScoped;
 import org.jboss.errai.ioc.client.container.IOCBeanDef;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.CategoriesFilteredResultsAndCategoryViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.CreateTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
@@ -69,6 +70,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 CategoriesFilteredResultsAndCategoryPresenter.HISTORY_TOKEN));
         eventBus.addHandler(SearchTagsFieldsAndFiltersViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
                 SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN));
+        eventBus.addHandler(CreateTopicViewEvent.TYPE, new ViewOpenEventHandler(
+                CreateTopicPresenter.HISTORY_TOKEN));
     }
 
     @Override

@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.CategoriesFilteredResultsAndCategoryViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.CreateTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchTagsFieldsAndFiltersViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
@@ -45,6 +46,14 @@ abstract public class ComponentBase<T extends BaseTemplateViewInterface> impleme
             public void onClick(final ClickEvent event) {
                 if (editableView.checkForUnsavedChanges())
                     eventBus.fireEvent(new SearchTagsFieldsAndFiltersViewEvent());
+            }
+        });
+        
+        display.getCreateTopic().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                if (editableView.checkForUnsavedChanges())
+                    eventBus.fireEvent(new CreateTopicViewEvent());
             }
         });
 

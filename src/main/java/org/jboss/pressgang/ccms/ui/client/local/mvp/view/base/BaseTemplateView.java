@@ -85,6 +85,10 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private final PushButton advancedOpen;
     private final PushButton close;
     
+    public PushButton getCreateTopic() {
+        return createTopic;
+    }
+
     /**
      * @return true when the view is visible, false otherwise
      */
@@ -302,7 +306,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         addShortcutButton(home);
 
         createTopic = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CreateTopic());
-        createTopic.setEnabled(false);
         addShortcutButton(createTopic);
 
         search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
