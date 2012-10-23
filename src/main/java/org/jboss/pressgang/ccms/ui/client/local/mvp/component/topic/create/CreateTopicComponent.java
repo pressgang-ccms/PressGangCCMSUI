@@ -3,9 +3,13 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.create;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndCategoryPresenter.Display;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
@@ -15,6 +19,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.create.Creat
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewCategoryEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectEditor;
@@ -32,7 +39,7 @@ import com.google.gwt.user.client.Window;
  */
 public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Display> implements
         CreateTopicPresenter.LogicComponent {
-    
+
     private TopicPresenter.Display topicViewDisplay;
     private TopicPresenter.LogicComponent topicViewComponent;
     private TopicXMLPresenter.Display topicXMLDisplay;
@@ -49,7 +56,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
 
     /** The new topicViewDisplay being created */
     private final RESTTopicV1 newTopic = new RESTTopicV1();
-    
+
     /**
      * A click handler to add a tag to a topicViewDisplay
      * 
@@ -127,7 +134,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             final CreateTopicPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
 
         super.bind(display, waitDisplay);
-        
+
         /* Create an intial collection to hold any new tags */
         newTopic.setTags(new RESTTagCollectionV1());
 
@@ -149,6 +156,22 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         updateDisplayedTopicView(topicViewDisplay);
 
         bindTopActionButtons();
+
+        getTopicTemplate();
+    }
+
+    private void getTopicTemplate() {
+        RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, CreateTopicPresenter.Display>(
+                display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, CreateTopicPresenter.Display>() {
+                    @Override
+                    public void doSuccessAction(final RESTStringConstantV1 retValue, final CreateTopicPresenter.Display display) {
+                        newTopic.setXml(retValue.getValue());
+                        topicXMLDisplay.initialize(newTopic, false, true, SplitType.NONE);
+                    }
+                }) {
+        };
+
+        RESTCalls.getStringConstant(callback, ServiceConstants.TOPIC_TEMPLATE);
     }
 
     private void bindTopActionButtons() {
@@ -218,17 +241,19 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             display.getPanel().clear();
             display.getPanel().setWidget(selectedView.getPanel());
         }
-        
-        /* Reload the tags view */
-        if (selectedView == this.topicTagsDisplay)
-        {
+
+        if (selectedView == this.topicTagsDisplay) {
+            /* Reload the tags view */
             selectedView.initialize(newTopic, false, true, SplitType.NONE);
             bindTagEditingButtons();
+        } else if (selectedView == this.topicXMLDisplay) {
+            /* Force a redisplay of the ACE exitor */
+            topicXMLDisplay.getEditor().redisplay();
         }
-        
+
         lastView = selectedView;
     }
-    
+
     /**
      * Add behaviour to the tag delete buttons
      */

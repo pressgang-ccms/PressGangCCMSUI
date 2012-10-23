@@ -16,7 +16,6 @@ import com.google.gwt.user.client.ui.ToggleButton;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 
 public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Display {
-   
 
     /** The GWT Editor Driver */
     private final TopicXMLPresenterDriver driver = GWT.create(TopicXMLPresenterDriver.class);
@@ -59,15 +58,17 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
     @Override
     protected void populateTopActionBar(final boolean newTopic) {
         super.populateTopActionBar(newTopic);
-        
+
         addActionButton(this.getRenderedSplit());
         addActionButton(this.getRendered());
         addActionButton(this.getXmlDown());
         addActionButton(this.getXmlErrors());
         addActionButton(this.getFields());
         addActionButton(this.getTopicTags());
-        addActionButton(this.getBugs());
-        addActionButton(this.getHistory());
+        if (!newTopic) {
+            addActionButton(this.getBugs());
+            addActionButton(this.getHistory());
+        }
         addActionButton(this.getSave());
 
         fixReadOnlyButtons();
