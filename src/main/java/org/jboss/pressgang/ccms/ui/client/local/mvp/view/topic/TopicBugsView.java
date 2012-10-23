@@ -123,7 +123,7 @@ public class TopicBugsView extends TopicViewBase implements TopicBugsPresenter.D
         addActionButton(this.getXml());
         addActionButton(this.getXmlErrors());
         addActionButton(this.getFields());
-        addActionButton(this.getTags());
+        addActionButton(this.getTopicTags());
         addActionButton(this.getBugsDown());
         addActionButton(this.getHistory());
         addActionButton(this.getSave());

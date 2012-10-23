@@ -4,7 +4,5 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresent
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter.Display;
 
 public class TopicComponent extends TopicViewComponent<Display> implements TopicPresenter.LogicComponent   {
-    
-
-    
+      
 }

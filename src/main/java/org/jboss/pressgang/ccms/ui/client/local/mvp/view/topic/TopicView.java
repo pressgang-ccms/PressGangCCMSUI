@@ -33,7 +33,7 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display {
         addActionButton(this.getXml());
         addActionButton(this.getXmlErrors());
         addActionButton(this.getFieldsDown());
-        addActionButton(this.getTags());
+        addActionButton(this.getTopicTags());
         addActionButton(this.getBugs());
         addActionButton(this.getHistory());
         addActionButton(this.getSave());

@@ -20,7 +20,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
     private final PushButton xml;
     private final PushButton xmlErrors;
     private final PushButton rendered;
-    private final PushButton tags;
+    private final PushButton topicTags;
     private final PushButton save;
     private final PushButton bugs;
     private final PushButton history;
@@ -120,8 +120,8 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
     }
 
     @Override
-    public PushButton getTags() {
-        return tags;
+    public PushButton getTopicTags() {
+        return topicTags;
     }
 
     @Override
@@ -161,7 +161,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
         xmlErrors = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
         fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Properties());
         save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-        tags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TopicTags());
+        topicTags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TopicTags());
         bugs = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Bugs());
         history = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Revisions());
 

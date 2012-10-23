@@ -848,7 +848,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
             view.getRendered().addClickHandler(topicRenderedClickHandler);
             view.getSave().addClickHandler(saveClickHandler);
             view.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
-            view.getTags().addClickHandler(topicTagsClickHandler);
+            view.getTopicTags().addClickHandler(topicTagsClickHandler);
             view.getBugs().addClickHandler(topicBugsClickHandler);
             view.getHistory().addClickHandler(topicRevisionsClickHanlder);
 
