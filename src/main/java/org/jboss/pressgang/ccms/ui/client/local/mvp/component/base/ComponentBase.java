@@ -72,7 +72,7 @@ abstract public class ComponentBase<T extends BaseTemplateViewInterface> impleme
             }
         });
 
-        display.getTopicTags().addClickHandler(new ClickHandler() {
+        display.getTags().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 if (editableView.checkForUnsavedChanges())

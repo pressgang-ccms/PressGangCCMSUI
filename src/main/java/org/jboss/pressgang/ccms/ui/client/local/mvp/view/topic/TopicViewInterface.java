@@ -67,7 +67,6 @@ public interface TopicViewInterface extends BaseTemplateViewInterface {
      * 
      * @return The button that is used to switch to the tags view
      */
-    @Override
     PushButton getTopicTags();
 
     /**
@@ -89,9 +88,10 @@ public interface TopicViewInterface extends BaseTemplateViewInterface {
      * 
      * @param topic The topic that is used to initialize the view
      * @param readOnly true if the display is to be read only, false otherwise
+     * @param newTopic true if this is a newly created topic
      * @param splitType How the panel should be split to display the rendered veiw
      */
-    void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType);
+    void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType);
 
     /** Show the rendered split view menu */
     void showSplitViewButtons();

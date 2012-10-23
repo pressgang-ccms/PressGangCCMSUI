@@ -27,15 +27,19 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display {
     }
 
     @Override
-    protected void populateTopActionBar() {
+    protected void populateTopActionBar(final boolean newTopic) {
+        super.populateTopActionBar(newTopic);
+        
         addActionButton(this.getRenderedSplit());
         addActionButton(this.getRendered());
         addActionButton(this.getXml());
         addActionButton(this.getXmlErrors());
         addActionButton(this.getFieldsDown());
         addActionButton(this.getTopicTags());
-        addActionButton(this.getBugs());
-        addActionButton(this.getHistory());
+        if (!newTopic) {
+            addActionButton(this.getBugs());
+            addActionButton(this.getHistory());
+        }
         addActionButton(this.getSave());
 
         fixReadOnlyButtons();
@@ -44,9 +48,9 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display {
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType) {
+    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType) {
         this.readOnly = readOnly;
-        fixReadOnlyButtons();
+        populateTopActionBar(newTopic);
         buildSplitViewButtons(splitType);
 
         /* SearchUIProjectsEditor is a grid */

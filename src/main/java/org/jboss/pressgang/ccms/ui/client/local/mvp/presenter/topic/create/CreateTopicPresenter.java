@@ -8,9 +8,11 @@ import javax.inject.Inject;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -31,9 +33,12 @@ public class CreateTopicPresenter implements TemplatePresenter {
     }
 
     public interface LogicComponent extends Component<Display> {
-        public void bind(final TopicPresenter.Display topic, final TopicTagsPresenter.Display topicTags,
-                final TopicXMLPresenter.Display topicXML, final TopicXMLErrorsPresenter.Display topicXMLErrors,
-                final Display display, final BaseTemplateViewInterface waitDisplay);
+        void bind(final TopicPresenter.Display topicViewDisplay, final TopicPresenter.LogicComponent topicViewComponent,
+                final TopicXMLPresenter.Display topicXMLDisplay, final TopicXMLPresenter.LogicComponent topicXMLComponent,
+                final TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay,
+                final TopicXMLErrorsPresenter.LogicComponent topicXMLErrorsComponent,
+                final TopicTagsPresenter.Display topicTagsDisplay, final TopicTagsPresenter.LogicComponent topicTagsComponent,
+                final CreateTopicPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
     }
 
     @Inject
@@ -84,7 +89,8 @@ public class CreateTopicPresenter implements TemplatePresenter {
         topicXMLComponent.bind(topicXML, display);
         topicXMLErrorsComponent.bind(topicXMLErrors, display);
 
-        component.bind(topic, topicTags, topicXML, topicXMLErrors, display, display);
+        component.bind(topic, topicComponent, topicXML, topicXMLComponent, topicXMLErrors,
+                topicXMLErrorsComponent, topicTags, topicTagsComponent, display, display);
     }
 
     @Override

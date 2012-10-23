@@ -182,7 +182,6 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
         renderedHorizontalSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.HorizontalSplit());
         renderedSplitClose = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CloseSubMenu());
 
-        populateTopActionBar();
     }
 
     /**
@@ -259,5 +258,8 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
     /**
      * This method is called to initialize the buttons that should appear in the top action bar
      */
-    abstract protected void populateTopActionBar();
+    protected void populateTopActionBar(final boolean newTopic)
+    {
+        this.getTopActionPanel().removeAllRows();
+    }
 }

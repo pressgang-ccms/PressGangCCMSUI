@@ -14,7 +14,6 @@ import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HTML;
 
 public class TopicRenderedView extends TopicViewBase implements TopicRenderedPresenter.Display {
-    
 
     private final HTML div = new HTML("div");
 
@@ -31,14 +30,12 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 
         div.addStyleName(CSSConstants.TOPIC_RENDERED_VIEW_DIV);
     }
-    
+
     /**
-     * The rendered view will add or remove the rendered down label, instead 
-     * of the rendered view button.
+     * The rendered view will add or remove the rendered down label, instead of the rendered view button.
      */
     @Override
-    protected void addOrRemoveRenderedButton(final SplitType splitType)
-    {
+    protected void addOrRemoveRenderedButton(final SplitType splitType) {
         /* Add the rendered view button if there is no split screen, and remove if it there is a split screen */
         if (splitType == SplitType.NONE || splitType == SplitType.DISABLED) {
             if (this.getRenderedDown().getParent() == null) {
@@ -55,15 +52,20 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
     }
 
     @Override
-    protected void populateTopActionBar() {
+    protected void populateTopActionBar(final boolean newTopic) {
+        super.populateTopActionBar(newTopic);
+        
         addActionButton(this.getRenderedSplit());
         addActionButton(this.getRenderedDown());
         addActionButton(this.getXml());
         addActionButton(this.getXmlErrors());
         addActionButton(this.getFields());
         addActionButton(this.getTopicTags());
-        addActionButton(this.getBugs());
-        addActionButton(this.getHistory());
+        if (!newTopic) {            
+            addActionButton(this.getBugs());
+            addActionButton(this.getHistory());
+        }
+        
         addActionButton(this.getSave());
 
         fixReadOnlyButtons();
@@ -72,9 +74,9 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType) {
+    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType) {
         this.readOnly = readOnly;
-        fixReadOnlyButtons();
+        populateTopActionBar(newTopic);
         buildSplitViewButtons(splitType);
 
         try {

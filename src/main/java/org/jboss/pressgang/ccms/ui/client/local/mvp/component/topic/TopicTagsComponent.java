@@ -6,8 +6,13 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 
 public class TopicTagsComponent extends TopicViewComponent<TopicTagsPresenter.Display> implements
@@ -48,6 +53,27 @@ public class TopicTagsComponent extends TopicViewComponent<TopicTagsPresenter.Di
             }
         };
         RESTCalls.getTags(callback);
+    }
+    
+    /**
+     * Add behaviour to the tag view screen elements
+     */
+    public void bindNewTagListBoxes(final ClickHandler clickHandler) {
+        display.getProjectsList().addValueChangeHandler(new ValueChangeHandler<SearchUIProject>() {
+            @Override
+            public void onValueChange(final ValueChangeEvent<SearchUIProject> event) {
+                display.updateNewTagCategoriesDisplay();
+            }
+        });
+
+        display.getCategoriesList().addValueChangeHandler(new ValueChangeHandler<SearchUICategory>() {
+            @Override
+            public void onValueChange(final ValueChangeEvent<SearchUICategory> event) {
+                display.updateNewTagTagDisplay();
+            }
+        });
+
+        display.getAdd().addClickHandler(clickHandler);
     }
 
   

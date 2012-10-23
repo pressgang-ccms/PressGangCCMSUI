@@ -57,7 +57,9 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
     }
 
     @Override
-    protected void populateTopActionBar() {
+    protected void populateTopActionBar(final boolean newTopic) {
+        super.populateTopActionBar(newTopic);
+        
         addActionButton(this.getRenderedSplit());
         addActionButton(this.getRendered());
         addActionButton(this.getXmlDown());
@@ -76,9 +78,9 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType) {
+    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType) {
         this.readOnly = readOnly;
-        fixReadOnlyButtons();
+        populateTopActionBar(newTopic);
         buildSplitViewButtons(splitType);
 
         /* SearchUIProjectsEditor is a grid */

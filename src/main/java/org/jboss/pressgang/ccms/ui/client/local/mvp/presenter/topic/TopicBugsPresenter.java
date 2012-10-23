@@ -20,8 +20,6 @@ public class TopicBugsPresenter implements TemplatePresenter {
     private String topicId;
 
     public interface Display extends TopicViewInterface {
-        @Override
-        void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType);
 
         EnhancedAsyncDataProvider<RESTBugzillaBugCollectionItemV1> getProvider();
 

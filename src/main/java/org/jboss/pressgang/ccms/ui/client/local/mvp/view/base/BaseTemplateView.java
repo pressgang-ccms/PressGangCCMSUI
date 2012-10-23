@@ -177,7 +177,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     }
 
     @Override
-    public PushButton getTopicTags() {
+    public PushButton getTags() {
         return tags;
     }
 

@@ -109,7 +109,8 @@ html {
 .TopActionPanel
 {
 	position: relative;
-	left: 100px;
+	/*left: 100px;*/
+	padding-left: 100px;
 }
 
 

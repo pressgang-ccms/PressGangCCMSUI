@@ -124,7 +124,7 @@ public interface BaseTemplateViewInterface extends EditableView {
 
     PushButton getCategories();
 
-    PushButton getTopicTags();
+    PushButton getTags();
 
     /**
      * @return The button that closes the advanced menu
