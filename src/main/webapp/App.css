@@ -93,6 +93,11 @@ html {
 	height: 100%;
 }
 
+.TopActionParentPanel
+{
+	margin-left: 100px;
+}
+
 .TopActionPanel, .RenderedSplitViewMenuTable {
 	width: 100%;
 	height: 100%;
@@ -109,8 +114,6 @@ html {
 .TopActionPanel
 {
 	position: relative;
-	/*left: 100px;*/
-	padding-left: 100px;
 }
 
 

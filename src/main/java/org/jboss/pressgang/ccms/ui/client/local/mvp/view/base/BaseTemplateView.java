@@ -273,6 +273,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         secondLevelLayoutPanel.add(thirdLevelLayoutPanel);
 
         /* Set the action bar panel */
+        topActionParentPanel.addStyleName(CSSConstants.TOP_ACTION_PARENT_PANEL);
         topActionPanel.addStyleName(CSSConstants.TOP_ACTION_PANEL);
 
         topActionParentPanel.add(topActionPanel);
