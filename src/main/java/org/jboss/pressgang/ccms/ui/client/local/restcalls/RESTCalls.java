@@ -177,6 +177,16 @@ public final class RESTCalls {
             }
         });
     }
+    
+    static public void createTopic(final RESTCallback<RESTTopicV1> callback, final RESTTopicV1 topic) {
+        // final String expand = "{\"branches\":[" + TOPIC_EXPANSION + "]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).createJSONTopic("", topic);
+            }
+        });
+    }
 
     static public void getStringConstant(final RESTCalls.RESTCallback<RESTStringConstantV1> callback, final int id) {
         doRestCall(callback, new RestMethodCaller() {

@@ -1,8 +1,10 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.create;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
@@ -135,8 +137,10 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
 
         super.bind(display, waitDisplay);
 
-        /* Create an intial collection to hold any new tags */
+        /* Create an intial collection to hold any new tags, urls and property tags */
         newTopic.setTags(new RESTTagCollectionV1());
+        newTopic.setSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
+        newTopic.setProperties(new RESTAssignedPropertyTagCollectionV1());
 
         this.topicViewDisplay = topicViewDisplay;
         this.topicViewComponent = topicViewComponent;
@@ -146,11 +150,6 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         this.topicTagsDisplay = topicTagsDisplay;
         this.topicTagsComponent = topicTagsComponent;
         topicViews = new TopicViewInterface[] { topicViewDisplay, topicTagsDisplay, topicXMLDisplay, topicXMLErrorsDisplay };
-
-        topicViewDisplay.initialize(newTopic, false, true, SplitType.NONE);
-        topicTagsDisplay.initialize(newTopic, false, true, SplitType.NONE);
-        topicXMLDisplay.initialize(newTopic, false, true, SplitType.NONE);
-        topicXMLErrorsDisplay.initialize(newTopic, false, true, SplitType.NONE);
 
         topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
         updateDisplayedTopicView(topicViewDisplay);
@@ -208,12 +207,78 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             }
         };
 
+        final ClickHandler saveClickHandler = new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                /* Update the data object with the GUI changes */
+                for (final TopicViewInterface view : topicViews)
+                    view.getDriver().flush();
+
+                /* Create a topic that has the new details */
+                final RESTTopicV1 saveRestTopic = new RESTTopicV1();
+                saveRestTopic.setId(newTopic.getId());
+                saveRestTopic.explicitSetXml(newTopic.getXml());
+                saveRestTopic.explicitSetDescription(newTopic.getDescription());
+                saveRestTopic.explicitSetLocale(newTopic.getLocale());
+                saveRestTopic.explicitSetTags(newTopic.getTags());
+                saveRestTopic.explicitSetSourceUrls_OTM(newTopic.getSourceUrls_OTM());
+                saveRestTopic.explicitSetTitle(newTopic.getTitle());
+                saveRestTopic.explicitSetProperties(newTopic.getProperties());
+
+                final RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, CreateTopicPresenter.Display>(
+                        display, new BaseRestCallback.SuccessAction<RESTTopicV1, CreateTopicPresenter.Display>() {
+                            @Override
+                            public void doSuccessAction(final RESTTopicV1 retValue, final CreateTopicPresenter.Display display) {
+                                retValue.cloneInto(newTopic, true);
+                                updateDisplayedTopicView(lastView);
+                                loadTags();
+                                Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                            }
+                        }) {
+                };
+
+                /* Create or update the topic */
+                if (saveRestTopic.getId() != null) {
+                    RESTCalls.saveTopic(callback, saveRestTopic);
+                } else {
+                    RESTCalls.createTopic(callback, saveRestTopic);
+                }
+
+            }
+        };
+
         for (final TopicViewInterface view : topicViews) {
             view.getTopicTags().addClickHandler(displayTagsClickHandler);
             view.getFields().addClickHandler(displayTopicClickHandler);
             view.getXml().addClickHandler(topicXMLClickHandler);
             view.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
+            view.getSave().addClickHandler(saveClickHandler);
         }
+    }
+
+    private void loadTags() {
+        /* A callback to respond to a request for a topic with the tags expanded */
+        final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
+                topicTagsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
+                    @Override
+                    public void doSuccessAction(RESTTopicV1 retValue, TopicTagsPresenter.Display display) {
+                        /* copy the revisions into the displayed Topic */
+                        newTopic.setTags(retValue.getTags());
+                        /* If we are looking at the rendered view, update it */
+                        if (lastView == topicTagsDisplay) {
+                            updateDisplayedTopicView(topicTagsDisplay);
+                        }
+                    }
+                }) {
+            @Override
+            public void failed() {
+                super.failed();
+                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+            }
+        };
+
+        RESTCalls.getTopicWithTags(topicWithTagsCallback, newTopic.getId());
     }
 
     /**
@@ -233,6 +298,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
      */
     private void updateDisplayedTopicView(final TopicViewInterface selectedView) {
         if (lastView != selectedView) {
+
             setShownDisplay(selectedView);
 
             display.getTopActionParentPanel().clear();
@@ -242,11 +308,12 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             display.getPanel().setWidget(selectedView.getPanel());
         }
 
-        if (selectedView == this.topicTagsDisplay) {
-            /* Reload the tags view */
-            selectedView.initialize(newTopic, false, true, SplitType.NONE);
-            bindTagEditingButtons();
-        } else if (selectedView == this.topicXMLDisplay) {
+        /* refresh the data being displayed */
+        for (final TopicViewInterface view : this.topicViews) {
+            view.initialize(newTopic, false, true, SplitType.NONE);
+        }
+
+        if (selectedView == this.topicXMLDisplay) {
             /* Force a redisplay of the ACE exitor */
             topicXMLDisplay.getEditor().redisplay();
         }
