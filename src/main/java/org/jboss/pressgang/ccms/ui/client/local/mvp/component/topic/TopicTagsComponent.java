@@ -49,6 +49,8 @@ public class TopicTagsComponent extends TopicViewComponent<TopicTagsPresenter.Di
         };
         RESTCalls.getTags(callback);
     }
+    
+    
 
   
 }

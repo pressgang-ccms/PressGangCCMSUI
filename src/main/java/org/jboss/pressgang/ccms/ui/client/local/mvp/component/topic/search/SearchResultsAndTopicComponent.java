@@ -62,6 +62,11 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
      * How long to wait before refreshing the rendered view (in milliseconds).
      */
     private static final int REFRESH_RATE = 1000;
+    /**
+     * false to indicate that the topic views should display action buttons
+     * applicabale to established topics (as opposed to new topics)
+     */
+    private static final boolean NEW_TOPIC = false;
 
     @Inject
     private HandlerManager eventBus;
@@ -74,7 +79,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         public void run() {
             if (selectedView == topicXMLDisplay) {
                 topicXMLDisplay.getDriver().flush();
-                topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(),
+                topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
                         display.getSplitType());
             }
         }
@@ -299,7 +304,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
          * Need to do an initial call to initialize for the rendered view in the split pane
          */
         topicSplitPanelRenderedDisplay
-                .initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), display.getSplitType());
+                .initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, display.getSplitType());
         /* By default, stop the automatic updating of the rendered view panel */
         timer.cancel();
 
@@ -308,10 +313,10 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
              * The revisions always come from the parent topic (this saves us expanding the revisions when loading a revision
              */
             selectedView.initialize(searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem(),
-                    isReadOnlyMode(), display.getSplitType());
+                    isReadOnlyMode(), NEW_TOPIC, display.getSplitType());
         } else {
             /* All other details come from the revision topic */
-            selectedView.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), display.getSplitType());
+            selectedView.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, display.getSplitType());
         }
 
         /* Need to redisplay to work around a bug in the ACE editor */

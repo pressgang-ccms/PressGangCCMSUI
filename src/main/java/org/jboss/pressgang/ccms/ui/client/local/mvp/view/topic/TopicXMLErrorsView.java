@@ -11,7 +11,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 
 public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsPresenter.Display {
-    
 
     /** The GWT Editor Driver */
     private final TopicXMLErrorsPresenterDriver driver = GWT.create(TopicXMLErrorsPresenterDriver.class);
@@ -28,15 +27,19 @@ public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsP
     }
 
     @Override
-    protected void populateTopActionBar() {
+    protected void populateTopActionBar(final boolean newTopic) {
+        super.populateTopActionBar(newTopic);
+        
         addActionButton(this.getRenderedSplit());
         addActionButton(this.getRendered());
         addActionButton(this.getXml());
         addActionButton(this.getXmlErrorsDown());
         addActionButton(this.getFields());
         addActionButton(this.getTopicTags());
-        addActionButton(this.getBugs());
-        addActionButton(this.getHistory());
+        if (!newTopic) {
+            addActionButton(this.getBugs());
+            addActionButton(this.getHistory());
+        }
         addActionButton(this.getSave());
 
         fixReadOnlyButtons();
@@ -45,10 +48,11 @@ public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsP
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType) {
+    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType) {
         this.readOnly = readOnly;
-        fixReadOnlyButtons();
+        populateTopActionBar(newTopic);
         buildSplitViewButtons(splitType);
+        
 
         /* SearchUIProjectsEditor is a grid */
         final RESTTopicV1XMLErrorsEditor editor = new RESTTopicV1XMLErrorsEditor();

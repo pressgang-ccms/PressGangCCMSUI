@@ -25,7 +25,6 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.web.bindery.requestfactory.gwt.ui.client.ProxyRenderer;
 
 public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.Display {
-    
 
     final FlexTable layout = new FlexTable();
 
@@ -130,15 +129,20 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
     }
 
     @Override
-    protected void populateTopActionBar() {
+    protected void populateTopActionBar(final boolean newTopic) {
+        
+        super.populateTopActionBar(newTopic);
+        
         addActionButton(this.getRenderedSplit());
         addActionButton(this.getRendered());
         addActionButton(this.getXml());
         addActionButton(this.getXmlErrors());
         addActionButton(this.getFields());
         addActionButton(this.getTagsDown());
-        addActionButton(this.getBugs());
-        addActionButton(this.getHistory());
+        if (!newTopic) {
+            addActionButton(this.getBugs());
+            addActionButton(this.getHistory());
+        }
         addActionButton(this.getSave());
 
         fixReadOnlyButtons();
@@ -223,9 +227,9 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType) {
+    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType) {
         this.readOnly = readOnly;
-        fixReadOnlyButtons();
+        populateTopActionBar(newTopic);
         buildSplitViewButtons(splitType);
 
         /* reset the layout */

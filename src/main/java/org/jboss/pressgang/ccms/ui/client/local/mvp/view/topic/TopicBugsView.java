@@ -28,13 +28,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * @author Matthew Casperson
  */
 public class TopicBugsView extends TopicViewBase implements TopicBugsPresenter.Display {
-    
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
 
     private final SimplePager pager = new SimplePager();
-    private final CellTable<RESTBugzillaBugCollectionItemV1> results = new CellTable<RESTBugzillaBugCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
-            (Resources) GWT.create(TableResources.class));
+    private final CellTable<RESTBugzillaBugCollectionItemV1> results = new CellTable<RESTBugzillaBugCollectionItemV1>(
+            Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
     private EnhancedAsyncDataProvider<RESTBugzillaBugCollectionItemV1> provider;
 
     private final TextColumn<RESTBugzillaBugCollectionItemV1> summaryColumn = new TextColumn<RESTBugzillaBugCollectionItemV1>() {
@@ -56,10 +55,12 @@ public class TopicBugsView extends TopicViewBase implements TopicBugsPresenter.D
     /**
      * The column that renders a link to Bugzilla
      */
-    private final Column<RESTBugzillaBugCollectionItemV1, Anchor> linkColumn = new Column<RESTBugzillaBugCollectionItemV1, Anchor>(new AnchorCell()) {
+    private final Column<RESTBugzillaBugCollectionItemV1, Anchor> linkColumn = new Column<RESTBugzillaBugCollectionItemV1, Anchor>(
+            new AnchorCell()) {
         @Override
         public Anchor getValue(final RESTBugzillaBugCollectionItemV1 bug) {
-            final Anchor link = new Anchor(bug.getItem().getBugId().toString(), Constants.BUGZILLA_VIEW_BUG_URL + bug.getItem().getBugId());
+            final Anchor link = new Anchor(bug.getItem().getBugId().toString(), Constants.BUGZILLA_VIEW_BUG_URL
+                    + bug.getItem().getBugId());
             return link;
         }
     };
@@ -110,22 +111,26 @@ public class TopicBugsView extends TopicViewBase implements TopicBugsPresenter.D
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType) {
+    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType) {
         this.readOnly = readOnly;
-        fixReadOnlyButtons();
+        populateTopActionBar(newTopic);
         buildSplitViewButtons(splitType);
     }
 
     @Override
-    protected void populateTopActionBar() {
+    protected void populateTopActionBar(final boolean newTopic) {
+        super.populateTopActionBar(newTopic);
+        
         addActionButton(this.getRenderedSplit());
         addActionButton(this.getRendered());
         addActionButton(this.getXml());
         addActionButton(this.getXmlErrors());
         addActionButton(this.getFields());
-        addActionButton(this.getTopicTags());
-        addActionButton(this.getBugsDown());
-        addActionButton(this.getHistory());
+        addActionButton(this.getTopicTags());        
+        if (!newTopic) {
+            addActionButton(this.getHistory());
+            addActionButton(this.getBugsDown());
+        }
         addActionButton(this.getSave());
 
         fixReadOnlyButtons();

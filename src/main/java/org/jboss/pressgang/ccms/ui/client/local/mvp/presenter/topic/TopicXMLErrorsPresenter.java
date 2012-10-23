@@ -56,7 +56,7 @@ public class TopicXMLErrorsPresenter implements TemplatePresenter {
                 new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
                     @Override
                     public void doSuccessAction(RESTTopicV1 retValue, Display display) {
-                        display.initialize(retValue, false, SplitType.DISABLED);
+                        display.initialize(retValue, false, false, SplitType.DISABLED);
                     }
                 }) {
         };

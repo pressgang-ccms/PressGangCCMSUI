@@ -28,13 +28,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * @author Matthew Casperson
  */
 public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsPresenter.Display {
-    
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
 
     private final SimplePager pager = new SimplePager();
-    private final CellTable<RESTTopicCollectionItemV1> results = new CellTable<RESTTopicCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
-            (Resources) GWT.create(TableResources.class));
+    private final CellTable<RESTTopicCollectionItemV1> results = new CellTable<RESTTopicCollectionItemV1>(
+            Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
     private EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider;
     private RESTTopicCollectionItemV1 revisionTopic;
     private RESTTopicV1 mainTopic;
@@ -63,7 +62,8 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
         }
     };
 
-    private final Column<RESTTopicCollectionItemV1, String> viewButton = new Column<RESTTopicCollectionItemV1, String>(new ButtonCell()) {
+    private final Column<RESTTopicCollectionItemV1, String> viewButton = new Column<RESTTopicCollectionItemV1, String>(
+            new ButtonCell()) {
         @Override
         public String getValue(final RESTTopicCollectionItemV1 object) {
             /*
@@ -88,7 +88,8 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
         }
     };
 
-    private final Column<RESTTopicCollectionItemV1, String> diffButton = new Column<RESTTopicCollectionItemV1, String>(new ButtonCell()) {
+    private final Column<RESTTopicCollectionItemV1, String> diffButton = new Column<RESTTopicCollectionItemV1, String>(
+            new ButtonCell()) {
         @Override
         public String getValue(final RESTTopicCollectionItemV1 object) {
             if (mainTopic != null && object.getItem().getRevision().equals(mainTopic.getRevision())) {
@@ -173,23 +174,28 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final SplitType splitType) {
+    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType) {
         this.readOnly = readOnly;
         this.mainTopic = topic;
-        fixReadOnlyButtons();
+        populateTopActionBar(newTopic);
         buildSplitViewButtons(splitType);
+        
     }
 
     @Override
-    protected void populateTopActionBar() {
+    protected void populateTopActionBar(final boolean newTopic) {
+        super.populateTopActionBar(newTopic);
+        
         addActionButton(this.getRenderedSplit());
         addActionButton(this.getRendered());
         addActionButton(this.getXml());
         addActionButton(this.getXmlErrors());
         addActionButton(this.getFields());
         addActionButton(this.getTopicTags());
-        addActionButton(this.getBugs());
-        addActionButton(this.getHistoryDown());
+        if (!newTopic) {
+            addActionButton(this.getBugs());
+            addActionButton(this.getHistoryDown());
+        }
         addActionButton(this.getSave());
 
         fixReadOnlyButtons();
