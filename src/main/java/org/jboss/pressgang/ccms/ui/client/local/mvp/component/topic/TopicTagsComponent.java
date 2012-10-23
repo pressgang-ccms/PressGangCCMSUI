@@ -54,7 +54,7 @@ public class TopicTagsComponent extends TopicViewComponent<TopicTagsPresenter.Di
         };
         RESTCalls.getTags(callback);
     }
-    
+
     /**
      * Add behaviour to the tag view screen elements
      */
@@ -75,6 +75,5 @@ public class TopicTagsComponent extends TopicViewComponent<TopicTagsPresenter.Di
 
         display.getAdd().addClickHandler(clickHandler);
     }
-
-  
 }
+
