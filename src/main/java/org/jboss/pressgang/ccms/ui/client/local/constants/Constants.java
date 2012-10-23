@@ -6,6 +6,13 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
  * @author Matthew Casperson
  */
 public final class Constants {
+    
+    /**
+     * How long to wait before refreshing the rendered view (in milliseconds).
+     */
+    public static final int REFRESH_RATE = 1000;
+    
+    
     /**
      * The name of a javascript click event.
      */
@@ -44,7 +51,7 @@ public final class Constants {
     /**
      * The height of the action bars.
      */
-    public static final int ACTION_BAR_HEIGHT = 60;
+    public static final int ACTION_BAR_HEIGHT = 96;
 
     /**
      * The width of the shortcut bar.

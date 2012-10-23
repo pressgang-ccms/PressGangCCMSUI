@@ -5,13 +5,12 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollection
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndCategoryPresenter.Display;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
@@ -20,6 +19,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPres
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.create.CreateTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
@@ -31,13 +31,13 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 
 /**
  * A component used to provide the logic for the create topicViewDisplay view
  * 
  * @author Matthew Casperson
- * 
  */
 public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Display> implements
         CreateTopicPresenter.LogicComponent {
@@ -47,17 +47,36 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
     private TopicXMLPresenter.Display topicXMLDisplay;
     private TopicXMLPresenter.LogicComponent topicXMLComponent;
     private TopicRenderedPresenter.Display topicRenderedDisplay;
+    private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
 
     private TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay;
     private TopicTagsPresenter.Display topicTagsDisplay;
     private TopicTagsPresenter.LogicComponent topicTagsComponent;
     private TopicViewInterface[] topicViews;
 
+    /**
+     * How the rendering panel is displayed
+     */
+    private SplitType split = SplitType.NONE;
+
     /** The last displayed view */
     private TopicViewInterface lastView;
 
     /** The new topicViewDisplay being created */
     private final RESTTopicV1 newTopic = new RESTTopicV1();
+
+    /**
+     * Setup automatic flushing and rendering.
+     */
+    final Timer timer = new Timer() {
+        @Override
+        public void run() {
+            if (lastView == topicXMLDisplay) {
+                topicXMLDisplay.getDriver().flush();
+                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split);
+            }
+        }
+    };
 
     /**
      * A click handler to add a tag to a topicViewDisplay
@@ -133,14 +152,10 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             final TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay,
             final TopicXMLErrorsPresenter.LogicComponent topicXMLErrorsComponent,
             final TopicTagsPresenter.Display topicTagsDisplay, final TopicTagsPresenter.LogicComponent topicTagsComponent,
-            final CreateTopicPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
+            final TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay, final CreateTopicPresenter.Display display,
+            final BaseTemplateViewInterface waitDisplay) {
 
         super.bind(display, waitDisplay);
-
-        /* Create an intial collection to hold any new tags, urls and property tags */
-        newTopic.setTags(new RESTTagCollectionV1());
-        newTopic.setSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
-        newTopic.setProperties(new RESTAssignedPropertyTagCollectionV1());
 
         this.topicViewDisplay = topicViewDisplay;
         this.topicViewComponent = topicViewComponent;
@@ -149,7 +164,20 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         this.topicXMLErrorsDisplay = topicXMLErrorsDisplay;
         this.topicTagsDisplay = topicTagsDisplay;
         this.topicTagsComponent = topicTagsComponent;
+        this.topicSplitPanelRenderedDisplay = topicSplitPanelRenderedDisplay;
         topicViews = new TopicViewInterface[] { topicViewDisplay, topicTagsDisplay, topicXMLDisplay, topicXMLErrorsDisplay };
+        
+        /* Create an initial collection to hold any new tags, urls and property tags */
+        newTopic.setTags(new RESTTagCollectionV1());
+        newTopic.setSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
+        newTopic.setProperties(new RESTAssignedPropertyTagCollectionV1());
+        
+        /* initialise the GWT editors */
+        for (final TopicViewInterface view : this.topicViews) {
+            view.initialize(newTopic, false, true, split);
+        }
+
+        initializeDisplay();
 
         topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
         updateDisplayedTopicView(topicViewDisplay);
@@ -159,13 +187,37 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         getTopicTemplate();
     }
 
+    /**
+     * (Re)Initialize the main display with the rendered view split pane (if selected).
+     */
+    private void initializeDisplay() {
+        final String savedSplit = Preferences.INSTANCE.getString(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE, "");
+        if (Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE.equals(savedSplit)) {
+            split = SplitType.NONE;
+        } else if (Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL.equals(savedSplit)) {
+            split = SplitType.VERTICAL;
+        } else {
+            split = SplitType.HORIZONTAL;
+        }
+
+        /* Have to do this after the parseToken method has been called */
+        display.initialize(split, topicSplitPanelRenderedDisplay.getPanel());
+
+        for (final TopicViewInterface view : topicViews) {
+            view.buildSplitViewButtons(split);
+        }
+    }
+
     private void getTopicTemplate() {
         RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, CreateTopicPresenter.Display>(
                 display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, CreateTopicPresenter.Display>() {
                     @Override
                     public void doSuccessAction(final RESTStringConstantV1 retValue, final CreateTopicPresenter.Display display) {
                         newTopic.setXml(retValue.getValue());
+                        
+                        /* Refresh the views */
                         topicXMLDisplay.initialize(newTopic, false, true, SplitType.NONE);
+                        topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split);
                     }
                 }) {
         };
@@ -211,9 +263,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
 
             @Override
             public void onClick(final ClickEvent event) {
-                /* Update the data object with the GUI changes */
-                for (final TopicViewInterface view : topicViews)
-                    view.getDriver().flush();
+                flushChanges();
 
                 /* Create a topic that has the new details */
                 final RESTTopicV1 saveRestTopic = new RESTTopicV1();
@@ -248,12 +298,114 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             }
         };
 
+        final ClickHandler splitMenuHandler = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                /* Sync any changes back to the underlying object */
+                flushChanges();
+
+                showRenderedSplitPanelMenu();
+            }
+        };
+
+        final ClickHandler splitMenuCloseHandler = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                /* Sync any changes back to the underlying object */
+                flushChanges();
+
+                showRegularMenu();
+
+            }
+        };
+
+        final ClickHandler splitMenuNoSplitHandler = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                /* Sync any changes back to the underlying object */
+                flushChanges();
+
+                split = SplitType.NONE;
+                Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
+                        Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE);
+
+                initializeDisplay();
+                updateDisplayedTopicView(lastView);
+            }
+        };
+
+        final ClickHandler splitMenuVSplitHandler = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                /* Sync any changes back to the underlying object */
+                flushChanges();
+
+                split = SplitType.VERTICAL;
+                Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
+                        Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL);
+
+                initializeDisplay();
+                updateDisplayedTopicView(lastView);
+            }
+        };
+
+        final ClickHandler splitMenuHSplitHandler = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                /* Sync any changes back to the underlying object */
+                flushChanges();
+
+                split = SplitType.HORIZONTAL;
+                Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
+                        Preferences.TOPIC_RENDERED_VIEW_SPLIT_HOIRZONTAL);
+
+                initializeDisplay();
+                updateDisplayedTopicView(lastView);
+            }
+        };
+
         for (final TopicViewInterface view : topicViews) {
             view.getTopicTags().addClickHandler(displayTagsClickHandler);
             view.getFields().addClickHandler(displayTopicClickHandler);
             view.getXml().addClickHandler(topicXMLClickHandler);
             view.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
             view.getSave().addClickHandler(saveClickHandler);
+
+            view.getRenderedSplit().addClickHandler(splitMenuHandler);
+            view.getRenderedSplitOpen().addClickHandler(splitMenuCloseHandler);
+            view.getRenderedSplitClose().addClickHandler(splitMenuCloseHandler);
+            view.getRenderedNoSplit().addClickHandler(splitMenuNoSplitHandler);
+            view.getRenderedVerticalSplit().addClickHandler(splitMenuVSplitHandler);
+            view.getRenderedHorizontalSplit().addClickHandler(splitMenuHSplitHandler);
+        }
+    }
+
+    /**
+     * TODO: copied from SearchResultsAndTopicComponent - abstract this
+     */
+    private void showRegularMenu() {
+        display.getTopicViewActionButtonsPanel().clear();
+        display.getTopicViewActionButtonsPanel().add(lastView.getTopActionPanel());
+    }
+
+    /**
+     * TODO: copied from SearchResultsAndTopicComponent - abstract this
+     */
+    private void showRenderedSplitPanelMenu() {
+        display.getTopicViewActionButtonsPanel().clear();
+        display.getTopicViewActionButtonsPanel().add(lastView.getRenderedSplitViewMenu());
+    }
+
+    /**
+     * Sync any changes back to the underlying object
+     */
+    private void flushChanges() {
+        /* Update the data object with the GUI changes */
+        for (final TopicViewInterface view : topicViews) {
+            /* Make sure we have a driver, and it is not a readonly view */
+            if (view.getDriver() != null && view != topicXMLErrorsDisplay && view != topicTagsDisplay) {
+                view.getDriver().flush();
+            }
         }
     }
 
@@ -298,24 +450,37 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
      */
     private void updateDisplayedTopicView(final TopicViewInterface selectedView) {
         if (lastView != selectedView) {
-
+            
+            flushChanges();
+            
             setShownDisplay(selectedView);
 
-            display.getTopActionParentPanel().clear();
-            display.getTopActionParentPanel().setWidget(selectedView.getTopActionPanel());
+            display.getTopicViewActionButtonsPanel().clear();
+            display.getTopicViewActionButtonsPanel().setWidget(selectedView.getTopActionPanel());
 
-            display.getPanel().clear();
-            display.getPanel().setWidget(selectedView.getPanel());
+            display.getTopicViewPanel().clear();
+            display.getTopicViewPanel().setWidget(selectedView.getPanel());
         }
+        
+        /* By default, stop the automatic updating of the rendered view panel */
+        timer.cancel();
 
         /* refresh the data being displayed */
         for (final TopicViewInterface view : this.topicViews) {
-            view.initialize(newTopic, false, true, SplitType.NONE);
+            view.initialize(newTopic, false, true, split);
         }
 
         if (selectedView == this.topicXMLDisplay) {
-            /* Force a redisplay of the ACE exitor */
+            /* Force a redisplay of the ACE editor */
             topicXMLDisplay.getEditor().redisplay();
+
+            /* While editing the XML, we need to setup a refresh of the rendered view */
+            if (split != SplitType.NONE) {
+                /* setup automatic updating */
+                timer.scheduleRepeating(Constants.REFRESH_RATE);
+                /* Do an initial update */
+                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split);
+            }
         }
 
         lastView = selectedView;

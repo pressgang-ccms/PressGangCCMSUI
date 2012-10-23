@@ -96,12 +96,13 @@ html {
 .TopActionParentPanel
 {
 	margin-left: 100px;
+	bottom: 16px !important;
 }
 
 .TopActionPanel, .RenderedSplitViewMenuTable {
-	width: 100%;
-	height: 100%;
+	width: 100%;	
 	border-spacing: 0px;
+	height: 100%;
 	padding-bottom: 8px;
 	padding-top: 8px;
 }
@@ -514,6 +515,11 @@ html {
 .ImageViewLanguageImageFilenameText {
 	width: 100%;
 	box-sizing : border-box;
+}
+
+.TopicSearchTopicViewButtonsPanel
+{
+	bottom: 16px !important;
 }
 
 .TopicSearchTopicViewButtonsPanel>div

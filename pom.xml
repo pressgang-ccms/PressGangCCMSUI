@@ -9,18 +9,18 @@
 
 	<version>1.0-SNAPSHOT</version>
 
-    <parent>
-        <groupId>org.jboss.pressgang</groupId>
-        <artifactId>pressgang-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<groupId>org.jboss.pressgang</groupId>
+		<artifactId>pressgang-parent</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<errai.version>2.1.0.Final</errai.version>
 		<gwt.version>2.5.0-rc2</gwt.version>
 		<weld.version>1.1.6.Final</weld.version>
-		<gwt.maven.version>2.5.0-rc1</gwt.maven.version>
+		<gwt.maven.version>2.5.0-rc2</gwt.maven.version>
 		<mvel.version>2.1.Beta8</mvel.version>
 		<jetty.version>6.1.25</jetty.version>
 		<slf4j.version>1.6.1</slf4j.version>
@@ -131,11 +131,11 @@
 			<version>${errai.version}</version>
 		</dependency>
 
-        <dependency>
-            <groupId>org.jboss.errai</groupId>
-            <artifactId>errai-data-binding</artifactId>
-            <version>${errai.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>org.jboss.errai</groupId>
+			<artifactId>errai-data-binding</artifactId>
+			<version>${errai.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.jboss.errai</groupId>
@@ -793,9 +793,18 @@
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>gwt-maven-plugin</artifactId>
 						<version>${gwt.maven.version}</version>
+						<executions>
+							<execution>
+								<configuration>
+									<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
+								</configuration>
+								<goals>
+									<goal>compile</goal>
+								</goals>
+							</execution>
+						</executions>
 						<configuration>
 							<skip>true</skip>
-
 						</configuration>
 					</plugin>
 				</plugins>

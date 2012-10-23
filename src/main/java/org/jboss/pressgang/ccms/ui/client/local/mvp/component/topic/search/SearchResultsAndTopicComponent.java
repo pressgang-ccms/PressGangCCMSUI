@@ -14,7 +14,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
@@ -34,8 +33,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewCategoryEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 import com.google.gwt.cell.client.FieldUpdater;
@@ -43,8 +40,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
@@ -58,10 +53,7 @@ import com.google.gwt.view.client.HasData;
 public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsAndTopicPresenter.Display> implements
         SearchResultsAndTopicPresenter.LogicComponent {
 
-    /**
-     * How long to wait before refreshing the rendered view (in milliseconds).
-     */
-    private static final int REFRESH_RATE = 1000;
+ 
     /**
      * false to indicate that the topic views should display action buttons
      * applicabale to established topics (as opposed to new topics)
@@ -328,7 +320,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
             /* While editing the XML, we need to setup a refresh of the rendered view */
             if (display.getSplitType() != SplitType.NONE) {
                 if (!isReadOnlyMode()) {
-                    timer.scheduleRepeating(REFRESH_RATE);
+                    timer.scheduleRepeating(Constants.REFRESH_RATE);
                 }
             }
         }

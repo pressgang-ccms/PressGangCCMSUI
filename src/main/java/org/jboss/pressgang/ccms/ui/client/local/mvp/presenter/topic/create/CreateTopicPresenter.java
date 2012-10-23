@@ -14,8 +14,13 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErro
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 
 /**
  * The presneter that manages the topic search screen, combining the tags, fields and filters views
@@ -29,7 +34,11 @@ public class CreateTopicPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "CreateTopicView";
 
     public interface Display extends BaseTemplateViewInterface {
-
+        SimpleLayoutPanel getTopicViewActionButtonsPanel();
+        DockLayoutPanel getTopicViewLayoutPanel();
+        HandlerSplitLayoutPanel getSplitPanel();
+        SimpleLayoutPanel getTopicViewPanel();
+        void initialize(final SplitType splitType, final Panel panel);
     }
 
     public interface LogicComponent extends Component<Display> {
@@ -38,6 +47,7 @@ public class CreateTopicPresenter implements TemplatePresenter {
                 final TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay,
                 final TopicXMLErrorsPresenter.LogicComponent topicXMLErrorsComponent,
                 final TopicTagsPresenter.Display topicTagsDisplay, final TopicTagsPresenter.LogicComponent topicTagsComponent,
+                final TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay,
                 final CreateTopicPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
     }
 
@@ -77,6 +87,12 @@ public class CreateTopicPresenter implements TemplatePresenter {
     /** The component that provides logic for the topic xml errors view */
     @Inject
     private TopicXMLErrorsPresenter.LogicComponent topicXMLErrorsComponent;
+    
+    /**
+     * The rendered topic view display in a split panel
+     */
+    @Inject
+    private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
 
     @Override
     public void go(final HasWidgets container) {
@@ -90,7 +106,7 @@ public class CreateTopicPresenter implements TemplatePresenter {
         topicXMLErrorsComponent.bind(topicXMLErrors, display);
 
         component.bind(topic, topicComponent, topicXML, topicXMLComponent, topicXMLErrors,
-                topicXMLErrorsComponent, topicTags, topicTagsComponent, display, display);
+                topicXMLErrorsComponent, topicTags, topicTagsComponent, topicSplitPanelRenderedDisplay, display, display);
     }
 
     @Override
