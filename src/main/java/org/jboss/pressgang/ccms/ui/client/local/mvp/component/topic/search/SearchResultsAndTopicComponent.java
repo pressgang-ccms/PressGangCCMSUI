@@ -5,6 +5,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
@@ -473,11 +474,11 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                 if (topicXMLDisplay.getEditor() != null) {
                     topicXMLDisplay.getEditor().redisplay();
                 }
-                
+
                 /*
                  * Saves the width of the split screen
                  */
-                
+
                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, display.getSplitPanel()
                         .getSplitPosition(display.getResultsViewLayoutPanel()) + "");
 
@@ -543,11 +544,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                         topicRevisionsDisplay.getProvider().displayNewFixedList(retValue.getRevisions().getItems());
                     }
                 }) {
-            @Override
-            public void failed() {
-                super.failed();
-                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-            }
+
         };
 
         /* A callback to respond to a request for a topic with the tags expanded */
@@ -563,11 +560,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                         }
                     }
                 }) {
-            @Override
-            public void failed() {
-                super.failed();
-                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-            }
+
         };
 
         /* A callback to respond to a request for a topic with the bugzilla bugs expanded */
@@ -583,11 +576,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                         topicBugsDisplay.getProvider().displayNewFixedList(collection.getItems());
                     }
                 }) {
-            @Override
-            public void failed() {
-                super.failed();
-                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-            }
+
         };
 
         /* Initiate the REST calls */
@@ -648,7 +637,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                         }
 
                         @Override
-                        public void failed() {
+                        public void failed(final Message message, final Throwable throwable) {
                             Window.alert(PressGangCCMSUI.INSTANCE.ErrorSavingTopic());
                             display.removeWaitOperation();
                             topicXMLDisplay.getEditor().redisplay();
@@ -919,11 +908,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                                         .getXml(), sourceTopicLabel);
                             }
                         }) {
-                    @Override
-                    public void failed() {
-                        super.failed();
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                    }
+
                 };
                 RESTCalls.getTopicRevision(callback, revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision());
             }
@@ -974,7 +959,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         if (!displayedTopic.getTags().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
             unsavedChanges = true;
         }
-        
+
         /*
          * If any values in selectedTopic don't match displayedTopic, we have unsaved changes
          */
@@ -986,7 +971,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
             unsavedChanges = true;
         if (!GWTUtilities.compareStrings(selectedTopic.getXml(), displayedTopic.getXml()))
             unsavedChanges = true;
-        
+
         /* Prompt the user if they are happy to lose their changes */
         if (unsavedChanges) {
             return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());

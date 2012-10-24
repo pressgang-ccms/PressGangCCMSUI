@@ -157,20 +157,7 @@ public class TagsFilteredResultsAndTagPresenter implements TemplatePresenter {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
         }
 
-        final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
-        for (final String queryStringElement : queryStringElements) {
-            final String[] queryElements = queryStringElement.split("=");
-
-            if (queryElements.length == 2) {
-                if (queryElements[0].equals("tagIds")) {
-                    this.filteredResultsDisplay.getIdFilter().setText(queryElements[1]);
-                } else if (queryElements[0].equals("tagName")) {
-                    this.filteredResultsDisplay.getNameFilter().setText(queryElements[1]);
-                } else if (queryElements[0].equals("tagDesc")) {
-                    this.filteredResultsDisplay.getDescriptionFilter().setText(queryElements[1]);
-                }
-            }
-        }
+        
     }
 
 }

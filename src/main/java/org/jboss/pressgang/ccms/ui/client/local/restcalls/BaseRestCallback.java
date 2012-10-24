@@ -1,6 +1,10 @@
 package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
+import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+
+import com.google.gwt.user.client.Window;
 
 /**
  * @author kamiller@redhat.com (Katie Miller)
@@ -35,8 +39,9 @@ public abstract class BaseRestCallback<T, D extends BaseTemplateViewInterface> i
     }
 
     @Override
-    public void failed() {
+    public void failed(final Message message, final Throwable throwable) {
         display.removeWaitOperation();
+        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
     }
 
     public interface SuccessAction<T, D extends BaseTemplateViewInterface> {

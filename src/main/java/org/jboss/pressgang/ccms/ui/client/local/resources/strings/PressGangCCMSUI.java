@@ -18,6 +18,8 @@ public interface PressGangCCMSUI extends Constants {
 
     String Search();
     
+    String Create();
+    
     String SearchFields();
 
     String Common();
@@ -51,6 +53,8 @@ public interface PressGangCCMSUI extends Constants {
     String TopicXML();
 
     String SaveSuccess();
+    
+    String TagSaveSuccess();
 
     String ErrorGettingTopics();
 
@@ -155,6 +159,8 @@ public interface PressGangCCMSUI extends Constants {
     String PleaseUseFirefox();
 
     String ConnectionError();
+    
+    String InvalidInput();
 
     String ConfirmDelete();
 

@@ -93,7 +93,7 @@ public final class RESTCalls {
         /**
          * Called if the REST call was unsuccessful
          */
-        void failed();
+        void failed(final Message message, final Throwable throwable);
     }
 
     public interface RestMethodCaller {
@@ -118,7 +118,7 @@ public final class RESTCalls {
         final ErrorCallback errorCallback = new ErrorCallback() {
             @Override
             public boolean error(final Message message, final Throwable throwable) {
-                callback.failed();
+                callback.failed(message, throwable);
                 return true;
             }
         };
@@ -146,6 +146,17 @@ public final class RESTCalls {
             @Override
             public void call() throws Exception {
                 createRestMethod(callback).updateJSONTag(expand, tag);
+            }
+        });
+    }
+    
+    public static void createTag(final RESTCallback<RESTTagV1> callback, final RESTTagV1 tag) {
+        /* Expand the categories and projects in the tags */
+        final String expand = "{\"branches\":[" + TAG_EXPANSION + "]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).createJSONTag(expand, tag);
             }
         });
     }

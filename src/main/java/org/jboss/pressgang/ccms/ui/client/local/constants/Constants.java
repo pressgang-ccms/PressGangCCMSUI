@@ -8,6 +8,11 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
 public final class Constants {
     
     /**
+     * And ID that can not appear in the database.
+     */
+    public static final int NULL_ID = -1;
+    
+    /**
      * How long to wait before refreshing the rendered view (in milliseconds).
      */
     public static final int REFRESH_RATE = 1000;

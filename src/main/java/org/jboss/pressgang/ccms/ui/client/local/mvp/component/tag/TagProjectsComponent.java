@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.tag;
 
+import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
@@ -112,7 +113,7 @@ public class TagProjectsComponent extends ComponentBase<TagProjectsPresenter.Dis
             }
 
             @Override
-            public void failed() {
+            public void failed(final Message message, final Throwable throwable) {
                 display.removeWaitOperation();
                 Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
             }

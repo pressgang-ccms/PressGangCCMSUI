@@ -46,11 +46,7 @@ public class TopicTagsComponent extends TopicViewComponent<TopicTagsPresenter.Di
                         display.initializeNewTags(searchUIProjects);
                     }
                 }) {
-            @Override
-            public void failed() {
-                super.failed();
-                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-            }
+
         };
         RESTCalls.getTags(callback);
     }
@@ -76,4 +72,3 @@ public class TopicTagsComponent extends TopicViewComponent<TopicTagsPresenter.Di
         display.getAdd().addClickHandler(clickHandler);
     }
 }
-

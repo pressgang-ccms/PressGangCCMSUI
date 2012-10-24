@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.tag;
 
+import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -34,6 +35,25 @@ public class TagFilteredResultsComponent extends ComponentBase<TagFilteredResult
     public void bind(final String queryString, final TagFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
         super.bind(display, waitDisplay);
         display.setProvider(generateListProvider(queryString, display, waitDisplay));
+        displayQueryElements(queryString);
+    }
+    
+    private void displayQueryElements(final String queryString)
+    {
+        final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
+        for (final String queryStringElement : queryStringElements) {
+            final String[] queryElements = queryStringElement.split("=");
+
+            if (queryElements.length == 2) {
+                if (queryElements[0].equals("tagIds")) {
+                    this.display.getIdFilter().setText(queryElements[1]);
+                } else if (queryElements[0].equals("tagName")) {
+                    this.display.getNameFilter().setText(queryElements[1]);
+                } else if (queryElements[0].equals("tagDesc")) {
+                    this.display.getDescriptionFilter().setText(queryElements[1]);
+                }
+            }
+        }
     }
 
     /**
@@ -43,19 +63,19 @@ public class TagFilteredResultsComponent extends ComponentBase<TagFilteredResult
             final TagFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTagCollectionItemV1> display) {
+            protected void onRangeChanged(final HasData<RESTTagCollectionItemV1> range) {
 
                 final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
                     @Override
                     public void begin() {
                         resetProvider();
-                        waitDisplay.addWaitOperation();
+                        display.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception e) {
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        waitDisplay.removeWaitOperation();
+                        display.removeWaitOperation();
                     }
 
                     @Override
@@ -66,24 +86,25 @@ public class TagFilteredResultsComponent extends ComponentBase<TagFilteredResult
                             displayAsynchronousList(tagProviderData.getItems(), retValue.getSize(),
                                     tagProviderData.getStartRow());
                         } finally {
-                            waitDisplay.removeWaitOperation();
+                            display.removeWaitOperation();
                         }
                     }
 
                     @Override
-                    public void failed() {
-                        waitDisplay.removeWaitOperation();
+                    public void failed(final Message message, final Throwable throwable) {
+                        display.removeWaitOperation();
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
                 };
 
-                tagProviderData.setStartRow(display.getVisibleRange().getStart());
-                final int length = display.getVisibleRange().getLength();
+                tagProviderData.setStartRow(range.getVisibleRange().getStart());
+                final int length = range.getVisibleRange().getLength();
                 final int end = tagProviderData.getStartRow() + length;
 
                 RESTCalls.getTagsFromQuery(callback, queryString, tagProviderData.getStartRow(), end);
             }
         };
+        
         return provider;
     }
     

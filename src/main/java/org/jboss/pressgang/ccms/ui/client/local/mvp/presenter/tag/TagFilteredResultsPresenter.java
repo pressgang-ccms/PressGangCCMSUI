@@ -37,8 +37,9 @@ public class TagFilteredResultsPresenter implements TemplatePresenter {
 
         TextBox getNameFilter();
 
-        @Override
         PushButton getSearch();
+        
+        PushButton getCreate();
     }
     
     public interface LogicComponent extends Component<Display>

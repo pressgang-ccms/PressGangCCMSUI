@@ -33,6 +33,7 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
     private final Label descriptionFilterLabel = new Label(PressGangCCMSUI.INSTANCE.TagDescription());
     private final TextBox descriptionFilter = new TextBox();
     private final PushButton search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
+    private final PushButton create = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Create());
 
     private final SimplePager pager = new SimplePager();
     private final CellTable<RESTTagCollectionItemV1> results = new CellTable<RESTTagCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
@@ -94,6 +95,7 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Images());
 
         this.addActionButton(search);
+        this.addActionButton(create);
         this.addRightAlignedActionButtonPaddingPanel();
 
         results.addColumn(idColumn, PressGangCCMSUI.INSTANCE.TagID());
@@ -121,5 +123,9 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
     @Override
     public PushButton getSearch() {
         return search;
+    }
+
+    public PushButton getCreate() {
+        return create;
     }
 }

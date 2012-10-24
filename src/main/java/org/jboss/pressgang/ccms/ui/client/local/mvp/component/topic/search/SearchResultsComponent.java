@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.search;
 
+import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
@@ -83,7 +84,7 @@ public class SearchResultsComponent extends ComponentBase<SearchResultsPresenter
                     }
 
                     @Override
-                    public void failed() {
+                    public void failed(final Message message, final Throwable throwable) {
                         display.removeWaitOperation();
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }

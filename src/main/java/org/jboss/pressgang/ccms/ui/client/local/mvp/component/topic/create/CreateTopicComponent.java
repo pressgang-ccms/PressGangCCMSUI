@@ -160,7 +160,8 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             final TopicXMLPresenter.Display topicXMLDisplay, final TopicXMLPresenter.LogicComponent topicXMLComponent,
             final TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay,
             final TopicXMLErrorsPresenter.LogicComponent topicXMLErrorsComponent,
-            final TopicTagsPresenter.Display topicTagsDisplay, final TopicTagsPresenter.LogicComponent topicTagsComponent, final TopicRenderedPresenter.Display topicRenderedDisplay,
+            final TopicTagsPresenter.Display topicTagsDisplay, final TopicTagsPresenter.LogicComponent topicTagsComponent,
+            final TopicRenderedPresenter.Display topicRenderedDisplay,
             final TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay, final CreateTopicPresenter.Display display,
             final BaseTemplateViewInterface waitDisplay) {
 
@@ -175,7 +176,8 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         this.topicTagsComponent = topicTagsComponent;
         this.topicSplitPanelRenderedDisplay = topicSplitPanelRenderedDisplay;
         this.topicRenderedDisplay = topicRenderedDisplay;
-        updatableTopicViews = new TopicViewInterface[] { topicViewDisplay, topicTagsDisplay, topicXMLDisplay, topicXMLErrorsDisplay, topicRenderedDisplay };
+        updatableTopicViews = new TopicViewInterface[] { topicViewDisplay, topicTagsDisplay, topicXMLDisplay,
+                topicXMLErrorsDisplay, topicRenderedDisplay };
         editableTopicViews = new TopicViewInterface[] { topicViewDisplay, topicXMLDisplay };
 
         /* Create an initial collection to hold any new tags, urls and property tags */
@@ -186,9 +188,9 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         /* initialise the GWT editors */
         updateViews();
         bindTagEditingButtons();
-        
+
         initializeDisplay();
-               
+
         topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
         updateDisplayedTopicView(topicViewDisplay);
 
@@ -236,7 +238,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
 
         RESTCalls.getStringConstant(callback, ServiceConstants.TOPIC_TEMPLATE);
     }
-    
+
     /**
      * Load the split panel sizes
      */
@@ -254,7 +256,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                             Constants.SPLIT_PANEL_SIZE), false);
         }
     }
-    
+
     /**
      * Respond to the split panel resizing by redisplaying the ACE editor component
      */
@@ -265,11 +267,11 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 if (topicXMLDisplay.getEditor() != null) {
                     topicXMLDisplay.getEditor().redisplay();
                 }
-                
+
                 /*
                  * Saves the width of the split screen
                  */
-                
+
                 if (split == SplitType.HORIZONTAL) {
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH, display
                             .getSplitPanel().getSplitPosition(topicSplitPanelRenderedDisplay.getPanel().getParent()) + "");
@@ -422,13 +424,13 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 updateDisplayedTopicView(lastView);
             }
         };
-        
+
         final ClickHandler topicRenderedClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 /* Sync any changes back to the underlying object */
                 flushChanges();
-                updateDisplayedTopicView(topicRenderedDisplay);                
+                updateDisplayedTopicView(topicRenderedDisplay);
             }
         };
 
@@ -492,11 +494,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                         }
                     }
                 }) {
-            @Override
-            public void failed() {
-                super.failed();
-                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-            }
+
         };
 
         RESTCalls.getTopicWithTags(topicWithTagsCallback, newTopic.getId());
@@ -549,17 +547,14 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 /* Do an initial update */
                 topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split);
             }
-        }
-        else if (selectedView == this.topicTagsDisplay)
-        {
+        } else if (selectedView == this.topicTagsDisplay) {
             bindTagEditingButtons();
         }
 
         lastView = selectedView;
     }
-    
-    private void updateViews()
-    {
+
+    private void updateViews() {
         /* refresh the data being displayed */
         for (final TopicViewInterface view : this.updatableTopicViews) {
             view.initialize(newTopic, false, true, split);
@@ -587,10 +582,10 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
 
     @Override
     public boolean checkForUnsavedChanges() {
-        
+
         /* Save any pending changes */
         flushChanges();
-        
+
         final boolean lastSavedTopicIsNull = lastSavedTopic == null;
         boolean unsavedChanges = false;
 
@@ -604,22 +599,19 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             newTopicIsEmpty = false;
         if (newTopic.getXml() != null && !newTopic.getXml().trim().isEmpty())
             newTopicIsEmpty = false;
-        
+
         /* If there are any modified tags in newTopic, we have unsaved changes */
-        if (!newTopic.getTags().returnDeletedAddedAndUpdatedCollectionItems().isEmpty())
-        {
+        if (!newTopic.getTags().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
             unsavedChanges = true;
         }
-        
+
         /* If there are any modified property tags in newTopic, we have unsaved changes */
-        if (!newTopic.getProperties().returnDeletedAddedAndUpdatedCollectionItems().isEmpty())
-        {
+        if (!newTopic.getProperties().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
             unsavedChanges = true;
         }
-        
+
         /* If there are any modified source urls in newTopic, we have unsaved changes */
-        if (!newTopic.getSourceUrls_OTM().returnDeletedAddedAndUpdatedCollectionItems().isEmpty())
-        {
+        if (!newTopic.getSourceUrls_OTM().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
             unsavedChanges = true;
         }
 
@@ -638,7 +630,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         }
         /* The second state is where newTopics has been saved */
         else {
-            
+
             /*
              * If any values in newTopic don't match lastSavedTopic, wehave unsaved changes
              */

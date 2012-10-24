@@ -5,6 +5,8 @@ import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.errai.bus.client.api.Message;
+import org.jboss.errai.enterprise.client.jaxrs.api.ResponseException;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
@@ -45,6 +47,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
@@ -55,20 +58,17 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
 
     @Inject
     private HandlerManager eventBus;
-    
-    /** The currently displayed view */
-    private TagViewInterface displayedView;
 
     /** The last displayed view */
     private TagViewInterface lastDisplayedView;
-    
+
     private TagFilteredResultsPresenter.Display filteredResultsDisplay;
     private TagFilteredResultsPresenter.LogicComponent filteredResultsComponent;
     private TagPresenter.Display resultDisplay;
     private TagPresenter.LogicComponent resultComponent;
     private TagProjectsPresenter.Display projectsDisplay;
     private TagProjectsPresenter.LogicComponent projectsComponent;
-    private TagCategoriesPresenter.Display categoriesDisplay;           
+    private TagCategoriesPresenter.Display categoriesDisplay;
     private TagCategoriesPresenter.LogicComponent categoriesComponent;
 
     /**
@@ -77,8 +77,7 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
     private final ClickHandler tagDetailsClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
-            displayedView = resultDisplay;
-            reInitialiseView();
+            reInitialiseView(resultDisplay);
         }
 
     };
@@ -89,8 +88,7 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
     private final ClickHandler tagProjectsClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
-            displayedView = projectsDisplay;
-            reInitialiseView();
+            reInitialiseView(projectsDisplay);
         }
     };
 
@@ -100,8 +98,7 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
     private final ClickHandler tagCategoriesClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
-            displayedView = categoriesDisplay;
-            reInitialiseView();
+            reInitialiseView(categoriesDisplay);
         }
     };
 
@@ -118,201 +115,254 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
             final boolean unsavedTagChanges = unsavedTagChanged();
             final boolean unsavedCategoryChanges = categoriesComponent.unsavedCategoryChanges();
 
+            /* Create the tag first */
+            saveTagChanges(unsavedTagChanges, unsavedCategoryChanges);
+
+        }
+
+        private void saveTagChanges(final boolean unsavedTagChanges, final boolean unsavedCategoryChanges) {
+
+            /* Was the tag we just saved a new tag? */
+            final boolean wasNewTag = filteredResultsComponent.getTagProviderData().getSelectedItem().returnIsAddItem();
+
+            /* Save any changes made to the tag entity itself */
+            final RESTCalls.RESTCallback<RESTTagV1> callback = new RESTCalls.RESTCallback<RESTTagV1>() {
+                @Override
+                public void begin() {
+                    display.addWaitOperation();
+                }
+
+                @Override
+                public void generalException(final Exception e) {
+                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+                    display.removeWaitOperation();
+                }
+
+                @Override
+                public void success(final RESTTagV1 retValue) {
+                    try {
+                        /* we are now viewing the object returned by the save */
+                        retValue.cloneInto(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem(), true);
+
+                        /* Update the list of tags with any saved changes */
+                        retValue.cloneInto(filteredResultsComponent.getTagProviderData().getSelectedItem().getItem(), true);
+
+                        /* refresh the list of tags */
+                        filteredResultsDisplay.getProvider().displayNewFixedList(
+                                filteredResultsComponent.getTagProviderData().getItems());
+
+                        if (unsavedCategoryChanges) {
+                            saveCategoryChanges(wasNewTag, filteredResultsComponent.getTagProviderData().getDisplayedItem()
+                                    .getItem().getId());
+                        } else {
+                            updateDisplayAfterSave(wasNewTag);
+                        }
+
+                        Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + retValue.getId());
+
+                    } finally {
+                        display.removeWaitOperation();
+                    }
+                }
+
+                @Override
+                public void failed(final Message message, final Throwable throwable) {
+                    try {
+                        if (throwable instanceof ResponseException)
+                        {
+                            final ResponseException ex = (ResponseException)throwable;
+                            if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST)
+                            {
+                                Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput());
+                            }
+                        }
+                        else
+                        {                        
+                            Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError() + "\n"
+                                    + (message != null ? message.toString() : "") + "\n"
+                                    + (throwable != null ? throwable.toString() : ""));
+                        }
+
+                    } finally {
+                        display.removeWaitOperation();
+                    }
+
+                }
+            };
+
+            /* Sync changes from the tag view */
+            final RESTTagV1 updateTag = new RESTTagV1();
+            updateTag.setId(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getId());
+            updateTag.explicitSetDescription(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem()
+                    .getDescription());
+            updateTag.explicitSetName(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getName());
+
             /*
-             * We refresh the list of categories when both save operations are complete. To do this we need to know when the
-             * final REST call has succeeded, which is noted by these two variables.
+             * Sync changes from the projects. categoriesComponent.getCategoryProviderData().getItems() contains a collection of
+             * all the projects, and their tags collections contain any added or removed tag relationships. Here we copy those
+             * modified relationships into the updateTag, so the changes are all done in one transaction.
              */
-            final Holder<Boolean> tagSaveComplete = new Holder<Boolean>(!unsavedTagChanges);
-            final Holder<Boolean> categorySaveComplete = new Holder<Boolean>(!unsavedCategoryChanges);
+            if (categoriesComponent.getCategoryProviderData().getItems() != null) {
+                updateTag.explicitSetCategories(new RESTCategoryInTagCollectionV1());
+                for (final RESTCategoryCollectionItemV1 category : categoriesComponent.getCategoryProviderData().getItems()) {
+                    for (final RESTTagInCategoryCollectionItemV1 tag : category.getItem().getTags()
+                            .returnDeletedAndAddedCollectionItems()) {
+                        /*
+                         * It should only be possible to add the currently displayed tag to the categories
+                         */
+                        if (tag.getItem().getId().equals(updateTag.getId())) {
 
-            /* Only attempt to save changes if there are changes to save */
-            if (unsavedTagChanged()) {
+                            final RESTCategoryInTagV1 addedCategory = new RESTCategoryInTagV1();
+                            addedCategory.setId(category.getItem().getId());
 
-                /* Save any changes made to the tag entity itself */
-                final RESTCalls.RESTCallback<RESTTagV1> callback = new RESTCalls.RESTCallback<RESTTagV1>() {
-                    @Override
-                    public void begin() {
-                        display.addWaitOperation();
-                    }
+                            final RESTCategoryInTagCollectionItemV1 collectionItem = new RESTCategoryInTagCollectionItemV1();
+                            collectionItem.setState(tag.getState());
+                            collectionItem.setItem(addedCategory);
 
-                    @Override
-                    public void generalException(final Exception e) {
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        display.removeWaitOperation();
-                        tagSaveComplete.setValue(true);
-                    }
-
-                    @Override
-                    public void success(final RESTTagV1 retValue) {
-                        try {
-                            tagSaveComplete.setValue(true);
-
-                            /* we are now viewing the object returned by the save */
-                            retValue.cloneInto(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem(), true);
-
-                            /* Update the list of tags with any saved changes */
-                            retValue.cloneInto(filteredResultsComponent.getTagProviderData().getSelectedItem().getItem(), true);
-
-                            /* refresh the list of tags */
-                            filteredResultsDisplay.getProvider().displayNewFixedList(filteredResultsComponent.getTagProviderData().getItems());
-
-                            /*
-                             * Reload the list of categoires and projects if this is the last REST call to succeed
-                             */
-                            if (categorySaveComplete.getValue())
-                                resetCategoryAndProjectsLists(false);
-
-                            /* refresh the display */
-                            reInitialiseView();
-                        } finally {
-                            display.removeWaitOperation();
-                        }
-                    }
-
-                    @Override
-                    public void failed() {
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        display.removeWaitOperation();
-                        tagSaveComplete.setValue(true);
-                    }
-                };
-
-                /* Sync changes from the tag view */
-                final RESTTagV1 updateTag = new RESTTagV1();
-                updateTag.setId(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getId());
-                updateTag.explicitSetDescription(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getDescription());
-                updateTag.explicitSetName(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getName());
-
-                /*
-                 * Sync changes from the categories. categoriesComponent.getCategoryProviderData().getItems() contains a collection of all the
-                 * categories, and their tags collections contain any added or removed tag relationships. Here we copy those
-                 * modified relationships into the updateTag, so the changes are all done in one transaction.
-                 */
-                if (categoriesComponent.getCategoryProviderData().getItems() != null) {
-                    updateTag.explicitSetCategories(new RESTCategoryInTagCollectionV1());
-                    for (final RESTCategoryCollectionItemV1 category : categoriesComponent.getCategoryProviderData().getItems()) {
-                        for (final RESTTagInCategoryCollectionItemV1 tag : category.getItem().getTags()
-                                .returnDeletedAndAddedCollectionItems()) {
-                            /*
-                             * It should only be possible to add the currently displayed tag to the categories
-                             */
-                            if (tag.getItem().getId().equals(updateTag.getId())) {
-
-                                final RESTCategoryInTagV1 addedCategory = new RESTCategoryInTagV1();
-                                addedCategory.setId(category.getItem().getId());
-
-                                final RESTCategoryInTagCollectionItemV1 collectionItem = new RESTCategoryInTagCollectionItemV1();
-                                collectionItem.setState(tag.getState());
-                                collectionItem.setItem(addedCategory);
-
-                                updateTag.getCategories().getItems().add(collectionItem);
-                            }
+                            updateTag.getCategories().getItems().add(collectionItem);
                         }
                     }
                 }
-
-                /*
-                 * Sync changes from the projects.
-                 */
-                if (projectsComponent.getProjectProviderData().getItems() != null) {
-                    updateTag.explicitSetProjects(new RESTProjectCollectionV1());
-                    for (final RESTProjectCollectionItemV1 project : projectsComponent.getProjectProviderData().getItems()) {
-                        for (final RESTTagCollectionItemV1 tag : project.getItem().getTags()
-                                .returnDeletedAndAddedCollectionItems()) {
-                            if (tag.getItem().getId().equals(updateTag.getId())) {
-
-                                final RESTProjectV1 addedProject = new RESTProjectV1();
-                                addedProject.setId(project.getItem().getId());
-
-                                final RESTProjectCollectionItemV1 collectionItem = new RESTProjectCollectionItemV1();
-                                collectionItem.setState(tag.getState());
-                                collectionItem.setItem(addedProject);
-
-                                updateTag.getProjects().getItems().add(collectionItem);
-                            }
-                        }
-                    }
-                }
-
-                RESTCalls.saveTag(callback, updateTag);
             }
 
-            /* Save the changes to the categories in a separate REST call */
-            if (categoriesComponent.unsavedCategoryChanges()) {
+            /*
+             * Sync changes from the projects.
+             */
+            if (projectsComponent.getProjectProviderData().getItems() != null) {
+                updateTag.explicitSetProjects(new RESTProjectCollectionV1());
+                for (final RESTProjectCollectionItemV1 project : projectsComponent.getProjectProviderData().getItems()) {
+                    for (final RESTTagCollectionItemV1 tag : project.getItem().getTags().returnDeletedAndAddedCollectionItems()) {
+                        if (tag.getItem().getId().equals(updateTag.getId())) {
 
-                /* Save any changes made to the tag entity itself */
-                final RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
-                    @Override
-                    public void begin() {
-                        display.addWaitOperation();
-                    }
+                            final RESTProjectV1 addedProject = new RESTProjectV1();
+                            addedProject.setId(project.getItem().getId());
 
-                    @Override
-                    public void generalException(final Exception e) {
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        display.removeWaitOperation();
-                        categorySaveComplete.setValue(true);
-                    }
+                            final RESTProjectCollectionItemV1 collectionItem = new RESTProjectCollectionItemV1();
+                            collectionItem.setState(tag.getState());
+                            collectionItem.setItem(addedProject);
 
-                    @Override
-                    public void success(final RESTCategoryCollectionV1 retValue) {
-                        try {
-                            /*
-                             * Reload the list of categoires and projects if this is the last REST call to succeed
-                             */
-                            if (tagSaveComplete.getValue())
-                                resetCategoryAndProjectsLists(false);
-
-                            /* refresh the display */
-                            reInitialiseView();
-                        } finally {
-                            display.removeWaitOperation();
-                            categorySaveComplete.setValue(true);
-                        }
-
-                    }
-
-                    @Override
-                    public void failed() {
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        display.removeWaitOperation();
-                        categorySaveComplete.setValue(true);
-                    }
-                };
-
-                final RESTCategoryCollectionV1 updatedCategories = new RESTCategoryCollectionV1();
-
-                for (final RESTCategoryCollectionItemV1 category : categoriesComponent.getCategoryProviderData().getItems()) {
-                    final List<RESTTagInCategoryCollectionItemV1> updatedItems = category.getItem().getTags()
-                            .returnUpdatedCollectionItems();
-
-                    /* this should always be greater than 0 */
-                    if (updatedItems.size() != 0) {
-                        /* Create the category that we are updating */
-                        final RESTCategoryV1 updatedCategory = new RESTCategoryV1();
-                        updatedCategory.setId(category.getItem().getId());
-                        updatedCategory.explicitSetTags(new RESTTagInCategoryCollectionV1());
-
-                        /* Add it to the collection */
-                        updatedCategories.addItem(updatedCategory);
-
-                        for (final RESTTagInCategoryCollectionItemV1 tag : updatedItems) {
-                            /* create a new tag to represent the one that we are updating */
-                            final RESTTagInCategoryV1 updatedTag = new RESTTagInCategoryV1();
-                            updatedTag.explicitSetRelationshipId(tag.getItem().getRelationshipId());
-                            updatedTag.explicitSetRelationshipSort(tag.getItem().getRelationshipSort());
-                            updatedTag.setId(tag.getItem().getId());
-
-                            /* add it to the collection */
-                            updatedCategory.getTags().addUpdateItem(updatedTag);
+                            updateTag.getProjects().getItems().add(collectionItem);
                         }
                     }
                 }
+            }
 
-                RESTCalls.saveCategories(callback, updatedCategories);
+            /*
+             * If this is a new tag, it needs to be saved in order to get the tag id to complete the category updates. Upon
+             * success, the categories will be updated.
+             */
+            if (unsavedTagChanges) {
+                if (wasNewTag) {
+                    RESTCalls.createTag(callback, updateTag);
+                } else {
+                    RESTCalls.saveTag(callback, updateTag);
+                }
+            }
+            /*
+             * If there are no tag changes but there are pending category changes, apply them. There should never be a situation
+             * where a there are no tag changes but the tag is new.
+             */
+            else if (unsavedCategoryChanges && !wasNewTag) {
+
+                saveCategoryChanges(false, null);
             }
         }
+
+        /**
+         * Saves the changes to the tags within the categories
+         * 
+         * @param wasNewTag true if we just created a new tag
+         * @param newTagId the id of the new tag, to replace any tags with the NULL_ID placeholder id. If null, no replacement
+         *        is done
+         */
+        private void saveCategoryChanges(final boolean wasNewTag, final Integer newTagId) {
+            /* Save any changes made to the tag entity itself */
+            final RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
+                @Override
+                public void begin() {
+                    display.addWaitOperation();
+                }
+
+                @Override
+                public void generalException(final Exception e) {
+                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+                    display.removeWaitOperation();
+                }
+
+                @Override
+                public void success(final RESTCategoryCollectionV1 retValue) {
+                    try {
+                        /*
+                         * Reload the list of categories and projects if this is the last REST call to succeed
+                         */
+                        updateDisplayAfterSave(wasNewTag);
+                    } finally {
+                        display.removeWaitOperation();
+                    }
+
+                }
+
+                @Override
+                public void failed(final Message message, final Throwable throwable) {
+                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+                    display.removeWaitOperation();
+                }
+            };
+
+            final RESTCategoryCollectionV1 updatedCategories = new RESTCategoryCollectionV1();
+
+            for (final RESTCategoryCollectionItemV1 category : categoriesComponent.getCategoryProviderData().getItems()) {
+                final List<RESTTagInCategoryCollectionItemV1> updatedItems = category.getItem().getTags()
+                        .returnUpdatedCollectionItems();
+
+                /* this should always be greater than 0 */
+                if (updatedItems.size() != 0) {
+                    /* Create the category that we are updating */
+                    final RESTCategoryV1 updatedCategory = new RESTCategoryV1();
+                    updatedCategory.setId(category.getItem().getId());
+                    updatedCategory.explicitSetTags(new RESTTagInCategoryCollectionV1());
+
+                    /* Add it to the collection */
+                    updatedCategories.addItem(updatedCategory);
+
+                    for (final RESTTagInCategoryCollectionItemV1 tag : updatedItems) {
+                        /* create a new tag to represent the one that we are updating */
+                        final RESTTagInCategoryV1 updatedTag = new RESTTagInCategoryV1();
+                        updatedTag.explicitSetRelationshipId(tag.getItem().getRelationshipId());
+                        updatedTag.explicitSetRelationshipSort(tag.getItem().getRelationshipSort());
+
+                        /*
+                         * If we were editing a new tag, it is possible that a tag with a NULL_ID is in the category tags
+                         * collection. If so, replace it with the id that was assigned to the created tag.
+                         */
+                        updatedTag.setId(tag.getItem().getId() == Constants.NULL_ID && newTagId != null ? newTagId : tag
+                                .getItem().getId());
+
+                        /* add it to the collection */
+                        updatedCategory.getTags().addUpdateItem(updatedTag);
+                    }
+                }
+            }
+
+            RESTCalls.saveCategories(callback, updatedCategories);
+        }
     };
+
+    /**
+     * Called after a tag has been saved
+     * 
+     * @param wasNewTag true if the tag just saved was a new tag, false otherwise
+     */
+    private void updateDisplayAfterSave(final boolean wasNewTag) {
+        resetCategoryAndProjectsLists(false);
+        /* refresh the display */
+        reInitialiseView(lastDisplayedView);
+
+        /* If we just created a new tag, refresh the list of tags */
+        if (wasNewTag) {
+            filteredResultsComponent.bind(getQuery(), filteredResultsDisplay, display);
+        }
+    }
 
     @Override
     public void bind(final TagsFilteredResultsAndTagPresenter.Display display, BaseTemplateViewInterface waitDisplay,
@@ -320,21 +370,20 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
             final TagFilteredResultsPresenter.LogicComponent filteredResultsComponent,
             final TagPresenter.Display resultDisplay, final TagPresenter.LogicComponent resultComponent,
             final TagProjectsPresenter.Display projectsDisplay, final TagProjectsPresenter.LogicComponent projectsComponent,
-            final TagCategoriesPresenter.Display categoriesDisplay,           
-            final TagCategoriesPresenter.LogicComponent categoriesComponent ) {
-        
+            final TagCategoriesPresenter.Display categoriesDisplay,
+            final TagCategoriesPresenter.LogicComponent categoriesComponent) {
+
         super.bind(display, waitDisplay);
-        
+
         this.filteredResultsDisplay = filteredResultsDisplay;
-        this.filteredResultsComponent =filteredResultsComponent;
+        this.filteredResultsComponent = filteredResultsComponent;
         this.resultDisplay = resultDisplay;
         this.resultComponent = resultComponent;
         this.projectsDisplay = projectsDisplay;
         this.projectsComponent = projectsComponent;
         this.categoriesDisplay = categoriesDisplay;
         this.categoriesComponent = categoriesComponent;
-        
-        
+
         bindTagViewButtons();
         bindSearchButtons();
         bindMainSplitResize();
@@ -353,7 +402,8 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
                 boolean found = false;
 
                 for (final RESTTagCollectionItemV1 tag : object.getItem().getTags().getItems()) {
-                    if (tag.getItem().getId().equals(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getId())) {
+                    if (tag.getItem().getId()
+                            .equals(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getId())) {
                         /* Project was added and then removed */
                         if (tag.getState() == RESTBaseCollectionItemV1.ADD_STATE) {
                             object.getItem().getTags().getItems().remove(tag);
@@ -374,7 +424,8 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
                 }
 
                 if (!found) {
-                    final RESTTagV1 newTag = filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().clone(true);
+                    final RESTTagV1 newTag = filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem()
+                            .clone(true);
                     object.getItem().getTags().addNewItem(newTag);
                 }
 
@@ -411,7 +462,8 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
             public void update(final int index, final RESTCategoryCollectionItemV1 object, final String value) {
                 boolean found = false;
                 for (final RESTTagInCategoryCollectionItemV1 tag : object.getItem().getTags().getItems()) {
-                    if (tag.getItem().getId().equals(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getId())) {
+                    if (tag.getItem().getId()
+                            .equals(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getId())) {
                         /* Tag was added and then removed */
                         if (tag.returnIsAddItem()) {
                             object.getItem().getTags().getItems().remove(tag);
@@ -503,16 +555,12 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
                     /* All editing is done in a clone of the selected tag. Any expanded collections will be copied into this tag */
                     filteredResultsComponent.getTagProviderData().setDisplayedItem(event.getValue().clone(true));
 
-                    /*
-                     * If this is the first image selected, display the image view
-                     */
-                    if (displayedView == null) {
-                        displayedView = resultDisplay;
-                    }
-
                     resetCategoryAndProjectsLists(true);
 
-                    reInitialiseView();
+                    /*
+                     * If this is the first tag selected, display the image view
+                     */
+                    reInitialiseView(lastDisplayedView == null ? resultDisplay : lastDisplayedView);
                 }
             }
         });
@@ -529,7 +577,8 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
         if (filteredResultsComponent.getTagProviderData().getDisplayedItem() != null) {
             resultDisplay.getDriver().flush();
 
-            if (unsavedTagChanged() || categoriesComponent.unsavedCategoryChanges() || projectsComponent.unsavedProjectChanges()) {
+            if (unsavedTagChanged() || categoriesComponent.unsavedCategoryChanges()
+                    || projectsComponent.unsavedProjectChanges()) {
                 return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
             }
         }
@@ -546,15 +595,19 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
          * See if any items have been added or removed from the project and category lists
          */
         final boolean unsavedCategoryChanges = categoriesComponent.getCategoryProviderData().getItems() != null
-                && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems(categoriesComponent.getCategoryProviderData().getItems());
+                && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems(categoriesComponent.getCategoryProviderData()
+                        .getItems());
         final boolean unsavedProjectChanges = projectsComponent.getProjectProviderData().getItems() != null
-                && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems( projectsComponent.getProjectProviderData().getItems());
+                && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems(projectsComponent.getProjectProviderData()
+                        .getItems());
 
         /* See if any of the fields were changed */
-        final boolean unsavedDescriptionChanges = !GWTUtilities.compareStrings(filteredResultsComponent.getTagProviderData().getSelectedItem().getItem()
-                .getDescription(), filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getDescription());
-        final boolean unsavedNameChanges = !GWTUtilities.compareStrings(filteredResultsComponent.getTagProviderData().getSelectedItem().getItem().getName(),
-                filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getName());
+        final boolean unsavedDescriptionChanges = !GWTUtilities.compareStrings(filteredResultsComponent.getTagProviderData()
+                .getSelectedItem().getItem().getDescription(), filteredResultsComponent.getTagProviderData().getDisplayedItem()
+                .getItem().getDescription());
+        final boolean unsavedNameChanges = !GWTUtilities.compareStrings(filteredResultsComponent.getTagProviderData()
+                .getSelectedItem().getItem().getName(), filteredResultsComponent.getTagProviderData().getDisplayedItem()
+                .getItem().getName());
 
         return unsavedCategoryChanges || unsavedProjectChanges || unsavedDescriptionChanges || unsavedNameChanges;
     }
@@ -582,8 +635,33 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
                     eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(getQuery()));
             }
         });
+
+        filteredResultsDisplay.getCreate().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+
+                /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
+                final RESTTagV1 selectedTag = new RESTTagV1();
+                selectedTag.setId(Constants.NULL_ID);
+                final RESTTagCollectionItemV1 selectedTagWrapper = new RESTTagCollectionItemV1(selectedTag,
+                        RESTBaseCollectionItemV1.ADD_STATE);
+
+                /* The displayed tag will also be blank. This ins the object that our data will be saved into */
+                final RESTTagV1 displayedTag = new RESTTagV1();
+                displayedTag.setId(Constants.NULL_ID);
+                final RESTTagCollectionItemV1 displayedTagWrapper = new RESTTagCollectionItemV1(displayedTag,
+                        RESTBaseCollectionItemV1.ADD_STATE);
+
+                filteredResultsComponent.getTagProviderData().setSelectedItem(selectedTagWrapper);
+                filteredResultsComponent.getTagProviderData().setDisplayedItem(displayedTagWrapper);
+
+                resetCategoryAndProjectsLists(true);
+
+                reInitialiseView(lastDisplayedView == null ? resultDisplay : lastDisplayedView);
+            }
+        });
     }
-    
+
     private String getQuery() {
         final StringBuilder retValue = new StringBuilder(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON);
         if (!filteredResultsDisplay.getIdFilter().getText().isEmpty()) {
@@ -602,7 +680,7 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
     /**
      * Called when the selected tag is changed, or the selected view is changed.
      */
-    protected void reInitialiseView() {
+    protected void reInitialiseView(final TagViewInterface displayedView) {
         /* save any changes as we move between views */
         if (lastDisplayedView == resultDisplay) {
             resultDisplay.getDriver().flush();

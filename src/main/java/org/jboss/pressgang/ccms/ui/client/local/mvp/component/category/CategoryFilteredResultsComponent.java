@@ -1,12 +1,15 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.category;
 
+import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter.LogicCompnent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
@@ -74,7 +77,7 @@ public class CategoryFilteredResultsComponent extends ComponentBase<CategoryFilt
                     }
 
                     @Override
-                    public void failed() {
+                    public void failed(final Message message, final Throwable throwable) {
                         display.removeWaitOperation();
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
@@ -85,6 +88,9 @@ public class CategoryFilteredResultsComponent extends ComponentBase<CategoryFilt
                 final int end = categoryProviderData.getStartRow() + length;
 
                 RESTCalls.getCategoriesFromQuery(callback, queryString, categoryProviderData.getStartRow(), end);
+                
+                
+
             }
         };
         return provider;

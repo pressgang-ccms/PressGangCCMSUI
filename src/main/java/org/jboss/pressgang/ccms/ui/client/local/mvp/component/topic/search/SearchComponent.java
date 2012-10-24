@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.search;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter;
@@ -36,16 +37,6 @@ public class SearchComponent extends ComponentBase<SearchPresenter.Display> impl
                         display.initialise(retValue);
                     }
                 }) {
-            @Override
-            public void generalException(Exception e) {
-                Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTags());
-                super.generalException(e);
-            }
-
-            @Override
-            public void failed() {
-                super.failed();
-            }
         };
         RESTCalls.getTags(callback);
     }

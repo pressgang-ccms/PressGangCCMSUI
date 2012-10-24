@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.image;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
@@ -292,7 +293,7 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
                                                 }
                                             }) {
                                         @Override
-                                        public void failed() {
+                                        public void failed(final Message message, final Throwable throwable) {
                                             waitDisplay.removeWaitOperation();
                                             Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                                         }
@@ -340,7 +341,7 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
                 }) {
 
             @Override
-            public void failed() {
+            public void failed(final Message message, final Throwable throwable) {
                 display.removeWaitOperation();
                 Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
             }

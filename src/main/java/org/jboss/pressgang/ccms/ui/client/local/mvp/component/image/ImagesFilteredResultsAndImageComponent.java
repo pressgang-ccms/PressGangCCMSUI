@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.image;
 
+import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -91,7 +92,7 @@ public class ImagesFilteredResultsAndImageComponent extends ComponentBase<Images
                         }
 
                         @Override
-                        public void failed() {
+                        public void failed(final Message message, final Throwable throwable) {
                             display.removeWaitOperation();
                             Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                         }

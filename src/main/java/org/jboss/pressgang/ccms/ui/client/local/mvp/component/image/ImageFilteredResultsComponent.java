@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.image;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -108,7 +109,7 @@ public class ImageFilteredResultsComponent extends ComponentBase<ImageFilteredRe
                     }
 
                     @Override
-                    public void failed() {
+                    public void failed(final Message message, final Throwable throwable) {
                         display.removeWaitOperation();
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
