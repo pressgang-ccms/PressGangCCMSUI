@@ -32,6 +32,8 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 
@@ -190,6 +192,8 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
         updateDisplayedTopicView(topicViewDisplay);
 
+        loadSplitPanelSize();
+        bindSplitPanelResize();
         bindTopActionButtons();
 
         getTopicTemplate();
@@ -231,6 +235,50 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         };
 
         RESTCalls.getStringConstant(callback, ServiceConstants.TOPIC_TEMPLATE);
+    }
+    
+    /**
+     * Load the split panel sizes
+     */
+    private void loadSplitPanelSize() {
+
+        if (split == SplitType.HORIZONTAL) {
+            display.getSplitPanel().setSplitPosition(
+                    topicSplitPanelRenderedDisplay.getPanel().getParent(),
+                    Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH,
+                            Constants.SPLIT_PANEL_SIZE), false);
+        } else if (split == SplitType.VERTICAL) {
+            display.getSplitPanel().setSplitPosition(
+                    topicSplitPanelRenderedDisplay.getPanel().getParent(),
+                    Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH,
+                            Constants.SPLIT_PANEL_SIZE), false);
+        }
+    }
+    
+    /**
+     * Respond to the split panel resizing by redisplaying the ACE editor component
+     */
+    private void bindSplitPanelResize() {
+        display.getSplitPanel().addResizeHandler(new ResizeHandler() {
+            @Override
+            public void onResize(final ResizeEvent event) {
+                if (topicXMLDisplay.getEditor() != null) {
+                    topicXMLDisplay.getEditor().redisplay();
+                }
+                
+                /*
+                 * Saves the width of the split screen
+                 */
+                
+                if (split == SplitType.HORIZONTAL) {
+                    Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH, display
+                            .getSplitPanel().getSplitPosition(topicSplitPanelRenderedDisplay.getPanel().getParent()) + "");
+                } else if (split == SplitType.VERTICAL) {
+                    Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH, display
+                            .getSplitPanel().getSplitPosition(topicSplitPanelRenderedDisplay.getPanel().getParent()) + "");
+                }
+            }
+        });
     }
 
     private void bindTopActionButtons() {

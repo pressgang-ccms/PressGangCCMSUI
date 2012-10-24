@@ -248,7 +248,6 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         bindSplitPanelResize();
         bindTagEditingButtons();
         loadSplitPanelSize();
-        bindMainSplitResize();
         this.topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
         bindTopicListRowClicks();
     }
@@ -405,28 +404,6 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
     }
 
     /**
-     * Saves the width of the split screen
-     */
-    private void bindMainSplitResize() {
-        display.getSplitPanel().addResizeHandler(new ResizeHandler() {
-
-            @Override
-            public void onResize(final ResizeEvent event) {
-                Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, display.getSplitPanel()
-                        .getSplitPosition(display.getResultsViewLayoutPanel()) + "");
-
-                if (split == SplitType.HORIZONTAL) {
-                    Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH, display
-                            .getSplitPanel().getSplitPosition(topicSplitPanelRenderedDisplay.getPanel().getParent()) + "");
-                } else if (split == SplitType.VERTICAL) {
-                    Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH, display
-                            .getSplitPanel().getSplitPosition(topicSplitPanelRenderedDisplay.getPanel().getParent()) + "");
-                }
-            }
-        });
-    }
-
-    /**
      * Load the split panel sizes
      */
     private void loadSplitPanelSize() {
@@ -495,6 +472,21 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
             public void onResize(final ResizeEvent event) {
                 if (topicXMLDisplay.getEditor() != null) {
                     topicXMLDisplay.getEditor().redisplay();
+                }
+                
+                /*
+                 * Saves the width of the split screen
+                 */
+                
+                Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, display.getSplitPanel()
+                        .getSplitPosition(display.getResultsViewLayoutPanel()) + "");
+
+                if (split == SplitType.HORIZONTAL) {
+                    Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH, display
+                            .getSplitPanel().getSplitPosition(topicSplitPanelRenderedDisplay.getPanel().getParent()) + "");
+                } else if (split == SplitType.VERTICAL) {
+                    Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH, display
+                            .getSplitPanel().getSplitPosition(topicSplitPanelRenderedDisplay.getPanel().getParent()) + "");
                 }
             }
         });
@@ -984,7 +976,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         }
         
         /*
-         * If any values in displayedTopic don't match displayedTopic, we have unsaved changes
+         * If any values in selectedTopic don't match displayedTopic, we have unsaved changes
          */
         if (!GWTUtilities.compareStrings(selectedTopic.getTitle(), displayedTopic.getTitle()))
             unsavedChanges = true;
