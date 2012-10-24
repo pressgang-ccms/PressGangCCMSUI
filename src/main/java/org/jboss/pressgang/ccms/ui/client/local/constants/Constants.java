@@ -70,8 +70,8 @@ public final class Constants {
     /**
      * The REST server.
      */
-    public static final String BASE_URL = "http://localhost:8080/TopicIndex/";
-    //public static final String BASE_URL = "http://skynet-dev.usersys.redhat.com:8080/TopicIndex/";
+    //public static final String BASE_URL = "http://localhost:8080/TopicIndex/";
+    public static final String BASE_URL = "http://skynet-dev.usersys.redhat.com:8080/TopicIndex/";
     /**
      * The REST URL.
      */

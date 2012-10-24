@@ -34,6 +34,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -53,10 +54,9 @@ import com.google.gwt.view.client.HasData;
 public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsAndTopicPresenter.Display> implements
         SearchResultsAndTopicPresenter.LogicComponent {
 
- 
     /**
-     * false to indicate that the topic views should display action buttons
-     * applicabale to established topics (as opposed to new topics)
+     * false to indicate that the topic views should display action buttons applicabale to established topics (as opposed to new
+     * topics)
      */
     private static final boolean NEW_TOPIC = false;
 
@@ -234,9 +234,9 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         this.topicBugsDisplay = topicBugsDisplay;
         this.topicRevisionsDisplay = topicRevisionsDisplay;
         this.topicrevisionsComponent = topicrevisionsComponent;
-        
-        this.topicViews = new TopicViewInterface[] { topicViewDisplay, topicXMLDisplay,
-                topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay };
+
+        this.topicViews = new TopicViewInterface[] { topicViewDisplay, topicXMLDisplay, topicRenderedDisplay,
+                topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay };
 
         initializeDisplay();
 
@@ -274,7 +274,6 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         }
     }
 
-
     /**
      * Updates the current topic view
      */
@@ -295,8 +294,8 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
         /*
          * Need to do an initial call to initialize for the rendered view in the split pane
          */
-        topicSplitPanelRenderedDisplay
-                .initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, display.getSplitType());
+        topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
+                display.getSplitType());
         /* By default, stop the automatic updating of the rendered view panel */
         timer.cancel();
 
@@ -966,6 +965,42 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
                 }
             }
         });
+    }
+
+    @Override
+    public boolean checkForUnsavedChanges() {
+
+        /* Save any pending changes */
+        flushChanges();
+
+        final RESTTopicV1 displayedTopic = this.searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem();
+        final RESTTopicV1 selectedTopic = this.searchResultsComponent.getTopicProviderData().getSelectedItem().getItem();
+
+        boolean unsavedChanges = false;
+
+        /* If there are any modified tags in newTopic, we have unsaved changes */
+        if (!displayedTopic.getTags().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
+            unsavedChanges = true;
+        }
+        
+        /*
+         * If any values in displayedTopic don't match displayedTopic, we have unsaved changes
+         */
+        if (!GWTUtilities.compareStrings(selectedTopic.getTitle(), displayedTopic.getTitle()))
+            unsavedChanges = true;
+        if (!GWTUtilities.compareStrings(selectedTopic.getLocale(), displayedTopic.getLocale()))
+            unsavedChanges = true;
+        if (!GWTUtilities.compareStrings(selectedTopic.getDescription(), displayedTopic.getDescription()))
+            unsavedChanges = true;
+        if (!GWTUtilities.compareStrings(selectedTopic.getXml(), displayedTopic.getXml()))
+            unsavedChanges = true;
+        
+        /* Prompt the user if they are happy to lose their changes */
+        if (unsavedChanges) {
+            return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
+        }
+
+        return true;
     }
 
 }
