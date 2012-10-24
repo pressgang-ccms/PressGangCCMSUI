@@ -610,6 +610,18 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         {
             unsavedChanges = true;
         }
+        
+        /* If there are any modified property tags in newTopic, we have unsaved changes */
+        if (!newTopic.getProperties().returnDeletedAddedAndUpdatedCollectionItems().isEmpty())
+        {
+            unsavedChanges = true;
+        }
+        
+        /* If there are any modified source urls in newTopic, we have unsaved changes */
+        if (!newTopic.getSourceUrls_OTM().returnDeletedAddedAndUpdatedCollectionItems().isEmpty())
+        {
+            unsavedChanges = true;
+        }
 
         /*
          * The newTopic can be in two states. The first is where lastSavedTopic == null, which implies that the topics has not
