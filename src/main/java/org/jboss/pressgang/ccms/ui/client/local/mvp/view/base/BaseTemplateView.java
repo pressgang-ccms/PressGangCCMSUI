@@ -478,12 +478,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         // Do nothing by default
     }
     
-    @Override
-    public boolean checkForUnsavedChanges()
-    {
-        /* Assume no changes have been made by default */
-        return true;
-    }
+
     
     @Override
     public void setFeedbackLink(final String link)

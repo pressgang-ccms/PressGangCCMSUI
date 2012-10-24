@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
  * used to build up all views.
  * @author Matthew Casperson
  */
-public interface BaseTemplateViewInterface extends EditableView {
+public interface BaseTemplateViewInterface {
     
     /**
      * @return The container that holds the actions buttons (i.e. the horizontal row of buttons that are specific to a view)

@@ -16,7 +16,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 
 @Dependent
-public class SearchFieldPresenter implements EditableView, TemplatePresenter {
+public class SearchFieldPresenter implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "SearchFieldView";
 
@@ -44,11 +44,6 @@ public class SearchFieldPresenter implements EditableView, TemplatePresenter {
     public void go(final HasWidgets container) {
         GWTUtilities.clearContainerAndAddTopLevelPanel(container, display);
         component.bind(display, display);
-    }
-
-    @Override
-    public boolean checkForUnsavedChanges() {
-        return true;
     }
 
     @Override

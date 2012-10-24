@@ -28,6 +28,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewCategoryEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -52,7 +53,10 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
     private TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay;
     private TopicTagsPresenter.Display topicTagsDisplay;
     private TopicTagsPresenter.LogicComponent topicTagsComponent;
-    private TopicViewInterface[] topicViews;
+    /** A collection of views that can be edited and flushed back to their underlying objects */
+    private TopicViewInterface[] editableTopicViews;
+    /** A collecion view vies that can be updated */
+    private TopicViewInterface[] updatableTopicViews;
 
     /**
      * How the rendering panel is displayed
@@ -64,6 +68,9 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
 
     /** The new topicViewDisplay being created */
     private final RESTTopicV1 newTopic = new RESTTopicV1();
+
+    /** The state of the topic when it was last saved */
+    private RESTTopicV1 lastSavedTopic;
 
     /**
      * Setup automatic flushing and rendering.
@@ -151,7 +158,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             final TopicXMLPresenter.Display topicXMLDisplay, final TopicXMLPresenter.LogicComponent topicXMLComponent,
             final TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay,
             final TopicXMLErrorsPresenter.LogicComponent topicXMLErrorsComponent,
-            final TopicTagsPresenter.Display topicTagsDisplay, final TopicTagsPresenter.LogicComponent topicTagsComponent,
+            final TopicTagsPresenter.Display topicTagsDisplay, final TopicTagsPresenter.LogicComponent topicTagsComponent, final TopicRenderedPresenter.Display topicRenderedDisplay,
             final TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay, final CreateTopicPresenter.Display display,
             final BaseTemplateViewInterface waitDisplay) {
 
@@ -165,20 +172,21 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         this.topicTagsDisplay = topicTagsDisplay;
         this.topicTagsComponent = topicTagsComponent;
         this.topicSplitPanelRenderedDisplay = topicSplitPanelRenderedDisplay;
-        topicViews = new TopicViewInterface[] { topicViewDisplay, topicTagsDisplay, topicXMLDisplay, topicXMLErrorsDisplay };
-        
+        this.topicRenderedDisplay = topicRenderedDisplay;
+        updatableTopicViews = new TopicViewInterface[] { topicViewDisplay, topicTagsDisplay, topicXMLDisplay, topicXMLErrorsDisplay, topicRenderedDisplay };
+        editableTopicViews = new TopicViewInterface[] { topicViewDisplay, topicXMLDisplay };
+
         /* Create an initial collection to hold any new tags, urls and property tags */
         newTopic.setTags(new RESTTagCollectionV1());
         newTopic.setSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
         newTopic.setProperties(new RESTAssignedPropertyTagCollectionV1());
-        
+
         /* initialise the GWT editors */
-        for (final TopicViewInterface view : this.topicViews) {
-            view.initialize(newTopic, false, true, split);
-        }
-
+        updateViews();
+        bindTagEditingButtons();
+        
         initializeDisplay();
-
+               
         topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
         updateDisplayedTopicView(topicViewDisplay);
 
@@ -203,7 +211,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         /* Have to do this after the parseToken method has been called */
         display.initialize(split, topicSplitPanelRenderedDisplay.getPanel());
 
-        for (final TopicViewInterface view : topicViews) {
+        for (final TopicViewInterface view : updatableTopicViews) {
             view.buildSplitViewButtons(split);
         }
     }
@@ -214,7 +222,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                     @Override
                     public void doSuccessAction(final RESTStringConstantV1 retValue, final CreateTopicPresenter.Display display) {
                         newTopic.setXml(retValue.getValue());
-                        
+
                         /* Refresh the views */
                         topicXMLDisplay.initialize(newTopic, false, true, SplitType.NONE);
                         topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split);
@@ -281,6 +289,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                             @Override
                             public void doSuccessAction(final RESTTopicV1 retValue, final CreateTopicPresenter.Display display) {
                                 retValue.cloneInto(newTopic, true);
+                                lastSavedTopic = retValue;
                                 updateDisplayedTopicView(lastView);
                                 loadTags();
                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
@@ -345,6 +354,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL);
 
                 initializeDisplay();
+                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split);
                 updateDisplayedTopicView(lastView);
             }
         };
@@ -360,16 +370,27 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_HOIRZONTAL);
 
                 initializeDisplay();
+                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split);
                 updateDisplayedTopicView(lastView);
             }
         };
+        
+        final ClickHandler topicRenderedClickHandler = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                /* Sync any changes back to the underlying object */
+                flushChanges();
+                updateDisplayedTopicView(topicRenderedDisplay);                
+            }
+        };
 
-        for (final TopicViewInterface view : topicViews) {
+        for (final TopicViewInterface view : updatableTopicViews) {
             view.getTopicTags().addClickHandler(displayTagsClickHandler);
             view.getFields().addClickHandler(displayTopicClickHandler);
             view.getXml().addClickHandler(topicXMLClickHandler);
             view.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
             view.getSave().addClickHandler(saveClickHandler);
+            view.getRendered().addClickHandler(topicRenderedClickHandler);
 
             view.getRenderedSplit().addClickHandler(splitMenuHandler);
             view.getRenderedSplitOpen().addClickHandler(splitMenuCloseHandler);
@@ -401,9 +422,9 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
      */
     private void flushChanges() {
         /* Update the data object with the GUI changes */
-        for (final TopicViewInterface view : topicViews) {
+        for (final TopicViewInterface view : editableTopicViews) {
             /* Make sure we have a driver, and it is not a readonly view */
-            if (view.getDriver() != null && view != topicXMLErrorsDisplay && view != topicTagsDisplay) {
+            if (view.getDriver() != null) {
                 view.getDriver().flush();
             }
         }
@@ -439,6 +460,8 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
      * @param shownDisplay The currently displayed view
      */
     private void setShownDisplay(final TopicViewInterface shownDisplay) {
+        /* The main display is always visible */
+        this.display.setViewShown(true);
         this.topicViewDisplay.setViewShown(shownDisplay == topicViewDisplay);
         this.topicTagsDisplay.setViewShown(shownDisplay == topicTagsDisplay);
         this.topicXMLDisplay.setViewShown(shownDisplay == topicXMLDisplay);
@@ -450,9 +473,9 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
      */
     private void updateDisplayedTopicView(final TopicViewInterface selectedView) {
         if (lastView != selectedView) {
-            
+
             flushChanges();
-            
+
             setShownDisplay(selectedView);
 
             display.getTopicViewActionButtonsPanel().clear();
@@ -461,14 +484,11 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             display.getTopicViewPanel().clear();
             display.getTopicViewPanel().setWidget(selectedView.getPanel());
         }
-        
+
         /* By default, stop the automatic updating of the rendered view panel */
         timer.cancel();
 
-        /* refresh the data being displayed */
-        for (final TopicViewInterface view : this.topicViews) {
-            view.initialize(newTopic, false, true, split);
-        }
+        updateViews();
 
         if (selectedView == this.topicXMLDisplay) {
             /* Force a redisplay of the ACE editor */
@@ -482,14 +502,26 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split);
             }
         }
+        else if (selectedView == this.topicTagsDisplay)
+        {
+            bindTagEditingButtons();
+        }
 
         lastView = selectedView;
+    }
+    
+    private void updateViews()
+    {
+        /* refresh the data being displayed */
+        for (final TopicViewInterface view : this.updatableTopicViews) {
+            view.initialize(newTopic, false, true, split);
+        }
     }
 
     /**
      * Add behaviour to the tag delete buttons
      */
-    public void bindTagEditingButtons() {
+    private void bindTagEditingButtons() {
 
         /* This will be null if the tags have not been downloaded */
         if (topicTagsDisplay.getEditor() != null) {
@@ -503,5 +535,68 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 }
             }
         }
+    }
+
+    @Override
+    public boolean checkForUnsavedChanges() {
+        
+        /* Save any pending changes */
+        flushChanges();
+        
+        final boolean lastSavedTopicIsNull = lastSavedTopic == null;
+        boolean unsavedChanges = false;
+
+        /* See if any values have been set */
+        boolean newTopicIsEmpty = true;
+        if (newTopic.getLocale() != null && !newTopic.getLocale().trim().isEmpty())
+            newTopicIsEmpty = false;
+        if (newTopic.getDescription() != null && !newTopic.getDescription().trim().isEmpty())
+            newTopicIsEmpty = false;
+        if (newTopic.getTitle() != null && !newTopic.getTitle().trim().isEmpty())
+            newTopicIsEmpty = false;
+        if (newTopic.getXml() != null && !newTopic.getXml().trim().isEmpty())
+            newTopicIsEmpty = false;
+        
+        /* If there are any modified tags in newTopic, we have unsaved changes */
+        if (!newTopic.getTags().returnDeletedAddedAndUpdatedCollectionItems().isEmpty())
+        {
+            unsavedChanges = true;
+        }
+
+        /*
+         * The newTopic can be in two states. The first is where lastSavedTopic == null, which implies that the topics has not
+         * been saved.
+         */
+        if (lastSavedTopicIsNull) {
+
+            /*
+             * If the newTopic is empty, it means nothing has been set, and we have no changes to save.
+             */
+            if (!newTopicIsEmpty) {
+                unsavedChanges = true;
+            }
+        }
+        /* The second state is where newTopics has been saved */
+        else {
+            
+            /*
+             * If any values in newTopic don't match lastSavedTopic, wehave unsaved changes
+             */
+            if (!GWTUtilities.compareStrings(newTopic.getTitle(), lastSavedTopic.getTitle()))
+                unsavedChanges = true;
+            if (!GWTUtilities.compareStrings(newTopic.getLocale(), lastSavedTopic.getLocale()))
+                unsavedChanges = true;
+            if (!GWTUtilities.compareStrings(newTopic.getDescription(), lastSavedTopic.getDescription()))
+                unsavedChanges = true;
+            if (!GWTUtilities.compareStrings(newTopic.getXml(), lastSavedTopic.getXml()))
+                unsavedChanges = true;
+        }
+
+        /* Prompt the user if they are happy to lose thheir changes */
+        if (unsavedChanges) {
+            return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
+        }
+
+        return true;
     }
 }

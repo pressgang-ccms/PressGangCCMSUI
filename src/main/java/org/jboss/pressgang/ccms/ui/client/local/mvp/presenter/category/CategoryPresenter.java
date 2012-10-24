@@ -17,7 +17,7 @@ import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
-public class CategoryPresenter implements EditableView, TemplatePresenter {
+public class CategoryPresenter implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "CategoryView";
 
@@ -63,8 +63,4 @@ public class CategoryPresenter implements EditableView, TemplatePresenter {
         component.getCategory(categoryId);
     }
 
-    @Override
-    public boolean checkForUnsavedChanges() {
-        return true;
-    }
 }

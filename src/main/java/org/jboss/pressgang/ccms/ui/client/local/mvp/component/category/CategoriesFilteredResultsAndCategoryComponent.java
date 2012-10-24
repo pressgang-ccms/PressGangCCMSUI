@@ -128,7 +128,7 @@ public class CategoriesFilteredResultsAndCategoryComponent extends
      * 
      * @return true if the user wants to ignore the unsaved changes, false otherwise
      */
-    private boolean checkForUnsavedChanges() {
+    public boolean checkForUnsavedChanges() {
         /* sync the UI with the underlying tag */
         if (filteredResultsComponent.getCategoryProviderData().getDisplayedItem() != null) {
             resultDisplay.getDriver().flush();

@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public class WelcomePresenter implements EditableView, TemplatePresenter {
+public class WelcomePresenter implements TemplatePresenter {
     
     public static final String HISTORY_TOKEN = "WelcomeView";
     
@@ -40,11 +40,6 @@ public class WelcomePresenter implements EditableView, TemplatePresenter {
 
     @Override
     public void parseToken(final String historyToken) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public boolean checkForUnsavedChanges() {
-        return true;
+        
     }
 }

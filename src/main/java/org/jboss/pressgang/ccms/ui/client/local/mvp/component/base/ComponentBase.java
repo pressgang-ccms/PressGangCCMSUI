@@ -27,24 +27,31 @@ import com.google.gwt.user.client.Window;
  * @author Matthew Casperson
  * 
  */
-abstract public class ComponentBase<T extends BaseTemplateViewInterface> implements Component<T>{
+abstract public class ComponentBase<T extends BaseTemplateViewInterface> implements Component<T>, EditableView {
 
     @Inject
     private HandlerManager eventBus;
     
     protected BaseTemplateViewInterface waitDisplay;
     protected T display; 
+    
+    @Override
+    public boolean checkForUnsavedChanges()
+    {
+        /* Assume no changes have been made by default */
+        return true;
+    }
 
     /**
      * Called to bind the UI elements to event handlers.
      *
      * @param display The main template display
      */
-    protected void bindStandardButtons(final BaseTemplateViewInterface display, final EditableView editableView) {
+    protected void bindStandardButtons() {
         display.getSearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (editableView.checkForUnsavedChanges())
+                if (checkForUnsavedChanges())
                     eventBus.fireEvent(new SearchTagsFieldsAndFiltersViewEvent());
             }
         });
@@ -52,7 +59,7 @@ abstract public class ComponentBase<T extends BaseTemplateViewInterface> impleme
         display.getCreateTopic().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (editableView.checkForUnsavedChanges())
+                if (checkForUnsavedChanges())
                     eventBus.fireEvent(new CreateTopicViewEvent());
             }
         });
@@ -67,7 +74,7 @@ abstract public class ComponentBase<T extends BaseTemplateViewInterface> impleme
         display.getImages().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (editableView.checkForUnsavedChanges())
+                if (checkForUnsavedChanges())
                     eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
             }
         });
@@ -75,7 +82,7 @@ abstract public class ComponentBase<T extends BaseTemplateViewInterface> impleme
         display.getTags().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (editableView.checkForUnsavedChanges())
+                if (checkForUnsavedChanges())
                     eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
             }
         });
@@ -83,7 +90,7 @@ abstract public class ComponentBase<T extends BaseTemplateViewInterface> impleme
         display.getCategories().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (editableView.checkForUnsavedChanges())
+                if (checkForUnsavedChanges())
                     eventBus.fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
             }
         });
@@ -111,7 +118,7 @@ abstract public class ComponentBase<T extends BaseTemplateViewInterface> impleme
     {
         this.display = display;
         this.waitDisplay = waitDisplay;
-        bindStandardButtons(display, waitDisplay);
+        bindStandardButtons();
     }
     
     @Override

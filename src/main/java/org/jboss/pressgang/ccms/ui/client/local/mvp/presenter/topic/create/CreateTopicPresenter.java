@@ -35,9 +35,13 @@ public class CreateTopicPresenter implements TemplatePresenter {
 
     public interface Display extends BaseTemplateViewInterface {
         SimpleLayoutPanel getTopicViewActionButtonsPanel();
+
         DockLayoutPanel getTopicViewLayoutPanel();
+
         HandlerSplitLayoutPanel getSplitPanel();
+
         SimpleLayoutPanel getTopicViewPanel();
+
         void initialize(final SplitType splitType, final Panel panel);
     }
 
@@ -47,6 +51,7 @@ public class CreateTopicPresenter implements TemplatePresenter {
                 final TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay,
                 final TopicXMLErrorsPresenter.LogicComponent topicXMLErrorsComponent,
                 final TopicTagsPresenter.Display topicTagsDisplay, final TopicTagsPresenter.LogicComponent topicTagsComponent,
+                final TopicRenderedPresenter.Display topicRenderedDisplay,
                 final TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay,
                 final CreateTopicPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
     }
@@ -87,7 +92,13 @@ public class CreateTopicPresenter implements TemplatePresenter {
     /** The component that provides logic for the topic xml errors view */
     @Inject
     private TopicXMLErrorsPresenter.LogicComponent topicXMLErrorsComponent;
-    
+
+    /**
+     * The rendered topic view display
+     */
+    @Inject
+    private TopicRenderedPresenter.Display topicRenderedDisplay;
+
     /**
      * The rendered topic view display in a split panel
      */
@@ -105,8 +116,8 @@ public class CreateTopicPresenter implements TemplatePresenter {
         topicXMLComponent.bind(topicXML, display);
         topicXMLErrorsComponent.bind(topicXMLErrors, display);
 
-        component.bind(topic, topicComponent, topicXML, topicXMLComponent, topicXMLErrors,
-                topicXMLErrorsComponent, topicTags, topicTagsComponent, topicSplitPanelRenderedDisplay, display, display);
+        component.bind(topic, topicComponent, topicXML, topicXMLComponent, topicXMLErrors, topicXMLErrorsComponent, topicTags,
+                topicTagsComponent, topicRenderedDisplay, topicSplitPanelRenderedDisplay, display, display);
     }
 
     @Override

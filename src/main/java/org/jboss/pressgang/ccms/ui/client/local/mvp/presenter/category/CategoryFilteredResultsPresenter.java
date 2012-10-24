@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
 
 @Dependent
-public class CategoryFilteredResultsPresenter implements EditableView, TemplatePresenter {
+public class CategoryFilteredResultsPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "CategoryFilteredResultsView";
 
     public interface Display extends BaseTemplateViewInterface {
@@ -68,10 +68,5 @@ public class CategoryFilteredResultsPresenter implements EditableView, TemplateP
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         component.bind(queryString, display, display);
-    }
-
-    @Override
-    public boolean checkForUnsavedChanges() {
-        return true;
     }
 }
