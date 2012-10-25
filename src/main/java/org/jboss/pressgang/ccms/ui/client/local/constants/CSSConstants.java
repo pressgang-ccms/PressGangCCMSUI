@@ -9,6 +9,19 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
  */
 public interface CSSConstants {
 
+    public interface FilteredResultsView {
+        /** Assigned to the panel that holds the list of images. */
+        String FILTERED_RESULTS_PANEL = "FilteredResultsPanel";
+        /** Assigned to the panel that holds the filter options for images. */
+        String FILTERED_OPTIONS_PANEL = "FilteredOptionsPanel";
+    }
+    
+    public interface OrderedChildrenResultsView {
+        String ORDERED_CHILDREN_LIST_PANEL = "OrderedChildrenListPanel";
+        String ORDERED_CHILDREN_EXISTING_LIST_PANEL = "OrderedChildrenExistingListPanel";
+        String ORDERED_CHILDREN_SPLIT_PANEL = "OrderedChildrenSplitPanel";
+    }
+    
     public interface TagsFilteredResultsAndTagView {        
         /** Assigned to the panel that holds the action buttons above the tags search results lists */
         String TAG_SEARCH_TAGS_RESULT_BUTTONS_PANEL = "TagSearchTagsResultButtonsPanel";
@@ -31,26 +44,6 @@ public interface CSSConstants {
         String TAG_VIEW_NAME_TEXT_CELL = "TagViewNameTextCell";
         String TAG_VIEW_DESCRIPTION_LABEL_CELL = "TagViewDescriptionLabelCell";
         String TAG_VIEW_DESCRIPTION_TEXT_CELL = "TagViewDescriptionTextCell";
-    }
-
-    public interface TagFilteredResultsView {
-        /** Assigned to the panel that holds the list of images. */
-        String TAG_FILTERED_RESULTS_PANEL = "TagFilteredResultsPanel";
-        /** Assigned to the panel that holds the filter options for images. */
-        String TAG_FILTERED_OPTIONS_PANEL = "TagFilteredOptionsPanel";
-    }
-
-    public interface CategoryFilteredResultsView {
-        /** Assigned to the panel that holds the list of images. */
-        String CATEGORY_FILTERED_RESULTS_PANEL = "CategoryFilteredResultsPanel";
-        /** Assigned to the panel that holds the filter options for images. */
-        String CATEGORY_FILTERED_OPTIONS_PANEL = "CategoryFilteredOptionsPanel";
-    }
-
-    public interface TagCategoryView {
-        String TAG_CATEGORIES_LIST_PANEL = "TagCategoriesListPanel";
-        String TAG_CATEGORY_TAGS_LIST_PANEL = "TagCategoryTagsListPanel";
-        String TAG_CATEGORIES_SPLIT_PANEL = "TagCategoriesSplitPanel";
     }
 
     public interface CategoryView {

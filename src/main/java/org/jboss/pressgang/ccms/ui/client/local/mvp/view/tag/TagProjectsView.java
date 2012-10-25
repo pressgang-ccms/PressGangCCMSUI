@@ -5,6 +5,8 @@ import org.jboss.pressgang.ccms.rest.v1.components.ComponentProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
@@ -17,20 +19,36 @@ import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class TagProjectsView extends TagViewBase implements TagProjectsPresenter.Display {
+public class TagProjectsView extends BaseChildrenView<RESTTagV1, RESTProjectCollectionItemV1> implements TagProjectsPresenter.Display {
     
+    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+    private final PushButton tagDetails = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagDetails());
+    private final PushButton tagProjects = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagProjects());
+    private final PushButton tagCategories = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagCategories());
 
-    /** A reference to the tag that this view will be modifying */
-    private RESTTagV1 tag;
+    @Override
+    public PushButton getTagCategories() {
+        return tagCategories;
+    }
 
-    private final VerticalPanel searchResultsPanel = new VerticalPanel();
+    @Override
+    public PushButton getSave() {
+        return save;
+    }
 
-    private final SimplePager pager = UIUtilities.createSimplePager();
-    private final CellTable<RESTProjectCollectionItemV1> results = new CellTable<RESTProjectCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
-            (Resources) GWT.create(TableResources.class));
-    private EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider;
+    @Override
+    public PushButton getTagProjects() {
+        return tagProjects;
+    }
+
+    @Override
+    public PushButton getTagDetails() {
+        return tagDetails;
+    }
+   
 
     private final TextColumn<RESTProjectCollectionItemV1> idColumn = new TextColumn<RESTProjectCollectionItemV1>() {
         @Override
@@ -57,8 +75,8 @@ public class TagProjectsView extends TagViewBase implements TagProjectsPresenter
     private final Column<RESTProjectCollectionItemV1, String> buttonColumn = new Column<RESTProjectCollectionItemV1, String>(new ButtonCell()) {
         @Override
         public String getValue(final RESTProjectCollectionItemV1 object) {
-            if (tag != null) {
-                if (ComponentProjectV1.containsTag(object.getItem(), tag.getId())) {
+            if (getOriginalEntity() != null) {
+                if (ComponentProjectV1.containsTag(object.getItem(), getOriginalEntity().getId())) {
                     return PressGangCCMSUI.INSTANCE.Remove();
                 } else {
                     return PressGangCCMSUI.INSTANCE.Add();
@@ -74,50 +92,19 @@ public class TagProjectsView extends TagViewBase implements TagProjectsPresenter
         return buttonColumn;
     }
 
-    @Override
-    public EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> getProvider() {
-        return provider;
-    }
-
-    @Override
-    public void setProvider(final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider) {
-        this.provider = provider;
-        provider.addDataDisplay(results);
-    }
-
-    @Override
-    public CellTable<RESTProjectCollectionItemV1> getResults() {
-        return results;
-    }
-
-    @Override
-    public SimplePager getPager() {
-        return pager;
-    }
-
     public TagProjectsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.TagProjects());
+        populateTopActionBar();
 
-        results.addColumn(idColumn, PressGangCCMSUI.INSTANCE.ProjectID());
-        results.addColumn(nameColumn, PressGangCCMSUI.INSTANCE.ProjectName());
-        results.addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.ProjectDescription());
-        results.addColumn(buttonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
+        getPossibleChildrenResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ProjectID());
+        getPossibleChildrenResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.ProjectName());
+        getPossibleChildrenResults().addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.ProjectDescription());
+        getPossibleChildrenResults().addColumn(buttonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
 
-        pager.setDisplay(results);
-
-        searchResultsPanel.add(results);
-        searchResultsPanel.add(pager);
-
-        this.getPanel().setWidget(searchResultsPanel);
+        
     }
 
-    @Override
-    public void initialize(final RESTTagV1 tag, final boolean readOnly) {
-        this.tag = tag;
-    }
-
-    @Override
-    protected void populateTopActionBar() {
+    private void populateTopActionBar() {
         this.addActionButton(this.getTagDetails());
         this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TagProjects()));
         this.addActionButton(this.getTagCategories());

@@ -34,7 +34,7 @@ public class TagProjectsComponent extends ComponentBase<TagProjectsPresenter.Dis
     public void bind(final TagProjectsPresenter.Display display, final BaseTemplateViewInterface waitDisplay)
     {
         super.bind(display, waitDisplay);
-        display.setProvider(generateProjectListProvider());
+        display.setPossibleChildrenProvider(generateProjectListProvider());
         getProjects();
     }
     
@@ -105,7 +105,7 @@ public class TagProjectsComponent extends ComponentBase<TagProjectsPresenter.Dis
                     projectProviderData.setItems(retValue.getItems());
 
                     /* Refresh the list */
-                    display.getProvider().displayNewFixedList(projectProviderData.getItems());
+                    display.getPossibleChildrenProvider().displayNewFixedList(projectProviderData.getItems());
 
                 } finally {
                     display.removeWaitOperation();
@@ -121,7 +121,7 @@ public class TagProjectsComponent extends ComponentBase<TagProjectsPresenter.Dis
 
         /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
         projectProviderData.reset();
-        display.getProvider().resetProvider();
+        display.getPossibleChildrenProvider().resetProvider();
 
         RESTCalls.getProjects(callback);
     }

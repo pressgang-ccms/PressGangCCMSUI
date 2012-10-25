@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
@@ -22,24 +23,13 @@ import com.google.gwt.user.client.ui.TextBox;
 public class TagFilteredResultsPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "TagFilteredResultsView";
     
-    public interface Display extends BaseTemplateViewInterface {
-        EnhancedAsyncDataProvider<RESTTagCollectionItemV1> getProvider();
-
-        void setProvider(final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider);
-
-        CellTable<RESTTagCollectionItemV1> getResults();
-
-        SimplePager getPager();
+    public interface Display extends BaseTemplateViewInterface, BaseFilteredResultsViewInterface<RESTTagCollectionItemV1> {
 
         TextBox getIdFilter();
 
         TextBox getDescriptionFilter();
 
         TextBox getNameFilter();
-
-        PushButton getSearch();
-        
-        PushButton getCreate();
     }
     
     public interface LogicComponent extends Component<Display>

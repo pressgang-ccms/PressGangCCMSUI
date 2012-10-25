@@ -8,39 +8,28 @@ import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
 
 @Dependent
 public class CategoryFilteredResultsPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "CategoryFilteredResultsView";
 
-    public interface Display extends BaseTemplateViewInterface {
-        EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> getProvider();
-
-        void setProvider(final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider);
-
-        CellTable<RESTCategoryCollectionItemV1> getResults();
-
-        SimplePager getPager();
-
+    public interface Display extends BaseTemplateViewInterface, BaseFilteredResultsViewInterface<RESTCategoryCollectionItemV1> {
+        
         TextBox getIdFilter();
 
         TextBox getDescriptionFilter();
 
         TextBox getNameFilter();
-
-        @Override
-        PushButton getSearch();
     }
     
     public interface LogicCompnent extends Component<Display>

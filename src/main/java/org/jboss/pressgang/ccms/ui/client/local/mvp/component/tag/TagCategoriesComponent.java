@@ -59,8 +59,8 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
 
         super.bind(display, waitDisplay);
 
-        display.setProvider(generateCategoriesListProvider());
-        display.setTagsProvider(generateCategoriesTagListProvider());
+        display.setPossibleChildrenProvider(generateCategoriesListProvider());
+        display.setExistingChildrenProvider(generateCategoriesTagListProvider());
         bindCategoryListRowClicks();
         bindCategoryTagsColumnButtons();
         bindCategorySplitResize();
@@ -126,7 +126,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
      * Bind behaviour to the buttons found in the celltable listing the categories
      */
     private void bindCategoryListRowClicks() {
-        display.getResults().addCellPreviewHandler(new Handler<RESTCategoryCollectionItemV1>() {
+        display.getPossibleChildrenResults().addCellPreviewHandler(new Handler<RESTCategoryCollectionItemV1>() {
             @Override
             public void onCellPreview(final CellPreviewEvent<RESTCategoryCollectionItemV1> event) {
                 /* Check to see if this was a click event */
@@ -153,13 +153,13 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
                      * If this is the first category selected, display the tags list
                      */
                     if (needToAddImageView) {
-                        display.getSplit().add(display.getTagsResultsPanel());
+                        display.getSplit().add(display.getExistingChildrenResultsPanel());
                     }
 
                     /*
                      * reset the provider, which will refresh the list of tags
                      */
-                    display.setTagsProvider(generateCategoriesTagListProvider());
+                    display.setExistingChildrenProvider(generateCategoriesTagListProvider());
                 }
             }
         });
@@ -235,7 +235,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
 
         if (modifiedSort) {
             /* redisplay the fixed list */
-            display.setTagsProvider(generateCategoriesTagListProvider());
+            display.setExistingChildrenProvider(generateCategoriesTagListProvider());
         }
     }
 
@@ -289,7 +289,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
                     /* Zero results can be a null list */
                     categoryProviderData.setItems(retValue.getItems());
 
-                    display.getProvider().displayNewFixedList(categoryProviderData.getItems());
+                    display.getPossibleChildrenProvider().displayNewFixedList(categoryProviderData.getItems());
 
                 } finally {
                     display.removeWaitOperation();
@@ -305,7 +305,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
 
         /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
         categoryProviderData.reset();
-        display.getProvider().resetProvider();
+        display.getPossibleChildrenProvider().resetProvider();
 
         RESTCalls.getCategories(callback);
     }
@@ -319,7 +319,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
             @Override
             public void onResize(final ResizeEvent event) {
                 Preferences.INSTANCE.saveSetting(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display.getSplit()
-                        .getSplitPosition(display.getSearchResultsPanel()) + "");
+                        .getSplitPosition(display.getPossibleChildrenResultsPanel()) + "");
             }
         });
     }

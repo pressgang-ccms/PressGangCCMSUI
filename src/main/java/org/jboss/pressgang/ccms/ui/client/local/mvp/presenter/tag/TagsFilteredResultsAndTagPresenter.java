@@ -138,7 +138,7 @@ public class TagsFilteredResultsAndTagPresenter implements TemplatePresenter {
 
         display.getSplitPanel().setSplitPosition(display.getResultsPanel(),
                 Preferences.INSTANCE.getInt(Preferences.TAG_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
-        categoriesDisplay.getSplit().setSplitPosition(categoriesDisplay.getSearchResultsPanel(),
+        categoriesDisplay.getSplit().setSplitPosition(categoriesDisplay.getPossibleChildrenResultsPanel(),
                 Preferences.INSTANCE.getInt(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
         
         filteredResultsComponent.bind(queryString, filteredResultsDisplay, display);

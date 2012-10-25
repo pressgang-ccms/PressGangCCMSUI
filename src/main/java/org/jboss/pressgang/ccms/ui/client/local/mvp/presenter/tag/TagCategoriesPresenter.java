@@ -6,8 +6,10 @@ import javax.inject.Inject;
 import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -23,36 +25,16 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 /**
  * The presenter that provides the logic for the tag category relationships.
  *
- * @author matthew
+ * @author Matthew Casperson
  */
 @Dependent
 public class TagCategoriesPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "TagCategoriesView";
 
-    public interface Display extends TagViewInterface {
-        EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> getProvider();
-
-        void setProvider(final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider);
-
-        CellTable<RESTCategoryCollectionItemV1> getResults();
-
-        SimplePager getPager();
-
-        Column<RESTCategoryCollectionItemV1, String> getButtonColumn();
-
+    public interface Display extends BaseOrderedChildrenViewInterface<RESTTagV1, RESTCategoryCollectionItemV1, RESTTagInCategoryCollectionItemV1>, TagViewInterface {
         Column<RESTTagInCategoryCollectionItemV1, String> getTagDownButtonColumn();
-
         Column<RESTTagInCategoryCollectionItemV1, String> getTagUpButtonColumn();
-
-        EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> getTagsProvider();
-
-        void setTagsProvider(EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> tagsProvider);
-
-        VerticalPanel getTagsResultsPanel();
-
-        HandlerSplitLayoutPanel getSplit();
-
-        VerticalPanel getSearchResultsPanel();
+        Column<RESTCategoryCollectionItemV1, String> getButtonColumn();
     }
     
     public interface LogicComponent extends Component<Display>

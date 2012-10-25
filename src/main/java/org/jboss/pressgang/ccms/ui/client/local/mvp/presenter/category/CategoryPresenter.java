@@ -52,7 +52,7 @@ public class CategoryPresenter implements TemplatePresenter {
         }
         catch (final NumberFormatException ex)
         {
-            categoryId = -1;
+            categoryId = null;
         }
     }
 

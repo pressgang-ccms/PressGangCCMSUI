@@ -6,8 +6,10 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -21,15 +23,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 public class TagProjectsPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "TagProjectsView";
 
-    public interface Display extends TagViewInterface {
-        EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> getProvider();
-
-        void setProvider(final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider);
-
-        CellTable<RESTProjectCollectionItemV1> getResults();
-
-        SimplePager getPager();
-
+    public interface Display extends TagViewInterface, BaseChildrenViewInterface<RESTTagV1, RESTProjectCollectionItemV1> {
         Column<RESTProjectCollectionItemV1, String> getButtonColumn();
     }
 

@@ -459,7 +459,7 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
                 }
 
                 /* refresh the project list */
-                projectsDisplay.getProvider().displayNewFixedList(projectsComponent.getProjectProviderData().getItems());
+                projectsDisplay.getPossibleChildrenProvider().displayNewFixedList(projectsComponent.getProjectProviderData().getItems());
             }
         });
     }
@@ -522,12 +522,12 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
                 }
 
                 /* refresh the category list */
-                categoriesDisplay.getProvider().displayNewFixedList(categoriesComponent.getCategoryProviderData().getItems());
+                categoriesDisplay.getPossibleChildrenProvider().displayNewFixedList(categoriesComponent.getCategoryProviderData().getItems());
 
                 /*
                  * refresh the list of tags in the category
                  */
-                categoriesDisplay.setTagsProvider(categoriesComponent.generateCategoriesTagListProvider());
+                categoriesDisplay.setExistingChildrenProvider(categoriesComponent.generateCategoriesTagListProvider());
             }
         });
     }
@@ -715,7 +715,7 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
                     tag.setName(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getName());
 
                     /* refresh the list */
-                    this.categoriesDisplay.getTagsProvider().displayNewFixedList(
+                    this.categoriesDisplay.getExistingChildrenProvider().displayNewFixedList(
                             this.categoriesComponent.getCategoryTagsProviderData().getItems());
                 }
             }
@@ -730,15 +730,15 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
         /* refresh the project list */
         if (displayedView == projectsDisplay) {
             /* If we switch to this view before the projects have been downloaded, there is nothing to update */
-            if (projectsDisplay.getProvider() != null && projectsComponent.getProjectProviderData().getItems() != null) {
-                projectsDisplay.getProvider().displayNewFixedList(projectsComponent.getProjectProviderData().getItems());
+            if (projectsDisplay.getPossibleChildrenProvider() != null && projectsComponent.getProjectProviderData().getItems() != null) {
+                projectsDisplay.getPossibleChildrenProvider().displayNewFixedList(projectsComponent.getProjectProviderData().getItems());
             }
         }
         /* refresh the category list */
         else if (displayedView == categoriesDisplay) {
             /* If we switch to this view before the categories have been downloaded, there is nothing to update */
-            if (categoriesDisplay.getProvider() != null && categoriesComponent.getCategoryProviderData().getItems() != null) {
-                categoriesDisplay.getProvider().displayNewFixedList(categoriesComponent.getCategoryProviderData().getItems());
+            if (categoriesDisplay.getPossibleChildrenProvider() != null && categoriesComponent.getCategoryProviderData().getItems() != null) {
+                categoriesDisplay.getPossibleChildrenProvider().displayNewFixedList(categoriesComponent.getCategoryProviderData().getItems());
             }
         }
 
@@ -779,7 +779,7 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
         if (removeCatgeoryTagListFromScreen) {
             categoriesComponent.getCategoryProviderData().setSelectedItem(null);
             categoriesComponent.getCategoryProviderData().setDisplayedItem(null);
-            categoriesDisplay.getSplit().remove(categoriesDisplay.getTagsResultsPanel());
+            categoriesDisplay.getSplit().remove(categoriesDisplay.getExistingChildrenResultsPanel());
         }
     }
 
