@@ -517,7 +517,7 @@ html {
 	box-sizing : border-box;
 }
 
-.TopicSearchTopicViewButtonsPanel
+.TopicSearchTopicViewButtonsPanel, .TagSearchTagsResultButtonsPanel, .TagSearchTagViewButtonsPanel
 {
 	bottom: 16px !important;
 }

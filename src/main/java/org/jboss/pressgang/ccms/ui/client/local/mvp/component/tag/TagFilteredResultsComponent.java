@@ -20,7 +20,7 @@ public class TagFilteredResultsComponent extends ComponentBase<TagFilteredResult
 
     /** Holds the data required to populate and refresh the tags list */
     private ProviderUpdateData<RESTTagCollectionItemV1> tagProviderData = new ProviderUpdateData<RESTTagCollectionItemV1>();
-    
+
     @Override
     public ProviderUpdateData<RESTTagCollectionItemV1> getTagProviderData() {
         return tagProviderData;
@@ -32,14 +32,14 @@ public class TagFilteredResultsComponent extends ComponentBase<TagFilteredResult
     }
 
     @Override
-    public void bind(final String queryString, final TagFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
+    public void bind(final String queryString, final TagFilteredResultsPresenter.Display display,
+            final BaseTemplateViewInterface waitDisplay) {
         super.bind(display, waitDisplay);
         display.setProvider(generateListProvider(queryString, display, waitDisplay));
         displayQueryElements(queryString);
     }
-    
-    private void displayQueryElements(final String queryString)
-    {
+
+    private void displayQueryElements(final String queryString) {
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
         for (final String queryStringElement : queryStringElements) {
             final String[] queryElements = queryStringElement.split("=");
@@ -83,7 +83,9 @@ public class TagFilteredResultsComponent extends ComponentBase<TagFilteredResult
                         try {
                             /* Zero results can be a null list */
                             tagProviderData.setItems(retValue.getItems());
-                            displayAsynchronousList(tagProviderData.getItems(), retValue.getSize(),
+                            tagProviderData.setSize(retValue.getSize());
+
+                            displayAsynchronousList(tagProviderData.getItems(), tagProviderData.getSize(),
                                     tagProviderData.getStartRow());
                         } finally {
                             display.removeWaitOperation();
@@ -104,10 +106,10 @@ public class TagFilteredResultsComponent extends ComponentBase<TagFilteredResult
                 RESTCalls.getTagsFromQuery(callback, queryString, tagProviderData.getStartRow(), end);
             }
         };
-        
+
         return provider;
     }
-    
+
     public String getQuery(final TagFilteredResultsPresenter.Display searchDisplay) {
         final StringBuilder retValue = new StringBuilder(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON);
         if (!searchDisplay.getIdFilter().getText().isEmpty()) {

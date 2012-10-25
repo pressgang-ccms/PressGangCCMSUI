@@ -13,6 +13,7 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.CellTable.Resources;
+import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -35,7 +36,7 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
     private final PushButton search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
     private final PushButton create = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Create());
 
-    private final SimplePager pager = new SimplePager();
+    private final SimplePager pager = new SimplePager(TextLocation.CENTER, true, true);
     private final CellTable<RESTTagCollectionItemV1> results = new CellTable<RESTTagCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
     private EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider;
@@ -43,15 +44,18 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
     private final TextColumn<RESTTagCollectionItemV1> idColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
         public String getValue(final RESTTagCollectionItemV1 object) {
-            return object.getItem().getId().toString();
-
+            if (object != null && object.getItem() != null)            
+                return object.getItem().getId() + "";
+            return null + "";
         }
     };
 
     private final TextColumn<RESTTagCollectionItemV1> nameColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
         public String getValue(final RESTTagCollectionItemV1 object) {
-            return object.getItem().getName();
+            if (object != null && object.getItem() != null)            
+                return object.getItem().getName();
+            return null + "";            
         }
     };
 

@@ -18,6 +18,8 @@ public class ProviderUpdateData<T> {
     private T selectedItem;
     /** References the currently displayed item. */
     private T displayedItem;
+    /** The total size of the collection - for async lists */
+    private Integer size;
 
     public T getSelectedItem() {
         return selectedItem;
@@ -58,6 +60,11 @@ public class ProviderUpdateData<T> {
         this.startRow = startRow;
         this.items = items;
     }
+    
+    public ProviderUpdateData(final Integer startRow, final List<T> items, final Integer size) {
+        this(startRow, items);
+        this.size = size;
+    }
 
     public T getDisplayedItem() {
         return displayedItem;
@@ -71,5 +78,14 @@ public class ProviderUpdateData<T> {
     {
         this.items = null;
         this.startRow = null;
+        this.size = null;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
     }
 }

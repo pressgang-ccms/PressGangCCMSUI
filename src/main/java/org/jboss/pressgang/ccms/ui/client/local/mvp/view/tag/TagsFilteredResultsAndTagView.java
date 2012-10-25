@@ -76,7 +76,8 @@ public class TagsFilteredResultsAndTagView extends BaseTemplateView implements T
 
         splitPanel.addWest(resultsViewLayoutPanel, Constants.SPLIT_PANEL_SIZE);
 
-        viewActionButtonsPanel.addStyleName(CSSConstants.TOPIC_SEARCH_TOPIC_VIEW_BUTTONS_PANEL);
+        viewActionButtonsPanel.addStyleName(CSSConstants.TagsFilteredResultsAndTagView.TAG_SEARCH_TAG_VIEW_BUTTONS_PANEL);
+        resultsActionButtonsPanel.addStyleName(CSSConstants.TagsFilteredResultsAndTagView.TAG_SEARCH_TAGS_RESULT_BUTTONS_PANEL);
         viewPanel.addStyleName(CSSConstants.TOPIC_SEARCH_TOPIC_VIEW_DETAILS_PANEL);
 
         splitPanel.addStyleName(CSSConstants.TOPIC_SEARCH_RESULTS_AND_VIEW_PARENT_PANEL);

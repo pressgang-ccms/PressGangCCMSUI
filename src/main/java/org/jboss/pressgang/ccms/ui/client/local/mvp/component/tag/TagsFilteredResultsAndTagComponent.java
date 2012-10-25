@@ -123,7 +123,7 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
         private void saveTagChanges(final boolean unsavedTagChanges, final boolean unsavedCategoryChanges) {
 
             /* Was the tag we just saved a new tag? */
-            final boolean wasNewTag = filteredResultsComponent.getTagProviderData().getSelectedItem().returnIsAddItem();
+            final boolean wasNewTag = filteredResultsComponent.getTagProviderData().getDisplayedItem().returnIsAddItem();
 
             /* Save any changes made to the tag entity itself */
             final RESTCalls.RESTCallback<RESTTagV1> callback = new RESTCalls.RESTCallback<RESTTagV1>() {
@@ -143,13 +143,13 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
                     try {
                         /* we are now viewing the object returned by the save */
                         retValue.cloneInto(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem(), true);
+                        filteredResultsComponent.getTagProviderData().getDisplayedItem()
+                                .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
                         /* Update the list of tags with any saved changes */
                         retValue.cloneInto(filteredResultsComponent.getTagProviderData().getSelectedItem().getItem(), true);
-
-                        /* refresh the list of tags */
-                        filteredResultsDisplay.getProvider().displayNewFixedList(
-                                filteredResultsComponent.getTagProviderData().getItems());
+                        filteredResultsComponent.getTagProviderData().getSelectedItem()
+                                .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
                         if (unsavedCategoryChanges) {
                             saveCategoryChanges(wasNewTag, filteredResultsComponent.getTagProviderData().getDisplayedItem()
@@ -168,16 +168,12 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
                 @Override
                 public void failed(final Message message, final Throwable throwable) {
                     try {
-                        if (throwable instanceof ResponseException)
-                        {
-                            final ResponseException ex = (ResponseException)throwable;
-                            if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST)
-                            {
+                        if (throwable instanceof ResponseException) {
+                            final ResponseException ex = (ResponseException) throwable;
+                            if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
                                 Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput());
                             }
-                        }
-                        else
-                        {                        
+                        } else {
                             Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError() + "\n"
                                     + (message != null ? message.toString() : "") + "\n"
                                     + (throwable != null ? throwable.toString() : ""));
@@ -355,13 +351,22 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
      */
     private void updateDisplayAfterSave(final boolean wasNewTag) {
         resetCategoryAndProjectsLists(false);
+
+        /* refresh the list of tags from the existing list that was modified */
+        if (!wasNewTag) {
+            filteredResultsDisplay.getProvider().displayAsynchronousList(
+                    filteredResultsComponent.getTagProviderData().getItems(),
+                    filteredResultsComponent.getTagProviderData().getSize(),
+                    filteredResultsComponent.getTagProviderData().getStartRow());
+        }
+        /* If we just created a new tag, refresh the list of tags from the database */
+        else {
+            filteredResultsComponent.bind(getQuery(), filteredResultsDisplay, display);
+        }
+
         /* refresh the display */
         reInitialiseView(lastDisplayedView);
 
-        /* If we just created a new tag, refresh the list of tags */
-        if (wasNewTag) {
-            filteredResultsComponent.bind(getQuery(), filteredResultsDisplay, display);
-        }
     }
 
     @Override
@@ -643,8 +648,7 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
                 final RESTTagV1 selectedTag = new RESTTagV1();
                 selectedTag.setId(Constants.NULL_ID);
-                final RESTTagCollectionItemV1 selectedTagWrapper = new RESTTagCollectionItemV1(selectedTag,
-                        RESTBaseCollectionItemV1.ADD_STATE);
+                final RESTTagCollectionItemV1 selectedTagWrapper = new RESTTagCollectionItemV1(selectedTag);
 
                 /* The displayed tag will also be blank. This ins the object that our data will be saved into */
                 final RESTTagV1 displayedTag = new RESTTagV1();
@@ -681,11 +685,6 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
      * Called when the selected tag is changed, or the selected view is changed.
      */
     protected void reInitialiseView(final TagViewInterface displayedView) {
-        /* save any changes as we move between views */
-        if (lastDisplayedView == resultDisplay) {
-            resultDisplay.getDriver().flush();
-        }
-
         /* Show/Hide any localised loading dialogs */
         if (lastDisplayedView != null)
             lastDisplayedView.setViewShown(false);

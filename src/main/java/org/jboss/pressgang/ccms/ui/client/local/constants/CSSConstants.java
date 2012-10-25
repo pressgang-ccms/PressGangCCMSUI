@@ -9,6 +9,13 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
  */
 public interface CSSConstants {
 
+    public interface TagsFilteredResultsAndTagView {        
+        /** Assigned to the panel that holds the action buttons above the tags search results lists */
+        String TAG_SEARCH_TAGS_RESULT_BUTTONS_PANEL = "TagSearchTagsResultButtonsPanel";
+        /** Assigned to the panel that holds the action buttons above the tag search result view */
+        String TAG_SEARCH_TAG_VIEW_BUTTONS_PANEL = "TagSearchTagViewButtonsPanel";
+    }
+    
     public interface TagView {
         String TAG_VIEW_PANEL = "TagViewPanel";
         String TAG_VIEW_ID_LABEL = "TagViewIDLabel";
