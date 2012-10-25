@@ -23,7 +23,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TagFilteredResultsView extends BaseTemplateView implements TagFilteredResultsPresenter.Display {
-    
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
     private final FlexTable filterTable = new FlexTable();
@@ -37,15 +36,21 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
     private final PushButton create = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Create());
 
     private final SimplePager pager = new SimplePager(TextLocation.CENTER, true, true);
-    private final CellTable<RESTTagCollectionItemV1> results = new CellTable<RESTTagCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
-            (Resources) GWT.create(TableResources.class));
+    private final CellTable<RESTTagCollectionItemV1> results = new CellTable<RESTTagCollectionItemV1>(
+            Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
     private EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider;
 
     private final TextColumn<RESTTagCollectionItemV1> idColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
         public String getValue(final RESTTagCollectionItemV1 object) {
-            if (object != null && object.getItem() != null)            
-                return object.getItem().getId() + "";
+            if (object != null && object.getItem() != null) {
+                /* don't display the null ID for new tags */
+                if (object.getItem().getId() != null && object.getItem().getId().equals(Constants.NULL_ID)) {
+                    return "";
+                } else {
+                    return object.getItem().getId() + "";
+                }
+            }
             return null + "";
         }
     };
@@ -53,9 +58,9 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
     private final TextColumn<RESTTagCollectionItemV1> nameColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
         public String getValue(final RESTTagCollectionItemV1 object) {
-            if (object != null && object.getItem() != null)            
+            if (object != null && object.getItem() != null)
                 return object.getItem().getName();
-            return null + "";            
+            return null + "";
         }
     };
 
