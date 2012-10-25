@@ -35,6 +35,14 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
     /** Holds the data required to populate and refresh the category tags list */
     private ProviderUpdateData<RESTTagInCategoryCollectionItemV1> categoryTagsProviderData = new ProviderUpdateData<RESTTagInCategoryCollectionItemV1>();
 
+    public ProviderUpdateData<RESTTagInCategoryCollectionItemV1> getCategoryTagsProviderData() {
+        return categoryTagsProviderData;
+    }
+
+    public void setCategoryTagsProviderData(ProviderUpdateData<RESTTagInCategoryCollectionItemV1> categoryTagsProviderData) {
+        this.categoryTagsProviderData = categoryTagsProviderData;
+    }
+
     @Override
     public ProviderUpdateData<RESTCategoryCollectionItemV1> getCategoryProviderData() {
         return categoryProviderData;

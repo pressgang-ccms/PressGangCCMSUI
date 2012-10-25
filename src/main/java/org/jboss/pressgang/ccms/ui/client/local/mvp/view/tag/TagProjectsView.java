@@ -27,7 +27,7 @@ public class TagProjectsView extends TagViewBase implements TagProjectsPresenter
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
 
-    private final SimplePager pager = new SimplePager();
+    private final SimplePager pager = UIUtilities.createSimplePager();
     private final CellTable<RESTProjectCollectionItemV1> results = new CellTable<RESTProjectCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
     private EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider;

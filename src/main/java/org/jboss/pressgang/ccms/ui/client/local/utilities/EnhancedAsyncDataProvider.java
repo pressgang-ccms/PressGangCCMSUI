@@ -74,5 +74,4 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
         this.updateRowData(0, items);
     }
 
-
 }

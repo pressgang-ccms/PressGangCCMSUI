@@ -17,6 +17,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTag
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryInTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.components.ComponentCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentRESTBaseEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
@@ -362,6 +363,11 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
         /* If we just created a new tag, refresh the list of tags from the database */
         else {
             filteredResultsComponent.bind(getQuery(), filteredResultsDisplay, display);
+
+            /* reinitialize the tag property view with the new tag id */
+            if (lastDisplayedView == resultDisplay) {
+                resultDisplay.initialize(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem(), false);
+            }
         }
 
         /* refresh the display */
@@ -560,12 +566,12 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
                     /* All editing is done in a clone of the selected tag. Any expanded collections will be copied into this tag */
                     filteredResultsComponent.getTagProviderData().setDisplayedItem(event.getValue().clone(true));
 
-                    resetCategoryAndProjectsLists(true);
-
                     /*
                      * If this is the first tag selected, display the image view
                      */
                     reInitialiseView(lastDisplayedView == null ? resultDisplay : lastDisplayedView);
+
+                    resetCategoryAndProjectsLists(true);
                 }
             }
         });
@@ -686,8 +692,34 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
      */
     protected void reInitialiseView(final TagViewInterface displayedView) {
         /* Show/Hide any localised loading dialogs */
-        if (lastDisplayedView != null)
+        if (lastDisplayedView != null) {
             lastDisplayedView.setViewShown(false);
+        }
+
+        /* save any changes to the tag details */
+        if (lastDisplayedView == this.resultDisplay) {
+
+            this.resultDisplay.getDriver().flush();
+
+            /*
+             * If this tag was added to a category, the it was cloned with the old tag name. Here we reflect the current tag
+             * name in the category tag lists.
+             */
+            if (this.categoriesComponent.getCategoryProviderData().getDisplayedItem() != null) {
+                final RESTTagInCategoryV1 tag = ComponentCategoryV1.returnTag(this.categoriesComponent
+                        .getCategoryProviderData().getDisplayedItem().getItem(), filteredResultsComponent.getTagProviderData()
+                        .getDisplayedItem().getItem().getId());
+                if (tag != null) {
+
+                    /* update the tag in the category list */
+                    tag.setName(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getName());
+
+                    /* refresh the list */
+                    this.categoriesDisplay.getTagsProvider().displayNewFixedList(
+                            this.categoriesComponent.getCategoryTagsProviderData().getItems());
+                }
+            }
+        }
 
         /* update the new view */
         if (displayedView != null) {
@@ -718,8 +750,10 @@ public class TagsFilteredResultsAndTagComponent extends ComponentBase<TagsFilter
 
         /* Update the page name */
         final StringBuilder title = new StringBuilder(displayedView.getPageName());
-        if (this.filteredResultsComponent.getTagProviderData().getDisplayedItem() != null)
-            title.append(": " + this.filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getName());
+        if (this.filteredResultsComponent.getTagProviderData().getDisplayedItem() != null) {
+            final String tagTitle = this.filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getName();
+            title.append(": " + (tagTitle == null ? PressGangCCMSUI.INSTANCE.NoTitle() : tagTitle));
+        }
         display.getPageTitle().setText(title.toString());
 
         lastDisplayedView = displayedView;

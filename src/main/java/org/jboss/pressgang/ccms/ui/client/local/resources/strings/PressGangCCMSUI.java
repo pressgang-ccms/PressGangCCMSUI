@@ -277,4 +277,6 @@ public interface PressGangCCMSUI extends Constants {
     String MatchAny();
     
     String Fields();
+    
+    String NoTitle();
 }

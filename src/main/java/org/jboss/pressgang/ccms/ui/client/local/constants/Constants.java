@@ -8,6 +8,11 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
 public final class Constants {
     
     /**
+     * The number of rows to "fast forward" by with the SimplePager
+     */
+    static public final int FAST_FORWARD_ROWS = 100;
+    
+    /**
      * And ID that can not appear in the database.
      */
     public static final int NULL_ID = -1;

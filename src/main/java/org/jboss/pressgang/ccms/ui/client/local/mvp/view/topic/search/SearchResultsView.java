@@ -7,6 +7,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.Searc
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 import com.google.gwt.core.client.GWT;
@@ -21,7 +22,7 @@ public class SearchResultsView extends BaseTemplateView implements SearchResults
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
 
-    private final SimplePager pager = new SimplePager();
+    private final SimplePager pager = UIUtilities.createSimplePager();
     private final CellTable<RESTTopicCollectionItemV1> results = new CellTable<RESTTopicCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
     private EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider;

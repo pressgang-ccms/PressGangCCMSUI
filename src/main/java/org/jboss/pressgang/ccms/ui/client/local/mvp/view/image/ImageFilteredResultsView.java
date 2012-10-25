@@ -34,7 +34,7 @@ public class ImageFilteredResultsView extends BaseTemplateView implements ImageF
     private final TextBox imageOriginalFileNameFilter = new TextBox();
     private final PushButton search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
 
-    private final SimplePager pager = new SimplePager();
+    private final SimplePager pager = UIUtilities.createSimplePager();
     private final CellTable<RESTImageCollectionItemV1> results = new CellTable<RESTImageCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
     private org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider;

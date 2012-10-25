@@ -60,6 +60,8 @@ public class TagCategoriesPresenter implements TemplatePresenter {
         boolean unsavedCategoryChanges();
         ProviderUpdateData<RESTCategoryCollectionItemV1> getCategoryProviderData();
         void setCategoryProviderData(ProviderUpdateData<RESTCategoryCollectionItemV1> categoryProviderData);
+        ProviderUpdateData<RESTTagInCategoryCollectionItemV1> getCategoryTagsProviderData();
+        void setCategoryTagsProviderData(ProviderUpdateData<RESTTagInCategoryCollectionItemV1> categoryTagsProviderData);
         void getCategories();
         EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateCategoriesListProvider();
         EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> generateCategoriesTagListProvider();

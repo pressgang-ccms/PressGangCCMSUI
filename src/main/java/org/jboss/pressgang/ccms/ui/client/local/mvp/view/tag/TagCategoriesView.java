@@ -30,13 +30,13 @@ public class TagCategoriesView extends TagViewBase implements TagCategoriesPrese
     private HandlerSplitLayoutPanel split = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
-    private final SimplePager pager = new SimplePager();
+    private final SimplePager pager = UIUtilities.createSimplePager();
     private final CellTable<RESTCategoryCollectionItemV1> results = new CellTable<RESTCategoryCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
     private EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider;
 
     private final VerticalPanel tagsResultsPanel = new VerticalPanel();
-    private final SimplePager tagsPager = new SimplePager();
+    private final SimplePager tagsPager = UIUtilities.createSimplePager();
     private final CellTable<RESTTagInCategoryCollectionItemV1> tagsResults = new CellTable<RESTTagInCategoryCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
     private EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> tagsProvider;

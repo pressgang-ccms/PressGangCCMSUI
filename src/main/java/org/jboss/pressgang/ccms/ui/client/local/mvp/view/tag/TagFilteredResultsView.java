@@ -35,7 +35,7 @@ public class TagFilteredResultsView extends BaseTemplateView implements TagFilte
     private final PushButton search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
     private final PushButton create = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Create());
 
-    private final SimplePager pager = new SimplePager(TextLocation.CENTER, true, true);
+    private final SimplePager pager = new SimplePager(TextLocation.CENTER, true, Constants.FAST_FORWARD_ROWS, true);
     private final CellTable<RESTTagCollectionItemV1> results = new CellTable<RESTTagCollectionItemV1>(
             Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
     private EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider;

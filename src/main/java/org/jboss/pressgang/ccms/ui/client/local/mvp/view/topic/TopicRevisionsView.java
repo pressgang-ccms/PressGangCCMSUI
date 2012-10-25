@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisio
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 import com.google.gwt.cell.client.ButtonCell;
@@ -31,7 +32,7 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
 
-    private final SimplePager pager = new SimplePager();
+    private final SimplePager pager = UIUtilities.createSimplePager();
     private final CellTable<RESTTopicCollectionItemV1> results = new CellTable<RESTTopicCollectionItemV1>(
             Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
     private EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider;

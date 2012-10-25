@@ -28,7 +28,7 @@ public class CategoryFilteredResultsView extends BaseTemplateView implements Cat
     private final TextBox descriptionFilter = new TextBox();
     private final PushButton search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
 
-    private final SimplePager pager = new SimplePager();
+    private final SimplePager pager = UIUtilities.createSimplePager();
     private final CellTable<RESTCategoryCollectionItemV1> results = new CellTable<RESTCategoryCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
             (Resources) GWT.create(TableResources.class));
     private EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider;
