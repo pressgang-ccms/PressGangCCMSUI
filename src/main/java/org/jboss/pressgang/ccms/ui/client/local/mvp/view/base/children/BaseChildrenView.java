@@ -45,6 +45,7 @@ public class BaseChildrenView<T extends RESTBasePrimaryEntityV1, U extends RESTB
 
     public void setPossibleChildrenProvider(final EnhancedAsyncDataProvider<U> possibleChildrenProvider) {
         this.possibleChildrenProvider = possibleChildrenProvider;
+        possibleChildrenProvider.addDataDisplay(possibleChildrenResults);
     }
     
     public void initialize(final T originalEntity, final boolean readOnly) {

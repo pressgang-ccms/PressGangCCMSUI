@@ -103,6 +103,7 @@ public class TagProjectsComponent extends ComponentBase<TagProjectsPresenter.Dis
                     /* Zero results can be a null list */
                     projectProviderData.setStartRow(0);
                     projectProviderData.setItems(retValue.getItems());
+                    projectProviderData.setSize(retValue.getItems().size());
 
                     /* Refresh the list */
                     display.getPossibleChildrenProvider().displayNewFixedList(projectProviderData.getItems());

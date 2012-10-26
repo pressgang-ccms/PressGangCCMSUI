@@ -32,7 +32,7 @@ abstract public class BaseFilteredResultsView<T extends RESTBaseCollectionItemV1
     /** The button that initiates a new search */
     private final PushButton search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
     /** The button that creates a new entity */
-    private final PushButton create = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
+    private final PushButton create = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Create());
     /** The pager used to move over the results */
     private final SimplePager pager = UIUtilities.createSimplePager();
     /** The celltable that displays the results */
