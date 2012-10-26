@@ -39,7 +39,7 @@ public class SearchResultsAndTopicView extends BaseSearchAndEditView implements 
         
         getSplitPanel().clear();
         
-        getSplitPanel().addWest(this.getResultsPanel(), Constants.SPLIT_PANEL_SIZE);
+        getSplitPanel().addWest(this.getResultsViewLayoutPanel(), Constants.SPLIT_PANEL_SIZE);
 
         final SimplePanel renderedPanelParent = new SimplePanel();
         renderedPanelParent.addStyleName(CSSConstants.TOPIC_VIEW_LAYOUT_PANEL);
@@ -51,6 +51,6 @@ public class SearchResultsAndTopicView extends BaseSearchAndEditView implements 
             getSplitPanel().addEast(renderedPanelParent, Constants.SPLIT_PANEL_SIZE);
         }
 
-        getSplitPanel().add(this.getViewPanel());
+        getSplitPanel().add(this.getViewLayoutPanel());
     }
 }

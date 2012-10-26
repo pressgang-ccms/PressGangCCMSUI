@@ -28,6 +28,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredRes
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.create.CreateTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFieldPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter;
@@ -102,6 +103,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 presenter = getBeanInstance(SearchResultsPresenter.class);
             } else if (token.startsWith(TopicPresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(TopicPresenter.class);
+            } else if (token.startsWith(TopicXMLPresenter.HISTORY_TOKEN)) {
+                presenter = getBeanInstance(TopicXMLPresenter.class);
             } else if (token.startsWith(TagPresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(TagPresenter.class);
             } else if (token.startsWith(SearchResultsAndTopicPresenter.HISTORY_TOKEN)) {
