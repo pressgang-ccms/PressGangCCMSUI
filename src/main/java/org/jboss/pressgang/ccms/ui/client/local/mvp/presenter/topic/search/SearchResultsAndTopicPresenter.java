@@ -127,8 +127,7 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
 
         clearContainerAndAddTopLevelPanel(container, display);
 
-        display.getResultsActionButtonsPanel().setWidget(searchResultsDisplay.getTopActionPanel());
-        display.getResultsPanel().setWidget(searchResultsDisplay.getPanel());
+        display.displaySearchResultsView(searchResultsDisplay);
 
         searchResultsComponent.bind(component.getQueryString(), searchResultsDisplay, display);
         topicTagsComponent.bind(topicTagsDisplay, display);

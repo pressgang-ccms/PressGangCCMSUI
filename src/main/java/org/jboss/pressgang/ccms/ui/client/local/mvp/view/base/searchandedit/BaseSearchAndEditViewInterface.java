@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit;
 
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
@@ -39,4 +40,6 @@ public interface BaseSearchAndEditViewInterface extends BaseTemplateViewInterfac
      * @param displayedView The view to be displayed
      */
     void displayChildView(final BaseTemplateViewInterface displayedView);
+    
+    void displaySearchResultsView(final BaseFilteredResultsViewInterface filteredResultsView);
 }

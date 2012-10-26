@@ -5,6 +5,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.WaitingDialog;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
@@ -109,6 +110,16 @@ public class BaseSearchAndEditView extends BaseTemplateView implements BaseSearc
         if (displayedView != null) {
             this.getViewActionButtonsPanel().setWidget(displayedView.getTopActionPanel());
             this.getViewPanel().setWidget(displayedView.getPanel());
+        }
+    }
+    
+    public void displaySearchResultsView(final BaseFilteredResultsViewInterface filteredResultsView)
+    {
+        this.getResultsActionButtonsPanel().clear();
+        this.getResultsPanel().clear();
+        if (filteredResultsView != null) {
+            this.getResultsActionButtonsPanel().setWidget(filteredResultsView.getTopActionPanel());
+            this.getResultsPanel().setWidget(filteredResultsView.getPanel());
         }
     }
 }

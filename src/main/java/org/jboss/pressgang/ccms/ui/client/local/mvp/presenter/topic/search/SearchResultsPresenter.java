@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionIte
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
@@ -22,14 +23,8 @@ public class SearchResultsPresenter implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "SearchResultsView";
 
-    public interface Display extends BaseTemplateViewInterface {
-        EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> getProvider();
+    public interface Display extends BaseFilteredResultsViewInterface<RESTTopicCollectionItemV1> {
 
-        void setProvider(final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider);
-
-        CellTable<RESTTopicCollectionItemV1> getResults();
-
-        SimplePager getPager();
     }
 
     public interface LogicComponent extends Component<Display> {

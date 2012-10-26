@@ -341,11 +341,7 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
      * Displays a new topic view
      */
     private void changeDisplayedTopicView() {
-        display.getViewActionButtonsPanel().clear();
-        display.getViewPanel().clear();
-
-        display.getViewActionButtonsPanel().setWidget(selectedView.getTopActionPanel());
-        display.getViewPanel().setWidget(selectedView.getPanel());
+        display.displayChildView(selectedView);
 
         if (previousView != null) {
             previousView.setViewShown(false);
