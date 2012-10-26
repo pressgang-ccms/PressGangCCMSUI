@@ -15,8 +15,6 @@ public class CategoryFilteredResultsView extends BaseFilteredResultsView<RESTCat
     private final TextBox nameFilter = new TextBox();
     private final TextBox descriptionFilter = new TextBox();
 
-    
-
     private final TextColumn<RESTCategoryCollectionItemV1> idColumn = new TextColumn<RESTCategoryCollectionItemV1>() {
         @Override
         public String getValue(final RESTCategoryCollectionItemV1 object) {

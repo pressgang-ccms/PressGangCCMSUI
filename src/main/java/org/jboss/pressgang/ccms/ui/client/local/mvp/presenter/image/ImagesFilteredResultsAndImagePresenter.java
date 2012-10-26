@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
@@ -21,18 +22,8 @@ public class ImagesFilteredResultsAndImagePresenter implements TemplatePresenter
 
     public static final String HISTORY_TOKEN = "ImageFilteredResultsAndImageView";
 
-    public interface Display extends BaseTemplateViewInterface {
-        SimpleLayoutPanel getResultsPanel();
-
-        SimpleLayoutPanel getViewPanel();
-
-        SimpleLayoutPanel getViewActionButtonsPanel();
-
-        SimpleLayoutPanel getResultsActionButtonsPanel();
-
-        HandlerSplitLayoutPanel getSplitPanel();
-
-        DockLayoutPanel getViewLayoutPanel();
+    public interface Display extends BaseSearchAndEditViewInterface {
+      
     }
 
     public interface LogicComponent extends Component<Display> {

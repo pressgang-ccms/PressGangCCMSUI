@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -34,31 +35,8 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
      * 
      * @author Matthew Casperson
      */
-    public interface Display extends BaseTemplateViewInterface {
-        /**
-         * @return The panel used to hold the list of categories
-         */
-        SimpleLayoutPanel getResultsPanel();
-
-        /**
-         * @return The panel used to hold the views that display the category details
-         */
-        SimpleLayoutPanel getViewPanel();
-
-        /**
-         * @return The panel that holds the action buttons for the category details view
-         */
-        SimpleLayoutPanel getViewActionButtonsPanel();
-
-        /**
-         * @return The panel that holds the action buttons for the list of categories
-         */
-        SimpleLayoutPanel getResultsActionButtonsPanel();
-
-        /**
-         * @return The split panel that separates the category list from the category details views
-         */
-        HandlerSplitLayoutPanel getSplitPanel();
+    public interface Display extends BaseSearchAndEditViewInterface {
+        
     }
 
     public interface LogicComponent extends Component<Display> {

@@ -341,11 +341,11 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
      * Displays a new topic view
      */
     private void changeDisplayedTopicView() {
-        display.getTopicViewActionButtonsPanel().clear();
-        display.getTopicViewPanel().clear();
+        display.getViewActionButtonsPanel().clear();
+        display.getViewPanel().clear();
 
-        display.getTopicViewActionButtonsPanel().setWidget(selectedView.getTopActionPanel());
-        display.getTopicViewPanel().setWidget(selectedView.getPanel());
+        display.getViewActionButtonsPanel().setWidget(selectedView.getTopActionPanel());
+        display.getViewPanel().setWidget(selectedView.getPanel());
 
         if (previousView != null) {
             previousView.setViewShown(false);
@@ -395,13 +395,13 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
     }
 
     private void showRegularMenu() {
-        display.getTopicViewActionButtonsPanel().clear();
-        display.getTopicViewActionButtonsPanel().add(selectedView.getTopActionPanel());
+        display.getViewActionButtonsPanel().clear();
+        display.getViewActionButtonsPanel().add(selectedView.getTopActionPanel());
     }
 
     private void showRenderedSplitPanelMenu() {
-        display.getTopicViewActionButtonsPanel().clear();
-        display.getTopicViewActionButtonsPanel().add(selectedView.getRenderedSplitViewMenu());
+        display.getViewActionButtonsPanel().clear();
+        display.getViewActionButtonsPanel().add(selectedView.getRenderedSplitViewMenu());
     }
 
     /**

@@ -22,12 +22,20 @@ public interface CSSConstants {
         String ORDERED_CHILDREN_SPLIT_PANEL = "OrderedChildrenSplitPanel";
     }
     
-    public interface TagsFilteredResultsAndTagView {        
-        /** Assigned to the panel that holds the action buttons above the tags search results lists */
-        String TAG_SEARCH_TAGS_RESULT_BUTTONS_PANEL = "TagSearchTagsResultButtonsPanel";
-        /** Assigned to the panel that holds the action buttons above the tag search result view */
-        String TAG_SEARCH_TAG_VIEW_BUTTONS_PANEL = "TagSearchTagViewButtonsPanel";
+    public interface BaseSearchAndEditView
+    {
+        String RESULTS_VIEW_LAYOUT_PANEL = "ResultsViewLayoutPanel";
+        String ENTITY_VIEW_LAYOUT_PANEL = "EntityViewLayoutPanel";
+        /** Assigned to the panel that holds the action buttons above the entity search results lists */
+        String ENTITY_SEARCH_TAGS_RESULT_BUTTONS_PANEL = "EntitySearchTagsResultButtonsPanel";
+        /** Assigned to the panel that holds the action buttons above the entity search result view */
+        String ENTITY_SEARCH_TAG_VIEW_BUTTONS_PANEL = "EntitySearchTagViewButtonsPanel";
+        String ENTITY_SEARCH_TOPIC_VIEW_BUTTONS_PANEL = "EntitySearchTopicViewButtonsPanel";
+        String ENTITY_SEARCH_TOPIC_VIEW_DETAILS_PANEL = "EntitySearchTopicViewDetailsPanel";
+        String ENTITY_SEARCH_RESULTS_AND_VIEW_PARENT_PANEL = "EntitySearchResultsAndViewParentPanel";
     }
+    
+
     
     public interface TagView {
         String TAG_VIEW_PANEL = "TagViewPanel";
@@ -84,11 +92,8 @@ public interface CSSConstants {
     String FOOTER_PANEL = "FooterPanel";
     String RIGHT_ALIGNED_ACTION_BUTTONS = "RightAlignedActionButtons";
     String PAGE_TITLE_PARENT_LAYOUT_PANEL = "PageTitleParentLayoutPanel";
-    String RESULTS_VIEW_LAYOUT_PANEL = "ResultsViewLayoutPanel";
-    String TOPIC_VIEW_LAYOUT_PANEL = "TopicViewLayoutPanel";
-    String TOPIC_SEARCH_TOPIC_VIEW_BUTTONS_PANEL = "TopicSearchTopicViewButtonsPanel";
-    String TOPIC_SEARCH_TOPIC_VIEW_DETAILS_PANEL = "TopicSearchTopicViewDetailsPanel";
-    String TOPIC_SEARCH_RESULTS_AND_VIEW_PARENT_PANEL = "TopicSearchResultsAndViewParentPanel";
+    
+    String TOPIC_VIEW_LAYOUT_PANEL = "TopicViewLayoutPanel";    
     String TOPIC_RENDERED_VIEW_DIV = "TopicRenderedViewDiv";
     String SEARCH_RESULTS_PANEL = "SearchResultsPanel";
     String TOPIC_VIEW_PANEL = "TopicViewPanel";

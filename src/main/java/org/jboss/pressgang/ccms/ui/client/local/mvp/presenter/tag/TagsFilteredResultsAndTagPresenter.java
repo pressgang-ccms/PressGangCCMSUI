@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 
 import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
@@ -35,31 +36,8 @@ public class TagsFilteredResultsAndTagPresenter implements TemplatePresenter {
      * @author Matthew Casperson
      * 
      */
-    public interface Display extends BaseTemplateViewInterface {
-        /**
-         * @return The panel used to hold the list of tags
-         */
-        SimpleLayoutPanel getResultsPanel();
-
-        /**
-         * @return The panel used to hold the views that display the tag details
-         */
-        SimpleLayoutPanel getViewPanel();
-
-        /**
-         * @return The panel that holds the action buttons for the tag detail views
-         */
-        SimpleLayoutPanel getViewActionButtonsPanel();
-
-        /**
-         * @return The panel that holds the action buttons for the list of tags
-         */
-        SimpleLayoutPanel getResultsActionButtonsPanel();
-
-        /**
-         * @return The split panel that separates the tag list from the tag details views
-         */
-        HandlerSplitLayoutPanel getSplitPanel();
+    public interface Display extends BaseSearchAndEditViewInterface {
+        
     }
 
     public interface LogicComponent extends Component<Display> {

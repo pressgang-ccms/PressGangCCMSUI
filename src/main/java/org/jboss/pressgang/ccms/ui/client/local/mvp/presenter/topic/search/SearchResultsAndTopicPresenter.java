@@ -15,6 +15,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPre
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 
 import com.google.gwt.user.client.ui.DockLayoutPanel;
@@ -34,22 +35,8 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
 
-    public interface Display extends BaseTemplateViewInterface {
+    public interface Display extends BaseSearchAndEditViewInterface {
         SplitType getSplitType();
-
-        DockLayoutPanel getResultsViewLayoutPanel();
-
-        SimpleLayoutPanel getTopicResultsPanel();
-
-        SimpleLayoutPanel getTopicViewPanel();
-
-        SimpleLayoutPanel getTopicViewActionButtonsPanel();
-
-        SimpleLayoutPanel getTopicResultsActionButtonsPanel();
-
-        HandlerSplitLayoutPanel getSplitPanel();
-
-        DockLayoutPanel getTopicViewLayoutPanel();
 
         void initialize(final SplitType splitType, final Panel panel);
     }
@@ -140,8 +127,8 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
 
         clearContainerAndAddTopLevelPanel(container, display);
 
-        display.getTopicResultsActionButtonsPanel().setWidget(searchResultsDisplay.getTopActionPanel());
-        display.getTopicResultsPanel().setWidget(searchResultsDisplay.getPanel());
+        display.getResultsActionButtonsPanel().setWidget(searchResultsDisplay.getTopActionPanel());
+        display.getResultsPanel().setWidget(searchResultsDisplay.getPanel());
 
         searchResultsComponent.bind(component.getQueryString(), searchResultsDisplay, display);
         topicTagsComponent.bind(topicTagsDisplay, display);
