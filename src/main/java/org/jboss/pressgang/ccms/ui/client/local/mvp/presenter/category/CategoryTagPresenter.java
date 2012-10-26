@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
@@ -32,7 +34,7 @@ public class CategoryTagPresenter implements TemplatePresenter {
 
     @Override
     public void go(final HasWidgets container) {
-
+        clearContainerAndAddTopLevelPanel(container, display);
     }
 
     @Override

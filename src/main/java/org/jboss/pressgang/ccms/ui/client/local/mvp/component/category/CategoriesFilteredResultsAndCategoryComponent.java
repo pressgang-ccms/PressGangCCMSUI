@@ -113,22 +113,9 @@ public class CategoriesFilteredResultsAndCategoryComponent
 
         views = new CategoryViewInterface[] { resultDisplay, tagDisplay };
 
-        bindMainSplitResize();
+        bindMainSplitResize(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
         bindResultsListRowClicks();
-    }
-
-    /**
-     * Saves the width of the split screen
-     */
-    protected void bindMainSplitResize() {
-        display.getSplitPanel().addResizeHandler(new ResizeHandler() {
-
-            @Override
-            public void onResize(final ResizeEvent event) {
-                Preferences.INSTANCE.saveSetting(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display.getSplitPanel()
-                        .getSplitPosition(display.getResultsPanel()) + "");
-            }
-        });
+        bindActionButtons();
     }
 
     /**
@@ -220,7 +207,6 @@ public class CategoriesFilteredResultsAndCategoryComponent
 
             /* Update the displayed view */
             display.displayChildView(displayedView);
-
         }
 
         /* Show any wait dialogs from the new view, and update the view with the currently displayed entity */

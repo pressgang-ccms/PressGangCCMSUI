@@ -397,7 +397,7 @@ public class TagsFilteredResultsAndTagComponent
 
         bindActionButtons();
         bindSearchButtons();
-        bindMainSplitResize();
+        bindMainSplitResize(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
         bindCategoryColumnButtons();
         bindProjectColumnButtons();
         bindResultsListRowClicks();
@@ -533,22 +533,6 @@ public class TagsFilteredResultsAndTagComponent
             }
         });
     }
-
-    /**
-     * Saves the width of the split screen
-     */
-    private void bindMainSplitResize() {
-        display.getSplitPanel().addResizeHandler(new ResizeHandler() {
-
-            @Override
-            public void onResize(final ResizeEvent event) {
-                Preferences.INSTANCE.saveSetting(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display.getSplitPanel()
-                        .getSplitPosition(display.getResultsPanel()) + "");
-            }
-        });
-    }
-
-
 
     /**
      * Compare the displayed tag (the one that is edited) with the selected tag (the one that exists in the collection used to

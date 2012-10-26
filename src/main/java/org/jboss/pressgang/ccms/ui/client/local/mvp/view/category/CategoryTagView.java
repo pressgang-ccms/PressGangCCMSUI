@@ -105,6 +105,7 @@ public class CategoryTagView extends
 
     public CategoryTagView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Categories());
+        
         populateTopActionBar();
 
         getPossibleChildrenResults().addColumn(tagsIdColumn, PressGangCCMSUI.INSTANCE.CategoryID());
