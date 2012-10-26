@@ -26,7 +26,7 @@ public class CategoryPresenter implements TemplatePresenter {
     public interface CategoryPresenterDriver extends SimpleBeanEditorDriver<RESTCategoryV1, RESTCategoryV1BasicDetailsEditor> {
     }
 
-    public interface Display extends BaseTemplateViewInterface, CategoryViewInterface {
+    public interface Display extends CategoryViewInterface {
         @SuppressWarnings("rawtypes")
         SimpleBeanEditorDriver getDriver();
 

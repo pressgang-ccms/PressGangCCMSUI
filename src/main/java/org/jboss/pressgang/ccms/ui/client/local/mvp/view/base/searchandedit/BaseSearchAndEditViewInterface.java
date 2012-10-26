@@ -33,4 +33,10 @@ public interface BaseSearchAndEditViewInterface extends BaseTemplateViewInterfac
     HandlerSplitLayoutPanel getSplitPanel();
     
     DockLayoutPanel getResultsViewLayoutPanel();
+    
+    /**
+     * Displays the contents of a child view
+     * @param displayedView The view to be displayed
+     */
+    void displayChildView(final BaseTemplateViewInterface displayedView);
 }

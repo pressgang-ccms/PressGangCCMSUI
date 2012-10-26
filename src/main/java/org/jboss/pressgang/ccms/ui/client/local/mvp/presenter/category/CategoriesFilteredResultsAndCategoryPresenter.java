@@ -42,8 +42,8 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
     public interface LogicComponent extends Component<Display> {
         void bind(final CategoryFilteredResultsPresenter.Display filteredResultsDisplay,
                 final CategoryFilteredResultsPresenter.LogicCompnent filteredResultsComponent,
-                final CategoryPresenter.Display resultDisplay,
-                final CategoriesFilteredResultsAndCategoryPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
+                final CategoryPresenter.Display resultDisplay, final CategoryTagPresenter.Display tagDisplay, final CategoriesFilteredResultsAndCategoryPresenter.Display display,
+                final BaseTemplateViewInterface waitDisplay);
     }
 
     /**
@@ -103,7 +103,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
 
         filteredResultsComponent.bind(queryString, filteredResultsDisplay, display);
         resultComponent.bind(resultDisplay, display);
-        component.bind(filteredResultsDisplay, filteredResultsComponent, resultDisplay, display, display);
+        component.bind(filteredResultsDisplay, filteredResultsComponent, resultDisplay, tagDisplay, display, display);
     }
 
     @Override
