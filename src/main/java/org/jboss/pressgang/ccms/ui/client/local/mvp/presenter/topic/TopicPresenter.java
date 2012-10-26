@@ -51,6 +51,7 @@ public class TopicPresenter implements TemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
+        component.bind(display,  display);
         component.getTopic(topicId);
     }
 

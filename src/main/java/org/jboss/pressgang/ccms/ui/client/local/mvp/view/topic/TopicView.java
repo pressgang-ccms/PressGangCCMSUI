@@ -24,6 +24,7 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display {
     public TopicView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
                 + PressGangCCMSUI.INSTANCE.Properties());
+        
     }
 
     @Override

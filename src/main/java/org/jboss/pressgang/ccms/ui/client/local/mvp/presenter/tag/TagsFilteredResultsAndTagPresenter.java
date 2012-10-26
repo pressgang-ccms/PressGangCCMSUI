@@ -106,8 +106,7 @@ public class TagsFilteredResultsAndTagPresenter implements TemplatePresenter {
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
 
-        display.getResultsActionButtonsPanel().setWidget(filteredResultsDisplay.getTopActionPanel());
-        display.getResultsPanel().setWidget(filteredResultsDisplay.getPanel());
+        display.displaySearchResultsView(filteredResultsDisplay);
 
         filteredResultsDisplay.setViewShown(true);
         display.setViewShown(true);
