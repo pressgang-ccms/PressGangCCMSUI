@@ -3,14 +3,20 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.category;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.stringEqualsEquatingNullWithEmptyString;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndCategoryPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndCategoryPresenter.Display;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.category.CategoryViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -26,7 +32,7 @@ import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 
 public class CategoriesFilteredResultsAndCategoryComponent extends
-        ComponentBase<CategoriesFilteredResultsAndCategoryPresenter.Display> implements
+BaseSearchAndEditComponent<CategoriesFilteredResultsAndCategoryPresenter.Display, CategoryFilteredResultsPresenter.Display, RESTCategoryCollectionItemV1, CategoryViewInterface> implements
         CategoriesFilteredResultsAndCategoryPresenter.LogicComponent {
 
     private CategoryFilteredResultsPresenter.Display filteredResultsDisplay;
@@ -73,13 +79,13 @@ public class CategoriesFilteredResultsAndCategoryComponent extends
         this.filteredResultsComponent = filteredResultsComponent;
         
         bindMainSplitResize();
-        bindCategoryListRowClicks();
+        bindResultsListRowClicks();
     }
     
     /**
      * Saves the width of the split screen
      */
-    private void bindMainSplitResize() {
+    protected void bindMainSplitResize() {
         display.getSplitPanel().addResizeHandler(new ResizeHandler() {
 
             @Override
@@ -90,10 +96,40 @@ public class CategoriesFilteredResultsAndCategoryComponent extends
         });
     }
     
+    
     /**
-     * Bind the button click events for the topic editor screens
+     * Compare the displayed category (the one that is edited) with the selected category (the one that exists in the collection
+     * used to build the category list). If there are unsaved changes, prompt the user.
+     * 
+     * @return true if the user wants to ignore the unsaved changes, false otherwise
      */
-    private void bindCategoryListRowClicks() {
+    public boolean checkForUnsavedChanges() {
+        /* sync the UI with the underlying tag */
+        if (filteredResultsComponent.getCategoryProviderData().getDisplayedItem() != null) {
+            resultDisplay.getDriver().flush();
+
+            if (unsavedCategoryChanged()) {
+                return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
+            }
+        }
+        return true;
+    }
+
+    private boolean unsavedCategoryChanged() {
+        return !(stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getCategoryProviderData().getSelectedItem().getItem().getName(),
+                filteredResultsComponent.getCategoryProviderData().getDisplayedItem().getItem().getName()) && stringEqualsEquatingNullWithEmptyString(
+                        filteredResultsComponent.getCategoryProviderData().getSelectedItem().getItem().getDescription(), filteredResultsComponent.getCategoryProviderData().getDisplayedItem()
+                        .getItem().getDescription()));
+    }
+
+    @Override
+    protected void updateDisplayAfterSave(boolean wasNewEntity) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    protected void bindResultsListRowClicks() {
         filteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTCategoryCollectionItemV1>() {
             @Override
             public void onCellPreview(final CellPreviewEvent<RESTCategoryCollectionItemV1> event) {
@@ -120,30 +156,24 @@ public class CategoriesFilteredResultsAndCategoryComponent extends
                 }
             }
         });
-    }
-    
-    /**
-     * Compare the displayed category (the one that is edited) with the selected category (the one that exists in the collection
-     * used to build the category list). If there are unsaved changes, prompt the user.
-     * 
-     * @return true if the user wants to ignore the unsaved changes, false otherwise
-     */
-    public boolean checkForUnsavedChanges() {
-        /* sync the UI with the underlying tag */
-        if (filteredResultsComponent.getCategoryProviderData().getDisplayedItem() != null) {
-            resultDisplay.getDriver().flush();
-
-            if (unsavedCategoryChanged()) {
-                return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
-            }
-        }
-        return true;
+        
     }
 
-    private boolean unsavedCategoryChanged() {
-        return !(stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getCategoryProviderData().getSelectedItem().getItem().getName(),
-                filteredResultsComponent.getCategoryProviderData().getDisplayedItem().getItem().getName()) && stringEqualsEquatingNullWithEmptyString(
-                        filteredResultsComponent.getCategoryProviderData().getSelectedItem().getItem().getDescription(), filteredResultsComponent.getCategoryProviderData().getDisplayedItem()
-                        .getItem().getDescription()));
+    @Override
+    protected void bindActionButtons() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    protected void reInitialiseView(CategoryViewInterface displayedView) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    protected String getQuery() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

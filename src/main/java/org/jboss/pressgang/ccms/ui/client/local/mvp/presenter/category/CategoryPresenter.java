@@ -11,6 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.category.CategoryViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCategoryV1BasicDetailsEditor;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
@@ -25,7 +26,7 @@ public class CategoryPresenter implements TemplatePresenter {
     public interface CategoryPresenterDriver extends SimpleBeanEditorDriver<RESTCategoryV1, RESTCategoryV1BasicDetailsEditor> {
     }
 
-    public interface Display extends BaseTemplateViewInterface {
+    public interface Display extends BaseTemplateViewInterface, CategoryViewInterface {
         @SuppressWarnings("rawtypes")
         SimpleBeanEditorDriver getDriver();
 

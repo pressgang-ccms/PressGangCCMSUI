@@ -36,7 +36,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
      * @author Matthew Casperson
      */
     public interface Display extends BaseSearchAndEditViewInterface {
-        
+
     }
 
     public interface LogicComponent extends Component<Display> {
@@ -78,6 +78,9 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
     @Inject
     private CategoryPresenter.LogicComponent resultComponent;
 
+    @Inject
+    private CategoryTagPresenter.Display tagDisplay;
+
     /**
      * The category query string extracted from the history token
      */
@@ -89,8 +92,6 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
 
         display.getResultsActionButtonsPanel().setWidget(filteredResultsDisplay.getTopActionPanel());
         display.getResultsPanel().setWidget(filteredResultsDisplay.getPanel());
-        display.getViewActionButtonsPanel().setWidget(resultDisplay.getTopActionPanel());
-        display.getViewPanel().setWidget(resultDisplay.getPanel());
 
         filteredResultsDisplay.setViewShown(true);
         display.setViewShown(true);
@@ -100,9 +101,9 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
         display.getSplitPanel().setSplitPosition(display.getResultsPanel(),
                 Preferences.INSTANCE.getInt(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
 
-        component.bind(filteredResultsDisplay, filteredResultsComponent, resultDisplay, display, display);
         filteredResultsComponent.bind(queryString, filteredResultsDisplay, display);
         resultComponent.bind(resultDisplay, display);
+        component.bind(filteredResultsDisplay, filteredResultsComponent, resultDisplay, display, display);
     }
 
     @Override

@@ -225,6 +225,8 @@ public interface PressGangCCMSUI extends Constants {
     String CategoryDescription();
 
     String CategoryDetails();
+    
+    String CategoryTags();
 
     String Up();
 
