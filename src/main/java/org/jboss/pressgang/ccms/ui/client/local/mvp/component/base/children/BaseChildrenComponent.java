@@ -7,7 +7,14 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChild
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
-/** This is the base class that is used for components adding logic to views that list the children of an entity */
+/**
+ * This is the base class that is used for components adding logic to views that list the children of an entity
+ * @author Matthew Casperson
+ *
+ * @param <T> The display that holds the child view
+ * @param <U> The parent entity type
+ * @param <V> The potential children type
+ */
 abstract public class BaseChildrenComponent<T extends BaseChildrenViewInterface<U, V>, U extends RESTBasePrimaryEntityV1, V extends RESTBaseCollectionItemV1>
         extends ComponentBase<T> implements BaseChildrenComponentInterface<T, U, V> {
 

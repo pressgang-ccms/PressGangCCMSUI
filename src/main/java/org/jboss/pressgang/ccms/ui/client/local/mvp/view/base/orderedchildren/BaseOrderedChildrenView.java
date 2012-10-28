@@ -5,6 +5,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBasePrimaryEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -24,7 +25,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * @param <V> The type of the children that are added to the collection
  */
 public class BaseOrderedChildrenView<T extends RESTBasePrimaryEntityV1, U extends RESTBaseCollectionItemV1, V extends RESTBaseCollectionItemV1>
-        extends BaseTemplateView {
+        extends BaseChildrenView<T, U> {
     
 
     /** A reference to the entity that this view will be modifying. */
@@ -32,11 +33,6 @@ public class BaseOrderedChildrenView<T extends RESTBasePrimaryEntityV1, U extend
 
     /** The panel that defines the split between the current children and the possible children */
     private HandlerSplitLayoutPanel split = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
-
-    private final VerticalPanel possibleChildrenResultsPanel = new VerticalPanel();
-    private final SimplePager possibleChildrenPager = UIUtilities.createSimplePager();
-    private final CellTable<U> possibleChildrenResults = UIUtilities.<U> createCellTable();
-    private EnhancedAsyncDataProvider<U> possibleChildrenProvider;
 
     private final VerticalPanel existingChildrenResultsPanel = new VerticalPanel();
     private final SimplePager existingChildrenPager = UIUtilities.createSimplePager();
@@ -53,27 +49,6 @@ public class BaseOrderedChildrenView<T extends RESTBasePrimaryEntityV1, U extend
 
     public VerticalPanel getExistingChildrenResultsPanel() {
         return existingChildrenResultsPanel;
-    }
-
-    public EnhancedAsyncDataProvider<U> getPossibleChildrenProvider() {
-        return possibleChildrenProvider;
-    }
-
-    public void setPossibleChildrenProvider(final EnhancedAsyncDataProvider<U> possibleChildrenProvider) {
-        this.possibleChildrenProvider = possibleChildrenProvider;
-        possibleChildrenProvider.addDataDisplay(possibleChildrenResults);
-    }
-
-    public CellTable<U> getPossibleChildrenResults() {
-        return possibleChildrenResults;
-    }
-
-    public SimplePager getPossibleChildrenPager() {
-        return possibleChildrenPager;
-    }
-
-    public VerticalPanel getPossibleChildrenResultsPanel() {
-        return possibleChildrenResultsPanel;
     }
 
     public HandlerSplitLayoutPanel getSplit() {
@@ -110,12 +85,12 @@ public class BaseOrderedChildrenView<T extends RESTBasePrimaryEntityV1, U extend
        
         split.addStyleName(CSSConstants.OrderedChildrenResultsView.ORDERED_CHILDREN_SPLIT_PANEL);
         
-        possibleChildrenResultsPanel.addStyleName(CSSConstants.OrderedChildrenResultsView.ORDERED_CHILDREN_LIST_PANEL);
-        possibleChildrenResultsPanel.add(possibleChildrenResults);
-        possibleChildrenResultsPanel.add(possibleChildrenPager);
-        possibleChildrenPager.setDisplay(possibleChildrenResults);
+        getPossibleChildrenResultsPanel().addStyleName(CSSConstants.OrderedChildrenResultsView.ORDERED_CHILDREN_LIST_PANEL);
+        getPossibleChildrenResultsPanel().add(getPossibleChildrenResults());
+        getPossibleChildrenResultsPanel().add(getPossibleChildrenPager());
+        getPossibleChildrenPager().setDisplay(getPossibleChildrenResults());
 
-        split.addWest(possibleChildrenResultsPanel, Constants.SPLIT_PANEL_SIZE);
+        split.addWest(getPossibleChildrenResultsPanel(), Constants.SPLIT_PANEL_SIZE);
 
         existingChildrenResultsPanel.addStyleName(CSSConstants.OrderedChildrenResultsView.ORDERED_CHILDREN_EXISTING_LIST_PANEL);
         existingChildrenResultsPanel.add(existingChildrenResults);

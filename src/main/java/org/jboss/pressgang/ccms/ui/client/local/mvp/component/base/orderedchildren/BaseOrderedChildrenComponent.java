@@ -1,0 +1,38 @@
+package org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren;
+
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBasePrimaryEntityV1;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.BaseChildrenComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
+
+abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildrenViewInterface<T, U, V>, T extends RESTBasePrimaryEntityV1, U extends RESTBaseCollectionItemV1, V extends RESTBaseCollectionItemV1>
+        extends BaseChildrenComponent<S, T, U> {
+
+    /**
+     * Save the size of the split ui component
+     */
+    protected void bindChildSplitResize(final String preferencesKey)
+    {
+        display.getSplit().addResizeHandler(new ResizeHandler() {
+
+            @Override
+            public void onResize(final ResizeEvent event) {
+                Preferences.INSTANCE.saveSetting(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display.getSplit()
+                        .getSplitPosition(display.getPossibleChildrenResultsPanel()) + "");
+            }
+        });
+    }
+    
+    abstract protected void getExistingEntityList();
+    
+    abstract protected void bindPossibleChildrenRowClick();
+    
+    abstract protected void bindExistingChildrenRowClick();
+    
+    abstract protected EnhancedAsyncDataProvider<V> generateExistingProvider();
+}
