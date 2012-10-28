@@ -223,9 +223,9 @@ public class TagsFilteredResultsAndTagComponent
             /*
              * Sync changes from the projects.
              */
-            if (projectsComponent.getProjectProviderData().getItems() != null) {
+            if (projectsComponent.getProviderData().getItems() != null) {
                 updateTag.explicitSetProjects(new RESTProjectCollectionV1());
-                for (final RESTProjectCollectionItemV1 project : projectsComponent.getProjectProviderData().getItems()) {
+                for (final RESTProjectCollectionItemV1 project : projectsComponent.getProviderData().getItems()) {
                     for (final RESTTagCollectionItemV1 tag : project.getItem().getTags().returnDeletedAndAddedCollectionItems()) {
                         if (tag.getItem().getId().equals(updateTag.getId())) {
 
@@ -460,7 +460,7 @@ public class TagsFilteredResultsAndTagComponent
 
                 /* refresh the project list */
                 projectsDisplay.getPossibleChildrenProvider().displayNewFixedList(
-                        projectsComponent.getProjectProviderData().getItems());
+                        projectsComponent.getProviderData().getItems());
             }
         });
     }
@@ -546,7 +546,7 @@ public class TagsFilteredResultsAndTagComponent
             resultDisplay.getDriver().flush();
 
             if (unsavedTagChanged() || categoriesComponent.unsavedCategoryChanges()
-                    || projectsComponent.unsavedProjectChanges()) {
+                    || projectsComponent.checkForUnsavedChanges()) {
                 return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
             }
         }
@@ -565,8 +565,8 @@ public class TagsFilteredResultsAndTagComponent
         final boolean unsavedCategoryChanges = categoriesComponent.getCategoryProviderData().getItems() != null
                 && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems(categoriesComponent.getCategoryProviderData()
                         .getItems());
-        final boolean unsavedProjectChanges = projectsComponent.getProjectProviderData().getItems() != null
-                && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems(projectsComponent.getProjectProviderData()
+        final boolean unsavedProjectChanges = projectsComponent.getProviderData().getItems() != null
+                && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems(projectsComponent.getProviderData()
                         .getItems());
 
         /* See if any of the fields were changed */
@@ -677,9 +677,9 @@ public class TagsFilteredResultsAndTagComponent
         if (displayedView == projectsDisplay) {
             /* If we switch to this view before the projects have been downloaded, there is nothing to update */
             if (projectsDisplay.getPossibleChildrenProvider() != null
-                    && projectsComponent.getProjectProviderData().getItems() != null) {
+                    && projectsComponent.getProviderData().getItems() != null) {
                 projectsDisplay.getPossibleChildrenProvider().displayNewFixedList(
-                        projectsComponent.getProjectProviderData().getItems());
+                        projectsComponent.getProviderData().getItems());
             }
         }
         /* refresh the category list */
@@ -720,9 +720,9 @@ public class TagsFilteredResultsAndTagComponent
          * slow.
          */
         categoriesComponent.getCategoryProviderData().reset();
-        projectsComponent.getProjectProviderData().reset();
+        projectsComponent.getProviderData().reset();
 
-        projectsComponent.getProjects();
+        projectsComponent.getEntityList();
         categoriesComponent.getCategories();
 
         /* remove the category tags list */

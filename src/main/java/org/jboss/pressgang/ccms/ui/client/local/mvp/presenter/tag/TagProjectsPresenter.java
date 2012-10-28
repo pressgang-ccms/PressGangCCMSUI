@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.BaseChildrenComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
@@ -27,11 +28,8 @@ public class TagProjectsPresenter implements TemplatePresenter {
         Column<RESTProjectCollectionItemV1, String> getButtonColumn();
     }
 
-    public interface LogicComponent extends Component<Display> {
-        boolean unsavedProjectChanges();
-        ProviderUpdateData<RESTProjectCollectionItemV1> getProjectProviderData();
-        void setProjectProviderData(final ProviderUpdateData<RESTProjectCollectionItemV1> projectProviderData);
-        void getProjects();
+    public interface LogicComponent extends BaseChildrenComponentInterface<Display, RESTTagV1, RESTProjectCollectionItemV1> {
+
     }
 
     @Inject
