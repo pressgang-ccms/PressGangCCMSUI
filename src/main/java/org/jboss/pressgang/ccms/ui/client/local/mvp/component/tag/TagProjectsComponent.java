@@ -23,7 +23,7 @@ public class TagProjectsComponent extends BaseChildrenComponent<TagProjectsPrese
     public void bind(final TagProjectsPresenter.Display display, final BaseTemplateViewInterface waitDisplay)
     {
         super.bind(display, waitDisplay);
-        display.setPossibleChildrenProvider(generateProvider());
+        display.setPossibleChildrenProvider(generatePossibleChildrenrovider());
         getEntityList();
     }
     
@@ -31,7 +31,7 @@ public class TagProjectsComponent extends BaseChildrenComponent<TagProjectsPrese
      * @return A provider to be used for the project display list
      */
     @Override
-    public EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> generateProvider() {
+    public EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> generatePossibleChildrenrovider() {
 
         final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTProjectCollectionItemV1>() {
             @Override

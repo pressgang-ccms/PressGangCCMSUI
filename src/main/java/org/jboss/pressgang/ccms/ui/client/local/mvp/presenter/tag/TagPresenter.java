@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.propertyview.BasePropertyViewComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
@@ -29,8 +30,8 @@ public class TagPresenter implements TemplatePresenter {
         SimpleBeanEditorDriver getDriver();
     }
 
-    public interface LogicComponent extends Component<Display> {
-        void getTag(final Integer tagId);
+    public interface LogicComponent extends BasePropertyViewComponentInterface<Display> {
+        void getEntity(final Integer tagId);
     }
 
     private Integer tagId;
@@ -57,6 +58,6 @@ public class TagPresenter implements TemplatePresenter {
         component.bind(display,  display);
         
         if (tagId != null)
-            component.getTag(tagId);
+            component.getEntity(tagId);
     }
 }

@@ -7,6 +7,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.propertyview.BasePropertyViewComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter.Display;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter.LogicComponent;
@@ -43,7 +44,7 @@ public class TopicXMLPresenter implements TemplatePresenter {
         AceEditor getEditor();
     }
     
-    public interface LogicComponent extends TopicViewComponentInterface<Display>
+    public interface LogicComponent extends BasePropertyViewComponentInterface<Display>
     {
         
     }
@@ -62,6 +63,6 @@ public class TopicXMLPresenter implements TemplatePresenter {
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         component.bind(display,  display);
-        component.getTopic(topicId);
+        component.getEntity(topicId);
     }
 }

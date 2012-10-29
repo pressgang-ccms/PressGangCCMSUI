@@ -13,7 +13,7 @@ public class CategoryComponent extends ComponentBase<CategoryPresenter.Display> 
      * Get the category from the database and use it to populate the editor in the view
      */
     @Override
-    public void getCategory(final Integer categoryId) {
+    public void getEntity(final Integer categoryId) {
         final RESTCalls.RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, Display>(display,
                 new BaseRestCallback.SuccessAction<RESTCategoryV1, Display>() {
                     @Override

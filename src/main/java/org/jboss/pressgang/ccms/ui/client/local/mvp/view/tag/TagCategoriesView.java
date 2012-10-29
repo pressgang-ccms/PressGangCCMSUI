@@ -96,7 +96,7 @@ public class TagCategoriesView extends
     }
 
     @Override
-    public Column<RESTCategoryCollectionItemV1, String> getButtonColumn() {
+    public Column<RESTCategoryCollectionItemV1, String> getPossibleChildrenButtonColumn() {
         return buttonColumn;
     }
     

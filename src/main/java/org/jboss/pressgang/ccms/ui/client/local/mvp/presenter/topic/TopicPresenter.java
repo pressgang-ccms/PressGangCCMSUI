@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.propertyview.BasePropertyViewComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
@@ -26,7 +27,7 @@ public class TopicPresenter implements TemplatePresenter {
 
     }
 
-    public interface LogicComponent extends TopicViewComponentInterface<Display> {
+    public interface LogicComponent extends BasePropertyViewComponentInterface<Display> {
 
     }
 
@@ -52,7 +53,7 @@ public class TopicPresenter implements TemplatePresenter {
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         component.bind(display,  display);
-        component.getTopic(topicId);
+        component.getEntity(topicId);
     }
 
 }

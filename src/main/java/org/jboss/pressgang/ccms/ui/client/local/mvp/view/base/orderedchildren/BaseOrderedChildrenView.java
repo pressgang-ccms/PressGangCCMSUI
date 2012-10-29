@@ -24,9 +24,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * @param <U> The type of the children that can be added to the collection
  * @param <V> The type of the children that are added to the collection
  */
-public class BaseOrderedChildrenView<T extends RESTBasePrimaryEntityV1, U extends RESTBaseCollectionItemV1, V extends RESTBaseCollectionItemV1>
+abstract public class BaseOrderedChildrenView<T extends RESTBasePrimaryEntityV1<?, ?, ?>, U extends RESTBaseCollectionItemV1<?, ?, ?>, V extends RESTBaseCollectionItemV1<?, ?, ?>>
         extends BaseChildrenView<T, U> {
-    
 
     /** A reference to the entity that this view will be modifying. */
     private T originalEntity;
@@ -79,12 +78,12 @@ public class BaseOrderedChildrenView<T extends RESTBasePrimaryEntityV1, U extend
     public void initialize(final T originalEntity, final boolean readOnly) {
         this.originalEntity = originalEntity;
     }
-    
+
     public BaseOrderedChildrenView(final String applicationName, final String pageName) {
         super(applicationName, pageName);
-       
+
         split.addStyleName(CSSConstants.OrderedChildrenResultsView.ORDERED_CHILDREN_SPLIT_PANEL);
-        
+
         getPossibleChildrenResultsPanel().addStyleName(CSSConstants.OrderedChildrenResultsView.ORDERED_CHILDREN_LIST_PANEL);
         getPossibleChildrenResultsPanel().add(getPossibleChildrenResults());
         getPossibleChildrenResultsPanel().add(getPossibleChildrenPager());

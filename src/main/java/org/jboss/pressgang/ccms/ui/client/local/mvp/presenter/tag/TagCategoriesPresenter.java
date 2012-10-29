@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren.BaseOrderedChildrenComponent;
@@ -36,10 +37,9 @@ public class TagCategoriesPresenter implements TemplatePresenter {
     public interface Display extends BaseOrderedChildrenViewInterface<RESTTagV1, RESTCategoryCollectionItemV1, RESTTagInCategoryCollectionItemV1>, TagViewInterface {
         Column<RESTTagInCategoryCollectionItemV1, String> getTagDownButtonColumn();
         Column<RESTTagInCategoryCollectionItemV1, String> getTagUpButtonColumn();
-        Column<RESTCategoryCollectionItemV1, String> getButtonColumn();
     }
     
-    public interface LogicComponent extends BaseOrderedChildrenComponentInterface<TagCategoriesPresenter.Display, RESTTagV1, RESTCategoryCollectionItemV1, RESTTagInCategoryCollectionItemV1>
+    public interface LogicComponent extends BaseOrderedChildrenComponentInterface<TagCategoriesPresenter.Display, RESTTagV1, RESTCategoryV1, RESTCategoryCollectionItemV1, RESTTagInCategoryCollectionItemV1>
     {
 
     }

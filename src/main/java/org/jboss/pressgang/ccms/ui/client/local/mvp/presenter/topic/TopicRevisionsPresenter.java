@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 import javax.enterprise.context.Dependent;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.propertyview.BasePropertyViewComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -42,7 +43,7 @@ public class TopicRevisionsPresenter implements TemplatePresenter {
         void setRevisionTopic(RESTTopicCollectionItemV1 revisionTopic);
     }
     
-    public interface LogicComponent extends TopicViewComponentInterface<Display>
+    public interface LogicComponent extends BasePropertyViewComponentInterface<Display>
     {
         void displayDiff(final String source, final String sourceLabel, final String diff, final String diffLabel);
     }

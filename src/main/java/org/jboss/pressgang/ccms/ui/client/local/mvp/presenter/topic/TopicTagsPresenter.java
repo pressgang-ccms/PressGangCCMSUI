@@ -4,6 +4,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ValueListBox;
+
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.propertyview.BasePropertyViewComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectsEditor;
@@ -48,7 +50,7 @@ public class TopicTagsPresenter implements TemplatePresenter {
         PushButton getAdd();
     }
 
-    public interface LogicComponent extends TopicViewComponentInterface<Display> {
+    public interface LogicComponent extends BasePropertyViewComponentInterface<Display> {
         SearchUIProjects getSearchUIProjects();
         void bindNewTagListBoxes(final ClickHandler clickHandler);
     }
@@ -67,6 +69,6 @@ public class TopicTagsPresenter implements TemplatePresenter {
         clearContainerAndAddTopLevelPanel(container, display);
         component.bind(display, display);
         if (topicId != null)
-            component.getTopic(topicId);
+            component.getEntity(topicId);
     }
 }

@@ -25,7 +25,7 @@ public class TagProjectsPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "TagProjectsView";
 
     public interface Display extends TagViewInterface, BaseChildrenViewInterface<RESTTagV1, RESTProjectCollectionItemV1> {
-        Column<RESTProjectCollectionItemV1, String> getButtonColumn();
+        
     }
 
     public interface LogicComponent extends BaseChildrenComponentInterface<Display, RESTTagV1, RESTProjectCollectionItemV1> {

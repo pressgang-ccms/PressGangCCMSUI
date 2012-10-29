@@ -6,15 +6,25 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.Base
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 
-abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildrenViewInterface<T, U, V>, T extends RESTBasePrimaryEntityV1, U extends RESTBaseCollectionItemV1, V extends RESTBaseCollectionItemV1>
-        extends BaseChildrenComponent<S, T, U> implements BaseOrderedChildrenComponentInterface<S, T, U, V> {
+/**
+ * 
+ * @author matthew
+ *
+ * @param <S> The view type
+ * @param <T> The entity being modified
+ * @param <W> The entity type modified as an ordered collection of children
+ * @param <U> The potential children type
+ * @param <V> The existing children type
+ */
+abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildrenViewInterface<T, U, V>, T extends RESTBasePrimaryEntityV1, W extends RESTBasePrimaryEntityV1, U extends RESTBaseCollectionItemV1, V extends RESTBaseCollectionItemV1>
+        extends BaseChildrenComponent<S, T, U> implements BaseOrderedChildrenComponentInterface<S, T, W, U, V> {
 
     protected ProviderUpdateData<V> existingProviderData = new ProviderUpdateData<V>();
+
 
     @Override
     public ProviderUpdateData<V> getExistingProviderData() {
@@ -25,13 +35,11 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
     public void setExistingProviderData(final ProviderUpdateData<V> existingProviderData) {
         this.existingProviderData = existingProviderData;
     }
-  
-    
+
     /**
      * Save the size of the split ui component
      */
-    protected void bindChildSplitResize(final String preferencesKey)
-    {
+    protected void bindChildSplitResize(final String preferencesKey) {
         display.getSplit().addResizeHandler(new ResizeHandler() {
 
             @Override
@@ -41,10 +49,9 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
             }
         });
     }
-    
-    abstract protected void getExistingEntityList();      
-    
+
+    abstract protected void getExistingEntityList();
+
     abstract protected void bindExistingChildrenRowClick();
-    
-    
+
 }

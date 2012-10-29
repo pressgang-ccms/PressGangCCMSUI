@@ -91,6 +91,11 @@ public class CategoryTagView extends
         }
     };
 
+    @Override
+    public Column<RESTTagCollectionItemV1, String> getPossibleChildrenButtonColumn() {
+        return tagsButtonColumn;
+    }
+
     public PushButton getChildren() {
         return children;
     }

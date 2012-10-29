@@ -42,8 +42,9 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
     public interface LogicComponent extends Component<Display> {
         void bind(final CategoryFilteredResultsPresenter.Display filteredResultsDisplay,
                 final CategoryFilteredResultsPresenter.LogicCompnent filteredResultsComponent,
-                final CategoryPresenter.Display resultDisplay, final CategoryTagPresenter.Display tagDisplay, final CategoriesFilteredResultsAndCategoryPresenter.Display display,
-                final BaseTemplateViewInterface waitDisplay);
+                final CategoryPresenter.Display resultDisplay, final CategoryTagPresenter.Display tagDisplay,
+                final CategoryTagPresenter.LogicComponent tagComponent,
+                final CategoriesFilteredResultsAndCategoryPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
     }
 
     /**
@@ -81,6 +82,9 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
     @Inject
     private CategoryTagPresenter.Display tagDisplay;
 
+    @Inject
+    private CategoryTagPresenter.LogicComponent tagComponent;
+
     /**
      * The category query string extracted from the history token
      */
@@ -103,7 +107,8 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
 
         filteredResultsComponent.bind(queryString, filteredResultsDisplay, display);
         resultComponent.bind(resultDisplay, display);
-        component.bind(filteredResultsDisplay, filteredResultsComponent, resultDisplay, tagDisplay, display, display);
+        tagComponent.bind(tagDisplay, display);
+        component.bind(filteredResultsDisplay, filteredResultsComponent, resultDisplay, tagDisplay, tagComponent, display, display);
     }
 
     @Override

@@ -31,7 +31,7 @@ abstract public class BaseFilteredResultsComponent<S extends BaseFilteredResults
      */
     abstract protected void displayQueryElements(final String queryString);
     
-    abstract protected EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generateListProvider(final String queryString,
+    abstract protected EnhancedAsyncDataProvider<T> generateListProvider(final String queryString,
             final S display, final BaseTemplateViewInterface waitDisplay);
 
 }

@@ -3,8 +3,11 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.category;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter.Display;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter.LogicCompnent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -16,35 +19,24 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.HasData;
 
-public class CategoryFilteredResultsComponent extends ComponentBase<CategoryFilteredResultsPresenter.Display> implements LogicCompnent {
-    
-    /**
-     * Holds the data required to populate and refresh the categories list
-     */
-    private ProviderUpdateData<RESTCategoryCollectionItemV1> categoryProviderData = new ProviderUpdateData<RESTCategoryCollectionItemV1>();
-    
-    @Override
-    public ProviderUpdateData<RESTCategoryCollectionItemV1> getCategoryProviderData() {
-        return categoryProviderData;
-    }
+public class CategoryFilteredResultsComponent extends
+        BaseFilteredResultsComponent<CategoryFilteredResultsPresenter.Display, RESTCategoryCollectionItemV1> implements
+        LogicCompnent {
 
     @Override
-    public void setCategoryProviderData(ProviderUpdateData<RESTCategoryCollectionItemV1> categoryProviderData) {
-        this.categoryProviderData = categoryProviderData;
-    }
-
-    @Override
-    public void bind(final String queryString, final CategoryFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay)
-    {
+    public void bind(final String queryString, final CategoryFilteredResultsPresenter.Display display,
+            final BaseTemplateViewInterface waitDisplay) {
         super.bind(display, waitDisplay);
-        
-        display.setProvider(generateListProvider(queryString));
+
+        display.setProvider(generateListProvider(queryString, display, waitDisplay));
     }
-    
+
     /**
      * @return A provider to be used for the category display list
      */
-    private EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateListProvider(final String queryString) {
+    @Override
+    protected EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateListProvider(final String queryString, final Display display,
+            final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTCategoryCollectionItemV1> list) {
@@ -65,9 +57,9 @@ public class CategoryFilteredResultsComponent extends ComponentBase<CategoryFilt
                     @Override
                     public void success(final RESTCategoryCollectionV1 retValue) {
                         try {
-                            categoryProviderData.setItems(retValue.getItems());
-                            displayAsynchronousList(categoryProviderData.getItems(), retValue.getSize(),
-                                    categoryProviderData.getStartRow());
+                            getProviderData().setItems(retValue.getItems());
+                            displayAsynchronousList(getProviderData().getItems(), retValue.getSize(), getProviderData()
+                                    .getStartRow());
                         } finally {
                             display.removeWaitOperation();
                         }
@@ -80,13 +72,25 @@ public class CategoryFilteredResultsComponent extends ComponentBase<CategoryFilt
                     }
                 };
 
-                categoryProviderData.setStartRow(list.getVisibleRange().getStart());
+                getProviderData().setStartRow(list.getVisibleRange().getStart());
                 final int length = list.getVisibleRange().getLength();
-                final int end = categoryProviderData.getStartRow() + length;
+                final int end = getProviderData().getStartRow() + length;
 
-                RESTCalls.getCategoriesFromQuery(callback, queryString, categoryProviderData.getStartRow(), end);
-             }
+                RESTCalls.getCategoriesFromQuery(callback, queryString, getProviderData().getStartRow(), end);
+            }
         };
         return provider;
+    }
+
+    @Override
+    public String getQuery() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    protected void displayQueryElements(String queryString) {
+        // TODO Auto-generated method stub
+        
     }
 }

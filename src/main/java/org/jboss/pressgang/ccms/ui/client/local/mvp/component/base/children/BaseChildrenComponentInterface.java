@@ -8,14 +8,22 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChild
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
+/**
+ * 
+ * @author matthew
+ *
+ * @param <T> The type of the view
+ * @param <U> The type of the possible children
+ * @param <V> The type of the existing children
+ */
 public interface BaseChildrenComponentInterface<T extends BaseChildrenViewInterface<U, V>, U extends RESTBasePrimaryEntityV1, V extends RESTBaseCollectionItemV1>
         extends EditableView, Component<T> {
     
-    ProviderUpdateData<V> getProviderData();
+    ProviderUpdateData<V> getPossibleChildrenProviderData();
 
-    void setProviderData(final ProviderUpdateData<V> providerData);
+    void setPossibleChildrenProviderData(final ProviderUpdateData<V> providerData);
     
     void getEntityList();
     
-    EnhancedAsyncDataProvider<V> generateProvider();
+    EnhancedAsyncDataProvider<V> generatePossibleChildrenrovider();
 }
