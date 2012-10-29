@@ -28,7 +28,7 @@ public class CategoryTagComponent
     @Override
     public void bind(final CategoryTagPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
         super.bind(display, waitDisplay);
-        display.setPossibleChildrenProvider(generatePossibleChildrenrovider());
+        display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
         getEntityList();
     }
 
@@ -77,7 +77,7 @@ public class CategoryTagComponent
     }
 
     @Override
-    public EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generatePossibleChildrenrovider() {
+    public EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generatePossibleChildrenProvider() {
 
         final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override
@@ -93,11 +93,6 @@ public class CategoryTagComponent
             }
         };
         return provider;
-    }
-
-    @Override
-    protected void bindPossibleChildrenRowClick() {
-
     }
 
     @Override

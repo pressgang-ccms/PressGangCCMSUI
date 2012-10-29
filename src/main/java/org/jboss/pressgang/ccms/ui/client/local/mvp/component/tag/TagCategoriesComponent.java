@@ -43,7 +43,7 @@ public class TagCategoriesComponent
 
         super.bind(display, waitDisplay);
 
-        display.setPossibleChildrenProvider(generatePossibleChildrenrovider());
+        display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
         // display.setExistingChildrenProvider(generateExistingProvider());
         bindPossibleChildrenRowClick();
         bindExistingChildrenRowClick();
@@ -59,7 +59,7 @@ public class TagCategoriesComponent
      * @return A provider to be used for the category display list.
      */
     @Override
-    public EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generatePossibleChildrenrovider() {
+    public EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generatePossibleChildrenProvider() {
         final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTCategoryCollectionItemV1> display) {

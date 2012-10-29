@@ -9,8 +9,9 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 /**
+ * This interface defines the methods used to add logic to a view that displays a list of potential children
  * 
- * @author matthew
+ * @author Matthew Casperson
  *
  * @param <T> The type of the view
  * @param <U> The type of the possible children
@@ -19,11 +20,24 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 public interface BaseChildrenComponentInterface<T extends BaseChildrenViewInterface<U, V>, U extends RESTBasePrimaryEntityV1, V extends RESTBaseCollectionItemV1>
         extends EditableView, Component<T> {
     
+    /**
+     * @return the data that is used to back the list of potential children
+     */
     ProviderUpdateData<V> getPossibleChildrenProviderData();
 
+    /**
+     * @param providerData the data that is used to back the list of potential children
+     */
     void setPossibleChildrenProviderData(final ProviderUpdateData<V> providerData);
     
+    /**
+     * Get a list of potential children from the REST service and display it in the 
+     * celltable held by the view of type <T>
+     */
     void getEntityList();
     
-    EnhancedAsyncDataProvider<V> generatePossibleChildrenrovider();
+    /**
+     * @return the provider that displays the entities found in getPossibleChildrenProviderData()
+     */
+    EnhancedAsyncDataProvider<V> generatePossibleChildrenProvider();
 }

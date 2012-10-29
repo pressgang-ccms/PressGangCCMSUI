@@ -8,6 +8,13 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.Ba
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
+/**
+ * This is the base class that is used for components adding logic to views that list the results of a query
+ * @author Matthew Casperson
+ *
+ * @param <S> The type of the view that displays the query results
+ * @param <T> The type of the entity that is listed in the query results
+ */
 abstract public class BaseFilteredResultsComponent<S extends BaseFilteredResultsViewInterface<T>, T extends RESTBaseCollectionItemV1<?, ?, ?>>
         extends ComponentBase<S> implements BaseFilteredResultsComponentInterface<S, T> {
 

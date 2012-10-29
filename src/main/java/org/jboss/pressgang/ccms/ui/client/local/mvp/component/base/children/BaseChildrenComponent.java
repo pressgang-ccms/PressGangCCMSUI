@@ -24,6 +24,7 @@ import com.google.gwt.cell.client.FieldUpdater;
 abstract public class BaseChildrenComponent<T extends BaseChildrenViewInterface<U, V>, U extends RESTBasePrimaryEntityV1, V extends RESTBaseCollectionItemV1>
         extends ComponentBase<T> implements BaseChildrenComponentInterface<T, U, V> {
 
+    /** An instance of the provider data */
     protected ProviderUpdateData<V> providerData = new ProviderUpdateData<V>();
 
     @Override
@@ -36,5 +37,9 @@ abstract public class BaseChildrenComponent<T extends BaseChildrenViewInterface<
         this.providerData = providerData;
     }
    
-    abstract protected void bindPossibleChildrenRowClick();
+    /**
+     * Used to bind logic to mouse clicks on the list of possible children. This is not mandatory,
+     * as sometimes selecting an item in this list has no effect in the UI.
+     */
+    protected void bindPossibleChildrenRowClick() {};
 }
