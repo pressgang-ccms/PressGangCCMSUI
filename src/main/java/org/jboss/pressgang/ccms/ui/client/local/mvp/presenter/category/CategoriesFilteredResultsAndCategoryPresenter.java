@@ -11,9 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePrese
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
-import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 
 /**
  * This presenter takes the CategoryFilteredResults view to provide a list of categories, and the CategoryView to provide a way

@@ -2,11 +2,9 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBasePrimaryEntityV1;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
-import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -34,9 +32,12 @@ public interface BaseOrderedChildrenViewInterface<T extends RESTBasePrimaryEntit
 
     void setSplit(final HandlerSplitLayoutPanel split);
 
+    @Override
     T getOriginalEntity();
 
+    @Override
     void setOriginalEntity(final T originalEntity);
 
+    @Override
     void initialize(final T originalEntity, final boolean readOnly);
 }

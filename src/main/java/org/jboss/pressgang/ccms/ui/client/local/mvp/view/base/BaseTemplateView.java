@@ -85,6 +85,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private final PushButton advancedOpen;
     private final PushButton close;
     
+    @Override
     public PushButton getCreateTopic() {
         return createTopic;
     }

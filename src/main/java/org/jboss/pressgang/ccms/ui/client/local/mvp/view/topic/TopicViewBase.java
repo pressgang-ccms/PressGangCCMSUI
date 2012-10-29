@@ -215,6 +215,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
         }
     }
 
+    @Override
     public void buildSplitViewButtons(final SplitType splitType) {
 
         addOrRemoveRenderedButton(splitType);

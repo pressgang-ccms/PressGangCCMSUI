@@ -28,19 +28,23 @@ public class CreateTopicView extends BaseTemplateView implements CreateTopicPres
     private final SimpleLayoutPanel topicViewPanel = new SimpleLayoutPanel();
     private final SimpleLayoutPanel topicViewActionButtonsPanel = new SimpleLayoutPanel();
     
+    @Override
     public SimpleLayoutPanel getTopicViewActionButtonsPanel() {
         return topicViewActionButtonsPanel;
     }
 
+    @Override
     public DockLayoutPanel getTopicViewLayoutPanel() {
         return topicViewLayoutPanel;
     }
 
+    @Override
     public HandlerSplitLayoutPanel getSplitPanel() {
         return splitPanel;
     }
     
 
+    @Override
     public SimpleLayoutPanel getTopicViewPanel() {
         return topicViewPanel;
     }
@@ -66,6 +70,7 @@ public class CreateTopicView extends BaseTemplateView implements CreateTopicPres
         this.getPanel().add(splitPanel);
     }
     
+    @Override
     public void initialize(final SplitType splitType, final Panel panel)
     {
         this.splitType = splitType;

@@ -96,14 +96,17 @@ public class CategoryTagView extends
         return tagsButtonColumn;
     }
 
+    @Override
     public PushButton getChildren() {
         return children;
     }
 
+    @Override
     public PushButton getDetails() {
         return details;
     }
 
+    @Override
     public PushButton getSave() {
         return save;
     }

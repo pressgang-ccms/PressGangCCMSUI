@@ -24,14 +24,17 @@ public class CategoryView extends BaseTemplateView implements CategoryPresenter.
 
     private boolean readOnly = false;
     
+    @Override
     public PushButton getChildren() {
         return children;
     }
 
+    @Override
     public PushButton getDetails() {
         return details;
     }
 
+    @Override
     public PushButton getSave() {
         return save;
     }

@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 
 public class TopicViewComponent<T extends TopicViewInterface> extends ComponentBase<T> implements BasePropertyViewComponentInterface<T>{
     
+    @Override
     public void getEntity(final Integer topicId) {
         final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, T>(display,
                 new BaseRestCallback.SuccessAction<RESTTopicV1, T>() {

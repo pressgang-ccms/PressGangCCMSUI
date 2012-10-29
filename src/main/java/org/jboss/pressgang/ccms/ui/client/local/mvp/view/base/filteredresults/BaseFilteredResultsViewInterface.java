@@ -23,6 +23,7 @@ public interface BaseFilteredResultsViewInterface<T extends RESTBaseCollectionIt
     /**
      * @return The button that creates a new entity
      */
+    @Override
     PushButton getSearch();
     
     /** @return The celltable that displays the results */

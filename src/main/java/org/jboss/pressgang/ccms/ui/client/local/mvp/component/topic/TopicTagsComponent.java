@@ -3,7 +3,6 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
@@ -13,7 +12,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.Window;
 
 public class TopicTagsComponent extends TopicViewComponent<TopicTagsPresenter.Display> implements
         TopicTagsPresenter.LogicComponent {
@@ -54,6 +52,7 @@ public class TopicTagsComponent extends TopicViewComponent<TopicTagsPresenter.Di
     /**
      * Add behaviour to the tag view screen elements
      */
+    @Override
     public void bindNewTagListBoxes(final ClickHandler clickHandler) {
         display.getProjectsList().addValueChangeHandler(new ValueChangeHandler<SearchUIProject>() {
             @Override

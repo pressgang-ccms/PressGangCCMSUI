@@ -19,35 +19,43 @@ abstract public class BaseChildrenView<T extends RESTBasePrimaryEntityV1, U exte
     private final CellTable<U> possibleChildrenResults = UIUtilities.<U> createCellTable();
     private EnhancedAsyncDataProvider<U> possibleChildrenProvider;
 
+    @Override
     public T getOriginalEntity() {
         return originalEntity;
     }
 
+    @Override
     public void setOriginalEntity(final T originalEntity) {
         this.originalEntity = originalEntity;
     }
 
+    @Override
     public VerticalPanel getPossibleChildrenResultsPanel() {
         return possibleChildrenResultsPanel;
     }
 
+    @Override
     public SimplePager getPossibleChildrenPager() {
         return possibleChildrenPager;
     }
 
+    @Override
     public CellTable<U> getPossibleChildrenResults() {
         return possibleChildrenResults;
     }
 
+    @Override
     public EnhancedAsyncDataProvider<U> getPossibleChildrenProvider() {
         return possibleChildrenProvider;
     }
 
+    @Override
     public void setPossibleChildrenProvider(final EnhancedAsyncDataProvider<U> possibleChildrenProvider) {
         this.possibleChildrenProvider = possibleChildrenProvider;
         possibleChildrenProvider.addDataDisplay(possibleChildrenResults);
     }
     
+    @Override
     public void initialize(final T originalEntity, final boolean readOnly) {
         this.originalEntity = originalEntity;
     }

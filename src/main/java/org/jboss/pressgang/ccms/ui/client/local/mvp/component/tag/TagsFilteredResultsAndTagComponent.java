@@ -619,6 +619,7 @@ public class TagsFilteredResultsAndTagComponent
         });
     }
 
+    @Override
     protected String getQuery() {
         final StringBuilder retValue = new StringBuilder(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON);
         if (!filteredResultsDisplay.getIdFilter().getText().isEmpty()) {
@@ -637,6 +638,7 @@ public class TagsFilteredResultsAndTagComponent
     /**
      * Called when the selected tag is changed, or the selected view is changed.
      */
+    @Override
     protected void reInitialiseView(final TagViewInterface displayedView) {
         /* Show/Hide any localised loading dialogs */
         if (lastDisplayedView != null) {

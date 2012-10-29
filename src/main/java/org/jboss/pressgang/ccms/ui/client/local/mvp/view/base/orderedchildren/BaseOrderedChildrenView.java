@@ -4,9 +4,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBasePrimaryEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
-import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
@@ -58,10 +56,12 @@ abstract public class BaseOrderedChildrenView<T extends RESTBasePrimaryEntityV1<
         this.split = split;
     }
 
+    @Override
     public T getOriginalEntity() {
         return originalEntity;
     }
 
+    @Override
     public void setOriginalEntity(final T originalEntity) {
         this.originalEntity = originalEntity;
     }
@@ -75,6 +75,7 @@ abstract public class BaseOrderedChildrenView<T extends RESTBasePrimaryEntityV1<
         existingChildrenProvider.addDataDisplay(existingChildrenResults);
     }
 
+    @Override
     public void initialize(final T originalEntity, final boolean readOnly) {
         this.originalEntity = originalEntity;
     }

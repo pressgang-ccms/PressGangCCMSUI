@@ -1,19 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
-import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
-import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
@@ -45,6 +40,7 @@ abstract public class BaseFilteredResultsView<T extends RESTBaseCollectionItemV1
     private EnhancedAsyncDataProvider<T> provider;
 
     /** @return The provider used to populate the celltable */
+    @Override
     public EnhancedAsyncDataProvider<T> getProvider() {
         return provider;
     }
@@ -52,6 +48,7 @@ abstract public class BaseFilteredResultsView<T extends RESTBaseCollectionItemV1
     /**
      * @param provider The provider used to populate the celltable
      */
+    @Override
     public void setProvider(final EnhancedAsyncDataProvider<T> provider) {
         this.provider = provider;
         provider.addDataDisplay(getResults());
@@ -68,11 +65,13 @@ abstract public class BaseFilteredResultsView<T extends RESTBaseCollectionItemV1
     }
 
     /** @return The celltable that displays the results */
+    @Override
     public CellTable<T> getResults() {
         return results;
     }
 
     /** @return The pager used to move over the results */
+    @Override
     public SimplePager getPager() {
         return pager;
     }
@@ -80,6 +79,7 @@ abstract public class BaseFilteredResultsView<T extends RESTBaseCollectionItemV1
     /**
      * @return The button that initiates a new search
      */
+    @Override
     public PushButton getCreate() {
         return create;
     }
@@ -87,6 +87,7 @@ abstract public class BaseFilteredResultsView<T extends RESTBaseCollectionItemV1
     /**
      * @return The button that creates a new entity
      */
+    @Override
     public PushButton getSearch() {
         return search;
     }

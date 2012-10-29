@@ -1,7 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
-
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;

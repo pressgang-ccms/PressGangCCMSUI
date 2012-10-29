@@ -25,6 +25,7 @@ public class BaseSearchAndEditView extends BaseTemplateView implements BaseSearc
     /** The dialog that is presented when the view is unavailable. */
     private final WaitingDialog waiting = new WaitingDialog();
 
+    @Override
     public DockLayoutPanel getResultsViewLayoutPanel() {
         return resultsViewLayoutPanel;
     }
@@ -104,6 +105,7 @@ public class BaseSearchAndEditView extends BaseTemplateView implements BaseSearc
      * 
      * @param displayedView The view to be displayed, or null if no view is to be displayed
      */
+    @Override
     public void displayChildView(final BaseTemplateViewInterface displayedView) {
         this.getViewActionButtonsPanel().clear();
         this.getViewPanel().clear();
@@ -113,6 +115,7 @@ public class BaseSearchAndEditView extends BaseTemplateView implements BaseSearc
         }
     }
     
+    @Override
     public void displaySearchResultsView(final BaseFilteredResultsViewInterface filteredResultsView)
     {
         this.getResultsActionButtonsPanel().clear();

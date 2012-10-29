@@ -31,6 +31,11 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 
+/**
+ * The component that adds logic to the category search and edit view. 
+ * @author Matthew Casperson
+ *
+ */
 public class CategoriesFilteredResultsAndCategoryComponent
         extends
         BaseSearchAndEditComponent<CategoriesFilteredResultsAndCategoryPresenter.Display, CategoryFilteredResultsPresenter.Display, RESTCategoryCollectionItemV1, CategoryViewInterface>
@@ -209,6 +214,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
      * 
      * @return true if the user wants to ignore the unsaved changes, false otherwise
      */
+    @Override
     public boolean checkForUnsavedChanges() {
         /* sync the UI with the underlying tag */
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
