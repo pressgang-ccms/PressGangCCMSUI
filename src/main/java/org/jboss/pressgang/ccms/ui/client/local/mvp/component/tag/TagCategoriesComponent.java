@@ -107,6 +107,7 @@ public class TagCategoriesComponent extends BaseOrderedChildrenComponent<TagCate
     /**
      * Bind behaviour to the buttons found in the celltable listing the categories
      */
+    @Override
     protected void bindPossibleChildrenRowClick() {
         display.getPossibleChildrenResults().addCellPreviewHandler(new Handler<RESTCategoryCollectionItemV1>() {
             @Override
@@ -292,6 +293,7 @@ public class TagCategoriesComponent extends BaseOrderedChildrenComponent<TagCate
         RESTCalls.getCategories(callback);
     }
     
+    @Override
     protected void getExistingEntityList()
     {
         // Does nothing

@@ -44,8 +44,6 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
@@ -122,7 +120,7 @@ public class TagsFilteredResultsAndTagComponent
         private void saveTagChanges(final boolean unsavedTagChanges, final boolean unsavedCategoryChanges) {
 
             /* Was the tag we just saved a new tag? */
-            final boolean wasNewTag = filteredResultsComponent.getTagProviderData().getDisplayedItem().returnIsAddItem();
+            final boolean wasNewTag = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
 
             /* Save any changes made to the tag entity itself */
             final RESTCalls.RESTCallback<RESTTagV1> callback = new RESTCalls.RESTCallback<RESTTagV1>() {
@@ -141,17 +139,17 @@ public class TagsFilteredResultsAndTagComponent
                 public void success(final RESTTagV1 retValue) {
                     try {
                         /* we are now viewing the object returned by the save */
-                        retValue.cloneInto(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem(), true);
-                        filteredResultsComponent.getTagProviderData().getDisplayedItem()
+                        retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
+                        filteredResultsComponent.getProviderData().getDisplayedItem()
                                 .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
                         /* Update the list of tags with any saved changes */
-                        retValue.cloneInto(filteredResultsComponent.getTagProviderData().getSelectedItem().getItem(), true);
-                        filteredResultsComponent.getTagProviderData().getSelectedItem()
+                        retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
+                        filteredResultsComponent.getProviderData().getSelectedItem()
                                 .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
                         if (unsavedCategoryChanges) {
-                            saveCategoryChanges(wasNewTag, filteredResultsComponent.getTagProviderData().getDisplayedItem()
+                            saveCategoryChanges(wasNewTag, filteredResultsComponent.getProviderData().getDisplayedItem()
                                     .getItem().getId());
                         } else {
                             updateDisplayAfterSave(wasNewTag);
@@ -187,10 +185,10 @@ public class TagsFilteredResultsAndTagComponent
 
             /* Sync changes from the tag view */
             final RESTTagV1 updateTag = new RESTTagV1();
-            updateTag.setId(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getId());
-            updateTag.explicitSetDescription(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem()
+            updateTag.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
+            updateTag.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                     .getDescription());
-            updateTag.explicitSetName(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getName());
+            updateTag.explicitSetName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
 
             /*
              * Sync changes from the projects. categoriesComponent.getProviderData().getItems() contains a collection of
@@ -356,9 +354,9 @@ public class TagsFilteredResultsAndTagComponent
         /* refresh the list of tags from the existing list that was modified */
         if (!wasNewEntity) {
             filteredResultsDisplay.getProvider().displayAsynchronousList(
-                    filteredResultsComponent.getTagProviderData().getItems(),
-                    filteredResultsComponent.getTagProviderData().getSize(),
-                    filteredResultsComponent.getTagProviderData().getStartRow());
+                    filteredResultsComponent.getProviderData().getItems(),
+                    filteredResultsComponent.getProviderData().getSize(),
+                    filteredResultsComponent.getProviderData().getStartRow());
         }
         /* If we just created a new tag, refresh the list of tags from the database */
         else {
@@ -366,7 +364,7 @@ public class TagsFilteredResultsAndTagComponent
 
             /* reinitialize the tag property view with the new tag id */
             if (lastDisplayedView == resultDisplay) {
-                resultDisplay.initialize(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem(), false);
+                resultDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
             }
         }
 
@@ -414,7 +412,7 @@ public class TagsFilteredResultsAndTagComponent
 
                 for (final RESTTagCollectionItemV1 tag : object.getItem().getTags().getItems()) {
                     if (tag.getItem().getId()
-                            .equals(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getId())) {
+                            .equals(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId())) {
                         /* Project was added and then removed */
                         if (tag.getState() == RESTBaseCollectionItemV1.ADD_STATE) {
                             object.getItem().getTags().getItems().remove(tag);
@@ -435,7 +433,7 @@ public class TagsFilteredResultsAndTagComponent
                 }
 
                 if (!found) {
-                    final RESTTagV1 newTag = filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem()
+                    final RESTTagV1 newTag = filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                             .clone(true);
                     object.getItem().getTags().addNewItem(newTag);
                 }
@@ -475,7 +473,7 @@ public class TagsFilteredResultsAndTagComponent
                 boolean found = false;
                 for (final RESTTagInCategoryCollectionItemV1 tag : object.getItem().getTags().getItems()) {
                     if (tag.getItem().getId()
-                            .equals(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getId())) {
+                            .equals(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId())) {
                         /* Tag was added and then removed */
                         if (tag.returnIsAddItem()) {
                             object.getItem().getTags().getItems().remove(tag);
@@ -497,8 +495,8 @@ public class TagsFilteredResultsAndTagComponent
 
                 if (!found) {
                     final RESTTagInCategoryV1 newTag = new RESTTagInCategoryV1();
-                    newTag.setId(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getId());
-                    newTag.setName(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getName());
+                    newTag.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
+                    newTag.setName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
                     newTag.setRelationshipSort(0);
 
                     object.getItem().getTags().addNewItem(newTag);
@@ -542,7 +540,7 @@ public class TagsFilteredResultsAndTagComponent
      */
     public boolean checkForUnsavedChanges() {
         /* sync the UI with the underlying tag */
-        if (filteredResultsComponent.getTagProviderData().getDisplayedItem() != null) {
+        if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             resultDisplay.getDriver().flush();
 
             if (unsavedTagChanged() || categoriesComponent.checkForUnsavedChanges()
@@ -570,11 +568,11 @@ public class TagsFilteredResultsAndTagComponent
                         .getItems());
 
         /* See if any of the fields were changed */
-        final boolean unsavedDescriptionChanges = !GWTUtilities.compareStrings(filteredResultsComponent.getTagProviderData()
-                .getSelectedItem().getItem().getDescription(), filteredResultsComponent.getTagProviderData().getDisplayedItem()
+        final boolean unsavedDescriptionChanges = !GWTUtilities.compareStrings(filteredResultsComponent.getProviderData()
+                .getSelectedItem().getItem().getDescription(), filteredResultsComponent.getProviderData().getDisplayedItem()
                 .getItem().getDescription());
-        final boolean unsavedNameChanges = !GWTUtilities.compareStrings(filteredResultsComponent.getTagProviderData()
-                .getSelectedItem().getItem().getName(), filteredResultsComponent.getTagProviderData().getDisplayedItem()
+        final boolean unsavedNameChanges = !GWTUtilities.compareStrings(filteredResultsComponent.getProviderData()
+                .getSelectedItem().getItem().getName(), filteredResultsComponent.getProviderData().getDisplayedItem()
                 .getItem().getName());
 
         return unsavedCategoryChanges || unsavedProjectChanges || unsavedDescriptionChanges || unsavedNameChanges;
@@ -608,8 +606,8 @@ public class TagsFilteredResultsAndTagComponent
                 final RESTTagCollectionItemV1 displayedTagWrapper = new RESTTagCollectionItemV1(displayedTag,
                         RESTBaseCollectionItemV1.ADD_STATE);
 
-                filteredResultsComponent.getTagProviderData().setSelectedItem(selectedTagWrapper);
-                filteredResultsComponent.getTagProviderData().setDisplayedItem(displayedTagWrapper);
+                filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
+                filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
 
                 resetCategoryAndProjectsLists(true);
 
@@ -653,12 +651,12 @@ public class TagsFilteredResultsAndTagComponent
              */
             if (this.categoriesComponent.getProviderData().getDisplayedItem() != null) {
                 final RESTTagInCategoryV1 tag = ComponentCategoryV1.returnTag(this.categoriesComponent
-                        .getProviderData().getDisplayedItem().getItem(), filteredResultsComponent.getTagProviderData()
+                        .getProviderData().getDisplayedItem().getItem(), filteredResultsComponent.getProviderData()
                         .getDisplayedItem().getItem().getId());
                 if (tag != null) {
 
                     /* update the tag in the category list */
-                    tag.setName(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getName());
+                    tag.setName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
 
                     /* refresh the list */
                     this.categoriesDisplay.getExistingChildrenProvider().displayNewFixedList(
@@ -669,7 +667,7 @@ public class TagsFilteredResultsAndTagComponent
 
         /* update the new view */
         if (displayedView != null) {
-            displayedView.initialize(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem(), false);
+            displayedView.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
             displayedView.setViewShown(true);
         }
 
@@ -700,8 +698,8 @@ public class TagsFilteredResultsAndTagComponent
 
         /* Update the page name */
         final StringBuilder title = new StringBuilder(displayedView.getPageName());
-        if (this.filteredResultsComponent.getTagProviderData().getDisplayedItem() != null) {
-            final String tagTitle = this.filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getName();
+        if (this.filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+            final String tagTitle = this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName();
             title.append(": " + (tagTitle == null ? PressGangCCMSUI.INSTANCE.NoTitle() : tagTitle));
         }
         display.getPageTitle().setText(title.toString());
@@ -749,9 +747,9 @@ public class TagsFilteredResultsAndTagComponent
                     }
 
                     /* The selected item will be the tag from the list. This is the unedited, unexpanded copy of the tag */
-                    filteredResultsComponent.getTagProviderData().setSelectedItem(event.getValue());
+                    filteredResultsComponent.getProviderData().setSelectedItem(event.getValue());
                     /* All editing is done in a clone of the selected tag. Any expanded collections will be copied into this tag */
-                    filteredResultsComponent.getTagProviderData().setDisplayedItem(event.getValue().clone(true));
+                    filteredResultsComponent.getProviderData().setDisplayedItem(event.getValue().clone(true));
 
                     /*
                      * If this is the first tag selected, display the image view

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
@@ -32,11 +33,9 @@ public class TagFilteredResultsPresenter implements TemplatePresenter {
         TextBox getNameFilter();
     }
     
-    public interface LogicComponent extends Component<Display>
+    public interface LogicComponent extends BaseFilteredResultsComponentInterface<Display, RESTTagCollectionItemV1>
     {
         void bind(final String queryString, final TagFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
-        ProviderUpdateData<RESTTagCollectionItemV1> getTagProviderData();
-        void setTagProviderData(final ProviderUpdateData<RESTTagCollectionItemV1> tagProviderData);
     }
 
     @Inject
