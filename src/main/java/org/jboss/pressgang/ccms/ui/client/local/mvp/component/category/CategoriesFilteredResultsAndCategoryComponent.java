@@ -6,12 +6,9 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryInTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndCategoryPresenter;
@@ -30,8 +27,6 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
@@ -122,10 +117,23 @@ public class CategoriesFilteredResultsAndCategoryComponent
 
         views = new CategoryViewInterface[] { resultDisplay, tagDisplay };
 
+        
         bindMainSplitResize(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
         bindResultsListRowClicks();
         bindActionButtons();
         bindTagListButtonClicks();
+    }
+    
+    /**
+     * Refresh the display with the tags that have been assigned to the category
+     */
+    private void displayExistingTagList()
+    {
+        /*
+         * refresh the list of tags in the category
+         */
+        tagDisplay.setExistingChildrenProvider(tagComponent.generateExistingProvider(filteredResultsComponent
+                .getProviderData().getDisplayedItem().getItem()));
     }
 
     /**
@@ -185,15 +193,11 @@ public class CategoriesFilteredResultsAndCategoryComponent
                     object.getItem().getConfiguredParameters().remove(RESTBaseTagV1.CATEGORIES_NAME);
                 }
 
-                /* refresh the category list */
-                tagDisplay.getPossibleChildrenProvider().displayNewFixedList(
-                        tagComponent.getPossibleChildrenProviderData().getItems());
 
                 /*
                  * refresh the list of tags in the category
                  */
-                tagDisplay.setExistingChildrenProvider(tagComponent.generateExistingProvider(filteredResultsComponent
-                        .getProviderData().getDisplayedItem().getItem()));
+                displayExistingTagList();
             }
         });
 
@@ -248,13 +252,20 @@ public class CategoriesFilteredResultsAndCategoryComponent
                      * category
                      */
                     filteredResultsComponent.getProviderData().setSelectedItem(event.getValue());
+                    
                     /*
                      * All editing is done in a clone of the selected category. Any expanded collections will be copied into
                      * this category
                      */
                     filteredResultsComponent.getProviderData().setDisplayedItem(event.getValue().clone(true));
+                    
                     /* Refresh the view, or display the properties view if none is shown */
                     reInitialiseView(lastDisplayedView == null ? resultDisplay : lastDisplayedView);
+                    
+                    displayExistingTagList();
+                    
+                    /* Get a new collection of tags */
+                    tagComponent.getEntityList();
                 }
             }
         });
