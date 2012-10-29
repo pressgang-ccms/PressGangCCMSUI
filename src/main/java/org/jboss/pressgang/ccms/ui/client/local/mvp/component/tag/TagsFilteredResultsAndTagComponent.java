@@ -538,6 +538,7 @@ public class TagsFilteredResultsAndTagComponent
      * 
      * @return true if the user wants to ignore the unsaved changes, false otherwise
      */
+    @Override
     public boolean checkForUnsavedChanges() {
         /* sync the UI with the underlying tag */
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
