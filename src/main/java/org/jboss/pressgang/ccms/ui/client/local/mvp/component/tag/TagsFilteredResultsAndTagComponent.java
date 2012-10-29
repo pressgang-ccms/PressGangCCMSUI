@@ -112,7 +112,7 @@ public class TagsFilteredResultsAndTagComponent
             resultDisplay.getDriver().flush();
 
             final boolean unsavedTagChanges = unsavedTagChanged();
-            final boolean unsavedCategoryChanges = categoriesComponent.unsavedCategoryChanges();
+            final boolean unsavedCategoryChanges = categoriesComponent.checkForUnsavedChanges();
 
             /* Create the tag first */
             saveTagChanges(unsavedTagChanges, unsavedCategoryChanges);
@@ -193,13 +193,13 @@ public class TagsFilteredResultsAndTagComponent
             updateTag.explicitSetName(filteredResultsComponent.getTagProviderData().getDisplayedItem().getItem().getName());
 
             /*
-             * Sync changes from the projects. categoriesComponent.getCategoryProviderData().getItems() contains a collection of
+             * Sync changes from the projects. categoriesComponent.getProviderData().getItems() contains a collection of
              * all the projects, and their tags collections contain any added or removed tag relationships. Here we copy those
              * modified relationships into the updateTag, so the changes are all done in one transaction.
              */
-            if (categoriesComponent.getCategoryProviderData().getItems() != null) {
+            if (categoriesComponent.getProviderData().getItems() != null) {
                 updateTag.explicitSetCategories(new RESTCategoryInTagCollectionV1());
-                for (final RESTCategoryCollectionItemV1 category : categoriesComponent.getCategoryProviderData().getItems()) {
+                for (final RESTCategoryCollectionItemV1 category : categoriesComponent.getProviderData().getItems()) {
                     for (final RESTTagInCategoryCollectionItemV1 tag : category.getItem().getTags()
                             .returnDeletedAndAddedCollectionItems()) {
                         /*
@@ -306,7 +306,7 @@ public class TagsFilteredResultsAndTagComponent
 
             final RESTCategoryCollectionV1 updatedCategories = new RESTCategoryCollectionV1();
 
-            for (final RESTCategoryCollectionItemV1 category : categoriesComponent.getCategoryProviderData().getItems()) {
+            for (final RESTCategoryCollectionItemV1 category : categoriesComponent.getProviderData().getItems()) {
                 final List<RESTTagInCategoryCollectionItemV1> updatedItems = category.getItem().getTags()
                         .returnUpdatedCollectionItems();
 
@@ -524,12 +524,12 @@ public class TagsFilteredResultsAndTagComponent
 
                 /* refresh the category list */
                 categoriesDisplay.getPossibleChildrenProvider().displayNewFixedList(
-                        categoriesComponent.getCategoryProviderData().getItems());
+                        categoriesComponent.getProviderData().getItems());
 
                 /*
                  * refresh the list of tags in the category
                  */
-                categoriesDisplay.setExistingChildrenProvider(categoriesComponent.generateCategoriesTagListProvider());
+                categoriesDisplay.setExistingChildrenProvider(categoriesComponent.generateExistingProvider());
             }
         });
     }
@@ -545,7 +545,7 @@ public class TagsFilteredResultsAndTagComponent
         if (filteredResultsComponent.getTagProviderData().getDisplayedItem() != null) {
             resultDisplay.getDriver().flush();
 
-            if (unsavedTagChanged() || categoriesComponent.unsavedCategoryChanges()
+            if (unsavedTagChanged() || categoriesComponent.checkForUnsavedChanges()
                     || projectsComponent.checkForUnsavedChanges()) {
                 return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
             }
@@ -562,8 +562,8 @@ public class TagsFilteredResultsAndTagComponent
         /*
          * See if any items have been added or removed from the project and category lists
          */
-        final boolean unsavedCategoryChanges = categoriesComponent.getCategoryProviderData().getItems() != null
-                && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems(categoriesComponent.getCategoryProviderData()
+        final boolean unsavedCategoryChanges = categoriesComponent.getProviderData().getItems() != null
+                && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems(categoriesComponent.getProviderData()
                         .getItems());
         final boolean unsavedProjectChanges = projectsComponent.getProviderData().getItems() != null
                 && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems(projectsComponent.getProviderData()
@@ -651,9 +651,9 @@ public class TagsFilteredResultsAndTagComponent
              * If this tag was added to a category, the it was cloned with the old tag name. Here we reflect the current tag
              * name in the category tag lists.
              */
-            if (this.categoriesComponent.getCategoryProviderData().getDisplayedItem() != null) {
+            if (this.categoriesComponent.getProviderData().getDisplayedItem() != null) {
                 final RESTTagInCategoryV1 tag = ComponentCategoryV1.returnTag(this.categoriesComponent
-                        .getCategoryProviderData().getDisplayedItem().getItem(), filteredResultsComponent.getTagProviderData()
+                        .getProviderData().getDisplayedItem().getItem(), filteredResultsComponent.getTagProviderData()
                         .getDisplayedItem().getItem().getId());
                 if (tag != null) {
 
@@ -662,7 +662,7 @@ public class TagsFilteredResultsAndTagComponent
 
                     /* refresh the list */
                     this.categoriesDisplay.getExistingChildrenProvider().displayNewFixedList(
-                            this.categoriesComponent.getCategoryTagsProviderData().getItems());
+                            this.categoriesComponent.getExistingProviderData().getItems());
                 }
             }
         }
@@ -686,9 +686,9 @@ public class TagsFilteredResultsAndTagComponent
         else if (displayedView == categoriesDisplay) {
             /* If we switch to this view before the categories have been downloaded, there is nothing to update */
             if (categoriesDisplay.getPossibleChildrenProvider() != null
-                    && categoriesComponent.getCategoryProviderData().getItems() != null) {
+                    && categoriesComponent.getProviderData().getItems() != null) {
                 categoriesDisplay.getPossibleChildrenProvider().displayNewFixedList(
-                        categoriesComponent.getCategoryProviderData().getItems());
+                        categoriesComponent.getProviderData().getItems());
             }
         }
 
@@ -719,16 +719,16 @@ public class TagsFilteredResultsAndTagComponent
          * Reset the category and projects data. This is to clear out any added tags. Maybe cache this info if reloading is too
          * slow.
          */
-        categoriesComponent.getCategoryProviderData().reset();
+        categoriesComponent.getProviderData().reset();
         projectsComponent.getProviderData().reset();
 
         projectsComponent.getEntityList();
-        categoriesComponent.getCategories();
+        categoriesComponent.getEntityList();
 
         /* remove the category tags list */
         if (removeCatgeoryTagListFromScreen) {
-            categoriesComponent.getCategoryProviderData().setSelectedItem(null);
-            categoriesComponent.getCategoryProviderData().setDisplayedItem(null);
+            categoriesComponent.getProviderData().setSelectedItem(null);
+            categoriesComponent.getProviderData().setDisplayedItem(null);
             categoriesDisplay.getSplit().remove(categoriesDisplay.getExistingChildrenResultsPanel());
         }
     }

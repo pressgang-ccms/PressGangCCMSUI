@@ -6,6 +6,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 public interface BaseChildrenComponentInterface<T extends BaseChildrenViewInterface<U, V>, U extends RESTBasePrimaryEntityV1, V extends RESTBaseCollectionItemV1>
         extends EditableView, Component<T> {
@@ -15,4 +16,6 @@ public interface BaseChildrenComponentInterface<T extends BaseChildrenViewInterf
     void setProviderData(final ProviderUpdateData<V> providerData);
     
     void getEntityList();
+    
+    EnhancedAsyncDataProvider<V> generateProvider();
 }

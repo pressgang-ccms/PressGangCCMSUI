@@ -5,12 +5,17 @@ import java.util.Collections;
 
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.sort.RESTTagCategoryCollectionItemV1SortComparator;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren.BaseOrderedChildrenComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -27,31 +32,8 @@ import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
 
-public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter.Display> implements
+public class TagCategoriesComponent extends BaseOrderedChildrenComponent<TagCategoriesPresenter.Display, RESTTagV1, RESTCategoryCollectionItemV1, RESTTagInCategoryCollectionItemV1> implements
         TagCategoriesPresenter.LogicComponent {
-
-    /** Holds the data required to populate and refresh the categories list */
-    private ProviderUpdateData<RESTCategoryCollectionItemV1> categoryProviderData = new ProviderUpdateData<RESTCategoryCollectionItemV1>();
-    /** Holds the data required to populate and refresh the category tags list */
-    private ProviderUpdateData<RESTTagInCategoryCollectionItemV1> categoryTagsProviderData = new ProviderUpdateData<RESTTagInCategoryCollectionItemV1>();
-
-    public ProviderUpdateData<RESTTagInCategoryCollectionItemV1> getCategoryTagsProviderData() {
-        return categoryTagsProviderData;
-    }
-
-    public void setCategoryTagsProviderData(ProviderUpdateData<RESTTagInCategoryCollectionItemV1> categoryTagsProviderData) {
-        this.categoryTagsProviderData = categoryTagsProviderData;
-    }
-
-    @Override
-    public ProviderUpdateData<RESTCategoryCollectionItemV1> getCategoryProviderData() {
-        return categoryProviderData;
-    }
-
-    @Override
-    public void setCategoryProviderData(ProviderUpdateData<RESTCategoryCollectionItemV1> categoryProviderData) {
-        this.categoryProviderData = categoryProviderData;
-    }
 
     @Override
     public void bind(final TagCategoriesPresenter.Display display,
@@ -59,12 +41,12 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
 
         super.bind(display, waitDisplay);
 
-        display.setPossibleChildrenProvider(generateCategoriesListProvider());
-        display.setExistingChildrenProvider(generateCategoriesTagListProvider());
-        bindCategoryListRowClicks();
-        bindCategoryTagsColumnButtons();
-        bindCategorySplitResize();
-        getCategories();
+        display.setPossibleChildrenProvider(generateProvider());
+        display.setExistingChildrenProvider(generateExistingProvider());
+        bindPossibleChildrenRowClick();
+        bindExistingChildrenRowClick();
+        bindChildSplitResize(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
+        getEntityList();
     }
 
     /**
@@ -75,15 +57,15 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
      * @return A provider to be used for the category display list.
      */
     @Override
-    public EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateCategoriesListProvider() {
+    public EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateProvider() {
         final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTCategoryCollectionItemV1> display) {
 
-                categoryProviderData.setStartRow(display.getVisibleRange().getStart());
+                getProviderData().setStartRow(display.getVisibleRange().getStart());
 
-                if (categoryProviderData.getItems() != null)
-                    displayNewFixedList(categoryProviderData.getItems());
+                if (getProviderData().getItems() != null)
+                    displayNewFixedList(getProviderData().getItems());
                 else
                     resetProvider();
 
@@ -96,26 +78,26 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
      * @return A provider to be used for the tag display list
      */
     @Override
-    public EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> generateCategoriesTagListProvider() {
+    public EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> generateExistingProvider() {
         final EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTagInCategoryCollectionItemV1> display) {
-                categoryTagsProviderData.setStartRow(display.getVisibleRange().getStart());
-                categoryTagsProviderData.setItems(new ArrayList<RESTTagInCategoryCollectionItemV1>());
+                getExistingProviderData().setStartRow(display.getVisibleRange().getStart());
+                getExistingProviderData().setItems(new ArrayList<RESTTagInCategoryCollectionItemV1>());
 
-                /* Zero results can be a null list. Also selecting a new tag will reset categoryProviderData. */
-                if (categoryProviderData.getDisplayedItem() != null
-                        && categoryProviderData.getDisplayedItem().getItem().getTags() != null) {
+                /* Zero results can be a null list. Also selecting a new tag will reset getProviderData(). */
+                if (getProviderData().getDisplayedItem() != null
+                        && getProviderData().getDisplayedItem().getItem().getTags() != null) {
                     /* Don't display removed tags */
-                    for (final RESTTagInCategoryCollectionItemV1 tagInCategory : categoryProviderData.getDisplayedItem()
+                    for (final RESTTagInCategoryCollectionItemV1 tagInCategory : getProviderData().getDisplayedItem()
                             .getItem().getTags().returnExistingAddedAndUpdatedCollectionItems()) {
-                        categoryTagsProviderData.getItems().add(tagInCategory);
+                        getExistingProviderData().getItems().add(tagInCategory);
                     }
                 }
 
-                Collections.sort(categoryTagsProviderData.getItems(), new RESTTagCategoryCollectionItemV1SortComparator());
+                Collections.sort(getExistingProviderData().getItems(), new RESTTagCategoryCollectionItemV1SortComparator());
 
-                displayNewFixedList(categoryTagsProviderData.getItems());
+                displayNewFixedList(getExistingProviderData().getItems());
             }
         };
 
@@ -125,7 +107,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
     /**
      * Bind behaviour to the buttons found in the celltable listing the categories
      */
-    private void bindCategoryListRowClicks() {
+    protected void bindPossibleChildrenRowClick() {
         display.getPossibleChildrenResults().addCellPreviewHandler(new Handler<RESTCategoryCollectionItemV1>() {
             @Override
             public void onCellPreview(final CellPreviewEvent<RESTCategoryCollectionItemV1> event) {
@@ -134,9 +116,9 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
 
                 if (isClick) {
                     /*
-                     * categoryProviderData.getSelectedItem() will be null until a category is selected for the first time
+                     * getProviderData().getSelectedItem() will be null until a category is selected for the first time
                      */
-                    final boolean needToAddImageView = categoryProviderData.getSelectedItem() == null;
+                    final boolean needToAddImageView = getProviderData().getSelectedItem() == null;
 
                     /*
                      * Normally a list is populated with an un-expanded collection of entities. However, in this case we have
@@ -146,8 +128,8 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
                      * need to get an expanded category in response to a category being selected. This means the displayed and
                      * selected items are the same.
                      */
-                    categoryProviderData.setSelectedItem(event.getValue());
-                    categoryProviderData.setDisplayedItem(event.getValue());
+                    getProviderData().setSelectedItem(event.getValue());
+                    getProviderData().setDisplayedItem(event.getValue());
 
                     /*
                      * If this is the first category selected, display the tags list
@@ -159,7 +141,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
                     /*
                      * reset the provider, which will refresh the list of tags
                      */
-                    display.setExistingChildrenProvider(generateCategoriesTagListProvider());
+                    display.setExistingChildrenProvider(generateExistingProvider());
                 }
             }
         });
@@ -169,10 +151,10 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
      * @return true if the categories have any unsaved changes to their tags
      */
     @Override
-    public boolean unsavedCategoryChanges() {
+    public boolean checkForUnsavedChanges() {
         /* It is possible that the list of categories has not loaded yet, in which case no changes could have been made */
-        if (categoryProviderData.getItems() != null) {
-            for (final RESTCategoryCollectionItemV1 category : categoryProviderData.getItems()) {
+        if (getProviderData().getItems() != null) {
+            for (final RESTCategoryCollectionItemV1 category : getProviderData().getItems()) {
                 if (category.getItem().getTags().returnDeletedAddedAndUpdatedCollectionItems().size() != 0) {
                     return true;
                 }
@@ -184,7 +166,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
 
     private void moveTagsUpAndDown(final RESTTagInCategoryCollectionItemV1 object, final boolean down) {
 
-        final int size = categoryTagsProviderData.getItems().size();
+        final int size = getExistingProviderData().getItems().size();
 
         boolean modifiedSort = false;
 
@@ -192,7 +174,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
         for (int i = (down ? 0 : 1); i < (down ? size - 1 : size); ++i) {
 
             /* Get the item from the collection for convenience */
-            final RESTTagInCategoryCollectionItemV1 tagInCatgeory = categoryTagsProviderData.getItems().get(i);
+            final RESTTagInCategoryCollectionItemV1 tagInCatgeory = getExistingProviderData().getItems().get(i);
 
             if (tagInCatgeory.getItem().getId().equals(object.getItem().getId())) {
 
@@ -207,7 +189,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
 
                 for (int j = 0; j < size; ++j) {
                     /* get the item from the collection */
-                    final RESTTagInCategoryCollectionItemV1 existingTagInCatgeory = categoryTagsProviderData.getItems().get(j);
+                    final RESTTagInCategoryCollectionItemV1 existingTagInCatgeory = getExistingProviderData().getItems().get(j);
 
                     /* set the sort value (the list was previously sorted on this value) */
                     existingTagInCatgeory.getItem().setRelationshipSort(j);
@@ -221,7 +203,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
                 final int nextItemIndex = down ? i + 1 : i - 1;
 
                 /* get the next item in the list */
-                final RESTTagInCategoryCollectionItemV1 nextTagInCatgeory = categoryTagsProviderData.getItems().get(
+                final RESTTagInCategoryCollectionItemV1 nextTagInCatgeory = getExistingProviderData().getItems().get(
                         nextItemIndex);
 
                 /* swap the sort field */
@@ -235,13 +217,13 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
 
         if (modifiedSort) {
             /* redisplay the fixed list */
-            display.setExistingChildrenProvider(generateCategoriesTagListProvider());
+            display.setExistingChildrenProvider(generateExistingProvider());
         }
     }
 
     
-
-    private void bindCategoryTagsColumnButtons() {
+    @Override
+    protected void bindExistingChildrenRowClick() {
         display.getTagUpButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
             @Override
@@ -269,7 +251,7 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
      * added to a project, that will actually be persisted through the REST interface as a category added to the displayed tag.
      */
     @Override
-    public void getCategories() {
+    public void getEntityList() {
         final RESTCalls.RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
             @Override
             public void begin() {
@@ -285,11 +267,11 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
             @Override
             public void success(final RESTCategoryCollectionV1 retValue) {
                 try {
-                    categoryProviderData.setStartRow(0);
+                    getProviderData().setStartRow(0);
                     /* Zero results can be a null list */
-                    categoryProviderData.setItems(retValue.getItems());
+                    getProviderData().setItems(retValue.getItems());
 
-                    display.getPossibleChildrenProvider().displayNewFixedList(categoryProviderData.getItems());
+                    display.getPossibleChildrenProvider().displayNewFixedList(getProviderData().getItems());
 
                 } finally {
                     display.removeWaitOperation();
@@ -304,24 +286,16 @@ public class TagCategoriesComponent extends ComponentBase<TagCategoriesPresenter
         };
 
         /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
-        categoryProviderData.reset();
+        getProviderData().reset();
         display.getPossibleChildrenProvider().resetProvider();
 
         RESTCalls.getCategories(callback);
     }
-
-    /**
-     * Saves the width of the split screen in the category view
-     */
-    private void bindCategorySplitResize() {
-        display.getSplit().addResizeHandler(new ResizeHandler() {
-
-            @Override
-            public void onResize(final ResizeEvent event) {
-                Preferences.INSTANCE.saveSetting(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display.getSplit()
-                        .getSplitPosition(display.getPossibleChildrenResultsPanel()) + "");
-            }
-        });
+    
+    protected void getExistingEntityList()
+    {
+        // Does nothing
     }
+
 
 }

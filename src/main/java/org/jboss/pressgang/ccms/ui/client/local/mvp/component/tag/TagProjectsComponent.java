@@ -30,7 +30,7 @@ public class TagProjectsComponent extends BaseChildrenComponent<TagProjectsPrese
     /**
      * @return A provider to be used for the project display list
      */
-    protected EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> generateProvider() {
+    public EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> generateProvider() {
 
         final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTProjectCollectionItemV1>() {
             @Override
@@ -116,6 +116,11 @@ public class TagProjectsComponent extends BaseChildrenComponent<TagProjectsPrese
         RESTCalls.getProjects(callback);
     }
 
+    
+    public void bindPossibleChildrenRowClick()
+    {
+        
+    }
 }
 
 

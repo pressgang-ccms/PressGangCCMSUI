@@ -5,14 +5,28 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBasePrimaryEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.BaseChildrenComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
+import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 
 abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildrenViewInterface<T, U, V>, T extends RESTBasePrimaryEntityV1, U extends RESTBaseCollectionItemV1, V extends RESTBaseCollectionItemV1>
-        extends BaseChildrenComponent<S, T, U> {
+        extends BaseChildrenComponent<S, T, U> implements BaseOrderedChildrenComponentInterface<S, T, U, V> {
 
+    protected ProviderUpdateData<V> existingProviderData = new ProviderUpdateData<V>();
+
+    @Override
+    public ProviderUpdateData<V> getExistingProviderData() {
+        return existingProviderData;
+    }
+
+    @Override
+    public void setExistingProviderData(final ProviderUpdateData<V> existingProviderData) {
+        this.existingProviderData = existingProviderData;
+    }
+  
+    
     /**
      * Save the size of the split ui component
      */
@@ -28,11 +42,9 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
         });
     }
     
-    abstract protected void getExistingEntityList();
-    
-    abstract protected void bindPossibleChildrenRowClick();
+    abstract protected void getExistingEntityList();      
     
     abstract protected void bindExistingChildrenRowClick();
     
-    abstract protected EnhancedAsyncDataProvider<V> generateExistingProvider();
+    
 }

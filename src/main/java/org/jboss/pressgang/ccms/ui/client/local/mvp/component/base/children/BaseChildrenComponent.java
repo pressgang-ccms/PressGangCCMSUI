@@ -30,5 +30,7 @@ abstract public class BaseChildrenComponent<T extends BaseChildrenViewInterface<
         this.providerData = providerData;
     }
 
-    abstract protected EnhancedAsyncDataProvider<V> generateProvider();
+    
+    
+    abstract protected void bindPossibleChildrenRowClick();
 }

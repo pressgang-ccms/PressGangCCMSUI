@@ -8,6 +8,8 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollection
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren.BaseOrderedChildrenComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren.BaseOrderedChildrenComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
@@ -37,16 +39,9 @@ public class TagCategoriesPresenter implements TemplatePresenter {
         Column<RESTCategoryCollectionItemV1, String> getButtonColumn();
     }
     
-    public interface LogicComponent extends Component<Display>
+    public interface LogicComponent extends BaseOrderedChildrenComponentInterface<TagCategoriesPresenter.Display, RESTTagV1, RESTCategoryCollectionItemV1, RESTTagInCategoryCollectionItemV1>
     {
-        boolean unsavedCategoryChanges();
-        ProviderUpdateData<RESTCategoryCollectionItemV1> getCategoryProviderData();
-        void setCategoryProviderData(ProviderUpdateData<RESTCategoryCollectionItemV1> categoryProviderData);
-        ProviderUpdateData<RESTTagInCategoryCollectionItemV1> getCategoryTagsProviderData();
-        void setCategoryTagsProviderData(ProviderUpdateData<RESTTagInCategoryCollectionItemV1> categoryTagsProviderData);
-        void getCategories();
-        EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateCategoriesListProvider();
-        EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> generateCategoriesTagListProvider();
+
     }
 
     @Inject
