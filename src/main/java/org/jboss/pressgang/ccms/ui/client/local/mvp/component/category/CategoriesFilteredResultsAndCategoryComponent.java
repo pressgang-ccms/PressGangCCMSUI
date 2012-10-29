@@ -35,9 +35,10 @@ import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 
 /**
- * The component that adds logic to the category search and edit view. 
+ * The component that adds logic to the category search and edit view.
+ * 
  * @author Matthew Casperson
- *
+ * 
  */
 public class CategoriesFilteredResultsAndCategoryComponent
         extends
@@ -127,26 +128,24 @@ public class CategoriesFilteredResultsAndCategoryComponent
 
         loadMainSplitResize(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
         bindMainSplitResize(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
-        
+
         bindResultsListRowClicks();
         bindActionButtons();
         bindTagListButtonClicks();
     }
-    
+
     /**
      * Refresh the display with the tags that have been assigned to the category
      */
-    private void displayExistingTagList()
-    {
-        tagDisplay.setExistingChildrenProvider(tagComponent.generateExistingProvider(filteredResultsComponent
-                .getProviderData().getDisplayedItem().getItem()));
+    private void displayExistingTagList() {
+        tagDisplay.setExistingChildrenProvider(tagComponent.generateExistingProvider(filteredResultsComponent.getProviderData()
+                .getDisplayedItem().getItem()));
     }
-    
+
     /**
      * Refresh the display with the tags that can be assigned to the category
      */
-    private void displayPossibleTagList()
-    {
+    private void displayPossibleTagList() {
         tagDisplay.getPossibleChildrenProvider().displayNewFixedList(tagComponent.getPossibleChildrenProviderData().getItems());
     }
 
@@ -157,18 +156,16 @@ public class CategoriesFilteredResultsAndCategoryComponent
         tagDisplay.getPossibleChildrenButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagCollectionItemV1, String>() {
             @Override
             public void update(final int index, final RESTTagCollectionItemV1 object, final String value) {
-                
+
                 /* find the tag if it exists in the category */
                 boolean found = false;
-                final RESTTagInCategoryCollectionV1 currentCategoryTags = filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags(); 
-                for (final RESTTagInCategoryCollectionItemV1 tag : currentCategoryTags.getItems())
-                {
+                final RESTTagInCategoryCollectionV1 currentCategoryTags = filteredResultsComponent.getProviderData()
+                        .getDisplayedItem().getItem().getTags();
+                for (final RESTTagInCategoryCollectionItemV1 tag : currentCategoryTags.getItems()) {
                     /* we've found a matching tag */
-                    if (tag.getItem().getId().equals(object.getItem().getId()))
-                    {
+                    if (tag.getItem().getId().equals(object.getItem().getId())) {
                         /* Tag was added and then removed */
-                        if (tag.returnIsAddItem())
-                        {
+                        if (tag.returnIsAddItem()) {
                             currentCategoryTags.getItems().remove(tag);
                         }
                         /* Tag existed, was removed and then was added again */
@@ -200,7 +197,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
                  * refresh the list of tags in the category
                  */
                 displayExistingTagList();
-                
+
                 /*
                  * refresh the list of possible tags
                  */
@@ -222,18 +219,31 @@ public class CategoriesFilteredResultsAndCategoryComponent
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             resultDisplay.getDriver().flush();
 
-            if (unsavedCategoryChanged()) {
+            if (unsavedCategoryChanges() || unsavedTagChanges()) {
                 return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
             }
         }
         return true;
     }
 
-    private boolean unsavedCategoryChanged() {
+    /**
+     * Compare the selected and displayed category, and see if any of the fields have changed
+     * @return true if there are unsaved changes, false otherwise
+     */
+    private boolean unsavedCategoryChanges() {
         return !(stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData().getSelectedItem().getItem()
                 .getName(), filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName()) && stringEqualsEquatingNullWithEmptyString(
                 filteredResultsComponent.getProviderData().getSelectedItem().getItem().getDescription(),
                 filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription()));
+    }
+
+    /**
+     * Check to see if there are any added, removed or modified tags in the category
+     * @return true if there are modified tags, false otherwise
+     */
+    private boolean unsavedTagChanges() {
+        return !filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags()
+                .returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
     }
 
     @Override
@@ -260,18 +270,18 @@ public class CategoriesFilteredResultsAndCategoryComponent
                      * category
                      */
                     filteredResultsComponent.getProviderData().setSelectedItem(event.getValue());
-                    
+
                     /*
                      * All editing is done in a clone of the selected category. Any expanded collections will be copied into
                      * this category
                      */
                     filteredResultsComponent.getProviderData().setDisplayedItem(event.getValue().clone(true));
-                    
+
                     /* Refresh the view, or display the properties view if none is shown */
                     reInitialiseView(lastDisplayedView == null ? resultDisplay : lastDisplayedView);
-                    
+
                     displayExistingTagList();
-                    
+
                     /* Get a new collection of tags */
                     tagComponent.getEntityList();
                 }
