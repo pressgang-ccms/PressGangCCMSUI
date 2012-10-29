@@ -394,6 +394,7 @@ public class TagsFilteredResultsAndTagComponent
 
         bindActionButtons();
         bindSearchButtons();
+        loadMainSplitResize(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
         bindMainSplitResize(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
         bindCategoryColumnButtons();
         bindProjectColumnButtons();

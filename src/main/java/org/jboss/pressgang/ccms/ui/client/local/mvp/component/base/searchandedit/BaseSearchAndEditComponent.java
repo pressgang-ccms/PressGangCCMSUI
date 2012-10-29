@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
@@ -45,6 +46,16 @@ abstract public class BaseSearchAndEditComponent<T extends BaseSearchAndEditView
                         + "");
             }
         });
+    }
+    
+    /**
+     * Restores the size of the main split screen
+     * @param preferencesKey The key against which the previous size was saved
+     */
+    protected void loadMainSplitResize(final String preferencesKey)
+    {
+        display.getSplitPanel().setSplitPosition(display.getResultsPanel(),
+                Preferences.INSTANCE.getInt(preferencesKey, Constants.SPLIT_PANEL_SIZE), false);
     }
 
     /** Called when displaying changes to a entity or when changing views */

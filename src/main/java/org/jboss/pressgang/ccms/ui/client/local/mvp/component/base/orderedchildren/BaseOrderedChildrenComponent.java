@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchild
 
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBasePrimaryEntityV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.BaseChildrenComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -12,7 +13,7 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 
 /**
  * 
- * @author matthew
+ * @author Matttthew Casperson
  *
  * @param <S> The view type
  * @param <T> The entity being modified
@@ -38,20 +39,33 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
 
     /**
      * Save the size of the split ui component
+     * @param preferencesKey The key against which the previous size was saved
      */
     protected void bindChildSplitResize(final String preferencesKey) {
         display.getSplit().addResizeHandler(new ResizeHandler() {
 
             @Override
             public void onResize(final ResizeEvent event) {
-                Preferences.INSTANCE.saveSetting(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display.getSplit()
+                Preferences.INSTANCE.saveSetting(preferencesKey, display.getSplit()
                         .getSplitPosition(display.getPossibleChildrenResultsPanel()) + "");
             }
         });
     }
+    
+    /**
+     * Restores the size of the child split screen
+     * @param preferencesKey The key against which the previous size was saved
+     */
+    protected void loadChildSplitResize(final String preferencesKey)
+    {
+        display.getSplit().setSplitPosition(display.getPossibleChildrenResultsPanel(),
+                Preferences.INSTANCE.getInt(preferencesKey, Constants.SPLIT_PANEL_SIZE), false);
+    }
 
-    abstract protected void getExistingEntityList();
-
-    abstract protected void bindExistingChildrenRowClick();
+    /**
+     * Used to bind logic to the selection of an existing child. Optional, as most of the time
+     * this won't trigger any action. 
+     */
+    protected void bindExistingChildrenRowClick() {}
 
 }

@@ -12,6 +12,7 @@ import org.jboss.pressgang.ccms.rest.v1.sort.RESTTagCategoryCollectionItemV1Sort
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren.BaseOrderedChildrenComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryTagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -27,6 +28,8 @@ public class CategoryTagComponent
     @Override
     public void bind(final CategoryTagPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
         super.bind(display, waitDisplay);
+        loadChildSplitResize(Preferences.CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH);
+        bindChildSplitResize(Preferences.CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH);
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
         getEntityList();
     }
@@ -119,15 +122,4 @@ public class CategoryTagComponent
 
         return provider;
     }
-
-    @Override
-    protected void getExistingEntityList() {
-
-    }
-
-    @Override
-    protected void bindExistingChildrenRowClick() {
-
-    }
-
 }

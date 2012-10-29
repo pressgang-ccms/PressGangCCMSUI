@@ -40,6 +40,7 @@ public class TagCategoriesComponent
         // display.setExistingChildrenProvider(generateExistingProvider());
         bindPossibleChildrenRowClick();
         bindExistingChildrenRowClick();
+        loadChildSplitResize(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
         bindChildSplitResize(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
         getEntityList();
     }
@@ -287,10 +288,4 @@ public class TagCategoriesComponent
 
         RESTCalls.getCategories(callback);
     }
-
-    @Override
-    protected void getExistingEntityList() {
-        // Does nothing
-    }
-
 }

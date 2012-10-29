@@ -6,9 +6,12 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryInTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndCategoryPresenter;
@@ -122,8 +125,9 @@ public class CategoriesFilteredResultsAndCategoryComponent
 
         views = new CategoryViewInterface[] { resultDisplay, tagDisplay };
 
-        
+        loadMainSplitResize(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
         bindMainSplitResize(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
+        
         bindResultsListRowClicks();
         bindActionButtons();
         bindTagListButtonClicks();
@@ -134,11 +138,16 @@ public class CategoriesFilteredResultsAndCategoryComponent
      */
     private void displayExistingTagList()
     {
-        /*
-         * refresh the list of tags in the category
-         */
         tagDisplay.setExistingChildrenProvider(tagComponent.generateExistingProvider(filteredResultsComponent
                 .getProviderData().getDisplayedItem().getItem()));
+    }
+    
+    /**
+     * Refresh the display with the tags that can be assigned to the category
+     */
+    private void displayPossibleTagList()
+    {
+        tagDisplay.getPossibleChildrenProvider().displayNewFixedList(tagComponent.getPossibleChildrenProviderData().getItems());
     }
 
     /**
@@ -148,22 +157,28 @@ public class CategoriesFilteredResultsAndCategoryComponent
         tagDisplay.getPossibleChildrenButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagCollectionItemV1, String>() {
             @Override
             public void update(final int index, final RESTTagCollectionItemV1 object, final String value) {
+                
+                /* find the tag if it exists in the category */
                 boolean found = false;
-                for (final RESTCategoryInTagCollectionItemV1 category : object.getItem().getCategories().getItems()) {
-                    if (category.getItem().getId()
-                            .equals(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId())) {
+                final RESTTagInCategoryCollectionV1 currentCategoryTags = filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags(); 
+                for (final RESTTagInCategoryCollectionItemV1 tag : currentCategoryTags.getItems())
+                {
+                    /* we've found a matching tag */
+                    if (tag.getItem().getId().equals(object.getItem().getId()))
+                    {
                         /* Tag was added and then removed */
-                        if (category.returnIsAddItem()) {
-                            object.getItem().getCategories().getItems().remove(category);
+                        if (tag.returnIsAddItem())
+                        {
+                            currentCategoryTags.getItems().remove(tag);
                         }
                         /* Tag existed, was removed and then was added again */
-                        else if (category.returnIsRemoveItem()) {
-                            category.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                        else if (tag.returnIsRemoveItem()) {
+                            tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
                         }
                         /* Tag existed and was removed */
                         else {
-                            category.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
-                            category.getItem().setRelationshipSort(0);
+                            tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+                            tag.getItem().setRelationshipSort(0);
                         }
 
                         found = true;
@@ -171,38 +186,25 @@ public class CategoriesFilteredResultsAndCategoryComponent
                     }
                 }
 
+                /* The tag did not exist, so add it to the collection */
                 if (!found) {
-                    final RESTCategoryInTagV1 newCategory = new RESTCategoryInTagV1();
-                    newCategory.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                    newCategory.setName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
-                    newCategory.setRelationshipSort(0);
+                    final RESTTagInCategoryV1 newChild = new RESTTagInCategoryV1();
+                    newChild.setId(object.getItem().getId());
+                    newChild.setName(object.getItem().getName());
+                    newChild.setRelationshipSort(0);
 
-                    object.getItem().getCategories().addNewItem(newCategory);
+                    currentCategoryTags.addNewItem(newChild);
                 }
-
-                /*
-                 * In order for the warning to appear if selecting a new tag when unsaved changes exist, we need to set the
-                 * configured parameters to reflect the fact that the category contains tags that will modify the database. So
-                 * here we check to see if any tags have been added or removed. If there are none (i.e. a tag was added and then
-                 * removed again without persisting the change in the database, or there were just no changes made) we remove
-                 * the tags collection from the configured parameters.
-                 */
-                if (object.getItem().getCategories().returnDeletedAndAddedCollectionItems().size() != 0) {
-
-                    /*
-                     * Need to mark the categories collection as dirty. The explicitSetTags provides a convenient way to set the
-                     * appropriate configured parameter value
-                     */
-                    object.getItem().explicitSetCategories(object.getItem().getCategories());
-                } else {
-                    object.getItem().getConfiguredParameters().remove(RESTBaseTagV1.CATEGORIES_NAME);
-                }
-
 
                 /*
                  * refresh the list of tags in the category
                  */
                 displayExistingTagList();
+                
+                /*
+                 * refresh the list of possible tags
+                 */
+                displayPossibleTagList();
             }
         });
 
