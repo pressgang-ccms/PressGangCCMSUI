@@ -5,12 +5,9 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.st
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryInTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
@@ -87,7 +84,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
             RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, Display>(display,
                     new BaseRestCallback.SuccessAction<RESTCategoryV1, Display>() {
                         @Override
-                        public void doSuccessAction(RESTCategoryV1 retValue, Display display) {
+                        public void doSuccessAction(final RESTCategoryV1 retValue, final Display display) {
                             retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
                             retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
                             filteredResultsDisplay.getProvider().updateRowData(
@@ -95,6 +92,9 @@ public class CategoriesFilteredResultsAndCategoryComponent
                                     filteredResultsComponent.getProviderData().getItems());
 
                             reInitialiseView(lastDisplayedView);
+                            displayExistingTagList();
+                            displayPossibleTagList();
+                            Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                         }
                     }) {
             };
@@ -105,6 +105,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
                 category.explicitSetName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
                 category.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                         .getDescription());
+                category.explicitSetTags(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags());
                 RESTCalls.saveCategory(callback, category);
             }
         }
@@ -132,12 +133,42 @@ public class CategoriesFilteredResultsAndCategoryComponent
         bindResultsListRowClicks();
         bindActionButtons();
         bindTagListButtonClicks();
+        bindExistingChildrenRowClick();
+    }
+
+    protected void bindExistingChildrenRowClick() {
+        tagDisplay.getTagUpButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
+
+            @Override
+            public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
+                if (tagComponent.moveTagsUpAndDown(object, false)) {
+                    tagDisplay.setExistingChildrenProvider(tagComponent.generateExistingProvider(filteredResultsComponent
+                            .getProviderData().getDisplayedItem().getItem()));
+                }
+            }
+
+        });
+
+        tagDisplay.getTagDownButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
+
+            /**
+             * Swap the sort value for the tag that was selected with the tag below it.
+             */
+            @Override
+            public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
+                if (tagComponent.moveTagsUpAndDown(object, true)) {
+                    tagDisplay.setExistingChildrenProvider(tagComponent.generateExistingProvider(filteredResultsComponent
+                            .getProviderData().getDisplayedItem().getItem()));
+                }
+            }
+        });
     }
 
     /**
      * Refresh the display with the tags that have been assigned to the category
      */
     private void displayExistingTagList() {
+        tagDisplay.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
         tagDisplay.setExistingChildrenProvider(tagComponent.generateExistingProvider(filteredResultsComponent.getProviderData()
                 .getDisplayedItem().getItem()));
     }
@@ -228,6 +259,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
 
     /**
      * Compare the selected and displayed category, and see if any of the fields have changed
+     * 
      * @return true if there are unsaved changes, false otherwise
      */
     private boolean unsavedCategoryChanges() {
@@ -239,6 +271,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
 
     /**
      * Check to see if there are any added, removed or modified tags in the category
+     * 
      * @return true if there are modified tags, false otherwise
      */
     private boolean unsavedTagChanges() {

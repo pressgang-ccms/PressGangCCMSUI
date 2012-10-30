@@ -160,12 +160,13 @@ public final class RESTCalls {
             }
         });
     }
-
+    
     public static void saveCategory(final RESTCallback<RESTCategoryV1> callback, final RESTCategoryV1 category) {
+        final String expand = "{\"branches\":[" + CATEGORY_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).updateJSONCategory("", category);
+                createRestMethod(callback).updateJSONCategory(expand, category);
             }
         });
     }

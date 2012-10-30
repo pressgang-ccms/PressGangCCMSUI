@@ -116,14 +116,16 @@ public class CategoryTagView extends
         
         populateTopActionBar();
 
-        getPossibleChildrenResults().addColumn(tagsIdColumn, PressGangCCMSUI.INSTANCE.CategoryID());
-        getPossibleChildrenResults().addColumn(tagsNameColumn, PressGangCCMSUI.INSTANCE.CategoryName());
+        getPossibleChildrenResults().addColumn(tagsIdColumn, PressGangCCMSUI.INSTANCE.TagID());
+        getPossibleChildrenResults().addColumn(tagsNameColumn, PressGangCCMSUI.INSTANCE.TagName());
         getPossibleChildrenResults().addColumn(tagsButtonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
 
-        getExistingChildrenResults().addColumn(tagIdColumn, PressGangCCMSUI.INSTANCE.TagID());
-        getExistingChildrenResults().addColumn(tagNameColumn, PressGangCCMSUI.INSTANCE.TagName());
+        getExistingChildrenResults().addColumn(tagIdColumn, PressGangCCMSUI.INSTANCE.ChildTagID());
+        getExistingChildrenResults().addColumn(tagNameColumn, PressGangCCMSUI.INSTANCE.ChildTagName());
         getExistingChildrenResults().addColumn(tagUpButtonColumn, PressGangCCMSUI.INSTANCE.Up());
         getExistingChildrenResults().addColumn(tagDownButtonColumn, PressGangCCMSUI.INSTANCE.Down());
+        
+        addExistingChildrenPanel();
     }
 
     private void populateTopActionBar() {
@@ -131,6 +133,14 @@ public class CategoryTagView extends
         this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.CategoryTags()));
         this.addActionButton(this.getSave());
         addRightAlignedActionButtonPaddingPanel();
+    }
+
+    public Column<RESTTagInCategoryCollectionItemV1, String> getTagUpButtonColumn() {
+        return tagUpButtonColumn;
+    }
+
+    public Column<RESTTagInCategoryCollectionItemV1, String> getTagDownButtonColumn() {
+        return tagDownButtonColumn;
     }
 
 }

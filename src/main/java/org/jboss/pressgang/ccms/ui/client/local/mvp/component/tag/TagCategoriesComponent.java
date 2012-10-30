@@ -161,71 +161,17 @@ public class TagCategoriesComponent
         return false;
     }
 
-    private void moveTagsUpAndDown(final RESTTagInCategoryCollectionItemV1 object, final boolean down) {
-
-        final int size = getExistingProviderData().getItems().size();
-
-        boolean modifiedSort = false;
-
-        /* if moving down, start at the beginning, and end on the second last item. If moving up, start the second item */
-        for (int i = (down ? 0 : 1); i < (down ? size - 1 : size); ++i) {
-
-            /* Get the item from the collection for convenience */
-            final RESTTagInCategoryCollectionItemV1 tagInCatgeory = getExistingProviderData().getItems().get(i);
-
-            if (tagInCatgeory.getItem().getId().equals(object.getItem().getId())) {
-
-                /*
-                 * The sort values are exposed directly in the old UI. This means that it is possible for two tags to have the
-                 * same or no sort value assigned to them, or have sort values that increment in odd values.
-                 * 
-                 * If we are changing the sort order in the new UI, we need a consistent progression of the sort field. So, now
-                 * that we have found a tag that needs changing, we start by reassigning sort values based on the location of
-                 * the tag in the collection.
-                 */
-
-                for (int j = 0; j < size; ++j) {
-                    /* get the item from the collection */
-                    final RESTTagInCategoryCollectionItemV1 existingTagInCatgeory = getExistingProviderData().getItems().get(j);
-
-                    /* set the sort value (the list was previously sorted on this value) */
-                    existingTagInCatgeory.getItem().setRelationshipSort(j);
-
-                    /* we need to mark the joiner entity as updated */
-                    if (!existingTagInCatgeory.returnIsAddItem())
-                        existingTagInCatgeory.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
-                }
-
-                /* The next item is either the item before (if moving up) of the item after (if moving down) */
-                final int nextItemIndex = down ? i + 1 : i - 1;
-
-                /* get the next item in the list */
-                final RESTTagInCategoryCollectionItemV1 nextTagInCatgeory = getExistingProviderData().getItems().get(
-                        nextItemIndex);
-
-                /* swap the sort field */
-                tagInCatgeory.getItem().setRelationshipSort(nextItemIndex);
-                nextTagInCatgeory.getItem().setRelationshipSort(i);
-
-                modifiedSort = true;
-                break;
-            }
-        }
-
-        if (modifiedSort) {
-            /* redisplay the fixed list */
-            display.setExistingChildrenProvider(generateExistingProvider(getPossibleChildrenProviderData().getDisplayedItem()
-                    .getItem()));
-        }
-    }
-
     @Override
     protected void bindExistingChildrenRowClick() {
         display.getTagUpButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
             @Override
             public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
-                moveTagsUpAndDown(object, false);
+                if (moveTagsUpAndDown(object, false))
+                {
+                    display.setExistingChildrenProvider(generateExistingProvider(getPossibleChildrenProviderData().getDisplayedItem()
+                            .getItem()));
+                }
             }
 
         });
@@ -237,7 +183,9 @@ public class TagCategoriesComponent
              */
             @Override
             public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
-                moveTagsUpAndDown(object, true);
+                if (moveTagsUpAndDown(object, true))
+                        {display.setExistingChildrenProvider(generateExistingProvider(getPossibleChildrenProviderData().getDisplayedItem()
+                                .getItem()));}
             }
         });
     }
@@ -287,5 +235,11 @@ public class TagCategoriesComponent
         display.getPossibleChildrenProvider().resetProvider();
 
         RESTCalls.getCategories(callback);
+    }
+
+    @Override
+    protected void setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
+        child.getItem().setRelationshipSort(index);
+
     }
 }

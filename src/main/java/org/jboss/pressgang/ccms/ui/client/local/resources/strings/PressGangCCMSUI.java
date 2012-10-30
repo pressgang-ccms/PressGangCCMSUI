@@ -197,6 +197,10 @@ public interface PressGangCCMSUI extends Constants {
     String TagID();
 
     String TagName();
+    
+    String ChildTagID();
+
+    String ChildTagName();
 
     String TagDescription();
 

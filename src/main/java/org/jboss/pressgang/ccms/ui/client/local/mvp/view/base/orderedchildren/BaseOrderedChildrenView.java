@@ -97,9 +97,14 @@ abstract public class BaseOrderedChildrenView<T extends RESTBasePrimaryEntityV1<
         existingChildrenResultsPanel.add(existingChildrenPager);
         existingChildrenPager.setDisplay(existingChildrenResults);
 
-        /* Add this later once a category has been selected */
-        // split.add(existingChildrenResultsPanel);
-
         this.getPanel().setWidget(split);
+    }
+
+    /**
+     * This method will add the existing results panel to the view. This might be called when the view is constructed, or left
+     * if the existing children panel should not be shown straight away.
+     */
+    protected void addExistingChildrenPanel() {
+        split.add(existingChildrenResultsPanel);
     }
 }

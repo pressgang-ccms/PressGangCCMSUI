@@ -14,45 +14,48 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.Ba
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.category.CategoryViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
 public class CategoryTagPresenter implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "CategoryTagView";
-    
+
     public interface Display extends
-            BaseOrderedChildrenViewInterface<RESTCategoryV1, RESTTagCollectionItemV1, RESTTagInCategoryCollectionItemV1>, CategoryViewInterface {
+            BaseOrderedChildrenViewInterface<RESTCategoryV1, RESTTagCollectionItemV1, RESTTagInCategoryCollectionItemV1>,
+            CategoryViewInterface {
+        Column<RESTTagInCategoryCollectionItemV1, String> getTagUpButtonColumn();
+
+        Column<RESTTagInCategoryCollectionItemV1, String> getTagDownButtonColumn();
+    }
+
+    public interface LogicComponent
+            extends
+            BaseOrderedChildrenComponentInterface<Display, RESTCategoryV1, RESTCategoryV1, RESTTagCollectionItemV1, RESTTagInCategoryCollectionItemV1> {
 
     }
 
-    public interface LogicComponent extends BaseOrderedChildrenComponentInterface<Display, RESTCategoryV1, RESTCategoryV1, RESTTagCollectionItemV1, RESTTagInCategoryCollectionItemV1> {
-
-    }
-    
     private Integer entityId;
 
     @Inject
     private Display display;
-    
-    @Inject 
+
+    @Inject
     private LogicComponent component;
 
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         display.initialize(null, false);
-        component.bind(display,  display);
+        component.bind(display, display);
     }
 
     @Override
     public void parseToken(final String historyToken) {
-        try
-        {
+        try {
             entityId = Integer.parseInt(GWTUtilities.removeHistoryToken(HISTORY_TOKEN, historyToken));
-        }
-        catch (final NumberFormatException ex)
-        {
+        } catch (final NumberFormatException ex) {
             entityId = null;
         }
     }

@@ -28,4 +28,6 @@ public interface BaseOrderedChildrenComponentInterface<S extends BaseOrderedChil
      * @return The provder used to display the list of existing children
      */
     EnhancedAsyncDataProvider<V> generateExistingProvider(final W entity);
+    
+    boolean moveTagsUpAndDown(final V object, final boolean down);
 }
