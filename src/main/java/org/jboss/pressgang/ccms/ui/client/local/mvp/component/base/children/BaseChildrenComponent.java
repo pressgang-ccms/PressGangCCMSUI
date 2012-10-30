@@ -14,7 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
  * @param <U> The parent entity type
  * @param <V> The potential children type
  */
-abstract public class BaseChildrenComponent<T extends BaseChildrenViewInterface<U, V>, U extends RESTBasePrimaryEntityV1, V extends RESTBaseCollectionItemV1>
+abstract public class BaseChildrenComponent<T extends BaseChildrenViewInterface<U, V>, U extends RESTBasePrimaryEntityV1<?, ?, ?>, V extends RESTBaseCollectionItemV1<?, ?, ?>>
         extends ComponentBase<T> implements BaseChildrenComponentInterface<T, U, V> {
 
     /** An instance of the provider data */

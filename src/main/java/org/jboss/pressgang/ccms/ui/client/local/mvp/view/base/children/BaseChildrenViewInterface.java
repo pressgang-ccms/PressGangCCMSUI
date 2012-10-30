@@ -10,7 +10,7 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public interface BaseChildrenViewInterface<T extends RESTBasePrimaryEntityV1, U extends RESTBaseCollectionItemV1> extends
+public interface BaseChildrenViewInterface<T extends RESTBasePrimaryEntityV1<?, ?, ?>, U extends RESTBaseCollectionItemV1<?, ?, ?>> extends
         BaseTemplateViewInterface {
     T getOriginalEntity();
 

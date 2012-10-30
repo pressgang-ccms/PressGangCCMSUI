@@ -17,7 +17,7 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
  * @param <U> The type of the possible children
  * @param <V> The type of the existing children
  */
-public interface BaseChildrenComponentInterface<T extends BaseChildrenViewInterface<U, V>, U extends RESTBasePrimaryEntityV1, V extends RESTBaseCollectionItemV1>
+public interface BaseChildrenComponentInterface<T extends BaseChildrenViewInterface<U, V>, U extends RESTBasePrimaryEntityV1<?, ?, ?>, V extends RESTBaseCollectionItemV1<?, ?, ?>>
         extends EditableView, Component<T> {
     
     /**

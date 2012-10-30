@@ -17,7 +17,6 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
-import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.HasData;
 

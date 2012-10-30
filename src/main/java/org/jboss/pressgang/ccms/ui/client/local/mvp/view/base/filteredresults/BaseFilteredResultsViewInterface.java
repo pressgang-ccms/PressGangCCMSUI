@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.PushButton;
  * @author Matthew Casperson
  * 
  */
-public interface BaseFilteredResultsViewInterface<T extends RESTBaseCollectionItemV1> extends BaseTemplateViewInterface {
+public interface BaseFilteredResultsViewInterface<T extends RESTBaseCollectionItemV1<?, ?, ?>> extends BaseTemplateViewInterface {
     /**
      * @return The button that initiates a new search
      */

@@ -2,7 +2,6 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchild
 
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBasePrimaryEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.BaseChildrenComponent;
@@ -23,7 +22,7 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
  * @param <U> The potential children type
  * @param <V> The existing children type
  */
-abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildrenViewInterface<T, U, V>, T extends RESTBasePrimaryEntityV1, W extends RESTBasePrimaryEntityV1, U extends RESTBaseCollectionItemV1, V extends RESTBaseCollectionItemV1>
+abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildrenViewInterface<T, U, V>, T extends RESTBasePrimaryEntityV1<?, ?, ?>, W extends RESTBasePrimaryEntityV1<?, ?, ?>, U extends RESTBaseCollectionItemV1<?, ?, ?>, V extends RESTBaseCollectionItemV1<?, ?, ?>>
         extends BaseChildrenComponent<S, T, U> implements BaseOrderedChildrenComponentInterface<S, T, W, U, V> {
 
     protected ProviderUpdateData<V> existingProviderData = new ProviderUpdateData<V>();
@@ -77,6 +76,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
      * @param down true if the child is to be moved down, false if it is to be moved up
      * @return true if the sort order of any child was modified, false otherwise
      */
+    @Override
     public boolean moveTagsUpAndDown(final V object, final boolean down) {
 
         final int size = getExistingProviderData().getItems().size();

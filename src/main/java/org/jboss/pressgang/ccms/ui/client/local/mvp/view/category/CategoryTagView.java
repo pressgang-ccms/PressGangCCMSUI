@@ -135,10 +135,12 @@ public class CategoryTagView extends
         addRightAlignedActionButtonPaddingPanel();
     }
 
+    @Override
     public Column<RESTTagInCategoryCollectionItemV1, String> getTagUpButtonColumn() {
         return tagUpButtonColumn;
     }
 
+    @Override
     public Column<RESTTagInCategoryCollectionItemV1, String> getTagDownButtonColumn() {
         return tagDownButtonColumn;
     }

@@ -17,7 +17,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * @param <U> The type of the children that can be added to the parent
  * @param <V> The type of the children that have been added to the parent
  */
-public interface BaseOrderedChildrenViewInterface<T extends RESTBasePrimaryEntityV1, U extends RESTBaseCollectionItemV1, V extends RESTBaseCollectionItemV1>
+public interface BaseOrderedChildrenViewInterface<T extends RESTBasePrimaryEntityV1<?, ?, ?>, U extends RESTBaseCollectionItemV1<?, ?, ?>, V extends RESTBaseCollectionItemV1<?, ?, ?>>
         extends BaseChildrenViewInterface<T, U> {
 
     SimplePager getExistingChildrenPager();

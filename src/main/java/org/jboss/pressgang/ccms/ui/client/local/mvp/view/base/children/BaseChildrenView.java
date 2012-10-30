@@ -10,7 +10,7 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-abstract public class BaseChildrenView<T extends RESTBasePrimaryEntityV1, U extends RESTBaseCollectionItemV1> extends BaseTemplateView implements BaseChildrenViewInterface<T, U> {
+abstract public class BaseChildrenView<T extends RESTBasePrimaryEntityV1<?, ?, ?>, U extends RESTBaseCollectionItemV1<?, ?, ?>> extends BaseTemplateView implements BaseChildrenViewInterface<T, U> {
     /** A reference to the tag that this view will be modifying */
     private T originalEntity;
 

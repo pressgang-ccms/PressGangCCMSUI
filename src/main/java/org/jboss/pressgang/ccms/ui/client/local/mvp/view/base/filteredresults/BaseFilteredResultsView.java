@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Matthew Casperson
  * 
  */
-abstract public class BaseFilteredResultsView<T extends RESTBaseCollectionItemV1> extends BaseTemplateView implements
+abstract public class BaseFilteredResultsView<T extends RESTBaseCollectionItemV1<?, ?, ?>> extends BaseTemplateView implements
         BaseFilteredResultsViewInterface<T> {
 
     /** The button that initiates a new search */

@@ -21,7 +21,7 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
  * @param <V> The filtered search results view data type
  * @param <W> The base class for all the detail views
  */
-abstract public class BaseSearchAndEditComponent<T extends BaseSearchAndEditViewInterface, U extends BaseFilteredResultsViewInterface<V>, V extends RESTBaseCollectionItemV1, W extends BaseTemplateViewInterface>
+abstract public class BaseSearchAndEditComponent<T extends BaseSearchAndEditViewInterface, U extends BaseFilteredResultsViewInterface<V>, V extends RESTBaseCollectionItemV1<?, ?, ?>, W extends BaseTemplateViewInterface>
         extends ComponentBase<T> {
 
     /** The last displayed view */

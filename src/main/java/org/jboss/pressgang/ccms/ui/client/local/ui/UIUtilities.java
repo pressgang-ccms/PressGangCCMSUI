@@ -72,7 +72,7 @@ final public class UIUtilities {
      * 
      * @return A new celltable with the default settings
      */
-    public static <T extends RESTBaseCollectionItemV1> CellTable<T> createCellTable() {
+    public static <T extends RESTBaseCollectionItemV1<?, ?, ?>> CellTable<T> createCellTable() {
         return new CellTable<T>(Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
     }
 }
