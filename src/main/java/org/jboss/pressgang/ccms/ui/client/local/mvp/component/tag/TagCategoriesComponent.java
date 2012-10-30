@@ -239,7 +239,7 @@ public class TagCategoriesComponent
 
     @Override
     protected void setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
-        child.getItem().setRelationshipSort(index);
+        child.getItem().explicitSetRelationshipSort(index);
 
     }
 }
