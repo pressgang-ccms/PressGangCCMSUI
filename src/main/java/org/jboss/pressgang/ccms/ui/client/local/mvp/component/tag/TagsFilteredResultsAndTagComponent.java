@@ -6,7 +6,6 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.errai.bus.client.api.Message;
-import org.jboss.errai.enterprise.client.jaxrs.api.ResponseException;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
@@ -46,7 +45,6 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
@@ -62,7 +60,6 @@ public class TagsFilteredResultsAndTagComponent
 
     private TagFilteredResultsPresenter.Display filteredResultsDisplay;
     private TagFilteredResultsPresenter.LogicComponent filteredResultsComponent;
-    private TagPresenter.Display entityPropertiesView;
     private TagPresenter.LogicComponent resultComponent;
     private TagProjectsPresenter.Display projectsDisplay;
     private TagProjectsPresenter.LogicComponent projectsComponent;
@@ -124,31 +121,29 @@ public class TagsFilteredResultsAndTagComponent
             final boolean wasNewTag = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
 
             /* Save any changes made to the tag entity itself */
-            final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, TagsFilteredResultsAndTagPresenter.Display>(display,
-                    new BaseRestCallback.SuccessAction<RESTTagV1, TagsFilteredResultsAndTagPresenter.Display>() {
+            final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, TagsFilteredResultsAndTagPresenter.Display>(
+                    display, new BaseRestCallback.SuccessAction<RESTTagV1, TagsFilteredResultsAndTagPresenter.Display>() {
                         @Override
-                        public void doSuccessAction(final RESTTagV1 retValue, final TagsFilteredResultsAndTagPresenter.Display display) {
-                            try {
-                                /* we are now viewing the object returned by the save */
-                                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
-                                filteredResultsComponent.getProviderData().getDisplayedItem()
-                                        .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                        public void doSuccessAction(final RESTTagV1 retValue,
+                                final TagsFilteredResultsAndTagPresenter.Display display) {
 
-                                /* Update the list of tags with any saved changes */
-                                retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
+                            /* we are now viewing the object returned by the save */
+                            retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
+                            filteredResultsComponent.getProviderData().getDisplayedItem()
+                                    .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
-                                if (unsavedCategoryChanges) {
-                                    saveCategoryChanges(wasNewTag, filteredResultsComponent.getProviderData().getDisplayedItem()
-                                            .getItem().getId());
-                                } else {
-                                    updateDisplayAfterSave(filteredResultsDisplay, filteredResultsComponent, wasNewTag);
-                                }
+                            /* Update the list of tags with any saved changes */
+                            retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
 
-                                Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + retValue.getId());
-
-                            } finally {
-                                display.removeWaitOperation();
+                            if (unsavedCategoryChanges) {
+                                saveCategoryChanges(wasNewTag, filteredResultsComponent.getProviderData().getDisplayedItem()
+                                        .getItem().getId());
+                            } else {
+                                updateDisplayAfterSave(filteredResultsDisplay, filteredResultsComponent, wasNewTag);
                             }
+
+                            Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + retValue.getId());
+
                         }
                     }) {
             };
@@ -709,7 +704,8 @@ public class TagsFilteredResultsAndTagComponent
 
     @Override
     protected void bindActionButtons() {
-        for (final TagViewInterface tagDisplay : new TagViewInterface[] { entityPropertiesView, projectsDisplay, categoriesDisplay }) {
+        for (final TagViewInterface tagDisplay : new TagViewInterface[] { entityPropertiesView, projectsDisplay,
+                categoriesDisplay }) {
             tagDisplay.getTagDetails().addClickHandler(tagDetailsClickHandler);
             tagDisplay.getTagProjects().addClickHandler(tagProjectsClickHandler);
             tagDisplay.getSave().addClickHandler(saveClickHandler);

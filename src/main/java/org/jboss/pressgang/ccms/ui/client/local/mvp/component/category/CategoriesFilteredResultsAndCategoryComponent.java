@@ -105,9 +105,8 @@ public class CategoriesFilteredResultsAndCategoryComponent
                                     filteredResultsComponent.getProviderData().getStartRow(),
                                     filteredResultsComponent.getProviderData().getItems());
 
-                            reInitialiseView(lastDisplayedView);
                             displayExistingTagList();
-                            displayPossibleTagList();
+                            tagComponent.getEntityList();
                             
                             updateDisplayAfterSave(filteredResultsDisplay, filteredResultsComponent, wasNewEntity);
                             
@@ -117,8 +116,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
             };
 
             if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-                
-                
+
                 /*
                  * If this is a new category, it needs to be saved in order to get the tag id to complete the category updates. Upon
                  * success, the categories will be updated.
@@ -133,9 +131,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
                     category.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                             .getDescription());
                     category.explicitSetTags(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags());
-                    
-                    
-                    
+ 
                     if (wasNewEntity) {
                         RESTCalls.createCategory(callback, category);
                     } else {
@@ -153,18 +149,18 @@ public class CategoriesFilteredResultsAndCategoryComponent
     @Override
     public void bind(final CategoryFilteredResultsPresenter.Display filteredResultsDisplay,
             final CategoryFilteredResultsPresenter.LogicCompnent filteredResultsComponent,
-            final CategoryPresenter.Display resultDisplay, final CategoryTagPresenter.Display tagDisplay,
+            final CategoryPresenter.Display entityPropertiesView, final CategoryTagPresenter.Display tagDisplay,
             final CategoryTagPresenter.LogicComponent tagComponent,
             final CategoriesFilteredResultsAndCategoryPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
 
         super.bind(display, waitDisplay);
         this.filteredResultsDisplay = filteredResultsDisplay;
-        this.entityPropertiesView = resultDisplay;
+        this.entityPropertiesView = entityPropertiesView;
         this.filteredResultsComponent = filteredResultsComponent;
         this.tagDisplay = tagDisplay;
         this.tagComponent = tagComponent;
 
-        views = new CategoryViewInterface[] { resultDisplay, tagDisplay };
+        views = new CategoryViewInterface[] { entityPropertiesView, tagDisplay };
 
         loadMainSplitResize(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
         bindMainSplitResize(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
@@ -438,7 +434,8 @@ public class CategoriesFilteredResultsAndCategoryComponent
 
     @Override
     protected String getQuery() {
-        // TODO Auto-generated method stub
-        return "";
+        final StringBuilder retValue = new StringBuilder();
+        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX
+                : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
     }
 }

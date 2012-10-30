@@ -50,13 +50,13 @@ abstract public class BaseSearchAndEditComponent<T extends BaseSearchAndEditView
         }
         /* If we just created a new tag, refresh the list of tags from the database */
         else {
-            filteredResultsComponent.bind(getQuery(), filteredResultsDisplay, display);
+            filteredResultsComponent.bind(getQuery(), filteredResultsDisplay, waitDisplay);
 
             /*
              * reInitialiseView will flush the ui, which will flush the null ID back to the displayed object. To prevent that we
              * need to call edit on the newly saved entity
              */
-            entityPropertiesView.getDriver().edit(filteredResultsComponent.getProviderData().getDisplayedItem());
+            entityPropertiesView.getDriver().edit(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
         }
 

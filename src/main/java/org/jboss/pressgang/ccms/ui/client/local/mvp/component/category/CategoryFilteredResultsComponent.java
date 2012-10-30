@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.category;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter.Display;
@@ -32,8 +33,8 @@ public class CategoryFilteredResultsComponent extends
      * @return A provider to be used for the category display list
      */
     @Override
-    protected EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateListProvider(final String queryString, final Display display,
-            final BaseTemplateViewInterface waitDisplay) {
+    protected EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateListProvider(final String queryString,
+            final Display display, final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTCategoryCollectionItemV1> list) {
@@ -55,8 +56,9 @@ public class CategoryFilteredResultsComponent extends
                     public void success(final RESTCategoryCollectionV1 retValue) {
                         try {
                             getProviderData().setItems(retValue.getItems());
-                            displayAsynchronousList(getProviderData().getItems(), retValue.getSize(), getProviderData()
-                                    .getStartRow());
+                            getProviderData().setSize(retValue.getSize());
+                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(),
+                                    getProviderData().getStartRow());
                         } finally {
                             display.removeWaitOperation();
                         }
@@ -81,13 +83,14 @@ public class CategoryFilteredResultsComponent extends
 
     @Override
     public String getQuery() {
-        // TODO Auto-generated method stub
-        return null;
+        final StringBuilder retValue = new StringBuilder();
+        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX
+                : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
     }
 
     @Override
     protected void displayQueryElements(String queryString) {
         // TODO Auto-generated method stub
-        
+
     }
 }
