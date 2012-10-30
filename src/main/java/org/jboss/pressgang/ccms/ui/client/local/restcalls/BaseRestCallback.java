@@ -1,9 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
 import org.jboss.errai.bus.client.api.Message;
+import org.jboss.errai.enterprise.client.jaxrs.api.ResponseException;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
+import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
 
 /**
@@ -40,8 +42,22 @@ public abstract class BaseRestCallback<T, D extends BaseTemplateViewInterface> i
 
     @Override
     public void failed(final Message message, final Throwable throwable) {
-        display.removeWaitOperation();
-        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+        try {
+            if (throwable instanceof ResponseException) {
+                final ResponseException ex = (ResponseException) throwable;
+                /* A bad request means invalid input, like a duplicated name */
+                if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
+                    Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput());
+                }
+            } else {
+                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError() + "\n"
+                        + (message != null ? message.toString() : "") + "\n"
+                        + (throwable != null ? throwable.toString() : ""));
+            }
+
+        } finally {
+            display.removeWaitOperation();
+        }
     }
 
     public interface SuccessAction<T, D extends BaseTemplateViewInterface> {

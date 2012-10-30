@@ -54,6 +54,8 @@ public interface PressGangCCMSUI extends Constants {
 
     String SaveSuccess();
     
+    String NoUnsavedChanges();
+    
     String TagSaveSuccess();
 
     String ErrorGettingTopics();

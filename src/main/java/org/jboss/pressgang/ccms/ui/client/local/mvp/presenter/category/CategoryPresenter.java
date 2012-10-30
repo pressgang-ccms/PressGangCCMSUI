@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.propertyview.BasePropertyViewComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.category.CategoryViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCategoryV1BasicDetailsEditor;
 
@@ -24,12 +25,8 @@ public class CategoryPresenter implements TemplatePresenter {
     public interface CategoryPresenterDriver extends SimpleBeanEditorDriver<RESTCategoryV1, RESTCategoryV1BasicDetailsEditor> {
     }
 
-    public interface Display extends CategoryViewInterface {
-        @SuppressWarnings("rawtypes")
-        SimpleBeanEditorDriver getDriver();
+    public interface Display extends CategoryViewInterface, BaseEditorViewInterface {
 
-        @Override
-        public void initialize(final RESTCategoryV1 category, final boolean readOnly);
     }
 
     public interface LogicComponent extends BasePropertyViewComponentInterface<Display> {
