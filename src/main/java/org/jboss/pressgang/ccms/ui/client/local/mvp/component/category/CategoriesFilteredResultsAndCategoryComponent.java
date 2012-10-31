@@ -54,7 +54,6 @@ public class CategoriesFilteredResultsAndCategoryComponent
     private CategoryFilteredResultsPresenter.LogicCompnent filteredResultsComponent;
     private CategoryTagPresenter.Display tagDisplay;
     private CategoryTagPresenter.LogicComponent tagComponent;
-    private CategoryViewInterface[] views;
 
     /**
      * A click handler used to display the category fields view
@@ -149,16 +148,13 @@ public class CategoriesFilteredResultsAndCategoryComponent
             final CategoryFilteredResultsPresenter.LogicCompnent filteredResultsComponent,
             final CategoryPresenter.Display entityPropertiesView, final CategoryTagPresenter.Display tagDisplay,
             final CategoryTagPresenter.LogicComponent tagComponent,
-            final CategoriesFilteredResultsAndCategoryPresenter.Display display,
-            final BaseTemplateViewInterface waitDisplay) {
+            final CategoriesFilteredResultsAndCategoryPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
 
         super.bind(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, entityPropertiesView, entityPropertiesView,
                 filteredResultsDisplay, filteredResultsComponent, display, waitDisplay);
 
         this.tagDisplay = tagDisplay;
         this.tagComponent = tagComponent;
-
-        views = new CategoryViewInterface[] { entityPropertiesView, tagDisplay };
 
         bindTagListButtonClicks();
         bindExistingChildrenRowClick();
@@ -319,7 +315,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
 
     @Override
     protected void bindActionButtons() {
-        for (final CategoryViewInterface view : views) {
+        for (final CategoryViewInterface view : new CategoryViewInterface[] { entityPropertiesView, tagDisplay }) {
             view.getDetails().addClickHandler(this.categoryDetailsClickHandler);
             view.getChildren().addClickHandler(this.categoryTagsClickHandler);
             view.getSave().addClickHandler(this.saveClickHandler);
