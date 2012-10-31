@@ -1,5 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -15,7 +18,7 @@ import com.google.gwt.user.client.ui.PushButton;
  * 
  * @author Matthew Casperson
  */
-abstract public class TopicViewBase extends BaseTemplateView implements TopicViewInterface {
+abstract public class TopicViewBase extends BaseTemplateView<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> implements TopicViewInterface {
     private final PushButton fields;
     private final PushButton xml;
     private final PushButton xmlErrors;

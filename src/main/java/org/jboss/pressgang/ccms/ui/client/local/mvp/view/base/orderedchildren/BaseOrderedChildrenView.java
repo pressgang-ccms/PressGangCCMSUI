@@ -1,7 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBasePrimaryEntityV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
@@ -18,12 +19,14 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * 
  * @author Matthew Casperson
  * 
- * @param <T> The type of the entity that is being modified
- * @param <U> The type of the children that can be added to the collection
- * @param <V> The type of the children that are added to the collection
+ * @param <T> The entity type
+ * @param <U> The collection type for entity T
+ * @param <V> The collection item type for entity T
+ * @param <W> The type of the children that can be added to the collection
+ * @param <X> The type of the children that are added to the collection
  */
-abstract public class BaseOrderedChildrenView<T extends RESTBasePrimaryEntityV1<?, ?, ?>, U extends RESTBaseCollectionItemV1<?, ?, ?>, V extends RESTBaseCollectionItemV1<?, ?, ?>>
-        extends BaseChildrenView<T, U> {
+abstract public class BaseOrderedChildrenView<T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends RESTBaseCollectionItemV1<?, ?, ?>, X extends RESTBaseCollectionItemV1<?, ?, ?>>
+        extends BaseChildrenView<T, U, V, W> implements BaseOrderedChildrenViewInterface<T, U, V, W, X> {
 
     /** A reference to the entity that this view will be modifying. */
     private T originalEntity;
@@ -33,25 +36,29 @@ abstract public class BaseOrderedChildrenView<T extends RESTBasePrimaryEntityV1<
 
     private final VerticalPanel existingChildrenResultsPanel = new VerticalPanel();
     private final SimplePager existingChildrenPager = UIUtilities.createSimplePager();
-    private final CellTable<V> existingChildrenResults = UIUtilities.<V> createCellTable();
-    private EnhancedAsyncDataProvider<V> existingChildrenProvider;
+    private final CellTable<X> existingChildrenResults = UIUtilities.<X> createCellTable();
+    private EnhancedAsyncDataProvider<X> existingChildrenProvider;
 
-    public CellTable<V> getExistingChildrenResults() {
+    public CellTable<X> getExistingChildrenResults() {
         return existingChildrenResults;
     }
 
+    @Override
     public SimplePager getExistingChildrenPager() {
         return existingChildrenPager;
     }
 
+    @Override
     public VerticalPanel getExistingChildrenResultsPanel() {
         return existingChildrenResultsPanel;
     }
 
+    @Override
     public HandlerSplitLayoutPanel getSplit() {
         return split;
     }
 
+    @Override
     public void setSplit(final HandlerSplitLayoutPanel split) {
         this.split = split;
     }
@@ -66,11 +73,13 @@ abstract public class BaseOrderedChildrenView<T extends RESTBasePrimaryEntityV1<
         this.originalEntity = originalEntity;
     }
 
-    public EnhancedAsyncDataProvider<V> getExistingChildrenProvider() {
+    @Override
+    public EnhancedAsyncDataProvider<X> getExistingChildrenProvider() {
         return existingChildrenProvider;
     }
 
-    public void setExistingChildrenProvider(final EnhancedAsyncDataProvider<V> existingChildrenProvider) {
+    @Override
+    public void setExistingChildrenProvider(final EnhancedAsyncDataProvider<X> existingChildrenProvider) {
         this.existingChildrenProvider = existingChildrenProvider;
         existingChildrenProvider.addDataDisplay(existingChildrenResults);
     }

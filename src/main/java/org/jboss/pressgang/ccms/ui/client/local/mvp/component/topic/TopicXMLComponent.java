@@ -10,12 +10,12 @@ public class TopicXMLComponent extends TopicViewComponent<TopicXMLPresenter.Disp
         TopicXMLPresenter.LogicComponent {
 
     @Override
-    public void bind(final TopicXMLPresenter.Display display, final BaseTemplateViewInterface waitDisplay)
-    {
+    public void bind(final TopicXMLPresenter.Display display,
+            final BaseTemplateViewInterface waitDisplay) {
         super.bind(display, waitDisplay);
         bindAceEditorButtons();
     }
-    
+
     /**
      * Bind the button clicks for the ACE editor buttons
      */
@@ -36,5 +36,5 @@ public class TopicXMLComponent extends TopicViewComponent<TopicXMLPresenter.Disp
             }
         });
     }
-    
+
 }

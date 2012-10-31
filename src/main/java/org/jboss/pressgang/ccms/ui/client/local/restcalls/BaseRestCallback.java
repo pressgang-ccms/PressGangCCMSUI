@@ -9,14 +9,17 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
 
 /**
+ * @param <C> The type of the returned entity
+ * @Param <D> The type of the wait view
  * @author kamiller@redhat.com (Katie Miller)
+ * 
  */
-public abstract class BaseRestCallback<T, D extends BaseTemplateViewInterface> implements RESTCalls.RESTCallback<T> {
+public abstract class BaseRestCallback<C, D extends BaseTemplateViewInterface> implements RESTCalls.RESTCallback<C> {
 
     D display;
-    SuccessAction<T, D> successAction;
+    SuccessAction<C, D> successAction;
 
-    public BaseRestCallback(D display, SuccessAction<T, D> successAction) {
+    public BaseRestCallback(D display, SuccessAction<C, D> successAction) {
         this.display = display;
         this.successAction = successAction;
     }
@@ -27,12 +30,12 @@ public abstract class BaseRestCallback<T, D extends BaseTemplateViewInterface> i
     }
 
     @Override
-    public void generalException(Exception e) {
+    public void generalException(final Exception e) {
         display.removeWaitOperation();
     }
 
     @Override
-    public void success(T retValue) {
+    public void success(final C retValue) {
         try {
             successAction.doSuccessAction(retValue, display);
         } finally {

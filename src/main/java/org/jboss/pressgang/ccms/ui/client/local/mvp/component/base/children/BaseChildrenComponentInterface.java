@@ -1,7 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBasePrimaryEntityV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
@@ -13,22 +14,23 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
  * 
  * @author Matthew Casperson
  *
- * @param <T> The type of the view
- * @param <U> The type of the possible children
- * @param <V> The type of the existing children
+ * @param <S> The type of the view that display the children
+ * @param <T> The entity type
+ * @param <U> The collection type for entity T
+ * @param <V> The collection item type for entity T
  */
-public interface BaseChildrenComponentInterface<T extends BaseChildrenViewInterface<U, V>, U extends RESTBasePrimaryEntityV1<?, ?, ?>, V extends RESTBaseCollectionItemV1<?, ?, ?>>
-        extends EditableView, Component<T> {
+public interface BaseChildrenComponentInterface<S extends BaseChildrenViewInterface<T, U, V, W>, T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends RESTBaseCollectionItemV1<?, ?, ?>>
+        extends EditableView, Component<S> {
     
     /**
      * @return the data that is used to back the list of potential children
      */
-    ProviderUpdateData<V> getPossibleChildrenProviderData();
+    ProviderUpdateData<W> getPossibleChildrenProviderData();
 
     /**
      * @param providerData the data that is used to back the list of potential children
      */
-    void setPossibleChildrenProviderData(final ProviderUpdateData<V> providerData);
+    void setPossibleChildrenProviderData(final ProviderUpdateData<W> providerData);
     
     /**
      * Get a list of potential children from the REST service and display it in the 
@@ -39,5 +41,5 @@ public interface BaseChildrenComponentInterface<T extends BaseChildrenViewInterf
     /**
      * @return the provider that displays the entities found in getPossibleChildrenProviderData()
      */
-    EnhancedAsyncDataProvider<V> generatePossibleChildrenProvider();
+    EnhancedAsyncDataProvider<W> generatePossibleChildrenProvider();
 }

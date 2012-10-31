@@ -16,14 +16,17 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 
-public class ImagesFilteredResultsAndImageComponent extends ComponentBase<ImagesFilteredResultsAndImagePresenter.Display>
+public class ImagesFilteredResultsAndImageComponent
+        extends
+        ComponentBase<ImagesFilteredResultsAndImagePresenter.Display>
         implements ImagesFilteredResultsAndImagePresenter.LogicComponent {
 
     @Override
     public void bind(final ImageFilteredResultsPresenter.Display imageFilteredResultsDisplay,
             final ImageFilteredResultsPresenter.LogicComponent imageFilteredResultsComponent,
             final ImagePresenter.Display imageDisplay, final ImagePresenter.LogicComponent imageComponent,
-            final ImagesFilteredResultsAndImagePresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
+            final ImagesFilteredResultsAndImagePresenter.Display display,
+            final BaseTemplateViewInterface waitDisplay) {
         super.bind(display, waitDisplay);
 
         bindListRowClicks(imageFilteredResultsDisplay, imageFilteredResultsComponent, imageDisplay, imageComponent, display,
@@ -36,7 +39,8 @@ public class ImagesFilteredResultsAndImageComponent extends ComponentBase<Images
     private void bindListRowClicks(final ImageFilteredResultsPresenter.Display imageFilteredResultsDisplay,
             final ImageFilteredResultsPresenter.LogicComponent imageFilteredResultsComponent,
             final ImagePresenter.Display imageDisplay, final ImagePresenter.LogicComponent imageComponent,
-            final ImagesFilteredResultsAndImagePresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
+            final ImagesFilteredResultsAndImagePresenter.Display display,
+            final BaseTemplateViewInterface waitDisplay) {
 
         imageFilteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTImageCollectionItemV1>() {
             @Override

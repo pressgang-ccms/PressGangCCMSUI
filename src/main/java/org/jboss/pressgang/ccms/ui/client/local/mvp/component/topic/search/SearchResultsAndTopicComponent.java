@@ -52,8 +52,9 @@ import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
 
 @Dependent
-public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsAndTopicPresenter.Display> implements
-        SearchResultsAndTopicPresenter.LogicComponent {
+public class SearchResultsAndTopicComponent extends
+        ComponentBase<SearchResultsAndTopicPresenter.Display>
+        implements SearchResultsAndTopicPresenter.LogicComponent {
 
     /**
      * false to indicate that the topic views should display action buttons applicabale to established topics (as opposed to new
@@ -207,7 +208,8 @@ public class SearchResultsAndTopicComponent extends ComponentBase<SearchResultsA
     }
 
     @Override
-    public void bind(final SearchResultsAndTopicPresenter.Display display, final BaseTemplateViewInterface waitDisplay,
+    public void bind(final SearchResultsAndTopicPresenter.Display display,
+            final BaseTemplateViewInterface waitDisplay,
             final TopicPresenter.Display topicViewDisplay, final TopicPresenter.LogicComponent topicViewComponent,
             final TopicXMLPresenter.Display topicXMLDisplay, final TopicXMLPresenter.LogicComponent topicXMLComponent,
             final TopicRenderedPresenter.Display topicRenderedDisplay,

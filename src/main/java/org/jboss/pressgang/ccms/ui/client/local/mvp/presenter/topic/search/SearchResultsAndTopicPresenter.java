@@ -5,6 +5,9 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter;
@@ -32,7 +35,8 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
 
-    public interface Display extends BaseSearchAndEditViewInterface {
+    public interface Display extends
+            BaseSearchAndEditViewInterface<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
         SplitType getSplitType();
 
         void initialize(final SplitType splitType, final Panel panel);
@@ -48,8 +52,9 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
         String getQueryString();
 
         void setQueryString(final String queryString);
-        
-        void bind(final SearchResultsAndTopicPresenter.Display display, final BaseTemplateViewInterface waitDisplay,
+
+        void bind(final SearchResultsAndTopicPresenter.Display display,
+                final BaseTemplateViewInterface waitDisplay,
                 final TopicPresenter.Display topicViewDisplay, final TopicPresenter.LogicComponent topicViewComponent,
                 final TopicXMLPresenter.Display topicXMLDisplay, final TopicXMLPresenter.LogicComponent topicXMLComponent,
                 final TopicRenderedPresenter.Display topicRenderedDisplay,
@@ -128,13 +133,13 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
 
         searchResultsComponent.bind(component.getQueryString(), searchResultsDisplay, display);
         topicTagsComponent.bind(topicTagsDisplay, display);
-        
+
         component.bind(display, display, topicViewDisplay, topicViewComponent, topicXMLDisplay, topicXMLComponent,
                 topicRenderedDisplay, topicSplitPanelRenderedDisplay, searchResultsDisplay, searchResultsComponent,
                 topicXMLErrorsDisplay, topicTagsDisplay, topicTagsComponent, topicBugsDisplay, topicRevisionsDisplay,
                 topicrevisionsComponent);
         component.setFeedbackLink(HISTORY_TOKEN);
-        
+
     }
 
     @Override

@@ -6,6 +6,8 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.propertyview.BasePropertyViewComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
@@ -25,7 +27,7 @@ public class TagPresenter implements TemplatePresenter {
     public interface TagPresenterDriver extends SimpleBeanEditorDriver<RESTTagV1, RESTTagV1BasicDetailsEditor> {
     }
 
-    public interface Display extends TagViewInterface, BaseEditorViewInterface {
+    public interface Display extends TagViewInterface, BaseEditorViewInterface<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
 
     }
 

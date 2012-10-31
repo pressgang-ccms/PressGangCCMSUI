@@ -5,6 +5,9 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
@@ -33,7 +36,8 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
      * 
      * @author Matthew Casperson
      */
-    public interface Display extends BaseSearchAndEditViewInterface {
+    public interface Display extends
+            BaseSearchAndEditViewInterface<RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1> {
 
     }
 
@@ -106,7 +110,8 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
         filteredResultsComponent.bind(queryString, filteredResultsDisplay, display);
         resultComponent.bind(resultDisplay, display);
         tagComponent.bind(tagDisplay, display);
-        component.bind(filteredResultsDisplay, filteredResultsComponent, resultDisplay, tagDisplay, tagComponent, display, display);
+        component.bind(filteredResultsDisplay, filteredResultsComponent, resultDisplay, tagDisplay, tagComponent, display,
+                display);
     }
 
     @Override

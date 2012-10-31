@@ -6,7 +6,9 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -19,24 +21,27 @@ import com.google.gwt.user.client.ui.TextBox;
 public class CategoryFilteredResultsPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "CategoryFilteredResultsView";
 
-    public interface Display extends BaseTemplateViewInterface, BaseFilteredResultsViewInterface<RESTCategoryCollectionItemV1> {
-        
+    public interface Display extends
+            BaseFilteredResultsViewInterface<RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1> {
+
         TextBox getIdFilter();
 
         TextBox getDescriptionFilter();
 
         TextBox getNameFilter();
     }
-    
-    public interface LogicCompnent extends BaseFilteredResultsComponentInterface<Display, RESTCategoryCollectionItemV1>
-    {
-        void bind(final String queryString, final CategoryFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
+
+    public interface LogicCompnent
+            extends
+            BaseFilteredResultsComponentInterface<CategoryFilteredResultsPresenter.Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1> {
+        @Override
+        void bind(final String queryString, final CategoryFilteredResultsPresenter.Display display,
+                final BaseTemplateViewInterface waitDisplay);
     }
-   
 
     @Inject
     private Display display;
-    
+
     @Inject
     private LogicCompnent component;
 

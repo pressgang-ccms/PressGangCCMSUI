@@ -1,6 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.search;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.WaitingDialog;
@@ -13,7 +16,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 
-public class SearchView extends BaseTemplateView implements SearchPresenter.Display {    
+public class SearchView extends BaseTemplateView<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> implements
+        SearchPresenter.Display {
 
     private final PushButton search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
     private final Label tags = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Tags());
@@ -23,7 +27,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
     private final SearchPresenterDriver driver = GWT.create(SearchPresenterDriver.class);
     /** The UI hierarchy */
     private final SearchUIProjects searchUIProjects = new SearchUIProjects();
-    
+
     /** The dialog that is presented when the view is unavailable. */
     private final WaitingDialog waiting = new WaitingDialog();
 
@@ -53,7 +57,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 
     @Override
     public void initialise(final RESTTagCollectionV1 tagCollection) {
-       
+
         /* Build the action bar icons */
         addActionButton(search);
         addActionButton(tags);
@@ -77,11 +81,11 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
     @Override
     protected void showWaiting() {
         waiting.center();
-        waiting.show();        
+        waiting.show();
     }
 
     @Override
     protected void hideWaiting() {
-        waiting.hide();        
+        waiting.hide();
     }
 }

@@ -29,7 +29,8 @@ public class SearchTagsFieldsAndFiltersPresenter implements TemplatePresenter {
     public interface LogicComponent extends Component<Display> {
         public void bind(final SearchPresenter.Display tagsDisplay, final SearchPresenter.LogicComponent tagsComponent,
                 final SearchFieldPresenter.Display fieldsDisplay, final SearchFieldPresenter.LogicComponent fieldsComponent,
-                final SearchTagsFieldsAndFiltersPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
+                final SearchTagsFieldsAndFiltersPresenter.Display display,
+                final BaseTemplateViewInterface waitDisplay);
     }
 
     @Inject
@@ -56,7 +57,7 @@ public class SearchTagsFieldsAndFiltersPresenter implements TemplatePresenter {
         clearContainerAndAddTopLevelPanel(container, display);
 
         display.setViewShown(true);
-        
+
         tagsComponent.bind(tagsDisplay, display);
         fieldsComponent.bind(fieldsDisplay, display);
 

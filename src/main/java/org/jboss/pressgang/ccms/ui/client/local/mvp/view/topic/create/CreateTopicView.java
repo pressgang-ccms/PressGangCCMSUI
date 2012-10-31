@@ -1,5 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.create;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.create.CreateTopicPresenter;
@@ -15,19 +18,20 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 
-public class CreateTopicView extends BaseTemplateView implements CreateTopicPresenter.Display {
+public class CreateTopicView extends BaseTemplateView<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> implements
+        CreateTopicPresenter.Display {
 
     /** The dialog that is presented when the view is unavailable. */
     private final WaitingDialog waiting = new WaitingDialog();
-    
+
     /** The current split type */
     private SplitType splitType = SplitType.NONE;
-    
+
     private final HandlerSplitLayoutPanel splitPanel = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
     private final DockLayoutPanel topicViewLayoutPanel = new DockLayoutPanel(Unit.PX);
     private final SimpleLayoutPanel topicViewPanel = new SimpleLayoutPanel();
     private final SimpleLayoutPanel topicViewActionButtonsPanel = new SimpleLayoutPanel();
-    
+
     @Override
     public SimpleLayoutPanel getTopicViewActionButtonsPanel() {
         return topicViewActionButtonsPanel;
@@ -42,7 +46,6 @@ public class CreateTopicView extends BaseTemplateView implements CreateTopicPres
     public HandlerSplitLayoutPanel getSplitPanel() {
         return splitPanel;
     }
-    
 
     @Override
     public SimpleLayoutPanel getTopicViewPanel() {
@@ -51,7 +54,7 @@ public class CreateTopicView extends BaseTemplateView implements CreateTopicPres
 
     public CreateTopicView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.CreateTopic());
-        
+
         /* We have own own top action panels */
         this.getTopActionParentPanel().removeFromParent();
 
@@ -69,12 +72,11 @@ public class CreateTopicView extends BaseTemplateView implements CreateTopicPres
 
         this.getPanel().add(splitPanel);
     }
-    
+
     @Override
-    public void initialize(final SplitType splitType, final Panel panel)
-    {
+    public void initialize(final SplitType splitType, final Panel panel) {
         this.splitType = splitType;
-        
+
         splitPanel.clear();
 
         final SimplePanel renderedPanelParent = new SimplePanel();
@@ -89,17 +91,16 @@ public class CreateTopicView extends BaseTemplateView implements CreateTopicPres
 
         splitPanel.add(topicViewLayoutPanel);
     }
-    
+
     @Override
     protected void showWaiting() {
         waiting.center();
-        waiting.show();        
+        waiting.show();
     }
 
     @Override
     protected void hideWaiting() {
-        waiting.hide();        
+        waiting.hide();
     }
 
 }
-

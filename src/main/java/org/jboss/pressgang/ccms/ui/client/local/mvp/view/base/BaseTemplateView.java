@@ -1,5 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
@@ -25,8 +28,11 @@ import com.google.gwt.user.client.ui.Widget;
  * This class is used to build the standard page template.
  * 
  * @author Matthew Casperson
+ * 
+ * @param T The type of the entity this view is displaying
  */
-public abstract class BaseTemplateView implements BaseTemplateViewInterface {
+public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>>
+        implements BaseTemplateViewInterface {
     /** true when the view is visible, false otherwise */
     private boolean isViewShown = false;
     /** Maintains a count of how many waiting operations are in progress */
@@ -61,9 +67,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     /** This is the default collection of top action bar items. */
     private final FlexTable topActionPanel = new FlexTable();
     private final FlexTable footerPanel = new FlexTable();
-    
+
     private final Anchor feedback = new Anchor(PressGangCCMSUI.INSTANCE.Feedback());
-    
+
     private final PushButton home;
     private final PushButton createTopic;
     private final PushButton search;
@@ -84,7 +90,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private final PushButton advanced;
     private final PushButton advancedOpen;
     private final PushButton close;
-    
+
     @Override
     public PushButton getCreateTopic() {
         return createTopic;
@@ -244,7 +250,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     public PushButton getSearch() {
         return search;
     }
-    
+
     public BaseTemplateView(final String applicationName, final String pageName) {
         this.applicationName = applicationName;
         this.pageName = pageName;
@@ -292,7 +298,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         footerPanel.addStyleName(CSSConstants.FOOTER_PANEL);
 
         thirdLevelLayoutPanel.addSouth(footerPanel, Constants.FOOTER_HEIGHT);
-        
+
         /* Add the feedback link */
         addRightAlignedActionButtonPaddingPanel(footerPanel);
         footerPanel.setWidget(0, 1, feedback);
@@ -428,32 +434,30 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         this.getAdvancedShortcutPanel().insertRow(0);
         this.getAdvancedShortcutPanel().setWidget(0, 0, spacer2);
     }
-    
+
     /**
      * Called when some background operation that would cause this view to be locked is started.
      */
     @Override
-    public void addWaitOperation()
-    {
+    public void addWaitOperation() {
         ++waitingCount;
         updateDisplay();
     }
-    
+
     /**
      * Called when some background operation that would cause this view to be locked is ended.
      */
     @Override
-    public void removeWaitOperation()
-    {
-        if (waitingCount < 1) throw new IllegalStateException("waitingCount should never be less than one when removeWaitOperation() is called.");
-        
+    public void removeWaitOperation() {
+        if (waitingCount < 1)
+            throw new IllegalStateException("waitingCount should never be less than one when removeWaitOperation() is called.");
+
         --waitingCount;
         updateDisplay();
     }
 
     /**
-     * Hide or display the waiting state depending on the views visibility and any 
-     * pending background operations.
+     * Hide or display the waiting state depending on the views visibility and any pending background operations.
      */
     private void updateDisplay() {
         if (!isViewShown || waitingCount == 0) {
@@ -462,28 +466,23 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
             showWaiting();
         }
     }
-    
+
     /**
-     * The view can show a waiting widget when this method is called.
-     * Override this method to provide implementation.
+     * The view can show a waiting widget when this method is called. Override this method to provide implementation.
      */
     protected void showWaiting() {
         // Do nothing by default
     }
-    
+
     /**
-     * The view can hide a waiting widget when this method is called.
-     * Override this method to provide implementation.
+     * The view can hide a waiting widget when this method is called. Override this method to provide implementation.
      */
     protected void hideWaiting() {
         // Do nothing by default
     }
-    
 
-    
     @Override
-    public void setFeedbackLink(final String link)
-    {
+    public void setFeedbackLink(final String link) {
         feedback.setHref(link);
     }
 }

@@ -1,7 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBasePrimaryEntityV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
@@ -10,8 +11,17 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public interface BaseChildrenViewInterface<T extends RESTBasePrimaryEntityV1<?, ?, ?>, U extends RESTBaseCollectionItemV1<?, ?, ?>> extends
-        BaseTemplateViewInterface {
+/**
+ * 
+ * @author matthew
+ *
+ * @param <T>
+ * @param <U>
+ * @param <V>
+ * @param <W> The potential children type
+ */
+public interface BaseChildrenViewInterface<T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends RESTBaseCollectionItemV1<?, ?, ?>>
+        extends BaseTemplateViewInterface {
     T getOriginalEntity();
 
     void setOriginalEntity(final T originalEntity);
@@ -20,13 +30,13 @@ public interface BaseChildrenViewInterface<T extends RESTBasePrimaryEntityV1<?, 
 
     SimplePager getPossibleChildrenPager();
 
-    CellTable<U> getPossibleChildrenResults();
+    CellTable<W> getPossibleChildrenResults();
 
-    EnhancedAsyncDataProvider<U> getPossibleChildrenProvider();
+    EnhancedAsyncDataProvider<W> getPossibleChildrenProvider();
 
-    void setPossibleChildrenProvider(final EnhancedAsyncDataProvider<U> possibleChildrenProvider);
+    void setPossibleChildrenProvider(final EnhancedAsyncDataProvider<W> possibleChildrenProvider);
 
     void initialize(final T originalEntity, final boolean readOnly);
-    
-    Column<U, String> getPossibleChildrenButtonColumn();
+
+    Column<W, String> getPossibleChildrenButtonColumn();
 }

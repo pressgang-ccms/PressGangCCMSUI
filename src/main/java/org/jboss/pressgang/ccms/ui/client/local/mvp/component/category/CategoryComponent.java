@@ -7,7 +7,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryP
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 
-public class CategoryComponent extends ComponentBase<CategoryPresenter.Display> implements CategoryPresenter.LogicComponent {
+public class CategoryComponent extends
+        ComponentBase<CategoryPresenter.Display>
+        implements CategoryPresenter.LogicComponent {
 
     /**
      * Get the category from the database and use it to populate the editor in the view

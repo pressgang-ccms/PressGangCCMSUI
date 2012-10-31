@@ -5,7 +5,9 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -16,8 +18,8 @@ import com.google.gwt.user.client.ui.TextBox;
 @Dependent
 public class TagFilteredResultsPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "TagFilteredResultsView";
-    
-    public interface Display extends BaseTemplateViewInterface, BaseFilteredResultsViewInterface<RESTTagCollectionItemV1> {
+
+    public interface Display extends BaseFilteredResultsViewInterface<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
 
         TextBox getIdFilter();
 
@@ -25,16 +27,20 @@ public class TagFilteredResultsPresenter implements TemplatePresenter {
 
         TextBox getNameFilter();
     }
-    
-    public interface LogicComponent extends BaseFilteredResultsComponentInterface<Display, RESTTagCollectionItemV1>
-    {
-        void bind(final String queryString, final TagFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
+
+    public interface LogicComponent
+            extends
+            BaseFilteredResultsComponentInterface<TagFilteredResultsPresenter.Display, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
+        @Override
+        void bind(final String queryString, final TagFilteredResultsPresenter.Display display,
+                final BaseTemplateViewInterface waitDisplay);
     }
 
     @Inject
     private Display display;
-    
-    @Inject private LogicComponent component;
+
+    @Inject
+    private LogicComponent component;
 
     private String queryString;
 
@@ -49,5 +55,4 @@ public class TagFilteredResultsPresenter implements TemplatePresenter {
         component.bind(queryString, display, display);
     }
 
-    
 }

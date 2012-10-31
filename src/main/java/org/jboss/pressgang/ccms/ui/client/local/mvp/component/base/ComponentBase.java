@@ -21,30 +21,31 @@ import com.google.gwt.user.client.Window;
  * complex UI.
  * 
  * Because of the One-To_many relationship between presenters and views, the logic that is attached to a view needs to be shared
- * across multiple presenters. Controllers are used to provide the logic that should be applied to a view. This allows presenters
- * to mix and match controllers in much the same way they mix and match views.
+ * across multiple presenters. Controllers are used to provide the logic that should be applied to a view. This allows
+ * presenters to mix and match controllers in much the same way they mix and match views.
  * 
  * @author Matthew Casperson
  * 
+ * @param <S> The type of the view
  */
-abstract public class ComponentBase<T extends BaseTemplateViewInterface> implements Component<T>, EditableView {
+abstract public class ComponentBase<S extends BaseTemplateViewInterface>
+        implements Component<S>, EditableView {
 
     @Inject
     private HandlerManager eventBus;
-    
+
     protected BaseTemplateViewInterface waitDisplay;
-    protected T display; 
-    
+    protected S display;
+
     @Override
-    public boolean checkForUnsavedChanges()
-    {
+    public boolean checkForUnsavedChanges() {
         /* Assume no changes have been made by default */
         return true;
     }
 
     /**
      * Called to bind the UI elements to event handlers.
-     *
+     * 
      * @param display The main template display
      */
     protected void bindStandardButtons() {
@@ -55,7 +56,7 @@ abstract public class ComponentBase<T extends BaseTemplateViewInterface> impleme
                     eventBus.fireEvent(new SearchTagsFieldsAndFiltersViewEvent());
             }
         });
-        
+
         display.getCreateTopic().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
@@ -112,18 +113,16 @@ abstract public class ComponentBase<T extends BaseTemplateViewInterface> impleme
         display.getAdvancedOpen().addClickHandler(closeAdvancedMenu);
         display.getClose().addClickHandler(closeAdvancedMenu);
     }
-    
+
     @Override
-    public void bind(final T display, final BaseTemplateViewInterface waitDisplay)
-    {
+    public void bind(final S display, final BaseTemplateViewInterface waitDisplay) {
         this.display = display;
         this.waitDisplay = waitDisplay;
         bindStandardButtons();
     }
-    
+
     @Override
-    public void setFeedbackLink(final String pageId)
-    {
+    public void setFeedbackLink(final String pageId) {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);
     }
 }

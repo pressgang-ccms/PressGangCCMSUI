@@ -5,6 +5,8 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
@@ -23,7 +25,7 @@ public class CategoryTagPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "CategoryTagView";
 
     public interface Display extends
-            BaseOrderedChildrenViewInterface<RESTCategoryV1, RESTTagCollectionItemV1, RESTTagInCategoryCollectionItemV1>,
+            BaseOrderedChildrenViewInterface<RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, RESTTagCollectionItemV1, RESTTagInCategoryCollectionItemV1>,
             CategoryViewInterface {
         Column<RESTTagInCategoryCollectionItemV1, String> getTagUpButtonColumn();
 
@@ -32,7 +34,7 @@ public class CategoryTagPresenter implements TemplatePresenter {
 
     public interface LogicComponent
             extends
-            BaseOrderedChildrenComponentInterface<Display, RESTCategoryV1, RESTCategoryV1, RESTTagCollectionItemV1, RESTTagInCategoryCollectionItemV1> {
+            BaseOrderedChildrenComponentInterface<Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, RESTTagCollectionItemV1, RESTTagInCategoryCollectionItemV1, RESTCategoryV1> {
 
     }
 

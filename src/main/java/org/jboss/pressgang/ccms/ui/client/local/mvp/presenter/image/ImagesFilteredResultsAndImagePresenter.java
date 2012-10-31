@@ -6,6 +6,9 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
@@ -19,15 +22,17 @@ public class ImagesFilteredResultsAndImagePresenter implements TemplatePresenter
 
     public static final String HISTORY_TOKEN = "ImageFilteredResultsAndImageView";
 
-    public interface Display extends BaseSearchAndEditViewInterface {
-      
+    public interface Display extends
+            BaseSearchAndEditViewInterface<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1> {
+
     }
 
     public interface LogicComponent extends Component<Display> {
         void bind(final ImageFilteredResultsPresenter.Display imageFilteredResultsDisplay,
                 final ImageFilteredResultsPresenter.LogicComponent imageFilteredResultsComponent,
                 final ImagePresenter.Display imageDisplay, final ImagePresenter.LogicComponent imageComponent,
-                final ImagesFilteredResultsAndImagePresenter.Display display, final BaseTemplateViewInterface waitDisplay);
+                final ImagesFilteredResultsAndImagePresenter.Display display,
+                final BaseTemplateViewInterface waitDisplay);
     }
 
     @Inject
@@ -62,8 +67,9 @@ public class ImagesFilteredResultsAndImagePresenter implements TemplatePresenter
 
         imageComponent.bind(imageDisplay, display);
         imageFilteredResultsComponent.bind(queryString, imageFilteredResultsDisplay, display);
-                
-        component.bind(imageFilteredResultsDisplay, imageFilteredResultsComponent, imageDisplay, imageComponent, display, display);
+
+        component.bind(imageFilteredResultsDisplay, imageFilteredResultsComponent, imageDisplay, imageComponent, display,
+                display);
         component.setFeedbackLink(HISTORY_TOKEN);
     }
 

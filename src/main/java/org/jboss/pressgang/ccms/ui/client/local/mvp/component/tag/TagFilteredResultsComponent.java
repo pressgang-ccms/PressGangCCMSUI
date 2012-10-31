@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.tag;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter;
@@ -14,9 +15,10 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.HasData;
 
-public class TagFilteredResultsComponent extends
-        BaseFilteredResultsComponent<TagFilteredResultsPresenter.Display, RESTTagCollectionItemV1> implements
-        TagFilteredResultsPresenter.LogicComponent {
+public class TagFilteredResultsComponent
+        extends
+        BaseFilteredResultsComponent<TagFilteredResultsPresenter.Display, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>
+        implements TagFilteredResultsPresenter.LogicComponent {
 
     @Override
     public void bind(final String queryString, final TagFilteredResultsPresenter.Display display,
@@ -49,7 +51,8 @@ public class TagFilteredResultsComponent extends
      */
     @Override
     protected EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generateListProvider(final String queryString,
-            final TagFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
+            final TagFilteredResultsPresenter.Display display,
+            final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTagCollectionItemV1> range) {
@@ -101,7 +104,7 @@ public class TagFilteredResultsComponent extends
 
     @Override
     public String getQuery() {
-        final StringBuilder retValue = new StringBuilder(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON);
+        final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
             retValue.append(";tagIds=" + display.getIdFilter().getText());
         }
@@ -112,6 +115,7 @@ public class TagFilteredResultsComponent extends
             retValue.append(";tagDesc=" + display.getDescriptionFilter().getText());
         }
 
-        return retValue.toString();
+        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX
+                : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
     }
 }

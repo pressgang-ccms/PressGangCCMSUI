@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
@@ -46,13 +47,11 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.view.client.CellPreviewEvent;
-import com.google.gwt.view.client.CellPreviewEvent.Handler;
 
 @Dependent
 public class TagsFilteredResultsAndTagComponent
         extends
-        BaseSearchAndEditComponent<TagsFilteredResultsAndTagPresenter.Display, TagFilteredResultsPresenter.Display, RESTTagCollectionItemV1, TagViewInterface, TagPresenter.Display>
+        BaseSearchAndEditComponent<TagFilteredResultsPresenter.Display, TagsFilteredResultsAndTagPresenter.Display, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, TagViewInterface, TagPresenter.Display>
         implements TagsFilteredResultsAndTagPresenter.LogicComponent {
 
     @Inject
@@ -139,7 +138,7 @@ public class TagsFilteredResultsAndTagComponent
                                 saveCategoryChanges(wasNewTag, filteredResultsComponent.getProviderData().getDisplayedItem()
                                         .getItem().getId());
                             } else {
-                                updateDisplayAfterSave(filteredResultsDisplay, filteredResultsComponent, wasNewTag);
+                                updateDisplayAfterSave(wasNewTag);
                             }
 
                             Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + retValue.getId());
@@ -254,7 +253,7 @@ public class TagsFilteredResultsAndTagComponent
                         /*
                          * Reload the list of categories and projects if this is the last REST call to succeed
                          */
-                        updateDisplayAfterSave(filteredResultsDisplay, filteredResultsComponent, wasNewTag);
+                        updateDisplayAfterSave(wasNewTag);
                     } finally {
                         display.removeWaitOperation();
                     }
@@ -316,24 +315,17 @@ public class TagsFilteredResultsAndTagComponent
             final TagCategoriesPresenter.Display categoriesDisplay,
             final TagCategoriesPresenter.LogicComponent categoriesComponent) {
 
-        super.bind(display, waitDisplay);
+        super.bind(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultDisplay, resultDisplay, filteredResultsDisplay,
+                filteredResultsComponent, display, waitDisplay);
 
-        this.filteredResultsDisplay = filteredResultsDisplay;
-        this.filteredResultsComponent = filteredResultsComponent;
-        this.entityPropertiesView = resultDisplay;
         this.resultComponent = resultComponent;
         this.projectsDisplay = projectsDisplay;
         this.projectsComponent = projectsComponent;
         this.categoriesDisplay = categoriesDisplay;
         this.categoriesComponent = categoriesComponent;
 
-        bindActionButtons();
-        bindSearchButtons();
-        loadMainSplitResize(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
-        bindMainSplitResize(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
         bindCategoryColumnButtons();
         bindProjectColumnButtons();
-        bindResultsListRowClicks();
     }
 
     /**
@@ -521,12 +513,13 @@ public class TagsFilteredResultsAndTagComponent
     /**
      * Binds behaviour to the tag search and list view
      */
-    private void bindSearchButtons() {
+    @Override
+    protected void bindFilteredResultsButtons() {
         filteredResultsDisplay.getSearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 if (checkForUnsavedChanges())
-                    eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(getQuery()));
+                    eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(filteredResultsComponent.getQuery()));
             }
         });
 
@@ -555,37 +548,20 @@ public class TagsFilteredResultsAndTagComponent
         });
     }
 
-    @Override
-    protected String getQuery() {
-        final StringBuilder retValue = new StringBuilder(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON);
-        if (!filteredResultsDisplay.getIdFilter().getText().isEmpty()) {
-            retValue.append(";tagIds=" + filteredResultsDisplay.getIdFilter().getText());
-        }
-        if (!filteredResultsDisplay.getNameFilter().getText().isEmpty()) {
-            retValue.append(";tagName=" + filteredResultsDisplay.getNameFilter().getText());
-        }
-        if (!filteredResultsDisplay.getDescriptionFilter().getText().isEmpty()) {
-            retValue.append(";tagDesc=" + filteredResultsDisplay.getDescriptionFilter().getText());
-        }
-
-        return retValue.toString();
-    }
-
     /**
      * Called when the selected tag is changed, or the selected view is changed.
      */
     @Override
     protected void reInitialiseView(final TagViewInterface displayedView) {
-        /* Show/Hide any localised loading dialogs */
-        if (lastDisplayedView != null) {
-            lastDisplayedView.setViewShown(false);
+
+        super.reInitialiseView(displayedView);
+
+        if (displayedView != null) {
+            displayedView.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
         }
 
         /* save any changes to the tag details */
         if (lastDisplayedView == this.entityPropertiesView) {
-
-            this.entityPropertiesView.getDriver().flush();
-
             /*
              * If this tag was added to a category, the it was cloned with the old tag name. Here we reflect the current tag
              * name in the category tag lists.
@@ -606,12 +582,6 @@ public class TagsFilteredResultsAndTagComponent
             }
         }
 
-        /* update the new view */
-        if (displayedView != null) {
-            displayedView.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
-            displayedView.setViewShown(true);
-        }
-
         /* refresh the project list */
         if (displayedView == projectsDisplay) {
             /* If we switch to this view before the projects have been downloaded, there is nothing to update */
@@ -629,12 +599,6 @@ public class TagsFilteredResultsAndTagComponent
                 categoriesDisplay.getPossibleChildrenProvider().displayNewFixedList(
                         categoriesComponent.getPossibleChildrenProviderData().getItems());
             }
-        }
-
-        /* update the display widgets if we have changed displays */
-        if (lastDisplayedView != displayedView) {
-            display.getViewPanel().setWidget(displayedView.getPanel());
-            display.getViewActionButtonsPanel().setWidget(displayedView.getTopActionPanel());
         }
 
         /* Update the page name */
@@ -673,36 +637,6 @@ public class TagsFilteredResultsAndTagComponent
     }
 
     @Override
-    protected void bindResultsListRowClicks() {
-        filteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTTagCollectionItemV1>() {
-            @Override
-            public void onCellPreview(final CellPreviewEvent<RESTTagCollectionItemV1> event) {
-                /* Check to see if this was a click event */
-                final boolean isClick = Constants.JAVASCRIPT_CLICK_EVENT.equals(event.getNativeEvent().getType());
-
-                if (isClick) {
-                    if (!checkForUnsavedChanges()) {
-                        return;
-                    }
-
-                    /* The selected item will be the tag from the list. This is the unedited, unexpanded copy of the tag */
-                    filteredResultsComponent.getProviderData().setSelectedItem(event.getValue());
-                    /* All editing is done in a clone of the selected tag. Any expanded collections will be copied into this tag */
-                    filteredResultsComponent.getProviderData().setDisplayedItem(event.getValue().clone(true));
-
-                    /*
-                     * If this is the first tag selected, display the image view
-                     */
-                    reInitialiseView(lastDisplayedView == null ? entityPropertiesView : lastDisplayedView);
-
-                    resetCategoryAndProjectsLists(true);
-                }
-            }
-        });
-
-    }
-
-    @Override
     protected void bindActionButtons() {
         for (final TagViewInterface tagDisplay : new TagViewInterface[] { entityPropertiesView, projectsDisplay,
                 categoriesDisplay }) {
@@ -712,6 +646,11 @@ public class TagsFilteredResultsAndTagComponent
             tagDisplay.getTagCategories().addClickHandler(tagCategoriesClickHandler);
         }
 
+    }
+
+    @Override
+    protected void newEntitySelected() {
+        resetCategoryAndProjectsLists(true);
     }
 
 }

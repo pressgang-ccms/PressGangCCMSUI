@@ -1,6 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.search;
 
-import com.google.gwt.user.client.ui.*;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsAndTopicPresenter;
@@ -8,7 +10,12 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.Base
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 
-public class SearchResultsAndTopicView extends BaseSearchAndEditView implements SearchResultsAndTopicPresenter.Display {
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.SimplePanel;
+
+public class SearchResultsAndTopicView extends
+        BaseSearchAndEditView<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> implements
+        SearchResultsAndTopicPresenter.Display {
 
     private SplitType splitType = SplitType.NONE;
 
@@ -31,9 +38,9 @@ public class SearchResultsAndTopicView extends BaseSearchAndEditView implements 
     @Override
     public void initialize(final SplitType splitType, final Panel panel) {
         this.splitType = splitType;
-        
+
         getSplitPanel().clear();
-        
+
         getSplitPanel().addWest(this.getResultsViewLayoutPanel(), Constants.SPLIT_PANEL_SIZE);
 
         final SimplePanel renderedPanelParent = new SimplePanel();

@@ -1,6 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter;
@@ -13,12 +15,15 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.PushButton;
 
-public class TagProjectsView extends BaseChildrenView<RESTTagV1, RESTProjectCollectionItemV1> implements TagProjectsPresenter.Display {
-    
+public class TagProjectsView extends
+        BaseChildrenView<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, RESTProjectCollectionItemV1> implements
+        TagProjectsPresenter.Display {
+
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
     private final PushButton tagDetails = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagDetails());
     private final PushButton tagProjects = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagProjects());
     private final PushButton tagCategories = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagCategories());
+ 
 
     @Override
     public PushButton getTagCategories() {
@@ -39,7 +44,6 @@ public class TagProjectsView extends BaseChildrenView<RESTTagV1, RESTProjectColl
     public PushButton getTagDetails() {
         return tagDetails;
     }
-   
 
     private final TextColumn<RESTProjectCollectionItemV1> idColumn = new TextColumn<RESTProjectCollectionItemV1>() {
         @Override
@@ -63,7 +67,8 @@ public class TagProjectsView extends BaseChildrenView<RESTTagV1, RESTProjectColl
         }
     };
 
-    private final Column<RESTProjectCollectionItemV1, String> buttonColumn = new Column<RESTProjectCollectionItemV1, String>(new ButtonCell()) {
+    private final Column<RESTProjectCollectionItemV1, String> buttonColumn = new Column<RESTProjectCollectionItemV1, String>(
+            new ButtonCell()) {
         @Override
         public String getValue(final RESTProjectCollectionItemV1 object) {
             if (getOriginalEntity() != null) {
@@ -92,7 +97,6 @@ public class TagProjectsView extends BaseChildrenView<RESTTagV1, RESTProjectColl
         getPossibleChildrenResults().addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.ProjectDescription());
         getPossibleChildrenResults().addColumn(buttonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
 
-        
     }
 
     private void populateTopActionBar() {

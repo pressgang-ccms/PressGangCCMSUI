@@ -6,7 +6,9 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -21,15 +23,21 @@ public class SearchResultsPresenter implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "SearchResultsView";
 
-    public interface Display extends BaseFilteredResultsViewInterface<RESTTopicCollectionItemV1> {
+    public interface Display extends
+            BaseFilteredResultsViewInterface<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
 
     }
 
     public interface LogicComponent extends Component<Display> {
-        void bind(final String queryString, final SearchResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
+        void bind(final String queryString, final SearchResultsPresenter.Display display,
+                final BaseTemplateViewInterface waitDisplay);
+
         ProviderUpdateData<RESTTopicCollectionItemV1> getTopicProviderData();
+
         void setTopicProviderData(ProviderUpdateData<RESTTopicCollectionItemV1> topicProviderData);
+
         EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> getProvider();
+
         void setProvider(EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider);
     }
 
@@ -49,6 +57,6 @@ public class SearchResultsPresenter implements TemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        component.bind(queryString, display,  display);
+        component.bind(queryString, display, display);
     }
 }

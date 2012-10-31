@@ -8,14 +8,15 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 
-public class TopicViewComponent<T extends TopicViewInterface> extends ComponentBase<T> implements BasePropertyViewComponentInterface<T>{
-    
+public class TopicViewComponent<S extends TopicViewInterface> extends ComponentBase<S> implements
+        BasePropertyViewComponentInterface<S> {
+
     @Override
     public void getEntity(final Integer topicId) {
-        final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, T>(display,
-                new BaseRestCallback.SuccessAction<RESTTopicV1, T>() {
+        final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, S>(display,
+                new BaseRestCallback.SuccessAction<RESTTopicV1, S>() {
                     @Override
-                    public void doSuccessAction(RESTTopicV1 retValue, T display) {
+                    public void doSuccessAction(RESTTopicV1 retValue, S display) {
                         display.initialize(retValue, false, false, SplitType.DISABLED);
                     }
                 }) {

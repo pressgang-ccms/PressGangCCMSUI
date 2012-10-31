@@ -1,6 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.image;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
@@ -21,8 +23,8 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class ImageFilteredResultsView extends BaseTemplateView implements ImageFilteredResultsPresenter.Display {
-    
+public class ImageFilteredResultsView extends BaseTemplateView<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1>
+        implements ImageFilteredResultsPresenter.Display {
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
     private final FlexTable filterTable = new FlexTable();
@@ -35,8 +37,8 @@ public class ImageFilteredResultsView extends BaseTemplateView implements ImageF
     private final PushButton search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
 
     private final SimplePager pager = UIUtilities.createSimplePager();
-    private final CellTable<RESTImageCollectionItemV1> results = new CellTable<RESTImageCollectionItemV1>(Constants.MAX_SEARCH_RESULTS,
-            (Resources) GWT.create(TableResources.class));
+    private final CellTable<RESTImageCollectionItemV1> results = new CellTable<RESTImageCollectionItemV1>(
+            Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
     private org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider;
 
     private final TextColumn<RESTImageCollectionItemV1> idColumn = new TextColumn<RESTImageCollectionItemV1>() {

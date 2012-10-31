@@ -1,6 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
@@ -14,15 +16,16 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.PushButton;
 
-public class TagCategoriesView extends
-        BaseOrderedChildrenView<RESTTagV1, RESTCategoryCollectionItemV1, RESTTagInCategoryCollectionItemV1> implements
-        TagCategoriesPresenter.Display {
+public class TagCategoriesView
+        extends
+        BaseOrderedChildrenView<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, RESTCategoryCollectionItemV1, RESTTagInCategoryCollectionItemV1>
+        implements TagCategoriesPresenter.Display {
 
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
     private final PushButton tagDetails = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagDetails());
     private final PushButton tagProjects = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagProjects());
     private final PushButton tagCategories = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagCategories());
-    
+
     private final TextColumn<RESTCategoryCollectionItemV1> idColumn = new TextColumn<RESTCategoryCollectionItemV1>() {
         @Override
         public String getValue(final RESTCategoryCollectionItemV1 object) {
@@ -99,7 +102,7 @@ public class TagCategoriesView extends
     public Column<RESTCategoryCollectionItemV1, String> getPossibleChildrenButtonColumn() {
         return buttonColumn;
     }
-    
+
     @Override
     public PushButton getTagCategories() {
         return tagCategories;
@@ -132,9 +135,9 @@ public class TagCategoriesView extends
         getExistingChildrenResults().addColumn(tagNameColumn, PressGangCCMSUI.INSTANCE.TagName());
         getExistingChildrenResults().addColumn(tagUpButtonColumn, PressGangCCMSUI.INSTANCE.Up());
         getExistingChildrenResults().addColumn(tagDownButtonColumn, PressGangCCMSUI.INSTANCE.Down());
-        
+
     }
-    
+
     private void populateTopActionBar() {
         this.addActionButton(this.getTagDetails());
         this.addActionButton(this.getTagProjects());

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import org.jboss.errai.bus.client.api.Message;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
@@ -22,7 +24,7 @@ import com.google.gwt.view.client.HasData;
 
 public class CategoryTagComponent
         extends
-        BaseOrderedChildrenComponent<CategoryTagPresenter.Display, RESTCategoryV1, RESTCategoryV1, RESTTagCollectionItemV1, RESTTagInCategoryCollectionItemV1>
+        BaseOrderedChildrenComponent<CategoryTagPresenter.Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, RESTTagCollectionItemV1, RESTTagInCategoryCollectionItemV1, RESTCategoryV1>
         implements CategoryTagPresenter.LogicComponent {
 
     @Override

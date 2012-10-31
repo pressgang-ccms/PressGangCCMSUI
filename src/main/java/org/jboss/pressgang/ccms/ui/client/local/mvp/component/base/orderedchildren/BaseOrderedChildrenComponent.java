@@ -1,8 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBasePrimaryEntityV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.BaseChildrenComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
@@ -14,26 +15,28 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 
 /**
  * 
- * @author Matttthew Casperson
- * 
- * @param <S> The view type
- * @param <T> The entity being modified
- * @param <W> The entity type modified as an ordered collection of children
- * @param <U> The potential children type
- * @param <V> The existing children type
+ * @author Matthew Casperson
+ *
+ * @param <S> The type of the parent view
+ * @param <T> The type of the entity being edited by the view
+ * @param <U> The collection type of T
+ * @param <V> The collection Item type of T
+ * @param <W> The type of the possible children
+ * @param <X> The type of the existing children
+ * @param <Y> The type of the parent of W
  */
-abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildrenViewInterface<T, U, V>, T extends RESTBasePrimaryEntityV1<?, ?, ?>, W extends RESTBasePrimaryEntityV1<?, ?, ?>, U extends RESTBaseCollectionItemV1<?, ?, ?>, V extends RESTBaseCollectionItemV1<?, ?, ?>>
-        extends BaseChildrenComponent<S, T, U> implements BaseOrderedChildrenComponentInterface<S, T, W, U, V> {
+abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildrenViewInterface<T, U, V, W, X>, T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends RESTBaseCollectionItemV1<?, ?, ?>, X extends RESTBaseCollectionItemV1<?, ?, ?>, Y extends RESTBaseEntityV1<?, ?, ?>>
+        extends BaseChildrenComponent<S, T, U, V, W> implements BaseOrderedChildrenComponentInterface<S, T, U, V, W, X, Y> {
 
-    protected ProviderUpdateData<V> existingProviderData = new ProviderUpdateData<V>();
+    protected ProviderUpdateData<X> existingProviderData = new ProviderUpdateData<X>();
 
     @Override
-    public ProviderUpdateData<V> getExistingProviderData() {
+    public ProviderUpdateData<X> getExistingProviderData() {
         return existingProviderData;
     }
 
     @Override
-    public void setExistingProviderData(final ProviderUpdateData<V> existingProviderData) {
+    public void setExistingProviderData(final ProviderUpdateData<X> existingProviderData) {
         this.existingProviderData = existingProviderData;
     }
 
@@ -77,7 +80,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
      * @return true if the sort order of any child was modified, false otherwise
      */
     @Override
-    public boolean moveTagsUpAndDown(final V object, final boolean down) {
+    public boolean moveTagsUpAndDown(final X object, final boolean down) {
 
         final int size = getExistingProviderData().getItems().size();
 
@@ -87,7 +90,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
         for (int i = (down ? 0 : 1); i < (down ? size - 1 : size); ++i) {
 
             /* Get the item from the collection for convenience */
-            final V child = getExistingProviderData().getItems().get(i);
+            final X child = getExistingProviderData().getItems().get(i);
 
             if (child.getItem().getId().equals(object.getItem().getId())) {
 
@@ -102,7 +105,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
 
                 for (int j = 0; j < size; ++j) {
                     /* get the item from the collection */
-                    final V existingChild = getExistingProviderData().getItems().get(j);
+                    final X existingChild = getExistingProviderData().getItems().get(j);
 
                     /* set the sort value (the list was previously sorted on this value) */
                     setSort(existingChild, j);
@@ -116,7 +119,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
                 final int nextItemIndex = down ? i + 1 : i - 1;
 
                 /* get the next item in the list */
-                final V nextChild = getExistingProviderData().getItems().get(nextItemIndex);
+                final X nextChild = getExistingProviderData().getItems().get(nextItemIndex);
 
                 /* swap the sort field */
                 setSort(child, nextItemIndex);
@@ -137,6 +140,6 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
      * @param child The child entity whose sort order is to be modified
      * @param index The new sort index
      */
-    abstract protected void setSort(final V child, final int index);
+    abstract protected void setSort(final X child, final int index);
 
 }

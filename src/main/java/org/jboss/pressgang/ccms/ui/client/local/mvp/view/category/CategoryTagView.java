@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.category;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentCategoryV1;
@@ -14,9 +16,10 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.PushButton;
 
-public class CategoryTagView extends
-        BaseOrderedChildrenView<RESTCategoryV1, RESTTagCollectionItemV1, RESTTagInCategoryCollectionItemV1> implements
-        CategoryTagPresenter.Display {
+public class CategoryTagView
+        extends
+        BaseOrderedChildrenView<RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, RESTTagCollectionItemV1, RESTTagInCategoryCollectionItemV1>
+        implements CategoryTagPresenter.Display {
 
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
     private final PushButton details = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CategoryDetails());
@@ -113,7 +116,7 @@ public class CategoryTagView extends
 
     public CategoryTagView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Categories());
-        
+
         populateTopActionBar();
 
         getPossibleChildrenResults().addColumn(tagsIdColumn, PressGangCCMSUI.INSTANCE.TagID());
@@ -124,7 +127,7 @@ public class CategoryTagView extends
         getExistingChildrenResults().addColumn(tagNameColumn, PressGangCCMSUI.INSTANCE.ChildTagName());
         getExistingChildrenResults().addColumn(tagUpButtonColumn, PressGangCCMSUI.INSTANCE.Up());
         getExistingChildrenResults().addColumn(tagDownButtonColumn, PressGangCCMSUI.INSTANCE.Down());
-        
+
         addExistingChildrenPanel();
     }
 

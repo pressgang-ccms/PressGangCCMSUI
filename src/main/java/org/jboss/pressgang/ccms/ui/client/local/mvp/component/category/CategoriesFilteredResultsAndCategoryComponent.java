@@ -5,6 +5,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.st
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
@@ -33,8 +34,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.view.client.CellPreviewEvent;
-import com.google.gwt.view.client.CellPreviewEvent.Handler;
 
 /**
  * The component that adds logic to the category search and edit view.
@@ -45,12 +44,12 @@ import com.google.gwt.view.client.CellPreviewEvent.Handler;
 @Dependent
 public class CategoriesFilteredResultsAndCategoryComponent
         extends
-        BaseSearchAndEditComponent<CategoriesFilteredResultsAndCategoryPresenter.Display, CategoryFilteredResultsPresenter.Display, RESTCategoryCollectionItemV1, CategoryViewInterface, CategoryPresenter.Display>
+        BaseSearchAndEditComponent<CategoryFilteredResultsPresenter.Display, CategoriesFilteredResultsAndCategoryPresenter.Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, CategoryViewInterface, CategoryPresenter.Display>
         implements CategoriesFilteredResultsAndCategoryPresenter.LogicComponent {
 
     @Inject
     private HandlerManager eventBus;
-    
+
     private CategoryFilteredResultsPresenter.Display filteredResultsDisplay;
     private CategoryFilteredResultsPresenter.LogicCompnent filteredResultsComponent;
     private CategoryTagPresenter.Display tagDisplay;
@@ -88,7 +87,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
 
             /* Was the tag we just saved a new tag? */
             final boolean wasNewEntity = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
-            
+
             /* Sync the UI to the underlying object */
             entityPropertiesView.getDriver().flush();
 
@@ -98,18 +97,19 @@ public class CategoriesFilteredResultsAndCategoryComponent
                         public void doSuccessAction(final RESTCategoryV1 retValue, final Display display) {
                             retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
                             retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
-                            
+
                             /* This category is no longer a new category */
-                            filteredResultsComponent.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                            filteredResultsComponent.getProviderData().getDisplayedItem()
+                                    .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
                             filteredResultsDisplay.getProvider().updateRowData(
                                     filteredResultsComponent.getProviderData().getStartRow(),
                                     filteredResultsComponent.getProviderData().getItems());
 
                             displayExistingTagList();
                             tagComponent.getEntityList();
-                            
-                            updateDisplayAfterSave(filteredResultsDisplay, filteredResultsComponent, wasNewEntity);
-                            
+
+                            updateDisplayAfterSave(wasNewEntity);
+
                             Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                         }
                     }) {
@@ -118,28 +118,26 @@ public class CategoriesFilteredResultsAndCategoryComponent
             if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
 
                 /*
-                 * If this is a new category, it needs to be saved in order to get the tag id to complete the category updates. Upon
-                 * success, the categories will be updated.
+                 * If this is a new category, it needs to be saved in order to get the tag id to complete the category updates.
+                 * Upon success, the categories will be updated.
                  */
                 final boolean unsavedTagChanges = unsavedCategoryChanges() || unsavedTagChanges();
-                
+
                 if (unsavedTagChanges) {
-                
+
                     final RESTCategoryV1 category = new RESTCategoryV1();
                     category.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                     category.explicitSetName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
                     category.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                             .getDescription());
                     category.explicitSetTags(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags());
- 
+
                     if (wasNewEntity) {
                         RESTCalls.createCategory(callback, category);
                     } else {
                         RESTCalls.saveCategory(callback, category);
                     }
-                }
-                else
-                {
+                } else {
                     Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
             }
@@ -151,25 +149,20 @@ public class CategoriesFilteredResultsAndCategoryComponent
             final CategoryFilteredResultsPresenter.LogicCompnent filteredResultsComponent,
             final CategoryPresenter.Display entityPropertiesView, final CategoryTagPresenter.Display tagDisplay,
             final CategoryTagPresenter.LogicComponent tagComponent,
-            final CategoriesFilteredResultsAndCategoryPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
+            final CategoriesFilteredResultsAndCategoryPresenter.Display display,
+            final BaseTemplateViewInterface waitDisplay) {
 
-        super.bind(display, waitDisplay);
-        this.filteredResultsDisplay = filteredResultsDisplay;
-        this.entityPropertiesView = entityPropertiesView;
-        this.filteredResultsComponent = filteredResultsComponent;
+        super.bind(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, entityPropertiesView, entityPropertiesView,
+                filteredResultsDisplay, filteredResultsComponent, display, waitDisplay);
+
         this.tagDisplay = tagDisplay;
         this.tagComponent = tagComponent;
 
         views = new CategoryViewInterface[] { entityPropertiesView, tagDisplay };
 
-        loadMainSplitResize(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
-        bindMainSplitResize(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
-
-        bindResultsListRowClicks();
-        bindActionButtons();
         bindTagListButtonClicks();
         bindExistingChildrenRowClick();
-        bindSearchButtons();
+
     }
 
     protected void bindExistingChildrenRowClick() {
@@ -198,6 +191,15 @@ public class CategoriesFilteredResultsAndCategoryComponent
                 }
             }
         });
+    }
+
+    @Override
+    protected void newEntitySelected() {
+        /* Display the tags that are added to the category */
+        displayExistingTagList();
+
+        /* Get a new collection of tags */
+        tagComponent.getEntityList();
     }
 
     /**
@@ -315,46 +317,6 @@ public class CategoriesFilteredResultsAndCategoryComponent
                 .returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
     }
 
-
-
-    @Override
-    protected void bindResultsListRowClicks() {
-        filteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTCategoryCollectionItemV1>() {
-            @Override
-            public void onCellPreview(final CellPreviewEvent<RESTCategoryCollectionItemV1> event) {
-                /* Check to see if this was a click event */
-                final boolean isClick = Constants.JAVASCRIPT_CLICK_EVENT.equals(event.getNativeEvent().getType());
-
-                if (isClick) {
-                    if (!checkForUnsavedChanges()) {
-                        return;
-                    }
-
-                    /*
-                     * The selected item will be the category from the list. This is the unedited, unexpanded copy of the
-                     * category
-                     */
-                    filteredResultsComponent.getProviderData().setSelectedItem(event.getValue());
-
-                    /*
-                     * All editing is done in a clone of the selected category. Any expanded collections will be copied into
-                     * this category
-                     */
-                    filteredResultsComponent.getProviderData().setDisplayedItem(event.getValue().clone(true));
-
-                    /* Refresh the view, or display the properties view if none is shown */
-                    reInitialiseView(lastDisplayedView == null ? entityPropertiesView : lastDisplayedView);
-
-                    displayExistingTagList();
-
-                    /* Get a new collection of tags */
-                    tagComponent.getEntityList();
-                }
-            }
-        });
-
-    }
-
     @Override
     protected void bindActionButtons() {
         for (final CategoryViewInterface view : views) {
@@ -364,16 +326,17 @@ public class CategoriesFilteredResultsAndCategoryComponent
         }
 
     }
-    
+
     /**
      * Binds behaviour to the tag search and list view
      */
-    private void bindSearchButtons() {
+    @Override
+    protected void bindFilteredResultsButtons() {
         filteredResultsDisplay.getSearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 if (checkForUnsavedChanges())
-                    eventBus.fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(getQuery()));
+                    eventBus.fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(filteredResultsComponent.getQuery()));
             }
         });
 
@@ -407,21 +370,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
     @Override
     protected void reInitialiseView(final CategoryViewInterface displayedView) {
 
-        /* We have changed views */
-        if (lastDisplayedView != displayedView) {
-            /* Save any changes to the underlying object */
-            if (lastDisplayedView == this.entityPropertiesView) {
-                entityPropertiesView.getDriver().flush();
-            }
-
-            /* Hide any wait dialogs from the last view */
-            if (lastDisplayedView != null) {
-                lastDisplayedView.setViewShown(false);
-            }
-
-            /* Update the displayed view */
-            display.displayChildView(displayedView);
-        }
+        super.reInitialiseView(displayedView);
 
         /* Show any wait dialogs from the new view, and update the view with the currently displayed entity */
         if (displayedView != null) {
@@ -430,12 +379,5 @@ public class CategoriesFilteredResultsAndCategoryComponent
         }
 
         lastDisplayedView = displayedView;
-    }
-
-    @Override
-    protected String getQuery() {
-        final StringBuilder retValue = new StringBuilder();
-        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX
-                : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
     }
 }

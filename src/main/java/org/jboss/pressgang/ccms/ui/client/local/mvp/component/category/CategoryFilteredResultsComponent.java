@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.category;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter;
@@ -17,9 +18,10 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.HasData;
 
-public class CategoryFilteredResultsComponent extends
-        BaseFilteredResultsComponent<CategoryFilteredResultsPresenter.Display, RESTCategoryCollectionItemV1> implements
-        LogicCompnent {
+public class CategoryFilteredResultsComponent
+        extends
+        BaseFilteredResultsComponent<CategoryFilteredResultsPresenter.Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1>
+        implements LogicCompnent {
 
     @Override
     public void bind(final String queryString, final CategoryFilteredResultsPresenter.Display display,
@@ -34,7 +36,8 @@ public class CategoryFilteredResultsComponent extends
      */
     @Override
     protected EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateListProvider(final String queryString,
-            final Display display, final BaseTemplateViewInterface waitDisplay) {
+            final Display display,
+            final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTCategoryCollectionItemV1> list) {

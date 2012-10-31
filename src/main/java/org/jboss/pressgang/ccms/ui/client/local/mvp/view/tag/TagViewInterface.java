@@ -6,7 +6,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import com.google.gwt.user.client.ui.PushButton;
 
 public interface TagViewInterface extends BaseTemplateViewInterface {
-    void initialize(final RESTTagV1 tag, final boolean readOnly);
+    void initialize(final RESTTagV1 entity, final boolean readonly);
 
     PushButton getTagProjects();
 

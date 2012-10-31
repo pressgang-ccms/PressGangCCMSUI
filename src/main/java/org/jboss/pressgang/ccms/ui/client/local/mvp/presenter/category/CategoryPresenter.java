@@ -6,6 +6,8 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.propertyview.BasePropertyViewComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
@@ -25,11 +27,13 @@ public class CategoryPresenter implements TemplatePresenter {
     public interface CategoryPresenterDriver extends SimpleBeanEditorDriver<RESTCategoryV1, RESTCategoryV1BasicDetailsEditor> {
     }
 
-    public interface Display extends CategoryViewInterface, BaseEditorViewInterface {
+    public interface Display extends CategoryViewInterface,
+            BaseEditorViewInterface<RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1> {
 
     }
 
-    public interface LogicComponent extends BasePropertyViewComponentInterface<Display> {
+    public interface LogicComponent extends
+            BasePropertyViewComponentInterface<Display> {
         @Override
         void getEntity(final Integer categoryId);
     }
@@ -44,12 +48,9 @@ public class CategoryPresenter implements TemplatePresenter {
 
     @Override
     public void parseToken(final String searchToken) {
-        try
-        {
+        try {
             categoryId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
-        }
-        catch (final NumberFormatException ex)
-        {
+        } catch (final NumberFormatException ex) {
             categoryId = null;
         }
     }

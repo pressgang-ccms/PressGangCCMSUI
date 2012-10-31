@@ -1,18 +1,31 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBasePrimaryEntityV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.BaseChildrenComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
-public interface BaseOrderedChildrenComponentInterface<S extends BaseOrderedChildrenViewInterface<T, U, V>, T extends RESTBasePrimaryEntityV1<?, ?, ?>, W extends RESTBasePrimaryEntityV1<?, ?, ?>, U extends RESTBaseCollectionItemV1<?, ?, ?>, V extends RESTBaseCollectionItemV1<?, ?, ?>>
-        extends BaseChildrenComponentInterface<S, T, U>, EditableView {
-    ProviderUpdateData<V> getExistingProviderData();
+/**
+ * 
+ * @author Matthew Casperson
+ *
+ * @param <S> The type of the parent view
+ * @param <T> The type of the entity being edited by the view
+ * @param <U> The collection type of T
+ * @param <V> The collection Item type of T
+ * @param <W> The type of the possible children
+ * @param <X> The type of the existing children
+ * @param <Y> The type of the parent of W
+ */
+public interface BaseOrderedChildrenComponentInterface<S extends BaseOrderedChildrenViewInterface<T, U, V, W, X>, T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends RESTBaseCollectionItemV1<?, ?, ?>, X extends RESTBaseCollectionItemV1<?, ?, ?>, Y extends RESTBaseEntityV1<?, ?, ?>>
+        extends BaseChildrenComponentInterface<S, T, U, V, W>, EditableView {
+    ProviderUpdateData<X> getExistingProviderData();
 
-    void setExistingProviderData(final ProviderUpdateData<V> existingProviderData);
+    void setExistingProviderData(final ProviderUpdateData<X> existingProviderData);
 
     /**
      * 
@@ -27,7 +40,7 @@ public interface BaseOrderedChildrenComponentInterface<S extends BaseOrderedChil
      *        the entity being edited can be referenced via the filtered results getProviderData().getDisplayedItem() property.
      * @return The provder used to display the list of existing children
      */
-    EnhancedAsyncDataProvider<V> generateExistingProvider(final W entity);
+    EnhancedAsyncDataProvider<X> generateExistingProvider(final Y entity);
     
-    boolean moveTagsUpAndDown(final V object, final boolean down);
+    boolean moveTagsUpAndDown(final X object, final boolean down);
 }

@@ -1,5 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
@@ -12,7 +15,8 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 
-public class BaseSearchAndEditView extends BaseTemplateView implements BaseSearchAndEditViewInterface {
+abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>>
+        extends BaseTemplateView<T, U, V> implements BaseSearchAndEditViewInterface<T, U, V> {
 
     private final HandlerSplitLayoutPanel splitPanel = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
     private final DockLayoutPanel resultsViewLayoutPanel = new DockLayoutPanel(Unit.PX);
@@ -114,10 +118,9 @@ public class BaseSearchAndEditView extends BaseTemplateView implements BaseSearc
             this.getViewPanel().setWidget(displayedView.getPanel());
         }
     }
-    
+
     @Override
-    public void displaySearchResultsView(final BaseFilteredResultsViewInterface filteredResultsView)
-    {
+    public void displaySearchResultsView(final BaseFilteredResultsViewInterface<T, U, V> filteredResultsView) {
         this.getResultsActionButtonsPanel().clear();
         this.getResultsPanel().clear();
         if (filteredResultsView != null) {
