@@ -70,6 +70,23 @@ public interface CSSConstants {
         String CATEGORY_VIEW_DESCRIPTION_LABEL_CELL = "CategoryViewDescriptionLabelCell";
         String CATEGORY_VIEW_DESCRIPTION_TEXT_CELL = "CategoryViewDescriptionTextCell";
     }
+    
+    public interface ProjectView {
+        String PROJECT_VIEW_PANEL = "ProjectViewPanel";
+        String PROJECT_VIEW_ID_LABEL = "ProjectViewIDLabel";
+        String PROJECT_VIEW_ID_TEXT = "ProjectViewIDText";
+        String PROJECT_VIEW_NAME_LABEL = "ProjectViewNameLabel";
+        String PROJECT_VIEW_NAME_TEXT = "ProjectViewNameText";
+        String PROJECT_VIEW_DESCRIPTION_LABEL = "ProjectViewDescriptionLabel";
+        String PROJECT_VIEW_DESCRIPTION_TEXT = "ProjectViewDescriptionText";
+
+        String PROJECT_VIEW_ID_LABEL_CELL = "ProjectViewIDLabelCell";
+        String PROJECT_VIEW_ID_TEXT_CELL = "ProjectViewIDTextCell";
+        String PROJECT_VIEW_NAME_LABEL_CELL = "ProjectViewNameLabelCell";
+        String PROJECT_VIEW_NAME_TEXT_CELL = "ProjectViewNameTextCell";
+        String PROJECT_VIEW_DESCRIPTION_LABEL_CELL = "ProjectViewDescriptionLabelCell";
+        String PROJECT_VIEW_DESCRIPTION_TEXT_CELL = "ProjectViewDescriptionTextCell";
+    }
 
     /**
      * The class assigned to the page title label.

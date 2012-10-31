@@ -183,7 +183,7 @@ public class TagCategoriesComponent
 
     @Override
     protected void bindExistingChildrenRowClick() {
-        display.getTagUpButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
+        display.getExistingChildUpButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
             @Override
             public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
@@ -193,7 +193,7 @@ public class TagCategoriesComponent
 
         });
 
-        display.getTagDownButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
+        display.getExistingChildDownButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
             /**
              * Swap the sort value for the tag that was selected with the tag below it.

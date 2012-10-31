@@ -37,9 +37,7 @@ public class TagCategoriesPresenter implements TemplatePresenter {
         RESTCategoryV1,
         RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, 
         RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>, TagViewInterface {
-        
-        Column<RESTTagInCategoryCollectionItemV1, String> getTagDownButtonColumn();
-        Column<RESTTagInCategoryCollectionItemV1, String> getTagUpButtonColumn();
+ 
     }
     
     public interface LogicComponent extends BaseOrderedChildrenComponentInterface<TagCategoriesPresenter.Display, 

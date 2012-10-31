@@ -96,12 +96,12 @@ public class TagCategoriesView
     };
 
     @Override
-    public Column<RESTTagInCategoryCollectionItemV1, String> getTagDownButtonColumn() {
+    public Column<RESTTagInCategoryCollectionItemV1, String> getExistingChildDownButtonColumn() {
         return tagDownButtonColumn;
     }
 
     @Override
-    public Column<RESTTagInCategoryCollectionItemV1, String> getTagUpButtonColumn() {
+    public Column<RESTTagInCategoryCollectionItemV1, String> getExistingChildUpButtonColumn() {
         return tagUpButtonColumn;
     }
 

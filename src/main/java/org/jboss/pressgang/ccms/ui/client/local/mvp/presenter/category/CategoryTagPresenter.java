@@ -36,9 +36,7 @@ public class CategoryTagPresenter implements TemplatePresenter {
                 RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>,
             CategoryViewInterface {
         
-        Column<RESTTagInCategoryCollectionItemV1, String> getTagUpButtonColumn();
 
-        Column<RESTTagInCategoryCollectionItemV1, String> getTagDownButtonColumn();
     }
 
     public interface LogicComponent

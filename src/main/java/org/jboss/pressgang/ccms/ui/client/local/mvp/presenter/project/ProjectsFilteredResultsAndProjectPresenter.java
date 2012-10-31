@@ -1,29 +1,23 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
-import javax.enterprise.context.Dependent;
+
 import javax.inject.Inject;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
+
 import com.google.gwt.user.client.ui.HasWidgets;
 
-/**
- * This presenter takes the CategoryFilteredResults view to provide a list of categories, and the CategoryView to provide a way
- * to edit the properties of a category.
- * 
- * @author Matthew Casperson
- */
-@Dependent
-public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePresenter {
+public class ProjectsFilteredResultsAndProjectPresenter implements TemplatePresenter {
 
     /**
      * The history token used to identify this view
@@ -37,16 +31,16 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
      * @author Matthew Casperson
      */
     public interface Display extends
-            BaseSearchAndEditViewInterface<RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1> {
+            BaseSearchAndEditViewInterface<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> {
 
     }
 
     public interface LogicComponent extends Component<Display> {
-        void bind(final CategoryFilteredResultsPresenter.Display filteredResultsDisplay,
-                final CategoryFilteredResultsPresenter.LogicCompnent filteredResultsComponent,
-                final CategoryPresenter.Display resultDisplay, final CategoryTagPresenter.Display tagDisplay,
-                final CategoryTagPresenter.LogicComponent tagComponent,
-                final CategoriesFilteredResultsAndCategoryPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
+        void bind(final ProjectFilteredResultsPresenter.Display filteredResultsDisplay,
+                final ProjectFilteredResultsPresenter.LogicCompnent filteredResultsComponent,
+                final ProjectPresenter.Display resultDisplay, final ProjectTagPresenter.Display tagDisplay,
+                final ProjectTagPresenter.LogicComponent tagComponent,
+                final ProjectsFilteredResultsAndProjectPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
     }
 
     /**
@@ -60,32 +54,32 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
     private LogicComponent component;
 
     /**
-     * An Errai injected instance of a class that implements CategoryFilteredResultsPresenter.Display. This is the view that
+     * An Errai injected instance of a class that implements ProjectFilteredResultsPresenter.Display. This is the view that
      * displays the list of categories.
      */
     @Inject
-    private CategoryFilteredResultsPresenter.Display filteredResultsDisplay;
+    private ProjectFilteredResultsPresenter.Display filteredResultsDisplay;
 
-    /** An Errai injected instance of a class that implements CategoryFilteredResultsPresenter.LogicCompnent */
+    /** An Errai injected instance of a class that implements ProjectFilteredResultsPresenter.LogicCompnent */
     @Inject
-    private CategoryFilteredResultsPresenter.LogicCompnent filteredResultsComponent;
+    private ProjectFilteredResultsPresenter.LogicCompnent filteredResultsComponent;
 
     /**
-     * An Errai injected instance of a class that implements CategoryPresenter.Display. This is the view that displays the
+     * An Errai injected instance of a class that implements ProjectPresenter.Display. This is the view that displays the
      * fields of the category (name, description etc)
      */
     @Inject
-    private CategoryPresenter.Display resultDisplay;
+    private ProjectPresenter.Display resultDisplay;
 
-    /** An Errai injected instance of a class that implements CategoryPresenter.LogicComponent */
+    /** An Errai injected instance of a class that implements ProjectPresenter.LogicComponent */
     @Inject
-    private CategoryPresenter.LogicComponent resultComponent;
-
-    @Inject
-    private CategoryTagPresenter.Display tagDisplay;
+    private ProjectPresenter.LogicComponent resultComponent;
 
     @Inject
-    private CategoryTagPresenter.LogicComponent tagComponent;
+    private ProjectTagPresenter.Display tagDisplay;
+
+    @Inject
+    private ProjectTagPresenter.LogicComponent tagComponent;
 
     /**
      * The category query string extracted from the history token
@@ -95,7 +89,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-  
+        
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
         filteredResultsComponent.bind(queryString, filteredResultsDisplay, display);
@@ -117,15 +111,14 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
             final String[] queryElements = queryStringElement.split("=");
 
             if (queryElements.length == 2) {
-                if (queryElements[0].equals("categoryIds")) {
+                if (queryElements[0].equals("entityIds")) {
                     this.filteredResultsDisplay.getIdFilter().setText(queryElements[1]);
-                } else if (queryElements[0].equals("categoryName")) {
+                } else if (queryElements[0].equals("entityName")) {
                     this.filteredResultsDisplay.getNameFilter().setText(queryElements[1]);
-                } else if (queryElements[0].equals("categoryDesc")) {
+                } else if (queryElements[0].equals("entityDesc")) {
                     this.filteredResultsDisplay.getDescriptionFilter().setText(queryElements[1]);
                 }
             }
         }
     }
-
 }

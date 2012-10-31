@@ -72,6 +72,11 @@ abstract public class BaseSearchAndEditComponent<
         this.filteredResultsDisplay = filteredResultsDisplay;
         this.filteredResultsComponent = filteredResultsComponent;
         this.firstDisplayedView = firstDisplayedView;
+        
+        filteredResultsDisplay.setViewShown(true);
+        display.setViewShown(true);
+        
+        display.displaySearchResultsView(filteredResultsDisplay);
 
         loadMainSplitResize(mainSplitSizePreferenceKey);
         bindMainSplitResize(mainSplitSizePreferenceKey);
