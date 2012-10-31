@@ -133,9 +133,4 @@ public class CategoryTagComponent
         return provider;
     }
 
-    @Override
-    protected void setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
-        child.getItem().explicitSetRelationshipSort(index);
-
-    }
 }

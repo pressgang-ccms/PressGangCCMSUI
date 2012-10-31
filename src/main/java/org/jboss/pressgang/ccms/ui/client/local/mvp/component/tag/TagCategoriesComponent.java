@@ -16,6 +16,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.sort.RESTTagCategoryCollectionItemV1SortComparator;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren.BaseOrderedChildrenComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren.SetNewChildSortCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -38,6 +39,18 @@ public class TagCategoriesComponent
             RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
         implements TagCategoriesPresenter.LogicComponent {
 
+    /**
+     * Used when moving children up and down
+     */
+    private final SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> sortCallback = 
+            new SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
+                
+                @Override
+                public void setSort(final RESTTagInCategoryCollectionItemV1 child, int index) {
+                    child.getItem().setRelationshipSort(index);                   
+                }
+            };
+    
     @Override
     public void bind(final TagCategoriesPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
 
@@ -174,7 +187,7 @@ public class TagCategoriesComponent
 
             @Override
             public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
-                if (moveTagsUpAndDown(object, false))
+                if (moveTagsUpAndDown(object, false, sortCallback))
                 {
                     display.setExistingChildrenProvider(generateExistingProvider(getPossibleChildrenProviderData().getDisplayedItem()
                             .getItem()));
@@ -190,7 +203,7 @@ public class TagCategoriesComponent
              */
             @Override
             public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
-                if (moveTagsUpAndDown(object, true))
+                if (moveTagsUpAndDown(object, true, sortCallback))
                         {display.setExistingChildrenProvider(generateExistingProvider(getPossibleChildrenProviderData().getDisplayedItem()
                                 .getItem()));}
             }
@@ -242,11 +255,5 @@ public class TagCategoriesComponent
         display.getPossibleChildrenProvider().resetProvider();
 
         RESTCalls.getCategories(callback);
-    }
-
-    @Override
-    protected void setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
-        child.getItem().explicitSetRelationshipSort(index);
-
     }
 }

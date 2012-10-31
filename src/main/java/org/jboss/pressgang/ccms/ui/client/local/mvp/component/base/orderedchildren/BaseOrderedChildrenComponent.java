@@ -92,7 +92,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
      * @return true if the sort order of any child was modified, false otherwise
      */
     @Override
-    public boolean moveTagsUpAndDown(final F object, final boolean down) {
+    public boolean moveTagsUpAndDown(final F object, final boolean down, final SetNewChildSortCallback<D, E, F> sortCallback) {
 
         final int size = getExistingProviderData().getItems().size();
 
@@ -120,7 +120,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
                     final F existingChild = getExistingProviderData().getItems().get(j);
 
                     /* set the sort value (the list was previously sorted on this value) */
-                    setSort(existingChild, j);
+                    sortCallback.setSort(existingChild, j);
 
                     /* we need to mark the joiner entity as updated */
                     if (!existingChild.returnIsAddItem())
@@ -134,8 +134,8 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
                 final F nextChild = getExistingProviderData().getItems().get(nextItemIndex);
 
                 /* swap the sort field */
-                setSort(child, nextItemIndex);
-                setSort(nextChild, i);
+                sortCallback.setSort(child, nextItemIndex);
+                sortCallback.setSort(nextChild, i);
 
                 modifiedSort = true;
                 break;
@@ -145,13 +145,6 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
         return modifiedSort;
     }
 
-    /**
-     * The sort property is not exposed via a consistent interface, so this method is used to allow overriding components to set
-     * the sort order on the children being modified.
-     * 
-     * @param child The child entity whose sort order is to be modified
-     * @param index The new sort index
-     */
-    abstract protected void setSort(final F child, final int index);
+
 
 }
