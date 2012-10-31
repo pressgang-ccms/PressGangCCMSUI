@@ -6,14 +6,19 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.AddPossibleChildCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.GetExistingCollectionCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.UpdateAfterChildModfiedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.CategoriesFilteredResultsAndCategoryViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndCategoryPresenter;
@@ -53,94 +58,6 @@ public class CategoriesFilteredResultsAndCategoryComponent
     private CategoryTagPresenter.Display tagDisplay;
     private CategoryTagPresenter.LogicComponent tagComponent;
 
-    /**
-     * A click handler used to display the category fields view
-     */
-    private final ClickHandler categoryDetailsClickHandler = new ClickHandler() {
-        @Override
-        public void onClick(final ClickEvent event) {
-            reInitialiseView(entityPropertiesView);
-        }
-
-    };
-
-    /**
-     * A click handler used to display the category tags view
-     */
-    private final ClickHandler categoryTagsClickHandler = new ClickHandler() {
-        @Override
-        public void onClick(final ClickEvent event) {
-            reInitialiseView(tagDisplay);
-        }
-
-    };
-
-    /**
-     * A click handler used to save any changes to the category
-     */
-    private final ClickHandler saveClickHandler = new ClickHandler() {
-        @Override
-        public void onClick(final ClickEvent event) {
-
-            /* Was the tag we just saved a new tag? */
-            final boolean wasNewEntity = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
-
-            /* Sync the UI to the underlying object */
-            entityPropertiesView.getDriver().flush();
-
-            final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, Display>(display,
-                    new BaseRestCallback.SuccessAction<RESTCategoryV1, Display>() {
-                        @Override
-                        public void doSuccessAction(final RESTCategoryV1 retValue, final Display display) {
-                            retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
-                            retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
-
-                            /* This category is no longer a new category */
-                            filteredResultsComponent.getProviderData().getDisplayedItem()
-                                    .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
-                            filteredResultsDisplay.getProvider().updateRowData(
-                                    filteredResultsComponent.getProviderData().getStartRow(),
-                                    filteredResultsComponent.getProviderData().getItems());
-
-                            displayExistingTagList();
-                            tagComponent.getEntityList();
-
-                            updateDisplayAfterSave(wasNewEntity);
-
-                            Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                        }
-                    }) {
-            };
-
-            if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-
-                /*
-                 * If this is a new category, it needs to be saved in order to get the tag id to complete the category updates.
-                 * Upon success, the categories will be updated.
-                 */
-                final boolean unsavedTagChanges = unsavedCategoryChanges() || unsavedTagChanges();
-
-                if (unsavedTagChanges) {
-
-                    final RESTCategoryV1 category = new RESTCategoryV1();
-                    category.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                    category.explicitSetName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
-                    category.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                            .getDescription());
-                    category.explicitSetTags(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags());
-
-                    if (wasNewEntity) {
-                        RESTCalls.createCategory(callback, category);
-                    } else {
-                        RESTCalls.saveCategory(callback, category);
-                    }
-                } else {
-                    Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
-                }
-            }
-        }
-    };
-
     @Override
     public void bind(final CategoryFilteredResultsPresenter.Display filteredResultsDisplay,
             final CategoryFilteredResultsPresenter.LogicCompnent filteredResultsComponent,
@@ -150,13 +67,55 @@ public class CategoriesFilteredResultsAndCategoryComponent
 
         this.tagDisplay = tagDisplay;
         this.tagComponent = tagComponent;
-        
+
         super.bind(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, entityPropertiesView, entityPropertiesView,
                 filteredResultsDisplay, filteredResultsComponent, display, waitDisplay);
 
-        bindTagListButtonClicks();
-        bindExistingChildrenRowClick();
+        tagComponent.bindPossibleChildrenListButtonClicks(
+                new GetExistingCollectionCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
 
+                    @Override
+                    public RESTTagInCategoryCollectionV1 getExistingCollection() {
+                        return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags();
+                    }
+
+                }, new AddPossibleChildCallback<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>() {
+
+                     @Override
+                    public void createAndAddChild(final RESTTagCollectionItemV1 copy) {
+                        final RESTTagInCategoryV1 newChild = new RESTTagInCategoryV1();
+                        newChild.setId(copy.getItem().getId());
+                        newChild.setName(copy.getItem().getName());
+                        newChild.setRelationshipSort(0);
+                        filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addItem(newChild);                        
+                    }
+
+                }, new UpdateAfterChildModfiedCallback() {
+
+                    @Override
+                    public void updateAfterChidModfied() {
+                        /*
+                         * refresh the list of tags in the category
+                         */
+                        displayExistingTagList();
+
+                        /*
+                         * refresh the list of possible tags
+                         */
+                        displayPossibleTagList();                        
+                    }
+
+                });
+        bindExistingChildrenRowClick();
+    }
+
+    @Override
+    protected void newEntitySelected() {
+        /* Display the tags that are added to the category */
+        displayExistingTagList();
+
+        /* Get a new collection of tags */
+        tagComponent.getEntityList();
     }
 
     protected void bindExistingChildrenRowClick() {
@@ -187,15 +146,6 @@ public class CategoriesFilteredResultsAndCategoryComponent
         });
     }
 
-    @Override
-    protected void newEntitySelected() {
-        /* Display the tags that are added to the category */
-        displayExistingTagList();
-
-        /* Get a new collection of tags */
-        tagComponent.getEntityList();
-    }
-
     /**
      * Refresh the display with the tags that have been assigned to the category
      */
@@ -212,111 +162,103 @@ public class CategoriesFilteredResultsAndCategoryComponent
         tagDisplay.getPossibleChildrenProvider().displayNewFixedList(tagComponent.getPossibleChildrenProviderData().getItems());
     }
 
-    /**
-     * Binds behaviour to the tag list buttons
-     */
-    private void bindTagListButtonClicks() {
-        tagDisplay.getPossibleChildrenButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagCollectionItemV1, String>() {
-            @Override
-            public void update(final int index, final RESTTagCollectionItemV1 object, final String value) {
-
-                /* find the tag if it exists in the category */
-                boolean found = false;
-                final RESTTagInCategoryCollectionV1 currentCategoryTags = filteredResultsComponent.getProviderData()
-                        .getDisplayedItem().getItem().getTags();
-                for (final RESTTagInCategoryCollectionItemV1 tag : currentCategoryTags.getItems()) {
-                    /* we've found a matching tag */
-                    if (tag.getItem().getId().equals(object.getItem().getId())) {
-                        /* Tag was added and then removed */
-                        if (tag.returnIsAddItem()) {
-                            currentCategoryTags.getItems().remove(tag);
-                        }
-                        /* Tag existed, was removed and then was added again */
-                        else if (tag.returnIsRemoveItem()) {
-                            tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
-                        }
-                        /* Tag existed and was removed */
-                        else {
-                            tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
-                            tag.getItem().setRelationshipSort(0);
-                        }
-
-                        found = true;
-                        break;
-                    }
-                }
-
-                /* The tag did not exist, so add it to the collection */
-                if (!found) {
-                    final RESTTagInCategoryV1 newChild = new RESTTagInCategoryV1();
-                    newChild.setId(object.getItem().getId());
-                    newChild.setName(object.getItem().getName());
-                    newChild.setRelationshipSort(0);
-
-                    currentCategoryTags.addNewItem(newChild);
-                }
-
-                /*
-                 * refresh the list of tags in the category
-                 */
-                displayExistingTagList();
-
-                /*
-                 * refresh the list of possible tags
-                 */
-                displayPossibleTagList();
-            }
-        });
-
-    }
-
-    /**
-     * Compare the displayed category (the one that is edited) with the selected category (the one that exists in the collection
-     * used to build the category list). If there are unsaved changes, prompt the user.
-     * 
-     * @return true if the user wants to ignore the unsaved changes, false otherwise
-     */
-    @Override
-    public boolean checkForUnsavedChanges() {
-        /* sync the UI with the underlying tag */
-        if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-            entityPropertiesView.getDriver().flush();
-
-            if (unsavedCategoryChanges() || unsavedTagChanges()) {
-                return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Compare the selected and displayed category, and see if any of the fields have changed
-     * 
-     * @return true if there are unsaved changes, false otherwise
-     */
-    private boolean unsavedCategoryChanges() {
-        return !(stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData().getSelectedItem().getItem()
-                .getName(), filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName()) && stringEqualsEquatingNullWithEmptyString(
-                filteredResultsComponent.getProviderData().getSelectedItem().getItem().getDescription(),
-                filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription()));
-    }
-
-    /**
-     * Check to see if there are any added, removed or modified tags in the category
-     * 
-     * @return true if there are modified tags, false otherwise
-     */
-    private boolean unsavedTagChanges() {
-        return !filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags()
-                .returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
-    }
-
     @Override
     protected void bindActionButtons() {
+        /**
+         * A click handler used to display the category fields view
+         */
+        final ClickHandler categoryDetailsClickHandler = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                reInitialiseView(entityPropertiesView);
+            }
+
+        };
+
+        /**
+         * A click handler used to display the category tags view
+         */
+        final ClickHandler categoryTagsClickHandler = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                reInitialiseView(tagDisplay);
+            }
+
+        };
+
+        /**
+         * A click handler used to save any changes to the category
+         */
+        final ClickHandler saveClickHandler = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+
+                /* Was the tag we just saved a new tag? */
+                final boolean wasNewEntity = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
+
+                /* Sync the UI to the underlying object */
+                entityPropertiesView.getDriver().flush();
+
+                final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, Display>(display,
+                        new BaseRestCallback.SuccessAction<RESTCategoryV1, Display>() {
+                            @Override
+                            public void doSuccessAction(final RESTCategoryV1 retValue, final Display display) {
+                                retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
+                                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                                        true);
+
+                                /* This category is no longer a new category */
+                                filteredResultsComponent.getProviderData().getDisplayedItem()
+                                        .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                                filteredResultsDisplay.getProvider().updateRowData(
+                                        filteredResultsComponent.getProviderData().getStartRow(),
+                                        filteredResultsComponent.getProviderData().getItems());
+
+                                displayExistingTagList();
+                                tagComponent.getEntityList();
+
+                                updateDisplayAfterSave(wasNewEntity);
+
+                                Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                            }
+                        }) {
+                };
+
+                if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+
+                    /*
+                     * If this is a new category, it needs to be saved in order to get the tag id to complete the category
+                     * updates. Upon success, the categories will be updated.
+                     */
+                    final boolean unsavedTagChanges = unsavedCategoryChanges() || unsavedTagChanges();
+
+                    if (unsavedTagChanges) {
+
+                        final RESTCategoryV1 category = new RESTCategoryV1();
+                        category.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
+                        category.explicitSetName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                                .getName());
+                        category.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                                .getDescription());
+                        category.explicitSetTags(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                                .getTags());
+
+                        if (wasNewEntity) {
+                            RESTCalls.createCategory(callback, category);
+                        } else {
+                            RESTCalls.saveCategory(callback, category);
+                        }
+                    } else {
+                        Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                    }
+                }
+            }
+        };
+
         for (final CategoryViewInterface view : new CategoryViewInterface[] { entityPropertiesView, tagDisplay }) {
-            view.getDetails().addClickHandler(this.categoryDetailsClickHandler);
-            view.getChildren().addClickHandler(this.categoryTagsClickHandler);
-            view.getSave().addClickHandler(this.saveClickHandler);
+            view.getDetails().addClickHandler(categoryDetailsClickHandler);
+            view.getChildren().addClickHandler(categoryTagsClickHandler);
+            view.getSave().addClickHandler(saveClickHandler);
         }
 
     }
@@ -359,6 +301,47 @@ public class CategoriesFilteredResultsAndCategoryComponent
                 reInitialiseView(lastDisplayedView == null ? entityPropertiesView : lastDisplayedView);
             }
         });
+    }
+
+    /**
+     * Compare the displayed category (the one that is edited) with the selected category (the one that exists in the collection
+     * used to build the category list). If there are unsaved changes, prompt the user.
+     * 
+     * @return true if the user wants to ignore the unsaved changes, false otherwise
+     */
+    @Override
+    public boolean checkForUnsavedChanges() {
+        /* sync the UI with the underlying tag */
+        if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+            entityPropertiesView.getDriver().flush();
+
+            if (unsavedCategoryChanges() || unsavedTagChanges()) {
+                return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Compare the selected and displayed category, and see if any of the fields have changed
+     * 
+     * @return true if there are unsaved changes, false otherwise
+     */
+    private boolean unsavedCategoryChanges() {
+        return !(stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData().getSelectedItem().getItem()
+                .getName(), filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName()) && stringEqualsEquatingNullWithEmptyString(
+                filteredResultsComponent.getProviderData().getSelectedItem().getItem().getDescription(),
+                filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription()));
+    }
+
+    /**
+     * Check to see if there are any added, removed or modified tags in the category
+     * 
+     * @return true if there are modified tags, false otherwise
+     */
+    private boolean unsavedTagChanges() {
+        return !filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags()
+                .returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
     }
 
     @Override

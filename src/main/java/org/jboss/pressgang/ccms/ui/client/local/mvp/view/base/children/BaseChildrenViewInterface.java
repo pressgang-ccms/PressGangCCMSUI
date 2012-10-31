@@ -20,8 +20,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * @param <V>
  * @param <W> The potential children type
  */
-public interface BaseChildrenViewInterface<T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends RESTBaseCollectionItemV1<?, ?, ?>>
+public interface BaseChildrenViewInterface<
+    T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, 
+    A extends RESTBaseEntityV1<A, B, C>, B extends RESTBaseCollectionV1<A, B, C>, C extends RESTBaseCollectionItemV1<A, B, C>,
+    D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
         extends BaseTemplateViewInterface {
+    
     T getOriginalEntity();
 
     void setOriginalEntity(final T originalEntity);
@@ -30,13 +34,13 @@ public interface BaseChildrenViewInterface<T extends RESTBaseEntityV1<T, U, V>, 
 
     SimplePager getPossibleChildrenPager();
 
-    CellTable<W> getPossibleChildrenResults();
+    CellTable<C> getPossibleChildrenResults();
 
-    EnhancedAsyncDataProvider<W> getPossibleChildrenProvider();
+    EnhancedAsyncDataProvider<C> getPossibleChildrenProvider();
 
-    void setPossibleChildrenProvider(final EnhancedAsyncDataProvider<W> possibleChildrenProvider);
+    void setPossibleChildrenProvider(final EnhancedAsyncDataProvider<C> possibleChildrenProvider);
 
     void initialize(final T originalEntity, final boolean readOnly);
 
-    Column<W, String> getPossibleChildrenButtonColumn();
+    Column<C, String> getPossibleChildrenButtonColumn();
 }

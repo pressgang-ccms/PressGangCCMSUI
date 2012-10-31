@@ -14,18 +14,31 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
  * @author Matthew Casperson
  *
  * @param <S> The type of the parent view
+ * 
  * @param <T> The type of the entity being edited by the view
  * @param <U> The collection type of T
  * @param <V> The collection Item type of T
- * @param <W> The type of the possible children
- * @param <X> The type of the existing children
- * @param <Y> The type of the parent of W
+ * 
+ * @param <W> The type of the parent of X
+ * 
+ * @param <A> The type of the potential children
+ * @param <B> The collection type of A
+ * @param <C> The collection item type of A
+ * 
+ * @param <D> The type of the existing children
+ * @param <E> The collection type of D
+ * @param <F> The collection item type of D
  */
-public interface BaseOrderedChildrenComponentInterface<S extends BaseOrderedChildrenViewInterface<T, U, V, W, X>, T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends RESTBaseCollectionItemV1<?, ?, ?>, X extends RESTBaseCollectionItemV1<?, ?, ?>, Y extends RESTBaseEntityV1<?, ?, ?>>
-        extends BaseChildrenComponentInterface<S, T, U, V, W>, EditableView {
-    ProviderUpdateData<X> getExistingProviderData();
+public interface BaseOrderedChildrenComponentInterface<S extends BaseOrderedChildrenViewInterface<T, U, V, W, A, B, C, D, E, F>, 
+    T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>,
+    W extends RESTBaseEntityV1<?, ?, ?>,
+    A extends RESTBaseEntityV1<A, B, C>, B extends RESTBaseCollectionV1<A, B, C>, C extends RESTBaseCollectionItemV1<A, B, C>,
+    D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
+        extends BaseChildrenComponentInterface<S, T, U, V, A, B, C, D, E, F>, EditableView {
+    
+    ProviderUpdateData<F> getExistingProviderData();
 
-    void setExistingProviderData(final ProviderUpdateData<X> existingProviderData);
+    void setExistingProviderData(final ProviderUpdateData<F> existingProviderData);
 
     /**
      * 
@@ -40,7 +53,7 @@ public interface BaseOrderedChildrenComponentInterface<S extends BaseOrderedChil
      *        the entity being edited can be referenced via the filtered results getProviderData().getDisplayedItem() property.
      * @return The provder used to display the list of existing children
      */
-    EnhancedAsyncDataProvider<X> generateExistingProvider(final Y entity);
+    EnhancedAsyncDataProvider<F> generateExistingProvider(final W entity);
     
-    boolean moveTagsUpAndDown(final X object, final boolean down);
+    boolean moveTagsUpAndDown(final F object, final boolean down);
 }

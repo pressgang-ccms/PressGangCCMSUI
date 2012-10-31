@@ -9,7 +9,10 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.sort.RESTTagCategoryCollectionItemV1SortComparator;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren.BaseOrderedChildrenComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryTagPresenter;
@@ -23,9 +26,12 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.HasData;
 
 public class CategoryTagComponent
-        extends
-        BaseOrderedChildrenComponent<CategoryTagPresenter.Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, RESTTagCollectionItemV1, RESTTagInCategoryCollectionItemV1, RESTCategoryV1>
-        implements CategoryTagPresenter.LogicComponent {
+    extends BaseOrderedChildrenComponent<CategoryTagPresenter.Display, 
+        RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, 
+        RESTCategoryV1,
+        RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, 
+        RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
+    implements CategoryTagPresenter.LogicComponent {
 
     @Override
     public void bind(final CategoryTagPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {

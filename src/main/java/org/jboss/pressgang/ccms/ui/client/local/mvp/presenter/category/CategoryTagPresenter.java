@@ -6,10 +6,14 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren.BaseOrderedChildrenComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
@@ -25,8 +29,13 @@ public class CategoryTagPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "CategoryTagView";
 
     public interface Display extends
-            BaseOrderedChildrenViewInterface<RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, RESTTagCollectionItemV1, RESTTagInCategoryCollectionItemV1>,
+            BaseOrderedChildrenViewInterface<
+                RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, 
+                RESTCategoryV1,
+                RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, 
+                RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>,
             CategoryViewInterface {
+        
         Column<RESTTagInCategoryCollectionItemV1, String> getTagUpButtonColumn();
 
         Column<RESTTagInCategoryCollectionItemV1, String> getTagDownButtonColumn();
@@ -34,8 +43,11 @@ public class CategoryTagPresenter implements TemplatePresenter {
 
     public interface LogicComponent
             extends
-            BaseOrderedChildrenComponentInterface<Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, RESTTagCollectionItemV1, RESTTagInCategoryCollectionItemV1, RESTCategoryV1> {
-
+            BaseOrderedChildrenComponentInterface<Display, 
+            RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, 
+            RESTCategoryV1,
+            RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, 
+            RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> {
     }
 
     private Integer entityId;

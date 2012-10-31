@@ -20,15 +20,19 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * @param <V> The collection item type for entity T
  * @param <W> The entity type for the possible children
  */
-abstract public class BaseChildrenView<T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends RESTBaseCollectionItemV1<?, ?, ?>>
-        extends BaseTemplateView<T, U, V> implements BaseChildrenViewInterface<T, U, V, W> {
+abstract public class BaseChildrenView<
+    T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, 
+    A extends RESTBaseEntityV1<A, B, C>, B extends RESTBaseCollectionV1<A, B, C>, C extends RESTBaseCollectionItemV1<A, B, C>,
+    D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
+        extends BaseTemplateView<T, U, V> implements BaseChildrenViewInterface<T, U, V, A, B, C, D, E, F> {
+    
     /** A reference to the tag that this view will be modifying */
     private T originalEntity;
 
     private final VerticalPanel possibleChildrenResultsPanel = new VerticalPanel();
     private final SimplePager possibleChildrenPager = UIUtilities.createSimplePager();
-    private final CellTable<W> possibleChildrenResults = UIUtilities.<W> createCellTable();
-    private EnhancedAsyncDataProvider<W> possibleChildrenProvider;
+    private final CellTable<C> possibleChildrenResults = UIUtilities.<C> createCellTable();
+    private EnhancedAsyncDataProvider<C> possibleChildrenProvider;
 
     @Override
     public T getOriginalEntity() {
@@ -51,17 +55,17 @@ abstract public class BaseChildrenView<T extends RESTBaseEntityV1<T, U, V>, U ex
     }
 
     @Override
-    public CellTable<W> getPossibleChildrenResults() {
+    public CellTable<C> getPossibleChildrenResults() {
         return possibleChildrenResults;
     }
 
     @Override
-    public EnhancedAsyncDataProvider<W> getPossibleChildrenProvider() {
+    public EnhancedAsyncDataProvider<C> getPossibleChildrenProvider() {
         return possibleChildrenProvider;
     }
 
     @Override
-    public void setPossibleChildrenProvider(final EnhancedAsyncDataProvider<W> possibleChildrenProvider) {
+    public void setPossibleChildrenProvider(final EnhancedAsyncDataProvider<C> possibleChildrenProvider) {
         this.possibleChildrenProvider = possibleChildrenProvider;
         possibleChildrenProvider.addDataDisplay(possibleChildrenResults);
     }

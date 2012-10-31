@@ -18,25 +18,37 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
  * @author Matthew Casperson
  *
  * @param <S> The type of the parent view
+ * 
  * @param <T> The type of the entity being edited by the view
  * @param <U> The collection type of T
  * @param <V> The collection Item type of T
- * @param <W> The type of the possible children
- * @param <X> The type of the existing children
- * @param <Y> The type of the parent of W
+ * 
+ * @param <W> The type of the parent of X
+ * 
+ * @param <A> The type of the potential children
+ * @param <B> The collection type of A
+ * @param <C> The collection item type of A
+ * 
+ * @param <D> The type of the existing children
+ * @param <E> The collection type of D
+ * @param <F> The collection item type of D
  */
-abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildrenViewInterface<T, U, V, W, X>, T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends RESTBaseCollectionItemV1<?, ?, ?>, X extends RESTBaseCollectionItemV1<?, ?, ?>, Y extends RESTBaseEntityV1<?, ?, ?>>
-        extends BaseChildrenComponent<S, T, U, V, W> implements BaseOrderedChildrenComponentInterface<S, T, U, V, W, X, Y> {
+abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildrenViewInterface<T, U, V, W, A, B, C, D, E, F>, 
+    T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>,
+    W extends RESTBaseEntityV1<?, ?, ?>,
+    A extends RESTBaseEntityV1<A, B, C>, B extends RESTBaseCollectionV1<A, B, C>, C extends RESTBaseCollectionItemV1<A, B, C>,
+    D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
+        extends BaseChildrenComponent<S, T, U, V, A, B, C, D, E, F> implements BaseOrderedChildrenComponentInterface<S, T, U, V, W, A, B, C, D, E, F> {
 
-    protected ProviderUpdateData<X> existingProviderData = new ProviderUpdateData<X>();
+    protected ProviderUpdateData<F> existingProviderData = new ProviderUpdateData<F>();
 
     @Override
-    public ProviderUpdateData<X> getExistingProviderData() {
+    public ProviderUpdateData<F> getExistingProviderData() {
         return existingProviderData;
     }
 
     @Override
-    public void setExistingProviderData(final ProviderUpdateData<X> existingProviderData) {
+    public void setExistingProviderData(final ProviderUpdateData<F> existingProviderData) {
         this.existingProviderData = existingProviderData;
     }
 
@@ -80,7 +92,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
      * @return true if the sort order of any child was modified, false otherwise
      */
     @Override
-    public boolean moveTagsUpAndDown(final X object, final boolean down) {
+    public boolean moveTagsUpAndDown(final F object, final boolean down) {
 
         final int size = getExistingProviderData().getItems().size();
 
@@ -90,7 +102,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
         for (int i = (down ? 0 : 1); i < (down ? size - 1 : size); ++i) {
 
             /* Get the item from the collection for convenience */
-            final X child = getExistingProviderData().getItems().get(i);
+            final F child = getExistingProviderData().getItems().get(i);
 
             if (child.getItem().getId().equals(object.getItem().getId())) {
 
@@ -105,7 +117,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
 
                 for (int j = 0; j < size; ++j) {
                     /* get the item from the collection */
-                    final X existingChild = getExistingProviderData().getItems().get(j);
+                    final F existingChild = getExistingProviderData().getItems().get(j);
 
                     /* set the sort value (the list was previously sorted on this value) */
                     setSort(existingChild, j);
@@ -119,7 +131,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
                 final int nextItemIndex = down ? i + 1 : i - 1;
 
                 /* get the next item in the list */
-                final X nextChild = getExistingProviderData().getItems().get(nextItemIndex);
+                final F nextChild = getExistingProviderData().getItems().get(nextItemIndex);
 
                 /* swap the sort field */
                 setSort(child, nextItemIndex);
@@ -140,6 +152,6 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
      * @param child The child entity whose sort order is to be modified
      * @param index The new sort index
      */
-    abstract protected void setSort(final X child, final int index);
+    abstract protected void setSort(final F child, final int index);
 
 }

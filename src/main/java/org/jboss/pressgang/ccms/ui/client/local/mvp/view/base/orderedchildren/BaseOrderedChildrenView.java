@@ -22,11 +22,23 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * @param <T> The entity type
  * @param <U> The collection type for entity T
  * @param <V> The collection item type for entity T
- * @param <W> The type of the children that can be added to the collection
- * @param <X> The type of the children that are added to the collection
+ * 
+ * @param <W> The parent of the children
+ * 
+ * @param <A> The possible child type
+ * @param <B> The collection type for entity A
+ * @param <C> The collection item type for entity A
+ * 
+ * @param <D> The existing child type
+ * @param <E> The collection type for entity D
+ * @param <F> The collection item type for entity D
  */
-abstract public class BaseOrderedChildrenView<T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends RESTBaseCollectionItemV1<?, ?, ?>, X extends RESTBaseCollectionItemV1<?, ?, ?>>
-        extends BaseChildrenView<T, U, V, W> implements BaseOrderedChildrenViewInterface<T, U, V, W, X> {
+abstract public class BaseOrderedChildrenView<
+    T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>,
+    W extends RESTBaseEntityV1<?, ?, ?>,
+    A extends RESTBaseEntityV1<A, B, C>, B extends RESTBaseCollectionV1<A, B, C>, C extends RESTBaseCollectionItemV1<A, B, C>,
+    D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
+        extends BaseChildrenView<T, U, V, A, B, C, D, E, F> implements BaseOrderedChildrenViewInterface<T, U, V, W, A, B, C, D, E, F> {
 
     /** A reference to the entity that this view will be modifying. */
     private T originalEntity;
@@ -36,10 +48,10 @@ abstract public class BaseOrderedChildrenView<T extends RESTBaseEntityV1<T, U, V
 
     private final VerticalPanel existingChildrenResultsPanel = new VerticalPanel();
     private final SimplePager existingChildrenPager = UIUtilities.createSimplePager();
-    private final CellTable<X> existingChildrenResults = UIUtilities.<X> createCellTable();
-    private EnhancedAsyncDataProvider<X> existingChildrenProvider;
+    private final CellTable<F> existingChildrenResults = UIUtilities.<F> createCellTable();
+    private EnhancedAsyncDataProvider<F> existingChildrenProvider;
 
-    public CellTable<X> getExistingChildrenResults() {
+    public CellTable<F> getExistingChildrenResults() {
         return existingChildrenResults;
     }
 
@@ -74,12 +86,12 @@ abstract public class BaseOrderedChildrenView<T extends RESTBaseEntityV1<T, U, V
     }
 
     @Override
-    public EnhancedAsyncDataProvider<X> getExistingChildrenProvider() {
+    public EnhancedAsyncDataProvider<F> getExistingChildrenProvider() {
         return existingChildrenProvider;
     }
 
     @Override
-    public void setExistingChildrenProvider(final EnhancedAsyncDataProvider<X> existingChildrenProvider) {
+    public void setExistingChildrenProvider(final EnhancedAsyncDataProvider<F> existingChildrenProvider) {
         this.existingChildrenProvider = existingChildrenProvider;
         existingChildrenProvider.addDataDisplay(existingChildrenResults);
     }
