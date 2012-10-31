@@ -84,6 +84,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
         super.bind(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, entityPropertiesView, entityPropertiesView,
                 filteredResultsDisplay, filteredResultsComponent, display, waitDisplay);
 
+        /* Bind the logic to add and remove possible children */
         tagComponent.bindPossibleChildrenListButtonClicks(
                 new GetExistingCollectionCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
 
@@ -110,12 +111,12 @@ public class CategoriesFilteredResultsAndCategoryComponent
                         /*
                          * refresh the list of tags in the category
                          */
-                        displayExistingTagList();
+                        tagComponent.refreshExistingChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
                         /*
                          * refresh the list of possible tags
                          */
-                        displayPossibleTagList();                        
+                        tagComponent.refreshPossibleChildList();                        
                     }
 
                 });
@@ -125,7 +126,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
     @Override
     protected void newEntitySelected() {
         /* Display the tags that are added to the category */
-        displayExistingTagList();
+        tagComponent.refreshExistingChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
         /* Get a new collection of tags */
         tagComponent.getEntityList();
@@ -136,10 +137,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
 
             @Override
             public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
-                if (tagComponent.moveTagsUpAndDown(object, false, sortCallback)) {
-                    tagDisplay.setExistingChildrenProvider(tagComponent.generateExistingProvider(filteredResultsComponent
-                            .getProviderData().getDisplayedItem().getItem()));
-                }
+                tagComponent.moveTagsUpAndDown(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), object, false, sortCallback);
             }
 
         });
@@ -151,28 +149,9 @@ public class CategoriesFilteredResultsAndCategoryComponent
              */
             @Override
             public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
-                if (tagComponent.moveTagsUpAndDown(object, true, sortCallback)) {
-                    tagDisplay.setExistingChildrenProvider(tagComponent.generateExistingProvider(filteredResultsComponent
-                            .getProviderData().getDisplayedItem().getItem()));
-                }
+                tagComponent.moveTagsUpAndDown(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), object, true, sortCallback);
             }
         });
-    }
-
-    /**
-     * Refresh the display with the tags that have been assigned to the category
-     */
-    private void displayExistingTagList() {
-        tagDisplay.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
-        tagDisplay.setExistingChildrenProvider(tagComponent.generateExistingProvider(filteredResultsComponent.getProviderData()
-                .getDisplayedItem().getItem()));
-    }
-
-    /**
-     * Refresh the display with the tags that can be assigned to the category
-     */
-    private void displayPossibleTagList() {
-        tagDisplay.getPossibleChildrenProvider().displayNewFixedList(tagComponent.getPossibleChildrenProviderData().getItems());
     }
 
     @Override
@@ -227,7 +206,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
                                         filteredResultsComponent.getProviderData().getStartRow(),
                                         filteredResultsComponent.getProviderData().getItems());
 
-                                displayExistingTagList();
+                                tagComponent.refreshExistingChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
                                 tagComponent.getEntityList();
 
                                 updateDisplayAfterSave(wasNewEntity);
@@ -308,7 +287,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
 
-                displayExistingTagList();
+                tagComponent.refreshExistingChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
                 tagComponent.getEntityList();
 
                 reInitialiseView(lastDisplayedView == null ? entityPropertiesView : lastDisplayedView);

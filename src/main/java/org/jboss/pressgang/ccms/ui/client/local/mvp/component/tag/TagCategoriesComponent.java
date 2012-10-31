@@ -187,11 +187,8 @@ public class TagCategoriesComponent
 
             @Override
             public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
-                if (moveTagsUpAndDown(object, false, sortCallback))
-                {
-                    display.setExistingChildrenProvider(generateExistingProvider(getPossibleChildrenProviderData().getDisplayedItem()
-                            .getItem()));
-                }
+                moveTagsUpAndDown(getPossibleChildrenProviderData().getDisplayedItem()
+                        .getItem(), object, false, sortCallback);
             }
 
         });
@@ -203,9 +200,8 @@ public class TagCategoriesComponent
              */
             @Override
             public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
-                if (moveTagsUpAndDown(object, true, sortCallback))
-                        {display.setExistingChildrenProvider(generateExistingProvider(getPossibleChildrenProviderData().getDisplayedItem()
-                                .getItem()));}
+                moveTagsUpAndDown(getPossibleChildrenProviderData().getDisplayedItem()
+                        .getItem(), object, true, sortCallback);
             }
         });
     }

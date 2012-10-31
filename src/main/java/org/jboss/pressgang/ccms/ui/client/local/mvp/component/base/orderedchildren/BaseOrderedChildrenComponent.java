@@ -23,7 +23,7 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
  * @param <U> The collection type of T
  * @param <V> The collection Item type of T
  * 
- * @param <W> The type of the parent of X
+ * @param <W> The type of the parent of A and D
  * 
  * @param <A> The type of the potential children
  * @param <B> The collection type of A
@@ -92,7 +92,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
      * @return true if the sort order of any child was modified, false otherwise
      */
     @Override
-    public boolean moveTagsUpAndDown(final F object, final boolean down, final SetNewChildSortCallback<D, E, F> sortCallback) {
+    public boolean moveTagsUpAndDown(final W parent, final F object, final boolean down, final SetNewChildSortCallback<D, E, F> sortCallback) {
 
         final int size = getExistingProviderData().getItems().size();
 
@@ -142,9 +142,23 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
             }
         }
         
+        if (modifiedSort)
+        {
+            refreshExistingChildList(parent);
+            refreshPossibleChildList();
+        }
+        
         return modifiedSort;
     }
 
-
+    public void refreshExistingChildList(final W parent)
+    {
+        display.setExistingChildrenProvider(generateExistingProvider(parent));
+    }
+    
+    public void refreshPossibleChildList()
+    {
+        display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
+    }
 
 }

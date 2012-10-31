@@ -55,5 +55,16 @@ public interface BaseOrderedChildrenComponentInterface<S extends BaseOrderedChil
      */
     EnhancedAsyncDataProvider<F> generateExistingProvider(final W entity);
     
-    boolean moveTagsUpAndDown(final F object, final boolean down, final SetNewChildSortCallback<D, E, F> sortCallback);
+    boolean moveTagsUpAndDown(final W parent, final F object, final boolean down, final SetNewChildSortCallback<D, E, F> sortCallback);
+    
+    /**
+     * Called to refresh the list of existing children
+     * @param parent The entity that contains the existing children
+     */
+    public void refreshExistingChildList(final W parent);
+    
+    /**
+     * Called to refresh the list of potential children
+     */
+    public void refreshPossibleChildList();
 }
