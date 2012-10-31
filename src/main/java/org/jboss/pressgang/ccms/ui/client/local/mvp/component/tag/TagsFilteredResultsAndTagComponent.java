@@ -57,8 +57,6 @@ public class TagsFilteredResultsAndTagComponent
     @Inject
     private HandlerManager eventBus;
 
-    private TagFilteredResultsPresenter.Display filteredResultsDisplay;
-    private TagFilteredResultsPresenter.LogicComponent filteredResultsComponent;
     private TagPresenter.LogicComponent resultComponent;
     private TagProjectsPresenter.Display projectsDisplay;
     private TagProjectsPresenter.LogicComponent projectsComponent;

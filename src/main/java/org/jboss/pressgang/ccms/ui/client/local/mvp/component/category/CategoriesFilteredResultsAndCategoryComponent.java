@@ -50,8 +50,6 @@ public class CategoriesFilteredResultsAndCategoryComponent
     @Inject
     private HandlerManager eventBus;
 
-    private CategoryFilteredResultsPresenter.Display filteredResultsDisplay;
-    private CategoryFilteredResultsPresenter.LogicCompnent filteredResultsComponent;
     private CategoryTagPresenter.Display tagDisplay;
     private CategoryTagPresenter.LogicComponent tagComponent;
 

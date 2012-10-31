@@ -131,6 +131,9 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
 
                     /* Refresh the view, or display the properties view if none is shown */
                     reInitialiseView(lastDisplayedView == null ? firstDisplayedView : lastDisplayedView);
+                    
+                    /* Allow overriding classes to display any additional details */
+                    newEntitySelected();
                 }
             }
         });
