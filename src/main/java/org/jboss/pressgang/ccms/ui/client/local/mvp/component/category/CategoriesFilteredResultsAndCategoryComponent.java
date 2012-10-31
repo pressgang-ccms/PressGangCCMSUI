@@ -150,11 +150,11 @@ public class CategoriesFilteredResultsAndCategoryComponent
             final CategoryTagPresenter.LogicComponent tagComponent,
             final CategoriesFilteredResultsAndCategoryPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
 
-        super.bind(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, entityPropertiesView, entityPropertiesView,
-                filteredResultsDisplay, filteredResultsComponent, display, waitDisplay);
-
         this.tagDisplay = tagDisplay;
         this.tagComponent = tagComponent;
+        
+        super.bind(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, entityPropertiesView, entityPropertiesView,
+                filteredResultsDisplay, filteredResultsComponent, display, waitDisplay);
 
         bindTagListButtonClicks();
         bindExistingChildrenRowClick();

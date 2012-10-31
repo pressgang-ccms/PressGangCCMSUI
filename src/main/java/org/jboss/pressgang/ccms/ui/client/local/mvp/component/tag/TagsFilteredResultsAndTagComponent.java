@@ -315,14 +315,14 @@ public class TagsFilteredResultsAndTagComponent
             final TagCategoriesPresenter.Display categoriesDisplay,
             final TagCategoriesPresenter.LogicComponent categoriesComponent) {
 
-        super.bind(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultDisplay, resultDisplay, filteredResultsDisplay,
-                filteredResultsComponent, display, waitDisplay);
-
         this.resultComponent = resultComponent;
         this.projectsDisplay = projectsDisplay;
         this.projectsComponent = projectsComponent;
         this.categoriesDisplay = categoriesDisplay;
         this.categoriesComponent = categoriesComponent;
+        
+        super.bind(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultDisplay, resultDisplay, filteredResultsDisplay,
+                filteredResultsComponent, display, waitDisplay);
 
         bindCategoryColumnButtons();
         bindProjectColumnButtons();
