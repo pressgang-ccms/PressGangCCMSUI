@@ -27,14 +27,21 @@ import com.google.gwt.view.client.CellPreviewEvent.Handler;
  * 
  * @param <R> The results view type
  * @param <S> The main view 
+ * 
  * @param <T> The entity type
  * @param <U> The entity collection type of T
  * @param <V> The entity collection item type of T
+ * 
  * @param <W> The common type to all views
  * @param <X> The type of the entity properties view
  */
-abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsViewInterface<T, U, V>, S extends BaseSearchAndEditViewInterface<T, U, V>, T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends BaseTemplateViewInterface, X extends BaseEditorViewInterface<T, U, V> & BaseTemplateViewInterface>
-        extends ComponentBase<S> {
+abstract public class BaseSearchAndEditComponent<
+        R extends BaseFilteredResultsViewInterface<T, U, V>, 
+        S extends BaseSearchAndEditViewInterface<T, U, V>, 
+        T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, 
+        W extends BaseTemplateViewInterface, 
+        X extends BaseEditorViewInterface<T, U, V> & BaseTemplateViewInterface>
+    extends ComponentBase<S> {
 
     /** The last displayed view */
     protected W lastDisplayedView;

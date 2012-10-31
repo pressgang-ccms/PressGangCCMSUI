@@ -18,8 +18,9 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
  * @param <U> The collection type for entity T
  * @param <V> The collection item type for entity T
  */
-abstract public class BaseFilteredResultsComponent<S extends BaseFilteredResultsViewInterface<T, U, V>, T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>>
-        extends ComponentBase<S> implements BaseFilteredResultsComponentInterface<S, T, U, V> {
+abstract public class BaseFilteredResultsComponent<S extends BaseFilteredResultsViewInterface<T, U, V>, 
+        T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>>
+    extends ComponentBase<S> implements BaseFilteredResultsComponentInterface<S, T, U, V> {
 
     /** Holds the data required to populate and refresh the tags list */
     protected ProviderUpdateData<V> providerData = new ProviderUpdateData<V>();

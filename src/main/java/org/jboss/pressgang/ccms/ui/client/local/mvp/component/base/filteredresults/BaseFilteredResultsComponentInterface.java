@@ -17,8 +17,9 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
  * @param <U> The collection type for entity T
  * @param <V> The collection item type for entity T
  */
-public interface BaseFilteredResultsComponentInterface<S extends BaseFilteredResultsViewInterface<T, U, V>, T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>>
-        extends Component<S> {
+public interface BaseFilteredResultsComponentInterface<S extends BaseFilteredResultsViewInterface<T, U, V>, 
+        T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>>
+    extends Component<S> {
 
     /**
      * @return The query string that represents the current state of the filters
