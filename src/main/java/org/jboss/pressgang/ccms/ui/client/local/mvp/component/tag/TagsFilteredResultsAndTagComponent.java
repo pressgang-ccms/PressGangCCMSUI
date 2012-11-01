@@ -137,9 +137,10 @@ public class TagsFilteredResultsAndTagComponent
                                         .getItem().getId());
                             } else {
                                 updateDisplayAfterSave(wasNewTag);
+                                Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + retValue.getId());
                             }
 
-                            Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + retValue.getId());
+                            
 
                         }
                     }) {
@@ -220,7 +221,7 @@ public class TagsFilteredResultsAndTagComponent
              */
             else if (unsavedCategoryChanges && !wasNewTag) {
 
-                saveCategoryChanges(false, null);
+                saveCategoryChanges(false, filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
             }
         }
 
@@ -228,8 +229,7 @@ public class TagsFilteredResultsAndTagComponent
          * Saves the changes to the tags within the categories
          * 
          * @param wasNewTag true if we just created a new tag
-         * @param newTagId the id of the new tag, to replace any tags with the NULL_ID placeholder id. If null, no replacement
-         *        is done
+         * @param newTagId the id of the new tag, to replace any tags with the NULL_ID placeholder id if wasNewTag == true
          */
         private void saveCategoryChanges(final boolean wasNewTag, final Integer newTagId) {
             /* Save any changes made to the tag entity itself */
@@ -252,6 +252,7 @@ public class TagsFilteredResultsAndTagComponent
                          * Reload the list of categories and projects if this is the last REST call to succeed
                          */
                         updateDisplayAfterSave(wasNewTag);
+                        Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + newTagId);
                     } finally {
                         display.removeWaitOperation();
                     }
@@ -291,7 +292,7 @@ public class TagsFilteredResultsAndTagComponent
                          * If we were editing a new tag, it is possible that a tag with a NULL_ID is in the category tags
                          * collection. If so, replace it with the id that was assigned to the created tag.
                          */
-                        updatedTag.setId(tag.getItem().getId() == Constants.NULL_ID && newTagId != null ? newTagId : tag
+                        updatedTag.setId(tag.getItem().getId() == Constants.NULL_ID && wasNewTag ? newTagId : tag
                                 .getItem().getId());
 
                         /* add it to the collection */
@@ -498,10 +499,10 @@ public class TagsFilteredResultsAndTagComponent
                         .getPossibleChildrenProviderData().getItems());
 
         /* See if any of the fields were changed */
-        final boolean unsavedDescriptionChanges = !GWTUtilities.compareStrings(filteredResultsComponent.getProviderData()
+        final boolean unsavedDescriptionChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData()
                 .getSelectedItem().getItem().getDescription(), filteredResultsComponent.getProviderData().getDisplayedItem()
                 .getItem().getDescription());
-        final boolean unsavedNameChanges = !GWTUtilities.compareStrings(filteredResultsComponent.getProviderData()
+        final boolean unsavedNameChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData()
                 .getSelectedItem().getItem().getName(), filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                 .getName());
 

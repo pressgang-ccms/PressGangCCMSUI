@@ -72,7 +72,7 @@ public class SearchResultsAndTopicComponent extends
         @Override
         public void run() {
             if (selectedView == topicXMLDisplay) {
-                topicXMLDisplay.getDriver().flush();
+ topicXMLDisplay.getDriver().flush();
                 topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
                         display.getSplitType());
             }
@@ -945,12 +945,17 @@ public class SearchResultsAndTopicComponent extends
     @Override
     public boolean checkForUnsavedChanges() {
 
+        /* No topic selected, so no changes need to be saved */
+        if (this.searchResultsComponent.getTopicProviderData().getDisplayedItem() == null)
+            return true;
+        
         /* Save any pending changes */
         flushChanges();
 
         final RESTTopicV1 displayedTopic = this.searchResultsComponent.getTopicProviderData().getDisplayedItem().getItem();
         final RESTTopicV1 selectedTopic = this.searchResultsComponent.getTopicProviderData().getSelectedItem().getItem();
 
+        
         boolean unsavedChanges = false;
 
         /* If there are any modified tags in newTopic, we have unsaved changes */
@@ -961,13 +966,13 @@ public class SearchResultsAndTopicComponent extends
         /*
          * If any values in selectedTopic don't match displayedTopic, we have unsaved changes
          */
-        if (!GWTUtilities.compareStrings(selectedTopic.getTitle(), displayedTopic.getTitle()))
+        if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getTitle(), displayedTopic.getTitle()))
             unsavedChanges = true;
-        if (!GWTUtilities.compareStrings(selectedTopic.getLocale(), displayedTopic.getLocale()))
+        if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getLocale(), displayedTopic.getLocale()))
             unsavedChanges = true;
-        if (!GWTUtilities.compareStrings(selectedTopic.getDescription(), displayedTopic.getDescription()))
+        if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getDescription(), displayedTopic.getDescription()))
             unsavedChanges = true;
-        if (!GWTUtilities.compareStrings(selectedTopic.getXml(), displayedTopic.getXml()))
+        if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getXml(), displayedTopic.getXml()))
             unsavedChanges = true;
 
         /* Prompt the user if they are happy to lose their changes */

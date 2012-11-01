@@ -47,21 +47,19 @@ public class TagCategoriesComponent
                 
                 @Override
                 public void setSort(final RESTTagInCategoryCollectionItemV1 child, int index) {
-                    child.getItem().setRelationshipSort(index);                   
+                    child.getItem().explicitSetRelationshipSort(index);                   
                 }
             };
     
     @Override
     public void bind(final TagCategoriesPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
 
-        super.bind(display, waitDisplay);
+        super.bind(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display, waitDisplay);
 
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
         // display.setExistingChildrenProvider(generateExistingProvider());
         bindPossibleChildrenRowClick();
         bindExistingChildrenRowClick();
-        loadChildSplitResize(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
-        bindChildSplitResize(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
         refreshPossibleChildrenDataAndList();
     }
 

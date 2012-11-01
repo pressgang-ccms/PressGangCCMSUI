@@ -67,7 +67,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
      * 
      * @param preferencesKey The key against which the previous size was saved
      */
-    protected void bindChildSplitResize(final String preferencesKey) {
+    private void bindChildSplitResize(final String preferencesKey) {
         display.getSplit().addResizeHandler(new ResizeHandler() {
 
             @Override
@@ -83,7 +83,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
      * 
      * @param preferencesKey The key against which the previous size was saved
      */
-    protected void loadChildSplitResize(final String preferencesKey) {
+    private void loadChildSplitResize(final String preferencesKey) {
         display.getSplit().setSplitPosition(display.getPossibleChildrenResultsPanel(),
                 Preferences.INSTANCE.getInt(preferencesKey, Constants.SPLIT_PANEL_SIZE), false);
     }
@@ -166,7 +166,4 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
     {
         display.setExistingChildrenProvider(generateExistingProvider(parent));
     }
-    
-
-
 }

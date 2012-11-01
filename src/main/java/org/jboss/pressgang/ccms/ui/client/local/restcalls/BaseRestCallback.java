@@ -9,6 +9,9 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
 
 /**
+ * Most REST calls have the same responses to starting the call, exceptions during the call, and failure of the call. This class
+ * wraps up these generic responses.
+ * 
  * @param <C> The type of the returned entity
  * @Param <D> The type of the wait view
  * @author kamiller@redhat.com (Katie Miller)
@@ -53,9 +56,8 @@ public abstract class BaseRestCallback<C, D extends BaseTemplateViewInterface> i
                     Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput());
                 }
             } else {
-                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError() + "\n"
-                        + (message != null ? message.toString() : "") + "\n"
-                        + (throwable != null ? throwable.toString() : ""));
+                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError() + "\n" + (message != null ? message.toString() : "")
+                        + "\n" + (throwable != null ? throwable.toString() : ""));
             }
 
         } finally {

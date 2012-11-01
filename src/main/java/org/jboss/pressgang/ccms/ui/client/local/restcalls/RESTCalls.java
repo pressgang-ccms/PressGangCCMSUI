@@ -67,7 +67,7 @@ public final class RESTCalls {
      * An Exception may be thrown
      * The call succeeds or
      * The call fails
-     * <p/>
+     * 
      * This interface defines callbacks for these events.
      *
      * @param <T> The type that is returned by the REST call

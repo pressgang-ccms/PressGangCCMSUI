@@ -146,9 +146,9 @@ public class SearchFieldEditor extends FlexTable implements LeafValueEditor<Sear
         ids.setValue(value.getIds());
         notIds.setValue(value.getNotIds());
         title.setValue(value.getTitle());
-        contents.setValue(value.getContents());
-        notContents.setValue(value.getContents());
         notTitle.setValue(value.getNotTitle());
+        contents.setValue(value.getContents());
+        notContents.setValue(value.getNotContents());        
         description.setValue(value.getDescription());
         notDescription.setValue(value.getNotDescription());
         includedInContentSpecs.setValue(value.getIncludedInContentSpecs());
@@ -172,9 +172,9 @@ public class SearchFieldEditor extends FlexTable implements LeafValueEditor<Sear
         value.setIds(ids.getValue());
         value.setNotIds(notIds.getValue());
         value.setTitle(title.getValue());
-        value.setContents(contents.getValue());
-        value.setContents(notContents.getValue());
         value.setNotTitle(notTitle.getValue());
+        value.setContents(contents.getValue());
+        value.setNotContents(notContents.getValue());
         value.setDescription(description.getValue());
         value.setNotDescription(notDescription.getValue());
         value.setIncludedInContentSpecs(includedInContentSpecs.getValue());

@@ -67,7 +67,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
                 
                 @Override
                 public void setSort(final RESTTagInCategoryCollectionItemV1 child, int index) {
-                    child.getItem().setRelationshipSort(index);                   
+                    child.getItem().explicitSetRelationshipSort(index);                   
                 }
             };
 
@@ -101,7 +101,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
                         newChild.setId(copy.getItem().getId());
                         newChild.setName(copy.getItem().getName());
                         newChild.setRelationshipSort(0);
-                        filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addItem(newChild);                        
+                        filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(newChild);                        
                     }
 
                 }, new UpdateAfterChildModfiedCallback() {
@@ -202,9 +202,6 @@ public class CategoriesFilteredResultsAndCategoryComponent
                                 /* This category is no longer a new category */
                                 filteredResultsComponent.getProviderData().getDisplayedItem()
                                         .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
-                                filteredResultsDisplay.getProvider().updateRowData(
-                                        filteredResultsComponent.getProviderData().getStartRow(),
-                                        filteredResultsComponent.getProviderData().getItems());
 
                                 tagComponent.refreshExistingChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
                                 tagComponent.refreshPossibleChildrenDataAndList();
