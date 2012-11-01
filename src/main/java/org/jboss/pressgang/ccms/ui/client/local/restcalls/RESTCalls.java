@@ -430,9 +430,8 @@ public final class RESTCalls {
     static public void getProjectsFromQuery(final RESTCallback<RESTProjectCollectionV1> callback, final String queryString,
                                             int start, int end) {
         /* Expand the categories and projects in the tags */
-        final String tagsExpand = "\"branches\":[{\"trunk\":{\"name\": \"" + RESTProjectV1.TAGS_NAME + "\"}}]";
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
-                + ", \"name\": \"projects\"}, " + tagsExpand + "}]}";
+                + ", \"name\": \"projects\"}, \"branches\":[" + PROJECT_EXPANSION + "]}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -443,7 +442,7 @@ public final class RESTCalls {
 
     static public void getProjects(final RESTCallback<RESTProjectCollectionV1> callback) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"projects\"}, " + PROJECT_EXPANSION + "}]}";
+        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"projects\"}, \"branches\":[" + PROJECT_EXPANSION + "]}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
