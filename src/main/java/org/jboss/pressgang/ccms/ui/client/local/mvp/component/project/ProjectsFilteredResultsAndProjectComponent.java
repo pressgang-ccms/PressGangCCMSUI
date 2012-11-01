@@ -62,7 +62,7 @@ public class ProjectsFilteredResultsAndProjectComponent
         this.tagDisplay = tagDisplay;
         this.tagComponent = tagComponent;
 
-        super.bind(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, entityPropertiesView, entityPropertiesView,
+        super.bind(Preferences.PROJECT_VIEW_MAIN_SPLIT_WIDTH, entityPropertiesView, entityPropertiesView,
                 filteredResultsDisplay, filteredResultsComponent, display, waitDisplay);
 
         /* Bind the logic to add and remove possible children */
@@ -83,7 +83,7 @@ public class ProjectsFilteredResultsAndProjectComponent
                                 newChild.setId(copy.getItem().getId());
                                 newChild.setName(copy.getItem().getName());      
                                 filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags()
-                                        .addItem(newChild);
+                                        .addNewItem(newChild);
                             }
 
                         }, new UpdateAfterChildModfiedCallback() {

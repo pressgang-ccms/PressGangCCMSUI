@@ -93,8 +93,6 @@ abstract public class BaseChildrenComponent<S extends BaseChildrenViewInterface<
                 }
                 
                 updateAfterChildModfied.updateAfterChidModfied();
-
-
             }
         });
     }

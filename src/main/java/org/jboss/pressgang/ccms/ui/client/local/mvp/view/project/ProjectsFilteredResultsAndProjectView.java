@@ -12,6 +12,6 @@ public class ProjectsFilteredResultsAndProjectView extends
         ProjectsFilteredResultsAndProjectPresenter.Display {
     
     public ProjectsFilteredResultsAndProjectView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Categories());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Projects());
     }
 }
