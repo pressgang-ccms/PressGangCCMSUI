@@ -28,7 +28,7 @@ public class TagProjectsComponent extends BaseChildrenComponent<TagProjectsPrese
     {
         super.bind(display, waitDisplay);
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
-        getEntityList();
+        refreshPossibleChildrenDataAndList();
     }
     
     /**
@@ -78,7 +78,7 @@ public class TagProjectsComponent extends BaseChildrenComponent<TagProjectsPrese
      * added to a project, that will actually be persisted through the REST interface as a project added to the displayed tag.
      */
     @Override
-    public void getEntityList() {
+    public void refreshPossibleChildrenDataAndList() {
         final RESTCalls.RESTCallback<RESTProjectCollectionV1> callback = new RESTCalls.RESTCallback<RESTProjectCollectionV1>() {
             @Override
             public void begin() {

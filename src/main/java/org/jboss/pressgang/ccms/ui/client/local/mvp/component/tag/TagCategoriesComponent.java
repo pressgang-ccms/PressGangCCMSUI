@@ -62,7 +62,7 @@ public class TagCategoriesComponent
         bindExistingChildrenRowClick();
         loadChildSplitResize(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
         bindChildSplitResize(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH);
-        getEntityList();
+        refreshPossibleChildrenDataAndList();
     }
 
     /**
@@ -212,7 +212,7 @@ public class TagCategoriesComponent
      * added to a project, that will actually be persisted through the REST interface as a category added to the displayed tag.
      */
     @Override
-    public void getEntityList() {
+    public void refreshPossibleChildrenDataAndList() {
         final RESTCalls.RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
             @Override
             public void begin() {

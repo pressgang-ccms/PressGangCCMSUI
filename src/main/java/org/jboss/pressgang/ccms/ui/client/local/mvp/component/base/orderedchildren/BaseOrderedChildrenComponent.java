@@ -47,7 +47,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
     {
         super.bind(display, waitDisplay);
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
-        getEntityList();
+        refreshPossibleChildrenDataAndList();
         loadChildSplitResize(preferencesKey);
         bindChildSplitResize(preferencesKey);
     }

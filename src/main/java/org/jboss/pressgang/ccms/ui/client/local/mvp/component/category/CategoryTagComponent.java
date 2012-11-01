@@ -40,7 +40,7 @@ public class CategoryTagComponent
     }
 
     @Override
-    public void getEntityList() {
+    public void refreshPossibleChildrenDataAndList() {
         final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
             @Override
             public void begin() {

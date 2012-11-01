@@ -27,7 +27,7 @@ public class ProjectTagComponent
     implements ProjectTagPresenter.LogicComponent {
 
     @Override
-    public void getEntityList() {
+    public void refreshPossibleChildrenDataAndList() {
         
         final RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, ProjectTagPresenter.Display>(display,
                 new BaseRestCallback.SuccessAction<RESTTagCollectionV1, ProjectTagPresenter.Display>() {

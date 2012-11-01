@@ -102,7 +102,7 @@ public class ProjectsFilteredResultsAndProjectComponent
     @Override
     protected void newEntitySelected() {
         /* Get a new collection of tags */
-        tagComponent.getEntityList();
+        tagComponent.refreshPossibleChildrenDataAndList();
     }
 
         @Override
@@ -157,7 +157,7 @@ public class ProjectsFilteredResultsAndProjectComponent
                                         filteredResultsComponent.getProviderData().getStartRow(),
                                         filteredResultsComponent.getProviderData().getItems());
 
-                                tagComponent.getEntityList();
+                                tagComponent.refreshPossibleChildrenDataAndList();
 
                                 updateDisplayAfterSave(wasNewEntity);
 
@@ -172,9 +172,9 @@ public class ProjectsFilteredResultsAndProjectComponent
                      * If this is a new project, it needs to be saved in order to get the tag id to complete the project
                      * updates. Upon success, the categories will be updated.
                      */
-                    final boolean unsavedTagChanges = unsavedProjectChanges() || unsavedTagChanges();
+                    final boolean unsavedChanges = unsavedProjectChanges() || unsavedTagChanges();
 
-                    if (unsavedTagChanges) {
+                    if (unsavedChanges) {
 
                         final RESTProjectV1 project = new RESTProjectV1();
                         project.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
@@ -237,7 +237,7 @@ public class ProjectsFilteredResultsAndProjectComponent
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
 
-                tagComponent.getEntityList();
+                tagComponent.refreshPossibleChildrenDataAndList();
 
                 reInitialiseView(lastDisplayedView == null ? entityPropertiesView : lastDisplayedView);
             }

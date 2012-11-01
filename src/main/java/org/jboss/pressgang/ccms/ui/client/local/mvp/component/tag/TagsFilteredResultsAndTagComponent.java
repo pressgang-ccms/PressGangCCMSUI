@@ -623,8 +623,8 @@ public class TagsFilteredResultsAndTagComponent
         categoriesComponent.getPossibleChildrenProviderData().reset();
         projectsComponent.getPossibleChildrenProviderData().reset();
 
-        projectsComponent.getEntityList();
-        categoriesComponent.getEntityList();
+        projectsComponent.refreshPossibleChildrenDataAndList();
+        categoriesComponent.refreshPossibleChildrenDataAndList();
 
         /* remove the category tags list */
         if (removeCatgeoryTagListFromScreen) {

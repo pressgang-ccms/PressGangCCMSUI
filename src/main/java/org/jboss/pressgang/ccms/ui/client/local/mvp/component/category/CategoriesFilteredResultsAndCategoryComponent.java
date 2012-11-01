@@ -129,7 +129,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
         tagComponent.refreshExistingChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
         /* Get a new collection of tags */
-        tagComponent.getEntityList();
+        tagComponent.refreshPossibleChildrenDataAndList();
     }
 
     protected void bindExistingChildrenRowClick() {
@@ -207,7 +207,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
                                         filteredResultsComponent.getProviderData().getItems());
 
                                 tagComponent.refreshExistingChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
-                                tagComponent.getEntityList();
+                                tagComponent.refreshPossibleChildrenDataAndList();
 
                                 updateDisplayAfterSave(wasNewEntity);
 
@@ -288,7 +288,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
 
                 tagComponent.refreshExistingChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
-                tagComponent.getEntityList();
+                tagComponent.refreshPossibleChildrenDataAndList();
 
                 reInitialiseView(lastDisplayedView == null ? entityPropertiesView : lastDisplayedView);
             }
