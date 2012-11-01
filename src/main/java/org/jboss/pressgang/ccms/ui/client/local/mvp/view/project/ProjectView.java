@@ -67,7 +67,7 @@ public class ProjectView extends BaseTemplateView<RESTProjectV1, RESTProjectColl
     }
 
     private void populateTopActionBar() {
-        this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.CategoryDetails()));
+        this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.ProjectDetails()));
         this.addActionButton(this.getChildren());
         this.addActionButton(this.getSave());
         addRightAlignedActionButtonPaddingPanel();

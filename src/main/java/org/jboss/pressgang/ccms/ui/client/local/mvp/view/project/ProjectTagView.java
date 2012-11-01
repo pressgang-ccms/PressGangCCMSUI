@@ -94,7 +94,7 @@ public class ProjectTagView
 
     private void populateTopActionBar() {
         this.addActionButton(this.getDetails());
-        this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.CategoryTags()));
+        this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.ProjectTags()));
         this.addActionButton(this.getSave());
         addRightAlignedActionButtonPaddingPanel();
     }
