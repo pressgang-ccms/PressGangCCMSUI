@@ -57,11 +57,11 @@ public class ProjectedFilteredResultsView extends
     public ProjectedFilteredResultsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Projects());
 
-        getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.CategoryID());
-        getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.CategoryName());
+        getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ProjectID());
+        getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.ProjectName());
 
-        addFilterField(PressGangCCMSUI.INSTANCE.CategoryID(), idFilter);
-        addFilterField(PressGangCCMSUI.INSTANCE.CategoryName(), nameFilter);
-        addFilterField(PressGangCCMSUI.INSTANCE.CategoryDescription(), descriptionFilter);
+        addFilterField(PressGangCCMSUI.INSTANCE.ProjectID(), idFilter);
+        addFilterField(PressGangCCMSUI.INSTANCE.ProjectName(), nameFilter);
+        addFilterField(PressGangCCMSUI.INSTANCE.ProjectDescription(), descriptionFilter);
     }
 }

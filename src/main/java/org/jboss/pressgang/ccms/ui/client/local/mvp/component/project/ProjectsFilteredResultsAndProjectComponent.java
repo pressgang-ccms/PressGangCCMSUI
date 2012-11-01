@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.project;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.stringEqualsEquatingNullWithEmptyString;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
@@ -35,6 +36,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 
+@Dependent
 public class ProjectsFilteredResultsAndProjectComponent
         extends BaseSearchAndEditComponent<
         ProjectFilteredResultsPresenter.Display, 

@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.project;
 
+import javax.enterprise.context.Dependent;
+
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
@@ -15,13 +17,14 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 
 import com.google.gwt.view.client.HasData;
 
+@Dependent
 public class ProjectTagComponent
-        extends
-        BaseChildrenComponent<ProjectTagPresenter.Display,               // The display
+    extends BaseChildrenComponent<
+        ProjectTagPresenter.Display,                                            // The display type
         RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1,    // The main REST types 
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,                // The possible children types
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>                // The existing children types
-        implements ProjectTagPresenter.LogicComponent {
+    implements ProjectTagPresenter.LogicComponent {
 
     @Override
     public void getEntityList() {

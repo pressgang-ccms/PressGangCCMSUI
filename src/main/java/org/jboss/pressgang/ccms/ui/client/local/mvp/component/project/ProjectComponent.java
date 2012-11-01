@@ -1,11 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.project;
 
+import javax.enterprise.context.Dependent;
+
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 
+@Dependent
 public class ProjectComponent extends ComponentBase<ProjectPresenter.Display> implements ProjectPresenter.LogicComponent {
 
     /**
