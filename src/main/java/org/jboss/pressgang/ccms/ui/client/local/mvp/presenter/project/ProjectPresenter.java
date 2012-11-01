@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
@@ -17,6 +18,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjec
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 
+@Dependent
 public class ProjectPresenter implements TemplatePresenter {
     
     public static final String HISTORY_TOKEN = "ProjectView";

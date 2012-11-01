@@ -161,6 +161,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
         return modifiedSort;
     }
 
+    @Override
     public void refreshExistingChildList(final W parent)
     {
         display.setExistingChildrenProvider(generateExistingProvider(parent));

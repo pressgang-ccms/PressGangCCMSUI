@@ -333,7 +333,6 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
         addShortcutButton(categories);
 
         projects = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Projects());
-        projects.setEnabled(false);
         addShortcutButton(projects);
 
         reports = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Reports());

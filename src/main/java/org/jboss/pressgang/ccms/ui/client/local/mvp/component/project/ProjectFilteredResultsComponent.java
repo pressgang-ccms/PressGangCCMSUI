@@ -1,9 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.project;
 
 import org.jboss.errai.bus.client.api.Message;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;

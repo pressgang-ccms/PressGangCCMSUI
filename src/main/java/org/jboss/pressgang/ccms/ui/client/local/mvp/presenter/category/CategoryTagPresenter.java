@@ -20,7 +20,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.Ba
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.category.CategoryViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
-import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent

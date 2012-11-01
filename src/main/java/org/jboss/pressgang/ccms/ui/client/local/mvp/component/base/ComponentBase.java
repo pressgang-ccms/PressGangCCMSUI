@@ -6,11 +6,11 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.CategoriesFilteredResultsAndCategoryViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.CreateTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ProjectsFilteredResultsAndProjectViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchTagsFieldsAndFiltersViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -96,6 +96,13 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface>
                     eventBus.fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
             }
         });
+        
+        display.getProjects().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                eventBus.fireEvent(new ProjectsFilteredResultsAndProjectViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
+            }
+        });
 
         display.getAdvanced().addClickHandler(new ClickHandler() {
             @Override
@@ -103,6 +110,8 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface>
                 display.getShortCutPanelParent().setWidget(display.getAdvancedShortcutPanel());
             }
         });
+        
+        
 
         final ClickHandler closeAdvancedMenu = new ClickHandler() {
             @Override

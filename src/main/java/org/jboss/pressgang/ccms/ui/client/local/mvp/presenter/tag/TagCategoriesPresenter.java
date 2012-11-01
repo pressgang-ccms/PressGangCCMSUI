@@ -20,7 +20,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePrese
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 
-import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 /**

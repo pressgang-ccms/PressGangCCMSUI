@@ -2,11 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
@@ -53,6 +49,7 @@ abstract public class BaseChildrenComponent<S extends BaseChildrenViewInterface<
     /**
      * Binds behaviour to the tag list buttons
      */
+    @Override
     public void bindPossibleChildrenListButtonClicks(final GetExistingCollectionCallback<D, E, F> getExistingCollectionCallback, final AddPossibleChildCallback<A, B, C> addChildCallback,
             final UpdateAfterChildModfiedCallback updateAfterChildModfied) {
         display.getPossibleChildrenButtonColumn().setFieldUpdater(new FieldUpdater<C, String>() {
@@ -102,6 +99,7 @@ abstract public class BaseChildrenComponent<S extends BaseChildrenViewInterface<
     protected void bindPossibleChildrenRowClick() {
     };
     
+    @Override
     public void refreshPossibleChildList()
     {
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider());

@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.CategoriesFilteredRes
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.CreateTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ProjectsFilteredResultsAndProjectViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchTagsFieldsAndFiltersViewEvent;
@@ -24,6 +25,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectsFilteredResultsAndProjectPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter;
@@ -71,8 +73,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 CategoriesFilteredResultsAndCategoryPresenter.HISTORY_TOKEN));
         eventBus.addHandler(SearchTagsFieldsAndFiltersViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
                 SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN));
-        eventBus.addHandler(CreateTopicViewEvent.TYPE, new ViewOpenEventHandler(
-                CreateTopicPresenter.HISTORY_TOKEN));
+        eventBus.addHandler(CreateTopicViewEvent.TYPE, new ViewOpenEventHandler(CreateTopicPresenter.HISTORY_TOKEN));
+        eventBus.addHandler(ProjectsFilteredResultsAndProjectViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
+                ProjectsFilteredResultsAndProjectPresenter.HISTORY_TOKEN));
     }
 
     @Override
@@ -131,6 +134,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 presenter = getBeanInstance(SearchFieldPresenter.class);
             } else if (token.startsWith(SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(SearchTagsFieldsAndFiltersPresenter.class);
+            } else if (token.startsWith(ProjectsFilteredResultsAndProjectPresenter.HISTORY_TOKEN)) {
+                presenter = getBeanInstance(ProjectsFilteredResultsAndProjectPresenter.class);
             }
 
             if (presenter.isPresent()) {
