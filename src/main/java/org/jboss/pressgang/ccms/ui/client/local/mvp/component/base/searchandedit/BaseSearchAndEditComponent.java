@@ -98,7 +98,7 @@ abstract public class BaseSearchAndEditComponent<
                     filteredResultsComponent.getProviderData().getSize(),
                     filteredResultsComponent.getProviderData().getStartRow());
         }
-        /* If we just created a new tag, refresh the list of tags from the database */
+        /* If we just created a new entity, refresh the list of entities from the database */
         else {
             filteredResultsComponent.bind(filteredResultsComponent.getQuery(), filteredResultsDisplay, waitDisplay);
 

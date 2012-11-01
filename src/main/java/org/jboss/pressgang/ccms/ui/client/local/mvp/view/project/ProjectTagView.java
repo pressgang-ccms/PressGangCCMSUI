@@ -19,14 +19,14 @@ import com.google.gwt.user.client.ui.PushButton;
 
 public class ProjectTagView
     extends BaseChildrenView<
-        RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1,                 // The main entity types
-        RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,                                // The possible child types
-        RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>  // The existing child types
+        RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1,  // The main entity types
+        RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,             // The possible child types
+        RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>             // The existing child types
     implements ProjectTagPresenter.Display {
     
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-    private final PushButton details = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CategoryDetails());
-    private final PushButton children = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CategoryTags());
+    private final PushButton details = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ProjectDetails());
+    private final PushButton children = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ProjectTags());
 
     private final TextColumn<RESTTagCollectionItemV1> tagsIdColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override

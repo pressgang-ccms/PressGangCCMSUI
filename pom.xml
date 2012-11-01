@@ -587,6 +587,29 @@
 					<version>${jetty.version}</version>
 				</dependency>
 			</dependencies>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>gwt-maven-plugin</artifactId>
+						<version>${gwt.maven.version}</version>
+						<executions>
+							<execution>
+								<configuration>
+									<extraJvmArgs>-Xmx1024m -Xss1024k</extraJvmArgs>
+								</configuration>
+								<goals>
+									<goal>compile</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<skip>false</skip>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 
 		<!-- Begin OpenShift Express Profiles -->
@@ -796,7 +819,7 @@
 						<executions>
 							<execution>
 								<configuration>
-									<extraJvmArgs>-Xmx2048M -Xss2048k</extraJvmArgs>
+									<extraJvmArgs>-Xmx1024m -Xss1024k</extraJvmArgs>
 								</configuration>
 								<goals>
 									<goal>compile</goal>
@@ -1083,7 +1106,7 @@
 
 							<!-- Note: to run the test in a real browser, set -DargLine='-Dgwt.args="-runStyle 
 								Manual:1"' -->
-							<argLine>-Xmx2048m ${argLine}</argLine>
+							<argLine>-Xmx3072m ${argLine}</argLine>
 
 
 							<systemProperties>

@@ -53,9 +53,6 @@ public interface BaseOrderedChildrenViewInterface<
 
     @Override
     void setOriginalEntity(final T originalEntity);
-
-    @Override
-    void initialize(final T originalEntity, final boolean readOnly);
     
     Column<F, String> getExistingChildUpButtonColumn();
 

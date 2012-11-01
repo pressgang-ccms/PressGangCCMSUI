@@ -13,12 +13,19 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * 
- * @author matthew
+ * @author Matthew Casperson
  *
- * @param <T>
- * @param <U>
- * @param <V>
- * @param <W> The potential children type
+ * @param <T> The entity type
+ * @param <U> The collection type for entity T
+ * @param <V> The collection item type for entity T
+ * 
+ * @param <A> The possible child type
+ * @param <B> The collection type for entity A
+ * @param <C> The collection item type for entity A
+ * 
+ * @param <D> The existing child type
+ * @param <E> The collection type for entity D
+ * @param <F> The collection item type for entity D
  */
 public interface BaseChildrenViewInterface<
     T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, 
@@ -40,7 +47,7 @@ public interface BaseChildrenViewInterface<
 
     void setPossibleChildrenProvider(final EnhancedAsyncDataProvider<C> possibleChildrenProvider);
 
-    void initialize(final T originalEntity, final boolean readOnly);
+    
 
     Column<C, String> getPossibleChildrenButtonColumn();
 }

@@ -18,7 +18,14 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * @param <T> The entity type
  * @param <U> The collection type for entity T
  * @param <V> The collection item type for entity T
- * @param <W> The entity type for the possible children
+ * 
+ * @param <A> The possible child type
+ * @param <B> The collection type for entity A
+ * @param <C> The collection item type for entity A
+ * 
+ * @param <D> The existing child type
+ * @param <E> The collection type for entity D
+ * @param <F> The collection item type for entity D
  */
 abstract public class BaseChildrenView<
     T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, 
@@ -70,7 +77,6 @@ abstract public class BaseChildrenView<
         possibleChildrenProvider.addDataDisplay(possibleChildrenResults);
     }
 
-    @Override
     public void initialize(final T originalEntity, final boolean readOnly) {
         this.originalEntity = originalEntity;
     }

@@ -157,6 +157,7 @@ public class ProjectsFilteredResultsAndProjectComponent
                                         filteredResultsComponent.getProviderData().getStartRow(),
                                         filteredResultsComponent.getProviderData().getItems());
 
+                                tagDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
                                 tagComponent.refreshPossibleChildrenDataAndList();
 
                                 updateDisplayAfterSave(wasNewEntity);
