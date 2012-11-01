@@ -65,8 +65,8 @@ public class ProjectsFilteredResultsAndProjectPresenter implements TemplatePrese
     private ProjectFilteredResultsPresenter.LogicCompnent filteredResultsComponent;
 
     /**
-     * An Errai injected instance of a class that implements ProjectPresenter.Display. This is the view that displays the
-     * fields of the category (name, description etc)
+     * An Errai injected instance of a class that implements ProjectPresenter.Display. This is the view that displays the fields
+     * of the category (name, description etc)
      */
     @Inject
     private ProjectPresenter.Display resultDisplay;
@@ -89,7 +89,7 @@ public class ProjectsFilteredResultsAndProjectPresenter implements TemplatePrese
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        
+
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
         filteredResultsComponent.bind(queryString, filteredResultsDisplay, display);

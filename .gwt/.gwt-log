@@ -2,18 +2,18 @@ Public resources found in...
 Translatable source found in...
 Found 0 cached/archived units.  Used 0 / 2729 units from cache.
 Compiling...
-   0% complete (ETR: ?)
-   10% complete (ETR: 84 seconds)
-   20% complete (ETR: 54 seconds)
-   30% complete (ETR: 37 seconds)
-   40% complete (ETR: 26 seconds)
-   50% complete (ETR: 18 seconds)
-   60% complete (ETR: 13 seconds)
-   70% complete (ETR: 9 seconds)
-   80% complete (ETR: 5 seconds)
-   90% complete (ETR: 2 seconds)
+   0% complete (ETR: 76 seconds)
+   10% complete (ETR: 53 seconds)
+   20% complete (ETR: 30 seconds)
+   30% complete (ETR: 21 seconds)
+   40% complete (ETR: 15 seconds)
+   50% complete (ETR: 11 seconds)
+   60% complete (ETR: 8 seconds)
+   70% complete (ETR: 5 seconds)
+   80% complete (ETR: 3 seconds)
+   90% complete (ETR: 1 seconds)
    100% complete (ETR: 0 seconds)
-   Compilation completed in 32.29 seconds
+   Compilation completed in 27.50 seconds
 Validating units:
    [ERROR] Errors in 'file:/home/matthew/git/PressGangCCMSUI/src/main/java/com/google/gwt/user/client/ui/FourTextAndImageButtonSearchUICategoryEditor.java'
       [ERROR] Line 17: No source code is available for type org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory.TagSummary; did you forget to inherit a required module?

@@ -168,7 +168,7 @@ abstract public class BaseSearchAndEditComponent<
 
             @Override
             public void onResize(final ResizeEvent event) {
-                Preferences.INSTANCE.saveSetting(saveKey, display.getSplitPanel().getSplitPosition(display.getResultsPanel())
+                Preferences.INSTANCE.saveSetting(saveKey, display.getSplitPanel().getSplitPosition(display.getResultsViewLayoutPanel())
                         + "");
             }
         });
@@ -180,7 +180,7 @@ abstract public class BaseSearchAndEditComponent<
      * @param preferencesKey The key against which the previous size was saved
      */
     private void loadMainSplitResize(final String preferencesKey) {
-        display.getSplitPanel().setSplitPosition(display.getResultsPanel(),
+        display.getSplitPanel().setSplitPosition(display.getResultsViewLayoutPanel(),
                 Preferences.INSTANCE.getInt(preferencesKey, Constants.SPLIT_PANEL_SIZE), false);
     }
 
