@@ -18,8 +18,8 @@ public class ProjectView extends BaseTemplateView<RESTProjectV1, RESTProjectColl
         implements ProjectPresenter.Display {
 
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-    private final PushButton details = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CategoryDetails());
-    private final PushButton children = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CategoryTags());
+    private final PushButton details = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ProjectDetails());
+    private final PushButton children = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ProjectTags());
   
     /** The GWT Editor Driver */
     private final ProjectPresenterDriver driver = GWT.create(ProjectPresenterDriver.class);

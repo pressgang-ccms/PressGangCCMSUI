@@ -4,6 +4,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 
@@ -44,6 +45,12 @@ abstract public class BaseChildrenComponent<S extends BaseChildrenViewInterface<
     @Override
     public void setPossibleChildrenProviderData(final ProviderUpdateData<C> providerData) {
         this.providerData = providerData;
+    }
+    
+    @Override
+    public void bind(final S display, final BaseTemplateViewInterface waitDisplay) {
+        super.bind(display, waitDisplay);
+        refreshPossibleChildList();
     }
 
     /**
