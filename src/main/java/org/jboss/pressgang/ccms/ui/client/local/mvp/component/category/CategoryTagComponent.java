@@ -35,14 +35,9 @@ public class CategoryTagComponent
 
     @Override
     public void bind(final CategoryTagPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
-        super.bind(display, waitDisplay);
-        loadChildSplitResize(Preferences.CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH);
-        bindChildSplitResize(Preferences.CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH);
-        display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
-        getEntityList();
+        super.bind(Preferences.CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH, display, waitDisplay);
+        
     }
-
-    
 
     @Override
     public void getEntityList() {

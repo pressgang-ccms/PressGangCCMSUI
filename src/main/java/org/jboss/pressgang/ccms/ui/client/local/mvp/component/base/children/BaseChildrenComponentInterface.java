@@ -64,4 +64,9 @@ public interface BaseChildrenComponentInterface<S extends BaseChildrenViewInterf
      */
     void bindPossibleChildrenListButtonClicks(final GetExistingCollectionCallback<D, E, F> getExistingCollectionCallback, final AddPossibleChildCallback<A, B, C> addChildCallback,
             final UpdateAfterChildModfiedCallback updateAfterChildModfied);
+    
+    /**
+     * Called to refresh the list of potential children
+     */
+    public void refreshPossibleChildList();
 }

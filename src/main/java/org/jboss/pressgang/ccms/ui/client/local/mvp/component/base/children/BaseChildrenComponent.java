@@ -23,8 +23,6 @@ import com.google.gwt.cell.client.FieldUpdater;
  * @param <U> The collection type for entity T
  * @param <V> The collection item type for entity T
  * 
- * @param <W> The parent of the children
- * 
  * @param <A> The possible child type
  * @param <B> The collection type for entity A
  * @param <C> The collection item type for entity A
@@ -103,4 +101,9 @@ abstract public class BaseChildrenComponent<S extends BaseChildrenViewInterface<
      */
     protected void bindPossibleChildrenRowClick() {
     };
+    
+    public void refreshPossibleChildList()
+    {
+        display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
+    }
 }

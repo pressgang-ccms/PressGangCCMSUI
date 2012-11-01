@@ -56,6 +56,10 @@ public final class RESTCalls {
      * The required expansion details for the categories.
      */
     private static final String CATEGORY_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTCategoryV1.TAGS_NAME + "\"}}";
+    /**
+     * The required expansion details for the projects.
+     */
+    private static final String PROJECT_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTProjectV1.TAGS_NAME + "\"}}";
 
     /**
      * All REST calls follow a similar pattern:
@@ -439,12 +443,40 @@ public final class RESTCalls {
 
     static public void getProjects(final RESTCallback<RESTProjectCollectionV1> callback) {
         /* Expand the categories and projects in the tags */
-        final String tagsExpand = "\"branches\":[{\"trunk\":{\"name\": \"" + RESTProjectV1.TAGS_NAME + "\"}}]";
-        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"projects\"}, " + tagsExpand + "}]}";
+        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"projects\"}, " + PROJECT_EXPANSION + "}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
                 createRestMethod(callback).getJSONProjects(expand);
+            }
+        });
+    }
+    
+    static public void getUnexpandedProject(final RESTCallback<RESTProjectV1> callback, final Integer id) {
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONProject(id, "");
+            }
+        });
+    }
+    
+    public static void saveProject(final RESTCallback<RESTProjectV1> callback, final RESTProjectV1 category) {
+        final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).updateJSONProject(expand, category);
+            }
+        });
+    }
+    
+    public static void createProject(final RESTCallback<RESTProjectV1> callback, final RESTProjectV1 category) {
+        final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).createJSONProject(expand, category);
             }
         });
     }

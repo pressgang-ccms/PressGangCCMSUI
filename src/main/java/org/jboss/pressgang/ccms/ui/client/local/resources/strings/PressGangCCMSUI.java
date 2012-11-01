@@ -213,6 +213,8 @@ public interface PressGangCCMSUI extends Constants {
     String ProjectID();
 
     String ProjectDescription();
+    
+    String ProjectDetails();
 
     String NoAction();
 

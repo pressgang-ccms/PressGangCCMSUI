@@ -11,28 +11,32 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionI
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.BaseChildrenComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren.BaseOrderedChildrenComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.project.ProjectViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
 public class ProjectTagPresenter implements TemplatePresenter {
-    
+
     public static final String HISTORY_TOKEN = "ProjectTagView";
-    
+
     public interface Display
             extends
-            BaseOrderedChildrenViewInterface<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1, RESTProjectV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
+            BaseChildrenViewInterface<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>,
+            ProjectViewInterface {
     }
 
     public interface LogicComponent
             extends
-            BaseOrderedChildrenComponentInterface<Display, RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1, RESTProjectV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
+            BaseChildrenComponentInterface<Display, RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
     }
-    
+
     private Integer entityId;
 
     @Inject

@@ -63,8 +63,5 @@ public interface BaseOrderedChildrenComponentInterface<S extends BaseOrderedChil
      */
     public void refreshExistingChildList(final W parent);
     
-    /**
-     * Called to refresh the list of potential children
-     */
-    public void refreshPossibleChildList();
+ 
 }

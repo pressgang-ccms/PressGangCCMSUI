@@ -11,7 +11,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.propertyview.BasePropertyViewComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.category.CategoryViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.project.ProjectViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjectV1BasicDetailsEditor;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
@@ -22,10 +22,10 @@ public class ProjectPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "ProjectView";
 
     // Empty interface declaration, similar to UiBinder
-    public interface CategoryPresenterDriver extends SimpleBeanEditorDriver<RESTProjectV1, RESTProjectV1BasicDetailsEditor> {
+    public interface ProjectPresenterDriver extends SimpleBeanEditorDriver<RESTProjectV1, RESTProjectV1BasicDetailsEditor> {
     }
 
-    public interface Display extends CategoryViewInterface,
+    public interface Display extends ProjectViewInterface,
             BaseEditorViewInterface<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> {
 
     }

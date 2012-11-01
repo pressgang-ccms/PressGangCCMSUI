@@ -6,6 +6,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectio
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.BaseChildrenComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
@@ -41,6 +42,15 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
         extends BaseChildrenComponent<S, T, U, V, A, B, C, D, E, F> implements BaseOrderedChildrenComponentInterface<S, T, U, V, W, A, B, C, D, E, F> {
 
     protected ProviderUpdateData<F> existingProviderData = new ProviderUpdateData<F>();
+    
+    public void bind(final String preferencesKey, final S display, final BaseTemplateViewInterface waitDisplay)
+    {
+        super.bind(display, waitDisplay);
+        display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
+        getEntityList();
+        loadChildSplitResize(preferencesKey);
+        bindChildSplitResize(preferencesKey);
+    }
 
     @Override
     public ProviderUpdateData<F> getExistingProviderData() {
@@ -156,9 +166,6 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
         display.setExistingChildrenProvider(generateExistingProvider(parent));
     }
     
-    public void refreshPossibleChildList()
-    {
-        display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
-    }
+
 
 }
