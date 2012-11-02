@@ -227,7 +227,7 @@ public class ImagesFilteredResultsAndImageComponent
     public boolean checkForUnsavedChanges() {
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
 
-            if (GWTUtilities.stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData()
+            if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData()
                     .getSelectedItem().getItem().getDescription(), filteredResultsComponent.getProviderData()
                     .getDisplayedItem().getItem().getDescription())) {
                 return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
