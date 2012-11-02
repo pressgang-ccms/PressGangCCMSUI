@@ -238,9 +238,9 @@ public class ProjectsFilteredResultsAndProjectComponent
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
 
-                tagComponent.refreshPossibleChildrenDataAndList();
-
                 reInitialiseView(lastDisplayedView == null ? entityPropertiesView : lastDisplayedView);
+                
+                tagComponent.refreshPossibleChildrenDataAndList();
             }
         });
     }
