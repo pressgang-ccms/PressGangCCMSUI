@@ -71,7 +71,7 @@ public class ImagePresenter implements TemplatePresenter {
         void setImageData(ProviderUpdateData<RESTImageCollectionItemV1> imageData);
         void getImage(final Integer imageId);
         List<String> getUnassignedLocales();
-        void bindImageUploadButtons(final ImagePresenter.Display imageDisplay, final BaseTemplateViewInterface waitDisplay);
+        
         void reInitialiseImageView();
     }
 
