@@ -594,19 +594,11 @@
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>gwt-maven-plugin</artifactId>
 						<version>${gwt.maven.version}</version>
-						<executions>
-							<execution>
-								<configuration>
-									<extraJvmArgs>-Xmx1024m -Xss1024k</extraJvmArgs>
-								</configuration>
-								<goals>
-									<goal>compile</goal>
-								</goals>
-							</execution>
-						</executions>
 						<configuration>
-							<skip>false</skip>
+							<extraJvmArgs>-Xmx1024M -Xms1024M -Xss1024k -XX:MaxPermSize=256M -XX:PermSize=128M</extraJvmArgs>
+							<!--<localWorkers>2</localWorkers>-->
 						</configuration>
+
 					</plugin>
 				</plugins>
 			</build>
