@@ -251,6 +251,9 @@ public class TagsFilteredResultsAndTagComponent
                         /*
                          * Reload the list of categories and projects if this is the last REST call to succeed
                          */
+                        categoriesComponent.refreshExistingChildList(categoriesComponent.getPossibleChildrenProviderData().getDisplayedItem().getItem());
+                        categoriesComponent.refreshPossibleChildrenDataAndList();
+                        
                         updateDisplayAfterSave(wasNewTag);
                         Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + newTagId);
                     } finally {
