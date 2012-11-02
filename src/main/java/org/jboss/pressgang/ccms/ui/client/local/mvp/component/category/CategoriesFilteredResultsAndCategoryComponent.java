@@ -132,7 +132,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
         tagComponent.refreshPossibleChildrenDataAndList();
     }
 
-    protected void bindExistingChildrenRowClick() {
+    private void bindExistingChildrenRowClick() {
         tagDisplay.getExistingChildUpButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
             @Override

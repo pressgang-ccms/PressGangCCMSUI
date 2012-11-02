@@ -7,6 +7,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
@@ -23,23 +24,13 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class ImageFilteredResultsView extends BaseTemplateView<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1>
+public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1>
         implements ImageFilteredResultsPresenter.Display {
 
-    private final VerticalPanel searchResultsPanel = new VerticalPanel();
-    private final FlexTable filterTable = new FlexTable();
-    private final Label imageIdFilterLabel = new Label(PressGangCCMSUI.INSTANCE.ImageID());
     private final TextBox imageIdFilter = new TextBox();
-    private final Label imageDescriptionFilterLabel = new Label(PressGangCCMSUI.INSTANCE.ImageDescription());
     private final TextBox imageDescriptionFilter = new TextBox();
-    private final Label imageOriginalFileNameFilterLabel = new Label(PressGangCCMSUI.INSTANCE.ImageOriginalFileName());
     private final TextBox imageOriginalFileNameFilter = new TextBox();
-    private final PushButton search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
 
-    private final SimplePager pager = UIUtilities.createSimplePager();
-    private final CellTable<RESTImageCollectionItemV1> results = new CellTable<RESTImageCollectionItemV1>(
-            Constants.MAX_SEARCH_RESULTS, (Resources) GWT.create(TableResources.class));
-    private org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider;
 
     private final TextColumn<RESTImageCollectionItemV1> idColumn = new TextColumn<RESTImageCollectionItemV1>() {
         @Override
@@ -71,57 +62,16 @@ public class ImageFilteredResultsView extends BaseTemplateView<RESTImageV1, REST
         return imageDescriptionFilter;
     }
 
-    @Override
-    public SimplePager getPager() {
-        return pager;
-    }
-
-    @Override
-    public CellTable<RESTImageCollectionItemV1> getResults() {
-        return results;
-    }
-
-    @Override
-    public EnhancedAsyncDataProvider<RESTImageCollectionItemV1> getProvider() {
-        return provider;
-    }
-
-    @Override
-    public void setProvider(EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider) {
-        this.provider = provider;
-        provider.addDataDisplay(results);
-    }
-
     public ImageFilteredResultsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Images());
 
-        this.addActionButton(search);
-        this.addRightAlignedActionButtonPaddingPanel();
+       
+        getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ImageID());
+        getResults().addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.ImageDescription());
 
-        results.addColumn(idColumn, PressGangCCMSUI.INSTANCE.ImageID());
-        results.addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.ImageDescription());
-
-        searchResultsPanel.addStyleName(CSSConstants.IMAGE_FILTERED_RESULTS_PANEL);
-        filterTable.addStyleName(CSSConstants.IMAGE_FILTERED_OPTIONS_PANEL);
-
-        filterTable.setWidget(0, 0, imageIdFilterLabel);
-        filterTable.setWidget(0, 1, imageIdFilter);
-        filterTable.setWidget(1, 0, imageDescriptionFilterLabel);
-        filterTable.setWidget(1, 1, imageDescriptionFilter);
-        filterTable.setWidget(2, 0, imageOriginalFileNameFilterLabel);
-        filterTable.setWidget(2, 1, imageOriginalFileNameFilter);
-
-        searchResultsPanel.add(filterTable);
-        searchResultsPanel.add(results);
-        searchResultsPanel.add(pager);
-
-        pager.setDisplay(results);
-
-        this.getPanel().add(searchResultsPanel);
+        addFilterField(PressGangCCMSUI.INSTANCE.ImageID(), imageIdFilter);
+        addFilterField(PressGangCCMSUI.INSTANCE.ImageDescription(), imageDescriptionFilter);
+        addFilterField(PressGangCCMSUI.INSTANCE.ImageOriginalFileName(), imageOriginalFileNameFilter);
     }
 
-    @Override
-    public PushButton getSearch() {
-        return search;
-    }
 }

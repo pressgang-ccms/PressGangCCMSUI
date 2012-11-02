@@ -67,23 +67,15 @@ public class ImagePresenter implements TemplatePresenter {
     }    
 
     public interface LogicComponent extends Component<Display> {
-        ProviderUpdateData<RESTImageCollectionItemV1> getImageData();
-        void setImageData(ProviderUpdateData<RESTImageCollectionItemV1> imageData);
-        void getImage(final Integer imageId);
+        void getEntity(final Integer imageId);
     }
 
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        /*
-         * normally the displayedImage would be from a collection, but as this presenter only works with one specified entity,
-         * we just create the wrapper RESTImageCollectionItemV1 object manually.
-         */
-        component.getImageData().setDisplayedItem(new RESTImageCollectionItemV1());
-        component.getImageData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
-        component.getImageData().getDisplayedItem().setItem(new RESTImageV1());        
+       
         component.bind(display, display);
-        component.getImage(imageId);
+        component.getEntity(imageId);
         component.setFeedbackLink(HISTORY_TOKEN);
     }
 

@@ -19,9 +19,10 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.HasData;
 
 public class CategoryFilteredResultsComponent
-        extends
-        BaseFilteredResultsComponent<CategoryFilteredResultsPresenter.Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1>
-        implements LogicCompnent {
+    extends BaseFilteredResultsComponent<
+        CategoryFilteredResultsPresenter.Display, 
+        RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1>
+    implements LogicCompnent {
 
     @Override
     public void bind(final String queryString, final CategoryFilteredResultsPresenter.Display display,

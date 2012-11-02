@@ -6,49 +6,36 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
-import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
 
 @Dependent
 public class ImageFilteredResultsPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "ImageFilteredResultsView";
 
-    public interface Display extends BaseTemplateViewInterface {
-        EnhancedAsyncDataProvider<RESTImageCollectionItemV1> getProvider();
-
-        void setProvider(final EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider);
-
-        CellTable<RESTImageCollectionItemV1> getResults();
-
-        SimplePager getPager();
+    public interface Display extends
+            BaseFilteredResultsViewInterface<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1> {
 
         TextBox getImageIdFilter();
 
         TextBox getImageDescriptionFilter();
 
-        @Override
-        PushButton getSearch();
-
         TextBox getImageOriginalFileNameFilter();
     }
 
-    public interface LogicComponent extends Component<Display> {
-        ProviderUpdateData<RESTImageCollectionItemV1> getProviderData();
+    public interface LogicComponent extends
+            BaseFilteredResultsComponentInterface<Display, RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1> {
 
-        void setProviderData(ProviderUpdateData<RESTImageCollectionItemV1> providerData);
-
-        void bind(final String queryString, final ImageFilteredResultsPresenter.Display display,
-                final BaseTemplateViewInterface waitDisplay);
     }
 
     @Inject
