@@ -1,12 +1,18 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.image;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
@@ -34,6 +40,11 @@ public class ImagesFilteredResultsAndImageComponent
         ComponentBase<ImagesFilteredResultsAndImagePresenter.Display>
         implements ImagesFilteredResultsAndImagePresenter.LogicComponent {
 
+    /**
+     * A reference to the StringConstants that holds the locales.
+     */
+    private String[] locales;
+    
     private ImageFilteredResultsPresenter.Display imageFilteredResultsDisplay;
     private ImageFilteredResultsPresenter.LogicComponent imageFilteredResultsComponent;
     private ImagePresenter.Display imageDisplay;
@@ -53,6 +64,7 @@ public class ImagesFilteredResultsAndImageComponent
         
         super.bind(display, waitDisplay);
 
+        populateLocales();
         bindListRowClicks();
         bindImageViewButtons();
     }
@@ -98,15 +110,17 @@ public class ImagesFilteredResultsAndImageComponent
                                  */
                                 retValue.cloneInto(
                                         imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
-
-                                reInitialiseImageView();
-
+                                
                                 /*
                                  * If this is the first image selected, display the image view
                                  */
                                 if (needToAddImageView) {
                                     display.displayChildView(imageDisplay);
                                 }
+                                
+                                finishLoading();
+
+                                
                             } finally {
                                 display.removeWaitOperation();
                             }
@@ -260,10 +274,39 @@ public class ImagesFilteredResultsAndImageComponent
 
     private void reInitialiseImageView() {
 
-        imageDisplay.initialize(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), imageComponent
-                .getUnassignedLocales().toArray(new String[0]));
+        imageDisplay.initialize(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), getUnassignedLocales().toArray(new String[0]));
 
         bindImageUploadButtons();
+    }
+    
+    public List<String> getUnassignedLocales() {
+        final List<String> newLocales = new ArrayList<String>(Arrays.asList(locales));
+
+        /* Make it so you can't add a locale if it already exists */
+        if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null) {
+            for (final RESTLanguageImageCollectionItemV1 langImage : imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                    .getLanguageImages_OTM().returnExistingAndAddedCollectionItems()) {
+                newLocales.remove(langImage.getItem().getLocale());
+            }
+        }
+
+        return newLocales;
+    }
+
+    private void populateLocales() {
+        final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+                display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
+                    @Override
+                    public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
+                        /* Get the list of locales from the StringConstant */
+                        locales = retValue.getValue().replaceAll("\\r\\n", "").replaceAll("\\n", "").replaceAll(" ", "").split(",");
+                        
+                        finishLoading();
+                    }
+                }) {
+        };
+
+        RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
     }
     
     /**
@@ -354,12 +397,22 @@ public class ImagesFilteredResultsAndImageComponent
     }
 
     public boolean checkForUnsavedChanges() {
-        if (imageComponent.getImageData().getSelectedItem() != null) {
-            if (!imageComponent.getImageData().getSelectedItem().getItem().getDescription()
-                    .equals(imageComponent.getImageData().getDisplayedItem().getItem().getDescription())) {
+        if (imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+            if (!imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getDescription()
+                    .equals(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription())) {
                 return true;
             }
         }
         return false;
+    }
+    
+    /**
+     * Potentially two REST calls have to finish before we can display the page. This function will be called as each REST call
+     * finishes, and when all the information has been gathered, the page will be displayed.
+     */
+    private void finishLoading() {
+        if (locales != null && imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+            reInitialiseImageView();
+        }
     }
 }

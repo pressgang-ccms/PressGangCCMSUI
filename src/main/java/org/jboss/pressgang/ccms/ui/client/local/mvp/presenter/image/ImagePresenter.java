@@ -70,9 +70,6 @@ public class ImagePresenter implements TemplatePresenter {
         ProviderUpdateData<RESTImageCollectionItemV1> getImageData();
         void setImageData(ProviderUpdateData<RESTImageCollectionItemV1> imageData);
         void getImage(final Integer imageId);
-        List<String> getUnassignedLocales();
-        
-        void reInitialiseImageView();
     }
 
     @Override
