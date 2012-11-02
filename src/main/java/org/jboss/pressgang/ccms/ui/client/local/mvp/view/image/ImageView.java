@@ -23,11 +23,11 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 
-public class ImageView extends BaseTemplateView<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1> implements ImagePresenter.Display {
-    
+public class ImageView extends BaseTemplateView<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1> implements
+        ImagePresenter.Display {
 
     private RESTImageV1Editor editor;
-    private ImagePresenterDriver driver = GWT.create(ImagePresenterDriver.class);
+    private final ImagePresenterDriver driver = GWT.create(ImagePresenterDriver.class);
 
     private final PushButton addLocale = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.AddLocale());
     private final PushButton removeLocale = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RemoveLocale());
@@ -89,6 +89,10 @@ public class ImageView extends BaseTemplateView<RESTImageV1, RESTImageCollection
             this.add(layout);
         }
 
+    }
+
+    public ImagePresenterDriver getDriver() {
+        return driver;
     }
 
     @Override

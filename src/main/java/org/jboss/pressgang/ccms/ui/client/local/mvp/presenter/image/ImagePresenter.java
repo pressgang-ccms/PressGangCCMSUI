@@ -13,6 +13,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionIte
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.Display.ImagePresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
@@ -64,6 +65,8 @@ public class ImagePresenter implements TemplatePresenter {
         AddLocaleInterface getAddLocaleDialog();
 
         RESTImageV1Editor getEditor();
+        
+        ImagePresenterDriver getDriver();
     }    
 
     public interface LogicComponent extends Component<Display> {

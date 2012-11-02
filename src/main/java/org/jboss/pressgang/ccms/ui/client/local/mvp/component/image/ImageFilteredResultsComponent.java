@@ -81,7 +81,8 @@ public class ImageFilteredResultsComponent
                     public void success(final RESTImageCollectionV1 retValue) {
                         try {
                             providerData.setItems(retValue.getItems());
-                            displayAsynchronousList(providerData.getItems(), retValue.getSize(), providerData.getStartRow());
+                            providerData.setSize(retValue.getSize());
+                            displayAsynchronousList(providerData.getItems(), providerData.getSize(), providerData.getStartRow());
                         } finally {
                             display.removeWaitOperation();
                         }

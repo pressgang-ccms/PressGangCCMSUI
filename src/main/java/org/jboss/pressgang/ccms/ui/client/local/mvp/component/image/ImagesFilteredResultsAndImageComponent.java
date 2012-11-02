@@ -45,10 +45,10 @@ public class ImagesFilteredResultsAndImageComponent
      */
     private String[] locales;
     
-    private ImageFilteredResultsPresenter.Display imageFilteredResultsDisplay;
-    private ImageFilteredResultsPresenter.LogicComponent imageFilteredResultsComponent;
-    private ImagePresenter.Display imageDisplay;
-    private ImagePresenter.LogicComponent imageComponent;
+    private ImageFilteredResultsPresenter.Display filteredResultsDisplay;
+    private ImageFilteredResultsPresenter.LogicComponent filteredResultsComponent;
+    private ImagePresenter.Display entityPropertiesView;
+    private ImagePresenter.LogicComponent entityPropertiesComponent;
     
     @Override
     public void bind(final ImageFilteredResultsPresenter.Display imageFilteredResultsDisplay,
@@ -57,10 +57,10 @@ public class ImagesFilteredResultsAndImageComponent
             final ImagesFilteredResultsAndImagePresenter.Display display,
             final BaseTemplateViewInterface waitDisplay) {
         
-        this.imageFilteredResultsDisplay = imageFilteredResultsDisplay;
-        this.imageFilteredResultsComponent = imageFilteredResultsComponent;
-        this.imageDisplay = imageDisplay;
-        this.imageComponent = imageComponent;
+        this.filteredResultsDisplay = imageFilteredResultsDisplay;
+        this.filteredResultsComponent = imageFilteredResultsComponent;
+        this.entityPropertiesView = imageDisplay;
+        this.entityPropertiesComponent = imageComponent;
         
         super.bind(display, waitDisplay);
 
@@ -74,7 +74,7 @@ public class ImagesFilteredResultsAndImageComponent
      */
     private void bindListRowClicks() {
 
-        imageFilteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTImageCollectionItemV1>() {
+        filteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<RESTImageCollectionItemV1>() {
             @Override
             public void onCellPreview(final CellPreviewEvent<RESTImageCollectionItemV1> event) {
                 /* Check to see if this was a click event */
@@ -84,10 +84,10 @@ public class ImagesFilteredResultsAndImageComponent
                     /*
                      * selectedSearchImage will be null until an image is selected for the first time
                      */
-                    final boolean needToAddImageView = imageFilteredResultsComponent.getProviderData().getSelectedItem() == null;
+                    final boolean needToAddImageView = filteredResultsComponent.getProviderData().getSelectedItem() == null;
 
-                    imageFilteredResultsComponent.getProviderData().setDisplayedItem(event.getValue());
-                    imageFilteredResultsComponent.getProviderData().setSelectedItem(event.getValue().clone(true));
+                    filteredResultsComponent.getProviderData().setDisplayedItem(event.getValue());
+                    filteredResultsComponent.getProviderData().setSelectedItem(event.getValue().clone(true));
 
                     final RESTCalls.RESTCallback<RESTImageV1> callback = new RESTCalls.RESTCallback<RESTImageV1>() {
                         @Override
@@ -109,13 +109,13 @@ public class ImagesFilteredResultsAndImageComponent
                                  * http://code.google.com/p/chromium/issues/detail?id=56588
                                  */
                                 retValue.cloneInto(
-                                        imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+                                        filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
                                 
                                 /*
                                  * If this is the first image selected, display the image view
                                  */
                                 if (needToAddImageView) {
-                                    display.displayChildView(imageDisplay);
+                                    display.displayChildView(entityPropertiesView);
                                 }
                                 
                                 finishLoading();
@@ -135,7 +135,7 @@ public class ImagesFilteredResultsAndImageComponent
 
                     };
 
-                    RESTCalls.getImage(callback, imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem()
+                    RESTCalls.getImage(callback, filteredResultsComponent.getProviderData().getSelectedItem().getItem()
                             .getId());
                 }
             }
@@ -144,24 +144,25 @@ public class ImagesFilteredResultsAndImageComponent
     
     private void bindImageViewButtons() {
 
-        imageDisplay.getSave().addClickHandler(new ClickHandler() {
+        entityPropertiesView.getSave().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                imageDisplay.getEditor().flush();
+                entityPropertiesView.getEditor().flush();
 
                 /*
                  * Create the image to be modified. This is so we don't send off unnessessary data.
                  */
                 final RESTImageV1 updateImage = new RESTImageV1();
-                updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
+                updateImage.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
+                updateImage.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
 
                 final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
                         waitDisplay, new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
                             @Override
                             public void doSuccessAction(RESTImageV1 retValue, BaseTemplateViewInterface display) {
-                                retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
-                                reInitialiseImageView();
+                                retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
+                                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
+                                updateDisplayAfterSave(false);
                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                             }
                         }) {
@@ -172,29 +173,29 @@ public class ImagesFilteredResultsAndImageComponent
             }
         });
 
-        imageDisplay.getAddLocale().addClickHandler(new ClickHandler() {
+        entityPropertiesView.getAddLocale().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                imageDisplay.getAddLocaleDialog().getDialogBox().center();
-                imageDisplay.getAddLocaleDialog().getDialogBox().show();
+                entityPropertiesView.getAddLocaleDialog().getDialogBox().center();
+                entityPropertiesView.getAddLocaleDialog().getDialogBox().show();
             }
         });
 
-        imageDisplay.getRemoveLocale().addClickHandler(new ClickHandler() {
+        entityPropertiesView.getRemoveLocale().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 if (Window.confirm(PressGangCCMSUI.INSTANCE.ConfirmDelete())) {
 
-                    final int selectedTab = imageDisplay.getEditor().languageImages_OTMEditor().getSelectedIndex();
+                    final int selectedTab = entityPropertiesView.getEditor().languageImages_OTMEditor().getSelectedIndex();
                     if (selectedTab != -1) {
-                        final RESTLanguageImageCollectionItemV1 selectedImage = imageDisplay.getEditor().languageImages_OTMEditor()
+                        final RESTLanguageImageCollectionItemV1 selectedImage = entityPropertiesView.getEditor().languageImages_OTMEditor()
                                 .itemsEditor().getList().get(selectedTab);
 
                         /*
                          * Create the image to be modified. This is so we don't send off unnessessary data.
                          */
                         final RESTImageV1 updateImage = new RESTImageV1();
-                        updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
+                        updateImage.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
 
                         /* Create the language image */
                         final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
@@ -214,17 +215,17 @@ public class ImagesFilteredResultsAndImageComponent
             }
         });
 
-        imageDisplay.getAddLocaleDialog().getOk().addClickHandler(new ClickHandler() {
+        entityPropertiesView.getAddLocaleDialog().getOk().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                imageDisplay.getAddLocaleDialog().getDialogBox().hide();
+                entityPropertiesView.getAddLocaleDialog().getDialogBox().hide();
 
-                final String selectedLocale = imageDisplay.getAddLocaleDialog().getLocales()
-                        .getItemText(imageDisplay.getAddLocaleDialog().getLocales().getSelectedIndex());
+                final String selectedLocale = entityPropertiesView.getAddLocaleDialog().getLocales()
+                        .getItemText(entityPropertiesView.getAddLocaleDialog().getLocales().getSelectedIndex());
 
                 /* Don't add locales twice */
-                if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null) {
-                    for (final RESTLanguageImageCollectionItemV1 langImage : imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                if (filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null) {
+                    for (final RESTLanguageImageCollectionItemV1 langImage : filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                             .getLanguageImages_OTM().returnExistingAndAddedCollectionItems()) {
                         if (langImage.getItem().getLocale().equals(selectedLocale)) {
                             return;
@@ -236,7 +237,7 @@ public class ImagesFilteredResultsAndImageComponent
                  * Create the image to be modified. This is so we don't send off unnessessary data.
                  */
                 final RESTImageV1 updateImage = new RESTImageV1();
-                updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
+                updateImage.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
 
                 /* Create the language image */
                 final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
@@ -254,10 +255,10 @@ public class ImagesFilteredResultsAndImageComponent
             }
         });
 
-        imageDisplay.getAddLocaleDialog().getCancel().addClickHandler(new ClickHandler() {
+        entityPropertiesView.getAddLocaleDialog().getCancel().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                imageDisplay.getAddLocaleDialog().getDialogBox().hide();
+                entityPropertiesView.getAddLocaleDialog().getDialogBox().hide();
             }
         });
     }
@@ -266,15 +267,15 @@ public class ImagesFilteredResultsAndImageComponent
         return new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
             @Override
             public void doSuccessAction(RESTImageV1 retValue, BaseTemplateViewInterface display) {
-                retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
-                reInitialiseImageView();
+                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
+                reInitialiseView();
             }
         };
     }
 
-    private void reInitialiseImageView() {
+    private void reInitialiseView() {
 
-        imageDisplay.initialize(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), getUnassignedLocales().toArray(new String[0]));
+        entityPropertiesView.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), getUnassignedLocales().toArray(new String[0]));
 
         bindImageUploadButtons();
     }
@@ -283,8 +284,8 @@ public class ImagesFilteredResultsAndImageComponent
         final List<String> newLocales = new ArrayList<String>(Arrays.asList(locales));
 
         /* Make it so you can't add a locale if it already exists */
-        if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null) {
-            for (final RESTLanguageImageCollectionItemV1 langImage : imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+        if (filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null) {
+            for (final RESTLanguageImageCollectionItemV1 langImage : filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                     .getLanguageImages_OTM().returnExistingAndAddedCollectionItems()) {
                 newLocales.remove(langImage.getItem().getLocale());
             }
@@ -312,15 +313,15 @@ public class ImagesFilteredResultsAndImageComponent
     /**
      * Each Language Image has an upload button that needs to be bound to some behaviour.
      * 
-     * @param imageDisplay The view that displays the image details.
+     * @param entityPropertiesView The view that displays the image details.
      * @param waitDisplay The view that displays the waiting screen
      */
     private void bindImageUploadButtons() {
-        if (imageDisplay.getEditor() == null) {
+        if (entityPropertiesView.getEditor() == null) {
             throw new IllegalStateException("display.getEditor() cannot be null");
         }
 
-        for (final RESTLanguageImageV1Editor editor : imageDisplay.getEditor().languageImages_OTMEditor().itemsEditor()
+        for (final RESTLanguageImageV1Editor editor : entityPropertiesView.getEditor().languageImages_OTMEditor().itemsEditor()
                 .getEditors()) {
             editor.getUploadButton().addClickHandler(new ClickHandler() {
                 @Override
@@ -338,7 +339,7 @@ public class ImagesFilteredResultsAndImageComponent
                         reader.addErrorHandler(new ErrorHandler() {
                             @Override
                             public void onError(final org.vectomatic.file.events.ErrorEvent event) {
-                                imageDisplay.removeWaitOperation();
+                                entityPropertiesView.removeWaitOperation();
                             }
                         });
 
@@ -353,7 +354,7 @@ public class ImagesFilteredResultsAndImageComponent
                                      * Create the image to be modified. This is so we don't send off unnecessary data.
                                      */
                                     final RESTImageV1 updateImage = new RESTImageV1();
-                                    updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
+                                    updateImage.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
 
                                     /* Create the language image */
                                     final RESTLanguageImageV1 updatedLanguageImage = new RESTLanguageImageV1();
@@ -371,8 +372,8 @@ public class ImagesFilteredResultsAndImageComponent
                                                 @Override
                                                 public void doSuccessAction(RESTImageV1 retValue,
                                                         BaseTemplateViewInterface display) {
-                                                    retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
-                                                    reInitialiseImageView();
+                                                    retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
+                                                    reInitialiseView();
                                                 }
                                             }) {
                                         @Override
@@ -397,9 +398,9 @@ public class ImagesFilteredResultsAndImageComponent
     }
 
     public boolean checkForUnsavedChanges() {
-        if (imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-            if (!imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getDescription()
-                    .equals(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription())) {
+        if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+            if (!filteredResultsComponent.getProviderData().getSelectedItem().getItem().getDescription()
+                    .equals(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription())) {
                 return true;
             }
         }
@@ -411,8 +412,38 @@ public class ImagesFilteredResultsAndImageComponent
      * finishes, and when all the information has been gathered, the page will be displayed.
      */
     private void finishLoading() {
-        if (locales != null && imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-            reInitialiseImageView();
+        if (locales != null && filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+            reInitialiseView();
         }
+    }
+    
+    /**
+     * Called once an entity has been saved to refresh the various lists that may have been modified by the edited or created
+     * entity.
+     * 
+     * 
+     * @param wasNewEntity true if the entity that was saved was a new entity, and false otherwise
+     */
+    protected void updateDisplayAfterSave(final boolean wasNewEntity) {
+        /* refresh the list of tags from the existing list that was modified */
+        if (!wasNewEntity) {
+            filteredResultsDisplay.getProvider().displayAsynchronousList(filteredResultsComponent.getProviderData().getItems(),
+                    filteredResultsComponent.getProviderData().getSize(),
+                    filteredResultsComponent.getProviderData().getStartRow());
+        }
+        /* If we just created a new entity, refresh the list of entities from the database */
+        else {
+            filteredResultsComponent.bind(filteredResultsComponent.getQuery(), filteredResultsDisplay, waitDisplay);
+
+            /*
+             * reInitialiseView will flush the ui, which will flush the null ID back to the displayed object. To prevent that we
+             * need to call edit on the newly saved entity
+             */
+            entityPropertiesView.getDriver().edit(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+
+        }
+
+        /* refresh the display */
+        reInitialiseView();
     }
 }
