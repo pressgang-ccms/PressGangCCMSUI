@@ -64,7 +64,6 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageV
 
     public ImageFilteredResultsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Images());
-
        
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ImageID());
         getResults().addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.ImageDescription());

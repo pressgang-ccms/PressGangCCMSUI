@@ -49,9 +49,13 @@ import com.google.gwt.user.client.Window;
  */
 @Dependent
 public class CategoriesFilteredResultsAndCategoryComponent
-        extends
-        BaseSearchAndEditComponent<CategoryFilteredResultsPresenter.Display, CategoriesFilteredResultsAndCategoryPresenter.Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, CategoryViewInterface, CategoryPresenter.Display>
-        implements CategoriesFilteredResultsAndCategoryPresenter.LogicComponent {
+    extends BaseSearchAndEditComponent<
+        CategoryFilteredResultsPresenter.Display, 
+        CategoriesFilteredResultsAndCategoryPresenter.Display,
+        RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, 
+        CategoryViewInterface, 
+        CategoryPresenter.Display>
+    implements CategoriesFilteredResultsAndCategoryPresenter.LogicComponent {
 
     @Inject
     private HandlerManager eventBus;

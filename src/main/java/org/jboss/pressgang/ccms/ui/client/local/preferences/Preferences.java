@@ -19,6 +19,8 @@ final public class Preferences {
     /** The setting that saves the width of the split screen on the tag search screen */
     public static final String TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH = "TagCategoryViewMainSplitWidth";
     /** The setting that saves the width of the split screen on the category search screen */
+    public static final String  IMAGE_VIEW_MAIN_SPLIT_WIDTH = "ImageViewMainSplitWidth";
+    /** The setting that saves the width of the split screen on the category search screen */
     public static final String  CATEGORY_VIEW_MAIN_SPLIT_WIDTH = "CategoryViewMainSplitWidth";
     /** The setting that saves the width of the split screen on the category's tag editing screen */
     public static final String  CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH = "CategoryTagViewMainSplitWidth";

@@ -57,20 +57,16 @@ public class ImagesFilteredResultsAndImagePresenter implements TemplatePresenter
 
     @Override
     public void go(final HasWidgets container) {
-        display.setViewShown(true);
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
         clearContainerAndAddTopLevelPanel(container, display);
 
-        display.getResultsActionButtonsPanel().setWidget(imageFilteredResultsDisplay.getTopActionPanel());
-        display.getResultsPanel().setWidget(imageFilteredResultsDisplay.getPanel());
 
         imageComponent.bind(imageDisplay, display);
         imageFilteredResultsComponent.bind(queryString, imageFilteredResultsDisplay, display);
 
         component.bind(imageFilteredResultsDisplay, imageFilteredResultsComponent, imageDisplay, imageComponent, display,
                 display);
-        component.setFeedbackLink(HISTORY_TOKEN);
     }
 
     @Override

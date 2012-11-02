@@ -8,6 +8,7 @@ import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
@@ -15,6 +16,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.Display.ImagePresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
 
@@ -39,7 +41,8 @@ public class ImagePresenter implements TemplatePresenter {
      */
     private Integer imageId;
 
-    public interface Display extends BaseTemplateViewInterface {
+    public interface Display extends BaseTemplateViewInterface,
+            BaseEditorViewInterface<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1> {
         // Empty interface declaration, similar to UiBinder
         public interface ImagePresenterDriver extends SimpleBeanEditorDriver<RESTImageV1, RESTImageV1Editor> {
         }
@@ -65,9 +68,8 @@ public class ImagePresenter implements TemplatePresenter {
         AddLocaleInterface getAddLocaleDialog();
 
         RESTImageV1Editor getEditor();
-        
-        ImagePresenterDriver getDriver();
-    }    
+
+    }
 
     public interface LogicComponent extends Component<Display> {
         void getEntity(final Integer imageId);
@@ -76,7 +78,7 @@ public class ImagePresenter implements TemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-       
+
         component.bind(display, display);
         component.getEntity(imageId);
         component.setFeedbackLink(HISTORY_TOKEN);
