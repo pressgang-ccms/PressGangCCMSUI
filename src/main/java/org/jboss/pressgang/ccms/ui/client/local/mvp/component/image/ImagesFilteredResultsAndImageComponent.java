@@ -81,6 +81,8 @@ public class ImagesFilteredResultsAndImageComponent
 
                                 reInitialiseImageView(imageFilteredResultsDisplay, imageFilteredResultsComponent, imageDisplay,
                                         imageComponent, display, waitDisplay);
+                                
+                                imageComponent.reInitialiseImageView();
 
                                 /*
                                  * If this is the first image selected, display the image view

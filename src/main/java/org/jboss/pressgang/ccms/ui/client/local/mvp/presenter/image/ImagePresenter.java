@@ -72,6 +72,7 @@ public class ImagePresenter implements TemplatePresenter {
         void getImage(final Integer imageId);
         List<String> getUnassignedLocales();
         void bindImageUploadButtons(final ImagePresenter.Display imageDisplay, final BaseTemplateViewInterface waitDisplay);
+        void reInitialiseImageView();
     }
 
     @Override

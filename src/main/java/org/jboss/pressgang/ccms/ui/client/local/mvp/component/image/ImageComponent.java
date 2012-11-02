@@ -85,7 +85,7 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
         final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
                 display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
                     @Override
-                    public void doSuccessAction(RESTStringConstantV1 retValue, BaseTemplateViewInterface display) {
+                    public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
                         /* Get the list of locales from the StringConstant */
                         locales = retValue.getValue().replaceAll("\\n", "").replaceAll(" ", "").split(",");
                     }
@@ -120,7 +120,7 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
                         }) {
                 };
 
-                RESTCalls.saveImage(callback, updateImage);
+                RESTCalls.updateImage(callback, updateImage);
 
             }
         });
@@ -161,7 +161,7 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
                                 waitDisplay, getDefaultImageRestCallback()) {
                         };
 
-                        RESTCalls.saveImage(callback, updateImage);
+                        RESTCalls.updateImage(callback, updateImage);
                     }
                 }
             }
@@ -203,7 +203,7 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
                         waitDisplay, getDefaultImageRestCallback()) {
                 };
 
-                RESTCalls.saveImage(callback, updateImage);
+                RESTCalls.updateImage(callback, updateImage);
             }
         });
 
@@ -299,7 +299,7 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
                                         }
                                     };
 
-                                    RESTCalls.saveImage(callback, updateImage);
+                                    RESTCalls.updateImage(callback, updateImage);
                                 } finally {
                                     waitDisplay.removeWaitOperation();
                                 }

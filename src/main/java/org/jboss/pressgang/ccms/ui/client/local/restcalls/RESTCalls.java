@@ -320,7 +320,7 @@ public final class RESTCalls {
         });
     }
 
-    static public void saveImage(final RESTCallback<RESTImageV1> callback, final RESTImageV1 image) {
+    static public void updateImage(final RESTCallback<RESTImageV1> callback, final RESTImageV1 image) {
         /* Expand the language images */
         final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
                 + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
