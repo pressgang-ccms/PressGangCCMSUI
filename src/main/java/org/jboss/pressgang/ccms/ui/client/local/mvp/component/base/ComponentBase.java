@@ -38,6 +38,7 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface>
     protected BaseTemplateViewInterface waitDisplay;
     protected S display;
 
+ 
     @Override
     public boolean checkForUnsavedChanges() {
         /* Assume no changes have been made by default */
