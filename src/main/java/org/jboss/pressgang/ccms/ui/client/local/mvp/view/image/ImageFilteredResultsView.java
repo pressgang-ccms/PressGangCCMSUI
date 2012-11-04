@@ -35,6 +35,11 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageV
     private final TextColumn<RESTImageCollectionItemV1> idColumn = new TextColumn<RESTImageCollectionItemV1>() {
         @Override
         public String getValue(final RESTImageCollectionItemV1 object) {
+            if (object == null)
+            {
+                return null + "";
+            }
+            
             return object.getItem().getId().toString();
 
         }
@@ -43,6 +48,11 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageV
     private final TextColumn<RESTImageCollectionItemV1> descriptionColumn = new TextColumn<RESTImageCollectionItemV1>() {
         @Override
         public String getValue(final RESTImageCollectionItemV1 object) {
+            if (object == null)
+            {
+                return null + "";
+            }
+            
             return object.getItem().getDescription();
         }
     };

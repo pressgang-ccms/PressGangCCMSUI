@@ -28,5 +28,5 @@ public interface Component<S extends BaseTemplateViewInterface> {
      * @return false if the view has unsaved changes that the user wishes to save (i.e. don't continue with a navigation event),
      *         true otherwise
      */
-    boolean checkForUnsavedChanges();
+    boolean isOKToProceed();
 }

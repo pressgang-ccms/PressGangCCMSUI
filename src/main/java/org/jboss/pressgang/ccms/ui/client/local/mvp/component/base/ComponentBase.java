@@ -40,7 +40,7 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface>
 
  
     @Override
-    public boolean checkForUnsavedChanges() {
+    public boolean isOKToProceed() {
         /* Assume no changes have been made by default */
         return true;
     }
@@ -51,10 +51,10 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface>
      * @param display The main template display
      */
     protected void bindStandardButtons() {
-        display.getSearch().addClickHandler(new ClickHandler() {
+        display.getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (checkForUnsavedChanges())
+                if (isOKToProceed())
                     eventBus.fireEvent(new SearchTagsFieldsAndFiltersViewEvent());
             }
         });
@@ -62,7 +62,7 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface>
         display.getCreateTopic().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (checkForUnsavedChanges())
+                if (isOKToProceed())
                     eventBus.fireEvent(new CreateTopicViewEvent());
             }
         });
@@ -77,7 +77,7 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface>
         display.getImages().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (checkForUnsavedChanges())
+                if (isOKToProceed())
                     eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
             }
         });
@@ -85,7 +85,7 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface>
         display.getTags().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (checkForUnsavedChanges())
+                if (isOKToProceed())
                     eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
             }
         });
@@ -93,7 +93,7 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface>
         display.getCategories().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (checkForUnsavedChanges())
+                if (isOKToProceed())
                     eventBus.fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
             }
         });

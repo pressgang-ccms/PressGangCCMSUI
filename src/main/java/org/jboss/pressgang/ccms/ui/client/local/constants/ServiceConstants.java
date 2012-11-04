@@ -12,6 +12,8 @@ final public class ServiceConstants {
     static public final int CONCEPT_TOPIC_TEMPLATE = 14;
     /** The StringConstant the holds the default topic template */
     static public final int TOPIC_TEMPLATE = 39;
+    /** The default locale */
+    static public final int DEFAULT_LOCALE_ID = 40;
 
     private ServiceConstants() {
 

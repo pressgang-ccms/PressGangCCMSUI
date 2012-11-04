@@ -331,6 +331,18 @@ public final class RESTCalls {
             }
         });
     }
+    
+    static public void createImage(final RESTCallback<RESTImageV1> callback, final RESTImageV1 image) {
+        /* Expand the language images */
+        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
+                + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).createJSONImage(expand, image);
+            }
+        });
+    }
 
     static public void getTopicRevision(final RESTCallback<RESTTopicV1> callback, final Integer id, final Integer revision) {
         /* Expand the categories and projects in the tags */

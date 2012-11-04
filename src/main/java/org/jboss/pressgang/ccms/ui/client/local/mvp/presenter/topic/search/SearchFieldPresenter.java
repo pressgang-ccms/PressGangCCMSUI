@@ -24,7 +24,7 @@ public class SearchFieldPresenter implements TemplatePresenter {
         }
         SearchFieldPresenterDriver getDriver();
         @Override
-        PushButton getSearch();
+        PushButton getEntitySearch();
         PushButton getTagsSearch();
         SearchUIFields getSearchUIFields();
     }

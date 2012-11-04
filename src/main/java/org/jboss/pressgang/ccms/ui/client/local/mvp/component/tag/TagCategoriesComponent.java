@@ -162,21 +162,18 @@ public class TagCategoriesComponent
         });
     }
 
-    /**
-     * @return true if the categories have any unsaved changes to their tags
-     */
     @Override
-    public boolean checkForUnsavedChanges() {
+    public boolean isOKToProceed() {
         /* It is possible that the list of categories has not loaded yet, in which case no changes could have been made */
         if (getPossibleChildrenProviderData().getItems() != null) {
             for (final RESTCategoryCollectionItemV1 category : getPossibleChildrenProviderData().getItems()) {
                 if (category.getItem().getTags().returnDeletedAddedAndUpdatedCollectionItems().size() != 0) {
-                    return true;
+                    return false;
                 }
             }
         }
 
-        return false;
+        return true;
     }
 
     @Override

@@ -128,7 +128,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
     }
 
     @Override
-    protected void newEntitySelected() {
+    protected void loadAdditionalDisplayedItemData() {
         /* Display the tags that are added to the category */
         tagComponent.refreshExistingChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
@@ -261,10 +261,10 @@ public class CategoriesFilteredResultsAndCategoryComponent
      */
     @Override
     protected void bindFilteredResultsButtons() {
-        filteredResultsDisplay.getSearch().addClickHandler(new ClickHandler() {
+        filteredResultsDisplay.getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (checkForUnsavedChanges())
+                if (isOKToProceed())
                     eventBus.fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(filteredResultsComponent.getQuery()));
             }
         });
@@ -303,7 +303,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
      * @return true if the user wants to ignore the unsaved changes, false otherwise
      */
     @Override
-    public boolean checkForUnsavedChanges() {
+    public boolean isOKToProceed() {
         /* sync the UI with the underlying tag */
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             entityPropertiesView.getDriver().flush();

@@ -27,7 +27,7 @@ public interface BaseFilteredResultsViewInterface<T extends RESTBaseEntityV1<T, 
      * @return The button that creates a new entity
      */
     @Override
-    PushButton getSearch();
+    PushButton getEntitySearch();
 
     /** @return The celltable that displays the results */
     CellTable<V> getResults();

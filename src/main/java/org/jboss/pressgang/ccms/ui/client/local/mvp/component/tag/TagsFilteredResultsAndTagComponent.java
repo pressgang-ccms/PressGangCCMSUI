@@ -105,7 +105,7 @@ public class TagsFilteredResultsAndTagComponent
             entityPropertiesView.getDriver().flush();
 
             final boolean unsavedTagChanges = unsavedTagChanged();
-            final boolean unsavedCategoryChanges = categoriesComponent.checkForUnsavedChanges();
+            final boolean unsavedCategoryChanges = categoriesComponent.isOKToProceed();
 
             /* Create the tag first */
             saveTagChanges(unsavedTagChanges, unsavedCategoryChanges);
@@ -475,13 +475,13 @@ public class TagsFilteredResultsAndTagComponent
      * @return true if the user wants to ignore the unsaved changes, false otherwise
      */
     @Override
-    public boolean checkForUnsavedChanges() {
+    public boolean isOKToProceed() {
         /* sync the UI with the underlying tag */
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             entityPropertiesView.getDriver().flush();
 
-            if (unsavedTagChanged() || categoriesComponent.checkForUnsavedChanges()
-                    || projectsComponent.checkForUnsavedChanges()) {
+            if (unsavedTagChanged() || categoriesComponent.isOKToProceed()
+                    || projectsComponent.isOKToProceed()) {
                 return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
             }
         }
@@ -520,10 +520,10 @@ public class TagsFilteredResultsAndTagComponent
      */
     @Override
     protected void bindFilteredResultsButtons() {
-        filteredResultsDisplay.getSearch().addClickHandler(new ClickHandler() {
+        filteredResultsDisplay.getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (checkForUnsavedChanges())
+                if (isOKToProceed())
                     eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(filteredResultsComponent.getQuery()));
             }
         });
@@ -654,7 +654,7 @@ public class TagsFilteredResultsAndTagComponent
     }
 
     @Override
-    protected void newEntitySelected() {
+    protected void loadAdditionalDisplayedItemData() {
         resetCategoryAndProjectsLists(true);
     }
 

@@ -86,7 +86,7 @@ public interface BaseTemplateViewInterface {
      * 
      * @return The button that switches to the topic search view
      */
-    PushButton getSearch();
+    PushButton getEntitySearch();
     
     /**
      * 

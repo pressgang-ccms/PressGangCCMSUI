@@ -123,7 +123,7 @@ abstract public class BaseSearchAndEditComponent<
                 final boolean isClick = Constants.JAVASCRIPT_CLICK_EVENT.equals(event.getNativeEvent().getType());
 
                 if (isClick) {
-                    if (!checkForUnsavedChanges()) {
+                    if (!isOKToProceed()) {
                         return;
                     }
 
@@ -144,7 +144,7 @@ abstract public class BaseSearchAndEditComponent<
                     reInitialiseView(lastDisplayedView == null ? firstDisplayedView : lastDisplayedView);
                     
                     /* Allow overriding classes to display any additional details */
-                    newEntitySelected();
+                    loadAdditionalDisplayedItemData();
                 }
             }
         });
@@ -154,7 +154,7 @@ abstract public class BaseSearchAndEditComponent<
     /**
      * Called once a new entity has been selected from the filtered results view
      */
-    abstract protected void newEntitySelected();
+    abstract protected void loadAdditionalDisplayedItemData();
 
     /** Binds logic to the action buttons */
     abstract protected void bindActionButtons();

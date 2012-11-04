@@ -581,7 +581,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
     }
 
     @Override
-    public boolean checkForUnsavedChanges() {
+    public boolean isOKToProceed() {
 
         /* Save any pending changes */
         flushChanges();

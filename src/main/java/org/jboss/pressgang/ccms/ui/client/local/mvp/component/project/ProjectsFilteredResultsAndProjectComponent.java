@@ -100,7 +100,7 @@ public class ProjectsFilteredResultsAndProjectComponent
     }
 
     @Override
-    protected void newEntitySelected() {
+    protected void loadAdditionalDisplayedItemData() {
         /* Get a new collection of tags */
         tagComponent.refreshPossibleChildrenDataAndList();
     }
@@ -211,10 +211,10 @@ public class ProjectsFilteredResultsAndProjectComponent
      */
     @Override
     protected void bindFilteredResultsButtons() {
-        filteredResultsDisplay.getSearch().addClickHandler(new ClickHandler() {
+        filteredResultsDisplay.getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (checkForUnsavedChanges())
+                if (isOKToProceed())
                     eventBus.fireEvent(new ProjectsFilteredResultsAndProjectViewEvent(filteredResultsComponent.getQuery()));
             }
         });
@@ -252,7 +252,7 @@ public class ProjectsFilteredResultsAndProjectComponent
      * @return true if the user wants to ignore the unsaved changes, false otherwise
      */
     @Override
-    public boolean checkForUnsavedChanges() {
+    public boolean isOKToProceed() {
         /* sync the UI with the underlying tag */
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             entityPropertiesView.getDriver().flush();

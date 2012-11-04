@@ -943,7 +943,7 @@ public class SearchResultsAndTopicComponent extends
     }
 
     @Override
-    public boolean checkForUnsavedChanges() {
+    public boolean isOKToProceed() {
 
         /* No topic selected, so no changes need to be saved */
         if (this.searchResultsComponent.getTopicProviderData().getDisplayedItem() == null)

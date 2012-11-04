@@ -27,7 +27,7 @@ abstract public class BaseFilteredResultsView<T extends RESTBaseEntityV1<T, U, V
         extends BaseTemplateView<T, U, V> implements BaseFilteredResultsViewInterface<T, U, V> {
 
     /** The button that initiates a new search */
-    private final PushButton search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
+    private final PushButton entitySearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
     /** The button that creates a new entity */
     private final PushButton create = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Create());
     /** The pager used to move over the results */
@@ -90,8 +90,8 @@ abstract public class BaseFilteredResultsView<T extends RESTBaseEntityV1<T, U, V
      * @return The button that creates a new entity
      */
     @Override
-    public PushButton getSearch() {
-        return search;
+    public PushButton getEntitySearch() {
+        return entitySearch;
     }
 
     public BaseFilteredResultsView(final String applicationName, final String pageName) {
@@ -100,7 +100,7 @@ abstract public class BaseFilteredResultsView<T extends RESTBaseEntityV1<T, U, V
         searchResultsPanel.addStyleName(CSSConstants.FilteredResultsView.FILTERED_RESULTS_PANEL);
         filterTable.addStyleName(CSSConstants.FilteredResultsView.FILTERED_OPTIONS_PANEL);
 
-        this.addActionButton(search);
+        this.addActionButton(entitySearch);
         this.addActionButton(create);
         this.addRightAlignedActionButtonPaddingPanel();
 
