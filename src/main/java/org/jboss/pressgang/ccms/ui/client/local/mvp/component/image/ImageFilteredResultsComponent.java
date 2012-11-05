@@ -38,7 +38,7 @@ public class ImageFilteredResultsComponent
 
     @Override
     public String getQuery() {
-        final StringBuilder retValue = new StringBuilder(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON);
+        final StringBuilder retValue = new StringBuilder();
         if (!display.getImageIdFilter().getText().isEmpty()) {
             retValue.append(";imageIds=" + display.getImageIdFilter().getText());
         }
@@ -49,7 +49,8 @@ public class ImageFilteredResultsComponent
             retValue.append(";imageOrigName=" + display.getImageOriginalFileNameFilter().getText());
         }
 
-        return retValue.toString();
+        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX
+                : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();       
     }
 
     /**

@@ -498,6 +498,7 @@ public class TagsFilteredResultsAndTagComponent
         final boolean unsavedCategoryChanges = categoriesComponent.getPossibleChildrenProviderData().getItems() != null
                 && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems(categoriesComponent
                         .getPossibleChildrenProviderData().getItems());
+        
         final boolean unsavedProjectChanges = projectsComponent.getPossibleChildrenProviderData().getItems() != null
                 && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems(projectsComponent
                         .getPossibleChildrenProviderData().getItems());
@@ -506,6 +507,7 @@ public class TagsFilteredResultsAndTagComponent
         final boolean unsavedDescriptionChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(
                 filteredResultsComponent.getProviderData().getSelectedItem().getItem().getDescription(),
                 filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
+        
         final boolean unsavedNameChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(filteredResultsComponent
                 .getProviderData().getSelectedItem().getItem().getName(), filteredResultsComponent.getProviderData()
                 .getDisplayedItem().getItem().getName());
