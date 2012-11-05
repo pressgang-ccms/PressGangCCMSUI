@@ -29,7 +29,8 @@ public class ProjectFilteredResultsComponent
     @Override
     public void bind(final String queryString, final ProjectFilteredResultsPresenter.Display display,
             final BaseTemplateViewInterface waitDisplay) {
-        super.bind(display, waitDisplay);
+        
+        super.bind(queryString, display, waitDisplay);
 
         display.setProvider(generateListProvider(queryString, display, waitDisplay));
     }
@@ -89,13 +90,36 @@ public class ProjectFilteredResultsComponent
     @Override
     public String getQuery() {
         final StringBuilder retValue = new StringBuilder();
+        if (!display.getIdFilter().getText().isEmpty()) {
+            retValue.append(";projectIds=" + display.getIdFilter().getText());
+        }
+        if (!display.getNameFilter().getText().isEmpty()) {
+            retValue.append(";projectName=" + display.getNameFilter().getText());
+        }
+        if (!display.getDescriptionFilter().getText().isEmpty()) {
+            retValue.append(";projectDesc=" + display.getDescriptionFilter().getText());
+        }
+
         return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX
                 : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
     }
 
     @Override
     protected void displayQueryElements(final String queryString) {
-        // TODO Auto-generated method stub
+        final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
+        for (final String queryStringElement : queryStringElements) {
+            final String[] queryElements = queryStringElement.split("=");
+
+            if (queryElements.length == 2) {
+                if (queryElements[0].equals("projectIds")) {
+                    this.display.getIdFilter().setText(queryElements[1]);
+                } else if (queryElements[0].equals("projectName")) {
+                    this.display.getNameFilter().setText(queryElements[1]);
+                } else if (queryElements[0].equals("projectDesc")) {
+                    this.display.getDescriptionFilter().setText(queryElements[1]);
+                }
+            }
+        }
 
     }
 }

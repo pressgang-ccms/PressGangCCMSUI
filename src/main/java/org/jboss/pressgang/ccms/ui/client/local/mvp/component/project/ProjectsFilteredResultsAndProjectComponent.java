@@ -113,7 +113,7 @@ public class ProjectsFilteredResultsAndProjectComponent
         final ClickHandler projectDetailsClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                reInitialiseView(entityPropertiesView);
+                switchView(entityPropertiesView);
             }
 
         };
@@ -124,7 +124,7 @@ public class ProjectsFilteredResultsAndProjectComponent
         final ClickHandler projectTagsClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                reInitialiseView(tagDisplay);
+                switchView(tagDisplay);
             }
 
         };
@@ -238,7 +238,7 @@ public class ProjectsFilteredResultsAndProjectComponent
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
 
-                reInitialiseView(lastDisplayedView == null ? entityPropertiesView : lastDisplayedView);
+                switchView(lastDisplayedView == null ? entityPropertiesView : lastDisplayedView);
                 
                 tagComponent.refreshPossibleChildrenDataAndList();
             }
@@ -287,16 +287,18 @@ public class ProjectsFilteredResultsAndProjectComponent
     }
 
     @Override
-    protected void reInitialiseView(final ProjectViewInterface displayedView) {
+    protected void switchView(final ProjectViewInterface displayedView) {
 
-        super.reInitialiseView(displayedView);
-
-        /* Show any wait dialogs from the new view, and update the view with the currently displayed entity */
-        if (displayedView != null) {
-            displayedView.setViewShown(true);
-            displayedView.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
-        }
+        super.switchView(displayedView);
 
         lastDisplayedView = displayedView;
+    }
+
+    @Override
+    protected void initializeViews() {
+        for (final ProjectViewInterface view : new ProjectViewInterface[] { entityPropertiesView, tagDisplay }) {
+            view.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+        }
+        
     }
 }

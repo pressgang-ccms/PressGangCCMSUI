@@ -69,7 +69,7 @@ public class TagsFilteredResultsAndTagComponent
     private final ClickHandler tagDetailsClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
-            reInitialiseView(entityPropertiesView);
+            switchView(entityPropertiesView);
         }
 
     };
@@ -80,7 +80,7 @@ public class TagsFilteredResultsAndTagComponent
     private final ClickHandler tagProjectsClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
-            reInitialiseView(projectsDisplay);
+            switchView(projectsDisplay);
         }
     };
 
@@ -90,7 +90,7 @@ public class TagsFilteredResultsAndTagComponent
     private final ClickHandler tagCategoriesClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
-            reInitialiseView(categoriesDisplay);
+            switchView(categoriesDisplay);
         }
     };
 
@@ -131,7 +131,7 @@ public class TagsFilteredResultsAndTagComponent
 
                             /* Update the list of tags with any saved changes */
                             retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
-                            
+
                             /* refresh the p[rojects list */
                             projectsComponent.refreshPossibleChildrenDataAndList();
 
@@ -142,8 +142,6 @@ public class TagsFilteredResultsAndTagComponent
                                 updateDisplayAfterSave(wasNewTag);
                                 Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + retValue.getId());
                             }
-
-                            
 
                         }
                     }) {
@@ -254,9 +252,10 @@ public class TagsFilteredResultsAndTagComponent
                         /*
                          * Reload the list of categories and projects if this is the last REST call to succeed
                          */
-                        categoriesComponent.refreshExistingChildList(categoriesComponent.getPossibleChildrenProviderData().getDisplayedItem().getItem());
+                        categoriesComponent.refreshExistingChildList(categoriesComponent.getPossibleChildrenProviderData()
+                                .getDisplayedItem().getItem());
                         categoriesComponent.refreshPossibleChildrenDataAndList();
-                        
+
                         updateDisplayAfterSave(wasNewTag);
                         Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + newTagId);
                     } finally {
@@ -298,8 +297,8 @@ public class TagsFilteredResultsAndTagComponent
                          * If we were editing a new tag, it is possible that a tag with a NULL_ID is in the category tags
                          * collection. If so, replace it with the id that was assigned to the created tag.
                          */
-                        updatedTag.setId(tag.getItem().getId() == Constants.NULL_ID && wasNewTag ? newTagId : tag
-                                .getItem().getId());
+                        updatedTag.setId(tag.getItem().getId() == Constants.NULL_ID && wasNewTag ? newTagId : tag.getItem()
+                                .getId());
 
                         /* add it to the collection */
                         updatedCategory.getTags().addUpdateItem(updatedTag);
@@ -325,7 +324,7 @@ public class TagsFilteredResultsAndTagComponent
         this.projectsComponent = projectsComponent;
         this.categoriesDisplay = categoriesDisplay;
         this.categoriesComponent = categoriesComponent;
-        
+
         super.bind(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultDisplay, resultDisplay, filteredResultsDisplay,
                 filteredResultsComponent, display, waitDisplay);
 
@@ -480,8 +479,7 @@ public class TagsFilteredResultsAndTagComponent
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             entityPropertiesView.getDriver().flush();
 
-            if (unsavedTagChanged() || !categoriesComponent.isOKToProceed()
-                    || !projectsComponent.isOKToProceed()) {
+            if (unsavedTagChanged() || !categoriesComponent.isOKToProceed() || !projectsComponent.isOKToProceed()) {
                 return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
             }
         }
@@ -505,12 +503,12 @@ public class TagsFilteredResultsAndTagComponent
                         .getPossibleChildrenProviderData().getItems());
 
         /* See if any of the fields were changed */
-        final boolean unsavedDescriptionChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData()
-                .getSelectedItem().getItem().getDescription(), filteredResultsComponent.getProviderData().getDisplayedItem()
-                .getItem().getDescription());
-        final boolean unsavedNameChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData()
-                .getSelectedItem().getItem().getName(), filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                .getName());
+        final boolean unsavedDescriptionChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(
+                filteredResultsComponent.getProviderData().getSelectedItem().getItem().getDescription(),
+                filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
+        final boolean unsavedNameChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(filteredResultsComponent
+                .getProviderData().getSelectedItem().getItem().getName(), filteredResultsComponent.getProviderData()
+                .getDisplayedItem().getItem().getName());
 
         return unsavedCategoryChanges || unsavedProjectChanges || unsavedDescriptionChanges || unsavedNameChanges;
     }
@@ -546,9 +544,11 @@ public class TagsFilteredResultsAndTagComponent
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
 
+                initializeViews();
+                
                 resetCategoryAndProjectsLists(true);
 
-                reInitialiseView(lastDisplayedView == null ? entityPropertiesView : lastDisplayedView);
+                switchView(lastDisplayedView == null ? entityPropertiesView : lastDisplayedView);
             }
         });
     }
@@ -557,13 +557,9 @@ public class TagsFilteredResultsAndTagComponent
      * Called when the selected tag is changed, or the selected view is changed.
      */
     @Override
-    protected void reInitialiseView(final TagViewInterface displayedView) {
+    protected void switchView(final TagViewInterface displayedView) {
 
-        super.reInitialiseView(displayedView);
-
-        if (displayedView != null) {
-            displayedView.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
-        }
+        super.switchView(displayedView);
 
         /* save any changes to the tag details */
         if (lastDisplayedView == this.entityPropertiesView) {
@@ -656,6 +652,14 @@ public class TagsFilteredResultsAndTagComponent
     @Override
     protected void loadAdditionalDisplayedItemData() {
         resetCategoryAndProjectsLists(true);
+    }
+
+    @Override
+    protected void initializeViews() {
+        for (final TagViewInterface view : new TagViewInterface[] { entityPropertiesView, projectsDisplay,
+                categoriesDisplay }) {
+            view.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+        }
     }
 
 }

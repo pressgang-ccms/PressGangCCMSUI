@@ -107,20 +107,17 @@ public class ImagesFilteredResultsAndImageComponent
             @Override
             public void doSuccessAction(RESTImageV1 retValue, BaseTemplateViewInterface display) {
                 retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
-                reInitialiseView(entityPropertiesView);
+                switchView(entityPropertiesView);
             }
         };
     }
 
     @Override
-    protected void reInitialiseView(final ImagePresenter.Display displayedView) {
+    protected void switchView(final ImagePresenter.Display displayedView) {
 
-        super.reInitialiseView(displayedView);
+        super.switchView(displayedView);
 
-        displayedView.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                getUnassignedLocales().toArray(new String[0]));
-
-        bindImageUploadButtons();
+        
 
         lastDisplayedView = displayedView;
     }
@@ -221,7 +218,7 @@ public class ImagesFilteredResultsAndImageComponent
                                                         BaseTemplateViewInterface display) {
                                                     retValue.cloneInto(filteredResultsComponent.getProviderData()
                                                             .getDisplayedItem().getItem(), true);
-                                                    reInitialiseView(entityPropertiesView);
+                                                    switchView(entityPropertiesView);
                                                 }
                                             }) {
                                         @Override
@@ -266,7 +263,7 @@ public class ImagesFilteredResultsAndImageComponent
      */
     private void finishLoading() {
         if (locales != null && filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-            reInitialiseView(entityPropertiesView);
+            switchView(entityPropertiesView);
         }
     }
 
@@ -296,9 +293,8 @@ public class ImagesFilteredResultsAndImageComponent
             entityPropertiesView.getDriver().edit(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
         }
-
-        /* refresh the display */
-        reInitialiseView(entityPropertiesView);
+        
+        initializeViews();
     }
 
     @Override
@@ -486,5 +482,13 @@ public class ImagesFilteredResultsAndImageComponent
             }
         });
 
+    }
+
+    @Override
+    protected void initializeViews() {
+        entityPropertiesView.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                getUnassignedLocales().toArray(new String[0]));  
+        
+        bindImageUploadButtons();
     }
 }

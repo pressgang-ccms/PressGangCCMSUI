@@ -111,7 +111,7 @@ abstract public class BaseSearchAndEditComponent<
         }
 
         /* refresh the display */
-        reInitialiseView(lastDisplayedView);
+        initializeViews();
     }
 
     /** Binds logic to the search results list row click event */
@@ -139,9 +139,12 @@ abstract public class BaseSearchAndEditComponent<
                      */
 
                     filteredResultsComponent.getProviderData().setDisplayedItem(event.getValue().clone(true));
+                    
+                    /* Initialize the views */
+                    initializeViews();
 
                     /* Refresh the view, or display the properties view if none is shown */
-                    reInitialiseView(lastDisplayedView == null ? firstDisplayedView : lastDisplayedView);
+                    switchView(lastDisplayedView == null ? firstDisplayedView : lastDisplayedView);
                     
                     /* Allow overriding classes to display any additional details */
                     loadAdditionalDisplayedItemData();
@@ -183,9 +186,14 @@ abstract public class BaseSearchAndEditComponent<
         display.getSplitPanel().setSplitPosition(display.getResultsViewLayoutPanel(),
                 Preferences.INSTANCE.getInt(preferencesKey, Constants.SPLIT_PANEL_SIZE), false);
     }
+    
+    /**
+     * Called when a new entity is selected
+     */
+    abstract protected void initializeViews();
 
     /** Called when displaying changes to a entity or when changing views */
-    protected void reInitialiseView(final W displayedView) {
+    protected void switchView(final W displayedView) {
         /* Show/Hide any localised loading dialogs */
         if (lastDisplayedView != null) {
             lastDisplayedView.setViewShown(false);
