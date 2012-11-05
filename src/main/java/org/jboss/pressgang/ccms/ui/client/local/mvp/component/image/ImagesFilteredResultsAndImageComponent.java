@@ -215,15 +215,11 @@ public class ImagesFilteredResultsAndImageComponent
                                                 public void doSuccessAction(RESTImageV1 retValue,
                                                         BaseTemplateViewInterface display) {
                                                     retValue.cloneInto(filteredResultsComponent.getProviderData()
-                                                            .getDisplayedItem().getItem(), true);
-                                                    switchView(entityPropertiesView);
+                                                            .getDisplayedItem().getItem(), false);
+                                                    initializeViews();
                                                 }
                                             }) {
-                                        @Override
-                                        public void failed(final Message message, final Throwable throwable) {
-                                            waitDisplay.removeWaitOperation();
-                                            Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                                        }
+
                                     };
 
                                     RESTCalls.updateImage(callback, updateImage);
@@ -291,7 +287,7 @@ public class ImagesFilteredResultsAndImageComponent
             entityPropertiesView.getDriver().edit(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
         }
-        
+
         initializeViews();
     }
 
@@ -346,11 +342,16 @@ public class ImagesFilteredResultsAndImageComponent
                         final RESTLanguageImageCollectionItemV1 selectedImage = entityPropertiesView.getEditor()
                                 .languageImages_OTMEditor().itemsEditor().getList().get(selectedTab);
 
+                        /* Adding or removing a locale will save changes to the description */
+                        entityPropertiesView.getDriver().flush();
+
                         /*
                          * Create the image to be modified. This is so we don't send off unnessessary data.
                          */
                         final RESTImageV1 updateImage = new RESTImageV1();
                         updateImage.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
+                        updateImage.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                                .getDescription());
 
                         /* Create the language image */
                         final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
@@ -388,11 +389,16 @@ public class ImagesFilteredResultsAndImageComponent
                     }
                 }
 
+                /* Adding or removing a locate will also save any changes to the description */
+                entityPropertiesView.getDriver().flush();
+
                 /*
                  * Create the image to be modified. This is so we don't send off unnessessary data.
                  */
                 final RESTImageV1 updateImage = new RESTImageV1();
                 updateImage.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
+                updateImage.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                        .getDescription());
 
                 /* Create the language image */
                 final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
@@ -457,11 +463,20 @@ public class ImagesFilteredResultsAndImageComponent
                                                 public void doSuccessAction(final RESTImageV1 retValue,
                                                         final ImagesFilteredResultsAndImagePresenter.Display display) {
 
-                                                    /* When we have a new image, display it and refresh the filtered results */
-                                                    retValue.cloneInto(filteredResultsComponent.getProviderData()
-                                                            .getSelectedItem().getItem(), false);
-                                                    retValue.cloneInto(filteredResultsComponent.getProviderData()
-                                                            .getDisplayedItem().getItem(), false);
+                                                    final RESTImageCollectionItemV1 selectedImageCollectionItem = new RESTImageCollectionItemV1();
+                                                    selectedImageCollectionItem.setItem(retValue.clone(false));
+                                                    filteredResultsComponent.getProviderData().setSelectedItem(
+                                                            selectedImageCollectionItem);
+
+                                                    final RESTImageCollectionItemV1 displayedImageCollectionItem = new RESTImageCollectionItemV1();
+                                                    displayedImageCollectionItem.setItem(retValue.clone(false));
+                                                    filteredResultsComponent.getProviderData().setDisplayedItem(
+                                                            displayedImageCollectionItem);
+
+                                                    initializeViews();
+
+                                                    /* Display the entities property view */
+                                                    switchView(entityPropertiesView);
 
                                                     /* Reload the filtered results view */
                                                     updateDisplayAfterSave(true);
@@ -485,8 +500,8 @@ public class ImagesFilteredResultsAndImageComponent
     @Override
     protected void initializeViews() {
         entityPropertiesView.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                getUnassignedLocales().toArray(new String[0]));  
-        
+                getUnassignedLocales().toArray(new String[0]));
+
         bindImageUploadButtons();
     }
 }
