@@ -88,13 +88,35 @@ public class CategoryFilteredResultsComponent
     @Override
     public String getQuery() {
         final StringBuilder retValue = new StringBuilder();
+        if (!display.getIdFilter().getText().isEmpty()) {
+            retValue.append(";catIds=" + display.getIdFilter().getText());
+        }
+        if (!display.getNameFilter().getText().isEmpty()) {
+            retValue.append(";catName=" + display.getNameFilter().getText());
+        }
+        if (!display.getDescriptionFilter().getText().isEmpty()) {
+            retValue.append(";catDesc=" + display.getDescriptionFilter().getText());
+        }
+
         return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX
                 : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
     }
 
     @Override
-    protected void displayQueryElements(String queryString) {
-        // TODO Auto-generated method stub
+    protected void displayQueryElements(final String queryString) {
+        final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
+        for (final String queryStringElement : queryStringElements) {
+            final String[] queryElements = queryStringElement.split("=");
 
+            if (queryElements.length == 2) {
+                if (queryElements[0].equals("catIds")) {
+                    this.display.getIdFilter().setText(queryElements[1]);
+                } else if (queryElements[0].equals("catName")) {
+                    this.display.getNameFilter().setText(queryElements[1]);
+                } else if (queryElements[0].equals("catDesc")) {
+                    this.display.getDescriptionFilter().setText(queryElements[1]);
+                }
+            }
+        }
     }
 }
