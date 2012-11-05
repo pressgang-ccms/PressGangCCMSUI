@@ -32,7 +32,7 @@ public class ImageFilteredResultsComponent
     @Override
     public void bind(final String queryString, final ImageFilteredResultsPresenter.Display display,
             final BaseTemplateViewInterface waitDisplay) {
-        super.bind(display, waitDisplay);
+        super.bind(queryString, display, waitDisplay);
         display.setProvider(generateListProvider(queryString, display, waitDisplay));
     }
 
