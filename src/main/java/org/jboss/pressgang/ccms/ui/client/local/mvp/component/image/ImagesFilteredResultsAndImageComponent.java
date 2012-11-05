@@ -107,7 +107,7 @@ public class ImagesFilteredResultsAndImageComponent
             @Override
             public void doSuccessAction(RESTImageV1 retValue, BaseTemplateViewInterface display) {
                 retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
-                switchView(entityPropertiesView);
+                initializeViews();
             }
         };
     }
