@@ -309,6 +309,14 @@ public class TagsFilteredResultsAndTagComponent
             RESTCalls.saveCategories(callback, updatedCategories);
         }
     };
+    
+    @Override
+    protected void updateDisplayAfterSave(final boolean wasNewEntity)
+    {
+        super.updateDisplayAfterSave(wasNewEntity);
+        
+        resetCategoryAndProjectsLists(true);
+    }
 
     @Override
     public void bind(final TagsFilteredResultsAndTagPresenter.Display display, BaseTemplateViewInterface waitDisplay,
@@ -621,15 +629,9 @@ public class TagsFilteredResultsAndTagComponent
      * @param removeCatgeoryTagListFromScreen true if the list of tags within a category is to be removed from the screen
      */
     private void resetCategoryAndProjectsLists(final boolean removeCatgeoryTagListFromScreen) {
-        /*
-         * Reset the category and projects data. This is to clear out any added tags. Maybe cache this info if reloading is too
-         * slow.
-         */
-        categoriesComponent.getPossibleChildrenProviderData().reset();
-        projectsComponent.getPossibleChildrenProviderData().reset();
-
-        projectsComponent.refreshPossibleChildrenDataAndList();
-        categoriesComponent.refreshPossibleChildrenDataAndList();
+        
+        resetCategoryLists();
+        resetProjectList();
 
         /* remove the category tags list */
         if (removeCatgeoryTagListFromScreen) {
@@ -637,6 +639,24 @@ public class TagsFilteredResultsAndTagComponent
             categoriesComponent.getPossibleChildrenProviderData().setDisplayedItem(null);
             categoriesDisplay.getSplit().remove(categoriesDisplay.getExistingChildrenResultsPanel());
         }
+    }
+    
+    /**
+     * Reset the category list
+     */
+    private void resetCategoryLists()
+    {
+        categoriesComponent.getPossibleChildrenProviderData().reset();
+        categoriesComponent.refreshPossibleChildrenDataAndList();
+    }
+    
+    /**
+     * Reset the project list
+     */
+    private void resetProjectList()
+    {
+        projectsComponent.getPossibleChildrenProviderData().reset();
+        projectsComponent.refreshPossibleChildrenDataAndList();
     }
 
     @Override
