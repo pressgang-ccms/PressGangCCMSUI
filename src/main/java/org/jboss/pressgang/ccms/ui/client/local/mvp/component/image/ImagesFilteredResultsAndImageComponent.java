@@ -117,8 +117,6 @@ public class ImagesFilteredResultsAndImageComponent
 
         super.switchView(displayedView);
 
-        
-
         lastDisplayedView = displayedView;
     }
 
@@ -263,7 +261,7 @@ public class ImagesFilteredResultsAndImageComponent
      */
     private void finishLoading() {
         if (locales != null && filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-            switchView(entityPropertiesView);
+            initializeViews();
         }
     }
 

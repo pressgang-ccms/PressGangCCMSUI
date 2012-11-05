@@ -19,22 +19,12 @@
 	margin-left: 8px;
 }
 
-.TagViewPanel
+.TagViewPanel, .CategoryViewPanel, .ProjectViewPanel
 {
 	width: 100%;
 }
 
-.TagViewDescriptionTextCell
-{
-	width: 100%;
-}
-
-.CategoryViewPanel
-{
-	width: 100%;
-}
-
-.CategoryViewDescriptionTextCell
+.TagViewDescriptionTextCell, .CategoryViewDescriptionTextCell, .ProjectViewDescriptionTextCell
 {
 	width: 100%;
 }
@@ -45,7 +35,7 @@
 	height: 100%;
 }
 
-.ImageFilteredOptionsPanel, .TagFilteredOptionsPanel
+.FilteredOptionsPanel, .ImageFilteredOptionsPanel, .TagFilteredOptionsPanel
 {
 	margin-bottom: 8px;
 }
