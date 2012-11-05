@@ -238,6 +238,8 @@ public class ProjectsFilteredResultsAndProjectComponent
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
 
+                initializeViews();
+                
                 switchView(lastDisplayedView == null ? entityPropertiesView : lastDisplayedView);
                 
                 tagComponent.refreshPossibleChildrenDataAndList();
