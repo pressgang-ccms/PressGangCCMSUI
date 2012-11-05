@@ -133,9 +133,7 @@ public class TagsFilteredResultsAndTagPresenter implements TemplatePresenter {
         queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
-        }
-
-        
+        }       
     }
 
 }

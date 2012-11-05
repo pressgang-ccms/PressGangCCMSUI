@@ -61,7 +61,6 @@ public class ImagesFilteredResultsAndImagePresenter implements TemplatePresenter
 
         clearContainerAndAddTopLevelPanel(container, display);
 
-
         imageComponent.bind(imageDisplay, display);
         imageFilteredResultsComponent.bind(queryString, imageFilteredResultsDisplay, display);
 
@@ -71,25 +70,9 @@ public class ImagesFilteredResultsAndImagePresenter implements TemplatePresenter
 
     @Override
     public void parseToken(final String historyToken) {
-
         queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
-        }
-
-        final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
-        for (final String queryStringElement : queryStringElements) {
-            final String[] queryElements = queryStringElement.split("=");
-
-            if (queryElements.length == 2) {
-                if (queryElements[0].equals("imageIds")) {
-                    this.imageFilteredResultsDisplay.getImageIdFilter().setText(queryElements[1]);
-                } else if (queryElements[0].equals("imageDesc")) {
-                    this.imageFilteredResultsDisplay.getImageDescriptionFilter().setText(queryElements[1]);
-                } else if (queryElements[0].equals("imageOrigName")) {
-                    this.imageFilteredResultsDisplay.getImageOriginalFileNameFilter().setText(queryElements[1]);
-                }
-            }
         }
     }
 }

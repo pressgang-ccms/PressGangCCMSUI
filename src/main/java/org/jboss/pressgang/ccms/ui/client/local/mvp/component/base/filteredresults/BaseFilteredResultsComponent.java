@@ -34,6 +34,12 @@ abstract public class BaseFilteredResultsComponent<S extends BaseFilteredResults
     public void setTagProviderData(final ProviderUpdateData<V> providerData) {
         this.providerData = providerData;
     }
+    
+    public void bind(final String queryString, final S display, final BaseTemplateViewInterface waitDisplay)
+    {
+        super.bind(display, waitDisplay);
+        displayQueryElements(queryString);
+    }
 
     /**
      * DIsplay the current filter options

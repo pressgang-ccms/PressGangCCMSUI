@@ -103,7 +103,20 @@ public class ImageFilteredResultsComponent
 
     @Override
     protected void displayQueryElements(final String queryString) {
-        // TODO Auto-generated method stub
+        final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
+        for (final String queryStringElement : queryStringElements) {
+            final String[] queryElements = queryStringElement.split("=");
+
+            if (queryElements.length == 2) {
+                if (queryElements[0].equals("imageIds")) {
+                    this.display.getImageIdFilter().setText(queryElements[1]);
+                } else if (queryElements[0].equals("imageDesc")) {
+                    this.display.getImageDescriptionFilter().setText(queryElements[1]);
+                } else if (queryElements[0].equals("imageOrigName")) {
+                    this.display.getImageOriginalFileNameFilter().setText(queryElements[1]);
+                }
+            }
+        }
 
     }
 }

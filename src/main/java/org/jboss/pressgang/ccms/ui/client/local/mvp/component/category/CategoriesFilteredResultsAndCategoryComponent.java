@@ -129,6 +129,12 @@ public class CategoriesFilteredResultsAndCategoryComponent
 
     @Override
     protected void loadAdditionalDisplayedItemData() {
+        /* We need to initialize the view so the celltable buttons can display the correct labels */
+        tagDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+        
+        /* Initialize the properties view */
+        entityPropertiesView.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+        
         /* Display the tags that are added to the category */
         tagComponent.refreshExistingChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
@@ -345,7 +351,6 @@ public class CategoriesFilteredResultsAndCategoryComponent
         /* Show any wait dialogs from the new view, and update the view with the currently displayed entity */
         if (displayedView != null) {
             displayedView.setViewShown(true);
-            displayedView.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
         }
 
         lastDisplayedView = displayedView;
