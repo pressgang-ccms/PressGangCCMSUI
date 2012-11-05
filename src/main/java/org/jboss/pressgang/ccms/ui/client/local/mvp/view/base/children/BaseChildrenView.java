@@ -73,6 +73,12 @@ abstract public class BaseChildrenView<
 
     @Override
     public void setPossibleChildrenProvider(final EnhancedAsyncDataProvider<C> possibleChildrenProvider) {
+        
+        if (this.possibleChildrenProvider != null)
+        {
+            this.possibleChildrenProvider.removeDataDisplay(possibleChildrenResults);
+        }
+        
         this.possibleChildrenProvider = possibleChildrenProvider;
         possibleChildrenProvider.addDataDisplay(possibleChildrenResults);
     }

@@ -132,7 +132,7 @@ public class TagCategoriesComponent
                     /*
                      * getProviderData().getSelectedItem() will be null until a category is selected for the first time
                      */
-                    final boolean needToAddImageView = getPossibleChildrenProviderData().getSelectedItem() == null;
+                    final boolean needToAddView = getPossibleChildrenProviderData().getSelectedItem() == null;
 
                     /*
                      * Normally a list is populated with an un-expanded collection of entities. However, in this case we have
@@ -148,7 +148,7 @@ public class TagCategoriesComponent
                     /*
                      * If this is the first category selected, display the tags list
                      */
-                    if (needToAddImageView) {
+                    if (needToAddView) {
                         display.getSplit().add(display.getExistingChildrenResultsPanel());
                     }
 

@@ -92,6 +92,11 @@ abstract public class BaseOrderedChildrenView<
 
     @Override
     public void setExistingChildrenProvider(final EnhancedAsyncDataProvider<F> existingChildrenProvider) {
+        if (this.existingChildrenProvider != null)
+        {
+            this.existingChildrenProvider.removeDataDisplay(existingChildrenResults);
+        }
+        
         this.existingChildrenProvider = existingChildrenProvider;
         existingChildrenProvider.addDataDisplay(existingChildrenResults);
     }

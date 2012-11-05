@@ -41,8 +41,9 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
         if (items == null)
             throw new IllegalArgumentException("items cannot be null");
 
-        this.updateRowCount(listSize, true);
         this.updateRowData(startRow, items);
+        this.updateRowCount(listSize, true);
+        
     }
 
     /**
@@ -56,8 +57,9 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
         if (items == null)
             throw new IllegalArgumentException("items cannot be null");
 
-        this.updateRowCount(listSize, false);
         this.updateRowData(startRow, items);
+        this.updateRowCount(listSize, false);
+        
     }
 
     /**
@@ -70,8 +72,8 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
         if (items == null)
             throw new IllegalArgumentException("items cannot be null");
 
-        this.updateRowCount(items.size(), true);
         this.updateRowData(0, items);
+        this.updateRowCount(items.size(), true);
     }
 
 }

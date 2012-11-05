@@ -52,6 +52,11 @@ abstract public class BaseFilteredResultsView<T extends RESTBaseEntityV1<T, U, V
      */
     @Override
     public void setProvider(final EnhancedAsyncDataProvider<V> provider) {
+        if (this.provider != null)
+        {
+            this.provider.removeDataDisplay(getResults());
+        }
+        
         this.provider = provider;
         provider.addDataDisplay(getResults());
     }

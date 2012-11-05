@@ -36,6 +36,8 @@ public class TagCategoriesView
     private final TextColumn<RESTCategoryCollectionItemV1> idColumn = new TextColumn<RESTCategoryCollectionItemV1>() {
         @Override
         public String getValue(final RESTCategoryCollectionItemV1 object) {
+            if (object == null)
+                return null + "";
             return object.getItem().getId().toString();
 
         }
@@ -44,6 +46,8 @@ public class TagCategoriesView
     private final TextColumn<RESTCategoryCollectionItemV1> nameColumn = new TextColumn<RESTCategoryCollectionItemV1>() {
         @Override
         public String getValue(final RESTCategoryCollectionItemV1 object) {
+            if (object == null)
+                return null + "";
             return object.getItem().getName();
         }
     };
@@ -67,6 +71,8 @@ public class TagCategoriesView
     private final TextColumn<RESTTagInCategoryCollectionItemV1> tagIdColumn = new TextColumn<RESTTagInCategoryCollectionItemV1>() {
         @Override
         public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
+            if (object == null)
+                return null + "";
             return object.getItem().getId().toString();
 
         }
@@ -75,6 +81,8 @@ public class TagCategoriesView
     private final TextColumn<RESTTagInCategoryCollectionItemV1> tagNameColumn = new TextColumn<RESTTagInCategoryCollectionItemV1>() {
         @Override
         public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
+            if (object == null)
+                return null + "";
             return object.getItem().getName();
         }
     };

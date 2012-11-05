@@ -480,8 +480,8 @@ public class TagsFilteredResultsAndTagComponent
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             entityPropertiesView.getDriver().flush();
 
-            if (unsavedTagChanged() || categoriesComponent.isOKToProceed()
-                    || projectsComponent.isOKToProceed()) {
+            if (unsavedTagChanged() || !categoriesComponent.isOKToProceed()
+                    || !projectsComponent.isOKToProceed()) {
                 return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
             }
         }
