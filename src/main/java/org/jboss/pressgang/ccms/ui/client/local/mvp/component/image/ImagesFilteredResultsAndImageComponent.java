@@ -21,6 +21,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFiltere
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.project.ProjectViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -350,8 +351,8 @@ public class ImagesFilteredResultsAndImageComponent
                          */
                         final RESTImageV1 updateImage = new RESTImageV1();
                         updateImage.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                        updateImage.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                                .getDescription());
+                        updateImage.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem()
+                                .getItem().getDescription());
 
                         /* Create the language image */
                         final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
@@ -498,9 +499,12 @@ public class ImagesFilteredResultsAndImageComponent
     }
 
     @Override
-    protected void initializeViews() {
-        entityPropertiesView.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                getUnassignedLocales().toArray(new String[0]));
+    protected void initializeViews(final List<ImagePresenter.Display> filter) {
+
+        if (viewIsInFilter(filter, entityPropertiesView)) {
+            entityPropertiesView.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                    getUnassignedLocales().toArray(new String[0]));
+        }
 
         bindImageUploadButtons();
     }

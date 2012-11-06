@@ -2,6 +2,8 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.project;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.stringEqualsEquatingNullWithEmptyString;
 
+import java.util.List;
+
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
@@ -25,6 +27,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectsFi
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectsFilteredResultsAndProjectPresenter.Display;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.project.ProjectViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -38,12 +41,8 @@ import com.google.gwt.user.client.Window;
 
 @Dependent
 public class ProjectsFilteredResultsAndProjectComponent
-        extends BaseSearchAndEditComponent<
-        ProjectFilteredResultsPresenter.Display, 
-        ProjectsFilteredResultsAndProjectPresenter.Display, 
-        RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1, 
-        ProjectViewInterface, 
-        ProjectPresenter.Display>
+        extends
+        BaseSearchAndEditComponent<ProjectFilteredResultsPresenter.Display, ProjectsFilteredResultsAndProjectPresenter.Display, RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1, ProjectViewInterface, ProjectPresenter.Display>
         implements ProjectsFilteredResultsAndProjectPresenter.LogicComponent {
 
     @Inject
@@ -66,37 +65,35 @@ public class ProjectsFilteredResultsAndProjectComponent
                 filteredResultsDisplay, filteredResultsComponent, display, waitDisplay);
 
         /* Bind the logic to add and remove possible children */
-        tagComponent
-                .bindPossibleChildrenListButtonClicks(
-                        new GetExistingCollectionCallback<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>() {
+        tagComponent.bindPossibleChildrenListButtonClicks(
+                new GetExistingCollectionCallback<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>() {
 
-                            @Override
-                            public RESTTagCollectionV1 getExistingCollection() {
-                                return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags();
-                            }
+                    @Override
+                    public RESTTagCollectionV1 getExistingCollection() {
+                        return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags();
+                    }
 
-                        }, new AddPossibleChildCallback<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>() {
+                }, new AddPossibleChildCallback<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>() {
 
-                            @Override
-                            public void createAndAddChild(final RESTTagCollectionItemV1 copy) {
-                                final RESTTagV1 newChild = new RESTTagV1();
-                                newChild.setId(copy.getItem().getId());
-                                newChild.setName(copy.getItem().getName());      
-                                filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags()
-                                        .addNewItem(newChild);
-                            }
+                    @Override
+                    public void createAndAddChild(final RESTTagCollectionItemV1 copy) {
+                        final RESTTagV1 newChild = new RESTTagV1();
+                        newChild.setId(copy.getItem().getId());
+                        newChild.setName(copy.getItem().getName());
+                        filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(newChild);
+                    }
 
-                        }, new UpdateAfterChildModfiedCallback() {
+                }, new UpdateAfterChildModfiedCallback() {
 
-                            @Override
-                            public void updateAfterChidModfied() {
-                                /*
-                                 * refresh the list of possible tags
-                                 */
-                                tagComponent.refreshPossibleChildList();
-                            }
+                    @Override
+                    public void updateAfterChidModfied() {
+                        /*
+                         * refresh the list of possible tags
+                         */
+                        tagComponent.refreshPossibleChildList();
+                    }
 
-                        });
+                });
     }
 
     @Override
@@ -105,7 +102,7 @@ public class ProjectsFilteredResultsAndProjectComponent
         tagComponent.refreshPossibleChildrenDataAndList();
     }
 
-        @Override
+    @Override
     protected void bindActionButtons() {
         /**
          * A click handler used to display the project fields view
@@ -157,7 +154,8 @@ public class ProjectsFilteredResultsAndProjectComponent
                                         filteredResultsComponent.getProviderData().getStartRow(),
                                         filteredResultsComponent.getProviderData().getItems());
 
-                                tagDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+                                tagDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                                        false);
                                 tagComponent.refreshPossibleChildrenDataAndList();
 
                                 updateDisplayAfterSave(wasNewEntity);
@@ -239,9 +237,9 @@ public class ProjectsFilteredResultsAndProjectComponent
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
 
                 initializeViews();
-                
+
                 switchView(lastDisplayedView == null ? entityPropertiesView : lastDisplayedView);
-                
+
                 tagComponent.refreshPossibleChildrenDataAndList();
             }
         });
@@ -297,10 +295,12 @@ public class ProjectsFilteredResultsAndProjectComponent
     }
 
     @Override
-    protected void initializeViews() {
+    protected void initializeViews(final List<ProjectViewInterface> filter) {
         for (final ProjectViewInterface view : new ProjectViewInterface[] { entityPropertiesView, tagDisplay }) {
-            view.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+            if (viewIsInFilter(filter, view)) {
+                view.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+            }
         }
-        
+
     }
 }

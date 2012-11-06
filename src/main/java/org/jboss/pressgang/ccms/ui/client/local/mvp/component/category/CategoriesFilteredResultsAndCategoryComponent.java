@@ -2,6 +2,8 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.category;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.stringEqualsEquatingNullWithEmptyString;
 
+import java.util.List;
+
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
@@ -137,13 +139,16 @@ public class CategoriesFilteredResultsAndCategoryComponent
         tagComponent.refreshPossibleChildrenDataAndList();
     }
     
-    protected void initializeViews()
+    @Override
+    protected void initializeViews(final List<CategoryViewInterface> filter)
     {
         /* We need to initialize the view so the celltable buttons can display the correct labels */
-        tagDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+        if (viewIsInFilter(filter, tagDisplay))
+            tagDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
         
         /* Initialize the properties view */
-        entityPropertiesView.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+        if (viewIsInFilter(filter, entityPropertiesView))
+            entityPropertiesView.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
     }
 
     private void bindExistingChildrenRowClick() {

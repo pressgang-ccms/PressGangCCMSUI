@@ -2,6 +2,10 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.search;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
@@ -116,7 +120,7 @@ public class SearchResultsAndTopicComponent
                     if (tag.getState() == RESTBaseCollectionItemV1.REMOVE_STATE) {
                         tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
-                        topicTagsDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, split);
+                        initializeViews(Arrays.asList(new TopicViewInterface[] { topicTagsDisplay }));
 
                         return;
                     } else {
@@ -132,7 +136,7 @@ public class SearchResultsAndTopicComponent
             /* Add the tag to the topic */
             filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(selectedTagClone);
             /* Redisplay the view */
-            topicTagsDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, split);
+            initializeViews(Arrays.asList(new TopicViewInterface[] { topicTagsDisplay }));
         }
     }
 
@@ -166,7 +170,7 @@ public class SearchResultsAndTopicComponent
                 tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
             }
 
-            topicTagsDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, split);
+            initializeViews(Arrays.asList(new TopicViewInterface[] { topicTagsDisplay }));
         }
     }
 
@@ -228,14 +232,12 @@ public class SearchResultsAndTopicComponent
         bindTagEditingButtons();
         loadSplitPanelSize();
         this.topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
-        setXMLEditorButtonsToInitialState();
     }
-    
+
     /**
      * Reflect the state of the editor with the XML editor toggle buttons
      */
-    private void setXMLEditorButtonsToInitialState()
-    {
+    private void setXMLEditorButtonsToEditorState() {
         topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
         topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
     }
@@ -259,70 +261,6 @@ public class SearchResultsAndTopicComponent
         for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
                 topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay }) {
             view.buildSplitViewButtons(split);
-        }
-    }
-
-    /**
-     * Updates the current topic view
-     */
-    private void updateDisplayedTopicView() {
-        /* Update the page name */
-        final StringBuilder title = new StringBuilder(lastDisplayedView.getPageName());
-        if (this.filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-            title.append(": " + filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTitle());
-        }
-        display.getPageTitle().setText(title.toString());
-
-        /*
-         * Here we use the initialize function to copy the topic data into the GWT Editors. To save some data being retreived
-         * and sent by the server, the revisions view always uses the revisions from the current topic. All other views will
-         * display the revision topic if it has been selected.
-         */
-
-        /*
-         * Need to do an initial call to initialize for the rendered view in the split pane
-         */
-        topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
-                display.getSplitType());
-        /* By default, stop the automatic updating of the rendered view panel */
-        timer.cancel();
-
-        if (lastDisplayedView == this.topicRevisionsDisplay) {
-            /*
-             * The revisions always come from the parent topic (this saves us expanding the revisions when loading a revision
-             */
-            lastDisplayedView.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                    isReadOnlyMode(), NEW_TOPIC, display.getSplitType());
-        } else {
-            /* All other details come from the revision topic */
-            lastDisplayedView.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
-                    display.getSplitType());
-        }
-
-        /* Need to redisplay to work around a bug in the ACE editor */
-        if (lastDisplayedView == this.topicXMLDisplay) {
-            topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
-            topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
-            topicXMLDisplay.getEditor().redisplay();
-
-            /* While editing the XML, we need to setup a refresh of the rendered view */
-            if (display.getSplitType() != SplitType.NONE) {
-                if (!isReadOnlyMode()) {
-                    timer.scheduleRepeating(Constants.REFRESH_RATE);
-                }
-            }
-        }
-
-        /*
-         * Here we add behaviours to additional buttons or views that don't use the Editor framework (like those that use
-         * CellTables)
-         */
-
-        /*
-         * if we just displayed a new selection of tags, link up all the tag delete buttons
-         */
-        else if (lastDisplayedView == this.topicTagsDisplay) {
-            bindTagEditingButtons();
         }
     }
 
@@ -613,7 +551,7 @@ public class SearchResultsAndTopicComponent
                     public void doSuccessAction(final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
                         filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                                 .setRevisions(retValue.getRevisions());
-                        
+
                         /* refresh the list */
                         topicRevisionsDisplay.getProvider().displayNewFixedList(retValue.getRevisions().getItems());
                     }
@@ -626,12 +564,12 @@ public class SearchResultsAndTopicComponent
                 topicTagsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
                     @Override
                     public void doSuccessAction(final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
-                                               
+
                         /* copy the revisions into the displayed Topic */
                         filteredResultsComponent.getProviderData().getDisplayedItem().getItem().setTags(retValue.getTags());
 
                         /* update the view */
-                        topicTagsDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, split);
+                        initializeViews(Arrays.asList(new TopicViewInterface[] { topicTagsDisplay }));
                     }
                 }) {
 
@@ -718,10 +656,6 @@ public class SearchResultsAndTopicComponent
                                         true);
                                 /* Update the selected topic */
                                 retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
-                                /* Update the topic list */
-                                filteredResultsDisplay.getProvider().updateRowData(
-                                        filteredResultsComponent.getProviderData().getStartRow(),
-                                        filteredResultsComponent.getProviderData().getItems());
 
                                 initializeViews();
 
@@ -937,11 +871,11 @@ public class SearchResultsAndTopicComponent
                 topicXMLDisplay.getEditor().setUseWrapMode(topicXMLDisplay.getLineWrap().isDown());
             }
         });
-        
-        topicXMLDisplay.getShowInvisibles().addClickHandler(new ClickHandler() {            
+
+        topicXMLDisplay.getShowInvisibles().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                topicXMLDisplay.getEditor().setShowInvisibles(topicXMLDisplay.getShowInvisibles().isDown());               
+                topicXMLDisplay.getEditor().setShowInvisibles(topicXMLDisplay.getShowInvisibles().isDown());
             }
         });
 
@@ -954,23 +888,34 @@ public class SearchResultsAndTopicComponent
     }
 
     @Override
-    protected void initializeViews() {
+    protected void initializeViews(final List<TopicViewInterface> filter) {
 
-        topicSplitPanelRenderedDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                isReadOnlyMode(), NEW_TOPIC, this.split);
+        if (viewIsInFilter(filter, topicSplitPanelRenderedDisplay)) {
+            topicSplitPanelRenderedDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                    isReadOnlyMode(), NEW_TOPIC, this.split);
+        }
 
         for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
                 topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay }) {
-            view.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, this.split);
+            if (viewIsInFilter(filter, view)) {
+                view.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, this.split);
+            }
         }
 
-        topicRevisionsDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                isReadOnlyMode(), NEW_TOPIC, display.getSplitType());
+        if (viewIsInFilter(filter, topicRevisionsDisplay)) {
+            topicRevisionsDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                    isReadOnlyMode(), NEW_TOPIC, display.getSplitType());
+        }
 
-        /* Redisplay the editor */
-        topicXMLDisplay.getEditor().redisplay();
+        if (viewIsInFilter(filter, topicTagsDisplay)) {
+            bindTagEditingButtons();
+        }
 
-        bindTagEditingButtons();
+        if (viewIsInFilter(filter, topicXMLDisplay)) {
+            /* Redisplay the editor */
+            setXMLEditorButtonsToEditorState();
+            topicXMLDisplay.getEditor().redisplay();
+        }
     }
 
 }

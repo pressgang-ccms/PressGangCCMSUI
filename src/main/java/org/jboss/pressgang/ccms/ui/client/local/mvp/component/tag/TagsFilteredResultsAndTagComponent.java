@@ -35,6 +35,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPre
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -309,12 +310,11 @@ public class TagsFilteredResultsAndTagComponent
             RESTCalls.saveCategories(callback, updatedCategories);
         }
     };
-    
+
     @Override
-    protected void updateDisplayAfterSave(final boolean wasNewEntity)
-    {
+    protected void updateDisplayAfterSave(final boolean wasNewEntity) {
         super.updateDisplayAfterSave(wasNewEntity);
-        
+
         resetCategoryAndProjectsLists(true);
     }
 
@@ -506,7 +506,7 @@ public class TagsFilteredResultsAndTagComponent
         final boolean unsavedCategoryChanges = categoriesComponent.getPossibleChildrenProviderData().getItems() != null
                 && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems(categoriesComponent
                         .getPossibleChildrenProviderData().getItems());
-        
+
         final boolean unsavedProjectChanges = projectsComponent.getPossibleChildrenProviderData().getItems() != null
                 && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems(projectsComponent
                         .getPossibleChildrenProviderData().getItems());
@@ -515,7 +515,7 @@ public class TagsFilteredResultsAndTagComponent
         final boolean unsavedDescriptionChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(
                 filteredResultsComponent.getProviderData().getSelectedItem().getItem().getDescription(),
                 filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
-        
+
         final boolean unsavedNameChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(filteredResultsComponent
                 .getProviderData().getSelectedItem().getItem().getName(), filteredResultsComponent.getProviderData()
                 .getDisplayedItem().getItem().getName());
@@ -555,7 +555,7 @@ public class TagsFilteredResultsAndTagComponent
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
 
                 initializeViews();
-                
+
                 resetCategoryAndProjectsLists(true);
 
                 switchView(lastDisplayedView == null ? entityPropertiesView : lastDisplayedView);
@@ -629,7 +629,7 @@ public class TagsFilteredResultsAndTagComponent
      * @param removeCatgeoryTagListFromScreen true if the list of tags within a category is to be removed from the screen
      */
     private void resetCategoryAndProjectsLists(final boolean removeCatgeoryTagListFromScreen) {
-        
+
         resetCategoryLists();
         resetProjectList();
 
@@ -640,21 +640,19 @@ public class TagsFilteredResultsAndTagComponent
             categoriesDisplay.getSplit().remove(categoriesDisplay.getExistingChildrenResultsPanel());
         }
     }
-    
+
     /**
      * Reset the category list
      */
-    private void resetCategoryLists()
-    {
+    private void resetCategoryLists() {
         categoriesComponent.getPossibleChildrenProviderData().reset();
         categoriesComponent.refreshPossibleChildrenDataAndList();
     }
-    
+
     /**
      * Reset the project list
      */
-    private void resetProjectList()
-    {
+    private void resetProjectList() {
         projectsComponent.getPossibleChildrenProviderData().reset();
         projectsComponent.refreshPossibleChildrenDataAndList();
     }
@@ -677,10 +675,11 @@ public class TagsFilteredResultsAndTagComponent
     }
 
     @Override
-    protected void initializeViews() {
-        for (final TagViewInterface view : new TagViewInterface[] { entityPropertiesView, projectsDisplay,
-                categoriesDisplay }) {
-            view.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+    protected void initializeViews(final List<TagViewInterface> filter) {
+        for (final TagViewInterface view : new TagViewInterface[] { entityPropertiesView, projectsDisplay, categoriesDisplay }) {
+            if (viewIsInFilter(filter, view)) {
+                view.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+            }
         }
     }
 

@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit;
 
+import java.util.List;
+
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
@@ -112,6 +114,9 @@ abstract public class BaseSearchAndEditComponent<
 
         /* refresh the display */
         initializeViews();
+        
+        /* Load the data that is loaded when a new entity is selected */
+        loadAdditionalDisplayedItemData();
     }
 
     /** Binds logic to the search results list row click event */
@@ -190,7 +195,31 @@ abstract public class BaseSearchAndEditComponent<
     /**
      * Called when a new entity is selected
      */
-    abstract protected void initializeViews();
+    protected void initializeViews()
+    {
+        initializeViews(null);
+    }
+    
+    /**
+     * Called when a new entity is selected
+     * 
+     * @param filter null if all views are to be initialized, or includes a list of views to be initialized
+     */
+    abstract protected void initializeViews(final List<W> filter);
+    
+    /**
+     * Used by the initializeViews method
+     * @param filter The filter containing the list of views, or null if all views are to be initialized
+     * @param view The view to test against the filter
+     * @return true if the filter is null or if it contains the view, and false otherwise
+     */
+    protected boolean viewIsInFilter(final List<W> filter, final W view)
+    {
+        if (filter == null)
+            return true;
+        
+        return filter.contains(view);
+    }
 
     /** Called when displaying changes to a entity or when changing views */
     protected void switchView(final W displayedView) {

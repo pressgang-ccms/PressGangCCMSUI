@@ -120,7 +120,7 @@ html {
 
 .gwt-ToggleButton-down
 {
-	background-color: #005492;
+	background-color: #005492 !important;
 }
 
 .TextButton {
