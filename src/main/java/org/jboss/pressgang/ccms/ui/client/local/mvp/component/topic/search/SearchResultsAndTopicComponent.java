@@ -26,8 +26,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPres
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsAndTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicView;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -50,8 +48,6 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.view.client.CellPreviewEvent;
-import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
 
 @Dependent
@@ -120,7 +116,7 @@ public class SearchResultsAndTopicComponent
                     if (tag.getState() == RESTBaseCollectionItemV1.REMOVE_STATE) {
                         tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
-                        initializeViews();
+                        topicTagsDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, split);
 
                         return;
                     } else {
@@ -136,7 +132,7 @@ public class SearchResultsAndTopicComponent
             /* Add the tag to the topic */
             filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(selectedTagClone);
             /* Redisplay the view */
-            initializeViews();
+            topicTagsDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, split);
         }
     }
 
@@ -170,7 +166,7 @@ public class SearchResultsAndTopicComponent
                 tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
             }
 
-            initializeViews();
+            topicTagsDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, split);
         }
     }
 
@@ -614,9 +610,10 @@ public class SearchResultsAndTopicComponent
         final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
                 topicRevisionsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
                     @Override
-                    public void doSuccessAction(RESTTopicV1 retValue, TopicRevisionsPresenter.Display display) {
+                    public void doSuccessAction(final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
                         filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                                 .setRevisions(retValue.getRevisions());
+                        
                         /* refresh the list */
                         topicRevisionsDisplay.getProvider().displayNewFixedList(retValue.getRevisions().getItems());
                     }
@@ -628,11 +625,13 @@ public class SearchResultsAndTopicComponent
         final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
                 topicTagsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
                     @Override
-                    public void doSuccessAction(RESTTopicV1 retValue, TopicTagsPresenter.Display display) {
+                    public void doSuccessAction(final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
+                                               
                         /* copy the revisions into the displayed Topic */
                         filteredResultsComponent.getProviderData().getDisplayedItem().getItem().setTags(retValue.getTags());
 
-                        initializeViews();
+                        /* update the view */
+                        topicTagsDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, split);
                     }
                 }) {
 
@@ -642,7 +641,7 @@ public class SearchResultsAndTopicComponent
         final RESTCalls.RESTCallback<RESTTopicV1> topicWithBugsCallback = new BaseRestCallback<RESTTopicV1, TopicBugsPresenter.Display>(
                 topicBugsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicBugsPresenter.Display>() {
                     @Override
-                    public void doSuccessAction(RESTTopicV1 retValue, TopicBugsPresenter.Display display) {
+                    public void doSuccessAction(final RESTTopicV1 retValue, final TopicBugsPresenter.Display display) {
                         final RESTBugzillaBugCollectionV1 collection = retValue.getBugzillaBugs_OTM();
                         /* copy the revisions into the displayed Topic */
                         filteredResultsComponent.getProviderData().getDisplayedItem().getItem().setBugzillaBugs_OTM(collection);
