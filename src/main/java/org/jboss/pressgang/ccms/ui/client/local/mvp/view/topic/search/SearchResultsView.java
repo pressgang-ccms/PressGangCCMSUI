@@ -15,14 +15,17 @@ public class SearchResultsView extends BaseFilteredResultsView<RESTTopicV1, REST
     private final TextColumn<RESTTopicCollectionItemV1> idColumn = new TextColumn<RESTTopicCollectionItemV1>() {
         @Override
         public String getValue(final RESTTopicCollectionItemV1 object) {
+            if (object == null)
+                return null + "";
             return object.getItem().getId().toString();
-
         }
     };
 
     private final TextColumn<RESTTopicCollectionItemV1> titleColumn = new TextColumn<RESTTopicCollectionItemV1>() {
         @Override
         public String getValue(final RESTTopicCollectionItemV1 object) {
+            if (object == null)
+                return null + "";
             return object.getItem().getTitle();
         }
     };
