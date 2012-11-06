@@ -941,6 +941,9 @@ public class SearchResultsAndTopicComponent
         topicRevisionsDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), isReadOnlyMode(),
                 NEW_TOPIC, display.getSplitType());
         
+        /* Redisplay the editor */
+        topicXMLDisplay.getEditor().redisplay();
+        
         bindTagEditingButtons();
     }
 
