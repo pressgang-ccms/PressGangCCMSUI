@@ -56,13 +56,9 @@ import com.google.gwt.view.client.HasData;
 
 @Dependent
 public class SearchResultsAndTopicComponent
-    extends BaseSearchAndEditComponent<
-        SearchResultsPresenter.Display, 
-        SearchResultsAndTopicPresenter.Display, 
-        RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1, 
-        TopicViewInterface, 
-        TopicPresenter.Display>
-    implements SearchResultsAndTopicPresenter.LogicComponent {
+        extends
+        BaseSearchAndEditComponent<SearchResultsPresenter.Display, SearchResultsAndTopicPresenter.Display, RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1, TopicViewInterface, TopicPresenter.Display>
+        implements SearchResultsAndTopicPresenter.LogicComponent {
 
     /**
      * false to indicate that the topic views should display action buttons applicabale to established topics (as opposed to new
@@ -222,8 +218,9 @@ public class SearchResultsAndTopicComponent
         this.topicBugsDisplay = topicBugsDisplay;
         this.topicRevisionsDisplay = topicRevisionsDisplay;
         this.topicrevisionsComponent = topicrevisionsComponent;
-        
-        super.bind(Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLDisplay, topicViewDisplay, searchResultsDisplay, searchResultsComponent, display, waitDisplay);
+
+        super.bind(Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLDisplay, topicViewDisplay, searchResultsDisplay,
+                searchResultsComponent, display, waitDisplay);
 
         initializeDisplay();
 
@@ -235,6 +232,16 @@ public class SearchResultsAndTopicComponent
         bindTagEditingButtons();
         loadSplitPanelSize();
         this.topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
+        setXMLEditorButtonsToInitialState();
+    }
+    
+    /**
+     * Reflect the state of the editor with the XML editor toggle buttons
+     */
+    private void setXMLEditorButtonsToInitialState()
+    {
+        topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
+        topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
     }
 
     /**
@@ -253,8 +260,8 @@ public class SearchResultsAndTopicComponent
         /* Have to do this after the parseToken method has been called */
         display.initialize(split, topicSplitPanelRenderedDisplay.getPanel());
 
-        for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay, topicRenderedDisplay,
-                topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay }) {
+        for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
+                topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay }) {
             view.buildSplitViewButtons(split);
         }
     }
@@ -288,11 +295,12 @@ public class SearchResultsAndTopicComponent
             /*
              * The revisions always come from the parent topic (this saves us expanding the revisions when loading a revision
              */
-            lastDisplayedView.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), isReadOnlyMode(),
-                    NEW_TOPIC, display.getSplitType());
+            lastDisplayedView.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                    isReadOnlyMode(), NEW_TOPIC, display.getSplitType());
         } else {
             /* All other details come from the revision topic */
-            lastDisplayedView.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, display.getSplitType());
+            lastDisplayedView.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
+                    display.getSplitType());
         }
 
         /* Need to redisplay to work around a bug in the ACE editor */
@@ -540,7 +548,7 @@ public class SearchResultsAndTopicComponent
                     /* Reset the reference to the revision topic */
                     topicRevisionsDisplay.setRevisionTopic(revisionTopic);
                 }
-                
+
                 initializeViews();
                 switchView(topicRevisionsDisplay);
             }
@@ -588,20 +596,17 @@ public class SearchResultsAndTopicComponent
         return true;
     }
 
-    
     @Override
     protected void loadAdditionalDisplayedItemData() {
         topicRevisionsDisplay.setRevisionTopic(null);
 
         /* set the revisions to show the loading widget */
-        if (topicRevisionsDisplay.getProvider() != null)
-        {           
+        if (topicRevisionsDisplay.getProvider() != null) {
             topicRevisionsDisplay.getProvider().resetProvider();
         }
 
         /* set the bugs to show the loading widget */
-        if (topicBugsDisplay.getProvider() != null)
-        {
+        if (topicBugsDisplay.getProvider() != null) {
             topicBugsDisplay.getProvider().resetProvider();
         }
 
@@ -626,7 +631,7 @@ public class SearchResultsAndTopicComponent
                     public void doSuccessAction(RESTTopicV1 retValue, TopicTagsPresenter.Display display) {
                         /* copy the revisions into the displayed Topic */
                         filteredResultsComponent.getProviderData().getDisplayedItem().getItem().setTags(retValue.getTags());
-                        
+
                         initializeViews();
                     }
                 }) {
@@ -649,35 +654,42 @@ public class SearchResultsAndTopicComponent
         };
 
         /* Initiate the REST calls */
-        RESTCalls.getTopicWithTags(topicWithTagsCallback, filteredResultsComponent.getProviderData().getSelectedItem().getItem()
-                .getId());
-        RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, filteredResultsComponent.getProviderData().getSelectedItem()
+        RESTCalls.getTopicWithTags(topicWithTagsCallback, filteredResultsComponent.getProviderData().getSelectedItem()
                 .getItem().getId());
-        RESTCalls.getTopicWithBugs(topicWithBugsCallback, filteredResultsComponent.getProviderData().getSelectedItem().getItem()
-                .getId());
-        
+        RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, filteredResultsComponent.getProviderData()
+                .getSelectedItem().getItem().getId());
+        RESTCalls.getTopicWithBugs(topicWithBugsCallback, filteredResultsComponent.getProviderData().getSelectedItem()
+                .getItem().getId());
 
-        
     }
-    
+
     @Override
-    protected void switchView(final TopicViewInterface displayedView)
-    {
+    protected void switchView(final TopicViewInterface displayedView) {
         super.switchView(displayedView);
-        
+
         /* Update the page name */
         final StringBuilder title = new StringBuilder(displayedView.getPageName());
         if (this.filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             title.append(": " + filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTitle());
         }
         display.getPageTitle().setText(title.toString());
-        
+
         /* Redisplay the editor */
-        topicXMLDisplay.getEditor().redisplay();
-        
+        if (displayedView == topicXMLDisplay) {
+            topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
+            topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
+            topicXMLDisplay.getEditor().redisplay();
+        }
+
+        /* While editing the XML, we need to setup a refresh of the rendered view */
+        if (displayedView == topicXMLDisplay && display.getSplitType() != SplitType.NONE && !isReadOnlyMode()) {
+            timer.scheduleRepeating(Constants.REFRESH_RATE);
+        } else {
+            timer.cancel();
+        }
+
         lastDisplayedView = displayedView;
     }
-    
 
     @Override
     protected void bindActionButtons() {
@@ -703,14 +715,15 @@ public class SearchResultsAndTopicComponent
                         public void success(final RESTTopicV1 retValue) {
                             try {
                                 /* Update the displayed topic */
-                                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
+                                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                                        true);
                                 /* Update the selected topic */
                                 retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
                                 /* Update the topic list */
                                 filteredResultsDisplay.getProvider().updateRowData(
                                         filteredResultsComponent.getProviderData().getStartRow(),
                                         filteredResultsComponent.getProviderData().getItems());
-                                
+
                                 initializeViews();
 
                                 updateDisplayAfterSave(false);
@@ -899,8 +912,8 @@ public class SearchResultsAndTopicComponent
         };
 
         /* Hook up the click listeners */
-        for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay, topicRenderedDisplay,
-            topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay }) {
+        for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
+                topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay }) {
             view.getRenderedSplit().addClickHandler(splitMenuHandler);
             view.getFields().addClickHandler(topicViewClickHandler);
             view.getXml().addClickHandler(topicXMLClickHandler);
@@ -917,33 +930,47 @@ public class SearchResultsAndTopicComponent
             view.getRenderedVerticalSplit().addClickHandler(splitMenuVSplitHandler);
             view.getRenderedHorizontalSplit().addClickHandler(splitMenuHSplitHandler);
         }
+
+        /* Hook up the xml editor buttons */
+        topicXMLDisplay.getLineWrap().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                topicXMLDisplay.getEditor().setUseWrapMode(topicXMLDisplay.getLineWrap().isDown());
+            }
+        });
         
+        topicXMLDisplay.getShowInvisibles().addClickHandler(new ClickHandler() {            
+            @Override
+            public void onClick(final ClickEvent event) {
+                topicXMLDisplay.getEditor().setShowInvisibles(topicXMLDisplay.getShowInvisibles().isDown());               
+            }
+        });
+
     }
 
-   
     @Override
     protected void bindFilteredResultsButtons() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     protected void initializeViews() {
-        
-        topicSplitPanelRenderedDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), isReadOnlyMode(), NEW_TOPIC, this.split);
-        
-        for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay, topicRenderedDisplay,
-                topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay }) 
-        {
+
+        topicSplitPanelRenderedDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                isReadOnlyMode(), NEW_TOPIC, this.split);
+
+        for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
+                topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay }) {
             view.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, this.split);
-        }  
-        
-        topicRevisionsDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), isReadOnlyMode(),
-                NEW_TOPIC, display.getSplitType());
-        
+        }
+
+        topicRevisionsDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                isReadOnlyMode(), NEW_TOPIC, display.getSplitType());
+
         /* Redisplay the editor */
         topicXMLDisplay.getEditor().redisplay();
-        
+
         bindTagEditingButtons();
     }
 

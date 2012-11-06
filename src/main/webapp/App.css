@@ -118,6 +118,11 @@ html {
 	padding: 1px;	
 }
 
+.gwt-ToggleButton-down
+{
+	background-color: #005492;
+}
+
 .TextButton {
 	border-style: solid;
 	border-width: 1px;
