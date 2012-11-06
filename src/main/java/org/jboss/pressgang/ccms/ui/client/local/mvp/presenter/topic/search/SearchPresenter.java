@@ -9,7 +9,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUIProjectsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 
@@ -22,19 +22,14 @@ public class SearchPresenter implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "SearchView";
 
-    public interface Display extends BaseTemplateViewInterface {
+    public interface Display extends BaseEditorViewInterface {
         // Empty interface declaration, similar to UiBinder
         interface SearchPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor> {
         }
 
         SearchUIProjects getSearchUIProjects();
-
-        @Override
-        PushButton getEntitySearch();
         
         PushButton getFields();
-
-        SearchPresenterDriver getDriver();
 
         void initialise(final RESTTagCollectionV1 tags);
     }

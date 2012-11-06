@@ -27,13 +27,11 @@ public class CategoryPresenter implements TemplatePresenter {
     public interface CategoryPresenterDriver extends SimpleBeanEditorDriver<RESTCategoryV1, RESTCategoryV1BasicDetailsEditor> {
     }
 
-    public interface Display extends CategoryViewInterface,
-            BaseEditorViewInterface<RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1> {
+    public interface Display extends CategoryViewInterface, BaseEditorViewInterface {
 
     }
 
-    public interface LogicComponent extends
-            BasePropertyViewComponentInterface<Display> {
+    public interface LogicComponent extends BasePropertyViewComponentInterface<Display> {
         @Override
         void getEntity(final Integer categoryId);
     }

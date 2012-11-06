@@ -39,7 +39,7 @@ abstract public class BaseSearchAndEditComponent<
         S extends BaseSearchAndEditViewInterface<T, U, V>, 
         T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, 
         W extends BaseTemplateViewInterface, 
-        X extends BaseEditorViewInterface<T, U, V> & BaseTemplateViewInterface>
+        X extends BaseEditorViewInterface & BaseTemplateViewInterface>
     extends ComponentBase<S> {
 
     /** The last displayed view */

@@ -27,7 +27,7 @@ public class TopicPresenter implements TemplatePresenter {
     public interface TopicPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1BasicDetailsEditor> {
     }
 
-    public interface Display extends TopicViewInterface, BaseEditorViewInterface<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
+    public interface Display extends TopicViewInterface, BaseEditorViewInterface {
 
     }
 

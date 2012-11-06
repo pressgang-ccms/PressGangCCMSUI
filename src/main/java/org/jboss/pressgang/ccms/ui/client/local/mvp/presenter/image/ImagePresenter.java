@@ -41,7 +41,7 @@ public class ImagePresenter implements TemplatePresenter {
     }
 
     public interface Display extends BaseTemplateViewInterface,
-            BaseEditorViewInterface<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1> {
+            BaseEditorViewInterface {
 
         public interface AddLocaleInterface {
             PushButton getCancel();
