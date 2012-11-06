@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
@@ -28,17 +29,8 @@ public class SearchResultsPresenter implements TemplatePresenter {
 
     }
 
-    public interface LogicComponent extends Component<Display> {
-        void bind(final String queryString, final SearchResultsPresenter.Display display,
-                final BaseTemplateViewInterface waitDisplay);
+    public interface LogicComponent extends BaseFilteredResultsComponentInterface<Display, RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
 
-        ProviderUpdateData<RESTTopicCollectionItemV1> getTopicProviderData();
-
-        void setTopicProviderData(ProviderUpdateData<RESTTopicCollectionItemV1> topicProviderData);
-
-        EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> getProvider();
-
-        void setProvider(EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider);
     }
 
     @Inject

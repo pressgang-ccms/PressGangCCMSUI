@@ -6,9 +6,12 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.propertyview.BasePropertyViewComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 
@@ -24,7 +27,7 @@ public class TopicPresenter implements TemplatePresenter {
     public interface TopicPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1BasicDetailsEditor> {
     }
 
-    public interface Display extends TopicViewInterface {
+    public interface Display extends TopicViewInterface, BaseEditorViewInterface<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
 
     }
 
