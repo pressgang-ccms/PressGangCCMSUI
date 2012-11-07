@@ -91,7 +91,7 @@ public interface TopicViewInterface extends BaseTemplateViewInterface {
      * @param newTopic true if this is a newly created topic
      * @param splitType How the panel should be split to display the rendered veiw
      */
-    void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType);
+    void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final String[] locales);
 
     /** Show the rendered split view menu */
     void showSplitViewButtons();

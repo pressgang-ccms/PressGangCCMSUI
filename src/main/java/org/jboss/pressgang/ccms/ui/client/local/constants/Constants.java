@@ -46,7 +46,7 @@ public final class Constants {
     /**
      * The height of the header banner in the template.
      */
-    public static final int HEADING_BANNER_HEIGHT = 110;
+    public static final int HEADING_BANNER_HEIGHT = 55;
 
     /**
      * The size of the split panel dividers.

@@ -38,7 +38,7 @@
 
 	<dependencies>
 		<!-- Smart GWT -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.smartgwt</groupId>
 			<artifactId>smartgwt</artifactId>
 			<version>3.0</version>
@@ -48,7 +48,7 @@
 			<groupId>com.smartgwt</groupId>
 			<artifactId>smartgwt-skins</artifactId>
 			<version>3.0</version>
-		</dependency>
+		</dependency> -->
 	
 		<dependency>
 			<groupId>javax.servlet</groupId>

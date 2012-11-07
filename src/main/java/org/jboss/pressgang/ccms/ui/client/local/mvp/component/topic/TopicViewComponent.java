@@ -17,7 +17,7 @@ public class TopicViewComponent<S extends TopicViewInterface> extends ComponentB
                 new BaseRestCallback.SuccessAction<RESTTopicV1, S>() {
                     @Override
                     public void doSuccessAction(RESTTopicV1 retValue, S display) {
-                        display.initialize(retValue, false, false, SplitType.DISABLED);
+                        display.initialize(retValue, false, false, SplitType.DISABLED, null);
                     }
                 }) {
         };

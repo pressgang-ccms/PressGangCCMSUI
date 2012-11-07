@@ -1,20 +1,37 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview;
 
+import java.io.IOException;
+import java.util.Arrays;
+
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
 import com.google.gwt.editor.client.Editor;
+import com.google.gwt.text.shared.Renderer;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.ValueListBox;
 
 public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTopicV1> {
     private final IntegerBox id = new IntegerBox();
     private final IntegerBox revision = new IntegerBox();
-    private final TextBox locale = new TextBox();
+    private final ValueListBox<String> locale = new ValueListBox<String>(new Renderer<String>() {
+
+        @Override
+        public String render(final String object) {
+            return object;
+        }
+
+        @Override
+        public void render(final String object, final Appendable appendable) throws IOException {
+        }
+    });
     private final TextBox title = new TextBox();
     private final TextArea description = new TextArea();
 
@@ -26,7 +43,7 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
         return title;
     }
 
-    public TextBox localeEditor() {
+    public ValueListBox<String> localeEditor() {
         return locale;
     }
 
@@ -38,23 +55,23 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
         return id;
     }
 
-    public RESTTopicV1BasicDetailsEditor(final boolean readOnly) {
+    public RESTTopicV1BasicDetailsEditor(final boolean readOnly, final String[] locales) {
         super(5, 2);
 
         this.addStyleName(CSSConstants.TOPIC_VIEW_PANEL);
 
-        for (int i = 0; i < 5; ++i)
-        {
+        for (int i = 0; i < 5; ++i) {
             this.getCellFormatter().addStyleName(i, 0, CSSConstants.TOPIC_VIEW_LABEL);
         }
 
-        for (int i = 0; i < 4; ++i)
-        {
+        for (int i = 0; i < 4; ++i) {
             this.getCellFormatter().addStyleName(i, 1, CSSConstants.TOPIC_VIEW_DETAIL);
         }
 
         title.setReadOnly(readOnly);
-        locale.setReadOnly(readOnly);
+        /* http://code.google.com/p/google-web-toolkit/issues/detail?id=6112 */
+        DOM.setElementPropertyBoolean(locale.getElement(), "disabled", readOnly);
+        locale.setAcceptableValues(Arrays.asList(locales));
         description.setReadOnly(readOnly);
 
         id.setReadOnly(true);

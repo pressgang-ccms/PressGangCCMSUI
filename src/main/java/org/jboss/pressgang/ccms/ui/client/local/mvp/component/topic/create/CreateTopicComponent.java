@@ -82,7 +82,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         public void run() {
             if (lastView == topicXMLDisplay) {
                 topicXMLDisplay.getDriver().flush();
-                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split);
+                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, null);
             }
         }
     };
@@ -230,8 +230,8 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                         newTopic.setXml(retValue.getValue());
 
                         /* Refresh the views */
-                        topicXMLDisplay.initialize(newTopic, false, true, SplitType.NONE);
-                        topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split);
+                        topicXMLDisplay.initialize(newTopic, false, true, SplitType.NONE, null);
+                        topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, null);
                     }
                 }) {
         };
@@ -404,7 +404,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL);
 
                 initializeDisplay();
-                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split);
+                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, null);
                 updateDisplayedTopicView(lastView);
             }
         };
@@ -420,7 +420,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_HOIRZONTAL);
 
                 initializeDisplay();
-                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split);
+                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, null);
                 updateDisplayedTopicView(lastView);
             }
         };
@@ -545,7 +545,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 /* setup automatic updating */
                 timer.scheduleRepeating(Constants.REFRESH_RATE);
                 /* Do an initial update */
-                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split);
+                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, null);
             }
         } else if (selectedView == this.topicTagsDisplay) {
             bindTagEditingButtons();
@@ -557,7 +557,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
     private void updateViews() {
         /* refresh the data being displayed */
         for (final TopicViewInterface view : this.updatableTopicViews) {
-            view.initialize(newTopic, false, true, split);
+            view.initialize(newTopic, false, true, split, null);
         }
     }
 

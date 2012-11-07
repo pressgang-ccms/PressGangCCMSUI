@@ -3,7 +3,6 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.search;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,9 +17,11 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
@@ -82,12 +83,15 @@ public class SearchResultsAndTopicComponent
             if (lastDisplayedView == topicXMLDisplay) {
                 topicXMLDisplay.getDriver().flush();
                 topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
-                        display.getSplitType());
+                        display.getSplitType(), locales);
             }
         }
     };
 
     private String queryString;
+    
+    /** A list of locales retrieved from the server */
+    private String[] locales;
 
     private TopicPresenter.LogicComponent topicViewComponent;
     private TopicXMLPresenter.Display topicXMLDisplay;
@@ -236,6 +240,26 @@ public class SearchResultsAndTopicComponent
         bindTagEditingButtons();
         loadSplitPanelSize();
         this.topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
+        populateLocales();
+    }
+    
+    /**
+     * Retrieve a list of locales from the server
+     */
+    private void populateLocales() {
+        final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+                waitDisplay, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
+                    @Override
+                    public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
+                        /* Get the list of locales from the StringConstant */
+                        locales = retValue.getValue().replaceAll("\\r\\n", "").replaceAll("\\n", "").replaceAll(" ", "")
+                                .split(",");
+                        Arrays.sort(locales);
+                    }
+                }) {
+        };
+
+        RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
     }
 
     /**
@@ -272,6 +296,8 @@ public class SearchResultsAndTopicComponent
                 topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay }) {
             view.buildSplitViewButtons(split);
         }
+        
+        loadSplitPanelSize();
     }
 
     /**
@@ -922,21 +948,21 @@ public class SearchResultsAndTopicComponent
                 logger.log(Level.INFO, "\tInitializing split rendering view");
 
                 topicSplitPanelRenderedDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem()
-                        .getItem(), isReadOnlyMode(), NEW_TOPIC, this.split);
+                        .getItem(), isReadOnlyMode(), NEW_TOPIC, this.split, locales);
             }
 
             logger.log(Level.INFO, "\tInitializing topic views");
             for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
                     topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay }) {
                 if (viewIsInFilter(filter, view)) {
-                    view.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, this.split);
+                    view.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, this.split, locales);
                 }
             }
 
             if (viewIsInFilter(filter, topicRevisionsDisplay)) {
                 logger.log(Level.INFO, "\tInitializing topic revisions view");
                 topicRevisionsDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                        isReadOnlyMode(), NEW_TOPIC, display.getSplitType());
+                        isReadOnlyMode(), NEW_TOPIC, display.getSplitType(), locales);
             }
 
             if (viewIsInFilter(filter, topicTagsDisplay)) {
