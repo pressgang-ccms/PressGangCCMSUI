@@ -113,6 +113,7 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
     public void displayChildView(final BaseTemplateViewInterface displayedView) {
         this.getViewActionButtonsPanel().clear();
         this.getViewPanel().clear();
+        
         if (displayedView != null) {
             this.getViewActionButtonsPanel().setWidget(displayedView.getTopActionPanel());
             this.getViewPanel().setWidget(displayedView.getPanel());

@@ -5,6 +5,8 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -65,6 +67,8 @@ public class SearchResultsAndTopicComponent
      * topics)
      */
     private static final boolean NEW_TOPIC = false;
+
+    private static final Logger logger = Logger.getLogger(SearchResultsAndTopicComponent.class.getName());
 
     @Inject
     private HandlerManager eventBus;
@@ -238,8 +242,14 @@ public class SearchResultsAndTopicComponent
      * Reflect the state of the editor with the XML editor toggle buttons
      */
     private void setXMLEditorButtonsToEditorState() {
-        topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
-        topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
+        try {
+            logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.setXMLEditorButtonsToEditorState()");
+
+            topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
+            topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
+        } finally {
+            logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.setXMLEditorButtonsToEditorState()");
+        }
     }
 
     /**
@@ -398,17 +408,24 @@ public class SearchResultsAndTopicComponent
      */
     private void bindTagEditingButtons() {
 
-        /* This will be null if the tags have not been downloaded */
-        if (topicTagsDisplay.getEditor() != null) {
-            for (final TopicTagViewProjectEditor topicTagViewProjectEditor : topicTagsDisplay.getEditor().projects.getEditors()) {
-                for (final TopicTagViewCategoryEditor topicTagViewCategoryEditor : topicTagViewProjectEditor.categories
+        try {
+            logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.bindTagEditingButtons()");
+
+            /* This will be null if the tags have not been downloaded */
+            if (topicTagsDisplay.getEditor() != null) {
+                for (final TopicTagViewProjectEditor topicTagViewProjectEditor : topicTagsDisplay.getEditor().projects
                         .getEditors()) {
-                    for (final TopicTagViewTagEditor topicTagViewTagEditor : topicTagViewCategoryEditor.myTags.getEditors()) {
-                        topicTagViewTagEditor.getDelete().addClickHandler(
-                                new DeleteTagClickHandler(topicTagViewTagEditor.getTag().getTag()));
+                    for (final TopicTagViewCategoryEditor topicTagViewCategoryEditor : topicTagViewProjectEditor.categories
+                            .getEditors()) {
+                        for (final TopicTagViewTagEditor topicTagViewTagEditor : topicTagViewCategoryEditor.myTags.getEditors()) {
+                            topicTagViewTagEditor.getDelete().addClickHandler(
+                                    new DeleteTagClickHandler(topicTagViewTagEditor.getTag().getTag()));
+                        }
                     }
                 }
             }
+        } finally {
+            logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.bindTagEditingButtons()");
         }
     }
 
@@ -532,100 +549,107 @@ public class SearchResultsAndTopicComponent
 
     @Override
     protected void loadAdditionalDisplayedItemData() {
-        topicRevisionsDisplay.setRevisionTopic(null);
 
-        /* set the revisions to show the loading widget */
-        if (topicRevisionsDisplay.getProvider() != null) {
-            topicRevisionsDisplay.getProvider().resetProvider();
+        try {
+            logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.loadAdditionalDisplayedItemData()");
+
+            topicRevisionsDisplay.setRevisionTopic(null);
+
+            /* set the revisions to show the loading widget */
+            if (topicRevisionsDisplay.getProvider() != null) {
+                topicRevisionsDisplay.getProvider().resetProvider();
+            }
+
+            /* set the bugs to show the loading widget */
+            if (topicBugsDisplay.getProvider() != null) {
+                topicBugsDisplay.getProvider().resetProvider();
+            }
+
+            /* A callback to respond to a request for a topic with the revisions expanded */
+            final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
+                    topicRevisionsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
+                        @Override
+                        public void doSuccessAction(final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
+                            filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                                    .setRevisions(retValue.getRevisions());
+
+                            /* refresh the list */
+                            topicRevisionsDisplay.getProvider().displayNewFixedList(retValue.getRevisions().getItems());
+                        }
+                    }) {
+
+            };
+
+            /* A callback to respond to a request for a topic with the tags expanded */
+            final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
+                    topicTagsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
+                        @Override
+                        public void doSuccessAction(final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
+
+                            /* copy the revisions into the displayed Topic */
+                            filteredResultsComponent.getProviderData().getDisplayedItem().getItem().setTags(retValue.getTags());
+
+                            /* update the view */
+                            initializeViews(Arrays.asList(new TopicViewInterface[] { topicTagsDisplay }));
+                        }
+                    }) {
+
+            };
+
+            /* A callback to respond to a request for a topic with the bugzilla bugs expanded */
+            final RESTCalls.RESTCallback<RESTTopicV1> topicWithBugsCallback = new BaseRestCallback<RESTTopicV1, TopicBugsPresenter.Display>(
+                    topicBugsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicBugsPresenter.Display>() {
+                        @Override
+                        public void doSuccessAction(final RESTTopicV1 retValue, final TopicBugsPresenter.Display display) {
+                            final RESTBugzillaBugCollectionV1 collection = retValue.getBugzillaBugs_OTM();
+                            /* copy the revisions into the displayed Topic */
+                            filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                                    .setBugzillaBugs_OTM(collection);
+                            /* refresh the celltable */
+                            topicBugsDisplay.getProvider().displayNewFixedList(collection.getItems());
+                        }
+                    }) {
+
+            };
+
+            /* Initiate the REST calls */
+            RESTCalls.getTopicWithTags(topicWithTagsCallback, filteredResultsComponent.getProviderData().getSelectedItem()
+                    .getItem().getId());
+            RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, filteredResultsComponent.getProviderData()
+                    .getSelectedItem().getItem().getId());
+            RESTCalls.getTopicWithBugs(topicWithBugsCallback, filteredResultsComponent.getProviderData().getSelectedItem()
+                    .getItem().getId());
+        } finally {
+            logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.loadAdditionalDisplayedItemData()");
         }
-
-        /* set the bugs to show the loading widget */
-        if (topicBugsDisplay.getProvider() != null) {
-            topicBugsDisplay.getProvider().resetProvider();
-        }
-
-        /* A callback to respond to a request for a topic with the revisions expanded */
-        final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
-                topicRevisionsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
-                    @Override
-                    public void doSuccessAction(final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
-                        filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                                .setRevisions(retValue.getRevisions());
-
-                        /* refresh the list */
-                        topicRevisionsDisplay.getProvider().displayNewFixedList(retValue.getRevisions().getItems());
-                    }
-                }) {
-
-        };
-
-        /* A callback to respond to a request for a topic with the tags expanded */
-        final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
-                topicTagsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
-                    @Override
-                    public void doSuccessAction(final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
-
-                        /* copy the revisions into the displayed Topic */
-                        filteredResultsComponent.getProviderData().getDisplayedItem().getItem().setTags(retValue.getTags());
-
-                        /* update the view */
-                        initializeViews(Arrays.asList(new TopicViewInterface[] { topicTagsDisplay }));
-                    }
-                }) {
-
-        };
-
-        /* A callback to respond to a request for a topic with the bugzilla bugs expanded */
-        final RESTCalls.RESTCallback<RESTTopicV1> topicWithBugsCallback = new BaseRestCallback<RESTTopicV1, TopicBugsPresenter.Display>(
-                topicBugsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicBugsPresenter.Display>() {
-                    @Override
-                    public void doSuccessAction(final RESTTopicV1 retValue, final TopicBugsPresenter.Display display) {
-                        final RESTBugzillaBugCollectionV1 collection = retValue.getBugzillaBugs_OTM();
-                        /* copy the revisions into the displayed Topic */
-                        filteredResultsComponent.getProviderData().getDisplayedItem().getItem().setBugzillaBugs_OTM(collection);
-                        /* refresh the celltable */
-                        topicBugsDisplay.getProvider().displayNewFixedList(collection.getItems());
-                    }
-                }) {
-
-        };
-
-        /* Initiate the REST calls */
-        RESTCalls.getTopicWithTags(topicWithTagsCallback, filteredResultsComponent.getProviderData().getSelectedItem()
-                .getItem().getId());
-        RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, filteredResultsComponent.getProviderData()
-                .getSelectedItem().getItem().getId());
-        RESTCalls.getTopicWithBugs(topicWithBugsCallback, filteredResultsComponent.getProviderData().getSelectedItem()
-                .getItem().getId());
 
     }
 
     @Override
     protected void switchView(final TopicViewInterface displayedView) {
-        super.switchView(displayedView);
+        try {
+            logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.switchView(final TopicViewInterface displayedView)");
 
-        /* Update the page name */
-        final StringBuilder title = new StringBuilder(displayedView.getPageName());
-        if (this.filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-            title.append(": " + filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTitle());
+            super.switchView(displayedView);
+
+            /* Update the page name */
+            final StringBuilder title = new StringBuilder(displayedView.getPageName());
+            if (this.filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+                title.append(": " + filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTitle());
+            }
+            display.getPageTitle().setText(title.toString());
+
+            /* While editing the XML, we need to setup a refresh of the rendered view */
+            if (displayedView == topicXMLDisplay && display.getSplitType() != SplitType.NONE && !isReadOnlyMode()) {
+                timer.scheduleRepeating(Constants.REFRESH_RATE);
+            } else {
+                timer.cancel();
+            }
+
+            lastDisplayedView = displayedView;
+        } finally {
+            logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.switchView(final TopicViewInterface displayedView)");
         }
-        display.getPageTitle().setText(title.toString());
-
-        /* Redisplay the editor */
-        if (displayedView == topicXMLDisplay) {
-            topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
-            topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
-            topicXMLDisplay.getEditor().redisplay();
-        }
-
-        /* While editing the XML, we need to setup a refresh of the rendered view */
-        if (displayedView == topicXMLDisplay && display.getSplitType() != SplitType.NONE && !isReadOnlyMode()) {
-            timer.scheduleRepeating(Constants.REFRESH_RATE);
-        } else {
-            timer.cancel();
-        }
-
-        lastDisplayedView = displayedView;
     }
 
     @Override
@@ -890,32 +914,45 @@ public class SearchResultsAndTopicComponent
     @Override
     protected void initializeViews(final List<TopicViewInterface> filter) {
 
-        if (viewIsInFilter(filter, topicSplitPanelRenderedDisplay)) {
-            topicSplitPanelRenderedDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                    isReadOnlyMode(), NEW_TOPIC, this.split);
-        }
+        try {
+            logger.log(Level.INFO,
+                    "ENTER SearchResultsAndTopicComponent.initializeViews(final List<TopicViewInterface> filter)");
 
-        for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
-                topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay }) {
-            if (viewIsInFilter(filter, view)) {
-                view.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, this.split);
+            if (viewIsInFilter(filter, topicSplitPanelRenderedDisplay)) {
+                logger.log(Level.INFO, "\tInitializing split rendering view");
+
+                topicSplitPanelRenderedDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem()
+                        .getItem(), isReadOnlyMode(), NEW_TOPIC, this.split);
             }
+
+            logger.log(Level.INFO, "\tInitializing topic views");
+            for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
+                    topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay }) {
+                if (viewIsInFilter(filter, view)) {
+                    view.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, this.split);
+                }
+            }
+
+            if (viewIsInFilter(filter, topicRevisionsDisplay)) {
+                logger.log(Level.INFO, "\tInitializing topic revisions view");
+                topicRevisionsDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                        isReadOnlyMode(), NEW_TOPIC, display.getSplitType());
+            }
+
+            if (viewIsInFilter(filter, topicTagsDisplay)) {
+                bindTagEditingButtons();
+            }
+
+            /* Redisplay the editor. topicXMLDisplay.getEditor() will be not null after the initialize method was called above */
+            if (viewIsInFilter(filter, topicXMLDisplay)) {
+                logger.log(Level.INFO, "\tSetting topic XML edit button state and redisplaying ACE editor");
+                setXMLEditorButtonsToEditorState();
+                topicXMLDisplay.getEditor().redisplay();
+            }
+
+        } finally {
+            logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.initializeViews(final List<TopicViewInterface> filter)");
         }
 
-        if (viewIsInFilter(filter, topicRevisionsDisplay)) {
-            topicRevisionsDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                    isReadOnlyMode(), NEW_TOPIC, display.getSplitType());
-        }
-
-        if (viewIsInFilter(filter, topicTagsDisplay)) {
-            bindTagEditingButtons();
-        }
-
-        if (viewIsInFilter(filter, topicXMLDisplay)) {
-            /* Redisplay the editor */
-            setXMLEditorButtonsToEditorState();
-            topicXMLDisplay.getEditor().redisplay();
-        }
     }
-
 }
