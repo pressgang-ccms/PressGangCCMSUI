@@ -27,7 +27,29 @@
 		<uel.impl.version>2.1.2-b04</uel.impl.version>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>smartclient.com</id>
+			<url>http://www.smartclient.com/maven2</url>
+		</repository>
+	</repositories>
+	
+	
+
 	<dependencies>
+		<!-- Smart GWT -->
+		<dependency>
+			<groupId>com.smartgwt</groupId>
+			<artifactId>smartgwt</artifactId>
+			<version>3.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.smartgwt</groupId>
+			<artifactId>smartgwt-skins</artifactId>
+			<version>3.0</version>
+		</dependency>
+	
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -595,8 +617,9 @@
 						<artifactId>gwt-maven-plugin</artifactId>
 						<version>${gwt.maven.version}</version>
 						<configuration>
-							<extraJvmArgs>-Xmx1024M -Xms1024M -Xss1024k -XX:MaxPermSize=256M -XX:PermSize=128M</extraJvmArgs>
-							<!--<localWorkers>2</localWorkers>-->
+							<extraJvmArgs>-Xmx1024M -Xms1024M -Xss1024k -XX:MaxPermSize=256M
+								-XX:PermSize=128M</extraJvmArgs>
+							<!--<localWorkers>2</localWorkers> -->
 						</configuration>
 
 					</plugin>
