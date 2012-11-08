@@ -35,6 +35,7 @@ abstract public class BaseFilteredResultsComponent<S extends BaseFilteredResults
         this.providerData = providerData;
     }
     
+    @Override
     public void bind(final String queryString, final S display, final BaseTemplateViewInterface waitDisplay)
     {
         super.bind(display, waitDisplay);

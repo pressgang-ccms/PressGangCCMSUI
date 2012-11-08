@@ -92,6 +92,7 @@ public class ImageView extends BaseTemplateView<RESTImageV1, RESTImageCollection
 
     }
 
+    @Override
     public ImagePresenterDriver getDriver() {
         return driver;
     }

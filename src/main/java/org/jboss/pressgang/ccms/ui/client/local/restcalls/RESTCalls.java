@@ -1,7 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
-import javax.ws.rs.QueryParam;
-
 import org.jboss.errai.bus.client.api.ErrorCallback;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.errai.bus.client.api.RemoteCallback;
@@ -38,7 +36,8 @@ public final class RESTCalls {
     /**
      * A topic with expanded revisions
      */
-    private static final String TOPIC_REVISIONS_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"}}";
+    private static final String TOPIC_REVISIONS_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"},\"branches\":[{\"trunk\":{\"name\": \""
+            + RESTTopicV1.LOG_DETAILS_NAME + "\"}}]}";
     /**
      * A topic with expanded bugs
      */
@@ -222,6 +221,16 @@ public final class RESTCalls {
             @Override
             public void call() throws Exception {
                 createRestMethod(callback).createJSONTopic("", topic);
+            }
+        });
+    }
+    
+    static public void createTopic(final RESTCallback<RESTTopicV1> callback, final RESTTopicV1 topic, final String message, final Integer flag, final Integer userId) {
+        // final String expand = "{\"branches\":[" + TOPIC_EXPANSION + "]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).createJSONTopic("", topic, message, flag, userId);
             }
         });
     }

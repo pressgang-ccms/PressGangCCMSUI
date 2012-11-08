@@ -6,6 +6,7 @@ import java.util.Collections;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
@@ -50,7 +51,7 @@ public class TagCategoriesComponent
                 public void setSort(final RESTTagInCategoryCollectionItemV1 child, int index) {
                     child.getItem().explicitSetRelationshipSort(index);  
                     /* Set any unchanged items to updated */
-                    if (child.getState() == RESTBaseUpdateCollectionItemV1.UNCHANGED_STATE)
+                    if (child.getState() == RESTBaseCollectionItemV1.UNCHANGED_STATE)
                         child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);                    
                 }
             };

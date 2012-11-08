@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionIte
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.LogMessageInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
@@ -19,15 +20,10 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErro
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.search.SearchResultsAndTopicView.MessageLogDialog;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.TextArea;
 
 /**
  * This presenter is used to display and wire selection of views, including the topic search results view, and the topic XML,
@@ -43,31 +39,7 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
     public interface Display extends
             BaseSearchAndEditViewInterface<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
         
-        /**
-         * The interface that defines the save log message dialog box
-         * @author Matthew Casperson
-         */
-        interface LogMessageDialog
-        {
-            PushButton getCancel();
-
-            PushButton getOk();
-            
-            TextArea getMessage();
-            
-            RadioButton getMinorChange();
-            
-            RadioButton getMajorChange();
-
-            DialogBox getDialogBox();
-            
-            /**
-             * Reset all the ui elements to default states
-             */
-            void reset();
-        }
-        
-        LogMessageDialog getMessageLogDialog();
+        LogMessageInterface getMessageLogDialog();
         
         SplitType getSplitType();
 

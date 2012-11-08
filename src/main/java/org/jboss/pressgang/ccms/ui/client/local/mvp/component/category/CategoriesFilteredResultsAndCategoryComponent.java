@@ -76,7 +76,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
                 public void setSort(final RESTTagInCategoryCollectionItemV1 child, int index) {
                     child.getItem().explicitSetRelationshipSort(index);   
                     /* Set any unchanged items to updated */
-                    if (child.getState() == RESTBaseUpdateCollectionItemV1.UNCHANGED_STATE)
+                    if (child.getState() == RESTBaseCollectionItemV1.UNCHANGED_STATE)
                         child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
                 }
             };

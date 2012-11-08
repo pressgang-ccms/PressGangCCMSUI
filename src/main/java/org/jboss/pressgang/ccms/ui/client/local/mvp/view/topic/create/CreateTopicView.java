@@ -5,9 +5,11 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionIte
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.LogMessageInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.create.CreateTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.WaitingDialog;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.LogMessageView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 
@@ -31,7 +33,14 @@ public class CreateTopicView extends BaseTemplateView<RESTTopicV1, RESTTopicColl
     private final DockLayoutPanel topicViewLayoutPanel = new DockLayoutPanel(Unit.PX);
     private final SimpleLayoutPanel topicViewPanel = new SimpleLayoutPanel();
     private final SimpleLayoutPanel topicViewActionButtonsPanel = new SimpleLayoutPanel();
+    private final LogMessageView messageLogDialog = new LogMessageView();
+    
 
+    @Override
+    public LogMessageInterface getMessageLogDialog() {
+        return messageLogDialog;
+    }
+    
     @Override
     public SimpleLayoutPanel getTopicViewActionButtonsPanel() {
         return topicViewActionButtonsPanel;
@@ -102,5 +111,7 @@ public class CreateTopicView extends BaseTemplateView<RESTTopicV1, RESTTopicColl
     protected void hideWaiting() {
         waiting.hide();
     }
+
+
 
 }

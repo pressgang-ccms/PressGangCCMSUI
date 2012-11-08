@@ -346,13 +346,38 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                             }
                         }) {
                 };
+                
+                display.getMessageLogDialog().getDialogBox().center();
+                display.getMessageLogDialog().getDialogBox().show();
+                display.getMessageLogDialog().getOk().addClickHandler(new ClickHandler() {
+                    @Override
+                    public void onClick(final ClickEvent event) {
+                        
+                        final String message = display.getMessageLogDialog().getMessage().getText();
+                        final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
+                        
+                        /* Create or update the topic */
+                        if (saveRestTopic.getId() != null) {
+                            RESTCalls.saveTopic(callback, saveRestTopic, message, flag, ServiceConstants.NULL_USER_ID);
+                        } else {
+                            RESTCalls.createTopic(callback, saveRestTopic, message, flag, ServiceConstants.NULL_USER_ID);
+                        }
+                             
+                        display.getMessageLogDialog().reset();
+                        display.getMessageLogDialog().getDialogBox().hide();
+                    }
+                });
+                
+                display.getMessageLogDialog().getCancel().addClickHandler(new ClickHandler() {
+                    
+                    @Override
+                    public void onClick(final ClickEvent event) {
+                        display.getMessageLogDialog().reset();
+                        display.getMessageLogDialog().getDialogBox().hide();
+                    }
+                });
 
-                /* Create or update the topic */
-                if (saveRestTopic.getId() != null) {
-                    RESTCalls.saveTopic(callback, saveRestTopic);
-                } else {
-                    RESTCalls.createTopic(callback, saveRestTopic);
-                }
+                
 
             }
         };

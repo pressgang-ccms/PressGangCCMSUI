@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.LogMessageInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
@@ -42,6 +43,8 @@ public class CreateTopicPresenter implements TemplatePresenter {
         SimpleLayoutPanel getTopicViewPanel();
 
         void initialize(final SplitType splitType, final Panel panel);
+        
+        LogMessageInterface getMessageLogDialog();
     }
 
     public interface LogicComponent extends Component<Display> {

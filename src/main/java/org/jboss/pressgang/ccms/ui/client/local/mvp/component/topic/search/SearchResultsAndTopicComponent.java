@@ -754,7 +754,7 @@ public class SearchResultsAndTopicComponent
                             
                             final String message = display.getMessageLogDialog().getMessage().getText();
                             final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
-                            RESTCalls.saveTopic(callback, updateTopic, message, flag, Constants.NULL_ID);
+                            RESTCalls.saveTopic(callback, updateTopic, message, flag, ServiceConstants.NULL_USER_ID);
                                                         
                             display.getMessageLogDialog().reset();
                             display.getMessageLogDialog().getDialogBox().hide();
