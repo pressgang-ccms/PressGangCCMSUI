@@ -35,6 +35,13 @@ public interface CSSConstants {
         String ENTITY_SEARCH_RESULTS_AND_VIEW_PARENT_PANEL = "EntitySearchResultsAndViewParentPanel";
     }
     
+    public interface CreateTopicView
+    {
+        String CREATE_TOPIC_VIEW_BUTTONS_PANEL = "CreateTopicViewButtonsPanel";
+        String CREATE_TOPIC_VIEW_DETAILS_PANEL = "CreateTopicViewDetailsPanel";
+        String CREATE_RESULTS_AND_VIEW_PARENT_PANEL = "CreateResultsAndViewPanelParent";
+    }
+    
 
     
     public interface TagView {

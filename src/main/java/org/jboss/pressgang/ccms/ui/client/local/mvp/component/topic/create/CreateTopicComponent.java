@@ -213,7 +213,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
     private void finishLoading() {
         if (templateLoaded && localesLoaded) {
             initializeViews();
-            updateDisplayedTopicView(topicViewDisplay);
+            updateDisplayedTopicView(topicXMLDisplay);
         }
 
     }

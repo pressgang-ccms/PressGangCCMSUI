@@ -104,6 +104,11 @@ html {
 	bottom: 16px !important;
 }
 
+.CreateTopicViewButtonsPanel
+{
+	bottom: 16px !important;
+}
+
 .TopActionPanel, .RenderedSplitViewMenuTable {
 	width: 100%;	
 	border-spacing: 0px;

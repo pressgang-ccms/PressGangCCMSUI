@@ -74,10 +74,10 @@ public class CreateTopicView extends BaseTemplateView<RESTTopicV1, RESTTopicColl
         topicViewLayoutPanel.addNorth(topicViewActionButtonsPanel, Constants.ACTION_BAR_HEIGHT);
         topicViewLayoutPanel.add(topicViewPanel);
 
-        topicViewActionButtonsPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_SEARCH_TOPIC_VIEW_BUTTONS_PANEL);
-        topicViewPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_SEARCH_TOPIC_VIEW_DETAILS_PANEL);
+        topicViewActionButtonsPanel.addStyleName(CSSConstants.CreateTopicView.CREATE_TOPIC_VIEW_BUTTONS_PANEL);
+        topicViewPanel.addStyleName(CSSConstants.CreateTopicView.CREATE_TOPIC_VIEW_DETAILS_PANEL);
 
-        splitPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_SEARCH_RESULTS_AND_VIEW_PARENT_PANEL);
+        splitPanel.addStyleName(CSSConstants.CreateTopicView.CREATE_RESULTS_AND_VIEW_PARENT_PANEL);
 
         this.getPanel().add(splitPanel);
     }
