@@ -89,7 +89,7 @@ public class SearchResultsAndTopicComponent
     };
 
     private String queryString;
-    
+
     /** A list of locales retrieved from the server */
     private String[] locales;
 
@@ -242,7 +242,7 @@ public class SearchResultsAndTopicComponent
         this.topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
         populateLocales();
     }
-    
+
     /**
      * Retrieve a list of locales from the server
      */
@@ -296,7 +296,7 @@ public class SearchResultsAndTopicComponent
                 topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay }) {
             view.buildSplitViewButtons(split);
         }
-        
+
         loadSplitPanelSize();
     }
 
@@ -746,7 +746,31 @@ public class SearchResultsAndTopicComponent
                     updateTopic.explicitSetTitle(updateTopic.getTitle());
                     updateTopic.explicitSetXml(updateTopic.getXml());
 
-                    RESTCalls.saveTopic(callback, updateTopic);
+                    display.getMessageLogDialog().getDialogBox().center();
+                    display.getMessageLogDialog().getDialogBox().show();
+                    display.getMessageLogDialog().getOk().addClickHandler(new ClickHandler() {
+                        @Override
+                        public void onClick(final ClickEvent event) {
+                            
+                            final String message = display.getMessageLogDialog().getMessage().getText();
+                            final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
+                            RESTCalls.saveTopic(callback, updateTopic, message, flag, Constants.NULL_ID);
+                                                        
+                            display.getMessageLogDialog().reset();
+                            display.getMessageLogDialog().getDialogBox().hide();
+                        }
+                    });
+                    
+                    display.getMessageLogDialog().getCancel().addClickHandler(new ClickHandler() {
+                        
+                        @Override
+                        public void onClick(final ClickEvent event) {
+                            display.getMessageLogDialog().reset();
+                            display.getMessageLogDialog().getDialogBox().hide();
+                        }
+                    });
+
+                    
                 }
             }
         };

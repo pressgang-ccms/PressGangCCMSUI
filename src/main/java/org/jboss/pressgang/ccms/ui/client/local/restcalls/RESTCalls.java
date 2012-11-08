@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
+import javax.ws.rs.QueryParam;
+
 import org.jboss.errai.bus.client.api.ErrorCallback;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.errai.bus.client.api.RemoteCallback;
@@ -200,6 +202,16 @@ public final class RESTCalls {
             @Override
             public void call() throws Exception {
                 createRestMethod(callback).updateJSONTopic("", topic);
+            }
+        });
+    }
+    
+    static public void saveTopic(final RESTCallback<RESTTopicV1> callback, final RESTTopicV1 topic, final String message, final Integer flag, final Integer userId) {
+        // final String expand = "{\"branches\":[" + TOPIC_EXPANSION + "]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).updateJSONTopic("", topic, message, flag, userId);
             }
         });
     }

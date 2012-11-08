@@ -14,6 +14,11 @@ final public class ServiceConstants {
     static public final int TOPIC_TEMPLATE = 39;
     /** The default locale */
     static public final int DEFAULT_LOCALE_ID = 40;
+    
+    /** Used to indicate a minor change to an entity */
+    static public final byte MINOR_CHANGE = 0x01;
+    /** Used to indicate a major change to an entity */
+    static public final byte MAJOR_CHANGE = 0x01;
 
     private ServiceConstants() {
 

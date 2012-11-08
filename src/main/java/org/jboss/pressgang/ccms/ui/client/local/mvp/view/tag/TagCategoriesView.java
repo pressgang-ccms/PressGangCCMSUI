@@ -18,15 +18,13 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.DisableableButtonCell;
 import com.google.gwt.user.client.ui.PushButton;
 
 public class TagCategoriesView
-    extends BaseOrderedChildrenView<
-        RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, 
-        RESTCategoryV1,
-        RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, 
-        RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
-    implements TagCategoriesPresenter.Display {
+        extends
+        BaseOrderedChildrenView<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, RESTCategoryV1, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
+        implements TagCategoriesPresenter.Display {
 
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
     private final PushButton tagDetails = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagDetails());
@@ -87,16 +85,18 @@ public class TagCategoriesView
         }
     };
 
+    final DisableableButtonCell up = new DisableableButtonCell();
     private final Column<RESTTagInCategoryCollectionItemV1, String> tagUpButtonColumn = new Column<RESTTagInCategoryCollectionItemV1, String>(
-            new ButtonCell()) {
+            up) {
         @Override
         public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
             return PressGangCCMSUI.INSTANCE.Up();
         }
     };
 
+    final DisableableButtonCell down = new DisableableButtonCell();
     private final Column<RESTTagInCategoryCollectionItemV1, String> tagDownButtonColumn = new Column<RESTTagInCategoryCollectionItemV1, String>(
-            new ButtonCell()) {
+            down) {
         @Override
         public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
             return PressGangCCMSUI.INSTANCE.Down();

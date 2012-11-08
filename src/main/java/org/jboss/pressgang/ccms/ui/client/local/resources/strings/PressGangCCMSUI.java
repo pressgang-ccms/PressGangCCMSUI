@@ -309,5 +309,13 @@ public interface PressGangCCMSUI extends Constants {
     String Fields();
     
     String NoTitle();
+    
+    String MinorChange();
+    
+    String MajorChange();
+    
+    String SaveLog();
+    
+    String Message();
 }
 

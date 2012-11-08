@@ -18,7 +18,7 @@ public final class Constants {
     static public final int FAST_FORWARD_ROWS = 100;
     
     /**
-     * And ID that can not appear in the database.
+     * An ID that can not appear in the database.
      */
     public static final int NULL_ID = -1;
     
