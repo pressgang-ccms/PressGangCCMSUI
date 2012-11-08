@@ -81,9 +81,7 @@ public class SearchResultsAndTopicComponent
         @Override
         public void run() {
             if (lastDisplayedView == topicXMLDisplay) {
-                topicXMLDisplay.getDriver().flush();
-                topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
-                        display.getSplitType(), locales);
+                refreshRenderedView();
             }
         }
     };
@@ -241,6 +239,16 @@ public class SearchResultsAndTopicComponent
         loadSplitPanelSize();
         this.topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
         populateLocales();
+    }
+    
+    /**
+     * Refresh the split panel rendered view
+     */
+    private void refreshRenderedView()
+    {
+        topicXMLDisplay.getDriver().flush();
+        topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
+                display.getSplitType(), locales);
     }
 
     /**
@@ -969,16 +977,9 @@ public class SearchResultsAndTopicComponent
             logger.log(Level.INFO,
                     "ENTER SearchResultsAndTopicComponent.initializeViews(final List<TopicViewInterface> filter)");
 
-            if (viewIsInFilter(filter, topicSplitPanelRenderedDisplay)) {
-                logger.log(Level.INFO, "\tInitializing split rendering view");
-
-                topicSplitPanelRenderedDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem()
-                        .getItem(), isReadOnlyMode(), NEW_TOPIC, this.split, locales);
-            }
-
             logger.log(Level.INFO, "\tInitializing topic views");
             for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
-                    topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay }) {
+                    topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicSplitPanelRenderedDisplay }) {
                 if (viewIsInFilter(filter, view)) {
                     view.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, this.split, locales);
                 }
