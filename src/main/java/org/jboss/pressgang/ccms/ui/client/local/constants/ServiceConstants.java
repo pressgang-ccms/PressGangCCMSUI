@@ -20,8 +20,8 @@ final public class ServiceConstants {
     /** Used to indicate a major change to an entity */
     static public final byte MAJOR_CHANGE = 0x01;
     
-    /** The nul user, used when no login information is available */
-    static public final int NULL_USER_ID = 79;
+    /** The null user, used when no login information is available */
+    static public final Integer NULL_USER_ID = null;
 
     private ServiceConstants() {
 
