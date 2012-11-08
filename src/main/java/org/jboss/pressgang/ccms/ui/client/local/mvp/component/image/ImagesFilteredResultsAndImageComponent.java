@@ -311,7 +311,7 @@ public class ImagesFilteredResultsAndImageComponent
                         waitDisplay, new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
                             @Override
                             public void doSuccessAction(RESTImageV1 retValue, BaseTemplateViewInterface display) {
-                                retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
+                                retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), false);
                                 retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
                                         true);
                                 updateDisplayAfterSave(false);

@@ -11,7 +11,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
-import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.i18n.shared.DateTimeFormat;
@@ -110,9 +109,17 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 
             if (revisionTopic == null || !revisionTopic.getItem().getRevision().equals(object.getItem().getRevision())) {
                 
-                /* Diffs don't work if there is no XML to compare to */
-                if (object.getItem().getXml().trim().isEmpty())
+                final String viewingXML = revisionTopic == null ? mainTopic.getXml() : revisionTopic.getItem().getXml();
+                
+                if (object.getItem().getXml().trim().equals(viewingXML.trim()))
                 {
+                    /* The XML is the same */
+                    diffButtonCell.setEnabled(false);
+                    return PressGangCCMSUI.INSTANCE.SameXML();
+                }
+                else if (object.getItem().getXml().trim().isEmpty())
+                {
+                    /* Diffs don't work if there is no XML to compare to */
                     diffButtonCell.setEnabled(false);
                     return PressGangCCMSUI.INSTANCE.NoXML();
                 }
