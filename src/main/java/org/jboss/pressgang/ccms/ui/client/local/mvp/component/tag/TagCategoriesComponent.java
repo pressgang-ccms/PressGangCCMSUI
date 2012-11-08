@@ -49,7 +49,9 @@ public class TagCategoriesComponent
                 @Override
                 public void setSort(final RESTTagInCategoryCollectionItemV1 child, int index) {
                     child.getItem().explicitSetRelationshipSort(index);  
-                    child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                    /* Set any unchanged items to updated */
+                    if (child.getState() == RESTBaseUpdateCollectionItemV1.UNCHANGED_STATE)
+                        child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);                    
                 }
             };
     

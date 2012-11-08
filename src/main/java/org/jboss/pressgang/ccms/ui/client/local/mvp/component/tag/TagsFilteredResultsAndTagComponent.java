@@ -161,6 +161,7 @@ public class TagsFilteredResultsAndTagComponent
              * relationships into the updateTag, so the changes are all done in one transaction.
              */
             if (categoriesComponent.getPossibleChildrenProviderData().getItems() != null) {
+                
                 updateTag.explicitSetCategories(new RESTCategoryInTagCollectionV1());
                 for (final RESTCategoryCollectionItemV1 category : categoriesComponent.getPossibleChildrenProviderData()
                         .getItems()) {
@@ -173,6 +174,7 @@ public class TagsFilteredResultsAndTagComponent
 
                             final RESTCategoryInTagV1 addedCategory = new RESTCategoryInTagV1();
                             addedCategory.setId(category.getItem().getId());
+                            addedCategory.explicitSetRelationshipSort(category.getItem().getSort());
 
                             final RESTCategoryInTagCollectionItemV1 collectionItem = new RESTCategoryInTagCollectionItemV1();
                             collectionItem.setState(tag.getState());
@@ -309,7 +311,7 @@ public class TagsFilteredResultsAndTagComponent
                 }
             }
 
-            RESTCalls.saveCategories(callback, updatedCategories);
+            RESTCalls.updateCategories(callback, updatedCategories);
         }
     };
 

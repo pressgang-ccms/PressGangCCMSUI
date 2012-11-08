@@ -185,7 +185,7 @@ public final class RESTCalls {
         });
     }
 
-    static public void saveCategories(final RESTCallback<RESTCategoryCollectionV1> callback, final RESTCategoryCollectionV1 categories) {
+    static public void updateCategories(final RESTCallback<RESTCategoryCollectionV1> callback, final RESTCategoryCollectionV1 categories) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {

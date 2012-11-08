@@ -68,7 +68,10 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
     private final FlexTable topActionPanel = new FlexTable();
     private final FlexTable footerPanel = new FlexTable();
 
+    /** The feedback link */
     private final Anchor feedback = new Anchor(PressGangCCMSUI.INSTANCE.Feedback());
+    /** The version label */
+    private final Label version = new Label(PressGangCCMSUI.INSTANCE.Build() + " " + Constants.VERSION);
 
     private final PushButton home;
     private final PushButton createTopic;
@@ -286,6 +289,11 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
         topActionParentPanel.add(topActionPanel);
 
         thirdLevelLayoutPanel.addNorth(topActionParentPanel, Constants.ACTION_BAR_HEIGHT);
+        
+        /* Set the footer panel */
+        footerPanel.addStyleName(CSSConstants.FOOTER_PANEL);
+
+        thirdLevelLayoutPanel.addSouth(footerPanel, Constants.FOOTER_HEIGHT);
 
         /* Set the shortcut bar */
         shortCutPanelParent.setWidget(shortcutPanel);
@@ -294,14 +302,10 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
 
         thirdLevelLayoutPanel.addWest(shortCutPanelParent, Constants.SHORTCUT_BAR_WIDTH);
 
-        /* Set the footer panel */
-        footerPanel.addStyleName(CSSConstants.FOOTER_PANEL);
-
-        thirdLevelLayoutPanel.addSouth(footerPanel, Constants.FOOTER_HEIGHT);
-
         /* Add the feedback link */
+        footerPanel.setWidget(0, 0, version);
         addRightAlignedActionButtonPaddingPanel(footerPanel);
-        footerPanel.setWidget(0, 1, feedback);
+        footerPanel.setWidget(0, 2, feedback);
 
         /* Add the content panel */
         panel.addStyleName(CSSConstants.CONTENT_LAYOUT_PANEL);

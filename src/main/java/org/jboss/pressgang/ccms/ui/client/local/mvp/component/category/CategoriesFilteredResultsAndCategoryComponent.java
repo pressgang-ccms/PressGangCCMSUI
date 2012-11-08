@@ -75,7 +75,9 @@ public class CategoriesFilteredResultsAndCategoryComponent
                 @Override
                 public void setSort(final RESTTagInCategoryCollectionItemV1 child, int index) {
                     child.getItem().explicitSetRelationshipSort(index);   
-                    child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                    /* Set any unchanged items to updated */
+                    if (child.getState() == RESTBaseUpdateCollectionItemV1.UNCHANGED_STATE)
+                        child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
                 }
             };
 
@@ -108,7 +110,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
                         final RESTTagInCategoryV1 newChild = new RESTTagInCategoryV1();
                         newChild.setId(copy.getItem().getId());
                         newChild.setName(copy.getItem().getName());
-                        newChild.setRelationshipSort(0);
+                        newChild.explicitSetRelationshipSort(0);
                         filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(newChild);                        
                     }
 
