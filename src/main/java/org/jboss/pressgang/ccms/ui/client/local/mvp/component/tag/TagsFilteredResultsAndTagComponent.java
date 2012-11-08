@@ -133,7 +133,7 @@ public class TagsFilteredResultsAndTagComponent
                             /* Update the list of tags with any saved changes */
                             retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
 
-                            /* refresh the p[rojects list */
+                            /* refresh the projects list */
                             projectsComponent.refreshPossibleChildrenDataAndList();
 
                             if (unsavedCategoryChanges) {
