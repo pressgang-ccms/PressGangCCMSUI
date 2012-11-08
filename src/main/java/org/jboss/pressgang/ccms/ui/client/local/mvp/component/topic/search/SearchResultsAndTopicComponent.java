@@ -527,6 +527,7 @@ public class SearchResultsAndTopicComponent
                 }
 
                 initializeViews();
+                topicRevisionsDisplay.setProvider(generateTopicRevisionsListProvider());
                 switchView(topicRevisionsDisplay);
             }
         });

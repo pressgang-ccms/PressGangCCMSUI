@@ -76,7 +76,6 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
              * editable instead of read only.
              */
             if (mainTopic != null && object.getItem().getRevision().equals(mainTopic.getRevision()))
-
             {
                 if (revisionTopic == null || revisionTopic.getItem().getRevision().equals(mainTopic.getRevision())) {
                     viewButtonCell.setEnabled(false);
