@@ -91,6 +91,8 @@ public interface PressGangCCMSUI extends Constants {
     String View();
 
     String Diff();
+    
+    String NoXML();
 
     String CurrentlyViewing();
 

@@ -109,7 +109,17 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
             }
 
             if (revisionTopic == null || !revisionTopic.getItem().getRevision().equals(object.getItem().getRevision())) {
-                return PressGangCCMSUI.INSTANCE.Diff();
+                
+                /* Diffs don't work if there is no XML to compare to */
+                if (object.getItem().getXml().trim().isEmpty())
+                {
+                    diffButtonCell.setEnabled(false);
+                    return PressGangCCMSUI.INSTANCE.NoXML();
+                }
+                else
+                {
+                    return PressGangCCMSUI.INSTANCE.Diff();
+                }
             }
 
             diffButtonCell.setEnabled(false);
