@@ -63,7 +63,7 @@ public class TagFilteredResultsView extends BaseFilteredResultsView<RESTTagV1, R
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.TagID());
         getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.TagName());
 
-        this.addFilterField(PressGangCCMSUI.INSTANCE.TagID(), idFilter);
+        this.addFilterField(PressGangCCMSUI.INSTANCE.TagIDs(), idFilter);
         this.addFilterField(PressGangCCMSUI.INSTANCE.TagName(), nameFilter);
         this.addFilterField(PressGangCCMSUI.INSTANCE.TagDescription(), descriptionFilter);
 

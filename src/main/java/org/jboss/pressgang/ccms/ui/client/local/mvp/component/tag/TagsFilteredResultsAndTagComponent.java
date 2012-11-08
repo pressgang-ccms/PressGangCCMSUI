@@ -106,7 +106,7 @@ public class TagsFilteredResultsAndTagComponent
             entityPropertiesView.getDriver().flush();
 
             final boolean unsavedTagChanges = unsavedTagChanged();
-            final boolean unsavedCategoryChanges = categoriesComponent.isOKToProceed();
+            final boolean unsavedCategoryChanges = !categoriesComponent.isOKToProceed();
 
             /* Create the tag first */
             saveTagChanges(unsavedTagChanges, unsavedCategoryChanges);

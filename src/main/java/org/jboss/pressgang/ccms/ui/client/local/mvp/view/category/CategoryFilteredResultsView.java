@@ -60,7 +60,7 @@ public class CategoryFilteredResultsView extends
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.CategoryID());
         getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.CategoryName());
 
-        addFilterField(PressGangCCMSUI.INSTANCE.CategoryID(), idFilter);
+        addFilterField(PressGangCCMSUI.INSTANCE.CategoryIDs(), idFilter);
         addFilterField(PressGangCCMSUI.INSTANCE.CategoryName(), nameFilter);
         addFilterField(PressGangCCMSUI.INSTANCE.CategoryDescription(), descriptionFilter);
     }

@@ -60,7 +60,7 @@ public class ProjectedFilteredResultsView extends
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ProjectID());
         getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.ProjectName());
 
-        addFilterField(PressGangCCMSUI.INSTANCE.ProjectID(), idFilter);
+        addFilterField(PressGangCCMSUI.INSTANCE.ProjectIDs(), idFilter);
         addFilterField(PressGangCCMSUI.INSTANCE.ProjectName(), nameFilter);
         addFilterField(PressGangCCMSUI.INSTANCE.ProjectDescription(), descriptionFilter);
     }

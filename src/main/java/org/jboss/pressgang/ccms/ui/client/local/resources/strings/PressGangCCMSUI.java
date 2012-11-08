@@ -42,6 +42,8 @@ public interface PressGangCCMSUI extends Constants {
 
     String TopicID();
     
+    String TopicIDs();
+    
     String TopicCreated();
     
     String TopicLastModified();
@@ -205,6 +207,8 @@ public interface PressGangCCMSUI extends Constants {
     String Advanced();
 
     String TagID();
+    
+    String TagIDs();
 
     String TagName();
     
@@ -219,6 +223,8 @@ public interface PressGangCCMSUI extends Constants {
     String ProjectName();
 
     String ProjectID();
+    
+    String ProjectIDs();
 
     String ProjectDescription();
     
@@ -237,6 +243,8 @@ public interface PressGangCCMSUI extends Constants {
     String TagCategories();
 
     String CategoryID();
+    
+    String CategoryIDs();
 
     String CategoryName();
 
@@ -300,3 +308,4 @@ public interface PressGangCCMSUI extends Constants {
     
     String NoTitle();
 }
+
