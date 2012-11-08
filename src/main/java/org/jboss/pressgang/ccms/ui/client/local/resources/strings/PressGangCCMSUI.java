@@ -41,6 +41,10 @@ public interface PressGangCCMSUI extends Constants {
     String TopicView();
 
     String TopicID();
+    
+    String TopicCreated();
+    
+    String TopicLastModified();
 
     String TopicRevision();
 

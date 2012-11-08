@@ -13,10 +13,10 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueListBox;
+import com.google.gwt.user.datepicker.client.DateBox;
 
 public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTopicV1> {
     private final IntegerBox id = new IntegerBox();
@@ -34,6 +34,16 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
     });
     private final TextBox title = new TextBox();
     private final TextArea description = new TextArea();
+    private final DateBox created = new DateBox();
+    private final DateBox lastModified = new DateBox();
+
+    public DateBox lastModifiedEditor() {
+        return lastModified;
+    }
+
+    public DateBox createdEditor() {
+        return created;
+    }
 
     public TextArea descriptionEditor() {
         return description;
@@ -56,7 +66,7 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
     }
 
     public RESTTopicV1BasicDetailsEditor(final boolean readOnly, final String[] locales) {
-        super(5, 2);
+        super(7, 2);
 
         this.addStyleName(CSSConstants.TOPIC_VIEW_PANEL);
 
@@ -85,18 +95,24 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
 
         this.setWidget(0, 0, new Label(PressGangCCMSUI.INSTANCE.TopicID()));
         this.setWidget(0, 1, id);
+        
+        this.setWidget(1, 0, new Label(PressGangCCMSUI.INSTANCE.TopicCreated()));
+        this.setWidget(1, 1, created);
+        
+        this.setWidget(2, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLastModified()));
+        this.setWidget(2, 1, lastModified);
 
-        this.setWidget(1, 0, new Label(PressGangCCMSUI.INSTANCE.TopicRevision()));
-        this.setWidget(1, 1, revision);
+        this.setWidget(3, 0, new Label(PressGangCCMSUI.INSTANCE.TopicRevision()));
+        this.setWidget(3, 1, revision);
 
-        this.setWidget(2, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLocale()));
-        this.setWidget(2, 1, locale);
+        this.setWidget(4, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLocale()));
+        this.setWidget(4, 1, locale);
 
-        this.setWidget(3, 0, new Label(PressGangCCMSUI.INSTANCE.TopicTitle()));
-        this.setWidget(3, 1, title);
+        this.setWidget(5, 0, new Label(PressGangCCMSUI.INSTANCE.TopicTitle()));
+        this.setWidget(5, 1, title);
 
-        this.setWidget(4, 0, new Label(PressGangCCMSUI.INSTANCE.TopicDescription()));
-        this.getCellFormatter().addStyleName(4, 1, CSSConstants.TOPIC_VIEW_DESCRIPTION_DETAIL);
-        this.setWidget(4, 1, description);
+        this.setWidget(6, 0, new Label(PressGangCCMSUI.INSTANCE.TopicDescription()));
+        this.getCellFormatter().addStyleName(6, 1, CSSConstants.TOPIC_VIEW_DESCRIPTION_DETAIL);
+        this.setWidget(6, 1, description);
     }
 }
