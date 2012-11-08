@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.create;
 
+import java.util.Arrays;
+
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
@@ -74,6 +76,11 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
     /** The state of the topic when it was last saved */
     private RESTTopicV1 lastSavedTopic;
 
+    private String[] locales;
+
+    private boolean templateLoaded = false;
+    private boolean localesLoaded = false;
+
     /**
      * Setup automatic flushing and rendering.
      */
@@ -82,7 +89,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         public void run() {
             if (lastView == topicXMLDisplay) {
                 topicXMLDisplay.getDriver().flush();
-                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, null);
+                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales);
             }
         }
     };
@@ -186,19 +193,51 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         newTopic.setProperties(new RESTAssignedPropertyTagCollectionV1());
 
         /* initialise the GWT editors */
-        updateViews();
         bindTagEditingButtons();
 
         initializeDisplay();
 
         topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
-        updateDisplayedTopicView(topicViewDisplay);
 
         loadSplitPanelSize();
         bindSplitPanelResize();
         bindTopActionButtons();
 
         getTopicTemplate();
+        populateLocales();
+    }
+
+    /**
+     * Called after the template and locales are loaded, and once the last load operation is complete the view is updated
+     */
+    private void finishLoading() {
+        if (templateLoaded && localesLoaded) {
+            initializeViews();
+            updateDisplayedTopicView(topicViewDisplay);
+        }
+
+    }
+
+    /**
+     * Retrieve a list of locales from the server
+     */
+    private void populateLocales() {
+        final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+                waitDisplay, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
+                    @Override
+                    public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
+                        /* Get the list of locales from the StringConstant */
+                        locales = retValue.getValue().replaceAll("\\r\\n", "").replaceAll("\\n", "").replaceAll(" ", "")
+                                .split(",");
+                        Arrays.sort(locales);
+                        
+                        localesLoaded = true;
+                        finishLoading();
+                    }
+                }) {
+        };
+
+        RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
     }
 
     /**
@@ -229,9 +268,8 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                     public void doSuccessAction(final RESTStringConstantV1 retValue, final CreateTopicPresenter.Display display) {
                         newTopic.setXml(retValue.getValue());
 
-                        /* Refresh the views */
-                        topicXMLDisplay.initialize(newTopic, false, true, SplitType.NONE, null);
-                        topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, null);
+                        templateLoaded = true;
+                        finishLoading();
                     }
                 }) {
         };
@@ -346,38 +384,37 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                             }
                         }) {
                 };
-                
+
                 display.getMessageLogDialog().getDialogBox().center();
                 display.getMessageLogDialog().getDialogBox().show();
                 display.getMessageLogDialog().getOk().addClickHandler(new ClickHandler() {
                     @Override
                     public void onClick(final ClickEvent event) {
-                        
+
                         final String message = display.getMessageLogDialog().getMessage().getText();
-                        final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
-                        
+                        final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
+                                : ServiceConstants.MAJOR_CHANGE);
+
                         /* Create or update the topic */
                         if (saveRestTopic.getId() != null) {
                             RESTCalls.saveTopic(callback, saveRestTopic, message, flag, ServiceConstants.NULL_USER_ID);
                         } else {
                             RESTCalls.createTopic(callback, saveRestTopic, message, flag, ServiceConstants.NULL_USER_ID);
                         }
-                             
+
                         display.getMessageLogDialog().reset();
                         display.getMessageLogDialog().getDialogBox().hide();
                     }
                 });
-                
+
                 display.getMessageLogDialog().getCancel().addClickHandler(new ClickHandler() {
-                    
+
                     @Override
                     public void onClick(final ClickEvent event) {
                         display.getMessageLogDialog().reset();
                         display.getMessageLogDialog().getDialogBox().hide();
                     }
                 });
-
-                
 
             }
         };
@@ -429,7 +466,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL);
 
                 initializeDisplay();
-                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, null);
+                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales);
                 updateDisplayedTopicView(lastView);
             }
         };
@@ -445,7 +482,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_HOIRZONTAL);
 
                 initializeDisplay();
-                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, null);
+                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales);
                 updateDisplayedTopicView(lastView);
             }
         };
@@ -559,7 +596,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         /* By default, stop the automatic updating of the rendered view panel */
         timer.cancel();
 
-        updateViews();
+        initializeViews();
 
         if (selectedView == this.topicXMLDisplay) {
             /* Force a redisplay of the ACE editor */
@@ -570,7 +607,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 /* setup automatic updating */
                 timer.scheduleRepeating(Constants.REFRESH_RATE);
                 /* Do an initial update */
-                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, null);
+                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales);
             }
         } else if (selectedView == this.topicTagsDisplay) {
             bindTagEditingButtons();
@@ -579,10 +616,10 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         lastView = selectedView;
     }
 
-    private void updateViews() {
+    private void initializeViews() {
         /* refresh the data being displayed */
         for (final TopicViewInterface view : this.updatableTopicViews) {
-            view.initialize(newTopic, false, true, split, null);
+            view.initialize(newTopic, false, true, split, locales);
         }
     }
 

@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
@@ -81,7 +82,7 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
         title.setReadOnly(readOnly);
         /* http://code.google.com/p/google-web-toolkit/issues/detail?id=6112 */
         DOM.setElementPropertyBoolean(locale.getElement(), "disabled", readOnly);
-        locale.setAcceptableValues(Arrays.asList(locales));
+        locale.setAcceptableValues(locales == null ? new ArrayList<String>() : Arrays.asList(locales));
         description.setReadOnly(readOnly);
 
         id.setReadOnly(true);
