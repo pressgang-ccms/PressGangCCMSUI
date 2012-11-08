@@ -64,22 +64,28 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
             return "";
         }
     };
-    
+
     private final Column<RESTTopicCollectionItemV1, Boolean> minorRevisionColumn = new Column<RESTTopicCollectionItemV1, Boolean>(
             new DisableableCheckboxCell(false)) {
         @Override
         public Boolean getValue(final RESTTopicCollectionItemV1 object) {
-           return (object.getItem()
-                   .getLogDetails().getFlag() & ServiceConstants.MINOR_CHANGE) == ServiceConstants.MINOR_CHANGE;
+            if (object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getFlag() != null)
+            {
+                return (object.getItem().getLogDetails().getFlag() & ServiceConstants.MINOR_CHANGE) == ServiceConstants.MINOR_CHANGE;
+            }
+            return false;
         }
     };
-    
+
     private final Column<RESTTopicCollectionItemV1, Boolean> majorRevisionColumn = new Column<RESTTopicCollectionItemV1, Boolean>(
             new DisableableCheckboxCell(false)) {
         @Override
         public Boolean getValue(final RESTTopicCollectionItemV1 object) {
-           return (object.getItem()
-                   .getLogDetails().getFlag() & ServiceConstants.MAJOR_CHANGE) == ServiceConstants.MAJOR_CHANGE;
+            if (object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getFlag() != null)
+            {
+                return (object.getItem().getLogDetails().getFlag() & ServiceConstants.MAJOR_CHANGE) == ServiceConstants.MAJOR_CHANGE;
+            }
+            return false;
         }
     };
 
@@ -89,13 +95,12 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
         @Override
         public String getValue(final RESTTopicCollectionItemV1 object) {
             viewButtonCell.setEnabled(true);
-            
+
             /*
              * The last revision is the same as the topic in the main database. We indicate that by showing the last revision as
              * editable instead of read only.
              */
-            if (mainTopic != null && object.getItem().getRevision().equals(mainTopic.getRevision()))
-            {
+            if (mainTopic != null && object.getItem().getRevision().equals(mainTopic.getRevision())) {
                 if (revisionTopic == null || revisionTopic.getItem().getRevision().equals(mainTopic.getRevision())) {
                     viewButtonCell.setEnabled(false);
                     return PressGangCCMSUI.INSTANCE.CurrentlyEditing();
@@ -119,7 +124,7 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
         @Override
         public String getValue(final RESTTopicCollectionItemV1 object) {
             diffButtonCell.setEnabled(true);
-            
+
             if (mainTopic != null && object.getItem().getRevision().equals(mainTopic.getRevision())) {
                 if (revisionTopic == null || revisionTopic.getItem().getRevision().equals(mainTopic.getRevision())) {
                     diffButtonCell.setEnabled(false);
@@ -128,23 +133,18 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
             }
 
             if (revisionTopic == null || !revisionTopic.getItem().getRevision().equals(object.getItem().getRevision())) {
-                
+
                 final String viewingXML = revisionTopic == null ? mainTopic.getXml() : revisionTopic.getItem().getXml();
-                
-                if (object.getItem().getXml().trim().equals(viewingXML.trim()))
-                {
+
+                if (object.getItem().getXml().trim().equals(viewingXML.trim())) {
                     /* The XML is the same */
                     diffButtonCell.setEnabled(false);
                     return PressGangCCMSUI.INSTANCE.SameXML();
-                }
-                else if (object.getItem().getXml().trim().isEmpty())
-                {
+                } else if (object.getItem().getXml().trim().isEmpty()) {
                     /* Diffs don't work if there is no XML to compare to */
                     diffButtonCell.setEnabled(false);
                     return PressGangCCMSUI.INSTANCE.NoXML();
-                }
-                else
-                {
+                } else {
                     return PressGangCCMSUI.INSTANCE.Diff();
                 }
             }
@@ -224,18 +224,19 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final String[] locales) {
+    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType,
+            final String[] locales) {
         this.readOnly = readOnly;
         this.mainTopic = topic;
         populateTopActionBar(newTopic);
         buildSplitViewButtons(splitType);
-        
+
     }
 
     @Override
     protected void populateTopActionBar(final boolean newTopic) {
         super.populateTopActionBar(newTopic);
-        
+
         addActionButton(this.getRenderedSplit());
         addActionButton(this.getRendered());
         addActionButton(this.getXml());
