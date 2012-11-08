@@ -4,6 +4,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionIte
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -21,6 +22,7 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.DisableableButtonCell;
+import com.google.gwt.user.client.ui.DisableableCheckboxCell;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
@@ -60,6 +62,24 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
                 return object.getItem().getLogDetails().getMessage();
             }
             return "";
+        }
+    };
+    
+    private final Column<RESTTopicCollectionItemV1, Boolean> minorRevisionColumn = new Column<RESTTopicCollectionItemV1, Boolean>(
+            new DisableableCheckboxCell(false)) {
+        @Override
+        public Boolean getValue(final RESTTopicCollectionItemV1 object) {
+           return (object.getItem()
+                   .getLogDetails().getFlag() & ServiceConstants.MINOR_CHANGE) == ServiceConstants.MINOR_CHANGE;
+        }
+    };
+    
+    private final Column<RESTTopicCollectionItemV1, Boolean> majorRevisionColumn = new Column<RESTTopicCollectionItemV1, Boolean>(
+            new DisableableCheckboxCell(false)) {
+        @Override
+        public Boolean getValue(final RESTTopicCollectionItemV1 object) {
+           return (object.getItem()
+                   .getLogDetails().getFlag() & ServiceConstants.MAJOR_CHANGE) == ServiceConstants.MAJOR_CHANGE;
         }
     };
 
@@ -181,6 +201,8 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 
         results.addColumn(revisionNumber, PressGangCCMSUI.INSTANCE.RevisionNumber());
         results.addColumn(revisionDate, PressGangCCMSUI.INSTANCE.RevisionDate());
+        results.addColumn(minorRevisionColumn, PressGangCCMSUI.INSTANCE.MinorChange());
+        results.addColumn(majorRevisionColumn, PressGangCCMSUI.INSTANCE.MajorChange());
         results.addColumn(revisionMessage, PressGangCCMSUI.INSTANCE.RevisionMessage());
         results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.View() + " / " + PressGangCCMSUI.INSTANCE.Edit());
         results.addColumn(diffButton, PressGangCCMSUI.INSTANCE.Diff());

@@ -37,6 +37,10 @@ public class DisableableCheckboxCell extends CheckboxCell {
 
     private final boolean enabled;
 
+    public DisableableCheckboxCell(final boolean enabled) {
+        this.enabled = enabled;
+    }
+    
     public DisableableCheckboxCell(final boolean enabled, final boolean dependsOnSelection, final boolean handlesSelection) {
         super(dependsOnSelection, handlesSelection);
         this.enabled = enabled;
