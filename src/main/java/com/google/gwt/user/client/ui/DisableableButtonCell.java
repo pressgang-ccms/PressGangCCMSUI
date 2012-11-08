@@ -3,7 +3,6 @@ package com.google.gwt.user.client.ui;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 
 /**
  * A version of ButtonCell that can display a disabled button.

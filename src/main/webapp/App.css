@@ -311,6 +311,12 @@ html {
 	height: 100%;
 }
 
+.EntityViewLayoutPanel
+{
+	margin-left: 8px;
+}
+
+
 .TopicViewDescriptionField {
 	width: 100%;
 	height: 100%;

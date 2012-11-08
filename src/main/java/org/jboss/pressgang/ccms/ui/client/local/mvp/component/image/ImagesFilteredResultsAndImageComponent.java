@@ -313,7 +313,7 @@ public class ImagesFilteredResultsAndImageComponent
                             public void doSuccessAction(RESTImageV1 retValue, BaseTemplateViewInterface display) {
                                 retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), false);
                                 retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                                        true);
+                                        false);
                                 updateDisplayAfterSave(false);
                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                             }
