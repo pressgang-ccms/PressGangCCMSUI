@@ -21,6 +21,7 @@ import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.DisableableButtonCell;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
@@ -63,10 +64,13 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
         }
     };
 
+    final DisableableButtonCell viewButtonCell = new DisableableButtonCell();
     private final Column<RESTTopicCollectionItemV1, String> viewButton = new Column<RESTTopicCollectionItemV1, String>(
-            new ButtonCell()) {
+            viewButtonCell) {
         @Override
         public String getValue(final RESTTopicCollectionItemV1 object) {
+            viewButtonCell.setEnabled(true);
+            
             /*
              * The last revision is the same as the topic in the main database. We indicate that by showing the last revision as
              * editable instead of read only.
@@ -75,6 +79,7 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 
             {
                 if (revisionTopic == null || revisionTopic.getItem().getRevision().equals(mainTopic.getRevision())) {
+                    viewButtonCell.setEnabled(false);
                     return PressGangCCMSUI.INSTANCE.CurrentlyEditing();
                 } else {
                     return PressGangCCMSUI.INSTANCE.Edit();
@@ -85,16 +90,21 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
                 return PressGangCCMSUI.INSTANCE.View();
             }
 
+            viewButtonCell.setEnabled(false);
             return PressGangCCMSUI.INSTANCE.CurrentlyViewing();
         }
     };
 
+    final DisableableButtonCell diffButtonCell = new DisableableButtonCell();
     private final Column<RESTTopicCollectionItemV1, String> diffButton = new Column<RESTTopicCollectionItemV1, String>(
-            new ButtonCell()) {
+            diffButtonCell) {
         @Override
         public String getValue(final RESTTopicCollectionItemV1 object) {
+            diffButtonCell.setEnabled(true);
+            
             if (mainTopic != null && object.getItem().getRevision().equals(mainTopic.getRevision())) {
                 if (revisionTopic == null || revisionTopic.getItem().getRevision().equals(mainTopic.getRevision())) {
+                    diffButtonCell.setEnabled(false);
                     return PressGangCCMSUI.INSTANCE.CurrentlyEditing();
                 }
             }
@@ -103,6 +113,7 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
                 return PressGangCCMSUI.INSTANCE.Diff();
             }
 
+            diffButtonCell.setEnabled(false);
             return PressGangCCMSUI.INSTANCE.CurrentlyViewing();
         }
     };
