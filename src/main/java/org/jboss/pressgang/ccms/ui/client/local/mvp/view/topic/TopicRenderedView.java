@@ -3,6 +3,8 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
 import hu.szaboaz.gwt.xslt.client.XsltProcessor;
 
+import java.util.List;
+
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
@@ -74,7 +76,7 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final String[] locales) {
+    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales) {
         this.readOnly = readOnly;
         populateTopActionBar(newTopic);
         buildSplitViewButtons(splitType);

@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+import java.util.List;
+
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter.TopicPresenterDriver;
@@ -49,7 +51,7 @@ public class TopicView extends TopicViewBase implements TopicPresenter.Display {
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final String[] locales) {
+    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales) {
         this.readOnly = readOnly;
         populateTopActionBar(newTopic);
         buildSplitViewButtons(splitType);

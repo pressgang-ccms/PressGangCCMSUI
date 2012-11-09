@@ -1,5 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
@@ -91,7 +94,7 @@ public interface TopicViewInterface extends BaseTemplateViewInterface {
      * @param newTopic true if this is a newly created topic
      * @param splitType How the panel should be split to display the rendered veiw
      */
-    void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final String[] locales);
+    void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales);
 
     /** Show the rendered split view menu */
     void showSplitViewButtons();

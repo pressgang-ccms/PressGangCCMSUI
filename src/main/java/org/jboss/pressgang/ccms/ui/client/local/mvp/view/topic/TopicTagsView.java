@@ -227,7 +227,7 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final String[] locales) {
+    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales) {
         this.readOnly = readOnly;
         populateTopActionBar(newTopic);
         buildSplitViewButtons(splitType);

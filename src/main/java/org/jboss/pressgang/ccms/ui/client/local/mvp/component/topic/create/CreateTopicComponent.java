@@ -1,6 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.create;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
@@ -76,7 +79,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
     /** The state of the topic when it was last saved */
     private RESTTopicV1 lastSavedTopic;
 
-    private String[] locales;
+    private List<String> locales;
 
     private boolean templateLoaded = false;
     private boolean localesLoaded = false;
@@ -188,6 +191,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         editableTopicViews = new TopicViewInterface[] { topicViewDisplay, topicXMLDisplay };
 
         /* Create an initial collection to hold any new tags, urls and property tags */
+        newTopic.setLocale("");
         newTopic.setTags(new RESTTagCollectionV1());
         newTopic.setSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
         newTopic.setProperties(new RESTAssignedPropertyTagCollectionV1());
@@ -227,9 +231,16 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                     @Override
                     public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
                         /* Get the list of locales from the StringConstant */
-                        locales = retValue.getValue().replaceAll("\\r\\n", "").replaceAll("\\n", "").replaceAll(" ", "")
-                                .split(",");
-                        Arrays.sort(locales);
+                        locales = new LinkedList<String>(Arrays.asList(retValue.getValue().replaceAll("\\r\\n", "").replaceAll("\\n", "").replaceAll(" ", "")
+                                .split(",")));
+                        
+                        /* Clean the list */
+                        while (locales.contains(""))
+                        {
+                            locales.remove("");
+                        }
+                        
+                        Collections.sort(locales);
                         
                         localesLoaded = true;
                         finishLoading();

@@ -2,7 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
@@ -66,7 +66,7 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
         return id;
     }
 
-    public RESTTopicV1BasicDetailsEditor(final boolean readOnly, final String[] locales) {
+    public RESTTopicV1BasicDetailsEditor(final boolean readOnly, final List<String> locales) {
         super(7, 2);
 
         this.addStyleName(CSSConstants.TOPIC_VIEW_PANEL);
@@ -82,7 +82,9 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
         title.setReadOnly(readOnly);
         /* http://code.google.com/p/google-web-toolkit/issues/detail?id=6112 */
         DOM.setElementPropertyBoolean(locale.getElement(), "disabled", readOnly);
-        locale.setAcceptableValues(locales == null ? new ArrayList<String>() : Arrays.asList(locales));
+        /* http://stackoverflow.com/a/11176707/157605 */
+        locale.setValue("");
+        locale.setAcceptableValues(locales == null ? new ArrayList<String>() : locales);
         description.setReadOnly(readOnly);
 
         id.setReadOnly(true);
