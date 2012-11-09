@@ -658,6 +658,9 @@ public class SearchResultsAndTopicComponent
                     .getSelectedItem().getItem().getId());
             RESTCalls.getTopicWithBugs(topicWithBugsCallback, filteredResultsComponent.getProviderData().getSelectedItem()
                     .getItem().getId());
+            
+            /* fix the rendered view buttons */
+            initializeSplitViewButtons();
         } finally {
             logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.loadAdditionalDisplayedItemData()");
         }
@@ -902,6 +905,7 @@ public class SearchResultsAndTopicComponent
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE);
 
                 initializeDisplay();
+                initializeSplitViewButtons();
             }
         };
 
@@ -915,6 +919,7 @@ public class SearchResultsAndTopicComponent
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL);
 
                 initializeDisplay();
+                initializeSplitViewButtons();
             }
         };
 
@@ -928,6 +933,7 @@ public class SearchResultsAndTopicComponent
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_HOIRZONTAL);
 
                 initializeDisplay();
+                initializeSplitViewButtons();
             }
         };
 
@@ -998,12 +1004,6 @@ public class SearchResultsAndTopicComponent
             if (viewIsInFilter(filter, topicTagsDisplay)) {
                 bindTagEditingButtons();
             }
-            
-            /* fix the rendered view button */
-            for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
-                    topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay }) {
-                view.buildSplitViewButtons(split);
-            }
 
             /* Redisplay the editor. topicXMLDisplay.getEditor() will be not null after the initialize method was called above */
             if (viewIsInFilter(filter, topicXMLDisplay)) {
@@ -1011,10 +1011,21 @@ public class SearchResultsAndTopicComponent
                 setXMLEditorButtonsToEditorState();
                 topicXMLDisplay.getEditor().redisplay();
             }
+            
+            
 
         } finally {
             logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.initializeViews(final List<TopicViewInterface> filter)");
         }
 
+    }
+    
+    private void initializeSplitViewButtons()
+    {
+        /* fix the rendered view button */
+        for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
+                topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay }) {
+            view.buildSplitViewButtons(split);
+        }
     }
 }
