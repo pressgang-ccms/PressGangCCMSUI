@@ -309,11 +309,6 @@ public class SearchResultsAndTopicComponent
         /* Have to do this after the parseToken method has been called */
         display.initialize(split, topicSplitPanelRenderedDisplay.getPanel());
 
-        for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
-                topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay }) {
-            view.buildSplitViewButtons(split);
-        }
-
         loadSplitPanelSize();
     }
 
@@ -1002,6 +997,12 @@ public class SearchResultsAndTopicComponent
 
             if (viewIsInFilter(filter, topicTagsDisplay)) {
                 bindTagEditingButtons();
+            }
+            
+            /* fix the rendered view button */
+            for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
+                    topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay }) {
+                view.buildSplitViewButtons(split);
             }
 
             /* Redisplay the editor. topicXMLDisplay.getEditor() will be not null after the initialize method was called above */

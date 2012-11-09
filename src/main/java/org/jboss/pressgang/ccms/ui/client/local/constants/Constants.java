@@ -10,7 +10,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm
      */
-    public static final String VERSION = "201211091203";
+    public static final String VERSION = "201211091340";
     
     /**
      * The number of rows to "fast forward" by with the SimplePager
