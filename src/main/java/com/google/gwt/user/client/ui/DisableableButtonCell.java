@@ -23,7 +23,8 @@ public class DisableableButtonCell extends ButtonCell {
     /** The close tag */
     private static final String INPUT_CLOSE = "</button>";
 
-    private boolean enabled;
+    /** whether or not the button is enabled */
+    private boolean enabled = true;
 
     public boolean isEnabled() {
         return enabled;
