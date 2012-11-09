@@ -3,6 +3,12 @@
 	margin-left: 8px;	
 }
 
+.OrderedChildrenSplitPanel > div
+{
+	overflow: auto !important;
+}
+
+
 .OrderedChildrenListPanel
 {
 	margin-right: 8px;
