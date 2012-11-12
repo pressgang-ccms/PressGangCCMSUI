@@ -16,6 +16,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
@@ -224,7 +225,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
     }
 
     /**
-     * Retrieve a list of locales from the server
+     * Retrieve a list of locales from the server, as well as the default locale.
      */
     private void populateLocales() {
         final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
@@ -242,8 +243,26 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
 
                         Collections.sort(locales);
 
-                        localesLoaded = true;
-                        finishLoading();
+                        
+
+                        final RESTCallback<RESTStringConstantV1> defaultLocaleCallback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+                                waitDisplay,
+                                new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
+                                    @Override
+                                    public void doSuccessAction(final RESTStringConstantV1 retValue,
+                                            final BaseTemplateViewInterface display) {
+                                        
+                                        newTopic.setLocale(retValue.getValue());
+                                        
+                                        localesLoaded = true;
+                                        finishLoading();
+                                    }
+                                }) {
+                        };
+
+                        RESTCalls.getStringConstant(defaultLocaleCallback, ServiceConstants.DEFAULT_LOCALE_ID);
+
+                        
                     }
                 }) {
         };
