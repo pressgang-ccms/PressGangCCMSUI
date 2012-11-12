@@ -93,6 +93,23 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
      */
     protected void bindExistingChildrenRowClick() {
     }
+    
+    /**
+     * The sort order of child collections is determined by an integer field. This field has no restrictions, and may be set
+     * with duplicate, non-consecutive or null values. This function will take the current sort order (based on the intereger field and the name) and
+     * set the sort field to consecutive, predicable values.
+     * @return
+     */
+    public void setSortOrderOfChildren(final SetNewChildSortCallback<D, E, F> sortCallback)
+    {
+        final int size = getExistingProviderData().getItems().size();
+        
+        for (int i = Constants.CHILDREN_SORT_ORDER_START; i < size + Constants.CHILDREN_SORT_ORDER_START; ++i )
+        {
+            final F child = getExistingProviderData().getItems().get(i);
+            sortCallback.setSort(child, i);
+        }
+    }
 
     /**
      * Reorder a collection and move a child entity up or down

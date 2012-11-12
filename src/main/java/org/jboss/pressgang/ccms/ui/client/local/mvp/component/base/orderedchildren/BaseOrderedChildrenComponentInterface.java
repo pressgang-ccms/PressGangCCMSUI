@@ -55,6 +55,8 @@ public interface BaseOrderedChildrenComponentInterface<S extends BaseOrderedChil
      */
     EnhancedAsyncDataProvider<F> generateExistingProvider(final W entity);
     
+    void setSortOrderOfChildren(final SetNewChildSortCallback<D, E, F> sortCallback);
+    
     boolean moveTagsUpAndDown(final W parent, final F object, final boolean down, final SetNewChildSortCallback<D, E, F> sortCallback);
     
     /**

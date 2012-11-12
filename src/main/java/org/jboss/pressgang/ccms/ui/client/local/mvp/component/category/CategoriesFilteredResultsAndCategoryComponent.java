@@ -52,34 +52,29 @@ import com.google.gwt.user.client.Window;
  */
 @Dependent
 public class CategoriesFilteredResultsAndCategoryComponent
-    extends BaseSearchAndEditComponent<
-        CategoryFilteredResultsPresenter.Display, 
-        CategoriesFilteredResultsAndCategoryPresenter.Display,
-        RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, 
-        CategoryViewInterface, 
-        CategoryPresenter.Display>
-    implements CategoriesFilteredResultsAndCategoryPresenter.LogicComponent {
+        extends
+        BaseSearchAndEditComponent<CategoryFilteredResultsPresenter.Display, CategoriesFilteredResultsAndCategoryPresenter.Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, CategoryViewInterface, CategoryPresenter.Display>
+        implements CategoriesFilteredResultsAndCategoryPresenter.LogicComponent {
 
     @Inject
     private HandlerManager eventBus;
 
     private CategoryTagPresenter.Display tagDisplay;
     private CategoryTagPresenter.LogicComponent tagComponent;
-    
+
     /**
      * Used when moving children up and down
      */
-    private final SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> sortCallback = 
-            new SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
-                
-                @Override
-                public void setSort(final RESTTagInCategoryCollectionItemV1 child, int index) {
-                    child.getItem().explicitSetRelationshipSort(index);   
-                    /* Set any unchanged items to updated */
-                    if (child.getState() == RESTBaseCollectionItemV1.UNCHANGED_STATE)
-                        child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
-                }
-            };
+    private final SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> sortCallback = new SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
+
+        @Override
+        public void setSort(final RESTTagInCategoryCollectionItemV1 child, int index) {
+            child.getItem().explicitSetRelationshipSort(index);
+            /* Set any unchanged items to updated */
+            if (child.getState() == RESTBaseCollectionItemV1.UNCHANGED_STATE)
+                child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+        }
+    };
 
     @Override
     public void bind(final CategoryFilteredResultsPresenter.Display filteredResultsDisplay,
@@ -95,86 +90,96 @@ public class CategoriesFilteredResultsAndCategoryComponent
                 filteredResultsDisplay, filteredResultsComponent, display, waitDisplay);
 
         /* Bind the logic to add and remove possible children */
-        tagComponent.bindPossibleChildrenListButtonClicks(
-                new GetExistingCollectionCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
+        tagComponent
+                .bindPossibleChildrenListButtonClicks(
+                        new GetExistingCollectionCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
 
-                    @Override
-                    public RESTTagInCategoryCollectionV1 getExistingCollection() {
-                        return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags();
-                    }
+                            @Override
+                            public RESTTagInCategoryCollectionV1 getExistingCollection() {
+                                return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags();
+                            }
 
-                }, new AddPossibleChildCallback<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>() {
+                        }, new AddPossibleChildCallback<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>() {
 
-                     @Override
-                    public void createAndAddChild(final RESTTagCollectionItemV1 copy) {
-                        final RESTTagInCategoryV1 newChild = new RESTTagInCategoryV1();
-                        newChild.setId(copy.getItem().getId());
-                        newChild.setName(copy.getItem().getName());
-                        newChild.explicitSetRelationshipSort(0);
-                        filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(newChild);                        
-                    }
+                            @Override
+                            public void createAndAddChild(final RESTTagCollectionItemV1 copy) {
 
-                }, new UpdateAfterChildModfiedCallback() {
+                                tagComponent.setSortOrderOfChildren(sortCallback);
+                                
+                                final RESTTagInCategoryV1 newChild = new RESTTagInCategoryV1();
+                                newChild.setId(copy.getItem().getId());
+                                newChild.setName(copy.getItem().getName());
+                                newChild.explicitSetRelationshipSort(Constants.NEW_CHILD_SORT_ORDER);
+                                filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags()
+                                        .addNewItem(newChild);
+                            }
 
-                    @Override
-                    public void updateAfterChidModfied() {
-                        /*
-                         * refresh the list of tags in the category
-                         */
-                        tagComponent.refreshExistingChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+                        }, new UpdateAfterChildModfiedCallback() {
 
-                        /*
-                         * refresh the list of possible tags
-                         */
-                        tagComponent.refreshPossibleChildList();                        
-                    }
+                            @Override
+                            public void updateAfterChidModfied() {
+                                /*
+                                 * refresh the list of tags in the category
+                                 */
+                                tagComponent.refreshExistingChildList(filteredResultsComponent.getProviderData()
+                                        .getDisplayedItem().getItem());
 
-                });
+                                /*
+                                 * refresh the list of possible tags
+                                 */
+                                tagComponent.refreshPossibleChildList();
+                            }
+
+                        });
         bindExistingChildrenRowClick();
     }
 
     @Override
     protected void loadAdditionalDisplayedItemData() {
-       
+
         /* Display the tags that are added to the category */
         tagComponent.refreshExistingChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
         /* Get a new collection of tags */
         tagComponent.refreshPossibleChildrenDataAndList();
     }
-    
+
     @Override
-    protected void initializeViews(final List<CategoryViewInterface> filter)
-    {
+    protected void initializeViews(final List<CategoryViewInterface> filter) {
         /* We need to initialize the view so the celltable buttons can display the correct labels */
         if (viewIsInFilter(filter, tagDisplay))
             tagDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
-        
+
         /* Initialize the properties view */
         if (viewIsInFilter(filter, entityPropertiesView))
-            entityPropertiesView.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+            entityPropertiesView
+                    .initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
     }
 
     private void bindExistingChildrenRowClick() {
-        tagDisplay.getExistingChildUpButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
+        tagDisplay.getExistingChildUpButtonColumn().setFieldUpdater(
+                new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
-            @Override
-            public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
-                tagComponent.moveTagsUpAndDown(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), object, false, sortCallback);
-            }
+                    @Override
+                    public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
+                        tagComponent.moveTagsUpAndDown(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                                object, false, sortCallback);
+                    }
 
-        });
+                });
 
-        tagDisplay.getExistingChildDownButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
+        tagDisplay.getExistingChildDownButtonColumn().setFieldUpdater(
+                new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
-            /**
-             * Swap the sort value for the tag that was selected with the tag below it.
-             */
-            @Override
-            public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
-                tagComponent.moveTagsUpAndDown(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), object, true, sortCallback);
-            }
-        });
+                    /**
+                     * Swap the sort value for the tag that was selected with the tag below it.
+                     */
+                    @Override
+                    public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
+                        tagComponent.moveTagsUpAndDown(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                                object, true, sortCallback);
+                    }
+                });
     }
 
     @Override
@@ -226,7 +231,8 @@ public class CategoriesFilteredResultsAndCategoryComponent
                                 filteredResultsComponent.getProviderData().getDisplayedItem()
                                         .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
-                                tagComponent.refreshExistingChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+                                tagComponent.refreshExistingChildList(filteredResultsComponent.getProviderData()
+                                        .getDisplayedItem().getItem());
                                 tagComponent.refreshPossibleChildrenDataAndList();
 
                                 updateDisplayAfterSave(wasNewEntity);
@@ -311,7 +317,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
                 tagComponent.refreshPossibleChildrenDataAndList();
 
                 initializeViews();
-                
+
                 switchView(lastDisplayedView == null ? entityPropertiesView : lastDisplayedView);
             }
         });

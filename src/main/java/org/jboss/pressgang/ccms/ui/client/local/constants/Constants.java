@@ -13,6 +13,16 @@ public final class Constants {
     public static final String VERSION = "201211120817";
     
     /**
+     * The sort order to apply to a newly added child
+     */
+    public static final int NEW_CHILD_SORT_ORDER = 0;
+    
+    /**
+     * The first sort order used when setting the sort order to an existing list 
+     */
+    public static final int CHILDREN_SORT_ORDER_START = 1;
+    
+    /**
      * The number of rows to "fast forward" by with the SimplePager
      */
     static public final int FAST_FORWARD_ROWS = 100;

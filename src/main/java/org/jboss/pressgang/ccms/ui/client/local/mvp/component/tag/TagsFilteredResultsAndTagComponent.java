@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
@@ -26,6 +27,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryInTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren.SetNewChildSortCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter;
@@ -62,6 +64,21 @@ public class TagsFilteredResultsAndTagComponent
     private TagProjectsPresenter.LogicComponent projectsComponent;
     private TagCategoriesPresenter.Display categoriesDisplay;
     private TagCategoriesPresenter.LogicComponent categoriesComponent;
+    
+    /**
+     * Used when moving children up and down
+     */
+    private final SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> sortCallback = 
+            new SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
+                
+                @Override
+                public void setSort(final RESTTagInCategoryCollectionItemV1 child, int index) {
+                    child.getItem().explicitSetRelationshipSort(index);  
+                    /* Set any unchanged items to updated */
+                    if (child.getState() == RESTBaseCollectionItemV1.UNCHANGED_STATE)
+                        child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);                    
+                }
+            };
 
     /**
      * A click handler used to display the tag fields view
@@ -438,10 +455,12 @@ public class TagsFilteredResultsAndTagComponent
                         }
 
                         if (!found) {
+                            categoriesComponent.setSortOrderOfChildren(sortCallback);
+                            
                             final RESTTagInCategoryV1 newTag = new RESTTagInCategoryV1();
                             newTag.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                             newTag.setName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
-                            newTag.setRelationshipSort(0);
+                            newTag.setRelationshipSort(Constants.NEW_CHILD_SORT_ORDER);
 
                             object.getItem().getTags().addNewItem(newTag);
                         }
