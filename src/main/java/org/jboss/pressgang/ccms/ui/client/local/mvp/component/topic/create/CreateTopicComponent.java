@@ -420,6 +420,8 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                                 lastSavedTopic = retValue;
                                 updateDisplayedTopicView(lastView);
                                 loadTags();
+                                /* The save process will modify the title, so do a refresh of the rendered view */
+                                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales);
                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                             }
                         }) {
