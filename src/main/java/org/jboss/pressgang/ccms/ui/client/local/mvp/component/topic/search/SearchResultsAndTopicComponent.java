@@ -243,12 +243,11 @@ public class SearchResultsAndTopicComponent
         this.topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
         populateLocales();
     }
-    
+
     /**
      * Refresh the split panel rendered view
      */
-    private void refreshRenderedView()
-    {
+    private void refreshRenderedView() {
         topicXMLDisplay.getDriver().flush();
         topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
                 display.getSplitType(), locales);
@@ -263,15 +262,14 @@ public class SearchResultsAndTopicComponent
                     @Override
                     public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
                         /* Get the list of locales from the StringConstant */
-                        locales = new LinkedList<String>(Arrays.asList(retValue.getValue().replaceAll("\\r\\n", "").replaceAll("\\n", "").replaceAll(" ", "")
-                                .split(",")));
-                        
+                        locales = new LinkedList<String>(Arrays.asList(retValue.getValue().replaceAll("\\r\\n", "")
+                                .replaceAll("\\n", "").replaceAll(" ", "").split(",")));
+
                         /* Clean the list */
-                        while (locales.contains(""))
-                        {
+                        while (locales.contains("")) {
                             locales.remove("");
                         }
-                        
+
                         Collections.sort(locales);
                     }
                 }) {
@@ -659,7 +657,7 @@ public class SearchResultsAndTopicComponent
                     .getSelectedItem().getItem().getId());
             RESTCalls.getTopicWithBugs(topicWithBugsCallback, filteredResultsComponent.getProviderData().getSelectedItem()
                     .getItem().getId());
-            
+
             /* fix the rendered view buttons */
             initializeSplitViewButtons();
         } finally {
@@ -672,18 +670,16 @@ public class SearchResultsAndTopicComponent
     protected void switchView(final TopicViewInterface displayedView) {
         try {
             logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.switchView(final TopicViewInterface displayedView)");
-          
+
             super.switchView(displayedView);
-            
+
             /* Save any changes to the xml editor */
-            if (lastDisplayedView == this.topicXMLDisplay)
-            {
+            if (lastDisplayedView == this.topicXMLDisplay) {
                 this.topicXMLDisplay.getDriver().flush();
             }
-            
+
             /* Refresh the rendered view (when there is no page splitting) */
-            if (displayedView == this.topicRenderedDisplay)
-            {
+            if (displayedView == this.topicRenderedDisplay) {
                 topicRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
                         display.getSplitType(), locales);
             }
@@ -714,114 +710,114 @@ public class SearchResultsAndTopicComponent
         final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                
-                try
-                {                
-                    logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.bindActionButtons() saveClickHandler.onClick()");
-                    
-                    if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-                        final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
-                            @Override
-                            public void begin() {
-                                display.addWaitOperation();
-                            }
-    
-                            @Override
-                            public void generalException(final Exception e) {
-                                logger.log(Level.SEVERE, e.toString());
-                                Window.alert(PressGangCCMSUI.INSTANCE.ErrorSavingTopic());
-                                display.removeWaitOperation();
-                                topicXMLDisplay.getEditor().redisplay();
-                            }
-    
-                            @Override
-                            public void success(final RESTTopicV1 retValue) {
-                                try {
-                                    /* Update the displayed topic */
-                                    retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                                            true);
-                                    /* Update the selected topic */
-                                    retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
-    
-                                    initializeViews();
-    
-                                    updateDisplayAfterSave(false);
-    
-                                    Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                                } finally {
-                                    display.removeWaitOperation();
-                                    if (topicXMLDisplay.getEditor() != null) {
-                                        topicXMLDisplay.getEditor().redisplay();
-                                    }
-                                }
-                            }
-    
-                            @Override
-                            public void failed(final Message message, final Throwable throwable) {
-                                
-                                if (message != null)
-                                    logger.log(Level.SEVERE, message.toString());
-                                if (throwable != null)
-                                    logger.log(Level.SEVERE, throwable.getMessage());
-                                
-                                Window.alert(PressGangCCMSUI.INSTANCE.ErrorSavingTopic());
-                                display.removeWaitOperation();
-                                topicXMLDisplay.getEditor().redisplay();
-                            }
-                        };
-    
-                        /* Sync any changes back to the underlying object */
-                        flushChanges();
-    
-                        /*
-                         * Create a new instance of the topic, with all the properties set to explicitly update
-                         */
-                        final RESTTopicV1 updateTopic = filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                                .clone(true);
-                        
-                        updateTopic.explicitSetBugzillaBugs_OTM(updateTopic.getBugzillaBugs_OTM());
-                        updateTopic.explicitSetProperties(updateTopic.getProperties());
-                        updateTopic.explicitSetSourceUrls_OTM(updateTopic.getSourceUrls_OTM());
-                        updateTopic.explicitSetTags(updateTopic.getTags());
-                        updateTopic.explicitSetDescription(updateTopic.getDescription());
-                        updateTopic.explicitSetLocale(updateTopic.getLocale());
-                        updateTopic.explicitSetTitle(updateTopic.getTitle());
-                        updateTopic.explicitSetXml(updateTopic.getXml());
-    
-                        display.getMessageLogDialog().getDialogBox().center();
-                        display.getMessageLogDialog().getDialogBox().show();
-                        display.getMessageLogDialog().getOk().addClickHandler(new ClickHandler() {
-                            @Override
-                            public void onClick(final ClickEvent event) {
-                                
-                                final String message = display.getMessageLogDialog().getMessage().getText();
-                                final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
-                                RESTCalls.saveTopic(callback, updateTopic, message, flag, ServiceConstants.NULL_USER_ID);
-                                                            
-                                display.getMessageLogDialog().reset();
-                                display.getMessageLogDialog().getDialogBox().hide();
-                            }
-                        });
-                        
-                        display.getMessageLogDialog().getCancel().addClickHandler(new ClickHandler() {
-                            
-                            @Override
-                            public void onClick(final ClickEvent event) {
-                                display.getMessageLogDialog().reset();
-                                display.getMessageLogDialog().getDialogBox().hide();
-                            }
-                        });
-    
-                        
-                    }
+
+                try {
+                    logger.log(Level.INFO,
+                            "ENTER SearchResultsAndTopicComponent.bindActionButtons() saveClickHandler.onClick()");
+
+                    display.getMessageLogDialog().getDialogBox().center();
+                    display.getMessageLogDialog().getDialogBox().show();
                 }
-            
-                finally
-                {
+
+                finally {
                     logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.bindActionButtons() saveClickHandler.onClick()");
                 }
             }
         };
+
+        /* Hook up the dialog box buttons */
+        display.getMessageLogDialog().getOk().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+
+                if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+                    final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
+                        @Override
+                        public void begin() {
+                            display.addWaitOperation();
+                        }
+
+                        @Override
+                        public void generalException(final Exception e) {
+                            logger.log(Level.SEVERE, e.toString());
+                            Window.alert(PressGangCCMSUI.INSTANCE.ErrorSavingTopic());
+                            display.removeWaitOperation();
+                            topicXMLDisplay.getEditor().redisplay();
+                        }
+
+                        @Override
+                        public void success(final RESTTopicV1 retValue) {
+                            try {
+                                /* Update the displayed topic */
+                                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                                        true);
+                                /* Update the selected topic */
+                                retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
+
+                                initializeViews();
+
+                                updateDisplayAfterSave(false);
+
+                                Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                            } finally {
+                                display.removeWaitOperation();
+                                if (topicXMLDisplay.getEditor() != null) {
+                                    topicXMLDisplay.getEditor().redisplay();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void failed(final Message message, final Throwable throwable) {
+
+                            if (message != null)
+                                logger.log(Level.SEVERE, message.toString());
+                            if (throwable != null)
+                                logger.log(Level.SEVERE, throwable.getMessage());
+
+                            Window.alert(PressGangCCMSUI.INSTANCE.ErrorSavingTopic());
+                            display.removeWaitOperation();
+                            topicXMLDisplay.getEditor().redisplay();
+                        }
+                    };
+
+                    /* Sync any changes back to the underlying object */
+                    flushChanges();
+
+                    /*
+                     * Create a new instance of the topic, with all the properties set to explicitly update
+                     */
+                    final RESTTopicV1 updateTopic = filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                            .clone(true);
+
+                    updateTopic.explicitSetBugzillaBugs_OTM(updateTopic.getBugzillaBugs_OTM());
+                    updateTopic.explicitSetProperties(updateTopic.getProperties());
+                    updateTopic.explicitSetSourceUrls_OTM(updateTopic.getSourceUrls_OTM());
+                    updateTopic.explicitSetTags(updateTopic.getTags());
+                    updateTopic.explicitSetDescription(updateTopic.getDescription());
+                    updateTopic.explicitSetLocale(updateTopic.getLocale());
+                    updateTopic.explicitSetTitle(updateTopic.getTitle());
+                    updateTopic.explicitSetXml(updateTopic.getXml());
+
+                    final String message = display.getMessageLogDialog().getMessage().getText();
+                    final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
+                            : ServiceConstants.MAJOR_CHANGE);
+                    RESTCalls.saveTopic(callback, updateTopic, message, flag, ServiceConstants.NULL_USER_ID);
+                }
+
+                display.getMessageLogDialog().reset();
+                display.getMessageLogDialog().getDialogBox().hide();
+            }
+        });
+
+        display.getMessageLogDialog().getCancel().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                display.getMessageLogDialog().reset();
+                display.getMessageLogDialog().getDialogBox().hide();
+            }
+        });
 
         final ClickHandler topicViewClickHandler = new ClickHandler() {
             @Override
@@ -1022,7 +1018,8 @@ public class SearchResultsAndTopicComponent
 
             logger.log(Level.INFO, "\tInitializing topic views");
             for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
-                    topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicSplitPanelRenderedDisplay }) {
+                    topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay,
+                    topicSplitPanelRenderedDisplay }) {
                 if (viewIsInFilter(filter, view)) {
                     view.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, this.split, locales);
                 }
@@ -1044,17 +1041,14 @@ public class SearchResultsAndTopicComponent
                 setXMLEditorButtonsToEditorState();
                 topicXMLDisplay.getEditor().redisplay();
             }
-            
-            
 
         } finally {
             logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.initializeViews(final List<TopicViewInterface> filter)");
         }
 
     }
-    
-    private void initializeSplitViewButtons()
-    {
+
+    private void initializeSplitViewButtons() {
         /* fix the rendered view button */
         for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
                 topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay }) {

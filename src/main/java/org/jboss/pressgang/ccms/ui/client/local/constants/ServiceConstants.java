@@ -18,13 +18,13 @@ final public class ServiceConstants {
     /** Used to indicate a minor change to an entity */
     static public final byte MINOR_CHANGE = 0x01;
     /** Used to indicate a major change to an entity */
-    static public final byte MAJOR_CHANGE = 0x01;
+    static public final byte MAJOR_CHANGE = 0x02;
 
     /**
      * The null user, used when no login information is available. Null identifies an unknown user, but this has issues in errai
      * (https://issues.jboss.org/browse/ERRAI-433)
      */
-    static public final Integer NULL_USER_ID = null;// 79;
+    static public final Integer NULL_USER_ID = 79;
 
     private ServiceConstants() {
 

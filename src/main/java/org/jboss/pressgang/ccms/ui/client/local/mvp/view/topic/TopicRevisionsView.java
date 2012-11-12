@@ -73,7 +73,8 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
         public Boolean getValue(final RESTTopicCollectionItemV1 object) {
             if (object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getFlag() != null)
             {
-                return (object.getItem().getLogDetails().getFlag() & ServiceConstants.MINOR_CHANGE) == ServiceConstants.MINOR_CHANGE;
+                final Integer flag = object.getItem().getLogDetails().getFlag();
+                return (flag & ServiceConstants.MINOR_CHANGE) == ServiceConstants.MINOR_CHANGE;
             }
             return false;
         }
