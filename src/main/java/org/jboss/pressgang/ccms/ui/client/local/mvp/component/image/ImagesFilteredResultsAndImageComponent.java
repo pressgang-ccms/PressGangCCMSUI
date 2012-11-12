@@ -104,9 +104,12 @@ public class ImagesFilteredResultsAndImageComponent
     private BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface> getDefaultImageRestCallback() {
         return new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
             @Override
-            public void doSuccessAction(RESTImageV1 retValue, BaseTemplateViewInterface display) {
-                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
+            public void doSuccessAction(final RESTImageV1 retValue, final BaseTemplateViewInterface display) {
+                retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), false);
+                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                        false);
                 initializeViews();
+                updateDisplayAfterSave(false);
             }
         };
     }
@@ -208,17 +211,7 @@ public class ImagesFilteredResultsAndImageComponent
                                     updateImage.getLanguageImages_OTM().addUpdateItem(updatedLanguageImage);
 
                                     final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                                            waitDisplay,
-                                            new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
-                                                @Override
-                                                public void doSuccessAction(RESTImageV1 retValue,
-                                                        BaseTemplateViewInterface display) {
-                                                    retValue.cloneInto(filteredResultsComponent.getProviderData()
-                                                            .getDisplayedItem().getItem(), false);
-                                                    initializeViews();
-                                                }
-                                            }) {
-
+                                            waitDisplay,getDefaultImageRestCallback()) {
                                     };
 
                                     RESTCalls.updateImage(callback, updateImage);
@@ -306,16 +299,7 @@ public class ImagesFilteredResultsAndImageComponent
                         .getDescription());
 
                 final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                        waitDisplay, new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
-                            @Override
-                            public void doSuccessAction(RESTImageV1 retValue, BaseTemplateViewInterface display) {
-                                retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), false);
-                                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                                        false);
-                                updateDisplayAfterSave(false);
-                                Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                            }
-                        }) {
+                        waitDisplay, getDefaultImageRestCallback()) {
                 };
 
                 RESTCalls.updateImage(callback, updateImage);
