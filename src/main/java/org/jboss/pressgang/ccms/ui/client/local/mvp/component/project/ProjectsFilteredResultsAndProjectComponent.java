@@ -166,13 +166,9 @@ public class ProjectsFilteredResultsAndProjectComponent
 
                 if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
 
-                    /*
-                     * If this is a new project, it needs to be saved in order to get the tag id to complete the project
-                     * updates. Upon success, the categories will be updated.
-                     */
-                    final boolean unsavedChanges = unsavedProjectChanges() || unsavedTagChanges();
+                    
 
-                    if (unsavedChanges) {
+                    if (hasUnsavedChanges()) {
 
                         final RESTProjectV1 project = new RESTProjectV1();
                         project.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
@@ -244,23 +240,16 @@ public class ProjectsFilteredResultsAndProjectComponent
         });
     }
 
-    /**
-     * Compare the displayed project (the one that is edited) with the selected project (the one that exists in the collection
-     * used to build the project list). If there are unsaved changes, prompt the user.
-     * 
-     * @return true if the user wants to ignore the unsaved changes, false otherwise
-     */
+ 
     @Override
-    public boolean isOKToProceed() {
+    public boolean hasUnsavedChanges() {
         /* sync the UI with the underlying tag */
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             entityPropertiesView.getDriver().flush();
 
-            if (unsavedProjectChanges() || unsavedTagChanges()) {
-                return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
-            }
+            return (unsavedProjectChanges() || unsavedTagChanges());
         }
-        return true;
+        return false;
     }
 
     /**

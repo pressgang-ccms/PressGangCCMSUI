@@ -11,6 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchTagsFieldsAndFi
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -41,8 +42,15 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface>
  
     @Override
     public boolean isOKToProceed() {
-        /* Assume no changes have been made by default */
+        if (hasUnsavedChanges())
+            return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
         return true;
+    }
+    
+    @Override
+    public boolean hasUnsavedChanges()
+    {
+        return false;
     }
 
     /**

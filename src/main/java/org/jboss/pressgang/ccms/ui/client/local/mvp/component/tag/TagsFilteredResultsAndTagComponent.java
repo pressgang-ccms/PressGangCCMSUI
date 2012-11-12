@@ -64,21 +64,20 @@ public class TagsFilteredResultsAndTagComponent
     private TagProjectsPresenter.LogicComponent projectsComponent;
     private TagCategoriesPresenter.Display categoriesDisplay;
     private TagCategoriesPresenter.LogicComponent categoriesComponent;
-    
+
     /**
      * Used when moving children up and down
      */
-    private final SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> sortCallback = 
-            new SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
-                
-                @Override
-                public void setSort(final RESTTagInCategoryCollectionItemV1 child, int index) {
-                    child.getItem().explicitSetRelationshipSort(index);  
-                    /* Set any unchanged items to updated */
-                    if (child.getState() == RESTBaseCollectionItemV1.UNCHANGED_STATE)
-                        child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);                    
-                }
-            };
+    private final SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> sortCallback = new SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
+
+        @Override
+        public void setSort(final RESTTagInCategoryCollectionItemV1 child, int index) {
+            child.getItem().explicitSetRelationshipSort(index);
+            /* Set any unchanged items to updated */
+            if (child.getState() == RESTBaseCollectionItemV1.UNCHANGED_STATE)
+                child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+        }
+    };
 
     /**
      * A click handler used to display the tag fields view
@@ -118,14 +117,16 @@ public class TagsFilteredResultsAndTagComponent
         @Override
         public void onClick(final ClickEvent event) {
 
-            /* Sync the UI to the underlying object */
-            entityPropertiesView.getDriver().flush();
+            if (hasUnsavedChanges()) {
 
-            final boolean unsavedTagChanges = unsavedTagChanged();
-            final boolean unsavedCategoryChanges = !categoriesComponent.isOKToProceed();
+                final boolean unsavedTagChanges = unsavedTagChanged();
+                final boolean unsavedCategoryChanges = !categoriesComponent.isOKToProceed();
 
-            /* Create the tag first */
-            saveTagChanges(unsavedTagChanges, unsavedCategoryChanges);
+                /* Create the tag first */
+                saveTagChanges(unsavedTagChanges, unsavedCategoryChanges);
+            } else {
+                Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+            }
 
         }
 
@@ -177,7 +178,7 @@ public class TagsFilteredResultsAndTagComponent
              * relationships into the updateTag, so the changes are all done in one transaction.
              */
             if (categoriesComponent.getPossibleChildrenProviderData().getItems() != null) {
-                
+
                 updateTag.explicitSetCategories(new RESTCategoryInTagCollectionV1());
                 for (final RESTCategoryCollectionItemV1 category : categoriesComponent.getPossibleChildrenProviderData()
                         .getItems()) {
@@ -456,7 +457,7 @@ public class TagsFilteredResultsAndTagComponent
 
                         if (!found) {
                             categoriesComponent.setSortOrderOfChildren(sortCallback);
-                            
+
                             final RESTTagInCategoryV1 newTag = new RESTTagInCategoryV1();
                             newTag.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                             newTag.setName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
@@ -497,24 +498,16 @@ public class TagsFilteredResultsAndTagComponent
                 });
     }
 
-    /**
-     * Compare the displayed tag (the one that is edited) with the selected tag (the one that exists in the collection used to
-     * build the tag list). If there are unsaved changes, prompt the user.
-     * 
-     * @return true if the user wants to ignore the unsaved changes, false otherwise
-     */
     @Override
-    public boolean isOKToProceed() {
+    public boolean hasUnsavedChanges() {
         /* sync the UI with the underlying tag */
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             entityPropertiesView.getDriver().flush();
 
-            if (unsavedTagChanged() || !categoriesComponent.isOKToProceed() || !projectsComponent.isOKToProceed()) {
-                return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
-            }
+            return (unsavedTagChanged() || categoriesComponent.hasUnsavedChanges() || projectsComponent.hasUnsavedChanges());
         }
 
-        return true;
+        return false;
     }
 
     /**

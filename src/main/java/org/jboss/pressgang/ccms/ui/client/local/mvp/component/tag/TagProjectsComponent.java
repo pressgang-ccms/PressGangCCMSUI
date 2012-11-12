@@ -54,17 +54,17 @@ public class TagProjectsComponent extends BaseChildrenComponent<TagProjectsPrese
     }
     
     @Override
-    public boolean isOKToProceed() {
+    public boolean hasUnsavedChanges() {
         /* It is possible that the list of categories has not loaded yet, in which case no changes could have been made */
         if (providerData.getItems() != null) {
             for (final RESTProjectCollectionItemV1 project : providerData.getItems()) {
                 if (project.getItem().getTags().returnDeletedAddedAndUpdatedCollectionItems().size() != 0) {
-                    return false;
+                    return true;
                 }
             }
         }
 
-        return true;
+        return false;
     }
     
     

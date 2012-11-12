@@ -323,23 +323,16 @@ public class CategoriesFilteredResultsAndCategoryComponent
         });
     }
 
-    /**
-     * Compare the displayed category (the one that is edited) with the selected category (the one that exists in the collection
-     * used to build the category list). If there are unsaved changes, prompt the user.
-     * 
-     * @return true if the user wants to ignore the unsaved changes, false otherwise
-     */
+ 
     @Override
-    public boolean isOKToProceed() {
+    public boolean hasUnsavedChanges() {
         /* sync the UI with the underlying tag */
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             entityPropertiesView.getDriver().flush();
 
-            if (unsavedCategoryChanges() || unsavedTagChanges()) {
-                return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
-            }
+            return unsavedCategoryChanges() || unsavedTagChanges();
         }
-        return true;
+        return false;
     }
 
     /**

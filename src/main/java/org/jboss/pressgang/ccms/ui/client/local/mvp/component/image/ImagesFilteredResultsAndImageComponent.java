@@ -106,8 +106,7 @@ public class ImagesFilteredResultsAndImageComponent
             @Override
             public void doSuccessAction(final RESTImageV1 retValue, final BaseTemplateViewInterface display) {
                 retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), false);
-                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                        false);
+                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
                 initializeViews();
                 updateDisplayAfterSave(false);
             }
@@ -211,7 +210,7 @@ public class ImagesFilteredResultsAndImageComponent
                                     updateImage.getLanguageImages_OTM().addUpdateItem(updatedLanguageImage);
 
                                     final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                                            waitDisplay,getDefaultImageRestCallback()) {
+                                            waitDisplay, getDefaultImageRestCallback()) {
                                     };
 
                                     RESTCalls.updateImage(callback, updateImage);
@@ -229,18 +228,16 @@ public class ImagesFilteredResultsAndImageComponent
     }
 
     @Override
-    public boolean isOKToProceed() {
+    public boolean hasUnsavedChanges() {
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
 
             entityPropertiesView.getDriver().flush();
 
-            if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData()
+            return !GWTUtilities.stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData()
                     .getSelectedItem().getItem().getDescription(), filteredResultsComponent.getProviderData()
-                    .getDisplayedItem().getItem().getDescription())) {
-                return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
-            }
+                    .getDisplayedItem().getItem().getDescription());
         }
-        return true;
+        return false;
     }
 
     /**
@@ -288,21 +285,24 @@ public class ImagesFilteredResultsAndImageComponent
         entityPropertiesView.getSave().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                entityPropertiesView.getEditor().flush();
+                if (hasUnsavedChanges()) {
 
-                /*
-                 * Create the image to be modified. This is so we don't send off unnessessary data.
-                 */
-                final RESTImageV1 updateImage = new RESTImageV1();
-                updateImage.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                updateImage.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                        .getDescription());
+                    /*
+                     * Create the image to be modified. This is so we don't send off unnessessary data.
+                     */
+                    final RESTImageV1 updateImage = new RESTImageV1();
+                    updateImage.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
+                    updateImage.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                            .getDescription());
 
-                final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                        waitDisplay, getDefaultImageRestCallback()) {
-                };
+                    final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
+                            waitDisplay, getDefaultImageRestCallback()) {
+                    };
 
-                RESTCalls.updateImage(callback, updateImage);
+                    RESTCalls.updateImage(callback, updateImage);
+                } else {
+                    Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                }
 
             }
         });

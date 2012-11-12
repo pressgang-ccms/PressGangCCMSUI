@@ -12,4 +12,10 @@ public interface EditableView {
      * @return true if there are no unsaved changes, or if the user is happy to lose any unsaved changes, and false otherwise.
      */
     boolean isOKToProceed();
+    
+    /**
+     * 
+     * @return true if there are unsaved changes, false otherwise
+     */
+    boolean hasUnsavedChanges();
 }

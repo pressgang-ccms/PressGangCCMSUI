@@ -29,4 +29,11 @@ public interface Component<S extends BaseTemplateViewInterface> {
      *         true otherwise
      */
     boolean isOKToProceed();
+    
+    /**
+     * Is called by isOKToProceed to determine if it is ok to move from the page. Can also be called by other methods to see if there are 
+     * pending changes.
+     * @return true if there are unsaved changes, and false otherwise
+     */
+    boolean hasUnsavedChanges();
 }

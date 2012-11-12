@@ -2,7 +2,6 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.search;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -545,11 +544,11 @@ public class SearchResultsAndTopicComponent
     }
 
     @Override
-    public boolean isOKToProceed() {
+    public boolean hasUnsavedChanges() {
 
         /* No topic selected, so no changes need to be saved */
         if (this.filteredResultsComponent.getProviderData().getDisplayedItem() == null)
-            return true;
+            return false;
 
         /* Save any pending changes */
         flushChanges();
@@ -576,13 +575,8 @@ public class SearchResultsAndTopicComponent
             unsavedChanges = true;
         if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getXml(), displayedTopic.getXml()))
             unsavedChanges = true;
-
-        /* Prompt the user if they are happy to lose their changes */
-        if (unsavedChanges) {
-            return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
-        }
-
-        return true;
+        
+        return unsavedChanges;
     }
 
     @Override
@@ -715,8 +709,15 @@ public class SearchResultsAndTopicComponent
                     logger.log(Level.INFO,
                             "ENTER SearchResultsAndTopicComponent.bindActionButtons() saveClickHandler.onClick()");
 
-                    display.getMessageLogDialog().getDialogBox().center();
-                    display.getMessageLogDialog().getDialogBox().show();
+                    if (hasUnsavedChanges())
+                    {
+                        display.getMessageLogDialog().getDialogBox().center();
+                        display.getMessageLogDialog().getDialogBox().show();
+                    }
+                    else
+                    {
+                        Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                    }
                 }
 
                 finally {

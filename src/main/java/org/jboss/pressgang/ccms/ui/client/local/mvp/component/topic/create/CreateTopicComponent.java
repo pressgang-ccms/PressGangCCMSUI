@@ -232,17 +232,16 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                     @Override
                     public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
                         /* Get the list of locales from the StringConstant */
-                        locales = new LinkedList<String>(Arrays.asList(retValue.getValue().replaceAll("\\r\\n", "").replaceAll("\\n", "").replaceAll(" ", "")
-                                .split(",")));
-                        
+                        locales = new LinkedList<String>(Arrays.asList(retValue.getValue().replaceAll("\\r\\n", "")
+                                .replaceAll("\\n", "").replaceAll(" ", "").split(",")));
+
                         /* Clean the list */
-                        while (locales.contains(""))
-                        {
+                        while (locales.contains("")) {
                             locales.remove("");
                         }
-                        
+
                         Collections.sort(locales);
-                        
+
                         localesLoaded = true;
                         finishLoading();
                     }
@@ -368,6 +367,19 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
 
             @Override
             public void onClick(final ClickEvent event) {
+                if (hasUnsavedChanges()) {
+                    display.getMessageLogDialog().getDialogBox().center();
+                    display.getMessageLogDialog().getDialogBox().show();
+                } else {
+                    Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                }
+            }
+        };
+
+        display.getMessageLogDialog().getOk().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+
                 flushChanges();
 
                 /* Create a topic that has the new details */
@@ -394,39 +406,30 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                         }) {
                 };
 
-                display.getMessageLogDialog().getDialogBox().center();
-                display.getMessageLogDialog().getDialogBox().show();
-                display.getMessageLogDialog().getOk().addClickHandler(new ClickHandler() {
-                    @Override
-                    public void onClick(final ClickEvent event) {
+                final String message = display.getMessageLogDialog().getMessage().getText();
+                final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
+                        : ServiceConstants.MAJOR_CHANGE);
 
-                        final String message = display.getMessageLogDialog().getMessage().getText();
-                        final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
-                                : ServiceConstants.MAJOR_CHANGE);
+                /* Create or update the topic */
+                if (saveRestTopic.getId() != null) {
+                    RESTCalls.saveTopic(callback, saveRestTopic, message, flag, ServiceConstants.NULL_USER_ID);
+                } else {
+                    RESTCalls.createTopic(callback, saveRestTopic, message, flag, ServiceConstants.NULL_USER_ID);
+                }
 
-                        /* Create or update the topic */
-                        if (saveRestTopic.getId() != null) {
-                            RESTCalls.saveTopic(callback, saveRestTopic, message, flag, ServiceConstants.NULL_USER_ID);
-                        } else {
-                            RESTCalls.createTopic(callback, saveRestTopic, message, flag, ServiceConstants.NULL_USER_ID);
-                        }
-
-                        display.getMessageLogDialog().reset();
-                        display.getMessageLogDialog().getDialogBox().hide();
-                    }
-                });
-
-                display.getMessageLogDialog().getCancel().addClickHandler(new ClickHandler() {
-
-                    @Override
-                    public void onClick(final ClickEvent event) {
-                        display.getMessageLogDialog().reset();
-                        display.getMessageLogDialog().getDialogBox().hide();
-                    }
-                });
-
+                display.getMessageLogDialog().reset();
+                display.getMessageLogDialog().getDialogBox().hide();
             }
-        };
+        });
+
+        display.getMessageLogDialog().getCancel().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                display.getMessageLogDialog().reset();
+                display.getMessageLogDialog().getDialogBox().hide();
+            }
+        });
 
         final ClickHandler splitMenuHandler = new ClickHandler() {
             @Override
@@ -652,7 +655,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
     }
 
     @Override
-    public boolean isOKToProceed() {
+    public boolean hasUnsavedChanges() {
 
         /* Save any pending changes */
         flushChanges();
@@ -715,19 +718,13 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 unsavedChanges = true;
         }
 
-        /* Prompt the user if they are happy to lose thheir changes */
-        if (unsavedChanges) {
-            return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
-        }
-
-        return true;
+        return unsavedChanges;
     }
-    
-    private void initializeSplitViewButtons()
-    {
+
+    private void initializeSplitViewButtons() {
         /* fix the rendered view button */
         for (final TopicViewInterface view : new TopicViewInterface[] { topicViewDisplay, topicXMLDisplay,
-                topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay}) {
+                topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay }) {
             view.buildSplitViewButtons(split);
         }
     }
