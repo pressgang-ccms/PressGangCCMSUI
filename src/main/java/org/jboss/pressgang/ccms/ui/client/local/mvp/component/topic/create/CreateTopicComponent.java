@@ -218,6 +218,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         if (templateLoaded && localesLoaded) {
             initializeViews();
             updateDisplayedTopicView(topicXMLDisplay);
+            initializeSplitViewButtons();
         }
 
     }
@@ -267,9 +268,6 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         /* Have to do this after the parseToken method has been called */
         display.initialize(split, topicSplitPanelRenderedDisplay.getPanel());
 
-        for (final TopicViewInterface view : updatableTopicViews) {
-            view.buildSplitViewButtons(split);
-        }
     }
 
     private void getTopicTemplate() {
@@ -461,8 +459,8 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE);
 
+                initializeSplitViewButtons();
                 initializeDisplay();
-                updateDisplayedTopicView(lastView);
             }
         };
 
@@ -476,9 +474,9 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL);
 
+                initializeSplitViewButtons();
                 initializeDisplay();
                 topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales);
-                updateDisplayedTopicView(lastView);
             }
         };
 
@@ -492,9 +490,9 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_HOIRZONTAL);
 
+                initializeSplitViewButtons();
                 initializeDisplay();
                 topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales);
-                updateDisplayedTopicView(lastView);
             }
         };
 
@@ -723,5 +721,14 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         }
 
         return true;
+    }
+    
+    private void initializeSplitViewButtons()
+    {
+        /* fix the rendered view button */
+        for (final TopicViewInterface view : new TopicViewInterface[] { topicViewDisplay, topicXMLDisplay,
+                topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay}) {
+            view.buildSplitViewButtons(split);
+        }
     }
 }

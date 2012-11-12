@@ -1,5 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.errai.enterprise.client.jaxrs.api.ResponseException;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -19,10 +22,12 @@ import com.google.gwt.user.client.Window;
  */
 public abstract class BaseRestCallback<C, D extends BaseTemplateViewInterface> implements RESTCalls.RESTCallback<C> {
 
-    D display;
-    SuccessAction<C, D> successAction;
+    private final D display;
+    private final SuccessAction<C, D> successAction;
+    
+    private static final Logger logger = Logger.getLogger(BaseRestCallback.class.getName());
 
-    public BaseRestCallback(D display, SuccessAction<C, D> successAction) {
+    public BaseRestCallback(final D display, final SuccessAction<C, D> successAction) {
         this.display = display;
         this.successAction = successAction;
     }
@@ -34,6 +39,7 @@ public abstract class BaseRestCallback<C, D extends BaseTemplateViewInterface> i
 
     @Override
     public void generalException(final Exception e) {
+        logger.log(Level.SEVERE, e.toString());
         display.removeWaitOperation();
     }
 
@@ -49,6 +55,12 @@ public abstract class BaseRestCallback<C, D extends BaseTemplateViewInterface> i
     @Override
     public void failed(final Message message, final Throwable throwable) {
         try {
+            
+            if (message != null)
+                logger.log(Level.SEVERE, message.toString());
+            if (throwable != null)
+                logger.log(Level.SEVERE, throwable.getMessage());
+            
             if (throwable instanceof ResponseException) {
                 final ResponseException ex = (ResponseException) throwable;
                 /* A bad request means invalid input, like a duplicated name */

@@ -96,7 +96,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
     
     /**
      * The sort order of child collections is determined by an integer field. This field has no restrictions, and may be set
-     * with duplicate, non-consecutive or null values. This function will take the current sort order (based on the intereger field and the name) and
+     * with duplicate, non-consecutive or null values. This function will take the current sort order (based on the Integer field and the name) and
      * set the sort field to consecutive, predicable values.
      * @return
      */
@@ -106,7 +106,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
         
         for (int i = Constants.CHILDREN_SORT_ORDER_START; i < size + Constants.CHILDREN_SORT_ORDER_START; ++i )
         {
-            final F child = getExistingProviderData().getItems().get(i);
+            final F child = getExistingProviderData().getItems().get(i - Constants.CHILDREN_SORT_ORDER_START);
             sortCallback.setSort(child, i);
         }
     }
