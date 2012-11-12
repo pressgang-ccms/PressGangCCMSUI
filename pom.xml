@@ -25,6 +25,7 @@
 		<jetty.version>6.1.25</jetty.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<uel.impl.version>2.1.2-b04</uel.impl.version>
+		<maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
 	</properties>
 
 	<repositories>
@@ -33,23 +34,15 @@
 			<url>http://www.smartclient.com/maven2</url>
 		</repository>
 	</repositories>
-	
-	
+
+
 
 	<dependencies>
 		<!-- Smart GWT -->
-		<!-- <dependency>
-			<groupId>com.smartgwt</groupId>
-			<artifactId>smartgwt</artifactId>
-			<version>3.0</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.smartgwt</groupId>
-			<artifactId>smartgwt-skins</artifactId>
-			<version>3.0</version>
-		</dependency> -->
-	
+		<!-- <dependency> <groupId>com.smartgwt</groupId> <artifactId>smartgwt</artifactId> 
+			<version>3.0</version> </dependency> <dependency> <groupId>com.smartgwt</groupId> 
+			<artifactId>smartgwt-skins</artifactId> <version>3.0</version> </dependency> -->
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -622,6 +615,29 @@
 						</configuration>
 
 					</plugin>
+					<plugin>
+						<groupId>com.google.code.maven-replacer-plugin</groupId>
+						<artifactId>replacer</artifactId>
+						<version>1.5.1</version>
+						<executions>
+							<execution>
+								<phase>validate</phase>
+								<goals>
+									<goal>replace</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<file>src/main/java/org/jboss/pressgang/ccms/ui/client/local/constants/Constants.java</file>
+							<replacements>
+								<replacement>
+									<token>public static final String VERSION = "\d{12}"</token>
+									<value>public static final String VERSION = "${maven.build.timestamp}"</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</plugin>
+
 				</plugins>
 			</build>
 		</profile>
