@@ -14,14 +14,15 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimpleIntegerBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTopicV1> {
-    private final IntegerBox id = new IntegerBox();
-    private final IntegerBox revision = new IntegerBox();
+    private final SimpleIntegerBox id = new SimpleIntegerBox();
+    private final SimpleIntegerBox revision = new SimpleIntegerBox();
     private final ValueListBox<String> locale = new ValueListBox<String>(new Renderer<String>() {
 
         @Override
@@ -58,11 +59,11 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
         return locale;
     }
 
-    public IntegerBox revisionEditor() {
+    public SimpleIntegerBox revisionEditor() {
         return revision;
     }
 
-    public IntegerBox idEditor() {
+    public SimpleIntegerBox idEditor() {
         return id;
     }
 

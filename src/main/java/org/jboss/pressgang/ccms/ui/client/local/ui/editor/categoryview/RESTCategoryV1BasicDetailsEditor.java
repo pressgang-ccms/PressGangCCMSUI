@@ -7,7 +7,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
 public class RESTCategoryV1BasicDetailsEditor extends FlexTable implements Editor<RESTCategoryV1> {
-    private final IntegerBox id = new IntegerBox();
+    private final SimpleIntegerBox id = new SimpleIntegerBox();
     private final TextBox name = new TextBox();
     private final TextArea description = new TextArea();
 
@@ -15,7 +15,7 @@ public class RESTCategoryV1BasicDetailsEditor extends FlexTable implements Edito
     private final Label nameLabel = new Label(PressGangCCMSUI.INSTANCE.CategoryName());
     private final Label descriptionLabel = new Label(PressGangCCMSUI.INSTANCE.CategoryDescription());
 
-    public IntegerBox idEditor() {
+    public SimpleIntegerBox idEditor() {
         return id;
     }
 

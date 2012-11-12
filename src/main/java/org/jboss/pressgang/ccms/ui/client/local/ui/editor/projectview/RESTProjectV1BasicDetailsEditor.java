@@ -6,13 +6,13 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimpleIntegerBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 
 public class RESTProjectV1BasicDetailsEditor extends FlexTable implements Editor<RESTProjectV1> {
-    private final IntegerBox id = new IntegerBox();
+    private final SimpleIntegerBox id = new SimpleIntegerBox();
     private final TextBox name = new TextBox();
     private final TextArea description = new TextArea();
 
@@ -20,7 +20,7 @@ public class RESTProjectV1BasicDetailsEditor extends FlexTable implements Editor
     private final Label nameLabel = new Label(PressGangCCMSUI.INSTANCE.ProjectName());
     private final Label descriptionLabel = new Label(PressGangCCMSUI.INSTANCE.ProjectDescription());
 
-    public IntegerBox idEditor() {
+    public SimpleIntegerBox idEditor() {
         return id;
     }
 

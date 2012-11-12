@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.SimpleIntegerBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.TriStatePushButton;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -24,8 +25,8 @@ public class SearchFieldEditor extends FlexTable implements LeafValueEditor<Sear
     private final DateBox createdBefore = new DateBox();
     private final DateBox editedAfter = new DateBox();
     private final DateBox editedBefore = new DateBox();
-    private final IntegerBox editedInLastXDays = new IntegerBox();
-    private final IntegerBox notEditedInLastXDays = new IntegerBox();
+    private final SimpleIntegerBox editedInLastXDays = new SimpleIntegerBox();
+    private final SimpleIntegerBox notEditedInLastXDays = new SimpleIntegerBox();
     private final TextBox ids = new TextBox();
     private final TextBox notIds = new TextBox();
     private final TextBox title = new TextBox();
