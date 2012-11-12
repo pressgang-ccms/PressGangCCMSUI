@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.search;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -671,8 +672,21 @@ public class SearchResultsAndTopicComponent
     protected void switchView(final TopicViewInterface displayedView) {
         try {
             logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.switchView(final TopicViewInterface displayedView)");
-
+          
             super.switchView(displayedView);
+            
+            /* Save any changes to the xml editor */
+            if (lastDisplayedView == this.topicXMLDisplay)
+            {
+                this.topicXMLDisplay.getDriver().flush();
+            }
+            
+            /* Refresh the rendered view (when there is no page splitting) */
+            if (displayedView == this.topicRenderedDisplay)
+            {
+                topicRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
+                        display.getSplitType(), locales);
+            }
 
             /* Update the page name */
             final StringBuilder title = new StringBuilder(displayedView.getPageName());

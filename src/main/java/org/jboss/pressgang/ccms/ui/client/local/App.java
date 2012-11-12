@@ -1,5 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
@@ -7,6 +10,7 @@ import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.errai.ioc.client.api.AfterInitialization;
 import org.jboss.errai.ioc.client.api.EntryPoint;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.search.SearchResultsAndTopicComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
 
@@ -28,6 +32,8 @@ public class App {
     /** The controller that handles the transitions between views. */
     @Inject
     private AppController appController;
+    
+    private static final Logger logger = Logger.getLogger(App.class.getName());
 
     /**
      * Called once GWT has initialized.
@@ -38,6 +44,7 @@ public class App {
             @Override
             public void onUncaughtException(final Throwable ex) {
                 ex.printStackTrace();
+                logger.log(Level.SEVERE, ex.getMessage());
                 Window.alert("Uncaught exception was detected. Redirecting you to the home page.\nException: "
                         + ex.getMessage());
                 History.newItem(WelcomePresenter.HISTORY_TOKEN);
