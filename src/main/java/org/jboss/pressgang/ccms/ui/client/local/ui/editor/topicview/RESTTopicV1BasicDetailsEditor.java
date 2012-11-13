@@ -90,6 +90,8 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
 
         id.setReadOnly(true);
         revision.setReadOnly(true);
+        created.setEnabled(false);
+        lastModified.setEnabled(false);
 
         id.addStyleName(CSSConstants.TOPIC_VIEW_ID_FIELD);
         revision.addStyleName(CSSConstants.TOPIC_VIEW_REVISION_NUMBER_FIELD);
