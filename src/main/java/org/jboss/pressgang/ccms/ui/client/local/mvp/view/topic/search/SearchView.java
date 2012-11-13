@@ -42,7 +42,7 @@ public class SearchView extends BaseTemplateView<RESTTopicV1, RESTTopicCollectio
     }
 
     @Override
-    public PushButton getEntitySearch() {
+    public PushButton getSearch() {
         return search;
     }
 

@@ -59,7 +59,7 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface>
      * @param display The main template display
      */
     protected void bindStandardButtons() {
-        display.getEntitySearch().addClickHandler(new ClickHandler() {
+        display.getSearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed())

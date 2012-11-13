@@ -23,7 +23,7 @@ public class SearchFieldPresenter implements TemplatePresenter {
         interface SearchFieldPresenterDriver extends SimpleBeanEditorDriver<SearchUIFields, SearchFieldEditor> {
         }
         @Override
-        PushButton getEntitySearch();
+        PushButton getSearch();
         PushButton getTagsSearch();
         SearchUIFields getSearchUIFields();
     }

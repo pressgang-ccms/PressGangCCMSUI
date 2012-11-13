@@ -250,7 +250,7 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
     }
 
     @Override
-    public PushButton getEntitySearch() {
+    public PushButton getSearch() {
         return search;
     }
 

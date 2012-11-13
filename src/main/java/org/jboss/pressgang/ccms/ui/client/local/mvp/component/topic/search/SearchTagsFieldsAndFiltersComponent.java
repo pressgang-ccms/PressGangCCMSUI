@@ -71,8 +71,8 @@ public class SearchTagsFieldsAndFiltersComponent extends ComponentBase<SearchTag
         fieldsDisplay.getTagsSearch().addClickHandler(tagsHandler);
         tagsDisplay.getFields().addClickHandler(fieldsHandler);
 
-        tagsDisplay.getEntitySearch().addClickHandler(searchHandler);
-        fieldsDisplay.getEntitySearch().addClickHandler(searchHandler);
+        tagsDisplay.getSearch().addClickHandler(searchHandler);
+        fieldsDisplay.getSearch().addClickHandler(searchHandler);
     }
     
     private void displayTags()
