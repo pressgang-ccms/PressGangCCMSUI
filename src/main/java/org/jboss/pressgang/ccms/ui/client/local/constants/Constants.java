@@ -10,7 +10,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm
      */
-    public static final String VERSION = "201211131049";
+    public static final String VERSION = "201211131107";
     
     /**
      * The sort order to apply to a newly added child
@@ -111,7 +111,7 @@ public final class Constants {
      * The Bugzilla link for this product.
      */
     public static final String BUGZILLA_URL = BUGZILLA_BASE_URL
-            + "/enter_bug.cgi?product=PressGang CCMS&component=Web-UI&version=1.1";
+            + "/enter_bug.cgi?product=PressGang CCMS&component=Web-UI&version=1.1&cf_build_id=UI%20Build%20" + VERSION;
 
     /**
      * View Bugzilla bug URL.
