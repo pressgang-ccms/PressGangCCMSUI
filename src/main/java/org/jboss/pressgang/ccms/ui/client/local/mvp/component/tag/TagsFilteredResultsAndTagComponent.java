@@ -120,7 +120,7 @@ public class TagsFilteredResultsAndTagComponent
             if (hasUnsavedChanges()) {
 
                 final boolean unsavedTagChanges = unsavedTagChanged();
-                final boolean unsavedCategoryChanges = !categoriesComponent.isOKToProceed();
+                final boolean unsavedCategoryChanges = categoriesComponent.hasUnsavedChanges();
 
                 /* Create the tag first */
                 saveTagChanges(unsavedTagChanges, unsavedCategoryChanges);
