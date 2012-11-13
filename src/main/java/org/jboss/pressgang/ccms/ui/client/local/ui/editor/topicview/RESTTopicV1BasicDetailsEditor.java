@@ -100,14 +100,14 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
         this.setWidget(0, 0, new Label(PressGangCCMSUI.INSTANCE.TopicID()));
         this.setWidget(0, 1, id);
         
-        this.setWidget(1, 0, new Label(PressGangCCMSUI.INSTANCE.TopicCreated()));
-        this.setWidget(1, 1, created);
+        this.setWidget(1, 0, new Label(PressGangCCMSUI.INSTANCE.TopicRevision()));
+        this.setWidget(1, 1, revision);
         
-        this.setWidget(2, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLastModified()));
-        this.setWidget(2, 1, lastModified);
-
-        this.setWidget(3, 0, new Label(PressGangCCMSUI.INSTANCE.TopicRevision()));
-        this.setWidget(3, 1, revision);
+        this.setWidget(2, 0, new Label(PressGangCCMSUI.INSTANCE.TopicCreated()));
+        this.setWidget(2, 1, created);
+        
+        this.setWidget(3, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLastModified()));
+        this.setWidget(3, 1, lastModified);
 
         this.setWidget(4, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLocale()));
         this.setWidget(4, 1, locale);

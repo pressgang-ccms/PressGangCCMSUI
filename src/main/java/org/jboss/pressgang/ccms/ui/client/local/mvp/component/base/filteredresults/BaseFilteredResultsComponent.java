@@ -39,7 +39,27 @@ abstract public class BaseFilteredResultsComponent<S extends BaseFilteredResults
     public void bind(final String queryString, final S display, final BaseTemplateViewInterface waitDisplay)
     {
         super.bind(display, waitDisplay);
-        displayQueryElements(queryString);
+        displayQueryElements(queryString);        
+    }
+    
+    /**
+     * When a new entity is created, the filtered results are reloaded. This process breaks the link between the selected item
+     * and the collection being displayed by the filtered results. This methods will go through and set the selected item to the
+     * item in the filtered results list (if it exists).
+     */
+    protected void relinkSelectedItem()
+    {
+        if (this.providerData.getSelectedItem() != null && this.providerData.getItems() != null)
+        {
+            for (final V filteredResultEntity : this.providerData.getItems())
+            {
+                if (filteredResultEntity.getItem().getId().equals(this.providerData.getSelectedItem().getItem().getId()))
+                {
+                    this.providerData.setSelectedItem(filteredResultEntity);
+                    break;
+                }
+            }
+        }
     }
 
     /**

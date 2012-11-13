@@ -63,6 +63,7 @@ public class ProjectFilteredResultsComponent
                         try {
                             getProviderData().setItems(retValue.getItems());
                             getProviderData().setSize(retValue.getSize());
+                            relinkSelectedItem();
                             displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(),
                                     getProviderData().getStartRow());
                         } finally {

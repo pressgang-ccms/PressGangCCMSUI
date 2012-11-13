@@ -83,6 +83,7 @@ public class ImageFilteredResultsComponent
                         try {
                             providerData.setItems(retValue.getItems());
                             providerData.setSize(retValue.getSize());
+                            relinkSelectedItem();
                             displayAsynchronousList(providerData.getItems(), providerData.getSize(), providerData.getStartRow());
                         } finally {
                             display.removeWaitOperation();

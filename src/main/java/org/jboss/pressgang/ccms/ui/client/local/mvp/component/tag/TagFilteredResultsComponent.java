@@ -76,7 +76,7 @@ public class TagFilteredResultsComponent
                             /* Zero results can be a null list */
                             getProviderData().setItems(retValue.getItems());
                             getProviderData().setSize(retValue.getSize());
-
+                            relinkSelectedItem();
                             displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(),
                                     getProviderData().getStartRow());
                         } finally {
