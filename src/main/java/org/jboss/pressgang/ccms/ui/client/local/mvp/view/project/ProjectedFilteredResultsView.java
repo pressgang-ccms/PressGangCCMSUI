@@ -6,6 +6,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
 
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.TextBox;
@@ -63,5 +64,7 @@ public class ProjectedFilteredResultsView extends
         addFilterField(PressGangCCMSUI.INSTANCE.ProjectIDs(), idFilter);
         addFilterField(PressGangCCMSUI.INSTANCE.ProjectName(), nameFilter);
         addFilterField(PressGangCCMSUI.INSTANCE.ProjectDescription(), descriptionFilter);
+        
+        new NumbersAndCommaValidator(idFilter);
     }
 }

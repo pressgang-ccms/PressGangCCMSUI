@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.search;
 
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 
 import com.google.gwt.editor.client.LeafValueEditor;
@@ -132,6 +133,9 @@ public class SearchFieldEditor extends FlexTable implements LeafValueEditor<Sear
 
         this.setWidget(this.getRowCount(), 0, matchAll);
         this.setWidget(this.getRowCount() - 1, 1, matchAny);
+        
+        new NumbersAndCommaValidator(ids);
+        new NumbersAndCommaValidator(notIds);
     }
 
     @Override

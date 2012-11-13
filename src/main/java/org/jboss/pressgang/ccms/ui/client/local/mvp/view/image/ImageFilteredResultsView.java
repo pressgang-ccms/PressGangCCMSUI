@@ -6,6 +6,8 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
+
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.TextBox;
 
@@ -66,6 +68,8 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageV
         addFilterField(PressGangCCMSUI.INSTANCE.ImageID(), imageIdFilter);
         addFilterField(PressGangCCMSUI.INSTANCE.ImageDescription(), imageDescriptionFilter);
         addFilterField(PressGangCCMSUI.INSTANCE.ImageOriginalFileName(), imageOriginalFileNameFilter);
+        
+        new NumbersAndCommaValidator(imageIdFilter);
     }
 
 }
