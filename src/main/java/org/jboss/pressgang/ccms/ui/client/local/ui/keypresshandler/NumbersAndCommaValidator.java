@@ -56,7 +56,17 @@ public class NumbersAndCommaValidator implements KeyPressHandler, ValueChangeHan
 
     @Override
     public void onValueChange(final ValueChangeEvent<String> event) {
-        source.setText(regex.replace(source.getText(), ""));        
+        String fixedValue = regex.replace(source.getText(), "");
+        
+        /* Cannot start with a comma */
+        while (fixedValue.endsWith(","))
+            fixedValue = fixedValue.substring(0, fixedValue.length() - 1);
+        
+        /* Cannot end with a comma */
+        while (fixedValue.startsWith(","))
+            fixedValue = fixedValue.substring(1, fixedValue.length());
+        
+        source.setText(fixedValue);
     }
 
 }
