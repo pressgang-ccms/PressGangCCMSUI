@@ -19,7 +19,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.components.ComponentImageV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
@@ -56,12 +55,13 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.HasData;
+import com.google.gwt.xml.client.XMLParser;
+import com.google.gwt.xml.client.impl.DOMParseException;
 
 @Dependent
 public class SearchResultsAndTopicComponent
@@ -519,14 +519,15 @@ public class SearchResultsAndTopicComponent
                                         + DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL).format(
                                                 sourceTopic.getItem().getLastModified());
                                 
+                                /* See if the topic contains valid XML or not */
                                 boolean isXML = true;
-                                for (final RESTTagCollectionItemV1 tag : sourceTopic.getItem().getTags().getItems())
+                                try
                                 {
-                                    if (ServiceConstants.CSP_TAG_ID.equals(tag.getItem().getId()))
-                                    {
-                                        isXML = false;
-                                        break;
-                                    }
+                                    XMLParser.parse(sourceTopic.getItem().getXml());
+                                }
+                                catch (final DOMParseException ex)
+                                {
+                                    isXML = false;
                                 }
                                 
                                 topicrevisionsComponent.displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getItem()
