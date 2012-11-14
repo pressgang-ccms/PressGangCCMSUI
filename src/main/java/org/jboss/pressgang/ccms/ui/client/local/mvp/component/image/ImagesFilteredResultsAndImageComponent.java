@@ -405,7 +405,30 @@ public class ImagesFilteredResultsAndImageComponent
                 entityPropertiesView.getAddLocaleDialog().getDialogBox().hide();
             }
         });
+        
+        entityPropertiesView.getViewImage().addClickHandler(new ClickHandler(){
+            @Override
+            public void onClick(final ClickEvent event) {
+                
+                final int selectedTab = entityPropertiesView.getEditor().languageImages_OTMEditor().getSelectedIndex();
+                if (selectedTab != -1) {
+                    final RESTLanguageImageCollectionItemV1 selectedImage = entityPropertiesView.getEditor()
+                            .languageImages_OTMEditor().itemsEditor().getList().get(selectedTab);
+                
+                    displayImageInPopup(GWTUtilities.getStringUTF8(selectedImage.getItem().getImageDataBase64()));
+                }
+            };               
+        });
     }
+    
+    /**
+     * Open a popup window that displays the image defined in the base64 parameter
+     * @param base64 The BASE64 representation of the image to be displayed
+     */
+    native private void displayImageInPopup(final String base64) /*-{
+        var win = $wnd.open("data:image/jpeg;base64," + base64, "_blank", "width=" + (screen.width - 200)
+                        + ", height=" + (screen.height - 200) + ", left=100, top=100"); // a window object
+    }-*/;
 
     @Override
     protected void bindFilteredResultsButtons() {

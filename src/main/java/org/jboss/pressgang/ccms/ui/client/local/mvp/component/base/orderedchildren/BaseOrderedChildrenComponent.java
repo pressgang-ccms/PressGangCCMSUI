@@ -150,7 +150,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
                     sortCallback.setSort(existingChild, j);
 
                     /* we need to mark the joiner entity as updated */
-                    if (!existingChild.returnIsAddItem())
+                    if (existingChild.getState() == RESTBaseUpdateCollectionItemV1.UNCHANGED_STATE)
                         existingChild.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
                 }
 

@@ -33,13 +33,12 @@ public class ImagePresenter implements TemplatePresenter {
      * The id of the image to display, extracted from the history token.
      */
     private Integer imageId;
-    
+
     // Empty interface declaration, similar to UiBinder
     public interface ImagePresenterDriver extends SimpleBeanEditorDriver<RESTImageV1, RESTImageV1Editor> {
     }
 
-    public interface Display extends BaseTemplateViewInterface,
-            BaseEditorViewInterface {
+    public interface Display extends BaseTemplateViewInterface, BaseEditorViewInterface {
 
         public interface AddLocaleInterface {
             PushButton getCancel();
@@ -56,6 +55,8 @@ public class ImagePresenter implements TemplatePresenter {
         PushButton getRemoveLocale();
 
         PushButton getAddLocale();
+
+        PushButton getViewImage();
 
         PushButton getSave();
 
