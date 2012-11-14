@@ -77,6 +77,12 @@ public interface TopicViewInterface extends BaseTemplateViewInterface {
      * @return The button that is used to switch to the bugs view
      */
     PushButton getBugs();
+    
+    /**
+     * 
+     * @return The button this is used to match topics to csps
+     */
+    PushButton getCsps();
 
     /**
      * 

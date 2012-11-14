@@ -19,12 +19,15 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.components.ComponentImageV1;
+import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
@@ -967,6 +970,22 @@ public class SearchResultsAndTopicComponent
                 initializeSplitViewButtons();
             }
         };
+        
+        final ClickHandler cspsHandler = new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+
+                if (filteredResultsComponent.getProviderData().getDisplayedItem() != null && isOKToProceed()) {
+
+                    final RESTTopicV1 topic = filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
+                    
+                    eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
+                            + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + topic.getTitle() + " [" + topic.getId() + "];tag" + ServiceConstants.CSP_TAG_ID + "=1;logic=AND"));
+                }
+
+            }
+        };
 
         /* Hook up the click listeners */
         for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
@@ -980,6 +999,7 @@ public class SearchResultsAndTopicComponent
             view.getTopicTags().addClickHandler(topicTagsClickHandler);
             view.getBugs().addClickHandler(topicBugsClickHandler);
             view.getHistory().addClickHandler(topicRevisionsClickHanlder);
+            view.getCsps().addClickHandler(cspsHandler);
 
             view.getRenderedSplitOpen().addClickHandler(splitMenuCloseHandler);
             view.getRenderedSplitClose().addClickHandler(splitMenuCloseHandler);

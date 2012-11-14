@@ -19,6 +19,9 @@ final public class ServiceConstants {
     static public final byte MINOR_CHANGE = 0x01;
     /** Used to indicate a major change to an entity */
     static public final byte MAJOR_CHANGE = 0x02;
+    
+    /** The id of the tag applied tgo all content specs */
+    static public final int CSP_TAG_ID = 268;
 
     /**
      * The null user, used when no login information is available. Null identifies an unknown user, but this has issues in errai

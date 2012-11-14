@@ -250,6 +250,7 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
             addActionButton(this.getBugs());
             addActionButton(this.getHistoryDown());
         }
+        addActionButton(this.getCsps());
         addActionButton(this.getSave());
 
         fixReadOnlyButtons();

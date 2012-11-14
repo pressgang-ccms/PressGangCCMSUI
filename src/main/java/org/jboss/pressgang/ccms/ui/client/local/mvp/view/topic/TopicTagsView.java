@@ -143,6 +143,7 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
             addActionButton(this.getBugs());
             addActionButton(this.getHistory());
         }
+        addActionButton(this.getCsps());
         addActionButton(this.getSave());
 
         fixReadOnlyButtons();

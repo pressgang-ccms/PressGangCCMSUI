@@ -27,6 +27,7 @@ abstract public class TopicViewBase extends BaseTemplateView<RESTTopicV1, RESTTo
     private final PushButton save;
     private final PushButton bugs;
     private final PushButton history;
+    private final PushButton csps;
 
     private final Label fieldsDown;
     private final Label xmlDown;
@@ -48,6 +49,11 @@ abstract public class TopicViewBase extends BaseTemplateView<RESTTopicV1, RESTTo
     private final PushButton renderedSplitOpen;
 
     protected boolean readOnly = false;
+
+    @Override
+    public PushButton getCsps() {
+        return csps;
+    }
 
     public Label getFieldsDown() {
         return fieldsDown;
@@ -167,6 +173,7 @@ abstract public class TopicViewBase extends BaseTemplateView<RESTTopicV1, RESTTo
         topicTags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TopicTags());
         bugs = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Bugs());
         history = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Revisions());
+        csps = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ContentSpecifications());
 
         fieldsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Properties());
         xmlDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.XMLEditing());

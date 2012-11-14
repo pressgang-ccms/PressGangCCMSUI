@@ -67,6 +67,7 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
             addActionButton(this.getBugs());
             addActionButton(this.getHistory());
         }
+        addActionButton(this.getCsps());
         
         addActionButton(this.getSave());
 

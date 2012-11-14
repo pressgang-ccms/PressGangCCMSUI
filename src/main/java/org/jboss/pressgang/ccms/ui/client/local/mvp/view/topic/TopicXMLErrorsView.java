@@ -42,6 +42,7 @@ public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsP
             addActionButton(this.getBugs());
             addActionButton(this.getHistory());
         }
+        addActionButton(this.getCsps());
         addActionButton(this.getSave());
 
         fixReadOnlyButtons();

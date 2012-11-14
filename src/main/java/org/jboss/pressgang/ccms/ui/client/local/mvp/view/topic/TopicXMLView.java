@@ -71,6 +71,7 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
             addActionButton(this.getBugs());
             addActionButton(this.getHistory());
         }
+        addActionButton(this.getCsps());
         addActionButton(this.getSave());
 
         fixReadOnlyButtons();
