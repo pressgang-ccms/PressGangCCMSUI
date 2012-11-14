@@ -9,6 +9,8 @@ import org.vectomatic.file.FileUploadExt;
 
 import com.google.gwt.editor.client.EditorDelegate;
 import com.google.gwt.editor.client.ValueAwareEditor;
+import com.google.gwt.event.dom.client.LoadEvent;
+import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -45,11 +47,13 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
     private final int parentIndex;
 
     private final TextBox filename = new TextBox();
+    private final TextBox dimensions = new TextBox();
     private final Image imageDataBase64 = new Image();
     private final FileUploadExt upload = new FileUploadExt(false);
     private final PushButton uploadButton = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Upload());
 
     private final Label filenameLabel = new Label(PressGangCCMSUI.INSTANCE.ImageFilename());
+    private final Label dimensionsLabel = new Label(PressGangCCMSUI.INSTANCE.ImageDimensions());
     private final Label imageLabel = new Label(PressGangCCMSUI.INSTANCE.ImageSample());
     private final Label newFileLabel = new Label(PressGangCCMSUI.INSTANCE.UploadFile());
 
@@ -77,6 +81,7 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
         this.addStyleName(CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_TAB);
 
         filename.setReadOnly(true);
+        dimensions.setReadOnly(true);
 
         this.parentPanel = parentPanel;
         this.parentIndex = parentIndex;
@@ -89,8 +94,10 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
         this.setWidget(0, 1, uploadPanel);
         this.setWidget(1, 0, filenameLabel);
         this.setWidget(1, 1, filename);
-        this.setWidget(2, 0, imageLabel);
-        this.setWidget(2, 1, imageDataBase64);
+        this.setWidget(2, 0, dimensionsLabel);
+        this.setWidget(2, 1, dimensions);
+        this.setWidget(3, 0, imageLabel);
+        this.setWidget(3, 1, imageDataBase64);
 
         filenameLabel.addStyleName(CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_LABEL);
         filename.addStyleName(CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_TEXT);
@@ -130,7 +137,14 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
 
         if (value.getItem().getImageDataBase64() != null) {
             final String base64 = GWTUtilities.getStringUTF8(value.getItem().getImageDataBase64());
+            this.imageDataBase64.addLoadHandler(new LoadHandler(){
+
+                @Override
+                public void onLoad(final LoadEvent event) {
+                    dimensions.setText(imageDataBase64.getWidth() + "x" + imageDataBase64.getHeight());
+                }});
             this.imageDataBase64.setUrl(JPG_BASE64_PREFIX + base64);
+
         }
 
         if (value.getItem().getLocale() != null) {

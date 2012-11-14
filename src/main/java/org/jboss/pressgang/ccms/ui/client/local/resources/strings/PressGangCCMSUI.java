@@ -143,6 +143,8 @@ public interface PressGangCCMSUI extends Constants {
     String ImageLocale();
 
     String ImageFilename();
+    
+    String ImageDimensions();
 
     String ImageSample();
 
