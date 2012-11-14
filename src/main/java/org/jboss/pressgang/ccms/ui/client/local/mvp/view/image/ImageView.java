@@ -34,6 +34,7 @@ public class ImageView extends BaseTemplateView<RESTImageV1, RESTImageCollection
     private final PushButton removeLocale = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RemoveLocale());
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
     private final PushButton viewImage = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ViewImage());
+    private final PushButton findTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.FindTopics());
     private final AddLocaleDialog addLocaleDialog = new AddLocaleDialog();
 
     /**
@@ -94,6 +95,11 @@ public class ImageView extends BaseTemplateView<RESTImageV1, RESTImageCollection
     }
 
     @Override
+    public PushButton getFindTopics() {
+        return findTopics;
+    }
+
+    @Override
     public PushButton getViewImage() {
         return viewImage;
     }
@@ -138,6 +144,7 @@ public class ImageView extends BaseTemplateView<RESTImageV1, RESTImageCollection
         this.addActionButton(addLocale);
         this.addActionButton(removeLocale);
         this.addActionButton(viewImage);
+        this.addActionButton(findTopics);
         this.addActionButton(save);
         this.addRightAlignedActionButtonPaddingPanel();
     }

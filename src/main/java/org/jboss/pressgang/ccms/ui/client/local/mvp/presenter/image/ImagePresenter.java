@@ -57,6 +57,8 @@ public class ImagePresenter implements TemplatePresenter {
         PushButton getAddLocale();
 
         PushButton getViewImage();
+        
+        PushButton getFindTopics();
 
         PushButton getSave();
 

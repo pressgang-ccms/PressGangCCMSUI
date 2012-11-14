@@ -7,6 +7,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchViewBase;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.TriStateSelectionState;
 
@@ -221,9 +222,9 @@ public class SearchUIFields implements SearchViewBase {
         if (!GWTUtilities.IsStringNullOrEmpty(notTitle))
             retValue.append(";" + CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR + "=" + notTitle);
         if (editedInLastXDays != null)
-            retValue.append(";" + CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS + "=" + editedInLastXDays);
+            retValue.append(";" + CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS + "=" + editedInLastXDays.toString());
         if (notEditedInLastXDays != null)
-            retValue.append(";" + CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS + "=" + notEditedInLastXDays);
+            retValue.append(";" + CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS + "=" + notEditedInLastXDays.toString());
         if (!GWTUtilities.IsStringNullOrEmpty(contents))
             retValue.append(";" + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + contents);
         if (!GWTUtilities.IsStringNullOrEmpty(notContents))

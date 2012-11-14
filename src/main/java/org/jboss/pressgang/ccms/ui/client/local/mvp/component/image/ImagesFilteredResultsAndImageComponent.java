@@ -10,12 +10,16 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.components.ComponentImageV1;
+import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
@@ -405,29 +409,48 @@ public class ImagesFilteredResultsAndImageComponent
                 entityPropertiesView.getAddLocaleDialog().getDialogBox().hide();
             }
         });
-        
-        entityPropertiesView.getViewImage().addClickHandler(new ClickHandler(){
+
+        entityPropertiesView.getViewImage().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                
+
                 final int selectedTab = entityPropertiesView.getEditor().languageImages_OTMEditor().getSelectedIndex();
                 if (selectedTab != -1) {
                     final RESTLanguageImageCollectionItemV1 selectedImage = entityPropertiesView.getEditor()
                             .languageImages_OTMEditor().itemsEditor().getList().get(selectedTab);
-                
+
                     displayImageInPopup(GWTUtilities.getStringUTF8(selectedImage.getItem().getImageDataBase64()));
                 }
-            };               
+            };
+        });
+
+        entityPropertiesView.getFindTopics().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+
+                final String docbookFileName = ComponentImageV1.getDocbookFileName(filteredResultsComponent.getProviderData()
+                        .getDisplayedItem().getItem());
+
+                if (docbookFileName != null && !docbookFileName.isEmpty() && isOKToProceed()) {
+
+                    eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
+                            + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=images/" + docbookFileName));
+                }
+
+            }
         });
     }
-    
+
     /**
      * Open a popup window that displays the image defined in the base64 parameter
+     * 
      * @param base64 The BASE64 representation of the image to be displayed
      */
     native private void displayImageInPopup(final String base64) /*-{
-        var win = $wnd.open("data:image/jpeg;base64," + base64, "_blank", "width=" + (screen.width - 200)
-                        + ", height=" + (screen.height - 200) + ", left=100, top=100"); // a window object
+		var win = $wnd.open("data:image/jpeg;base64," + base64, "_blank",
+				"width=" + (screen.width - 200) + ", height="
+						+ (screen.height - 200) + ", left=100, top=100"); // a window object
     }-*/;
 
     @Override

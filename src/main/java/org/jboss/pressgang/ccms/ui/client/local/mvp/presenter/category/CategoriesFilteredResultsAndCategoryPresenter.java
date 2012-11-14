@@ -13,6 +13,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
+
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 /**
@@ -109,21 +111,6 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
         queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
-        }
-
-        final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
-        for (final String queryStringElement : queryStringElements) {
-            final String[] queryElements = queryStringElement.split("=");
-
-            if (queryElements.length == 2) {
-                if (queryElements[0].equals("categoryIds")) {
-                    this.filteredResultsDisplay.getIdFilter().setText(queryElements[1]);
-                } else if (queryElements[0].equals("categoryName")) {
-                    this.filteredResultsDisplay.getNameFilter().setText(queryElements[1]);
-                } else if (queryElements[0].equals("categoryDesc")) {
-                    this.filteredResultsDisplay.getDescriptionFilter().setText(queryElements[1]);
-                }
-            }
         }
     }
 

@@ -15,6 +15,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.HasData;
 
@@ -111,11 +112,11 @@ public class CategoryFilteredResultsComponent
 
             if (queryElements.length == 2) {
                 if (queryElements[0].equals("catIds")) {
-                    this.display.getIdFilter().setText(queryElements[1]);
+                    this.display.getIdFilter().setText(URL.decodeQueryString(queryElements[1]));
                 } else if (queryElements[0].equals("catName")) {
-                    this.display.getNameFilter().setText(queryElements[1]);
+                    this.display.getNameFilter().setText(URL.decodeQueryString(queryElements[1]));
                 } else if (queryElements[0].equals("catDesc")) {
-                    this.display.getDescriptionFilter().setText(queryElements[1]);
+                    this.display.getDescriptionFilter().setText(URL.decodeQueryString(queryElements[1]));
                 }
             }
         }
