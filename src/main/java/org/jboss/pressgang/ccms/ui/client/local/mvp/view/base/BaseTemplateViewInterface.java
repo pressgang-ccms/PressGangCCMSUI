@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TextBox;
 
 /**
  * This interface defines the UI elements that are exposed from the base template that is
@@ -163,4 +164,17 @@ public interface BaseTemplateViewInterface {
      * @param link A link to a survey
      */
     void setFeedbackLink(String link);
+    
+    /**
+     * 
+     * @return the button used to perform a quick search
+     */
+    PushButton getQuickSearch();
+    
+    
+    /**
+     *
+     * @return The text box that holds the search critera
+     */
+    TextBox getQuickSearchQuery();
 }

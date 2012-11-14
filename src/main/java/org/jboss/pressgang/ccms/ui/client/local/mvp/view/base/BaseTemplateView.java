@@ -15,13 +15,15 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -53,7 +55,7 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
     private final DockLayoutPanel thirdLevelLayoutPanel = new DockLayoutPanel(Unit.PX);
 
     private final SimplePanel headingBanner = new SimplePanel();
-    private final VerticalPanel pageTitleParentLayoutPanel = new VerticalPanel();
+    private final HorizontalPanel pageTitleParentLayoutPanel = new HorizontalPanel();
     private final Label pageTitle = new Label();
 
     private final SimplePanel shortCutPanelParent = new SimplePanel();
@@ -93,6 +95,17 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
     private final PushButton advanced;
     private final PushButton advancedOpen;
     private final PushButton close;
+    
+    private final TextBox quickSearchQuery = new TextBox();
+    private final PushButton quickSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.QuickSearch());
+
+    public PushButton getQuickSearch() {
+        return quickSearch;
+    }
+
+    public TextBox getQuickSearchQuery() {
+        return quickSearchQuery;
+    }
 
     @Override
     public PushButton getCreateTopic() {
@@ -274,6 +287,19 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
         pageTitle.addStyleName(CSSConstants.PAGE_TITLE);
         pageTitleParentLayoutPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         pageTitleParentLayoutPanel.add(pageTitle);
+        
+        /* Add the quick search box */
+        final HorizontalPanel quickSearchParentPanel = new HorizontalPanel();
+        quickSearchParentPanel.addStyleName(CSSConstants.QUICK_SEARCH_PARENT_PANEL);
+        quickSearchParentPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+        
+        final HorizontalPanel quickSearchPanel = new HorizontalPanel();   
+        quickSearchPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+        quickSearchPanel.add(quickSearchQuery);
+        quickSearchPanel.add(getQuickSearch());
+        
+        quickSearchParentPanel.add(quickSearchPanel);
+        pageTitleParentLayoutPanel.add(quickSearchParentPanel);
 
         pageTitleParentLayoutPanel.addStyleName(CSSConstants.PAGE_TITLE_PARENT_LAYOUT_PANEL);
         secondLevelLayoutPanel.addNorth(pageTitleParentLayoutPanel, Constants.PAGE_TITLE_BAR_HEIGHT);

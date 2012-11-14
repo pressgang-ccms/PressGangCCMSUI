@@ -116,6 +116,7 @@ public interface CSSConstants {
     String FOOTER_PANEL = "FooterPanel";
     String RIGHT_ALIGNED_ACTION_BUTTONS = "RightAlignedActionButtons";
     String PAGE_TITLE_PARENT_LAYOUT_PANEL = "PageTitleParentLayoutPanel";
+    String QUICK_SEARCH_PARENT_PANEL = "QuickSearchParentPanel";
     
     String TOPIC_VIEW_LAYOUT_PANEL = "TopicViewLayoutPanel";    
     String TOPIC_RENDERED_VIEW_DIV = "TopicRenderedViewDiv";

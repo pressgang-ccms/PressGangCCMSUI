@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
+import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 
@@ -25,6 +26,33 @@ final public class GWTUtilities {
         if (input.trim().isEmpty()) return true;
         return false;
         
+    }
+    
+    /**
+     * Takes a string and returns only integers separated by single commas. Useful for cleaning up a string
+     * used to search for a list of ids.
+     * @param input The string to be cleaned
+     * @return The cleaned string
+     */
+    public static String fixUpIdSearchString(final String input)
+    {
+        final RegExp regex = RegExp.compile("[^0-9,]", "g");
+        
+        String retValue = regex.replace(input, "");
+        
+        /* Cannot have sequential commas */
+        while (retValue.contains(",,"))
+            retValue = retValue.replaceAll(",,", ",");
+        
+        /* Cannot start with a comma */
+        while (retValue.endsWith(","))
+            retValue = retValue.substring(0,retValue.length() - 1);
+        
+        /* Cannot end with a comma */
+        while (retValue.startsWith(","))
+            retValue = retValue.substring(1, retValue.length());
+        
+        return retValue;
     }
 
     public static byte[] getBytesUTF8(final String string) {

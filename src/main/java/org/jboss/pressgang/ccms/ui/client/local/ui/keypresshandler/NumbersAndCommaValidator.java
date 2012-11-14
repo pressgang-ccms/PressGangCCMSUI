@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler;
 
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
@@ -16,7 +18,7 @@ import com.google.gwt.user.client.ui.ValueBoxBase;
 public class NumbersAndCommaValidator implements KeyPressHandler, ValueChangeHandler<String> {
 
     private final ValueBoxBase<String> source;
-    private final RegExp regex = RegExp.compile("[^0-9,]", "g");
+    
     
     public NumbersAndCommaValidator(final ValueBoxBase<String> source)
     {
@@ -56,21 +58,7 @@ public class NumbersAndCommaValidator implements KeyPressHandler, ValueChangeHan
 
     @Override
     public void onValueChange(final ValueChangeEvent<String> event) {
-        String fixedValue = regex.replace(source.getText(), "");
-        
-        /* Cannot have sequential commas */
-        while (fixedValue.contains(",,"))
-            fixedValue = fixedValue.replaceAll(",,", ",");
-        
-        /* Cannot start with a comma */
-        while (fixedValue.endsWith(","))
-            fixedValue = fixedValue.substring(0, fixedValue.length() - 1);
-        
-        /* Cannot end with a comma */
-        while (fixedValue.startsWith(","))
-            fixedValue = fixedValue.substring(1, fixedValue.length());
-        
-        source.setText(fixedValue);
+        source.setText(GWTUtilities.fixUpIdSearchString(source.getText()));
     }
 
 }

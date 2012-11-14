@@ -10,7 +10,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm
      */
-    public static final String VERSION = "201211141351";
+    public static final String VERSION = "201211150846";
     
     /**
      * The sort order to apply to a newly added child
@@ -69,9 +69,9 @@ public final class Constants {
     public static final int SPLIT_PANEL_DIVIDER_SIZE = 5;
     
     /**
-     * The size of the page title bar.
+     * The size of the page title bar, in EM
      */
-    public static final int PAGE_TITLE_BAR_HEIGHT = 3;
+    public static final int PAGE_TITLE_BAR_HEIGHT = 4;
 
     /**
      * The height of the action bars.

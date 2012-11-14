@@ -212,6 +212,13 @@ html {
 	height: 100%;
 }
 
+.QuickSearchParentPanel
+{
+	width: 100%;
+	padding-right: 8px;
+	font-size: medium;
+}
+
 .ProjectsLayout, .CategoriesLayout
 {
 	height: 100%;

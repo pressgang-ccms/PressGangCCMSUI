@@ -20,6 +20,8 @@ public interface PressGangCCMSUI extends Constants {
 
     String Search();
     
+    String QuickSearch();
+    
     String Create();
     
     String SearchFields();
@@ -325,5 +327,7 @@ public interface PressGangCCMSUI extends Constants {
     String SaveLog();
     
     String Message();
+    
+    String PleaseEnterValue();
 }
 
