@@ -20,14 +20,14 @@ public class TopicRevisionsComponent extends TopicViewComponent<TopicRevisionsPr
      * @param diffLabel The diff XML label
      */
     @Override
-    native public void displayDiff(final String source, final String sourceLabel, final String diff, final String diffLabel)
+    native public void displayDiff(final String source, final String sourceLabel, final String diff, final String diffLabel, final boolean isXML)
     /*-{
         var diffTable = $wnd.prettydiff({
             source : source,
             sourcelabel : sourceLabel,
             diff : diff,
             difflabel : diffLabel,
-            lang : "markup",
+            lang : isXML ? "markup" : "text",
             mode : "diff",
             diffview : "sidebyside"
         })[0];

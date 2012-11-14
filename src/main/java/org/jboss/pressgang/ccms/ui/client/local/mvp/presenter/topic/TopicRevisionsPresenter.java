@@ -45,7 +45,7 @@ public class TopicRevisionsPresenter implements TemplatePresenter {
     
     public interface LogicComponent extends BasePropertyViewComponentInterface<Display>
     {
-        void displayDiff(final String source, final String sourceLabel, final String diff, final String diffLabel);
+        void displayDiff(final String source, final String sourceLabel, final String diff, final String diffLabel, final boolean isXML);
     }
 
     @Override

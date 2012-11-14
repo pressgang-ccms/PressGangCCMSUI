@@ -491,7 +491,7 @@ public class SearchResultsAndTopicComponent
                         topicRevisionsDisplay,
                         new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
                             @Override
-                            public void doSuccessAction(RESTTopicV1 retValue, TopicRevisionsPresenter.Display display) {
+                            public void doSuccessAction(final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
                                 final RESTTopicCollectionItemV1 sourceTopic = getTopicOrRevisionTopic();
                                 final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID()
                                         + ": "
@@ -505,6 +505,7 @@ public class SearchResultsAndTopicComponent
                                         + ": "
                                         + DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL).format(
                                                 retValue.getLastModified());
+                                
                                 final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID()
                                         + ": "
                                         + sourceTopic.getItem().getId()
@@ -517,8 +518,19 @@ public class SearchResultsAndTopicComponent
                                         + ": "
                                         + DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL).format(
                                                 sourceTopic.getItem().getLastModified());
+                                
+                                boolean isXML = true;
+                                for (final RESTTagCollectionItemV1 tag : sourceTopic.getItem().getTags().getItems())
+                                {
+                                    if (ServiceConstants.CSP_TAG_ID.equals(tag.getItem().getId()))
+                                    {
+                                        isXML = false;
+                                        break;
+                                    }
+                                }
+                                
                                 topicrevisionsComponent.displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getItem()
-                                        .getXml(), sourceTopicLabel);
+                                        .getXml(), sourceTopicLabel, isXML);
                             }
                         }) {
 

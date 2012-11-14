@@ -21,7 +21,7 @@ final public class ServiceConstants {
     static public final byte MAJOR_CHANGE = 0x02;
     
     /** The id of the tag applied tgo all content specs */
-    static public final int CSP_TAG_ID = 268;
+    static public final Integer CSP_TAG_ID = 268;
 
     /**
      * The null user, used when no login information is available. Null identifies an unknown user, but this has issues in errai
