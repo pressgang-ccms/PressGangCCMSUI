@@ -1,22 +1,18 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.create;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.base;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.create.CreateTopicComponent.DeleteTagClickHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
@@ -36,21 +32,20 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 
-/**
- * A component used to provide the logic for the create topicViewDisplay view
- * 
- * @author Matthew Casperson
- */
-public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Display> implements
-        CreateTopicPresenter.LogicComponent {
-
+abstract public class BaseTopicEditComponent {
+    
     private TopicPresenter.Display topicViewDisplay;
     private TopicPresenter.LogicComponent topicViewComponent;
     private TopicXMLPresenter.Display topicXMLDisplay;
@@ -63,28 +58,14 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
     private TopicTagsPresenter.LogicComponent topicTagsComponent;
     /** A collection of views that can be edited and flushed back to their underlying objects */
     private TopicViewInterface[] editableTopicViews;
-    /** A collecion view vies that can be updated */
+    /** A collection view vies that can be updated */
     private TopicViewInterface[] updatableTopicViews;
-
+    
     /**
      * How the rendering panel is displayed
      */
     private SplitType split = SplitType.NONE;
-
-    /** The last displayed view */
-    private TopicViewInterface lastView;
-
-    /** The new topicViewDisplay being created */
-    private final RESTTopicV1 newTopic = new RESTTopicV1();
-
-    /** The state of the topic when it was last saved */
-    private RESTTopicV1 lastSavedTopic;
-
-    private List<String> locales;
-
-    private boolean templateLoaded = false;
-    private boolean localesLoaded = false;
-
+    
     /**
      * Setup automatic flushing and rendering.
      */
@@ -93,11 +74,41 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         public void run() {
             if (lastView == topicXMLDisplay) {
                 topicXMLDisplay.getDriver().flush();
-                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales);
+                topicSplitPanelRenderedDisplay.initialize(getDisplayedTopic(), false, true, split, locales);
             }
         }
     };
+    
+    /** The handler that watches for keyboard shortcuts */
+    private final NativePreviewHandler keyboardShortcutPreviewhandler = new NativePreviewHandler() {
+        @Override
+        public void onPreviewNativeEvent(final NativePreviewEvent event) {
+            final NativeEvent ne = event.getNativeEvent();
+            if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'Q') {
+                Scheduler.get().scheduleDeferred(new Command() {
+                    @Override
+                    public void execute() {
+                        if (display.getTopLevelPanel().isAttached() && lastDisplayedView == topicXMLDisplay) {
+                            topicXMLDisplay.getXmlTagsDialog().getDialogBox().center();
+                            topicXMLDisplay.getXmlTagsDialog().getDialogBox().show();
+                        }
+                    }
+                });
+            } else if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'W') {
+                Scheduler.get().scheduleDeferred(new Command() {
+                    @Override
+                    public void execute() {
+                        if (display.getTopLevelPanel().isAttached() && lastDisplayedView == topicXMLDisplay) {
+                            topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().center();
+                            topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().show();
+                        }
+                    }
+                });
+            }
 
+        }
+    };
+    
     /**
      * A click handler to add a tag to a topicViewDisplay
      * 
@@ -110,7 +121,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             final RESTTagV1 selectedTag = topicTagsDisplay.getMyTags().getValue().getTag().getItem();
 
             /* Need to deal with re-adding removed tags */
-            for (final RESTTagCollectionItemV1 tag : newTopic.getTags().getItems()) {
+            for (final RESTTagCollectionItemV1 tag : getDisplayedTopic().getTags().getItems()) {
                 if (tag.getItem().getId().equals(selectedTag.getId())) {
                     if (tag.getState() == RESTBaseCollectionItemV1.REMOVE_STATE) {
                         tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
@@ -130,9 +141,9 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             /* Get the selected tag, and clone it */
             final RESTTagV1 selectedTagClone = selectedTag.clone(true);
             /* Add the tag to the topicViewDisplay */
-            newTopic.getTags().addNewItem(selectedTagClone);
+            getDisplayedTopic().getTags().addNewItem(selectedTagClone);
             /* Redisplay the view */
-            updateDisplayedTopicView(lastView);
+            updateDisplayedTopicView(getDisplayedTopic());
         }
     }
 
@@ -156,7 +167,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         public void onClick(final ClickEvent event) {
             if (tag.getState() == RESTBaseCollectionItemV1.ADD_STATE) {
                 /* Tag was added and then removed, so we just delete the tag */
-                newTopic.getTags().getItems().remove(tag);
+                getDisplayedTopic().getTags().getItems().remove(tag);
             } else {
                 /* Otherwise we set the tag as removed */
                 tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
@@ -165,65 +176,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             updateDisplayedTopicView(lastView);
         }
     }
-
-    @Override
-    public void bind(final TopicPresenter.Display topicViewDisplay, final TopicPresenter.LogicComponent topicViewComponent,
-            final TopicXMLPresenter.Display topicXMLDisplay, final TopicXMLPresenter.LogicComponent topicXMLComponent,
-            final TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay,
-            final TopicXMLErrorsPresenter.LogicComponent topicXMLErrorsComponent,
-            final TopicTagsPresenter.Display topicTagsDisplay, final TopicTagsPresenter.LogicComponent topicTagsComponent,
-            final TopicRenderedPresenter.Display topicRenderedDisplay,
-            final TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay, final CreateTopicPresenter.Display display,
-            final BaseTemplateViewInterface waitDisplay) {
-
-        super.bind(display, waitDisplay);
-
-        this.topicViewDisplay = topicViewDisplay;
-        this.topicViewComponent = topicViewComponent;
-        this.topicXMLDisplay = topicXMLDisplay;
-        this.topicXMLComponent = topicXMLComponent;
-        this.topicXMLErrorsDisplay = topicXMLErrorsDisplay;
-        this.topicTagsDisplay = topicTagsDisplay;
-        this.topicTagsComponent = topicTagsComponent;
-        this.topicSplitPanelRenderedDisplay = topicSplitPanelRenderedDisplay;
-        this.topicRenderedDisplay = topicRenderedDisplay;
-        updatableTopicViews = new TopicViewInterface[] { topicViewDisplay, topicTagsDisplay, topicXMLDisplay,
-                topicXMLErrorsDisplay, topicRenderedDisplay };
-        editableTopicViews = new TopicViewInterface[] { topicViewDisplay, topicXMLDisplay };
-
-        /* Create an initial collection to hold any new tags, urls and property tags */
-        newTopic.setLocale("");
-        newTopic.setTags(new RESTTagCollectionV1());
-        newTopic.setSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
-        newTopic.setProperties(new RESTAssignedPropertyTagCollectionV1());
-
-        /* initialise the GWT editors */
-        bindTagEditingButtons();
-
-        initializeDisplay();
-
-        topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
-
-        loadSplitPanelSize();
-        bindSplitPanelResize();
-        bindTopActionButtons();
-
-        getTopicTemplate();
-        populateLocales();
-    }
-
-    /**
-     * Called after the template and locales are loaded, and once the last load operation is complete the view is updated
-     */
-    private void finishLoading() {
-        if (templateLoaded && localesLoaded) {
-            initializeViews();
-            updateDisplayedTopicView(topicXMLDisplay);
-            initializeSplitViewButtons();
-        }
-
-    }
-
+    
     /**
      * Retrieve a list of locales from the server, as well as the default locale.
      */
@@ -233,7 +186,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                     @Override
                     public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
                         /* Get the list of locales from the StringConstant */
-                        locales = new LinkedList<String>(Arrays.asList(retValue.getValue().replaceAll("\\r\\n", "")
+                        final List<String> locales = new LinkedList<String>(Arrays.asList(retValue.getValue().replaceAll("\\r\\n", "")
                                 .replaceAll("\\n", "").replaceAll(" ", "").split(",")));
 
                         /* Clean the list */
@@ -243,31 +196,14 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
 
                         Collections.sort(locales);
 
-                        final RESTCallback<RESTStringConstantV1> defaultLocaleCallback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
-                                waitDisplay,
-                                new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
-                                    @Override
-                                    public void doSuccessAction(final RESTStringConstantV1 retValue,
-                                            final BaseTemplateViewInterface display) {
-                                        
-                                        newTopic.setLocale(retValue.getValue());
-                                        
-                                        localesLoaded = true;
-                                        finishLoading();
-                                    }
-                                }) {
-                        };
-
-                        RESTCalls.getStringConstant(defaultLocaleCallback, ServiceConstants.DEFAULT_LOCALE_ID);
-
-                        
+                        localesLoaded(locales);
                     }
                 }) {
         };
 
         RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
     }
-
+    
     /**
      * (Re)Initialize the main display with the rendered view split pane (if selected).
      */
@@ -285,23 +221,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         display.initialize(split, topicSplitPanelRenderedDisplay.getPanel());
 
     }
-
-    private void getTopicTemplate() {
-        RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, CreateTopicPresenter.Display>(
-                display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, CreateTopicPresenter.Display>() {
-                    @Override
-                    public void doSuccessAction(final RESTStringConstantV1 retValue, final CreateTopicPresenter.Display display) {
-                        newTopic.setXml(retValue.getValue());
-
-                        templateLoaded = true;
-                        finishLoading();
-                    }
-                }) {
-        };
-
-        RESTCalls.getStringConstant(callback, ServiceConstants.TOPIC_TEMPLATE);
-    }
-
+    
     /**
      * Load the split panel sizes
      */
@@ -345,7 +265,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             }
         });
     }
-
+    
     private void bindTopActionButtons() {
         final ClickHandler displayTopicClickHandler = new ClickHandler() {
             @Override
@@ -378,68 +298,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 updateDisplayedTopicView(topicXMLErrorsDisplay);
 
             }
-        };
-
-        final ClickHandler saveClickHandler = new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                if (hasUnsavedChanges()) {
-                    display.getMessageLogDialog().getDialogBox().center();
-                    display.getMessageLogDialog().getDialogBox().show();
-                } else {
-                    Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
-                }
-            }
-        };
-
-        display.getMessageLogDialog().getOk().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-
-                flushChanges();
-
-                /* Create a topic that has the new details */
-                final RESTTopicV1 saveRestTopic = new RESTTopicV1();
-                saveRestTopic.setId(newTopic.getId());
-                saveRestTopic.explicitSetXml(newTopic.getXml());
-                saveRestTopic.explicitSetDescription(newTopic.getDescription());
-                saveRestTopic.explicitSetLocale(newTopic.getLocale());
-                saveRestTopic.explicitSetTags(newTopic.getTags());
-                saveRestTopic.explicitSetSourceUrls_OTM(newTopic.getSourceUrls_OTM());
-                saveRestTopic.explicitSetTitle(newTopic.getTitle());
-                saveRestTopic.explicitSetProperties(newTopic.getProperties());
-
-                final RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, CreateTopicPresenter.Display>(
-                        display, new BaseRestCallback.SuccessAction<RESTTopicV1, CreateTopicPresenter.Display>() {
-                            @Override
-                            public void doSuccessAction(final RESTTopicV1 retValue, final CreateTopicPresenter.Display display) {
-                                retValue.cloneInto(newTopic, true);
-                                lastSavedTopic = retValue;
-                                updateDisplayedTopicView(lastView);
-                                loadTags();
-                                /* The save process will modify the title, so do a refresh of the rendered view */
-                                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales);
-                                Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                            }
-                        }) {
-                };
-
-                final String message = display.getMessageLogDialog().getMessage().getText();
-                final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
-                        : ServiceConstants.MAJOR_CHANGE);
-
-                /* Create or update the topic */
-                if (saveRestTopic.getId() != null) {
-                    RESTCalls.saveTopic(callback, saveRestTopic, message, flag, ServiceConstants.NULL_USER_ID);
-                } else {
-                    RESTCalls.createTopic(callback, saveRestTopic, message, flag, ServiceConstants.NULL_USER_ID);
-                }
-
-                display.getMessageLogDialog().reset();
-                display.getMessageLogDialog().getDialogBox().hide();
-            }
-        });
+        };        
 
         display.getMessageLogDialog().getCancel().addClickHandler(new ClickHandler() {
 
@@ -543,23 +402,17 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             view.getRenderedHorizontalSplit().addClickHandler(splitMenuHSplitHandler);
         }
     }
-
-    /**
-     * TODO: copied from SearchResultsAndTopicComponent - abstract this
-     */
+    
     private void showRegularMenu() {
         display.getTopicViewActionButtonsPanel().clear();
         display.getTopicViewActionButtonsPanel().add(lastView.getTopActionPanel());
     }
 
-    /**
-     * TODO: copied from SearchResultsAndTopicComponent - abstract this
-     */
     private void showRenderedSplitPanelMenu() {
         display.getTopicViewActionButtonsPanel().clear();
         display.getTopicViewActionButtonsPanel().add(lastView.getRenderedSplitViewMenu());
     }
-
+    
     /**
      * Sync any changes back to the underlying object
      */
@@ -684,27 +537,27 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
 
         /* See if any values have been set */
         boolean newTopicIsEmpty = true;
-        if (newTopic.getLocale() != null && !newTopic.getLocale().trim().isEmpty())
+        if (getDisplayedTopic().getLocale() != null && !getDisplayedTopic().getLocale().trim().isEmpty())
             newTopicIsEmpty = false;
-        if (newTopic.getDescription() != null && !newTopic.getDescription().trim().isEmpty())
+        if (getDisplayedTopic().getDescription() != null && !getDisplayedTopic().getDescription().trim().isEmpty())
             newTopicIsEmpty = false;
-        if (newTopic.getTitle() != null && !newTopic.getTitle().trim().isEmpty())
+        if (getDisplayedTopic().getTitle() != null && !getDisplayedTopic().getTitle().trim().isEmpty())
             newTopicIsEmpty = false;
-        if (newTopic.getXml() != null && !newTopic.getXml().trim().isEmpty())
+        if (getDisplayedTopic().getXml() != null && !getDisplayedTopic().getXml().trim().isEmpty())
             newTopicIsEmpty = false;
 
         /* If there are any modified tags in newTopic, we have unsaved changes */
-        if (!newTopic.getTags().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
+        if (!getDisplayedTopic().getTags().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
             unsavedChanges = true;
         }
 
         /* If there are any modified property tags in newTopic, we have unsaved changes */
-        if (!newTopic.getProperties().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
+        if (!getDisplayedTopic().getProperties().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
             unsavedChanges = true;
         }
 
         /* If there are any modified source urls in newTopic, we have unsaved changes */
-        if (!newTopic.getSourceUrls_OTM().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
+        if (!getDisplayedTopic().getSourceUrls_OTM().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
             unsavedChanges = true;
         }
 
@@ -725,15 +578,15 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         else {
 
             /*
-             * If any values in newTopic don't match lastSavedTopic, wehave unsaved changes
+             * If any values in newTopic don't match lastSavedTopic, we have unsaved changes
              */
-            if (!GWTUtilities.compareStrings(newTopic.getTitle(), lastSavedTopic.getTitle()))
+            if (!GWTUtilities.compareStrings(getDisplayedTopic().getTitle(), getLoadedTopic().getTitle()))
                 unsavedChanges = true;
-            if (!GWTUtilities.compareStrings(newTopic.getLocale(), lastSavedTopic.getLocale()))
+            if (!GWTUtilities.compareStrings(getDisplayedTopic().getLocale(), getLoadedTopic().getLocale()))
                 unsavedChanges = true;
-            if (!GWTUtilities.compareStrings(newTopic.getDescription(), lastSavedTopic.getDescription()))
+            if (!GWTUtilities.compareStrings(getDisplayedTopic().getDescription(), getLoadedTopic().getDescription()))
                 unsavedChanges = true;
-            if (!GWTUtilities.compareStrings(newTopic.getXml(), lastSavedTopic.getXml()))
+            if (!GWTUtilities.compareStrings(getDisplayedTopic().getXml(), getLoadedTopic().getXml()))
                 unsavedChanges = true;
         }
 
@@ -747,4 +600,18 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             view.buildSplitViewButtons(split);
         }
     }
+    
+    /**
+     * Called once the locales are loaded
+     * @param locales The locales that were loaded
+     */
+    abstract protected void localesLoaded(final List<String> locales);
+    /**
+     * @return The topic being displayed
+     */
+    abstract protected RESTTopicV1 getDisplayedTopic();
+    /**
+     * @return The topic as it was loaded from the database
+     */
+    abstract protected RESTTopicV1 getLoadedTopic();
 }

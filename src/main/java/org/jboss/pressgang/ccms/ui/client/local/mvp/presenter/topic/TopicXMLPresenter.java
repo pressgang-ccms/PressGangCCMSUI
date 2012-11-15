@@ -3,6 +3,8 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
+import java.util.List;
+
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
@@ -13,7 +15,11 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterfac
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ToggleButton;
 
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
@@ -35,6 +41,32 @@ public class TopicXMLPresenter implements TemplatePresenter {
     }
 
     public interface Display extends TopicViewInterface {
+        
+        /**
+         * The interface that defines the tag selection dialog box
+         * @author Matthew Casperson
+         */
+        public interface XmlTagsDialog
+        {
+            PushButton getOK();
+            PushButton getCancel();
+            PushButton getMoreInfo();
+            ListBox getOptions();
+            DialogBox getDialogBox();
+            void setSuggestions(final List<String> suggestions);
+        }
+        
+        public interface CSPTopicDetailsDialog
+        {
+            PushButton getOK();
+            PushButton getCancel();
+            TextBox getIds();
+            DialogBox getDialogBox();
+        }
+        
+        XmlTagsDialog getXmlTagsDialog();
+        CSPTopicDetailsDialog getCSPTopicDetailsDialog();
+        
         ToggleButton getLineWrap();
 
         ToggleButton getShowInvisibles();

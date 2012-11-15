@@ -40,7 +40,7 @@ import com.google.gwt.user.client.Window;
  */
 abstract public class ComponentBase<S extends BaseTemplateViewInterface> implements Component<S>, EditableView {
 
-    private static final RegExp ID_SEARCH = RegExp.compile("(\\s*\\d+\\s*,+)\\s*\\d+\\s*,*");
+    private static final RegExp ID_SEARCH = RegExp.compile(",*(\\s*\\d+\\s*,+)*\\s*\\d+\\s*,*");
 
     @Inject
     private HandlerManager eventBus;

@@ -28,6 +28,11 @@ final public class ServiceConstants {
      * (https://issues.jboss.org/browse/ERRAI-433)
      */
     static public final Integer NULL_USER_ID = 79;
+    
+    /**
+     * The string constant that contains all the docbook elements
+     */
+    static public final Integer DOCBOOK_ELEMENTS_STRING_CONSTANT_ID = 41; 
 
     private ServiceConstants() {
 

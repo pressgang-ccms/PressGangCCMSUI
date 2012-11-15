@@ -52,7 +52,7 @@ final public class GWTUtilities {
         while (retValue.startsWith(","))
             retValue = retValue.substring(1, retValue.length());
         
-        return retValue;
+        return retValue.trim();
     }
 
     public static byte[] getBytesUTF8(final String string) {

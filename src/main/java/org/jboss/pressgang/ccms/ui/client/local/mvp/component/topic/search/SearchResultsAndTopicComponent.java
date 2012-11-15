@@ -14,6 +14,7 @@ import javax.inject.Inject;
 
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
@@ -50,13 +51,22 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.HasData;
@@ -186,6 +196,35 @@ public class SearchResultsAndTopicComponent
         }
     }
 
+    private final NativePreviewHandler keyboardShortcutPreviewhandler = new NativePreviewHandler() {
+        @Override
+        public void onPreviewNativeEvent(final NativePreviewEvent event) {
+            final NativeEvent ne = event.getNativeEvent();
+            if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'Q') {
+                Scheduler.get().scheduleDeferred(new Command() {
+                    @Override
+                    public void execute() {
+                        if (display.getTopLevelPanel().isAttached() && lastDisplayedView == topicXMLDisplay) {
+                            topicXMLDisplay.getXmlTagsDialog().getDialogBox().center();
+                            topicXMLDisplay.getXmlTagsDialog().getDialogBox().show();
+                        }
+                    }
+                });
+            } else if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'W') {
+                Scheduler.get().scheduleDeferred(new Command() {
+                    @Override
+                    public void execute() {
+                        if (display.getTopLevelPanel().isAttached() && lastDisplayedView == topicXMLDisplay) {
+                            topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().center();
+                            topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().show();
+                        }
+                    }
+                });
+            }
+
+        }
+    };
+
     @Override
     public String getQueryString() {
         return queryString;
@@ -245,6 +284,9 @@ public class SearchResultsAndTopicComponent
         loadSplitPanelSize();
         this.topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
         populateLocales();
+        populateXMLElements();
+
+        Event.addNativePreviewHandler(this.keyboardShortcutPreviewhandler);
     }
 
     /**
@@ -254,6 +296,40 @@ public class SearchResultsAndTopicComponent
         topicXMLDisplay.getDriver().flush();
         topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
                 display.getSplitType(), locales);
+    }
+
+    /**
+     * Retrieve a list of xml elements from the server
+     */
+    private void populateXMLElements() {
+        final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+                waitDisplay, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
+                    @Override
+                    public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
+
+                        logger.log(Level.INFO, "Returned the following XML elements for the suggestion box");
+                        logger.log(Level.INFO, retValue.getValue());
+
+                        /* Get the list of locales from the StringConstant */
+                        final List<String> xmlElements = new LinkedList<String>(Arrays.asList(retValue.getValue()
+                                .replaceAll("\r\n", "\n").replaceAll(" ", "").split("\n")));
+
+                        /* Clean the list */
+                        while (xmlElements.contains("")) {
+                            xmlElements.remove("");
+                        }
+
+                        Collections.sort(xmlElements);
+
+                        logger.log(Level.INFO, "Parsed the following XML element for the suggestion box");
+                        logger.log(Level.INFO, xmlElements.toString());
+
+                        topicXMLDisplay.getXmlTagsDialog().setSuggestions(xmlElements);
+                    }
+                }) {
+        };
+
+        RESTCalls.getStringConstant(callback, ServiceConstants.DOCBOOK_ELEMENTS_STRING_CONSTANT_ID);
     }
 
     /**
@@ -491,7 +567,8 @@ public class SearchResultsAndTopicComponent
                         topicRevisionsDisplay,
                         new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
                             @Override
-                            public void doSuccessAction(final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
+                            public void doSuccessAction(final RESTTopicV1 retValue,
+                                    final TopicRevisionsPresenter.Display display) {
                                 final RESTTopicCollectionItemV1 sourceTopic = getTopicOrRevisionTopic();
                                 final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID()
                                         + ": "
@@ -505,7 +582,7 @@ public class SearchResultsAndTopicComponent
                                         + ": "
                                         + DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL).format(
                                                 retValue.getLastModified());
-                                
+
                                 final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID()
                                         + ": "
                                         + sourceTopic.getItem().getId()
@@ -518,18 +595,15 @@ public class SearchResultsAndTopicComponent
                                         + ": "
                                         + DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL).format(
                                                 sourceTopic.getItem().getLastModified());
-                                
+
                                 /* See if the topic contains valid XML or not */
                                 boolean isXML = true;
-                                try
-                                {
+                                try {
                                     XMLParser.parse(sourceTopic.getItem().getXml());
-                                }
-                                catch (final DOMParseException ex)
-                                {
+                                } catch (final DOMParseException ex) {
                                     isXML = false;
                                 }
-                                
+
                                 topicrevisionsComponent.displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getItem()
                                         .getXml(), sourceTopicLabel, isXML);
                             }
@@ -592,7 +666,7 @@ public class SearchResultsAndTopicComponent
             unsavedChanges = true;
         if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getXml(), displayedTopic.getXml()))
             unsavedChanges = true;
-        
+
         return unsavedChanges;
     }
 
@@ -726,13 +800,10 @@ public class SearchResultsAndTopicComponent
                     logger.log(Level.INFO,
                             "ENTER SearchResultsAndTopicComponent.bindActionButtons() saveClickHandler.onClick()");
 
-                    if (hasUnsavedChanges())
-                    {
+                    if (hasUnsavedChanges()) {
                         display.getMessageLogDialog().getDialogBox().center();
                         display.getMessageLogDialog().getDialogBox().show();
-                    }
-                    else
-                    {
+                    } else {
                         Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                     }
                 }
@@ -983,7 +1054,7 @@ public class SearchResultsAndTopicComponent
                 initializeSplitViewButtons();
             }
         };
-        
+
         final ClickHandler cspsHandler = new ClickHandler() {
 
             @Override
@@ -992,9 +1063,10 @@ public class SearchResultsAndTopicComponent
                 if (filteredResultsComponent.getProviderData().getDisplayedItem() != null && isOKToProceed()) {
 
                     final RESTTopicV1 topic = filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
-                    
+
                     eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
-                            + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + topic.getTitle() + " [" + topic.getId() + "];tag" + ServiceConstants.CSP_TAG_ID + "=1;logic=AND"));
+                            + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + topic.getTitle() + " [" + topic.getId()
+                            + "];tag" + ServiceConstants.CSP_TAG_ID + "=1;logic=AND"));
                 }
 
             }
@@ -1036,6 +1108,152 @@ public class SearchResultsAndTopicComponent
             }
         });
 
+        topicXMLDisplay.getXmlTagsDialog().getOK().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                insertElement();
+            }
+        });
+        
+        topicXMLDisplay.getXmlTagsDialog().getOptions().addKeyPressHandler(new KeyPressHandler() {
+            
+            @Override
+            public void onKeyPress(KeyPressEvent event) {
+                if (event.getCharCode() == KeyCodes.KEY_ENTER)
+                {
+                    insertElement();
+                }
+                else if (event.getCharCode() == KeyCodes.KEY_ESCAPE)
+                {
+                    hideElementDialogBox();
+                }
+                
+            }
+        });
+        
+        topicXMLDisplay.getXmlTagsDialog().getCancel().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                hideElementDialogBox();
+            }
+        });
+        
+        topicXMLDisplay.getXmlTagsDialog().getMoreInfo().addClickHandler(new ClickHandler() {
+            
+            @Override
+            public void onClick(final ClickEvent event) {
+                final int selectedItem = topicXMLDisplay.getXmlTagsDialog().getOptions().getSelectedIndex();
+                if (selectedItem != -1)
+                {
+                    final String value = topicXMLDisplay.getXmlTagsDialog().getOptions().getItemText(selectedItem);
+                    Window.open(Constants.DOCBOOK_ELEMENT_URL_PREFIX +value + Constants.DOCBOOK_ELEMENT_URL_POSTFIX , "_blank", "");
+                }
+                
+            }
+        });
+        
+        topicXMLDisplay.getCSPTopicDetailsDialog().getIds().addKeyPressHandler(new KeyPressHandler() {
+            
+            @Override
+            public void onKeyPress(KeyPressEvent event) {
+                if (event.getCharCode() == KeyCodes.KEY_ENTER)
+                {
+                    insertCspDetails();
+                }
+                else if (event.getCharCode() == KeyCodes.KEY_ESCAPE)
+                {
+                    hideCspDetailsDialogBox();
+                }
+                
+            }
+        });
+        
+        topicXMLDisplay.getCSPTopicDetailsDialog().getOK().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                insertCspDetails();
+            }
+        });
+        
+        topicXMLDisplay.getCSPTopicDetailsDialog().getCancel().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                hideCspDetailsDialogBox();
+            }
+        });
+
+    }
+    
+    private void insertCspDetails()
+    {
+        final String ids = GWTUtilities.fixUpIdSearchString(topicXMLDisplay.getCSPTopicDetailsDialog().getIds().getValue());
+        if (!ids.isEmpty())
+        {
+            final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
+                @Override
+                public void begin() {
+                    display.addWaitOperation();
+                }
+
+                @Override
+                public void generalException(final Exception e) {
+                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+                    display.removeWaitOperation();
+                }
+
+                @Override
+                public void success(final RESTTopicCollectionV1 retValue) {
+                    try {
+                        final StringBuilder details = new StringBuilder();
+                        for (final RESTTopicCollectionItemV1 topicCollectionItem : retValue.getItems())
+                        {
+                            final RESTTopicV1 topic = topicCollectionItem.getItem();
+                            if (!details.toString().isEmpty())
+                                details.append("\n");
+                            details.append(topic.getTitle() + " [" + topic.getId() + "]");
+                        }
+                        
+                        topicXMLDisplay.getEditor().insertText(details.toString());
+                        
+                    } finally {
+                        display.removeWaitOperation();
+                    }
+                }
+
+                @Override
+                public void failed(final Message message, final Throwable throwable) {
+                    display.removeWaitOperation();
+                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+                }
+            };
+
+            RESTCalls.getTopicsFromQuery(callback, Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids);
+            hideCspDetailsDialogBox();
+        }
+        
+    }
+
+    private void hideCspDetailsDialogBox() {
+        topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().hide();
+        topicXMLDisplay.getEditor().focus();
+    }
+
+    private void hideElementDialogBox() {
+        topicXMLDisplay.getXmlTagsDialog().getDialogBox().hide();
+        topicXMLDisplay.getEditor().focus();
+    }
+
+    private void insertElement() {
+        final int selectedItem = topicXMLDisplay.getXmlTagsDialog().getOptions().getSelectedIndex();
+        if (selectedItem != -1) {
+            final String value = topicXMLDisplay.getXmlTagsDialog().getOptions().getItemText(selectedItem);
+            topicXMLDisplay.getEditor().wrapSelection("<" + value + ">", "</" + value + ">");
+        }
+        hideElementDialogBox();
     }
 
     @Override

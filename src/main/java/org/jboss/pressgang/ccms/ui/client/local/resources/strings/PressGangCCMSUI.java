@@ -11,6 +11,8 @@ public interface PressGangCCMSUI extends Constants {
     String OK();
 
     String Cancel();
+    
+    String MoreInfo();
 
     String PressGangCCMS();
 
@@ -329,5 +331,9 @@ public interface PressGangCCMSUI extends Constants {
     String Message();
     
     String PleaseEnterValue();
+    
+    String InsertXMLElement();
+    
+    String InsertCSPTopicDetails();
 }
 

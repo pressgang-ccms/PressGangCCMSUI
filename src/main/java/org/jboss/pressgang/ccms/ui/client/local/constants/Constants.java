@@ -10,7 +10,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm
      */
-    public static final String VERSION = "201211150846";
+    public static final String VERSION = "201211151341";
     
     /**
      * The sort order to apply to a newly added child
@@ -96,7 +96,7 @@ public final class Constants {
      * The REST server.
      */
     //public static final String BASE_URL = "http://localhost:8080/TopicIndex/";
-    public static final String BASE_URL = "http://skynet-dev.usersys.redhat.com:8080/TopicIndex/";
+    public static final String BASE_URL = "http://skynet.usersys.redhat.com:8080/TopicIndex/";
     /**
      * The REST URL.
      */
@@ -122,6 +122,14 @@ public final class Constants {
      * A link to the survey
      */
     public static final String KEY_SURVEY_LINK = "http://www.keysurvey.com/votingmodule/s180/f/457744/1909/?LQID=1&source=";
+    /**
+     * The start of the url for the documentation of Docbook XML elements
+     */
+    public static final String DOCBOOK_ELEMENT_URL_PREFIX = "http://www.docbook.org/tdg5/en/html/";
+    /**
+     * The end of the url for the documentation of Docbook XML elements
+     */
+    public static final String DOCBOOK_ELEMENT_URL_POSTFIX = ".html";
     
     private Constants() {
 

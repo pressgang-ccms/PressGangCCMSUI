@@ -37,7 +37,7 @@ public class SearchResultsView extends BaseFilteredResultsView<RESTTopicV1, REST
         getResults().addColumn(titleColumn, PressGangCCMSUI.INSTANCE.TopicTitle());
         
         /* Unlike every other results view, the topic results don't have a search or create button */
-        this.getSearch().removeFromParent();
+        this.getEntitySearch().removeFromParent();
         this.getCreate().removeFromParent();
     }
 }

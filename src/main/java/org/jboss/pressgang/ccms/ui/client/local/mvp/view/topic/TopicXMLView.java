@@ -10,9 +10,16 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ToggleButton;
 
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
@@ -26,6 +33,145 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
     private final ToggleButton lineWrap = UIUtilities.createToggleButton(PressGangCCMSUI.INSTANCE.LineWrap());
     private final ToggleButton showInvisibles = UIUtilities.createToggleButton(PressGangCCMSUI.INSTANCE.ShowHiddenCharacters());
+    
+    public class XmlTagsDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTagsDialog
+    {
+        private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
+        private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
+        private final PushButton moreInfo = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.MoreInfo());
+        private final ListBox options = new ListBox(false);
+        private final FlexTable layout = new FlexTable();
+       
+        @Override
+        public PushButton getOK() {
+            return ok;
+        }
+        
+        @Override
+        public PushButton getCancel() {
+            return cancel;
+        }
+        
+        @Override
+        public PushButton getMoreInfo() {
+            return moreInfo;
+        }
+
+        @Override
+        public ListBox getOptions() {
+            return options;
+        }
+
+        @Override
+        public DialogBox getDialogBox() {
+            return this;
+        }
+        
+        @Override 
+        public void setSuggestions(final List<String> suggestions)
+        {
+            options.clear();
+            
+            if (suggestions != null)
+            {
+                for (final String suggestion : suggestions)
+                {
+                    options.addItem(suggestion);
+                }
+            }
+        }
+        
+        public XmlTagsDialog() {
+            this.setGlassEnabled(true);
+            this.setText(PressGangCCMSUI.INSTANCE.InsertXMLElement());
+            
+            options.setVisibleItemCount(10);
+            layout.setWidget(0, 0, options);
+
+            final HorizontalPanel buttonPanel = new HorizontalPanel();
+            buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
+            buttonPanel.add(moreInfo);
+            buttonPanel.add(cancel);
+            buttonPanel.add(ok);
+
+            layout.setWidget(1, 0, buttonPanel);
+
+            this.add(layout);
+        }
+        
+        @Override
+        public void show()
+        {
+            super.show();
+            options.setFocus(true);
+        }        
+    }
+    
+    public class CSPTopicDetailsDialog extends DialogBox implements TopicXMLPresenter.Display.CSPTopicDetailsDialog
+    {
+        private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
+        private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
+        private final TextBox ids = new TextBox();
+        private final FlexTable layout = new FlexTable();
+       
+        @Override
+        public PushButton getOK() {
+            return ok;
+        }
+        
+        @Override
+        public PushButton getCancel() {
+            return cancel;
+        }
+
+        @Override
+        public TextBox getIds() {
+            return ids;
+        }
+
+        @Override
+        public DialogBox getDialogBox() {
+            return this;
+        }
+
+        
+        public CSPTopicDetailsDialog() {
+            this.setGlassEnabled(true);
+            this.setText(PressGangCCMSUI.INSTANCE.InsertXMLElement());
+
+            layout.setWidget(0, 0, ids);
+            new NumbersAndCommaValidator(ids);
+
+            final HorizontalPanel buttonPanel = new HorizontalPanel();
+            buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
+            buttonPanel.add(cancel);
+            buttonPanel.add(ok);
+
+            layout.setWidget(1, 0, buttonPanel);
+
+            this.add(layout);
+        }
+        
+        @Override
+        public void show()
+        {
+            super.show();
+            ids.setFocus(true);
+        }        
+    }
+    
+    private final XmlTagsDialog xmlTagsDialog = new XmlTagsDialog();
+    private final CSPTopicDetailsDialog cspTopicDetailsDialog = new CSPTopicDetailsDialog();
+
+    @Override
+    public XmlTagsDialog getXmlTagsDialog() {
+        return xmlTagsDialog;
+    }
+
+    @Override
+    public CSPTopicDetailsDialog getCSPTopicDetailsDialog() {
+        return cspTopicDetailsDialog;
+    }
 
     @Override
     public ToggleButton getShowInvisibles() {
