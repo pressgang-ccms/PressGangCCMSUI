@@ -32,6 +32,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -166,8 +167,6 @@ public class ProjectsFilteredResultsAndProjectComponent
 
                 if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
 
-                    
-
                     if (hasUnsavedChanges()) {
 
                         final RESTProjectV1 project = new RESTProjectV1();
@@ -208,7 +207,8 @@ public class ProjectsFilteredResultsAndProjectComponent
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed())
-                    eventBus.fireEvent(new ProjectsFilteredResultsAndProjectViewEvent(filteredResultsComponent.getQuery()));
+                    eventBus.fireEvent(new ProjectsFilteredResultsAndProjectViewEvent(filteredResultsComponent.getQuery(),
+                            GWTUtilities.isEventToOpenNewWindow(event)));
             }
         });
 
@@ -240,7 +240,6 @@ public class ProjectsFilteredResultsAndProjectComponent
         });
     }
 
- 
     @Override
     public boolean hasUnsavedChanges() {
         /* sync the UI with the underlying tag */

@@ -22,9 +22,10 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.ClosingEvent;
+import com.google.gwt.user.client.Window.ClosingHandler;
 
 /**
  * Views can either be stand alone, displayed in isolation. Views can also be combined into a presenter to provide a more
@@ -93,7 +94,7 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed())
-                    eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
+                    eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
             }
         });
 
@@ -101,7 +102,7 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed())
-                    eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
+                    eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
             }
         });
 
@@ -109,14 +110,14 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed())
-                    eventBus.fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
+                    eventBus.fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
             }
         });
 
         display.getProjects().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                eventBus.fireEvent(new ProjectsFilteredResultsAndProjectViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX));
+                eventBus.fireEvent(new ProjectsFilteredResultsAndProjectViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
             }
         });
 
@@ -140,7 +141,7 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
         display.getQuickSearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                doQuickSearch();
+                doQuickSearch(GWTUtilities.isEventToOpenNewWindow(event));
             }
         });
         
@@ -150,13 +151,13 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
             public void onKeyPress(final KeyPressEvent event) {
                 if (event.getCharCode() == KeyCodes.KEY_ENTER)
                 {
-                    doQuickSearch();
+                    doQuickSearch(event.isControlKeyDown());
                 }                
             }
         });
     }
 
-    private void doQuickSearch() {
+    private void doQuickSearch(final boolean newWindow) {
         final String query = display.getQuickSearchQuery().getValue().trim();
 
         if (query.isEmpty()) {
@@ -166,14 +167,14 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
                 /* If the search query was numbers and integers, assume that we are searching for topics ids */
                 final String fixedQuery = GWTUtilities.fixUpIdSearchString(query);
                 eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
-                        + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + fixedQuery));
+                        + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + fixedQuery, newWindow));
             } else {
                 /* Otherwise do a search against the title, description and content of the topics */
                 eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
                         + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + query + ";"
                         + CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + query + ";"
                         + CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + query + ";"
-                        + CommonFilterConstants.LOGIC_FILTER_VAR + "=" + CommonFilterConstants.OR_LOGIC));
+                        + CommonFilterConstants.LOGIC_FILTER_VAR + "=" + CommonFilterConstants.OR_LOGIC, newWindow));
             }
         }
     }
@@ -183,6 +184,21 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
         this.display = display;
         this.waitDisplay = waitDisplay;
         bindStandardButtons();
+        
+        /* Watch for page closes */
+        Window.addWindowClosingHandler(new ClosingHandler() {
+            
+            @Override
+            public void onWindowClosing(ClosingEvent event) {
+                if (display.getTopLevelPanel().isAttached())
+                {
+                    if (hasUnsavedChanges())
+                    {
+                        event.setMessage(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
+                    }
+                }                
+            }
+        });
 
     }
 

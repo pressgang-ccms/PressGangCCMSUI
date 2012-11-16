@@ -15,6 +15,7 @@ public class SimpleIntegerBox extends ValueBox<Integer> {
         protected IntegerRenderer() {
         }
 
+        @Override
         public String render(final Integer object) {
             if (null == object) {
                 return "";

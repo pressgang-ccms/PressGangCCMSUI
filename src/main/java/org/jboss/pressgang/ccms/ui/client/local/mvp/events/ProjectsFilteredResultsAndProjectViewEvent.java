@@ -3,8 +3,8 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.events;
 public class ProjectsFilteredResultsAndProjectViewEvent extends ViewOpenWithQueryEvent<ViewOpenWithQueryEventHandler> {
     public static final Type<ViewOpenWithQueryEventHandler> TYPE = new Type<ViewOpenWithQueryEventHandler>();
 
-    public ProjectsFilteredResultsAndProjectViewEvent(String query) {
-        super(query);
+    public ProjectsFilteredResultsAndProjectViewEvent(final String query, final boolean newWindow) {
+        super(query, newWindow);
     }
 
     @Override

@@ -104,7 +104,17 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
         {
             super.show();
             options.setFocus(true);
-        }        
+        }     
+        
+        /**
+         * Select the first item when the box is closed
+         */
+        @Override
+        public void hide()
+        {
+            super.hide();
+            options.setSelectedIndex(0);
+        }
     }
     
     public class CSPTopicDetailsDialog extends DialogBox implements TopicXMLPresenter.Display.CSPTopicDetailsDialog
@@ -137,7 +147,7 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
         
         public CSPTopicDetailsDialog() {
             this.setGlassEnabled(true);
-            this.setText(PressGangCCMSUI.INSTANCE.InsertXMLElement());
+            this.setText(PressGangCCMSUI.INSTANCE.InsertCSPTopicDetails());
 
             layout.setWidget(0, 0, ids);
             new NumbersAndCommaValidator(ids);

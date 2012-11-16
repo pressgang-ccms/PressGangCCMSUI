@@ -39,6 +39,7 @@ import org.vectomatic.file.events.LoadEndHandler;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 
@@ -202,6 +203,7 @@ public class ImagesFilteredResultsAndImageComponent
                                     final RESTImageV1 updateImage = new RESTImageV1();
                                     updateImage.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                                             .getId());
+                                    updateImage.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
 
                                     /* Create the language image */
                                     final RESTLanguageImageV1 updatedLanguageImage = new RESTLanguageImageV1();
@@ -427,7 +429,7 @@ public class ImagesFilteredResultsAndImageComponent
         entityPropertiesView.getFindTopics().addClickHandler(new ClickHandler() {
 
             @Override
-            public void onClick(ClickEvent event) {
+            public void onClick(final ClickEvent event) {
 
                 final String docbookFileName = ComponentImageV1.getDocbookFileName(filteredResultsComponent.getProviderData()
                         .getDisplayedItem().getItem());
@@ -435,7 +437,8 @@ public class ImagesFilteredResultsAndImageComponent
                 if (docbookFileName != null && !docbookFileName.isEmpty() && isOKToProceed()) {
 
                     eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
-                            + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=images/" + docbookFileName));
+                            + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=images/" + docbookFileName, event.getNativeEvent()
+                            .getKeyCode() == KeyCodes.KEY_CTRL));
                 }
 
             }
@@ -459,7 +462,8 @@ public class ImagesFilteredResultsAndImageComponent
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed()) {
-                    eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(filteredResultsComponent.getQuery()));
+                    eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(filteredResultsComponent.getQuery(), event
+                            .getNativeEvent().getKeyCode() == KeyCodes.KEY_CTRL));
                 }
             }
         });

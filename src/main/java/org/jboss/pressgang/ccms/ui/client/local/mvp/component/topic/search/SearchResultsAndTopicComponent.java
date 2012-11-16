@@ -14,7 +14,6 @@ import javax.inject.Inject;
 
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
@@ -27,6 +26,8 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common.CommonTopicComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
@@ -67,6 +68,8 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
+import com.google.gwt.user.client.Window.ClosingEvent;
+import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.HasData;
@@ -269,6 +272,7 @@ public class SearchResultsAndTopicComponent
         this.topicBugsDisplay = topicBugsDisplay;
         this.topicRevisionsDisplay = topicRevisionsDisplay;
         this.topicrevisionsComponent = topicrevisionsComponent;
+        
 
         super.bind(Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLDisplay, topicViewDisplay, searchResultsDisplay,
                 searchResultsComponent, display, waitDisplay);
@@ -282,9 +286,23 @@ public class SearchResultsAndTopicComponent
         bindSplitPanelResize();
         bindTagEditingButtons();
         loadSplitPanelSize();
+        
         this.topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
-        populateLocales();
-        populateXMLElements();
+        
+        CommonTopicComponent.populateLocales(waitDisplay, new StringListLoaded() {            
+            @Override
+            public void stringListLoaded(final List<String> locales) {
+                SearchResultsAndTopicComponent.this.locales = locales;
+            }
+        });
+        
+        CommonTopicComponent.populateXMLElements(waitDisplay, new StringListLoaded() {
+            
+            @Override
+            public void stringListLoaded(final List<String> xmlElements) {
+                topicXMLDisplay.getXmlTagsDialog().setSuggestions(xmlElements);                
+            }
+        });
 
         Event.addNativePreviewHandler(this.keyboardShortcutPreviewhandler);
     }
@@ -298,64 +316,9 @@ public class SearchResultsAndTopicComponent
                 display.getSplitType(), locales);
     }
 
-    /**
-     * Retrieve a list of xml elements from the server
-     */
-    private void populateXMLElements() {
-        final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
-                waitDisplay, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
-                    @Override
-                    public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
+    
 
-                        logger.log(Level.INFO, "Returned the following XML elements for the suggestion box");
-                        logger.log(Level.INFO, retValue.getValue());
 
-                        /* Get the list of locales from the StringConstant */
-                        final List<String> xmlElements = new LinkedList<String>(Arrays.asList(retValue.getValue()
-                                .replaceAll("\r\n", "\n").replaceAll(" ", "").split("\n")));
-
-                        /* Clean the list */
-                        while (xmlElements.contains("")) {
-                            xmlElements.remove("");
-                        }
-
-                        Collections.sort(xmlElements);
-
-                        logger.log(Level.INFO, "Parsed the following XML element for the suggestion box");
-                        logger.log(Level.INFO, xmlElements.toString());
-
-                        topicXMLDisplay.getXmlTagsDialog().setSuggestions(xmlElements);
-                    }
-                }) {
-        };
-
-        RESTCalls.getStringConstant(callback, ServiceConstants.DOCBOOK_ELEMENTS_STRING_CONSTANT_ID);
-    }
-
-    /**
-     * Retrieve a list of locales from the server
-     */
-    private void populateLocales() {
-        final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
-                waitDisplay, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
-                    @Override
-                    public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
-                        /* Get the list of locales from the StringConstant */
-                        locales = new LinkedList<String>(Arrays.asList(retValue.getValue().replaceAll("\\r\\n", "")
-                                .replaceAll("\\n", "").replaceAll(" ", "").split(",")));
-
-                        /* Clean the list */
-                        while (locales.contains("")) {
-                            locales.remove("");
-                        }
-
-                        Collections.sort(locales);
-                    }
-                }) {
-        };
-
-        RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
-    }
 
     /**
      * Reflect the state of the editor with the XML editor toggle buttons
@@ -1066,7 +1029,7 @@ public class SearchResultsAndTopicComponent
 
                     eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
                             + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + topic.getTitle() + " [" + topic.getId()
-                            + "];tag" + ServiceConstants.CSP_TAG_ID + "=1;logic=AND"));
+                            + "];tag" + ServiceConstants.CSP_TAG_ID + "=1;logic=AND", GWTUtilities.isEventToOpenNewWindow(event)));
                 }
 
             }

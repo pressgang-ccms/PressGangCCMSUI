@@ -99,10 +99,12 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
     private final TextBox quickSearchQuery = new TextBox();
     private final PushButton quickSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.QuickSearch());
 
+    @Override
     public PushButton getQuickSearch() {
         return quickSearch;
     }
 
+    @Override
     public TextBox getQuickSearchQuery() {
         return quickSearchQuery;
     }

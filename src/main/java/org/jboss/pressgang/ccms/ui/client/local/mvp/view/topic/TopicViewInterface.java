@@ -1,6 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;

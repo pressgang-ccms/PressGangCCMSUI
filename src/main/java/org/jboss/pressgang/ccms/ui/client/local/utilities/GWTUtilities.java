@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -18,6 +19,17 @@ final public class GWTUtilities {
     private static final int BITS_PER_BYTE = 8;
 
     private GWTUtilities() {
+    }
+    
+    /**
+     * This does not work. See http://stackoverflow.com/questions/13406964/detect-ctrl-click-on-pushbutton
+     * @param event
+     * @return
+     */
+    public static boolean isEventToOpenNewWindow(final ClickEvent event)
+    {
+        return event.isControlKeyDown();
+        
     }
     
     public static boolean IsStringNullOrEmpty(final String input)

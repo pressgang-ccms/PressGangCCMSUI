@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.Searc
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchTagsFieldsAndFiltersPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -64,7 +65,7 @@ public class SearchTagsFieldsAndFiltersComponent extends ComponentBase<SearchTag
                 fieldsDisplay.getDriver().flush();
                 final String query = tagsDisplay.getSearchUIProjects().getSearchQuery(true)
                         + fieldsDisplay.getSearchUIFields().getSearchQuery(false);
-                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(query));
+                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
             }
         };
 

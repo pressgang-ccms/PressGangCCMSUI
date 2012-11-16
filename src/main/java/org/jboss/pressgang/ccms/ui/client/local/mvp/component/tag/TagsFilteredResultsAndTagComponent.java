@@ -547,7 +547,8 @@ public class TagsFilteredResultsAndTagComponent
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed())
-                    eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(filteredResultsComponent.getQuery()));
+                    eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(filteredResultsComponent.getQuery(), GWTUtilities
+                            .isEventToOpenNewWindow(event)));
             }
         });
 

@@ -37,6 +37,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -105,7 +106,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
                             public void createAndAddChild(final RESTTagCollectionItemV1 copy) {
 
                                 tagComponent.setSortOrderOfChildren(sortCallback);
-                                
+
                                 final RESTTagInCategoryV1 newChild = new RESTTagInCategoryV1();
                                 newChild.setId(copy.getItem().getId());
                                 newChild.setName(copy.getItem().getName());
@@ -290,7 +291,8 @@ public class CategoriesFilteredResultsAndCategoryComponent
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed())
-                    eventBus.fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(filteredResultsComponent.getQuery()));
+                    eventBus.fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(filteredResultsComponent.getQuery(),
+                            GWTUtilities.isEventToOpenNewWindow(event)));
             }
         });
 
@@ -323,7 +325,6 @@ public class CategoriesFilteredResultsAndCategoryComponent
         });
     }
 
- 
     @Override
     public boolean hasUnsavedChanges() {
         /* sync the UI with the underlying tag */

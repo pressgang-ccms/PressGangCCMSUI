@@ -27,7 +27,7 @@ final public class ServiceConstants {
      * The null user, used when no login information is available. Null identifies an unknown user, but this has issues in errai
      * (https://issues.jboss.org/browse/ERRAI-433)
      */
-    static public final Integer NULL_USER_ID = 79;
+    static public final Integer NULL_USER_ID = 89;
     
     /**
      * The string constant that contains all the docbook elements

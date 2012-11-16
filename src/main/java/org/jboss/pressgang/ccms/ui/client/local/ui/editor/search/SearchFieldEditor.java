@@ -7,7 +7,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.SimpleIntegerBox;
