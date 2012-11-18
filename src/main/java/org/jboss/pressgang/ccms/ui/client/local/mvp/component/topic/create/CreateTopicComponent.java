@@ -434,6 +434,12 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             @Override
             public void onClick(final ClickEvent event) {
                 if (hasUnsavedChanges()) {
+                    /* set to major revision and add default message when saving a topic for the first time */
+                    if (newTopic.getId() == null) {
+                        display.getMessageLogDialog().getMajorChange().setValue(true);
+                        display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.InitialTopicCreation());
+                    }
+                    
                     display.getMessageLogDialog().getDialogBox().center();
                     display.getMessageLogDialog().getDialogBox().show();
                 } else {

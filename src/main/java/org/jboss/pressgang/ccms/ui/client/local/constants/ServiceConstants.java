@@ -33,6 +33,12 @@ final public class ServiceConstants {
      * The string constant that contains all the docbook elements
      */
     static public final Integer DOCBOOK_ELEMENTS_STRING_CONSTANT_ID = 41; 
+    
+    /**
+     * The string constant ID that contains a comma separated list of 
+     * other strnig constant IDs that contain docbook templates
+     */
+    static public final Integer DOCBOOK_TEMPLATES_STRING_CONSTANT_ID = 43;
 
     private ServiceConstants() {
 

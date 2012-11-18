@@ -335,5 +335,7 @@ public interface PressGangCCMSUI extends Constants {
     String InsertXMLElement();
     
     String InsertCSPTopicDetails();
+    
+    String InitialTopicCreation();
 }
 

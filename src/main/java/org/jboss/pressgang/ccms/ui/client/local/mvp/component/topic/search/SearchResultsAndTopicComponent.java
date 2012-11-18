@@ -199,35 +199,6 @@ public class SearchResultsAndTopicComponent
         }
     }
 
-    private final NativePreviewHandler keyboardShortcutPreviewhandler = new NativePreviewHandler() {
-        @Override
-        public void onPreviewNativeEvent(final NativePreviewEvent event) {
-            final NativeEvent ne = event.getNativeEvent();
-            if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'Q') {
-                Scheduler.get().scheduleDeferred(new Command() {
-                    @Override
-                    public void execute() {
-                        if (display.getTopLevelPanel().isAttached() && lastDisplayedView == topicXMLDisplay) {
-                            topicXMLDisplay.getXmlTagsDialog().getDialogBox().center();
-                            topicXMLDisplay.getXmlTagsDialog().getDialogBox().show();
-                        }
-                    }
-                });
-            } else if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'W') {
-                Scheduler.get().scheduleDeferred(new Command() {
-                    @Override
-                    public void execute() {
-                        if (display.getTopLevelPanel().isAttached() && lastDisplayedView == topicXMLDisplay) {
-                            topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().center();
-                            topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().show();
-                        }
-                    }
-                });
-            }
-
-        }
-    };
-
     @Override
     public String getQueryString() {
         return queryString;
@@ -294,17 +265,9 @@ public class SearchResultsAndTopicComponent
             public void stringListLoaded(final List<String> locales) {
                 SearchResultsAndTopicComponent.this.locales = locales;
             }
-        });
-        
-        CommonTopicComponent.populateXMLElements(waitDisplay, new StringListLoaded() {
-            
-            @Override
-            public void stringListLoaded(final List<String> xmlElements) {
-                topicXMLDisplay.getXmlTagsDialog().setSuggestions(xmlElements);                
-            }
-        });
+        });        
 
-        Event.addNativePreviewHandler(this.keyboardShortcutPreviewhandler);
+       CommonTopicComponent.addKeyboardShortcutEventHandler(this.topicXMLDisplay, this.display);
     }
 
     /**
@@ -315,10 +278,6 @@ public class SearchResultsAndTopicComponent
         topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
                 display.getSplitType(), locales);
     }
-
-    
-
-
 
     /**
      * Reflect the state of the editor with the XML editor toggle buttons
@@ -1071,153 +1030,12 @@ public class SearchResultsAndTopicComponent
             }
         });
 
-        topicXMLDisplay.getXmlTagsDialog().getOK().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                insertElement();
-            }
-        });
-        
-        topicXMLDisplay.getXmlTagsDialog().getOptions().addKeyPressHandler(new KeyPressHandler() {
-            
-            @Override
-            public void onKeyPress(KeyPressEvent event) {
-                if (event.getCharCode() == KeyCodes.KEY_ENTER)
-                {
-                    insertElement();
-                }
-                else if (event.getCharCode() == KeyCodes.KEY_ESCAPE)
-                {
-                    hideElementDialogBox();
-                }
-                
-            }
-        });
-        
-        topicXMLDisplay.getXmlTagsDialog().getCancel().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                hideElementDialogBox();
-            }
-        });
-        
-        topicXMLDisplay.getXmlTagsDialog().getMoreInfo().addClickHandler(new ClickHandler() {
-            
-            @Override
-            public void onClick(final ClickEvent event) {
-                final int selectedItem = topicXMLDisplay.getXmlTagsDialog().getOptions().getSelectedIndex();
-                if (selectedItem != -1)
-                {
-                    final String value = topicXMLDisplay.getXmlTagsDialog().getOptions().getItemText(selectedItem);
-                    Window.open(Constants.DOCBOOK_ELEMENT_URL_PREFIX +value + Constants.DOCBOOK_ELEMENT_URL_POSTFIX , "_blank", "");
-                }
-                
-            }
-        });
-        
-        topicXMLDisplay.getCSPTopicDetailsDialog().getIds().addKeyPressHandler(new KeyPressHandler() {
-            
-            @Override
-            public void onKeyPress(KeyPressEvent event) {
-                if (event.getCharCode() == KeyCodes.KEY_ENTER)
-                {
-                    insertCspDetails();
-                }
-                else if (event.getCharCode() == KeyCodes.KEY_ESCAPE)
-                {
-                    hideCspDetailsDialogBox();
-                }
-                
-            }
-        });
-        
-        topicXMLDisplay.getCSPTopicDetailsDialog().getOK().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                insertCspDetails();
-            }
-        });
-        
-        topicXMLDisplay.getCSPTopicDetailsDialog().getCancel().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                hideCspDetailsDialogBox();
-            }
-        });
-
+        CommonTopicComponent.addKeyboardShortcutEvents(topicXMLDisplay, display);
     }
     
-    private void insertCspDetails()
-    {
-        final String ids = GWTUtilities.fixUpIdSearchString(topicXMLDisplay.getCSPTopicDetailsDialog().getIds().getValue());
-        if (!ids.isEmpty())
-        {
-            final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
-                @Override
-                public void begin() {
-                    display.addWaitOperation();
-                }
+    
 
-                @Override
-                public void generalException(final Exception e) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                    display.removeWaitOperation();
-                }
 
-                @Override
-                public void success(final RESTTopicCollectionV1 retValue) {
-                    try {
-                        final StringBuilder details = new StringBuilder();
-                        for (final RESTTopicCollectionItemV1 topicCollectionItem : retValue.getItems())
-                        {
-                            final RESTTopicV1 topic = topicCollectionItem.getItem();
-                            if (!details.toString().isEmpty())
-                                details.append("\n");
-                            details.append(topic.getTitle() + " [" + topic.getId() + "]");
-                        }
-                        
-                        topicXMLDisplay.getEditor().insertText(details.toString());
-                        
-                    } finally {
-                        display.removeWaitOperation();
-                    }
-                }
-
-                @Override
-                public void failed(final Message message, final Throwable throwable) {
-                    display.removeWaitOperation();
-                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                }
-            };
-
-            RESTCalls.getTopicsFromQuery(callback, Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids);
-            hideCspDetailsDialogBox();
-        }
-        
-    }
-
-    private void hideCspDetailsDialogBox() {
-        topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().hide();
-        topicXMLDisplay.getEditor().focus();
-    }
-
-    private void hideElementDialogBox() {
-        topicXMLDisplay.getXmlTagsDialog().getDialogBox().hide();
-        topicXMLDisplay.getEditor().focus();
-    }
-
-    private void insertElement() {
-        final int selectedItem = topicXMLDisplay.getXmlTagsDialog().getOptions().getSelectedIndex();
-        if (selectedItem != -1) {
-            final String value = topicXMLDisplay.getXmlTagsDialog().getOptions().getItemText(selectedItem);
-            topicXMLDisplay.getEditor().wrapSelection("<" + value + ">", "</" + value + ">");
-        }
-        hideElementDialogBox();
-    }
 
     @Override
     protected void bindFilteredResultsButtons() {

@@ -4,6 +4,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -56,6 +57,15 @@ public class TopicXMLPresenter implements TemplatePresenter {
             void setSuggestions(final List<String> suggestions);
         }
         
+        public interface XmlTemplatesDialog
+        {
+            PushButton getOK();
+            PushButton getCancel();
+            ListBox getOptions();
+            DialogBox getDialogBox();
+            void setSuggestions(final Map<String, String> suggestions);
+        }
+        
         public interface CSPTopicDetailsDialog
         {
             PushButton getOK();
@@ -66,6 +76,7 @@ public class TopicXMLPresenter implements TemplatePresenter {
         
         XmlTagsDialog getXmlTagsDialog();
         CSPTopicDetailsDialog getCSPTopicDetailsDialog();
+        XmlTemplatesDialog getXmlTemplatesDialog();
         
         ToggleButton getLineWrap();
 
