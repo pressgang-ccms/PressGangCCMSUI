@@ -24,7 +24,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  */
 abstract public class BaseFilteredResultsView<T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>>
-        extends BaseTemplateView<T, U, V> implements BaseFilteredResultsViewInterface<T, U, V> {
+        extends BaseTemplateView implements BaseFilteredResultsViewInterface<T, U, V> {
 
     /** The button that initiates a new search */
     private final PushButton entitySearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());

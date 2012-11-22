@@ -69,6 +69,15 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
      * @param display The main template display
      */
     protected void bindStandardButtons() {
+        
+        display.getHome().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                if (isOKToProceed())
+                    eventBus.fireEvent(new SearchTagsFieldsAndFiltersViewEvent());
+            }
+        });
+        
         display.getSearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
@@ -169,14 +178,14 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
                 /* If the search query was numbers and integers, assume that we are searching for topics ids */
                 final String fixedQuery = GWTUtilities.fixUpIdSearchString(query);
                 eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
-                        + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + fixedQuery, newWindow));
+                        + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + fixedQuery, newWindow));
             } else {
                 /* Otherwise do a search against the title, description and content of the topics */
                 eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
-                        + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + query + ";"
-                        + CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + query + ";"
-                        + CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + query + ";"
-                        + CommonFilterConstants.LOGIC_FILTER_VAR + "=" + CommonFilterConstants.OR_LOGIC, newWindow));
+                        + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + query + ";"
+                        + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + query + ";"
+                        + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + query + ";"
+                        + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.LOGIC_FILTER_VAR + "=" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.OR_LOGIC, newWindow));
             }
         }
     }

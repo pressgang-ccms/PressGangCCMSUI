@@ -225,6 +225,10 @@ public interface CSSConstants {
     String IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_LABEL_CELL = "ImageViewLanguageImageDisplayLabelCell";
     /** Assigned to the cell that holds the language display image cell. */
     String IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_IMAGE_CELL = "ImageViewLanguageImageDisplayImageCell";
+    /** Assigned to the cell that holds the language display label cell. */
+    String IMAGE_VIEW_LANGUAGE_IMAGE_DIMENSION_LABEL_CELL = "ImageViewLanguageImageDimensionLabelCell";
+    /** Assigned to the cell that holds the language display image cell. */
+    String IMAGE_VIEW_LANGUAGE_IMAGE_DIMENSION_TEXT_CELL = "ImageViewLanguageImageDimensionTextCell";
     /** Assigned to the image description label. */
     String IMAGE_VIEW_DESCRIPTION_LABEL = "ImageViewDescriptionLabel";
     /** Assigned to the image description text. */
@@ -255,6 +259,8 @@ public interface CSSConstants {
     String DOWN_LABEL = "DownLabel";
     /** Assigned to push buttons that are sub menus. */
     String SUB_MENU = "SubMenu";
+    /** Assigned to push buttons that have an error state. */
+    String ERROR = "Error";
     /** Assigned to buttons that need to show some kind of alert status. */
     String ALERT_BUTTON = "AlertButton";
     /**

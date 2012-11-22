@@ -44,6 +44,9 @@ final public class ServiceConstants {
      * The help topic for the search screen
      */
     static public final int SEARCH_VIEW_HELP_TOPIC = 12505;
+    
+    /** The topic that is displayed in the welcome view */
+    static public final int WELCOME_VIEW_CONTENT_TOPIC = 12556;
 
     private ServiceConstants() {
 

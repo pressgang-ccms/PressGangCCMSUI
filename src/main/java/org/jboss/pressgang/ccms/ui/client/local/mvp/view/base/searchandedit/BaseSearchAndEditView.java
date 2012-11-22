@@ -16,7 +16,7 @@ import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 
 abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>>
-        extends BaseTemplateView<T, U, V> implements BaseSearchAndEditViewInterface<T, U, V> {
+        extends BaseTemplateView implements BaseSearchAndEditViewInterface<T, U, V> {
 
     private final HandlerSplitLayoutPanel splitPanel = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
     private final DockLayoutPanel resultsViewLayoutPanel = new DockLayoutPanel(Unit.PX);

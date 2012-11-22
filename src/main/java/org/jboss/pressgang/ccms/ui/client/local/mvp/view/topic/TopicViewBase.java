@@ -1,8 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -18,7 +15,7 @@ import com.google.gwt.user.client.ui.PushButton;
  * 
  * @author Matthew Casperson
  */
-abstract public class TopicViewBase extends BaseTemplateView<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> implements TopicViewInterface {
+abstract public class TopicViewBase extends BaseTemplateView implements TopicViewInterface {
     private final PushButton fields;
     private final PushButton xml;
     private final PushButton xmlErrors;
@@ -208,6 +205,20 @@ abstract public class TopicViewBase extends BaseTemplateView<RESTTopicV1, RESTTo
         }
     }
     
+    protected void setXMLErrorsButtonState(final boolean hasErrors)
+    {
+        if (hasErrors)
+        {
+            this.xmlErrors.addStyleName(CSSConstants.ERROR);
+            xmlErrorsDown.addStyleName(CSSConstants.ERROR);
+        }
+        else
+        {
+            this.xmlErrors.removeStyleName(CSSConstants.ERROR);
+            xmlErrorsDown.removeStyleName(CSSConstants.ERROR);
+        }
+    }
+    
     protected void addOrRemoveRenderedButton(final SplitType splitType)
     {
         /* Add the rendered view button if there is no split screen, and remove if it there is a split screen */
@@ -269,8 +280,10 @@ abstract public class TopicViewBase extends BaseTemplateView<RESTTopicV1, RESTTo
     /**
      * This method is called to initialize the buttons that should appear in the top action bar
      */
-    protected void populateTopActionBar(final boolean newTopic)
+    protected void populateTopActionBar(final boolean newTopic, final boolean hasErrors)
     {
         this.getTopActionPanel().removeAllRows();
+        setXMLErrorsButtonState(hasErrors);
+        fixReadOnlyButtons();
     }
 }

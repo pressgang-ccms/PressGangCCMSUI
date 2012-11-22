@@ -16,6 +16,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ViewOpenEventHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ViewOpenWithQueryEventHandler;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.WelcomeViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.Presenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
@@ -59,6 +60,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
     public void bind() {
         History.addValueChangeHandler(this);
 
+        eventBus.addHandler(WelcomeViewEvent.TYPE, new ViewOpenEventHandler(WelcomePresenter.HISTORY_TOKEN));
         eventBus.addHandler(SearchViewEvent.TYPE, new ViewOpenEventHandler(SearchPresenter.HISTORY_TOKEN));
         eventBus.addHandler(SearchResultsViewEvent.TYPE,
                 new ViewOpenWithQueryEventHandler(SearchResultsPresenter.HISTORY_TOKEN));

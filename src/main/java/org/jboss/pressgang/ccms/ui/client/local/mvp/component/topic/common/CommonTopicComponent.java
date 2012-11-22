@@ -265,7 +265,7 @@ public class CommonTopicComponent {
 
             }
         });
-
+       
         topicXMLDisplay.getCSPTopicDetailsDialog().getIds().addKeyPressHandler(new KeyPressHandler() {
 
             @Override
@@ -400,7 +400,7 @@ public class CommonTopicComponent {
             };
 
             RESTCalls.getTopicsFromQuery(callback, Constants.QUERY_PATH_SEGMENT_PREFIX
-                    + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids);
+                    + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids);
             hideCspDetailsDialogBox(topicXMLDisplay);
         }
 

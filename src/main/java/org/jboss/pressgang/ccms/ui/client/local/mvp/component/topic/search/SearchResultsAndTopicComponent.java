@@ -3,8 +3,6 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.search;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +18,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollect
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -52,24 +49,13 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Event.NativePreviewEvent;
-import com.google.gwt.user.client.Event.NativePreviewHandler;
-import com.google.gwt.user.client.Window.ClosingEvent;
-import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.HasData;
@@ -966,6 +952,8 @@ public class SearchResultsAndTopicComponent
 
                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE);
+                
+                timer.cancel();
 
                 initializeDisplay();
                 initializeSplitViewButtons();
@@ -980,6 +968,8 @@ public class SearchResultsAndTopicComponent
 
                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL);
+                
+                timer.scheduleRepeating(Constants.REFRESH_RATE);
 
                 initializeDisplay();
                 initializeSplitViewButtons();
@@ -994,6 +984,8 @@ public class SearchResultsAndTopicComponent
 
                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_HOIRZONTAL);
+                
+                timer.scheduleRepeating(Constants.REFRESH_RATE);
 
                 initializeDisplay();
                 initializeSplitViewButtons();
@@ -1010,7 +1002,7 @@ public class SearchResultsAndTopicComponent
                     final RESTTopicV1 topic = filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
 
                     eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
-                            + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + topic.getTitle() + " [" + topic.getId()
+                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + topic.getTitle() + " [" + topic.getId()
                             + "];tag" + ServiceConstants.CSP_TAG_ID + "=1;logic=AND", GWTUtilities.isEventToOpenNewWindow(event)));
                 }
 

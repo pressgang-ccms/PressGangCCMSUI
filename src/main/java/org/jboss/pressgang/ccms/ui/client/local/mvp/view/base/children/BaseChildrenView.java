@@ -31,7 +31,7 @@ abstract public class BaseChildrenView<
     T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, 
     A extends RESTBaseEntityV1<A, B, C>, B extends RESTBaseCollectionV1<A, B, C>, C extends RESTBaseCollectionItemV1<A, B, C>,
     D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
-        extends BaseTemplateView<T, U, V> implements BaseChildrenViewInterface<T, U, V, A, B, C, D, E, F> {
+        extends BaseTemplateView implements BaseChildrenViewInterface<T, U, V, A, B, C, D, E, F> {
     
     /** A reference to the tag that this view will be modifying */
     private T originalEntity;

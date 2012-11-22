@@ -209,52 +209,52 @@ public class SearchUIFields implements SearchViewBase {
                 : "");
 
         if (!GWTUtilities.IsStringNullOrEmpty(ids))
-            retValue.append(";" + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids);
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids);
         if (!GWTUtilities.IsStringNullOrEmpty(notIds))
-            retValue.append(";" + CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR + "=" + notIds);
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR + "=" + notIds);
         if (!GWTUtilities.IsStringNullOrEmpty(description))
-            retValue.append(";" + CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + description);
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + description);
         if (!GWTUtilities.IsStringNullOrEmpty(notDescription))
-            retValue.append(";" + CommonFilterConstants.TOPIC_DESCRIPTION_NOT_FILTER_VAR + "=" + notDescription);
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_DESCRIPTION_NOT_FILTER_VAR + "=" + notDescription);
         if (!GWTUtilities.IsStringNullOrEmpty(title))
-            retValue.append(";" + CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + title);
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + title);
         if (!GWTUtilities.IsStringNullOrEmpty(notTitle))
-            retValue.append(";" + CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR + "=" + notTitle);
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR + "=" + notTitle);
         if (editedInLastXDays != null)
-            retValue.append(";" + CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS + "=" + editedInLastXDays.toString());
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS + "=" + editedInLastXDays.toString());
         if (notEditedInLastXDays != null)
-            retValue.append(";" + CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS + "=" + notEditedInLastXDays.toString());
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS + "=" + notEditedInLastXDays.toString());
         if (!GWTUtilities.IsStringNullOrEmpty(contents))
-            retValue.append(";" + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + contents);
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + contents);
         if (!GWTUtilities.IsStringNullOrEmpty(notContents))
-            retValue.append(";" + CommonFilterConstants.TOPIC_XML_NOT_FILTER_VAR + "=" + notContents);
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_NOT_FILTER_VAR + "=" + notContents);
         if (createdBefore != null)
-            retValue.append(";" + CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR + "=" + dateformat.format(createdBefore));
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR + "=" + dateformat.format(createdBefore));
         if (editedBefore != null)
-            retValue.append(";" + CommonFilterConstants.TOPIC_ENDEDITDATE_FILTER_VAR + "=" + dateformat.format(editedBefore));
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_ENDEDITDATE_FILTER_VAR + "=" + dateformat.format(editedBefore));
         if (editedAfter != null)
-            retValue.append(";" + CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR + "=" + dateformat.format(editedAfter));
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR + "=" + dateformat.format(editedAfter));
         if (createdAfter != null)
-            retValue.append(";" + CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR + "=" + dateformat.format(createdAfter));
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR + "=" + dateformat.format(createdAfter));
         if (!GWTUtilities.IsStringNullOrEmpty(includedInContentSpecs))
-            retValue.append(";" + CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC + "=" + includedInContentSpecs);
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC + "=" + includedInContentSpecs);
         if (!GWTUtilities.IsStringNullOrEmpty(notIncludedInContentSpecs))
-            retValue.append(";" + CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC + "=" + notIncludedInContentSpecs);
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC + "=" + notIncludedInContentSpecs);
         if (!GWTUtilities.IsStringNullOrEmpty(freeTextSearch))
-            retValue.append(";" + CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR + "=" + freeTextSearch);
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR + "=" + freeTextSearch);
         if (hasBugzillaBugs == TriStateSelectionState.SELECTED)
-            retValue.append(";" + CommonFilterConstants.TOPIC_HAS_BUGZILLA_BUGS + "=true");
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_HAS_BUGZILLA_BUGS + "=true");
         else if (hasBugzillaBugs == TriStateSelectionState.UNSELECTED)
-            retValue.append(";" + CommonFilterConstants.TOPIC_HAS_NOT_BUGZILLA_BUGS + "=true");
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_HAS_NOT_BUGZILLA_BUGS + "=true");
         if (hasOpenBugzillaBugs == TriStateSelectionState.SELECTED)
-            retValue.append(";" + CommonFilterConstants.TOPIC_HAS_OPEN_BUGZILLA_BUGS + "=true");
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_HAS_OPEN_BUGZILLA_BUGS + "=true");
         else if (hasOpenBugzillaBugs == TriStateSelectionState.UNSELECTED)
-            retValue.append(";" + CommonFilterConstants.TOPIC_HAS_NOT_OPEN_BUGZILLA_BUGS + "=true");
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_HAS_NOT_OPEN_BUGZILLA_BUGS + "=true");
 
         if (matchAll)
-            retValue.append(";" + CommonFilterConstants.LOGIC_FILTER_VAR + "=" + CommonFilterConstants.AND_LOGIC);
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.LOGIC_FILTER_VAR + "=" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.AND_LOGIC);
         else
-            retValue.append(";" + CommonFilterConstants.LOGIC_FILTER_VAR + "=" + CommonFilterConstants.OR_LOGIC);
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.LOGIC_FILTER_VAR + "=" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.OR_LOGIC);
 
         return retValue.toString();
     }

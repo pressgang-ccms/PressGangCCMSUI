@@ -171,6 +171,18 @@ html {
 	border-color: #009200;
 }
 
+.TextButton.Error
+{
+	background-color: #C60000;
+	border-color: #920000;
+}
+
+.TextButton.Error:hover, .DownLabel.Error
+{
+	background-color: #920000;
+	border-color: #920000;
+}
+
 .TextButton:hover, .DownLabel {
 	border-style: solid;
 	border-width: 1px;

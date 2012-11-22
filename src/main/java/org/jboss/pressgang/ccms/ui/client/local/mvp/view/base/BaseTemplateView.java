@@ -3,10 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
 import hu.szaboaz.gwt.xslt.client.XsltProcessor;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
@@ -39,9 +36,8 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Matthew Casperson
  * 
- * @param T The type of the entity this view is displaying
  */
-public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>>
+public abstract class BaseTemplateView
         implements BaseTemplateViewInterface {
     /** true when the view is visible, false otherwise */
     private boolean isViewShown = false;
@@ -145,6 +141,7 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
             this.add(layout);
         }
 
+        @Override
         public void show(final int topicId, final BaseTemplateViewInterface waitDisplay) {
             final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
                     waitDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {
@@ -178,10 +175,16 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
 
     private final HelpDialog helpDialog = new HelpDialogImpl();
 
+    public PushButton getHome() {
+        return home;
+    }
+
+    @Override
     public Anchor getHelp() {
         return help;
     }
 
+    @Override
     public HelpDialog getHelpDialog() {
         return helpDialog;
     }

@@ -96,6 +96,12 @@ public interface BaseTemplateViewInterface {
 
     /**
      * 
+     * @return The button that opens the home view
+     */
+    PushButton getHome();
+    
+    /**
+     * 
      * @return The button that opens the bugzilla window
      */
     PushButton getBug();

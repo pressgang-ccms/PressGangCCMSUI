@@ -197,6 +197,9 @@ public class ImagesFilteredResultsAndImageComponent
                                     final String result = reader.getStringResult();
                                     final byte[] buffer = GWTUtilities.getByteArray(result, 1);
 
+                                    /* Flush any changes */
+                                    entityPropertiesView.getDriver().flush();
+                                    
                                     /*
                                      * Create the image to be modified. This is so we don't send off unnecessary data.
                                      */
@@ -437,7 +440,7 @@ public class ImagesFilteredResultsAndImageComponent
                 if (docbookFileName != null && !docbookFileName.isEmpty() && isOKToProceed()) {
 
                     eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
-                            + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=images/" + docbookFileName, event.getNativeEvent()
+                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=images/" + docbookFileName, event.getNativeEvent()
                             .getKeyCode() == KeyCodes.KEY_CTRL));
                 }
 

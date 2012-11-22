@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.create;
 
 import java.util.List;
-import java.util.logging.Level;
 
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
@@ -11,7 +10,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
@@ -39,8 +37,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -48,14 +44,8 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Event.NativePreviewEvent;
-import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.Window.ClosingEvent;
-import com.google.gwt.user.client.Window.ClosingHandler;
 
 /**
  * A component used to provide the logic for the create topicViewDisplay view
@@ -98,10 +88,10 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
 
     private boolean templateLoaded = false;
     private boolean localesLoaded = false;
-    
+
     private String lastXML = null;
     private long lastXMLChange;
-    private boolean isDisplayingImage = false; 
+    private boolean isDisplayingImage = false;
 
     /**
      * Setup automatic flushing and rendering.
@@ -110,28 +100,24 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         @Override
         public void run() {
             if (lastView == topicXMLDisplay) {
-                
+
                 topicXMLDisplay.getDriver().flush();
-                
+
                 final boolean xmlHasChanges = lastXML == null || !lastXML.equals(newTopic.getXml());
-                
-                if (xmlHasChanges)
-                {
+
+                if (xmlHasChanges) {
                     lastXMLChange = System.currentTimeMillis();
                 }
-                
-                final Boolean timeToDisplayImage = System.currentTimeMillis() - lastXMLChange >=  Constants.REFRESH_RATE_WTH_IMAGES;
-                
-                if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage))
-                {
+
+                final Boolean timeToDisplayImage = System.currentTimeMillis() - lastXMLChange >= Constants.REFRESH_RATE_WTH_IMAGES;
+
+                if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
                     isDisplayingImage = timeToDisplayImage;
                     topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales, isDisplayingImage);
                 }
-                
+
                 lastXML = newTopic.getXml();
 
-                
-                
             }
         }
     };
@@ -203,35 +189,6 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             updateDisplayedTopicView(lastView);
         }
     }
-    
-    private final NativePreviewHandler keyboardShortcutPreviewhandler = new NativePreviewHandler() {
-        @Override
-        public void onPreviewNativeEvent(final NativePreviewEvent event) {
-            final NativeEvent ne = event.getNativeEvent();
-            if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'Q') {
-                Scheduler.get().scheduleDeferred(new Command() {
-                    @Override
-                    public void execute() {
-                        if (display.getTopLevelPanel().isAttached() && lastView == topicXMLDisplay) {
-                            topicXMLDisplay.getXmlTagsDialog().getDialogBox().center();
-                            topicXMLDisplay.getXmlTagsDialog().getDialogBox().show();
-                        }
-                    }
-                });
-            } else if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'W') {
-                Scheduler.get().scheduleDeferred(new Command() {
-                    @Override
-                    public void execute() {
-                        if (display.getTopLevelPanel().isAttached() && lastView == topicXMLDisplay) {
-                            topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().center();
-                            topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().show();
-                        }
-                    }
-                });
-            }
-
-        }
-    };
 
     @Override
     public void bind(final TopicPresenter.Display topicViewDisplay, final TopicPresenter.LogicComponent topicViewComponent,
@@ -276,23 +233,22 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         bindTopActionButtons();
 
         getTopicTemplate();
-        
+
         CommonTopicComponent.populateLocales(waitDisplay, new StringListLoaded() {
-            
+
             @Override
             public void stringListLoaded(List<String> stringList) {
-                
+
                 CreateTopicComponent.this.locales = stringList;
-                
+
                 final RESTCallback<RESTStringConstantV1> defaultLocaleCallback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
-                        waitDisplay,
-                        new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
+                        waitDisplay, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
                             @Override
                             public void doSuccessAction(final RESTStringConstantV1 retValue,
                                     final BaseTemplateViewInterface display) {
-                                
+
                                 newTopic.setLocale(retValue.getValue());
-                                
+
                                 localesLoaded = true;
                                 finishLoading();
                             }
@@ -300,31 +256,29 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 };
 
                 RESTCalls.getStringConstant(defaultLocaleCallback, ServiceConstants.DEFAULT_LOCALE_ID);
-                
+
             }
         });
-        
+
         CommonTopicComponent.populateXMLElements(waitDisplay, new StringListLoaded() {
-            
+
             @Override
             public void stringListLoaded(final List<String> xmlElements) {
-                topicXMLDisplay.getXmlTagsDialog().setSuggestions(xmlElements);                
+                topicXMLDisplay.getXmlTagsDialog().setSuggestions(xmlElements);
             }
         });
-        
-        Event.addNativePreviewHandler(this.keyboardShortcutPreviewhandler);
+
+        CommonTopicComponent.addKeyboardShortcutEventHandler(this.topicXMLDisplay, this.display);
     }
-    
+
     /**
      * Reflect the state of the editor with the XML editor toggle buttons
      */
     private void setXMLEditorButtonsToEditorState() {
 
-            
+        topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
+        topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
 
-            topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
-            topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
-     
     }
 
     /**
@@ -338,8 +292,6 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         }
 
     }
-
-    
 
     /**
      * (Re)Initialize the main display with the rendered view split pane (if selected).
@@ -463,7 +415,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                         display.getMessageLogDialog().getMajorChange().setValue(true);
                         display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.InitialTopicCreation());
                     }
-                    
+
                     display.getMessageLogDialog().getDialogBox().center();
                     display.getMessageLogDialog().getDialogBox().show();
                 } else {
@@ -559,6 +511,8 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 split = SplitType.NONE;
                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE);
+                
+                timer.cancel();
 
                 initializeSplitViewButtons();
                 initializeDisplay();
@@ -574,6 +528,8 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 split = SplitType.VERTICAL;
                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL);
+                
+                timer.scheduleRepeating(Constants.REFRESH_RATE);
 
                 initializeSplitViewButtons();
                 initializeDisplay();
@@ -590,6 +546,8 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 split = SplitType.HORIZONTAL;
                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_HOIRZONTAL);
+                
+                timer.scheduleRepeating(Constants.REFRESH_RATE);
 
                 initializeSplitViewButtons();
                 initializeDisplay();
@@ -635,154 +593,8 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 topicXMLDisplay.getEditor().setShowInvisibles(topicXMLDisplay.getShowInvisibles().isDown());
             }
         });
-
-        topicXMLDisplay.getXmlTagsDialog().getOK().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                insertElement();
-            }
-        });
-        
-        topicXMLDisplay.getXmlTagsDialog().getOptions().addKeyPressHandler(new KeyPressHandler() {
-            
-            @Override
-            public void onKeyPress(KeyPressEvent event) {
-                if (event.getCharCode() == KeyCodes.KEY_ENTER)
-                {
-                    insertElement();
-                }
-                else if (event.getCharCode() == KeyCodes.KEY_ESCAPE)
-                {
-                    hideElementDialogBox();
-                }
-                
-            }
-        });
-        
-        topicXMLDisplay.getXmlTagsDialog().getCancel().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                hideElementDialogBox();
-            }
-        });
-        
-        topicXMLDisplay.getXmlTagsDialog().getMoreInfo().addClickHandler(new ClickHandler() {
-            
-            @Override
-            public void onClick(final ClickEvent event) {
-                final int selectedItem = topicXMLDisplay.getXmlTagsDialog().getOptions().getSelectedIndex();
-                if (selectedItem != -1)
-                {
-                    final String value = topicXMLDisplay.getXmlTagsDialog().getOptions().getItemText(selectedItem);
-                    Window.open(Constants.DOCBOOK_ELEMENT_URL_PREFIX +value + Constants.DOCBOOK_ELEMENT_URL_POSTFIX , "_blank", "");
-                }
-                
-            }
-        });
-        
-        topicXMLDisplay.getCSPTopicDetailsDialog().getIds().addKeyPressHandler(new KeyPressHandler() {
-            
-            @Override
-            public void onKeyPress(KeyPressEvent event) {
-                if (event.getCharCode() == KeyCodes.KEY_ENTER)
-                {
-                    insertCspDetails();
-                }
-                else if (event.getCharCode() == KeyCodes.KEY_ESCAPE)
-                {
-                    hideCspDetailsDialogBox();
-                }
-                
-            }
-        });
-        
-        topicXMLDisplay.getCSPTopicDetailsDialog().getOK().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                insertCspDetails();
-            }
-        });
-        
-        topicXMLDisplay.getCSPTopicDetailsDialog().getCancel().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                hideCspDetailsDialogBox();
-            }
-        });
-
-    }
-    
-    private void insertCspDetails()
-    {
-        final String ids = GWTUtilities.fixUpIdSearchString(topicXMLDisplay.getCSPTopicDetailsDialog().getIds().getValue());
-        if (!ids.isEmpty())
-        {
-            final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
-                @Override
-                public void begin() {
-                    display.addWaitOperation();
-                }
-
-                @Override
-                public void generalException(final Exception e) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                    display.removeWaitOperation();
-                }
-
-                @Override
-                public void success(final RESTTopicCollectionV1 retValue) {
-                    try {
-                        final StringBuilder details = new StringBuilder();
-                        for (final RESTTopicCollectionItemV1 topicCollectionItem : retValue.getItems())
-                        {
-                            final RESTTopicV1 topic = topicCollectionItem.getItem();
-                            if (!details.toString().isEmpty())
-                                details.append("\n");
-                            details.append(topic.getTitle() + " [" + topic.getId() + "]");
-                        }
-                        
-                        topicXMLDisplay.getEditor().insertText(details.toString());
-                        
-                    } finally {
-                        display.removeWaitOperation();
-                    }
-                }
-
-                @Override
-                public void failed(final Message message, final Throwable throwable) {
-                    display.removeWaitOperation();
-                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                }
-            };
-
-            RESTCalls.getTopicsFromQuery(callback, Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids);
-            hideCspDetailsDialogBox();
-        }
-        
     }
 
-    private void hideCspDetailsDialogBox() {
-        topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().hide();
-        topicXMLDisplay.getEditor().focus();
-    }
-
-    private void hideElementDialogBox() {
-        topicXMLDisplay.getXmlTagsDialog().getDialogBox().hide();
-        topicXMLDisplay.getEditor().focus();
-    }
-
-    private void insertElement() {
-        final int selectedItem = topicXMLDisplay.getXmlTagsDialog().getOptions().getSelectedIndex();
-        if (selectedItem != -1) {
-            final String value = topicXMLDisplay.getXmlTagsDialog().getOptions().getItemText(selectedItem);
-            topicXMLDisplay.getEditor().wrapSelection("<" + value + ">", "</" + value + ">");
-        }
-        hideElementDialogBox();
-    }
     /**
      * TODO: copied from SearchResultsAndTopicComponent - abstract this
      */
@@ -879,9 +691,9 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 /* Do an initial update */
                 topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales, false);
             }
-            
+
             setXMLEditorButtonsToEditorState();
-            
+
         } else if (selectedView == this.topicTagsDisplay) {
             bindTagEditingButtons();
         }

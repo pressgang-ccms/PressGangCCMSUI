@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
-import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
@@ -55,8 +54,8 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
     }
 
     @Override
-    protected void populateTopActionBar(final boolean newTopic) {
-        super.populateTopActionBar(newTopic);
+    protected void populateTopActionBar(final boolean newTopic, final boolean hasErrors) {
+        super.populateTopActionBar(newTopic, hasErrors);
         
         addActionButton(this.getRenderedSplit());
         addActionButton(this.getRenderedDown());
@@ -72,7 +71,6 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
         
         addActionButton(this.getSave());
 
-        fixReadOnlyButtons();
 
         addRightAlignedActionButtonPaddingPanel();
     }
@@ -80,7 +78,7 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
     @Override
     public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
         this.readOnly = readOnly;
-        populateTopActionBar(newTopic);
+        populateTopActionBar(newTopic, topic.getXmlErrors() != null && !topic.getXmlErrors().trim().isEmpty());
         buildSplitViewButtons(splitType);
 
         try {

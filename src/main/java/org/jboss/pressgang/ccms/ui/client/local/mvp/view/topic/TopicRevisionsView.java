@@ -231,14 +231,14 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
             final List<String> locales, final Boolean showImages) {
         this.readOnly = readOnly;
         this.mainTopic = topic;
-        populateTopActionBar(newTopic);
+        populateTopActionBar(newTopic, topic.getXmlErrors() != null && !topic.getXmlErrors().trim().isEmpty());
         buildSplitViewButtons(splitType);
 
     }
 
     @Override
-    protected void populateTopActionBar(final boolean newTopic) {
-        super.populateTopActionBar(newTopic);
+    protected void populateTopActionBar(final boolean newTopic, final boolean hasErrors) {
+        super.populateTopActionBar(newTopic, hasErrors);
 
         addActionButton(this.getRenderedSplit());
         addActionButton(this.getRendered());
@@ -253,7 +253,6 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
         addActionButton(this.getCsps());
         addActionButton(this.getSave());
 
-        fixReadOnlyButtons();
 
         addRightAlignedActionButtonPaddingPanel();
     }

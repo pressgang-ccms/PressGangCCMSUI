@@ -129,9 +129,9 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
     }
 
     @Override
-    protected void populateTopActionBar(final boolean newTopic) {
+    protected void populateTopActionBar(final boolean newTopic, final boolean hasErrors) {
         
-        super.populateTopActionBar(newTopic);
+        super.populateTopActionBar(newTopic, hasErrors);
         
         addActionButton(this.getRenderedSplit());
         addActionButton(this.getRendered());
@@ -145,8 +145,6 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
         }
         addActionButton(this.getCsps());
         addActionButton(this.getSave());
-
-        fixReadOnlyButtons();
 
         addRightAlignedActionButtonPaddingPanel();
     }
@@ -230,7 +228,7 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
     @Override
     public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
         this.readOnly = readOnly;
-        populateTopActionBar(newTopic);
+        populateTopActionBar(newTopic, topic.getXmlErrors() != null && !topic.getXmlErrors().trim().isEmpty());
         buildSplitViewButtons(splitType);
 
         /* reset the layout */

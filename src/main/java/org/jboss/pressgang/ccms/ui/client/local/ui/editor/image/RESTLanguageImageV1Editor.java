@@ -108,8 +108,10 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
         this.getCellFormatter().addStyleName(0, 1, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_UPLOAD_BUTTONS_CELL);
         this.getCellFormatter().addStyleName(1, 0, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_LABEL_CELL);
         this.getCellFormatter().addStyleName(1, 1, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_TEXT_CELL);
-        this.getCellFormatter().addStyleName(2, 0, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_LABEL_CELL);
-        this.getCellFormatter().addStyleName(2, 1, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_IMAGE_CELL);
+        this.getCellFormatter().addStyleName(2, 0, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DIMENSION_LABEL_CELL);
+        this.getCellFormatter().addStyleName(2, 1, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DIMENSION_TEXT_CELL);
+        this.getCellFormatter().addStyleName(3, 0, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_LABEL_CELL);
+        this.getCellFormatter().addStyleName(3, 1, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_IMAGE_CELL);
     }
 
     @Override

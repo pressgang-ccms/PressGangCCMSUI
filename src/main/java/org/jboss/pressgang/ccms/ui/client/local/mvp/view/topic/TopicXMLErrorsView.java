@@ -29,8 +29,8 @@ public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsP
     }
 
     @Override
-    protected void populateTopActionBar(final boolean newTopic) {
-        super.populateTopActionBar(newTopic);
+    protected void populateTopActionBar(final boolean newTopic, final boolean hasErrors) {
+        super.populateTopActionBar(newTopic, hasErrors);
         
         addActionButton(this.getRenderedSplit());
         addActionButton(this.getRendered());
@@ -53,7 +53,7 @@ public class TopicXMLErrorsView extends TopicViewBase implements TopicXMLErrorsP
     @Override
     public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
         this.readOnly = readOnly;
-        populateTopActionBar(newTopic);
+        populateTopActionBar(newTopic, topic.getXmlErrors() != null && !topic.getXmlErrors().trim().isEmpty());
         buildSplitViewButtons(splitType);
         
 
