@@ -98,8 +98,9 @@ public interface TopicViewInterface extends BaseTemplateViewInterface {
      * @param readOnly true if the display is to be read only, false otherwise
      * @param newTopic true if this is a newly created topic
      * @param splitType How the panel should be split to display the rendered veiw
+     * @param showImages true if external images are to be shown, and false if a placeholder is to be used
      */
-    void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales);
+    void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages);
 
     /** Show the rendered split view menu */
     void showSplitViewButtons();

@@ -98,6 +98,10 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
 
     private boolean templateLoaded = false;
     private boolean localesLoaded = false;
+    
+    private String lastXML = null;
+    private long lastXMLChange;
+    private boolean isDisplayingImage = false; 
 
     /**
      * Setup automatic flushing and rendering.
@@ -106,8 +110,28 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         @Override
         public void run() {
             if (lastView == topicXMLDisplay) {
+                
                 topicXMLDisplay.getDriver().flush();
-                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales);
+                
+                final boolean xmlHasChanges = lastXML == null || !lastXML.equals(newTopic.getXml());
+                
+                if (xmlHasChanges)
+                {
+                    lastXMLChange = System.currentTimeMillis();
+                }
+                
+                final Boolean timeToDisplayImage = System.currentTimeMillis() - lastXMLChange >=  Constants.REFRESH_RATE_WTH_IMAGES;
+                
+                if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage))
+                {
+                    isDisplayingImage = timeToDisplayImage;
+                    topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales, isDisplayingImage);
+                }
+                
+                lastXML = newTopic.getXml();
+
+                
+                
             }
         }
     };
@@ -474,7 +498,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                                 updateDisplayedTopicView(lastView);
                                 loadTags();
                                 /* The save process will modify the title, so do a refresh of the rendered view */
-                                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales);
+                                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales, false);
                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                             }
                         }) {
@@ -553,7 +577,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
 
                 initializeSplitViewButtons();
                 initializeDisplay();
-                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales);
+                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales, false);
             }
         };
 
@@ -569,7 +593,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
 
                 initializeSplitViewButtons();
                 initializeDisplay();
-                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales);
+                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales, false);
             }
         };
 
@@ -853,7 +877,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 /* setup automatic updating */
                 timer.scheduleRepeating(Constants.REFRESH_RATE);
                 /* Do an initial update */
-                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales);
+                topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales, false);
             }
             
             setXMLEditorButtonsToEditorState();
@@ -868,7 +892,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
     private void initializeViews() {
         /* refresh the data being displayed */
         for (final TopicViewInterface view : this.updatableTopicViews) {
-            view.initialize(newTopic, false, true, split, locales);
+            view.initialize(newTopic, false, true, split, locales, false);
         }
     }
 

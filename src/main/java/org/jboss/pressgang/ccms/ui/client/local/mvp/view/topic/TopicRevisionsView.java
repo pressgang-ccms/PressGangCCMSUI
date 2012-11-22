@@ -228,7 +228,7 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
 
     @Override
     public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType,
-            final List<String> locales) {
+            final List<String> locales, final Boolean showImages) {
         this.readOnly = readOnly;
         this.mainTopic = topic;
         populateTopActionBar(newTopic);

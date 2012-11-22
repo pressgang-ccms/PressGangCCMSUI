@@ -37,6 +37,11 @@ public final class Constants {
      */
     public static final int REFRESH_RATE = 1000;
     
+    /**
+     * How long to wait before refreshing the rendered view (in milliseconds).
+     */
+    public static final int REFRESH_RATE_WTH_IMAGES = REFRESH_RATE * 5;
+    
     
     /**
      * The name of a javascript click event.

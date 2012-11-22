@@ -78,7 +78,7 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales) {
+    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
         this.readOnly = readOnly;
         populateTopActionBar(newTopic);
         buildSplitViewButtons(splitType);
@@ -91,6 +91,7 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
             // Setting the stylesheet to transform with
 
             processor.importStyleSheet(DocbookToHTML.XSL);
+            processor.setParameter("externalImages", showImages.toString());
             
             //processor.importSource(Constants.DOCBOOK_XSL_FILE);
 

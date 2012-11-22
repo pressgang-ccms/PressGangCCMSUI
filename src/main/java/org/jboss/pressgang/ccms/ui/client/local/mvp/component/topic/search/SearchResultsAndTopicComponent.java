@@ -104,6 +104,13 @@ public class SearchResultsAndTopicComponent
             }
         }
     };
+    
+    /** The last xml that was rendered */
+    private String lastXML = null;
+    /** How long it has been since the xml changes */
+    private long lastXMLChange = 0;
+    /** False if we are not displaying external images in the current rendered view, and true otherwise */
+    private boolean isDisplayingImage = false;
 
     private String queryString;
 
@@ -275,8 +282,24 @@ public class SearchResultsAndTopicComponent
      */
     private void refreshRenderedView() {
         topicXMLDisplay.getDriver().flush();
-        topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
-                display.getSplitType(), locales);
+        
+        final boolean xmlHasChanges = lastXML == null || !lastXML.equals(getTopicOrRevisionTopic().getItem().getXml());
+        
+        if (xmlHasChanges)
+        {
+            lastXMLChange = System.currentTimeMillis();
+        }
+        
+        final Boolean timeToDisplayImage = System.currentTimeMillis() - lastXMLChange >=  Constants.REFRESH_RATE_WTH_IMAGES;
+        
+        if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage))
+        {
+            isDisplayingImage = timeToDisplayImage;
+            topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
+                display.getSplitType(), locales, isDisplayingImage);
+        }
+        
+        lastXML = getTopicOrRevisionTopic().getItem().getXml();
     }
 
     /**
@@ -688,7 +711,7 @@ public class SearchResultsAndTopicComponent
             /* Refresh the rendered view (when there is no page splitting) */
             if (displayedView == this.topicRenderedDisplay) {
                 topicRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
-                        display.getSplitType(), locales);
+                        display.getSplitType(), locales, false);
             }
 
             /* Update the page name */
@@ -1055,14 +1078,14 @@ public class SearchResultsAndTopicComponent
                     topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay,
                     topicSplitPanelRenderedDisplay }) {
                 if (viewIsInFilter(filter, view)) {
-                    view.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, this.split, locales);
+                    view.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, this.split, locales, false);
                 }
             }
 
             if (viewIsInFilter(filter, topicRevisionsDisplay)) {
                 logger.log(Level.INFO, "\tInitializing topic revisions view");
                 topicRevisionsDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                        isReadOnlyMode(), NEW_TOPIC, display.getSplitType(), locales);
+                        isReadOnlyMode(), NEW_TOPIC, display.getSplitType(), locales, false);
             }
 
             if (viewIsInFilter(filter, topicTagsDisplay)) {
