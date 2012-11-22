@@ -368,6 +368,70 @@ public final class DocbookToHTML {
             "       <xsl:apply-templates />\n" + 
             "    </xsl:template>\n" + 
             "    \n" + 
+            "    <xsl:template match=\"table\">\n" + 
+            "       <xsl:variable name=\"borderTop\">\n" + 
+            "           <xsl:if test=\"@frame='all' or @frame='top' or @frame='topbot'\">\n" + 
+            "               border-top-style:solid;\n" + 
+            "           </xsl:if>\n" + 
+            "       </xsl:variable>\n" + 
+            "       \n" + 
+            "       <xsl:variable name=\"borderBottom\">\n" + 
+            "           <xsl:if test=\"@frame='all' or @frame='bottom' or @frame='topbot'\">\n" + 
+            "               border-bottom-style:solid;\n" + 
+            "           </xsl:if>\n" + 
+            "       </xsl:variable>\n" + 
+            "       \n" + 
+            "       <xsl:variable name=\"borderSides\">\n" + 
+            "           <xsl:if test=\"@frame='all' or @frame='sides'\">\n" + 
+            "               border-left-style:solid; border-right-style:solid;\n" + 
+            "           </xsl:if>\n" + 
+            "       </xsl:variable>\n" + 
+            "           \n" + 
+            "       <table style=\"{$borderTop} {$borderBottom} {$borderSides}\">\n" + 
+            "           <xsl:apply-templates />\n" + 
+            "       </table>\n" + 
+            "    </xsl:template>\n" + 
+            "    \n" + 
+            "    <xsl:template match=\"tgroup\">\n" + 
+            "       <xsl:apply-templates />\n" + 
+            "    </xsl:template>\n" + 
+            "    \n" + 
+            "    <xsl:template match=\"thead\">\n" + 
+            "       <thead>\n" + 
+            "           <xsl:apply-templates />\n" + 
+            "       </thead>\n" + 
+            "    </xsl:template>\n" + 
+            "    \n" + 
+            "    <xsl:template match=\"tfoot\">\n" + 
+            "       <tfoot>\n" + 
+            "           <xsl:apply-templates />\n" + 
+            "       </tfoot>\n" + 
+            "    </xsl:template>\n" + 
+            "    \n" + 
+            "    <xsl:template match=\"tbody\">\n" + 
+            "       <tbody>\n" + 
+            "           <xsl:apply-templates />\n" + 
+            "       </tbody>\n" + 
+            "    </xsl:template>\n" + 
+            "    \n" + 
+            "    <xsl:template match=\"row\">\n" + 
+            "       <tr>\n" + 
+            "           <xsl:apply-templates />\n" + 
+            "       </tr>\n" + 
+            "    </xsl:template>\n" + 
+            "    \n" + 
+            "    <xsl:template match=\"entry\">\n" + 
+            "       <td>\n" + 
+            "           <xsl:apply-templates />\n" + 
+            "       </td>\n" + 
+            "    </xsl:template>\n" + 
+            "    \n" + 
+            "    <xsl:template match=\"thead/row/entry\">\n" + 
+            "       <th>\n" + 
+            "           <xsl:apply-templates />\n" + 
+            "       </th>\n" + 
+            "    </xsl:template>\n" + 
+            "    \n" + 
             "  <xsl:template name=\"string-replace-all\">\n" + 
             "     <xsl:param name=\"text\" />\n" + 
             "     <xsl:param name=\"replace\" />\n" + 

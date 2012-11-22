@@ -152,9 +152,10 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
                         public void doSuccessAction(final RESTTopicV1 retValue, final BaseTemplateViewInterface display) {
 
                             try {
-                                final XsltProcessor processor = new XsltProcessor();
-                                processor.importStyleSheet(DocbookToHTML.XSL);
+                                final XsltProcessor processor = new XsltProcessor();                                
+                                processor.importStyleSheet(DocbookToHTML.XSL);                                
                                 processor.importSource(retValue.getXml());
+                                processor.setParameter("externalImages", true + "");
                                 final String resultString = processor.transform();
                                 contents.setHTML(resultString);
                                 
