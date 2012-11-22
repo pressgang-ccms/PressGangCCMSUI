@@ -39,6 +39,11 @@ final public class ServiceConstants {
      * other strnig constant IDs that contain docbook templates
      */
     static public final Integer DOCBOOK_TEMPLATES_STRING_CONSTANT_ID = 43;
+    
+    /**
+     * The help topic for the search screen
+     */
+    static public final int SEARCH_VIEW_HELP_TOPIC = 12505;
 
     private ServiceConstants() {
 

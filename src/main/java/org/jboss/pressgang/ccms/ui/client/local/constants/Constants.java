@@ -10,7 +10,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm
      */
-    public static final String VERSION = "201211190956";
+    public static final String VERSION = "201211221012";
     
     /**
      * The sort order to apply to a newly added child
@@ -130,6 +130,16 @@ public final class Constants {
      * The end of the url for the documentation of Docbook XML elements
      */
     public static final String DOCBOOK_ELEMENT_URL_POSTFIX = ".html";
+    
+    /**
+     * The location of the docbook xsl files
+     */
+    public static final String DOCBOOK_XSL_DIRECTORY = "docbook-xsl-1.77.1";
+    
+    /** The XSL file to use for the transformation */
+    public static final String DOCBOOK_XSL_FILE = DOCBOOK_XSL_DIRECTORY + "/xhtml5/docbook.xsl";
+    
+    public static final String DOCBOOK_LITE_XSL_FILE = "docbook_lite.xsl";
     
     private Constants() {
 

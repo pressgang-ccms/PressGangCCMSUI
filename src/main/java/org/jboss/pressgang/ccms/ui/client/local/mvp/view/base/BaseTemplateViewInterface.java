@@ -1,7 +1,10 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
@@ -15,7 +18,21 @@ import com.google.gwt.user.client.ui.TextBox;
  */
 public interface BaseTemplateViewInterface {
     
-  
+    /**
+     * The interface to the help dialog popup box
+     * @author Matthew Casperson
+     *
+     */
+    public interface HelpDialog
+    {
+        DialogBox getDialogBox();
+        HTML getContents();
+        PushButton getOK();
+        void show(final int topicId, final BaseTemplateViewInterface waitDisplay);
+    }
+    
+    HelpDialog getHelpDialog();
+    
     /**
      * @return The container that holds the actions buttons (i.e. the horizontal row of buttons that are specific to a view)
      */
@@ -125,6 +142,8 @@ public interface BaseTemplateViewInterface {
     PushButton getCategories();
 
     PushButton getTags();
+    
+    Anchor getHelp();
 
     /**
      * @return The button that closes the advanced menu

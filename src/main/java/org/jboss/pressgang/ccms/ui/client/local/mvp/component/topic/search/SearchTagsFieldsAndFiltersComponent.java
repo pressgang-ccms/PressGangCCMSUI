@@ -28,7 +28,7 @@ public class SearchTagsFieldsAndFiltersComponent extends ComponentBase<SearchTag
     private HandlerManager eventBus;
 
     @Override
-    public void bind(final SearchPresenter.Display tagsDisplay, final SearchPresenter.LogicComponent tagsComponent,
+    public void bind(final int topicId, final String pageId, final SearchPresenter.Display tagsDisplay, final SearchPresenter.LogicComponent tagsComponent,
             final SearchFieldPresenter.Display fieldsDisplay, final SearchFieldPresenter.LogicComponent fieldsComponent,
             final SearchTagsFieldsAndFiltersPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
         super.bind(display, waitDisplay);
@@ -38,6 +38,8 @@ public class SearchTagsFieldsAndFiltersComponent extends ComponentBase<SearchTag
         this.fieldsDisplay = fieldsDisplay;
         this.fieldsComponent = fieldsComponent;
 
+        this.setHelpTopicId(topicId);
+        this.setFeedbackLink(pageId);
         bindSearchButtons();
         
         displayTags();

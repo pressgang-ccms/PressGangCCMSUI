@@ -5,6 +5,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -27,7 +28,7 @@ public class SearchTagsFieldsAndFiltersPresenter implements TemplatePresenter {
     }
 
     public interface LogicComponent extends Component<Display> {
-        public void bind(final SearchPresenter.Display tagsDisplay, final SearchPresenter.LogicComponent tagsComponent,
+        public void bind(final int topicId, final String pageId, final SearchPresenter.Display tagsDisplay, final SearchPresenter.LogicComponent tagsComponent,
                 final SearchFieldPresenter.Display fieldsDisplay, final SearchFieldPresenter.LogicComponent fieldsComponent,
                 final SearchTagsFieldsAndFiltersPresenter.Display display,
                 final BaseTemplateViewInterface waitDisplay);
@@ -61,7 +62,7 @@ public class SearchTagsFieldsAndFiltersPresenter implements TemplatePresenter {
         tagsComponent.bind(tagsDisplay, display);
         fieldsComponent.bind(fieldsDisplay, display);
 
-        component.bind(tagsDisplay, tagsComponent, fieldsDisplay, fieldsComponent, display, display);
+        component.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, tagsDisplay, tagsComponent, fieldsDisplay, fieldsComponent, display, display);
     }
 
     @Override

@@ -23,6 +23,12 @@ public interface Component<S extends BaseTemplateViewInterface> {
      * @param pageId A token that identifies the view
      */
     void setFeedbackLink(final String pageId);
+    
+    /**
+     * Sets the help like to display the appropriate topic
+     * @param id The topic id to use as a help page for the view
+     */
+    void setHelpTopicId(final int id);
 
     /**
      * @return false if the view has unsaved changes that the user wishes to save (i.e. don't continue with a navigation event),

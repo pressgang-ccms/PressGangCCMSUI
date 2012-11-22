@@ -280,6 +280,8 @@ public interface PressGangCCMSUI extends Constants {
     
     String Feedback();
     
+    String Help();
+    
     String TopicsEditedInLastXDays();
     
     String TopicsNotEditedInLastXDays();

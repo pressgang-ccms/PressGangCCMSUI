@@ -48,6 +48,8 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
 
     protected BaseTemplateViewInterface waitDisplay;
     protected S display;
+    
+   
 
     @Override
     public boolean isOKToProceed() {
@@ -205,5 +207,26 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
     @Override
     public void setFeedbackLink(final String pageId) {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);
+    }
+    
+    @Override
+    public void setHelpTopicId(final int id)
+    {
+        final ClickHandler openHelpClickHandler = new ClickHandler() {            
+            @Override
+            public void onClick(final ClickEvent event) {
+                waitDisplay.getHelpDialog().show(id, waitDisplay);                
+            }
+        };
+        
+        final ClickHandler okClickHandler = new ClickHandler() {            
+            @Override
+            public void onClick(final ClickEvent event) {
+                waitDisplay.getHelpDialog().getDialogBox().hide();             
+            }
+        };
+        
+        display.getHelp().addClickHandler(openHelpClickHandler);
+        display.getHelpDialog().getOK().addClickHandler(okClickHandler);
     }
 }

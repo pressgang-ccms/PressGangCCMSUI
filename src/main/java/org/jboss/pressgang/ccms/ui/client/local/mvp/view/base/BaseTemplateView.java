@@ -1,17 +1,25 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 
+import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
+import hu.szaboaz.gwt.xslt.client.XsltProcessor;
+
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
@@ -72,6 +80,7 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
 
     /** The feedback link */
     private final Anchor feedback = new Anchor(PressGangCCMSUI.INSTANCE.Feedback());
+    private final Anchor help = new Anchor(PressGangCCMSUI.INSTANCE.Help());
     /** The version label */
     private final Label version = new Label(PressGangCCMSUI.INSTANCE.Build() + " " + Constants.VERSION);
 
@@ -95,9 +104,86 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
     private final PushButton advanced;
     private final PushButton advancedOpen;
     private final PushButton close;
-    
+
     private final TextBox quickSearchQuery = new TextBox();
     private final PushButton quickSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.QuickSearch());
+
+    public class HelpDialogImpl extends DialogBox implements HelpDialog {
+
+        private final FlexTable layout = new FlexTable();
+        private final HTML contents = new HTML("div");
+        private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
+
+        @Override
+        public PushButton getOK() {
+            return ok;
+        }
+
+        @Override
+        public DialogBox getDialogBox() {
+            return this;
+        }
+
+        @Override
+        public HTML getContents() {
+            return contents;
+        }
+        
+        public HelpDialogImpl()
+        {
+            this.setGlassEnabled(true);
+            this.setText(PressGangCCMSUI.INSTANCE.Help());
+
+            layout.setWidget(0, 0, contents);
+
+            final HorizontalPanel buttonPanel = new HorizontalPanel();
+            buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
+            buttonPanel.add(ok);
+
+            layout.setWidget(1, 0, buttonPanel);
+
+            this.add(layout);
+        }
+
+        public void show(final int topicId, final BaseTemplateViewInterface waitDisplay) {
+            final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
+                    waitDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {
+                        @Override
+                        public void doSuccessAction(final RESTTopicV1 retValue, final BaseTemplateViewInterface display) {
+
+                            try {
+                                final XsltProcessor processor = new XsltProcessor();
+                                processor.importStyleSheet(DocbookToHTML.XSL);
+                                processor.importSource(retValue.getXml());
+                                final String resultString = processor.transform();
+                                contents.setHTML(resultString);
+                                
+
+                            } catch (final XsltProcessingException ex) {
+                                // this should not happen
+                            }
+
+                            HelpDialogImpl.this.center();
+                            HelpDialogImpl.this.show();
+                        }
+                    }) {
+
+            };
+            RESTCalls.getTopic(callback, topicId);
+
+        }
+
+    }
+
+    private final HelpDialog helpDialog = new HelpDialogImpl();
+
+    public Anchor getHelp() {
+        return help;
+    }
+
+    public HelpDialog getHelpDialog() {
+        return helpDialog;
+    }
 
     @Override
     public PushButton getQuickSearch() {
@@ -289,17 +375,17 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
         pageTitle.addStyleName(CSSConstants.PAGE_TITLE);
         pageTitleParentLayoutPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         pageTitleParentLayoutPanel.add(pageTitle);
-        
+
         /* Add the quick search box */
         final HorizontalPanel quickSearchParentPanel = new HorizontalPanel();
         quickSearchParentPanel.addStyleName(CSSConstants.QUICK_SEARCH_PARENT_PANEL);
         quickSearchParentPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-        
-        final HorizontalPanel quickSearchPanel = new HorizontalPanel();   
+
+        final HorizontalPanel quickSearchPanel = new HorizontalPanel();
         quickSearchPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         quickSearchPanel.add(quickSearchQuery);
         quickSearchPanel.add(getQuickSearch());
-        
+
         quickSearchParentPanel.add(quickSearchPanel);
         pageTitleParentLayoutPanel.add(quickSearchParentPanel);
 
@@ -317,7 +403,7 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
         topActionParentPanel.add(topActionPanel);
 
         thirdLevelLayoutPanel.addNorth(topActionParentPanel, Constants.ACTION_BAR_HEIGHT);
-        
+
         /* Set the footer panel */
         footerPanel.addStyleName(CSSConstants.FOOTER_PANEL);
 
@@ -333,7 +419,9 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
         /* Add the feedback link */
         footerPanel.setWidget(0, 0, version);
         addRightAlignedActionButtonPaddingPanel(footerPanel);
-        footerPanel.setWidget(0, 2, feedback);
+        footerPanel.setWidget(0, 2, help);
+        footerPanel.setWidget(0, 3, new Label("|"));
+        footerPanel.setWidget(0, 4, feedback);
 
         /* Add the content panel */
         panel.addStyleName(CSSConstants.CONTENT_LAYOUT_PANEL);
@@ -516,4 +604,5 @@ public abstract class BaseTemplateView<T extends RESTBaseEntityV1<T, U, V>, U ex
     public void setFeedbackLink(final String link) {
         feedback.setHref(link);
     }
+ 
 }

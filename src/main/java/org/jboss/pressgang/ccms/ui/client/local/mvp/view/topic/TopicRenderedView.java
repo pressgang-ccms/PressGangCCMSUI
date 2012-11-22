@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
@@ -90,6 +91,8 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
             // Setting the stylesheet to transform with
 
             processor.importStyleSheet(DocbookToHTML.XSL);
+            
+            //processor.importSource(Constants.DOCBOOK_XSL_FILE);
 
             // Setting the document to be transformed
             processor.importSource(topic.getXml());

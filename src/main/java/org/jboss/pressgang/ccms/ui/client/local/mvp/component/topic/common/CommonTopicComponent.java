@@ -294,6 +294,19 @@ public class CommonTopicComponent {
                 hideCspDetailsDialogBox(topicXMLDisplay);
             }
         });
+        
+        topicXMLDisplay.getXmlTemplatesDialog().getOptions().addKeyPressHandler(new KeyPressHandler() {
+
+            @Override
+            public void onKeyPress(KeyPressEvent event) {
+                if (event.getCharCode() == KeyCodes.KEY_ENTER) {
+                    insertTemplate(topicXMLDisplay);
+                } else if (event.getCharCode() == KeyCodes.KEY_ESCAPE) {
+                    hideTemplateDialogBox(topicXMLDisplay);
+                }
+
+            }
+        });
 
         topicXMLDisplay.getXmlTemplatesDialog().getOK().addClickHandler(new ClickHandler() {
 
