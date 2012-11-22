@@ -86,7 +86,7 @@ public class SearchResultsAndTopicComponent
         @Override
         public void run() {
             if (lastDisplayedView == topicXMLDisplay) {
-                refreshRenderedView();
+                refreshRenderedView(false);
             }
         }
     };
@@ -266,7 +266,7 @@ public class SearchResultsAndTopicComponent
     /**
      * Refresh the split panel rendered view
      */
-    private void refreshRenderedView() {
+    private void refreshRenderedView(boolean forceExternalImages) {
         topicXMLDisplay.getDriver().flush();
         
         final boolean xmlHasChanges = lastXML == null || !lastXML.equals(getTopicOrRevisionTopic().getItem().getXml());
@@ -276,7 +276,7 @@ public class SearchResultsAndTopicComponent
             lastXMLChange = System.currentTimeMillis();
         }
         
-        final Boolean timeToDisplayImage = System.currentTimeMillis() - lastXMLChange >=  Constants.REFRESH_RATE_WTH_IMAGES;
+        final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >=  Constants.REFRESH_RATE_WTH_IMAGES;
         
         if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage))
         {
@@ -712,6 +712,7 @@ public class SearchResultsAndTopicComponent
                 timer.scheduleRepeating(Constants.REFRESH_RATE);
             } else {
                 timer.cancel();
+                refreshRenderedView(true);
             }
 
             lastDisplayedView = displayedView;

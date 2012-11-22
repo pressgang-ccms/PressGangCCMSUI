@@ -101,22 +101,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         public void run() {
             if (lastView == topicXMLDisplay) {
 
-                topicXMLDisplay.getDriver().flush();
-
-                final boolean xmlHasChanges = lastXML == null || !lastXML.equals(newTopic.getXml());
-
-                if (xmlHasChanges) {
-                    lastXMLChange = System.currentTimeMillis();
-                }
-
-                final Boolean timeToDisplayImage = System.currentTimeMillis() - lastXMLChange >= Constants.REFRESH_RATE_WTH_IMAGES;
-
-                if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
-                    isDisplayingImage = timeToDisplayImage;
-                    topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales, isDisplayingImage);
-                }
-
-                lastXML = newTopic.getXml();
+                refreshRenderedView(false);
 
             }
         }
@@ -511,7 +496,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 split = SplitType.NONE;
                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE);
-                
+
                 timer.cancel();
 
                 initializeSplitViewButtons();
@@ -528,7 +513,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 split = SplitType.VERTICAL;
                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL);
-                
+
                 timer.scheduleRepeating(Constants.REFRESH_RATE);
 
                 initializeSplitViewButtons();
@@ -546,7 +531,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 split = SplitType.HORIZONTAL;
                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_HOIRZONTAL);
-                
+
                 timer.scheduleRepeating(Constants.REFRESH_RATE);
 
                 initializeSplitViewButtons();
@@ -694,8 +679,13 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
 
             setXMLEditorButtonsToEditorState();
 
-        } else if (selectedView == this.topicTagsDisplay) {
-            bindTagEditingButtons();
+        } else {
+            
+            refreshRenderedView(true);
+            
+            if (selectedView == this.topicTagsDisplay) {
+                bindTagEditingButtons();
+            }
         }
 
         lastView = selectedView;
@@ -800,5 +790,27 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay }) {
             view.buildSplitViewButtons(split);
         }
+    }
+
+    /**
+     * Refresh the split panel rendered view
+     */
+    private void refreshRenderedView(boolean forceExternalImages) {
+        topicXMLDisplay.getDriver().flush();
+
+        final boolean xmlHasChanges = lastXML == null || !lastXML.equals(newTopic.getXml());
+
+        if (xmlHasChanges) {
+            lastXMLChange = System.currentTimeMillis();
+        }
+
+        final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >= Constants.REFRESH_RATE_WTH_IMAGES;
+
+        if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
+            isDisplayingImage = timeToDisplayImage;
+            topicSplitPanelRenderedDisplay.initialize(newTopic, false, true, split, locales, isDisplayingImage);
+        }
+
+        lastXML = newTopic.getXml();
     }
 }
