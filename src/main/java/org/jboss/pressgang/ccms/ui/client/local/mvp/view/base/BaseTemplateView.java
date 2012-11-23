@@ -26,9 +26,11 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -106,7 +108,7 @@ public abstract class BaseTemplateView
 
     public class HelpDialogImpl extends DialogBox implements HelpDialog {
 
-        private final FlexTable layout = new FlexTable();
+        private final VerticalPanel layout = new VerticalPanel();
         private final HTML contents = new HTML("div");
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
 
@@ -129,14 +131,23 @@ public abstract class BaseTemplateView
         {
             this.setGlassEnabled(true);
             this.setText(PressGangCCMSUI.INSTANCE.Help());
+            
+            final ScrollPanel scroll = new ScrollPanel(contents);
+            scroll.setWidth(Constants.HELP_DIALOG_WIDTH);
+            scroll.setHeight(Constants.HELP_DIALOG_HEIGHT);
 
-            layout.setWidget(0, 0, contents);
+            layout.add(scroll);
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(ok);
 
-            layout.setWidget(1, 0, buttonPanel);
+            layout.add(buttonPanel);
+            
+            //this.setWidth("75%");
+            //this.setHeight("75%");
+            
+            //this.setModal(false);
 
             this.add(layout);
         }

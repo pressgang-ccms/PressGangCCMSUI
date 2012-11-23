@@ -10,7 +10,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm
      */
-    public static final String VERSION = "201211231320";
+    public static final String VERSION = "201211231329";
     
     /**
      * The sort order to apply to a newly added child
@@ -146,7 +146,11 @@ public final class Constants {
     
     public static final String DOCBOOK_LITE_XSL_FILE = "docbook_lite.xsl";
     
+    public static final String HELP_DIALOG_WIDTH = "640px"; 
+    public static final String HELP_DIALOG_HEIGHT = "480px";
+    
     private Constants() {
 
     }
 }
+
