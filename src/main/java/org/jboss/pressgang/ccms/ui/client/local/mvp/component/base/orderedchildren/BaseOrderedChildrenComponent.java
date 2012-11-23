@@ -43,9 +43,9 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
 
     protected ProviderUpdateData<F> existingProviderData = new ProviderUpdateData<F>();
     
-    public void bind(final String preferencesKey, final S display, final BaseTemplateViewInterface waitDisplay)
+    public void bind(final int topicId, final String pageId, final String preferencesKey, final S display, final BaseTemplateViewInterface waitDisplay)
     {
-        super.bind(display, waitDisplay);
+         super.bind(topicId, pageId, display, waitDisplay);
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
         refreshPossibleChildrenDataAndList();
         loadChildSplitResize(preferencesKey);

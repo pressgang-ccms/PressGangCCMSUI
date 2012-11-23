@@ -11,9 +11,9 @@ public class SearchFieldComponent extends ComponentBase<SearchFieldPresenter.Dis
      * @inheritDoc
      */
     @Override
-    public void bind(final SearchFieldPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
+    public void bind(final int topicId, final String pageId, final SearchFieldPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
         
-        super.bind(display, waitDisplay);
+         super.bind(topicId, pageId, display, waitDisplay);
         
     }
 

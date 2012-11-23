@@ -26,10 +26,10 @@ public class CategoryFilteredResultsComponent
     implements LogicCompnent {
 
     @Override
-    public void bind(final String queryString, final CategoryFilteredResultsPresenter.Display display,
+    public void bind(final int topicId, final String pageId, final String queryString, final CategoryFilteredResultsPresenter.Display display,
             final BaseTemplateViewInterface waitDisplay) {
         
-        super.bind(queryString, display, waitDisplay);
+        super.bind(topicId, pageId, queryString, display, waitDisplay);
         display.setProvider(generateListProvider(queryString, display, waitDisplay));
     }
 

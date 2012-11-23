@@ -57,9 +57,9 @@ public class TagCategoriesComponent
             };
     
     @Override
-    public void bind(final TagCategoriesPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
+    public void bind(final int topicId, final String pageId, final TagCategoriesPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
 
-        super.bind(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display, waitDisplay);
+        super.bind(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display, waitDisplay);
 
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
         // display.setExistingChildrenProvider(generateExistingProvider());

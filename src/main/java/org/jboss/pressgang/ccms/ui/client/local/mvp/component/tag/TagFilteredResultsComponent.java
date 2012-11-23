@@ -21,9 +21,9 @@ public class TagFilteredResultsComponent
         implements TagFilteredResultsPresenter.LogicComponent {
 
     @Override
-    public void bind(final String queryString, final TagFilteredResultsPresenter.Display display,
+    public void bind(final int topicId, final String pageId, final String queryString, final TagFilteredResultsPresenter.Display display,
             final BaseTemplateViewInterface waitDisplay) {
-        super.bind(display, waitDisplay);
+         super.bind(topicId, pageId, display, waitDisplay);
         display.setProvider(generateListProvider(queryString, display, waitDisplay));
         displayQueryElements(queryString);
     }

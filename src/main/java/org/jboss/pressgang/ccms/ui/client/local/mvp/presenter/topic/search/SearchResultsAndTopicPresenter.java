@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.LogMessageInterface;
@@ -57,8 +58,7 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
 
         void setQueryString(final String queryString);
 
-        void bind(final SearchResultsAndTopicPresenter.Display display,
-                final BaseTemplateViewInterface waitDisplay,
+        void bind(final int topicId, final String pageId, final SearchResultsAndTopicPresenter.Display display, final BaseTemplateViewInterface waitDisplay,
                 final TopicPresenter.Display topicViewDisplay, final TopicPresenter.LogicComponent topicViewComponent,
                 final TopicXMLPresenter.Display topicXMLDisplay, final TopicXMLPresenter.LogicComponent topicXMLComponent,
                 final TopicRenderedPresenter.Display topicRenderedDisplay,
@@ -135,14 +135,13 @@ public class SearchResultsAndTopicPresenter implements TemplatePresenter {
 
         display.displaySearchResultsView(searchResultsDisplay);
 
-        searchResultsComponent.bind(component.getQueryString(), searchResultsDisplay, display);
-        topicTagsComponent.bind(topicTagsDisplay, display);
+        searchResultsComponent.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, component.getQueryString(), searchResultsDisplay, display);
+        topicTagsComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN,  topicTagsDisplay, display);
 
-        component.bind(display, display, topicViewDisplay, topicViewComponent, topicXMLDisplay, topicXMLComponent,
+        component.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display, display, topicViewDisplay, topicViewComponent, topicXMLDisplay, topicXMLComponent,
                 topicRenderedDisplay, topicSplitPanelRenderedDisplay, searchResultsDisplay, searchResultsComponent,
                 topicXMLErrorsDisplay, topicTagsDisplay, topicTagsComponent, topicBugsDisplay, topicRevisionsDisplay,
                 topicrevisionsComponent);
-        component.setFeedbackLink(HISTORY_TOKEN);
 
     }
 

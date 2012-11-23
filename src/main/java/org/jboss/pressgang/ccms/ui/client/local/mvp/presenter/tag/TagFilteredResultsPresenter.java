@@ -8,10 +8,12 @@ import javax.inject.Inject;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
+
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.TextBox;
 
@@ -31,8 +33,7 @@ public class TagFilteredResultsPresenter implements TemplatePresenter {
     public interface LogicComponent
             extends
             BaseFilteredResultsComponentInterface<TagFilteredResultsPresenter.Display, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
-        @Override
-        void bind(final String queryString, final TagFilteredResultsPresenter.Display display,
+        void bind(final int topicId, final String pageId, final String queryString, final TagFilteredResultsPresenter.Display display,
                 final BaseTemplateViewInterface waitDisplay);
     }
 
@@ -52,7 +53,7 @@ public class TagFilteredResultsPresenter implements TemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        component.bind(queryString, display, display);
+        component.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display, display);
     }
 
 }

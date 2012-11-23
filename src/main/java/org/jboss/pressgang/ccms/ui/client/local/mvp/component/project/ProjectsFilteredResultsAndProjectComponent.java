@@ -52,7 +52,7 @@ public class ProjectsFilteredResultsAndProjectComponent
     private ProjectTagPresenter.LogicComponent tagComponent;
 
     @Override
-    public void bind(final ProjectFilteredResultsPresenter.Display filteredResultsDisplay,
+    public void bind(final int topicId, final String pageId, final ProjectFilteredResultsPresenter.Display filteredResultsDisplay,
             final ProjectFilteredResultsPresenter.LogicCompnent filteredResultsComponent,
             final ProjectPresenter.Display entityPropertiesView, final ProjectTagPresenter.Display tagDisplay,
             final ProjectTagPresenter.LogicComponent tagComponent,
@@ -61,7 +61,7 @@ public class ProjectsFilteredResultsAndProjectComponent
         this.tagDisplay = tagDisplay;
         this.tagComponent = tagComponent;
 
-        super.bind(Preferences.PROJECT_VIEW_MAIN_SPLIT_WIDTH, entityPropertiesView, entityPropertiesView,
+        super.bind(topicId, pageId, Preferences.PROJECT_VIEW_MAIN_SPLIT_WIDTH, entityPropertiesView, entityPropertiesView,
                 filteredResultsDisplay, filteredResultsComponent, display, waitDisplay);
 
         /* Bind the logic to add and remove possible children */

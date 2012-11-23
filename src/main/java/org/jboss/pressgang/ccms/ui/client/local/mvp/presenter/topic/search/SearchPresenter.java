@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
@@ -50,7 +51,7 @@ public class SearchPresenter implements TemplatePresenter {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
         display.setViewShown(true);
         clearContainerAndAddTopLevelPanel(container, display);
-        component.bind(display, display);
+        component.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display, display);
     }
 
     @Override

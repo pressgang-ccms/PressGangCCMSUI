@@ -24,9 +24,9 @@ public class TagProjectsComponent extends BaseChildrenComponent<TagProjectsPrese
         TagProjectsPresenter.LogicComponent {
 
     @Override
-    public void bind(final TagProjectsPresenter.Display display, final BaseTemplateViewInterface waitDisplay)
+    public void bind(final int topicId, final String pageId, final TagProjectsPresenter.Display display, final BaseTemplateViewInterface waitDisplay)
     {
-        super.bind(display, waitDisplay);
+         super.bind(topicId, pageId, display, waitDisplay);
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
         refreshPossibleChildrenDataAndList();
     }

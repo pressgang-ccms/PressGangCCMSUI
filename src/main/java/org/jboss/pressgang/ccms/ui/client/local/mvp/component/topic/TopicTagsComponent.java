@@ -27,8 +27,8 @@ public class TopicTagsComponent extends TopicViewComponent<TopicTagsPresenter.Di
     }
 
     @Override
-    public void bind(final TopicTagsPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
-        super.bind(display, waitDisplay);
+    public void bind(final int topicId, final String pageId, final TopicTagsPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
+         super.bind(topicId, pageId, display, waitDisplay);
         getTags();
     }
 

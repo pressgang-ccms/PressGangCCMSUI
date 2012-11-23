@@ -2,17 +2,16 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -112,8 +111,11 @@ public class CommonTopicComponent {
                         /* Get the list of template string constant ids from the StringConstant */
                         final Set<String> xmlElements = new HashSet<String>(Arrays.asList(GWTUtilities.fixUpIdSearchString(
                                 retValue.getValue()).split(",")));
-                        final Map<String, String> data = new HashMap<String, String>();
+                        final Map<String, String> data = new TreeMap<String, String>();
 
+                        /* work around the inability to modify an int from an anonymous class */
+                        final int[] counter = new int[] {0};
+                        
                         for (final String id : xmlElements) {
                             try {
                                 final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
@@ -123,18 +125,28 @@ public class CommonTopicComponent {
                                             public void doSuccessAction(final RESTStringConstantV1 retValue,
                                                     final BaseTemplateViewInterface display) {
 
+                                                ++counter[0];
+                                                
                                                 data.put(retValue.getName(), retValue.getValue());
 
                                                 /*
-                                                 * If this was the last call, return the data to the callee. TODO: This will
-                                                 * fail if one REST call fails
+                                                 * If this was the last call, return the data to the callee.
                                                  */
-                                                if (data.size() == xmlElements.size()) {
+                                                if (counter[0] == xmlElements.size()) {
                                                     loadedCallback.stringMapLoaded(data);
                                                 }
                                             }
-                                        }) {
-                                };
+                                        }, 
+                                        new BaseRestCallback.FailureAction<BaseTemplateViewInterface>() {
+
+                                            @Override
+                                            public void doFailureAction(BaseTemplateViewInterface display) {
+                                                ++counter[0];
+                                                if (counter[0] == xmlElements.size()) {
+                                                    loadedCallback.stringMapLoaded(data);
+                                                }                                                
+                                            }
+                                        });
 
                                 RESTCalls.getStringConstant(callback, Integer.parseInt(id));
                             } catch (final NumberFormatException ex) {
@@ -143,8 +155,7 @@ public class CommonTopicComponent {
                         }
 
                     }
-                }) {
-        };
+                });
 
         RESTCalls.getStringConstant(callback, ServiceConstants.DOCBOOK_TEMPLATES_STRING_CONSTANT_ID);
     }

@@ -20,16 +20,24 @@ import com.google.gwt.user.client.Window;
  * @author kamiller@redhat.com (Katie Miller)
  * 
  */
-public abstract class BaseRestCallback<C, D extends BaseTemplateViewInterface> implements RESTCalls.RESTCallback<C> {
+public class BaseRestCallback<C, D extends BaseTemplateViewInterface> implements RESTCalls.RESTCallback<C> {
 
     private final D display;
     private final SuccessAction<C, D> successAction;
+    private final FailureAction<D> failureAction;
     
     private static final Logger logger = Logger.getLogger(BaseRestCallback.class.getName());
 
     public BaseRestCallback(final D display, final SuccessAction<C, D> successAction) {
         this.display = display;
         this.successAction = successAction;
+        this.failureAction = null; 
+    }
+    
+    public BaseRestCallback(final D display, final SuccessAction<C, D> successAction, final FailureAction<D> failureAction) {
+        this.display = display;
+        this.successAction = successAction;
+        this.failureAction = failureAction; 
     }
 
     @Override
@@ -41,6 +49,19 @@ public abstract class BaseRestCallback<C, D extends BaseTemplateViewInterface> i
     public void generalException(final Exception e) {
         logger.log(Level.SEVERE, e.toString());
         display.removeWaitOperation();
+        
+        try
+        {
+            if (failureAction != null)
+            {
+                failureAction.doFailureAction(display);    
+            }
+            
+        }
+        catch (final Exception ex)
+        {
+            
+        }
     }
 
     @Override
@@ -54,6 +75,19 @@ public abstract class BaseRestCallback<C, D extends BaseTemplateViewInterface> i
 
     @Override
     public void failed(final Message message, final Throwable throwable) {
+        
+        try
+        {
+            if (failureAction != null)
+            {
+                failureAction.doFailureAction(display);    
+            }            
+        }
+        catch (final Exception ex)
+        {
+            
+        }
+        
         try {
             
             if (message != null)
@@ -79,5 +113,9 @@ public abstract class BaseRestCallback<C, D extends BaseTemplateViewInterface> i
 
     public interface SuccessAction<T, D extends BaseTemplateViewInterface> {
         void doSuccessAction(T retValue, D display);
+    }
+    
+    public interface FailureAction<D extends BaseTemplateViewInterface> {
+        void doFailureAction(D display);
     }
 }

@@ -176,7 +176,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
     }
 
     @Override
-    public void bind(final TopicPresenter.Display topicViewDisplay, final TopicPresenter.LogicComponent topicViewComponent,
+    public void bind(final int topicId, final String pageId, final TopicPresenter.Display topicViewDisplay, final TopicPresenter.LogicComponent topicViewComponent,
             final TopicXMLPresenter.Display topicXMLDisplay, final TopicXMLPresenter.LogicComponent topicXMLComponent,
             final TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay,
             final TopicXMLErrorsPresenter.LogicComponent topicXMLErrorsComponent,
@@ -185,7 +185,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             final TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay, final CreateTopicPresenter.Display display,
             final BaseTemplateViewInterface waitDisplay) {
 
-        super.bind(display, waitDisplay);
+         super.bind(topicId, pageId, display, waitDisplay);
 
         this.topicViewDisplay = topicViewDisplay;
         this.topicViewComponent = topicViewComponent;
@@ -254,6 +254,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         });
 
         CommonTopicComponent.addKeyboardShortcutEventHandler(this.topicXMLDisplay, this.display);
+
     }
 
     /**
@@ -579,6 +580,8 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 topicXMLDisplay.getEditor().setShowInvisibles(topicXMLDisplay.getShowInvisibles().isDown());
             }
         });
+        
+        CommonTopicComponent.addKeyboardShortcutEvents(topicXMLDisplay, display);
     }
 
     /**

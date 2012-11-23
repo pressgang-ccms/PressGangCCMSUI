@@ -11,6 +11,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionI
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.BaseChildrenComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
@@ -49,6 +50,6 @@ public class TagProjectsPresenter implements TemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        component.bind(display,  display);
+        component.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display,  display);
     }
 }

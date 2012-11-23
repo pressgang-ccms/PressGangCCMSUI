@@ -21,9 +21,9 @@ public class SearchResultsComponent
         implements SearchResultsPresenter.LogicComponent {
 
     @Override
-    public void bind(final String queryString, final SearchResultsPresenter.Display display,
-            final BaseTemplateViewInterface waitDisplay) {
-        super.bind(queryString, display, waitDisplay);
+    public void bind(final int topicId, final String pageId, final String queryString,
+            final SearchResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
+        super.bind(topicId, pageId, queryString, display, waitDisplay);
         display.setProvider(generateListProvider(queryString, display, waitDisplay));
     }
 

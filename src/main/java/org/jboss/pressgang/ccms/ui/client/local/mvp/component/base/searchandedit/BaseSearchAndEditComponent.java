@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -63,11 +64,11 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
      * @param display The view that this component adds logic to
      * @param waitDisplay The view that displays the wiat dialog
      */
-    public void bind(final String mainSplitSizePreferenceKey, final W firstDisplayedView, final X entityPropertiesView,
+    public void bind(final int topicId, final String pageId, final String mainSplitSizePreferenceKey, final W firstDisplayedView, final X entityPropertiesView,
             final R filteredResultsDisplay, final BaseFilteredResultsComponentInterface<R, T, U, V> filteredResultsComponent,
             final S display, final BaseTemplateViewInterface waitDisplay) {
 
-        super.bind(display, waitDisplay);
+        super.bind(topicId, pageId, display, waitDisplay);
 
         this.entityPropertiesView = entityPropertiesView;
         this.filteredResultsDisplay = filteredResultsDisplay;
@@ -102,7 +103,7 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
         }
         /* If we just created a new entity, refresh the list of entities from the database */
         else {
-            filteredResultsComponent.bind(filteredResultsComponent.getQuery(), filteredResultsDisplay, waitDisplay);
+            filteredResultsComponent.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", filteredResultsComponent.getQuery(), filteredResultsDisplay, waitDisplay);
 
             /*
              * reInitialiseView will flush the ui, which will flush the null ID back to the displayed object. To prevent that we

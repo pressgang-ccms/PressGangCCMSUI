@@ -191,9 +191,12 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
     }
 
     @Override
-    public void bind(final S display, final BaseTemplateViewInterface waitDisplay) {
+    public void bind(final int topicId, final String pageId, final S display, final BaseTemplateViewInterface waitDisplay) {
         this.display = display;
         this.waitDisplay = waitDisplay;
+        
+        this.setHelpTopicId(topicId);
+        this.setFeedbackLink(pageId);
         bindStandardButtons();
         
         /* Watch for page closes */
@@ -213,13 +216,11 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
 
     }
 
-    @Override
-    public void setFeedbackLink(final String pageId) {
+    private void setFeedbackLink(final String pageId) {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);
     }
     
-    @Override
-    public void setHelpTopicId(final int id)
+    private void setHelpTopicId(final int id)
     {
         final ClickHandler openHelpClickHandler = new ClickHandler() {            
             @Override

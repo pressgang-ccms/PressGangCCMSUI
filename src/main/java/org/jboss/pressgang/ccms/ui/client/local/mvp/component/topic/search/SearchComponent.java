@@ -19,9 +19,9 @@ public class SearchComponent extends ComponentBase<SearchPresenter.Display> impl
     private HandlerManager eventBus;
 
     @Override
-    public void bind(final SearchPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
+    public void bind(final int topicId, final String pageId, final SearchPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
 
-        super.bind(display, waitDisplay);
+         super.bind(topicId, pageId, display, waitDisplay);
 
         getProjects(display);
     }

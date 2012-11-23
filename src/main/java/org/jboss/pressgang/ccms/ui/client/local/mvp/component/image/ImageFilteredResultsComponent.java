@@ -30,9 +30,9 @@ public class ImageFilteredResultsComponent
     private HandlerManager eventBus;
 
     @Override
-    public void bind(final String queryString, final ImageFilteredResultsPresenter.Display display,
+    public void bind(final int topicId, final String pageId, final String queryString, final ImageFilteredResultsPresenter.Display display,
             final BaseTemplateViewInterface waitDisplay) {
-        super.bind(queryString, display, waitDisplay);
+        super.bind(topicId, pageId, queryString, display, waitDisplay);
         display.setProvider(generateListProvider(queryString, display, waitDisplay));
     }
 

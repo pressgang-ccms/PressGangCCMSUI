@@ -294,9 +294,9 @@ public final class DocbookToHTML {
             "    \n" + 
             "    <xsl:template match=\"figure\">\n" + 
             "       <div id=\"{@id}\" class=\"formalpara\">\n" + 
-            "           <h2 class=\"figureTitle\">\n" + 
+            "           <h3 class=\"figureTitle\">\n" + 
             "               <xsl:value-of select=\"title\" />\n" + 
-            "           </h2>                \n" + 
+            "           </h3>                \n" + 
             "           <xsl:apply-templates />\n" + 
             "        </div>\n" + 
             "    </xsl:template>\n" + 
@@ -431,6 +431,13 @@ public final class DocbookToHTML {
             "           <xsl:apply-templates />\n" + 
             "       </th>\n" + 
             "    </xsl:template>\n" + 
+            "    \n" + 
+            "    <xsl:template match=\"keycap | mousebutton | keysym\">\n" + 
+            "        <xsl:apply-templates />\n" + 
+            "       <xsl:if test=\"following-sibling::node()[1][self::keycap] or following-sibling::node()[1][self::mousebutton] or following-sibling::node()[1][self::keysym]\">\n" + 
+            "           <xsl:text>-</xsl:text>\n" + 
+            "       </xsl:if>\n" + 
+            "   </xsl:template>\n" + 
             "    \n" + 
             "  <xsl:template name=\"string-replace-all\">\n" + 
             "     <xsl:param name=\"text\" />\n" + 

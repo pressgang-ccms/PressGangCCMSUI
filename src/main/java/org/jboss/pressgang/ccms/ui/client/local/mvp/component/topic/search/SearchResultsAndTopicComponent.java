@@ -213,7 +213,7 @@ public class SearchResultsAndTopicComponent
     }
 
     @Override
-    public void bind(final SearchResultsAndTopicPresenter.Display display, final BaseTemplateViewInterface waitDisplay,
+    public void bind(final int topicId, final String pageId, final SearchResultsAndTopicPresenter.Display display, final BaseTemplateViewInterface waitDisplay,
             final TopicPresenter.Display topicViewDisplay, final TopicPresenter.LogicComponent topicViewComponent,
             final TopicXMLPresenter.Display topicXMLDisplay, final TopicXMLPresenter.LogicComponent topicXMLComponent,
             final TopicRenderedPresenter.Display topicRenderedDisplay,
@@ -238,7 +238,7 @@ public class SearchResultsAndTopicComponent
         this.topicrevisionsComponent = topicrevisionsComponent;
         
 
-        super.bind(Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLDisplay, topicViewDisplay, searchResultsDisplay,
+        super.bind(topicId, pageId, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLDisplay, topicViewDisplay, searchResultsDisplay,
                 searchResultsComponent, display, waitDisplay);
 
         initializeDisplay();

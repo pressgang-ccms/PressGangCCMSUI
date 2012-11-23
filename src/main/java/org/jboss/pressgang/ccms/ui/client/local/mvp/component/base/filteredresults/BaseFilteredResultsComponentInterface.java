@@ -42,5 +42,5 @@ public interface BaseFilteredResultsComponentInterface<S extends BaseFilteredRes
      * @param display The filtered results view
      * @param waitDisplay The view that displays the waiting dialog 
      */
-    void bind(final String query, final S display, final BaseTemplateViewInterface waitDisplay);
+    void bind(final int topicId, final String pageId, final String queryString, final S display, final BaseTemplateViewInterface waitDisplay);
 }

@@ -5,6 +5,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.LogMessageInterface;
@@ -43,13 +44,14 @@ public class CreateTopicPresenter implements TemplatePresenter {
         SimpleLayoutPanel getTopicViewPanel();
 
         void initialize(final SplitType splitType, final Panel panel);
-        
+
         LogMessageInterface getMessageLogDialog();
     }
 
     public interface LogicComponent extends Component<Display> {
-        void bind(final TopicPresenter.Display topicViewDisplay, final TopicPresenter.LogicComponent topicViewComponent,
-                final TopicXMLPresenter.Display topicXMLDisplay, final TopicXMLPresenter.LogicComponent topicXMLComponent,
+        void bind(final int topicId, final String pageId, final TopicPresenter.Display topicViewDisplay,
+                final TopicPresenter.LogicComponent topicViewComponent, final TopicXMLPresenter.Display topicXMLDisplay,
+                final TopicXMLPresenter.LogicComponent topicXMLComponent,
                 final TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay,
                 final TopicXMLErrorsPresenter.LogicComponent topicXMLErrorsComponent,
                 final TopicTagsPresenter.Display topicTagsDisplay, final TopicTagsPresenter.LogicComponent topicTagsComponent,
@@ -113,13 +115,14 @@ public class CreateTopicPresenter implements TemplatePresenter {
 
         display.setViewShown(true);
 
-        topicComponent.bind(topic, display);
-        topicTagsComponent.bind(topicTags, display);
-        topicXMLComponent.bind(topicXML, display);
-        topicXMLErrorsComponent.bind(topicXMLErrors, display);
+        topicComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, topic, display);
+        topicTagsComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, topicTags, display);
+        topicXMLComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, topicXML, display);
+        topicXMLErrorsComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, topicXMLErrors, display);
 
-        component.bind(topic, topicComponent, topicXML, topicXMLComponent, topicXMLErrors, topicXMLErrorsComponent, topicTags,
-                topicTagsComponent, topicRenderedDisplay, topicSplitPanelRenderedDisplay, display, display);
+        component.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, topic, topicComponent, topicXML, topicXMLComponent,
+                topicXMLErrors, topicXMLErrorsComponent, topicTags, topicTagsComponent, topicRenderedDisplay,
+                topicSplitPanelRenderedDisplay, display, display);
     }
 
     @Override

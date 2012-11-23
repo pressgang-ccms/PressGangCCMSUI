@@ -9,9 +9,11 @@ import javax.inject.Inject;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
+
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.TextBox;
 
@@ -50,7 +52,6 @@ public class ImageFilteredResultsPresenter implements TemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        component.bind(queryString, display, display);
-        component.setFeedbackLink(HISTORY_TOKEN);
+        component.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display, display);
     }
 }

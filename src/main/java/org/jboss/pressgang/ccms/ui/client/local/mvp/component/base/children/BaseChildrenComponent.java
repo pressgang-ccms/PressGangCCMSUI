@@ -48,8 +48,8 @@ abstract public class BaseChildrenComponent<S extends BaseChildrenViewInterface<
     }
     
     @Override
-    public void bind(final S display, final BaseTemplateViewInterface waitDisplay) {
-        super.bind(display, waitDisplay);
+    public void bind(final int topicId, final String pageId, final S display, final BaseTemplateViewInterface waitDisplay) {
+         super.bind(topicId, pageId, display, waitDisplay);
         refreshPossibleChildList();
     }
 

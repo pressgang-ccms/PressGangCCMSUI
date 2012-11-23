@@ -6,9 +6,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 public class TopicRevisionsComponent extends TopicViewComponent<TopicRevisionsPresenter.Display> implements TopicRevisionsPresenter.LogicComponent {
     
     @Override
-    public void bind(final TopicRevisionsPresenter.Display display, final BaseTemplateViewInterface waitDisplay)
+    public void bind(final int topicId, final String pageId, final TopicRevisionsPresenter.Display display, final BaseTemplateViewInterface waitDisplay)
     {
-        super.bind(display, waitDisplay);
+         super.bind(topicId, pageId, display, waitDisplay);
     }
     
     /**

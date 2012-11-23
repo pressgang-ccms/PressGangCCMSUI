@@ -34,8 +34,8 @@ public class CategoryTagComponent
     implements CategoryTagPresenter.LogicComponent {
 
     @Override
-    public void bind(final CategoryTagPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
-        super.bind(Preferences.CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH, display, waitDisplay);
+    public void bind(final int topicId, final String pageId, final CategoryTagPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
+        super.bind(topicId, pageId, Preferences.CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH, display, waitDisplay);
         
     }
 

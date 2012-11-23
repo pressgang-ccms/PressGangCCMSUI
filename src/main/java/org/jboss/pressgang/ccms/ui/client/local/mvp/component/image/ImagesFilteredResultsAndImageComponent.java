@@ -71,12 +71,12 @@ public class ImagesFilteredResultsAndImageComponent
     private HandlerManager eventBus;
 
     @Override
-    public void bind(final ImageFilteredResultsPresenter.Display imageFilteredResultsDisplay,
+    public void bind(final int topicId, final String pageId, final ImageFilteredResultsPresenter.Display imageFilteredResultsDisplay,
             final ImageFilteredResultsPresenter.LogicComponent imageFilteredResultsComponent,
             final ImagePresenter.Display imageDisplay, final ImagePresenter.LogicComponent imageComponent,
             final ImagesFilteredResultsAndImagePresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
 
-        super.bind(Preferences.IMAGE_VIEW_MAIN_SPLIT_WIDTH, imageDisplay, imageDisplay, imageFilteredResultsDisplay,
+        super.bind(topicId, pageId, Preferences.IMAGE_VIEW_MAIN_SPLIT_WIDTH, imageDisplay, imageDisplay, imageFilteredResultsDisplay,
                 imageFilteredResultsComponent, display, waitDisplay);
 
         populateLocales();
@@ -276,7 +276,7 @@ public class ImagesFilteredResultsAndImageComponent
         }
         /* If we just created a new entity, refresh the list of entities from the database */
         else {
-            filteredResultsComponent.bind(filteredResultsComponent.getQuery(), filteredResultsDisplay, waitDisplay);
+            filteredResultsComponent.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", filteredResultsComponent.getQuery(), filteredResultsDisplay, waitDisplay);
 
             /*
              * reInitialiseView will flush the ui, which will flush the null ID back to the displayed object. To prevent that we

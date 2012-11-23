@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -28,11 +29,10 @@ public class ImagesFilteredResultsAndImagePresenter implements TemplatePresenter
     }
 
     public interface LogicComponent extends Component<Display> {
-        void bind(final ImageFilteredResultsPresenter.Display imageFilteredResultsDisplay,
+        void bind(final int topicId, final String pageId, final ImageFilteredResultsPresenter.Display imageFilteredResultsDisplay,
                 final ImageFilteredResultsPresenter.LogicComponent imageFilteredResultsComponent,
                 final ImagePresenter.Display imageDisplay, final ImagePresenter.LogicComponent imageComponent,
-                final ImagesFilteredResultsAndImagePresenter.Display display,
-                final BaseTemplateViewInterface waitDisplay);
+                final ImagesFilteredResultsAndImagePresenter.Display display, final BaseTemplateViewInterface waitDisplay);
     }
 
     @Inject
@@ -61,10 +61,10 @@ public class ImagesFilteredResultsAndImagePresenter implements TemplatePresenter
 
         clearContainerAndAddTopLevelPanel(container, display);
 
-        imageComponent.bind(imageDisplay, display);
-        imageFilteredResultsComponent.bind(queryString, imageFilteredResultsDisplay, display);
+        imageComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, imageDisplay, display);
+        imageFilteredResultsComponent.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, imageFilteredResultsDisplay, display);
 
-        component.bind(imageFilteredResultsDisplay, imageFilteredResultsComponent, imageDisplay, imageComponent, display,
+        component.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, imageFilteredResultsDisplay, imageFilteredResultsComponent, imageDisplay, imageComponent, display,
                 display);
     }
 

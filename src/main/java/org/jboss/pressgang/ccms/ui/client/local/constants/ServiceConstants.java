@@ -47,6 +47,11 @@ final public class ServiceConstants {
     
     /** The topic that is displayed in the welcome view */
     static public final int WELCOME_VIEW_CONTENT_TOPIC = 12556;
+    
+    /** The topic that is displayed in the welcome view */
+    static public final int TOPIC_EDIT_VIEW_CONTENT_TOPIC = 12510;
+    
+    static public final int DEFAULT_HELP_TOPIC = 12558;
 
     private ServiceConstants() {
 

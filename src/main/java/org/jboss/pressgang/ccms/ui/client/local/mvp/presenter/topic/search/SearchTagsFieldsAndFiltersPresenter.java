@@ -59,8 +59,8 @@ public class SearchTagsFieldsAndFiltersPresenter implements TemplatePresenter {
 
         display.setViewShown(true);
 
-        tagsComponent.bind(tagsDisplay, display);
-        fieldsComponent.bind(fieldsDisplay, display);
+        tagsComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, tagsDisplay, display);
+        fieldsComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, fieldsDisplay, display);
 
         component.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, tagsDisplay, tagsComponent, fieldsDisplay, fieldsComponent, display, display);
     }

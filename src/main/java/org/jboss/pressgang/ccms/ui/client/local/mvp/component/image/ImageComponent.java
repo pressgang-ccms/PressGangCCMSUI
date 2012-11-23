@@ -15,8 +15,8 @@ public class ImageComponent extends ComponentBase<ImagePresenter.Display> implem
     }
 
     @Override
-    public void bind(final ImagePresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
-        super.bind(display, waitDisplay);        
+    public void bind(final int topicId, final String pageId, final ImagePresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
+         super.bind(topicId, pageId, display, waitDisplay);        
         
     }
 

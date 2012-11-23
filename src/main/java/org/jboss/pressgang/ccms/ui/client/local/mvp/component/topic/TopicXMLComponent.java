@@ -10,9 +10,9 @@ public class TopicXMLComponent extends TopicViewComponent<TopicXMLPresenter.Disp
         TopicXMLPresenter.LogicComponent {
 
     @Override
-    public void bind(final TopicXMLPresenter.Display display,
+    public void bind(final int topicId, final String pageId, final TopicXMLPresenter.Display display,
             final BaseTemplateViewInterface waitDisplay) {
-        super.bind(display, waitDisplay);
+         super.bind(topicId, pageId, display, waitDisplay);
         bindAceEditorButtons();
     }
 

@@ -31,15 +31,14 @@ public class SearchTagsFieldsAndFiltersComponent extends ComponentBase<SearchTag
     public void bind(final int topicId, final String pageId, final SearchPresenter.Display tagsDisplay, final SearchPresenter.LogicComponent tagsComponent,
             final SearchFieldPresenter.Display fieldsDisplay, final SearchFieldPresenter.LogicComponent fieldsComponent,
             final SearchTagsFieldsAndFiltersPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
-        super.bind(display, waitDisplay);
+        super.bind(topicId, pageId, display, waitDisplay);
 
         this.tagsDisplay = tagsDisplay;
         this.tagsComponent = tagsComponent;
         this.fieldsDisplay = fieldsDisplay;
         this.fieldsComponent = fieldsComponent;
 
-        this.setHelpTopicId(topicId);
-        this.setFeedbackLink(pageId);
+        
         bindSearchButtons();
         
         displayTags();

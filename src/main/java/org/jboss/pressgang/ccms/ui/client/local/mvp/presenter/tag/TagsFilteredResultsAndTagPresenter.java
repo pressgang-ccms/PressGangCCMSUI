@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -42,12 +43,12 @@ public class TagsFilteredResultsAndTagPresenter implements TemplatePresenter {
     }
 
     public interface LogicComponent extends Component<Display> {
-        void bind(final TagsFilteredResultsAndTagPresenter.Display display, BaseTemplateViewInterface waitDisplay,
+        void bind(final int topicId, final String pageId, final TagsFilteredResultsAndTagPresenter.Display display, BaseTemplateViewInterface waitDisplay,
                 final TagFilteredResultsPresenter.Display filteredResultsDisplay,
                 final TagFilteredResultsPresenter.LogicComponent filteredResultsComponent,
                 final TagPresenter.Display resultDisplay, final TagPresenter.LogicComponent resultComponent,
                 final TagProjectsPresenter.Display projectsDisplay, final TagProjectsPresenter.LogicComponent projectsComponent,
-                final TagCategoriesPresenter.Display categoriesDisplay,           
+                final TagCategoriesPresenter.Display categoriesDisplay,
                 final TagCategoriesPresenter.LogicComponent categoriesComponent);
     }
 
@@ -119,12 +120,12 @@ public class TagsFilteredResultsAndTagPresenter implements TemplatePresenter {
         categoriesDisplay.getSplit().setSplitPosition(categoriesDisplay.getPossibleChildrenResultsPanel(),
                 Preferences.INSTANCE.getInt(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
         
-        filteredResultsComponent.bind(queryString, filteredResultsDisplay, display);
-        projectsComponent.bind(projectsDisplay, display);
-        categoriesComponent.bind(categoriesDisplay, display);
-        resultComponent.bind(resultDisplay, display);
+        filteredResultsComponent.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, filteredResultsDisplay, display);
+        projectsComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, projectsDisplay, display);
+        categoriesComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, categoriesDisplay, display);
+        resultComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, resultDisplay, display);
         
-        component.bind(display, display, filteredResultsDisplay, filteredResultsComponent, resultDisplay, resultComponent,
+        component.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display, display, filteredResultsDisplay, filteredResultsComponent, resultDisplay, resultComponent,
                 projectsDisplay, projectsComponent, categoriesDisplay, categoriesComponent);
     }
 

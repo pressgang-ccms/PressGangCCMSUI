@@ -36,10 +36,10 @@ abstract public class BaseFilteredResultsComponent<S extends BaseFilteredResults
     }
     
     @Override
-    public void bind(final String queryString, final S display, final BaseTemplateViewInterface waitDisplay)
+    public void bind(final int topicId, final String pageId, final String queryString, final S display, final BaseTemplateViewInterface waitDisplay)
     {
-        super.bind(display, waitDisplay);
-        displayQueryElements(queryString);        
+         super.bind(topicId, pageId, display, waitDisplay);
+         displayQueryElements(queryString);        
     }
     
     /**

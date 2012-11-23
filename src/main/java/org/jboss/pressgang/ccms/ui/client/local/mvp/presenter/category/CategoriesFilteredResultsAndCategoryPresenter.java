@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -42,9 +43,9 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
     }
 
     public interface LogicComponent extends Component<Display> {
-        void bind(final CategoryFilteredResultsPresenter.Display filteredResultsDisplay,
+        void bind(final int topicId, final String pageId, final CategoryFilteredResultsPresenter.Display filteredResultsDisplay,
                 final CategoryFilteredResultsPresenter.LogicCompnent filteredResultsComponent,
-                final CategoryPresenter.Display resultDisplay, final CategoryTagPresenter.Display tagDisplay,
+                final CategoryPresenter.Display entityPropertiesView, final CategoryTagPresenter.Display tagDisplay,
                 final CategoryTagPresenter.LogicComponent tagComponent,
                 final CategoriesFilteredResultsAndCategoryPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
     }
@@ -98,10 +99,9 @@ public class CategoriesFilteredResultsAndCategoryPresenter implements TemplatePr
   
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
-        filteredResultsComponent.bind(queryString, filteredResultsDisplay, display);
-        resultComponent.bind(resultDisplay, display);
-        tagComponent.bind(tagDisplay, display);
-        component.bind(filteredResultsDisplay, filteredResultsComponent, resultDisplay, tagDisplay, tagComponent, display,
+        resultComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, resultDisplay, display);
+        tagComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, tagDisplay, display);
+        component.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, filteredResultsDisplay, filteredResultsComponent, resultDisplay, tagDisplay, tagComponent, display,
                 display);
     }
 

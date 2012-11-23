@@ -340,7 +340,7 @@ public class TagsFilteredResultsAndTagComponent
     }
 
     @Override
-    public void bind(final TagsFilteredResultsAndTagPresenter.Display display, BaseTemplateViewInterface waitDisplay,
+    public void bind(final int topicId, final String pageId, final TagsFilteredResultsAndTagPresenter.Display display, BaseTemplateViewInterface waitDisplay,
             final TagFilteredResultsPresenter.Display filteredResultsDisplay,
             final TagFilteredResultsPresenter.LogicComponent filteredResultsComponent,
             final TagPresenter.Display resultDisplay, final TagPresenter.LogicComponent resultComponent,
@@ -354,7 +354,7 @@ public class TagsFilteredResultsAndTagComponent
         this.categoriesDisplay = categoriesDisplay;
         this.categoriesComponent = categoriesComponent;
 
-        super.bind(Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultDisplay, resultDisplay, filteredResultsDisplay,
+        super.bind(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultDisplay, resultDisplay, filteredResultsDisplay,
                 filteredResultsComponent, display, waitDisplay);
 
         bindCategoryColumnButtons();

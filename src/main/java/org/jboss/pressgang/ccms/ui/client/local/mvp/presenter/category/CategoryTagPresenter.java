@@ -14,6 +14,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollec
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren.BaseOrderedChildrenComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
@@ -59,7 +60,7 @@ public class CategoryTagPresenter implements TemplatePresenter {
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         display.initialize(null, false);
-        component.bind(display, display);
+        component.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display, display);
     }
 
     @Override

@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -19,7 +20,7 @@ import com.google.gwt.user.client.ui.TextBox;
 
 @Dependent
 public class ProjectFilteredResultsPresenter implements TemplatePresenter {
-    
+
     public static final String HISTORY_TOKEN = "ProjectFilteredResultsView";
 
     public interface Display extends
@@ -32,13 +33,10 @@ public class ProjectFilteredResultsPresenter implements TemplatePresenter {
         TextBox getNameFilter();
     }
 
-    public interface LogicCompnent
-            extends
+    public interface LogicCompnent extends
             BaseFilteredResultsComponentInterface<Display, RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> {
-        @Override
-        
-        void bind(final String queryString, final Display display,
-                final BaseTemplateViewInterface waitDisplay);
+        void bind(final int topicId, final String pageId, final String queryString,
+                final ProjectFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
     }
 
     @Inject
@@ -57,6 +55,6 @@ public class ProjectFilteredResultsPresenter implements TemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        component.bind(queryString, display, display);
+        component.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display, display);
     }
 }

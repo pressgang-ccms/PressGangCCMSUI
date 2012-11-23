@@ -78,7 +78,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
     };
 
     @Override
-    public void bind(final CategoryFilteredResultsPresenter.Display filteredResultsDisplay,
+    public void bind(final int topicId, final String pageId, final CategoryFilteredResultsPresenter.Display filteredResultsDisplay,
             final CategoryFilteredResultsPresenter.LogicCompnent filteredResultsComponent,
             final CategoryPresenter.Display entityPropertiesView, final CategoryTagPresenter.Display tagDisplay,
             final CategoryTagPresenter.LogicComponent tagComponent,
@@ -87,7 +87,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
         this.tagDisplay = tagDisplay;
         this.tagComponent = tagComponent;
 
-        super.bind(Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, entityPropertiesView, entityPropertiesView,
+        super.bind(topicId, pageId, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, entityPropertiesView, entityPropertiesView,
                 filteredResultsDisplay, filteredResultsComponent, display, waitDisplay);
 
         /* Bind the logic to add and remove possible children */
