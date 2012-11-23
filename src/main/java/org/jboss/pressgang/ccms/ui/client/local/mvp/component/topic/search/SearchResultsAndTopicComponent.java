@@ -774,6 +774,8 @@ public class SearchResultsAndTopicComponent
                                         true);
                                 /* Update the selected topic */
                                 retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
+                                
+                                lastXML = null;
 
                                 initializeViews();
 
