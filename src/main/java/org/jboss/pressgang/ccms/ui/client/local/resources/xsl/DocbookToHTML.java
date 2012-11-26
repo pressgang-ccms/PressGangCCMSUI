@@ -71,11 +71,13 @@ public final class DocbookToHTML {
             "        </p>\n" + 
             "    </xsl:template>\n" + 
             "    <xsl:template match=\"note\">\n" + 
-            "        <div class=\"note\">\n" + 
+            "        <div class=\"docbookNote\">\n" + 
             "            <h2 class=\"label docbookNoteTitle\">\n" + 
             "                <xsl:value-of select=\"title\" />\n" + 
             "            </h2>\n" + 
-            "            <xsl:apply-templates />\n" + 
+            "            <div class=\"docbookNoteContents\">\n" + 
+            "               <xsl:apply-templates />\n" + 
+            "            </div>\n" + 
             "        </div>\n" + 
             "    </xsl:template>\n" + 
             "    <xsl:template match=\"important\">\n" + 
@@ -294,9 +296,9 @@ public final class DocbookToHTML {
             "    \n" + 
             "    <xsl:template match=\"figure\">\n" + 
             "       <div id=\"{@id}\" class=\"formalpara\">\n" + 
-            "           <h3 class=\"figureTitle\">\n" + 
+            "           <h2 class=\"figureTitle\">\n" + 
             "               <xsl:value-of select=\"title\" />\n" + 
-            "           </h3>                \n" + 
+            "           </h2>                \n" + 
             "           <xsl:apply-templates />\n" + 
             "        </div>\n" + 
             "    </xsl:template>\n" + 

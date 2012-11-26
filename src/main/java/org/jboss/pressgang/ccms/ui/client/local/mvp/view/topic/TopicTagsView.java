@@ -19,6 +19,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.view.client.ProvidesKey;
@@ -236,6 +237,7 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 
         if (!readOnly) {
             layout.setWidget(0, 0, newTagUIElementsPanel);
+            ((ListBox)projects.asWidget()).setFocus(true);
         }
 
         /* We can't assume the tags have been loaded by the time we initialize the view */
