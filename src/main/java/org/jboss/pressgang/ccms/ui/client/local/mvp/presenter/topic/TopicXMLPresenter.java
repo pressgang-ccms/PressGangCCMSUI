@@ -14,6 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.propertyview.BasePropertyViewComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicXMLView.PlainTextXMLDialog;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
@@ -21,6 +22,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ToggleButton;
 
@@ -41,8 +43,18 @@ public class TopicXMLPresenter implements TemplatePresenter {
     // Empty interface declaration, similar to UiBinder
     public interface TopicXMLPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1XMLEditor> {
     }
+    
+    
 
     public interface Display extends TopicViewInterface {
+        
+        public interface PlainTextXMLDialog
+        {
+            PushButton getOK();
+            PushButton getCancel();
+            TextArea getTextArea();
+            DialogBox getDialogBox();
+        }
         
         /**
          * The interface that defines the tag selection dialog box
@@ -78,6 +90,7 @@ public class TopicXMLPresenter implements TemplatePresenter {
         XmlTagsDialog getXmlTagsDialog();
         CSPTopicDetailsDialog getCSPTopicDetailsDialog();
         XmlTemplatesDialog getXmlTemplatesDialog();
+        PlainTextXMLDialog getPlainTextXMLDialog();
         
         ToggleButton getLineWrap();
 

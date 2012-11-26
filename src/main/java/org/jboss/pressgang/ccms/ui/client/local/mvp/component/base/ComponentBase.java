@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.CategoriesFilteredResultsAndCategoryViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.CreateTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
@@ -12,6 +13,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopic
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchTagsFieldsAndFiltersViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.create.CreateTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -23,6 +25,7 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
@@ -48,8 +51,25 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
 
     protected BaseTemplateViewInterface waitDisplay;
     protected S display;
+    private int helpTopicId = ServiceConstants.DEFAULT_HELP_TOPIC;
     
-   
+    /**
+     * 
+     * @return The topic of the ID to be used for the help dialog
+     */
+    @Override
+   public int getHelpTopicId() {
+        return helpTopicId;
+    }
+
+    /**
+     * 
+     * @param helpTopicId The topic of the ID to be used for the help dialog
+     */
+    @Override
+    public void setHelpTopicId(int helpTopicId) {
+        this.helpTopicId = helpTopicId;
+    }
 
     @Override
     public boolean isOKToProceed() {
@@ -90,7 +110,15 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed())
-                    eventBus.fireEvent(new CreateTopicViewEvent());
+                    if (History.getToken().startsWith(CreateTopicPresenter.HISTORY_TOKEN))
+                    {
+                        /* If we are already in the create topic view, do a "refresh" */
+                        History.fireCurrentHistoryState();
+                    }
+                    else
+                    {
+                        eventBus.fireEvent(new CreateTopicViewEvent());
+                    }
             }
         });
 
@@ -194,8 +222,8 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
     public void bind(final int topicId, final String pageId, final S display, final BaseTemplateViewInterface waitDisplay) {
         this.display = display;
         this.waitDisplay = waitDisplay;
+        this.helpTopicId = topicId;
         
-        this.setHelpTopicId(topicId);
         this.setFeedbackLink(pageId);
         bindStandardButtons();
         
@@ -213,19 +241,12 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
                 }                
             }
         });
-
-    }
-
-    private void setFeedbackLink(final String pageId) {
-        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);
-    }
-    
-    private void setHelpTopicId(final int id)
-    {
+        
+        /* Add handlers for the help link */
         final ClickHandler openHelpClickHandler = new ClickHandler() {            
             @Override
             public void onClick(final ClickEvent event) {
-                waitDisplay.getHelpDialog().show(id, waitDisplay);                
+                waitDisplay.getHelpDialog().show(helpTopicId, waitDisplay);                
             }
         };
         
@@ -238,5 +259,10 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
         
         display.getHelp().addClickHandler(openHelpClickHandler);
         display.getHelpDialog().getOK().addClickHandler(okClickHandler);
+
+    }
+
+    protected void setFeedbackLink(final String pageId) {
+        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);
     }
 }

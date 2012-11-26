@@ -143,11 +143,6 @@ public abstract class BaseTemplateView
             buttonPanel.add(ok);
 
             layout.add(buttonPanel);
-            
-            //this.setWidth("75%");
-            //this.setHeight("75%");
-            
-            //this.setModal(false);
 
             this.add(layout);
         }

@@ -51,6 +51,12 @@ final public class ServiceConstants {
     /** The topic that is displayed in the welcome view */
     static public final int TOPIC_EDIT_VIEW_CONTENT_TOPIC = 12510;
     
+    /** The help topic for the validation errors view */
+    static public final int TOPIC_VALIDATION_ERRORS_TOPIC = 12559;
+    
+    /** The help topic for the properties view */
+    static public final int TOPIC_PROPERTIES_TOPIC = 12560;
+    
     static public final int DEFAULT_HELP_TOPIC = 12558;
 
     private ServiceConstants() {

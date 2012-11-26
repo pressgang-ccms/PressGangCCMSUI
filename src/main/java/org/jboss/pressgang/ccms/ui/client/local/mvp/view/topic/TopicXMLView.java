@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.TopicXMLPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -20,6 +21,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ToggleButton;
 
@@ -34,6 +36,55 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
     private final ToggleButton lineWrap = UIUtilities.createToggleButton(PressGangCCMSUI.INSTANCE.LineWrap());
     private final ToggleButton showInvisibles = UIUtilities.createToggleButton(PressGangCCMSUI.INSTANCE.ShowHiddenCharacters());
+    
+    public class PlainTextXMLDialog extends DialogBox implements TopicXMLPresenter.Display.PlainTextXMLDialog
+    {
+        private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
+        private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
+        private final TextArea textArea = new TextArea();
+        private final FlexTable layout = new FlexTable();
+        
+        @Override
+        public PushButton getOK() {
+            return ok;
+        }
+
+        @Override
+        public PushButton getCancel() {
+            return cancel;
+        }
+
+        @Override
+        public TextArea getTextArea() {
+            return textArea;
+        }
+
+        @Override
+        public DialogBox getDialogBox() {
+            return this;
+        }
+        
+        public PlainTextXMLDialog() {
+            this.setGlassEnabled(true);
+            /* If true, this interferes with the "After the Deadline" plugin */
+            this.setModal(false);
+            this.setText(PressGangCCMSUI.INSTANCE.SpellChecking());
+            
+            textArea.addStyleName(CSSConstants.PlainTextXMLDialog.PLAIN_TEXT_XML_DIALOG_TEXTAREA);
+            
+            layout.setWidget(0, 0, textArea);
+
+            final HorizontalPanel buttonPanel = new HorizontalPanel();
+            buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
+            buttonPanel.add(cancel);
+            buttonPanel.add(ok);
+
+            layout.setWidget(1, 0, buttonPanel);
+
+            this.add(layout);
+        }
+        
+    }
     
     /** The dialog box that displays a list of docbook tags */
     public class XmlTagsDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTagsDialog
@@ -252,6 +303,11 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
     private final XmlTagsDialog xmlTagsDialog = new XmlTagsDialog();
     private final XmlTemplatesDialog xmlTemplatesDialog = new XmlTemplatesDialog();
     private final CSPTopicDetailsDialog cspTopicDetailsDialog = new CSPTopicDetailsDialog();
+    private final PlainTextXMLDialog plainTextXMLDialog = new PlainTextXMLDialog();
+
+    public PlainTextXMLDialog getPlainTextXMLDialog() {
+        return plainTextXMLDialog;
+    }
 
     @Override
     public XmlTemplatesDialog getXmlTemplatesDialog() {

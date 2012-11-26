@@ -17,6 +17,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common.CommonTopicComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common.GetCurrentTopic;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
@@ -253,7 +254,13 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             }
         });
 
-        CommonTopicComponent.addKeyboardShortcutEventHandler(this.topicXMLDisplay, this.display);
+        CommonTopicComponent.addKeyboardShortcutEventHandler(this.topicXMLDisplay, this.display, new GetCurrentTopic() {
+            
+            @Override
+            public RESTTopicV1 getCurrentlyEditedTopic() {
+                return newTopic;
+            }
+        });
 
     }
 
@@ -691,6 +698,8 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 bindTagEditingButtons();
             }
         }
+        
+        CommonTopicComponent.setHelpTopicForView(this, selectedView);
 
         lastView = selectedView;
     }

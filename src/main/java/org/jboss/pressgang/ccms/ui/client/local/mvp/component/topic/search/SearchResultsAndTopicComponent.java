@@ -24,6 +24,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common.CommonTopicComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common.GetCurrentTopic;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter;
@@ -260,7 +261,13 @@ public class SearchResultsAndTopicComponent
             }
         });        
 
-       CommonTopicComponent.addKeyboardShortcutEventHandler(this.topicXMLDisplay, this.display);
+       CommonTopicComponent.addKeyboardShortcutEventHandler(this.topicXMLDisplay, this.display, new GetCurrentTopic() {
+           
+           @Override
+           public RESTTopicV1 getCurrentlyEditedTopic() {
+               return filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
+           }
+       });
     }
 
     /**
@@ -714,6 +721,8 @@ public class SearchResultsAndTopicComponent
                 timer.cancel();
                 refreshRenderedView(true);
             }
+            
+            CommonTopicComponent.setHelpTopicForView(this, displayedView);
 
             lastDisplayedView = displayedView;
         } finally {
@@ -1069,6 +1078,7 @@ public class SearchResultsAndTopicComponent
                     "ENTER SearchResultsAndTopicComponent.initializeViews(final List<TopicViewInterface> filter)");
 
             logger.log(Level.INFO, "\tInitializing topic views");
+            
             for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
                     topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay,
                     topicSplitPanelRenderedDisplay }) {

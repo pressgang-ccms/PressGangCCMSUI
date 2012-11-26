@@ -16,6 +16,9 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -167,7 +170,7 @@ public class CommonTopicComponent {
      * @param display The main view
      */
     public static void addKeyboardShortcutEventHandler(final TopicXMLPresenter.Display topicXMLDisplay,
-            final BaseTemplateViewInterface display) {
+            final BaseTemplateViewInterface display, final GetCurrentTopic currentTopicCallback) {
         final NativePreviewHandler keyboardShortcutPreviewhandler = new NativePreviewHandler() {
             @Override
             public void onPreviewNativeEvent(final NativePreviewEvent event) {
@@ -199,6 +202,18 @@ public class CommonTopicComponent {
                             if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()) {
                                 topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().center();
                                 topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().show();
+                            }
+                        }
+                    });
+                    
+                } else if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'R') {
+                    Scheduler.get().scheduleDeferred(new Command() {
+                        @Override
+                        public void execute() {
+                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()) {
+                                topicXMLDisplay.getPlainTextXMLDialog().getTextArea().setText(currentTopicCallback.getCurrentlyEditedTopic().getXml());
+                                topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().center();
+                                topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().show();
                             }
                         }
                     });
@@ -334,6 +349,32 @@ public class CommonTopicComponent {
                 hideTemplateDialogBox(topicXMLDisplay);
             }
         });
+        
+        topicXMLDisplay.getPlainTextXMLDialog().getOK().addClickHandler(new ClickHandler() {            
+            @Override
+            public void onClick(final ClickEvent event) {
+                copyTextToTopic(topicXMLDisplay);                
+            }
+        });
+        
+        topicXMLDisplay.getPlainTextXMLDialog().getCancel().addClickHandler(new ClickHandler() {            
+            @Override
+            public void onClick(final ClickEvent event) {
+                hidePlainTextXMLDialog(topicXMLDisplay);                
+            }
+        });
+    }
+    
+    private static void hidePlainTextXMLDialog(final TopicXMLPresenter.Display topicXMLDisplay)
+    {
+        topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().hide();
+        topicXMLDisplay.getEditor().focus();
+    }
+    
+    private static void copyTextToTopic(final TopicXMLPresenter.Display topicXMLDisplay)
+    {
+        topicXMLDisplay.getEditor().setText(topicXMLDisplay.getPlainTextXMLDialog().getTextArea().getText());
+        hidePlainTextXMLDialog(topicXMLDisplay);
     }
 
     private static void hideCspDetailsDialogBox(final TopicXMLPresenter.Display topicXMLDisplay) {
@@ -415,5 +456,18 @@ public class CommonTopicComponent {
             hideCspDetailsDialogBox(topicXMLDisplay);
         }
 
+    }
+    
+    public static void setHelpTopicForView(final Component<?> component,  final BaseTemplateViewInterface view)
+    {
+        /* Set the help link topic ids */
+        if (view instanceof TopicXMLErrorsPresenter.Display)
+        {
+            component.setHelpTopicId(ServiceConstants.TOPIC_VALIDATION_ERRORS_TOPIC);
+        }
+        else if (view instanceof TopicPresenter.Display)
+        {
+            component.setHelpTopicId(ServiceConstants.TOPIC_PROPERTIES_TOPIC);
+        }
     }
 }

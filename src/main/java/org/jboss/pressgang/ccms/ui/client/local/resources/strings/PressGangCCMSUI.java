@@ -339,5 +339,7 @@ public interface PressGangCCMSUI extends Constants {
     String InsertCSPTopicDetails();
     
     String InitialTopicCreation();
+    
+    String SpellChecking();
 }
 

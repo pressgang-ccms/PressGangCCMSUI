@@ -29,4 +29,16 @@ public interface Component<S extends BaseTemplateViewInterface> {
      * @return true if there are unsaved changes, and false otherwise
      */
     boolean hasUnsavedChanges();
+    
+    /**
+     * 
+     * @return The topic of the ID to be used for the help dialog
+     */
+    int getHelpTopicId();
+
+    /**
+     * 
+     * @param helpTopicId The topic of the ID to be used for the help dialog
+     */
+    void setHelpTopicId(int helpTopicId);
 }

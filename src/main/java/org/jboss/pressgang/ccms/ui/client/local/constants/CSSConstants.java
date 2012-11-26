@@ -9,6 +9,11 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
  */
 public interface CSSConstants {
 
+    public interface PlainTextXMLDialog
+    {
+        String PLAIN_TEXT_XML_DIALOG_TEXTAREA = "PlainTextXMLDialogTextArea";
+    }
+    
     public interface FilteredResultsView {
         /** Assigned to the panel that holds the list of images. */
         String FILTERED_RESULTS_PANEL = "FilteredResultsPanel";
