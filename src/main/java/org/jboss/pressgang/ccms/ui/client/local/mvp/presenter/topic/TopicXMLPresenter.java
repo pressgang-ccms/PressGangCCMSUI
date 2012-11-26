@@ -52,7 +52,8 @@ public class TopicXMLPresenter implements TemplatePresenter {
         {
             PushButton getOK();
             PushButton getCancel();
-            TextArea getTextArea();
+            void setText(final String text);
+            String getText();
             DialogBox getDialogBox();
         }
         

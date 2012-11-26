@@ -211,7 +211,7 @@ public class CommonTopicComponent {
                         @Override
                         public void execute() {
                             if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()) {
-                                topicXMLDisplay.getPlainTextXMLDialog().getTextArea().setText(currentTopicCallback.getCurrentlyEditedTopic().getXml());
+                                topicXMLDisplay.getPlainTextXMLDialog().setText(currentTopicCallback.getCurrentlyEditedTopic().getXml());
                                 topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().center();
                                 topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().show();
                             }
@@ -373,7 +373,7 @@ public class CommonTopicComponent {
     
     private static void copyTextToTopic(final TopicXMLPresenter.Display topicXMLDisplay)
     {
-        topicXMLDisplay.getEditor().setText(topicXMLDisplay.getPlainTextXMLDialog().getTextArea().getText());
+        topicXMLDisplay.getEditor().setText(topicXMLDisplay.getPlainTextXMLDialog().getText());
         hidePlainTextXMLDialog(topicXMLDisplay);
     }
 

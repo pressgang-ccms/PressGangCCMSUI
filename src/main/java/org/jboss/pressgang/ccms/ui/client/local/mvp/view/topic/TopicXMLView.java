@@ -36,14 +36,13 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
     private final ToggleButton lineWrap = UIUtilities.createToggleButton(PressGangCCMSUI.INSTANCE.LineWrap());
     private final ToggleButton showInvisibles = UIUtilities.createToggleButton(PressGangCCMSUI.INSTANCE.ShowHiddenCharacters());
-    
-    public class PlainTextXMLDialog extends DialogBox implements TopicXMLPresenter.Display.PlainTextXMLDialog
-    {
+
+    public class PlainTextXMLDialog extends DialogBox implements TopicXMLPresenter.Display.PlainTextXMLDialog {
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
-        private final TextArea textArea = new TextArea();
+        private TextArea textArea;
         private final FlexTable layout = new FlexTable();
-        
+
         @Override
         public PushButton getOK() {
             return ok;
@@ -55,24 +54,36 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
         }
 
         @Override
-        public TextArea getTextArea() {
-            return textArea;
+        public void setText(final String text) {
+            /*
+             * Create a new textarea to work around a situation where a After the Deadline check was not cleared before the
+             * dialog was closed
+             */
+            textArea = new TextArea();
+            textArea.addStyleName(CSSConstants.PlainTextXMLDialog.PLAIN_TEXT_XML_DIALOG_TEXTAREA);
+            textArea.setText(text);
+            layout.setWidget(0, 0, textArea);
+        }
+
+        @Override
+        public String getText() {
+            if (textArea != null)
+                return textArea.getText();
+            return "";
         }
 
         @Override
         public DialogBox getDialogBox() {
             return this;
         }
-        
+
         public PlainTextXMLDialog() {
             this.setGlassEnabled(true);
             /* If true, this interferes with the "After the Deadline" plugin */
             this.setModal(false);
             this.setText(PressGangCCMSUI.INSTANCE.SpellChecking());
-            
+
             textArea.addStyleName(CSSConstants.PlainTextXMLDialog.PLAIN_TEXT_XML_DIALOG_TEXTAREA);
-            
-            layout.setWidget(0, 0, textArea);
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
@@ -83,28 +94,27 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
             this.add(layout);
         }
-        
+
     }
-    
+
     /** The dialog box that displays a list of docbook tags */
-    public class XmlTagsDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTagsDialog
-    {
+    public class XmlTagsDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTagsDialog {
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
         private final PushButton moreInfo = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.MoreInfo());
         private final ListBox options = new ListBox(false);
         private final FlexTable layout = new FlexTable();
-       
+
         @Override
         public PushButton getOK() {
             return ok;
         }
-        
+
         @Override
         public PushButton getCancel() {
             return cancel;
         }
-        
+
         @Override
         public PushButton getMoreInfo() {
             return moreInfo;
@@ -119,25 +129,22 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
         public DialogBox getDialogBox() {
             return this;
         }
-        
-        @Override 
-        public void setSuggestions(final List<String> suggestions)
-        {
+
+        @Override
+        public void setSuggestions(final List<String> suggestions) {
             options.clear();
-            
-            if (suggestions != null)
-            {
-                for (final String suggestion : suggestions)
-                {
+
+            if (suggestions != null) {
+                for (final String suggestion : suggestions) {
                     options.addItem(suggestion);
                 }
             }
         }
-        
+
         public XmlTagsDialog() {
             this.setGlassEnabled(true);
             this.setText(PressGangCCMSUI.INSTANCE.InsertXMLElement());
-            
+
             options.setVisibleItemCount(10);
             layout.setWidget(0, 0, options);
 
@@ -151,38 +158,35 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
             this.add(layout);
         }
-        
+
         @Override
-        public void show()
-        {
+        public void show() {
             super.show();
             options.setFocus(true);
-        }     
-        
+        }
+
         /**
          * Select the first item when the box is closed
          */
         @Override
-        public void hide()
-        {
+        public void hide() {
             super.hide();
             options.setSelectedIndex(0);
         }
     }
-    
+
     /** The dialog box that displays a list of docbook templates */
-    public class XmlTemplatesDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTemplatesDialog
-    {
+    public class XmlTemplatesDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTemplatesDialog {
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
         private final ListBox options = new ListBox(false);
         private final FlexTable layout = new FlexTable();
-       
+
         @Override
         public PushButton getOK() {
             return ok;
         }
-        
+
         @Override
         public PushButton getCancel() {
             return cancel;
@@ -197,25 +201,22 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
         public DialogBox getDialogBox() {
             return this;
         }
-        
-        @Override 
-        public void setSuggestions(final Map<String, String> suggestions)
-        {
+
+        @Override
+        public void setSuggestions(final Map<String, String> suggestions) {
             options.clear();
-            
-            if (suggestions != null)
-            {
-                for (final String suggestion : suggestions.keySet())
-                {
+
+            if (suggestions != null) {
+                for (final String suggestion : suggestions.keySet()) {
                     options.addItem(suggestion, suggestions.get(suggestion));
                 }
             }
         }
-        
+
         public XmlTemplatesDialog() {
             this.setGlassEnabled(true);
             this.setText(PressGangCCMSUI.INSTANCE.InsertXMLElement());
-            
+
             options.setVisibleItemCount(10);
             layout.setWidget(0, 0, options);
 
@@ -228,37 +229,34 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
             this.add(layout);
         }
-        
+
         @Override
-        public void show()
-        {
+        public void show() {
             super.show();
             options.setFocus(true);
-        }     
-        
+        }
+
         /**
          * Select the first item when the box is closed
          */
         @Override
-        public void hide()
-        {
+        public void hide() {
             super.hide();
             options.setSelectedIndex(0);
         }
     }
-    
-    public class CSPTopicDetailsDialog extends DialogBox implements TopicXMLPresenter.Display.CSPTopicDetailsDialog
-    {
+
+    public class CSPTopicDetailsDialog extends DialogBox implements TopicXMLPresenter.Display.CSPTopicDetailsDialog {
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
         private final TextBox ids = new TextBox();
         private final FlexTable layout = new FlexTable();
-       
+
         @Override
         public PushButton getOK() {
             return ok;
         }
-        
+
         @Override
         public PushButton getCancel() {
             return cancel;
@@ -274,7 +272,6 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
             return this;
         }
 
-        
         public CSPTopicDetailsDialog() {
             this.setGlassEnabled(true);
             this.setText(PressGangCCMSUI.INSTANCE.InsertCSPTopicDetails());
@@ -291,15 +288,14 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
             this.add(layout);
         }
-        
+
         @Override
-        public void show()
-        {
+        public void show() {
             super.show();
             ids.setFocus(true);
-        }        
+        }
     }
-    
+
     private final XmlTagsDialog xmlTagsDialog = new XmlTagsDialog();
     private final XmlTemplatesDialog xmlTemplatesDialog = new XmlTemplatesDialog();
     private final CSPTopicDetailsDialog cspTopicDetailsDialog = new CSPTopicDetailsDialog();
@@ -379,7 +375,8 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
+    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType,
+            final List<String> locales, final Boolean showImages) {
         this.readOnly = readOnly;
         populateTopActionBar(newTopic, topic.getXmlErrors() != null && !topic.getXmlErrors().trim().isEmpty());
         buildSplitViewButtons(splitType);
