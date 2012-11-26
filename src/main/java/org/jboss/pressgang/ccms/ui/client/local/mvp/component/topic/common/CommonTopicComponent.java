@@ -17,7 +17,10 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBugsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -468,6 +471,18 @@ public class CommonTopicComponent {
         else if (view instanceof TopicPresenter.Display)
         {
             component.setHelpTopicId(ServiceConstants.TOPIC_PROPERTIES_TOPIC);
+        }
+        else if (view instanceof TopicTagsPresenter.Display)
+        {
+            component.setHelpTopicId(ServiceConstants.TOPIC_TAGS_TOPIC);
+        }
+        else if (view instanceof TopicRevisionsPresenter.Display)
+        {
+            component.setHelpTopicId(ServiceConstants.TOPIC_REVISIONS_TOPIC);
+        }
+        else if (view instanceof TopicBugsPresenter.Display)
+        {
+            component.setHelpTopicId(ServiceConstants.TOPIC_BUGS_TOPIC);
         }
     }
 }

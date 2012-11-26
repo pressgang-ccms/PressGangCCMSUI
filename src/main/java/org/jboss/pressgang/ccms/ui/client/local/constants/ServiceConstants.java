@@ -57,6 +57,15 @@ final public class ServiceConstants {
     /** The help topic for the properties view */
     static public final int TOPIC_PROPERTIES_TOPIC = 12560;
     
+    /** The help topic for the tags view */
+    static public final int TOPIC_TAGS_TOPIC = 12587;
+    
+    /** The help topic for the revisions view */
+    static public final int TOPIC_REVISIONS_TOPIC = 12588;
+    
+    /** The help topic for the revisions view */
+    static public final int TOPIC_BUGS_TOPIC = 12589;
+    
     static public final int DEFAULT_HELP_TOPIC = 12558;
 
     private ServiceConstants() {
