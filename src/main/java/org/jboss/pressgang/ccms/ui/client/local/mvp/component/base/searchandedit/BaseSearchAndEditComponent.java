@@ -155,32 +155,42 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
                             @Override
                             public void displayNewEntity(final T entity) {
 
-                                entity.cloneInto(selectedItem.getItem(), true);
+                                try {
+                                    logger.log(
+                                            Level.INFO,
+                                            "EXIT BaseSearchAndEditComponent.bindResultsListRowClicks() DisplayNewEntityCallback.displayNewEntity(final T entity)");
 
-                                /* Refresh the list */
-                                updateDisplayAfterSave(false);
+                                    entity.cloneInto(selectedItem.getItem(), true);
+                                   
+                                    /*
+                                     * The selected item will be the category from the list. This is the unedited, unexpanded
+                                     * copy of the category
+                                     */
+                                    filteredResultsComponent.getProviderData().setSelectedItem(selectedItem);
 
-                                /*
-                                 * The selected item will be the category from the list. This is the unedited, unexpanded copy
-                                 * of the category
-                                 */
-                                filteredResultsComponent.getProviderData().setSelectedItem(selectedItem);
+                                    /*
+                                     * All editing is done in a clone of the selected category. Any expanded collections will be
+                                     * copied into this category
+                                     */
 
-                                /*
-                                 * All editing is done in a clone of the selected category. Any expanded collections will be
-                                 * copied into this category
-                                 */
+                                    filteredResultsComponent.getProviderData().setDisplayedItem(selectedItem.clone(true));
+                                    
+                                    /* Refresh the list */
+                                    updateDisplayAfterSave(false);
 
-                                filteredResultsComponent.getProviderData().setDisplayedItem(selectedItem.clone(true));
+                                    /* Refresh the view, or display the properties view if none is shown */
+                                    switchView(lastDisplayedView == null ? firstDisplayedView : lastDisplayedView);
 
-                                /* Refresh the view, or display the properties view if none is shown */
-                                switchView(lastDisplayedView == null ? firstDisplayedView : lastDisplayedView);
+                                    /* Initialize the views */
+                                    initializeViews();
 
-                                /* Initialize the views */
-                                initializeViews();
-
-                                /* Allow overriding classes to display any additional details */
-                                loadAdditionalDisplayedItemData();
+                                    /* Allow overriding classes to display any additional details */
+                                    loadAdditionalDisplayedItemData();
+                                } finally {
+                                    logger.log(
+                                            Level.INFO,
+                                            "EXIT BaseSearchAndEditComponent.bindResultsListRowClicks() DisplayNewEntityCallback.displayNewEntity(final T entity)");
+                                }
 
                             }
                         });

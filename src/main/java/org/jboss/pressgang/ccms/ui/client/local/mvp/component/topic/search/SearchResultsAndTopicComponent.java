@@ -94,7 +94,7 @@ public class SearchResultsAndTopicComponent
             }
         }
     };
-    
+
     /** The last xml that was rendered */
     private String lastXML = null;
     /** How long it has been since the xml changes */
@@ -217,9 +217,10 @@ public class SearchResultsAndTopicComponent
     }
 
     @Override
-    public void bind(final int topicId, final String pageId, final SearchResultsAndTopicPresenter.Display display, final BaseTemplateViewInterface waitDisplay,
-            final TopicPresenter.Display topicViewDisplay, final TopicPresenter.LogicComponent topicViewComponent,
-            final TopicXMLPresenter.Display topicXMLDisplay, final TopicXMLPresenter.LogicComponent topicXMLComponent,
+    public void bind(final int topicId, final String pageId, final SearchResultsAndTopicPresenter.Display display,
+            final BaseTemplateViewInterface waitDisplay, final TopicPresenter.Display topicViewDisplay,
+            final TopicPresenter.LogicComponent topicViewComponent, final TopicXMLPresenter.Display topicXMLDisplay,
+            final TopicXMLPresenter.LogicComponent topicXMLComponent,
             final TopicRenderedPresenter.Display topicRenderedDisplay,
             final TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay,
             final SearchResultsPresenter.Display searchResultsDisplay,
@@ -240,26 +241,40 @@ public class SearchResultsAndTopicComponent
         this.topicBugsDisplay = topicBugsDisplay;
         this.topicRevisionsDisplay = topicRevisionsDisplay;
         this.topicrevisionsComponent = topicrevisionsComponent;
-        
+
         /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTTopicV1> getNewEntityCallback = new GetNewEntityCallback<RESTTopicV1>(){
+        final GetNewEntityCallback<RESTTopicV1> getNewEntityCallback = new GetNewEntityCallback<RESTTopicV1>() {
 
             @Override
             public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTTopicV1> displayCallback) {
-                final RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(waitDisplay,
-                        new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {
-                            @Override
-                            public void doSuccessAction(final RESTTopicV1 retValue, final BaseTemplateViewInterface display) {
-                                displayCallback.displayNewEntity(retValue);
-                            }
-                        });      
-                RESTCalls.getTopic(callback, id);
+
+                try {
+                    logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.bind() GetNewEntityCallback.getNewEntity()");
+
+                    final RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
+                            waitDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {
+                                @Override
+                                public void doSuccessAction(final RESTTopicV1 retValue, final BaseTemplateViewInterface display) {
+                                    try {
+                                        logger.log(Level.INFO,
+                                                "ENTER SearchResultsAndTopicComponent.bind() RESTCallback.doSuccessAction()");
+
+                                        displayCallback.displayNewEntity(retValue);
+                                    } finally {
+                                        logger.log(Level.INFO,
+                                                "EXIT SearchResultsAndTopicComponent.bind() RESTCallback.doSuccessAction()");
+                                    }
+                                }
+                            });
+                    RESTCalls.getTopic(callback, id);
+                } finally {
+                    logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.bind() GetNewEntityCallback.getNewEntity()");
+                }
             }
         };
-        
 
-        super.bind(topicId, pageId, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLDisplay, topicViewDisplay, searchResultsDisplay,
-                searchResultsComponent, display, waitDisplay, getNewEntityCallback);
+        super.bind(topicId, pageId, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLDisplay, topicViewDisplay,
+                searchResultsDisplay, searchResultsComponent, display, waitDisplay, getNewEntityCallback);
 
         initializeDisplay();
 
@@ -270,23 +285,23 @@ public class SearchResultsAndTopicComponent
         bindSplitPanelResize();
         bindTagEditingButtons();
         loadSplitPanelSize();
-        
+
         this.topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
-        
-        CommonTopicComponent.populateLocales(waitDisplay, new StringListLoaded() {            
+
+        CommonTopicComponent.populateLocales(waitDisplay, new StringListLoaded() {
             @Override
             public void stringListLoaded(final List<String> locales) {
                 SearchResultsAndTopicComponent.this.locales = locales;
             }
-        });        
+        });
 
-       CommonTopicComponent.addKeyboardShortcutEventHandler(this.topicXMLDisplay, this.display, new GetCurrentTopic() {
-           
-           @Override
-           public RESTTopicV1 getCurrentlyEditedTopic() {
-               return filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
-           }
-       });
+        CommonTopicComponent.addKeyboardShortcutEventHandler(this.topicXMLDisplay, this.display, new GetCurrentTopic() {
+
+            @Override
+            public RESTTopicV1 getCurrentlyEditedTopic() {
+                return filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
+            }
+        });
     }
 
     /**
@@ -294,23 +309,22 @@ public class SearchResultsAndTopicComponent
      */
     private void refreshRenderedView(boolean forceExternalImages) {
         topicXMLDisplay.getDriver().flush();
-        
+
         final boolean xmlHasChanges = lastXML == null || !lastXML.equals(getTopicOrRevisionTopic().getItem().getXml());
-        
-        if (xmlHasChanges)
-        {
+
+        if (xmlHasChanges) {
             lastXMLChange = System.currentTimeMillis();
         }
-        
-        final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >=  Constants.REFRESH_RATE_WTH_IMAGES;
-        
-        if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage))
-        {
+
+        final Boolean timeToDisplayImage = forceExternalImages
+                || System.currentTimeMillis() - lastXMLChange >= Constants.REFRESH_RATE_WTH_IMAGES;
+
+        if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
             isDisplayingImage = timeToDisplayImage;
             topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
-                display.getSplitType(), locales, isDisplayingImage);
+                    display.getSplitType(), locales, isDisplayingImage);
         }
-        
+
         lastXML = getTopicOrRevisionTopic().getItem().getXml();
     }
 
@@ -727,8 +741,7 @@ public class SearchResultsAndTopicComponent
             }
             /* Set the projects combo box as the focsed element */
             else if (displayedView == this.topicTagsDisplay) {
-                if (topicTagsDisplay.getProjectsList().isAttached())
-                {
+                if (topicTagsDisplay.getProjectsList().isAttached()) {
                     topicTagsDisplay.getProjectsList().getElement().focus();
                 }
             }
@@ -747,7 +760,7 @@ public class SearchResultsAndTopicComponent
                 timer.cancel();
                 refreshRenderedView(true);
             }
-            
+
             CommonTopicComponent.setHelpTopicForView(this, displayedView);
 
             lastDisplayedView = displayedView;
@@ -809,7 +822,7 @@ public class SearchResultsAndTopicComponent
                                         true);
                                 /* Update the selected topic */
                                 retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
-                                
+
                                 lastXML = null;
 
                                 initializeViews();
@@ -990,7 +1003,7 @@ public class SearchResultsAndTopicComponent
 
                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE);
-                
+
                 timer.cancel();
 
                 initializeDisplay();
@@ -1006,7 +1019,7 @@ public class SearchResultsAndTopicComponent
 
                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL);
-                
+
                 timer.scheduleRepeating(Constants.REFRESH_RATE);
 
                 initializeDisplay();
@@ -1022,7 +1035,7 @@ public class SearchResultsAndTopicComponent
 
                 Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                         Preferences.TOPIC_RENDERED_VIEW_SPLIT_HOIRZONTAL);
-                
+
                 timer.scheduleRepeating(Constants.REFRESH_RATE);
 
                 initializeDisplay();
@@ -1040,8 +1053,9 @@ public class SearchResultsAndTopicComponent
                     final RESTTopicV1 topic = filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
 
                     eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
-                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + topic.getTitle() + " [" + topic.getId()
-                            + "];tag" + ServiceConstants.CSP_TAG_ID + "=1;logic=AND", GWTUtilities.isEventToOpenNewWindow(event)));
+                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "="
+                            + topic.getTitle() + " [" + topic.getId() + "];tag" + ServiceConstants.CSP_TAG_ID + "=1;logic=AND",
+                            GWTUtilities.isEventToOpenNewWindow(event)));
                 }
 
             }
@@ -1085,10 +1099,6 @@ public class SearchResultsAndTopicComponent
 
         CommonTopicComponent.addKeyboardShortcutEvents(topicXMLDisplay, display);
     }
-    
-    
-
-
 
     @Override
     protected void bindFilteredResultsButtons() {
@@ -1104,12 +1114,13 @@ public class SearchResultsAndTopicComponent
                     "ENTER SearchResultsAndTopicComponent.initializeViews(final List<TopicViewInterface> filter)");
 
             logger.log(Level.INFO, "\tInitializing topic views");
-            
+
             for (final TopicViewInterface view : new TopicViewInterface[] { entityPropertiesView, topicXMLDisplay,
                     topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay,
                     topicSplitPanelRenderedDisplay }) {
                 if (viewIsInFilter(filter, view)) {
-                    view.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, this.split, locales, false);
+                    view.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, this.split, locales,
+                            false);
                 }
             }
 
