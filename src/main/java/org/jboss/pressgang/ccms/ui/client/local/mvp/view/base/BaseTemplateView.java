@@ -181,6 +181,7 @@ public abstract class BaseTemplateView
 
     private final HelpDialog helpDialog = new HelpDialogImpl();
 
+    @Override
     public PushButton getHome() {
         return home;
     }

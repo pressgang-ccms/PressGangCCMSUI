@@ -33,6 +33,7 @@ public class TagFilteredResultsPresenter implements TemplatePresenter {
     public interface LogicComponent
             extends
             BaseFilteredResultsComponentInterface<TagFilteredResultsPresenter.Display, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
+        @Override
         void bind(final int topicId, final String pageId, final String queryString, final TagFilteredResultsPresenter.Display display,
                 final BaseTemplateViewInterface waitDisplay);
     }

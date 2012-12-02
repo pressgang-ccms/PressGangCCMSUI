@@ -39,9 +39,8 @@ public class ProjectView extends BaseTemplateView
         return save;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public SimpleBeanEditorDriver getDriver() {
+    public ProjectPresenterDriver getDriver() {
         return driver;
     }
 

@@ -70,7 +70,7 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
     public void bind(final int topicId, final String pageId, final String mainSplitSizePreferenceKey,
             final W firstDisplayedView, final X entityPropertiesView, final R filteredResultsDisplay,
             final BaseFilteredResultsComponentInterface<R, T, U, V> filteredResultsComponent, final S display,
-            final BaseTemplateViewInterface waitDisplay) {
+            final BaseTemplateViewInterface waitDisplay, final GetNewEntityCallback<T> getNewEntityCallback) {
 
         super.bind(topicId, pageId, display, waitDisplay);
 
@@ -86,7 +86,7 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
 
         loadMainSplitResize(mainSplitSizePreferenceKey);
         bindMainSplitResize(mainSplitSizePreferenceKey);
-        bindResultsListRowClicks();
+        bindResultsListRowClicks(getNewEntityCallback);
         bindActionButtons();
         bindFilteredResultsButtons();
     }
@@ -126,7 +126,7 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
     }
 
     /** Binds logic to the search results list row click event */
-    protected void bindResultsListRowClicks() {
+    protected void bindResultsListRowClicks(final GetNewEntityCallback<T> getNewEntityCallback) {
         filteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<V>() {
             @Override
             public void onCellPreview(final CellPreviewEvent<V> event) {
@@ -143,27 +143,48 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
                             return;
                         }
 
-                        /*
-                         * The selected item will be the category from the list. This is the unedited, unexpanded copy of the
-                         * category
-                         */
-                        filteredResultsComponent.getProviderData().setSelectedItem(event.getValue());
+                        final V selectedItem = event.getValue();
 
                         /*
-                         * All editing is done in a clone of the selected category. Any expanded collections will be copied into
-                         * this category
+                         * When an entity is selected we will get afresh copy from the database. This is to deal with a
+                         * situation where the search screen has been left for a while and the entity has been edited by someone
+                         * else in the mean time.
                          */
+                        getNewEntityCallback.getNewEntity(selectedItem.getItem().getId(), new DisplayNewEntityCallback<T>() {
 
-                        filteredResultsComponent.getProviderData().setDisplayedItem(event.getValue().clone(true));
+                            @Override
+                            public void displayNewEntity(final T entity) {
 
-                        /* Refresh the view, or display the properties view if none is shown */
-                        switchView(lastDisplayedView == null ? firstDisplayedView : lastDisplayedView);
+                                entity.cloneInto(selectedItem.getItem(), true);
 
-                        /* Initialize the views */
-                        initializeViews();
+                                /* Refresh the list */
+                                updateDisplayAfterSave(false);
 
-                        /* Allow overriding classes to display any additional details */
-                        loadAdditionalDisplayedItemData();
+                                /*
+                                 * The selected item will be the category from the list. This is the unedited, unexpanded copy
+                                 * of the category
+                                 */
+                                filteredResultsComponent.getProviderData().setSelectedItem(selectedItem);
+
+                                /*
+                                 * All editing is done in a clone of the selected category. Any expanded collections will be
+                                 * copied into this category
+                                 */
+
+                                filteredResultsComponent.getProviderData().setDisplayedItem(selectedItem.clone(true));
+
+                                /* Refresh the view, or display the properties view if none is shown */
+                                switchView(lastDisplayedView == null ? firstDisplayedView : lastDisplayedView);
+
+                                /* Initialize the views */
+                                initializeViews();
+
+                                /* Allow overriding classes to display any additional details */
+                                loadAdditionalDisplayedItemData();
+
+                            }
+                        });
+
                     } finally {
                         logger.log(Level.INFO,
                                 "EXIT BaseSearchAndEditComponent.bindResultsListRowClicks() Anonymous.onCellPreview(final CellPreviewEvent<V> event)");

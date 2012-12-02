@@ -20,7 +20,7 @@ public class SearchFieldPresenter implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "SearchFieldView";
 
-    public interface Display extends BaseEditorViewInterface {
+    public interface Display extends BaseEditorViewInterface<SearchUIFields, SearchFieldEditor> {
         interface SearchFieldPresenterDriver extends SimpleBeanEditorDriver<SearchUIFields, SearchFieldEditor> {
         }
         @Override

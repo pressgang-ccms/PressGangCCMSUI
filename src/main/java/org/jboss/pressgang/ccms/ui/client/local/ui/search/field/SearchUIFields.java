@@ -2,7 +2,6 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.search.field;
 
 import java.util.Date;
 
-import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchViewBase;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;

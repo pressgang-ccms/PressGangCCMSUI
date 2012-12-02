@@ -22,6 +22,8 @@ package hu.szaboaz.gwt.xslt.client;
  */
 public class XsltProcessingException extends Exception {
 
+    private static final long serialVersionUID = 1308180761008591930L;
+
     public XsltProcessingException() {
         super();
     }

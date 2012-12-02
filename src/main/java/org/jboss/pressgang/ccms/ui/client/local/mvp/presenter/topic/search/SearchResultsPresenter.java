@@ -28,6 +28,7 @@ public class SearchResultsPresenter implements TemplatePresenter {
     }
 
     public interface LogicComponent extends BaseFilteredResultsComponentInterface<Display, RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
+        @Override
         void bind(final int topicId, final String pageId, final String queryString,
                 final SearchResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
     }

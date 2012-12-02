@@ -11,12 +11,15 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentImageV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.DisplayNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
@@ -76,8 +79,24 @@ public class ImagesFilteredResultsAndImageComponent
             final ImagePresenter.Display imageDisplay, final ImagePresenter.LogicComponent imageComponent,
             final ImagesFilteredResultsAndImagePresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
 
+        /* A call back used to get a fresh copy of the entity that was selected */
+        final GetNewEntityCallback<RESTImageV1> getNewEntityCallback = new GetNewEntityCallback<RESTImageV1>(){
+
+            @Override
+            public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTImageV1> displayCallback) {
+                final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(waitDisplay,
+                        new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
+                            @Override
+                            public void doSuccessAction(final RESTImageV1 retValue, final BaseTemplateViewInterface display) {
+                                displayCallback.displayNewEntity(retValue);
+                            }
+                        });      
+                RESTCalls.getImage(callback, id);
+            }
+        };
+        
         super.bind(topicId, pageId, Preferences.IMAGE_VIEW_MAIN_SPLIT_WIDTH, imageDisplay, imageDisplay, imageFilteredResultsDisplay,
-                imageFilteredResultsComponent, display, waitDisplay);
+                imageFilteredResultsComponent, display, waitDisplay, getNewEntityCallback);
 
         populateLocales();
     }

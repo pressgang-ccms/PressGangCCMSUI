@@ -29,6 +29,8 @@ import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren.SetNewChildSortCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.DisplayNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter;
@@ -341,7 +343,7 @@ public class TagsFilteredResultsAndTagComponent
     }
 
     @Override
-    public void bind(final int topicId, final String pageId, final TagsFilteredResultsAndTagPresenter.Display display, BaseTemplateViewInterface waitDisplay,
+    public void bind(final int topicId, final String pageId, final TagsFilteredResultsAndTagPresenter.Display display, final BaseTemplateViewInterface waitDisplay,
             final TagFilteredResultsPresenter.Display filteredResultsDisplay,
             final TagFilteredResultsPresenter.LogicComponent filteredResultsComponent,
             final TagPresenter.Display resultDisplay, final TagPresenter.LogicComponent resultComponent,
@@ -354,9 +356,25 @@ public class TagsFilteredResultsAndTagComponent
         this.projectsComponent = projectsComponent;
         this.categoriesDisplay = categoriesDisplay;
         this.categoriesComponent = categoriesComponent;
+        
+        /* A call back used to get a fresh copy of the entity that was selected */
+        final GetNewEntityCallback<RESTTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTTagV1>(){
+
+            @Override
+            public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTTagV1> displayCallback) {
+                final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, BaseTemplateViewInterface>(waitDisplay,
+                        new BaseRestCallback.SuccessAction<RESTTagV1, BaseTemplateViewInterface>() {
+                            @Override
+                            public void doSuccessAction(final RESTTagV1 retValue, final BaseTemplateViewInterface display) {
+                                displayCallback.displayNewEntity(retValue);
+                            }
+                        });      
+                RESTCalls.getTag(callback, id);
+            }
+        };
 
         super.bind(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultDisplay, resultDisplay, filteredResultsDisplay,
-                filteredResultsComponent, display, waitDisplay);
+                filteredResultsComponent, display, waitDisplay, getNewEntityCallback);
 
         bindCategoryColumnButtons();
         bindProjectColumnButtons();

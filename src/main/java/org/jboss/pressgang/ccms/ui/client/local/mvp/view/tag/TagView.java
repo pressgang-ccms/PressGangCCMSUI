@@ -44,9 +44,8 @@ public class TagView extends BaseTemplateView implements TagPresenter.Display {
 
     private boolean readOnly = false;
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public SimpleBeanEditorDriver getDriver() {
+    public TagPresenterDriver getDriver() {
         return driver;
     }
 

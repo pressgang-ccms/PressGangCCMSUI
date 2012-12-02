@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
-import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.TopicXMLPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -301,6 +300,7 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
     private final CSPTopicDetailsDialog cspTopicDetailsDialog = new CSPTopicDetailsDialog();
     private final PlainTextXMLDialog plainTextXMLDialog = new PlainTextXMLDialog();
 
+    @Override
     public PlainTextXMLDialog getPlainTextXMLDialog() {
         return plainTextXMLDialog;
     }

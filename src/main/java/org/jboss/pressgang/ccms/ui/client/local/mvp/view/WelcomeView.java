@@ -21,6 +21,7 @@ public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Di
         this.getPanel().setWidget(content);
     }
     
+    @Override
     public void initialize(final RESTTopicV1 topic)
     {
         try {

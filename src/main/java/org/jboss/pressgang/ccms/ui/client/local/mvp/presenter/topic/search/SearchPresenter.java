@@ -23,7 +23,7 @@ public class SearchPresenter implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "SearchView";
 
-    public interface Display extends BaseEditorViewInterface {
+    public interface Display extends BaseEditorViewInterface<SearchUIProjects, SearchUIProjectsEditor> {
         // Empty interface declaration, similar to UiBinder
         interface SearchPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor> {
         }

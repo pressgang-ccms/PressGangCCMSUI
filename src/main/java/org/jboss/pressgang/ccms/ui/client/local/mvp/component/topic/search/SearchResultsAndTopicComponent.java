@@ -22,6 +22,8 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.DisplayNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common.CommonTopicComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common.GetCurrentTopic;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common.StringListLoaded;
@@ -41,6 +43,7 @@ import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewCategoryEditor;
@@ -238,9 +241,25 @@ public class SearchResultsAndTopicComponent
         this.topicRevisionsDisplay = topicRevisionsDisplay;
         this.topicrevisionsComponent = topicrevisionsComponent;
         
+        /* A call back used to get a fresh copy of the entity that was selected */
+        final GetNewEntityCallback<RESTTopicV1> getNewEntityCallback = new GetNewEntityCallback<RESTTopicV1>(){
+
+            @Override
+            public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTTopicV1> displayCallback) {
+                final RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(waitDisplay,
+                        new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {
+                            @Override
+                            public void doSuccessAction(final RESTTopicV1 retValue, final BaseTemplateViewInterface display) {
+                                displayCallback.displayNewEntity(retValue);
+                            }
+                        });      
+                RESTCalls.getTopic(callback, id);
+            }
+        };
+        
 
         super.bind(topicId, pageId, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLDisplay, topicViewDisplay, searchResultsDisplay,
-                searchResultsComponent, display, waitDisplay);
+                searchResultsComponent, display, waitDisplay, getNewEntityCallback);
 
         initializeDisplay();
 

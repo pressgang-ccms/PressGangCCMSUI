@@ -503,6 +503,18 @@ public final class RESTCalls {
             }
         });
     }
+    
+    static public void getProject(final RESTCallback<RESTProjectV1> callback, final Integer id) {
+        /* Expand the categories and projects in the tags */
+        final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONProject(id, expand);
+            }
+        });
+    }
+    
 
     static public void getUnexpandedProject(final RESTCallback<RESTProjectV1> callback, final Integer id) {
         doRestCall(callback, new RestMethodCaller() {

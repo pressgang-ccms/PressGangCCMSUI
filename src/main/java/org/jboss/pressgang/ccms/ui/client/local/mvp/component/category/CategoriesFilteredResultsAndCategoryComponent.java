@@ -17,6 +17,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategory
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.AddPossibleChildCallback;
@@ -24,6 +25,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.GetE
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.UpdateAfterChildModfiedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren.SetNewChildSortCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.DisplayNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.CategoriesFilteredResultsAndCategoryViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndCategoryPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndCategoryPresenter.Display;
@@ -87,9 +90,25 @@ public class CategoriesFilteredResultsAndCategoryComponent
 
         this.tagDisplay = tagDisplay;
         this.tagComponent = tagComponent;
+        
+        /* A call back used to get a fresh copy of the entity that was selected */
+        final GetNewEntityCallback<RESTCategoryV1> getNewEntityCallback = new GetNewEntityCallback<RESTCategoryV1>(){
+
+            @Override
+            public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTCategoryV1> displayCallback) {
+                final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, BaseTemplateViewInterface>(waitDisplay,
+                        new BaseRestCallback.SuccessAction<RESTCategoryV1, BaseTemplateViewInterface>() {
+                            @Override
+                            public void doSuccessAction(final RESTCategoryV1 retValue, final BaseTemplateViewInterface display) {
+                                displayCallback.displayNewEntity(retValue);
+                            }
+                        });      
+                RESTCalls.getCategory(callback, id);
+            }
+        };
 
         super.bind(topicId, pageId, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, entityPropertiesView, entityPropertiesView,
-                filteredResultsDisplay, filteredResultsComponent, display, waitDisplay);
+                filteredResultsDisplay, filteredResultsComponent, display, waitDisplay, getNewEntityCallback);
 
         /* Bind the logic to add and remove possible children */
         tagComponent

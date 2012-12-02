@@ -12,6 +12,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -19,6 +20,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.AddP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.GetExistingCollectionCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.UpdateAfterChildModfiedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.DisplayNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ProjectsFilteredResultsAndProjectViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectPresenter;
@@ -62,8 +65,24 @@ public class ProjectsFilteredResultsAndProjectComponent
         this.tagDisplay = tagDisplay;
         this.tagComponent = tagComponent;
 
+        /* A call back used to get a fresh copy of the entity that was selected */
+        final GetNewEntityCallback<RESTProjectV1> getNewEntityCallback = new GetNewEntityCallback<RESTProjectV1>(){
+
+            @Override
+            public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTProjectV1> displayCallback) {
+                final RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, BaseTemplateViewInterface>(waitDisplay,
+                        new BaseRestCallback.SuccessAction<RESTProjectV1, BaseTemplateViewInterface>() {
+                            @Override
+                            public void doSuccessAction(final RESTProjectV1 retValue, final BaseTemplateViewInterface display) {
+                                displayCallback.displayNewEntity(retValue);
+                            }
+                        });      
+                RESTCalls.getProject(callback, id);
+            }
+        };
+        
         super.bind(topicId, pageId, Preferences.PROJECT_VIEW_MAIN_SPLIT_WIDTH, entityPropertiesView, entityPropertiesView,
-                filteredResultsDisplay, filteredResultsComponent, display, waitDisplay);
+                filteredResultsDisplay, filteredResultsComponent, display, waitDisplay, getNewEntityCallback);
 
         /* Bind the logic to add and remove possible children */
         tagComponent.bindPossibleChildrenListButtonClicks(

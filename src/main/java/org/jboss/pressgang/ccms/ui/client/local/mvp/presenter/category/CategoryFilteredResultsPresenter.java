@@ -36,6 +36,7 @@ public class CategoryFilteredResultsPresenter implements TemplatePresenter {
             extends
             BaseFilteredResultsComponentInterface<CategoryFilteredResultsPresenter.Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1> {
 
+        @Override
         void bind(final int topicId, final String pageId, final String queryString, final CategoryFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
     }
 

@@ -39,9 +39,8 @@ public class CategoryView extends BaseTemplateView
         return save;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public SimpleBeanEditorDriver getDriver() {
+    public CategoryPresenterDriver getDriver() {
         return driver;
     }
 

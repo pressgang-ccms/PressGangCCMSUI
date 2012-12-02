@@ -35,6 +35,7 @@ public class ProjectFilteredResultsPresenter implements TemplatePresenter {
 
     public interface LogicCompnent extends
             BaseFilteredResultsComponentInterface<Display, RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> {
+        @Override
         void bind(final int topicId, final String pageId, final String queryString,
                 final ProjectFilteredResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
     }
