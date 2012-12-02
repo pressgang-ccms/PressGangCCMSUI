@@ -351,7 +351,7 @@ public final class DocbookToHTML {
             "       </xsl:variable>\n" + 
             "       <xsl:choose>\n" + 
             "           <xsl:when test=\"$externalImages='true'\">\n" + 
-            "               <img src=\"https://skynet.usersys.redhat.com:8443/TopicIndex/ImageFileDisplay.seam?imageFileId={$imageidNoGif}\"/>\n" + 
+            "               <img src=\"https://skynet.usersys.redhat.com:8443/TopicIndex/seam/resource/rest/1/image/get/raw/{$imageidNoGif}\"/>\n" + 
             "           </xsl:when>\n" + 
             "           <xsl:otherwise>\n" + 
             "               <!-- http://www.iconspedia.com/icon/image-12570.html - free license -->\n" + 

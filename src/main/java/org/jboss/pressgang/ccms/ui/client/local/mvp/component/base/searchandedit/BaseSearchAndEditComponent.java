@@ -17,6 +17,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.Ba
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 
+import com.google.gwt.editor.client.Editor;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.view.client.CellPreviewEvent;
@@ -38,8 +39,10 @@ import com.google.gwt.view.client.CellPreviewEvent.Handler;
  * 
  * @param <W> The common type to all views
  * @param <X> The type of the entity properties view
+ * 
+ * @param <Y> The type of the Editor that is displayed by this component
  */
-abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsViewInterface<T, U, V>, S extends BaseSearchAndEditViewInterface<T, U, V>, T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends BaseTemplateViewInterface, X extends BaseEditorViewInterface & BaseTemplateViewInterface>
+abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsViewInterface<T, U, V>, S extends BaseSearchAndEditViewInterface<T, U, V>, T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends BaseTemplateViewInterface, X extends BaseEditorViewInterface<T, Y> & BaseTemplateViewInterface, Y extends Editor<T>>
         extends ComponentBase<S> {
 
     /** A logger */
@@ -64,9 +67,10 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
      * @param display The view that this component adds logic to
      * @param waitDisplay The view that displays the wiat dialog
      */
-    public void bind(final int topicId, final String pageId, final String mainSplitSizePreferenceKey, final W firstDisplayedView, final X entityPropertiesView,
-            final R filteredResultsDisplay, final BaseFilteredResultsComponentInterface<R, T, U, V> filteredResultsComponent,
-            final S display, final BaseTemplateViewInterface waitDisplay) {
+    public void bind(final int topicId, final String pageId, final String mainSplitSizePreferenceKey,
+            final W firstDisplayedView, final X entityPropertiesView, final R filteredResultsDisplay,
+            final BaseFilteredResultsComponentInterface<R, T, U, V> filteredResultsComponent, final S display,
+            final BaseTemplateViewInterface waitDisplay) {
 
         super.bind(topicId, pageId, display, waitDisplay);
 
@@ -103,7 +107,8 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
         }
         /* If we just created a new entity, refresh the list of entities from the database */
         else {
-            filteredResultsComponent.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", filteredResultsComponent.getQuery(), filteredResultsDisplay, waitDisplay);
+            filteredResultsComponent.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", filteredResultsComponent.getQuery(),
+                    filteredResultsDisplay, waitDisplay);
 
             /*
              * reInitialiseView will flush the ui, which will flush the null ID back to the displayed object. To prevent that we

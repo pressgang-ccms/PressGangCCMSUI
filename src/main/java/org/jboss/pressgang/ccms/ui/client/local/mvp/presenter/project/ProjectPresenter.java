@@ -27,7 +27,7 @@ public class ProjectPresenter implements TemplatePresenter {
     }
 
     public interface Display extends ProjectViewInterface,
-            BaseEditorViewInterface {
+            BaseEditorViewInterface<RESTProjectV1, RESTProjectV1BasicDetailsEditor> {
 
     }
 

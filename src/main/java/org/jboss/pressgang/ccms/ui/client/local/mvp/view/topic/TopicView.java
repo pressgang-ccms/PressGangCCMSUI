@@ -10,16 +10,14 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 
 public class TopicView extends TopicViewBase implements TopicPresenter.Display {
 
     /** The GWT Editor Driver */
     private final TopicPresenterDriver driver = GWT.create(TopicPresenterDriver.class);
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public SimpleBeanEditorDriver getDriver() {
+    public TopicPresenterDriver getDriver() {
         return driver;
     }
 

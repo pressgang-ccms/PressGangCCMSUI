@@ -1,7 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor;
 
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 
+import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 
 /**
@@ -9,7 +11,6 @@ import com.google.gwt.editor.client.SimpleBeanEditorDriver;
  * 
  * @author Matthew Casperson
  */
-public interface BaseEditorViewInterface extends BaseTemplateViewInterface {
-    @SuppressWarnings("rawtypes")
-    SimpleBeanEditorDriver getDriver();
+public interface BaseEditorViewInterface <W extends RESTBaseEntityV1<?, ?, ?>, X extends Editor<W>> extends BaseTemplateViewInterface {
+    SimpleBeanEditorDriver<W, X> getDriver();
 }

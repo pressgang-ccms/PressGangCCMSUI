@@ -17,7 +17,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -43,6 +42,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewCategoryEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
@@ -66,7 +66,7 @@ import com.google.gwt.xml.client.impl.DOMParseException;
 @Dependent
 public class SearchResultsAndTopicComponent
         extends
-        BaseSearchAndEditComponent<SearchResultsPresenter.Display, SearchResultsAndTopicPresenter.Display, RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1, TopicViewInterface, TopicPresenter.Display>
+        BaseSearchAndEditComponent<SearchResultsPresenter.Display, SearchResultsAndTopicPresenter.Display, RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1, TopicViewInterface, TopicPresenter.Display, RESTTopicV1BasicDetailsEditor>
         implements SearchResultsAndTopicPresenter.LogicComponent {
 
     /**
@@ -706,6 +706,13 @@ public class SearchResultsAndTopicComponent
                 topicRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
                         display.getSplitType(), locales, false);
             }
+            /* Set the projects combo box as the focsed element */
+            else if (displayedView == this.topicTagsDisplay) {
+                if (topicTagsDisplay.getProjectsList().isAttached())
+                {
+                    topicTagsDisplay.getProjectsList().getElement().focus();
+                }
+            }
 
             /* Update the page name */
             final StringBuilder title = new StringBuilder(displayedView.getPageName());
@@ -834,7 +841,7 @@ public class SearchResultsAndTopicComponent
                     final String message = display.getMessageLogDialog().getMessage().getText();
                     final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
                             : ServiceConstants.MAJOR_CHANGE);
-                    RESTCalls.saveTopic(callback, updateTopic, message, flag, ServiceConstants.NULL_USER_ID);
+                    RESTCalls.saveTopic(callback, updateTopic, message, flag, ServiceConstants.NULL_USER_ID.toString());
                 }
 
                 display.getMessageLogDialog().reset();

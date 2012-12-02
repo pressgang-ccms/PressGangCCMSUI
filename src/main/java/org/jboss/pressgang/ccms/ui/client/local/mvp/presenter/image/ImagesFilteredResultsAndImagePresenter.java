@@ -64,7 +64,7 @@ public class ImagesFilteredResultsAndImagePresenter implements TemplatePresenter
         imageComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, imageDisplay, display);
         imageFilteredResultsComponent.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, imageFilteredResultsDisplay, display);
 
-        component.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, imageFilteredResultsDisplay, imageFilteredResultsComponent, imageDisplay, imageComponent, display,
+        component.bind(ServiceConstants.IMAGES_TOPIC, HISTORY_TOKEN, imageFilteredResultsDisplay, imageFilteredResultsComponent, imageDisplay, imageComponent, display,
                 display);
     }
 

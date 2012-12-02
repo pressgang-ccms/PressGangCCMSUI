@@ -202,7 +202,7 @@ public final class RESTCalls {
     }
 
     static public void saveTopic(final RESTCallback<RESTTopicV1> callback, final RESTTopicV1 topic, final String message,
-            final Integer flag, final Integer userId) {
+            final Integer flag, final String userId) {
         // final String expand = "{\"branches\":[" + TOPIC_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -223,7 +223,7 @@ public final class RESTCalls {
     }
 
     static public void createTopic(final RESTCallback<RESTTopicV1> callback, final RESTTopicV1 topic, final String message,
-            final Integer flag, final Integer userId) {
+            final Integer flag, final String userId) {
         // final String expand = "{\"branches\":[" + TOPIC_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override

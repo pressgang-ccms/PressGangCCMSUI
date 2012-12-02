@@ -456,9 +456,9 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
 
                 /* Create or update the topic */
                 if (saveRestTopic.getId() != null) {
-                    RESTCalls.saveTopic(callback, saveRestTopic, message, flag, ServiceConstants.NULL_USER_ID);
+                    RESTCalls.saveTopic(callback, saveRestTopic, message, flag, ServiceConstants.NULL_USER_ID.toString());
                 } else {
-                    RESTCalls.createTopic(callback, saveRestTopic, message, flag, ServiceConstants.NULL_USER_ID);
+                    RESTCalls.createTopic(callback, saveRestTopic, message, flag, ServiceConstants.NULL_USER_ID.toString());
                 }
 
                 display.getMessageLogDialog().reset();

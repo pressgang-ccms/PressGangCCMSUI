@@ -11,7 +11,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentImageV1;
-import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
@@ -29,6 +28,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTLanguageImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.vectomatic.file.File;
@@ -59,7 +59,7 @@ import com.google.gwt.user.client.Window;
  */
 public class ImagesFilteredResultsAndImageComponent
         extends
-        BaseSearchAndEditComponent<ImageFilteredResultsPresenter.Display, ImagesFilteredResultsAndImagePresenter.Display, RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1, ImagePresenter.Display, ImagePresenter.Display>
+        BaseSearchAndEditComponent<ImageFilteredResultsPresenter.Display, ImagesFilteredResultsAndImagePresenter.Display, RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1, ImagePresenter.Display, ImagePresenter.Display, RESTImageV1Editor>
         implements ImagesFilteredResultsAndImagePresenter.LogicComponent {
 
     /**

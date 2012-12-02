@@ -26,7 +26,7 @@ public class TagPresenter implements TemplatePresenter {
     public interface TagPresenterDriver extends SimpleBeanEditorDriver<RESTTagV1, RESTTagV1BasicDetailsEditor> {
     }
 
-    public interface Display extends TagViewInterface, BaseEditorViewInterface {
+    public interface Display extends TagViewInterface, BaseEditorViewInterface<RESTTagV1, RESTTagV1BasicDetailsEditor> {
 
     }
 

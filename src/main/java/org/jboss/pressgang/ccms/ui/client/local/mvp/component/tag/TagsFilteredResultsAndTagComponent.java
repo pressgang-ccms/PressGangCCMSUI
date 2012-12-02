@@ -42,6 +42,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 import com.google.gwt.cell.client.FieldUpdater;
@@ -53,7 +54,7 @@ import com.google.gwt.user.client.Window;
 @Dependent
 public class TagsFilteredResultsAndTagComponent
         extends
-        BaseSearchAndEditComponent<TagFilteredResultsPresenter.Display, TagsFilteredResultsAndTagPresenter.Display, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, TagViewInterface, TagPresenter.Display>
+        BaseSearchAndEditComponent<TagFilteredResultsPresenter.Display, TagsFilteredResultsAndTagPresenter.Display, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, TagViewInterface, TagPresenter.Display, RESTTagV1BasicDetailsEditor>
         implements TagsFilteredResultsAndTagPresenter.LogicComponent {
 
     @Inject

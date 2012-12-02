@@ -37,6 +37,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCategoryV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 import com.google.gwt.cell.client.FieldUpdater;
@@ -54,7 +55,7 @@ import com.google.gwt.user.client.Window;
 @Dependent
 public class CategoriesFilteredResultsAndCategoryComponent
         extends
-        BaseSearchAndEditComponent<CategoryFilteredResultsPresenter.Display, CategoriesFilteredResultsAndCategoryPresenter.Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, CategoryViewInterface, CategoryPresenter.Display>
+        BaseSearchAndEditComponent<CategoryFilteredResultsPresenter.Display, CategoriesFilteredResultsAndCategoryPresenter.Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, CategoryViewInterface, CategoryPresenter.Display, RESTCategoryV1BasicDetailsEditor>
         implements CategoriesFilteredResultsAndCategoryPresenter.LogicComponent {
 
     @Inject

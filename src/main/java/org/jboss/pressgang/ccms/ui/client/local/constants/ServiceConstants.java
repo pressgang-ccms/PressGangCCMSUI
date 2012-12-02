@@ -29,6 +29,7 @@ final public class ServiceConstants {
      */
     static public final Integer NULL_USER_ID = 89;
     
+    
     /**
      * The string constant that contains all the docbook elements
      */
@@ -65,6 +66,9 @@ final public class ServiceConstants {
     
     /** The help topic for the revisions view */
     static public final int TOPIC_BUGS_TOPIC = 12589;
+    
+    /** The help topic for the images view */
+    static public final int IMAGES_TOPIC = 12592;
     
     static public final int DEFAULT_HELP_TOPIC = 12558;
 

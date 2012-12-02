@@ -32,6 +32,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjectV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -42,7 +43,7 @@ import com.google.gwt.user.client.Window;
 @Dependent
 public class ProjectsFilteredResultsAndProjectComponent
         extends
-        BaseSearchAndEditComponent<ProjectFilteredResultsPresenter.Display, ProjectsFilteredResultsAndProjectPresenter.Display, RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1, ProjectViewInterface, ProjectPresenter.Display>
+        BaseSearchAndEditComponent<ProjectFilteredResultsPresenter.Display, ProjectsFilteredResultsAndProjectPresenter.Display, RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1, ProjectViewInterface, ProjectPresenter.Display, RESTProjectV1BasicDetailsEditor>
         implements ProjectsFilteredResultsAndProjectPresenter.LogicComponent {
 
     @Inject

@@ -39,7 +39,7 @@ public class ImagePresenter implements TemplatePresenter {
     public interface ImagePresenterDriver extends SimpleBeanEditorDriver<RESTImageV1, RESTImageV1Editor> {
     }
 
-    public interface Display extends BaseTemplateViewInterface, BaseEditorViewInterface {
+    public interface Display extends BaseTemplateViewInterface, BaseEditorViewInterface<RESTImageV1, RESTImageV1Editor> {
 
         public interface AddLocaleInterface {
             PushButton getCancel();

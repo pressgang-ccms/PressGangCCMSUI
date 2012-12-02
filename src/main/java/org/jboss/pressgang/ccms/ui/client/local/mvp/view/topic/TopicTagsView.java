@@ -42,6 +42,7 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
     public interface TopicTagsPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, TopicTagViewProjectsEditor> {
     }
 
+
     @Override
     public PushButton getAdd() {
         return add;
@@ -236,8 +237,7 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
         layout.clear();
 
         if (!readOnly) {
-            layout.setWidget(0, 0, newTagUIElementsPanel);
-            ((ListBox)projects.asWidget()).setFocus(true);
+            layout.setWidget(0, 0, newTagUIElementsPanel);            
         }
 
         /* We can't assume the tags have been loaded by the time we initialize the view */
