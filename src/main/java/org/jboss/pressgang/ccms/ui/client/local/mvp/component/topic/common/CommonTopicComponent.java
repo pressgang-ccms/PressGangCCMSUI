@@ -24,6 +24,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPre
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicXMLView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
@@ -483,6 +484,10 @@ public class CommonTopicComponent {
         else if (view instanceof TopicBugsPresenter.Display)
         {
             component.setHelpTopicId(ServiceConstants.TOPIC_BUGS_TOPIC);
+        }
+        else if (view instanceof TopicXMLView)
+        {
+            component.setHelpTopicId(ServiceConstants.TOPIC_EDIT_VIEW_CONTENT_TOPIC);
         }
     }
 }
