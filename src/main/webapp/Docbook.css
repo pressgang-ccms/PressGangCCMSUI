@@ -25,7 +25,7 @@
 	background-color: #EEE;
 }
 
-.docbookFigureTitle,.formalParaTitle,.docbookSectionTitle,.docbookExampleTitle,.docbookTableTitle
+.docbookFigureTitle,.formalParaTitle,.docbookSectionTitle,.docbookExampleTitle,.docbookTableTitle,.docbookItemizedListTitle
 	{
 	color: #369;
 	margin-top: 0px;
@@ -38,14 +38,15 @@
 	word-wrap: break-word;
 }
 
+.docbookTableTitle, .docbookItemizedListTitle, .docbookFigureTitle,.formalParaTitle
+{
+	font-size: 14px;
+}
+
+
 .docbookSectionTitle {
 	font-size: 20px;
 	margin-top: 30px;
-}
-
-.docbookFigureTitle,.formalParaTitle {
-	font-size: 14px;
-	margin-bottom: 0px;
 }
 
 .docbookGuiLabel {
@@ -92,19 +93,6 @@
 	line-height: 1.4em;
 	font-size: 17px;
 	color: white;
-}
-
-.docbookItemizedListTitle {
-	color: #369;
-	margin-top: 0px;
-	margin-bottom: 0px;
-	background-color: transparent;
-	margin-bottom: 0px;
-	margin-top: 20px;
-	page-break-inside: avoid;
-	page-break-after: avoid;
-	word-wrap: break-word;
-	font-size: 14px;
 }
 
 .docbookNoteTitle {
