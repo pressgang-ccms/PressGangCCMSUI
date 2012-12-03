@@ -490,7 +490,7 @@ public class CommonTopicComponent {
         } else if (view instanceof TopicBugsPresenter.Display) {
             component.setHelpTopicId(ServiceConstants.TOPIC_BUGS_TOPIC);
         } else if (view instanceof TopicXMLView) {
-            component.setHelpTopicId(ServiceConstants.TOPIC_EDIT_VIEW_CONTENT_TOPIC);
+            component.setHelpTopicId(ServiceConstants.TOPIC_XML_EDIT_TOPIC);
         }
     }
 }

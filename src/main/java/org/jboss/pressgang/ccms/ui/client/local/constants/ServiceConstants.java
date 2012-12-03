@@ -52,6 +52,8 @@ final public class ServiceConstants {
     /** The topic that is displayed in the welcome view */
     static public final int TOPIC_EDIT_VIEW_CONTENT_TOPIC = 12510;
     
+    static public final int TOPIC_XML_EDIT_TOPIC = 12683;
+    
     /** The help topic for the validation errors view */
     static public final int TOPIC_VALIDATION_ERRORS_TOPIC = 12559;
     
