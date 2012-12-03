@@ -66,6 +66,8 @@ public interface PressGangCCMSUI extends Constants {
 
     String SaveSuccess();
     
+    String OverwriteSuccess();
+    
     String NoUnsavedChanges();
     
     String TagSaveSuccess();

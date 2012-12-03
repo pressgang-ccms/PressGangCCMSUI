@@ -10,6 +10,12 @@ public final class DocbookToHTML {
             "    <!-- If true, img elements will be output with external urls. If false, a standard placeholder will be used -->\n" + 
             "    <xsl:param name=\"externalImages\" select=\"'false'\"/>\n" + 
             "    \n" + 
+            "    <!-- The start of the url that is used to get the images from the server -->\n" + 
+            "    <xsl:param name=\"externalImagesUrlPrefix\" select=\"'http://skynet.usersys.redhat.com:8080/TopicIndex/seam/resource/rest/1/image/get/raw/'\"/>\n" + 
+            "    \n" +
+            "    <!-- The end of the url that is used to get the images from the server -->\n" + 
+            "    <xsl:param name=\"externalImagesUrlSuffix\" select=\"''\"/>\n" + 
+            "    \n" + 
             "    <xsl:template match=\"/\">\n" + 
             "        <xsl:apply-templates select=\"section\" />\n" + 
             "    </xsl:template>\n" + 
@@ -52,9 +58,9 @@ public final class DocbookToHTML {
             "    </xsl:template>\n" + 
             "   <xsl:template match=\"formalpara\">\n" + 
             "        <div id=\"{@id}\" class=\"formalpara\">\n" + 
-            "           <h3 class=\"formalParaTitle\">\n" + 
+            "           <h5 class=\"formalParaTitle\">\n" + 
             "               <xsl:value-of select=\"title\" />\n" + 
-            "           </h3>                \n" + 
+            "           </h5>                \n" + 
             "           <xsl:apply-templates />\n" + 
             "        </div>\n" + 
             "    </xsl:template>\n" + 
@@ -295,10 +301,10 @@ public final class DocbookToHTML {
             "    <xsl:template match=\"indexterm\"></xsl:template>\n" + 
             "    \n" + 
             "    <xsl:template match=\"figure\">\n" + 
-            "       <div id=\"{@id}\" class=\"formalpara\">\n" + 
-            "           <h2 class=\"figureTitle\">\n" + 
+            "       <div id=\"{@id}\" class=\"docbookFigure\">\n" + 
+            "           <h6 class=\"docbookFigureTitle\">\n" + 
             "               <xsl:value-of select=\"title\" />\n" + 
-            "           </h2>                \n" + 
+            "           </h6>                \n" + 
             "           <xsl:apply-templates />\n" + 
             "        </div>\n" + 
             "    </xsl:template>\n" + 
@@ -351,7 +357,7 @@ public final class DocbookToHTML {
             "       </xsl:variable>\n" + 
             "       <xsl:choose>\n" + 
             "           <xsl:when test=\"$externalImages='true'\">\n" + 
-            "               <img src=\"https://skynet.usersys.redhat.com:8443/TopicIndex/seam/resource/rest/1/image/get/raw/{$imageidNoGif}\"/>\n" + 
+            "               <img src=\"{$externalImagesUrlPrefix}{$imageidNoGif}{$externalImagesUrlSuffix}\"/>\n" + 
             "           </xsl:when>\n" + 
             "           <xsl:otherwise>\n" + 
             "               <!-- http://www.iconspedia.com/icon/image-12570.html - free license -->\n" + 
@@ -389,7 +395,7 @@ public final class DocbookToHTML {
             "           </xsl:if>\n" + 
             "       </xsl:variable>\n" + 
             "           \n" + 
-            "       <table style=\"{$borderTop} {$borderBottom} {$borderSides}\">\n" + 
+            "       <table class=\"docbookTable\" style=\"{$borderTop} {$borderBottom} {$borderSides}\">\n" + 
             "           <xsl:apply-templates />\n" + 
             "       </table>\n" + 
             "    </xsl:template>\n" + 
@@ -461,6 +467,11 @@ public final class DocbookToHTML {
             "       </xsl:otherwise>\n" + 
             "     </xsl:choose>\n" + 
             "   </xsl:template>\n" + 
+            "    <xsl:template match=\"guibutton\">\n" + 
+            "       <span class=\"docbookGuiButton\">\n" + 
+            "           <xsl:apply-templates />\n" + 
+            "       </span>\n" + 
+            "    </xsl:template>\n" +
             "</xsl:stylesheet>\n" + 
             "\n";
 

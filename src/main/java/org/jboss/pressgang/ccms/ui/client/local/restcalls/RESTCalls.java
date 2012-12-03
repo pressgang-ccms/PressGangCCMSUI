@@ -38,6 +38,12 @@ public final class RESTCalls {
      */
     private static final String TOPIC_REVISIONS_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME
             + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTTopicV1.LOG_DETAILS_NAME + "\"}}]}";
+    
+    /**
+     * A topic with expanded revisions
+     */
+    private static final String TOPIC_REVISIONS_EXPANSION_WO_MESSASGES = "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME
+            + "\"}}";
     /**
      * A topic with expanded bugs
      */
@@ -192,22 +198,22 @@ public final class RESTCalls {
     }
 
     static public void saveTopic(final RESTCallback<RESTTopicV1> callback, final RESTTopicV1 topic) {
-        // final String expand = "{\"branches\":[" + TOPIC_EXPANSION + "]}";
+        final String expand = "{\"branches\":[" + TOPIC_REVISIONS_EXPANSION_WO_MESSASGES + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).updateJSONTopic("", topic);
+                createRestMethod(callback).updateJSONTopic(expand, topic);
             }
         });
     }
 
     static public void saveTopic(final RESTCallback<RESTTopicV1> callback, final RESTTopicV1 topic, final String message,
             final Integer flag, final String userId) {
-        // final String expand = "{\"branches\":[" + TOPIC_EXPANSION + "]}";
+        final String expand = "{\"branches\":[" + TOPIC_REVISIONS_EXPANSION_WO_MESSASGES + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).updateJSONTopic("", topic, message, flag, userId);
+                createRestMethod(callback).updateJSONTopic(expand, topic, message, flag, userId);
             }
         });
     }
@@ -386,7 +392,7 @@ public final class RESTCalls {
             }
         });
     }
-    
+
     static public void getTopicsFromQuery(final RESTCallback<RESTTopicCollectionV1> callback, final String queryString) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"topics\"}}]}";
@@ -503,7 +509,7 @@ public final class RESTCalls {
             }
         });
     }
-    
+
     static public void getProject(final RESTCallback<RESTProjectV1> callback, final Integer id) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
@@ -514,7 +520,6 @@ public final class RESTCalls {
             }
         });
     }
-    
 
     static public void getUnexpandedProject(final RESTCallback<RESTProjectV1> callback, final Integer id) {
         doRestCall(callback, new RestMethodCaller() {

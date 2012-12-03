@@ -45,7 +45,12 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
     
     public void bind(final int topicId, final String pageId, final String preferencesKey, final S display, final BaseTemplateViewInterface waitDisplay)
     {
-         super.bind(topicId, pageId, display, waitDisplay);
+        if (pageId == null) throw new NullPointerException("pageId cannot be null");
+        if (preferencesKey == null) throw new NullPointerException("preferencesKey cannot be null");
+        if (display == null) throw new NullPointerException("display cannot be null");
+        if (waitDisplay == null) throw new NullPointerException("waitDisplay cannot be null");
+        
+        super.bind(topicId, pageId, display, waitDisplay);
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
         refreshPossibleChildrenDataAndList();
         loadChildSplitResize(preferencesKey);
@@ -68,6 +73,8 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
      * @param preferencesKey The key against which the previous size was saved
      */
     private void bindChildSplitResize(final String preferencesKey) {
+        if (preferencesKey == null) throw new NullPointerException("preferencesKey cannot be null");
+        
         display.getSplit().addResizeHandler(new ResizeHandler() {
 
             @Override
@@ -84,6 +91,8 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
      * @param preferencesKey The key against which the previous size was saved
      */
     private void loadChildSplitResize(final String preferencesKey) {
+        if (preferencesKey == null) throw new NullPointerException("preferencesKey cannot be null");
+        
         display.getSplit().setSplitPosition(display.getPossibleChildrenResultsPanel(),
                 Preferences.INSTANCE.getInt(preferencesKey, Constants.SPLIT_PANEL_SIZE), false);
     }
@@ -103,6 +112,8 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
     @Override
     public void setSortOrderOfChildren(final SetNewChildSortCallback<D, E, F> sortCallback)
     {
+        if (sortCallback == null) throw new NullPointerException("sortCallback cannot be null");
+        
         final int size = getExistingProviderData().getItems().size();
         
         for (int i = Constants.CHILDREN_SORT_ORDER_START; i < size + Constants.CHILDREN_SORT_ORDER_START; ++i )
@@ -122,6 +133,10 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
     @Override
     public boolean moveTagsUpAndDown(final W parent, final F object, final boolean down, final SetNewChildSortCallback<D, E, F> sortCallback) {
 
+        if (parent == null) throw new NullPointerException("parent cannot be null");
+        if (object == null) throw new NullPointerException("object cannot be null");
+        if (sortCallback == null) throw new NullPointerException("sortCallback cannot be null");
+        
         final int size = getExistingProviderData().getItems().size();
 
         boolean modifiedSort = false;
@@ -182,6 +197,8 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
     @Override
     public void refreshExistingChildList(final W parent)
     {
+        if (parent == null) throw new NullPointerException("parent cannot be null");
+        
         display.setExistingChildrenProvider(generateExistingProvider(parent));
     }
 }

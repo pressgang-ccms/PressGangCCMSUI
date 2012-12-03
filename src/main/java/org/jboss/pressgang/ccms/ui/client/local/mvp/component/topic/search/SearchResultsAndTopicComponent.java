@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.search;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,6 +45,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTopicCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewCategoryEditor;
@@ -386,6 +388,10 @@ public class SearchResultsAndTopicComponent
     private RESTTopicCollectionItemV1 getTopicOrRevisionTopic() {
         final RESTTopicCollectionItemV1 sourceTopic = topicRevisionsDisplay.getRevisionTopic() == null ? filteredResultsComponent
                 .getProviderData().getDisplayedItem() : topicRevisionsDisplay.getRevisionTopic();
+
+        if (sourceTopic == null)
+            new NullPointerException("sourceTopic cannot be null");
+
         return sourceTopic;
     }
 
@@ -749,7 +755,8 @@ public class SearchResultsAndTopicComponent
             /* Update the page name */
             final StringBuilder title = new StringBuilder(displayedView.getPageName());
             if (this.filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-                title.append(": " + filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTitle());
+                title.append(": [" + filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "] "
+                        + filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTitle());
             }
             display.getPageTitle().setText(title.toString());
 
@@ -817,6 +824,18 @@ public class SearchResultsAndTopicComponent
                         @Override
                         public void success(final RESTTopicV1 retValue) {
                             try {
+                                
+                                boolean overwroteChanges = false;
+                                
+                                if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null && retValue.getRevisions().getItems().size() >= 2)
+                                {                                
+                                    Collections.sort(retValue.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
+                                    /* Get the second last revision (the last one is the current one) */
+                                    final Integer overwriteRevision = retValue.getRevisions().getItems().get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
+                                    /* if the second last revision doesn't match the revision of the topic when editing was started, then we have overwritten someone elses changes */                             
+                                    overwroteChanges = !(filteredResultsComponent.getProviderData().getSelectedItem().getItem().getRevision().equals(overwriteRevision)); 
+                                }
+                                
                                 /* Update the displayed topic */
                                 retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
                                         true);
@@ -829,7 +848,14 @@ public class SearchResultsAndTopicComponent
 
                                 updateDisplayAfterSave(false);
 
-                                Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                                if (overwroteChanges)
+                                {
+                                    Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
+                                }
+                                else
+                                {
+                                    Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                                }
                             } finally {
                                 display.removeWaitOperation();
                                 if (topicXMLDisplay.getEditor() != null) {
@@ -1119,8 +1145,10 @@ public class SearchResultsAndTopicComponent
                     topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay,
                     topicSplitPanelRenderedDisplay }) {
                 if (viewIsInFilter(filter, view)) {
-                    view.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC, this.split, locales,
-                            false);
+
+                    final RESTTopicCollectionItemV1 topicToDisplay = getTopicOrRevisionTopic();
+
+                    view.initialize(topicToDisplay.getItem(), isReadOnlyMode(), NEW_TOPIC, this.split, locales, false);
                 }
             }
 
