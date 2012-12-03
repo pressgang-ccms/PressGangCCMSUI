@@ -40,7 +40,7 @@
 	background-color: #EEE;
 }
 
-.docbookFigureTitle,.formalParaTitle,.sectionTitle {
+.docbookFigureTitle,.formalParaTitle,.docbookSectionTitle {
 	color: #369;
 	margin-top: 0px;
 	margin-bottom: 0px;
@@ -52,7 +52,7 @@
 	word-wrap: break-word;
 }
 
-.sectionTitle {
+.docbookSectionTitle {
 	font-size: 20px;
 	margin-top: 30px;
 }

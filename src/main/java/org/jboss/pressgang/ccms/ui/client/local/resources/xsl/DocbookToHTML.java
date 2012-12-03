@@ -302,15 +302,15 @@ public final class DocbookToHTML {
             "    \n" + 
             "    <xsl:template match=\"figure\">\n" + 
             "       <div id=\"{@id}\" class=\"docbookFigure\">\n" + 
+            "           <xsl:apply-templates />\n" +
             "           <h6 class=\"docbookFigureTitle\">\n" + 
             "               <xsl:value-of select=\"title\" />\n" + 
-            "           </h6>                \n" + 
-            "           <xsl:apply-templates />\n" + 
+            "           </h6>                \n" +             
             "        </div>\n" + 
             "    </xsl:template>\n" + 
             "    \n" + 
             "    <xsl:template match=\"mediaobject\">\n" + 
-            "       <div id=\"{@id}\" class=\"formalpara\">                       \n" + 
+            "       <div id=\"{@id}\" class=\"docbookMediaObject\" align=\"center\">\n" + 
             "           <xsl:apply-templates />\n" + 
             "        </div>\n" + 
             "    </xsl:template>\n" + 
