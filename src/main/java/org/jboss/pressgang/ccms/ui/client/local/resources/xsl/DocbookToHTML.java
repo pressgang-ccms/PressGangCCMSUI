@@ -143,7 +143,7 @@ public final class DocbookToHTML {
             "    </xsl:template>\n" + 
             "    <!-- jwulf 5 July 2012 -->\n" + 
             "    <xsl:template match=\"programlisting\">\n" + 
-            "        <pre class=\"docbookProgramlisting programlisting\">\n" + 
+            "        <pre class=\"docbookProgramListing\">\n" + 
             "            <xsl:apply-templates />\n" + 
             "        </pre>\n" + 
             "    </xsl:template>\n" + 
@@ -156,34 +156,34 @@ public final class DocbookToHTML {
             "        </span>\n" + 
             "    </xsl:template>\n" + 
             "    <xsl:template match=\"emphasis\">\n" + 
-            "        <span class=\"docbookEmphasis emphasis\">\n" + 
+            "        <span class=\"docbookEmphasis\">\n" + 
             "            <xsl:apply-templates />\n" + 
             "        </span>\n" + 
             "    </xsl:template>\n" + 
             "    <!-- jwulf 5 July 2012 -->\n" + 
             "    <xsl:template match=\"firstterm\">\n" + 
-            "        <span class=\"docbookFirstTerm firstterm\">\n" + 
+            "        <span class=\"docbookFirstTerm\">\n" + 
             "            <xsl:apply-templates />\n" + 
             "        </span>\n" + 
             "    </xsl:template>\n" + 
             "    <!-- jwulf 5 July 2012 -->\n" + 
             "    <xsl:template match=\"literal\">\n" + 
-            "        <span class=\"docbookLiteral literal\">\n" + 
+            "        <span class=\"docbookLiteral\">\n" + 
             "            <xsl:apply-templates />\n" + 
             "        </span>\n" + 
             "    </xsl:template>\n" + 
             "    <xsl:template match=\"filename\">\n" + 
-            "        <code class=\"docbookFileName filename\">\n" + 
+            "        <code class=\"docbookFileName\">\n" + 
             "            <xsl:apply-templates />\n" + 
             "        </code>\n" + 
             "    </xsl:template>\n" + 
             "    <xsl:template match=\"classname\">\n" + 
-            "        <code class=\"docbookClassName classname\">\n" + 
+            "        <code class=\"docbookClassName\">\n" + 
             "            <xsl:apply-templates />\n" + 
             "        </code>\n" + 
             "    </xsl:template>\n" + 
             "    <xsl:template match=\"constant\">\n" + 
-            "        <code class=\"docbookConstant constant\">\n" + 
+            "        <code class=\"docbookConstant\">\n" + 
             "            <xsl:apply-templates />\n" + 
             "        </code>\n" + 
             "    </xsl:template>\n" + 
@@ -381,6 +381,11 @@ public final class DocbookToHTML {
             "           <xsl:apply-templates />\n" + 
             "       </div>\n" + 
             "    </xsl:template>\n" + 
+            "    <xsl:template match=\"citetitle\">\n" + 
+            "       <span class=\"docbookCiteTitle\">\n" + 
+            "           <xsl:apply-templates />\n" + 
+            "       </span>\n" + 
+            "    </xsl:template>\n" + 
             "    \n" + 
             "    <xsl:template match=\"table\">\n" + 
             "       <xsl:variable name=\"borderTop\">\n" + 
@@ -452,9 +457,9 @@ public final class DocbookToHTML {
             "           <xsl:text>-</xsl:text>\n" + 
             "       </xsl:if>\n" + 
             "   </xsl:template>\n" + 
-            "    <xsl:template match=\"guimenu | guisubmenu\">\n" + 
+            "    <xsl:template match=\"guimenu | guisubmenu | guimenuitem\">\n" + 
             "        <xsl:apply-templates />\n" + 
-            "       <xsl:if test=\"following-sibling::node()[1][self::guimenu] or following-sibling::node()[1][self::guisubmenu]\">\n" + 
+            "       <xsl:if test=\"following-sibling::node()[1][self::guimenu] or following-sibling::node()[1][self::guisubmenu]  or following-sibling::node()[1][self::guimenuitem]\">\n" + 
             "           <xsl:text> → </xsl:text>\n" + 
             "       </xsl:if>\n" + 
             "   </xsl:template>\n" + 
@@ -484,7 +489,7 @@ public final class DocbookToHTML {
             "           <xsl:apply-templates />\n" + 
             "       </span>\n" + 
             "    </xsl:template>\n" +
-            "    <xsl:template match=\"guibutton\">\n" + 
+            "    <xsl:template match=\"guilabel\">\n" + 
             "       <span class=\"docbookGuiLabel\">\n" + 
             "           <xsl:apply-templates />\n" + 
             "       </span>\n" + 

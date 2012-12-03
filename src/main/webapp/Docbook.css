@@ -79,7 +79,7 @@
 	padding-left: 5px;
 }
 
-.docbookNote, .docbookWarning, .docbookImportant {
+.docbookNote,.docbookWarning,.docbookImportant {
 	color: black;
 	margin: 0px;
 	padding: 0px;
@@ -90,7 +90,7 @@
 	page-break-inside: avoid;
 }
 
-.docbookNoteTitle, .docbookWarningTitle, .docbookImportantTitle {
+.docbookNoteTitle,.docbookWarningTitle,.docbookImportantTitle {
 	clear: both;
 	margin: 0px;
 	padding: 0px;
@@ -118,7 +118,7 @@
 	background-color: #590000;
 }
 
-.docbookNoteContents, .docbookWarningContents, .docbookImportantContents {
+.docbookNoteContents,.docbookWarningContents,.docbookImportantContents {
 	order: none;
 	border-left: 1px solid #AAA;
 	border-right: 1px solid #AAA;
@@ -132,4 +132,35 @@
 	-moz-border-radius: 0px;
 	-webkit-border-radius: 0px;
 	border-radius: 0px;
+}
+
+.docbookProgramListing {
+	font-family: "liberation mono", "bitstream vera mono", "dejavu mono",
+		monospace;
+	display: block;
+	background-color: whiteSmoke;
+	color: black;
+	margin-bottom: 1em;
+	padding: .5em 1em;
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap !important;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
+	font-size: 0.9em;
+	border-style: none;
+	box-shadow: 0 2px 5px #AAA inset;
+	-moz-box-shadow: 0 2px 5px #AAAAAA inset;
+	-webkit-box-shadow: 0 2px 5px #AAA inset;
+	-o-box-shadow: 0 2px 5px #AAAAAA inset;
+}
+
+.docbookCiteTitle {
+	font-style: italic;
+}
+
+.docbookLiteral {
+	font-family: "liberation mono", "bitstream vera mono", "dejavu mono",
+		monospace;
+	font-weight: bold;
 }
