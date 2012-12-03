@@ -1,0 +1,63 @@
+.docbookNote {
+	border: black solid;
+}
+
+.docbookNoteTitle {
+	text-align: center;
+	background-color: #597800;
+	color: white;
+	margin: 0px;
+}
+
+.docbookNoteContents {
+	padding: 0em 1em 1em 1em;
+}
+
+.docbookGuiButton {
+	font-weight: bold;
+}
+
+.docbookTable {
+	border-collapse: collapse;
+	table-layout: fixed;
+	word-wrap: break-word;
+	border-width: 1px;
+	border-color: #444;
+}
+
+.docbookTable th {
+	text-align: left;
+	background-color: #69C;
+	padding: .3em .5em;
+	color: white;
+}
+
+.docbookTable td {
+	padding: .15em .5em;
+}
+
+.docbookTable tr:nth-child(even) {
+	background-color: #EEE;
+}
+
+.docbookFigureTitle,.formalParaTitle,.sectionTitle {
+	color: #369;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	background-color: transparent;
+	margin-bottom: 0px;
+	margin-top: 20px;
+	page-break-inside: avoid;
+	page-break-after: avoid;
+	word-wrap: break-word;
+}
+
+.sectionTitle {
+	font-size: 20px;
+	margin-top: 30px;
+}
+
+.docbookFigureTitle,.formalParaTitle {
+	font-size: 14px;
+	margin-bottom: 0px;
+}
