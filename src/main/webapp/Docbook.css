@@ -1,15 +1,4 @@
-.docbookNoteTitle {
-	text-align: center;
-	background-color: #597800;
-	color: white;
-	margin: 0px;
-}
-
-.docbookNoteContents {
-	padding: 0em 1em 1em 1em;
-}
-
-.docbookGuiButton {
+.docbookGuiButton,.docbookEmphasis {
 	font-weight: bold;
 }
 
@@ -102,6 +91,7 @@
 	height: 1.4em;
 	line-height: 1.4em;
 	font-size: 17px;
+	color: white;
 }
 
 .docbookItemizedListTitle {

@@ -71,6 +71,11 @@ public final class DocbookToHTML {
             "            <xsl:apply-templates />\n" + 
             "        </p>\n" + 
             "    </xsl:template>\n" + 
+            "    <xsl:template match=\"emphasis\">\n" + 
+            "        <span class=\"docbookEmphasis\">\n" + 
+            "            <xsl:apply-templates />\n" + 
+            "        </span>\n" + 
+            "    </xsl:template>\n" +             
             "    <xsl:template match=\"remark\">\n" + 
             "        <p class=\"docbookRemark\">\n" + 
             "            <xsl:apply-templates />\n" + 
