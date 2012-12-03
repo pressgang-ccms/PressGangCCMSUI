@@ -36,7 +36,7 @@
 	background-color: #EEE;
 }
 
-.docbookFigureTitle,.formalParaTitle,.docbookSectionTitle {
+.docbookFigureTitle,.formalParaTitle,.docbookSectionTitle,.docbookExampleTitle,.docbookTableTitle {
 	color: #369;
 	margin-top: 0px;
 	margin-bottom: 0px;
@@ -157,6 +157,11 @@
 
 .docbookCiteTitle {
 	font-style: italic;
+}
+
+.docbookGuiMenu, .docbookGuiSubMenu, .docbookGuiMenuItem
+{
+	font-weight: bold;
 }
 
 .docbookLiteral {

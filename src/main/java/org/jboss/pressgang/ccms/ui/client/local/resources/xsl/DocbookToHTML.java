@@ -304,6 +304,14 @@ public final class DocbookToHTML {
             "    <!-- Do nothing for now -->\n" + 
             "    <xsl:template match=\"indexterm\"></xsl:template>\n" + 
             "    \n" + 
+            "    <xsl:template match=\"example\">\n" + 
+            "       <div id=\"{@id}\" class=\"docbookExample\">\n" + 
+            "           <xsl:apply-templates />\n" +
+            "           <h6 class=\"docbookExampleTitle\">\n" + 
+            "               <xsl:value-of select=\"title\" />\n" + 
+            "           </h6>\n" +             
+            "        </div>\n" + 
+            "    </xsl:template>\n" + 
             "    <xsl:template match=\"figure\">\n" + 
             "       <div id=\"{@id}\" class=\"docbookFigure\">\n" + 
             "           <xsl:apply-templates />\n" +
@@ -405,7 +413,10 @@ public final class DocbookToHTML {
             "               border-left-style:solid; border-right-style:solid;\n" + 
             "           </xsl:if>\n" + 
             "       </xsl:variable>\n" + 
-            "           \n" + 
+            "       \n" + 
+            "       <h6 class=\"docbookTableTitle\">\n" + 
+            "           <xsl:value-of select=\"title\" />\n" + 
+            "       </h6>\n" + 
             "       <table class=\"docbookTable\" style=\"{$borderTop} {$borderBottom} {$borderSides}\">\n" + 
             "           <xsl:apply-templates />\n" + 
             "       </table>\n" + 
@@ -457,8 +468,26 @@ public final class DocbookToHTML {
             "           <xsl:text>-</xsl:text>\n" + 
             "       </xsl:if>\n" + 
             "   </xsl:template>\n" + 
-            "    <xsl:template match=\"guimenu | guisubmenu | guimenuitem\">\n" + 
-            "        <xsl:apply-templates />\n" + 
+            "    <xsl:template match=\"guimenu\">\n" + 
+            "       <span class=\"docbookGuiMenu\">\n" +
+            "           <xsl:apply-templates />\n" +
+            "       </span>\n" +
+            "       <xsl:if test=\"following-sibling::node()[1][self::guimenu] or following-sibling::node()[1][self::guisubmenu]  or following-sibling::node()[1][self::guimenuitem]\">\n" + 
+            "           <xsl:text> → </xsl:text>\n" + 
+            "       </xsl:if>\n" + 
+            "   </xsl:template>\n" + 
+            "    <xsl:template match=\"guisubmenu\">\n" + 
+            "       <span class=\"docbookGuiSubMenu\">\n" +
+            "           <xsl:apply-templates />\n" +
+            "       </span>\n" +
+            "       <xsl:if test=\"following-sibling::node()[1][self::guimenu] or following-sibling::node()[1][self::guisubmenu]  or following-sibling::node()[1][self::guimenuitem]\">\n" + 
+            "           <xsl:text> → </xsl:text>\n" + 
+            "       </xsl:if>\n" + 
+            "   </xsl:template>\n" + 
+            "    <xsl:template match=\"guimenuitem\">\n" + 
+            "       <span class=\"docbookGuiMenuItem\">\n" +
+            "           <xsl:apply-templates />\n" +
+            "       </span>\n" +
             "       <xsl:if test=\"following-sibling::node()[1][self::guimenu] or following-sibling::node()[1][self::guisubmenu]  or following-sibling::node()[1][self::guimenuitem]\">\n" + 
             "           <xsl:text> → </xsl:text>\n" + 
             "       </xsl:if>\n" + 

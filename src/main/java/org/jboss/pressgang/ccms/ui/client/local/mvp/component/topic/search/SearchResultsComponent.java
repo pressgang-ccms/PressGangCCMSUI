@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.search;
 
+import java.util.ArrayList;
+
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
@@ -75,6 +77,10 @@ public class SearchResultsComponent
                     @Override
                     public void failed(final Message message, final Throwable throwable) {
                         display.removeWaitOperation();
+                        getProviderData().setItems(new ArrayList<RESTTopicCollectionItemV1>());
+                        getProviderData().setSize(0);
+                        displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(),
+                                getProviderData().getStartRow());
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
                 };
