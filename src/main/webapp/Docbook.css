@@ -164,6 +164,11 @@
 	font-weight: bold;
 }
 
+ol ol
+{
+	list-style-type: lower-alpha;
+}
+
 .docbookLiteral {
 	font-family: "liberation mono", "bitstream vera mono", "dejavu mono",
 		monospace;

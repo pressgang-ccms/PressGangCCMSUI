@@ -123,10 +123,17 @@ public final class DocbookToHTML {
             "    </xsl:template>\n" + 
             "    <xsl:template match=\"procedure\">\n" + 
             "        <div class=\"docbookProcedure\">\n" + 
-            "            <p class=\"procedurelistitle docbookProcedureTitle\">\n" + 
+            "            <p class=\"docbookProcedureTitle\">\n" + 
             "                <xsl:value-of select=\"title\" />\n" + 
             "            </p>\n" + 
-            "            <ol class=\"docbookProcedureContainer procedure\">\n" + 
+            "            <ol class=\"docbookProcedureContainer\">\n" + 
+            "                <xsl:apply-templates />\n" + 
+            "            </ol>\n" + 
+            "        </div>\n" + 
+            "    </xsl:template>\n" + 
+            "    <xsl:template match=\"substeps\">\n" + 
+            "        <div class=\"docbookSubSteps\">\n" + 
+            "            <ol class=\"docbookSubStepsContainer\">\n" + 
             "                <xsl:apply-templates />\n" + 
             "            </ol>\n" + 
             "        </div>\n" + 
