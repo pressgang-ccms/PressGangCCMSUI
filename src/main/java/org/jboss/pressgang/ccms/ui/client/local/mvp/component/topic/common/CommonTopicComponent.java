@@ -121,8 +121,8 @@ public class CommonTopicComponent {
                         final Map<String, String> data = new TreeMap<String, String>();
 
                         /* work around the inability to modify an int from an anonymous class */
-                        final int[] counter = new int[] {0};
-                        
+                        final int[] counter = new int[] { 0 };
+
                         for (final String id : xmlElements) {
                             try {
                                 final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
@@ -133,7 +133,7 @@ public class CommonTopicComponent {
                                                     final BaseTemplateViewInterface display) {
 
                                                 ++counter[0];
-                                                
+
                                                 data.put(retValue.getName(), retValue.getValue());
 
                                                 /*
@@ -143,15 +143,14 @@ public class CommonTopicComponent {
                                                     loadedCallback.stringMapLoaded(data);
                                                 }
                                             }
-                                        }, 
-                                        new BaseRestCallback.FailureAction<BaseTemplateViewInterface>() {
+                                        }, new BaseRestCallback.FailureAction<BaseTemplateViewInterface>() {
 
                                             @Override
                                             public void doFailureAction(BaseTemplateViewInterface display) {
                                                 ++counter[0];
                                                 if (counter[0] == xmlElements.size()) {
                                                     loadedCallback.stringMapLoaded(data);
-                                                }                                                
+                                                }
                                             }
                                         });
 
@@ -167,8 +166,24 @@ public class CommonTopicComponent {
         RESTCalls.getStringConstant(callback, ServiceConstants.DOCBOOK_TEMPLATES_STRING_CONSTANT_ID);
     }
 
+    static private boolean isAnyDialogBoxesOpen(final TopicXMLPresenter.Display topicXMLDisplay) {
+        if (topicXMLDisplay.getXmlTagsDialog().getDialogBox().isShowing())
+            return true;
+        
+        if (topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().isShowing())
+            return true;
+        
+        if (topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().isShowing())
+            return true;
+        
+        if (topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().isShowing())
+            return true;
+        
+        return false;
+    }
+
     /**
-     * Add listeres for keyboard events
+     * Add listeners for keyboard events
      * 
      * @param topicXMLDisplay The XML editing view
      * @param display The main view
@@ -183,7 +198,7 @@ public class CommonTopicComponent {
                     Scheduler.get().scheduleDeferred(new Command() {
                         @Override
                         public void execute() {
-                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()) {
+                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown() && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
                                 topicXMLDisplay.getXmlTagsDialog().getDialogBox().center();
                                 topicXMLDisplay.getXmlTagsDialog().getDialogBox().show();
                             }
@@ -193,7 +208,7 @@ public class CommonTopicComponent {
                     Scheduler.get().scheduleDeferred(new Command() {
                         @Override
                         public void execute() {
-                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()) {
+                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown() && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
                                 topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().center();
                                 topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().show();
                             }
@@ -203,19 +218,20 @@ public class CommonTopicComponent {
                     Scheduler.get().scheduleDeferred(new Command() {
                         @Override
                         public void execute() {
-                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()) {
+                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown() && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
                                 topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().center();
                                 topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().show();
                             }
                         }
                     });
-                    
+
                 } else if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'R') {
                     Scheduler.get().scheduleDeferred(new Command() {
                         @Override
                         public void execute() {
-                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()) {
-                                topicXMLDisplay.getPlainTextXMLDialog().setText(currentTopicCallback.getCurrentlyEditedTopic().getXml());
+                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown() && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
+                                topicXMLDisplay.getPlainTextXMLDialog().setText(
+                                        currentTopicCallback.getCurrentlyEditedTopic().getXml());
                                 topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().center();
                                 topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().show();
                             }
@@ -233,14 +249,15 @@ public class CommonTopicComponent {
                 topicXMLDisplay.getXmlTagsDialog().setSuggestions(xmlElements);
             }
         });
-        
-        populateXMLTemplates(display, new StringMapLoaded(){
+
+        populateXMLTemplates(display, new StringMapLoaded() {
 
             @Override
             public void stringMapLoaded(final Map<String, String> stringMap) {
                 topicXMLDisplay.getXmlTemplatesDialog().setSuggestions(stringMap);
-                
-            }});
+
+            }
+        });
 
         Event.addNativePreviewHandler(keyboardShortcutPreviewhandler);
     }
@@ -295,7 +312,7 @@ public class CommonTopicComponent {
 
             }
         });
-       
+
         topicXMLDisplay.getCSPTopicDetailsDialog().getIds().addKeyPressHandler(new KeyPressHandler() {
 
             @Override
@@ -324,7 +341,7 @@ public class CommonTopicComponent {
                 hideCspDetailsDialogBox(topicXMLDisplay);
             }
         });
-        
+
         topicXMLDisplay.getXmlTemplatesDialog().getOptions().addKeyPressHandler(new KeyPressHandler() {
 
             @Override
@@ -353,30 +370,28 @@ public class CommonTopicComponent {
                 hideTemplateDialogBox(topicXMLDisplay);
             }
         });
-        
-        topicXMLDisplay.getPlainTextXMLDialog().getOK().addClickHandler(new ClickHandler() {            
+
+        topicXMLDisplay.getPlainTextXMLDialog().getOK().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                copyTextToTopic(topicXMLDisplay);                
+                copyTextToTopic(topicXMLDisplay);
             }
         });
-        
-        topicXMLDisplay.getPlainTextXMLDialog().getCancel().addClickHandler(new ClickHandler() {            
+
+        topicXMLDisplay.getPlainTextXMLDialog().getCancel().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                hidePlainTextXMLDialog(topicXMLDisplay);                
+                hidePlainTextXMLDialog(topicXMLDisplay);
             }
         });
     }
-    
-    private static void hidePlainTextXMLDialog(final TopicXMLPresenter.Display topicXMLDisplay)
-    {
+
+    private static void hidePlainTextXMLDialog(final TopicXMLPresenter.Display topicXMLDisplay) {
         topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().hide();
         topicXMLDisplay.getEditor().focus();
     }
-    
-    private static void copyTextToTopic(final TopicXMLPresenter.Display topicXMLDisplay)
-    {
+
+    private static void copyTextToTopic(final TopicXMLPresenter.Display topicXMLDisplay) {
         topicXMLDisplay.getEditor().setText(topicXMLDisplay.getPlainTextXMLDialog().getText());
         hidePlainTextXMLDialog(topicXMLDisplay);
     }
@@ -461,32 +476,20 @@ public class CommonTopicComponent {
         }
 
     }
-    
-    public static void setHelpTopicForView(final Component<?> component,  final BaseTemplateViewInterface view)
-    {
+
+    public static void setHelpTopicForView(final Component<?> component, final BaseTemplateViewInterface view) {
         /* Set the help link topic ids */
-        if (view instanceof TopicXMLErrorsPresenter.Display)
-        {
+        if (view instanceof TopicXMLErrorsPresenter.Display) {
             component.setHelpTopicId(ServiceConstants.TOPIC_VALIDATION_ERRORS_TOPIC);
-        }
-        else if (view instanceof TopicPresenter.Display)
-        {
+        } else if (view instanceof TopicPresenter.Display) {
             component.setHelpTopicId(ServiceConstants.TOPIC_PROPERTIES_TOPIC);
-        }
-        else if (view instanceof TopicTagsPresenter.Display)
-        {
+        } else if (view instanceof TopicTagsPresenter.Display) {
             component.setHelpTopicId(ServiceConstants.TOPIC_TAGS_TOPIC);
-        }
-        else if (view instanceof TopicRevisionsPresenter.Display)
-        {
+        } else if (view instanceof TopicRevisionsPresenter.Display) {
             component.setHelpTopicId(ServiceConstants.TOPIC_REVISIONS_TOPIC);
-        }
-        else if (view instanceof TopicBugsPresenter.Display)
-        {
+        } else if (view instanceof TopicBugsPresenter.Display) {
             component.setHelpTopicId(ServiceConstants.TOPIC_BUGS_TOPIC);
-        }
-        else if (view instanceof TopicXMLView)
-        {
+        } else if (view instanceof TopicXMLView) {
             component.setHelpTopicId(ServiceConstants.TOPIC_EDIT_VIEW_CONTENT_TOPIC);
         }
     }

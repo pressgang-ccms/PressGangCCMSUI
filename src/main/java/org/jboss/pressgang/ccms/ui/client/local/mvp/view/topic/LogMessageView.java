@@ -90,5 +90,12 @@ import com.google.gwt.user.client.ui.TextArea;
             this.message.setText("");
             this.minorChange.setValue(true);            
         }
+        
+        @Override
+        public void show()
+        {            
+            super.show();
+            message.setFocus(true);
+        }
 
     }

@@ -91,7 +91,9 @@ public final class DocbookToHTML {
             "            <h2 class=\"label docbookImportantTitle\">\n" + 
             "                <xsl:value-of select=\"title\" />\n" + 
             "            </h2>\n" + 
-            "            <xsl:apply-templates />\n" + 
+            "            <div class=\"docbookImportantContents\">\n" + 
+            "               <xsl:apply-templates />\n" + 
+            "            </div>\n" + 
             "        </div>\n" + 
             "    </xsl:template>\n" + 
             "    <xsl:template match=\"warning\">\n" + 
@@ -99,7 +101,9 @@ public final class DocbookToHTML {
             "            <h2 class=\"label docbookWarningTitle\">\n" + 
             "                <xsl:value-of select=\"title\" />\n" + 
             "            </h2>\n" + 
-            "            <xsl:apply-templates />\n" + 
+            "            <div class=\"docbookWarningContents\">\n" + 
+            "               <xsl:apply-templates />\n" + 
+            "            </div>\n" + 
             "        </div>\n" + 
             "    </xsl:template>\n" + 
             "    <xsl:template match=\"itemizedlist\">\n" + 
@@ -373,7 +377,9 @@ public final class DocbookToHTML {
             "    </xsl:template>\n" + 
             "    \n" + 
             "    <xsl:template match=\"phrase\">\n" + 
-            "       <xsl:apply-templates />\n" + 
+            "       <div class=\"docbookPhrase\">\n" + 
+            "           <xsl:apply-templates />\n" + 
+            "       </div>\n" + 
             "    </xsl:template>\n" + 
             "    \n" + 
             "    <xsl:template match=\"table\">\n" + 
@@ -446,6 +452,12 @@ public final class DocbookToHTML {
             "           <xsl:text>-</xsl:text>\n" + 
             "       </xsl:if>\n" + 
             "   </xsl:template>\n" + 
+            "    <xsl:template match=\"guimenu | guisubmenu\">\n" + 
+            "        <xsl:apply-templates />\n" + 
+            "       <xsl:if test=\"following-sibling::node()[1][self::guimenu] or following-sibling::node()[1][self::guisubmenu]\">\n" + 
+            "           <xsl:text> → </xsl:text>\n" + 
+            "       </xsl:if>\n" + 
+            "   </xsl:template>\n" + 
             "    \n" + 
             "  <xsl:template name=\"string-replace-all\">\n" + 
             "     <xsl:param name=\"text\" />\n" + 
@@ -469,6 +481,11 @@ public final class DocbookToHTML {
             "   </xsl:template>\n" + 
             "    <xsl:template match=\"guibutton\">\n" + 
             "       <span class=\"docbookGuiButton\">\n" + 
+            "           <xsl:apply-templates />\n" + 
+            "       </span>\n" + 
+            "    </xsl:template>\n" +
+            "    <xsl:template match=\"guibutton\">\n" + 
+            "       <span class=\"docbookGuiLabel\">\n" + 
             "           <xsl:apply-templates />\n" + 
             "       </span>\n" + 
             "    </xsl:template>\n" +

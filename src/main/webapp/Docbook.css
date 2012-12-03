@@ -1,7 +1,3 @@
-.docbookNote {
-	border: black solid;
-}
-
 .docbookNoteTitle {
 	text-align: center;
 	background-color: #597800;
@@ -60,4 +56,80 @@
 .docbookFigureTitle,.formalParaTitle {
 	font-size: 14px;
 	margin-bottom: 0px;
+}
+
+.docbookGuiLabel {
+	font-family: "liberation mono", "bitstream vera mono", "dejavu mono",
+		monospace;
+	font-weight: bold;
+}
+
+.docbookNote::before {
+	content: url(images/note.png);
+	padding-left: 5px;
+}
+
+.docbookWarning::before {
+	content: url(images/warning.png);
+	padding-left: 5px;
+}
+
+.docbookImportant::before {
+	content: url(images/important.png);
+	padding-left: 5px;
+}
+
+.docbookNote, .docbookWarning, .docbookImportant {
+	color: black;
+	margin: 0px;
+	padding: 0px;
+	background: none;
+	background-color: white;
+	margin-bottom: 1em;
+	border-bottom: 1px solid #AAA;
+	page-break-inside: avoid;
+}
+
+.docbookNoteTitle, .docbookWarningTitle, .docbookImportantTitle {
+	clear: both;
+	margin: 0px;
+	padding: 0px;
+	margin-top: -40px;
+	padding-left: 58px;
+	line-height: 1.0px;
+	font-size: 1.0px;
+	height: 1.4em;
+	line-height: 1.4em;
+	font-size: 17px;
+}
+
+.docbookNoteTitle {
+	background: url(images/green.png) top right repeat-x;
+	background-color: #597800;
+}
+
+.docbookImportantTitle {
+	background: url(images/yellow.png) top right repeat-x;
+	background-color: #A6710F;
+}
+
+.docbookWarningTitle {
+	background: url(images/red.png) top right repeat-x;
+	background-color: #590000;
+}
+
+.docbookNoteContents, .docbookWarningContents, .docbookImportantContents {
+	order: none;
+	border-left: 1px solid #AAA;
+	border-right: 1px solid #AAA;
+	padding: 0px;
+	margin: 0px;
+	padding-top: 1.5em;
+	padding-bottom: 1em;
+	padding-left: 2em;
+	padding-right: 1em;
+	background-color: #EEEEEC;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
 }

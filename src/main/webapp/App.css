@@ -447,6 +447,7 @@ html {
 
 .TopicRenderedViewDiv {
 	overflow-y: auto;
+	padding-right: 8px;
 }
 
 .TopicViewLayoutPanel {
