@@ -104,6 +104,7 @@
 	page-break-inside: avoid;
 	page-break-after: avoid;
 	word-wrap: break-word;
+	font-size: 14px;
 }
 
 .docbookNoteTitle {
