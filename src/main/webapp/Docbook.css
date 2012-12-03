@@ -36,7 +36,8 @@
 	background-color: #EEE;
 }
 
-.docbookFigureTitle,.formalParaTitle,.docbookSectionTitle,.docbookExampleTitle,.docbookTableTitle {
+.docbookFigureTitle,.formalParaTitle,.docbookSectionTitle,.docbookExampleTitle,.docbookTableTitle
+	{
 	color: #369;
 	margin-top: 0px;
 	margin-bottom: 0px;
@@ -103,6 +104,18 @@
 	font-size: 17px;
 }
 
+.docbookItemizedListTitle {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	background-color: transparent;
+	margin-bottom: 0px;
+	margin-top: 20px;
+	page-break-inside: avoid;
+	page-break-after: avoid;
+	word-wrap: break-word;
+	font-size: 14px;
+}
+
 .docbookNoteTitle {
 	background: url(images/green.png) top right repeat-x;
 	background-color: #597800;
@@ -159,18 +172,24 @@
 	font-style: italic;
 }
 
-.docbookGuiMenu, .docbookGuiSubMenu, .docbookGuiMenuItem
-{
+.docbookGuiMenu,.docbookGuiSubMenu,.docbookGuiMenuItem {
 	font-weight: bold;
 }
 
-ol ol
-{
+ol ol {
 	list-style-type: lower-alpha;
 }
 
-.docbookLiteral {
+.docbookLiteral,.docbookFileName {
 	font-family: "liberation mono", "bitstream vera mono", "dejavu mono",
 		monospace;
+	font-weight: bold;
+}
+
+.docbookInterfaceName {
+	font-family: "liberation mono", "bitstream vera mono", "dejavu mono",
+		monospace;
+	white-space: pre-wrap;
+	word-wrap: break-word;
 	font-weight: bold;
 }

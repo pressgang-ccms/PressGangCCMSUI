@@ -108,9 +108,9 @@ public final class DocbookToHTML {
             "    </xsl:template>\n" + 
             "    <xsl:template match=\"itemizedlist\">\n" + 
             "        <div class=\"docbookItemizedList\">\n" + 
-            "            <p class=\"itemizedlistitle docbookItemizedListTitle\">\n" + 
+            "            <h6 class=\"itemizedlistitle docbookItemizedListTitle\">\n" + 
             "                <xsl:value-of select=\"title\" />\n" + 
-            "            </p>\n" + 
+            "            </h6>\n" + 
             "            <ul class=\"docbookItemizedListContainer itemizedlist\">\n" + 
             "                <xsl:apply-templates />\n" + 
             "            </ul>\n" + 
@@ -178,6 +178,11 @@ public final class DocbookToHTML {
             "        <span class=\"docbookLiteral\">\n" + 
             "            <xsl:apply-templates />\n" + 
             "        </span>\n" + 
+            "    </xsl:template>\n" + 
+            "    <xsl:template match=\"interfacename\">\n" + 
+            "        <code class=\"docbookInterfaceName\">\n" + 
+            "            <xsl:apply-templates />\n" + 
+            "        </code>\n" + 
             "    </xsl:template>\n" + 
             "    <xsl:template match=\"filename\">\n" + 
             "        <code class=\"docbookFileName\">\n" + 

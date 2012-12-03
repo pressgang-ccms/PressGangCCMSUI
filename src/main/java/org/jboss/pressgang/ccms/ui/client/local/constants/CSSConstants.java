@@ -9,6 +9,11 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
  */
 public interface CSSConstants {
 
+    public interface HelpDialog
+    {
+        String HELP_CONTENTS = "HelpContents";        
+    }
+    
     public interface PlainTextXMLDialog
     {
         String PLAIN_TEXT_XML_DIALOG_TEXTAREA = "PlainTextXMLDialogTextArea";
@@ -280,4 +285,5 @@ public interface CSSConstants {
     String IMAGE_FILTERED_RESULTS_PANEL = "ImageFilteredResultsPanel";
     /** Assigned to the panel that holds the filter options for images. */
     String IMAGE_FILTERED_OPTIONS_PANEL = "ImageFilteredOptionsPanel";
+    
 }

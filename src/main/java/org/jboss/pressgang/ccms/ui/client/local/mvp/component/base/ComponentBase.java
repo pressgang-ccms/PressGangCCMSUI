@@ -11,6 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ProjectsFilteredResul
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchTagsFieldsAndFiltersViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.TagsFilteredResultsAndTagViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.WelcomeViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.create.CreateTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -93,7 +94,7 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed())
-                    eventBus.fireEvent(new SearchTagsFieldsAndFiltersViewEvent());
+                    eventBus.fireEvent(new WelcomeViewEvent());
             }
         });
         

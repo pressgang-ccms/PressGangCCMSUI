@@ -132,6 +132,8 @@ public abstract class BaseTemplateView
             this.setGlassEnabled(true);
             this.setText(PressGangCCMSUI.INSTANCE.Help());
             
+            contents.addStyleName(CSSConstants.HelpDialog.HELP_CONTENTS);
+            
             final ScrollPanel scroll = new ScrollPanel(contents);
             scroll.setWidth(Constants.HELP_DIALOG_WIDTH);
             scroll.setHeight(Constants.HELP_DIALOG_HEIGHT);
