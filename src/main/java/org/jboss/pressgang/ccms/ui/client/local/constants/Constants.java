@@ -10,7 +10,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm
      */
-    public static final String VERSION = "201212031728";
+    public static final String VERSION = "201212041146";
     
     /**
      * The sort order to apply to a newly added child
@@ -101,8 +101,8 @@ public final class Constants {
      * The REST server.
      */
     //public static final String BASE_URL = "http://localhost:8080/TopicIndex/";
-    //public static final String BASE_URL = "http://skynet-dev.usersys.redhat.com:8080/TopicIndex/";
-    public static final String BASE_URL = "http://skynet.usersys.redhat.com:8080/TopicIndex/";
+    public static final String BASE_URL = "http://skynet-dev.usersys.redhat.com:8080/TopicIndex/";
+    //public static final String BASE_URL = "http://skynet.usersys.redhat.com:8080/TopicIndex/";
     /**
      * The REST URL.
      */

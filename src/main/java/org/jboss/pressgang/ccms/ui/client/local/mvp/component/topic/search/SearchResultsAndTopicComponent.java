@@ -603,7 +603,10 @@ public class SearchResultsAndTopicComponent
                     /* Reset the reference to the revision topic */
                     topicRevisionsDisplay.setRevisionTopic(revisionTopic);
                 }
-
+                
+                /* Load the tags and bugs */
+                loadTagsandBugs();
+                
                 initializeViews();
                 topicRevisionsDisplay.setProvider(generateTopicRevisionsListProvider());
                 switchView(topicRevisionsDisplay);
@@ -660,11 +663,6 @@ public class SearchResultsAndTopicComponent
                 topicRevisionsDisplay.getProvider().resetProvider();
             }
 
-            /* set the bugs to show the loading widget */
-            if (topicBugsDisplay.getProvider() != null) {
-                topicBugsDisplay.getProvider().resetProvider();
-            }
-
             /* A callback to respond to a request for a topic with the revisions expanded */
             final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
                     topicRevisionsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
@@ -676,49 +674,15 @@ public class SearchResultsAndTopicComponent
                             /* refresh the list */
                             topicRevisionsDisplay.getProvider().displayNewFixedList(retValue.getRevisions().getItems());
                         }
-                    }) {
+                    });
 
-            };
-
-            /* A callback to respond to a request for a topic with the tags expanded */
-            final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
-                    topicTagsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
-                        @Override
-                        public void doSuccessAction(final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
-
-                            /* copy the revisions into the displayed Topic */
-                            filteredResultsComponent.getProviderData().getDisplayedItem().getItem().setTags(retValue.getTags());
-
-                            /* update the view */
-                            initializeViews(Arrays.asList(new TopicViewInterface[] { topicTagsDisplay }));
-                        }
-                    }) {
-
-            };
-
-            /* A callback to respond to a request for a topic with the bugzilla bugs expanded */
-            final RESTCalls.RESTCallback<RESTTopicV1> topicWithBugsCallback = new BaseRestCallback<RESTTopicV1, TopicBugsPresenter.Display>(
-                    topicBugsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicBugsPresenter.Display>() {
-                        @Override
-                        public void doSuccessAction(final RESTTopicV1 retValue, final TopicBugsPresenter.Display display) {
-                            final RESTBugzillaBugCollectionV1 collection = retValue.getBugzillaBugs_OTM();
-                            /* copy the revisions into the displayed Topic */
-                            filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                                    .setBugzillaBugs_OTM(collection);
-                            /* refresh the celltable */
-                            topicBugsDisplay.getProvider().displayNewFixedList(collection.getItems());
-                        }
-                    }) {
-
-            };
-
-            /* Initiate the REST calls */
-            RESTCalls.getTopicWithTags(topicWithTagsCallback, filteredResultsComponent.getProviderData().getSelectedItem()
-                    .getItem().getId());
+            
             RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, filteredResultsComponent.getProviderData()
                     .getSelectedItem().getItem().getId());
-            RESTCalls.getTopicWithBugs(topicWithBugsCallback, filteredResultsComponent.getProviderData().getSelectedItem()
-                    .getItem().getId());
+            
+            /* got on to load the tags and bugs */
+            loadTagsandBugs();
+            
 
             /* fix the rendered view buttons */
             initializeSplitViewButtons();
@@ -726,6 +690,56 @@ public class SearchResultsAndTopicComponent
             logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.loadAdditionalDisplayedItemData()");
         }
 
+    }
+    
+    /**
+     * The tags and bugs for a topic are loaded as seperate operations to minimize the amount of data initially sent when a topic is displayed.
+     */
+    private void loadTagsandBugs()
+    {
+        /* set the bugs to show the loading widget */
+        if (topicBugsDisplay.getProvider() != null) {
+            topicBugsDisplay.getProvider().resetProvider();
+        }
+        
+        /* clear the tags display */
+        initializeViews(Arrays.asList(new TopicViewInterface[] { topicTagsDisplay }));
+        
+        /* A callback to respond to a request for a topic with the tags expanded */
+        final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
+                topicTagsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
+                    @Override
+                    public void doSuccessAction(final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
+
+                        /* copy the revisions into the displayed Topic */                        
+                        getTopicOrRevisionTopic().getItem().setTags(retValue.getTags());
+
+                        /* update the view */
+                        initializeViews(Arrays.asList(new TopicViewInterface[] { topicTagsDisplay }));
+                    }
+                });
+
+        /* A callback to respond to a request for a topic with the bugzilla bugs expanded */
+        final RESTCalls.RESTCallback<RESTTopicV1> topicWithBugsCallback = new BaseRestCallback<RESTTopicV1, TopicBugsPresenter.Display>(
+                topicBugsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicBugsPresenter.Display>() {
+                    @Override
+                    public void doSuccessAction(final RESTTopicV1 retValue, final TopicBugsPresenter.Display display) {
+                        final RESTBugzillaBugCollectionV1 collection = retValue.getBugzillaBugs_OTM();
+                        /* copy the revisions into the displayed Topic */
+                        getTopicOrRevisionTopic().getItem().setBugzillaBugs_OTM(collection);
+                        /* refresh the celltable */
+                        topicBugsDisplay.getProvider().displayNewFixedList(collection.getItems());
+                    }
+                }) {
+
+        };
+
+        /* Initiate the REST calls */
+        final Integer id = getTopicOrRevisionTopic().getItem().getId();
+        final Integer revision = getTopicOrRevisionTopic().getItem().getRevision();
+        
+        RESTCalls.getTopicRevisionWithBugs(topicWithBugsCallback, id, revision);
+        RESTCalls.getTopicRevisionWithTags(topicWithTagsCallback, id, revision);
     }
 
     @Override

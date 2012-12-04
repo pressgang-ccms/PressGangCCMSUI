@@ -300,6 +300,17 @@ public final class RESTCalls {
             }
         });
     }
+    
+    static public void getTopicRevisionWithBugs(final RESTCallback<RESTTopicV1> callback, final Integer id, final Integer revision) {
+        /* Expand the categories and projects in the tags */
+        final String expand = "{\"branches\":[" + TOPIC_BUGS_EXPANSION + "]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONTopicRevision(id, revision, expand);
+            }
+        });
+    }
 
     static public void getTopicWithTags(final RESTCallback<RESTTopicV1> callback, final Integer id) {
         /* Expand the categories and projects in the tags */
@@ -308,6 +319,17 @@ public final class RESTCalls {
             @Override
             public void call() throws Exception {
                 createRestMethod(callback).getJSONTopic(id, expand);
+            }
+        });
+    }
+    
+    static public void getTopicRevisionWithTags(final RESTCallback<RESTTopicV1> callback, final Integer id, final Integer revision) {
+        /* Expand the categories and projects in the tags */
+        final String expand = "{\"branches\":[" + TOPIC_TAGS_EXPANSION + "]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONTopicRevision(id, revision, expand);
             }
         });
     }
