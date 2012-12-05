@@ -93,6 +93,13 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
             this.add(layout);
         }
+        
+        @Override
+        public void show()
+        {
+            super.show();
+            this.textArea.setFocus(true);
+        }
 
     }
 

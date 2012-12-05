@@ -83,6 +83,8 @@ public interface PressGangCCMSUI extends Constants {
     String TopicCouldNotBeRendered();
 
     String TagAlreadyExists();
+    
+    String RemoveConflictingTags();
 
     String BugzillaID();
 

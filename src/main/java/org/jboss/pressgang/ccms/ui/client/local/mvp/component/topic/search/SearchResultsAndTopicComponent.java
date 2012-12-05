@@ -3,11 +3,13 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.search;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
@@ -18,6 +20,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -54,6 +57,9 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -138,15 +144,13 @@ public class SearchResultsAndTopicComponent
             final RESTTagV1 selectedTag = topicTagsDisplay.getMyTags().getValue().getTag().getItem();
 
             /* Need to deal with re-adding removed tags */
+            RESTTagCollectionItemV1 deletedTag = null;
             for (final RESTTagCollectionItemV1 tag : filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                     .getTags().getItems()) {
                 if (tag.getItem().getId().equals(selectedTag.getId())) {
                     if (tag.getState() == RESTBaseCollectionItemV1.REMOVE_STATE) {
-                        tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
-
-                        initializeViews(Arrays.asList(new TopicViewInterface[] { topicTagsDisplay }));
-
-                        return;
+                        deletedTag = tag;
+                        break;
                     } else {
                         /* Don't add tags twice */
                         Window.alert(PressGangCCMSUI.INSTANCE.TagAlreadyExists());
@@ -155,10 +159,89 @@ public class SearchResultsAndTopicComponent
                 }
             }
 
-            /* Get the selected tag, and clone it */
-            final RESTTagV1 selectedTagClone = selectedTag.clone(true);
-            /* Add the tag to the topic */
-            filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(selectedTagClone);
+            /*
+             * If we get this far we are adding a tag to the topic. However, some categories are mutually exclusive, so we need
+             * to remove any conflicting tags.
+             */
+
+            /* Find the mutually exclusive categories that the new tag belongs to */
+            final Collection<RESTCategoryInTagCollectionItemV1> mutuiallyExclusiveCategories = Collections2.filter(selectedTag
+                    .getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
+
+                @Override
+                public boolean apply(final @Nullable RESTCategoryInTagCollectionItemV1 arg0) {
+                    if (arg0 == null || arg0.getItem() == null)
+                        return false;
+                    return arg0.getItem().getMutuallyExclusive();
+                }
+            });
+
+            /* Find existing tags that belong to any of the mutually exclusive categories */
+            final Collection<RESTTagCollectionItemV1> conflictingTags = Collections2.filter(filteredResultsComponent
+                    .getProviderData().getDisplayedItem().getItem().getTags().getItems(),
+                    new Predicate<RESTTagCollectionItemV1>() {
+
+                        @Override
+                        public boolean apply(final @Nullable RESTTagCollectionItemV1 existingTag) {
+                            
+                            /* there is no match if the tag has already been removed */
+                            if (existingTag == null || existingTag.getItem() == null || existingTag.getState() == RESTBaseCollectionItemV1.REMOVE_STATE)
+                                return false;
+
+                            /* loop over the categories that the tag belongs to */
+                            return Iterables.any(existingTag.getItem().getCategories().getItems(),
+                                    new Predicate<RESTCategoryInTagCollectionItemV1>() {
+
+                                        @Override
+                                        public boolean apply(final @Nullable RESTCategoryInTagCollectionItemV1 existingTagCategory) {
+                                            if (existingTagCategory == null | existingTagCategory.getItem() == null)
+                                                return false;
+
+                                            /*
+                                             * match any categories that the tag belongs to with any of the mutually exclusive
+                                             * categories
+                                             */
+                                            return Iterables.any(mutuiallyExclusiveCategories,
+                                                    new Predicate<RESTCategoryInTagCollectionItemV1>() {
+
+                                                        @Override
+                                                        public boolean apply(@Nullable RESTCategoryInTagCollectionItemV1 mutuallyExclusiveCategory) {
+                                                            return mutuallyExclusiveCategory.getItem().getId().equals(existingTagCategory.getItem().getId());
+                                                        }
+                                                    });
+
+                                        }
+                                    });
+                        }
+                    });
+            
+            if (!conflictingTags.isEmpty())
+            {
+                final StringBuilder tags = new StringBuilder("\n");
+                for (final RESTTagCollectionItemV1 tag : conflictingTags)
+                {
+                    tags.append("\n* " + tag.getItem().getName());
+                }
+                
+                /* make sure the user is happy to remove the conflicting tags */
+                if (!Window.confirm(PressGangCCMSUI.INSTANCE.RemoveConflictingTags() + tags.toString()))
+                    return;
+                
+                for (final RESTTagCollectionItemV1 tag : conflictingTags)
+                {
+                    tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+                }
+            }
+
+            if (deletedTag == null) {
+                /* Get the selected tag, and clone it */
+                final RESTTagV1 selectedTagClone = selectedTag.clone(true);
+                /* Add the tag to the topic */
+                filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(selectedTagClone);               
+            } else {
+                deletedTag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+            }
+            
             /* Redisplay the view */
             initializeViews(Arrays.asList(new TopicViewInterface[] { topicTagsDisplay }));
         }
@@ -603,10 +686,10 @@ public class SearchResultsAndTopicComponent
                     /* Reset the reference to the revision topic */
                     topicRevisionsDisplay.setRevisionTopic(revisionTopic);
                 }
-                
+
                 /* Load the tags and bugs */
                 loadTagsandBugs();
-                
+
                 initializeViews();
                 topicRevisionsDisplay.setProvider(generateTopicRevisionsListProvider());
                 switchView(topicRevisionsDisplay);
@@ -676,13 +759,11 @@ public class SearchResultsAndTopicComponent
                         }
                     });
 
-            
             RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, filteredResultsComponent.getProviderData()
                     .getSelectedItem().getItem().getId());
-            
+
             /* got on to load the tags and bugs */
             loadTagsandBugs();
-            
 
             /* fix the rendered view buttons */
             initializeSplitViewButtons();
@@ -691,27 +772,27 @@ public class SearchResultsAndTopicComponent
         }
 
     }
-    
+
     /**
-     * The tags and bugs for a topic are loaded as seperate operations to minimize the amount of data initially sent when a topic is displayed.
+     * The tags and bugs for a topic are loaded as seperate operations to minimize the amount of data initially sent when a
+     * topic is displayed.
      */
-    private void loadTagsandBugs()
-    {
+    private void loadTagsandBugs() {
         /* set the bugs to show the loading widget */
         if (topicBugsDisplay.getProvider() != null) {
             topicBugsDisplay.getProvider().resetProvider();
         }
-        
+
         /* clear the tags display */
         initializeViews(Arrays.asList(new TopicViewInterface[] { topicTagsDisplay }));
-        
+
         /* A callback to respond to a request for a topic with the tags expanded */
         final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
                 topicTagsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
                     @Override
                     public void doSuccessAction(final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
 
-                        /* copy the revisions into the displayed Topic */                        
+                        /* copy the revisions into the displayed Topic */
                         getTopicOrRevisionTopic().getItem().setTags(retValue.getTags());
 
                         /* update the view */
@@ -737,7 +818,7 @@ public class SearchResultsAndTopicComponent
         /* Initiate the REST calls */
         final Integer id = getTopicOrRevisionTopic().getItem().getId();
         final Integer revision = getTopicOrRevisionTopic().getItem().getRevision();
-        
+
         RESTCalls.getTopicRevisionWithBugs(topicWithBugsCallback, id, revision);
         RESTCalls.getTopicRevisionWithTags(topicWithTagsCallback, id, revision);
     }
@@ -838,18 +919,24 @@ public class SearchResultsAndTopicComponent
                         @Override
                         public void success(final RESTTopicV1 retValue) {
                             try {
-                                
+
                                 boolean overwroteChanges = false;
-                                
-                                if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null && retValue.getRevisions().getItems().size() >= 2)
-                                {                                
-                                    Collections.sort(retValue.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
+
+                                if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null
+                                        && retValue.getRevisions().getItems().size() >= 2) {
+                                    Collections.sort(retValue.getRevisions().getItems(),
+                                            new RESTTopicCollectionItemV1RevisionSort());
                                     /* Get the second last revision (the last one is the current one) */
-                                    final Integer overwriteRevision = retValue.getRevisions().getItems().get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
-                                    /* if the second last revision doesn't match the revision of the topic when editing was started, then we have overwritten someone elses changes */                             
-                                    overwroteChanges = !(filteredResultsComponent.getProviderData().getSelectedItem().getItem().getRevision().equals(overwriteRevision)); 
+                                    final Integer overwriteRevision = retValue.getRevisions().getItems()
+                                            .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
+                                    /*
+                                     * if the second last revision doesn't match the revision of the topic when editing was
+                                     * started, then we have overwritten someone elses changes
+                                     */
+                                    overwroteChanges = !(filteredResultsComponent.getProviderData().getSelectedItem().getItem()
+                                            .getRevision().equals(overwriteRevision));
                                 }
-                                
+
                                 /* Update the displayed topic */
                                 retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
                                         true);
@@ -862,12 +949,9 @@ public class SearchResultsAndTopicComponent
 
                                 updateDisplayAfterSave(false);
 
-                                if (overwroteChanges)
-                                {
+                                if (overwroteChanges) {
                                     Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
-                                }
-                                else
-                                {
+                                } else {
                                     Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                                 }
                             } finally {

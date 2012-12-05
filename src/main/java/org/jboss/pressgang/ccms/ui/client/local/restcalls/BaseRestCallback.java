@@ -16,7 +16,7 @@ import com.google.gwt.user.client.Window;
  * wraps up these generic responses.
  * 
  * @param <C> The type of the returned entity
- * @Param <D> The type of the wait view
+ * @param <D> The type of the wait view
  * @author kamiller@redhat.com (Katie Miller)
  * 
  */

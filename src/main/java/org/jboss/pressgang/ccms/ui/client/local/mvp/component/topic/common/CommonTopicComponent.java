@@ -194,7 +194,28 @@ public class CommonTopicComponent {
             @Override
             public void onPreviewNativeEvent(final NativePreviewEvent event) {
                 final NativeEvent ne = event.getNativeEvent();
-                if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'Q') {
+                
+                
+                if (ne.getKeyCode() == KeyCodes.KEY_ESCAPE) {
+                    Scheduler.get().scheduleDeferred(new Command() {
+                        @Override
+                        public void execute() {
+                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()) {
+                                if (topicXMLDisplay.getXmlTagsDialog().getDialogBox().isShowing())
+                                    topicXMLDisplay.getXmlTagsDialog().getDialogBox().hide();
+                                
+                                if (topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().isShowing())
+                                    topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().hide();
+                                
+                                if (topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().isShowing())
+                                    topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().hide();
+                                
+                                if (topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().isShowing())
+                                    topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().hide();
+                            }
+                        }
+                    });
+                } else if (ne.getCtrlKey() && ne.getAltKey() && ne.getKeyCode() == 'Q') {
                     Scheduler.get().scheduleDeferred(new Command() {
                         @Override
                         public void execute() {
@@ -284,9 +305,7 @@ public class CommonTopicComponent {
             public void onKeyPress(KeyPressEvent event) {
                 if (event.getCharCode() == KeyCodes.KEY_ENTER) {
                     insertElement(topicXMLDisplay);
-                } else if (event.getCharCode() == KeyCodes.KEY_ESCAPE) {
-                    hideElementDialogBox(topicXMLDisplay);
-                }
+                } 
 
             }
         });
@@ -319,9 +338,7 @@ public class CommonTopicComponent {
             public void onKeyPress(KeyPressEvent event) {
                 if (event.getCharCode() == KeyCodes.KEY_ENTER) {
                     insertCspDetails(topicXMLDisplay, display);
-                } else if (event.getCharCode() == KeyCodes.KEY_ESCAPE) {
-                    hideCspDetailsDialogBox(topicXMLDisplay);
-                }
+                } 
 
             }
         });
@@ -348,9 +365,7 @@ public class CommonTopicComponent {
             public void onKeyPress(KeyPressEvent event) {
                 if (event.getCharCode() == KeyCodes.KEY_ENTER) {
                     insertTemplate(topicXMLDisplay);
-                } else if (event.getCharCode() == KeyCodes.KEY_ESCAPE) {
-                    hideTemplateDialogBox(topicXMLDisplay);
-                }
+                } 
 
             }
         });
@@ -362,8 +377,8 @@ public class CommonTopicComponent {
                 insertTemplate(topicXMLDisplay);
             }
         });
-
-        topicXMLDisplay.getXmlTemplatesDialog().getCancel().addClickHandler(new ClickHandler() {
+        
+       topicXMLDisplay.getXmlTemplatesDialog().getCancel().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(final ClickEvent event) {
