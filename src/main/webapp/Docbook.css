@@ -25,7 +25,7 @@
 	background-color: #EEE;
 }
 
-.docbookFigureTitle,.formalParaTitle,.docbookSectionTitle,.docbookExampleTitle,.docbookTableTitle,.docbookItemizedListTitle,.docbookProcedureTitle
+.docbookFigureTitle,.formalParaTitle,.docbookTableTitle,.docbookItemizedListTitle,.docbookProcedureTitle,.docbookExampleTitle,.docbookSectionTitle
 	{
 	color: #369;
 	margin-top: 0px;
@@ -38,11 +38,10 @@
 	word-wrap: break-word;
 }
 
-.docbookTableTitle, .docbookItemizedListTitle, .docbookFigureTitle,.formalParaTitle
-{
+.docbookFigureTitle,.formalParaTitle,.docbookTableTitle,.docbookItemizedListTitle,.docbookProcedureTitle,.docbookExampleTitle
+	{
 	font-size: 14px;
 }
-
 
 .docbookSectionTitle {
 	font-size: 20px;

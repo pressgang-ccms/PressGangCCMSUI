@@ -75,16 +75,7 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
 
         this.addStyleName(CSSConstants.TOPIC_VIEW_PANEL);
         
-        final int TOPIC_VIEW_ROWS = 7;
 
-        for (int i = 0; i < TOPIC_VIEW_ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TOPIC_VIEW_LABEL);
-        }
-
-        for (int i = 0; i < TOPIC_VIEW_ROWS - 1; ++i) {
-            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TOPIC_VIEW_DETAIL);
-        }
-        this.getCellFormatter().addStyleName(TOPIC_VIEW_ROWS, 1, CSSConstants.TOPIC_VIEW_DESCRIPTION_DETAIL);
 
         title.setReadOnly(readOnly);
         /* http://code.google.com/p/google-web-toolkit/issues/detail?id=6112 */
@@ -132,5 +123,16 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
         ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicDescription()));        
         this.setWidget(row, 1, description);
+        
+        final int TOPIC_VIEW_ROWS = 7;
+
+        for (int i = 0; i < TOPIC_VIEW_ROWS; ++i) {
+            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TOPIC_VIEW_LABEL);
+        }
+
+        for (int i = 0; i < TOPIC_VIEW_ROWS - 1; ++i) {
+            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TOPIC_VIEW_DETAIL);
+        }
+        this.getCellFormatter().addStyleName(TOPIC_VIEW_ROWS - 1, 1, CSSConstants.TOPIC_VIEW_DESCRIPTION_DETAIL);
     }
 }
