@@ -50,6 +50,20 @@ import com.google.gwt.user.client.Window;
  * 
  */
 public class CommonTopicComponent {
+
+    private static final String LINE_BREAK_ESCAPED = "\\n";
+    private static final String CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED = "\\r\\n";
+    private static final String LINE_BREAK = "\n";
+    private static final String CARRIAGE_RETURN_AND_LINE_BREAK = "\r\n";
+    private static final String COMMA = ",";
+
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private CommonTopicComponent() {
+
+    }
+
     /**
      * Retrieve a list of locales from the server
      */
@@ -60,7 +74,8 @@ public class CommonTopicComponent {
                     public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
                         /* Get the list of locales from the StringConstant */
                         final List<String> locales = new LinkedList<String>(Arrays.asList(retValue.getValue()
-                                .replaceAll("\\r\\n", "").replaceAll("\\n", "").replaceAll(" ", "").split(",")));
+                                .replaceAll(CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED, "").replaceAll(LINE_BREAK_ESCAPED, "")
+                                .replaceAll(" ", "").split(COMMA)));
 
                         /* Clean the list */
                         while (locales.contains("")) {
@@ -88,7 +103,7 @@ public class CommonTopicComponent {
 
                         /* Get the list of locales from the StringConstant */
                         final List<String> xmlElements = new LinkedList<String>(Arrays.asList(retValue.getValue()
-                                .replaceAll("\r\n", "\n").replaceAll(" ", "").split("\n")));
+                                .replaceAll(CARRIAGE_RETURN_AND_LINE_BREAK, LINE_BREAK).replaceAll(" ", "").split(LINE_BREAK)));
 
                         /* Clean the list */
                         while (xmlElements.contains("")) {
@@ -117,7 +132,7 @@ public class CommonTopicComponent {
 
                         /* Get the list of template string constant ids from the StringConstant */
                         final Set<String> xmlElements = new HashSet<String>(Arrays.asList(GWTUtilities.fixUpIdSearchString(
-                                retValue.getValue()).split(",")));
+                                retValue.getValue()).split(COMMA)));
                         final Map<String, String> data = new TreeMap<String, String>();
 
                         /* work around the inability to modify an int from an anonymous class */
@@ -167,18 +182,22 @@ public class CommonTopicComponent {
     }
 
     static private boolean isAnyDialogBoxesOpen(final TopicXMLPresenter.Display topicXMLDisplay) {
-        if (topicXMLDisplay.getXmlTagsDialog().getDialogBox().isShowing())
+        if (topicXMLDisplay.getXmlTagsDialog().getDialogBox().isShowing()) {
             return true;
-        
-        if (topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().isShowing())
+        }
+
+        if (topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().isShowing()) {
             return true;
-        
-        if (topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().isShowing())
+        }
+
+        if (topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().isShowing()) {
             return true;
-        
-        if (topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().isShowing())
+        }
+
+        if (topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().isShowing()) {
             return true;
-        
+        }
+
         return false;
     }
 
@@ -194,24 +213,27 @@ public class CommonTopicComponent {
             @Override
             public void onPreviewNativeEvent(final NativePreviewEvent event) {
                 final NativeEvent ne = event.getNativeEvent();
-                
-                
+
                 if (ne.getKeyCode() == KeyCodes.KEY_ESCAPE) {
                     Scheduler.get().scheduleDeferred(new Command() {
                         @Override
                         public void execute() {
                             if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()) {
-                                if (topicXMLDisplay.getXmlTagsDialog().getDialogBox().isShowing())
+                                if (topicXMLDisplay.getXmlTagsDialog().getDialogBox().isShowing()) {
                                     topicXMLDisplay.getXmlTagsDialog().getDialogBox().hide();
-                                
-                                if (topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().isShowing())
+                                }
+
+                                if (topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().isShowing()) {
                                     topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().hide();
-                                
-                                if (topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().isShowing())
+                                }
+
+                                if (topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().isShowing()) {
                                     topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().hide();
-                                
-                                if (topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().isShowing())
+                                }
+
+                                if (topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().isShowing()) {
                                     topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().hide();
+                                }
                             }
                         }
                     });
@@ -219,7 +241,8 @@ public class CommonTopicComponent {
                     Scheduler.get().scheduleDeferred(new Command() {
                         @Override
                         public void execute() {
-                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown() && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
+                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()
+                                    && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
                                 topicXMLDisplay.getXmlTagsDialog().getDialogBox().center();
                                 topicXMLDisplay.getXmlTagsDialog().getDialogBox().show();
                             }
@@ -229,7 +252,8 @@ public class CommonTopicComponent {
                     Scheduler.get().scheduleDeferred(new Command() {
                         @Override
                         public void execute() {
-                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown() && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
+                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()
+                                    && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
                                 topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().center();
                                 topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().show();
                             }
@@ -239,7 +263,8 @@ public class CommonTopicComponent {
                     Scheduler.get().scheduleDeferred(new Command() {
                         @Override
                         public void execute() {
-                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown() && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
+                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()
+                                    && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
                                 topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().center();
                                 topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().show();
                             }
@@ -250,7 +275,8 @@ public class CommonTopicComponent {
                     Scheduler.get().scheduleDeferred(new Command() {
                         @Override
                         public void execute() {
-                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown() && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
+                            if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()
+                                    && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
                                 topicXMLDisplay.getPlainTextXMLDialog().setText(
                                         currentTopicCallback.getCurrentlyEditedTopic().getXml());
                                 topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().center();
@@ -284,7 +310,7 @@ public class CommonTopicComponent {
     }
 
     /**
-     * Add event handlers to the buttons in the various dialog boxes
+     * Add event handlers to the buttons in the various dialog boxes.
      * 
      * @param topicXMLDisplay The XML editing view
      * @param display The main view
@@ -305,7 +331,7 @@ public class CommonTopicComponent {
             public void onKeyPress(final KeyPressEvent event) {
                 if (event.getCharCode() == KeyCodes.KEY_ENTER) {
                     insertElement(topicXMLDisplay);
-                } 
+                }
 
             }
         });
@@ -338,7 +364,7 @@ public class CommonTopicComponent {
             public void onKeyPress(final KeyPressEvent event) {
                 if (event.getCharCode() == KeyCodes.KEY_ENTER) {
                     insertCspDetails(topicXMLDisplay, display);
-                } 
+                }
 
             }
         });
@@ -365,7 +391,7 @@ public class CommonTopicComponent {
             public void onKeyPress(final KeyPressEvent event) {
                 if (event.getCharCode() == KeyCodes.KEY_ENTER) {
                     insertTemplate(topicXMLDisplay);
-                } 
+                }
 
             }
         });
@@ -377,8 +403,8 @@ public class CommonTopicComponent {
                 insertTemplate(topicXMLDisplay);
             }
         });
-        
-       topicXMLDisplay.getXmlTemplatesDialog().getCancel().addClickHandler(new ClickHandler() {
+
+        topicXMLDisplay.getXmlTemplatesDialog().getCancel().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(final ClickEvent event) {
