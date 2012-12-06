@@ -11,6 +11,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * @author Matthew Casperson
  */
 public class HandlerSplitLayoutPanel extends SplitLayoutPanel implements HasResizeHandlers {
+    private static final int ANIMATION_TIME_MILLISECONDS = 500;
+    
     public HandlerSplitLayoutPanel(final int size) {
         super(size);
     }
@@ -31,7 +33,7 @@ public class HandlerSplitLayoutPanel extends SplitLayoutPanel implements HasResi
         layout.oldSize = layout.size;
         layout.size = size;
         if (animate)
-            animate(500);
+            animate(ANIMATION_TIME_MILLISECONDS);
         else
             forceLayout();
     }

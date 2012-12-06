@@ -198,63 +198,103 @@ public class SearchUIFields implements SearchViewBase {
         this.matchAll = matchAll;
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public final String getSearchQuery(final boolean includeQueryPrefix) {
 
         final StringBuilder retValue = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON
                 : "");
 
-        if (!GWTUtilities.isStringNullOrEmpty(ids)) {
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids);
+        if (!GWTUtilities.isStringNullOrEmpty(this.ids)) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "="
+                    + this.ids);
         }
-        if (!GWTUtilities.isStringNullOrEmpty(notIds))
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR + "=" + notIds);
-        if (!GWTUtilities.isStringNullOrEmpty(description))
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + description);
-        if (!GWTUtilities.isStringNullOrEmpty(notDescription))
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_DESCRIPTION_NOT_FILTER_VAR + "=" + notDescription);
-        if (!GWTUtilities.isStringNullOrEmpty(title))
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + title);
-        if (!GWTUtilities.isStringNullOrEmpty(notTitle))
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR + "=" + notTitle);
-        if (editedInLastXDays != null)
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS + "=" + editedInLastXDays.toString());
-        if (notEditedInLastXDays != null)
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS + "=" + notEditedInLastXDays.toString());
-        if (!GWTUtilities.isStringNullOrEmpty(contents))
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + contents);
-        if (!GWTUtilities.isStringNullOrEmpty(notContents))
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_NOT_FILTER_VAR + "=" + notContents);
-        if (createdBefore != null)
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR + "=" + dateformat.format(createdBefore));
-        if (editedBefore != null)
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_ENDEDITDATE_FILTER_VAR + "=" + dateformat.format(editedBefore));
-        if (editedAfter != null)
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR + "=" + dateformat.format(editedAfter));
-        if (createdAfter != null)
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR + "=" + dateformat.format(createdAfter));
-        if (!GWTUtilities.isStringNullOrEmpty(includedInContentSpecs))
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC + "=" + includedInContentSpecs);
-        if (!GWTUtilities.isStringNullOrEmpty(notIncludedInContentSpecs))
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC + "=" + notIncludedInContentSpecs);
-        if (!GWTUtilities.isStringNullOrEmpty(freeTextSearch))
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR + "=" + freeTextSearch);
-        if (hasBugzillaBugs == TriStateSelectionState.SELECTED)
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_HAS_BUGZILLA_BUGS + "=true");
-        else if (hasBugzillaBugs == TriStateSelectionState.UNSELECTED)
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_HAS_NOT_BUGZILLA_BUGS + "=true");
-        if (hasOpenBugzillaBugs == TriStateSelectionState.SELECTED)
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_HAS_OPEN_BUGZILLA_BUGS + "=true");
-        else if (hasOpenBugzillaBugs == TriStateSelectionState.UNSELECTED)
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_HAS_NOT_OPEN_BUGZILLA_BUGS + "=true");
+        if (!GWTUtilities.isStringNullOrEmpty(this.notIds)) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR + "="
+                    + this.notIds);
+        }
+        if (!GWTUtilities.isStringNullOrEmpty(this.description)) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR
+                    + "=" + this.description);
+        }
+        if (!GWTUtilities.isStringNullOrEmpty(this.notDescription)) {
+            retValue.append(";"
+                    + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_DESCRIPTION_NOT_FILTER_VAR + "="
+                    + this.notDescription);
+        }
+        if (!GWTUtilities.isStringNullOrEmpty(this.title)) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "="
+                    + this.title);
+        }
+        if (!GWTUtilities.isStringNullOrEmpty(this.notTitle)) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR
+                    + "=" + this.notTitle);
+        }
+        if (this.editedInLastXDays != null) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS
+                    + "=" + this.editedInLastXDays.toString());
+        }
+        if (this.notEditedInLastXDays != null) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS
+                    + "=" + this.notEditedInLastXDays.toString());
+        }
+        if (!GWTUtilities.isStringNullOrEmpty(this.contents)) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "="
+                    + this.contents);
+        }
+        if (!GWTUtilities.isStringNullOrEmpty(this.notContents)) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_NOT_FILTER_VAR + "="
+                    + this.notContents);
+        }
+        if (this.createdBefore != null) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR + "="
+                    + this.dateformat.format(this.createdBefore));
+        }
+        if (this.editedBefore != null) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_ENDEDITDATE_FILTER_VAR
+                    + "=" + this.dateformat.format(this.editedBefore));
+        }
+        if (this.editedAfter != null) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR
+                    + "=" + this.dateformat.format(this.editedAfter));
+        }
+        if (this.createdAfter != null) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR
+                    + "=" + this.dateformat.format(this.createdAfter));
+        }
+        if (!GWTUtilities.isStringNullOrEmpty(this.includedInContentSpecs)) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC
+                    + "=" + this.includedInContentSpecs);
+        }
+        if (!GWTUtilities.isStringNullOrEmpty(this.notIncludedInContentSpecs)) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC
+                    + "=" + this.notIncludedInContentSpecs);
+        }
+        if (!GWTUtilities.isStringNullOrEmpty(freeTextSearch)) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR
+                    + "=" + this.freeTextSearch);
+        }
+        if (this.hasBugzillaBugs == TriStateSelectionState.SELECTED) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_HAS_BUGZILLA_BUGS
+                    + "=true");
+        } else if (this.hasBugzillaBugs == TriStateSelectionState.UNSELECTED) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_HAS_NOT_BUGZILLA_BUGS
+                    + "=true");
+        }
+        if (this.hasOpenBugzillaBugs == TriStateSelectionState.SELECTED) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_HAS_OPEN_BUGZILLA_BUGS
+                    + "=true");
+        } else if (this.hasOpenBugzillaBugs == TriStateSelectionState.UNSELECTED) {
+            retValue.append(";"
+                    + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_HAS_NOT_OPEN_BUGZILLA_BUGS + "=true");
+        }
 
-        if (matchAll)
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.LOGIC_FILTER_VAR + "=" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.AND_LOGIC);
-        else
-            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.LOGIC_FILTER_VAR + "=" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.OR_LOGIC);
+        if (this.matchAll) {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.LOGIC_FILTER_VAR + "="
+                    + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.AND_LOGIC);
+        } else {
+            retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.LOGIC_FILTER_VAR + "="
+                    + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.OR_LOGIC);
+        }
 
         return retValue.toString();
     }

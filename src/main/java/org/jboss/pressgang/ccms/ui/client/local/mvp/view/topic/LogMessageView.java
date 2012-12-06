@@ -64,21 +64,26 @@ import com.google.gwt.user.client.ui.TextArea;
             this.setGlassEnabled(true);
             this.setText(PressGangCCMSUI.INSTANCE.SaveLog());
 
-            layout.setWidget(0, 0, new Label(PressGangCCMSUI.INSTANCE.Message()));
-            layout.setWidget(0, 1, message);
-            layout.setWidget(1, 0, new Label(PressGangCCMSUI.INSTANCE.MinorChange()));
-            layout.setWidget(1, 1, minorChange);
-            layout.setWidget(2, 0, new Label(PressGangCCMSUI.INSTANCE.MajorChange()));
-            layout.setWidget(2, 1, majorChange);
+            int row = 0;            
+            layout.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.Message()));
+            layout.setWidget(row, 1, message);
+            
+            ++row;
+            layout.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.MinorChange()));
+            layout.setWidget(row, 1, minorChange);
+            
+            ++row;
+            layout.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.MajorChange()));
+            layout.setWidget(row, 1, majorChange);
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(cancel);
             buttonPanel.add(ok);
 
-            layout.setWidget(3, 0, buttonPanel);
-
-            layout.getFlexCellFormatter().setColSpan(3, 0, 2);
+            ++row;
+            layout.setWidget(row, 0, buttonPanel);
+            layout.getFlexCellFormatter().setColSpan(row, 0, 2);
 
             this.add(layout);
             

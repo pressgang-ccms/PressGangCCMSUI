@@ -31,7 +31,7 @@ import com.google.gwt.user.client.ui.TextBox;
 public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEditor<RESTLanguageImageCollectionItemV1> {
     private static final String JPG_BASE64_PREFIX = "data:image/jpg;base64,";
 
-    /** Keep a reference to the object this editor gets its values from */
+    /** Keep a reference to the object this editor gets its values from. */
     public RESTLanguageImageCollectionItemV1 self;
 
     /**
@@ -80,38 +80,52 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
     public RESTLanguageImageV1Editor(final TabLayoutPanel parentPanel, final int parentIndex) {
         this.addStyleName(CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_TAB);
 
-        filename.setReadOnly(true);
-        dimensions.setReadOnly(true);
+        this.filename.setReadOnly(true);
+        this.dimensions.setReadOnly(true);
 
         this.parentPanel = parentPanel;
         this.parentIndex = parentIndex;
 
         final HorizontalPanel uploadPanel = new HorizontalPanel();
-        uploadPanel.add(upload);
-        uploadPanel.add(uploadButton);
+        uploadPanel.add(this.upload);
+        uploadPanel.add(this.uploadButton);
 
-        this.setWidget(0, 0, newFileLabel);
-        this.setWidget(0, 1, uploadPanel);
-        this.setWidget(1, 0, filenameLabel);
-        this.setWidget(1, 1, filename);
-        this.setWidget(2, 0, dimensionsLabel);
-        this.setWidget(2, 1, dimensions);
-        this.setWidget(3, 0, imageLabel);
-        this.setWidget(3, 1, imageDataBase64);
+        int row = 0;
+        this.setWidget(row, 0, this.newFileLabel);
+        this.setWidget(row, 1, uploadPanel);
 
-        filenameLabel.addStyleName(CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_LABEL);
-        filename.addStyleName(CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_TEXT);
-        imageLabel.addStyleName(CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_LABEL);
-        imageDataBase64.addStyleName(CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_IMAGE);
+        ++row;
+        this.setWidget(row, 0, this.filenameLabel);
+        this.setWidget(row, 1, this.filename);
 
-        this.getCellFormatter().addStyleName(0, 0, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_UPLOAD_LABEL_CELL);
-        this.getCellFormatter().addStyleName(0, 1, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_UPLOAD_BUTTONS_CELL);
-        this.getCellFormatter().addStyleName(1, 0, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_LABEL_CELL);
-        this.getCellFormatter().addStyleName(1, 1, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_TEXT_CELL);
-        this.getCellFormatter().addStyleName(2, 0, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DIMENSION_LABEL_CELL);
-        this.getCellFormatter().addStyleName(2, 1, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DIMENSION_TEXT_CELL);
-        this.getCellFormatter().addStyleName(3, 0, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_LABEL_CELL);
-        this.getCellFormatter().addStyleName(3, 1, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_IMAGE_CELL);
+        ++row;
+        this.setWidget(row, 0, this.dimensionsLabel);
+        this.setWidget(row, 1, this.dimensions);
+
+        ++row;
+        this.setWidget(row, 0, this.imageLabel);
+        this.setWidget(row, 1, this.imageDataBase64);
+
+        this.filenameLabel.addStyleName(CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_LABEL);
+        this.filename.addStyleName(CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_TEXT);
+        this.imageLabel.addStyleName(CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_LABEL);
+        this.imageDataBase64.addStyleName(CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_IMAGE);
+
+        row = 0;
+        this.getCellFormatter().addStyleName(row, 0, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_UPLOAD_LABEL_CELL);
+        this.getCellFormatter().addStyleName(row, 1, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_UPLOAD_BUTTONS_CELL);
+
+        ++row;
+        this.getCellFormatter().addStyleName(row, 0, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_LABEL_CELL);
+        this.getCellFormatter().addStyleName(row, 1, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_TEXT_CELL);
+
+        ++row;
+        this.getCellFormatter().addStyleName(row, 0, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DIMENSION_LABEL_CELL);
+        this.getCellFormatter().addStyleName(row, 1, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DIMENSION_TEXT_CELL);
+
+        ++row;
+        this.getCellFormatter().addStyleName(row, 0, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_LABEL_CELL);
+        this.getCellFormatter().addStyleName(row, 1, CSSConstants.IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_IMAGE_CELL);
     }
 
     @Override
@@ -139,18 +153,20 @@ public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEd
 
         if (value.getItem().getImageDataBase64() != null) {
             final String base64 = GWTUtilities.getStringUTF8(value.getItem().getImageDataBase64());
-            this.imageDataBase64.addLoadHandler(new LoadHandler(){
+            this.imageDataBase64.addLoadHandler(new LoadHandler() {
 
                 @Override
                 public void onLoad(final LoadEvent event) {
-                    dimensions.setText(imageDataBase64.getWidth() + "x" + imageDataBase64.getHeight());
-                }});
+                    RESTLanguageImageV1Editor.this.dimensions.setText(RESTLanguageImageV1Editor.this.imageDataBase64.getWidth()
+                            + "x" + RESTLanguageImageV1Editor.this.imageDataBase64.getHeight());
+                }
+            });
             this.imageDataBase64.setUrl(JPG_BASE64_PREFIX + base64);
 
         }
 
         if (value.getItem().getLocale() != null) {
-            parentPanel.setTabText(parentIndex, value.getItem().getLocale());
+            this.parentPanel.setTabText(this.parentIndex, value.getItem().getLocale());
         }
     }
 }

@@ -10,7 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 /**
- * This interface defines the methods used to add logic to a view that displays a list of potential children
+ * This interface defines the methods used to add logic to a view that displays a list of potential children.
  * 
  * @author Matthew Casperson
  * 
@@ -18,8 +18,6 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
  * @param <T> The entity type
  * @param <U> The collection type for entity T
  * @param <V> The collection item type for entity T
- * 
- * @param <W> The parent of the children
  * 
  * @param <A> The possible child type
  * @param <B> The collection type for entity A

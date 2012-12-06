@@ -43,31 +43,32 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
         private final FlexTable layout = new FlexTable();
 
         @Override
-        public PushButton getOK() {
-            return ok;
+        public final PushButton getOK() {
+            return this.ok;
         }
 
         @Override
-        public PushButton getCancel() {
-            return cancel;
+        public final PushButton getCancel() {
+            return this.cancel;
         }
 
         @Override
-        public void setText(final String text) {
+        public final void setText(final String text) {
             /*
              * Create a new textarea to work around a situation where a After the Deadline check was not cleared before the
              * dialog was closed
              */
-            textArea = new TextArea();
-            textArea.addStyleName(CSSConstants.PlainTextXMLDialog.PLAIN_TEXT_XML_DIALOG_TEXTAREA);
-            textArea.setText(text);
-            layout.setWidget(0, 0, textArea);
+            this.textArea = new TextArea();
+            this.textArea.addStyleName(CSSConstants.PlainTextXMLDialog.PLAIN_TEXT_XML_DIALOG_TEXTAREA);
+            this.textArea.setText(text);
+            this.layout.setWidget(0, 0, this.textArea);
         }
 
         @Override
         public String getText() {
-            if (textArea != null)
-                return textArea.getText();
+            if (this.textArea != null) {
+                return this.textArea.getText();
+            }
             return "";
         }
 
@@ -82,29 +83,29 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
             this.setModal(false);
             this.setText(PressGangCCMSUI.INSTANCE.SpellChecking());
 
-            textArea.addStyleName(CSSConstants.PlainTextXMLDialog.PLAIN_TEXT_XML_DIALOG_TEXTAREA);
+            this.textArea.addStyleName(CSSConstants.PlainTextXMLDialog.PLAIN_TEXT_XML_DIALOG_TEXTAREA);
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
-            buttonPanel.add(cancel);
-            buttonPanel.add(ok);
+            buttonPanel.add(this.cancel);
+            buttonPanel.add(this.ok);
 
-            layout.setWidget(1, 0, buttonPanel);
+            this.layout.setWidget(1, 0, buttonPanel);
 
-            this.add(layout);
+            this.add(this.layout);
         }
-        
+
         @Override
-        public void show()
-        {
+        public void show() {
             super.show();
             this.textArea.setFocus(true);
         }
 
     }
 
-    /** The dialog box that displays a list of docbook tags */
+    /** The dialog box that displays a list of docbook tags. */
     public class XmlTagsDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTagsDialog {
+        private static final int NUMBER_OF_VISIBLE_ITEMS = 10;
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
         private final PushButton moreInfo = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.MoreInfo());
@@ -113,22 +114,22 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
         @Override
         public PushButton getOK() {
-            return ok;
+            return this.ok;
         }
 
         @Override
         public PushButton getCancel() {
-            return cancel;
+            return this.cancel;
         }
 
         @Override
         public PushButton getMoreInfo() {
-            return moreInfo;
+            return this.moreInfo;
         }
 
         @Override
         public ListBox getOptions() {
-            return options;
+            return this.options;
         }
 
         @Override
@@ -138,11 +139,11 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
         @Override
         public void setSuggestions(final List<String> suggestions) {
-            options.clear();
+            this.options.clear();
 
             if (suggestions != null) {
                 for (final String suggestion : suggestions) {
-                    options.addItem(suggestion);
+                    this.options.addItem(suggestion);
                 }
             }
         }
@@ -151,70 +152,71 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
             this.setGlassEnabled(true);
             this.setText(PressGangCCMSUI.INSTANCE.InsertXMLElement());
 
-            options.setVisibleItemCount(10);
-            layout.setWidget(0, 0, options);
+            this.options.setVisibleItemCount(NUMBER_OF_VISIBLE_ITEMS);
+            this.layout.setWidget(0, 0, this.options);
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
-            buttonPanel.add(moreInfo);
-            buttonPanel.add(cancel);
-            buttonPanel.add(ok);
+            buttonPanel.add(this.moreInfo);
+            buttonPanel.add(this.cancel);
+            buttonPanel.add(this.ok);
 
-            layout.setWidget(1, 0, buttonPanel);
+            this.layout.setWidget(1, 0, buttonPanel);
 
-            this.add(layout);
+            this.add(this.layout);
         }
 
         @Override
         public void show() {
             super.show();
-            options.setFocus(true);
+            this.options.setFocus(true);
         }
 
         /**
-         * Select the first item when the box is closed
+         * Select the first item when the box is closed.
          */
         @Override
         public void hide() {
             super.hide();
-            options.setSelectedIndex(0);
+            this.options.setSelectedIndex(0);
         }
     }
 
-    /** The dialog box that displays a list of docbook templates */
+    /** The dialog box that displays a list of docbook templates. */
     public class XmlTemplatesDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTemplatesDialog {
+        private static final int NUMBER_OF_VISIBLE_ITEMS = 10;
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
         private final ListBox options = new ListBox(false);
         private final FlexTable layout = new FlexTable();
 
         @Override
-        public PushButton getOK() {
-            return ok;
+        public final PushButton getOK() {
+            return this.ok;
         }
 
         @Override
-        public PushButton getCancel() {
-            return cancel;
+        public final PushButton getCancel() {
+            return this.cancel;
         }
 
         @Override
-        public ListBox getOptions() {
-            return options;
+        public final ListBox getOptions() {
+            return this.options;
         }
 
         @Override
-        public DialogBox getDialogBox() {
+        public final DialogBox getDialogBox() {
             return this;
         }
 
         @Override
-        public void setSuggestions(final Map<String, String> suggestions) {
-            options.clear();
+        public final void setSuggestions(final Map<String, String> suggestions) {
+            this.options.clear();
 
             if (suggestions != null) {
                 for (final String suggestion : suggestions.keySet()) {
-                    options.addItem(suggestion, suggestions.get(suggestion));
+                    this.options.addItem(suggestion, suggestions.get(suggestion));
                 }
             }
         }
@@ -223,32 +225,32 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
             this.setGlassEnabled(true);
             this.setText(PressGangCCMSUI.INSTANCE.InsertXMLElement());
 
-            options.setVisibleItemCount(10);
-            layout.setWidget(0, 0, options);
+            this.options.setVisibleItemCount(NUMBER_OF_VISIBLE_ITEMS);
+            this.layout.setWidget(0, 0, this.options);
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
-            buttonPanel.add(cancel);
-            buttonPanel.add(ok);
+            buttonPanel.add(this.cancel);
+            buttonPanel.add(this.ok);
 
-            layout.setWidget(1, 0, buttonPanel);
+            this.layout.setWidget(1, 0, buttonPanel);
 
-            this.add(layout);
+            this.add(this.layout);
         }
 
         @Override
-        public void show() {
+        public final void show() {
             super.show();
-            options.setFocus(true);
+            this.options.setFocus(true);
         }
 
         /**
-         * Select the first item when the box is closed
+         * Select the first item when the box is closed.
          */
         @Override
-        public void hide() {
+        public final void hide() {
             super.hide();
-            options.setSelectedIndex(0);
+            this.options.setSelectedIndex(0);
         }
     }
 
@@ -259,22 +261,22 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
         private final FlexTable layout = new FlexTable();
 
         @Override
-        public PushButton getOK() {
-            return ok;
+        public final PushButton getOK() {
+            return this.ok;
         }
 
         @Override
-        public PushButton getCancel() {
-            return cancel;
+        public final PushButton getCancel() {
+            return this.cancel;
         }
 
         @Override
-        public TextBox getIds() {
-            return ids;
+        public final TextBox getIds() {
+            return this.ids;
         }
 
         @Override
-        public DialogBox getDialogBox() {
+        public final DialogBox getDialogBox() {
             return this;
         }
 
@@ -282,23 +284,23 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
             this.setGlassEnabled(true);
             this.setText(PressGangCCMSUI.INSTANCE.InsertCSPTopicDetails());
 
-            layout.setWidget(0, 0, ids);
-            new NumbersAndCommaValidator(ids);
+            this.layout.setWidget(0, 0, this.ids);
+            new NumbersAndCommaValidator(this.ids);
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
-            buttonPanel.add(cancel);
-            buttonPanel.add(ok);
+            buttonPanel.add(this.cancel);
+            buttonPanel.add(this.ok);
 
-            layout.setWidget(1, 0, buttonPanel);
+            this.layout.setWidget(1, 0, buttonPanel);
 
-            this.add(layout);
+            this.add(this.layout);
         }
 
         @Override
-        public void show() {
+        public final void show() {
             super.show();
-            ids.setFocus(true);
+            this.ids.setFocus(true);
         }
     }
 
@@ -309,44 +311,43 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
 
     @Override
     public PlainTextXMLDialog getPlainTextXMLDialog() {
-        return plainTextXMLDialog;
+        return this.plainTextXMLDialog;
     }
 
     @Override
     public XmlTemplatesDialog getXmlTemplatesDialog() {
-        return xmlTemplatesDialog;
+        return this.xmlTemplatesDialog;
     }
 
     @Override
     public XmlTagsDialog getXmlTagsDialog() {
-        return xmlTagsDialog;
+        return this.xmlTagsDialog;
     }
 
     @Override
     public CSPTopicDetailsDialog getCSPTopicDetailsDialog() {
-        return cspTopicDetailsDialog;
+        return this.cspTopicDetailsDialog;
     }
 
     @Override
     public ToggleButton getShowInvisibles() {
-        return showInvisibles;
+        return this.showInvisibles;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public SimpleBeanEditorDriver getDriver() {
-        return driver;
+    public TopicXMLPresenterDriver getDriver() {
+        return this.driver;
     }
 
     @Override
     public ToggleButton getLineWrap() {
-        return lineWrap;
+        return this.lineWrap;
     }
 
     @Override
     public AceEditor getEditor() {
-        if (editor != null) {
-            return editor.xml;
+        if (this.editor != null) {
+            return this.editor.xml;
         }
         return null;
     }
@@ -377,24 +378,24 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
         fixReadOnlyButtons();
 
         addRightAlignedActionButtonPaddingPanel();
-        addActionButton(lineWrap);
-        addActionButton(showInvisibles);
+        addActionButton(this.lineWrap);
+        addActionButton(this.showInvisibles);
     }
 
     @Override
     public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType,
             final List<String> locales, final Boolean showImages) {
         this.readOnly = readOnly;
-        populateTopActionBar(newTopic, topic.getXmlErrors() != null && !topic.getXmlErrors().trim().isEmpty());
+        this.populateTopActionBar(newTopic, topic.getXmlErrors() != null && !topic.getXmlErrors().trim().isEmpty());
         buildSplitViewButtons(splitType);
 
         /* SearchUIProjectsEditor is a grid */
-        editor = new RESTTopicV1XMLEditor(readOnly);
+        this.editor = new RESTTopicV1XMLEditor(readOnly);
         /* Initialize the driver with the top-level editor */
-        driver.initialize(editor);
+        this.driver.initialize(this.editor);
         /* Copy the data in the object into the UI */
-        driver.edit(topic);
+        this.driver.edit(topic);
         /* Add the projects */
-        this.getPanel().setWidget(editor);
+        this.getPanel().setWidget(this.editor);
     }
 }

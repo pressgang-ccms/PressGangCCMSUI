@@ -430,11 +430,12 @@ public abstract class BaseTemplateView
         thirdLevelLayoutPanel.addWest(shortCutPanelParent, Constants.SHORTCUT_BAR_WIDTH);
 
         /* Add the feedback link */
+  
         footerPanel.setWidget(0, 0, version);
         addRightAlignedActionButtonPaddingPanel(footerPanel);
-        footerPanel.setWidget(0, 2, help);
-        footerPanel.setWidget(0, 3, new Label("|"));
-        footerPanel.setWidget(0, 4, feedback);
+        footerPanel.setWidget(0, footerPanel.getCellCount(0), help);
+        footerPanel.setWidget(0, footerPanel.getCellCount(0), new Label("|"));
+        footerPanel.setWidget(0, footerPanel.getCellCount(0), feedback);
 
         /* Add the content panel */
         panel.addStyleName(CSSConstants.CONTENT_LAYOUT_PANEL);

@@ -85,8 +85,6 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
 
     /**
      * Called to bind the UI elements to event handlers.
-     * 
-     * @param display The main template display
      */
     protected void bindStandardButtons() {
         

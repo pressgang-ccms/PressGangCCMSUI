@@ -17,6 +17,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
  */
 final public class GWTUtilities {
     private static final int BITS_PER_BYTE = 8;
+    private static final int BYTE_MASK = 0x000000FF;
+    private static final String DOUBLE_COMMA = ",,";
+    private static final String COMMA = ",";
 
     private GWTUtilities() {
     }
@@ -24,8 +27,8 @@ final public class GWTUtilities {
     /**
      * This does not work. See http://stackoverflow.com/questions/13406964/detect-ctrl-click-on-pushbutton
      * 
-     * @param event
-     * @return
+     * @param event the event to test
+     * @return true if the CTRL key is down
      */
     public static boolean isEventToOpenNewWindow(final ClickEvent event) {
         return event.isControlKeyDown();
@@ -48,7 +51,7 @@ final public class GWTUtilities {
 
     /**
      * Takes a string and returns only integers separated by single commas. Useful for cleaning up a string used to search for a
-     * list of ids.
+     * list of IDs.
      * 
      * @param input The string to be cleaned
      * @return The cleaned string
@@ -59,22 +62,26 @@ final public class GWTUtilities {
         String retValue = regex.replace(input, "");
 
         /* Cannot have sequential commas */
-        while (retValue.contains(",,"))
-            retValue = retValue.replaceAll(",,", ",");
+        while (retValue.contains(DOUBLE_COMMA)) {
+            retValue = retValue.replaceAll(DOUBLE_COMMA, COMMA);
+        }
 
         /* Cannot start with a comma */
-        while (retValue.endsWith(","))
+        while (retValue.endsWith(COMMA)) {
             retValue = retValue.substring(0, retValue.length() - 1);
+        }
 
         /* Cannot end with a comma */
-        while (retValue.startsWith(","))
+        while (retValue.startsWith(COMMA)) {
             retValue = retValue.substring(1, retValue.length());
+        }
 
         return retValue.trim();
     }
 
     /**
-     * A GWT friendly way to turn a String into a byte[]
+     * A GWT friendly way to turn a String into a byte[].
+     * 
      * @param string The source String
      * @return the string converted into a byte[]
      */
@@ -83,7 +90,8 @@ final public class GWTUtilities {
     }
 
     /**
-     * A GWT friendly way to turn a String into a byte[]
+     * A GWT friendly way to turn a String into a byte[].
+     * 
      * @param string The source String
      * @param bytesPerChar The number of bytes per character
      * @return the string converted into a byte[]
@@ -107,8 +115,9 @@ final public class GWTUtilities {
     }
 
     /**
-     * A GWT friendly way to turn a String into a byte[]
-     * @param string The source String
+     * A GWT friendly way to turn a String into a byte[].
+     * 
+     * @param bytes The source byte[]
      * @return the string converted into a byte[]
      */
     public static String getStringUTF8(final byte[] bytes) {
@@ -116,7 +125,8 @@ final public class GWTUtilities {
     }
 
     /**
-     * A GWT friendly way to turn a byte[] into a String
+     * A GWT friendly way to turn a byte[] into a String.
+     * 
      * @param bytes The source byte[]
      * @param bytesPerChar The number of bytes per character
      * @return the string converted from a byte[]
@@ -137,7 +147,7 @@ final public class GWTUtilities {
 
             for (int j = 0; j < bytesPerChar; ++j) {
                 final int shift = (bytesPerChar - 1 - j) * BITS_PER_BYTE;
-                thisChar |= (0x000000FF << shift) & (bytes[i * bytesPerChar + j] << shift);
+                thisChar |= (BYTE_MASK << shift) & (bytes[i * bytesPerChar + j] << shift);
             }
 
             retValue.append(thisChar);
@@ -154,10 +164,10 @@ final public class GWTUtilities {
      * @return the same as the standard Java String.toByteArray() method
      */
     public static byte[] getByteArray(final String string, final int bytesPerChar) {
-        char[] chars = string.toCharArray();
-        byte[] toReturn = new byte[chars.length * bytesPerChar];
-        for (int i = 0; i < chars.length; i++) {
-            for (int j = 0; j < bytesPerChar; j++) {
+        final char[] chars = string.toCharArray();
+        final byte[] toReturn = new byte[chars.length * bytesPerChar];
+        for (int i = 0; i < chars.length; ++i) {
+            for (int j = 0; j < bytesPerChar; ++j) {
                 toReturn[i * bytesPerChar + j] = (byte) (chars[i] >>> (BITS_PER_BYTE * (bytesPerChar - 1 - j)));
             }
         }
@@ -165,46 +175,50 @@ final public class GWTUtilities {
     }
 
     /**
-     * Compares two strings
+     * Compares two strings.
      * 
      * @param a The first string
      * @param b The second string
      * @return true if both strings are null, or if both strings are equal
      */
     public static boolean compareStrings(final String a, final String b) {
-        if (a == null && b == null)
+        if (a == null && b == null) {
             return true;
+        }
 
-        if (a != null)
+        if (a != null) {
             return a.equals(b);
+        }
 
         return b.equals(a);
     }
 
     /**
-     * Compares two strings for equality, considering null and empty string to be equal
+     * Compares two strings for equality, considering null and empty string to be equal.
      * 
      * @param a The first string
      * @param b The second string
      * @return true if both strings are either null or empty string, or if both strings are equal
      */
     public static boolean stringEqualsEquatingNullWithEmptyString(final String a, final String b) {
-        if ((a == null || a.isEmpty()) && (b == null || b.isEmpty()))
+        if ((a == null || a.isEmpty()) && (b == null || b.isEmpty())) {
             return true;
+        }
 
-        if (a != null)
+        if (a != null) {
             return a.equals(b);
+        }
 
         return b.equals(a);
     }
 
     /**
-     * Removes a history token and its postfix semicolon from a token string. For example,"TagsFilteredResultsAndTagView;query;"
+     * Removes a history token and its suffix semicolon from a token string. For example,"TagsFilteredResultsAndTagView;query;"
      * would become "query;".
      * 
      * @param token The token string to remove the history token from
      * @param historyToken The history token to remove
-     * @return
+     * @return the token with the history token and semi-colon suffix removed 
      */
     public static String removeHistoryToken(final String token, final String historyToken) {
         return token.replace(historyToken + ";", "");
@@ -213,8 +227,8 @@ final public class GWTUtilities {
     /**
      * Clears the container and adds the display's top-level panel to the container, an often-repeated combination.
      * 
-     * @param container
-     * @param display
+     * @param container The parent container to clear and then add the display to
+     * @param display The display to be added to the parent container
      */
     public static void clearContainerAndAddTopLevelPanel(final HasWidgets container, final BaseTemplateViewInterface display) {
         container.clear();

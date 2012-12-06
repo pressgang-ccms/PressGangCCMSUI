@@ -19,14 +19,15 @@ public class FourTextAndImageButton extends TextAndImageButton {
     public FourTextAndImageButton() {
         super(CSSConstants.CUSTOM_BUTTON_TEXT_BOLD);
 
+        int row = 1;        
         div2.setAttribute("class", CSSConstants.CUSTOM_BUTTON_TEXT);
-        DOM.insertChild(getElement(), div2, 1);
+        DOM.insertChild(getElement(), div2, row);
 
         div3.setAttribute("class", CSSConstants.CUSTOM_BUTTON_TEXT);
-        DOM.insertChild(getElement(), div3, 2);
+        DOM.insertChild(getElement(), div3, ++row);
 
         div4.setAttribute("class", CSSConstants.CUSTOM_BUTTON_TEXT);
-        DOM.insertChild(getElement(), div4, 3);
+        DOM.insertChild(getElement(), div4, ++row);
     }
 
     /**

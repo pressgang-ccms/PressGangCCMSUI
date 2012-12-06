@@ -244,27 +244,34 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
         renderedSplitViewMenu.clear();
 
         if (splitType != SplitType.DISABLED) {
-            renderedSplitViewMenu.setWidget(0, 0, renderedSplitOpen);
+            
+            int column = 0;
+            
+            renderedSplitViewMenu.setWidget(0, column, renderedSplitOpen);
 
+            ++column;
             if (splitType == SplitType.NONE) {
-                renderedSplitViewMenu.setWidget(0, 1, renderedNoSplitDown);
+                renderedSplitViewMenu.setWidget(0, column, renderedNoSplitDown);
             } else {
-                renderedSplitViewMenu.setWidget(0, 1, renderedNoSplit);
+                renderedSplitViewMenu.setWidget(0, column, renderedNoSplit);
             }
 
+            ++column;
             if (splitType == SplitType.VERTICAL) {
-                renderedSplitViewMenu.setWidget(0, 2, renderedVerticalSplitDown);
+                renderedSplitViewMenu.setWidget(0, column, renderedVerticalSplitDown);
             } else {
-                renderedSplitViewMenu.setWidget(0, 2, renderedVerticalSplit);
+                renderedSplitViewMenu.setWidget(0, column, renderedVerticalSplit);
             }
 
+            ++column;
             if (splitType == SplitType.HORIZONTAL) {
-                renderedSplitViewMenu.setWidget(0, 3, renderedHorizontalSplitDown);
+                renderedSplitViewMenu.setWidget(0, column, renderedHorizontalSplitDown);
             } else {
-                renderedSplitViewMenu.setWidget(0, 3, renderedHorizontalSplit);
+                renderedSplitViewMenu.setWidget(0, column, renderedHorizontalSplit);
             }
 
-            renderedSplitViewMenu.setWidget(0, 4, renderedSplitClose);
+            ++column;
+            renderedSplitViewMenu.setWidget(0, column, renderedSplitClose);
         }
 
         addRightAlignedActionButtonPaddingPanel(this.renderedSplitViewMenu);
