@@ -20,6 +20,10 @@ import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTopicV1> {
+    
+    private static final int ROWS = 7;
+    private static final int COLS = 2;
+    
     private final SimpleIntegerBox id = new SimpleIntegerBox();
     private final SimpleIntegerBox revision = new SimpleIntegerBox();
     private final ValueListBox<String> locale = new ValueListBox<String>(new Renderer<String>() {
@@ -67,17 +71,20 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
     }
 
     public RESTTopicV1BasicDetailsEditor(final boolean readOnly, final List<String> locales) {
-        super(7, 2);
+        super(ROWS, COLS);
 
         this.addStyleName(CSSConstants.TOPIC_VIEW_PANEL);
+        
+        final int TOPIC_VIEW_ROWS = 7;
 
-        for (int i = 0; i < 5; ++i) {
+        for (int i = 0; i < TOPIC_VIEW_ROWS; ++i) {
             this.getCellFormatter().addStyleName(i, 0, CSSConstants.TOPIC_VIEW_LABEL);
         }
 
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; i < TOPIC_VIEW_ROWS - 1; ++i) {
             this.getCellFormatter().addStyleName(i, 1, CSSConstants.TOPIC_VIEW_DETAIL);
         }
+        this.getCellFormatter().addStyleName(TOPIC_VIEW_ROWS, 1, CSSConstants.TOPIC_VIEW_DESCRIPTION_DETAIL);
 
         title.setReadOnly(readOnly);
         /* http://code.google.com/p/google-web-toolkit/issues/detail?id=6112 */
@@ -98,26 +105,32 @@ public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTo
         locale.addStyleName(CSSConstants.TOPIC_VIEW_LOCALE_FIELD);
         description.addStyleName(CSSConstants.TOPIC_VIEW_DESCRIPTION_FIELD);
 
-        this.setWidget(0, 0, new Label(PressGangCCMSUI.INSTANCE.TopicID()));
-        this.setWidget(0, 1, id);
+        int row = 0;        
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicID()));
+        this.setWidget(row, 1, id);
         
-        this.setWidget(1, 0, new Label(PressGangCCMSUI.INSTANCE.TopicRevision()));
-        this.setWidget(1, 1, revision);
+        ++row;
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicRevision()));
+        this.setWidget(row, 1, revision);
         
-        this.setWidget(2, 0, new Label(PressGangCCMSUI.INSTANCE.TopicCreated()));
-        this.setWidget(2, 1, created);
+        ++row;
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicCreated()));
+        this.setWidget(row, 1, created);
         
-        this.setWidget(3, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLastModified()));
-        this.setWidget(3, 1, lastModified);
+        ++row;
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLastModified()));
+        this.setWidget(row, 1, lastModified);
 
-        this.setWidget(4, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLocale()));
-        this.setWidget(4, 1, locale);
+        ++row;
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLocale()));
+        this.setWidget(row, 1, locale);
 
-        this.setWidget(5, 0, new Label(PressGangCCMSUI.INSTANCE.TopicTitle()));
-        this.setWidget(5, 1, title);
+        ++row;
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicTitle()));
+        this.setWidget(row, 1, title);
 
-        this.setWidget(6, 0, new Label(PressGangCCMSUI.INSTANCE.TopicDescription()));
-        this.getCellFormatter().addStyleName(6, 1, CSSConstants.TOPIC_VIEW_DESCRIPTION_DETAIL);
-        this.setWidget(6, 1, description);
+        ++row;
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicDescription()));        
+        this.setWidget(row, 1, description);
     }
 }
