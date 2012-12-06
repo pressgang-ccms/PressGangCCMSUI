@@ -19,7 +19,7 @@ public class ProjectComponent extends ComponentBase<ProjectPresenter.Display> im
         final RESTCalls.RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, ProjectPresenter.Display>(display,
                 new BaseRestCallback.SuccessAction<RESTProjectV1, ProjectPresenter.Display>() {
                     @Override
-                    public void doSuccessAction(final RESTProjectV1 retValue, ProjectPresenter.Display display) {
+                    public void doSuccessAction(final RESTProjectV1 retValue, final ProjectPresenter.Display display) {
                         display.initialize(retValue, false);
                     }
                 }) {

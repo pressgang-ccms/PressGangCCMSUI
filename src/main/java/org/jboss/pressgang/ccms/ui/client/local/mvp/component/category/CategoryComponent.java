@@ -19,7 +19,7 @@ public class CategoryComponent extends
         final RESTCalls.RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, Display>(display,
                 new BaseRestCallback.SuccessAction<RESTCategoryV1, Display>() {
                     @Override
-                    public void doSuccessAction(RESTCategoryV1 retValue, Display display) {
+                    public void doSuccessAction(final RESTCategoryV1 retValue, final Display display) {
                         display.initialize(retValue, false);
                     }
                 }) {

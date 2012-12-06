@@ -89,11 +89,11 @@ final public class GWTUtilities {
         return toReturn;
     }
 
-    public static String getStringUTF8(byte[] bytes) {
+    public static String getStringUTF8(final byte[] bytes) {
         return getString(bytes, 1);
     }
 
-    public static String getString(byte[] bytes, int bytesPerChar) {
+    public static String getString(final byte[] bytes, final int bytesPerChar) {
         if (bytes == null) {
             throw new IllegalArgumentException("bytes cannot be null");
         }
@@ -178,7 +178,7 @@ final public class GWTUtilities {
      * @param historyToken The history token to remove
      * @return
      */
-    public static String removeHistoryToken(String token, String historyToken) {
+    public static String removeHistoryToken(final String token, final String historyToken) {
         return token.replace(historyToken + ";", "");
     }
 
@@ -188,7 +188,7 @@ final public class GWTUtilities {
      * @param container
      * @param display
      */
-    public static void clearContainerAndAddTopLevelPanel(HasWidgets container, BaseTemplateViewInterface display) {
+    public static void clearContainerAndAddTopLevelPanel(final HasWidgets container, final BaseTemplateViewInterface display) {
         container.clear();
         container.add(display.getTopLevelPanel());
     }

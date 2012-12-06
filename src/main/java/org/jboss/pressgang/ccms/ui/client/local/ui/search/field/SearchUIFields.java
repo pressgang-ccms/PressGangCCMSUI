@@ -38,163 +38,163 @@ public class SearchUIFields implements SearchViewBase {
     private boolean matchAll = true;
     private final DateTimeFormat dateformat = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.ISO_8601);
 
-    public Date getCreatedAfter() {
-        return createdAfter;
+    public final Date getCreatedAfter() {
+        return this.createdAfter;
     }
 
-    public void setCreatedAfter(Date createdAfter) {
+    public final void setCreatedAfter(final Date createdAfter) {
         this.createdAfter = createdAfter;
     }
 
-    public Date getCreatedBefore() {
-        return createdBefore;
+    public final Date getCreatedBefore() {
+        return this.createdBefore;
     }
 
-    public void setCreatedBefore(Date createdBefore) {
+    public final void setCreatedBefore(final Date createdBefore) {
         this.createdBefore = createdBefore;
     }
 
-    public Date getEditedAfter() {
-        return editedAfter;
+    public final Date getEditedAfter() {
+        return this.editedAfter;
     }
 
-    public void setEditedAfter(Date editedAfter) {
+    public final void setEditedAfter(final Date editedAfter) {
         this.editedAfter = editedAfter;
     }
 
-    public Date getEditedBefore() {
-        return editedBefore;
+    public final Date getEditedBefore() {
+        return this.editedBefore;
     }
 
-    public void setEditedBefore(Date editedBefore) {
+    public final void setEditedBefore(final Date editedBefore) {
         this.editedBefore = editedBefore;
     }
 
-    public Integer getEditedInLastXDays() {
-        return editedInLastXDays;
+    public final Integer getEditedInLastXDays() {
+        return this.editedInLastXDays;
     }
 
-    public void setEditedInLastXDays(Integer editedInLastXDays) {
+    public final void setEditedInLastXDays(final Integer editedInLastXDays) {
         this.editedInLastXDays = editedInLastXDays;
     }
 
-    public String getIds() {
-        return ids;
+    public final String getIds() {
+        return this.ids;
     }
 
-    public void setIds(String ids) {
+    public final void setIds(final String ids) {
         this.ids = ids;
     }
 
-    public String getNotIds() {
-        return notIds;
+    public final String getNotIds() {
+        return this.notIds;
     }
 
-    public void setNotIds(String notIds) {
+    public final void setNotIds(final String notIds) {
         this.notIds = notIds;
     }
 
-    public String getTitle() {
-        return title;
+    public final String getTitle() {
+        return this.title;
     }
 
-    public void setTitle(String title) {
+    public final void setTitle(final String title) {
         this.title = title;
     }
 
-    public String getNotTitle() {
-        return notTitle;
+    public final String getNotTitle() {
+        return this.notTitle;
     }
 
-    public void setNotTitle(String notTitle) {
+    public final void setNotTitle(final String notTitle) {
         this.notTitle = notTitle;
     }
 
-    public String getDescription() {
-        return description;
+    public final String getDescription() {
+        return this.description;
     }
 
-    public void setDescription(String description) {
+    public final void setDescription(final String description) {
         this.description = description;
     }
 
-    public String getNotDescription() {
-        return notDescription;
+    public final String getNotDescription() {
+        return this.notDescription;
     }
 
-    public void setNotDescription(String notDescription) {
+    public final void setNotDescription(final String notDescription) {
         this.notDescription = notDescription;
     }
 
-    public String getIncludedInContentSpecs() {
-        return includedInContentSpecs;
+    public final String getIncludedInContentSpecs() {
+        return this.includedInContentSpecs;
     }
 
-    public void setIncludedInContentSpecs(String includedInContentSpecs) {
+    public final void setIncludedInContentSpecs(final String includedInContentSpecs) {
         this.includedInContentSpecs = includedInContentSpecs;
     }
 
-    public String getNotIncludedInContentSpecs() {
-        return notIncludedInContentSpecs;
+    public final String getNotIncludedInContentSpecs() {
+        return this.notIncludedInContentSpecs;
     }
 
-    public void setNotIncludedInContentSpecs(String notIncludedInContentSpecs) {
+    public final void setNotIncludedInContentSpecs(final String notIncludedInContentSpecs) {
         this.notIncludedInContentSpecs = notIncludedInContentSpecs;
     }
 
-    public String getFreeTextSearch() {
-        return freeTextSearch;
+    public final String getFreeTextSearch() {
+        return this.freeTextSearch;
     }
 
-    public void setFreeTextSearch(String freeTextSearch) {
+    public final void setFreeTextSearch(final String freeTextSearch) {
         this.freeTextSearch = freeTextSearch;
     }
 
-    public String getContents() {
-        return contents;
+    public final String getContents() {
+        return this.contents;
     }
 
-    public void setContents(String contents) {
+    public final void setContents(final String contents) {
         this.contents = contents;
     }
 
-    public Integer getNotEditedInLastXDays() {
-        return notEditedInLastXDays;
+    public final Integer getNotEditedInLastXDays() {
+        return this.notEditedInLastXDays;
     }
 
-    public void setNotEditedInLastXDays(Integer notEditedInLastXDays) {
+    public final void setNotEditedInLastXDays(final Integer notEditedInLastXDays) {
         this.notEditedInLastXDays = notEditedInLastXDays;
     }
 
-    public String getNotContents() {
-        return notContents;
+    public final String getNotContents() {
+        return this.notContents;
     }
 
-    public void setNotContents(String notContents) {
+    public final void setNotContents(final String notContents) {
         this.notContents = notContents;
     }
 
-    public TriStateSelectionState getHasBugzillaBugs() {
-        return hasBugzillaBugs;
+    public final TriStateSelectionState getHasBugzillaBugs() {
+        return this.hasBugzillaBugs;
     }
 
-    public void setHasBugzillaBugs(TriStateSelectionState hasBugzillaBugs) {
+    public final void setHasBugzillaBugs(final TriStateSelectionState hasBugzillaBugs) {
         this.hasBugzillaBugs = hasBugzillaBugs;
     }
 
-    public TriStateSelectionState getHasOpenBugzillaBugs() {
-        return hasOpenBugzillaBugs;
+    public final TriStateSelectionState getHasOpenBugzillaBugs() {
+        return this.hasOpenBugzillaBugs;
     }
 
-    public void setHasOpenBugzillaBugs(TriStateSelectionState hasOpenBugzillaBugs) {
+    public final void setHasOpenBugzillaBugs(final TriStateSelectionState hasOpenBugzillaBugs) {
         this.hasOpenBugzillaBugs = hasOpenBugzillaBugs;
     }
 
-    public boolean isMatchAll() {
-        return matchAll;
+    public final boolean isMatchAll() {
+        return this.matchAll;
     }
 
-    public void setMatchAll(boolean matchAll) {
+    public final void setMatchAll(final boolean matchAll) {
         this.matchAll = matchAll;
     }
 
@@ -202,13 +202,14 @@ public class SearchUIFields implements SearchViewBase {
      * @inheritDoc
      */
     @Override
-    public String getSearchQuery(final boolean includeQueryPrefix) {
+    public final String getSearchQuery(final boolean includeQueryPrefix) {
 
         final StringBuilder retValue = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON
                 : "");
 
-        if (!GWTUtilities.IsStringNullOrEmpty(ids))
+        if (!GWTUtilities.IsStringNullOrEmpty(ids)) {
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids);
+        }
         if (!GWTUtilities.IsStringNullOrEmpty(notIds))
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR + "=" + notIds);
         if (!GWTUtilities.IsStringNullOrEmpty(description))

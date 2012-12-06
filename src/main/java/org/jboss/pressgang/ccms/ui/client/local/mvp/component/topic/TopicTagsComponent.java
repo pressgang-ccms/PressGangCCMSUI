@@ -39,7 +39,7 @@ public class TopicTagsComponent extends TopicViewComponent<TopicTagsPresenter.Di
         final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, TopicTagsPresenter.Display>(
                 display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, TopicTagsPresenter.Display>() {
                     @Override
-                    public void doSuccessAction(RESTTagCollectionV1 retValue, TopicTagsPresenter.Display display) {
+                    public void doSuccessAction(final RESTTagCollectionV1 retValue, final TopicTagsPresenter.Display display) {
                         searchUIProjects.initialize(retValue);
                         display.initializeNewTags(searchUIProjects);
                     }

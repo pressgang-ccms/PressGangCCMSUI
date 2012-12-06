@@ -42,9 +42,9 @@ import com.google.gwt.user.client.ui.Widget;
 public abstract class BaseTemplateView
         implements BaseTemplateViewInterface {
     /** true when the view is visible, false otherwise */
-    private boolean isViewShown = false;
+    private boolean isViewShown;
     /** Maintains a count of how many waiting operations are in progress */
-    private int waitingCount = 0;
+    private int waitingCount;
 
     /** The name of the application. */
     private final String applicationName;
@@ -113,18 +113,18 @@ public abstract class BaseTemplateView
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
 
         @Override
-        public PushButton getOK() {
-            return ok;
+        public final PushButton getOK() {
+            return this.ok;
         }
 
         @Override
-        public DialogBox getDialogBox() {
+        public final DialogBox getDialogBox() {
             return this;
         }
 
         @Override
-        public HTML getContents() {
-            return contents;
+        public final HTML getContents() {
+            return this.contents;
         }
         
         public HelpDialogImpl()
@@ -225,7 +225,7 @@ public abstract class BaseTemplateView
      * @param isViewShown true if the view is visible, false otherwise
      */
     @Override
-    public void setViewShown(boolean isViewShown) {
+    public void setViewShown(final boolean isViewShown) {
         this.isViewShown = isViewShown;
         updateDisplay();
     }

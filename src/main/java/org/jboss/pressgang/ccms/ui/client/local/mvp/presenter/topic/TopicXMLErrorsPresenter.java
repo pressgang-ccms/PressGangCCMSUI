@@ -55,11 +55,10 @@ public class TopicXMLErrorsPresenter implements TemplatePresenter {
         final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, Display>(display,
                 new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
                     @Override
-                    public void doSuccessAction(RESTTopicV1 retValue, Display display) {
+                    public void doSuccessAction(final RESTTopicV1 retValue, final Display display) {
                         display.initialize(retValue, false, false, SplitType.DISABLED, null, false);
                     }
-                }) {
-        };
+                }) ;
 
         try {
             RESTCalls.getTopic(callback, Integer.parseInt(topicId));

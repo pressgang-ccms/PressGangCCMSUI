@@ -217,7 +217,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         CommonTopicComponent.populateLocales(waitDisplay, new StringListLoaded() {
 
             @Override
-            public void stringListLoaded(List<String> stringList) {
+            public void stringListLoaded(final List<String> stringList) {
 
                 CreateTopicComponent.this.locales = stringList;
 
@@ -619,7 +619,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
                 topicTagsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
                     @Override
-                    public void doSuccessAction(RESTTopicV1 retValue, TopicTagsPresenter.Display display) {
+                    public void doSuccessAction(final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
                         /* copy the revisions into the displayed Topic */
                         newTopic.setTags(retValue.getTags());
                         /* If we are looking at the rendered view, update it */
@@ -802,7 +802,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
     /**
      * Refresh the split panel rendered view
      */
-    private void refreshRenderedView(boolean forceExternalImages) {
+    private void refreshRenderedView(final boolean forceExternalImages) {
         topicXMLDisplay.getDriver().flush();
 
         final boolean xmlHasChanges = lastXML == null || !lastXML.equals(newTopic.getXml());

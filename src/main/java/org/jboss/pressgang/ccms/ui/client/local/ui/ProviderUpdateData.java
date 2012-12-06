@@ -21,27 +21,27 @@ public class ProviderUpdateData<T> {
     /** The total size of the collection - for async lists */
     private Integer size;
 
-    public T getSelectedItem() {
-        return selectedItem;
+    public final T getSelectedItem() {
+        return this.selectedItem;
     }
 
-    public void setSelectedItem(final T selectedItem) {
+    public final void setSelectedItem(final T selectedItem) {
         this.selectedItem = selectedItem;
     }
 
-    public Integer getStartRow() {
-        return startRow;
+    public final Integer getStartRow() {
+        return this.startRow;
     }
 
-    public void setStartRow(final Integer startRow) {
+    public final void setStartRow(final Integer startRow) {
         this.startRow = startRow;
     }
 
-    public List<T> getItems() {
-        return items;
+    public final List<T> getItems() {
+        return this.items;
     }
 
-    public void setItems(final List<T> items) {
+    public final void setItems(final List<T> items) {
         this.items = items;
     }
 
@@ -66,26 +66,26 @@ public class ProviderUpdateData<T> {
         this.size = size;
     }
 
-    public T getDisplayedItem() {
-        return displayedItem;
+    public final T getDisplayedItem() {
+        return this.displayedItem;
     }
 
-    public void setDisplayedItem(final T displayedItem) {
+    public final void setDisplayedItem(final T displayedItem) {
         this.displayedItem = displayedItem;
     }
     
-    public void reset()
+    public final void reset()
     {
         this.items = null;
         this.startRow = null;
         this.size = null;
     }
 
-    public Integer getSize() {
-        return size;
+    public final Integer getSize() {
+        return this.size;
     }
 
-    public void setSize(Integer size) {
+    public final void setSize(final Integer size) {
         this.size = size;
     }
 }

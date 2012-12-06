@@ -38,7 +38,7 @@ public class XsltProcessorImplIe extends XsltProcessorImpl {
                                                            }-*/;
 
     @Override
-    protected native void importStyleSheetImpl(String styleSheet) /*-{
+    protected native void importStyleSheetImpl(final String styleSheet) /*-{
                                                                   var styleSheetDocument = new ActiveXObject("MSXML2.FreeThreadedDOMDocument");
                                                                   styleSheetDocument.async = "false";
                                                                   styleSheetDocument.loadXML(styleSheet);
@@ -55,7 +55,7 @@ public class XsltProcessorImplIe extends XsltProcessorImpl {
                                                                   }-*/;
 
     @Override
-    protected native JavaScriptObject parseImpl(String contents) /*-{
+    protected native JavaScriptObject parseImpl(final String contents) /*-{
                                                                  var doc = this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImplIe::createDocumentImpl()();
                                                                  if(!doc.loadXML(contents)) {
                                                                  var err = doc.parseError;
@@ -76,7 +76,7 @@ public class XsltProcessorImplIe extends XsltProcessorImpl {
                                                                         }-*/;
 
     @Override
-    protected native void setParameterImpl(String name, String value) /*-{
+    protected native void setParameterImpl(final String name, final String value) /*-{
                                                                       if (this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl::processor != null) {
                                                                       this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl::processor.addParameter(name, value, "");
                                                                       }

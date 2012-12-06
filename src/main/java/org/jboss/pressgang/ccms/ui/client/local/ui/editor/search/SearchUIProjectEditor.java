@@ -35,7 +35,7 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
     private class SearchUICategoryEditorSource extends EditorSource<SearchUICategoryEditor> {
         @Override
         public SearchUICategoryEditor create(final int index) {
-            final SearchUICategoryEditor subEditor = new SearchUICategoryEditor(driver, searchUIProjects);
+            final SearchUICategoryEditor subEditor = new SearchUICategoryEditor(SearchUIProjectEditor.this.driver, SearchUIProjectEditor.this.searchUIProjects);
 
             SearchUIProjectEditor.this.categoriesButtonPanel.setWidget(index, 0, subEditor.summary);
 
@@ -88,7 +88,7 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
 
         summary.addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(ClickEvent event) {
+            public void onClick(final ClickEvent event) {
                 summary.removeStyleName(CSSConstants.CUSTOM_BUTTON);
                 summary.addStyleName(CSSConstants.CUSTOM_BUTTON_DOWN);
             }
@@ -96,7 +96,7 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
     }
 
     @Override
-    public void setDelegate(EditorDelegate<SearchUIProject> delegate) {
+    public void setDelegate(final EditorDelegate<SearchUIProject> delegate) {
         // TODO Auto-generated method stub
 
     }
@@ -107,13 +107,13 @@ public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<Sear
     }
 
     @Override
-    public void onPropertyChange(String... paths) {
+    public void onPropertyChange(final String... paths) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void setValue(final SearchUIProject value) {
+    public final void setValue(final SearchUIProject value) {
         this.value = value;
     }
 }

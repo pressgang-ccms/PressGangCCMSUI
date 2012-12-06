@@ -104,11 +104,11 @@ public class SearchResultsAndTopicComponent
     };
 
     /** The last xml that was rendered */
-    private String lastXML = null;
+    private String lastXML;
     /** How long it has been since the xml changes */
-    private long lastXMLChange = 0;
+    private long lastXMLChange;
     /** False if we are not displaying external images in the current rendered view, and true otherwise */
-    private boolean isDisplayingImage = false;
+    private boolean isDisplayingImage;
 
     private String queryString;
 
@@ -205,7 +205,7 @@ public class SearchResultsAndTopicComponent
                                                     new Predicate<RESTCategoryInTagCollectionItemV1>() {
 
                                                         @Override
-                                                        public boolean apply(@Nullable RESTCategoryInTagCollectionItemV1 mutuallyExclusiveCategory) {
+                                                        public boolean apply(final @Nullable RESTCategoryInTagCollectionItemV1 mutuallyExclusiveCategory) {
                                                             return mutuallyExclusiveCategory.getItem().getId().equals(existingTagCategory.getItem().getId());
                                                         }
                                                     });
@@ -297,7 +297,7 @@ public class SearchResultsAndTopicComponent
     }
 
     @Override
-    public void setSplit(SplitType split) {
+    public void setSplit(final SplitType split) {
         this.split = split;
     }
 
@@ -392,7 +392,7 @@ public class SearchResultsAndTopicComponent
     /**
      * Refresh the split panel rendered view
      */
-    private void refreshRenderedView(boolean forceExternalImages) {
+    private void refreshRenderedView(final boolean forceExternalImages) {
         topicXMLDisplay.getDriver().flush();
 
         final boolean xmlHasChanges = lastXML == null || !lastXML.equals(getTopicOrRevisionTopic().getItem().getXml());
@@ -1170,7 +1170,7 @@ public class SearchResultsAndTopicComponent
         final ClickHandler cspsHandler = new ClickHandler() {
 
             @Override
-            public void onClick(ClickEvent event) {
+            public void onClick(final ClickEvent event) {
 
                 if (filteredResultsComponent.getProviderData().getDisplayedItem() != null && isOKToProceed()) {
 

@@ -33,17 +33,17 @@ public class XsltProcessorImplStandard extends XsltProcessorImpl {
     protected final JavaScriptObject domParser = createDOMParser();
 
     @Override
-    protected void importStyleSheetImpl(String styleSheet) {
+    protected void importStyleSheetImpl(final String styleSheet) {
         importStyleSheetImpl(parseImpl(styleSheet));
     }
 
-    protected native void importStyleSheetImpl(JavaScriptObject styleSheet) /*-{
+    protected native void importStyleSheetImpl(final JavaScriptObject styleSheet) /*-{
                                                                             this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl::processor = new $wnd.XSLTProcessor();
                                                                             this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl::processor.importStylesheet(styleSheet);
                                                                             }-*/;
 
     @Override
-    protected native JavaScriptObject parseImpl(String contents) /*-{
+    protected native JavaScriptObject parseImpl(final String contents) /*-{
                                                                  var domParser = this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImplStandard::domParser;
                                                                  var result = domParser.parseFromString(contents,"text/xml");
                                                                  var roottag = result.documentElement;
@@ -56,7 +56,7 @@ public class XsltProcessorImplStandard extends XsltProcessorImpl {
                                                                  }-*/;
 
     @Override
-    protected native void setParameterImpl(String name, String value) /*-{
+    protected native void setParameterImpl(final String name, final String value) /*-{
                                                                       if (this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl::processor != null) {
                                                                       this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl::processor.setParameter(null, name, value);
                                                                       }

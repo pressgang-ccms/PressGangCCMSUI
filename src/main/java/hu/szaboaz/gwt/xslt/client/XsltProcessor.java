@@ -54,15 +54,15 @@ public class XsltProcessor {
         impl = GWT.create(XsltProcessorImpl.class);
     }
 
-    public void importSource(String source) throws XsltProcessingException {
+    public void importSource(final String source) throws XsltProcessingException {
         impl.importSource(source);
     }
 
-    public void importStyleSheet(String styleSheet) throws XsltProcessingException {
+    public void importStyleSheet(final String styleSheet) throws XsltProcessingException {
         impl.importStyleSheet(styleSheet);
     }
 
-    public void setParameter(String name, String value) throws XsltProcessingException {
+    public void setParameter(final String name, final String value) throws XsltProcessingException {
         impl.setParameter(name, value);
     }
 

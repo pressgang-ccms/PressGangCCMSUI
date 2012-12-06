@@ -71,7 +71,7 @@ public class SearchUICategoryEditor extends ScrollPanel implements ValueAwareEdi
 
         summary.addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(ClickEvent event) {
+            public void onClick(final ClickEvent event) {
                 summary.removeStyleName(CSSConstants.CUSTOM_BUTTON);
                 summary.addStyleName(CSSConstants.CUSTOM_BUTTON_DOWN);
             }

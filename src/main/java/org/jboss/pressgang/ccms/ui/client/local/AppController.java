@@ -147,7 +147,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
         }
     }
 
-    private <T extends TemplatePresenter> Optional<TemplatePresenter> getBeanInstance(Class<T> presenterType) {
+    private <T extends TemplatePresenter> Optional<TemplatePresenter> getBeanInstance(final Class<T> presenterType) {
         final IOCBeanDef<T> bean = manager.lookupBean(presenterType);
         if (bean != null) {
             final TemplatePresenter presenter = bean.getInstance();

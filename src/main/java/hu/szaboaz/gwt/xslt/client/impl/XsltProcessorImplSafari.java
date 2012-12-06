@@ -27,7 +27,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 public class XsltProcessorImplSafari extends XsltProcessorImplStandard {
 
     @Override
-    protected native JavaScriptObject parseImpl(String contents) /*-{
+    protected native JavaScriptObject parseImpl(final String contents) /*-{
                                                                  var domParser = 
                                                                  this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImplStandard::domParser;
                                                                  var result = domParser.parseFromString(contents,"text/xml");

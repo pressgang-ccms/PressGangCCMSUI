@@ -60,6 +60,11 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>net.sf.eclipsecs.core.CheckstyleBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jem.workbench.JavaEMFNature</nature>
@@ -73,5 +78,6 @@
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 		<nature>org.jboss.tools.ws.jaxrs.nature</nature>
 		<nature>org.hibernate.eclipse.console.hibernateNature</nature>
+		<nature>net.sf.eclipsecs.core.CheckstyleNature</nature>
 	</natures>
 </projectDescription>

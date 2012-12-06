@@ -146,7 +146,7 @@ public class CommonTopicComponent {
                                         }, new BaseRestCallback.FailureAction<BaseTemplateViewInterface>() {
 
                                             @Override
-                                            public void doFailureAction(BaseTemplateViewInterface display) {
+                                            public void doFailureAction(final BaseTemplateViewInterface display) {
                                                 ++counter[0];
                                                 if (counter[0] == xmlElements.size()) {
                                                     loadedCallback.stringMapLoaded(data);
@@ -302,7 +302,7 @@ public class CommonTopicComponent {
         topicXMLDisplay.getXmlTagsDialog().getOptions().addKeyPressHandler(new KeyPressHandler() {
 
             @Override
-            public void onKeyPress(KeyPressEvent event) {
+            public void onKeyPress(final KeyPressEvent event) {
                 if (event.getCharCode() == KeyCodes.KEY_ENTER) {
                     insertElement(topicXMLDisplay);
                 } 
@@ -335,7 +335,7 @@ public class CommonTopicComponent {
         topicXMLDisplay.getCSPTopicDetailsDialog().getIds().addKeyPressHandler(new KeyPressHandler() {
 
             @Override
-            public void onKeyPress(KeyPressEvent event) {
+            public void onKeyPress(final KeyPressEvent event) {
                 if (event.getCharCode() == KeyCodes.KEY_ENTER) {
                     insertCspDetails(topicXMLDisplay, display);
                 } 
@@ -362,7 +362,7 @@ public class CommonTopicComponent {
         topicXMLDisplay.getXmlTemplatesDialog().getOptions().addKeyPressHandler(new KeyPressHandler() {
 
             @Override
-            public void onKeyPress(KeyPressEvent event) {
+            public void onKeyPress(final KeyPressEvent event) {
                 if (event.getCharCode() == KeyCodes.KEY_ENTER) {
                     insertTemplate(topicXMLDisplay);
                 } 

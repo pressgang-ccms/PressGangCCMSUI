@@ -74,7 +74,7 @@ public class TagsFilteredResultsAndTagComponent
     private final SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> sortCallback = new SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
 
         @Override
-        public void setSort(final RESTTagInCategoryCollectionItemV1 child, int index) {
+        public void setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
             child.getItem().explicitSetRelationshipSort(index);
             /* Set any unchanged items to updated */
             if (child.getState() == RESTBaseCollectionItemV1.UNCHANGED_STATE)

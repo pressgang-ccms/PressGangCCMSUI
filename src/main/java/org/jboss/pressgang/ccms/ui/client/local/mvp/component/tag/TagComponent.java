@@ -13,11 +13,10 @@ public class TagComponent extends ComponentBase<TagPresenter.Display> implements
         final RESTCalls.RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, Display>(display,
                 new BaseRestCallback.SuccessAction<RESTTagV1, Display>() {
                     @Override
-                    public void doSuccessAction(RESTTagV1 retValue, Display display) {
+                    public void doSuccessAction(final RESTTagV1 retValue, final Display display) {
                         display.initialize(retValue, false);
                     }
-                }) {
-        };
+                });
         RESTCalls.getUnexpandedTag(callback, tagId);
     }
 }

@@ -67,7 +67,7 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
      * @param helpTopicId The topic of the ID to be used for the help dialog
      */
     @Override
-    public void setHelpTopicId(int helpTopicId) {
+    public void setHelpTopicId(final int helpTopicId) {
         this.helpTopicId = helpTopicId;
     }
 
@@ -231,7 +231,7 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
         Window.addWindowClosingHandler(new ClosingHandler() {
             
             @Override
-            public void onWindowClosing(ClosingEvent event) {
+            public void onWindowClosing(final ClosingEvent event) {
                 if (display.getTopLevelPanel().isAttached())
                 {
                     if (hasUnsavedChanges())

@@ -28,15 +28,15 @@ public class XsltProcessingException extends Exception {
         super();
     }
 
-    public XsltProcessingException(String message) {
+    public XsltProcessingException(final String message) {
         super(message);
     }
 
-    public XsltProcessingException(Throwable cause) {
+    public XsltProcessingException(final Throwable cause) {
         super(cause);
     }
 
-    public XsltProcessingException(String message, Throwable cause) {
+    public XsltProcessingException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

@@ -13,7 +13,7 @@ public class Holder<T> {
         return value;
     }
 
-    public void setValue(T value) {
+    public void setValue(final T value) {
         this.value = value;
     }
 

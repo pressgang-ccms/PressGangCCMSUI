@@ -30,7 +30,7 @@ public class DisableableButtonCell extends ButtonCell {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(final boolean enabled) {
         this.enabled = enabled;
     }
 
