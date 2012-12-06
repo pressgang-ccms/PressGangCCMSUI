@@ -207,26 +207,26 @@ public class SearchUIFields implements SearchViewBase {
         final StringBuilder retValue = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON
                 : "");
 
-        if (!GWTUtilities.IsStringNullOrEmpty(ids)) {
+        if (!GWTUtilities.isStringNullOrEmpty(ids)) {
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + ids);
         }
-        if (!GWTUtilities.IsStringNullOrEmpty(notIds))
+        if (!GWTUtilities.isStringNullOrEmpty(notIds))
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR + "=" + notIds);
-        if (!GWTUtilities.IsStringNullOrEmpty(description))
+        if (!GWTUtilities.isStringNullOrEmpty(description))
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + description);
-        if (!GWTUtilities.IsStringNullOrEmpty(notDescription))
+        if (!GWTUtilities.isStringNullOrEmpty(notDescription))
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_DESCRIPTION_NOT_FILTER_VAR + "=" + notDescription);
-        if (!GWTUtilities.IsStringNullOrEmpty(title))
+        if (!GWTUtilities.isStringNullOrEmpty(title))
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + title);
-        if (!GWTUtilities.IsStringNullOrEmpty(notTitle))
+        if (!GWTUtilities.isStringNullOrEmpty(notTitle))
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR + "=" + notTitle);
         if (editedInLastXDays != null)
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS + "=" + editedInLastXDays.toString());
         if (notEditedInLastXDays != null)
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS + "=" + notEditedInLastXDays.toString());
-        if (!GWTUtilities.IsStringNullOrEmpty(contents))
+        if (!GWTUtilities.isStringNullOrEmpty(contents))
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + contents);
-        if (!GWTUtilities.IsStringNullOrEmpty(notContents))
+        if (!GWTUtilities.isStringNullOrEmpty(notContents))
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_NOT_FILTER_VAR + "=" + notContents);
         if (createdBefore != null)
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR + "=" + dateformat.format(createdBefore));
@@ -236,11 +236,11 @@ public class SearchUIFields implements SearchViewBase {
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR + "=" + dateformat.format(editedAfter));
         if (createdAfter != null)
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR + "=" + dateformat.format(createdAfter));
-        if (!GWTUtilities.IsStringNullOrEmpty(includedInContentSpecs))
+        if (!GWTUtilities.isStringNullOrEmpty(includedInContentSpecs))
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC + "=" + includedInContentSpecs);
-        if (!GWTUtilities.IsStringNullOrEmpty(notIncludedInContentSpecs))
+        if (!GWTUtilities.isStringNullOrEmpty(notIncludedInContentSpecs))
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC + "=" + notIncludedInContentSpecs);
-        if (!GWTUtilities.IsStringNullOrEmpty(freeTextSearch))
+        if (!GWTUtilities.isStringNullOrEmpty(freeTextSearch))
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR + "=" + freeTextSearch);
         if (hasBugzillaBugs == TriStateSelectionState.SELECTED)
             retValue.append(";" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_HAS_BUGZILLA_BUGS + "=true");

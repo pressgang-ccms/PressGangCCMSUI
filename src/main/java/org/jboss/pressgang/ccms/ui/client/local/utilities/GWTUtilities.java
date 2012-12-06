@@ -20,57 +20,74 @@ final public class GWTUtilities {
 
     private GWTUtilities() {
     }
-    
+
     /**
      * This does not work. See http://stackoverflow.com/questions/13406964/detect-ctrl-click-on-pushbutton
+     * 
      * @param event
      * @return
      */
-    public static boolean isEventToOpenNewWindow(final ClickEvent event)
-    {
+    public static boolean isEventToOpenNewWindow(final ClickEvent event) {
         return event.isControlKeyDown();
-        
+
     }
-    
-    public static boolean IsStringNullOrEmpty(final String input)
-    {
-        if (input == null) return true;
-        if (input.trim().isEmpty()) return true;
-        return false;
-        
-    }
-    
+
     /**
-     * Takes a string and returns only integers separated by single commas. Useful for cleaning up a string
-     * used to search for a list of ids.
+     * Test to see if a String is null or contains only whitespace.
+     * 
+     * @param input The String to test
+     * @return true if input is null or contains only whitespace, and false otherwise
+     */
+    public static boolean isStringNullOrEmpty(final String input) {
+        if (input == null || input.trim().isEmpty()) {
+            return true;
+        }
+        return false;
+
+    }
+
+    /**
+     * Takes a string and returns only integers separated by single commas. Useful for cleaning up a string used to search for a
+     * list of ids.
+     * 
      * @param input The string to be cleaned
      * @return The cleaned string
      */
-    public static String fixUpIdSearchString(final String input)
-    {
+    public static String fixUpIdSearchString(final String input) {
         final RegExp regex = RegExp.compile("[^0-9,]", "g");
-        
+
         String retValue = regex.replace(input, "");
-        
+
         /* Cannot have sequential commas */
         while (retValue.contains(",,"))
             retValue = retValue.replaceAll(",,", ",");
-        
+
         /* Cannot start with a comma */
         while (retValue.endsWith(","))
-            retValue = retValue.substring(0,retValue.length() - 1);
-        
+            retValue = retValue.substring(0, retValue.length() - 1);
+
         /* Cannot end with a comma */
         while (retValue.startsWith(","))
             retValue = retValue.substring(1, retValue.length());
-        
+
         return retValue.trim();
     }
 
+    /**
+     * A GWT friendly way to turn a String into a byte[]
+     * @param string The source String
+     * @return the string converted into a byte[]
+     */
     public static byte[] getBytesUTF8(final String string) {
         return getBytes(string, 1);
     }
 
+    /**
+     * A GWT friendly way to turn a String into a byte[]
+     * @param string The source String
+     * @param bytesPerChar The number of bytes per character
+     * @return the string converted into a byte[]
+     */
     public static byte[] getBytes(final String string, final int bytesPerChar) {
         if (string == null) {
             throw new IllegalArgumentException("string cannot be null");
@@ -79,20 +96,31 @@ final public class GWTUtilities {
             throw new IllegalArgumentException("bytesPerChar must be greater than 1");
         }
 
-        char[] chars = string.toCharArray();
-        byte[] toReturn = new byte[chars.length * bytesPerChar];
-        for (int i = 0; i < chars.length; i++) {
-            for (int j = 0; j < bytesPerChar; j++) {
+        final char[] chars = string.toCharArray();
+        final byte[] toReturn = new byte[chars.length * bytesPerChar];
+        for (int i = 0; i < chars.length; ++i) {
+            for (int j = 0; j < bytesPerChar; ++j) {
                 toReturn[i * bytesPerChar + j] = (byte) (chars[i] >>> (BITS_PER_BYTE * (bytesPerChar - 1 - j)));
             }
         }
         return toReturn;
     }
 
+    /**
+     * A GWT friendly way to turn a String into a byte[]
+     * @param string The source String
+     * @return the string converted into a byte[]
+     */
     public static String getStringUTF8(final byte[] bytes) {
         return getString(bytes, 1);
     }
 
+    /**
+     * A GWT friendly way to turn a byte[] into a String
+     * @param bytes The source byte[]
+     * @param bytesPerChar The number of bytes per character
+     * @return the string converted from a byte[]
+     */
     public static String getString(final byte[] bytes, final int bytesPerChar) {
         if (bytes == null) {
             throw new IllegalArgumentException("bytes cannot be null");
@@ -104,10 +132,10 @@ final public class GWTUtilities {
         final int length = bytes.length / bytesPerChar;
         final StringBuilder retValue = new StringBuilder();
 
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < length; ++i) {
             char thisChar = 0;
 
-            for (int j = 0; j < bytesPerChar; j++) {
+            for (int j = 0; j < bytesPerChar; ++j) {
                 final int shift = (bytesPerChar - 1 - j) * BITS_PER_BYTE;
                 thisChar |= (0x000000FF << shift) & (bytes[i * bytesPerChar + j] << shift);
             }
@@ -135,32 +163,32 @@ final public class GWTUtilities {
         }
         return toReturn;
     }
-    
+
     /**
      * Compares two strings
+     * 
      * @param a The first string
      * @param b The second string
      * @return true if both strings are null, or if both strings are equal
      */
-    public static boolean compareStrings(final String a, final String b)
-    {
+    public static boolean compareStrings(final String a, final String b) {
         if (a == null && b == null)
             return true;
-        
+
         if (a != null)
             return a.equals(b);
-        
+
         return b.equals(a);
     }
 
     /**
      * Compares two strings for equality, considering null and empty string to be equal
+     * 
      * @param a The first string
      * @param b The second string
      * @return true if both strings are either null or empty string, or if both strings are equal
      */
-    public static boolean stringEqualsEquatingNullWithEmptyString(final String a, final String b)
-    {
+    public static boolean stringEqualsEquatingNullWithEmptyString(final String a, final String b) {
         if ((a == null || a.isEmpty()) && (b == null || b.isEmpty()))
             return true;
 
@@ -171,9 +199,9 @@ final public class GWTUtilities {
     }
 
     /**
-     * Removes a history token and its postfix semicolon from a token string.
-     * For example,"TagsFilteredResultsAndTagView;query;" would become "query;".
-     *
+     * Removes a history token and its postfix semicolon from a token string. For example,"TagsFilteredResultsAndTagView;query;"
+     * would become "query;".
+     * 
      * @param token The token string to remove the history token from
      * @param historyToken The history token to remove
      * @return
@@ -184,7 +212,7 @@ final public class GWTUtilities {
 
     /**
      * Clears the container and adds the display's top-level panel to the container, an often-repeated combination.
-     *
+     * 
      * @param container
      * @param display
      */
