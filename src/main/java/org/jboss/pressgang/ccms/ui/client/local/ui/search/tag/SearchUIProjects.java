@@ -33,19 +33,35 @@ public class SearchUIProjects implements SearchViewBase {
 
     private final LinkedList<SearchUIProject> projects = new LinkedList<SearchUIProject>();
 
-    public List<SearchUIProject> getProjects() {
-        return projects;
-    }
 
+    /**
+     * Default constructor. Does nothing.
+     */
     public SearchUIProjects() {
 
     }
 
+    /**
+     * 
+     * @param tags The collection of tags that is used to build the hierarchy of projects, categories and tags
+     */
     public SearchUIProjects(final RESTTagCollectionV1 tags) {
         initialize(tags);
     }
+    
+    /**
+     * 
+     * @return The list of projects
+     */
+    public final List<SearchUIProject> getProjects() {
+        return this.projects;
+    }
 
-    final public void initialize(final RESTTagCollectionV1 tags) {
+    /**
+     * 
+     * @param tags The collection of tags that is used to build the hierarchy of projects, categories and tags
+     */
+    public final void initialize(final RESTTagCollectionV1 tags) {
         if (tags == null) {
             throw new IllegalArgumentException("tags parameter cannot be null");
         }
@@ -58,14 +74,14 @@ public class SearchUIProjects implements SearchViewBase {
             /* Tags to be removed should not show up */
             for (final RESTProjectCollectionItemV1 project : tag.getItem().getProjects().returnExistingCollectionItems()) {
                 final SearchUIProject searchUIProject = new SearchUIProject(project);
-                if (!projects.contains(searchUIProject)) {
+                if (!this.projects.contains(searchUIProject)) {
                     searchUIProject.populateCategories(project, tags);
-                    projects.add(searchUIProject);
+                    this.projects.add(searchUIProject);
                 }
             }
         }
 
-        Collections.sort(projects, new SearchUINameSort());
+        Collections.sort(this.projects, new SearchUINameSort());
 
         /*
          * Add the common project to the start of the list. Do this after all the projects have been added, so it won't get
@@ -74,17 +90,17 @@ public class SearchUIProjects implements SearchViewBase {
         final SearchUIProject common = new SearchUIProject(PressGangCCMSUI.INSTANCE.Common());
         common.populateCategoriesWithoutProject(tags);
         if (common.getChildCount() != 0) {
-            projects.addFirst(common);
+            this.projects.addFirst(common);
         }
     }
 
     @Override
-    public String getSearchQuery(final boolean includeQueryPrefix) {
+    public final String getSearchQuery(final boolean includeQueryPrefix) {
 
         final StringBuilder builder = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON
                 : "");
-
-        for (final SearchUIProject project : projects) {
+        
+        for (final SearchUIProject project : this.projects) {
             for (final SearchUICategory category : project.getCategories()) {
                 for (final SearchUITag tag : category.getMyTags()) {
                     if (tag.getState() != TriStateSelectionState.NONE) {

@@ -20,43 +20,87 @@ import com.google.gwt.user.client.ui.TriStateSelectionState;
  * 
  * @author Matthew Casperson
  */
-public class SearchUICategory extends SearchUIBase {
+public final class SearchUICategory extends SearchUIBase {
+
+    /** The tags held by this category */
     private final List<SearchUITag> myTags = new ArrayList<SearchUITag>();
 
-    public class TagSummary {
+    /**
+     * This class contains the summary information to be displayed on a Category tile in the search screen.
+     * 
+     * @author Matthew Casperson
+     * 
+     */
+    public final class TagSummary {
         private final String name;
         private final int tagCount;
         private final int includedTags;
         private final int excludedTags;
 
-        public String getName() {
-            return name;
-        }
-
-        public int getTagCount() {
-            return tagCount;
-        }
-
-        public int getIncludedTags() {
-            return includedTags;
-        }
-
-        public int getExcludedTags() {
-            return excludedTags;
-        }
-
+        /**
+         * 
+         * @param name
+         * @param tagCount
+         * @param includedTags The number of tags that are to be included in the search
+         * @param excludedTags The number of tags that are to be excluded from the search
+         */
         public TagSummary(final String name, final int tagCount, final int includedTags, final int excludedTags) {
             this.name = name;
             this.tagCount = tagCount;
             this.includedTags = includedTags;
             this.excludedTags = excludedTags;
         }
+
+        /**
+         * 
+         * @return The name of the Category
+         */
+        public String getName() {
+            return this.name;
+        }
+
+        /**
+         * @return The number of tiles under this category
+         */
+        public int getTagCount() {
+            return this.tagCount;
+        }
+
+        /**
+         * 
+         * @return The number of tags that are to be included in the search
+         */
+        public int getIncludedTags() {
+            return this.includedTags;
+        }
+
+        /**
+         * 
+         * @return The number of tags that are to be excluded from the search
+         */
+        public int getExcludedTags() {
+            return this.excludedTags;
+        }
+
     }
 
+    /**
+     * 
+     * @param project The project that this object represents
+     * @param category The category that this object represents
+     */
+    public SearchUICategory(final SearchUIProject project, final RESTCategoryInTagCollectionItemV1 category) {
+        super(category.getItem().getName(), project.getId() + "-" + category.getItem().getId());
+    }
+
+    /**
+     * 
+     * @return An object that contains the summary information displayed on the Category tile in the search screen.
+     */
     public TagSummary getSummary() {
         int includedTags = 0;
         int excludedTags = 0;
-        for (final SearchUITag tag : myTags) {
+        for (final SearchUITag tag : this.myTags) {
             if (tag.getState() == TriStateSelectionState.SELECTED) {
                 ++includedTags;
             } else if (tag.getState() == TriStateSelectionState.UNSELECTED) {
@@ -67,18 +111,28 @@ public class SearchUICategory extends SearchUIBase {
         return new TagSummary(this.getName(), this.myTags.size(), includedTags, excludedTags);
     }
 
+    /**
+     * 
+     * @return The tags held by this category
+     */
     public List<SearchUITag> getMyTags() {
-        return myTags;
+        return this.myTags;
     }
 
+    /**
+     * 
+     * @return The number of tags held by this category
+     */
     public int getChildCount() {
-        return myTags.size();
+        return this.myTags.size();
     }
 
-    public SearchUICategory(final SearchUIProject project, final RESTCategoryInTagCollectionItemV1 category) {
-        super(category.getItem().getName(), project.getId() + "-" + category.getItem().getId());
-    }
-
+    /**
+     * Populate the tags under this category.
+     * @param project The project this category belongs to
+     * @param category The category that this object represents
+     * @param tags The tags collection from which tags will be selected for this category
+     */
     public void populateCategories(final RESTProjectCollectionItemV1 project, final RESTCategoryInTagCollectionItemV1 category,
             final RESTTagCollectionV1 tags) {
         if (tags == null) {
@@ -98,29 +152,41 @@ public class SearchUICategory extends SearchUIBase {
             if (tag.getItem().getCategories() == null) {
                 throw new IllegalArgumentException("tag.getItem().getCategories() cannot be null");
             }
-            
-            final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory = Iterables.tryFind( tag.getItem().getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
+
+            final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory = Iterables.tryFind(tag.getItem()
+                    .getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
                 @Override
-                public boolean apply(final RESTCategoryInTagCollectionItemV1 arg) { return arg.getItem().getId().equals(category.getItem().getId()); }
+                public boolean apply(final RESTCategoryInTagCollectionItemV1 arg) {
+                    return arg.getItem().getId().equals(category.getItem().getId());
+                }
             });
-            
-            final Optional<RESTProjectCollectionItemV1> matchingProject = Iterables.tryFind( tag.getItem().getProjects().getItems(), new Predicate<RESTProjectCollectionItemV1>() {
+
+            final Optional<RESTProjectCollectionItemV1> matchingProject = Iterables.tryFind(tag.getItem().getProjects()
+                    .getItems(), new Predicate<RESTProjectCollectionItemV1>() {
                 @Override
-                public boolean apply(final RESTProjectCollectionItemV1 arg) { return arg.getItem().getId().equals(project.getItem().getId()); }
+                public boolean apply(final RESTProjectCollectionItemV1 arg) {
+                    return arg.getItem().getId().equals(project.getItem().getId());
+                }
             });
-                            
+
             if (matchingCategory.isPresent() && matchingProject.isPresent()) {
                 final SearchUITag searchUITag = new SearchUITag(this, tag);
-                if (!myTags.contains(searchUITag)) {
-                    myTags.add(searchUITag);
+                if (!this.myTags.contains(searchUITag)) {
+                    this.myTags.add(searchUITag);
                 }
             }
         }
 
-        Collections.sort(myTags, new SearchUINameSort());
+        Collections.sort(this.myTags, new SearchUINameSort());
     }
 
-    public void populateCategoriesWithoutProject(final RESTCategoryInTagCollectionItemV1 category, final RESTTagCollectionV1 tags) {
+    /**
+     * Populate the tags under this category under the "Common" project.
+     * @param category The category that this object represents
+     * @param tags The tags collection from which tags will be selected for this category
+     */
+    public void populateCategoriesWithoutProject(final RESTCategoryInTagCollectionItemV1 category,
+            final RESTTagCollectionV1 tags) {
         if (tags == null) {
             throw new IllegalArgumentException("tags parameter cannot be null");
         }
@@ -138,21 +204,24 @@ public class SearchUICategory extends SearchUIBase {
 
             if (tag.getItem().getProjects().getItems().isEmpty()) {
 
-                final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory = Iterables.tryFind( tag.getItem().getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
+                final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory = Iterables.tryFind(tag.getItem()
+                        .getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
                     @Override
-                    public boolean apply(final RESTCategoryInTagCollectionItemV1 arg) { return arg.getItem().getId().equals(category.getItem().getId()); }
+                    public boolean apply(final RESTCategoryInTagCollectionItemV1 arg) {
+                        return arg.getItem().getId().equals(category.getItem().getId());
+                    }
                 });
-                                
+
                 if (matchingCategory.isPresent()) {
                     final SearchUITag searchUITag = new SearchUITag(this, tag);
-                    if (!myTags.contains(searchUITag)) {
-                        myTags.add(searchUITag);
+                    if (!this.myTags.contains(searchUITag)) {
+                        this.myTags.add(searchUITag);
                     }
                 }
-                            
+
             }
         }
 
-        Collections.sort(myTags, new SearchUINameSort());
+        Collections.sort(this.myTags, new SearchUINameSort());
     }
 }
