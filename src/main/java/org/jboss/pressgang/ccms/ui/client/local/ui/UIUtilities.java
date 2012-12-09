@@ -69,7 +69,7 @@ final public class UIUtilities {
     }
 
     /**
-     * 
+     * @param <T> The type of collection item to be displayed by the celltable
      * @return A new celltable with the default settings
      */
     public static <T extends RESTBaseCollectionItemV1<?, ?, ?>> CellTable<T> createCellTable() {

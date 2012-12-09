@@ -86,7 +86,7 @@ public final class RESTCalls {
         /**
          * Called if an exception is thrown when attempting to call the REST service
          * 
-         * @param e
+         * @param e The exception that was thrown
          */
         void generalException(final Exception e);
 
@@ -99,6 +99,8 @@ public final class RESTCalls {
 
         /**
          * Called if the REST call was unsuccessful
+         * @param message The message that accompanied the failure
+         * @param throwable The exception that accompanied the failure
          */
         void failed(final Message message, final Throwable throwable);
     }

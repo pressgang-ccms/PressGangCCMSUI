@@ -285,7 +285,9 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
     }
 
     /**
-     * This method is called to initialize the buttons that should appear in the top action bar
+     * This method is called to initialize the buttons that should appear in the top action bar.
+     * @param newTopic true if this is a new topic, false otherwise
+     * @param hasErrors true if the XML contains errors, false otherwise
      */
     protected void populateTopActionBar(final boolean newTopic, final boolean hasErrors)
     {

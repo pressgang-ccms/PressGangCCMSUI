@@ -39,8 +39,8 @@ public final class SearchUICategory extends SearchUIBase {
 
         /**
          * 
-         * @param name
-         * @param tagCount
+         * @param name The name of the Category
+         * @param tagCount The number of Tags held by the Category
          * @param includedTags The number of tags that are to be included in the search
          * @param excludedTags The number of tags that are to be excluded from the search
          */

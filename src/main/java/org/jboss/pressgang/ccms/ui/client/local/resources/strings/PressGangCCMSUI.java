@@ -3,15 +3,26 @@ package org.jboss.pressgang.ccms.ui.client.local.resources.strings;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Constants;
 
+/**
+ * This interface contains all the strings displayed by the UI. These strings can then be localized with the functionality
+ * provided by GWT.
+ * 
+ * @author Matthew Casperson
+ * 
+ */
 public interface PressGangCCMSUI extends Constants {
+
+    /**
+     * An instance of this interface constructed by GWT with the localized strings.
+     */
     PressGangCCMSUI INSTANCE = GWT.create(PressGangCCMSUI.class);
 
     String Build();
-    
+
     String OK();
 
     String Cancel();
-    
+
     String MoreInfo();
 
     String PressGangCCMS();
@@ -21,11 +32,11 @@ public interface PressGangCCMSUI extends Constants {
     String Welcome();
 
     String Search();
-    
+
     String QuickSearch();
-    
+
     String Create();
-    
+
     String SearchFields();
 
     String Common();
@@ -47,11 +58,11 @@ public interface PressGangCCMSUI extends Constants {
     String TopicView();
 
     String TopicID();
-    
+
     String TopicIDs();
-    
+
     String TopicCreated();
-    
+
     String TopicLastModified();
 
     String TopicRevision();
@@ -65,11 +76,11 @@ public interface PressGangCCMSUI extends Constants {
     String TopicXML();
 
     String SaveSuccess();
-    
+
     String OverwriteSuccess();
-    
+
     String NoUnsavedChanges();
-    
+
     String TagSaveSuccess();
 
     String ErrorGettingTopics();
@@ -83,7 +94,7 @@ public interface PressGangCCMSUI extends Constants {
     String TopicCouldNotBeRendered();
 
     String TagAlreadyExists();
-    
+
     String RemoveConflictingTags();
 
     String BugzillaID();
@@ -97,15 +108,15 @@ public interface PressGangCCMSUI extends Constants {
     String RevisionNumber();
 
     String RevisionDate();
-    
+
     String RevisionMessage();
 
     String View();
 
     String Diff();
-    
+
     String NoXML();
-    
+
     String SameXML();
 
     String CurrentlyViewing();
@@ -125,7 +136,7 @@ public interface PressGangCCMSUI extends Constants {
     String Bugs();
 
     String Revisions();
-    
+
     String ContentSpecifications();
 
     String TopicTags();
@@ -153,7 +164,7 @@ public interface PressGangCCMSUI extends Constants {
     String ImageLocale();
 
     String ImageFilename();
-    
+
     String ImageDimensions();
 
     String ImageSample();
@@ -173,9 +184,9 @@ public interface PressGangCCMSUI extends Constants {
     String AddLocale();
 
     String RemoveLocale();
-    
+
     String ViewImage();
-    
+
     String FindTopics();
 
     String Locales();
@@ -189,7 +200,7 @@ public interface PressGangCCMSUI extends Constants {
     String PleaseUseFirefox();
 
     String ConnectionError();
-    
+
     String InvalidInput();
 
     String ConfirmDelete();
@@ -225,11 +236,11 @@ public interface PressGangCCMSUI extends Constants {
     String Advanced();
 
     String TagID();
-    
+
     String TagIDs();
 
     String TagName();
-    
+
     String ChildTagID();
 
     String ChildTagName();
@@ -241,13 +252,13 @@ public interface PressGangCCMSUI extends Constants {
     String ProjectName();
 
     String ProjectID();
-    
+
     String ProjectIDs();
 
     String ProjectDescription();
-    
+
     String ProjectDetails();
-    
+
     String ProjectTags();
 
     String NoAction();
@@ -261,7 +272,7 @@ public interface PressGangCCMSUI extends Constants {
     String TagCategories();
 
     String CategoryID();
-    
+
     String CategoryIDs();
 
     String CategoryName();
@@ -269,7 +280,7 @@ public interface PressGangCCMSUI extends Constants {
     String CategoryDescription();
 
     String CategoryDetails();
-    
+
     String CategoryTags();
 
     String Up();
@@ -281,69 +292,68 @@ public interface PressGangCCMSUI extends Constants {
     String Bottom();
 
     String UnsavedChangesPrompt();
-    
+
     String Feedback();
-    
+
     String Help();
-    
+
     String TopicsEditedInLastXDays();
-    
+
     String TopicsNotEditedInLastXDays();
-    
+
     String TopicCreatedAfter();
-    
+
     String TopicCreatedBefore();
-    
+
     String TopicEditedAfter();
-    
+
     String TopicEditedBefore();
-    
+
     String TopicIds();
-    
+
     String NotTopicIds();
-    
+
     String NotTopicTitle();
-    
+
     String TopicContents();
-    
+
     String NotTopicContents();
-    
+
     String NotTopicDescription();
-    
+
     String IncludedInContentSpec();
-    
+
     String NotIncludedInContentSpec();
-    
+
     String FreeTextSearch();
-    
+
     String HasBugzillaBugs();
-    
+
     String HasOpenBugzillaBugs();
-    
+
     String MatchAll();
-    
+
     String MatchAny();
-    
+
     String Fields();
-    
+
     String NoTitle();
-    
+
     String MinorChange();
-    
+
     String MajorChange();
-    
+
     String SaveLog();
-    
+
     String Message();
-    
+
     String PleaseEnterValue();
-    
+
     String InsertXMLElement();
-    
+
     String InsertCSPTopicDetails();
-    
+
     String InitialTopicCreation();
-    
+
     String SpellChecking();
 }
-

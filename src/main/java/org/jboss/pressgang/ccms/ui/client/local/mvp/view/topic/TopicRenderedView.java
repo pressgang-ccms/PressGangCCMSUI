@@ -35,6 +35,7 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
 
     /**
      * The rendered view will add or remove the rendered down label, instead of the rendered view button.
+     * @param splitType How the page is split with the rendered view
      */
     @Override
     protected void addOrRemoveRenderedButton(final SplitType splitType) {

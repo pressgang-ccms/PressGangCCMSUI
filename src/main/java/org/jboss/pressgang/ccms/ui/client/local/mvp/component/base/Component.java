@@ -3,8 +3,9 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.component.base;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 
 /**
+ * Components are used to add logic to the veiws held by a presenter. Quite often multiple components are used by a single presenter.
  * 
- * @author matthew
+ * @author Matthew Casperson
  *
  * @param <S> The type of the view
  */
@@ -13,7 +14,10 @@ public interface Component<S extends BaseTemplateViewInterface> {
     /**
      * Bind behaviour to the UI elements in the display
      * 
+     * @param topicId the help topic for the page
+     * @param pageId The history token of the page
      * @param display The display to bind behaviour to
+     * @param waitDisplay The view used to notify the user that an ongoin operation is in progress
      */
     void bind(final int topicId, final String pageId, final S display, final BaseTemplateViewInterface waitDisplay);
 

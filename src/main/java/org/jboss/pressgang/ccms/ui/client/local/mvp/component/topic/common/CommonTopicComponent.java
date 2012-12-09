@@ -65,7 +65,9 @@ public class CommonTopicComponent {
     }
 
     /**
-     * Retrieve a list of locales from the server
+     * Retrieve a list of locales from the server.
+     * @param waitDisplay The view used to notify the user that an ongoin operation is in progress
+     * @param loadedCallback The callback to call when the locales are loaded
      */
     public static void populateLocales(final BaseTemplateViewInterface waitDisplay, final StringListLoaded loadedCallback) {
         final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
@@ -93,7 +95,9 @@ public class CommonTopicComponent {
     }
 
     /**
-     * Retrieve a list of xml elements from the server
+     * Retrieve a list of xml elements from the server.
+     * @param waitDisplay The view used to notify the user that an ongoing operation is in progress
+     * @param loadedCallback The callback to call when the data is loaded
      */
     public static void populateXMLElements(final BaseTemplateViewInterface waitDisplay, final StringListLoaded loadedCallback) {
         final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
@@ -122,7 +126,9 @@ public class CommonTopicComponent {
     }
 
     /**
-     * Retrieve a list of xml elements from the server
+     * Retrieve a list of xml elements from the server.
+     * @param waitDisplay The view used to notify the user that an ongoing operation is in progress
+     * @param loadedCallback The callback to call when the data is loaded
      */
     public static void populateXMLTemplates(final BaseTemplateViewInterface waitDisplay, final StringMapLoaded loadedCallback) {
         final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
@@ -206,6 +212,7 @@ public class CommonTopicComponent {
      * 
      * @param topicXMLDisplay The XML editing view
      * @param display The main view
+     * @param currentTopicCallback Called to get the currently displayed topic
      */
     public static void addKeyboardShortcutEventHandler(final TopicXMLPresenter.Display topicXMLDisplay,
             final BaseTemplateViewInterface display, final GetCurrentTopic currentTopicCallback) {

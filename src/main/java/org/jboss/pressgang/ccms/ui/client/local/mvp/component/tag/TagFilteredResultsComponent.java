@@ -47,6 +47,7 @@ public class TagFilteredResultsComponent
     }
 
     /**
+     * @param waitDisplay The view used to notify the user that an ongoin operation is in progress
      * @return A provider to be used for the tag display list
      */
     @Override

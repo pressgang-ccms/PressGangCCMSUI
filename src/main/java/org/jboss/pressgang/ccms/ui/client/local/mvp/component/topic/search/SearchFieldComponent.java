@@ -7,9 +7,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 public class SearchFieldComponent extends ComponentBase<SearchFieldPresenter.Display> implements
         SearchFieldPresenter.LogicComponent {
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void bind(final int topicId, final String pageId, final SearchFieldPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
         

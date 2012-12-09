@@ -54,6 +54,7 @@ public class ImageFilteredResultsComponent
     }
 
     /**
+     * @param waitDisplay The view used to notify the user that an ongoin operation is in progress
      * @return A provider to be used for the image display list.
      */
     @Override

@@ -1,78 +1,81 @@
 package org.jboss.pressgang.ccms.ui.client.local.constants;
 
 /**
- * This class holds constants that relate to the underlying REST service
+ * This class holds constants that relate to the underlying REST service.
  * 
  * @author Matthew Casperson
  */
-final public class ServiceConstants {
-    /** The StringConstant that holds the locales */
-    static public final int LOCALE_STRING_CONSTANT = 38;
-    /** The StringConstant that holds the concept XML template */
-    static public final int CONCEPT_TOPIC_TEMPLATE = 14;
-    /** The StringConstant the holds the default topic template */
-    static public final int TOPIC_TEMPLATE = 39;
-    /** The StringConstant default locale id */
-    static public final int DEFAULT_LOCALE_ID = 40;
+public final class ServiceConstants {
+    /** The StringConstant that holds the locales. */
+    public static final int LOCALE_STRING_CONSTANT = 38;
+    /** The StringConstant that holds the concept XML template. */
+    public static final int CONCEPT_TOPIC_TEMPLATE = 14;
+    /** The StringConstant the holds the default topic template. */
+    public static final int TOPIC_TEMPLATE = 39;
+    /** The StringConstant default locale id. */
+    public static final int DEFAULT_LOCALE_ID = 40;
 
-    /** Used to indicate a minor change to an entity */
-    static public final byte MINOR_CHANGE = 0x01;
-    /** Used to indicate a major change to an entity */
-    static public final byte MAJOR_CHANGE = 0x02;
+    /** Used to indicate a minor change to an entity. */
+    public static final byte MINOR_CHANGE = 0x01;
+    /** Used to indicate a major change to an entity. */
+    public static final byte MAJOR_CHANGE = 0x02;
     
-    /** The id of the tag applied tgo all content specs */
-    static public final Integer CSP_TAG_ID = 268;
+    /** The id of the tag applied to all content specs. */
+    public static final Integer CSP_TAG_ID = 268;
 
     /**
      * The null user, used when no login information is available. Null identifies an unknown user, but this has issues in errai
-     * (https://issues.jboss.org/browse/ERRAI-433)
+     * (https://issues.jboss.org/browse/ERRAI-433).
      */
-    static public final Integer NULL_USER_ID = 89;
+    public static final Integer NULL_USER_ID = 89;
+    //public static final Integer NULL_USER_ID = null;
     
     
     /**
-     * The string constant that contains all the docbook elements
+     * The string constant that contains all the docbook elements.
      */
-    static public final Integer DOCBOOK_ELEMENTS_STRING_CONSTANT_ID = 41; 
+    public static final Integer DOCBOOK_ELEMENTS_STRING_CONSTANT_ID = 41; 
     
     /**
      * The string constant ID that contains a comma separated list of 
-     * other strnig constant IDs that contain docbook templates
+     * other string constant IDs that contain docbook templates.
      */
-    static public final Integer DOCBOOK_TEMPLATES_STRING_CONSTANT_ID = 43;
+    public static final Integer DOCBOOK_TEMPLATES_STRING_CONSTANT_ID = 43;
     
     /**
-     * The help topic for the search screen
+     * The help topic for the search screen.
      */
-    static public final int SEARCH_VIEW_HELP_TOPIC = 12505;
+    public static final int SEARCH_VIEW_HELP_TOPIC = 12505;
     
-    /** The topic that is displayed in the welcome view */
-    static public final int WELCOME_VIEW_CONTENT_TOPIC = 12556;
+    /** The topic that is displayed in the welcome view. */
+    public static final int WELCOME_VIEW_CONTENT_TOPIC = 12556;
     
-    /** The topic that is displayed in the welcome view */
-    static public final int TOPIC_EDIT_VIEW_CONTENT_TOPIC = 12510;
+    /** The topic that is displayed in the welcome view. */
+    public static final int TOPIC_EDIT_VIEW_CONTENT_TOPIC = 12510;
     
-    static public final int TOPIC_XML_EDIT_TOPIC = 12683;
+    /** The help topic for the xml edit view. */
+    public static final int TOPIC_XML_EDIT_TOPIC = 12683;
     
-    /** The help topic for the validation errors view */
-    static public final int TOPIC_VALIDATION_ERRORS_TOPIC = 12559;
+    /** The help topic for the validation errors view. */
+    public static final int TOPIC_VALIDATION_ERRORS_TOPIC = 12559;
     
-    /** The help topic for the properties view */
-    static public final int TOPIC_PROPERTIES_TOPIC = 12560;
+    /** The help topic for the properties view. */
+    public static final int TOPIC_PROPERTIES_TOPIC = 12560;
     
-    /** The help topic for the tags view */
-    static public final int TOPIC_TAGS_TOPIC = 12587;
+    /** The help topic for the tags view. */
+    public static final int TOPIC_TAGS_TOPIC = 12587;
     
-    /** The help topic for the revisions view */
-    static public final int TOPIC_REVISIONS_TOPIC = 12588;
+    /** The help topic for the revisions view. */
+    public static final int TOPIC_REVISIONS_TOPIC = 12588;
     
-    /** The help topic for the revisions view */
-    static public final int TOPIC_BUGS_TOPIC = 12589;
+    /** The help topic for the revisions view. */
+    public static final int TOPIC_BUGS_TOPIC = 12589;
     
-    /** The help topic for the images view */
-    static public final int IMAGES_TOPIC = 12592;
+    /** The help topic for the images view. */
+    public static final int IMAGES_TOPIC = 12592;
     
-    static public final int DEFAULT_HELP_TOPIC = 12558;
+    /** The default "No help is available" topic. */
+    public static final int DEFAULT_HELP_TOPIC = 12558;
 
     private ServiceConstants() {
 
