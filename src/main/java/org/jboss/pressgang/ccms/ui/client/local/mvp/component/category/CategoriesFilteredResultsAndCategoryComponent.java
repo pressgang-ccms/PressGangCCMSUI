@@ -92,7 +92,7 @@ public class CategoriesFilteredResultsAndCategoryComponent
         this.tagComponent = tagComponent;
         
         /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTCategoryV1> getNewEntityCallback = new GetNewEntityCallback<RESTCategoryV1>(){
+        final GetNewEntityCallback<RESTCategoryV1> getNewEntityCallback = new GetNewEntityCallback<RESTCategoryV1>() {
 
             @Override
             public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTCategoryV1> displayCallback) {

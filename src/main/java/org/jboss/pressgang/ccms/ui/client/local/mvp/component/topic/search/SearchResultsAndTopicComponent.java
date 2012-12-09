@@ -194,7 +194,7 @@ public class SearchResultsAndTopicComponent
 
                                         @Override
                                         public boolean apply(final @Nullable RESTCategoryInTagCollectionItemV1 existingTagCategory) {
-                                            if (existingTagCategory == null | existingTagCategory.getItem() == null)
+                                            if (existingTagCategory == null || existingTagCategory.getItem() == null)
                                                 return false;
 
                                             /*
@@ -473,7 +473,7 @@ public class SearchResultsAndTopicComponent
                 .getProviderData().getDisplayedItem() : topicRevisionsDisplay.getRevisionTopic();
 
         if (sourceTopic == null)
-            new NullPointerException("sourceTopic cannot be null");
+            throw new NullPointerException("sourceTopic cannot be null");
 
         return sourceTopic;
     }

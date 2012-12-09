@@ -80,7 +80,7 @@ public class ImagesFilteredResultsAndImageComponent
             final ImagesFilteredResultsAndImagePresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
 
         /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTImageV1> getNewEntityCallback = new GetNewEntityCallback<RESTImageV1>(){
+        final GetNewEntityCallback<RESTImageV1> getNewEntityCallback = new GetNewEntityCallback<RESTImageV1>() {
 
             @Override
             public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTImageV1> displayCallback) {

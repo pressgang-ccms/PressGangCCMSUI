@@ -66,7 +66,7 @@ public class ProjectsFilteredResultsAndProjectComponent
         this.tagComponent = tagComponent;
 
         /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTProjectV1> getNewEntityCallback = new GetNewEntityCallback<RESTProjectV1>(){
+        final GetNewEntityCallback<RESTProjectV1> getNewEntityCallback = new GetNewEntityCallback<RESTProjectV1>() {
 
             @Override
             public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTProjectV1> displayCallback) {

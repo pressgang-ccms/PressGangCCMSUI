@@ -358,7 +358,7 @@ public class TagsFilteredResultsAndTagComponent
         this.categoriesComponent = categoriesComponent;
         
         /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTTagV1>(){
+        final GetNewEntityCallback<RESTTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTTagV1>() {
 
             @Override
             public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTTagV1> displayCallback) {
