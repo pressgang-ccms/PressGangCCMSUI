@@ -77,8 +77,9 @@ public class TagsFilteredResultsAndTagComponent
         public void setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
             child.getItem().explicitSetRelationshipSort(index);
             /* Set any unchanged items to updated */
-            if (child.getState() == RESTBaseCollectionItemV1.UNCHANGED_STATE)
+            if (RESTBaseCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {
                 child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+            }
         }
     };
 
@@ -343,8 +344,8 @@ public class TagsFilteredResultsAndTagComponent
     }
 
     @Override
-    public void bind(final int topicId, final String pageId, final TagsFilteredResultsAndTagPresenter.Display display, final BaseTemplateViewInterface waitDisplay,
-            final TagFilteredResultsPresenter.Display filteredResultsDisplay,
+    public void bind(final int topicId, final String pageId, final TagsFilteredResultsAndTagPresenter.Display display,
+            final BaseTemplateViewInterface waitDisplay, final TagFilteredResultsPresenter.Display filteredResultsDisplay,
             final TagFilteredResultsPresenter.LogicComponent filteredResultsComponent,
             final TagPresenter.Display resultDisplay, final TagPresenter.LogicComponent resultComponent,
             final TagProjectsPresenter.Display projectsDisplay, final TagProjectsPresenter.LogicComponent projectsComponent,
@@ -356,25 +357,25 @@ public class TagsFilteredResultsAndTagComponent
         this.projectsComponent = projectsComponent;
         this.categoriesDisplay = categoriesDisplay;
         this.categoriesComponent = categoriesComponent;
-        
+
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTTagV1>() {
 
             @Override
             public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTTagV1> displayCallback) {
-                final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, BaseTemplateViewInterface>(waitDisplay,
-                        new BaseRestCallback.SuccessAction<RESTTagV1, BaseTemplateViewInterface>() {
+                final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, BaseTemplateViewInterface>(
+                        waitDisplay, new BaseRestCallback.SuccessAction<RESTTagV1, BaseTemplateViewInterface>() {
                             @Override
                             public void doSuccessAction(final RESTTagV1 retValue, final BaseTemplateViewInterface display) {
                                 displayCallback.displayNewEntity(retValue);
                             }
-                        });      
+                        });
                 RESTCalls.getTag(callback, id);
             }
         };
 
-        super.bind(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultDisplay, resultDisplay, filteredResultsDisplay,
-                filteredResultsComponent, display, waitDisplay, getNewEntityCallback);
+        super.bind(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultDisplay, resultDisplay,
+                filteredResultsDisplay, filteredResultsComponent, display, waitDisplay, getNewEntityCallback);
 
         bindCategoryColumnButtons();
         bindProjectColumnButtons();
@@ -394,12 +395,12 @@ public class TagsFilteredResultsAndTagComponent
                             if (tag.getItem().getId()
                                     .equals(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId())) {
                                 /* Project was added and then removed */
-                                if (tag.getState() == RESTBaseCollectionItemV1.ADD_STATE) {
+                                if (RESTBaseCollectionItemV1.ADD_STATE.equals(tag.getState())) {
                                     object.getItem().getTags().getItems().remove(tag);
                                 }
 
                                 /* Project existed, was removed and then was added again */
-                                if (tag.getState() == RESTBaseCollectionItemV1.REMOVE_STATE) {
+                                if (RESTBaseCollectionItemV1.REMOVE_STATE.equals(tag.getState())) {
                                     tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
                                 }
                                 /* Project existed and was removed */

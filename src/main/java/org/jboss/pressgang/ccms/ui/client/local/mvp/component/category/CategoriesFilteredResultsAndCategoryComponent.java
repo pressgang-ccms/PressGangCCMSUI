@@ -76,13 +76,15 @@ public class CategoriesFilteredResultsAndCategoryComponent
         public void setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
             child.getItem().explicitSetRelationshipSort(index);
             /* Set any unchanged items to updated */
-            if (child.getState() == RESTBaseCollectionItemV1.UNCHANGED_STATE)
+            if (RESTBaseCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {
                 child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+            }
         }
     };
 
     @Override
-    public void bind(final int topicId, final String pageId, final CategoryFilteredResultsPresenter.Display filteredResultsDisplay,
+    public void bind(final int topicId, final String pageId,
+            final CategoryFilteredResultsPresenter.Display filteredResultsDisplay,
             final CategoryFilteredResultsPresenter.LogicCompnent filteredResultsComponent,
             final CategoryPresenter.Display entityPropertiesView, final CategoryTagPresenter.Display tagDisplay,
             final CategoryTagPresenter.LogicComponent tagComponent,
@@ -90,19 +92,19 @@ public class CategoriesFilteredResultsAndCategoryComponent
 
         this.tagDisplay = tagDisplay;
         this.tagComponent = tagComponent;
-        
+
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTCategoryV1> getNewEntityCallback = new GetNewEntityCallback<RESTCategoryV1>() {
 
             @Override
             public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTCategoryV1> displayCallback) {
-                final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, BaseTemplateViewInterface>(waitDisplay,
-                        new BaseRestCallback.SuccessAction<RESTCategoryV1, BaseTemplateViewInterface>() {
+                final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, BaseTemplateViewInterface>(
+                        waitDisplay, new BaseRestCallback.SuccessAction<RESTCategoryV1, BaseTemplateViewInterface>() {
                             @Override
                             public void doSuccessAction(final RESTCategoryV1 retValue, final BaseTemplateViewInterface display) {
                                 displayCallback.displayNewEntity(retValue);
                             }
-                        });      
+                        });
                 RESTCalls.getCategory(callback, id);
             }
         };

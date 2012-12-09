@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
 import hu.szaboaz.gwt.xslt.client.XsltProcessor;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -106,7 +107,11 @@ public abstract class BaseTemplateView
     private final TextBox quickSearchQuery = new TextBox();
     private final PushButton quickSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.QuickSearch());
 
-    public class HelpDialogImpl extends DialogBox implements HelpDialog {
+    /**
+     * Defines the help dialog box.
+     * @author Matthew Casperson
+     */
+    public static class HelpDialogImpl extends DialogBox implements HelpDialog {
 
         private final VerticalPanel layout = new VerticalPanel();
         private final HTML contents = new HTML("div");

@@ -214,4 +214,10 @@ public final class SearchUIProject extends SearchUIBase {
 
         Collections.sort(this.categories, new SearchUINameSort());
     }
+    
+    @Override
+    public boolean equals(final Object other)
+    {
+        return super.equals(other);
+    }
 }

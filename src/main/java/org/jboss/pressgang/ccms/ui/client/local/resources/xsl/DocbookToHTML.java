@@ -3,10 +3,9 @@ package org.jboss.pressgang.ccms.ui.client.local.resources.xsl;
 public final class DocbookToHTML {
 
     /**
-     * The XSL that is used to transform DocBook into HTML. This is not final because of bug
-     * http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6447475
+     * The XSL that is used to transform DocBook into HTML.
      */
-    public static String XSL = "<xsl:stylesheet xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" version=\"1.0\">\n"
+    public static final String XSL = "<xsl:stylesheet xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" version=\"1.0\">\n"
             + "    <xsl:output method=\"html\" encoding=\"UTF-8\" indent=\"yes\" />\n"
             + "    <xsl:strip-space elements=\"*\" />\n"
             + "    <xsl:preserve-space elements=\"screen programlisting\" />\n"

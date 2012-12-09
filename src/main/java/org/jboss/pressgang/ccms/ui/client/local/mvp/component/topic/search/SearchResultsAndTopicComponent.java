@@ -148,7 +148,7 @@ public class SearchResultsAndTopicComponent
             for (final RESTTagCollectionItemV1 tag : filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                     .getTags().getItems()) {
                 if (tag.getItem().getId().equals(selectedTag.getId())) {
-                    if (tag.getState() == RESTBaseCollectionItemV1.REMOVE_STATE) {
+                    if (RESTBaseCollectionItemV1.REMOVE_STATE.equals(tag.getState())) {
                         deletedTag = tag;
                         break;
                     } else {
@@ -183,17 +183,20 @@ public class SearchResultsAndTopicComponent
 
                         @Override
                         public boolean apply(final @Nullable RESTTagCollectionItemV1 existingTag) {
-                            
+
                             /* there is no match if the tag has already been removed */
-                            if (existingTag == null || existingTag.getItem() == null || existingTag.getState() == RESTBaseCollectionItemV1.REMOVE_STATE)
+                            if (existingTag == null || existingTag.getItem() == null
+                                    || RESTBaseCollectionItemV1.REMOVE_STATE.equals(existingTag.getState())) {
                                 return false;
+                            }
 
                             /* loop over the categories that the tag belongs to */
                             return Iterables.any(existingTag.getItem().getCategories().getItems(),
                                     new Predicate<RESTCategoryInTagCollectionItemV1>() {
 
                                         @Override
-                                        public boolean apply(final @Nullable RESTCategoryInTagCollectionItemV1 existingTagCategory) {
+                                        public boolean apply(
+                                                final @Nullable RESTCategoryInTagCollectionItemV1 existingTagCategory) {
                                             if (existingTagCategory == null || existingTagCategory.getItem() == null)
                                                 return false;
 
@@ -205,8 +208,10 @@ public class SearchResultsAndTopicComponent
                                                     new Predicate<RESTCategoryInTagCollectionItemV1>() {
 
                                                         @Override
-                                                        public boolean apply(final @Nullable RESTCategoryInTagCollectionItemV1 mutuallyExclusiveCategory) {
-                                                            return mutuallyExclusiveCategory.getItem().getId().equals(existingTagCategory.getItem().getId());
+                                                        public boolean apply(
+                                                                final @Nullable RESTCategoryInTagCollectionItemV1 mutuallyExclusiveCategory) {
+                                                            return mutuallyExclusiveCategory.getItem().getId()
+                                                                    .equals(existingTagCategory.getItem().getId());
                                                         }
                                                     });
 
@@ -214,21 +219,18 @@ public class SearchResultsAndTopicComponent
                                     });
                         }
                     });
-            
-            if (!conflictingTags.isEmpty())
-            {
+
+            if (!conflictingTags.isEmpty()) {
                 final StringBuilder tags = new StringBuilder("\n");
-                for (final RESTTagCollectionItemV1 tag : conflictingTags)
-                {
+                for (final RESTTagCollectionItemV1 tag : conflictingTags) {
                     tags.append("\n* " + tag.getItem().getName());
                 }
-                
+
                 /* make sure the user is happy to remove the conflicting tags */
                 if (!Window.confirm(PressGangCCMSUI.INSTANCE.RemoveConflictingTags() + tags.toString()))
                     return;
-                
-                for (final RESTTagCollectionItemV1 tag : conflictingTags)
-                {
+
+                for (final RESTTagCollectionItemV1 tag : conflictingTags) {
                     tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
                 }
             }
@@ -237,11 +239,11 @@ public class SearchResultsAndTopicComponent
                 /* Get the selected tag, and clone it */
                 final RESTTagV1 selectedTagClone = selectedTag.clone(true);
                 /* Add the tag to the topic */
-                filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(selectedTagClone);               
+                filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(selectedTagClone);
             } else {
                 deletedTag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
             }
-            
+
             /* Redisplay the view */
             initializeViews(Arrays.asList(new TopicViewInterface[] { topicTagsDisplay }));
         }
@@ -269,7 +271,7 @@ public class SearchResultsAndTopicComponent
                 throw new IllegalStateException("searchResultsComponent.getProviderData().getDisplayedItem() cannot be null");
             }
 
-            if (tag.getState() == RESTBaseCollectionItemV1.ADD_STATE) {
+            if (RESTBaseCollectionItemV1.ADD_STATE.equals(tag.getState())) {
                 /* Tag was added and then removed, so we just delete the tag */
                 filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().getItems().remove(tag);
             } else {

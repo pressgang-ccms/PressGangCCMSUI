@@ -17,7 +17,7 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 /**
  * 
  * @author Matthew Casperson
- *
+ * 
  * @param <S> The type of the parent view
  * 
  * @param <T> The type of the entity being edited by the view
@@ -34,22 +34,23 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
  * @param <E> The collection type of D
  * @param <F> The collection item type of D
  */
-abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildrenViewInterface<T, U, V, W, A, B, C, D, E, F>, 
-    T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>,
-    W extends RESTBaseEntityV1<?, ?, ?>,
-    A extends RESTBaseEntityV1<A, B, C>, B extends RESTBaseCollectionV1<A, B, C>, C extends RESTBaseCollectionItemV1<A, B, C>,
-    D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
-        extends BaseChildrenComponent<S, T, U, V, A, B, C, D, E, F> implements BaseOrderedChildrenComponentInterface<S, T, U, V, W, A, B, C, D, E, F> {
+abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildrenViewInterface<T, U, V, W, A, B, C, D, E, F>, T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends RESTBaseEntityV1<?, ?, ?>, A extends RESTBaseEntityV1<A, B, C>, B extends RESTBaseCollectionV1<A, B, C>, C extends RESTBaseCollectionItemV1<A, B, C>, D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
+        extends BaseChildrenComponent<S, T, U, V, A, B, C, D, E, F> implements
+        BaseOrderedChildrenComponentInterface<S, T, U, V, W, A, B, C, D, E, F> {
 
     protected ProviderUpdateData<F> existingProviderData = new ProviderUpdateData<F>();
-    
-    public void bind(final int topicId, final String pageId, final String preferencesKey, final S display, final BaseTemplateViewInterface waitDisplay)
-    {
-        if (pageId == null) throw new NullPointerException("pageId cannot be null");
-        if (preferencesKey == null) throw new NullPointerException("preferencesKey cannot be null");
-        if (display == null) throw new NullPointerException("display cannot be null");
-        if (waitDisplay == null) throw new NullPointerException("waitDisplay cannot be null");
-        
+
+    public void bind(final int topicId, final String pageId, final String preferencesKey, final S display,
+            final BaseTemplateViewInterface waitDisplay) {
+        if (pageId == null)
+            throw new NullPointerException("pageId cannot be null");
+        if (preferencesKey == null)
+            throw new NullPointerException("preferencesKey cannot be null");
+        if (display == null)
+            throw new NullPointerException("display cannot be null");
+        if (waitDisplay == null)
+            throw new NullPointerException("waitDisplay cannot be null");
+
         super.bind(topicId, pageId, display, waitDisplay);
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
         refreshPossibleChildrenDataAndList();
@@ -73,8 +74,9 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
      * @param preferencesKey The key against which the previous size was saved
      */
     private void bindChildSplitResize(final String preferencesKey) {
-        if (preferencesKey == null) throw new NullPointerException("preferencesKey cannot be null");
-        
+        if (preferencesKey == null)
+            throw new NullPointerException("preferencesKey cannot be null");
+
         display.getSplit().addResizeHandler(new ResizeHandler() {
 
             @Override
@@ -91,8 +93,9 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
      * @param preferencesKey The key against which the previous size was saved
      */
     private void loadChildSplitResize(final String preferencesKey) {
-        if (preferencesKey == null) throw new NullPointerException("preferencesKey cannot be null");
-        
+        if (preferencesKey == null)
+            throw new NullPointerException("preferencesKey cannot be null");
+
         display.getSplit().setSplitPosition(display.getPossibleChildrenResultsPanel(),
                 Preferences.INSTANCE.getInt(preferencesKey, Constants.SPLIT_PANEL_SIZE), false);
     }
@@ -102,22 +105,22 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
      */
     protected void bindExistingChildrenRowClick() {
     }
-    
+
     /**
      * The sort order of child collections is determined by an integer field. This field has no restrictions, and may be set
-     * with duplicate, non-consecutive or null values. This function will take the current sort order (based on the Integer field and the name) and
-     * set the sort field to consecutive, predicable values.
+     * with duplicate, non-consecutive or null values. This function will take the current sort order (based on the Integer
+     * field and the name) and set the sort field to consecutive, predicable values.
+     * 
      * @return
      */
     @Override
-    public void setSortOrderOfChildren(final SetNewChildSortCallback<D, E, F> sortCallback)
-    {
-        if (sortCallback == null) throw new NullPointerException("sortCallback cannot be null");
-        
+    public void setSortOrderOfChildren(final SetNewChildSortCallback<D, E, F> sortCallback) {
+        if (sortCallback == null)
+            throw new NullPointerException("sortCallback cannot be null");
+
         final int size = getExistingProviderData().getItems().size();
-        
-        for (int i = Constants.CHILDREN_SORT_ORDER_START; i < size + Constants.CHILDREN_SORT_ORDER_START; ++i )
-        {
+
+        for (int i = Constants.CHILDREN_SORT_ORDER_START; i < size + Constants.CHILDREN_SORT_ORDER_START; ++i) {
             final F child = getExistingProviderData().getItems().get(i - Constants.CHILDREN_SORT_ORDER_START);
             sortCallback.setSort(child, i);
         }
@@ -131,12 +134,16 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
      * @return true if the sort order of any child was modified, false otherwise
      */
     @Override
-    public boolean moveTagsUpAndDown(final W parent, final F object, final boolean down, final SetNewChildSortCallback<D, E, F> sortCallback) {
+    public boolean moveTagsUpAndDown(final W parent, final F object, final boolean down,
+            final SetNewChildSortCallback<D, E, F> sortCallback) {
 
-        if (parent == null) throw new NullPointerException("parent cannot be null");
-        if (object == null) throw new NullPointerException("object cannot be null");
-        if (sortCallback == null) throw new NullPointerException("sortCallback cannot be null");
-        
+        if (parent == null)
+            throw new NullPointerException("parent cannot be null");
+        if (object == null)
+            throw new NullPointerException("object cannot be null");
+        if (sortCallback == null)
+            throw new NullPointerException("sortCallback cannot be null");
+
         final int size = getExistingProviderData().getItems().size();
 
         boolean modifiedSort = false;
@@ -166,8 +173,9 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
                     sortCallback.setSort(existingChild, j);
 
                     /* we need to mark the joiner entity as updated */
-                    if (existingChild.getState() == RESTBaseCollectionItemV1.UNCHANGED_STATE)
+                    if (RESTBaseCollectionItemV1.UNCHANGED_STATE.equals(existingChild.getState())) {
                         existingChild.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                    }
                 }
 
                 /* The next item is either the item before (if moving up) of the item after (if moving down) */
@@ -184,21 +192,20 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
                 break;
             }
         }
-        
-        if (modifiedSort)
-        {
+
+        if (modifiedSort) {
             refreshExistingChildList(parent);
             refreshPossibleChildList();
         }
-        
+
         return modifiedSort;
     }
 
     @Override
-    public void refreshExistingChildList(final W parent)
-    {
-        if (parent == null) throw new NullPointerException("parent cannot be null");
-        
+    public void refreshExistingChildList(final W parent) {
+        if (parent == null)
+            throw new NullPointerException("parent cannot be null");
+
         display.setExistingChildrenProvider(generateExistingProvider(parent));
     }
 }

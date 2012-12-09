@@ -34,30 +34,27 @@ import com.google.gwt.view.client.HasData;
 
 public class TagCategoriesComponent
         extends
-        BaseOrderedChildrenComponent<TagCategoriesPresenter.Display, 
-            RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, 
-            RESTCategoryV1,
-            RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, 
-            RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
+        BaseOrderedChildrenComponent<TagCategoriesPresenter.Display, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, RESTCategoryV1, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
         implements TagCategoriesPresenter.LogicComponent {
 
     /**
      * Used when moving children up and down
      */
-    private final SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> sortCallback = 
-            new SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
-                
-                @Override
-                public void setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
-                    child.getItem().explicitSetRelationshipSort(index);  
-                    /* Set any unchanged items to updated */
-                    if (child.getState() == RESTBaseCollectionItemV1.UNCHANGED_STATE)
-                        child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);                    
-                }
-            };
-    
+    private final SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> sortCallback = new SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
+
+        @Override
+        public void setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
+            child.getItem().explicitSetRelationshipSort(index);
+            /* Set any unchanged items to updated */
+            if (RESTBaseCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {
+                child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+            }
+        }
+    };
+
     @Override
-    public void bind(final int topicId, final String pageId, final TagCategoriesPresenter.Display display, final BaseTemplateViewInterface waitDisplay) {
+    public void bind(final int topicId, final String pageId, final TagCategoriesPresenter.Display display,
+            final BaseTemplateViewInterface waitDisplay) {
 
         super.bind(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display, waitDisplay);
 
@@ -187,23 +184,23 @@ public class TagCategoriesComponent
 
             @Override
             public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
-                moveTagsUpAndDown(getPossibleChildrenProviderData().getDisplayedItem()
-                        .getItem(), object, false, sortCallback);
+                moveTagsUpAndDown(getPossibleChildrenProviderData().getDisplayedItem().getItem(), object, false, sortCallback);
             }
 
         });
 
-        display.getExistingChildDownButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
+        display.getExistingChildDownButtonColumn().setFieldUpdater(
+                new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
-            /**
-             * Swap the sort value for the tag that was selected with the tag below it.
-             */
-            @Override
-            public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
-                moveTagsUpAndDown(getPossibleChildrenProviderData().getDisplayedItem()
-                        .getItem(), object, true, sortCallback);
-            }
-        });
+                    /**
+                     * Swap the sort value for the tag that was selected with the tag below it.
+                     */
+                    @Override
+                    public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
+                        moveTagsUpAndDown(getPossibleChildrenProviderData().getDisplayedItem().getItem(), object, true,
+                                sortCallback);
+                    }
+                });
     }
 
     /**

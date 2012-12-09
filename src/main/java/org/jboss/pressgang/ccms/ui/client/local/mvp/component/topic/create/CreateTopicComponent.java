@@ -116,7 +116,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             /* Need to deal with re-adding removed tags */
             for (final RESTTagCollectionItemV1 tag : newTopic.getTags().getItems()) {
                 if (tag.getItem().getId().equals(selectedTag.getId())) {
-                    if (tag.getState() == RESTBaseCollectionItemV1.REMOVE_STATE) {
+                    if (RESTBaseCollectionItemV1.REMOVE_STATE.equals(tag.getState())) {
                         tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
                         /* Redisplay the view */
@@ -158,7 +158,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
 
         @Override
         public void onClick(final ClickEvent event) {
-            if (tag.getState() == RESTBaseCollectionItemV1.ADD_STATE) {
+            if (RESTBaseCollectionItemV1.ADD_STATE.equals(tag.getState())) {
                 /* Tag was added and then removed, so we just delete the tag */
                 newTopic.getTags().getItems().remove(tag);
             } else {
@@ -171,8 +171,9 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
     }
 
     @Override
-    public void bind(final int topicId, final String pageId, final TopicPresenter.Display topicViewDisplay, final TopicPresenter.LogicComponent topicViewComponent,
-            final TopicXMLPresenter.Display topicXMLDisplay, final TopicXMLPresenter.LogicComponent topicXMLComponent,
+    public void bind(final int topicId, final String pageId, final TopicPresenter.Display topicViewDisplay,
+            final TopicPresenter.LogicComponent topicViewComponent, final TopicXMLPresenter.Display topicXMLDisplay,
+            final TopicXMLPresenter.LogicComponent topicXMLComponent,
             final TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay,
             final TopicXMLErrorsPresenter.LogicComponent topicXMLErrorsComponent,
             final TopicTagsPresenter.Display topicTagsDisplay, final TopicTagsPresenter.LogicComponent topicTagsComponent,
@@ -180,7 +181,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             final TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay, final CreateTopicPresenter.Display display,
             final BaseTemplateViewInterface waitDisplay) {
 
-         super.bind(topicId, pageId, display, waitDisplay);
+        super.bind(topicId, pageId, display, waitDisplay);
 
         this.topicViewDisplay = topicViewDisplay;
         this.topicViewComponent = topicViewComponent;
@@ -249,7 +250,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
         });
 
         CommonTopicComponent.addKeyboardShortcutEventHandler(this.topicXMLDisplay, this.display, new GetCurrentTopic() {
-            
+
             @Override
             public RESTTopicV1 getCurrentlyEditedTopic() {
                 return newTopic;
@@ -581,7 +582,7 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
                 topicXMLDisplay.getEditor().setShowInvisibles(topicXMLDisplay.getShowInvisibles().isDown());
             }
         });
-        
+
         CommonTopicComponent.addKeyboardShortcutEvents(topicXMLDisplay, display);
     }
 
@@ -685,14 +686,14 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             setXMLEditorButtonsToEditorState();
 
         } else {
-            
+
             refreshRenderedView(true);
-            
+
             if (selectedView == this.topicTagsDisplay) {
                 bindTagEditingButtons();
             }
         }
-        
+
         CommonTopicComponent.setHelpTopicForView(this, selectedView);
 
         lastView = selectedView;
@@ -811,7 +812,8 @@ public class CreateTopicComponent extends ComponentBase<CreateTopicPresenter.Dis
             lastXMLChange = System.currentTimeMillis();
         }
 
-        final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >= Constants.REFRESH_RATE_WTH_IMAGES;
+        final Boolean timeToDisplayImage = forceExternalImages
+                || System.currentTimeMillis() - lastXMLChange >= Constants.REFRESH_RATE_WTH_IMAGES;
 
         if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
             isDisplayingImage = timeToDisplayImage;

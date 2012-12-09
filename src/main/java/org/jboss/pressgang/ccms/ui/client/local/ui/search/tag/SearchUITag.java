@@ -53,6 +53,11 @@ public class SearchUITag extends SearchUIBase {
     public final void setState(final TriStateSelectionState state) {
         this.state = state;
     }
+    
+    @Override
+    public boolean equals(final Object other)
+    {
+        return super.equals(other);
+    }
 
- 
 }

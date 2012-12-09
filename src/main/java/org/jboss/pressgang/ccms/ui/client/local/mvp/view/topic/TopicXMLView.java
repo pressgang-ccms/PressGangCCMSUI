@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
@@ -215,8 +216,8 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
             this.options.clear();
 
             if (suggestions != null) {
-                for (final String suggestion : suggestions.keySet()) {
-                    this.options.addItem(suggestion, suggestions.get(suggestion));
+                for (final Entry<String, String> suggestion : suggestions.entrySet()) {
+                    this.options.addItem(suggestion.getKey(), suggestion.getValue());
                 }
             }
         }
