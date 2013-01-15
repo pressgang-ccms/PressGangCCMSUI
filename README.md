@@ -8,4 +8,12 @@ just the code to build and display the user interface.
 Components, found in the org.jboss.pressgang.ccms.ui.client.local.mvp.component package, contains the logic that is applied to the views.
 
 Presenters, found in the org.jboss.pressgang.ccms.ui.client.local.mvp.presenter package, are used to define the views and components, and combine them to provide the
-interface that the users sees and interacts with. 
+interface that the users sees and interacts with.
+
+Compile with
+
+mvn -P jboss7,oss-public,jboss-public clean package
+
+Run super dev mode with
+
+mvn -P oss-public,jboss-public gwt:run-codeserver
