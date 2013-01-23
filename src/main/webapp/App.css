@@ -79,6 +79,8 @@
 {
 	width: 100%;
 	height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .FilteredOptionsPanel, .ImageFilteredOptionsPanel, .TagFilteredOptionsPanel
@@ -590,6 +592,11 @@ html {
 .TopicSearchTopicViewButtonsPanel, .EntitySearchTagViewButtonsPanel, .EntitySearchTagsResultButtonsPanel
 {
 	margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.EntitySearchTopicViewDetailsPanel
+{
     margin-bottom: 8px;
 }
 
