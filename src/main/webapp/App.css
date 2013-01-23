@@ -141,8 +141,8 @@ html {
 	width: 100%;	
 	border-spacing: 0px;
 	height: 100%;
-	/*padding-bottom: 8px;*/
-	padding-top: 8px;
+	/*padding-bottom: 8px;
+	padding-top: 8px;    */
 }
 
 .TopActionPanel td, .RenderedSplitViewMenuTable td {
