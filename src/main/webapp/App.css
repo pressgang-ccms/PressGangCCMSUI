@@ -126,7 +126,10 @@ html {
 .TopActionParentPanel
 {
 	margin-left: 100px;
-	bottom: 16px !important;
+    overflow: hidden;
+    margin-top: 8px;
+    margin-bottom: 8px;
+	/*bottom: 16px !important;*/
 }
 
 .CreateTopicViewButtonsPanel
@@ -138,7 +141,7 @@ html {
 	width: 100%;	
 	border-spacing: 0px;
 	height: 100%;
-	padding-bottom: 8px;
+	/*padding-bottom: 8px;*/
 	padding-top: 8px;
 }
 
@@ -586,7 +589,8 @@ html {
 
 .TopicSearchTopicViewButtonsPanel, .EntitySearchTagViewButtonsPanel, .EntitySearchTagsResultButtonsPanel
 {
-	bottom: 16px !important;
+	margin-top: 8px;
+    margin-bottom: 8px;
 }
 
 .TopicSearchTopicViewButtonsPanel>div

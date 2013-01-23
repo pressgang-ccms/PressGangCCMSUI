@@ -612,6 +612,8 @@
 						<configuration>
 							<extraJvmArgs>-Xmx4096M -Xms1024M -Xss1024k -XX:MaxPermSize=256M -XX:PermSize=128M</extraJvmArgs>
                             <logLevel>INFO</logLevel>
+                            <optimizationLevel>9</optimizationLevel>
+                            <enableClosureCompiler>true</enableClosureCompiler>
 							<!--<localWorkers>2</localWorkers> -->
 						</configuration>
 					</plugin>
