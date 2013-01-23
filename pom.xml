@@ -610,10 +610,10 @@
 						<artifactId>gwt-maven-plugin</artifactId>
 						<version>${gwt.maven.version}</version>
 						<configuration>
-							<extraJvmArgs>-Xmx1024M -Xms1024M -Xss1024k -XX:MaxPermSize=256M -XX:PermSize=128M</extraJvmArgs>
+							<extraJvmArgs>-Xmx4096M -Xms1024M -Xss1024k -XX:MaxPermSize=256M -XX:PermSize=128M</extraJvmArgs>
+                            <logLevel>INFO</logLevel>
 							<!--<localWorkers>2</localWorkers> -->
 						</configuration>
-
 					</plugin>
 					<plugin>
 						<groupId>com.google.code.maven-replacer-plugin</groupId>

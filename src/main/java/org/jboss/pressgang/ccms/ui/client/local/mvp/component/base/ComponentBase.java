@@ -186,10 +186,18 @@ abstract public class ComponentBase<S extends BaseTemplateViewInterface> impleme
             
             @Override
             public void onKeyPress(final KeyPressEvent event) {
-                if (event.getCharCode() == KeyCodes.KEY_ENTER)
-                {
+                int charCode = event.getUnicodeCharCode();
+                if (charCode == 0) {
+                    // it's probably Firefox
+                    int keyCode = event.getNativeEvent().getKeyCode();
+                    // beware! keyCode=40 means "down arrow", while charCode=40 means '('
+                    // always check the keyCode against a list of "known to be buggy" codes!
+                    if (keyCode == KeyCodes.KEY_ENTER) {
+                        doQuickSearch(event.isControlKeyDown());
+                    }
+                } else if (charCode == KeyCodes.KEY_ENTER) {
                     doQuickSearch(event.isControlKeyDown());
-                }                
+                }
             }
         });
     }
