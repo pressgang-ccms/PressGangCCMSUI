@@ -10,7 +10,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm
      */
-    public static final String VERSION = "201301240832";
+    public static final String VERSION = "201301240848";
     
     /**
      * The sort order to apply to a newly added child
@@ -81,7 +81,7 @@ public final class Constants {
     /**
      * The height of the action bars.
      */
-    public static final int ACTION_BAR_HEIGHT = 88;
+    public static final int ACTION_BAR_HEIGHT = 80;
 
     /**
      * The width of the shortcut bar.
