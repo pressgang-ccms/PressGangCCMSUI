@@ -60,12 +60,15 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
     protected BaseFilteredResultsComponentInterface<R, T, U, V> filteredResultsComponent;
 
     /**
+     * @param topicId The topic ID used for this views help link
+     * @param pageId The id of the page, used when submitting feedback
+     * @param mainSplitSizePreferenceKey The storage key that holds the position of the split panel
      * @param firstDisplayedView The view to display first when an entity is first selected
      * @param entityPropertiesView The view that displays the entity fields
      * @param filteredResultsDisplay The view that displays the search results
      * @param filteredResultsComponent The component that backs the filtered results view
      * @param display The view that this component adds logic to
-     * @param waitDisplay The view that displays the wiat dialog
+     * @param waitDisplay The view that displays the wait dialog
      */
     public void bind(final int topicId, final String pageId, final String mainSplitSizePreferenceKey,
             final W firstDisplayedView, final X entityPropertiesView, final R filteredResultsDisplay,

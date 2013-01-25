@@ -39,7 +39,9 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
      */
     public void displayAsynchronousList(final List<T> items, final int listSize, final int startRow) {
         if (items == null)
+        {
             throw new IllegalArgumentException("items cannot be null");
+        }
 
         this.updateRowData(startRow, items);
         this.updateRowCount(listSize, true);
@@ -55,7 +57,9 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
      */
     public void displayFuzzyAsynchronousList(final List<T> items, final int listSize, final int startRow) {
         if (items == null)
+        {
             throw new IllegalArgumentException("items cannot be null");
+        }
 
         this.updateRowData(startRow, items);
         this.updateRowCount(listSize, false);

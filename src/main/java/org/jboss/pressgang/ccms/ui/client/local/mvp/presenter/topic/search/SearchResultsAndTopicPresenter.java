@@ -191,13 +191,7 @@ public class SearchResultsAndTopicPresenter
                 }
             };
 
-            /* Display the view */
-            searchResultsDisplay.setViewShown(true);
-            display.setViewShown(true);
-
             clearContainerAndAddTopLevelPanel(container, display);
-
-            display.displaySearchResultsView(searchResultsDisplay);
 
             /* Initialize the other presenters we have pulled in */
             searchResultsComponent.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, searchResultsDisplay, display);

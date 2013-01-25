@@ -63,12 +63,18 @@ abstract public class BaseFilteredResultsComponent<S extends BaseFilteredResults
     }
 
     /**
-     * DIsplay the current filter options
+     * Display the current filter options
      * 
      * @param queryString The string that contains the filter options
      */
     abstract protected void displayQueryElements(final String queryString);
-    
+
+    /**
+     * @param queryString The query string passed to the rest interface
+     * @param display The individual display that is waiting for the list to be returned
+     * @param waitDisplay The main view used to notify the user that an ongoing operation is in progress
+     * @return A provider to be used for the category display list
+     */
     abstract protected EnhancedAsyncDataProvider<V> generateListProvider(final String queryString,
             final S display, final BaseTemplateViewInterface waitDisplay);
 

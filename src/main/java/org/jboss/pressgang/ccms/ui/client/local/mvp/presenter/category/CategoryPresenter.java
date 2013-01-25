@@ -1,26 +1,33 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category;
 
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.user.client.ui.HasWidgets;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter.Display;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.category.CategoryViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCategoryV1BasicDetailsEditor;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
-import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.propertyview.BasePropertyViewComponentInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.category.CategoryViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCategoryV1BasicDetailsEditor;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
-import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.ui.HasWidgets;
-
+/**
+ * The presenter used to add logic to the category view.
+ */
 @Dependent
-public class CategoryPresenter implements TemplatePresenter {
-
-    public static final String HISTORY_TOKEN = "CategoryView";
+public class CategoryPresenter extends
+        ComponentBase<CategoryPresenter.Display>
+        implements TemplatePresenter {
 
     // Empty interface declaration, similar to UiBinder
     public interface CategoryPresenterDriver extends SimpleBeanEditorDriver<RESTCategoryV1, RESTCategoryV1BasicDetailsEditor> {
@@ -30,18 +37,34 @@ public class CategoryPresenter implements TemplatePresenter {
 
     }
 
-    public interface LogicComponent extends BasePropertyViewComponentInterface<Display> {
-        @Override
-        void getEntity(final Integer categoryId);
-    }
+    /**
+     * The history token
+     */
+    public static final String HISTORY_TOKEN = "CategoryView";
 
+    /**
+     * The id of the category that is being viewed
+     */
     private Integer categoryId;
 
+    /**
+     * The category view
+     */
     @Inject
     private Display display;
 
-    @Inject
-    private LogicComponent component;
+    @Override
+    public void go(final HasWidgets container) {
+        clearContainerAndAddTopLevelPanel(container, display);
+        bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, this.display, this.display);
+    }
+
+    public final void bind(final int topicId, final String pageId, final Display display, final BaseTemplateViewInterface waitDisplay)
+    {
+        super.bind(topicId, pageId, display, waitDisplay);
+        this.getEntity();
+    }
+
 
     @Override
     public void parseToken(final String searchToken) {
@@ -52,11 +75,21 @@ public class CategoryPresenter implements TemplatePresenter {
         }
     }
 
-    @Override
-    public void go(final HasWidgets container) {
-        clearContainerAndAddTopLevelPanel(container, display);
-        component.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display, display);
-        component.getEntity(categoryId);
-    }
+    /**
+     * Get the category from the database and use it to populate the editor in the view
+     */
+    public void getEntity() {
+        final RESTCalls.RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, Display>(display,
+                new BaseRestCallback.SuccessAction<RESTCategoryV1, Display>() {
+                    @Override
+                    public void doSuccessAction(final RESTCategoryV1 retValue, final Display display) {
+                        display.initialize(retValue, false);
+                    }
+                });
 
+        if (categoryId != null)
+        {
+            RESTCalls.getUnexpandedCategory(callback, categoryId);
+        }
+    }
 }
