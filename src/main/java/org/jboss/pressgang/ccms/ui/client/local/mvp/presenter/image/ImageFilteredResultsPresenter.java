@@ -1,25 +1,38 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image;
 
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
-
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.TextBox;
+import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponentInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter.Display;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.view.client.HasData;
+
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class ImageFilteredResultsPresenter implements TemplatePresenter {
-    public static final String HISTORY_TOKEN = "ImageFilteredResultsView";
+public class ImageFilteredResultsPresenter
+        extends
+        BaseFilteredResultsComponent<ImageFilteredResultsPresenter.Display, RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1>
+        implements TemplatePresenter {
 
     public interface Display extends
             BaseFilteredResultsViewInterface<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1> {
@@ -31,27 +44,124 @@ public class ImageFilteredResultsPresenter implements TemplatePresenter {
         TextBox getImageOriginalFileNameFilter();
     }
 
-    public interface LogicComponent extends
-            BaseFilteredResultsComponentInterface<Display, RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1> {
-
-    }
+    /**
+     * History token
+     */
+    public static final String HISTORY_TOKEN = "ImageFilteredResultsView";
 
     @Inject
     private Display display;
 
-    @Inject
-    private LogicComponent component;
-
     private String queryString;
 
-    @Override
-    public void parseToken(final String searchToken) {
-        queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
+    @Inject
+    private HandlerManager eventBus;
+
+    public Display getDisplay()
+    {
+        return display;
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public final void parseToken(final String searchToken) {
+        this.queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
+    }
+
+    @Override
+    public final void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        component.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display, display);
+        process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display);
+    }
+
+    public final void process(final int topicId, final String pageId, final String queryString, final BaseTemplateViewInterface waitDisplay) {
+        super.bind(topicId, pageId, queryString, display, waitDisplay);
+        display.setProvider(generateListProvider(queryString, display, waitDisplay));
+    }
+
+    @Override
+    public String getQuery() {
+        final StringBuilder retValue = new StringBuilder();
+        if (!display.getImageIdFilter().getText().isEmpty()) {
+            retValue.append(";imageIds=").append(display.getImageIdFilter().getText());
+        }
+        if (!display.getImageDescriptionFilter().getText().isEmpty()) {
+            retValue.append(";imageDesc=").append(display.getImageDescriptionFilter().getText());
+        }
+        if (!display.getImageOriginalFileNameFilter().getText().isEmpty()) {
+            retValue.append(";imageOrigName=").append(display.getImageOriginalFileNameFilter().getText());
+        }
+
+        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX
+                : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
+    }
+
+    /**
+     * @param waitDisplay The view used to notify the user that an ongoin operation is in progress
+     * @return A provider to be used for the image display list.
+     */
+    @Override
+    protected EnhancedAsyncDataProvider<RESTImageCollectionItemV1> generateListProvider(final String queryString,
+                                                                                        final Display display, final BaseTemplateViewInterface waitDisplay) {
+        final EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTImageCollectionItemV1>() {
+            @Override
+            protected void onRangeChanged(final HasData<RESTImageCollectionItemV1> item) {
+                providerData.setStartRow(item.getVisibleRange().getStart());
+                final int length = item.getVisibleRange().getLength();
+                final int end = providerData.getStartRow() + length;
+
+                final RESTCalls.RESTCallback<RESTImageCollectionV1> callback = new RESTCalls.RESTCallback<RESTImageCollectionV1>() {
+                    @Override
+                    public void begin() {
+                        display.addWaitOperation();
+                    }
+
+                    @Override
+                    public void generalException(final Exception e) {
+                        Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopics());
+                        display.removeWaitOperation();
+                    }
+
+                    @Override
+                    public void success(final RESTImageCollectionV1 retValue) {
+                        try {
+                            providerData.setItems(retValue.getItems());
+                            providerData.setSize(retValue.getSize());
+                            relinkSelectedItem();
+                            displayAsynchronousList(providerData.getItems(), providerData.getSize(), providerData.getStartRow());
+                        } finally {
+                            display.removeWaitOperation();
+                        }
+                    }
+
+                    @Override
+                    public void failed(final Message message, final Throwable throwable) {
+                        display.removeWaitOperation();
+                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+                    }
+                };
+
+                RESTCalls.getImagesFromQuery(callback, queryString, providerData.getStartRow(), end);
+            }
+        };
+        return provider;
+    }
+
+    @Override
+    protected void displayQueryElements(final String queryString) {
+        final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
+        for (final String queryStringElement : queryStringElements) {
+            final String[] queryElements = queryStringElement.split("=");
+
+            if (queryElements.length == 2) {
+                if (queryElements[0].equals("imageIds")) {
+                    this.display.getImageIdFilter().setText(queryElements[1]);
+                } else if (queryElements[0].equals("imageDesc")) {
+                    this.display.getImageDescriptionFilter().setText(queryElements[1]);
+                } else if (queryElements[0].equals("imageOrigName")) {
+                    this.display.getImageOriginalFileNameFilter().setText(queryElements[1]);
+                }
+            }
+        }
+
     }
 }

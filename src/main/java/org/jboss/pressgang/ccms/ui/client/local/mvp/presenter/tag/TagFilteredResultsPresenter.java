@@ -20,10 +20,12 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.HasData;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
+@Dependent
 public class TagFilteredResultsPresenter
         extends
         BaseFilteredResultsComponent<TagFilteredResultsPresenter.Display, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>
