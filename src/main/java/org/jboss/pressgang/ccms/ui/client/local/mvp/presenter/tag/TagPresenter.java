@@ -8,17 +8,21 @@ import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.propertyview.BasePropertyViewComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
-public class TagPresenter implements TemplatePresenter {
+public class TagPresenter extends ComponentBase<TagPresenter.Display> implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "TagView";
 
@@ -30,18 +34,25 @@ public class TagPresenter implements TemplatePresenter {
 
     }
 
-    public interface LogicComponent extends BasePropertyViewComponentInterface<Display> {
-        @Override
-        void getEntity(final Integer tagId);
-    }
-
     private Integer tagId;
 
     @Inject
     private Display display;
 
-    @Inject
-    private LogicComponent component;
+    public Display getDisplay() {
+        return display;
+    }
+
+    public void getEntity(final Integer tagId) {
+        final RESTCalls.RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, Display>(display,
+                new BaseRestCallback.SuccessAction<RESTTagV1, Display>() {
+                    @Override
+                    public void doSuccessAction(final RESTTagV1 retValue, final Display display) {
+                        display.initialize(retValue, false);
+                    }
+                });
+        RESTCalls.getUnexpandedTag(callback, tagId);
+    }
 
     @Override
     public void parseToken(final String searchToken) {
@@ -56,9 +67,15 @@ public class TagPresenter implements TemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        component.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display,  display);
-        
+        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+    }
+
+    public void process(final int topicId, final String pageId, final BaseTemplateViewInterface waitDisplay) {
+        super.bind(topicId, pageId, display, waitDisplay);
+
         if (tagId != null)
-            component.getEntity(tagId);
+        {
+            getEntity(tagId);
+        }
     }
 }

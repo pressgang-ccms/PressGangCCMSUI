@@ -90,23 +90,13 @@ public class CategoriesFilteredResultsAndCategoryPresenter
      */
     @Inject
     private Display display;
-    /**
-     * An Errai injected instance of a class that implements CategoryFilteredResultsPresenter.Display. This is the view that
-     * displays the list of categories.
-     */
-    @Inject
-    private CategoryFilteredResultsPresenter.Display filteredResultsDisplay;
+
     /**
      * The presenter used to display the list of categories
      */
     @Inject
     private CategoryFilteredResultsPresenter filteredResultsPresenter;
-    /**
-     * An Errai injected instance of a class that implements CategoryPresenter.Display. This is the view that displays the
-     * fields of the category (name, description etc)
-     */
-    @Inject
-    private CategoryPresenter.Display resultDisplay;
+
     /**
      * An Errai injected instance of a class that implements CategoryPresenter.LogicComponent
      */
@@ -131,7 +121,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
             @Override
             public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTCategoryV1> displayCallback) {
                 final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, BaseTemplateViewInterface>(
-                        waitDisplay, new BaseRestCallback.SuccessAction<RESTCategoryV1, BaseTemplateViewInterface>() {
+                        display, new BaseRestCallback.SuccessAction<RESTCategoryV1, BaseTemplateViewInterface>() {
                     @Override
                     public void doSuccessAction(final RESTCategoryV1 retValue, final BaseTemplateViewInterface display) {
                         displayCallback.displayNewEntity(retValue);
@@ -145,12 +135,12 @@ public class CategoriesFilteredResultsAndCategoryPresenter
 
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
-        categoryPresenter.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, resultDisplay, display);
-        categoryTagPresenter.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
-        filteredResultsPresenter.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString, filteredResultsDisplay, display);
+        categoryPresenter.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+        categoryTagPresenter.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+        filteredResultsPresenter.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString, display);
 
-        super.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultDisplay, resultDisplay,
-                filteredResultsDisplay, filteredResultsPresenter, display, display, getNewEntityCallback);
+        super.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, categoryPresenter.getDisplay(), categoryPresenter.getDisplay(),
+                filteredResultsPresenter.getDisplay(), filteredResultsPresenter, display, display, getNewEntityCallback);
 
         bindExistingChildrenAddAndRemoveButtons();
         bindExistingChildrenRowClick();
@@ -369,7 +359,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                     }
                 };
 
-        for (final CategoryViewInterface view : new CategoryViewInterface[]{entityPropertiesView, categoryTagPresenter.getDisplay()}) {
+        for (final CategoryViewInterface view : new CategoryViewInterface[]{categoryPresenter.getDisplay(), categoryTagPresenter.getDisplay()}) {
             view.getDetails().addClickHandler(categoryDetailsClickHandler);
             view.getChildren().addClickHandler(categoryTagsClickHandler);
             view.getSave().addClickHandler(saveClickHandler);
@@ -385,7 +375,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
         try {
             logger.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.bindFilteredResultsButtons()");
 
-            filteredResultsDisplay.getEntitySearch().addClickHandler(new ClickHandler() {
+            filteredResultsPresenter.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
                     if (isOKToProceed())
@@ -394,7 +384,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                 }
             });
 
-            filteredResultsDisplay.getCreate().addClickHandler(new ClickHandler() {
+            filteredResultsPresenter.getDisplay().getCreate().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
 
@@ -418,7 +408,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
 
                     initializeViews();
 
-                    switchView(lastDisplayedView == null ? entityPropertiesView : lastDisplayedView);
+                    switchView(lastDisplayedView == null ? categoryPresenter.getDisplay() : lastDisplayedView);
                 }
             });
         } finally {
@@ -430,7 +420,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     public final boolean hasUnsavedChanges() {
         /* sync the UI with the underlying tag */
         if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
-            entityPropertiesView.getDriver().flush();
+            categoryPresenter.getDisplay().getDriver().flush();
 
             return unsavedCategoryChanges() || unsavedTagChanges();
         }

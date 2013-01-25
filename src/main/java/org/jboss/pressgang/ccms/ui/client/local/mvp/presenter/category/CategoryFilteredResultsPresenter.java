@@ -56,6 +56,11 @@ public class CategoryFilteredResultsPresenter
      */
     private String queryString;
 
+    public Display getDisplay()
+    {
+        return display;
+    }
+
     /**
      * Default constructor. Does nothing.
      */
@@ -66,7 +71,7 @@ public class CategoryFilteredResultsPresenter
     @Override
     public final void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        this.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, this.queryString, this.display, this.display);
+        process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, this.queryString, this.display);
     }
 
     @Override
@@ -74,7 +79,7 @@ public class CategoryFilteredResultsPresenter
         this.queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
-    public final void bind(final int topicId, final String pageId, final String queryString, final Display display, final BaseTemplateViewInterface waitDisplay) {
+    public final void process(final int topicId, final String pageId, final String queryString, final BaseTemplateViewInterface waitDisplay) {
         try {
             logger.log(Level.INFO, "ENTER CategoryFilteredResultsPresenter.bind()");
             super.bind(topicId, pageId, display, waitDisplay);

@@ -53,13 +53,18 @@ public class CategoryPresenter extends
     @Inject
     private Display display;
 
+    public Display getDisplay()
+    {
+        return display;
+    }
+
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, this.display, this.display);
+        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, this.display);
     }
 
-    public final void bind(final int topicId, final String pageId, final Display display, final BaseTemplateViewInterface waitDisplay)
+    public final void process(final int topicId, final String pageId, final BaseTemplateViewInterface waitDisplay)
     {
         super.bind(topicId, pageId, display, waitDisplay);
         this.getEntity();

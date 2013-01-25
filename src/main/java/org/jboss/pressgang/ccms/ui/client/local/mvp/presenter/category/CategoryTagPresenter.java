@@ -82,10 +82,10 @@ public class CategoryTagPresenter
     @Override
     public final void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, this.getDisplay());
-        bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, this.getDisplay());
+        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, this.getDisplay());
     }
 
-    public final void bind(final int topicId, final String pageId, final BaseTemplateViewInterface waitDisplay)
+    public final void process(final int topicId, final String pageId, final BaseTemplateViewInterface waitDisplay)
     {
         super.bind(topicId, pageId, display, waitDisplay);
         display.initialize(null, false);
