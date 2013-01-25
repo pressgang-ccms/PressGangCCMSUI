@@ -113,11 +113,6 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     @Inject
     private CategoryPresenter categoryPresenter;
     /**
-     * The view that lists the category's tags
-     */
-    @Inject
-    private CategoryTagPresenter.Display tagDisplay;
-    /**
      * The presenter used to display the category's tags.
      */
     @Inject
@@ -151,7 +146,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
         categoryPresenter.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, resultDisplay, display);
-        categoryTagPresenter.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, tagDisplay, display);
+        categoryTagPresenter.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
         filteredResultsPresenter.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString, filteredResultsDisplay, display);
 
         super.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultDisplay, resultDisplay,
@@ -221,12 +216,18 @@ public class CategoriesFilteredResultsAndCategoryPresenter
 
     @Override
     protected final void loadAdditionalDisplayedItemData() {
+        try {
+            logger.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.loadAdditionalDisplayedItemData()");
 
-        /* Display the tags that are added to the category */
-        categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+            /* Display the tags that are added to the category */
+            categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
 
-        /* Get a new collection of tags */
-        categoryTagPresenter.refreshPossibleChildrenDataAndList();
+            /* Get a new collection of tags */
+            categoryTagPresenter.refreshPossibleChildrenDataAndList();
+        }
+        finally {
+            logger.log(Level.INFO, "EXIT CategoriesFilteredResultsAndCategoryPresenter.loadAdditionalDisplayedItemData()");
+        }
     }
 
     @Override
@@ -235,8 +236,8 @@ public class CategoriesFilteredResultsAndCategoryPresenter
             logger.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.initializeViews()");
 
             /* We need to initialize the view so the celltable buttons can display the correct labels */
-            if (viewIsInFilter(filter, tagDisplay))
-                tagDisplay.initialize(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+            if (viewIsInFilter(filter, categoryTagPresenter.getDisplay()))
+                categoryTagPresenter.getDisplay().initialize(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
 
             /* Initialize the properties view */
             if (viewIsInFilter(filter, entityPropertiesView))
@@ -248,7 +249,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     }
 
     private void bindExistingChildrenRowClick() {
-        tagDisplay.getExistingChildUpButtonColumn().setFieldUpdater(
+        categoryTagPresenter.getDisplay().getExistingChildUpButtonColumn().setFieldUpdater(
                 new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
                     @Override
@@ -259,7 +260,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
 
                 });
 
-        tagDisplay.getExistingChildDownButtonColumn().setFieldUpdater(
+        categoryTagPresenter.getDisplay().getExistingChildDownButtonColumn().setFieldUpdater(
                 new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
                     /**
@@ -294,7 +295,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                 ClickHandler() {
                     @Override
                     public void onClick(final ClickEvent event) {
-                        switchView(tagDisplay);
+                        switchView(categoryTagPresenter.getDisplay());
                     }
 
                 };
@@ -368,7 +369,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                     }
                 };
 
-        for (final CategoryViewInterface view : new CategoryViewInterface[]{entityPropertiesView, tagDisplay}) {
+        for (final CategoryViewInterface view : new CategoryViewInterface[]{entityPropertiesView, categoryTagPresenter.getDisplay()}) {
             view.getDetails().addClickHandler(categoryDetailsClickHandler);
             view.getChildren().addClickHandler(categoryTagsClickHandler);
             view.getSave().addClickHandler(saveClickHandler);

@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren;
 
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
@@ -11,37 +13,35 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.Ba
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * 
- * @author Matthew Casperson
- * 
  * @param <S> The type of the parent view
- * 
  * @param <T> The type of the entity being edited by the view
  * @param <U> The collection type of T
  * @param <V> The collection Item type of T
- * 
  * @param <W> The type of the parent of A and D
- * 
  * @param <A> The type of the potential children
  * @param <B> The collection type of A
  * @param <C> The collection item type of A
- * 
  * @param <D> The type of the existing children
  * @param <E> The collection type of D
  * @param <F> The collection item type of D
+ * @author Matthew Casperson
  */
 abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildrenViewInterface<T, U, V, W, A, B, C, D, E, F>, T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends RESTBaseEntityV1<?, ?, ?>, A extends RESTBaseEntityV1<A, B, C>, B extends RESTBaseCollectionV1<A, B, C>, C extends RESTBaseCollectionItemV1<A, B, C>, D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
         extends BaseChildrenComponent<S, T, U, V, A, B, C, D, E, F> implements
         BaseOrderedChildrenComponentInterface<S, T, U, V, W, A, B, C, D, E, F> {
 
+    /**
+     * A logger.
+     */
+    private static final Logger logger = Logger.getLogger(BaseOrderedChildrenComponent.class.getName());
     protected ProviderUpdateData<F> existingProviderData = new ProviderUpdateData<F>();
 
     public void bind(final int topicId, final String pageId, final String preferencesKey, final S display,
-            final BaseTemplateViewInterface waitDisplay) {
+                     final BaseTemplateViewInterface waitDisplay) {
         if (pageId == null)
             throw new NullPointerException("pageId cannot be null");
         if (preferencesKey == null)
@@ -70,7 +70,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
 
     /**
      * Save the size of the split ui component
-     * 
+     *
      * @param preferencesKey The key against which the previous size was saved
      */
     private void bindChildSplitResize(final String preferencesKey) {
@@ -89,7 +89,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
 
     /**
      * Restores the size of the child split screen
-     * 
+     *
      * @param preferencesKey The key against which the previous size was saved
      */
     private void loadChildSplitResize(final String preferencesKey) {
@@ -110,7 +110,7 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
      * The sort order of child collections is determined by an integer field. This field has no restrictions, and may be set
      * with duplicate, non-consecutive or null values. This function will take the current sort order (based on the Integer
      * field and the name) and set the sort field to consecutive, predicable values.
-     * 
+     *
      * @return
      */
     @Override
@@ -128,14 +128,14 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
 
     /**
      * Reorder a collection and move a child entity up or down
-     * 
+     *
      * @param object The child to be moved
-     * @param down true if the child is to be moved down, false if it is to be moved up
+     * @param down   true if the child is to be moved down, false if it is to be moved up
      * @return true if the sort order of any child was modified, false otherwise
      */
     @Override
     public boolean moveTagsUpAndDown(final W parent, final F object, final boolean down,
-            final SetNewChildSortCallback<D, E, F> sortCallback) {
+                                     final SetNewChildSortCallback<D, E, F> sortCallback) {
 
         if (parent == null)
             throw new NullPointerException("parent cannot be null");
@@ -203,9 +203,16 @@ abstract public class BaseOrderedChildrenComponent<S extends BaseOrderedChildren
 
     @Override
     public void refreshExistingChildList(final W parent) {
-        if (parent == null)
-            throw new NullPointerException("parent cannot be null");
+        try {
+            logger.log(Level.INFO, "ENTER BaseOrderedChildrenComponent.refreshExistingChildList()");
 
-        display.setExistingChildrenProvider(generateExistingProvider(parent));
+            if (parent == null) {
+                throw new NullPointerException("parent cannot be null");
+            }
+
+            display.setExistingChildrenProvider(generateExistingProvider(parent));
+        } finally {
+            logger.log(Level.INFO, "EXIT BaseOrderedChildrenComponent.refreshExistingChildList()");
+        }
     }
 }

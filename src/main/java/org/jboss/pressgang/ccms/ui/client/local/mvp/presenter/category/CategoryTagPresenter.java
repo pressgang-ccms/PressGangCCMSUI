@@ -30,6 +30,8 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
@@ -50,6 +52,10 @@ public class CategoryTagPresenter
      */
     public static final String HISTORY_TOKEN = "CategoryTagView";
     /**
+     * A logger.
+     */
+    private static final Logger logger = Logger.getLogger(CategoryTagPresenter.class.getName());
+    /**
      * The id of the category to display.
      */
     private Integer entityId;
@@ -60,6 +66,13 @@ public class CategoryTagPresenter
     private Display display;
 
     /**
+     * The category tag view.
+     */
+    public Display getDisplay() {
+        return display;
+    }
+
+    /**
      * Default constructor. Does nothing.
      */
     public CategoryTagPresenter() {
@@ -68,14 +81,14 @@ public class CategoryTagPresenter
 
     @Override
     public final void go(final HasWidgets container) {
-        clearContainerAndAddTopLevelPanel(container, this.display);
-        bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Preferences.CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH, this.display, this.display);
+        clearContainerAndAddTopLevelPanel(container, this.getDisplay());
+        bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, this.getDisplay());
     }
 
-    public final void bind(final int topicId, final String pageId, final Display display, final BaseTemplateViewInterface waitDisplay)
+    public final void bind(final int topicId, final String pageId, final BaseTemplateViewInterface waitDisplay)
     {
         super.bind(topicId, pageId, display, waitDisplay);
-        this.display.initialize(null, false);
+        display.initialize(null, false);
     }
 
     @Override
@@ -89,46 +102,55 @@ public class CategoryTagPresenter
 
     @Override
     public void refreshPossibleChildrenDataAndList() {
-        final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
-            @Override
-            public void begin() {
-                display.addWaitOperation();
-            }
+        try {
+            logger.log(Level.INFO, "ENTER CategoryTagPresenter.refreshPossibleChildrenDataAndList()");
 
-            @Override
-            public void generalException(final Exception e) {
-                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                display.removeWaitOperation();
-            }
-
-            @Override
-            public void success(final RESTTagCollectionV1 retValue) {
-                try {
-                    /* Zero results can be a null list */
-                    providerData.setStartRow(0);
-                    providerData.setItems(retValue.getItems());
-                    providerData.setSize(retValue.getItems().size());
-
-                    /* Refresh the list */
-                    display.getPossibleChildrenProvider().displayNewFixedList(providerData.getItems());
-
-                } finally {
-                    display.removeWaitOperation();
+            final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
+                @Override
+                public void begin() {
+                    getDisplay().addWaitOperation();
                 }
-            }
 
-            @Override
-            public void failed(final Message message, final Throwable throwable) {
-                display.removeWaitOperation();
-                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-            }
-        };
+                @Override
+                public void generalException(final Exception ex) {
+                    logger.log(Level.SEVERE, "RESTCallback.generalException()\n\tException: " + ex.toString());
+                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+                    getDisplay().removeWaitOperation();
+                }
 
-        /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
-        providerData.reset();
-        this.display.getPossibleChildrenProvider().resetProvider();
+                @Override
+                public void success(final RESTTagCollectionV1 retValue) {
+                    try {
+                        logger.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
+                        /* Zero results can be a null list */
+                        providerData.setStartRow(0);
+                        providerData.setItems(retValue.getItems());
+                        providerData.setSize(retValue.getItems().size());
 
-        RESTCalls.getTags(callback);
+                        /* Refresh the list */
+                        getDisplay().getPossibleChildrenProvider().displayNewFixedList(providerData.getItems());
+
+                    } finally {
+                        getDisplay().removeWaitOperation();
+                    }
+                }
+
+                @Override
+                public void failed(final Message message, final Throwable throwable) {
+                    getDisplay().removeWaitOperation();
+                    logger.log(Level.SEVERE, "RESTCallback.failed()\n\tMessage: " + message.toString() + "\n\t Throwable: " + throwable.toString());
+                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+                }
+            };
+
+            /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
+            providerData.reset();
+            this.getDisplay().getPossibleChildrenProvider().resetProvider();
+
+            RESTCalls.getTags(callback);
+        } finally {
+            logger.log(Level.INFO, "EXIT CategoryTagPresenter.refreshPossibleChildrenDataAndList()");
+        }
     }
 
     @Override
