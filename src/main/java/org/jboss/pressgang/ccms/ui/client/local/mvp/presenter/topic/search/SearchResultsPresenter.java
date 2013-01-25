@@ -43,6 +43,11 @@ public class SearchResultsPresenter
 
     private String queryString;
 
+    public Display getDisplay()
+    {
+        return display;
+    }
+
     @Override
     public void parseToken(final String searchToken) {
         queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);

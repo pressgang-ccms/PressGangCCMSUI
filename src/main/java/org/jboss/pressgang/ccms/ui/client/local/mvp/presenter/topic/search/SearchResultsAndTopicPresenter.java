@@ -126,8 +126,6 @@ public class SearchResultsAndTopicPresenter
     @Inject
     private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
     @Inject
-    private SearchResultsPresenter.Display searchResultsDisplay;
-    @Inject
     private SearchResultsPresenter searchResultsComponent;
     @Inject
     private TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay;
@@ -189,7 +187,7 @@ public class SearchResultsAndTopicPresenter
             topicTagsComponent.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
 
             super.bind(ServiceConstants.TOPIC_EDIT_VIEW_CONTENT_TOPIC, HISTORY_TOKEN, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLComponent.getDisplay(), topicViewComponent.getDisplay(),
-                    searchResultsDisplay, searchResultsComponent, display, display, getNewEntityCallback);
+                    searchResultsComponent.getDisplay(), searchResultsComponent, display, display, getNewEntityCallback);
 
             /* Display the split panes */
             initializeDisplay();
