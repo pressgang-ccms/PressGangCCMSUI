@@ -170,11 +170,11 @@ public class ProjectsFilteredResultsAndProjectPresenter
 
             if (queryElements.length == 2) {
                 if (queryElements[0].equals("entityIds")) {
-                    this.filteredResultsDisplay.getIdFilter().setText(queryElements[1]);
+                    this.filteredResultsComponent.getDisplay().getIdFilter().setText(queryElements[1]);
                 } else if (queryElements[0].equals("entityName")) {
-                    this.filteredResultsDisplay.getNameFilter().setText(queryElements[1]);
+                    this.filteredResultsComponent.getDisplay().getNameFilter().setText(queryElements[1]);
                 } else if (queryElements[0].equals("entityDesc")) {
-                    this.filteredResultsDisplay.getDescriptionFilter().setText(queryElements[1]);
+                    this.filteredResultsComponent.getDisplay().getDescriptionFilter().setText(queryElements[1]);
                 }
             }
         }
@@ -194,7 +194,7 @@ public class ProjectsFilteredResultsAndProjectPresenter
         final ClickHandler projectDetailsClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                switchView(entityPropertiesView);
+                switchView(resultComponent.getDisplay());
             }
 
         };
@@ -221,7 +221,7 @@ public class ProjectsFilteredResultsAndProjectPresenter
                 final boolean wasNewEntity = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
 
                 /* Sync the UI to the underlying object */
-                entityPropertiesView.getDriver().flush();
+                resultComponent.getDisplay().getDriver().flush();
 
                 final RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, Display>(display,
                         new BaseRestCallback.SuccessAction<RESTProjectV1, Display>() {
@@ -234,7 +234,7 @@ public class ProjectsFilteredResultsAndProjectPresenter
                                 /* This project is no longer a new project */
                                 filteredResultsComponent.getProviderData().getDisplayedItem()
                                         .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
-                                filteredResultsDisplay.getProvider().updateRowData(
+                                filteredResultsComponent.getDisplay().getProvider().updateRowData(
                                         filteredResultsComponent.getProviderData().getStartRow(),
                                         filteredResultsComponent.getProviderData().getItems());
 
@@ -287,7 +287,7 @@ public class ProjectsFilteredResultsAndProjectPresenter
      */
     @Override
     protected void bindFilteredResultsButtons() {
-        filteredResultsDisplay.getEntitySearch().addClickHandler(new ClickHandler() {
+        filteredResultsComponent.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed())
@@ -296,7 +296,7 @@ public class ProjectsFilteredResultsAndProjectPresenter
             }
         });
 
-        filteredResultsDisplay.getCreate().addClickHandler(new ClickHandler() {
+        filteredResultsComponent.getDisplay().getCreate().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
 
@@ -328,7 +328,7 @@ public class ProjectsFilteredResultsAndProjectPresenter
     public boolean hasUnsavedChanges() {
         /* sync the UI with the underlying tag */
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-            entityPropertiesView.getDriver().flush();
+            resultComponent.getDisplay().getDriver().flush();
 
             return (unsavedProjectChanges() || unsavedTagChanges());
         }

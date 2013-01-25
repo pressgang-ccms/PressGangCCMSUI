@@ -185,8 +185,8 @@ public class SearchResultsAndTopicPresenter
             clearContainerAndAddTopLevelPanel(container, display);
 
             /* Initialize the other presenters we have pulled in */
-            searchResultsComponent.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, searchResultsDisplay, display);
-            topicTagsComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, topicTagsComponent.getDisplay(), display);
+            searchResultsComponent.process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display);
+            topicTagsComponent.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
 
             super.bind(ServiceConstants.TOPIC_EDIT_VIEW_CONTENT_TOPIC, HISTORY_TOKEN, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLComponent.getDisplay(), topicViewComponent.getDisplay(),
                     searchResultsDisplay, searchResultsComponent, display, display, getNewEntityCallback);
@@ -215,7 +215,7 @@ public class SearchResultsAndTopicPresenter
 
                 @Override
                 public RESTTopicV1 getCurrentlyEditedTopic() {
-                    return filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
+                    return searchResultsComponent.getProviderData().getDisplayedItem().getItem();
                 }
             });
         } finally {
@@ -317,7 +317,7 @@ public class SearchResultsAndTopicPresenter
      * @return The currently displayed topic
      */
     private RESTTopicCollectionItemV1 getTopicOrRevisionTopic() {
-        final RESTTopicCollectionItemV1 sourceTopic = topicRevisionsComponent.getDisplay().getRevisionTopic() == null ? filteredResultsComponent
+        final RESTTopicCollectionItemV1 sourceTopic = topicRevisionsComponent.getDisplay().getRevisionTopic() == null ? searchResultsComponent
                 .getProviderData().getDisplayedItem() : topicRevisionsComponent.getDisplay().getRevisionTopic();
 
         if (sourceTopic == null)
@@ -370,10 +370,10 @@ public class SearchResultsAndTopicPresenter
         final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTopicCollectionItemV1> display) {
-                if (filteredResultsComponent.getProviderData().getDisplayedItem() != null
-                        && filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getRevisions() != null
-                        && filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getRevisions().getItems() != null) {
-                    displayNewFixedList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getRevisions()
+                if (searchResultsComponent.getProviderData().getDisplayedItem() != null
+                        && searchResultsComponent.getProviderData().getDisplayedItem().getItem().getRevisions() != null
+                        && searchResultsComponent.getProviderData().getDisplayedItem().getItem().getRevisions().getItems() != null) {
+                    displayNewFixedList(searchResultsComponent.getProviderData().getDisplayedItem().getItem().getRevisions()
                             .getItems());
                 } else {
                     resetProvider();
@@ -390,9 +390,9 @@ public class SearchResultsAndTopicPresenter
         final EnhancedAsyncDataProvider<RESTBugzillaBugCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTBugzillaBugCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTBugzillaBugCollectionItemV1> display) {
-                if (filteredResultsComponent.getProviderData().getDisplayedItem() != null
-                        && filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getBugzillaBugs_OTM() != null) {
-                    displayNewFixedList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                if (searchResultsComponent.getProviderData().getDisplayedItem() != null
+                        && searchResultsComponent.getProviderData().getDisplayedItem().getItem().getBugzillaBugs_OTM() != null) {
+                    displayNewFixedList(searchResultsComponent.getProviderData().getDisplayedItem().getItem()
                             .getBugzillaBugs_OTM().getItems());
                 } else {
                     resetProvider();
@@ -519,7 +519,7 @@ public class SearchResultsAndTopicPresenter
                 topicRevisionsComponent.getDisplay().setRevisionTopic(null);
 
                 if (!revisionTopic.getItem().getRevision()
-                        .equals(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getRevision())) {
+                        .equals(searchResultsComponent.getProviderData().getDisplayedItem().getItem().getRevision())) {
                     /* Reset the reference to the revision topic */
                     topicRevisionsComponent.getDisplay().setRevisionTopic(revisionTopic);
                 }
@@ -538,14 +538,14 @@ public class SearchResultsAndTopicPresenter
     public boolean hasUnsavedChanges() {
 
         /* No topic selected, so no changes need to be saved */
-        if (this.filteredResultsComponent.getProviderData().getDisplayedItem() == null)
+        if (this.searchResultsComponent.getProviderData().getDisplayedItem() == null)
             return false;
 
         /* Save any pending changes */
         flushChanges();
 
-        final RESTTopicV1 displayedTopic = this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
-        final RESTTopicV1 selectedTopic = this.filteredResultsComponent.getProviderData().getSelectedItem().getItem();
+        final RESTTopicV1 displayedTopic = this.searchResultsComponent.getProviderData().getDisplayedItem().getItem();
+        final RESTTopicV1 selectedTopic = this.searchResultsComponent.getProviderData().getSelectedItem().getItem();
 
         boolean unsavedChanges = false;
 
@@ -588,7 +588,7 @@ public class SearchResultsAndTopicPresenter
                     topicRevisionsComponent.getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
                 @Override
                 public void doSuccessAction(final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
-                    filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                    searchResultsComponent.getProviderData().getDisplayedItem().getItem()
                             .setRevisions(retValue.getRevisions());
 
                             /* refresh the list */
@@ -596,7 +596,7 @@ public class SearchResultsAndTopicPresenter
                 }
             });
 
-            RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, filteredResultsComponent.getProviderData()
+            RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, searchResultsComponent.getProviderData()
                     .getSelectedItem().getItem().getId());
 
             /* got on to load the tags and bugs */
@@ -686,9 +686,9 @@ public class SearchResultsAndTopicPresenter
 
             /* Update the page name */
             final StringBuilder title = new StringBuilder(displayedView.getPageName());
-            if (this.filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-                title.append(": [" + filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "] "
-                        + filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTitle());
+            if (this.searchResultsComponent.getProviderData().getDisplayedItem() != null) {
+                title.append(": [" + searchResultsComponent.getProviderData().getDisplayedItem().getItem().getId() + "] "
+                        + searchResultsComponent.getProviderData().getDisplayedItem().getItem().getTitle());
             }
             display.getPageTitle().setText(title.toString());
 
@@ -736,7 +736,7 @@ public class SearchResultsAndTopicPresenter
             @Override
             public void onClick(final ClickEvent event) {
 
-                if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+                if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
                     final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
                         @Override
                         public void begin() {
@@ -768,15 +768,15 @@ public class SearchResultsAndTopicPresenter
                                      * if the second last revision doesn't match the revision of the topic when editing was
                                      * started, then we have overwritten someone elses changes
                                      */
-                                    overwroteChanges = !(filteredResultsComponent.getProviderData().getSelectedItem().getItem()
+                                    overwroteChanges = !(searchResultsComponent.getProviderData().getSelectedItem().getItem()
                                             .getRevision().equals(overwriteRevision));
                                 }
 
                                 /* Update the displayed topic */
-                                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                                retValue.cloneInto(searchResultsComponent.getProviderData().getDisplayedItem().getItem(),
                                         true);
                                 /* Update the selected topic */
-                                retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
+                                retValue.cloneInto(searchResultsComponent.getProviderData().getSelectedItem().getItem(), true);
 
                                 lastXML = null;
 
@@ -817,7 +817,7 @@ public class SearchResultsAndTopicPresenter
                     /*
                      * Create a new instance of the topic, with all the properties set to explicitly update
                      */
-                    final RESTTopicV1 updateTopic = filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                    final RESTTopicV1 updateTopic = searchResultsComponent.getProviderData().getDisplayedItem().getItem()
                             .clone(true);
 
                     updateTopic.explicitSetBugzillaBugs_OTM(updateTopic.getBugzillaBugs_OTM());
@@ -855,8 +855,8 @@ public class SearchResultsAndTopicPresenter
                 /* Sync any changes back to the underlying object */
                 flushChanges();
 
-                if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-                    switchView(entityPropertiesView);
+                if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
+                    switchView(topicViewComponent.getDisplay());
                 }
             }
         };
@@ -867,7 +867,7 @@ public class SearchResultsAndTopicPresenter
                 /* Sync any changes back to the underlying object */
                 flushChanges();
 
-                if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+                if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
                     switchView(topicXMLComponent.getDisplay());
 
                 }
@@ -880,7 +880,7 @@ public class SearchResultsAndTopicPresenter
                 /* Sync any changes back to the underlying object */
                 flushChanges();
 
-                if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+                if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
                     switchView(topicRenderedPresenter.getDisplay());
                 }
             }
@@ -892,7 +892,7 @@ public class SearchResultsAndTopicPresenter
                 /* Sync any changes back to the underlying object */
                 flushChanges();
 
-                if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+                if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
                     switchView(topicXMLErrorsDisplay);
                 }
             }
@@ -904,7 +904,7 @@ public class SearchResultsAndTopicPresenter
                 /* Sync any changes back to the underlying object */
                 flushChanges();
 
-                if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+                if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
                     switchView(topicTagsComponent.getDisplay());
                 }
             }
@@ -916,7 +916,7 @@ public class SearchResultsAndTopicPresenter
                 /* Sync any changes back to the underlying object */
                 flushChanges();
 
-                if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+                if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
                     switchView(topicBugsPresenter.getDisplay());
                 }
             }
@@ -928,7 +928,7 @@ public class SearchResultsAndTopicPresenter
                 /* Sync any changes back to the underlying object */
                 flushChanges();
 
-                if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+                if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
                     switchView(topicRevisionsComponent.getDisplay());
                 }
             }
@@ -1007,9 +1007,9 @@ public class SearchResultsAndTopicPresenter
             @Override
             public void onClick(final ClickEvent event) {
 
-                if (filteredResultsComponent.getProviderData().getDisplayedItem() != null && isOKToProceed()) {
+                if (searchResultsComponent.getProviderData().getDisplayedItem() != null && isOKToProceed()) {
 
-                    final RESTTopicV1 topic = filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
+                    final RESTTopicV1 topic = searchResultsComponent.getProviderData().getDisplayedItem().getItem();
 
                     eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
                             + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "="
@@ -1021,7 +1021,7 @@ public class SearchResultsAndTopicPresenter
         };
 
         /* Hook up the click listeners */
-        for (final TopicViewInterface view : new TopicViewInterface[]{entityPropertiesView, topicXMLComponent.getDisplay(),
+        for (final TopicViewInterface view : new TopicViewInterface[]{topicViewComponent.getDisplay(), topicXMLComponent.getDisplay(),
                 topicRenderedPresenter.getDisplay(), topicXMLErrorsDisplay, topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(), topicRevisionsComponent.getDisplay()}) {
             view.getRenderedSplit().addClickHandler(splitMenuHandler);
             view.getFields().addClickHandler(topicViewClickHandler);
@@ -1074,7 +1074,7 @@ public class SearchResultsAndTopicPresenter
 
             logger.log(Level.INFO, "\tInitializing topic views");
 
-            for (final TopicViewInterface view : new TopicViewInterface[]{entityPropertiesView, topicXMLComponent.getDisplay(),
+            for (final TopicViewInterface view : new TopicViewInterface[]{topicViewComponent.getDisplay(), topicXMLComponent.getDisplay(),
                     topicRenderedPresenter.getDisplay(), topicXMLErrorsDisplay, topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(),
                     topicSplitPanelRenderedDisplay}) {
                 if (viewIsInFilter(filter, view)) {
@@ -1087,7 +1087,7 @@ public class SearchResultsAndTopicPresenter
 
             if (viewIsInFilter(filter, topicRevisionsComponent.getDisplay())) {
                 logger.log(Level.INFO, "\tInitializing topic revisions view");
-                topicRevisionsComponent.getDisplay().initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                topicRevisionsComponent.getDisplay().initialize(searchResultsComponent.getProviderData().getDisplayedItem().getItem(),
                         isReadOnlyMode(), NEW_TOPIC, display.getSplitType(), locales, false);
             }
 
@@ -1110,7 +1110,7 @@ public class SearchResultsAndTopicPresenter
 
     private void initializeSplitViewButtons() {
         /* fix the rendered view button */
-        for (final TopicViewInterface view : new TopicViewInterface[]{entityPropertiesView, topicXMLComponent.getDisplay(),
+        for (final TopicViewInterface view : new TopicViewInterface[]{topicViewComponent.getDisplay(), topicXMLComponent.getDisplay(),
                 topicRenderedPresenter.getDisplay(), topicXMLErrorsDisplay, topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(), topicRevisionsComponent.getDisplay()}) {
             view.buildSplitViewButtons(split);
         }
@@ -1142,7 +1142,7 @@ public class SearchResultsAndTopicPresenter
 
             /* Need to deal with re-adding removed tags */
             RESTTagCollectionItemV1 deletedTag = null;
-            for (final RESTTagCollectionItemV1 tag : filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+            for (final RESTTagCollectionItemV1 tag : searchResultsComponent.getProviderData().getDisplayedItem().getItem()
                     .getTags().getItems()) {
                 if (tag.getItem().getId().equals(selectedTag.getId())) {
                     if (RESTBaseCollectionItemV1.REMOVE_STATE.equals(tag.getState())) {
@@ -1174,7 +1174,7 @@ public class SearchResultsAndTopicPresenter
             });
 
             /* Find existing tags that belong to any of the mutually exclusive categories */
-            final Collection<RESTTagCollectionItemV1> conflictingTags = Collections2.filter(filteredResultsComponent
+            final Collection<RESTTagCollectionItemV1> conflictingTags = Collections2.filter(searchResultsComponent
                     .getProviderData().getDisplayedItem().getItem().getTags().getItems(),
                     new Predicate<RESTTagCollectionItemV1>() {
 
@@ -1236,7 +1236,7 @@ public class SearchResultsAndTopicPresenter
                 /* Get the selected tag, and clone it */
                 final RESTTagV1 selectedTagClone = selectedTag.clone(true);
                 /* Add the tag to the topic */
-                filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(selectedTagClone);
+                searchResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(selectedTagClone);
             } else {
                 deletedTag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
             }
@@ -1264,13 +1264,13 @@ public class SearchResultsAndTopicPresenter
 
         @Override
         public void onClick(final ClickEvent event) {
-            if (filteredResultsComponent.getProviderData().getDisplayedItem() == null) {
+            if (searchResultsComponent.getProviderData().getDisplayedItem() == null) {
                 throw new IllegalStateException("searchResultsComponent.getProviderData().getDisplayedItem() cannot be null");
             }
 
             if (RESTBaseCollectionItemV1.ADD_STATE.equals(tag.getState())) {
                 /* Tag was added and then removed, so we just delete the tag */
-                filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().getItems().remove(tag);
+                searchResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().getItems().remove(tag);
             } else {
                 /* Otherwise we set the tag as removed */
                 tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);

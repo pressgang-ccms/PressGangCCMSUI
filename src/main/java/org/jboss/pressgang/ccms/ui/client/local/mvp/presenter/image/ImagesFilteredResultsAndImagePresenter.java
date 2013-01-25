@@ -155,22 +155,22 @@ public class ImagesFilteredResultsAndImagePresenter
                          * Do a shallow copy here, because Chrome has issues with System.arraycopy - see
                          * http://code.google.com/p/chromium/issues/detail?id=56588
                          */
-                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+                retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
 
                 finishLoading();
             }
         }) {
         };
 
-        RESTCalls.getImage(callback, filteredResultsComponent.getProviderData().getSelectedItem().getItem().getId());
+        RESTCalls.getImage(callback, imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId());
     }
 
     private BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface> getDefaultImageRestCallback() {
         return new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
             @Override
             public void doSuccessAction(final RESTImageV1 retValue, final BaseTemplateViewInterface display) {
-                retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), false);
-                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+                retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem(), false);
+                retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
                 initializeViews();
                 updateDisplayAfterSave(false);
             }
@@ -189,8 +189,8 @@ public class ImagesFilteredResultsAndImagePresenter
         final List<String> newLocales = new ArrayList<String>(Arrays.asList(locales));
 
         /* Make it so you can't add a locale if it already exists */
-        if (filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null) {
-            for (final RESTLanguageImageCollectionItemV1 langImage : filteredResultsComponent.getProviderData()
+        if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null) {
+            for (final RESTLanguageImageCollectionItemV1 langImage : imageFilteredResultsComponent.getProviderData()
                     .getDisplayedItem().getItem().getLanguageImages_OTM().returnExistingAndAddedCollectionItems()) {
                 newLocales.remove(langImage.getItem().getLocale());
             }
@@ -220,11 +220,11 @@ public class ImagesFilteredResultsAndImagePresenter
      * Each Language Image has an upload button that needs to be bound to some behaviour.
      */
     private void bindImageUploadButtons() {
-        if (entityPropertiesView.getEditor() == null) {
+        if (imageComponent.getDisplay().getEditor() == null) {
             throw new IllegalStateException("display.getEditor() cannot be null");
         }
 
-        for (final RESTLanguageImageV1Editor editor : entityPropertiesView.getEditor().languageImages_OTMEditor().itemsEditor()
+        for (final RESTLanguageImageV1Editor editor : imageComponent.getDisplay().getEditor().languageImages_OTMEditor().itemsEditor()
                 .getEditors()) {
             editor.getUploadButton().addClickHandler(new ClickHandler() {
                 @Override
@@ -242,7 +242,7 @@ public class ImagesFilteredResultsAndImagePresenter
                         reader.addErrorHandler(new ErrorHandler() {
                             @Override
                             public void onError(final org.vectomatic.file.events.ErrorEvent event) {
-                                entityPropertiesView.removeWaitOperation();
+                                imageComponent.getDisplay().removeWaitOperation();
                             }
                         });
 
@@ -254,15 +254,15 @@ public class ImagesFilteredResultsAndImagePresenter
                                     final byte[] buffer = GWTUtilities.getByteArray(result, 1);
 
                                     /* Flush any changes */
-                                    entityPropertiesView.getDriver().flush();
+                                    imageComponent.getDisplay().getDriver().flush();
                                     
                                     /*
                                      * Create the image to be modified. This is so we don't send off unnecessary data.
                                      */
                                     final RESTImageV1 updateImage = new RESTImageV1();
-                                    updateImage.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                                    updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                                             .getId());
-                                    updateImage.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
+                                    updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
 
                                     /* Create the language image */
                                     final RESTLanguageImageV1 updatedLanguageImage = new RESTLanguageImageV1();
@@ -294,12 +294,12 @@ public class ImagesFilteredResultsAndImagePresenter
 
     @Override
     public boolean hasUnsavedChanges() {
-        if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+        if (imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null) {
 
-            entityPropertiesView.getDriver().flush();
+            imageComponent.getDisplay().getDriver().flush();
 
-            return !GWTUtilities.stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData()
-                    .getSelectedItem().getItem().getDescription(), filteredResultsComponent.getProviderData()
+            return !GWTUtilities.stringEqualsEquatingNullWithEmptyString(imageFilteredResultsComponent.getProviderData()
+                    .getSelectedItem().getItem().getDescription(), imageFilteredResultsComponent.getProviderData()
                     .getDisplayedItem().getItem().getDescription());
         }
         return false;
@@ -310,7 +310,7 @@ public class ImagesFilteredResultsAndImagePresenter
      * finishes, and when all the information has been gathered, the page will be displayed.
      */
     private void finishLoading() {
-        if (locales != null && filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+        if (locales != null && imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             initializeViews();
         }
     }
@@ -326,19 +326,19 @@ public class ImagesFilteredResultsAndImagePresenter
     protected void updateDisplayAfterSave(final boolean wasNewEntity) {
         /* refresh the list of tags from the existing list that was modified */
         if (!wasNewEntity) {
-            filteredResultsDisplay.getProvider().displayAsynchronousList(filteredResultsComponent.getProviderData().getItems(),
-                    filteredResultsComponent.getProviderData().getSize(),
-                    filteredResultsComponent.getProviderData().getStartRow());
+            imageFilteredResultsComponent.getDisplay().getProvider().displayAsynchronousList(imageFilteredResultsComponent.getProviderData().getItems(),
+                    imageFilteredResultsComponent.getProviderData().getSize(),
+                    imageFilteredResultsComponent.getProviderData().getStartRow());
         }
         /* If we just created a new entity, refresh the list of entities from the database */
         else {
-            filteredResultsComponent.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", filteredResultsComponent.getQuery(), filteredResultsDisplay, waitDisplay);
+            imageFilteredResultsComponent.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", imageFilteredResultsComponent.getQuery(), imageFilteredResultsComponent.getDisplay(), waitDisplay);
 
             /*
              * reInitialiseView will flush the ui, which will flush the null ID back to the displayed object. To prevent that we
              * need to call edit on the newly saved entity
              */
-            entityPropertiesView.getDriver().edit(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+            imageComponent.getDisplay().getDriver().edit(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
         }
 
@@ -347,7 +347,7 @@ public class ImagesFilteredResultsAndImagePresenter
 
     @Override
     protected void bindActionButtons() {
-        entityPropertiesView.getSave().addClickHandler(new ClickHandler() {
+        imageComponent.getDisplay().getSave().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 if (hasUnsavedChanges()) {
@@ -356,8 +356,8 @@ public class ImagesFilteredResultsAndImagePresenter
                      * Create the image to be modified. This is so we don't send off unnessessary data.
                      */
                     final RESTImageV1 updateImage = new RESTImageV1();
-                    updateImage.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                    updateImage.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                    updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
+                    updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                             .getDescription());
 
                     final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
@@ -372,33 +372,33 @@ public class ImagesFilteredResultsAndImagePresenter
             }
         });
 
-        entityPropertiesView.getAddLocale().addClickHandler(new ClickHandler() {
+        imageComponent.getDisplay().getAddLocale().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                entityPropertiesView.getAddLocaleDialog().getDialogBox().center();
-                entityPropertiesView.getAddLocaleDialog().getDialogBox().show();
+                imageComponent.getDisplay().getAddLocaleDialog().getDialogBox().center();
+                imageComponent.getDisplay().getAddLocaleDialog().getDialogBox().show();
             }
         });
 
-        entityPropertiesView.getRemoveLocale().addClickHandler(new ClickHandler() {
+        imageComponent.getDisplay().getRemoveLocale().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 if (Window.confirm(PressGangCCMSUI.INSTANCE.ConfirmDelete())) {
 
-                    final int selectedTab = entityPropertiesView.getEditor().languageImages_OTMEditor().getSelectedIndex();
+                    final int selectedTab = imageComponent.getDisplay().getEditor().languageImages_OTMEditor().getSelectedIndex();
                     if (selectedTab != -1) {
-                        final RESTLanguageImageCollectionItemV1 selectedImage = entityPropertiesView.getEditor()
+                        final RESTLanguageImageCollectionItemV1 selectedImage = imageComponent.getDisplay().getEditor()
                                 .languageImages_OTMEditor().itemsEditor().getList().get(selectedTab);
 
                         /* Adding or removing a locale will save changes to the description */
-                        entityPropertiesView.getDriver().flush();
+                        imageComponent.getDisplay().getDriver().flush();
 
                         /*
                          * Create the image to be modified. This is so we don't send off unnessessary data.
                          */
                         final RESTImageV1 updateImage = new RESTImageV1();
-                        updateImage.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                        updateImage.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem()
+                        updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
+                        updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem()
                                 .getItem().getDescription());
 
                         /* Create the language image */
@@ -419,17 +419,17 @@ public class ImagesFilteredResultsAndImagePresenter
             }
         });
 
-        entityPropertiesView.getAddLocaleDialog().getOk().addClickHandler(new ClickHandler() {
+        imageComponent.getDisplay().getAddLocaleDialog().getOk().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                entityPropertiesView.getAddLocaleDialog().getDialogBox().hide();
+                imageComponent.getDisplay().getAddLocaleDialog().getDialogBox().hide();
 
-                final String selectedLocale = entityPropertiesView.getAddLocaleDialog().getLocales()
-                        .getItemText(entityPropertiesView.getAddLocaleDialog().getLocales().getSelectedIndex());
+                final String selectedLocale = imageComponent.getDisplay().getAddLocaleDialog().getLocales()
+                        .getItemText(imageComponent.getDisplay().getAddLocaleDialog().getLocales().getSelectedIndex());
 
                 /* Don't add locales twice */
-                if (filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null) {
-                    for (final RESTLanguageImageCollectionItemV1 langImage : filteredResultsComponent.getProviderData()
+                if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null) {
+                    for (final RESTLanguageImageCollectionItemV1 langImage : imageFilteredResultsComponent.getProviderData()
                             .getDisplayedItem().getItem().getLanguageImages_OTM().returnExistingAndAddedCollectionItems()) {
                         if (langImage.getItem().getLocale().equals(selectedLocale)) {
                             return;
@@ -438,14 +438,14 @@ public class ImagesFilteredResultsAndImagePresenter
                 }
 
                 /* Adding or removing a locate will also save any changes to the description */
-                entityPropertiesView.getDriver().flush();
+                imageComponent.getDisplay().getDriver().flush();
 
                 /*
                  * Create the image to be modified. This is so we don't send off unnessessary data.
                  */
                 final RESTImageV1 updateImage = new RESTImageV1();
-                updateImage.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                updateImage.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
+                updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                         .getDescription());
 
                 /* Create the language image */
@@ -464,20 +464,20 @@ public class ImagesFilteredResultsAndImagePresenter
             }
         });
 
-        entityPropertiesView.getAddLocaleDialog().getCancel().addClickHandler(new ClickHandler() {
+        imageComponent.getDisplay().getAddLocaleDialog().getCancel().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                entityPropertiesView.getAddLocaleDialog().getDialogBox().hide();
+                imageComponent.getDisplay().getAddLocaleDialog().getDialogBox().hide();
             }
         });
 
-        entityPropertiesView.getViewImage().addClickHandler(new ClickHandler() {
+        imageComponent.getDisplay().getViewImage().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
 
-                final int selectedTab = entityPropertiesView.getEditor().languageImages_OTMEditor().getSelectedIndex();
+                final int selectedTab = imageComponent.getDisplay().getEditor().languageImages_OTMEditor().getSelectedIndex();
                 if (selectedTab != -1) {
-                    final RESTLanguageImageCollectionItemV1 selectedImage = entityPropertiesView.getEditor()
+                    final RESTLanguageImageCollectionItemV1 selectedImage = imageComponent.getDisplay().getEditor()
                             .languageImages_OTMEditor().itemsEditor().getList().get(selectedTab);
 
                     displayImageInPopup(GWTUtilities.getStringUTF8(selectedImage.getItem().getImageDataBase64()));
@@ -485,12 +485,12 @@ public class ImagesFilteredResultsAndImagePresenter
             };
         });
 
-        entityPropertiesView.getFindTopics().addClickHandler(new ClickHandler() {
+        imageComponent.getDisplay().getFindTopics().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(final ClickEvent event) {
 
-                final String docbookFileName = ComponentImageV1.getDocbookFileName(filteredResultsComponent.getProviderData()
+                final String docbookFileName = ComponentImageV1.getDocbookFileName(imageFilteredResultsComponent.getProviderData()
                         .getDisplayedItem().getItem());
 
                 if (docbookFileName != null && !docbookFileName.isEmpty() && isOKToProceed()) {
@@ -517,17 +517,17 @@ public class ImagesFilteredResultsAndImagePresenter
 
     @Override
     protected void bindFilteredResultsButtons() {
-        filteredResultsDisplay.getEntitySearch().addClickHandler(new ClickHandler() {
+        imageFilteredResultsComponent.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed()) {
-                    eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(filteredResultsComponent.getQuery(), event
+                    eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(imageFilteredResultsComponent.getQuery(), event
                             .getNativeEvent().getKeyCode() == KeyCodes.KEY_CTRL));
                 }
             }
         });
 
-        filteredResultsDisplay.getCreate().addClickHandler(new ClickHandler() {
+        imageFilteredResultsComponent.getDisplay().getCreate().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed()) {
@@ -557,18 +557,18 @@ public class ImagesFilteredResultsAndImagePresenter
 
                                                     final RESTImageCollectionItemV1 selectedImageCollectionItem = new RESTImageCollectionItemV1();
                                                     selectedImageCollectionItem.setItem(retValue.clone(false));
-                                                    filteredResultsComponent.getProviderData().setSelectedItem(
+                                                    imageFilteredResultsComponent.getProviderData().setSelectedItem(
                                                             selectedImageCollectionItem);
 
                                                     final RESTImageCollectionItemV1 displayedImageCollectionItem = new RESTImageCollectionItemV1();
                                                     displayedImageCollectionItem.setItem(retValue.clone(false));
-                                                    filteredResultsComponent.getProviderData().setDisplayedItem(
+                                                    imageFilteredResultsComponent.getProviderData().setDisplayedItem(
                                                             displayedImageCollectionItem);
 
                                                     initializeViews();
 
                                                     /* Display the entities property view */
-                                                    switchView(entityPropertiesView);
+                                                    switchView(imageComponent.getDisplay());
 
                                                     /* Reload the filtered results view */
                                                     updateDisplayAfterSave(true);
@@ -592,8 +592,8 @@ public class ImagesFilteredResultsAndImagePresenter
     @Override
     protected void initializeViews(final List<ImagePresenter.Display> filter) {
 
-        if (viewIsInFilter(filter, entityPropertiesView)) {
-            entityPropertiesView.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+        if (viewIsInFilter(filter, imageComponent.getDisplay())) {
+            imageComponent.getDisplay().initialize(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
                     getUnassignedLocales().toArray(new String[0]));
         }
 

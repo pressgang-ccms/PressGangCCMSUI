@@ -581,7 +581,7 @@ public class TagsFilteredResultsAndTagPresenter
     public boolean hasUnsavedChanges() {
         /* sync the UI with the underlying tag */
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-            entityPropertiesView.getDriver().flush();
+            resultComponent.getDisplay().getDriver().flush();
 
             return (unsavedTagChanged() || categoriesComponent.hasUnsavedChanges() || projectsComponent.hasUnsavedChanges());
         }
@@ -622,7 +622,7 @@ public class TagsFilteredResultsAndTagPresenter
      */
     @Override
     protected void bindFilteredResultsButtons() {
-        filteredResultsDisplay.getEntitySearch().addClickHandler(new ClickHandler() {
+        filteredResultsComponent.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed())
@@ -631,7 +631,7 @@ public class TagsFilteredResultsAndTagPresenter
             }
         });
 
-        filteredResultsDisplay.getCreate().addClickHandler(new ClickHandler() {
+        filteredResultsComponent.getDisplay().getCreate().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
 
@@ -653,7 +653,7 @@ public class TagsFilteredResultsAndTagPresenter
 
                 resetCategoryAndProjectsLists(true);
 
-                switchView(lastDisplayedView == null ? entityPropertiesView : lastDisplayedView);
+                switchView(lastDisplayedView == null ? resultComponent.getDisplay() : lastDisplayedView);
             }
         });
     }
@@ -667,7 +667,7 @@ public class TagsFilteredResultsAndTagPresenter
         super.switchView(displayedView);
 
         /* save any changes to the tag details */
-        if (lastDisplayedView == this.entityPropertiesView) {
+        if (lastDisplayedView == this.resultComponent.getDisplay()) {
             /*
              * If this tag was added to a category, the it was cloned with the old tag name. Here we reflect the current tag
              * name in the category tag lists.
@@ -754,7 +754,7 @@ public class TagsFilteredResultsAndTagPresenter
 
     @Override
     protected void bindActionButtons() {
-        for (final TagViewInterface tagDisplay : new TagViewInterface[] { entityPropertiesView, projectsComponent.getDisplay(),
+        for (final TagViewInterface tagDisplay : new TagViewInterface[] { resultComponent.getDisplay(), projectsComponent.getDisplay(),
                 categoriesComponent.getDisplay() }) {
             tagDisplay.getTagDetails().addClickHandler(tagDetailsClickHandler);
             tagDisplay.getTagProjects().addClickHandler(tagProjectsClickHandler);
@@ -771,7 +771,7 @@ public class TagsFilteredResultsAndTagPresenter
 
     @Override
     protected void initializeViews(final List<TagViewInterface> filter) {
-        for (final TagViewInterface view : new TagViewInterface[] { entityPropertiesView, projectsComponent.getDisplay(), categoriesComponent.getDisplay() }) {
+        for (final TagViewInterface view : new TagViewInterface[] { resultComponent.getDisplay(), projectsComponent.getDisplay(), categoriesComponent.getDisplay() }) {
             if (viewIsInFilter(filter, view)) {
                 view.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
             }

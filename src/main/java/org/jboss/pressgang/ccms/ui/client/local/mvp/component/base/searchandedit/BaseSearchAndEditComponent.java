@@ -51,13 +51,13 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
     /** The last displayed view */
     protected W lastDisplayedView;
     /** The default view to display when an entity is selected for the first time */
-    protected W firstDisplayedView;
+    private W firstDisplayedView;
     /** The view that displays the entity properties (namely the id) */
-    protected X entityPropertiesView;
+    private X entityPropertiesView;
     /** The view that displays the list of results */
-    protected R filteredResultsDisplay;
+    private R filteredResultsDisplay;
     /** The component that adds logic to the filtered results view */
-    protected BaseFilteredResultsComponentInterface<R, T, U, V> filteredResultsComponent;
+    private BaseFilteredResultsComponentInterface<R, T, U, V> filteredResultsComponent;
 
     /**
      * @param topicId The topic ID used for this views help link

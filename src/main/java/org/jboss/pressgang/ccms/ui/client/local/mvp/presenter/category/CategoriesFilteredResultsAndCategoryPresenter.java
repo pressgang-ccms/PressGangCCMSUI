@@ -230,8 +230,8 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                 categoryTagPresenter.getDisplay().initialize(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
 
             /* Initialize the properties view */
-            if (viewIsInFilter(filter, entityPropertiesView))
-                entityPropertiesView
+            if (viewIsInFilter(filter, categoryPresenter.getDisplay()))
+                categoryPresenter.getDisplay()
                         .initialize(this.filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
         } finally {
             logger.log(Level.INFO, "EXIT CategoriesFilteredResultsAndCategoryPresenter.initializeViews()");
@@ -272,7 +272,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
         final ClickHandler categoryDetailsClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                switchView(entityPropertiesView);
+                switchView(categoryPresenter.getDisplay());
             }
 
         };
@@ -303,7 +303,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                         final boolean wasNewEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem();
 
                 /* Sync the UI to the underlying object */
-                        entityPropertiesView.getDriver().flush();
+                        categoryPresenter.getDisplay().getDriver().flush();
 
                         final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, Display>(display,
                                 new BaseRestCallback.SuccessAction<RESTCategoryV1, Display>() {
