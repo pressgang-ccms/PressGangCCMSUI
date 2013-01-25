@@ -23,6 +23,8 @@ public class TopicViewComponent<S extends TopicViewInterface> extends ComponentB
         };
 
         if (topicId != null)
+        {
             RESTCalls.getTopic(callback, topicId);
+        }
     }
 }

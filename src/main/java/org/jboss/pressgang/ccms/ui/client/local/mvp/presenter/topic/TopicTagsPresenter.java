@@ -1,37 +1,34 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.ValueListBox;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.propertyview.BasePropertyViewComponentInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.TopicViewComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.ValueListBox;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 
-@Dependent
-public class TopicTagsPresenter implements TemplatePresenter {
-    public static final String HISTORY_TOKEN = "TopicTagsView";
+import javax.inject.Inject;
 
-    private Integer topicId;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
-    @Inject
-    private Display display;
-
-    @Inject
-    private LogicComponent component;
+public class TopicTagsPresenter extends TopicViewComponent<TopicTagsPresenter.Display> implements
+        TemplatePresenter {
 
     public interface Display extends TopicViewInterface {
         void initializeNewTags(final SearchUIProjects tags);
@@ -51,9 +48,25 @@ public class TopicTagsPresenter implements TemplatePresenter {
         PushButton getAdd();
     }
 
-    public interface LogicComponent extends BasePropertyViewComponentInterface<Display> {
-        SearchUIProjects getSearchUIProjects();
-        void bindNewTagListBoxes(final ClickHandler clickHandler);
+    public static final String HISTORY_TOKEN = "TopicTagsView";
+
+    private Integer topicId;
+
+    @Inject
+    private Display display;
+
+    public Display getDisplay()
+    {
+        return display;
+    }
+
+    /**
+     * A copy of all the tags in the system, broken down into project->category->tag. Used when adding new tags to a topic.
+     */
+    private final SearchUIProjects searchUIProjects = new SearchUIProjects();
+
+    public SearchUIProjects getSearchUIProjects() {
+        return searchUIProjects;
     }
 
     @Override
@@ -68,8 +81,51 @@ public class TopicTagsPresenter implements TemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        component.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display, display);
+        process(topicId, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+    }
+
+    public void process(final Integer topicId, final int helpTopicId, final String pageId, final BaseTemplateViewInterface waitDisplay) {
+        super.bind(helpTopicId, pageId, display, waitDisplay);
         if (topicId != null)
-            component.getEntity(topicId);
+        {
+            getEntity(topicId);
+        }
+        getTags();
+    }
+
+    /**
+     * Gets the tags, so they can be displayed and added to topics
+     */
+    private void getTags() {
+        final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, TopicTagsPresenter.Display>(
+                display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, TopicTagsPresenter.Display>() {
+            @Override
+            public void doSuccessAction(final RESTTagCollectionV1 retValue, final TopicTagsPresenter.Display display) {
+                searchUIProjects.initialize(retValue);
+                display.initializeNewTags(searchUIProjects);
+            }
+        });
+        RESTCalls.getTags(callback);
+    }
+
+    /**
+     * Add behaviour to the tag view screen elements
+     */
+    public void bindNewTagListBoxes(final ClickHandler clickHandler) {
+        display.getProjectsList().addValueChangeHandler(new ValueChangeHandler<SearchUIProject>() {
+            @Override
+            public void onValueChange(final ValueChangeEvent<SearchUIProject> event) {
+                display.updateNewTagCategoriesDisplay();
+            }
+        });
+
+        display.getCategoriesList().addValueChangeHandler(new ValueChangeHandler<SearchUICategory>() {
+            @Override
+            public void onValueChange(final ValueChangeEvent<SearchUICategory> event) {
+                display.updateNewTagTagDisplay();
+            }
+        });
+
+        display.getAdd().addClickHandler(clickHandler);
     }
 }

@@ -1,51 +1,36 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
-
-import java.util.List;
-import java.util.Map;
-
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
+import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.user.client.ui.*;
+import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.propertyview.BasePropertyViewComponentInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.TopicViewComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
 
-import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.ToggleButton;
+import javax.inject.Inject;
+import java.util.List;
+import java.util.Map;
 
-import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
-@Dependent
-public class TopicXMLPresenter implements TemplatePresenter {
-    public static final String HISTORY_TOKEN = "TopicXMLView";
-    
-    private Integer topicId;
-
-    @Inject
-    private Display display;
-
-    @Inject
-    private LogicComponent component;
+public class TopicXMLPresenter extends TopicViewComponent<TopicXMLPresenter.Display> implements
+        TemplatePresenter {
 
     // Empty interface declaration, similar to UiBinder
     public interface TopicXMLPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1XMLEditor> {
     }
-    
-    
 
     public interface Display extends TopicViewInterface {
-        
+
         public interface PlainTextXMLDialog
         {
             PushButton getOK();
@@ -54,7 +39,7 @@ public class TopicXMLPresenter implements TemplatePresenter {
             String getText();
             DialogBox getDialogBox();
         }
-        
+
         /**
          * The interface that defines the tag selection dialog box
          * @author Matthew Casperson
@@ -68,7 +53,7 @@ public class TopicXMLPresenter implements TemplatePresenter {
             DialogBox getDialogBox();
             void setSuggestions(final List<String> suggestions);
         }
-        
+
         public interface XmlTemplatesDialog
         {
             PushButton getOK();
@@ -77,7 +62,7 @@ public class TopicXMLPresenter implements TemplatePresenter {
             DialogBox getDialogBox();
             void setSuggestions(final Map<String, String> suggestions);
         }
-        
+
         public interface CSPTopicDetailsDialog
         {
             PushButton getOK();
@@ -85,22 +70,29 @@ public class TopicXMLPresenter implements TemplatePresenter {
             TextBox getIds();
             DialogBox getDialogBox();
         }
-        
+
         XmlTagsDialog getXmlTagsDialog();
         CSPTopicDetailsDialog getCSPTopicDetailsDialog();
         XmlTemplatesDialog getXmlTemplatesDialog();
         PlainTextXMLDialog getPlainTextXMLDialog();
-        
+
         ToggleButton getLineWrap();
 
         ToggleButton getShowInvisibles();
 
         AceEditor getEditor();
     }
-    
-    public interface LogicComponent extends BasePropertyViewComponentInterface<Display>
+
+    public static final String HISTORY_TOKEN = "TopicXMLView";
+
+    private Integer topicId;
+
+    @Inject
+    private Display display;
+
+    public Display getDisplay()
     {
-        
+        return display;
     }
 
     @Override
@@ -116,7 +108,36 @@ public class TopicXMLPresenter implements TemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        component.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display,  display);
-        component.getEntity(topicId);
+        process(topicId, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
     }
+
+    public void process(final Integer topicId, final int helpTopicId, final String pageId, final BaseTemplateViewInterface waitDisplay) {
+        super.bind(helpTopicId, pageId, display, waitDisplay);
+        if (topicId != null) {
+            getEntity(topicId);
+        }
+        bindAceEditorButtons();
+    }
+
+    /**
+     * Bind the button clicks for the ACE editor buttons
+     */
+    private void bindAceEditorButtons() {
+        display.getLineWrap().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                display.getEditor().setUseWrapMode(!display.getEditor().getUserWrapMode());
+                display.getLineWrap().setDown(display.getEditor().getUserWrapMode());
+            }
+        });
+
+        display.getShowInvisibles().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                display.getEditor().setShowInvisibles(!display.getEditor().getShowInvisibles());
+                display.getShowInvisibles().setDown(display.getEditor().getShowInvisibles());
+            }
+        });
+    }
+
 }

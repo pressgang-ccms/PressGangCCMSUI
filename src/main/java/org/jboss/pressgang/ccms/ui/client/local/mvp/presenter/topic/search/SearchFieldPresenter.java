@@ -5,7 +5,9 @@ import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchFieldEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
@@ -16,7 +18,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 
 @Dependent
-public class SearchFieldPresenter implements TemplatePresenter {
+public class SearchFieldPresenter extends ComponentBase<SearchFieldPresenter.Display> implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "SearchFieldView";
 
@@ -29,20 +31,23 @@ public class SearchFieldPresenter implements TemplatePresenter {
         SearchUIFields getSearchUIFields();
     }
 
-    public interface LogicComponent extends Component<Display> {
-
-    }
-
     @Inject
     private Display display;
 
-    @Inject
-    private LogicComponent component;
+    public Display getDisplay()
+    {
+        return display;
+    }
 
     @Override
     public void go(final HasWidgets container) {
         GWTUtilities.clearContainerAndAddTopLevelPanel(container, display);
-        component.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display, display);
+        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+    }
+
+    public void process(final int helpTopicId, final String pageId, final BaseTemplateViewInterface waitDisplay)
+    {
+        bind(helpTopicId, pageId, display, waitDisplay);
     }
 
     @Override

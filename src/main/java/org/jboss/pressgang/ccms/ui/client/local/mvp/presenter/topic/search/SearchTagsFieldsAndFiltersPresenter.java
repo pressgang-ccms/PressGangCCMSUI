@@ -34,13 +34,9 @@ public class SearchTagsFieldsAndFiltersPresenter extends ComponentBase<BaseTempl
     @Inject
     private Display display;
     @Inject
-    private SearchPresenter.Display tagsDisplay;
+    private SearchPresenter tagsComponent;
     @Inject
-    private SearchPresenter.LogicComponent tagsComponent;
-    @Inject
-    private SearchFieldPresenter.Display fieldsDisplay;
-    @Inject
-    private SearchFieldPresenter.LogicComponent fieldsComponent;
+    private SearchFieldPresenter fieldsComponent;
 
     @Inject
     private HandlerManager eventBus;
@@ -54,8 +50,8 @@ public class SearchTagsFieldsAndFiltersPresenter extends ComponentBase<BaseTempl
 
         super.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, display, waitDisplay);
 
-        tagsComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, tagsDisplay, display);
-        fieldsComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, fieldsDisplay, display);
+        tagsComponent.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+        fieldsComponent.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
 
         bindSearchButtons();
 
@@ -86,41 +82,41 @@ public class SearchTagsFieldsAndFiltersPresenter extends ComponentBase<BaseTempl
         final ClickHandler searchHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                fieldsDisplay.getDriver().flush();
-                final String query = tagsDisplay.getSearchUIProjects().getSearchQuery(true)
-                        + fieldsDisplay.getSearchUIFields().getSearchQuery(false);
+                fieldsComponent.getDisplay().getDriver().flush();
+                final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
+                        + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false);
                 eventBus.fireEvent(new SearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
             }
         };
 
-        fieldsDisplay.getTagsSearch().addClickHandler(tagsHandler);
-        tagsDisplay.getFields().addClickHandler(fieldsHandler);
+        fieldsComponent.getDisplay().getTagsSearch().addClickHandler(tagsHandler);
+        tagsComponent.getDisplay().getFields().addClickHandler(fieldsHandler);
 
-        tagsDisplay.getSearch().addClickHandler(searchHandler);
-        fieldsDisplay.getSearch().addClickHandler(searchHandler);
+        tagsComponent.getDisplay().getSearch().addClickHandler(searchHandler);
+        fieldsComponent.getDisplay().getSearch().addClickHandler(searchHandler);
     }
 
     private void displayTags()
     {
         display.getTopActionParentPanel().clear();
-        display.getTopActionParentPanel().setWidget(tagsDisplay.getTopActionPanel());
+        display.getTopActionParentPanel().setWidget(tagsComponent.getDisplay().getTopActionPanel());
 
         display.getPanel().clear();
-        display.getPanel().setWidget(tagsDisplay.getPanel());
+        display.getPanel().setWidget(tagsComponent.getDisplay().getPanel());
 
-        fieldsDisplay.setViewShown(false);
-        tagsDisplay.setViewShown(true);
+        fieldsComponent.getDisplay().setViewShown(false);
+        tagsComponent.getDisplay().setViewShown(true);
     }
 
     private void displayFields()
     {
         display.getTopActionParentPanel().clear();
-        display.getTopActionParentPanel().setWidget(fieldsDisplay.getTopActionPanel());
+        display.getTopActionParentPanel().setWidget(fieldsComponent.getDisplay().getTopActionPanel());
 
         display.getPanel().clear();
-        display.getPanel().setWidget(fieldsDisplay.getPanel());
+        display.getPanel().setWidget(fieldsComponent.getDisplay().getPanel());
 
-        fieldsDisplay.setViewShown(true);
-        tagsDisplay.setViewShown(false);
+        fieldsComponent.getDisplay().setViewShown(true);
+        tagsComponent.getDisplay().setViewShown(false);
     }
 }

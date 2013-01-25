@@ -1,43 +1,45 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
 
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+import java.util.ArrayList;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
+import com.google.gwt.user.client.ui.HasWidgets;
+import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponentInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsPresenter.Display;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
-import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.view.client.HasData;
 
-@Dependent
-public class SearchResultsPresenter implements TemplatePresenter {
+import javax.inject.Inject;
 
-    public static final String HISTORY_TOKEN = "SearchResultsView";
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
+
+public class SearchResultsPresenter
+        extends
+        BaseFilteredResultsComponent<SearchResultsPresenter.Display, RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1>
+        implements TemplatePresenter {
 
     public interface Display extends
             BaseFilteredResultsViewInterface<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
 
     }
 
-    public interface LogicComponent extends BaseFilteredResultsComponentInterface<Display, RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
-        @Override
-        void bind(final int topicId, final String pageId, final String queryString,
-                final SearchResultsPresenter.Display display, final BaseTemplateViewInterface waitDisplay);
-    }
+    public static final String HISTORY_TOKEN = "SearchResultsView";
 
     @Inject
     private Display display;
-
-    @Inject
-    private LogicComponent component;
 
     private String queryString;
 
@@ -49,6 +51,78 @@ public class SearchResultsPresenter implements TemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        component.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display, display);
+        process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display);
     }
+
+    public void process(final int topicId, final String pageId, final String queryString, final BaseTemplateViewInterface waitDisplay) {
+        super.bind(topicId, pageId, queryString, display, waitDisplay);
+        display.setProvider(generateListProvider(queryString, display, waitDisplay));
+    }
+
+    @Override
+    public String getQuery() {
+        // TODO Auto-generated method stub
+        return "";
+    }
+
+    @Override
+    protected void displayQueryElements(final String queryString) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    protected EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateListProvider(final String queryString,
+                                                                                        final Display display, final BaseTemplateViewInterface waitDisplay) {
+        final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
+            @Override
+            protected void onRangeChanged(final HasData<RESTTopicCollectionItemV1> list) {
+
+                final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
+                    @Override
+                    public void begin() {
+                        resetProvider();
+                        display.addWaitOperation();
+                    }
+
+                    @Override
+                    public void generalException(final Exception e) {
+                        Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopics());
+                        display.removeWaitOperation();
+                    }
+
+                    @Override
+                    public void success(final RESTTopicCollectionV1 retValue) {
+                        try {
+                            getProviderData().setItems(retValue.getItems());
+                            getProviderData().setSize(retValue.getSize());
+                            relinkSelectedItem();
+                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(),
+                                    getProviderData().getStartRow());
+                        } finally {
+                            display.removeWaitOperation();
+                        }
+                    }
+
+                    @Override
+                    public void failed(final Message message, final Throwable throwable) {
+                        display.removeWaitOperation();
+                        getProviderData().setItems(new ArrayList<RESTTopicCollectionItemV1>());
+                        getProviderData().setSize(0);
+                        displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(),
+                                getProviderData().getStartRow());
+                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+                    }
+                };
+
+                getProviderData().setStartRow(list.getVisibleRange().getStart());
+                final int length = list.getVisibleRange().getLength();
+                final int end = getProviderData().getStartRow() + length;
+
+                RESTCalls.getTopicsFromQuery(callback, queryString, getProviderData().getStartRow(), end);
+            }
+        };
+        return provider;
+    }
+
 }

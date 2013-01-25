@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
@@ -15,6 +16,17 @@ public class TopicRenderedPresenter implements TemplatePresenter {
 
     public interface Display extends TopicViewInterface {
 
+    }
+
+    /**
+     * The rendered topic view display
+     */
+    @Inject
+    private Display display;
+
+    public Display getDisplay()
+    {
+        return display;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
@@ -26,6 +27,14 @@ public class TopicBugsPresenter implements TemplatePresenter {
         CellTable<RESTBugzillaBugCollectionItemV1> getResults();
 
         SimplePager getPager();
+    }
+
+    @Inject
+    private Display display;
+
+    public Display getDisplay()
+    {
+        return display;
     }
 
     @Override

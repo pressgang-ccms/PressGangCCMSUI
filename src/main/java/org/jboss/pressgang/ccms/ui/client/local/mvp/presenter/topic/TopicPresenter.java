@@ -9,7 +9,9 @@ import javax.inject.Inject;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.component.propertyview.BasePropertyViewComponentInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.TopicViewComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
@@ -18,7 +20,7 @@ import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
-public class TopicPresenter implements TemplatePresenter {
+public class TopicPresenter extends TopicViewComponent<TopicPresenter.Display> implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "TopicView";
 
@@ -30,17 +32,15 @@ public class TopicPresenter implements TemplatePresenter {
 
     }
 
-    public interface LogicComponent extends BasePropertyViewComponentInterface<Display> {
-
-    }
-
     private Integer topicId;
 
     @Inject
     private Display display;
 
-    @Inject
-    private LogicComponent component;
+    public Display getDisplay()
+    {
+        return display;
+    }
 
     @Override
     public void parseToken(final String searchToken) {
@@ -55,8 +55,13 @@ public class TopicPresenter implements TemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        component.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display,  display);
-        component.getEntity(topicId);
+        process(topicId, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+
     }
 
+    public void process(final Integer topicId, final int helpTopicId, final String pageId, final BaseTemplateViewInterface waitDisplay)
+    {
+        getEntity(topicId);
+        bind(helpTopicId, pageId, display, waitDisplay);
+    }
 }

@@ -88,7 +88,7 @@ public class SearchResultsAndTopicPresenter
     final Timer timer = new Timer() {
         @Override
         public void run() {
-            if (lastDisplayedView == topicXMLDisplay) {
+            if (lastDisplayedView == topicXMLComponent.getDisplay()) {
                 refreshRenderedView(false);
             }
         }
@@ -114,19 +114,12 @@ public class SearchResultsAndTopicPresenter
     private List<String> locales;
     @Inject
     private Display display;
+
     @Inject
-    private TopicPresenter.Display topicViewDisplay;
+    private TopicPresenter topicViewComponent;
+
     @Inject
-    private TopicPresenter.LogicComponent topicViewComponent;
-    @Inject
-    private TopicXMLPresenter.Display topicXMLDisplay;
-    @Inject
-    private TopicXMLPresenter.LogicComponent topicXMLComponent;
-    /**
-     * The rendered topic view display
-     */
-    @Inject
-    private TopicRenderedPresenter.Display topicRenderedDisplay;
+    private TopicXMLPresenter topicXMLComponent;
     /**
      * The rendered topic view display in a split panel
      */
@@ -135,19 +128,17 @@ public class SearchResultsAndTopicPresenter
     @Inject
     private SearchResultsPresenter.Display searchResultsDisplay;
     @Inject
-    private SearchResultsPresenter.LogicComponent searchResultsComponent;
+    private SearchResultsPresenter searchResultsComponent;
     @Inject
     private TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay;
     @Inject
-    private TopicTagsPresenter.Display topicTagsDisplay;
+    private TopicTagsPresenter topicTagsComponent;
     @Inject
-    private TopicTagsPresenter.LogicComponent topicTagsComponent;
+    private TopicRevisionsPresenter topicRevisionsComponent;
     @Inject
-    private TopicBugsPresenter.Display topicBugsDisplay;
+    private TopicBugsPresenter topicBugsPresenter;
     @Inject
-    private TopicRevisionsPresenter.Display topicRevisionsDisplay;
-    @Inject
-    private TopicRevisionsPresenter.LogicComponent topicrevisionsComponent;
+    private TopicRenderedPresenter topicRenderedPresenter;
     /**
      * How the rendering panel is displayed
      */
@@ -195,16 +186,16 @@ public class SearchResultsAndTopicPresenter
 
             /* Initialize the other presenters we have pulled in */
             searchResultsComponent.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, searchResultsDisplay, display);
-            topicTagsComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, topicTagsDisplay, display);
+            topicTagsComponent.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, topicTagsComponent.getDisplay(), display);
 
-            super.bind(ServiceConstants.TOPIC_EDIT_VIEW_CONTENT_TOPIC, HISTORY_TOKEN, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLDisplay, topicViewDisplay,
+            super.bind(ServiceConstants.TOPIC_EDIT_VIEW_CONTENT_TOPIC, HISTORY_TOKEN, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLComponent.getDisplay(), topicViewComponent.getDisplay(),
                     searchResultsDisplay, searchResultsComponent, display, display, getNewEntityCallback);
 
             /* Display the split panes */
             initializeDisplay();
 
-            this.topicBugsDisplay.setProvider(generateTopicBugListProvider());
-            this.topicRevisionsDisplay.setProvider(generateTopicRevisionsListProvider());
+            this.topicBugsPresenter.getDisplay().setProvider(generateTopicBugListProvider());
+            this.topicRevisionsComponent.getDisplay().setProvider(generateTopicRevisionsListProvider());
 
             bindViewTopicRevisionButton();
             bindSplitPanelResize();
@@ -220,7 +211,7 @@ public class SearchResultsAndTopicPresenter
                 }
             });
 
-            CommonTopicComponent.addKeyboardShortcutEventHandler(this.topicXMLDisplay, this.display, new GetCurrentTopic() {
+            CommonTopicComponent.addKeyboardShortcutEventHandler(this.topicXMLComponent.getDisplay(), this.display, new GetCurrentTopic() {
 
                 @Override
                 public RESTTopicV1 getCurrentlyEditedTopic() {
@@ -250,7 +241,7 @@ public class SearchResultsAndTopicPresenter
      *                            after the topics has not been edited after a period of time
      */
     private void refreshRenderedView(final boolean forceExternalImages) {
-        topicXMLDisplay.getDriver().flush();
+        topicXMLComponent.getDisplay().getDriver().flush();
 
         final boolean xmlHasChanges = lastXML == null || !lastXML.equals(getTopicOrRevisionTopic().getItem().getXml());
 
@@ -277,8 +268,8 @@ public class SearchResultsAndTopicPresenter
         try {
             logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.setXMLEditorButtonsToEditorState()");
 
-            topicXMLDisplay.getLineWrap().setDown(topicXMLDisplay.getEditor().getUserWrapMode());
-            topicXMLDisplay.getShowInvisibles().setDown(topicXMLDisplay.getEditor().getShowInvisibles());
+            topicXMLComponent.getDisplay().getLineWrap().setDown(topicXMLComponent.getDisplay().getEditor().getUserWrapMode());
+            topicXMLComponent.getDisplay().getShowInvisibles().setDown(topicXMLComponent.getDisplay().getEditor().getShowInvisibles());
         } finally {
             logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.setXMLEditorButtonsToEditorState()");
         }
@@ -312,7 +303,7 @@ public class SearchResultsAndTopicPresenter
         }
 
         /* These are read only views */
-        if (lastDisplayedView == topicXMLErrorsDisplay || lastDisplayedView == topicTagsDisplay) {
+        if (lastDisplayedView == topicXMLErrorsDisplay || lastDisplayedView == topicTagsComponent.getDisplay()) {
             return;
         }
 
@@ -320,14 +311,14 @@ public class SearchResultsAndTopicPresenter
     }
 
     /**
-     * The currently displayed topic is topicRevisionsDisplay.getRevisionTopic() if it is not null, or
+     * The currently displayed topic is topicRevisionsComponent.getDisplay().getRevisionTopic() if it is not null, or
      * searchResultsComponent.getProviderData().getDisplayedItem() otherwise.
      *
      * @return The currently displayed topic
      */
     private RESTTopicCollectionItemV1 getTopicOrRevisionTopic() {
-        final RESTTopicCollectionItemV1 sourceTopic = topicRevisionsDisplay.getRevisionTopic() == null ? filteredResultsComponent
-                .getProviderData().getDisplayedItem() : topicRevisionsDisplay.getRevisionTopic();
+        final RESTTopicCollectionItemV1 sourceTopic = topicRevisionsComponent.getDisplay().getRevisionTopic() == null ? filteredResultsComponent
+                .getProviderData().getDisplayedItem() : topicRevisionsComponent.getDisplay().getRevisionTopic();
 
         if (sourceTopic == null)
             throw new NullPointerException("sourceTopic cannot be null");
@@ -341,7 +332,7 @@ public class SearchResultsAndTopicPresenter
      * @return true if the UI is in readonly mode, and false otherwise
      */
     private boolean isReadOnlyMode() {
-        return topicRevisionsDisplay.getRevisionTopic() != null;
+        return topicRevisionsComponent.getDisplay().getRevisionTopic() != null;
     }
 
     private void showRegularMenu() {
@@ -418,8 +409,8 @@ public class SearchResultsAndTopicPresenter
         display.getSplitPanel().addResizeHandler(new ResizeHandler() {
             @Override
             public void onResize(final ResizeEvent event) {
-                if (topicXMLDisplay.getEditor() != null) {
-                    topicXMLDisplay.getEditor().redisplay();
+                if (topicXMLComponent.getDisplay().getEditor() != null) {
+                    topicXMLComponent.getDisplay().getEditor().redisplay();
                 }
 
                 /*
@@ -445,8 +436,8 @@ public class SearchResultsAndTopicPresenter
             logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.bindTagEditingButtons()");
 
             /* This will be null if the tags have not been downloaded */
-            if (topicTagsDisplay.getEditor() != null) {
-                for (final TopicTagViewProjectEditor topicTagViewProjectEditor : topicTagsDisplay.getEditor().projects
+            if (topicTagsComponent.getDisplay().getEditor() != null) {
+                for (final TopicTagViewProjectEditor topicTagViewProjectEditor : topicTagsComponent.getDisplay().getEditor().projects
                         .getEditors()) {
                     for (final TopicTagViewCategoryEditor topicTagViewCategoryEditor : topicTagViewProjectEditor.categories
                             .getEditors()) {
@@ -466,11 +457,11 @@ public class SearchResultsAndTopicPresenter
      * Bind behaviour to the view buttons in the topic revisions cell table
      */
     private void bindViewTopicRevisionButton() {
-        topicRevisionsDisplay.getDiffButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
+        topicRevisionsComponent.getDisplay().getDiffButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
             @Override
             public void update(final int index, final RESTTopicCollectionItemV1 revisionTopic, final String value) {
                 final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
-                        topicRevisionsDisplay,
+                        topicRevisionsComponent.getDisplay(),
                         new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
                             @Override
                             public void doSuccessAction(final RESTTopicV1 retValue,
@@ -510,7 +501,7 @@ public class SearchResultsAndTopicPresenter
                                     isXML = false;
                                 }
 
-                                topicrevisionsComponent.displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getItem()
+                                topicRevisionsComponent.displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getItem()
                                         .getXml(), sourceTopicLabel, isXML);
                             }
                         }) {
@@ -520,25 +511,25 @@ public class SearchResultsAndTopicPresenter
             }
         });
 
-        topicRevisionsDisplay.getViewButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
+        topicRevisionsComponent.getDisplay().getViewButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
             @Override
             public void update(final int index, final RESTTopicCollectionItemV1 revisionTopic, final String value) {
 
                 /* Reset the reference to the revision topic */
-                topicRevisionsDisplay.setRevisionTopic(null);
+                topicRevisionsComponent.getDisplay().setRevisionTopic(null);
 
                 if (!revisionTopic.getItem().getRevision()
                         .equals(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getRevision())) {
                     /* Reset the reference to the revision topic */
-                    topicRevisionsDisplay.setRevisionTopic(revisionTopic);
+                    topicRevisionsComponent.getDisplay().setRevisionTopic(revisionTopic);
                 }
 
                 /* Load the tags and bugs */
                 loadTagsandBugs();
 
                 initializeViews();
-                topicRevisionsDisplay.setProvider(generateTopicRevisionsListProvider());
-                switchView(topicRevisionsDisplay);
+                topicRevisionsComponent.getDisplay().setProvider(generateTopicRevisionsListProvider());
+                switchView(topicRevisionsComponent.getDisplay());
             }
         });
     }
@@ -585,23 +576,23 @@ public class SearchResultsAndTopicPresenter
         try {
             logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.loadAdditionalDisplayedItemData()");
 
-            topicRevisionsDisplay.setRevisionTopic(null);
+            topicRevisionsComponent.getDisplay().setRevisionTopic(null);
 
             /* set the revisions to show the loading widget */
-            if (topicRevisionsDisplay.getProvider() != null) {
-                topicRevisionsDisplay.getProvider().resetProvider();
+            if (topicRevisionsComponent.getDisplay().getProvider() != null) {
+                topicRevisionsComponent.getDisplay().getProvider().resetProvider();
             }
 
             /* A callback to respond to a request for a topic with the revisions expanded */
             final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
-                    topicRevisionsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
+                    topicRevisionsComponent.getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
                 @Override
                 public void doSuccessAction(final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
                     filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                             .setRevisions(retValue.getRevisions());
 
                             /* refresh the list */
-                    topicRevisionsDisplay.getProvider().displayNewFixedList(retValue.getRevisions().getItems());
+                    topicRevisionsComponent.getDisplay().getProvider().displayNewFixedList(retValue.getRevisions().getItems());
                 }
             });
 
@@ -625,16 +616,16 @@ public class SearchResultsAndTopicPresenter
      */
     private void loadTagsandBugs() {
         /* set the bugs to show the loading widget */
-        if (topicBugsDisplay.getProvider() != null) {
-            topicBugsDisplay.getProvider().resetProvider();
+        if (topicBugsPresenter.getDisplay().getProvider() != null) {
+            topicBugsPresenter.getDisplay().getProvider().resetProvider();
         }
 
         /* clear the tags display */
-        initializeViews(Arrays.asList(new TopicViewInterface[]{topicTagsDisplay}));
+        initializeViews(Arrays.asList(new TopicViewInterface[]{topicTagsComponent.getDisplay()}));
 
         /* A callback to respond to a request for a topic with the tags expanded */
         final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
-                topicTagsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
+                topicTagsComponent.getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
             @Override
             public void doSuccessAction(final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
 
@@ -642,20 +633,20 @@ public class SearchResultsAndTopicPresenter
                 getTopicOrRevisionTopic().getItem().setTags(retValue.getTags());
 
                         /* update the view */
-                initializeViews(Arrays.asList(new TopicViewInterface[]{topicTagsDisplay}));
+                initializeViews(Arrays.asList(new TopicViewInterface[]{topicTagsComponent.getDisplay()}));
             }
         });
 
         /* A callback to respond to a request for a topic with the bugzilla bugs expanded */
         final RESTCalls.RESTCallback<RESTTopicV1> topicWithBugsCallback = new BaseRestCallback<RESTTopicV1, TopicBugsPresenter.Display>(
-                topicBugsDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, TopicBugsPresenter.Display>() {
+                topicBugsPresenter.getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicBugsPresenter.Display>() {
             @Override
             public void doSuccessAction(final RESTTopicV1 retValue, final TopicBugsPresenter.Display display) {
                 final RESTBugzillaBugCollectionV1 collection = retValue.getBugzillaBugs_OTM();
                         /* copy the revisions into the displayed Topic */
                 getTopicOrRevisionTopic().getItem().setBugzillaBugs_OTM(collection);
                         /* refresh the celltable */
-                topicBugsDisplay.getProvider().displayNewFixedList(collection.getItems());
+                topicBugsPresenter.getDisplay().getProvider().displayNewFixedList(collection.getItems());
             }
         }) {
 
@@ -677,19 +668,19 @@ public class SearchResultsAndTopicPresenter
             super.switchView(displayedView);
 
             /* Save any changes to the xml editor */
-            if (lastDisplayedView == this.topicXMLDisplay) {
-                this.topicXMLDisplay.getDriver().flush();
+            if (lastDisplayedView == this.topicXMLComponent.getDisplay()) {
+                this.topicXMLComponent.getDisplay().getDriver().flush();
             }
 
             /* Refresh the rendered view (when there is no page splitting) */
-            if (displayedView == this.topicRenderedDisplay) {
-                topicRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
+            if (displayedView == this.topicRenderedPresenter.getDisplay()) {
+                topicRenderedPresenter.getDisplay().initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
                         display.getSplitType(), locales, false);
             }
             /* Set the projects combo box as the focsed element */
-            else if (displayedView == this.topicTagsDisplay) {
-                if (topicTagsDisplay.getProjectsList().isAttached()) {
-                    topicTagsDisplay.getProjectsList().getElement().focus();
+            else if (displayedView == this.topicTagsComponent.getDisplay()) {
+                if (topicTagsComponent.getDisplay().getProjectsList().isAttached()) {
+                    topicTagsComponent.getDisplay().getProjectsList().getElement().focus();
                 }
             }
 
@@ -702,7 +693,7 @@ public class SearchResultsAndTopicPresenter
             display.getPageTitle().setText(title.toString());
 
             /* While editing the XML, we need to setup a refresh of the rendered view */
-            if (displayedView == topicXMLDisplay && display.getSplitType() != SplitType.NONE && !isReadOnlyMode()) {
+            if (displayedView == topicXMLComponent.getDisplay() && display.getSplitType() != SplitType.NONE && !isReadOnlyMode()) {
                 timer.scheduleRepeating(Constants.REFRESH_RATE);
             } else {
                 timer.cancel();
@@ -757,7 +748,7 @@ public class SearchResultsAndTopicPresenter
                             logger.log(Level.SEVERE, e.toString());
                             Window.alert(PressGangCCMSUI.INSTANCE.ErrorSavingTopic());
                             display.removeWaitOperation();
-                            topicXMLDisplay.getEditor().redisplay();
+                            topicXMLComponent.getDisplay().getEditor().redisplay();
                         }
 
                         @Override
@@ -800,8 +791,8 @@ public class SearchResultsAndTopicPresenter
                                 }
                             } finally {
                                 display.removeWaitOperation();
-                                if (topicXMLDisplay.getEditor() != null) {
-                                    topicXMLDisplay.getEditor().redisplay();
+                                if (topicXMLComponent.getDisplay().getEditor() != null) {
+                                    topicXMLComponent.getDisplay().getEditor().redisplay();
                                 }
                             }
                         }
@@ -816,7 +807,7 @@ public class SearchResultsAndTopicPresenter
 
                             Window.alert(PressGangCCMSUI.INSTANCE.ErrorSavingTopic());
                             display.removeWaitOperation();
-                            topicXMLDisplay.getEditor().redisplay();
+                            topicXMLComponent.getDisplay().getEditor().redisplay();
                         }
                     };
 
@@ -877,7 +868,7 @@ public class SearchResultsAndTopicPresenter
                 flushChanges();
 
                 if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-                    switchView(topicXMLDisplay);
+                    switchView(topicXMLComponent.getDisplay());
 
                 }
             }
@@ -890,7 +881,7 @@ public class SearchResultsAndTopicPresenter
                 flushChanges();
 
                 if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-                    switchView(topicRenderedDisplay);
+                    switchView(topicRenderedPresenter.getDisplay());
                 }
             }
         };
@@ -914,7 +905,7 @@ public class SearchResultsAndTopicPresenter
                 flushChanges();
 
                 if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-                    switchView(topicTagsDisplay);
+                    switchView(topicTagsComponent.getDisplay());
                 }
             }
         };
@@ -926,7 +917,7 @@ public class SearchResultsAndTopicPresenter
                 flushChanges();
 
                 if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-                    switchView(topicBugsDisplay);
+                    switchView(topicBugsPresenter.getDisplay());
                 }
             }
         };
@@ -938,7 +929,7 @@ public class SearchResultsAndTopicPresenter
                 flushChanges();
 
                 if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
-                    switchView(topicRevisionsDisplay);
+                    switchView(topicRevisionsComponent.getDisplay());
                 }
             }
         };
@@ -1030,8 +1021,8 @@ public class SearchResultsAndTopicPresenter
         };
 
         /* Hook up the click listeners */
-        for (final TopicViewInterface view : new TopicViewInterface[]{entityPropertiesView, topicXMLDisplay,
-                topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay}) {
+        for (final TopicViewInterface view : new TopicViewInterface[]{entityPropertiesView, topicXMLComponent.getDisplay(),
+                topicRenderedPresenter.getDisplay(), topicXMLErrorsDisplay, topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(), topicRevisionsComponent.getDisplay()}) {
             view.getRenderedSplit().addClickHandler(splitMenuHandler);
             view.getFields().addClickHandler(topicViewClickHandler);
             view.getXml().addClickHandler(topicXMLClickHandler);
@@ -1051,21 +1042,21 @@ public class SearchResultsAndTopicPresenter
         }
 
         /* Hook up the xml editor buttons */
-        topicXMLDisplay.getLineWrap().addClickHandler(new ClickHandler() {
+        topicXMLComponent.getDisplay().getLineWrap().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                topicXMLDisplay.getEditor().setUseWrapMode(topicXMLDisplay.getLineWrap().isDown());
+                topicXMLComponent.getDisplay().getEditor().setUseWrapMode(topicXMLComponent.getDisplay().getLineWrap().isDown());
             }
         });
 
-        topicXMLDisplay.getShowInvisibles().addClickHandler(new ClickHandler() {
+        topicXMLComponent.getDisplay().getShowInvisibles().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                topicXMLDisplay.getEditor().setShowInvisibles(topicXMLDisplay.getShowInvisibles().isDown());
+                topicXMLComponent.getDisplay().getEditor().setShowInvisibles(topicXMLComponent.getDisplay().getShowInvisibles().isDown());
             }
         });
 
-        CommonTopicComponent.addKeyboardShortcutEvents(topicXMLDisplay, display);
+        CommonTopicComponent.addKeyboardShortcutEvents(topicXMLComponent.getDisplay(), display);
     }
 
     @Override
@@ -1083,8 +1074,8 @@ public class SearchResultsAndTopicPresenter
 
             logger.log(Level.INFO, "\tInitializing topic views");
 
-            for (final TopicViewInterface view : new TopicViewInterface[]{entityPropertiesView, topicXMLDisplay,
-                    topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay,
+            for (final TopicViewInterface view : new TopicViewInterface[]{entityPropertiesView, topicXMLComponent.getDisplay(),
+                    topicRenderedPresenter.getDisplay(), topicXMLErrorsDisplay, topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(),
                     topicSplitPanelRenderedDisplay}) {
                 if (viewIsInFilter(filter, view)) {
 
@@ -1094,21 +1085,21 @@ public class SearchResultsAndTopicPresenter
                 }
             }
 
-            if (viewIsInFilter(filter, topicRevisionsDisplay)) {
+            if (viewIsInFilter(filter, topicRevisionsComponent.getDisplay())) {
                 logger.log(Level.INFO, "\tInitializing topic revisions view");
-                topicRevisionsDisplay.initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                topicRevisionsComponent.getDisplay().initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
                         isReadOnlyMode(), NEW_TOPIC, display.getSplitType(), locales, false);
             }
 
-            if (viewIsInFilter(filter, topicTagsDisplay)) {
+            if (viewIsInFilter(filter, topicTagsComponent.getDisplay())) {
                 bindTagEditingButtons();
             }
 
-            /* Redisplay the editor. topicXMLDisplay.getEditor() will be not null after the initialize method was called above */
-            if (viewIsInFilter(filter, topicXMLDisplay)) {
+            /* Redisplay the editor. topicXMLComponent.getDisplay().getEditor() will be not null after the initialize method was called above */
+            if (viewIsInFilter(filter, topicXMLComponent.getDisplay())) {
                 logger.log(Level.INFO, "\tSetting topic XML edit button state and redisplaying ACE editor");
                 setXMLEditorButtonsToEditorState();
-                topicXMLDisplay.getEditor().redisplay();
+                topicXMLComponent.getDisplay().getEditor().redisplay();
             }
 
         } finally {
@@ -1119,8 +1110,8 @@ public class SearchResultsAndTopicPresenter
 
     private void initializeSplitViewButtons() {
         /* fix the rendered view button */
-        for (final TopicViewInterface view : new TopicViewInterface[]{entityPropertiesView, topicXMLDisplay,
-                topicRenderedDisplay, topicXMLErrorsDisplay, topicTagsDisplay, topicBugsDisplay, topicRevisionsDisplay}) {
+        for (final TopicViewInterface view : new TopicViewInterface[]{entityPropertiesView, topicXMLComponent.getDisplay(),
+                topicRenderedPresenter.getDisplay(), topicXMLErrorsDisplay, topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(), topicRevisionsComponent.getDisplay()}) {
             view.buildSplitViewButtons(split);
         }
     }
@@ -1147,7 +1138,7 @@ public class SearchResultsAndTopicPresenter
 
         @Override
         public void onClick(final ClickEvent event) {
-            final RESTTagV1 selectedTag = topicTagsDisplay.getMyTags().getValue().getTag().getItem();
+            final RESTTagV1 selectedTag = topicTagsComponent.getDisplay().getMyTags().getValue().getTag().getItem();
 
             /* Need to deal with re-adding removed tags */
             RESTTagCollectionItemV1 deletedTag = null;
@@ -1251,7 +1242,7 @@ public class SearchResultsAndTopicPresenter
             }
 
             /* Redisplay the view */
-            initializeViews(Arrays.asList(new TopicViewInterface[]{topicTagsDisplay}));
+            initializeViews(Arrays.asList(new TopicViewInterface[]{topicTagsComponent.getDisplay()}));
         }
     }
 
@@ -1285,7 +1276,7 @@ public class SearchResultsAndTopicPresenter
                 tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
             }
 
-            initializeViews(Arrays.asList(new TopicViewInterface[]{topicTagsDisplay}));
+            initializeViews(Arrays.asList(new TopicViewInterface[]{topicTagsComponent.getDisplay()}));
         }
     }
 }
