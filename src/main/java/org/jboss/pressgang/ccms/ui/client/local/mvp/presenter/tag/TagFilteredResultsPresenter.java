@@ -8,9 +8,8 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -28,7 +27,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 @Dependent
 public class TagFilteredResultsPresenter
         extends
-        BaseFilteredResultsComponent<TagFilteredResultsPresenter.Display, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>
+        BaseFilteredResultsComponent<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>
         implements TemplatePresenter {
 
     public interface Display extends BaseFilteredResultsViewInterface<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
@@ -62,13 +61,13 @@ public class TagFilteredResultsPresenter
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display);
+        process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
-    public void process(final int topicId, final String pageId, final String queryString, final BaseTemplateViewInterface waitDisplay) {
-        display.setProvider(generateListProvider(queryString, display, waitDisplay));
+    public void process(final int topicId, final String pageId, final String queryString) {
+        display.setProvider(generateListProvider(queryString, display));
         displayQueryElements(queryString);
-        super.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display, waitDisplay);
+        super.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display);
     }
 
     @Override
@@ -94,9 +93,7 @@ public class TagFilteredResultsPresenter
      * @return A provider to be used for the tag display list
      */
     @Override
-    protected EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generateListProvider(final String queryString,
-                                                                                      final TagFilteredResultsPresenter.Display display,
-                                                                                      final BaseTemplateViewInterface waitDisplay) {
+    protected EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generateListProvider(final String queryString, final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTagCollectionItemV1> range) {

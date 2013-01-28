@@ -11,7 +11,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollection
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
@@ -34,7 +34,6 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 @Dependent
 public class CategoryFilteredResultsPresenter
         extends BaseFilteredResultsComponent<
-        CategoryFilteredResultsPresenter.Display,
         RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1>
         implements TemplatePresenter {
 
@@ -71,7 +70,7 @@ public class CategoryFilteredResultsPresenter
     @Override
     public final void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, this.queryString, this.display);
+        process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, this.queryString);
     }
 
     @Override
@@ -79,11 +78,11 @@ public class CategoryFilteredResultsPresenter
         this.queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
-    public final void process(final int topicId, final String pageId, final String queryString, final BaseTemplateViewInterface waitDisplay) {
+    public final void process(final int topicId, final String pageId, final String queryString) {
         try {
             logger.log(Level.INFO, "ENTER CategoryFilteredResultsPresenter.bind()");
-            super.bind(topicId, pageId, display, waitDisplay);
-            display.setProvider(generateListProvider(queryString, display, waitDisplay));
+            super.bind(topicId, pageId, display);
+            display.setProvider(generateListProvider(queryString, display));
             displayQueryElements(queryString);
         } finally {
             logger.log(Level.INFO, "EXIT CategoryFilteredResultsPresenter.bind()");
@@ -91,9 +90,7 @@ public class CategoryFilteredResultsPresenter
     }
 
     @Override
-    protected final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateListProvider(final String queryString,
-                                                                                                 final Display display,
-                                                                                                 final BaseTemplateViewInterface waitDisplay) {
+    protected final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateListProvider(final String queryString, final BaseTemplateViewInterface waitDisplay) {
         return new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTCategoryCollectionItemV1> list) {

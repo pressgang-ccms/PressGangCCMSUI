@@ -4,10 +4,8 @@ import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter.Display;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.category.CategoryViewInterface;
@@ -26,7 +24,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
  */
 @Dependent
 public class CategoryPresenter extends
-        ComponentBase<CategoryPresenter.Display>
+        ComponentBase
         implements TemplatePresenter {
 
     // Empty interface declaration, similar to UiBinder
@@ -61,12 +59,12 @@ public class CategoryPresenter extends
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, this.display);
+        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public final void process(final int topicId, final String pageId, final BaseTemplateViewInterface waitDisplay)
+    public final void process(final int topicId, final String pageId)
     {
-        super.bind(topicId, pageId, display, waitDisplay);
+        super.bind(topicId, pageId, display);
         this.getEntity();
     }
 

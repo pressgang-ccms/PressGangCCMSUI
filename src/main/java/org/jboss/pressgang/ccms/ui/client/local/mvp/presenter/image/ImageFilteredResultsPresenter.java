@@ -11,10 +11,8 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionIte
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter.Display;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -31,7 +29,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 @Dependent
 public class ImageFilteredResultsPresenter
         extends
-        BaseFilteredResultsComponent<ImageFilteredResultsPresenter.Display, RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1>
+        BaseFilteredResultsComponent<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1>
         implements TemplatePresenter {
 
     public interface Display extends
@@ -70,12 +68,12 @@ public class ImageFilteredResultsPresenter
     @Override
     public final void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display);
+        process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
-    public final void process(final int topicId, final String pageId, final String queryString, final BaseTemplateViewInterface waitDisplay) {
-        super.bind(topicId, pageId, queryString, display, waitDisplay);
-        display.setProvider(generateListProvider(queryString, display, waitDisplay));
+    public final void process(final int topicId, final String pageId, final String queryString) {
+        super.bind(topicId, pageId, queryString, display);
+        display.setProvider(generateListProvider(queryString, display));
     }
 
     @Override
@@ -100,8 +98,7 @@ public class ImageFilteredResultsPresenter
      * @return A provider to be used for the image display list.
      */
     @Override
-    protected EnhancedAsyncDataProvider<RESTImageCollectionItemV1> generateListProvider(final String queryString,
-                                                                                        final Display display, final BaseTemplateViewInterface waitDisplay) {
+    protected EnhancedAsyncDataProvider<RESTImageCollectionItemV1> generateListProvider(final String queryString, final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTImageCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTImageCollectionItemV1> item) {

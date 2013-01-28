@@ -10,7 +10,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionI
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
@@ -28,7 +28,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 @Dependent
 public class ProjectFilteredResultsPresenter
         extends
-        BaseFilteredResultsComponent<ProjectFilteredResultsPresenter.Display, RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1>
+        BaseFilteredResultsComponent<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1>
         implements TemplatePresenter {
 
     /**
@@ -56,8 +56,8 @@ public class ProjectFilteredResultsPresenter
 
     public void process(final int topicId, final String pageId, final String queryString, final BaseTemplateViewInterface waitDisplay) {
 
-        super.bind(topicId, pageId, queryString, display, waitDisplay);
-        display.setProvider(generateListProvider(queryString, display, waitDisplay));
+        super.bind(topicId, pageId, queryString, display);
+        display.setProvider(generateListProvider(queryString, display));
     }
 
     /**
@@ -65,8 +65,7 @@ public class ProjectFilteredResultsPresenter
      * @return A provider to be used for the category display list
      */
     @Override
-    protected EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> generateListProvider(final String queryString,
-                                                                                          final Display display, final BaseTemplateViewInterface waitDisplay) {
+    protected EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> generateListProvider(final String queryString, final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTProjectCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTProjectCollectionItemV1> list) {

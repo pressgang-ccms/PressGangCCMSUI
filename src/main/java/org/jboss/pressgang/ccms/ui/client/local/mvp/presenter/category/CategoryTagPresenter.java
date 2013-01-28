@@ -15,12 +15,11 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.sort.RESTTagCategoryCollectionItemV1SortComparator;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren.BaseOrderedChildrenComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.orderedchildren.BaseOrderedChildrenComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.category.CategoryViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -40,7 +39,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
  */
 @Dependent
 public class CategoryTagPresenter
-        extends BaseOrderedChildrenComponent<CategoryTagPresenter.Display,
+        extends BaseOrderedChildrenComponent<
         RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1,
         RESTCategoryV1,
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
@@ -82,12 +81,12 @@ public class CategoryTagPresenter
     @Override
     public final void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, this.getDisplay());
-        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, this.getDisplay());
+        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public final void process(final int topicId, final String pageId, final BaseTemplateViewInterface waitDisplay)
+    public final void process(final int topicId, final String pageId)
     {
-        super.bind(topicId, pageId, display, waitDisplay);
+        super.bind(topicId, pageId, display);
         display.initialize(null, false);
     }
 

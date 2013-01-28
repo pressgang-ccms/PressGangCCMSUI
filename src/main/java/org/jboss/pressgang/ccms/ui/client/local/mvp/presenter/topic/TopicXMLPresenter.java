@@ -5,9 +5,8 @@ import com.google.gwt.user.client.ui.*;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.TopicViewComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicViewPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -22,7 +21,7 @@ import java.util.Map;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
-public class TopicXMLPresenter extends TopicViewComponent<TopicXMLPresenter.Display> implements
+public class TopicXMLPresenter extends BaseTopicViewPresenter implements
         TemplatePresenter {
 
     // Empty interface declaration, similar to UiBinder
@@ -108,13 +107,13 @@ public class TopicXMLPresenter extends TopicViewComponent<TopicXMLPresenter.Disp
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        process(topicId, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+        process(topicId, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void process(final Integer topicId, final int helpTopicId, final String pageId, final BaseTemplateViewInterface waitDisplay) {
-        super.bind(helpTopicId, pageId, display, waitDisplay);
+    public void process(final Integer topicId, final int helpTopicId, final String pageId) {
+        super.bind(helpTopicId, pageId, display);
         if (topicId != null) {
-            getEntity(topicId);
+            getEntity(topicId, display);
         }
         bindAceEditorButtons();
     }

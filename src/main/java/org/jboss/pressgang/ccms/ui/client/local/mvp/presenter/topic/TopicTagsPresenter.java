@@ -5,9 +5,8 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ValueListBox;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.TopicViewComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicViewPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -27,7 +26,7 @@ import javax.inject.Inject;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
-public class TopicTagsPresenter extends TopicViewComponent<TopicTagsPresenter.Display> implements
+public class TopicTagsPresenter extends BaseTopicViewPresenter implements
         TemplatePresenter {
 
     public interface Display extends TopicViewInterface {
@@ -81,14 +80,14 @@ public class TopicTagsPresenter extends TopicViewComponent<TopicTagsPresenter.Di
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        process(topicId, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+        process(topicId, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void process(final Integer topicId, final int helpTopicId, final String pageId, final BaseTemplateViewInterface waitDisplay) {
-        super.bind(helpTopicId, pageId, display, waitDisplay);
+    public void process(final Integer topicId, final int helpTopicId, final String pageId) {
+        super.bind(helpTopicId, pageId, display);
         if (topicId != null)
         {
-            getEntity(topicId);
+            getEntity(topicId, display);
         }
         getTags();
     }

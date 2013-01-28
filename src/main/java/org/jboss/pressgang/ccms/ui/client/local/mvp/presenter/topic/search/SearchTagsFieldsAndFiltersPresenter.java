@@ -4,12 +4,8 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFieldPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchTagsFieldsAndFiltersPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
@@ -22,7 +18,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public class SearchTagsFieldsAndFiltersPresenter extends ComponentBase<BaseTemplateViewInterface> implements TemplatePresenter
+public class SearchTagsFieldsAndFiltersPresenter extends ComponentBase implements TemplatePresenter
 {
     /** The history token used to access this page */
     public static final String HISTORY_TOKEN = "SearchTagsFieldsAndFiltersView";
@@ -48,10 +44,10 @@ public class SearchTagsFieldsAndFiltersPresenter extends ComponentBase<BaseTempl
 
         display.setViewShown(true);
 
-        super.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, display, waitDisplay);
+        super.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, display);
 
-        tagsComponent.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
-        fieldsComponent.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+        tagsComponent.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        fieldsComponent.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
 
         bindSearchButtons();
 

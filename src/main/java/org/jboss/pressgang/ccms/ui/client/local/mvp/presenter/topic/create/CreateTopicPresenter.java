@@ -13,10 +13,10 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common.CommonTopicComponent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common.GetCurrentTopic;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common.StringListLoaded;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicCombinedViewPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.GetCurrentTopic;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -50,7 +50,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
  * @author Matthew Casperson
  */
 @Dependent
-public class CreateTopicPresenter extends ComponentBase<CreateTopicPresenter.Display> implements
+public class CreateTopicPresenter extends ComponentBase implements
         TemplatePresenter {
 
     public interface Display extends BaseTemplateViewInterface {
@@ -219,10 +219,10 @@ public class CreateTopicPresenter extends ComponentBase<CreateTopicPresenter.Dis
 
         display.setViewShown(true);
 
-        topicComponent.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
-        topicTagsComponent.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
-        topicXMLComponent.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
-        topicXMLErrorsComponent.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+        topicComponent.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        topicTagsComponent.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        topicXMLComponent.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        topicXMLErrorsComponent.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
 
         process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
     }
@@ -234,7 +234,7 @@ public class CreateTopicPresenter extends ComponentBase<CreateTopicPresenter.Dis
 
     public void process(final int helpTopicId, final String pageId, final BaseTemplateViewInterface waitDisplay) {
 
-        super.bind(helpTopicId, pageId, display, waitDisplay);
+        super.bind(helpTopicId, pageId, display);
 
         updatableTopicViews = new TopicViewInterface[] { topicComponent.getDisplay(), topicTagsComponent.getDisplay(), topicXMLComponent.getDisplay(),
                 topicXMLErrorsComponent.getDisplay(), topicRenderedDisplay };
@@ -259,7 +259,7 @@ public class CreateTopicPresenter extends ComponentBase<CreateTopicPresenter.Dis
 
         getTopicTemplate();
 
-        CommonTopicComponent.populateLocales(waitDisplay, new StringListLoaded() {
+        BaseTopicCombinedViewPresenter.populateLocales(waitDisplay, new StringListLoaded() {
 
             @Override
             public void stringListLoaded(final List<String> stringList) {
@@ -285,7 +285,7 @@ public class CreateTopicPresenter extends ComponentBase<CreateTopicPresenter.Dis
             }
         });
 
-        CommonTopicComponent.populateXMLElements(waitDisplay, new StringListLoaded() {
+        BaseTopicCombinedViewPresenter.populateXMLElements(waitDisplay, new StringListLoaded() {
 
             @Override
             public void stringListLoaded(final List<String> xmlElements) {
@@ -293,7 +293,7 @@ public class CreateTopicPresenter extends ComponentBase<CreateTopicPresenter.Dis
             }
         });
 
-        CommonTopicComponent.addKeyboardShortcutEventHandler(this.topicXMLComponent.getDisplay(), this.display, new GetCurrentTopic() {
+        BaseTopicCombinedViewPresenter.addKeyboardShortcutEventHandler(this.topicXMLComponent.getDisplay(), this.display, new GetCurrentTopic() {
 
             @Override
             public RESTTopicV1 getCurrentlyEditedTopic() {
@@ -627,7 +627,7 @@ public class CreateTopicPresenter extends ComponentBase<CreateTopicPresenter.Dis
             }
         });
 
-        CommonTopicComponent.addKeyboardShortcutEvents(topicXMLComponent.getDisplay(), display);
+        BaseTopicCombinedViewPresenter.addKeyboardShortcutEvents(topicXMLComponent.getDisplay(), display);
     }
 
     /**
@@ -738,7 +738,7 @@ public class CreateTopicPresenter extends ComponentBase<CreateTopicPresenter.Dis
             }
         }
 
-        CommonTopicComponent.setHelpTopicForView(this, selectedView);
+        BaseTopicCombinedViewPresenter.setHelpTopicForView(this, selectedView);
 
         lastView = selectedView;
     }

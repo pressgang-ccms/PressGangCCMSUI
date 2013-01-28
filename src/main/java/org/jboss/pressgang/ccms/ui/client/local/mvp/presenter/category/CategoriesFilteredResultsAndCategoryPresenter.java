@@ -19,13 +19,13 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.AddPossibleChildCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.GetExistingCollectionCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.UpdateAfterChildModfiedCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.orderedchildren.SetNewChildSortCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.DisplayNewEntityCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.children.AddPossibleChildCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.children.GetExistingCollectionCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.children.UpdateAfterChildModfiedCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.orderedchildren.SetNewChildSortCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.searchandedit.BaseSearchAndEditComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.searchandedit.DisplayNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.CategoriesFilteredResultsAndCategoryViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -55,7 +55,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 @Dependent
 public class CategoriesFilteredResultsAndCategoryPresenter
         extends
-        BaseSearchAndEditComponent<CategoryFilteredResultsPresenter.Display, CategoriesFilteredResultsAndCategoryPresenter.Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, CategoryViewInterface, CategoryPresenter.Display, RESTCategoryV1BasicDetailsEditor>
+        BaseSearchAndEditComponent<CategoryFilteredResultsPresenter.Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, CategoryViewInterface, CategoryPresenter.Display, RESTCategoryV1BasicDetailsEditor>
         implements TemplatePresenter {
 
     /**
@@ -135,9 +135,9 @@ public class CategoriesFilteredResultsAndCategoryPresenter
 
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
-        categoryPresenter.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
-        categoryTagPresenter.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
-        filteredResultsPresenter.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString, display);
+        categoryPresenter.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        categoryTagPresenter.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        filteredResultsPresenter.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
 
         super.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, categoryPresenter.getDisplay(), categoryPresenter.getDisplay(),
                 filteredResultsPresenter.getDisplay(), filteredResultsPresenter, display, display, getNewEntityCallback);

@@ -9,9 +9,8 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.BaseChildrenComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.children.BaseChildrenComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
@@ -28,7 +27,7 @@ import javax.inject.Inject;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public class TagProjectsPresenter extends BaseChildrenComponent<TagProjectsPresenter.Display,
+public class TagProjectsPresenter extends BaseChildrenComponent<
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
         RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1,
         RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> implements
@@ -67,7 +66,7 @@ public class TagProjectsPresenter extends BaseChildrenComponent<TagProjectsPrese
 
     public void process(final int topicId, final String pageId, final BaseTemplateViewInterface waitDisplay)
     {
-        super.bind(topicId, pageId, display, waitDisplay);
+        super.bind(topicId, pageId, display);
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
         refreshPossibleChildrenDataAndList();
     }

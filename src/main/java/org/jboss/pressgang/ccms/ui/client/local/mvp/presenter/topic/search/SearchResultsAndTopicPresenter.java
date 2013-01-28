@@ -30,12 +30,12 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.DisplayNewEntityCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.GetNewEntityCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common.CommonTopicComponent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common.GetCurrentTopic;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.common.StringListLoaded;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.searchandedit.BaseSearchAndEditComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.searchandedit.DisplayNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicCombinedViewPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.GetCurrentTopic;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
@@ -72,12 +72,12 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 @Dependent
 public class SearchResultsAndTopicPresenter
         extends
-        BaseSearchAndEditComponent<SearchResultsPresenter.Display, SearchResultsAndTopicPresenter.Display, RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1, TopicViewInterface, TopicPresenter.Display, RESTTopicV1BasicDetailsEditor>
+        BaseSearchAndEditComponent<SearchResultsPresenter.Display, RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1, TopicViewInterface, TopicPresenter.Display, RESTTopicV1BasicDetailsEditor>
         implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
     /**
-     * false to indicate that the topic views should display action buttons applicabale to established topics (as opposed to new
+     * false to indicate that the topic views should display action buttons applicable to established topics (as opposed to new
      * topics)
      */
     private static final boolean NEW_TOPIC = false;
@@ -159,7 +159,7 @@ public class SearchResultsAndTopicPresenter
                         logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.bind() GetNewEntityCallback.getNewEntity()");
 
                         final RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
-                                waitDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {
+                                display, new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {
                             @Override
                             public void doSuccessAction(final RESTTopicV1 retValue, final BaseTemplateViewInterface display) {
                                 try {
@@ -184,7 +184,7 @@ public class SearchResultsAndTopicPresenter
 
             /* Initialize the other presenters we have pulled in */
             searchResultsComponent.process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display);
-            topicTagsComponent.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+            topicTagsComponent.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
 
             super.bind(ServiceConstants.TOPIC_EDIT_VIEW_CONTENT_TOPIC, HISTORY_TOKEN, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLComponent.getDisplay(), topicViewComponent.getDisplay(),
                     searchResultsComponent.getDisplay(), searchResultsComponent, display, display, getNewEntityCallback);
@@ -202,14 +202,14 @@ public class SearchResultsAndTopicPresenter
 
             this.topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
 
-            CommonTopicComponent.populateLocales(waitDisplay, new StringListLoaded() {
+            BaseTopicCombinedViewPresenter.populateLocales(display, new StringListLoaded() {
                 @Override
                 public void stringListLoaded(final List<String> locales) {
                     SearchResultsAndTopicPresenter.this.locales = locales;
                 }
             });
 
-            CommonTopicComponent.addKeyboardShortcutEventHandler(this.topicXMLComponent.getDisplay(), this.display, new GetCurrentTopic() {
+            BaseTopicCombinedViewPresenter.addKeyboardShortcutEventHandler(this.topicXMLComponent.getDisplay(), this.display, new GetCurrentTopic() {
 
                 @Override
                 public RESTTopicV1 getCurrentlyEditedTopic() {
@@ -698,7 +698,7 @@ public class SearchResultsAndTopicPresenter
                 refreshRenderedView(true);
             }
 
-            CommonTopicComponent.setHelpTopicForView(this, displayedView);
+            BaseTopicCombinedViewPresenter.setHelpTopicForView(this, displayedView);
 
             lastDisplayedView = displayedView;
         } finally {
@@ -1054,7 +1054,7 @@ public class SearchResultsAndTopicPresenter
             }
         });
 
-        CommonTopicComponent.addKeyboardShortcutEvents(topicXMLComponent.getDisplay(), display);
+        BaseTopicCombinedViewPresenter.addKeyboardShortcutEvents(topicXMLComponent.getDisplay(), display);
     }
 
     @Override

@@ -8,10 +8,8 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.filteredresults.BaseFilteredResultsComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsPresenter.Display;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -28,7 +26,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 
 public class SearchResultsPresenter
         extends
-        BaseFilteredResultsComponent<SearchResultsPresenter.Display, RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1>
+        BaseFilteredResultsComponent<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1>
         implements TemplatePresenter {
 
     public interface Display extends
@@ -60,8 +58,8 @@ public class SearchResultsPresenter
     }
 
     public void process(final int topicId, final String pageId, final String queryString, final BaseTemplateViewInterface waitDisplay) {
-        super.bind(topicId, pageId, queryString, display, waitDisplay);
-        display.setProvider(generateListProvider(queryString, display, waitDisplay));
+        super.bind(topicId, pageId, queryString, display);
+        display.setProvider(generateListProvider(queryString, waitDisplay));
     }
 
     @Override
@@ -77,8 +75,7 @@ public class SearchResultsPresenter
     }
 
     @Override
-    protected EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateListProvider(final String queryString,
-                                                                                        final Display display, final BaseTemplateViewInterface waitDisplay) {
+    protected EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateListProvider(final String queryString, final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTopicCollectionItemV1> list) {

@@ -8,9 +8,8 @@ import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.topic.TopicViewComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicViewPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -22,7 +21,7 @@ import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 
 @Dependent
-public class TopicXMLErrorsPresenter extends TopicViewComponent<TopicXMLErrorsPresenter.Display> implements TemplatePresenter {
+public class TopicXMLErrorsPresenter extends BaseTopicViewPresenter implements TemplatePresenter {
     public static final String HISTORY_TOKEN = "TopicXMLErrorsView";
 
     // Empty interface declaration, similar to UiBinder
@@ -58,10 +57,10 @@ public class TopicXMLErrorsPresenter extends TopicViewComponent<TopicXMLErrorsPr
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        process(topicId, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+        process(topicId, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void process(final Integer topicId, final int helpTopicId, final String pageId, final BaseTemplateViewInterface waitDisplay) {
+    public void process(final Integer topicId, final int helpTopicId, final String pageId) {
         getTopic(topicId);
     }
 

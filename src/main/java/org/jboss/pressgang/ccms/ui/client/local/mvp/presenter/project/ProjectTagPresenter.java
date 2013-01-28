@@ -11,9 +11,8 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.children.BaseChildrenComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.children.BaseChildrenComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectTagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.project.ProjectViewInterface;
@@ -30,7 +29,6 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 @Dependent
 public class ProjectTagPresenter
         extends BaseChildrenComponent<
-        ProjectTagPresenter.Display,                                            // The display type
         RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1,    // The main REST types 
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,                // The possible children types
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>                // The existing children types
@@ -66,13 +64,13 @@ public class ProjectTagPresenter
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void process(final int topicId, final String pageId, final BaseTemplateViewInterface waitDisplay)
+    public void process(final int topicId, final String pageId)
     {
         display.initialize(null, false);
-        super.bind(topicId, pageId, display, waitDisplay);
+        super.bind(topicId, pageId, display);
     }
 
     @Override

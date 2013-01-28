@@ -4,8 +4,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.Component;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
@@ -18,7 +17,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 
 @Dependent
-public class SearchFieldPresenter extends ComponentBase<SearchFieldPresenter.Display> implements TemplatePresenter {
+public class SearchFieldPresenter extends ComponentBase implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "SearchFieldView";
 
@@ -42,12 +41,12 @@ public class SearchFieldPresenter extends ComponentBase<SearchFieldPresenter.Dis
     @Override
     public void go(final HasWidgets container) {
         GWTUtilities.clearContainerAndAddTopLevelPanel(container, display);
-        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void process(final int helpTopicId, final String pageId, final BaseTemplateViewInterface waitDisplay)
+    public void process(final int helpTopicId, final String pageId)
     {
-        bind(helpTopicId, pageId, display, waitDisplay);
+        bind(helpTopicId, pageId, display);
     }
 
     @Override

@@ -13,21 +13,17 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentImageV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.BaseSearchAndEditComponent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.DisplayNewEntityCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.component.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.searchandedit.BaseSearchAndEditComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.searchandedit.DisplayNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -70,7 +66,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 @Dependent
 public class ImagesFilteredResultsAndImagePresenter
         extends
-        BaseSearchAndEditComponent<ImageFilteredResultsPresenter.Display, ImagesFilteredResultsAndImagePresenter.Display, RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1, ImagePresenter.Display, ImagePresenter.Display, RESTImageV1Editor>
+        BaseSearchAndEditComponent<ImageFilteredResultsPresenter.Display, RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1, ImagePresenter.Display, ImagePresenter.Display, RESTImageV1Editor>
         implements TemplatePresenter {
 
     public interface Display extends
@@ -108,15 +104,15 @@ public class ImagesFilteredResultsAndImagePresenter
 
         clearContainerAndAddTopLevelPanel(container, display);
 
-        imageComponent.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
-        imageFilteredResultsComponent.process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display);
+        imageComponent.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        imageFilteredResultsComponent.process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
 
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTImageV1> getNewEntityCallback = new GetNewEntityCallback<RESTImageV1>() {
 
             @Override
             public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTImageV1> displayCallback) {
-                final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(waitDisplay,
+                final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(display,
                         new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
                             @Override
                             public void doSuccessAction(final RESTImageV1 retValue, final BaseTemplateViewInterface display) {
@@ -235,7 +231,7 @@ public class ImagesFilteredResultsAndImagePresenter
                      * files
                      */
                     for (final File file : editor.getUpload().getFiles()) {
-                        waitDisplay.addWaitOperation();
+                        display.addWaitOperation();
 
                         final FileReader reader = new FileReader();
 
@@ -275,12 +271,12 @@ public class ImagesFilteredResultsAndImagePresenter
                                     updateImage.getLanguageImages_OTM().addUpdateItem(updatedLanguageImage);
 
                                     final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                                            waitDisplay, getDefaultImageRestCallback()) {
+                                            display, getDefaultImageRestCallback()) {
                                     };
 
                                     RESTCalls.updateImage(callback, updateImage);
                                 } finally {
-                                    waitDisplay.removeWaitOperation();
+                                    display.removeWaitOperation();
                                 }
                             }
                         });
@@ -332,7 +328,7 @@ public class ImagesFilteredResultsAndImagePresenter
         }
         /* If we just created a new entity, refresh the list of entities from the database */
         else {
-            imageFilteredResultsComponent.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", imageFilteredResultsComponent.getQuery(), imageFilteredResultsComponent.getDisplay(), waitDisplay);
+            imageFilteredResultsComponent.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", imageFilteredResultsComponent.getQuery(), imageFilteredResultsComponent.getDisplay());
 
             /*
              * reInitialiseView will flush the ui, which will flush the null ID back to the displayed object. To prevent that we
@@ -361,7 +357,7 @@ public class ImagesFilteredResultsAndImagePresenter
                             .getDescription());
 
                     final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                            waitDisplay, getDefaultImageRestCallback()) {
+                            display, getDefaultImageRestCallback()) {
                     };
 
                     RESTCalls.updateImage(callback, updateImage);
@@ -410,7 +406,7 @@ public class ImagesFilteredResultsAndImagePresenter
                         updateImage.getLanguageImages_OTM().addRemoveItem(languageImage);
 
                         final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                                waitDisplay, getDefaultImageRestCallback()) {
+                                display, getDefaultImageRestCallback()) {
                         };
 
                         RESTCalls.updateImage(callback, updateImage);
@@ -457,7 +453,7 @@ public class ImagesFilteredResultsAndImagePresenter
                 updateImage.getLanguageImages_OTM().addNewItem(languageImage);
 
                 final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                        waitDisplay, getDefaultImageRestCallback()) {
+                        display, getDefaultImageRestCallback()) {
                 };
 
                 RESTCalls.updateImage(callback, updateImage);
