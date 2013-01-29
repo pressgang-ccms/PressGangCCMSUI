@@ -41,35 +41,35 @@ public class SearchUIFields implements SearchViewBase {
     private final DateTimeFormat dateformat = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.ISO_8601);
 
     public final Date getCreatedAfter() {
-        return this.createdAfter;
+        return new Date(this.createdAfter.getTime());
     }
 
     public final void setCreatedAfter(final Date createdAfter) {
-        this.createdAfter = createdAfter;
+        this.createdAfter = new Date(createdAfter.getTime());
     }
 
     public final Date getCreatedBefore() {
-        return this.createdBefore;
+        return new Date(this.createdBefore.getTime());
     }
 
     public final void setCreatedBefore(final Date createdBefore) {
-        this.createdBefore = createdBefore;
+        this.createdBefore = new Date(createdBefore.getTime());
     }
 
     public final Date getEditedAfter() {
-        return this.editedAfter;
+        return new Date(this.editedAfter.getTime());
     }
 
     public final void setEditedAfter(final Date editedAfter) {
-        this.editedAfter = editedAfter;
+        this.editedAfter = new Date(editedAfter.getTime());
     }
 
     public final Date getEditedBefore() {
-        return this.editedBefore;
+        return new Date(this.editedBefore.getTime());
     }
 
     public final void setEditedBefore(final Date editedBefore) {
-        this.editedBefore = editedBefore;
+        this.editedBefore = new Date(editedBefore.getTime());
     }
 
     public final Integer getEditedInLastXDays() {

@@ -1,10 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.sort;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIBase;
 
-public class SearchUINameSort implements Comparator<SearchUIBase> {
+/**
+ * Compares SearchUIBase's objects based on their name.
+ */
+public class SearchUINameSort implements Comparator<SearchUIBase>, Serializable {
 
     @Override
     public int compare(final SearchUIBase arg0, final SearchUIBase arg1) {

@@ -40,7 +40,7 @@ public class ImageView extends BaseTemplateView implements
      * 
      * @author Matthew Casperson
      */
-    public class AddLocaleDialog extends DialogBox implements ImagePresenter.Display.AddLocaleInterface {
+    public static class AddLocaleDialog extends DialogBox implements ImagePresenter.Display.AddLocaleInterface {
         private final FlexTable layout = new FlexTable();
         private final ListBox locales = new ListBox();
         private final Label localesLabel = new Label(PressGangCCMSUI.INSTANCE.Locales());

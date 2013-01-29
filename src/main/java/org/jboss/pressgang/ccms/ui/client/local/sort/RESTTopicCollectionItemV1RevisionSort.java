@@ -1,10 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.sort;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 
-public class RESTTopicCollectionItemV1RevisionSort implements Comparator<RESTTopicCollectionItemV1> {
+/**
+ * Compares two RESTTopicCollectionItemV1's based on their revision numbers.
+ */
+public class RESTTopicCollectionItemV1RevisionSort implements Comparator<RESTTopicCollectionItemV1>, Serializable {
 
     @Override
     public int compare(final RESTTopicCollectionItemV1 arg0, final RESTTopicCollectionItemV1 arg1) {

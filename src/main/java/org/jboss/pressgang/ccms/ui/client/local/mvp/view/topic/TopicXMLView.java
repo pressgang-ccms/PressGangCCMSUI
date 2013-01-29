@@ -37,7 +37,7 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
     private final ToggleButton lineWrap = UIUtilities.createToggleButton(PressGangCCMSUI.INSTANCE.LineWrap());
     private final ToggleButton showInvisibles = UIUtilities.createToggleButton(PressGangCCMSUI.INSTANCE.ShowHiddenCharacters());
 
-    public class PlainTextXMLDialog extends DialogBox implements TopicXMLPresenter.Display.PlainTextXMLDialog {
+    public static class PlainTextXMLDialog extends DialogBox implements TopicXMLPresenter.Display.PlainTextXMLDialog {
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
         private TextArea textArea;
@@ -105,7 +105,7 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
     }
 
     /** The dialog box that displays a list of docbook tags. */
-    public class XmlTagsDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTagsDialog {
+    public static class XmlTagsDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTagsDialog {
         private static final int NUMBER_OF_VISIBLE_ITEMS = 10;
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
@@ -184,7 +184,7 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
     }
 
     /** The dialog box that displays a list of docbook templates. */
-    public class XmlTemplatesDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTemplatesDialog {
+    public static class XmlTemplatesDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTemplatesDialog {
         private static final int NUMBER_OF_VISIBLE_ITEMS = 10;
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
@@ -255,7 +255,7 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
         }
     }
 
-    public class CSPTopicDetailsDialog extends DialogBox implements TopicXMLPresenter.Display.CSPTopicDetailsDialog {
+    public static class CSPTopicDetailsDialog extends DialogBox implements TopicXMLPresenter.Display.CSPTopicDetailsDialog {
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
         private final TextBox ids = new TextBox();
