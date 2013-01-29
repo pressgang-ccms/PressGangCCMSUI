@@ -215,6 +215,10 @@ abstract public class BaseOrderedChildrenComponent<T extends RESTBaseEntityV1<T,
                 throw new NullPointerException("parent cannot be null");
             }
 
+            if (display == null) {
+                throw new NullPointerException("display cannot be null");
+            }
+
             display.setExistingChildrenProvider(generateExistingProvider(parent));
         } finally {
             logger.log(Level.INFO, "EXIT BaseOrderedChildrenComponent.refreshExistingChildList()");

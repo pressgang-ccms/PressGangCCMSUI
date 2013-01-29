@@ -82,6 +82,7 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
         this.filteredResultsDisplay = filteredResultsDisplay;
         this.filteredResultsComponent = filteredResultsComponent;
         this.firstDisplayedView = firstDisplayedView;
+        this.display = display;
 
         filteredResultsDisplay.setViewShown(true);
         display.setViewShown(true);
@@ -221,14 +222,20 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
 
     /** Saves the position of the main split */
     private void bindMainSplitResize(final String saveKey) {
-        display.getSplitPanel().addResizeHandler(new ResizeHandler() {
+        try {
+            logger.log(Level.INFO, "ENTER BaseSearchAndEditComponent.bindMainSplitResize()");
 
-            @Override
-            public void onResize(final ResizeEvent event) {
-                Preferences.INSTANCE.saveSetting(saveKey,
-                        display.getSplitPanel().getSplitPosition(display.getResultsViewLayoutPanel()) + "");
-            }
-        });
+            display.getSplitPanel().addResizeHandler(new ResizeHandler() {
+
+                @Override
+                public void onResize(final ResizeEvent event) {
+                    Preferences.INSTANCE.saveSetting(saveKey,
+                            display.getSplitPanel().getSplitPosition(display.getResultsViewLayoutPanel()) + "");
+                }
+            });
+        } finally {
+            logger.log(Level.INFO, "EXIT BaseSearchAndEditComponent.bindMainSplitResize()");
+        }
     }
 
     /**
@@ -237,8 +244,14 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
      * @param preferencesKey The key against which the previous size was saved
      */
     private void loadMainSplitResize(final String preferencesKey) {
-        display.getSplitPanel().setSplitPosition(display.getResultsViewLayoutPanel(),
-                Preferences.INSTANCE.getInt(preferencesKey, Constants.SPLIT_PANEL_SIZE), false);
+        try {
+            logger.log(Level.INFO, "ENTER BaseSearchAndEditComponent.loadMainSplitResize()");
+
+            display.getSplitPanel().setSplitPosition(display.getResultsViewLayoutPanel(),
+                    Preferences.INSTANCE.getInt(preferencesKey, Constants.SPLIT_PANEL_SIZE), false);
+        } finally {
+            logger.log(Level.INFO, "EXIT BaseSearchAndEditComponent.loadMainSplitResize()");
+        }
     }
 
     /**

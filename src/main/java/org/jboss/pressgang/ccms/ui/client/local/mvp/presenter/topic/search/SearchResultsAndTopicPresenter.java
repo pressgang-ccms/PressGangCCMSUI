@@ -112,6 +112,7 @@ public class SearchResultsAndTopicPresenter
      * A list of locales retrieved from the server
      */
     private List<String> locales;
+
     @Inject
     private Display display;
 
@@ -146,7 +147,7 @@ public class SearchResultsAndTopicPresenter
     public void go(final HasWidgets container) {
 
         try {
-            logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.go()");
+            logger.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.go()");
 
 
             /* A call back used to get a fresh copy of the entity that was selected */
@@ -156,7 +157,7 @@ public class SearchResultsAndTopicPresenter
                 public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTTopicV1> displayCallback) {
 
                     try {
-                        logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.bind() GetNewEntityCallback.getNewEntity()");
+                        logger.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bind() GetNewEntityCallback.getNewEntity()");
 
                         final RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
                                 display, new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {
@@ -164,18 +165,18 @@ public class SearchResultsAndTopicPresenter
                             public void doSuccessAction(final RESTTopicV1 retValue, final BaseTemplateViewInterface display) {
                                 try {
                                     logger.log(Level.INFO,
-                                            "ENTER SearchResultsAndTopicComponent.bind() RESTCallback.doSuccessAction()");
+                                            "ENTER SearchResultsAndTopicPresenter.bind() RESTCallback.doSuccessAction()");
 
                                     displayCallback.displayNewEntity(retValue);
                                 } finally {
                                     logger.log(Level.INFO,
-                                            "EXIT SearchResultsAndTopicComponent.bind() RESTCallback.doSuccessAction()");
+                                            "EXIT SearchResultsAndTopicPresenter.bind() RESTCallback.doSuccessAction()");
                                 }
                             }
                         });
                         RESTCalls.getTopic(callback, id);
                     } finally {
-                        logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.bind() GetNewEntityCallback.getNewEntity()");
+                        logger.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bind() GetNewEntityCallback.getNewEntity()");
                     }
                 }
             };
@@ -217,7 +218,7 @@ public class SearchResultsAndTopicPresenter
                 }
             });
         } finally {
-            logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.go()");
+            logger.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.go()");
         }
     }
 
@@ -264,12 +265,12 @@ public class SearchResultsAndTopicPresenter
      */
     private void setXMLEditorButtonsToEditorState() {
         try {
-            logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.setXMLEditorButtonsToEditorState()");
+            logger.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.setXMLEditorButtonsToEditorState()");
 
             topicXMLComponent.getDisplay().getLineWrap().setDown(topicXMLComponent.getDisplay().getEditor().getUserWrapMode());
             topicXMLComponent.getDisplay().getShowInvisibles().setDown(topicXMLComponent.getDisplay().getEditor().getShowInvisibles());
         } finally {
-            logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.setXMLEditorButtonsToEditorState()");
+            logger.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.setXMLEditorButtonsToEditorState()");
         }
     }
 
@@ -347,17 +348,23 @@ public class SearchResultsAndTopicPresenter
      * Load the split panel sizes
      */
     private void loadSplitPanelSize() {
+        try {
+            logger.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.loadSplitPanelSize()");
 
-        if (split == SplitType.HORIZONTAL) {
-            display.getSplitPanel().setSplitPosition(
-                    topicSplitPanelRenderedDisplay.getPanel().getParent(),
-                    Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH,
-                            Constants.SPLIT_PANEL_SIZE), false);
-        } else if (split == SplitType.VERTICAL) {
-            display.getSplitPanel().setSplitPosition(
-                    topicSplitPanelRenderedDisplay.getPanel().getParent(),
-                    Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH,
-                            Constants.SPLIT_PANEL_SIZE), false);
+            if (split == SplitType.HORIZONTAL) {
+                display.getSplitPanel().setSplitPosition(
+                        topicSplitPanelRenderedDisplay.getPanel().getParent(),
+                        Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH,
+                                Constants.SPLIT_PANEL_SIZE), false);
+            } else if (split == SplitType.VERTICAL) {
+                display.getSplitPanel().setSplitPosition(
+                        topicSplitPanelRenderedDisplay.getPanel().getParent(),
+                        Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH,
+                                Constants.SPLIT_PANEL_SIZE), false);
+            }
+        }
+        finally {
+            logger.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.loadSplitPanelSize()");
         }
     }
 
@@ -404,25 +411,33 @@ public class SearchResultsAndTopicPresenter
      * Respond to the split panel resizing by redisplaying the ACE editor component
      */
     private void bindSplitPanelResize() {
-        display.getSplitPanel().addResizeHandler(new ResizeHandler() {
-            @Override
-            public void onResize(final ResizeEvent event) {
-                if (topicXMLComponent.getDisplay().getEditor() != null) {
-                    topicXMLComponent.getDisplay().getEditor().redisplay();
-                }
 
-                /*
-                 * Saves the width of the split screen
-                 */
-                if (split == SplitType.HORIZONTAL) {
-                    Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH, display
-                            .getSplitPanel().getSplitPosition(topicSplitPanelRenderedDisplay.getPanel().getParent()) + "");
-                } else if (split == SplitType.VERTICAL) {
-                    Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH, display
-                            .getSplitPanel().getSplitPosition(topicSplitPanelRenderedDisplay.getPanel().getParent()) + "");
+        try {
+            logger.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bindSplitPanelResize()");
+
+            display.getSplitPanel().addResizeHandler(new ResizeHandler() {
+                @Override
+                public void onResize(final ResizeEvent event) {
+                    if (topicXMLComponent.getDisplay().getEditor() != null) {
+                        topicXMLComponent.getDisplay().getEditor().redisplay();
+                    }
+
+                    /*
+                     * Saves the width of the split screen
+                     */
+                    if (split == SplitType.HORIZONTAL) {
+                        Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH, display
+                                .getSplitPanel().getSplitPosition(topicSplitPanelRenderedDisplay.getPanel().getParent()) + "");
+                    } else if (split == SplitType.VERTICAL) {
+                        Preferences.INSTANCE.saveSetting(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH, display
+                                .getSplitPanel().getSplitPosition(topicSplitPanelRenderedDisplay.getPanel().getParent()) + "");
+                    }
                 }
-            }
-        });
+            });
+        }
+        finally {
+            logger.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bindSplitPanelResize()");
+        }
     }
 
     /**
@@ -431,7 +446,7 @@ public class SearchResultsAndTopicPresenter
     private void bindTagEditingButtons() {
 
         try {
-            logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.bindTagEditingButtons()");
+            logger.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bindTagEditingButtons()");
 
             /* This will be null if the tags have not been downloaded */
             if (topicTagsComponent.getDisplay().getEditor() != null) {
@@ -447,7 +462,7 @@ public class SearchResultsAndTopicPresenter
                 }
             }
         } finally {
-            logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.bindTagEditingButtons()");
+            logger.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bindTagEditingButtons()");
         }
     }
 
@@ -572,7 +587,7 @@ public class SearchResultsAndTopicPresenter
     protected void loadAdditionalDisplayedItemData() {
 
         try {
-            logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.loadAdditionalDisplayedItemData()");
+            logger.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.loadAdditionalDisplayedItemData()");
 
             topicRevisionsComponent.getDisplay().setRevisionTopic(null);
 
@@ -603,7 +618,7 @@ public class SearchResultsAndTopicPresenter
             /* fix the rendered view buttons */
             initializeSplitViewButtons();
         } finally {
-            logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.loadAdditionalDisplayedItemData()");
+            logger.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.loadAdditionalDisplayedItemData()");
         }
 
     }
@@ -661,7 +676,7 @@ public class SearchResultsAndTopicPresenter
     @Override
     protected void switchView(final TopicViewInterface displayedView) {
         try {
-            logger.log(Level.INFO, "ENTER SearchResultsAndTopicComponent.switchView(final TopicViewInterface displayedView)");
+            logger.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.switchView(final TopicViewInterface displayedView)");
 
             super.switchView(displayedView);
 
@@ -702,7 +717,7 @@ public class SearchResultsAndTopicPresenter
 
             lastDisplayedView = displayedView;
         } finally {
-            logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.switchView(final TopicViewInterface displayedView)");
+            logger.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.switchView(final TopicViewInterface displayedView)");
         }
     }
 
@@ -715,7 +730,7 @@ public class SearchResultsAndTopicPresenter
 
                 try {
                     logger.log(Level.INFO,
-                            "ENTER SearchResultsAndTopicComponent.bindActionButtons() saveClickHandler.onClick()");
+                            "ENTER SearchResultsAndTopicPresenter.bindActionButtons() saveClickHandler.onClick()");
 
                     if (hasUnsavedChanges()) {
                         display.getMessageLogDialog().getDialogBox().center();
@@ -724,7 +739,7 @@ public class SearchResultsAndTopicPresenter
                         Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                     }
                 } finally {
-                    logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.bindActionButtons() saveClickHandler.onClick()");
+                    logger.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bindActionButtons() saveClickHandler.onClick()");
                 }
             }
         };
@@ -1068,7 +1083,7 @@ public class SearchResultsAndTopicPresenter
 
         try {
             logger.log(Level.INFO,
-                    "ENTER SearchResultsAndTopicComponent.initializeViews(final List<TopicViewInterface> filter)");
+                    "ENTER SearchResultsAndTopicPresenter.initializeViews(final List<TopicViewInterface> filter)");
 
             logger.log(Level.INFO, "\tInitializing topic views");
 
@@ -1101,7 +1116,7 @@ public class SearchResultsAndTopicPresenter
             }
 
         } finally {
-            logger.log(Level.INFO, "EXIT SearchResultsAndTopicComponent.initializeViews(final List<TopicViewInterface> filter)");
+            logger.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.initializeViews(final List<TopicViewInterface> filter)");
         }
 
     }
