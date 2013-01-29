@@ -119,8 +119,9 @@ abstract public class BaseOrderedChildrenComponent<T extends RESTBaseEntityV1<T,
      */
     @Override
     public void setSortOrderOfChildren(final SetNewChildSortCallback<D, E, F> sortCallback) {
-        if (sortCallback == null)
+        if (sortCallback == null) {
             throw new NullPointerException("sortCallback cannot be null");
+        }
 
         final int size = getExistingProviderData().getItems().size();
 
@@ -141,12 +142,15 @@ abstract public class BaseOrderedChildrenComponent<T extends RESTBaseEntityV1<T,
     public boolean moveTagsUpAndDown(final W parent, final F object, final boolean down,
                                      final SetNewChildSortCallback<D, E, F> sortCallback) {
 
-        if (parent == null)
+        if (parent == null) {
             throw new NullPointerException("parent cannot be null");
-        if (object == null)
+        }
+        if (object == null) {
             throw new NullPointerException("object cannot be null");
-        if (sortCallback == null)
+        }
+        if (sortCallback == null) {
             throw new NullPointerException("sortCallback cannot be null");
+        }
 
         final int size = getExistingProviderData().getItems().size();
 

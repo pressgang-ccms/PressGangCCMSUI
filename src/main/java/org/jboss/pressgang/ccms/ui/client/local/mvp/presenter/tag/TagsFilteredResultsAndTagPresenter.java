@@ -114,12 +114,18 @@ public class TagsFilteredResultsAndTagPresenter
     private final SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> sortCallback = new SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
 
         @Override
-        public void setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
-            child.getItem().explicitSetRelationshipSort(index);
-            /* Set any unchanged items to updated */
-            if (RESTBaseCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {
-                child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+        public boolean setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
+            if (child.getItem().getRelationshipSort() != index)  {
+                child.getItem().explicitSetRelationshipSort(index);
+                /* Set any unchanged items to updated */
+                if (RESTBaseCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {
+                    child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                }
+
+                return true;
             }
+
+            return false;
         }
     };
 
@@ -160,132 +166,147 @@ public class TagsFilteredResultsAndTagPresenter
     private final ClickHandler saveClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
+            try {
+                logger.log(Level.INFO, "ENTER saveClickHandler.onClick()");
 
-            if (hasUnsavedChanges()) {
+                if (hasUnsavedChanges()) {
 
-                final boolean unsavedTagChanges = unsavedTagChanged();
-                final boolean unsavedCategoryChanges = categoriesComponent.hasUnsavedChanges();
+                    final boolean unsavedTagChanges = unsavedTagChanged();
+                    final boolean unsavedCategoryChanges = categoriesComponent.hasUnsavedChanges();
 
-                /* Create the tag first */
-                saveTagChanges(unsavedTagChanges, unsavedCategoryChanges);
-            } else {
-                Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                    logger.log(Level.INFO, "unsavedTagChanges: " + unsavedTagChanges);
+                    logger.log(Level.INFO, "unsavedCategoryChanges: " + unsavedCategoryChanges);
+
+                    /* Create the tag first */
+                    saveTagChanges(unsavedTagChanges, unsavedCategoryChanges);
+                } else {
+                    Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                }
+            } finally {
+                logger.log(Level.INFO, "EXIT saveClickHandler.onClick()");
             }
 
         }
 
         private void saveTagChanges(final boolean unsavedTagChanges, final boolean unsavedCategoryChanges) {
 
-            /* Was the tag we just saved a new tag? */
-            final boolean wasNewTag = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
+            try {
+                logger.log(Level.INFO, "ENTER TagsFilteredResultsAndTagPresenter.saveTagChanges()");
 
-            /* Save any changes made to the tag entity itself */
-            final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, TagsFilteredResultsAndTagPresenter.Display>(
-                    display, new BaseRestCallback.SuccessAction<RESTTagV1, TagsFilteredResultsAndTagPresenter.Display>() {
-                @Override
-                public void doSuccessAction(final RESTTagV1 retValue,
-                                            final TagsFilteredResultsAndTagPresenter.Display display) {
+                /* Was the tag we just saved a new tag? */
+                final boolean wasNewTag = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
 
-                    /* we are now viewing the object returned by the save */
-                    retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
-                    filteredResultsComponent.getProviderData().getDisplayedItem()
-                            .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                /* Save any changes made to the tag entity itself */
+                final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, TagsFilteredResultsAndTagPresenter.Display>(
+                        display, new BaseRestCallback.SuccessAction<RESTTagV1, TagsFilteredResultsAndTagPresenter.Display>() {
+                    @Override
+                    public void doSuccessAction(final RESTTagV1 retValue,
+                                                final TagsFilteredResultsAndTagPresenter.Display display) {
 
-                    /* Update the list of tags with any saved changes */
-                    retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
+                        /* we are now viewing the object returned by the save */
+                        retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
+                        filteredResultsComponent.getProviderData().getDisplayedItem()
+                                .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
-                    /* refresh the projects list */
-                    projectsComponent.refreshPossibleChildrenDataAndList();
+                        /* Update the list of tags with any saved changes */
+                        retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
 
-                    if (unsavedCategoryChanges) {
-                        saveCategoryChanges(wasNewTag, filteredResultsComponent.getProviderData().getDisplayedItem()
-                                .getItem().getId());
+                        /* refresh the projects list */
+                        projectsComponent.refreshPossibleChildrenDataAndList();
+
+                        if (unsavedCategoryChanges) {
+                            saveCategoryChanges(wasNewTag, filteredResultsComponent.getProviderData().getDisplayedItem()
+                                    .getItem().getId());
+                        } else {
+                            updateDisplayAfterSave(wasNewTag);
+                            Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + retValue.getId());
+                        }
+
+                    }
+                });
+
+                /* Sync changes from the tag view */
+                final RESTTagV1 updateTag = new RESTTagV1();
+                updateTag.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
+                updateTag.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
+                        .getDescription());
+                updateTag.explicitSetName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
+
+                /*
+                 * Sync changes from the projects. categoriesComponent.getProviderData().getItems() contains a collection of all the
+                 * projects, and their tags collections contain any added or removed tag relationships. Here we copy those modified
+                 * relationships into the updateTag, so the changes are all done in one transaction.
+                 */
+                if (categoriesComponent.getPossibleChildrenProviderData().getItems() != null) {
+
+                    updateTag.explicitSetCategories(new RESTCategoryInTagCollectionV1());
+
+                    for (final RESTCategoryCollectionItemV1 category : categoriesComponent.getPossibleChildrenProviderData()
+                            .getItems()) {
+                        for (final RESTTagInCategoryCollectionItemV1 tag : category.getItem().getTags()
+                                .returnDeletedAndAddedCollectionItems()) {
+                            /*
+                             * It should only be possible to add the currently displayed tag to the categories
+                             */
+                            if (tag.getItem().getId().equals(updateTag.getId())) {
+
+                                final RESTCategoryInTagV1 addedCategory = new RESTCategoryInTagV1();
+                                addedCategory.setId(category.getItem().getId());
+                                addedCategory.explicitSetRelationshipSort(tag.getItem().getRelationshipSort());
+
+                                final RESTCategoryInTagCollectionItemV1 collectionItem = new RESTCategoryInTagCollectionItemV1();
+                                collectionItem.setState(tag.getState());
+                                collectionItem.setItem(addedCategory);
+
+                                updateTag.getCategories().getItems().add(collectionItem);
+                            }
+                        }
+                    }
+                }
+
+                /*
+                 * Sync changes from the projects.
+                 */
+                if (projectsComponent.getPossibleChildrenProviderData().getItems() != null) {
+                    updateTag.explicitSetProjects(new RESTProjectCollectionV1());
+                    for (final RESTProjectCollectionItemV1 project : projectsComponent.getPossibleChildrenProviderData().getItems()) {
+                        for (final RESTTagCollectionItemV1 tag : project.getItem().getTags().returnDeletedAndAddedCollectionItems()) {
+                            if (tag.getItem().getId().equals(updateTag.getId())) {
+
+                                final RESTProjectV1 addedProject = new RESTProjectV1();
+                                addedProject.setId(project.getItem().getId());
+
+                                final RESTProjectCollectionItemV1 collectionItem = new RESTProjectCollectionItemV1();
+                                collectionItem.setState(tag.getState());
+                                collectionItem.setItem(addedProject);
+
+                                updateTag.getProjects().getItems().add(collectionItem);
+                            }
+                        }
+                    }
+                }
+
+                /*
+                 * If this is a new tag, it needs to be saved in order to get the tag id to complete the category updates. Upon
+                 * success, the categories will be updated.
+                 */
+                if (unsavedTagChanges) {
+                    if (wasNewTag) {
+                        RESTCalls.createTag(callback, updateTag);
                     } else {
-                        updateDisplayAfterSave(wasNewTag);
-                        Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + retValue.getId());
-                    }
-
-                }
-            });
-
-            /* Sync changes from the tag view */
-            final RESTTagV1 updateTag = new RESTTagV1();
-            updateTag.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-            updateTag.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                    .getDescription());
-            updateTag.explicitSetName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
-
-            /*
-             * Sync changes from the projects. categoriesComponent.getProviderData().getItems() contains a collection of all the
-             * projects, and their tags collections contain any added or removed tag relationships. Here we copy those modified
-             * relationships into the updateTag, so the changes are all done in one transaction.
-             */
-            if (categoriesComponent.getPossibleChildrenProviderData().getItems() != null) {
-
-                updateTag.explicitSetCategories(new RESTCategoryInTagCollectionV1());
-                for (final RESTCategoryCollectionItemV1 category : categoriesComponent.getPossibleChildrenProviderData()
-                        .getItems()) {
-                    for (final RESTTagInCategoryCollectionItemV1 tag : category.getItem().getTags()
-                            .returnDeletedAndAddedCollectionItems()) {
-                        /*
-                         * It should only be possible to add the currently displayed tag to the categories
-                         */
-                        if (tag.getItem().getId().equals(updateTag.getId())) {
-
-                            final RESTCategoryInTagV1 addedCategory = new RESTCategoryInTagV1();
-                            addedCategory.setId(category.getItem().getId());
-                            addedCategory.explicitSetRelationshipSort(category.getItem().getSort());
-
-                            final RESTCategoryInTagCollectionItemV1 collectionItem = new RESTCategoryInTagCollectionItemV1();
-                            collectionItem.setState(tag.getState());
-                            collectionItem.setItem(addedCategory);
-
-                            updateTag.getCategories().getItems().add(collectionItem);
-                        }
+                        RESTCalls.saveTag(callback, updateTag);
                     }
                 }
-            }
+                /*
+                 * If there are no tag changes but there are pending category changes, apply them. There should never be a situation
+                 * where a there are no tag changes but the tag is new.
+                 */
+                else if (unsavedCategoryChanges && !wasNewTag) {
 
-            /*
-             * Sync changes from the projects.
-             */
-            if (projectsComponent.getPossibleChildrenProviderData().getItems() != null) {
-                updateTag.explicitSetProjects(new RESTProjectCollectionV1());
-                for (final RESTProjectCollectionItemV1 project : projectsComponent.getPossibleChildrenProviderData().getItems()) {
-                    for (final RESTTagCollectionItemV1 tag : project.getItem().getTags().returnDeletedAndAddedCollectionItems()) {
-                        if (tag.getItem().getId().equals(updateTag.getId())) {
-
-                            final RESTProjectV1 addedProject = new RESTProjectV1();
-                            addedProject.setId(project.getItem().getId());
-
-                            final RESTProjectCollectionItemV1 collectionItem = new RESTProjectCollectionItemV1();
-                            collectionItem.setState(tag.getState());
-                            collectionItem.setItem(addedProject);
-
-                            updateTag.getProjects().getItems().add(collectionItem);
-                        }
-                    }
+                    saveCategoryChanges(false, filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                 }
-            }
-
-            /*
-             * If this is a new tag, it needs to be saved in order to get the tag id to complete the category updates. Upon
-             * success, the categories will be updated.
-             */
-            if (unsavedTagChanges) {
-                if (wasNewTag) {
-                    RESTCalls.createTag(callback, updateTag);
-                } else {
-                    RESTCalls.saveTag(callback, updateTag);
-                }
-            }
-            /*
-             * If there are no tag changes but there are pending category changes, apply them. There should never be a situation
-             * where a there are no tag changes but the tag is new.
-             */
-            else if (unsavedCategoryChanges && !wasNewTag) {
-
-                saveCategoryChanges(false, filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
+            } finally {
+                logger.log(Level.INFO, "EXIT TagsFilteredResultsAndTagPresenter.saveTagChanges()");
             }
         }
 
@@ -296,83 +317,90 @@ public class TagsFilteredResultsAndTagPresenter
          * @param newTagId the id of the new tag, to replace any tags with the NULL_ID placeholder id if wasNewTag == true
          */
         private void saveCategoryChanges(final boolean wasNewTag, final Integer newTagId) {
-            /* Save any changes made to the tag entity itself */
-            final RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
-                @Override
-                public void begin() {
-                    display.addWaitOperation();
-                }
+            try {
+                logger.log(Level.INFO, "ENTER TagsFilteredResultsAndTagPresenter.saveCategoryChanges()");
 
-                @Override
-                public void generalException(final Exception e) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                    display.removeWaitOperation();
-                }
+                /* Save any changes made to the tag entity itself */
+                final RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
+                    @Override
+                    public void begin() {
+                        display.addWaitOperation();
+                    }
 
-                @Override
-                public void success(final RESTCategoryCollectionV1 retValue) {
-                    try {
-                        /*
-                         * Reload the list of categories and projects if this is the last REST call to succeed
-                         */
-                        if (categoriesComponent.getPossibleChildrenProviderData().getDisplayedItem() != null) {
-                            categoriesComponent.refreshExistingChildList(categoriesComponent.getPossibleChildrenProviderData()
-                                    .getDisplayedItem().getItem());
-                        }
-                        categoriesComponent.refreshPossibleChildrenDataAndList();
-
-                        updateDisplayAfterSave(wasNewTag);
-                        Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + newTagId);
-                    } finally {
+                    @Override
+                    public void generalException(final Exception e) {
+                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                         display.removeWaitOperation();
                     }
 
-                }
+                    @Override
+                    public void success(final RESTCategoryCollectionV1 retValue) {
+                        try {
+                            /*
+                             * Reload the list of categories and projects if this is the last REST call to succeed
+                             */
+                            if (categoriesComponent.getPossibleChildrenProviderData().getDisplayedItem() != null) {
+                                categoriesComponent.refreshExistingChildList(categoriesComponent.getPossibleChildrenProviderData()
+                                        .getDisplayedItem().getItem());
+                            }
+                            categoriesComponent.refreshPossibleChildrenDataAndList();
 
-                @Override
-                public void failed(final Message message, final Throwable throwable) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                    display.removeWaitOperation();
-                }
-            };
+                            updateDisplayAfterSave(wasNewTag);
+                            Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + newTagId);
+                        } finally {
+                            display.removeWaitOperation();
+                        }
 
-            final RESTCategoryCollectionV1 updatedCategories = new RESTCategoryCollectionV1();
+                    }
 
-            for (final RESTCategoryCollectionItemV1 category : categoriesComponent.getPossibleChildrenProviderData().getItems()) {
-                final List<RESTTagInCategoryCollectionItemV1> updatedItems = category.getItem().getTags()
-                        .returnUpdatedCollectionItems();
+                    @Override
+                    public void failed(final Message message, final Throwable throwable) {
+                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
+                        display.removeWaitOperation();
+                    }
+                };
 
-                /* this should always be greater than 0 */
-                if (updatedItems.size() != 0) {
-                    /* Create the category that we are updating */
-                    final RESTCategoryV1 updatedCategory = new RESTCategoryV1();
-                    updatedCategory.setId(category.getItem().getId());
-                    updatedCategory.explicitSetTags(new RESTTagInCategoryCollectionV1());
+                final RESTCategoryCollectionV1 updatedCategories = new RESTCategoryCollectionV1();
 
-                    /* Add it to the collection */
-                    updatedCategories.addItem(updatedCategory);
+                for (final RESTCategoryCollectionItemV1 category : categoriesComponent.getPossibleChildrenProviderData().getItems()) {
+                    final List<RESTTagInCategoryCollectionItemV1> updatedItems = category.getItem().getTags()
+                            .returnUpdatedCollectionItems();
 
-                    for (final RESTTagInCategoryCollectionItemV1 tag : updatedItems) {
-                        /* create a new tag to represent the one that we are updating */
-                        final RESTTagInCategoryV1 updatedTag = new RESTTagInCategoryV1();
-                        updatedTag.explicitSetRelationshipId(tag.getItem().getRelationshipId());
-                        updatedTag.explicitSetRelationshipSort(tag.getItem().getRelationshipSort());
+                    /* this should always be greater than 0 */
+                    if (updatedItems.size() != 0) {
+                        /* Create the category that we are updating */
+                        final RESTCategoryV1 updatedCategory = new RESTCategoryV1();
+                        updatedCategory.setId(category.getItem().getId());
+                        updatedCategory.explicitSetTags(new RESTTagInCategoryCollectionV1());
 
-                        /*
-                         * If we were editing a new tag, it is possible that a tag with a NULL_ID is in the category tags
-                         * collection. If so, replace it with the id that was assigned to the created tag.
-                         */
-                        updatedTag.setId(tag.getItem().getId() == Constants.NULL_ID && wasNewTag ? newTagId : tag.getItem()
-                                .getId());
+                        /* Add it to the collection */
+                        updatedCategories.addItem(updatedCategory);
 
-                        /* add it to the collection */
-                        updatedCategory.getTags().addUpdateItem(updatedTag);
+                        for (final RESTTagInCategoryCollectionItemV1 tag : updatedItems) {
+                            /* create a new tag to represent the one that we are updating */
+                            final RESTTagInCategoryV1 updatedTag = new RESTTagInCategoryV1();
+                            updatedTag.explicitSetRelationshipId(tag.getItem().getRelationshipId());
+                            updatedTag.explicitSetRelationshipSort(tag.getItem().getRelationshipSort());
+
+                            /*
+                             * If we were editing a new tag, it is possible that a tag with a NULL_ID is in the category tags
+                             * collection. If so, replace it with the id that was assigned to the created tag.
+                             */
+                            updatedTag.setId(tag.getItem().getId() == Constants.NULL_ID && wasNewTag ? newTagId : tag.getItem()
+                                    .getId());
+
+                            /* add it to the collection */
+                            updatedCategory.getTags().addUpdateItem(updatedTag);
+                        }
                     }
                 }
-            }
 
-            RESTCalls.updateCategories(callback, updatedCategories);
+                RESTCalls.updateCategories(callback, updatedCategories);
+            } finally {
+                logger.log(Level.INFO, "EXIT TagsFilteredResultsAndTagPresenter.saveCategoryChanges()");
+            }
         }
+
     };
 
     @Override

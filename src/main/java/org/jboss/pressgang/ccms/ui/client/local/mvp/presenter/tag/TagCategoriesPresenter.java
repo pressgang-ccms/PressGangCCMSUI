@@ -101,12 +101,19 @@ public class TagCategoriesPresenter
     private final SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> sortCallback = new SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
 
         @Override
-        public void setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
-            child.getItem().explicitSetRelationshipSort(index);
-            /* Set any unchanged items to updated */
-            if (RESTBaseCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {
-                child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+        public boolean setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
+            if (child.getItem().getRelationshipSort() != index)
+            {
+                child.getItem().explicitSetRelationshipSort(index);
+                /* Set any unchanged items to updated */
+                if (RESTBaseCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {
+                    child.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                }
+
+                return true;
             }
+
+            return false;
         }
     };
 

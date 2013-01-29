@@ -11,6 +11,7 @@ public interface SetNewChildSortCallback<D extends RESTBaseEntityV1<D, E, F>, E 
      * 
      * @param child The child entity whose sort order is to be modified
      * @param index The new sort index
+     * @return true if a change was made, false otherwise
      */
-    void setSort(final F child, final int index);
+    boolean setSort(final F child, final int index);
 }
