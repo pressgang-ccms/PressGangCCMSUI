@@ -280,7 +280,7 @@ public class ImagesFilteredResultsAndImagePresenter
                                     updateImage.getLanguageImages_OTM().addUpdateItem(updatedLanguageImage);
 
                                     final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                                            display, getDefaultImageRestCallback()) {
+                                            display, getDefaultImageRestCallback(), getDefaultImageRestFailureCallback()) {
                                     };
 
                                     RESTCalls.updateImage(callback, updateImage);
@@ -337,7 +337,7 @@ public class ImagesFilteredResultsAndImagePresenter
         }
         /* If we just created a new entity, refresh the list of entities from the database */
         else {
-            imageFilteredResultsComponent.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", imageFilteredResultsComponent.getQuery(), imageFilteredResultsComponent.getDisplay());
+            imageFilteredResultsComponent.process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", imageFilteredResultsComponent.getQuery());
 
             /*
              * reInitialiseView will flush the ui, which will flush the null ID back to the displayed object. To prevent that we
