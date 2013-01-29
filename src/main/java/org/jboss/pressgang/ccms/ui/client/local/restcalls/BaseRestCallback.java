@@ -111,8 +111,8 @@ public class BaseRestCallback<C, D extends BaseTemplateViewInterface> implements
         }
     }
 
-    public interface SuccessAction<T, D extends BaseTemplateViewInterface> {
-        void doSuccessAction(T retValue, D display);
+    public interface SuccessAction<C, D extends BaseTemplateViewInterface> {
+        void doSuccessAction(C retValue, D display);
     }
     
     public interface FailureAction<D extends BaseTemplateViewInterface> {

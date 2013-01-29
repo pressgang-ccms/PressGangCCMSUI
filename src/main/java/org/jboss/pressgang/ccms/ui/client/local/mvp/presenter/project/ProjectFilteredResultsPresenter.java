@@ -51,10 +51,10 @@ public class ProjectFilteredResultsPresenter
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display);
+        process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
-    public void process(final int topicId, final String pageId, final String queryString, final BaseTemplateViewInterface waitDisplay) {
+    public void process(final int topicId, final String pageId, final String queryString) {
 
         super.bind(topicId, pageId, queryString, display);
         display.setProvider(generateListProvider(queryString, display));

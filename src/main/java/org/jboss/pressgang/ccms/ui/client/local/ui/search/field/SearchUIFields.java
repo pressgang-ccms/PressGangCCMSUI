@@ -41,35 +41,35 @@ public class SearchUIFields implements SearchViewBase {
     private final DateTimeFormat dateformat = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.ISO_8601);
 
     public final Date getCreatedAfter() {
-        return new Date(this.createdAfter.getTime());
+        return GWTUtilities.createDateCopy(this.createdAfter);
     }
 
     public final void setCreatedAfter(final Date createdAfter) {
-        this.createdAfter = new Date(createdAfter.getTime());
+        this.createdAfter = GWTUtilities.createDateCopy(createdAfter);
     }
 
     public final Date getCreatedBefore() {
-        return new Date(this.createdBefore.getTime());
+        return GWTUtilities.createDateCopy(this.createdBefore);
     }
 
     public final void setCreatedBefore(final Date createdBefore) {
-        this.createdBefore = new Date(createdBefore.getTime());
+        this.createdBefore = GWTUtilities.createDateCopy(createdBefore);
     }
 
     public final Date getEditedAfter() {
-        return new Date(this.editedAfter.getTime());
+        return GWTUtilities.createDateCopy(this.editedAfter);
     }
 
     public final void setEditedAfter(final Date editedAfter) {
-        this.editedAfter = new Date(editedAfter.getTime());
+        this.editedAfter = GWTUtilities.createDateCopy(editedAfter);
     }
 
     public final Date getEditedBefore() {
-        return new Date(this.editedBefore.getTime());
+        return GWTUtilities.createDateCopy(this.editedBefore);
     }
 
     public final void setEditedBefore(final Date editedBefore) {
-        this.editedBefore = new Date(editedBefore.getTime());
+        this.editedBefore = GWTUtilities.createDateCopy(editedBefore);
     }
 
     public final Integer getEditedInLastXDays() {

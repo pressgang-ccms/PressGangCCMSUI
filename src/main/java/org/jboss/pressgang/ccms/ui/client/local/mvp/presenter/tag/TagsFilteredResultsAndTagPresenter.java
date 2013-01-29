@@ -186,15 +186,15 @@ public class TagsFilteredResultsAndTagPresenter
                 public void doSuccessAction(final RESTTagV1 retValue,
                                             final TagsFilteredResultsAndTagPresenter.Display display) {
 
-                            /* we are now viewing the object returned by the save */
+                    /* we are now viewing the object returned by the save */
                     retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
                     filteredResultsComponent.getProviderData().getDisplayedItem()
                             .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
-                            /* Update the list of tags with any saved changes */
+                    /* Update the list of tags with any saved changes */
                     retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
 
-                            /* refresh the projects list */
+                    /* refresh the projects list */
                     projectsComponent.refreshPossibleChildrenDataAndList();
 
                     if (unsavedCategoryChanges) {
@@ -206,8 +206,7 @@ public class TagsFilteredResultsAndTagPresenter
                     }
 
                 }
-            }) {
-            };
+            });
 
             /* Sync changes from the tag view */
             final RESTTagV1 updateTag = new RESTTagV1();

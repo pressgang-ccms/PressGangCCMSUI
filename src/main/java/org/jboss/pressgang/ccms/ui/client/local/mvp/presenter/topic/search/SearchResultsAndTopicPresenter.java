@@ -185,7 +185,7 @@ public class SearchResultsAndTopicPresenter
             clearContainerAndAddTopLevelPanel(container, display);
 
             /* Initialize the other presenters we have pulled in */
-            searchResultsComponent.process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display);
+            searchResultsComponent.process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
             topicTagsComponent.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
 
             /* When the topics have been loaded, display the first one */

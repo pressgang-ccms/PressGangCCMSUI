@@ -112,7 +112,7 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
         }
         /* If we just created a new entity, refresh the list of entities from the database */
         else {
-            filteredResultsComponent.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", filteredResultsComponent.getQuery(), filteredResultsDisplay);
+            filteredResultsComponent.process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", filteredResultsComponent.getQuery());
 
             /*
              * reInitialiseView will flush the ui, which will flush the null ID back to the displayed object. To prevent that we

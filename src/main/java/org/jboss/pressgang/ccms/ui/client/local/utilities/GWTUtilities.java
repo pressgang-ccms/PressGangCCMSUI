@@ -5,6 +5,8 @@ import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 
+import java.util.Date;
+
 /**
  * GWT has some limitations, like not being able to bind an Editor to an array
  * (http://code.google.com/p/google-web-toolkit/issues/detail?id=6600) and not supporting conversion from a byte array to a
@@ -33,6 +35,18 @@ final public class GWTUtilities {
     public static boolean isEventToOpenNewWindow(final ClickEvent event) {
         return event.isControlKeyDown();
 
+    }
+
+    /**
+     * Creates a copy of the given date
+     * @param input The date to copy
+     * @return null if input is null, and a copy of the date otherwise
+     */
+    public static Date createDateCopy(final Date input)
+    {
+        if (input == null)
+            return null;
+        return new Date(input.getTime());
     }
 
     /**

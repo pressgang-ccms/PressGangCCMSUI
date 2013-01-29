@@ -293,71 +293,68 @@ public class CategoriesFilteredResultsAndCategoryPresenter
         /**
          * A click handler used to save any changes to the category
          */
-        final ClickHandler saveClickHandler = new
+        final ClickHandler saveClickHandler = new ClickHandler() {
+                @Override
+                public void onClick(final ClickEvent event) {
 
-                ClickHandler() {
-                    @Override
-                    public void onClick(final ClickEvent event) {
+                    /* Was the tag we just saved a new tag? */
+                    final boolean wasNewEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem();
 
-                /* Was the tag we just saved a new tag? */
-                        final boolean wasNewEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem();
+                     /* Sync the UI to the underlying object */
+                    categoryPresenter.getDisplay().getDriver().flush();
 
-                /* Sync the UI to the underlying object */
-                        categoryPresenter.getDisplay().getDriver().flush();
+                    final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, Display>(display,
+                            new BaseRestCallback.SuccessAction<RESTCategoryV1, Display>() {
+                                @Override
+                                public void doSuccessAction(final RESTCategoryV1 retValue, final Display display) {
+                                    retValue.cloneInto(filteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
+                                    retValue.cloneInto(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
+                                            true);
 
-                        final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, Display>(display,
-                                new BaseRestCallback.SuccessAction<RESTCategoryV1, Display>() {
-                                    @Override
-                                    public void doSuccessAction(final RESTCategoryV1 retValue, final Display display) {
-                                        retValue.cloneInto(filteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
-                                        retValue.cloneInto(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
-                                                true);
+                                    /* This category is no longer a new category */
+                                    filteredResultsPresenter.getProviderData().getDisplayedItem()
+                                            .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
-                                /* This category is no longer a new category */
-                                        filteredResultsPresenter.getProviderData().getDisplayedItem()
-                                                .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                                    categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData()
+                                            .getDisplayedItem().getItem());
+                                    categoryTagPresenter.refreshPossibleChildrenDataAndList();
 
-                                        categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData()
-                                                .getDisplayedItem().getItem());
-                                        categoryTagPresenter.refreshPossibleChildrenDataAndList();
+                                    updateDisplayAfterSave(wasNewEntity);
 
-                                        updateDisplayAfterSave(wasNewEntity);
-
-                                        Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                                    }
-                                }) {
-                        };
-
-                        if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
-
-                    /*
-                     * If this is a new category, it needs to be saved in order to get the tag id to complete the category
-                     * updates. Upon success, the categories will be updated.
-                     */
-                            final boolean unsavedTagChanges = unsavedCategoryChanges() || unsavedTagChanges();
-
-                            if (unsavedTagChanges) {
-
-                                final RESTCategoryV1 category = new RESTCategoryV1();
-                                category.setId(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
-                                category.explicitSetName(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
-                                        .getName());
-                                category.explicitSetDescription(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
-                                        .getDescription());
-                                category.explicitSetTags(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
-                                        .getTags());
-
-                                if (wasNewEntity) {
-                                    RESTCalls.createCategory(callback, category);
-                                } else {
-                                    RESTCalls.saveCategory(callback, category);
+                                    Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                                 }
+                            });
+
+                    if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
+
+                        /*
+                         * If this is a new category, it needs to be saved in order to get the tag id to complete the category
+                         * updates. Upon success, the categories will be updated.
+                         */
+                        final boolean unsavedTagChanges = unsavedCategoryChanges() || unsavedTagChanges();
+
+                        if (unsavedTagChanges) {
+
+                            final RESTCategoryV1 category = new RESTCategoryV1();
+                            category.setId(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
+                            category.explicitSetName(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
+                                    .getName());
+                            category.explicitSetDescription(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
+                                    .getDescription());
+                            category.explicitSetTags(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
+                                    .getTags());
+
+                            if (wasNewEntity) {
+                                RESTCalls.createCategory(callback, category);
                             } else {
-                                Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                                RESTCalls.saveCategory(callback, category);
                             }
+                        } else {
+                            Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                         }
                     }
-                };
+                }
+            };
 
         for (final CategoryViewInterface view : new CategoryViewInterface[]{categoryPresenter.getDisplay(), categoryTagPresenter.getDisplay()}) {
             view.getDetails().addClickHandler(categoryDetailsClickHandler);

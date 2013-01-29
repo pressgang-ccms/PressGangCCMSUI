@@ -4,6 +4,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.Component;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 
@@ -40,4 +41,6 @@ public interface BaseFilteredResultsComponentInterface<T extends RESTBaseEntityV
      * @param display The filtered results view
      */
     void bind(final int topicId, final String pageId, final String queryString, final BaseFilteredResultsViewInterface display);
+
+    void process(final int topicId, final String pageId, final String queryString);
 }
