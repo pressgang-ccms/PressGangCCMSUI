@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base;
 
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.Component;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.Component;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
 
 public interface BaseTopicViewPresenterInterface extends Component {

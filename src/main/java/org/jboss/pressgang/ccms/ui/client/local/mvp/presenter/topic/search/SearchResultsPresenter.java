@@ -2,13 +2,18 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
 
 import java.util.ArrayList;
 
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.filteredresults.BaseFilteredResultsComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.TopicListReceived;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.TopicListReceivedHandler;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ImagesFilteredResultsAndImageViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
@@ -18,6 +23,7 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.HasData;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 import javax.inject.Inject;
 
@@ -36,10 +42,22 @@ public class SearchResultsPresenter
 
     public static final String HISTORY_TOKEN = "SearchResultsView";
 
+    /**
+     * Manages event registration and notification.
+     */
+    final private HandlerManager handlerManager = new HandlerManager(this);
+
     @Inject
     private Display display;
 
     private String queryString;
+
+    @Inject
+    private HandlerManager eventBus;
+
+    public void addTopicListReceivedHandler(TopicListReceivedHandler handler) {
+        handlerManager.addHandler(TopicListReceived.getType(), handler);
+    }
 
     public Display getDisplay()
     {
@@ -99,10 +117,10 @@ public class SearchResultsPresenter
                             getProviderData().setItems(retValue.getItems());
                             getProviderData().setSize(retValue.getSize());
                             relinkSelectedItem();
-                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(),
-                                    getProviderData().getStartRow());
+                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                         } finally {
                             display.removeWaitOperation();
+                            handlerManager.fireEvent(new TopicListReceived(retValue));
                         }
                     }
 

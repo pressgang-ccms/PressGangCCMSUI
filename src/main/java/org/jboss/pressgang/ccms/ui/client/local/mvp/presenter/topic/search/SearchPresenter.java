@@ -9,7 +9,8 @@ import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.TopicListReceivedHandler;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
@@ -42,6 +43,8 @@ public class SearchPresenter extends ComponentBase implements TemplatePresenter 
     @Inject
     private HandlerManager eventBus;
 
+    final private HandlerManager handlerManager = new HandlerManager(this);
+
     @Inject
     private Display display;
 
@@ -49,6 +52,8 @@ public class SearchPresenter extends ComponentBase implements TemplatePresenter 
     {
         return display;
     }
+
+
 
     @Override
     public void go(final HasWidgets container) {

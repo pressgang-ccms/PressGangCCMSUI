@@ -1,7 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base;
 
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.ComponentBase;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;

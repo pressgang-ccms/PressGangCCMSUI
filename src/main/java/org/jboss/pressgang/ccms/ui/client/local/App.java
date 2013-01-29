@@ -24,15 +24,26 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
  * @author Matthew Casperson
  */
 @EntryPoint
-public class App {
+public final class App {
     /** The Errai event bus. */
     private HandlerManager eventBus = new HandlerManager(null);
 
     /** The controller that handles the transitions between views. */
     @Inject
     private AppController appController;
-    
-    private static final Logger logger = Logger.getLogger(App.class.getName());
+
+    /**
+     * The logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(App.class.getName());
+
+    /**
+     * Default constructor. Does nothing.
+     */
+    public App() {
+
+    }
+
 
     /**
      * Called once GWT has initialized.
@@ -43,7 +54,7 @@ public class App {
             @Override
             public void onUncaughtException(final Throwable ex) {
                 ex.printStackTrace();
-                logger.log(Level.SEVERE, ex.getMessage());
+                LOGGER.log(Level.SEVERE, ex.getMessage());
                 Window.alert("Uncaught exception was detected. Redirecting you to the home page.\nException: "
                         + ex.getMessage());
                 History.newItem(WelcomePresenter.HISTORY_TOKEN);
@@ -59,11 +70,11 @@ public class App {
         /* Inject the CSS file */
         CSSResources.INSTANCE.appCss().ensureInjected();
 
-        appController.go(root);
+        this.appController.go(root);
     }
 
     @Produces
     private HandlerManager produceEventBus() {
-        return eventBus;
+        return this.eventBus;
     }
 }

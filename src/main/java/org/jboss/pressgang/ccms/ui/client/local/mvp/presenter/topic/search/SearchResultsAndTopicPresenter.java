@@ -30,13 +30,14 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.searchandedit.BaseSearchAndEditComponent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.searchandedit.DisplayNewEntityCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.TopicListReceivedHandler;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicCombinedViewPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.GetCurrentTopic;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringListLoaded;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.SearchResultsAndTopicViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -186,6 +187,16 @@ public class SearchResultsAndTopicPresenter
             /* Initialize the other presenters we have pulled in */
             searchResultsComponent.process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display);
             topicTagsComponent.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+
+            /* When the topics have been loaded, display the first one */
+            searchResultsComponent.addTopicListReceivedHandler(new TopicListReceivedHandler(){
+                @Override
+                public void onTopicsRecieved(final RESTTopicCollectionV1 topics) {
+                    if (topics.getItems() != null && topics.getItems().size() == 1) {
+                        loadNewEntity(getNewEntityCallback, topics.getItems().get(0));
+                    }
+                }
+            });
 
             super.bind(ServiceConstants.TOPIC_EDIT_VIEW_CONTENT_TOPIC, HISTORY_TOKEN, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLComponent.getDisplay(), topicViewComponent.getDisplay(),
                     searchResultsComponent.getDisplay(), searchResultsComponent, display, display, getNewEntityCallback);
