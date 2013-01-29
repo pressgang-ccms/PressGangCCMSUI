@@ -173,6 +173,15 @@ public class ImagesFilteredResultsAndImagePresenter
         };
     }
 
+    private BaseRestCallback.FailureAction<BaseTemplateViewInterface> getDefaultImageRestFailureCallback() {
+        return new BaseRestCallback.FailureAction<BaseTemplateViewInterface>() {
+            @Override
+            public void doFailureAction(final BaseTemplateViewInterface display) {
+                  Window.alert(PressGangCCMSUI.INSTANCE.ImageUploadFailure());
+            }
+        };
+    }
+
     @Override
     protected void switchView(final ImagePresenter.Display displayedView) {
 

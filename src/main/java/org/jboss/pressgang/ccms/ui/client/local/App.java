@@ -24,7 +24,7 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
  * @author Matthew Casperson
  */
 @EntryPoint
-public final class App {
+public class App {
     /** The Errai event bus. */
     private HandlerManager eventBus = new HandlerManager(null);
 
@@ -50,27 +50,34 @@ public final class App {
      */
     @AfterInitialization
     public void startApp() {
-        GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
-            @Override
-            public void onUncaughtException(final Throwable ex) {
-                ex.printStackTrace();
-                LOGGER.log(Level.SEVERE, ex.getMessage());
-                Window.alert("Uncaught exception was detected. Redirecting you to the home page.\nException: "
-                        + ex.getMessage());
-                History.newItem(WelcomePresenter.HISTORY_TOKEN);
-            }
-        });
+        try {
+            LOGGER.log(Level.INFO, "ENTER App.startApp()");
 
-        /* Setup the REST client */
-        RestClient.setApplicationRoot(Constants.REST_SERVER);
-        RestClient.setJacksonMarshallingActive(true);
+            GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
+                @Override
+                public void onUncaughtException(final Throwable ex) {
+                    ex.printStackTrace();
+                    LOGGER.log(Level.SEVERE, ex.getMessage());
+                    Window.alert("Uncaught exception was detected. Redirecting you to the home page.\nException: "
+                            + ex.getMessage());
+                    History.newItem(WelcomePresenter.HISTORY_TOKEN);
+                }
+            });
 
-        final RootLayoutPanel root = RootLayoutPanel.get();
+            /* Setup the REST client */
+            RestClient.setApplicationRoot(Constants.REST_SERVER);
+            RestClient.setJacksonMarshallingActive(true);
 
-        /* Inject the CSS file */
-        CSSResources.INSTANCE.appCss().ensureInjected();
+            final RootLayoutPanel root = RootLayoutPanel.get();
 
-        this.appController.go(root);
+            /* Inject the CSS file */
+            CSSResources.INSTANCE.appCss().ensureInjected();
+
+            this.appController.go(root);
+        }
+        finally {
+            LOGGER.log(Level.INFO, "EXIT App.startApp()");
+        }
     }
 
     @Produces

@@ -47,6 +47,9 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * This class watches the event bus for page change requests, and instructs the appropriate presenters
  * to display when a page change event is received.
@@ -62,6 +65,11 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
     private HasWidgets container;
 
     /**
+     * The logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(AppController.class.getName());
+
+    /**
      * Default constructor. Does nothing.
      */
     public AppController() {
@@ -71,43 +79,57 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
     /**
      * Adds event handlers to the event bus.
      */
-    public final void bind() {
-        History.addValueChangeHandler(this);
+    public void bind() {
+        try {
+            LOGGER.log(Level.INFO, "ENTER AppController.bind()");
 
-        this.eventBus.addHandler(WelcomeViewEvent.TYPE, new ViewOpenEventHandler(WelcomePresenter.HISTORY_TOKEN));
-        this.eventBus.addHandler(SearchViewEvent.TYPE, new ViewOpenEventHandler(SearchPresenter.HISTORY_TOKEN));
-        this.eventBus.addHandler(SearchResultsViewEvent.TYPE,
-                new ViewOpenWithQueryEventHandler(SearchResultsPresenter.HISTORY_TOKEN));
-        this.eventBus.addHandler(SearchResultsAndTopicViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
-                SearchResultsAndTopicPresenter.HISTORY_TOKEN));
-        this.eventBus.addHandler(ImagesViewEvent.TYPE, new ViewOpenEventHandler(ImagePresenter.HISTORY_TOKEN));
-        this.eventBus.addHandler(ImagesFilteredResultsAndImageViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
-                ImagesFilteredResultsAndImagePresenter.HISTORY_TOKEN));
-        this.eventBus.addHandler(TagsFilteredResultsAndTagViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
-                TagsFilteredResultsAndTagPresenter.HISTORY_TOKEN));
-        this.eventBus.addHandler(CategoriesFilteredResultsAndCategoryViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
-                CategoriesFilteredResultsAndCategoryPresenter.HISTORY_TOKEN));
-        this.eventBus.addHandler(SearchTagsFieldsAndFiltersViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
-                SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN));
-        this.eventBus.addHandler(CreateTopicViewEvent.TYPE, new ViewOpenEventHandler(CreateTopicPresenter.HISTORY_TOKEN));
-        this.eventBus.addHandler(ProjectsFilteredResultsAndProjectViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
-                ProjectsFilteredResultsAndProjectPresenter.HISTORY_TOKEN));
-    }
+            History.addValueChangeHandler(this);
 
-    @Override
-    public final void go(final HasWidgets container) {
-        this.container = container;
-        this.bind();
-
-        if ("".equals(History.getToken())) {
-            History.newItem(WelcomePresenter.HISTORY_TOKEN);
-        } else {
-            History.fireCurrentHistoryState();
+            this.eventBus.addHandler(WelcomeViewEvent.TYPE, new ViewOpenEventHandler(WelcomePresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(SearchViewEvent.TYPE, new ViewOpenEventHandler(SearchPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(SearchResultsViewEvent.TYPE,
+                    new ViewOpenWithQueryEventHandler(SearchResultsPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(SearchResultsAndTopicViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
+                    SearchResultsAndTopicPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(ImagesViewEvent.TYPE, new ViewOpenEventHandler(ImagePresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(ImagesFilteredResultsAndImageViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
+                    ImagesFilteredResultsAndImagePresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(TagsFilteredResultsAndTagViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
+                    TagsFilteredResultsAndTagPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(CategoriesFilteredResultsAndCategoryViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
+                    CategoriesFilteredResultsAndCategoryPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(SearchTagsFieldsAndFiltersViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
+                    SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(CreateTopicViewEvent.TYPE, new ViewOpenEventHandler(CreateTopicPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(ProjectsFilteredResultsAndProjectViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
+                    ProjectsFilteredResultsAndProjectPresenter.HISTORY_TOKEN));
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT AppController.bind()");
         }
     }
 
     @Override
-    public final void onValueChange(final ValueChangeEvent<String> event) {
+    public void go(final HasWidgets container) {
+        try {
+            LOGGER.log(Level.INFO, "ENTER AppController.go()");
+
+            this.container = container;
+            this.bind();
+
+            if ("".equals(History.getToken())) {
+                LOGGER.log(Level.INFO, "Setting default history token");
+                History.newItem(WelcomePresenter.HISTORY_TOKEN);
+            } else {
+                LOGGER.log(Level.INFO, "Firing current history token");
+                History.fireCurrentHistoryState();
+            }
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT AppController.go()");
+        }
+    }
+
+    @Override
+    public void onValueChange(final ValueChangeEvent<String> event) {
 
         final String token = event.getValue();
 

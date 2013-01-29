@@ -356,4 +356,6 @@ public interface PressGangCCMSUI extends Constants {
     String InitialTopicCreation();
 
     String SpellChecking();
+
+    String ImageUploadFailure();
 }
