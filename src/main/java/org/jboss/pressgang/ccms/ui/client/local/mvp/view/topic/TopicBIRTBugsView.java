@@ -75,9 +75,6 @@ public class TopicBIRTBugsView extends TopicViewBase implements TopicBIRTBugsPre
         addActionButton(this.getCsps());
         addActionButton(this.getSave());
 
-       
-        
-
         addRightAlignedActionButtonPaddingPanel();
     }
 }

@@ -145,13 +145,13 @@ public class CategoryFilteredResultsPresenter
     public final String getQuery() {
         final StringBuilder retValue = new StringBuilder();
         if (!this.display.getIdFilter().getText().isEmpty()) {
-            retValue.append(";catIds=").append(this.display.getIdFilter().getText());
+            retValue.append(";catIds=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.display.getIdFilter().getText()) : this.display.getIdFilter().getText()));
         }
         if (!this.display.getNameFilter().getText().isEmpty()) {
-            retValue.append(";catName=").append(this.display.getNameFilter().getText());
+            retValue.append(";catName=").append((Constants.ENCODE_QUERY_OPTIONS ?URL.encodeQueryString(this.display.getNameFilter().getText()) : this.display.getNameFilter().getText()));
         }
         if (!this.display.getDescriptionFilter().getText().isEmpty()) {
-            retValue.append(";catDesc=").append(this.display.getDescriptionFilter().getText());
+            retValue.append(";catDesc=").append((Constants.ENCODE_QUERY_OPTIONS ?URL.encodeQueryString(this.display.getDescriptionFilter().getText()) : this.display.getDescriptionFilter().getText()));
         }
 
         return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX

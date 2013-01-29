@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.errai.bus.client.api.Message;
@@ -80,13 +81,13 @@ public class ImageFilteredResultsPresenter
     public String getQuery() {
         final StringBuilder retValue = new StringBuilder();
         if (!display.getImageIdFilter().getText().isEmpty()) {
-            retValue.append(";imageIds=").append(display.getImageIdFilter().getText());
+            retValue.append(";imageIds=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getImageIdFilter().getText()) : display.getImageIdFilter().getText()));
         }
         if (!display.getImageDescriptionFilter().getText().isEmpty()) {
-            retValue.append(";imageDesc=").append(display.getImageDescriptionFilter().getText());
+            retValue.append(";imageDesc=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getImageDescriptionFilter().getText()) : display.getImageDescriptionFilter().getText()));
         }
         if (!display.getImageOriginalFileNameFilter().getText().isEmpty()) {
-            retValue.append(";imageOrigName=").append(display.getImageOriginalFileNameFilter().getText());
+            retValue.append(";imageOrigName=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getImageOriginalFileNameFilter().getText()) : display.getImageOriginalFileNameFilter().getText()));
         }
 
         return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX

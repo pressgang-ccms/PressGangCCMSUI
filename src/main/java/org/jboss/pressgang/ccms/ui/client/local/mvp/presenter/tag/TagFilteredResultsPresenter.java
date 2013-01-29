@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.errai.bus.client.api.Message;
@@ -147,13 +148,13 @@ public class TagFilteredResultsPresenter
     public String getQuery() {
         final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
-            retValue.append(";tagIds=").append(display.getIdFilter().getText());
+            retValue.append(";tagIds=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getIdFilter().getText()) : display.getIdFilter().getText()));
         }
         if (!display.getNameFilter().getText().isEmpty()) {
-            retValue.append(";tagName=").append(display.getNameFilter().getText());
+            retValue.append(";tagName=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getNameFilter().getText()) : display.getNameFilter().getText()));
         }
         if (!display.getDescriptionFilter().getText().isEmpty()) {
-            retValue.append(";tagDesc=").append(display.getDescriptionFilter().getText());
+            retValue.append(";tagDesc=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getDescriptionFilter().getText()) : display.getDescriptionFilter().getText()));
         }
 
         return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX

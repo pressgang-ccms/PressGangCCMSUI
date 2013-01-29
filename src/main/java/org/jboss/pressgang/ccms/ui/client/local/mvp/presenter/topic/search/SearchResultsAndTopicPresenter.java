@@ -130,7 +130,7 @@ public class SearchResultsAndTopicPresenter
     @Inject
     private SearchResultsPresenter searchResultsComponent;
     @Inject
-    private TopicXMLErrorsPresenter.Display topicXMLErrorsDisplay;
+    private TopicXMLErrorsPresenter topicXMLErrorsPresenter;
     @Inject
     private TopicTagsPresenter topicTagsComponent;
     @Inject
@@ -314,7 +314,7 @@ public class SearchResultsAndTopicPresenter
         }
 
         /* These are read only views */
-        if (lastDisplayedView == topicXMLErrorsDisplay || lastDisplayedView == topicTagsComponent.getDisplay()) {
+        if (lastDisplayedView == topicXMLErrorsPresenter.getDisplay() || lastDisplayedView == topicTagsComponent.getDisplay()) {
             return;
         }
 
@@ -700,7 +700,7 @@ public class SearchResultsAndTopicPresenter
             /* Refresh the rendered view (when there is no page splitting) */
             if (displayedView == this.topicRenderedPresenter.getDisplay()) {
                 topicRenderedPresenter.getDisplay().initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
-                        display.getSplitType(), locales, false);
+                        display.getSplitType(), locales, true);
             }
             /* Set the projects combo box as the focsed element */
             else if (displayedView == this.topicTagsComponent.getDisplay()) {
@@ -918,7 +918,7 @@ public class SearchResultsAndTopicPresenter
                 flushChanges();
 
                 if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
-                    switchView(topicXMLErrorsDisplay);
+                    switchView(topicXMLErrorsPresenter.getDisplay());
                 }
             }
         };
@@ -1008,6 +1008,11 @@ public class SearchResultsAndTopicPresenter
 
                 initializeDisplay();
                 initializeSplitViewButtons();
+
+                if (lastDisplayedView == topicRenderedPresenter.getDisplay()) {
+                    switchView(topicXMLComponent.getDisplay());
+                    showRenderedSplitPanelMenu();
+                }
             }
         };
 
@@ -1024,6 +1029,11 @@ public class SearchResultsAndTopicPresenter
 
                 initializeDisplay();
                 initializeSplitViewButtons();
+
+                if (lastDisplayedView == topicRenderedPresenter.getDisplay()) {
+                    switchView(topicXMLComponent.getDisplay());
+                    showRenderedSplitPanelMenu();
+                }
             }
         };
 
@@ -1047,7 +1057,7 @@ public class SearchResultsAndTopicPresenter
 
         /* Hook up the click listeners */
         for (final TopicViewInterface view : new TopicViewInterface[]{topicViewComponent.getDisplay(), topicXMLComponent.getDisplay(),
-                topicRenderedPresenter.getDisplay(), topicXMLErrorsDisplay, topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(), topicRevisionsComponent.getDisplay()}) {
+                topicRenderedPresenter.getDisplay(), topicXMLErrorsPresenter.getDisplay(), topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(), topicRevisionsComponent.getDisplay()}) {
             view.getRenderedSplit().addClickHandler(splitMenuHandler);
             view.getFields().addClickHandler(topicViewClickHandler);
             view.getXml().addClickHandler(topicXMLClickHandler);
@@ -1100,7 +1110,7 @@ public class SearchResultsAndTopicPresenter
             logger.log(Level.INFO, "\tInitializing topic views");
 
             for (final TopicViewInterface view : new TopicViewInterface[]{topicViewComponent.getDisplay(), topicXMLComponent.getDisplay(),
-                    topicRenderedPresenter.getDisplay(), topicXMLErrorsDisplay, topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(),
+                    topicRenderedPresenter.getDisplay(), topicXMLErrorsPresenter.getDisplay(), topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(),
                     topicSplitPanelRenderedDisplay}) {
                 if (viewIsInFilter(filter, view)) {
 
@@ -1136,7 +1146,7 @@ public class SearchResultsAndTopicPresenter
     private void initializeSplitViewButtons() {
         /* fix the rendered view button */
         for (final TopicViewInterface view : new TopicViewInterface[]{topicViewComponent.getDisplay(), topicXMLComponent.getDisplay(),
-                topicRenderedPresenter.getDisplay(), topicXMLErrorsDisplay, topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(), topicRevisionsComponent.getDisplay()}) {
+                topicRenderedPresenter.getDisplay(), topicXMLErrorsPresenter.getDisplay(), topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(), topicRevisionsComponent.getDisplay()}) {
             view.buildSplitViewButtons(split);
         }
     }
