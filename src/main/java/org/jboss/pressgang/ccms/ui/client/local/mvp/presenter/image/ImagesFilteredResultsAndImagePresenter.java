@@ -485,7 +485,10 @@ public class ImagesFilteredResultsAndImagePresenter
                     final RESTLanguageImageCollectionItemV1 selectedImage = imageComponent.getDisplay().getEditor()
                             .languageImages_OTMEditor().itemsEditor().getList().get(selectedTab);
 
-                    displayImageInPopup(GWTUtilities.getStringUTF8(selectedImage.getItem().getImageDataBase64()));
+                    /* This may be null if no image was uploaded */
+                    if (selectedImage.getItem().getImageDataBase64() != null) {
+                        displayImageInPopup(GWTUtilities.getStringUTF8(selectedImage.getItem().getImageDataBase64()));
+                    }
                 }
             };
         });
