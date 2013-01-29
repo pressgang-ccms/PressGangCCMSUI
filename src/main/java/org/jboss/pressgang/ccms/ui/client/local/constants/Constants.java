@@ -10,7 +10,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm
      */
-    public static final String VERSION = "201301291338";
+    public static final String VERSION = "201301291441";
 
     /**
      * The newer versions of the REST interface encode the query PathParam elements (so as to allow for searches to
@@ -103,6 +103,18 @@ public final class Constants {
      * The maximum number of results to return in a search result.
      */
     public static final int MAX_SEARCH_RESULTS = 15;
+    /**
+     * The BIRT URL
+     */
+    public static final String BIRT_URL =  "http://skynet-dev.usersys.redhat.com:8080/birt/";
+    /**
+     * The report that run a report with no other options
+     */
+    public static final String BIRT_RUN_REPORT = "run?__report=";
+    /**
+     * The report that displays the topics bugzilla bugs
+     */
+    public static final String BIRT_TOPIC_BUGZILLA_REPORT = "General/Bugs_Per_Topic.rptdesign&TopicIDParameter=";
     /**
      * The REST server.
      */
