@@ -37,10 +37,10 @@ public class TopicRenderedPresenter extends BaseTopicViewPresenter implements Te
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void process(final int topicId, final String pageId, final BaseTemplateViewInterface waitDisplay)
+    public void process(final int topicId, final String pageId)
     {
         super.bind(topicId, pageId, display);
     }

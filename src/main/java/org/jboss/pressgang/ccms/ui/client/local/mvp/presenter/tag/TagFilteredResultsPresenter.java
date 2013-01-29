@@ -79,11 +79,11 @@ public class TagFilteredResultsPresenter
 
             if (queryElements.length == 2) {
                 if (queryElements[0].equals("tagIds")) {
-                    this.display.getIdFilter().setText(queryElements[1]);
+                    this.display.getIdFilter().setText(URL.decodeQueryString(queryElements[1]));
                 } else if (queryElements[0].equals("tagName")) {
-                    this.display.getNameFilter().setText(queryElements[1]);
+                    this.display.getNameFilter().setText(URL.decodeQueryString(queryElements[1]));
                 } else if (queryElements[0].equals("tagDesc")) {
-                    this.display.getDescriptionFilter().setText(queryElements[1]);
+                    this.display.getDescriptionFilter().setText(URL.decodeQueryString(queryElements[1]));
                 }
             }
         }

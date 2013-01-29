@@ -188,6 +188,7 @@ public class SearchResultsAndTopicPresenter
             searchResultsComponent.process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
             topicTagsComponent.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
 
+
             /* When the topics have been loaded, display the first one */
             searchResultsComponent.addTopicListReceivedHandler(new TopicListReceivedHandler(){
                 @Override

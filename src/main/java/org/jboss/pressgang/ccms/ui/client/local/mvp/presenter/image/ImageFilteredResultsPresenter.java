@@ -152,11 +152,11 @@ public class ImageFilteredResultsPresenter
 
             if (queryElements.length == 2) {
                 if (queryElements[0].equals("imageIds")) {
-                    this.display.getImageIdFilter().setText(queryElements[1]);
+                    this.display.getImageIdFilter().setText(URL.decodeQueryString(queryElements[1]));
                 } else if (queryElements[0].equals("imageDesc")) {
-                    this.display.getImageDescriptionFilter().setText(queryElements[1]);
+                    this.display.getImageDescriptionFilter().setText(URL.decodeQueryString(queryElements[1]));
                 } else if (queryElements[0].equals("imageOrigName")) {
-                    this.display.getImageOriginalFileNameFilter().setText(queryElements[1]);
+                    this.display.getImageOriginalFileNameFilter().setText(URL.decodeQueryString(queryElements[1]));
                 }
             }
         }

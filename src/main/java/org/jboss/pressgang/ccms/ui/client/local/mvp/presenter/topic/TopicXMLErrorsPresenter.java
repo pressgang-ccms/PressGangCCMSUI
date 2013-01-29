@@ -60,22 +60,9 @@ public class TopicXMLErrorsPresenter extends BaseTopicViewPresenter implements T
         process(topicId, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void process(final Integer topicId, final int helpTopicId, final String pageId) {
-        getTopic(topicId);
-    }
-
-    private void getTopic(final Integer topicId) {
-        final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, Display>(display,
-                new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
-                    @Override
-                    public void doSuccessAction(final RESTTopicV1 retValue, final Display display) {
-                        display.initialize(retValue, false, false, SplitType.DISABLED, null, false);
-                    }
-                }) ;
-
-        if (topicId != null)
-        {
-            RESTCalls.getTopic(callback,topicId);
-        }
+    public void process(final Integer topicId, final int helpTopicId, final String pageId)
+    {
+        super.bind(helpTopicId, pageId, display);
+        getEntity(topicId, display);
     }
 }

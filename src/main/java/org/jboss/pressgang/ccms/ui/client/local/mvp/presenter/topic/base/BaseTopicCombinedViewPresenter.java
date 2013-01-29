@@ -39,8 +39,7 @@ abstract public class BaseTopicCombinedViewPresenter {
     private static final String CARRIAGE_RETURN_AND_LINE_BREAK = "\r\n";
     private static final String COMMA = ",";
 
-    protected BaseTopicCombinedViewPresenter()
-    {
+    protected BaseTopicCombinedViewPresenter() {
 
     }
 
@@ -486,7 +485,7 @@ abstract public class BaseTopicCombinedViewPresenter {
     }
 
     static protected void insertCspDetails(final TopicXMLPresenter.Display topicXMLDisplay,
-                                         final BaseTemplateViewInterface display) {
+                                           final BaseTemplateViewInterface display) {
         final String ids = GWTUtilities.fixUpIdSearchString(topicXMLDisplay.getCSPTopicDetailsDialog().getIds().getValue());
         if (!ids.isEmpty()) {
             final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
@@ -550,6 +549,8 @@ abstract public class BaseTopicCombinedViewPresenter {
             component.setHelpTopicId(ServiceConstants.TOPIC_BUGS_TOPIC);
         } else if (view instanceof TopicXMLView) {
             component.setHelpTopicId(ServiceConstants.TOPIC_XML_EDIT_TOPIC);
+        } else {
+            component.setHelpTopicId(ServiceConstants.DEFAULT_HELP_TOPIC);
         }
     }
 }

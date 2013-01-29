@@ -139,11 +139,11 @@ public class ProjectFilteredResultsPresenter
 
             if (queryElements.length == 2) {
                 if (queryElements[0].equals("projectIds")) {
-                    this.display.getIdFilter().setText(queryElements[1]);
+                    this.display.getIdFilter().setText(URL.decodeQueryString(queryElements[1]));
                 } else if (queryElements[0].equals("projectName")) {
-                    this.display.getNameFilter().setText(queryElements[1]);
+                    this.display.getNameFilter().setText(URL.decodeQueryString(queryElements[1]));
                 } else if (queryElements[0].equals("projectDesc")) {
-                    this.display.getDescriptionFilter().setText(queryElements[1]);
+                    this.display.getDescriptionFilter().setText(URL.decodeQueryString(queryElements[1]));
                 }
             }
         }
