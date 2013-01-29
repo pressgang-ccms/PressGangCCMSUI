@@ -148,6 +148,8 @@ public interface BaseTemplateViewInterface {
     PushButton getCategories();
 
     PushButton getTags();
+
+    PushButton getReports();
     
     Anchor getHelp();
 

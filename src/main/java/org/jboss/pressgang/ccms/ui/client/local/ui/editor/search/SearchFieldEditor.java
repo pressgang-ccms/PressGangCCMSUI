@@ -38,8 +38,8 @@ public class SearchFieldEditor extends FlexTable implements LeafValueEditor<Sear
     private final TextBox includedInContentSpecs = new TextBox();
     private final TextBox notIncludedInContentSpecs = new TextBox();
     private final TextBox freeTextSearch = new TextBox();
-    private final TriStatePushButton hasBugzillaBugs = new TriStatePushButton();
-    private final TriStatePushButton hasOpenBugzillaBugs = new TriStatePushButton();
+    //private final TriStatePushButton hasBugzillaBugs = new TriStatePushButton();
+    //private final TriStatePushButton hasOpenBugzillaBugs = new TriStatePushButton();
     private final RadioButton matchAll = new RadioButton(MATCH_GROUP, PressGangCCMSUI.INSTANCE.MatchAll());
     private final RadioButton matchAny = new RadioButton(MATCH_GROUP, PressGangCCMSUI.INSTANCE.MatchAny());
     
@@ -122,13 +122,13 @@ public class SearchFieldEditor extends FlexTable implements LeafValueEditor<Sear
         this.setWidget(this.getRowCount(), 0, freeTextSearchLabel);
         this.setWidget(this.getRowCount() - 1, 1, freeTextSearch);
 
-        final Label hasBugzillaBugsLabels = new Label(PressGangCCMSUI.INSTANCE.HasBugzillaBugs());
+        /*final Label hasBugzillaBugsLabels = new Label(PressGangCCMSUI.INSTANCE.HasBugzillaBugs());
         this.setWidget(this.getRowCount(), 0, hasBugzillaBugsLabels);
         this.setWidget(this.getRowCount() - 1, 1, hasBugzillaBugs);
 
         final Label hasOpenBugzillaBugsLabels = new Label(PressGangCCMSUI.INSTANCE.HasOpenBugzillaBugs());
         this.setWidget(this.getRowCount(), 0, hasOpenBugzillaBugsLabels);
-        this.setWidget(this.getRowCount() - 1, 1, hasOpenBugzillaBugs);
+        this.setWidget(this.getRowCount() - 1, 1, hasOpenBugzillaBugs);*/
 
         this.setWidget(this.getRowCount(), 0, matchAll);
         this.setWidget(this.getRowCount() - 1, 1, matchAny);
@@ -158,8 +158,8 @@ public class SearchFieldEditor extends FlexTable implements LeafValueEditor<Sear
         includedInContentSpecs.setValue(value.getIncludedInContentSpecs());
         notIncludedInContentSpecs.setValue(value.getNotIncludedInContentSpecs());
         freeTextSearch.setValue(value.getFreeTextSearch());
-        hasBugzillaBugs.setState(value.getHasBugzillaBugs());
-        hasOpenBugzillaBugs.setState(value.getHasOpenBugzillaBugs());
+        /*hasBugzillaBugs.setState(value.getHasBugzillaBugs());
+        hasOpenBugzillaBugs.setState(value.getHasOpenBugzillaBugs());*/
         matchAll.setValue(value.isMatchAll());
         matchAny.setValue(!value.isMatchAll());
     }
@@ -184,8 +184,8 @@ public class SearchFieldEditor extends FlexTable implements LeafValueEditor<Sear
         value.setIncludedInContentSpecs(includedInContentSpecs.getValue());
         value.setNotIncludedInContentSpecs(notIncludedInContentSpecs.getValue());
         value.setFreeTextSearch(freeTextSearch.getValue());
-        value.setHasBugzillaBugs(hasBugzillaBugs.getState());
-        value.setHasOpenBugzillaBugs(hasOpenBugzillaBugs.getState());
+        /*value.setHasBugzillaBugs(hasBugzillaBugs.getState());
+        value.setHasOpenBugzillaBugs(hasOpenBugzillaBugs.getState());*/
         value.setMatchAll(matchAll.getValue());
         value.setMatchAll(!matchAny.getValue());
         

@@ -350,6 +350,7 @@ public abstract class BaseTemplateView
         return panel;
     }
 
+    @Override
     public PushButton getReports() {
         return reports;
     }
@@ -475,7 +476,6 @@ public abstract class BaseTemplateView
         addShortcutButton(projects);
 
         reports = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Reports());
-        reports.setEnabled(false);
         addShortcutButton(reports);
 
         bug = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CreateBug());

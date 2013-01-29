@@ -114,7 +114,7 @@ public final class Constants {
     /**
      * The report that displays the topics bugzilla bugs
      */
-    public static final String BIRT_TOPIC_BUGZILLA_REPORT = "General/Bugs_Per_Topic.rptdesign&TopicIDParameter=";
+    public static final String BIRT_TOPIC_BUGZILLA_REPORT = "General/Bugs_Per_Topic.rptdesign&ShowOnlyData=True&AlternateTableHeaderBackgroundColour=True&TopicIDParameter=";
     /**
      * The REST server.
      */

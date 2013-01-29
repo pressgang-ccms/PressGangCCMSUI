@@ -131,6 +131,13 @@ abstract public class ComponentBase implements Component, EditableView {
             }
         });
 
+        display.getReports().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                Window.open(Constants.BIRT_URL, "_blank", "");
+            }
+        });
+
         display.getImages().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
