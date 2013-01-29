@@ -71,7 +71,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
     /**
      * Adds event handlers to the event bus.
      */
-    public void bind() {
+    public final void bind() {
         History.addValueChangeHandler(this);
 
         this.eventBus.addHandler(WelcomeViewEvent.TYPE, new ViewOpenEventHandler(WelcomePresenter.HISTORY_TOKEN));
@@ -95,7 +95,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public final void go(final HasWidgets container) {
         this.container = container;
         this.bind();
 
@@ -107,7 +107,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
     }
 
     @Override
-    public void onValueChange(final ValueChangeEvent<String> event) {
+    public final void onValueChange(final ValueChangeEvent<String> event) {
 
         final String token = event.getValue();
 

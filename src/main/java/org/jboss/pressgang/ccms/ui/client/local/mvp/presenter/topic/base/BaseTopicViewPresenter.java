@@ -10,8 +10,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 /**
  * Every presenter that works with a topic needs to retrieve the topic. This base class simply
  * provides a method to retrieve a topic and initialize the view with that topic.
- *
- * @param <S>
  */
 public class BaseTopicViewPresenter extends ComponentBase implements
         BaseTopicViewPresenterInterface {

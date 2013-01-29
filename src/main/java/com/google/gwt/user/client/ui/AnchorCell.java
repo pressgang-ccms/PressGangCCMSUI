@@ -10,7 +10,15 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
  * https://groups.google.com/forum/?fromgroups=#!topic/google-web-toolkit/C18YWWkVbHw
  */
 
-public class AnchorCell extends AbstractCell<Anchor> {
+public final class AnchorCell extends AbstractCell<Anchor> {
+
+    /**
+     * Default constructor. Does nothing.
+     */
+    public AnchorCell() {
+
+    }
+
     @Override
     public void render(final com.google.gwt.cell.client.Cell.Context context, final Anchor link, final SafeHtmlBuilder sb) {
         sb.append(SafeHtmlUtils.fromTrustedString(link.toString()));

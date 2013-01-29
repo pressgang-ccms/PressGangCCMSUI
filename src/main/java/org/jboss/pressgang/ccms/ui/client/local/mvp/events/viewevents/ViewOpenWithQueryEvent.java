@@ -6,6 +6,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * Base for events that open a new view and run a query.
  *
  * @author kamiller@redhat.com (Katie Miller)
+ * @param <T> The event handler that corresponds to this event.
  */
 public abstract class ViewOpenWithQueryEvent <T extends ViewOpenWithQueryEventHandler> extends GwtEvent<T> {
     protected final String query;

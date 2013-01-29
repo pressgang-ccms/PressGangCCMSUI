@@ -7,7 +7,7 @@ import java.util.List;
  * keeps those pieces of information.
  * 
  * @author Matthew Casperson
- * TODO: save total list size.
+ * @param <T> The type of the entity to be displayed by the provider.
  */
 public class ProviderUpdateData<T> {
     /** References the providers start row. */

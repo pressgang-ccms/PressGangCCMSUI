@@ -28,7 +28,7 @@ public class TopicListReceived extends GwtEvent<TopicListReceivedHandler> {
     }
 
     @Override
-    protected void dispatch(TopicListReceivedHandler topicListRecievedHandler) {
+    protected void dispatch(final TopicListReceivedHandler topicListRecievedHandler) {
         final RESTTopicCollectionV1 copy = new RESTTopicCollectionV1();
         this.topics.cloneInto(copy, true);
         topicListRecievedHandler.onTopicsRecieved(copy);
