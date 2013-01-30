@@ -3,8 +3,11 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
@@ -17,14 +20,15 @@ import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPropertyTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
+
+import javax.enterprise.context.Dependent;
+import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: matthew
- * Date: 1/30/13
- * Time: 10:59 AM
- * To change this template use File | Settings | File Templates.
+
  */
+@Dependent
 public class TopicPropertyTagsView extends BaseExtendedChildrenView<
         RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1,
         RESTTopicV1,
@@ -42,7 +46,7 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
             if (object != null && object.getItem() != null && object.getItem().getValue() != null) {
                 return object.getItem().getValue();
             }
-            return null + "";
+            return "";
         }
     };
 
@@ -52,7 +56,7 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
             if (object != null && object.getItem() != null && object.getItem().getName() != null) {
                 return object.getItem().getName();
             }
-            return null + "";
+            return "";
         }
     };
 
@@ -62,7 +66,7 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
             if (object != null && object.getItem() != null && object.getItem().getDescription() != null) {
                 return object.getItem().getDescription();
             }
-            return null + "";
+            return "";
         }
     };
 
@@ -84,7 +88,7 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
             if (object != null && object.getItem() != null && object.getItem().getName() != null) {
                 return object.getItem().getName();
             }
-            return null + "";
+            return "";
         }
     };
 
@@ -94,7 +98,7 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
             if (object != null && object.getItem() != null && object.getItem().getDescription() != null) {
                 return object.getItem().getDescription();
             }
-            return null + "";
+            return "";
         }
     };
 
@@ -140,5 +144,112 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
                 object.getItem().setValue(value);
             }
         });
+
+        addExistingChildrenPanel();
+    }
+
+    @Override
+    public FlexTable getRenderedSplitViewMenu() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public PushButton getRenderedSplitOpen() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public PushButton getRenderedHorizontalSplit() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public PushButton getRenderedSplitClose() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public PushButton getRenderedVerticalSplit() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public PushButton getRenderedNoSplit() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public PushButton getRenderedSplit() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public PushButton getHistory() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public PushButton getRendered() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public PushButton getXml() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public PushButton getFields() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public PushButton getExtendedProperties() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public PushButton getSave() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public PushButton getXmlErrors() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public PushButton getTopicTags() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public PushButton getBugs() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public PushButton getCsps() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public SimpleBeanEditorDriver getDriver() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void initialize(RESTTopicV1 topic, boolean readOnly, boolean newTopic, SplitType splitType, List<String> locales, Boolean showImages) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void showSplitViewButtons() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void buildSplitViewButtons(SplitType splitType) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

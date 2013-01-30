@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -146,42 +147,42 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
             @Override
             public void displayNewEntity(final T entity) {
 
-            try {
-                logger.log(
-                        Level.INFO,
-                        "EXIT BaseSearchAndEditComponent.loadNewEntity() DisplayNewEntityCallback.displayNewEntity(final T entity)");
+                try {
+                    logger.log(
+                            Level.INFO,
+                            "ENTER BaseSearchAndEditComponent.loadNewEntity() DisplayNewEntityCallback.displayNewEntity(final T entity)");
 
-                entity.cloneInto(selectedItem.getItem(), true);
+                    // update the filtered list with the new entity
+                    selectedItem.setItem(entity);
 
-                                /*
-                                 * The selected item will be the category from the list. This is the unedited, unexpanded
-                                 * copy of the category
-                                 */
-                filteredResultsComponent.getProviderData().setSelectedItem(selectedItem);
+                    /*
+                     * The selected item will be the category from the list. This is the unedited, unexpanded
+                     * copy of the category
+                     */
+                    filteredResultsComponent.getProviderData().setSelectedItem(selectedItem);
 
-                                /*
-                                 * All editing is done in a clone of the selected category. Any expanded collections will be
-                                 * copied into this category
-                                 */
+                    /*
+                     * All editing is done in a clone of the selected category. Any expanded collections will be
+                     * copied into this category
+                     */
+                    filteredResultsComponent.getProviderData().setDisplayedItem(selectedItem.clone(true));
 
-                filteredResultsComponent.getProviderData().setDisplayedItem(selectedItem.clone(true));
+                    /* Refresh the list */
+                    updateDisplayAfterSave(false);
 
-                                /* Refresh the list */
-                updateDisplayAfterSave(false);
+                    /* Refresh the view, or display the properties view if none is shown */
+                    switchView(lastDisplayedView == null ? firstDisplayedView : lastDisplayedView);
 
-                                /* Refresh the view, or display the properties view if none is shown */
-                switchView(lastDisplayedView == null ? firstDisplayedView : lastDisplayedView);
+                    /* Initialize the views */
+                    initializeViews();
 
-                                /* Initialize the views */
-                initializeViews();
-
-                                /* Allow overriding classes to display any additional details */
-                loadAdditionalDisplayedItemData();
-            } finally {
-                logger.log(
-                        Level.INFO,
-                        "EXIT BaseSearchAndEditComponent.loadNewEntity() DisplayNewEntityCallback.displayNewEntity(final T entity)");
-            }
+                    /* Allow overriding classes to display any additional details */
+                    loadAdditionalDisplayedItemData();
+                } finally {
+                    logger.log(
+                            Level.INFO,
+                            "EXIT BaseSearchAndEditComponent.loadNewEntity() DisplayNewEntityCallback.displayNewEntity(final T entity)");
+                }
 
             }
         });

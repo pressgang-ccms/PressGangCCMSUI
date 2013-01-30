@@ -54,6 +54,12 @@ public interface TopicViewInterface extends BaseTemplateViewInterface {
     PushButton getFields();
 
     /**
+     *
+     * @return The button that is used to switch to the topic property tags view
+     */
+    PushButton getExtendedProperties();
+
+    /**
      * 
      * @return The button that is used to save the topic
      */

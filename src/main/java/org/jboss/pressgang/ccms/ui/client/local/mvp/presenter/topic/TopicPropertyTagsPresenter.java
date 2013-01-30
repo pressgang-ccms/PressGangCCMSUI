@@ -27,10 +27,13 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildr
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicViewPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import java.util.ArrayList;
@@ -44,6 +47,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 /**
     The presenter used to populate the tables of possible and existing topic property tags.
  */
+@Dependent
 public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
             RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1,
             RESTTopicV1,
@@ -51,7 +55,7 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
             RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1>
         implements TemplatePresenter {
 
-    public interface Display extends BaseExtendedChildrenViewInterface<
+    public interface Display extends TopicViewInterface, BaseExtendedChildrenViewInterface<
             RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1,
             RESTTopicV1,
             RESTPropertyTagV1, RESTPropertyTagCollectionV1, RESTPropertyTagCollectionItemV1,
@@ -90,7 +94,7 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
     }
 
     public void process(final Integer topicId, final int helpTopicId, final String pageId) {
-        bind(helpTopicId, pageId, display);
+        super.bind(helpTopicId, pageId, Preferences.TOPIC_PROPERTYTAG_VIEW_MAIN_SPLIT_WIDTH, display);
     }
 
     @Override
@@ -98,21 +102,33 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
         return new EnhancedAsyncDataProvider<RESTAssignedPropertyTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTAssignedPropertyTagCollectionItemV1> display) {
-                getExistingProviderData().setStartRow(display.getVisibleRange().getStart());
-                getExistingProviderData().setItems(new ArrayList<RESTAssignedPropertyTagCollectionItemV1>());
+                try
+                {
+                    LOGGER.log(Level.INFO, "ENTER TopicPropertyTagsPresenter.generateExistingProvider() EnhancedAsyncDataProvider.onRangeChanged()");
 
-                /* Zero results can be a null list. Also selecting a new tag will reset getProviderData(). */
-                if (entity != null && entity.getTags() != null) {
-                    /* Don't display removed tags */
-                    for (final RESTAssignedPropertyTagCollectionItemV1 propertyTagInTopic : entity.getProperties()
-                            .returnExistingAddedAndUpdatedCollectionItems()) {
-                        getExistingProviderData().getItems().add(propertyTagInTopic);
+                    getExistingProviderData().setStartRow(display.getVisibleRange().getStart());
+                    getExistingProviderData().setItems(new ArrayList<RESTAssignedPropertyTagCollectionItemV1>());
+
+                    /* Zero results can be a null list. Also selecting a new tag will reset getProviderData(). */
+                    if (entity != null && entity.getProperties() != null) {
+                        LOGGER.log(Level.INFO, "Found " + entity.getProperties().getItems().size() + " Property Tags.");
+                        /* Don't display removed tags */
+                        for (final RESTAssignedPropertyTagCollectionItemV1 propertyTagInTopic : entity.getProperties()
+                                .returnExistingAddedAndUpdatedCollectionItems()) {
+                            getExistingProviderData().getItems().add(propertyTagInTopic);
+                        }
                     }
+                    else
+                    {
+                        LOGGER.log(Level.WARNING, "entity == null: " + (entity == null) + " entity.getProperties() == null: " + (entity.getProperties() == null));
+                    }
+
+                    //Collections.sort(getExistingProviderData().getItems(), new RESTTagCategoryCollectionItemV1SortComparator());
+
+                    displayNewFixedList(getExistingProviderData().getItems());
+                } finally {
+                    LOGGER.log(Level.INFO, "EXIT TopicPropertyTagsPresenter.generateExistingProvider() EnhancedAsyncDataProvider.onRangeChanged()");
                 }
-
-                //Collections.sort(getExistingProviderData().getItems(), new RESTTagCategoryCollectionItemV1SortComparator());
-
-                displayNewFixedList(getExistingProviderData().getItems());
             }
         };
     }
@@ -138,7 +154,7 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
     @Override
     public void refreshPossibleChildrenDataAndList() {
         try {
-            LOGGER.log(Level.INFO, "ENTER CategoryTagPresenter.refreshPossibleChildrenDataAndList()");
+            LOGGER.log(Level.INFO, "ENTER TopicPropertyTagsPresenter.refreshPossibleChildrenDataAndList()");
 
             final RESTCalls.RESTCallback<RESTPropertyTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTPropertyTagCollectionV1>() {
                 @Override
@@ -184,7 +200,7 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
 
             RESTCalls.getPropertyTags(callback);
         } finally {
-            LOGGER.log(Level.INFO, "EXIT CategoryTagPresenter.refreshPossibleChildrenDataAndList()");
+            LOGGER.log(Level.INFO, "EXIT TopicPropertyTagsPresenter.refreshPossibleChildrenDataAndList()");
         }
     }
 }

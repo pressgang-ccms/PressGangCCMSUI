@@ -18,8 +18,9 @@ public final class RESTCalls {
     /**
      * The required expansion details for the topics.
      */
-    private static final String TOPIC_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.BUGZILLABUGS_NAME
-            + "\"}}, {\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"},\"branches\":[{\"trunk\":{\"name\": \""
+    private static final String TOPIC_EXPANSION =
+            "{\"trunk\":{\"name\": \"" + RESTTopicV1.BUGZILLABUGS_NAME + "\"}}," +
+            "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"},\"branches\":[{\"trunk\":{\"name\": \""
             + RESTTopicV1.LOG_DETAILS_NAME + "\"}}]}, {\"trunk\":{\"name\": \"" + RESTTopicV1.TAGS_NAME
             + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTTagV1.PROJECTS_NAME + "\"}},{\"trunk\":{\"name\":\""
             + RESTTagV1.CATEGORIES_NAME + "\"}}]}";
@@ -338,11 +339,11 @@ public final class RESTCalls {
     }
 
     public static void getTopic(final RESTCallback<RESTTopicV1> callback, final Integer id) {
-        // final String expand = "{\"branches\":[" + TOPIC_EXPANSION + "]}";
+        final String expand = "{\"branches\":[" + "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}" + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).getJSONTopic(id, "");
+                createRestMethod(callback).getJSONTopic(id, expand);
             }
         });
     }

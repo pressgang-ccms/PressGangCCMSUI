@@ -19,7 +19,6 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
 import org.jboss.errai.bus.client.api.Message;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTBugzillaBugCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
@@ -72,8 +71,14 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 
 @Dependent
 public class SearchResultsAndTopicPresenter
-        extends
-        BaseSearchAndEditComponent<SearchResultsPresenter.Display, RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1, TopicViewInterface, TopicPresenter.Display, RESTTopicV1BasicDetailsEditor>
+        extends BaseSearchAndEditComponent<
+            SearchResultsPresenter.Display,
+            RESTTopicV1,
+            RESTTopicCollectionV1,
+            RESTTopicCollectionItemV1,
+            TopicViewInterface,
+            TopicPresenter.Display,
+            RESTTopicV1BasicDetailsEditor>
         implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
@@ -94,8 +99,7 @@ public class SearchResultsAndTopicPresenter
             }
         }
     };
-    @Inject
-    private HandlerManager eventBus;
+    @Inject private HandlerManager eventBus;
     /**
      * The last xml that was rendered
      */
@@ -114,31 +118,22 @@ public class SearchResultsAndTopicPresenter
      */
     private List<String> locales;
 
-    @Inject
-    private Display display;
+    @Inject private Display display;
 
-    @Inject
-    private TopicPresenter topicViewComponent;
+    @Inject private TopicPresenter topicViewComponent;
 
-    @Inject
-    private TopicXMLPresenter topicXMLComponent;
+    @Inject private TopicXMLPresenter topicXMLComponent;
     /**
      * The rendered topic view display in a split panel
      */
-    @Inject
-    private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
-    @Inject
-    private SearchResultsPresenter searchResultsComponent;
-    @Inject
-    private TopicXMLErrorsPresenter topicXMLErrorsPresenter;
-    @Inject
-    private TopicTagsPresenter topicTagsComponent;
-    @Inject
-    private TopicRevisionsPresenter topicRevisionsComponent;
-    @Inject
-    private TopicBIRTBugsPresenter topicBugsPresenter;
-    @Inject
-    private TopicRenderedPresenter topicRenderedPresenter;
+    @Inject private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
+    @Inject private SearchResultsPresenter searchResultsComponent;
+    @Inject private TopicXMLErrorsPresenter topicXMLErrorsPresenter;
+    @Inject private TopicTagsPresenter topicTagsComponent;
+    @Inject private TopicRevisionsPresenter topicRevisionsComponent;
+    @Inject private TopicBIRTBugsPresenter topicBugsPresenter;
+    @Inject private TopicRenderedPresenter topicRenderedPresenter;
+    @Inject private TopicPropertyTagsPresenter topicPropertyTagPresenter;
     /**
      * How the rendering panel is displayed
      */
@@ -168,6 +163,8 @@ public class SearchResultsAndTopicPresenter
                                     logger.log(Level.INFO,
                                             "ENTER SearchResultsAndTopicPresenter.bind() RESTCallback.doSuccessAction()");
 
+                                    logger.log(Level.INFO, "retValue.getProperties().getItems().size(): " + retValue.getProperties().getItems().size());
+
                                     displayCallback.displayNewEntity(retValue);
                                 } finally {
                                     logger.log(Level.INFO,
@@ -187,7 +184,7 @@ public class SearchResultsAndTopicPresenter
             /* Initialize the other presenters we have pulled in */
             searchResultsComponent.process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
             topicTagsComponent.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-
+            topicPropertyTagPresenter.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
 
             /* When the topics have been loaded, display the first one */
             searchResultsComponent.addTopicListReceivedHandler(new TopicListReceivedHandler(){
@@ -551,7 +548,7 @@ public class SearchResultsAndTopicPresenter
                 }
 
                 /* Load the tags and bugs */
-                loadTagsandBugs();
+                loadTagsAndBugs();
 
                 initializeViews();
                 topicRevisionsComponent.getDisplay().setProvider(generateTopicRevisionsListProvider());
@@ -601,7 +598,17 @@ public class SearchResultsAndTopicPresenter
 
         try {
             logger.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.loadAdditionalDisplayedItemData()");
+;
+            logger.log(Level.INFO, "searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties(): " + searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties());
+            logger.log(Level.INFO, "searchResultsComponent.getProviderData().getSelectedItem().getItem().getProperties(): " + searchResultsComponent.getProviderData().getSelectedItem().getItem().getProperties());
 
+            /* Display the tags that are added to the category */
+            topicPropertyTagPresenter.refreshExistingChildList(searchResultsComponent.getProviderData().getDisplayedItem().getItem());
+
+            /* Get a new collection of tags */
+            //topicPropertyTagPresenter.refreshPossibleChildrenDataAndList();
+
+            /* reset the topic review view */
             topicRevisionsComponent.getDisplay().setRevisionTopic(null);
 
             /* set the revisions to show the loading widget */
@@ -626,7 +633,7 @@ public class SearchResultsAndTopicPresenter
                     .getSelectedItem().getItem().getId());
 
             /* got on to load the tags and bugs */
-            loadTagsandBugs();
+            loadTagsAndBugs();
 
             /* fix the rendered view buttons */
             initializeSplitViewButtons();
@@ -637,10 +644,14 @@ public class SearchResultsAndTopicPresenter
     }
 
     /**
-     * The tags and bugs for a topic are loaded as seperate operations to minimize the amount of data initially sent when a
+     * The tags and bugs for a topic are loaded as separate operations to minimize the amount of data initially sent when a
      * topic is displayed.
+     *
+     * We pull down the extended collections from a revision, just to make sure that the collections we are getting are for
+     * the entity we are viewing, since there is a slight chance that a new revision could be saved in between us loading
+     * the empty entity and then loading the collections.
      */
-    private void loadTagsandBugs() {
+    private void loadTagsAndBugs() {
         /* set the bugs to show the loading widget */
         /*if (topicBugsPresenter.getDisplay().getProvider() != null) {
             topicBugsPresenter.getDisplay().getProvider().resetProvider();
@@ -887,6 +898,18 @@ public class SearchResultsAndTopicPresenter
             }
         };
 
+        final ClickHandler topicPropertyTagsClickHandler = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                /* Sync any changes back to the underlying object */
+                flushChanges();
+
+                if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
+                    switchView(topicPropertyTagPresenter.getDisplay());
+                }
+            }
+        };
+
         final ClickHandler topicXMLClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
@@ -1061,6 +1084,7 @@ public class SearchResultsAndTopicPresenter
                 topicRenderedPresenter.getDisplay(), topicXMLErrorsPresenter.getDisplay(), topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(), topicRevisionsComponent.getDisplay()}) {
             view.getRenderedSplit().addClickHandler(splitMenuHandler);
             view.getFields().addClickHandler(topicViewClickHandler);
+            view.getExtendedProperties().addClickHandler(topicPropertyTagsClickHandler);
             view.getXml().addClickHandler(topicXMLClickHandler);
             view.getRendered().addClickHandler(topicRenderedClickHandler);
             view.getSave().addClickHandler(saveClickHandler);

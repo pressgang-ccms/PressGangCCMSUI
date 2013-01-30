@@ -64,12 +64,15 @@ abstract public class BaseExtendedChildrenPresenter<
     }
 
     public void bind(final int topicId, final String pageId, final String preferencesKey, final BaseExtendedChildrenViewInterface display) {
-        if (pageId == null)
-            throw new NullPointerException("pageId cannot be null");
-        if (preferencesKey == null)
-            throw new NullPointerException("preferencesKey cannot be null");
-        if (display == null)
-            throw new NullPointerException("display cannot be null");
+        if (pageId == null) {
+            throw new NullPointerException("BaseExtendedChildrenPresenter.bind(): pageId cannot be null");
+        }
+        if (preferencesKey == null) {
+            throw new NullPointerException("BaseExtendedChildrenPresenter.bind(): preferencesKey cannot be null");
+        }
+        if (display == null) {
+            throw new NullPointerException("BaseExtendedChildrenPresenter.bind(): display cannot be null");
+        }
 
         this.display = display;
 
@@ -126,11 +129,11 @@ abstract public class BaseExtendedChildrenPresenter<
             logger.log(Level.INFO, "ENTER BaseOrderedChildrenComponent.refreshExistingChildList()");
 
             if (parent == null) {
-                throw new NullPointerException("parent cannot be null");
+                throw new NullPointerException("BaseOrderedChildrenComponent.refreshExistingChildList(): parent cannot be null");
             }
 
             if (display == null) {
-                throw new NullPointerException("display cannot be null");
+                throw new NullPointerException("BaseOrderedChildrenComponent.refreshExistingChildList(): display cannot be null");
             }
 
             display.setExistingChildrenProvider(generateExistingProvider(parent));

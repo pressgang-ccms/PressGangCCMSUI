@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.PushButton;
  */
 abstract public class TopicViewBase extends BaseTemplateView implements TopicViewInterface {
     private final PushButton fields;
+    private final PushButton extendedProperties;
     private final PushButton xml;
     private final PushButton xmlErrors;
     private final PushButton rendered;
@@ -155,6 +156,11 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
         return fields;
     }
 
+    @Override
+    public PushButton getExtendedProperties() {
+        return extendedProperties;
+    }
+
     public TopicViewBase(final String applicationName, final String pageName) {
         super(applicationName, pageName);
 
@@ -166,6 +172,7 @@ abstract public class TopicViewBase extends BaseTemplateView implements TopicVie
         xml = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.XMLEditing());
         xmlErrors = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
         fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Properties());
+        extendedProperties = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.PropertyTags());
         save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
         topicTags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TopicTags());
         bugs = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Bugs());
