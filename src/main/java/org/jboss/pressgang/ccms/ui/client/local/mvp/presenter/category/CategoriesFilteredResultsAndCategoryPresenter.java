@@ -232,13 +232,15 @@ public class CategoriesFilteredResultsAndCategoryPresenter
             logger.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.initializeViews()");
 
             /* We need to initialize the view so the celltable buttons can display the correct labels */
-            if (viewIsInFilter(filter, categoryTagPresenter.getDisplay()))
+            if (viewIsInFilter(filter, categoryTagPresenter.getDisplay()))  {
                 categoryTagPresenter.getDisplay().initialize(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+            }
 
             /* Initialize the properties view */
-            if (viewIsInFilter(filter, categoryPresenter.getDisplay()))
+            if (viewIsInFilter(filter, categoryPresenter.getDisplay())) {
                 categoryPresenter.getDisplay()
                         .initialize(this.filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+            }
         } finally {
             logger.log(Level.INFO, "EXIT CategoriesFilteredResultsAndCategoryPresenter.initializeViews()");
         }

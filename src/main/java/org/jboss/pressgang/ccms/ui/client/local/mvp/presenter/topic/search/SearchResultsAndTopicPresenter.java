@@ -598,9 +598,6 @@ public class SearchResultsAndTopicPresenter
 
         try {
             logger.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.loadAdditionalDisplayedItemData()");
-;
-            logger.log(Level.INFO, "searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties(): " + searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties());
-            logger.log(Level.INFO, "searchResultsComponent.getProviderData().getSelectedItem().getItem().getProperties(): " + searchResultsComponent.getProviderData().getSelectedItem().getItem().getProperties());
 
             /* Display the tags that are added to the category */
             topicPropertyTagPresenter.refreshExistingChildList(searchResultsComponent.getProviderData().getDisplayedItem().getItem());
@@ -1136,7 +1133,7 @@ public class SearchResultsAndTopicPresenter
 
             for (final TopicViewInterface view : new TopicViewInterface[]{topicViewComponent.getDisplay(), topicXMLComponent.getDisplay(),
                     topicRenderedPresenter.getDisplay(), topicXMLErrorsPresenter.getDisplay(), topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(),
-                    topicSplitPanelRenderedDisplay}) {
+                    topicSplitPanelRenderedDisplay, topicPropertyTagPresenter.getDisplay()}) {
                 if (viewIsInFilter(filter, view)) {
 
                     final RESTTopicCollectionItemV1 topicToDisplay = getTopicOrRevisionTopic();

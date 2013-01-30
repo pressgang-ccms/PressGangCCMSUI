@@ -240,7 +240,7 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
 
     @Override
     public void initialize(RESTTopicV1 topic, boolean readOnly, boolean newTopic, SplitType splitType, List<String> locales, Boolean showImages) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        super.initialize(topic, readOnly);
     }
 
     @Override
