@@ -136,6 +136,7 @@ html {
 {
     overflow: hidden;
     height: 100%;
+    border-spacing: 0px;
 	/*bottom: 16px !important;*/
 }
 
@@ -161,8 +162,6 @@ html {
 {
 	position: relative;
 }
-
-
 
 .ShortcutPanelParent {
 	margin-right: 8px;
