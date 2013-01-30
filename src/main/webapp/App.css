@@ -125,12 +125,17 @@ html {
 	height: 100%;
 }
 
-.TopActionParentPanel
+.TopActionGrandParentPanel
 {
-	margin-left: 100px;
-    overflow: hidden;
+    margin-left: 100px;
     margin-top: 8px;
     margin-bottom: 8px;
+}
+
+.TopActionParentPanel
+{
+    overflow: hidden;
+    height: 100%;
 	/*bottom: 16px !important;*/
 }
 

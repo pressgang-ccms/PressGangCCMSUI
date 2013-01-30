@@ -71,6 +71,8 @@ public abstract class BaseTemplateView
 
     private SimpleLayoutPanel panel = new SimpleLayoutPanel();
 
+    /** This panel holds the topActionParentPanel panel. */
+    private final SimplePanel topActionGrandParentPanel = new SimplePanel();
     /** This panel holds the buttons currently displayed in the top action bar. */
     private final FlexTable topActionParentPanel = new FlexTable();
     /** This is the collection of to level action panel buttons. */
@@ -362,6 +364,12 @@ public abstract class BaseTemplateView
     }
 
     @Override
+    public SimplePanel getTopActionGrandParentPanel()
+    {
+        return topActionGrandParentPanel;
+    }
+
+    @Override
     public FlexTable getTopActionPanel() {
         return topActionPanel;
     }
@@ -423,14 +431,16 @@ public abstract class BaseTemplateView
         secondLevelLayoutPanel.add(thirdLevelLayoutPanel);
 
         /* Set the action bar panel */
+        topActionGrandParentPanel.addStyleName(CSSConstants.TOP_ACTION_GRANDPARENT_PANEL);
         topActionParentPanel.addStyleName(CSSConstants.TOP_ACTION_PARENT_PANEL);
         topActionPanel.addStyleName(CSSConstants.TOP_ACTION_PANEL);
 
         topActionParentPanel.setWidget(0, 0, topActionPanel);
         topActionParentPanel.setWidget(0, 1, topViewSpecificActionPanel);
-        topActionParentPanel.getFlexCellFormatter().setWidth(0, 0, "100%");
+        topActionParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
+        topActionParentPanel.getFlexCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT);
 
-        thirdLevelLayoutPanel.addNorth(topActionParentPanel, Constants.ACTION_BAR_HEIGHT);
+        thirdLevelLayoutPanel.addNorth(topActionGrandParentPanel, Constants.ACTION_BAR_HEIGHT);
 
         /* Set the footer panel */
         footerPanel.addStyleName(CSSConstants.FOOTER_PANEL);

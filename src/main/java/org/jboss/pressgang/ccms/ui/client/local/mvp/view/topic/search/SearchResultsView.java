@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.search;
 
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
@@ -8,6 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.Ba
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
 import com.google.gwt.user.cellview.client.TextColumn;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 
 public class SearchResultsView extends BaseFilteredResultsView<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1>
         implements SearchResultsPresenter.Display {
@@ -15,8 +17,9 @@ public class SearchResultsView extends BaseFilteredResultsView<RESTTopicV1, REST
     private final TextColumn<RESTTopicCollectionItemV1> idColumn = new TextColumn<RESTTopicCollectionItemV1>() {
         @Override
         public String getValue(final RESTTopicCollectionItemV1 object) {
-            if (object == null)
+            if (object == null) {
                 return null + "";
+            }
             return object.getItem().getId().toString();
         }
     };
@@ -24,8 +27,9 @@ public class SearchResultsView extends BaseFilteredResultsView<RESTTopicV1, REST
     private final TextColumn<RESTTopicCollectionItemV1> titleColumn = new TextColumn<RESTTopicCollectionItemV1>() {
         @Override
         public String getValue(final RESTTopicCollectionItemV1 object) {
-            if (object == null)
+            if (object == null) {
                 return null + "";
+            }
             return object.getItem().getTitle();
         }
     };
@@ -36,8 +40,7 @@ public class SearchResultsView extends BaseFilteredResultsView<RESTTopicV1, REST
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.TopicID());
         getResults().addColumn(titleColumn, PressGangCCMSUI.INSTANCE.TopicTitle());
         
-        /* Unlike every other results view, the topic results don't have a search or create button */
+        /* Unlike every other results view, the topic results don't have a search button */
         this.getEntitySearch().removeFromParent();
-        this.getCreate().removeFromParent();
     }
 }

@@ -85,10 +85,16 @@ public interface BaseTemplateViewInterface {
     SimplePanel getShortCutPanelParent();
     
     /**
-     * 
+     *
      * @return The panel that holds the top action buttons
      */
     FlexTable getTopActionParentPanel();
+
+    /**
+     *
+     * @return The panel that holds the panel that holds the top action buttons
+     */
+    SimplePanel getTopActionGrandParentPanel();
 
     /**
      * 

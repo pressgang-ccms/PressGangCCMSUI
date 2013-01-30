@@ -46,7 +46,9 @@ public class TopicBIRTBugsView extends BaseTemplateView implements TopicBIRTBugs
 
     @Override
     public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
-        iFrame.setUrl(Constants.BIRT_URL + Constants.BIRT_RUN_REPORT + Constants.BIRT_TOPIC_BUGZILLA_REPORT + topic.getId());
+        if (topic.getId() != null) {
+            iFrame.setUrl(Constants.BIRT_URL + Constants.BIRT_RUN_REPORT + Constants.BIRT_TOPIC_BUGZILLA_REPORT + topic.getId());
+        }
     }
 
     @SuppressWarnings("rawtypes")

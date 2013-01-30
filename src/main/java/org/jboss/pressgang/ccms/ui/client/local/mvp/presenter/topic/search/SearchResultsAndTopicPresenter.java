@@ -21,12 +21,14 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
 import org.jboss.errai.bus.client.api.Message;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -182,6 +184,7 @@ public class SearchResultsAndTopicPresenter
             };
 
             clearContainerAndAddTopLevelPanel(container, display);
+            this.display.getViewActionButtonsPanel().setWidget(display.getTopActionParentPanel());
 
             /* Initialize the other presenters we have pulled in */
             searchResultsComponent.process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
@@ -563,8 +566,14 @@ public class SearchResultsAndTopicPresenter
     public boolean hasUnsavedChanges() {
 
         /* No topic selected, so no changes need to be saved */
-        if (this.searchResultsComponent.getProviderData().getDisplayedItem() == null)
+        if (this.searchResultsComponent.getProviderData().getDisplayedItem() == null)  {
             return false;
+        }
+
+        /* if there is no selected item, we are trying to save a new topic */
+        if (this.searchResultsComponent.getProviderData().getSelectedItem() == null) {
+            return true;
+        }
 
         /* Save any pending changes */
         flushChanges();
@@ -615,24 +624,30 @@ public class SearchResultsAndTopicPresenter
                 topicRevisionsComponent.getDisplay().getProvider().resetProvider();
             }
 
-            /* A callback to respond to a request for a topic with the revisions expanded */
-            final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
-                    topicRevisionsComponent.getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
-                @Override
-                public void doSuccessAction(final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
-                    searchResultsComponent.getProviderData().getDisplayedItem().getItem()
-                            .setRevisions(retValue.getRevisions());
+            /* if searchResultsComponent.getProviderData().getSelectedItem() == null, then we are displaying a new topic */
+            if (searchResultsComponent.getProviderData().getSelectedItem() != null)
+            {
+                /* A callback to respond to a request for a topic with the revisions expanded */
+                final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
+                        topicRevisionsComponent.getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
+                    @Override
+                    public void doSuccessAction(final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
+                        searchResultsComponent.getProviderData().getDisplayedItem().getItem()
+                                .setRevisions(retValue.getRevisions());
 
-                            /* refresh the list */
-                    topicRevisionsComponent.getDisplay().getProvider().displayNewFixedList(retValue.getRevisions().getItems());
-                }
-            });
+                                /* refresh the list */
+                        topicRevisionsComponent.getDisplay().getProvider().displayNewFixedList(retValue.getRevisions().getItems());
+                    }
+                });
 
-            RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, searchResultsComponent.getProviderData()
-                    .getSelectedItem().getItem().getId());
+                RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, searchResultsComponent.getProviderData()
+                        .getSelectedItem().getItem().getId());
 
-            /* got on to load the tags and bugs */
-            loadTagsAndBugs();
+                /* got on to load the tags and bugs */
+                loadTagsAndBugs();
+            }
+
+
 
             /* fix the rendered view buttons */
             initializeSplitViewButtons();
@@ -665,10 +680,10 @@ public class SearchResultsAndTopicPresenter
             @Override
             public void doSuccessAction(final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
 
-                        /* copy the revisions into the displayed Topic */
+                /* copy the revisions into the displayed Topic */
                 getTopicOrRevisionTopic().getItem().setTags(retValue.getTags());
 
-                        /* update the view */
+                /* update the view */
                 initializeViews(Arrays.asList(new BaseTopicViewInterface[]{topicTagsComponent.getDisplay()}));
             }
         });
@@ -746,6 +761,38 @@ public class SearchResultsAndTopicPresenter
 
     @Override
     protected void bindActionButtons() {
+        final ClickHandler createClickHanlder = new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+
+                /* make sure there are no unsaved changes, or that the user is happy to continue without saving */
+                if (!isOKToProceed()) {
+                    return;
+                }
+
+                // Create the topic wrapper
+                final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
+                topicCollectionItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
+
+                // create the topic, and add to the wrapper
+                final RESTTopicV1 restTopic = new RESTTopicV1();
+                restTopic.setProperties(new RESTAssignedPropertyTagCollectionV1());
+                restTopic.setTags(new RESTTagCollectionV1());
+                restTopic.setRevisions(new RESTTopicCollectionV1());
+                topicCollectionItem.setItem(restTopic);
+
+                // the topic won't show up in the list of topics until it is saved, so the
+                // selected item is null
+                searchResultsComponent.getProviderData().setSelectedItem(null);
+
+                // the new topic is being displayed though, so we set the displayed item
+                searchResultsComponent.getProviderData().setDisplayedItem(topicCollectionItem);
+
+                updateViewsAfterNewEntityLoaded();
+            }
+        };
+
         /* Build up a click handler to save the topic */
         final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
@@ -773,102 +820,148 @@ public class SearchResultsAndTopicPresenter
             public void onClick(final ClickEvent event) {
 
                 if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
-                    final RESTCalls.RESTCallback<RESTTopicV1> callback = new RESTCalls.RESTCallback<RESTTopicV1>() {
-                        @Override
-                        public void begin() {
-                            display.addWaitOperation();
-                        }
 
-                        @Override
-                        public void generalException(final Exception e) {
-                            logger.log(Level.SEVERE, e.toString());
-                            Window.alert(PressGangCCMSUI.INSTANCE.ErrorSavingTopic());
-                            display.removeWaitOperation();
-                            topicXMLComponent.getDisplay().getEditor().redisplay();
-                        }
+                    if (searchResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem())
+                    {
+                        final BaseRestCallback<RESTTopicV1, Display> addCallback = new BaseRestCallback<RESTTopicV1, Display>(
+                                display,
+                                new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
+                                    @Override
+                                    public void doSuccessAction(final RESTTopicV1 retValue, final Display display) {
+                                        try {
+                                            // Create the topic wrapper
+                                            final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
+                                            topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
-                        @Override
-                        public void success(final RESTTopicV1 retValue) {
-                            try {
+                                            // create the topic, and add to the wrapper
+                                            final RESTTopicV1 restTopic = new RESTTopicV1();
+                                            topicCollectionItem.setItem(retValue);
 
-                                boolean overwroteChanges = false;
+                                            /* Update the displayed topic */
+                                            searchResultsComponent.getProviderData().setDisplayedItem(topicCollectionItem.clone(true));
+                                            /* Update the selected topic */
+                                            searchResultsComponent.getProviderData().setSelectedItem(topicCollectionItem);
 
-                                if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null
-                                        && retValue.getRevisions().getItems().size() >= 2) {
-                                    Collections.sort(retValue.getRevisions().getItems(),
-                                            new RESTTopicCollectionItemV1RevisionSort());
-                                    /* Get the second last revision (the last one is the current one) */
-                                    final Integer overwriteRevision = retValue.getRevisions().getItems()
-                                            .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
-                                    /*
-                                     * if the second last revision doesn't match the revision of the topic when editing was
-                                     * started, then we have overwritten someone elses changes
-                                     */
-                                    overwroteChanges = !(searchResultsComponent.getProviderData().getSelectedItem().getItem()
-                                            .getRevision().equals(overwriteRevision));
-                                }
+                                            lastXML = null;
 
-                                /* Update the displayed topic */
-                                retValue.cloneInto(searchResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                                        true);
-                                /* Update the selected topic */
-                                retValue.cloneInto(searchResultsComponent.getProviderData().getSelectedItem().getItem(), true);
+                                            initializeViews();
 
-                                lastXML = null;
+                                            updateDisplayAfterSave(true);
 
-                                initializeViews();
-
-                                updateDisplayAfterSave(false);
-
-                                if (overwroteChanges) {
-                                    Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
-                                } else {
-                                    Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                                }
-                            } finally {
-                                display.removeWaitOperation();
-                                if (topicXMLComponent.getDisplay().getEditor() != null) {
-                                    topicXMLComponent.getDisplay().getEditor().redisplay();
-                                }
+                                            Window.alert(PressGangCCMSUI.INSTANCE.TopicSaveSuccessWithID() + " " + retValue.getId());
+                                        } finally {
+                                            if (topicXMLComponent.getDisplay().getEditor() != null) {
+                                                topicXMLComponent.getDisplay().getEditor().redisplay();
+                                            }
+                                        }
+                                    }
+                                }, new BaseRestCallback.FailureAction<Display>() {
+                            @Override
+                            public void doFailureAction(final Display display) {
+                                topicXMLComponent.getDisplay().getEditor().redisplay();
                             }
                         }
+                        );
 
-                        @Override
-                        public void failed(final Message message, final Throwable throwable) {
+                        /* Sync any changes back to the underlying object */
+                        flushChanges();
 
-                            if (message != null)
-                                logger.log(Level.SEVERE, message.toString());
-                            if (throwable != null)
-                                logger.log(Level.SEVERE, throwable.getMessage());
+                        /*
+                         * Create a new instance of the topic, with all the properties set to explicitly update
+                         */
+                        final RESTTopicV1 addedTopic = searchResultsComponent.getProviderData().getDisplayedItem().getItem()
+                                .clone(true);
 
-                            Window.alert(PressGangCCMSUI.INSTANCE.ErrorSavingTopic());
-                            display.removeWaitOperation();
-                            topicXMLComponent.getDisplay().getEditor().redisplay();
-                        }
-                    };
+                        addedTopic.explicitSetProperties(addedTopic.getProperties());
+                        addedTopic.explicitSetSourceUrls_OTM(addedTopic.getSourceUrls_OTM());
+                        addedTopic.explicitSetTags(addedTopic.getTags());
+                        addedTopic.explicitSetDescription(addedTopic.getDescription());
+                        addedTopic.explicitSetLocale(addedTopic.getLocale());
+                        addedTopic.explicitSetTitle(addedTopic.getTitle());
+                        addedTopic.explicitSetXml(addedTopic.getXml());
 
-                    /* Sync any changes back to the underlying object */
-                    flushChanges();
+                        final String message = display.getMessageLogDialog().getMessage().getText();
+                        RESTCalls.createTopic(addCallback, addedTopic, message, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString());
+                    }
+                    else
+                    {
+                        final BaseRestCallback<RESTTopicV1, Display> updateCallback = new BaseRestCallback<RESTTopicV1, Display>(
+                                display,
+                                new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
+                                    @Override
+                                    public void doSuccessAction(final RESTTopicV1 retValue, final Display display) {
+                                        try {
 
-                    /*
-                     * Create a new instance of the topic, with all the properties set to explicitly update
-                     */
-                    final RESTTopicV1 updateTopic = searchResultsComponent.getProviderData().getDisplayedItem().getItem()
-                            .clone(true);
+                                            boolean overwroteChanges = false;
 
-                    updateTopic.explicitSetBugzillaBugs_OTM(updateTopic.getBugzillaBugs_OTM());
-                    updateTopic.explicitSetProperties(updateTopic.getProperties());
-                    updateTopic.explicitSetSourceUrls_OTM(updateTopic.getSourceUrls_OTM());
-                    updateTopic.explicitSetTags(updateTopic.getTags());
-                    updateTopic.explicitSetDescription(updateTopic.getDescription());
-                    updateTopic.explicitSetLocale(updateTopic.getLocale());
-                    updateTopic.explicitSetTitle(updateTopic.getTitle());
-                    updateTopic.explicitSetXml(updateTopic.getXml());
+                                            if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null
+                                                    && retValue.getRevisions().getItems().size() >= 2) {
+                                                Collections.sort(retValue.getRevisions().getItems(),
+                                                        new RESTTopicCollectionItemV1RevisionSort());
+                                                /* Get the second last revision (the last one is the current one) */
+                                                final Integer overwriteRevision = retValue.getRevisions().getItems()
+                                                        .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
+                                                /*
+                                                 * if the second last revision doesn't match the revision of the topic when editing was
+                                                 * started, then we have overwritten someone elses changes
+                                                 */
+                                                overwroteChanges = !(searchResultsComponent.getProviderData().getSelectedItem().getItem()
+                                                        .getRevision().equals(overwriteRevision));
+                                            }
 
-                    final String message = display.getMessageLogDialog().getMessage().getText();
-                    final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
-                            : ServiceConstants.MAJOR_CHANGE);
-                    RESTCalls.saveTopic(callback, updateTopic, message, flag, ServiceConstants.NULL_USER_ID.toString());
+                                            /* Update the displayed topic */
+                                            retValue.cloneInto(searchResultsComponent.getProviderData().getDisplayedItem().getItem(),
+                                                    true);
+                                            /* Update the selected topic */
+                                            retValue.cloneInto(searchResultsComponent.getProviderData().getSelectedItem().getItem(), true);
+
+                                            lastXML = null;
+
+                                            initializeViews();
+
+                                            updateDisplayAfterSave(false);
+
+                                            if (overwroteChanges) {
+                                                Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
+                                            } else {
+                                                Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                                            }
+                                        } finally {
+                                            if (topicXMLComponent.getDisplay().getEditor() != null) {
+                                                topicXMLComponent.getDisplay().getEditor().redisplay();
+                                            }
+                                        }
+                                    }
+                                }, new BaseRestCallback.FailureAction<Display>() {
+                                    @Override
+                                    public void doFailureAction(final Display display) {
+                                        topicXMLComponent.getDisplay().getEditor().redisplay();
+                                    }
+                                }
+                        );
+
+                        /* Sync any changes back to the underlying object */
+                        flushChanges();
+
+                        /*
+                         * Create a new instance of the topic, with all the properties set to explicitly update
+                         */
+                        final RESTTopicV1 updateTopic = searchResultsComponent.getProviderData().getDisplayedItem().getItem()
+                                .clone(true);
+
+                        updateTopic.explicitSetProperties(updateTopic.getProperties());
+                        updateTopic.explicitSetSourceUrls_OTM(updateTopic.getSourceUrls_OTM());
+                        updateTopic.explicitSetTags(updateTopic.getTags());
+                        updateTopic.explicitSetDescription(updateTopic.getDescription());
+                        updateTopic.explicitSetLocale(updateTopic.getLocale());
+                        updateTopic.explicitSetTitle(updateTopic.getTitle());
+                        updateTopic.explicitSetXml(updateTopic.getXml());
+
+                        final String message = display.getMessageLogDialog().getMessage().getText();
+                        final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
+                                : ServiceConstants.MAJOR_CHANGE);
+                        RESTCalls.saveTopic(updateCallback, updateTopic, message, flag, ServiceConstants.NULL_USER_ID.toString());
+                    }
                 }
 
                 display.getMessageLogDialog().reset();
@@ -1096,6 +1189,8 @@ public class SearchResultsAndTopicPresenter
         display.getRenderedNoSplit().addClickHandler(splitMenuNoSplitHandler);
         display.getRenderedVerticalSplit().addClickHandler(splitMenuVSplitHandler);
         display.getRenderedHorizontalSplit().addClickHandler(splitMenuHSplitHandler);
+
+        searchResultsComponent.getDisplay().getCreate().addClickHandler(createClickHanlder);
 
         /* Hook up the xml editor buttons */
         topicXMLComponent.getDisplay().getLineWrap().addClickHandler(new ClickHandler() {

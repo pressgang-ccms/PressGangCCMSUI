@@ -32,7 +32,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.create.CreateTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFieldPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsAndTopicPresenter;
@@ -100,7 +99,6 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                     CategoriesFilteredResultsAndCategoryPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(SearchTagsFieldsAndFiltersViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
                     SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN));
-            this.eventBus.addHandler(CreateTopicViewEvent.TYPE, new ViewOpenEventHandler(CreateTopicPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(ProjectsFilteredResultsAndProjectViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
                     ProjectsFilteredResultsAndProjectPresenter.HISTORY_TOKEN));
         } finally {
@@ -166,8 +164,6 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 presenter = getBeanInstance(CategoriesFilteredResultsAndCategoryPresenter.class);
             } else if (token.startsWith(TagFilteredResultsPresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(TagFilteredResultsPresenter.class);
-            } else if (token.startsWith(CreateTopicPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(CreateTopicPresenter.class);
             } else if (token.startsWith(SearchFieldPresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(SearchFieldPresenter.class);
             } else if (token.startsWith(SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN)) {

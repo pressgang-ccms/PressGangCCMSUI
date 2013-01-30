@@ -77,13 +77,13 @@ public class SearchResultsPresenter
 
     public void process(final int topicId, final String pageId, final String queryString) {
         super.bind(topicId, pageId, queryString, display);
+        this.queryString = queryString;
         display.setProvider(generateListProvider(queryString, display));
     }
 
     @Override
     public String getQuery() {
-        // TODO Auto-generated method stub
-        return "";
+        return queryString;
     }
 
     @Override

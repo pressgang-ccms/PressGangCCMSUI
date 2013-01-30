@@ -116,6 +116,7 @@ public interface CSSConstants {
     String SECOND_LEVEL_LAYOUT_PANEL = "SecondLevelLayoutPanel";
     String THIRD_LEVEL_LAYOUT_PANEL = "ThirdLevelLayoutPanel";
     String CONTENT_LAYOUT_PANEL = "ContentLayoutPanel";
+    String TOP_ACTION_GRANDPARENT_PANEL = "TopActionGrandParentPanel";
     String TOP_ACTION_PARENT_PANEL = "TopActionParentPanel";
     String TOP_ACTION_PANEL = "TopActionPanel";
     String SHORTCUT_PANEL = "ShortcutPanel";

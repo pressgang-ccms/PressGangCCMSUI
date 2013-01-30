@@ -12,7 +12,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResu
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchTagsFieldsAndFiltersViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TagsFilteredResultsAndTagViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.WelcomeViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.create.CreateTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -111,16 +110,9 @@ abstract public class ComponentBase implements Component, EditableView {
         display.getCreateTopic().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (isOKToProceed())
-                    if (History.getToken().startsWith(CreateTopicPresenter.HISTORY_TOKEN))
-                    {
-                        /* If we are already in the create topic view, do a "refresh" */
-                        History.fireCurrentHistoryState();
-                    }
-                    else
-                    {
-                        eventBus.fireEvent(new CreateTopicViewEvent());
-                    }
+                if (isOKToProceed()) {
+
+                }
             }
         });
 

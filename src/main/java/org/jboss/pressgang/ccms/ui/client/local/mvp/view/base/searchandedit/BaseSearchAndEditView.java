@@ -67,7 +67,7 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
         super(applicationName, pageName);
 
         /* We have own own top action panels */
-        this.getTopActionParentPanel().removeFromParent();
+        this.getTopActionGrandParentPanel().removeFromParent();
 
         addSpacerToShortcutPanels();
 
@@ -121,8 +121,11 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
     @Override
     public void displaySearchResultsView(final BaseFilteredResultsViewInterface<T, U, V> filteredResultsView) {
         this.getResultsPanel().clear();
+        this.getResultsActionButtonsPanel().clear();
+
         if (filteredResultsView != null) {
-            this.getResultsActionButtonsPanel().setWidget(filteredResultsView.getTopActionPanel());
+            this.getResultsPanel().setWidget(filteredResultsView.getPanel());
+            this.getResultsActionButtonsPanel().setWidget(filteredResultsView.getTopActionParentPanel());
         }
     }
 }
