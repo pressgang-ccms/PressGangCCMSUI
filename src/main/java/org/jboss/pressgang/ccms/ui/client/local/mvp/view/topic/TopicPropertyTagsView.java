@@ -148,108 +148,16 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
         addExistingChildrenPanel();
     }
 
-    @Override
-    public FlexTable getRenderedSplitViewMenu() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public PushButton getRenderedSplitOpen() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public PushButton getRenderedHorizontalSplit() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public PushButton getRenderedSplitClose() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public PushButton getRenderedVerticalSplit() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public PushButton getRenderedNoSplit() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public PushButton getRenderedSplit() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public PushButton getHistory() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public PushButton getRendered() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public PushButton getXml() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public PushButton getFields() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public PushButton getExtendedProperties() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public PushButton getSave() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public PushButton getXmlErrors() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public PushButton getTopicTags() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public PushButton getBugs() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public PushButton getCsps() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public SimpleBeanEditorDriver getDriver() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
     @Override
     public void initialize(RESTTopicV1 topic, boolean readOnly, boolean newTopic, SplitType splitType, List<String> locales, Boolean showImages) {
         super.initialize(topic, readOnly);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
-    public void showSplitViewButtons() {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public SimpleBeanEditorDriver getDriver() {
+        return null;
     }
 
-    @Override
-    public void buildSplitViewButtons(SplitType splitType) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
 }

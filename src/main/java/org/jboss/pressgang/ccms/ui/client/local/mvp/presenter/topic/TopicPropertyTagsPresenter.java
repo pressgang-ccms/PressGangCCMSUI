@@ -27,7 +27,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildr
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicViewPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
@@ -55,11 +55,12 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
             RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1>
         implements TemplatePresenter {
 
-    public interface Display extends TopicViewInterface, BaseExtendedChildrenViewInterface<
-            RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1,
-            RESTTopicV1,
-            RESTPropertyTagV1, RESTPropertyTagCollectionV1, RESTPropertyTagCollectionItemV1,
-            RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1> {
+    public interface Display extends BaseExtendedChildrenViewInterface<
+                RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1,
+                RESTTopicV1,
+                RESTPropertyTagV1, RESTPropertyTagCollectionV1, RESTPropertyTagCollectionItemV1,
+                RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1>,
+            BaseTopicViewInterface {
         Column<RESTAssignedPropertyTagCollectionItemV1, String> getPropertyTagRemoveColumn();
     }
 

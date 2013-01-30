@@ -67,6 +67,5 @@ public class CategoryView extends BaseTemplateView
         this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.CategoryDetails()));
         this.addActionButton(this.getChildren());
         this.addActionButton(this.getSave());
-        addRightAlignedActionButtonPaddingPanel();
     }
 }

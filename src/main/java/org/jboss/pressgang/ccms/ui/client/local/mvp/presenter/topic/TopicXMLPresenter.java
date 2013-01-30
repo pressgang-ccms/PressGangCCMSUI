@@ -11,7 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
 
 import javax.inject.Inject;
@@ -28,7 +28,7 @@ public class TopicXMLPresenter extends BaseTopicViewPresenter implements
     public interface TopicXMLPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1XMLEditor> {
     }
 
-    public interface Display extends TopicViewInterface {
+    public interface Display extends BaseTopicViewInterface {
 
         public interface PlainTextXMLDialog
         {
@@ -112,9 +112,6 @@ public class TopicXMLPresenter extends BaseTopicViewPresenter implements
 
     public void process(final Integer topicId, final int helpTopicId, final String pageId) {
         super.bind(helpTopicId, pageId, display);
-        if (topicId != null) {
-            getEntity(topicId, display);
-        }
         bindAceEditorButtons();
     }
 

@@ -72,8 +72,10 @@ public abstract class BaseTemplateView
     private SimpleLayoutPanel panel = new SimpleLayoutPanel();
 
     /** This panel holds the buttons currently displayed in the top action bar. */
-    private final SimplePanel topActionParentPanel = new SimplePanel();
-    /** This is the default collection of top action bar items. */
+    private final FlexTable topActionParentPanel = new FlexTable();
+    /** This is the collection of to level action panel buttons. */
+    private final FlexTable topViewSpecificActionPanel = new FlexTable();
+    /** This is the collection of view specific action buttons. */
     private final FlexTable topActionPanel = new FlexTable();
     private final FlexTable footerPanel = new FlexTable();
 
@@ -331,7 +333,7 @@ public abstract class BaseTemplateView
     }
 
     @Override
-    public SimplePanel getTopActionParentPanel() {
+    public FlexTable getTopActionParentPanel() {
         return topActionParentPanel;
     }
 
@@ -362,6 +364,11 @@ public abstract class BaseTemplateView
     @Override
     public FlexTable getTopActionPanel() {
         return topActionPanel;
+    }
+
+    @Override
+    public FlexTable getTopViewSpecificActionPanel() {
+        return topViewSpecificActionPanel;
     }
 
     @Override
@@ -419,7 +426,9 @@ public abstract class BaseTemplateView
         topActionParentPanel.addStyleName(CSSConstants.TOP_ACTION_PARENT_PANEL);
         topActionPanel.addStyleName(CSSConstants.TOP_ACTION_PANEL);
 
-        topActionParentPanel.add(topActionPanel);
+        topActionParentPanel.setWidget(0, 0, topActionPanel);
+        topActionParentPanel.setWidget(0, 1, topViewSpecificActionPanel);
+        topActionParentPanel.getFlexCellFormatter().setWidth(0, 0, "100%");
 
         thirdLevelLayoutPanel.addNorth(topActionParentPanel, Constants.ACTION_BAR_HEIGHT);
 
@@ -525,11 +534,7 @@ public abstract class BaseTemplateView
         topActionParentPanel.add(topActionPanel);
     }
 
-    protected void addRightAlignedActionButtonPaddingPanel() {
-        addRightAlignedActionButtonPaddingPanel(this.getTopActionPanel());
-    }
-
-    protected void addRightAlignedActionButtonPaddingPanel(final FlexTable table) {
+    private void addRightAlignedActionButtonPaddingPanel(final FlexTable table) {
         final int rows = table.getRowCount();
         int columns = 0;
         if (rows != 0) {

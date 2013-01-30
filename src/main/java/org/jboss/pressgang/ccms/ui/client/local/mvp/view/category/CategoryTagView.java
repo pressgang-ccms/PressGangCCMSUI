@@ -143,7 +143,6 @@ public class CategoryTagView
         this.addActionButton(this.getDetails());
         this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.CategoryTags()));
         this.addActionButton(this.getSave());
-        addRightAlignedActionButtonPaddingPanel();
     }
 
     @Override

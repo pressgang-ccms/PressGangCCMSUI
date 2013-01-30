@@ -96,7 +96,6 @@ public class ProjectTagView
         this.addActionButton(this.getDetails());
         this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.ProjectTags()));
         this.addActionButton(this.getSave());
-        addRightAlignedActionButtonPaddingPanel();
     }
 
 }

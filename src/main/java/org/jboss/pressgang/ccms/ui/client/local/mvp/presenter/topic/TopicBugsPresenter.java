@@ -7,7 +7,9 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollect
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicViewPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 import com.google.gwt.user.cellview.client.CellTable;
@@ -22,7 +24,7 @@ public class TopicBugsPresenter extends BaseTopicViewPresenter implements Templa
     
     private String topicId;
 
-    public interface Display extends TopicViewInterface {
+    public interface Display extends BaseTopicViewInterface {
 
         EnhancedAsyncDataProvider<RESTBugzillaBugCollectionItemV1> getProvider();
 

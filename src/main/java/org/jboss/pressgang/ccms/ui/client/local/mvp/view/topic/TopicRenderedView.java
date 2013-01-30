@@ -8,6 +8,7 @@ import java.util.List;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
@@ -15,14 +16,13 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HTML;
 
-public class TopicRenderedView extends TopicViewBase implements TopicRenderedPresenter.Display {
+public class TopicRenderedView extends BaseTemplateView implements TopicRenderedPresenter.Display {
 
     private final HTML div = new HTML("div");
 
     @SuppressWarnings("rawtypes")
     @Override
     public SimpleBeanEditorDriver getDriver() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -33,54 +33,8 @@ public class TopicRenderedView extends TopicViewBase implements TopicRenderedPre
         div.addStyleName(CSSConstants.TOPIC_RENDERED_VIEW_DIV);
     }
 
-    /**
-     * The rendered view will add or remove the rendered down label, instead of the rendered view button.
-     * @param splitType How the page is split with the rendered view
-     */
-    @Override
-    protected void addOrRemoveRenderedButton(final SplitType splitType) {
-        /* Add the rendered view button if there is no split screen, and remove if it there is a split screen */
-        if (splitType == SplitType.NONE || splitType == SplitType.DISABLED) {
-            if (this.getRenderedDown().getParent() == null) {
-                this.getTopActionPanel().insertCell(0, 1);
-                this.getTopActionPanel().setWidget(0, 1, this.getRenderedDown());
-            }
-        } else {
-            if (this.getRenderedDown().getParent() != null) {
-                this.getTopActionPanel().remove(this.getRenderedDown());
-                this.getTopActionPanel().removeCell(0, 1);
-            }
-
-        }
-    }
-
-    @Override
-    protected void populateTopActionBar(final boolean newTopic, final boolean hasErrors) {
-        super.populateTopActionBar(newTopic, hasErrors);
-        
-        addActionButton(this.getRenderedSplit());
-        addActionButton(this.getRenderedDown());
-        addActionButton(this.getXml());
-        addActionButton(this.getXmlErrors());
-        addActionButton(this.getFields());
-        addActionButton(this.getTopicTags());
-        if (!newTopic) {            
-            addActionButton(this.getBugs());
-            addActionButton(this.getHistory());
-        }
-        addActionButton(this.getCsps());
-        
-        addActionButton(this.getSave());
-
-
-        addRightAlignedActionButtonPaddingPanel();
-    }
-
     @Override
     public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
-        this.readOnly = readOnly;
-        populateTopActionBar(newTopic, topic.getXmlErrors() != null && !topic.getXmlErrors().trim().isEmpty());
-        buildSplitViewButtons(splitType);
 
         try {
             // Any number of processors can be created, they will behave

@@ -67,6 +67,5 @@ public class ProjectView extends BaseTemplateView
         this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.ProjectDetails()));
         this.addActionButton(this.getChildren());
         this.addActionButton(this.getSave());
-        addRightAlignedActionButtonPaddingPanel();
     }
 }

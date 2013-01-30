@@ -107,7 +107,6 @@ abstract public class BaseFilteredResultsView<T extends RESTBaseEntityV1<T, U, V
 
         this.addActionButton(entitySearch);
         this.addActionButton(create);
-        this.addRightAlignedActionButtonPaddingPanel();
 
         searchResultsPanel.add(filterTable);
         searchResultsPanel.add(results);

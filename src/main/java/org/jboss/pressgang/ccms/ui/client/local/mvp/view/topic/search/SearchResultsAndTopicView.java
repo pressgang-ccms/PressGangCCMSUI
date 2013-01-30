@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.search;
 
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
@@ -10,9 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.Base
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.LogMessageView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
-
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.SimplePanel;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 
 /**
  * The view that combines the topic search results with the individual topic views 
@@ -22,13 +21,139 @@ public class SearchResultsAndTopicView extends
         BaseSearchAndEditView<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> implements
         SearchResultsAndTopicPresenter.Display {
 
-   
-    
     /** An instance of the message log dialog box */
     private final LogMessageView messageLogDialog = new LogMessageView();
     
     /** The type of split used to display the rendered XML */
     private SplitType splitType = SplitType.NONE;
+
+    private final PushButton fields;
+    private final PushButton extendedProperties;
+    private final PushButton xml;
+    private final PushButton xmlErrors;
+    private final PushButton rendered;
+    private final PushButton topicTags;
+    private final PushButton save;
+    private final PushButton bugs;
+    private final PushButton history;
+    private final PushButton csps;
+
+    private final Label fieldsDown;
+    private final Label xmlDown;
+    private final Label xmlErrorsDown;
+    private final Label renderedDown;
+    private final Label tagsDown;
+    private final Label bugsDown;
+    private final Label historyDown;
+
+    private final FlexTable renderedSplitViewMenu = new FlexTable();
+    private final PushButton renderedSplit;
+    private final PushButton renderedNoSplit;
+    private final PushButton renderedVerticalSplit;
+    private final PushButton renderedHorizontalSplit;
+    private final Label renderedNoSplitDown;
+    private final Label renderedVerticalSplitDown;
+    private final Label renderedHorizontalSplitDown;
+    private final PushButton renderedSplitClose;
+    private final PushButton renderedSplitOpen;
+
+    protected boolean readOnly = false;
+
+    public PushButton getCsps() {
+        return csps;
+    }
+
+    public Label getFieldsDown() {
+        return fieldsDown;
+    }
+
+    public Label getXmlDown() {
+        return xmlDown;
+    }
+
+    public Label getXmlErrorsDown() {
+        return xmlErrorsDown;
+    }
+
+    public Label getRenderedDown() {
+        return renderedDown;
+    }
+
+    public Label getTagsDown() {
+        return tagsDown;
+    }
+
+    public Label getBugsDown() {
+        return bugsDown;
+    }
+
+    public Label getHistoryDown() {
+        return historyDown;
+    }
+
+    public PushButton getRenderedSplitOpen() {
+        return renderedSplitOpen;
+    }
+
+    public PushButton getRenderedHorizontalSplit() {
+        return renderedHorizontalSplit;
+    }
+
+    public FlexTable getRenderedSplitViewMenu() {
+        return renderedSplitViewMenu;
+    }
+
+    public PushButton getRenderedSplitClose() {
+        return renderedSplitClose;
+    }
+
+    public PushButton getRenderedVerticalSplit() {
+        return renderedVerticalSplit;
+    }
+
+    public PushButton getRenderedNoSplit() {
+        return renderedNoSplit;
+    }
+
+    public PushButton getRenderedSplit() {
+        return renderedSplit;
+    }
+
+    public PushButton getHistory() {
+        return history;
+    }
+
+    public PushButton getBugs() {
+        return bugs;
+    }
+
+    public PushButton getTopicTags() {
+        return topicTags;
+    }
+
+    public PushButton getXmlErrors() {
+        return xmlErrors;
+    }
+
+    public PushButton getSave() {
+        return save;
+    }
+
+    public PushButton getRendered() {
+        return rendered;
+    }
+
+    public PushButton getXml() {
+        return xml;
+    }
+
+    public PushButton getFields() {
+        return fields;
+    }
+
+    public PushButton getExtendedProperties() {
+        return extendedProperties;
+    }
 
     @Override
     public LogMessageView getMessageLogDialog() {
@@ -42,6 +167,42 @@ public class SearchResultsAndTopicView extends
 
     public SearchResultsAndTopicView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
+
+        renderedSplitViewMenu.addStyleName(CSSConstants.RENDERED_SPLIT_VIEW_MENU_TABLE);
+
+        /* Build the action bar icons */
+        renderedSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
+        rendered = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedView());
+        xml = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.XMLEditing());
+        xmlErrors = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
+        fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Properties());
+        extendedProperties = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.PropertyTags());
+        save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+        topicTags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TopicTags());
+        bugs = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Bugs());
+        history = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Revisions());
+        csps = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ContentSpecifications());
+
+        fieldsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Properties());
+        xmlDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.XMLEditing());
+        xmlErrorsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
+        renderedDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.RenderedView());
+        tagsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TopicTags());
+        bugsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Bugs());
+        historyDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
+
+        renderedSplitOpen = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
+        renderedNoSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.NoSplit());
+        renderedNoSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.NoSplit());
+        renderedVerticalSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.VerticalSplit());
+        renderedVerticalSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.VerticalSplit());
+        renderedHorizontalSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HorizontalSplit());
+        renderedHorizontalSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.HorizontalSplit());
+        renderedSplitClose = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CloseSubMenu());
+
+        // add the filtered results panel
+        getSplitPanel().clear();
+        getSplitPanel().addWest(this.getResultsViewLayoutPanel(), Constants.SPLIT_PANEL_SIZE);
     }
 
     /**
@@ -52,23 +213,144 @@ public class SearchResultsAndTopicView extends
      * @param panel The rendered view panel itself
      */
     @Override
-    public void initialize(final SplitType splitType, final Panel panel) {
-        this.splitType = splitType;
+    public void initialize(final boolean readOnly, final boolean hasErrors, final SplitType splitType, final Panel panel) {
 
-        getSplitPanel().clear();
+        if (this.splitType != splitType)
+        {
+            this.splitType = splitType;
 
-        getSplitPanel().addWest(this.getResultsViewLayoutPanel(), Constants.SPLIT_PANEL_SIZE);
+            getSplitPanel().clear();
 
-        final SimplePanel renderedPanelParent = new SimplePanel();
-        renderedPanelParent.addStyleName(CSSConstants.TOPIC_VIEW_LAYOUT_PANEL);
-        renderedPanelParent.add(panel);
+            getSplitPanel().addWest(this.getResultsViewLayoutPanel(), Constants.SPLIT_PANEL_SIZE);
 
-        if (splitType == SplitType.HORIZONTAL) {
-            getSplitPanel().addSouth(renderedPanelParent, Constants.SPLIT_PANEL_SIZE);
-        } else if (splitType == SplitType.VERTICAL) {
-            getSplitPanel().addEast(renderedPanelParent, Constants.SPLIT_PANEL_SIZE);
+            final SimplePanel renderedPanelParent = new SimplePanel();
+            renderedPanelParent.addStyleName(CSSConstants.TOPIC_VIEW_LAYOUT_PANEL);
+            renderedPanelParent.add(panel);
+
+            if (splitType == SplitType.HORIZONTAL) {
+                getSplitPanel().addSouth(renderedPanelParent, Constants.SPLIT_PANEL_SIZE);
+            } else if (splitType == SplitType.VERTICAL) {
+                getSplitPanel().addEast(renderedPanelParent, Constants.SPLIT_PANEL_SIZE);
+            }
+
+            getSplitPanel().add(this.getViewLayoutPanel());
         }
 
-        getSplitPanel().add(this.getViewLayoutPanel());
+        this.readOnly = readOnly;
+        this.populateTopActionBar(hasErrors);
+        buildSplitViewButtons(splitType);
+    }
+
+    /**
+     * This method enables or disables the save button based on the read only state, and also highlights the history button if
+     * needed.
+     */
+    private void fixReadOnlyButtons() {
+        this.getSave().setEnabled(!readOnly);
+
+        if (readOnly) {
+            this.getHistory().addStyleName(CSSConstants.ALERT_BUTTON);
+        } else {
+            this.getHistory().removeStyleName(CSSConstants.ALERT_BUTTON);
+        }
+    }
+
+    private void addOrRemoveRenderedButton(final SplitType splitType)
+    {
+        /* Add the rendered view button if there is no split screen, and remove if it there is a split screen */
+        if (splitType == SplitType.NONE || splitType == SplitType.DISABLED) {
+            if (this.getRendered().getParent() == null) {
+                this.getTopActionPanel().insertCell(0, 1);
+                this.getTopActionPanel().setWidget(0, 1, this.getRendered());
+            }
+        } else {
+            if (this.getRendered().getParent() != null) {
+                this.getTopActionPanel().remove(this.getRendered());
+                this.getTopActionPanel().removeCell(0, 1);
+            }
+
+        }
+    }
+
+    public void buildSplitViewButtons(final SplitType splitType) {
+
+        addOrRemoveRenderedButton(splitType);
+
+        renderedSplitViewMenu.clear();
+
+        if (splitType != SplitType.DISABLED) {
+
+            int column = 0;
+
+            renderedSplitViewMenu.setWidget(0, column, renderedSplitOpen);
+
+            ++column;
+            if (splitType == SplitType.NONE) {
+                renderedSplitViewMenu.setWidget(0, column, renderedNoSplitDown);
+            } else {
+                renderedSplitViewMenu.setWidget(0, column, renderedNoSplit);
+            }
+
+            ++column;
+            if (splitType == SplitType.VERTICAL) {
+                renderedSplitViewMenu.setWidget(0, column, renderedVerticalSplitDown);
+            } else {
+                renderedSplitViewMenu.setWidget(0, column, renderedVerticalSplit);
+            }
+
+            ++column;
+            if (splitType == SplitType.HORIZONTAL) {
+                renderedSplitViewMenu.setWidget(0, column, renderedHorizontalSplitDown);
+            } else {
+                renderedSplitViewMenu.setWidget(0, column, renderedHorizontalSplit);
+            }
+
+            ++column;
+            renderedSplitViewMenu.setWidget(0, column, renderedSplitClose);
+        }
+    }
+
+    /** Show the rendered split view menu */
+    public void showSplitViewButtons() {
+        getTopActionParentPanel().clear();
+        getTopActionParentPanel().add(renderedSplitViewMenu);
+    }
+
+    /**
+     * This method is called to initialize the buttons that should appear in the top action bar.
+     * @param hasErrors true if the XML contains errors, false otherwise
+     */
+    private void populateTopActionBar(final boolean hasErrors)
+    {
+        this.getTopActionPanel().removeAllRows();
+        setXMLErrorsButtonState(hasErrors);
+        fixReadOnlyButtons();
+
+        addActionButton(this.getRenderedSplit());
+        addActionButton(this.getRendered());
+        addActionButton(this.getXmlDown());
+        addActionButton(this.getXmlErrors());
+        addActionButton(this.getFields());
+        addActionButton(this.getExtendedProperties());
+        addActionButton(this.getTopicTags());
+        addActionButton(this.getBugs());
+        addActionButton(this.getHistory());
+        addActionButton(this.getCsps());
+        addActionButton(this.getSave());
+    }
+
+
+    private void setXMLErrorsButtonState(final boolean hasErrors)
+    {
+        if (hasErrors)
+        {
+            this.xmlErrors.addStyleName(CSSConstants.ERROR);
+            xmlErrorsDown.addStyleName(CSSConstants.ERROR);
+        }
+        else
+        {
+            this.xmlErrors.removeStyleName(CSSConstants.ERROR);
+            xmlErrorsDown.removeStyleName(CSSConstants.ERROR);
+        }
     }
 }

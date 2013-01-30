@@ -14,6 +14,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBIRTBugsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
@@ -28,7 +29,7 @@ import java.util.List;
  * 
  * @author Matthew Casperson
  */
-public class TopicBIRTBugsView extends TopicViewBase implements TopicBIRTBugsPresenter.Display {
+public class TopicBIRTBugsView extends BaseTemplateView implements TopicBIRTBugsPresenter.Display {
 
     private final Frame iFrame;
 
@@ -43,38 +44,14 @@ public class TopicBIRTBugsView extends TopicViewBase implements TopicBIRTBugsPre
         this.getPanel().add(iFrame);
     }
 
+    @Override
+    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
+        iFrame.setUrl(Constants.BIRT_URL + Constants.BIRT_RUN_REPORT + Constants.BIRT_TOPIC_BUGZILLA_REPORT + topic.getId());
+    }
+
     @SuppressWarnings("rawtypes")
     @Override
     public SimpleBeanEditorDriver getDriver() {
         return null;
-    }
-
-    @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
-        this.readOnly = readOnly;
-        populateTopActionBar(newTopic, topic.getXmlErrors() != null && !topic.getXmlErrors().trim().isEmpty());
-        buildSplitViewButtons(splitType);
-
-        iFrame.setUrl(Constants.BIRT_URL + Constants.BIRT_RUN_REPORT + Constants.BIRT_TOPIC_BUGZILLA_REPORT + topic.getId());
-    }
-
-    @Override
-    protected void populateTopActionBar(final boolean newTopic, final boolean hasErrors) {
-        super.populateTopActionBar(newTopic, hasErrors);
-        
-        addActionButton(this.getRenderedSplit());
-        addActionButton(this.getRendered());
-        addActionButton(this.getXml());
-        addActionButton(this.getXmlErrors());
-        addActionButton(this.getFields());
-        addActionButton(this.getTopicTags());        
-        if (!newTopic) {
-            addActionButton(this.getBugsDown());
-            addActionButton(this.getHistory());
-        }
-        addActionButton(this.getCsps());
-        addActionButton(this.getSave());
-
-        addRightAlignedActionButtonPaddingPanel();
     }
 }

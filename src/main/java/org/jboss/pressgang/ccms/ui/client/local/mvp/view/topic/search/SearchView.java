@@ -60,8 +60,6 @@ public class SearchView extends BaseTemplateView implements
         addActionButton(tags);
         addActionButton(fields);
 
-        addRightAlignedActionButtonPaddingPanel();
-
         /* Construct a hierarchy of tags from the tag collection */
         getSearchUIProjects().initialize(tagCollection);
 

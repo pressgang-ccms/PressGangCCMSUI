@@ -1,15 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.*;
 
 /**
  * This interface defines the UI elements that are exposed from the base template that is
@@ -37,6 +28,11 @@ public interface BaseTemplateViewInterface {
      * @return The container that holds the actions buttons (i.e. the horizontal row of buttons that are specific to a view)
      */
     FlexTable getTopActionPanel();
+
+    /**
+     * @return The container that holds the view specific actions buttons
+     */
+    FlexTable getTopViewSpecificActionPanel();
 
     /**
      * @return The panel into which a view will add its own content
@@ -92,7 +88,7 @@ public interface BaseTemplateViewInterface {
      * 
      * @return The panel that holds the top action buttons
      */
-    SimplePanel getTopActionParentPanel();
+    FlexTable getTopActionParentPanel();
 
     /**
      * 

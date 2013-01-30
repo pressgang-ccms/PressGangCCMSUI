@@ -111,22 +111,18 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
      */
     @Override
     public void displayChildView(final BaseTemplateViewInterface displayedView) {
-        this.getViewActionButtonsPanel().clear();
         this.getViewPanel().clear();
         
         if (displayedView != null) {
-            this.getViewActionButtonsPanel().setWidget(displayedView.getTopActionPanel());
             this.getViewPanel().setWidget(displayedView.getPanel());
         }
     }
 
     @Override
     public void displaySearchResultsView(final BaseFilteredResultsViewInterface<T, U, V> filteredResultsView) {
-        this.getResultsActionButtonsPanel().clear();
         this.getResultsPanel().clear();
         if (filteredResultsView != null) {
             this.getResultsActionButtonsPanel().setWidget(filteredResultsView.getTopActionPanel());
-            this.getResultsPanel().setWidget(filteredResultsView.getPanel());
         }
     }
 }

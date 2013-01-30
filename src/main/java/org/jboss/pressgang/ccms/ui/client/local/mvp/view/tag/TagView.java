@@ -60,7 +60,6 @@ public class TagView extends BaseTemplateView implements TagPresenter.Display {
         this.addActionButton(this.getTagProjects());
         this.addActionButton(this.getTagCategories());
         this.addActionButton(this.getSave());
-        addRightAlignedActionButtonPaddingPanel();
     }
 
     @Override

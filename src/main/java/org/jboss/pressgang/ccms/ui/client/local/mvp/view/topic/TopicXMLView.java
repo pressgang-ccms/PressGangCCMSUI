@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.TopicXMLPresenterDriver;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
@@ -27,7 +28,7 @@ import com.google.gwt.user.client.ui.ToggleButton;
 
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 
-public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Display {
+public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.Display {
 
     /** The GWT Editor Driver */
     private final TopicXMLPresenterDriver driver = GWT.create(TopicXMLPresenterDriver.class);
@@ -360,36 +361,8 @@ public class TopicXMLView extends TopicViewBase implements TopicXMLPresenter.Dis
     }
 
     @Override
-    protected void populateTopActionBar(final boolean newTopic, final boolean hasErrors) {
-        super.populateTopActionBar(newTopic, hasErrors);
-
-        addActionButton(this.getRenderedSplit());
-        addActionButton(this.getRendered());
-        addActionButton(this.getXmlDown());
-        addActionButton(this.getXmlErrors());
-        addActionButton(this.getFields());
-        addActionButton(this.getExtendedProperties());
-        addActionButton(this.getTopicTags());
-        if (!newTopic) {
-            addActionButton(this.getBugs());
-            addActionButton(this.getHistory());
-        }
-        addActionButton(this.getCsps());
-        addActionButton(this.getSave());
-
-        fixReadOnlyButtons();
-
-        addRightAlignedActionButtonPaddingPanel();
-        addActionButton(this.lineWrap);
-        addActionButton(this.showInvisibles);
-    }
-
-    @Override
     public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType,
             final List<String> locales, final Boolean showImages) {
-        this.readOnly = readOnly;
-        this.populateTopActionBar(newTopic, topic.getXmlErrors() != null && !topic.getXmlErrors().trim().isEmpty());
-        buildSplitViewButtons(splitType);
 
         /* SearchUIProjectsEditor is a grid */
         this.editor = new RESTTopicV1XMLEditor(readOnly);

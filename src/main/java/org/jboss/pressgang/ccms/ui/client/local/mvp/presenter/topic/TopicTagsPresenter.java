@@ -8,7 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicViewPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectsEditor;
@@ -29,7 +29,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 public class TopicTagsPresenter extends BaseTopicViewPresenter implements
         TemplatePresenter {
 
-    public interface Display extends TopicViewInterface {
+    public interface Display extends BaseTopicViewInterface {
         void initializeNewTags(final SearchUIProjects tags);
 
         void updateNewTagCategoriesDisplay();
@@ -85,10 +85,6 @@ public class TopicTagsPresenter extends BaseTopicViewPresenter implements
 
     public void process(final Integer topicId, final int helpTopicId, final String pageId) {
         super.bind(helpTopicId, pageId, display);
-        if (topicId != null)
-        {
-            getEntity(topicId, display);
-        }
         getTags();
     }
 

@@ -6,6 +6,7 @@ import java.util.List;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
@@ -24,7 +25,7 @@ import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.web.bindery.requestfactory.gwt.ui.client.ProxyRenderer;
 
-public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.Display {
+public class TopicTagsView extends BaseTemplateView implements TopicTagsPresenter.Display {
 
     final FlexTable layout = new FlexTable();
 
@@ -130,27 +131,6 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
     }
 
     @Override
-    protected void populateTopActionBar(final boolean newTopic, final boolean hasErrors) {
-        
-        super.populateTopActionBar(newTopic, hasErrors);
-        
-        addActionButton(this.getRenderedSplit());
-        addActionButton(this.getRendered());
-        addActionButton(this.getXml());
-        addActionButton(this.getXmlErrors());
-        addActionButton(this.getFields());
-        addActionButton(this.getTagsDown());
-        if (!newTopic) {
-            addActionButton(this.getBugs());
-            addActionButton(this.getHistory());
-        }
-        addActionButton(this.getCsps());
-        addActionButton(this.getSave());
-
-        addRightAlignedActionButtonPaddingPanel();
-    }
-
-    @Override
     public void updateNewTagCategoriesDisplay() {
         final List<SearchUICategory> listCategories = projects.getValue().getCategories();
 
@@ -228,9 +208,6 @@ public class TopicTagsView extends TopicViewBase implements TopicTagsPresenter.D
 
     @Override
     public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
-        this.readOnly = readOnly;
-        populateTopActionBar(newTopic, topic.getXmlErrors() != null && !topic.getXmlErrors().trim().isEmpty());
-        buildSplitViewButtons(splitType);
 
         /* reset the layout */
         layout.clear();

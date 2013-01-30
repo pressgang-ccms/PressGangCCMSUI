@@ -108,6 +108,5 @@ public class TagProjectsView extends
         this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TagProjects()));
         this.addActionButton(this.getTagCategories());
         this.addActionButton(this.getSave());
-        addRightAlignedActionButtonPaddingPanel();
     }
 }

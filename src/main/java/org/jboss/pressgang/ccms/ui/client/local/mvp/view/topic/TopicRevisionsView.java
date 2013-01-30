@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
@@ -32,7 +33,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * 
  * @author Matthew Casperson
  */
-public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsPresenter.Display {
+public class TopicRevisionsView extends BaseTemplateView implements TopicRevisionsPresenter.Display {
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
 
@@ -229,32 +230,9 @@ public class TopicRevisionsView extends TopicViewBase implements TopicRevisionsP
     @Override
     public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType,
             final List<String> locales, final Boolean showImages) {
-        this.readOnly = readOnly;
         this.mainTopic = topic;
-        populateTopActionBar(newTopic, topic.getXmlErrors() != null && !topic.getXmlErrors().trim().isEmpty());
-        buildSplitViewButtons(splitType);
-
     }
 
-    @Override
-    protected void populateTopActionBar(final boolean newTopic, final boolean hasErrors) {
-        super.populateTopActionBar(newTopic, hasErrors);
 
-        addActionButton(this.getRenderedSplit());
-        addActionButton(this.getRendered());
-        addActionButton(this.getXml());
-        addActionButton(this.getXmlErrors());
-        addActionButton(this.getFields());
-        addActionButton(this.getTopicTags());
-        if (!newTopic) {
-            addActionButton(this.getBugs());
-            addActionButton(this.getHistoryDown());
-        }
-        addActionButton(this.getCsps());
-        addActionButton(this.getSave());
-
-
-        addRightAlignedActionButtonPaddingPanel();
-    }
 
 }

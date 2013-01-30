@@ -144,7 +144,6 @@ public class ImageView extends BaseTemplateView implements
         this.addActionButton(viewImage);
         this.addActionButton(findTopics);
         this.addActionButton(save);
-        this.addRightAlignedActionButtonPaddingPanel();
     }
 
     @Override

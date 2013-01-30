@@ -11,7 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicViewPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
@@ -28,7 +28,7 @@ public class TopicXMLErrorsPresenter extends BaseTopicViewPresenter implements T
     public interface TopicXMLErrorsPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1XMLErrorsEditor> {
     }
 
-    public interface Display extends TopicViewInterface {
+    public interface Display extends BaseTopicViewInterface {
     }
 
     private Integer topicId;
@@ -63,6 +63,5 @@ public class TopicXMLErrorsPresenter extends BaseTopicViewPresenter implements T
     public void process(final Integer topicId, final int helpTopicId, final String pageId)
     {
         super.bind(helpTopicId, pageId, display);
-        getEntity(topicId, display);
     }
 }

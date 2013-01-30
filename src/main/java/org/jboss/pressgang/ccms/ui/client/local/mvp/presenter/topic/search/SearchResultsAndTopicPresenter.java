@@ -13,8 +13,10 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
@@ -41,7 +43,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePrese
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -76,7 +78,7 @@ public class SearchResultsAndTopicPresenter
             RESTTopicV1,
             RESTTopicCollectionV1,
             RESTTopicCollectionItemV1,
-            TopicViewInterface,
+            BaseTopicViewInterface,
             TopicPresenter.Display,
             RESTTopicV1BasicDetailsEditor>
         implements TemplatePresenter {
@@ -298,7 +300,7 @@ public class SearchResultsAndTopicPresenter
         }
 
         /* Have to do this after the parseToken method has been called */
-        display.initialize(split, topicSplitPanelRenderedDisplay.getPanel());
+        display.initialize(false, false, split, topicSplitPanelRenderedDisplay.getPanel());
 
         loadSplitPanelSize();
     }
@@ -351,7 +353,7 @@ public class SearchResultsAndTopicPresenter
 
     private void showRenderedSplitPanelMenu() {
         display.getViewActionButtonsPanel().clear();
-        display.getViewActionButtonsPanel().add(lastDisplayedView.getRenderedSplitViewMenu());
+        display.getViewActionButtonsPanel().add(display.getRenderedSplitViewMenu());
     }
 
     /**
@@ -655,7 +657,7 @@ public class SearchResultsAndTopicPresenter
         }*/
 
         /* clear the tags display */
-        initializeViews(Arrays.asList(new TopicViewInterface[]{topicTagsComponent.getDisplay()}));
+        initializeViews(Arrays.asList(new BaseTopicViewInterface[]{topicTagsComponent.getDisplay()}));
 
         /* A callback to respond to a request for a topic with the tags expanded */
         final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
@@ -667,7 +669,7 @@ public class SearchResultsAndTopicPresenter
                 getTopicOrRevisionTopic().getItem().setTags(retValue.getTags());
 
                         /* update the view */
-                initializeViews(Arrays.asList(new TopicViewInterface[]{topicTagsComponent.getDisplay()}));
+                initializeViews(Arrays.asList(new BaseTopicViewInterface[]{topicTagsComponent.getDisplay()}));
             }
         });
 
@@ -695,7 +697,7 @@ public class SearchResultsAndTopicPresenter
     }
 
     @Override
-    protected void switchView(final TopicViewInterface displayedView) {
+    protected void switchView(final BaseTopicViewInterface displayedView) {
         try {
             logger.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.switchView(final TopicViewInterface displayedView)");
 
@@ -1077,26 +1079,23 @@ public class SearchResultsAndTopicPresenter
         };
 
         /* Hook up the click listeners */
-        for (final TopicViewInterface view : new TopicViewInterface[]{topicViewComponent.getDisplay(), topicXMLComponent.getDisplay(),
-                topicRenderedPresenter.getDisplay(), topicXMLErrorsPresenter.getDisplay(), topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(), topicRevisionsComponent.getDisplay()}) {
-            view.getRenderedSplit().addClickHandler(splitMenuHandler);
-            view.getFields().addClickHandler(topicViewClickHandler);
-            view.getExtendedProperties().addClickHandler(topicPropertyTagsClickHandler);
-            view.getXml().addClickHandler(topicXMLClickHandler);
-            view.getRendered().addClickHandler(topicRenderedClickHandler);
-            view.getSave().addClickHandler(saveClickHandler);
-            view.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
-            view.getTopicTags().addClickHandler(topicTagsClickHandler);
-            view.getBugs().addClickHandler(topicBugsClickHandler);
-            view.getHistory().addClickHandler(topicRevisionsClickHanlder);
-            view.getCsps().addClickHandler(cspsHandler);
+        display.getRenderedSplit().addClickHandler(splitMenuHandler);
+        display.getFields().addClickHandler(topicViewClickHandler);
+        display.getExtendedProperties().addClickHandler(topicPropertyTagsClickHandler);
+        display.getXml().addClickHandler(topicXMLClickHandler);
+        display.getRendered().addClickHandler(topicRenderedClickHandler);
+        display.getSave().addClickHandler(saveClickHandler);
+        display.getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
+        display.getTopicTags().addClickHandler(topicTagsClickHandler);
+        display.getBugs().addClickHandler(topicBugsClickHandler);
+        display.getHistory().addClickHandler(topicRevisionsClickHanlder);
+        display.getCsps().addClickHandler(cspsHandler);
 
-            view.getRenderedSplitOpen().addClickHandler(splitMenuCloseHandler);
-            view.getRenderedSplitClose().addClickHandler(splitMenuCloseHandler);
-            view.getRenderedNoSplit().addClickHandler(splitMenuNoSplitHandler);
-            view.getRenderedVerticalSplit().addClickHandler(splitMenuVSplitHandler);
-            view.getRenderedHorizontalSplit().addClickHandler(splitMenuHSplitHandler);
-        }
+        display.getRenderedSplitOpen().addClickHandler(splitMenuCloseHandler);
+        display.getRenderedSplitClose().addClickHandler(splitMenuCloseHandler);
+        display.getRenderedNoSplit().addClickHandler(splitMenuNoSplitHandler);
+        display.getRenderedVerticalSplit().addClickHandler(splitMenuVSplitHandler);
+        display.getRenderedHorizontalSplit().addClickHandler(splitMenuHSplitHandler);
 
         /* Hook up the xml editor buttons */
         topicXMLComponent.getDisplay().getLineWrap().addClickHandler(new ClickHandler() {
@@ -1123,7 +1122,7 @@ public class SearchResultsAndTopicPresenter
     }
 
     @Override
-    protected void initializeViews(final List<TopicViewInterface> filter) {
+    protected void initializeViews(final List<BaseTopicViewInterface> filter) {
 
         try {
             logger.log(Level.INFO,
@@ -1131,7 +1130,7 @@ public class SearchResultsAndTopicPresenter
 
             logger.log(Level.INFO, "\tInitializing topic views");
 
-            for (final TopicViewInterface view : new TopicViewInterface[]{topicViewComponent.getDisplay(), topicXMLComponent.getDisplay(),
+            for (final BaseTopicViewInterface view : new BaseTopicViewInterface[]{topicViewComponent.getDisplay(), topicXMLComponent.getDisplay(),
                     topicRenderedPresenter.getDisplay(), topicXMLErrorsPresenter.getDisplay(), topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(),
                     topicSplitPanelRenderedDisplay, topicPropertyTagPresenter.getDisplay()}) {
                 if (viewIsInFilter(filter, view)) {
@@ -1167,10 +1166,7 @@ public class SearchResultsAndTopicPresenter
 
     private void initializeSplitViewButtons() {
         /* fix the rendered view button */
-        for (final TopicViewInterface view : new TopicViewInterface[]{topicViewComponent.getDisplay(), topicXMLComponent.getDisplay(),
-                topicRenderedPresenter.getDisplay(), topicXMLErrorsPresenter.getDisplay(), topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(), topicRevisionsComponent.getDisplay()}) {
-            view.buildSplitViewButtons(split);
-        }
+        display.buildSplitViewButtons(split);
     }
 
     /**
@@ -1179,11 +1175,92 @@ public class SearchResultsAndTopicPresenter
     public interface Display extends
             BaseSearchAndEditViewInterface<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
 
+        FlexTable getRenderedSplitViewMenu();
+
+        PushButton getRenderedSplitOpen();
+
+        PushButton getRenderedHorizontalSplit();
+
+        PushButton getRenderedSplitClose();
+
+        PushButton getRenderedVerticalSplit();
+
+        PushButton getRenderedNoSplit();
+
+        PushButton getRenderedSplit();
+
+        /**
+         * @return The button that is used to switch to the history view
+         */
+        PushButton getHistory();
+
+        /**
+         * @return The button that is used to switch to the rendered view
+         */
+        PushButton getRendered();
+
+        /**
+         *
+         * @return The button that is used to switch to the XML view
+         */
+        PushButton getXml();
+
+        /**
+         *
+         * @return The button that is used to switch to the topic fields view
+         */
+        PushButton getFields();
+
+        /**
+         *
+         * @return The button that is used to switch to the topic property tags view
+         */
+        PushButton getExtendedProperties();
+
+        /**
+         *
+         * @return The button that is used to save the topic
+         */
+        PushButton getSave();
+
+        /**
+         *
+         * @return The button that is used to switch to the XML errors view
+         */
+        PushButton getXmlErrors();
+
+        /**
+         *
+         * @return The button that is used to switch to the tags view
+         */
+        PushButton getTopicTags();
+
+        /**
+         *
+         * @return The button that is used to switch to the bugs view
+         */
+        PushButton getBugs();
+
+        /**
+         *
+         * @return The button this is used to match topics to csps
+         */
+        PushButton getCsps();
+
+        /** Show the rendered split view menu */
+        void showSplitViewButtons();
+
+        /**
+         * Rebuild the split view buttons
+         * @param splitType The screen split
+         */
+        void buildSplitViewButtons(final SplitType splitType);
+
         LogMessageInterface getMessageLogDialog();
 
         SplitType getSplitType();
 
-        void initialize(final SplitType splitType, final Panel panel);
+        void initialize(final boolean readOnly, final boolean hasErrors, final SplitType splitType, final Panel panel);
     }
 
     /**
@@ -1299,7 +1376,7 @@ public class SearchResultsAndTopicPresenter
             }
 
             /* Redisplay the view */
-            initializeViews(Arrays.asList(new TopicViewInterface[]{topicTagsComponent.getDisplay()}));
+            initializeViews(Arrays.asList(new BaseTopicViewInterface[]{topicTagsComponent.getDisplay()}));
         }
     }
 
@@ -1333,7 +1410,7 @@ public class SearchResultsAndTopicPresenter
                 tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
             }
 
-            initializeViews(Arrays.asList(new TopicViewInterface[]{topicTagsComponent.getDisplay()}));
+            initializeViews(Arrays.asList(new BaseTopicViewInterface[]{topicTagsComponent.getDisplay()}));
         }
     }
 }

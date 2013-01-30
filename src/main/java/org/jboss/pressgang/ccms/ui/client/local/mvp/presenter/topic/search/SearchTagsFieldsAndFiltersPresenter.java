@@ -95,7 +95,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends ComponentBase implement
     private void displayTags()
     {
         display.getTopActionParentPanel().clear();
-        display.getTopActionParentPanel().setWidget(tagsComponent.getDisplay().getTopActionPanel());
+        display.getTopActionParentPanel().setWidget(0, 0, tagsComponent.getDisplay().getTopActionPanel());
 
         display.getPanel().clear();
         display.getPanel().setWidget(tagsComponent.getDisplay().getPanel());
@@ -107,7 +107,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends ComponentBase implement
     private void displayFields()
     {
         display.getTopActionParentPanel().clear();
-        display.getTopActionParentPanel().setWidget(fieldsComponent.getDisplay().getTopActionPanel());
+        display.getTopActionParentPanel().setWidget(0, 0, fieldsComponent.getDisplay().getTopActionPanel());
 
         display.getPanel().clear();
         display.getPanel().setWidget(fieldsComponent.getDisplay().getPanel());

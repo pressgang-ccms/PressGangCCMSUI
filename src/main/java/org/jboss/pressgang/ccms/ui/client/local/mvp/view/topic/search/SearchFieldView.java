@@ -51,8 +51,6 @@ public class SearchFieldView extends BaseTemplateView implements
         addActionButton(tagsSearch);
         addActionButton(fields);
 
-        addRightAlignedActionButtonPaddingPanel();
-
         /* SearchUIProjectsEditor is a grid */
         final SearchFieldEditor editor = new SearchFieldEditor();
         /* Initialize the driver with the top-level editor */

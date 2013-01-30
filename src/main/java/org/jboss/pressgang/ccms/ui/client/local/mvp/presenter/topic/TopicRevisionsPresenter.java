@@ -9,7 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicViewPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 import javax.inject.Inject;
@@ -18,7 +18,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 
 public class TopicRevisionsPresenter extends BaseTopicViewPresenter implements TemplatePresenter {
 
-    public interface Display extends TopicViewInterface {
+    public interface Display extends BaseTopicViewInterface {
         EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> getProvider();
 
         void setProvider(final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider);

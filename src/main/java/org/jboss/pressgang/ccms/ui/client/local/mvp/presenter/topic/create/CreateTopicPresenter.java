@@ -20,7 +20,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringL
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -104,9 +104,9 @@ public class CreateTopicPresenter extends ComponentBase implements
     private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
 
     /** A collection of views that can be edited and flushed back to their underlying objects */
-    private TopicViewInterface[] editableTopicViews;
+    private BaseTopicViewInterface[] editableTopicViews;
     /** A collecion view vies that can be updated */
-    private TopicViewInterface[] updatableTopicViews;
+    private BaseTopicViewInterface[] updatableTopicViews;
 
     /**
      * How the rendering panel is displayed
@@ -114,7 +114,7 @@ public class CreateTopicPresenter extends ComponentBase implements
     private SplitType split = SplitType.NONE;
 
     /** The last displayed view */
-    private TopicViewInterface lastView;
+    private BaseTopicViewInterface lastView;
 
     /** The new topicViewComponent.getDisplay() being created */
     private final RESTTopicV1 newTopic = new RESTTopicV1();
@@ -236,9 +236,9 @@ public class CreateTopicPresenter extends ComponentBase implements
 
         super.bind(helpTopicId, pageId, display);
 
-        updatableTopicViews = new TopicViewInterface[] { topicComponent.getDisplay(), topicTagsComponent.getDisplay(), topicXMLComponent.getDisplay(),
+        updatableTopicViews = new BaseTopicViewInterface[] { topicComponent.getDisplay(), topicTagsComponent.getDisplay(), topicXMLComponent.getDisplay(),
                 topicXMLErrorsComponent.getDisplay(), topicRenderedDisplay };
-        editableTopicViews = new TopicViewInterface[] { topicComponent.getDisplay(), topicXMLComponent.getDisplay() };
+        editableTopicViews = new BaseTopicViewInterface[] { topicComponent.getDisplay(), topicXMLComponent.getDisplay() };
 
         /* Create an initial collection to hold any new tags, urls and property tags */
         newTopic.setLocale("");
@@ -597,7 +597,7 @@ public class CreateTopicPresenter extends ComponentBase implements
             }
         };
 
-        for (final TopicViewInterface view : updatableTopicViews) {
+        for (final BaseTopicViewInterface view : updatableTopicViews) {
             view.getTopicTags().addClickHandler(displayTagsClickHandler);
             view.getFields().addClickHandler(displayTopicClickHandler);
             view.getXml().addClickHandler(topicXMLClickHandler);
@@ -651,7 +651,7 @@ public class CreateTopicPresenter extends ComponentBase implements
      */
     private void flushChanges() {
         /* Update the data object with the GUI changes */
-        for (final TopicViewInterface view : editableTopicViews) {
+        for (final BaseTopicViewInterface view : editableTopicViews) {
             /* Make sure we have a driver, and it is not a readonly view */
             if (view.getDriver() != null) {
                 view.getDriver().flush();
@@ -684,7 +684,7 @@ public class CreateTopicPresenter extends ComponentBase implements
      *
      * @param shownDisplay The currently displayed view
      */
-    private void setShownDisplay(final TopicViewInterface shownDisplay) {
+    private void setShownDisplay(final BaseTopicViewInterface shownDisplay) {
         /* The main display is always visible */
         this.display.setViewShown(true);
         this.topicComponent.getDisplay().setViewShown(shownDisplay == topicComponent.getDisplay());
@@ -696,7 +696,7 @@ public class CreateTopicPresenter extends ComponentBase implements
     /**
      * Updates the current topicViewComponent.getDisplay() view
      */
-    private void updateDisplayedTopicView(final TopicViewInterface selectedView) {
+    private void updateDisplayedTopicView(final BaseTopicViewInterface selectedView) {
         if (lastView != selectedView) {
 
             flushChanges();
@@ -745,7 +745,7 @@ public class CreateTopicPresenter extends ComponentBase implements
 
     private void initializeViews() {
         /* refresh the data being displayed */
-        for (final TopicViewInterface view : this.updatableTopicViews) {
+        for (final BaseTopicViewInterface view : this.updatableTopicViews) {
             view.initialize(newTopic, false, true, split, locales, false);
         }
     }
@@ -838,7 +838,7 @@ public class CreateTopicPresenter extends ComponentBase implements
 
     private void initializeSplitViewButtons() {
         /* fix the rendered view button */
-        for (final TopicViewInterface view : new TopicViewInterface[] { topicComponent.getDisplay(), topicXMLComponent.getDisplay(),
+        for (final BaseTopicViewInterface view : new BaseTopicViewInterface[] { topicComponent.getDisplay(), topicXMLComponent.getDisplay(),
                 topicRenderedDisplay, topicXMLErrorsComponent.getDisplay(), topicTagsComponent.getDisplay() }) {
             view.buildSplitViewButtons(split);
         }

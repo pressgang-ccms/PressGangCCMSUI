@@ -7,7 +7,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicViewPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 
@@ -19,7 +19,7 @@ public class TopicRenderedPresenter extends BaseTopicViewPresenter implements Te
     
     private String topicId;
 
-    public interface Display extends TopicViewInterface {
+    public interface Display extends BaseTopicViewInterface {
 
     }
 
