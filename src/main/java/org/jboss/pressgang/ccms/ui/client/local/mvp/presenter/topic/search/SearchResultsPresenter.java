@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.view.client.AbstractDataProvider;
+import com.google.gwt.view.client.ListDataProvider;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
@@ -28,6 +30,7 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import javax.inject.Inject;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.isStringNullOrEmpty;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 public class SearchResultsPresenter
@@ -78,7 +81,12 @@ public class SearchResultsPresenter
     public void process(final int topicId, final String pageId, final String queryString) {
         super.bind(topicId, pageId, queryString, display);
         this.queryString = queryString;
-        display.setProvider(generateListProvider(queryString, display));
+
+        if (queryString == null) {
+            display.setProvider(generateListProvider());
+        } else {
+            display.setProvider(generateListProvider(queryString, display));
+        }
     }
 
     @Override
@@ -89,7 +97,18 @@ public class SearchResultsPresenter
     @Override
     protected void displayQueryElements(final String queryString) {
         // TODO Auto-generated method stub
+    }
 
+    protected EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateListProvider() {
+        getProviderData().resetToEmpty();
+
+        final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
+            @Override
+            protected void onRangeChanged(final HasData<RESTTopicCollectionItemV1> list) {
+                displayNewFixedList(getProviderData().getItems());
+            }
+        };
+        return provider;
     }
 
     @Override

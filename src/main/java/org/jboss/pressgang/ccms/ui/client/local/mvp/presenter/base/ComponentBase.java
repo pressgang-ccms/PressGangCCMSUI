@@ -111,7 +111,7 @@ abstract public class ComponentBase implements Component, EditableView {
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed()) {
-
+                    eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.CREATE_PATH_SEGMENT_PREFIX, false));
                 }
             }
         });
@@ -133,8 +133,9 @@ abstract public class ComponentBase implements Component, EditableView {
         display.getImages().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (isOKToProceed())
+                if (isOKToProceed()) {
                     eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
+                }
             }
         });
 

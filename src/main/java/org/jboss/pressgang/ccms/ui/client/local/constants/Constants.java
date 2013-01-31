@@ -65,6 +65,16 @@ public final class Constants {
     public static final String QUERY_PATH_SEGMENT_PREFIX = QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + ";";
 
     /**
+     * All path segments that define a query must start with this string.
+     */
+    public static final String CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON = "create";
+
+    /**
+     * All path segments that define a query must start with this string.
+     */
+    public static final String CREATE_PATH_SEGMENT_PREFIX = CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON + ";";
+
+    /**
      * The size of the split panels.
      */
     public static final int SPLIT_PANEL_SIZE = 300;

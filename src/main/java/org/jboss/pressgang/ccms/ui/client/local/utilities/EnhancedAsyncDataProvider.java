@@ -38,8 +38,7 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
      * @param startRow The row that this async load represents
      */
     public void displayAsynchronousList(final List<T> items, final int listSize, final int startRow) {
-        if (items == null)
-        {
+        if (items == null) {
             throw new IllegalArgumentException("items cannot be null");
         }
 
@@ -56,14 +55,12 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
      * @param startRow The row that this async load represents
      */
     public void displayFuzzyAsynchronousList(final List<T> items, final int listSize, final int startRow) {
-        if (items == null)
-        {
+        if (items == null) {
             throw new IllegalArgumentException("items cannot be null");
         }
 
         this.updateRowData(startRow, items);
         this.updateRowCount(listSize, false);
-        
     }
 
     /**
@@ -73,8 +70,9 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
      * @param items The items to be displayed
      */
     public void displayNewFixedList(final List<T> items) {
-        if (items == null)
+        if (items == null) {
             throw new IllegalArgumentException("items cannot be null");
+        }
 
         this.updateRowData(0, items);
         this.updateRowCount(items.size(), true);

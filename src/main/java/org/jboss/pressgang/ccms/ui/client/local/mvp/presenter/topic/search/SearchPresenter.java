@@ -53,8 +53,6 @@ public class SearchPresenter extends ComponentBase implements TemplatePresenter 
         return display;
     }
 
-
-
     @Override
     public void go(final HasWidgets container) {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);

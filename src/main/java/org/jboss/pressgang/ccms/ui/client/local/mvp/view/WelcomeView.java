@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.HTML;
 
 public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Display {
 
-    private final HTML content = new HTML("div");
+    private final HTML content = new HTML("<div/>");
     
     public WelcomeView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Welcome());

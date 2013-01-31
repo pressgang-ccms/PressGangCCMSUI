@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -80,6 +81,14 @@ public class ProviderUpdateData<T> {
         this.startRow = null;
         this.size = null;
     }
+
+    public final void resetToEmpty()
+    {
+        this.items = new ArrayList<T>();
+        this.startRow = 0;
+        this.size = 0;
+    }
+
 
     public final Integer getSize() {
         return this.size;
