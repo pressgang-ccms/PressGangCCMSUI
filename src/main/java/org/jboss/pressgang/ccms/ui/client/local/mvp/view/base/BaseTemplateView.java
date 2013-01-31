@@ -452,11 +452,13 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         topActionGrandParentPanel.addStyleName(CSSConstants.TOP_ACTION_GRANDPARENT_PANEL);
         topActionParentPanel.addStyleName(CSSConstants.TOP_ACTION_PARENT_PANEL);
         topActionPanel.addStyleName(CSSConstants.TOP_ACTION_PANEL);
+        topViewSpecificActionPanel.addStyleName(CSSConstants.TOP_ACTION_PANEL);
 
         topActionParentPanel.setWidget(0, 0, topActionPanel);
-        topActionParentPanel.setWidget(0, 1, topViewSpecificActionPanel);
+        topActionParentPanel.setWidget(0, 1, new SimplePanel());
+        topActionParentPanel.setWidget(0, 2, topViewSpecificActionPanel);
         topActionParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
-        topActionParentPanel.getFlexCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT);
+
 
         thirdLevelLayoutPanel.addNorth(topActionGrandParentPanel, Constants.ACTION_BAR_HEIGHT);
 
@@ -599,10 +601,14 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         final int rows = this.getTopActionPanel().getRowCount();
         int columns = 0;
         if (rows != 0) {
-            columns = this.getTopActionPanel().getCellCount(0);
+            columns = table.getCellCount(0);
         }
 
         table.setWidget(0, columns, widget);
+    }
+
+    protected void addLocalActionButton(final Widget widget) {
+        addActionButton(widget, this.getTopViewSpecificActionPanel());
     }
 
     protected void addActionButton(final Widget widget) {

@@ -144,9 +144,9 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
         this.viewViewSpecificActionButtonsPanel.clear();
 
         viewActionButtonsParentPanel.setWidget(0, 0, viewActionButtonsPanel);
-        viewActionButtonsParentPanel.setWidget(0, 1, viewViewSpecificActionButtonsPanel);
+        viewActionButtonsParentPanel.setWidget(0, 1, new SimplePanel());
+        viewActionButtonsParentPanel.setWidget(0, 2, viewViewSpecificActionButtonsPanel);
         viewActionButtonsParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
-        viewActionButtonsParentPanel.getFlexCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT);
 
         this.viewActionButtonsPanel.add(this.getTopActionPanel());
         this.viewViewSpecificActionButtonsPanel.add(this.getTopViewSpecificActionPanel());
@@ -173,12 +173,12 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
         this.resultsViewSpecificActionButtonsPanel.clear();
 
         resultsActionButtonsParentPanel.setWidget(0, 0, resultsActionButtonsPanel);
-        resultsActionButtonsParentPanel.setWidget(0, 1, resultsViewSpecificActionButtonsPanel);
+        resultsActionButtonsParentPanel.setWidget(0, 1, new SimplePanel());
+        resultsActionButtonsParentPanel.setWidget(0, 2, resultsViewSpecificActionButtonsPanel);
         resultsActionButtonsParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
-        resultsActionButtonsParentPanel.getFlexCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT);
 
-        this.resultsActionButtonsPanel.add(this.getTopActionPanel());
-        this.resultsViewSpecificActionButtonsPanel.add(this.getTopViewSpecificActionPanel());
+        //this.resultsActionButtonsPanel.add(this.getTopActionPanel());
+        //this.resultsViewSpecificActionButtonsPanel.add(this.getTopViewSpecificActionPanel());
 
         if (filteredResultsView != null) {
             this.getResultsPanel().setWidget(filteredResultsView.getPanel());

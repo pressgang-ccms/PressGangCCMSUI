@@ -358,6 +358,9 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
                 + PressGangCCMSUI.INSTANCE.XMLEditing());
         this.getPanel().addStyleName(CSSConstants.TOPIC_XML_VIEW_PANEL);
+
+        addLocalActionButton(this.lineWrap);
+        addLocalActionButton(this.showInvisibles);
     }
 
     @Override
