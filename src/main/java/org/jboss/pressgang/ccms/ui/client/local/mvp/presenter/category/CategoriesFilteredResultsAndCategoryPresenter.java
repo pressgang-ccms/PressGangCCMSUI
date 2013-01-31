@@ -6,6 +6,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
@@ -31,6 +33,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePrese
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.category.CategoryViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -364,11 +367,11 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                 }
             };
 
-        for (final CategoryViewInterface view : new CategoryViewInterface[]{categoryPresenter.getDisplay(), categoryTagPresenter.getDisplay()}) {
-            view.getDetails().addClickHandler(categoryDetailsClickHandler);
-            view.getChildren().addClickHandler(categoryTagsClickHandler);
-            view.getSave().addClickHandler(saveClickHandler);
-        }
+
+        display.getDetails().addClickHandler(categoryDetailsClickHandler);
+        display.getChildren().addClickHandler(categoryTagsClickHandler);
+        display.getSave().addClickHandler(saveClickHandler);
+
 
     }
 
@@ -458,12 +461,26 @@ public class CategoriesFilteredResultsAndCategoryPresenter
 
         super.switchView(displayedView);
 
+        enableAndDisableActionButtons(displayedView);
+
         /* Show any wait dialogs from the new view, and update the view with the currently displayed entity */
         if (displayedView != null) {
             displayedView.setViewShown(true);
         }
 
         lastDisplayedView = displayedView;
+    }
+
+    private void enableAndDisableActionButtons(final CategoryViewInterface displayedView)
+    {
+        this.display.replaceTopActionButton(this.display.getChildrenDown(), this.display.getChildren());
+        this.display.replaceTopActionButton(this.display.getDetailsDown(), this.display.getDetails());
+
+        if (displayedView == this.categoryPresenter.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getDetails(), this.display.getDetailsDown());
+        } else if (displayedView == this.categoryTagPresenter.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getChildren(), this.display.getChildrenDown());
+        }
     }
 
     /**
@@ -474,6 +491,14 @@ public class CategoriesFilteredResultsAndCategoryPresenter
      */
     public interface Display extends
             BaseSearchAndEditViewInterface<RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1> {
+        PushButton getChildren();
 
+        PushButton getDetails();
+
+        PushButton getSave();
+
+        Label getChildrenDown();
+
+        Label getDetailsDown();
     }
 }

@@ -15,29 +15,12 @@ import com.google.gwt.user.client.ui.PushButton;
 public class CategoryView extends BaseTemplateView
         implements CategoryPresenter.Display {
 
-    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-    private final PushButton details = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CategoryDetails());
-    private final PushButton children = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CategoryTags());
+
 
     /** The GWT Editor Driver */
     private final CategoryPresenterDriver driver = GWT.create(CategoryPresenterDriver.class);
 
     private boolean readOnly = false;
-
-    @Override
-    public PushButton getChildren() {
-        return children;
-    }
-
-    @Override
-    public PushButton getDetails() {
-        return details;
-    }
-
-    @Override
-    public PushButton getSave() {
-        return save;
-    }
 
     @Override
     public CategoryPresenterDriver getDriver() {
@@ -46,7 +29,6 @@ public class CategoryView extends BaseTemplateView
 
     public CategoryView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.CategoryDetails());
-        populateTopActionBar();
     }
 
     @Override
@@ -61,11 +43,5 @@ public class CategoryView extends BaseTemplateView
         driver.edit(category);
         /* Add the projects */
         this.getPanel().setWidget(editor);
-    }
-
-    private void populateTopActionBar() {
-        this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.CategoryDetails()));
-        this.addActionButton(this.getChildren());
-        this.addActionButton(this.getSave());
     }
 }

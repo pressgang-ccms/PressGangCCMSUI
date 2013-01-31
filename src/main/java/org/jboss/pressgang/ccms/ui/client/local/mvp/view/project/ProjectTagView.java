@@ -23,10 +23,6 @@ public class ProjectTagView
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,             // The possible child types
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>             // The existing child types
     implements ProjectTagPresenter.Display {
-    
-    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-    private final PushButton details = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ProjectDetails());
-    private final PushButton children = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ProjectTags());
 
     private final TextColumn<RESTTagCollectionItemV1> tagsIdColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
@@ -67,35 +63,11 @@ public class ProjectTagView
         return tagsButtonColumn;
     }
 
-    @Override
-    public PushButton getChildren() {
-        return children;
-    }
-
-    @Override
-    public PushButton getDetails() {
-        return details;
-    }
-
-    @Override
-    public PushButton getSave() {
-        return save;
-    }
-
     public ProjectTagView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Categories());
-
-        populateTopActionBar();
 
         getPossibleChildrenResults().addColumn(tagsIdColumn, PressGangCCMSUI.INSTANCE.TagID());
         getPossibleChildrenResults().addColumn(tagsNameColumn, PressGangCCMSUI.INSTANCE.TagName());
         getPossibleChildrenResults().addColumn(tagsButtonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
     }
-
-    private void populateTopActionBar() {
-        this.addActionButton(this.getDetails());
-        this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.ProjectTags()));
-        this.addActionButton(this.getSave());
-    }
-
 }

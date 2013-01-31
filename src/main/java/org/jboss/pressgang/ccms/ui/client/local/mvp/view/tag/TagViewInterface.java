@@ -7,12 +7,4 @@ import com.google.gwt.user.client.ui.PushButton;
 
 public interface TagViewInterface extends BaseTemplateViewInterface {
     void initialize(final RESTTagV1 entity, final boolean readonly);
-
-    PushButton getTagProjects();
-
-    PushButton getTagDetails();
-
-    PushButton getSave();
-
-    PushButton getTagCategories();
 }

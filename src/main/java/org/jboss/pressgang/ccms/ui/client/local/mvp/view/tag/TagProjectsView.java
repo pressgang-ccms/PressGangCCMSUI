@@ -23,32 +23,6 @@ public class TagProjectsView extends
         RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> implements
         TagProjectsPresenter.Display {
 
-    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-    private final PushButton tagDetails = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagDetails());
-    private final PushButton tagProjects = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagProjects());
-    private final PushButton tagCategories = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagCategories());
- 
-
-    @Override
-    public PushButton getTagCategories() {
-        return tagCategories;
-    }
-
-    @Override
-    public PushButton getSave() {
-        return save;
-    }
-
-    @Override
-    public PushButton getTagProjects() {
-        return tagProjects;
-    }
-
-    @Override
-    public PushButton getTagDetails() {
-        return tagDetails;
-    }
-
     private final TextColumn<RESTProjectCollectionItemV1> idColumn = new TextColumn<RESTProjectCollectionItemV1>() {
         @Override
         public String getValue(final RESTProjectCollectionItemV1 object) {
@@ -94,7 +68,6 @@ public class TagProjectsView extends
 
     public TagProjectsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.TagProjects());
-        populateTopActionBar();
 
         getPossibleChildrenResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ProjectID());
         getPossibleChildrenResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.ProjectName());
@@ -103,10 +76,4 @@ public class TagProjectsView extends
 
     }
 
-    private void populateTopActionBar() {
-        this.addActionButton(this.getTagDetails());
-        this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TagProjects()));
-        this.addActionButton(this.getTagCategories());
-        this.addActionButton(this.getSave());
-    }
 }

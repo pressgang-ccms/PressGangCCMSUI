@@ -10,6 +10,8 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
@@ -30,6 +32,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePrese
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.project.ProjectViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -57,7 +60,15 @@ public class ProjectsFilteredResultsAndProjectPresenter
      */
     public interface Display extends
             BaseSearchAndEditViewInterface<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> {
+        PushButton getChildren();
 
+        PushButton getDetails();
+
+        PushButton getSave();
+
+        Label getChildrenDown();
+
+        Label getDetailsDown();
     }
 
     /**
@@ -268,12 +279,9 @@ public class ProjectsFilteredResultsAndProjectPresenter
             }
         };
 
-        for (final ProjectViewInterface view : new ProjectViewInterface[] { resultComponent.getDisplay(), tagComponent.getDisplay()}) {
-            view.getDetails().addClickHandler(projectDetailsClickHandler);
-            view.getChildren().addClickHandler(projectTagsClickHandler);
-            view.getSave().addClickHandler(saveClickHandler);
-        }
-
+        display.getDetails().addClickHandler(projectDetailsClickHandler);
+        display.getChildren().addClickHandler(projectTagsClickHandler);
+        display.getSave().addClickHandler(saveClickHandler);
     }
 
     /**
@@ -355,8 +363,21 @@ public class ProjectsFilteredResultsAndProjectPresenter
     protected void switchView(final ProjectViewInterface displayedView) {
 
         super.switchView(displayedView);
+        enableAndDisableActionButtons(displayedView);
 
         lastDisplayedView = displayedView;
+    }
+
+    private void enableAndDisableActionButtons(final ProjectViewInterface displayedView)
+    {
+        this.display.replaceTopActionButton(this.display.getChildrenDown(), this.display.getChildren());
+        this.display.replaceTopActionButton(this.display.getDetailsDown(), this.display.getDetails());
+
+        if (displayedView == this.resultComponent.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getDetails(), this.display.getDetailsDown());
+        } else if (displayedView == this.tagComponent.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getChildren(), this.display.getChildrenDown());
+        }
     }
 
     @Override

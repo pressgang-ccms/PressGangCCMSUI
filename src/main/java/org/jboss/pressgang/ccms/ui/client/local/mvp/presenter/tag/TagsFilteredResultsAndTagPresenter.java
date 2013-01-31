@@ -8,6 +8,8 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
@@ -39,6 +41,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TagsFilter
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.category.CategoryViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -72,6 +75,19 @@ public class TagsFilteredResultsAndTagPresenter
      */
     public interface Display extends BaseSearchAndEditViewInterface<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
 
+        PushButton getTagProjects();
+
+        PushButton getTagDetails();
+
+        PushButton getSave();
+
+        PushButton getTagCategories();
+
+        Label getTagCategoriesDown();
+
+        Label getTagProjectsDown();
+
+        Label getTagDetailsDown();
     }
 
     /** The history token used to identify this view */
@@ -680,6 +696,21 @@ public class TagsFilteredResultsAndTagPresenter
         });
     }
 
+    private void enableAndDisableActionButtons(final TagViewInterface displayedView)
+    {
+        this.display.replaceTopActionButton(this.display.getTagCategoriesDown(), this.display.getTagCategories());
+        this.display.replaceTopActionButton(this.display.getTagDetailsDown(), this.display.getTagDetails());
+        this.display.replaceTopActionButton(this.display.getTagProjectsDown(), this.display.getTagProjects());
+
+        if (displayedView == this.categoriesComponent.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getTagCategories(), this.display.getTagCategoriesDown());
+        } else if (displayedView == this.projectsComponent.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getTagProjects(), this.display.getTagProjectsDown());
+        } else if (displayedView == this.resultComponent.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getTagDetails(), this.display.getTagDetailsDown());
+        }
+    }
+
     /**
      * Called when the selected tag is changed, or the selected view is changed.
      */
@@ -687,6 +718,8 @@ public class TagsFilteredResultsAndTagPresenter
     protected void switchView(final TagViewInterface displayedView) {
 
         super.switchView(displayedView);
+
+        this.enableAndDisableActionButtons(displayedView);
 
         /* save any changes to the tag details */
         if (lastDisplayedView == this.resultComponent.getDisplay()) {
@@ -776,14 +809,10 @@ public class TagsFilteredResultsAndTagPresenter
 
     @Override
     protected void bindActionButtons() {
-        for (final TagViewInterface tagDisplay : new TagViewInterface[] { resultComponent.getDisplay(), projectsComponent.getDisplay(),
-                categoriesComponent.getDisplay() }) {
-            tagDisplay.getTagDetails().addClickHandler(tagDetailsClickHandler);
-            tagDisplay.getTagProjects().addClickHandler(tagProjectsClickHandler);
-            tagDisplay.getSave().addClickHandler(saveClickHandler);
-            tagDisplay.getTagCategories().addClickHandler(tagCategoriesClickHandler);
-        }
-
+        display.getTagDetails().addClickHandler(tagDetailsClickHandler);
+        display.getTagProjects().addClickHandler(tagProjectsClickHandler);
+        display.getSave().addClickHandler(saveClickHandler);
+        display.getTagCategories().addClickHandler(tagCategoriesClickHandler);
     }
 
     @Override

@@ -6,11 +6,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import com.google.gwt.user.client.ui.PushButton;
 
 public interface CategoryViewInterface extends BaseTemplateViewInterface {
-    PushButton getChildren();
 
-    PushButton getDetails();
-
-    PushButton getSave();
     
     void initialize(final RESTCategoryV1 category, final boolean readOnly);
 }

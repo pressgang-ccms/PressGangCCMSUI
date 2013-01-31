@@ -15,29 +15,12 @@ import com.google.gwt.user.client.ui.PushButton;
 public class ProjectView extends BaseTemplateView
         implements ProjectPresenter.Display {
 
-    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-    private final PushButton details = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ProjectDetails());
-    private final PushButton children = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ProjectTags());
+
   
     /** The GWT Editor Driver */
     private final ProjectPresenterDriver driver = GWT.create(ProjectPresenterDriver.class);
 
     private boolean readOnly = false;
-
-    @Override
-    public PushButton getChildren() {
-        return children;
-    }
-
-    @Override
-    public PushButton getDetails() {
-        return details;
-    }
-
-    @Override
-    public PushButton getSave() {
-        return save;
-    }
 
     @Override
     public ProjectPresenterDriver getDriver() {
@@ -46,7 +29,6 @@ public class ProjectView extends BaseTemplateView
 
     public ProjectView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.ProjectDetails());
-        populateTopActionBar();
     }
 
     @Override
@@ -63,9 +45,5 @@ public class ProjectView extends BaseTemplateView
         this.getPanel().setWidget(editor);
     }
 
-    private void populateTopActionBar() {
-        this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.ProjectDetails()));
-        this.addActionButton(this.getChildren());
-        this.addActionButton(this.getSave());
-    }
+
 }

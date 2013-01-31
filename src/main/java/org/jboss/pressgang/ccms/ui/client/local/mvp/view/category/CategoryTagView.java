@@ -29,10 +29,6 @@ public class CategoryTagView
                 RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
     implements CategoryTagPresenter.Display {
 
-    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-    private final PushButton details = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CategoryDetails());
-    private final PushButton children = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CategoryTags());
-
     private final TextColumn<RESTTagCollectionItemV1> tagsIdColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
         public String getValue(final RESTTagCollectionItemV1 object) {
@@ -107,25 +103,8 @@ public class CategoryTagView
         return tagsButtonColumn;
     }
 
-    @Override
-    public PushButton getChildren() {
-        return children;
-    }
-
-    @Override
-    public PushButton getDetails() {
-        return details;
-    }
-
-    @Override
-    public PushButton getSave() {
-        return save;
-    }
-
     public CategoryTagView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Categories());
-
-        populateTopActionBar();
 
         getPossibleChildrenResults().addColumn(tagsIdColumn, PressGangCCMSUI.INSTANCE.TagID());
         getPossibleChildrenResults().addColumn(tagsNameColumn, PressGangCCMSUI.INSTANCE.TagName());
@@ -137,12 +116,6 @@ public class CategoryTagView
         getExistingChildrenResults().addColumn(tagDownButtonColumn, PressGangCCMSUI.INSTANCE.Down());
 
         addExistingChildrenPanel();
-    }
-
-    private void populateTopActionBar() {
-        this.addActionButton(this.getDetails());
-        this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.CategoryTags()));
-        this.addActionButton(this.getSave());
     }
 
     @Override

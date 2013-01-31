@@ -26,10 +26,6 @@ public class TagCategoriesView
         BaseExtendedChildrenView<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, RESTCategoryV1, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
         implements TagCategoriesPresenter.Display {
 
-    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-    private final PushButton tagDetails = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagDetails());
-    private final PushButton tagProjects = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagProjects());
-    private final PushButton tagCategories = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagCategories());
 
     private final TextColumn<RESTCategoryCollectionItemV1> idColumn = new TextColumn<RESTCategoryCollectionItemV1>() {
         @Override
@@ -118,29 +114,8 @@ public class TagCategoriesView
         return buttonColumn;
     }
 
-    @Override
-    public PushButton getTagCategories() {
-        return tagCategories;
-    }
-
-    @Override
-    public PushButton getSave() {
-        return save;
-    }
-
-    @Override
-    public PushButton getTagProjects() {
-        return tagProjects;
-    }
-
-    @Override
-    public PushButton getTagDetails() {
-        return tagDetails;
-    }
-
     public TagCategoriesView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.TagCategories());
-        populateTopActionBar();
 
         getPossibleChildrenResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.CategoryID());
         getPossibleChildrenResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.CategoryName());
@@ -151,12 +126,5 @@ public class TagCategoriesView
         getExistingChildrenResults().addColumn(tagUpButtonColumn, PressGangCCMSUI.INSTANCE.Up());
         getExistingChildrenResults().addColumn(tagDownButtonColumn, PressGangCCMSUI.INSTANCE.Down());
 
-    }
-
-    private void populateTopActionBar() {
-        this.addActionButton(this.getTagDetails());
-        this.addActionButton(this.getTagProjects());
-        this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TagCategories()));
-        this.addActionButton(this.getSave());
     }
 }
