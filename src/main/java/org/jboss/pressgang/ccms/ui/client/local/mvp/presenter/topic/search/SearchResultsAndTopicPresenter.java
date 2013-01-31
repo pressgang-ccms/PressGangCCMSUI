@@ -985,7 +985,7 @@ public class SearchResultsAndTopicPresenter
                         newTopic.explicitSetTags(new RESTTagCollectionV1());
 
                         /*
-                            Only assign those modified children to the topic that is to be added
+                            Only assign those modified children to the topic that is to be added/updated
                          */
                         newTopic.getProperties().setItems(sourceTopic.getProperties().returnDeletedAddedAndUpdatedCollectionItems());
                         newTopic.getSourceUrls_OTM().setItems(sourceTopic.getSourceUrls_OTM().returnDeletedAddedAndUpdatedCollectionItems());
@@ -994,6 +994,7 @@ public class SearchResultsAndTopicPresenter
                         /*
                             Assume all the text fields have been updated
                          */
+                        newTopic.setId(sourceTopic.getId());
                         newTopic.explicitSetDescription(newTopic.getDescription());
                         newTopic.explicitSetLocale(newTopic.getLocale());
                         newTopic.explicitSetTitle(newTopic.getTitle());
