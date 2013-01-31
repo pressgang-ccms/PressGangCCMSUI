@@ -23,6 +23,7 @@ import com.google.gwt.xml.client.impl.DOMParseException;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTAssignedPropertyTagCollectionItemV1;
@@ -71,6 +72,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1.REMOVE_STATE;
+import static org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1.UPDATE_STATE;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
@@ -524,6 +526,10 @@ public class SearchResultsAndTopicPresenter
                             /* Existing children are marked for removal */
                             object.setState(REMOVE_STATE);
                         }
+
+                        /* Update the list of existing children */
+                        SearchResultsAndTopicPresenter.this.topicPropertyTagPresenter.refreshExistingChildList(
+                                SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem());
                     }
                 }
         );
@@ -532,6 +538,7 @@ public class SearchResultsAndTopicPresenter
             @Override
             public void update(final int index, final RESTAssignedPropertyTagCollectionItemV1 object, final String value) {
                 object.getItem().explicitSetValue(value);
+                object.setState(UPDATE_STATE);
             }
         });
     }
@@ -701,7 +708,7 @@ public class SearchResultsAndTopicPresenter
             topicPropertyTagPresenter.refreshExistingChildList(searchResultsComponent.getProviderData().getDisplayedItem().getItem());
 
             /* Get a new collection of tags */
-            //topicPropertyTagPresenter.refreshPossibleChildrenDataAndList();
+            topicPropertyTagPresenter.refreshPossibleChildrenDataAndList();
 
             /* reset the topic review view */
             topicRevisionsComponent.getDisplay().setRevisionTopic(null);
@@ -962,6 +969,36 @@ public class SearchResultsAndTopicPresenter
 
                     if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
 
+                        /* Sync any changes back to the underlying object */
+                        flushChanges();
+
+                         /*
+                         * Create a new instance of the topic, and copy out any updated, added or deleted fields. We don't
+                         * do a clone here because cloning will send back a whole lot of data that was never modified,
+                         * wasting bandwidth, and chewing up CPU cycles as Errai serializes the data into JSON.
+                         */
+                        final RESTTopicV1 sourceTopic = searchResultsComponent.getProviderData().getDisplayedItem().getItem();
+
+                        final RESTTopicV1 newTopic = new RESTTopicV1();
+                        newTopic.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
+                        newTopic.explicitSetSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
+                        newTopic.explicitSetTags(new RESTTagCollectionV1());
+
+                        /*
+                            Only assign those modified children to the topic that is to be added
+                         */
+                        newTopic.getProperties().setItems(sourceTopic.getProperties().returnDeletedAddedAndUpdatedCollectionItems());
+                        newTopic.getSourceUrls_OTM().setItems(sourceTopic.getSourceUrls_OTM().returnDeletedAddedAndUpdatedCollectionItems());
+                        newTopic.getTags().setItems(sourceTopic.getTags().returnDeletedAddedAndUpdatedCollectionItems());
+
+                        /*
+                            Assume all the text fields have been updated
+                         */
+                        newTopic.explicitSetDescription(newTopic.getDescription());
+                        newTopic.explicitSetLocale(newTopic.getLocale());
+                        newTopic.explicitSetTitle(newTopic.getTitle());
+                        newTopic.explicitSetXml(newTopic.getXml());
+
                         if (searchResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
                             final BaseRestCallback<RESTTopicV1, Display> addCallback = new BaseRestCallback<RESTTopicV1, Display>(
                                     display,
@@ -1030,25 +1067,8 @@ public class SearchResultsAndTopicPresenter
                             }
                             );
 
-                            /* Sync any changes back to the underlying object */
-                            flushChanges();
-
-                            /*
-                             * Create a new instance of the topic, with all the properties set to explicitly update
-                             */
-                            final RESTTopicV1 addedTopic = searchResultsComponent.getProviderData().getDisplayedItem().getItem()
-                                    .clone(true);
-
-                            addedTopic.explicitSetProperties(addedTopic.getProperties());
-                            addedTopic.explicitSetSourceUrls_OTM(addedTopic.getSourceUrls_OTM());
-                            addedTopic.explicitSetTags(addedTopic.getTags());
-                            addedTopic.explicitSetDescription(addedTopic.getDescription());
-                            addedTopic.explicitSetLocale(addedTopic.getLocale());
-                            addedTopic.explicitSetTitle(addedTopic.getTitle());
-                            addedTopic.explicitSetXml(addedTopic.getXml());
-
                             final String message = display.getMessageLogDialog().getMessage().getText();
-                            RESTCalls.createTopic(addCallback, addedTopic, message, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString());
+                            RESTCalls.createTopic(addCallback, newTopic, message, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString());
                         } else {
                             final BaseRestCallback<RESTTopicV1, Display> updateCallback = new BaseRestCallback<RESTTopicV1, Display>(
                                     display,
@@ -1105,27 +1125,11 @@ public class SearchResultsAndTopicPresenter
                             }
                             );
 
-                            /* Sync any changes back to the underlying object */
-                            flushChanges();
-
-                            /*
-                             * Create a new instance of the topic, with all the properties set to explicitly update
-                             */
-                            final RESTTopicV1 updateTopic = searchResultsComponent.getProviderData().getDisplayedItem().getItem()
-                                    .clone(true);
-
-                            updateTopic.explicitSetProperties(updateTopic.getProperties());
-                            updateTopic.explicitSetSourceUrls_OTM(updateTopic.getSourceUrls_OTM());
-                            updateTopic.explicitSetTags(updateTopic.getTags());
-                            updateTopic.explicitSetDescription(updateTopic.getDescription());
-                            updateTopic.explicitSetLocale(updateTopic.getLocale());
-                            updateTopic.explicitSetTitle(updateTopic.getTitle());
-                            updateTopic.explicitSetXml(updateTopic.getXml());
 
                             final String message = display.getMessageLogDialog().getMessage().getText();
                             final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
                                     : ServiceConstants.MAJOR_CHANGE);
-                            RESTCalls.saveTopic(updateCallback, updateTopic, message, flag, ServiceConstants.NULL_USER_ID.toString());
+                            RESTCalls.saveTopic(updateCallback, newTopic, message, flag, ServiceConstants.NULL_USER_ID.toString());
                         }
                     }
 
