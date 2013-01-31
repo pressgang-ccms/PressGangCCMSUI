@@ -330,6 +330,7 @@ public class SearchResultsAndTopicPresenter
 
         /* Have to do this after the parseToken method has been called */
         display.initialize(false, false, split, topicSplitPanelRenderedDisplay.getPanel());
+        enableAndDisableActionButtons(lastDisplayedView);
 
         loadSplitPanelSize();
     }

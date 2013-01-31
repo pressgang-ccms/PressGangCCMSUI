@@ -357,7 +357,7 @@ public class SearchResultsAndTopicView extends
 
         addActionButton(this.getRenderedSplit());
         addActionButton(this.getRendered());
-        addActionButton(this.getXmlDown());
+        addActionButton(this.getXml());
         addActionButton(this.getXmlErrors());
         addActionButton(this.getFields());
         addActionButton(this.getExtendedProperties());
