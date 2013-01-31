@@ -1319,7 +1319,7 @@ public class SearchResultsAndTopicPresenter
         super.updateDisplayAfterSave(wasNewEntity);
 
         /* Refresh the buttons (especially the xml errors button) after a save */
-        enableAndDisableActionButtons();
+        enableAndDisableActionButtons(lastDisplayedView);
     }
 
 
