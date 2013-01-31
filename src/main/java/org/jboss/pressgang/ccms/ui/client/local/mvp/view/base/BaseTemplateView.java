@@ -455,6 +455,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         topViewSpecificActionPanel.addStyleName(CSSConstants.TOP_ACTION_PANEL);
 
         topActionParentPanel.setWidget(0, 0, topActionPanel);
+        /* A spacer cell, to push the next cell to the right */
         topActionParentPanel.setWidget(0, 1, new SimplePanel());
         topActionParentPanel.setWidget(0, 2, topViewSpecificActionPanel);
         topActionParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
@@ -598,7 +599,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     }
 
     protected void addActionButton(final Widget widget, final FlexTable table) {
-        final int rows = this.getTopActionPanel().getRowCount();
+        final int rows = table.getRowCount();
         int columns = 0;
         if (rows != 0) {
             columns = table.getCellCount(0);

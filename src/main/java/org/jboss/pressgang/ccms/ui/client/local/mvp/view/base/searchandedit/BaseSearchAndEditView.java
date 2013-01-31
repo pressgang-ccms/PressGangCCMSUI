@@ -144,6 +144,7 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
         this.viewViewSpecificActionButtonsPanel.clear();
 
         viewActionButtonsParentPanel.setWidget(0, 0, viewActionButtonsPanel);
+        /* A spacer cell, to push the next cell to the right */
         viewActionButtonsParentPanel.setWidget(0, 1, new SimplePanel());
         viewActionButtonsParentPanel.setWidget(0, 2, viewViewSpecificActionButtonsPanel);
         viewActionButtonsParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
@@ -173,6 +174,7 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
         this.resultsViewSpecificActionButtonsPanel.clear();
 
         resultsActionButtonsParentPanel.setWidget(0, 0, resultsActionButtonsPanel);
+        /* A spacer cell, to push the next cell to the right */
         resultsActionButtonsParentPanel.setWidget(0, 1, new SimplePanel());
         resultsActionButtonsParentPanel.setWidget(0, 2, resultsViewSpecificActionButtonsPanel);
         resultsActionButtonsParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
