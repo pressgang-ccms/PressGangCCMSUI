@@ -185,6 +185,7 @@ html {
 	padding: 8px;
 	color: white;
 	height: 100%;
+    -moz-box-sizing: border-box;
 }
 
 .TextButton.SubMenu
@@ -213,6 +214,7 @@ html {
 	padding: 8px;
 	color: white;
 	height: 100%;
+    -moz-box-sizing: border-box;
 }
 
 .TextButton.SubMenu:hover
