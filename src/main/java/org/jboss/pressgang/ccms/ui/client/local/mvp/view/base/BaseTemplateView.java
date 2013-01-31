@@ -36,12 +36,30 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * This class is used to build the standard page template.
+ *
+ * The top of the page is a simple header image.
+ *
+ * Next is the page title and quick search box.
+ *
+ * Next is the top action bar. For a single view, this will be housed in the topActionGrandParentPanel container. For
+ * compound views the topActionGrandParentPanel will be removed, and replaced with another container that will pull
+ * the topActionParentPanel and topViewSpecificActionPanel containers out. The topActionParentPanel container holds the
+ * "common" action buttons. These are buttons that are usually navigation related, and will remain in place as the user
+ * moves through the various views in the UI. The "local" action buttons are specific to a view, like line wrapping
+ * buttons in a text editing view. These are displayed to the right, and disappear as the user moves to another view.
+ *
+ * Next, on the left, is the main navigation column.
+ *
+ * To the right of that is the main view area.
+ *
+ * Finally, at the bottom, there is the footer.
+ *
+ * When a child view is included in a parent view, the parent will usually pull out the action buttons and content panel,
+ * displaying them in containers defined by the parent.
  * 
  * @author Matthew Casperson
- * 
  */
-public abstract class BaseTemplateView
-        implements BaseTemplateViewInterface {
+public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     /** true when the view is visible, false otherwise */
     private boolean isViewShown;
     /** Maintains a count of how many waiting operations are in progress */
@@ -73,9 +91,9 @@ public abstract class BaseTemplateView
 
     /** This panel holds the topActionParentPanel panel. */
     private final SimplePanel topActionGrandParentPanel = new SimplePanel();
-    /** This panel holds the buttons currently displayed in the top action bar. */
+    /** This panel holds the common action buttons in the top action bar. */
     private final FlexTable topActionParentPanel = new FlexTable();
-    /** This is the collection of to level action panel buttons. */
+    /** This is the collection the local action panel buttons. */
     private final FlexTable topViewSpecificActionPanel = new FlexTable();
     /** This is the collection of view specific action buttons. */
     private final FlexTable topActionPanel = new FlexTable();

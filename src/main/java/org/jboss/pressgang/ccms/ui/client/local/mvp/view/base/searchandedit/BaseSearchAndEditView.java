@@ -21,11 +21,29 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
     private final DockLayoutPanel viewLayoutPanel = new DockLayoutPanel(Unit.PX);
     private final SimpleLayoutPanel resultsPanel = new SimpleLayoutPanel();
     private final SimpleLayoutPanel viewPanel = new SimpleLayoutPanel();
+    /**
+     * The panel that will hold the command and local action buttons from the main view and the filtered results view it is displaying
+     */
     private final FlexTable resultsActionButtonsParentPanel = new FlexTable();
+    /**
+     * The panel that will hold the common action buttons from the main view and the filtered results view
+     */
     private final HorizontalPanel resultsActionButtonsPanel = new HorizontalPanel();
+    /**
+     * The panel that will hold the local action buttons from the main view and the filtered results view
+     */
     private final HorizontalPanel resultsViewSpecificActionButtonsPanel = new HorizontalPanel();
+    /**
+     * The panel that will hold the action buttons from the main view and the child view it is displaying
+     */
     private final FlexTable viewActionButtonsParentPanel = new FlexTable();
+    /**
+     * The panel that will hold the action buttons
+     */
     private final HorizontalPanel viewActionButtonsPanel = new HorizontalPanel();
+    /**
+     * The panel that will hold the view specific action buttons
+     */
     private final HorizontalPanel viewViewSpecificActionButtonsPanel = new HorizontalPanel();
 
     /** The dialog that is presented when the view is unavailable. */
