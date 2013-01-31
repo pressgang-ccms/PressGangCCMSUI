@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit;
 
+import com.google.gwt.user.client.ui.FlexTable;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
@@ -25,12 +26,12 @@ public interface BaseSearchAndEditViewInterface<T extends RESTBaseEntityV1<T, U,
     /**
      * @return The panel that holds the action buttons for the tag detail views
      */
-    SimpleLayoutPanel getViewActionButtonsPanel();
+    FlexTable getViewActionButtonsParentPanel();
 
     /**
      * @return The panel that holds the action buttons for the list of tags
      */
-    SimpleLayoutPanel getResultsActionButtonsPanel();
+    FlexTable getResultsActionButtonsParentPanel();
 
     /**
      * @return The split panel that separates the tag list from the tag details views

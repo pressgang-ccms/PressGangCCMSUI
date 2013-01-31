@@ -593,10 +593,17 @@ html {
 	box-sizing : border-box;
 }
 
-.TopicSearchTopicViewButtonsPanel, .EntitySearchTagViewButtonsPanel, .EntitySearchTagsResultButtonsPanel
+.TopicSearchTopicViewButtonsPanel, .EntitySearchTagViewButtonsParentPanel, .EntitySearchTagsResultButtonsParentPanel
 {
-	margin-top: 8px;
-    margin-bottom: 8px;
+	padding-top: 8px;
+    padding-bottom: 8px;
+    border-spacing: 0px;
+    height: 100%;
+}
+
+.EntitySearchTagViewButtonsPanel, .EntitySearchTagsResultButtonsPanel
+{
+    height: 100%;
 }
 
 .EntitySearchTopicViewDetailsPanel

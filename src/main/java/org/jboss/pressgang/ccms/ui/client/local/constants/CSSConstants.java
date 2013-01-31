@@ -38,8 +38,10 @@ public interface CSSConstants {
         String ENTITY_VIEW_LAYOUT_PANEL = "EntityViewLayoutPanel";
         /** Assigned to the panel that holds the action buttons above the entity search results lists */
         String ENTITY_SEARCH_TAGS_RESULT_BUTTONS_PANEL = "EntitySearchTagsResultButtonsPanel";
+        String ENTITY_SEARCH_TAGS_RESULT_BUTTONS_PARENT_PANEL = "EntitySearchTagsResultButtonsParentPanel";
         /** Assigned to the panel that holds the action buttons above the entity search result view */
         String ENTITY_SEARCH_TAG_VIEW_BUTTONS_PANEL = "EntitySearchTagViewButtonsPanel";
+        String ENTITY_SEARCH_TAG_VIEW_BUTTONS_PARENT_PANEL = "EntitySearchTagViewButtonsParentPanel";
         String ENTITY_SEARCH_TOPIC_VIEW_BUTTONS_PANEL = "EntitySearchTopicViewButtonsPanel";
         String ENTITY_SEARCH_TOPIC_VIEW_DETAILS_PANEL = "EntitySearchTopicViewDetailsPanel";
         String ENTITY_SEARCH_RESULTS_AND_VIEW_PARENT_PANEL = "EntitySearchResultsAndViewParentPanel";

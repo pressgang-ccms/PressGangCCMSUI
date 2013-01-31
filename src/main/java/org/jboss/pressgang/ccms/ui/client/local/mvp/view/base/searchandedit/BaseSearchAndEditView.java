@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit;
 
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
@@ -11,9 +12,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.WaitingDialog;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 
 abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>>
         extends BaseTemplateView implements BaseSearchAndEditViewInterface<T, U, V> {
@@ -23,8 +21,12 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
     private final DockLayoutPanel viewLayoutPanel = new DockLayoutPanel(Unit.PX);
     private final SimpleLayoutPanel resultsPanel = new SimpleLayoutPanel();
     private final SimpleLayoutPanel viewPanel = new SimpleLayoutPanel();
-    private final SimpleLayoutPanel resultsActionButtonsPanel = new SimpleLayoutPanel();
-    private final SimpleLayoutPanel viewActionButtonsPanel = new SimpleLayoutPanel();
+    private final FlexTable resultsActionButtonsParentPanel = new FlexTable();
+    private final HorizontalPanel resultsActionButtonsPanel = new HorizontalPanel();
+    private final HorizontalPanel resultsViewSpecificActionButtonsPanel = new HorizontalPanel();
+    private final FlexTable viewActionButtonsParentPanel = new FlexTable();
+    private final HorizontalPanel viewActionButtonsPanel = new HorizontalPanel();
+    private final HorizontalPanel viewViewSpecificActionButtonsPanel = new HorizontalPanel();
 
     /** The dialog that is presented when the view is unavailable. */
     private final WaitingDialog waiting = new WaitingDialog();
@@ -44,8 +46,8 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
     }
 
     @Override
-    public SimpleLayoutPanel getResultsActionButtonsPanel() {
-        return resultsActionButtonsPanel;
+    public FlexTable getResultsActionButtonsParentPanel() {
+        return resultsActionButtonsParentPanel;
     }
 
     @Override
@@ -59,8 +61,8 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
     }
 
     @Override
-    public SimpleLayoutPanel getViewActionButtonsPanel() {
-        return viewActionButtonsPanel;
+    public FlexTable getViewActionButtonsParentPanel() {
+        return viewActionButtonsParentPanel;
     }
 
     public BaseSearchAndEditView(final String applicationName, final String pageName) {
@@ -74,8 +76,8 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
         resultsViewLayoutPanel.addStyleName(CSSConstants.BaseSearchAndEditView.RESULTS_VIEW_LAYOUT_PANEL);
         viewLayoutPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_VIEW_LAYOUT_PANEL);
 
-        resultsViewLayoutPanel.addNorth(resultsActionButtonsPanel, Constants.ACTION_BAR_HEIGHT);
-        viewLayoutPanel.addNorth(viewActionButtonsPanel, Constants.ACTION_BAR_HEIGHT);
+        resultsViewLayoutPanel.addNorth(resultsActionButtonsParentPanel, Constants.ACTION_BAR_HEIGHT);
+        viewLayoutPanel.addNorth(viewActionButtonsParentPanel, Constants.ACTION_BAR_HEIGHT);
 
         resultsViewLayoutPanel.add(resultsPanel);
         viewLayoutPanel.add(viewPanel);
@@ -83,7 +85,13 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
         splitPanel.addWest(resultsViewLayoutPanel, Constants.SPLIT_PANEL_SIZE);
 
         viewActionButtonsPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_SEARCH_TAG_VIEW_BUTTONS_PANEL);
+        viewViewSpecificActionButtonsPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_SEARCH_TAG_VIEW_BUTTONS_PANEL);
+        viewActionButtonsParentPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_SEARCH_TAG_VIEW_BUTTONS_PARENT_PANEL);
+
         resultsActionButtonsPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_SEARCH_TAGS_RESULT_BUTTONS_PANEL);
+        resultsViewSpecificActionButtonsPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_SEARCH_TAGS_RESULT_BUTTONS_PANEL);
+        resultsActionButtonsParentPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_SEARCH_TAGS_RESULT_BUTTONS_PARENT_PANEL);
+
         viewPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_SEARCH_TOPIC_VIEW_DETAILS_PANEL);
 
         splitPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_SEARCH_RESULTS_AND_VIEW_PARENT_PANEL);
@@ -105,27 +113,59 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
     }
 
     /**
-     * Displays the contents of a child view
+     * Displays the contents of a child view. This method will also merge the action buttons
+     * defined in the top level view and the individual view that it is displaying as a child.
      * 
      * @param displayedView The view to be displayed, or null if no view is to be displayed
      */
     @Override
     public void displayChildView(final BaseTemplateViewInterface displayedView) {
         this.getViewPanel().clear();
-        
+        this.viewActionButtonsParentPanel.clear();
+        this.viewActionButtonsPanel.clear();
+        this.viewViewSpecificActionButtonsPanel.clear();
+
+        viewActionButtonsParentPanel.setWidget(0, 0, viewActionButtonsPanel);
+        viewActionButtonsParentPanel.setWidget(0, 1, viewViewSpecificActionButtonsPanel);
+        viewActionButtonsParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
+        viewActionButtonsParentPanel.getFlexCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT);
+
+        this.viewActionButtonsPanel.add(this.getTopActionPanel());
+        this.viewViewSpecificActionButtonsPanel.add(this.getTopViewSpecificActionPanel());
+
         if (displayedView != null) {
             this.getViewPanel().setWidget(displayedView.getPanel());
+            this.viewActionButtonsPanel.add(displayedView.getTopActionParentPanel());
+
+            this.viewViewSpecificActionButtonsPanel.add(displayedView.getTopViewSpecificActionPanel());
         }
     }
 
+    /**
+     * Displays the contents of a child filtered results view. This method will also merge the action buttons
+     * defined in the top level view and the individual view that it is displaying as a child.
+     *
+     * @param filteredResultsView The filtered view to be displayed, or null if no view is to be displayed
+     */
     @Override
     public void displaySearchResultsView(final BaseFilteredResultsViewInterface<T, U, V> filteredResultsView) {
         this.getResultsPanel().clear();
-        this.getResultsActionButtonsPanel().clear();
+        this.resultsActionButtonsParentPanel.clear();
+        this.resultsActionButtonsPanel.clear();
+        this.resultsViewSpecificActionButtonsPanel.clear();
+
+        resultsActionButtonsParentPanel.setWidget(0, 0, resultsActionButtonsPanel);
+        resultsActionButtonsParentPanel.setWidget(0, 1, resultsViewSpecificActionButtonsPanel);
+        resultsActionButtonsParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
+        resultsActionButtonsParentPanel.getFlexCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_RIGHT);
+
+        this.resultsActionButtonsPanel.add(this.getTopActionPanel());
+        this.resultsViewSpecificActionButtonsPanel.add(this.getTopViewSpecificActionPanel());
 
         if (filteredResultsView != null) {
             this.getResultsPanel().setWidget(filteredResultsView.getPanel());
-            this.getResultsActionButtonsPanel().setWidget(filteredResultsView.getTopActionParentPanel());
+            this.resultsActionButtonsPanel.add(filteredResultsView.getTopActionPanel());
+            this.resultsViewSpecificActionButtonsPanel.add(filteredResultsView.getTopViewSpecificActionPanel());
         }
     }
 }

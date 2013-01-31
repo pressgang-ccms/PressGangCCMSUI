@@ -577,14 +577,18 @@ public abstract class BaseTemplateView
         table.getCellFormatter().addStyleName(0, columns, CSSConstants.RIGHT_ALIGNED_ACTION_BUTTONS);
     }
 
-    protected void addActionButton(final Widget widget) {
+    protected void addActionButton(final Widget widget, final FlexTable table) {
         final int rows = this.getTopActionPanel().getRowCount();
         int columns = 0;
         if (rows != 0) {
             columns = this.getTopActionPanel().getCellCount(0);
         }
 
-        this.getTopActionPanel().setWidget(0, columns, widget);
+        table.setWidget(0, columns, widget);
+    }
+
+    protected void addActionButton(final Widget widget) {
+        addActionButton(widget, this.getTopActionPanel());
     }
 
     private void addShortcutButton(final Widget widget) {
