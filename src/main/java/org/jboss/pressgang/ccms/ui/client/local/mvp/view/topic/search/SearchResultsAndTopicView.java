@@ -25,7 +25,7 @@ public class SearchResultsAndTopicView extends
     private final LogMessageView messageLogDialog = new LogMessageView();
     
     /** The type of split used to display the rendered XML */
-    private SplitType splitType = SplitType.NONE;
+    private SplitType splitType = SplitType.NULL;
 
     private final PushButton fields;
     private final PushButton extendedProperties;

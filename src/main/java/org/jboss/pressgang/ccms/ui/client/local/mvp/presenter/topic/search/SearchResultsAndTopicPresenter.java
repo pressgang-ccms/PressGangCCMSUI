@@ -361,10 +361,6 @@ public class SearchResultsAndTopicPresenter
         final RESTTopicCollectionItemV1 sourceTopic = topicRevisionsComponent.getDisplay().getRevisionTopic() == null ? searchResultsComponent
                 .getProviderData().getDisplayedItem() : topicRevisionsComponent.getDisplay().getRevisionTopic();
 
-        if (sourceTopic == null) {
-            throw new NullPointerException("sourceTopic cannot be null");
-        }
-
         return sourceTopic;
     }
 
@@ -773,7 +769,9 @@ public class SearchResultsAndTopicPresenter
             this.display.replaceTopActionButton(this.display.getXmlErrors(), this.display.getXmlErrorsDown());
         }
 
-        if (getTopicOrRevisionTopic().getItem().getXmlErrors() != null && !getTopicOrRevisionTopic().getItem().getXmlErrors().isEmpty()) {
+        if (getTopicOrRevisionTopic() != null &&
+                getTopicOrRevisionTopic().getItem().getXmlErrors() != null &&
+                !getTopicOrRevisionTopic().getItem().getXmlErrors().isEmpty()) {
             this.display.getXmlErrors().addStyleName(CSSConstants.ERROR);
             this.display.getXmlErrorsDown().addStyleName(CSSConstants.ERROR);
         } else {
