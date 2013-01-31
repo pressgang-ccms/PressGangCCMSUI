@@ -18,12 +18,12 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsAndTopicViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -67,7 +67,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 public class ImagesFilteredResultsAndImagePresenter
         extends
         BaseSearchAndEditComponent<ImageFilteredResultsPresenter.Display, RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1, ImagePresenter.Display, ImagePresenter.Display, RESTImageV1Editor>
-        implements TemplatePresenter {
+        implements BaseTemplatePresenterInterface {
 
     public interface Display extends
             BaseSearchAndEditViewInterface<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1> {
@@ -104,8 +104,8 @@ public class ImagesFilteredResultsAndImagePresenter
 
         clearContainerAndAddTopLevelPanel(container, display);
 
-        imageComponent.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-        imageFilteredResultsComponent.process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        imageComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        imageFilteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
 
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTImageV1> getNewEntityCallback = new GetNewEntityCallback<RESTImageV1>() {
@@ -123,7 +123,7 @@ public class ImagesFilteredResultsAndImagePresenter
             }
         };
 
-        super.bind(ServiceConstants.IMAGES_TOPIC, HISTORY_TOKEN, Preferences.IMAGE_VIEW_MAIN_SPLIT_WIDTH, imageComponent.getDisplay(), imageComponent.getDisplay(), imageFilteredResultsComponent.getDisplay(),
+        super.bindSearchAndEdit(ServiceConstants.IMAGES_TOPIC, HISTORY_TOKEN, Preferences.IMAGE_VIEW_MAIN_SPLIT_WIDTH, imageComponent.getDisplay(), imageComponent.getDisplay(), imageFilteredResultsComponent.getDisplay(),
                 imageFilteredResultsComponent, display, display, getNewEntityCallback);
 
         populateLocales();
@@ -337,7 +337,7 @@ public class ImagesFilteredResultsAndImagePresenter
         }
         /* If we just created a new entity, refresh the list of entities from the database */
         else {
-            imageFilteredResultsComponent.process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", imageFilteredResultsComponent.getQuery());
+            imageFilteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", imageFilteredResultsComponent.getQuery());
 
             /*
              * reInitialiseView will flush the ui, which will flush the null ID back to the displayed object. To prevent that we

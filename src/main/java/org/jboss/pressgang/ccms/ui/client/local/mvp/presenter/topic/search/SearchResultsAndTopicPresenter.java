@@ -37,8 +37,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.TopicListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsAndTopicViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.Component;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
@@ -84,7 +83,7 @@ public class SearchResultsAndTopicPresenter
         BaseTopicViewInterface,
         TopicPresenter.Display,
         RESTTopicV1BasicDetailsEditor>
-        implements TemplatePresenter {
+        implements BaseTemplatePresenterInterface {
 
     public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
     private static final String LINE_BREAK_ESCAPED = "\\n";
@@ -205,9 +204,9 @@ public class SearchResultsAndTopicPresenter
             clearContainerAndAddTopLevelPanel(container, display);
 
             /* Initialize the other presenters we have pulled in */
-            searchResultsComponent.process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
-            topicTagsComponent.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-            topicPropertyTagPresenter.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+            searchResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
+            topicTagsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+            topicPropertyTagPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
 
             /* When the topics have been loaded, display the first one */
             searchResultsComponent.addTopicListReceivedHandler(new TopicListReceivedHandler() {
@@ -219,7 +218,7 @@ public class SearchResultsAndTopicPresenter
                 }
             });
 
-            super.bind(ServiceConstants.TOPIC_EDIT_VIEW_CONTENT_TOPIC, HISTORY_TOKEN, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLComponent.getDisplay(), topicViewComponent.getDisplay(),
+            super.bindSearchAndEdit(ServiceConstants.TOPIC_EDIT_VIEW_CONTENT_TOPIC, HISTORY_TOKEN, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLComponent.getDisplay(), topicViewComponent.getDisplay(),
                     searchResultsComponent.getDisplay(), searchResultsComponent, display, display, getNewEntityCallback);
 
             /* Display the split panes */
@@ -1880,7 +1879,7 @@ public class SearchResultsAndTopicPresenter
     /**
      * Set the help link topic ids.
      */
-    private void setHelpTopicForView(final Component component, final BaseTemplateViewInterface view) {
+    private void setHelpTopicForView(final BaseTemplatePresenterInterface component, final BaseTemplateViewInterface view) {
 
         if (view instanceof TopicXMLErrorsPresenter.Display) {
             component.setHelpTopicId(ServiceConstants.TOPIC_VALIDATION_ERRORS_TOPIC);

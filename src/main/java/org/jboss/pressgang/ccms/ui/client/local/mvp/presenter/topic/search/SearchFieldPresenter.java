@@ -4,8 +4,8 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.ComponentBase;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchFieldEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
@@ -16,14 +16,13 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 
 @Dependent
-public class SearchFieldPresenter extends ComponentBase implements TemplatePresenter {
+public class SearchFieldPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
 
     public static final String HISTORY_TOKEN = "SearchFieldView";
 
     public interface Display extends BaseEditorViewInterface<SearchUIFields, SearchFieldEditor> {
         interface SearchFieldPresenterDriver extends SimpleBeanEditorDriver<SearchUIFields, SearchFieldEditor> {
         }
-        @Override
         PushButton getSearch();
         PushButton getTagsSearch();
         SearchUIFields getSearchUIFields();
@@ -40,10 +39,10 @@ public class SearchFieldPresenter extends ComponentBase implements TemplatePrese
     @Override
     public void go(final HasWidgets container) {
         GWTUtilities.clearContainerAndAddTopLevelPanel(container, display);
-        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void process(final int helpTopicId, final String pageId)
+    public void bindExtended(final int helpTopicId, final String pageId)
     {
         bind(helpTopicId, pageId, display);
     }

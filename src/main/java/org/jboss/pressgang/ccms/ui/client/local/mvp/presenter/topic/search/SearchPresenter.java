@@ -9,9 +9,8 @@ import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.TopicListReceivedHandler;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.ComponentBase;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -24,7 +23,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public class SearchPresenter extends ComponentBase implements TemplatePresenter {
+public class SearchPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
 
     public interface Display extends BaseEditorViewInterface<SearchUIProjects, SearchUIProjectsEditor> {
         // Empty interface declaration, similar to UiBinder
@@ -58,10 +57,10 @@ public class SearchPresenter extends ComponentBase implements TemplatePresenter 
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
         display.setViewShown(true);
         clearContainerAndAddTopLevelPanel(container, display);
-        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void process(final int helpTopicId, final String pageId)
+    public void bindExtended(final int helpTopicId, final String pageId)
     {
         bind(helpTopicId, pageId, display);
     }

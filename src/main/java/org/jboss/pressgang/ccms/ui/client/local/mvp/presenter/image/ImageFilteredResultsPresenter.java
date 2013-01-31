@@ -12,8 +12,8 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionIte
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -31,7 +31,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 public class ImageFilteredResultsPresenter
         extends
         BaseFilteredResultsComponent<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1>
-        implements TemplatePresenter {
+        implements BaseTemplatePresenterInterface {
 
     public interface Display extends
             BaseFilteredResultsViewInterface<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1> {
@@ -69,11 +69,11 @@ public class ImageFilteredResultsPresenter
     @Override
     public final void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
-    public final void process(final int topicId, final String pageId, final String queryString) {
-        super.bind(topicId, pageId, queryString, display);
+    public final void bindExtendedFilteredResults(final int topicId, final String pageId, final String queryString) {
+        super.bindFilteredResults(topicId, pageId, queryString, display);
         display.setProvider(generateListProvider(queryString, display));
     }
 

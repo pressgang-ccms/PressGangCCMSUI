@@ -59,8 +59,8 @@ public interface BaseExtendedChildrenPresenterInterface<
     EnhancedAsyncDataProvider<F> generateExistingProvider(final W entity);
 
     /**
-     * Called to refresh the list of existing children
-     * @param parent The entity that contains the existing children
+     * Called to refresh the list of existing children.
+     * @param parent The entity that contains the existing children.
      */
     public void refreshExistingChildList(final W parent);
 

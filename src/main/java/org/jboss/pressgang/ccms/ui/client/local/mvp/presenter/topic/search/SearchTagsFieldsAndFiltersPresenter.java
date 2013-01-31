@@ -4,11 +4,11 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsAndTopicViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public class SearchTagsFieldsAndFiltersPresenter extends ComponentBase implements TemplatePresenter
+public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface
 {
     /** The history token used to access this page */
     public static final String HISTORY_TOKEN = "SearchTagsFieldsAndFiltersView";
@@ -44,14 +44,19 @@ public class SearchTagsFieldsAndFiltersPresenter extends ComponentBase implement
 
         display.setViewShown(true);
 
-        super.bind(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, display);
+        bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
 
-        tagsComponent.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-        fieldsComponent.process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        tagsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        fieldsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
 
         bindSearchButtons();
 
         displayTags();
+    }
+
+    public void bindExtended(final int helpTopicId, final String pageId)
+    {
+        bind(helpTopicId, pageId, display);
     }
 
     @Override

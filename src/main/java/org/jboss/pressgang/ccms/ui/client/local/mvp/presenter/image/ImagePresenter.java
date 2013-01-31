@@ -7,8 +7,8 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.ComponentBase;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -22,7 +22,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class ImagePresenter extends ComponentBase implements TemplatePresenter {
+public class ImagePresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
 
     public interface Display extends BaseTemplateViewInterface, BaseEditorViewInterface<RESTImageV1, RESTImageV1Editor> {
 
@@ -83,7 +83,7 @@ public class ImagePresenter extends ComponentBase implements TemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
 
     }
 
@@ -97,24 +97,7 @@ public class ImagePresenter extends ComponentBase implements TemplatePresenter {
         }
     }
 
-    public void process(final int topicId, final String pageId) {
+    public void bindExtended(final int topicId, final String pageId) {
         super.bind(topicId, pageId, display);
-        getEntity(imageId);
-
-    }
-
-    public void getEntity(final Integer imageId) {
-        final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, Display>(display,
-                new BaseRestCallback.SuccessAction<RESTImageV1, Display>() {
-                    @Override
-                    public void doSuccessAction(final RESTImageV1 retValue, final Display display) {
-                        display.initialize(retValue, new String[] {});
-                    }
-                }) {
-        };
-
-        if (imageId != null) {
-            RESTCalls.getImage(callback, imageId);
-        }
     }
 }

@@ -1,9 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base;
 
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.Component;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.PresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
 
-public interface BaseTopicViewPresenterInterface extends Component {
+public interface BaseTopicViewPresenterInterface extends PresenterInterface {
     /**
      * Get and display the entity
      * 

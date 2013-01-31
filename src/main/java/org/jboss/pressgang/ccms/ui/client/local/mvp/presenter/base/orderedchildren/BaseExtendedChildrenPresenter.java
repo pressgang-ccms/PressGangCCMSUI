@@ -83,7 +83,11 @@ abstract public class BaseExtendedChildrenPresenter<
         bindChildSplitResize(preferencesKey);
     }
 
-
+    /**
+     * Used to bind logic to the selection of an existing child. Optional, as most of the time this won't trigger any action.
+     */
+    protected void initLifecycleBindExistingChildrenRowClick() {
+    }
 
     /**
      * Save the size of the split ui component
@@ -118,11 +122,8 @@ abstract public class BaseExtendedChildrenPresenter<
     }
 
     /**
-     * Used to bind logic to the selection of an existing child. Optional, as most of the time this won't trigger any action.
+     * @inheritDoc
      */
-    protected void bindExistingChildrenRowClick() {
-    }
-
     @Override
     public void refreshExistingChildList(final W parent) {
         try {

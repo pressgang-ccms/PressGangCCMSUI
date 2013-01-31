@@ -2,10 +2,10 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base;
 
 import javax.inject.Inject;
 
+import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.CategoriesFilteredResultsAndCategoryViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.CreateTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ProjectsFilteredResultsAndProjectViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsAndTopicViewEvent;
@@ -23,22 +23,18 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.regexp.shared.RegExp;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.ClosingHandler;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+
 /**
- * Views can either be stand alone, displayed in isolation, or individual views can be combined into a presenter to
- * provide a more complex UI.
- * 
- * Because of the One-To-Many relationship between presenters and views, the logic that is attached to a view needs to be shared
- * across multiple presenters. Controllers are used to provide the logic that should be applied to a view. This allows
- * presenters to mix and match controllers in much the same way they mix and match views.
+ * Provides the basic functionality added to a template view.
  * 
  * @author Matthew Casperson
  */
-abstract public class ComponentBase implements Component, EditableView {
+abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInterface, EditableView {
 
     private static final RegExp ID_SEARCH = RegExp.compile(",*(\\s*\\d+\\s*,+)*\\s*\\d+\\s*,*");
 
@@ -57,9 +53,9 @@ abstract public class ComponentBase implements Component, EditableView {
      * The help topic that will be displayed when the help link is clicked.
      */
     private int helpTopicId = ServiceConstants.DEFAULT_HELP_TOPIC;
-    
+
     /**
-     * 
+     *
      * @return The topic of the ID to be used for the help dialog
      */
     @Override
@@ -68,7 +64,7 @@ abstract public class ComponentBase implements Component, EditableView {
     }
 
     /**
-     * 
+     *
      * @param helpTopicId The topic of the ID to be used for the help dialog
      */
     @Override
@@ -89,8 +85,8 @@ abstract public class ComponentBase implements Component, EditableView {
     /**
      * Called to bind the UI elements to event handlers.
      */
-    protected void bindStandardButtons() {
-        
+    private void bindStandardButtons() {
+
         display.getHome().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
@@ -98,7 +94,7 @@ abstract public class ComponentBase implements Component, EditableView {
                     eventBus.fireEvent(new WelcomeViewEvent());
             }
         });
-        
+
         display.getSearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
@@ -185,9 +181,9 @@ abstract public class ComponentBase implements Component, EditableView {
                 doQuickSearch(GWTUtilities.isEventToOpenNewWindow(event));
             }
         });
-        
+
         display.getQuickSearchQuery().addKeyPressHandler(new KeyPressHandler() {
-            
+
             @Override
             public void onKeyPress(final KeyPressEvent event) {
                 int charCode = event.getUnicodeCharCode();
@@ -228,17 +224,16 @@ abstract public class ComponentBase implements Component, EditableView {
         }
     }
 
-    @Override
-    public void bind(final int topicId, final String pageId, final BaseTemplateViewInterface display) {
+    protected final void bind(final int topicId, final String pageId, final BaseTemplateViewInterface display) {
         this.display = display;
         this.helpTopicId = topicId;
-        
+
         this.setFeedbackLink(pageId);
-        bindStandardButtons();
-        
+        this.bindStandardButtons();
+
         /* Watch for page closes */
         Window.addWindowClosingHandler(new ClosingHandler() {
-            
+
             @Override
             public void onWindowClosing(final ClosingEvent event) {
                 if (display.getTopLevelPanel().isAttached())
@@ -247,35 +242,34 @@ abstract public class ComponentBase implements Component, EditableView {
                     {
                         event.setMessage(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
                     }
-                }                
+                }
             }
         });
-        
+
         /* Add handlers for the help link */
-        final ClickHandler openHelpClickHandler = new ClickHandler() {            
+        final ClickHandler openHelpClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 display.getHelpDialog().show(helpTopicId, display);
             }
         };
-        
-        final ClickHandler okClickHandler = new ClickHandler() {            
+
+        final ClickHandler okClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 display.getHelpDialog().getDialogBox().hide();
             }
         };
-        
+
         display.getHelp().addClickHandler(openHelpClickHandler);
         display.getHelpDialog().getOK().addClickHandler(okClickHandler);
-
     }
 
     /**
      * Set the feedback URL for the page.
      * @param pageId The id of the page
      */
-    protected void setFeedbackLink(final String pageId) {
+    protected final void setFeedbackLink(final String pageId) {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);
     }
 }

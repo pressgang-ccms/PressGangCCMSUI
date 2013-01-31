@@ -11,8 +11,8 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenComponent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.project.ProjectViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -31,7 +31,7 @@ public class ProjectTagPresenter
         RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1,    // The main REST types 
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,                // The possible children types
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>                // The existing children types
-        implements TemplatePresenter {
+        implements BaseTemplatePresenterInterface {
 
     public interface Display
             extends
@@ -63,10 +63,10 @@ public class ProjectTagPresenter
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void process(final int topicId, final String pageId)
+    public void bindExtended(final int topicId, final String pageId)
     {
         display.initialize(null, false);
         super.bind(topicId, pageId, display);

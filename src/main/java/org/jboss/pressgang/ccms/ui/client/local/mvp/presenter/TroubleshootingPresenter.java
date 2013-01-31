@@ -4,8 +4,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.Component;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -13,28 +12,25 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public class TroubleshootingPresenter implements TemplatePresenter {
+public class TroubleshootingPresenter extends BaseTemplatePresenter {
     
     public static final String HISTORY_TOKEN = "TroubleshootingView";
     
     public interface Display extends BaseTemplateViewInterface {
 
     }
-    
-    public interface LogicComponent extends Component
-    {
-        
-    }
 
     @Inject
     private Display display;
-    
-    @Inject private LogicComponent component;
 
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        component.bind(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+    }
+
+    public void bindExtended(final int topicId, final String pageId) {
+        super.bind(topicId, pageId, display);
     }
 
     @Override

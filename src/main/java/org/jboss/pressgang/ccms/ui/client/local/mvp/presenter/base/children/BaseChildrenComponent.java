@@ -4,23 +4,12 @@ import com.google.gwt.cell.client.FieldUpdater;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 
 /**
- * This is the base class that is used for components adding logic to views that list the children of an entity.
- *
- * @param <T> The entity type
- * @param <U> The collection type for entity T
- * @param <V> The collection item type for entity T
- * @param <A> The possible child type
- * @param <B> The collection type for entity A
- * @param <C> The collection item type for entity A
- * @param <D> The existing child type
- * @param <E> The collection type for entity D
- * @param <F> The collection item type for entity D
- * @author Matthew Casperson
+ * @inheritDoc
  */
 public abstract class BaseChildrenComponent<
         T extends RESTBaseEntityV1<T, U, V>,
@@ -32,7 +21,7 @@ public abstract class BaseChildrenComponent<
         D extends RESTBaseEntityV1<D, E, F>,
         E extends RESTBaseCollectionV1<D, E, F>,
         F extends RESTBaseCollectionItemV1<D, E, F>>
-        extends ComponentBase implements BaseChildrenComponentInterface<T, U, V, A, B, C, D, E, F> {
+        extends BaseTemplatePresenter implements BaseChildrenComponentInterface<T, U, V, A, B, C, D, E, F> {
 
     /**
      * An instance of the provider data.
@@ -43,16 +32,25 @@ public abstract class BaseChildrenComponent<
      */
     private BaseChildrenViewInterface display;
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public ProviderUpdateData<C> getPossibleChildrenProviderData() {
         return this.providerData;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public void setPossibleChildrenProviderData(final ProviderUpdateData<C> providerData) {
         this.providerData = providerData;
     }
 
+    /**
+     * @inheritDoc
+     */
     public void bind(final int topicId, final String pageId, final BaseChildrenViewInterface display) {
         this.display = display;
 
@@ -62,7 +60,7 @@ public abstract class BaseChildrenComponent<
     }
 
     /**
-     * Binds behaviour to the tag list buttons.
+     * @inheritDoc
      */
     @Override
     public void bindPossibleChildrenListButtonClicks(final GetExistingCollectionCallback<D, E, F> getExistingCollectionCallback,
@@ -104,10 +102,13 @@ public abstract class BaseChildrenComponent<
      * Used to bind logic to mouse clicks on the list of possible children. This is not mandatory, as sometimes selecting an
      * item in this list has no effect in the UI.
      */
-    protected void bindPossibleChildrenRowClick() {
+    protected void initLifecycleBindPossibleChildrenRowClick() {
 
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public final void refreshPossibleChildList() {
         this.display.setPossibleChildrenProvider(generatePossibleChildrenProvider());

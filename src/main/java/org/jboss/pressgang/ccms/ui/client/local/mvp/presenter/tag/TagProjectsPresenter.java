@@ -9,8 +9,8 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenComponent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
@@ -31,7 +31,7 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
         RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1,
         RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> implements
-        TemplatePresenter {
+        BaseTemplatePresenterInterface {
 
     public interface Display extends TagViewInterface, BaseChildrenViewInterface<
                 RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
@@ -61,10 +61,10 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void process(final int topicId, final String pageId, final BaseTemplateViewInterface waitDisplay)
+    public void bindExtended(final int topicId, final String pageId)
     {
         super.bind(topicId, pageId, display);
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
@@ -159,7 +159,7 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
     }
 
     @Override
-    public void bindPossibleChildrenRowClick()
+    public void initLifecycleBindPossibleChildrenRowClick()
     {
 
     }

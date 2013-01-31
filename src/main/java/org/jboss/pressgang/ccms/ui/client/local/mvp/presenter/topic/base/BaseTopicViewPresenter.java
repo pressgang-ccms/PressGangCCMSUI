@@ -1,7 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base;
 
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
@@ -11,7 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
  * Every presenter that works with a topic needs to retrieve the topic. This base class simply
  * provides a method to retrieve a topic and initialize the view with that topic.
  */
-public class BaseTopicViewPresenter extends ComponentBase implements
+abstract public class BaseTopicViewPresenter extends BaseTemplatePresenter implements
         BaseTopicViewPresenterInterface {
 
     @Override

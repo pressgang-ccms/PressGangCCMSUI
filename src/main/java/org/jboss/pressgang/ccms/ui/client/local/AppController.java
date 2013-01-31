@@ -5,7 +5,6 @@ import javax.enterprise.context.ApplicationScoped;
 import org.jboss.errai.ioc.client.container.IOCBeanDef;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.CategoriesFilteredResultsAndCategoryViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.CreateTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ImagesViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ProjectsFilteredResultsAndProjectViewEvent;
@@ -18,8 +17,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ViewOpenEv
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ViewOpenWithQueryEventHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.WelcomeViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.Presenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.PresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndCategoryPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter;
@@ -54,7 +53,7 @@ import java.util.logging.Logger;
  * to display when a page change event is received.
  */
 @ApplicationScoped
-public class AppController implements Presenter, ValueChangeHandler<String> {
+public class AppController implements PresenterInterface, ValueChangeHandler<String> {
     @Inject
     private IOCBeanManager manager;
 
@@ -132,7 +131,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
         final String token = event.getValue();
 
         if (token != null) {
-            Optional<TemplatePresenter> presenter = Optional.absent();
+            Optional<BaseTemplatePresenterInterface> presenter = Optional.absent();
 
             if (token.startsWith(WelcomePresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(WelcomePresenter.class);
@@ -179,10 +178,10 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
         }
     }
 
-    private <T extends TemplatePresenter> Optional<TemplatePresenter> getBeanInstance(final Class<T> presenterType) {
+    private <T extends BaseTemplatePresenterInterface> Optional<BaseTemplatePresenterInterface> getBeanInstance(final Class<T> presenterType) {
         final IOCBeanDef<T> bean = this.manager.lookupBean(presenterType);
         if (bean != null) {
-            final TemplatePresenter presenter = bean.getInstance();
+            final BaseTemplatePresenterInterface presenter = bean.getInstance();
             return Optional.of(presenter);
         }
         return Optional.absent();

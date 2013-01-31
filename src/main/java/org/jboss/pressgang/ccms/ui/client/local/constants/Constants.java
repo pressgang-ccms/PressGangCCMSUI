@@ -10,7 +10,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm
      */
-    public static final String VERSION = "201301311545";
+    public static final String VERSION = "201301311653";
 
     /**
      * The newer versions of the REST interface encode the query PathParam elements (so as to allow for searches to

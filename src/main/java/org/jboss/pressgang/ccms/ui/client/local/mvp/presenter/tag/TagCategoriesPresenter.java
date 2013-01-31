@@ -19,11 +19,10 @@ import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.sort.RESTTagCategoryCollectionItemV1SortComparator;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.BaseOrderedChildrenComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.SetNewChildSortCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -47,7 +46,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 public class TagCategoriesPresenter
         extends
         BaseOrderedChildrenComponent<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, RESTCategoryV1, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
-        implements TemplatePresenter {
+        implements BaseTemplatePresenterInterface {
 
     public interface Display extends BaseOrderedChildrenViewInterface<
                         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
@@ -81,17 +80,17 @@ public class TagCategoriesPresenter
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        process(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, display);
+        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void process(final int topicId, final String pageId, final BaseTemplateViewInterface waitDisplay)
+    public void bindExtended(final int topicId, final String pageId)
     {
         super.bind(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display);
 
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
         // display.setExistingChildrenProvider(generateExistingProvider());
-        bindPossibleChildrenRowClick();
-        bindExistingChildrenRowClick();
+        initLifecycleBindPossibleChildrenRowClick();
+        initLifecycleBindExistingChildrenRowClick();
         refreshPossibleChildrenDataAndList();
     }
 
@@ -176,7 +175,7 @@ public class TagCategoriesPresenter
      * Bind behaviour to the buttons found in the celltable listing the categories
      */
     @Override
-    protected void bindPossibleChildrenRowClick() {
+    protected void initLifecycleBindPossibleChildrenRowClick() {
         display.getPossibleChildrenResults().addCellPreviewHandler(new Handler<RESTCategoryCollectionItemV1>() {
             @Override
             public void onCellPreview(final CellPreviewEvent<RESTCategoryCollectionItemV1> event) {
@@ -232,7 +231,7 @@ public class TagCategoriesPresenter
     }
 
     @Override
-    protected void bindExistingChildrenRowClick() {
+    protected void initLifecycleBindExistingChildrenRowClick() {
         display.getExistingChildUpButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
             @Override

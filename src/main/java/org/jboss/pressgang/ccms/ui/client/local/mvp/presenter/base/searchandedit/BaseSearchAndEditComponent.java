@@ -10,7 +10,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.ComponentBase;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
@@ -37,7 +37,7 @@ import java.util.logging.Logger;
  * @author Matthew Casperson
  */
 abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsViewInterface<T, U, V>, T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends BaseTemplateViewInterface, X extends BaseEditorViewInterface<T, Y> & BaseTemplateViewInterface, Y extends Editor<T>>
-        extends ComponentBase {
+        extends BaseTemplatePresenter {
 
     /**
      * A logger
@@ -69,6 +69,15 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
     private BaseSearchAndEditViewInterface display;
 
     /**
+     * Empty implementation.
+     * @param topicId the help topic for the page
+     * @param pageId The history token of the page
+     */
+    public void bindExtended(final int topicId, final String pageId) {
+
+    }
+
+    /**
      * @param topicId                    The topic ID used for this views help link
      * @param pageId                     The id of the page, used when submitting feedback
      * @param mainSplitSizePreferenceKey The storage key that holds the position of the split panel
@@ -79,7 +88,7 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
      * @param display                    The view that this component adds logic to
      * @param waitDisplay                The view that displays the wait dialog
      */
-    public void bind(final int topicId, final String pageId, final String mainSplitSizePreferenceKey,
+    protected void bindSearchAndEdit(final int topicId, final String pageId, final String mainSplitSizePreferenceKey,
                      final W firstDisplayedView, final X entityPropertiesView, final R filteredResultsDisplay,
                      final BaseFilteredResultsComponentInterface<T, U, V> filteredResultsComponent, final BaseSearchAndEditViewInterface display,
                      final BaseTemplateViewInterface waitDisplay, final GetNewEntityCallback<T> getNewEntityCallback) {
@@ -124,7 +133,7 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
             } else {
                 /* If we just created a new entity, refresh the list of entities from the database */
 
-                filteredResultsComponent.process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", filteredResultsComponent.getQuery());
+                filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", filteredResultsComponent.getQuery());
 
                 /*
                  * reInitialiseView will flush the ui, which will flush the null ID back to the displayed object. To prevent that we
