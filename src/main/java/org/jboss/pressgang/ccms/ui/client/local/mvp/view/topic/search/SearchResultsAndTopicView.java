@@ -232,6 +232,8 @@ public class SearchResultsAndTopicView extends
         // add the filtered results panel
         getSplitPanel().clear();
         getSplitPanel().addWest(this.getResultsViewLayoutPanel(), Constants.SPLIT_PANEL_SIZE);
+
+        this.populateTopActionBar();
     }
 
     /**
@@ -242,7 +244,7 @@ public class SearchResultsAndTopicView extends
      * @param panel The rendered view panel itself
      */
     @Override
-    public void initialize(final boolean readOnly, final boolean hasErrors, final SplitType splitType, final Panel panel) {
+    public void initialize(final boolean readOnly, final SplitType splitType, final Panel panel) {
 
         if (this.splitType != splitType)
         {
@@ -266,7 +268,7 @@ public class SearchResultsAndTopicView extends
         }
 
         this.readOnly = readOnly;
-        this.populateTopActionBar(hasErrors);
+
         buildSplitViewButtons(splitType);
     }
 
@@ -347,12 +349,10 @@ public class SearchResultsAndTopicView extends
 
     /**
      * This method is called to initialize the buttons that should appear in the top action bar.
-     * @param hasErrors true if the XML contains errors, false otherwise
      */
-    private void populateTopActionBar(final boolean hasErrors)
+    private void populateTopActionBar()
     {
         this.getTopActionPanel().removeAllRows();
-        setXMLErrorsButtonState(hasErrors);
         fixReadOnlyButtons();
 
         addActionButton(this.getRenderedSplit());
@@ -366,20 +366,5 @@ public class SearchResultsAndTopicView extends
         addActionButton(this.getHistory());
         addActionButton(this.getCsps());
         addActionButton(this.getSave());
-    }
-
-
-    private void setXMLErrorsButtonState(final boolean hasErrors)
-    {
-        if (hasErrors)
-        {
-            this.xmlErrors.addStyleName(CSSConstants.ERROR);
-            xmlErrorsDown.addStyleName(CSSConstants.ERROR);
-        }
-        else
-        {
-            this.xmlErrors.removeStyleName(CSSConstants.ERROR);
-            xmlErrorsDown.removeStyleName(CSSConstants.ERROR);
-        }
     }
 }

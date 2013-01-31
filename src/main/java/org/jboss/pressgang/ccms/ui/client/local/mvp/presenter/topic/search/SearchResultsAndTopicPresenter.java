@@ -329,7 +329,7 @@ public class SearchResultsAndTopicPresenter
         }
 
         /* Have to do this after the parseToken method has been called */
-        display.initialize(false, false, split, topicSplitPanelRenderedDisplay.getPanel());
+        display.initialize(false, split, topicSplitPanelRenderedDisplay.getPanel());
         enableAndDisableActionButtons(lastDisplayedView);
 
         loadSplitPanelSize();
@@ -2025,7 +2025,7 @@ public class SearchResultsAndTopicPresenter
 
         SplitType getSplitType();
 
-        void initialize(final boolean readOnly, final boolean hasErrors, final SplitType splitType, final Panel panel);
+        void initialize(final boolean readOnly, final SplitType splitType, final Panel panel);
     }
 
     /**
