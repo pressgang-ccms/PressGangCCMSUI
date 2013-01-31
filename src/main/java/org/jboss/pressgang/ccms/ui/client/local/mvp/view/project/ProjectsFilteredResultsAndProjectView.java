@@ -52,7 +52,7 @@ public class ProjectsFilteredResultsAndProjectView extends
     }
 
     private void populateTopActionBar() {
-        this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.ProjectDetails()));
+        this.addActionButton(this.getDetails());
         this.addActionButton(this.getChildren());
         this.addActionButton(this.getSave());
     }

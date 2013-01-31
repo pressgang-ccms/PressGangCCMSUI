@@ -64,7 +64,7 @@ public class TagsFilteredResultsAndTagView
     }
 
     private void populateTopActionBar() {
-        this.addActionButton(UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TagDetails()));
+        this.addActionButton(this.getTagDetails());
         this.addActionButton(this.getTagProjects());
         this.addActionButton(this.getTagCategories());
         this.addActionButton(this.getSave());
