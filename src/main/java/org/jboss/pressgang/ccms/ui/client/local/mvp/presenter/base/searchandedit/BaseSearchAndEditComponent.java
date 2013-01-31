@@ -42,7 +42,14 @@ import com.google.gwt.view.client.CellPreviewEvent.Handler;
  * 
  * @param <Y> The type of the Editor that is displayed by this component
  */
-abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsViewInterface<T, U, V>, T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends BaseTemplateViewInterface, X extends BaseEditorViewInterface<T, Y> & BaseTemplateViewInterface, Y extends Editor<T>>
+abstract public class BaseSearchAndEditComponent<
+            R extends BaseFilteredResultsViewInterface<T, U, V>,
+            T extends RESTBaseEntityV1<T, U, V>,
+            U extends RESTBaseCollectionV1<T, U, V>,
+            V extends RESTBaseCollectionItemV1<T, U, V>,
+            W extends BaseTemplateViewInterface,
+            X extends BaseEditorViewInterface<T, Y> & BaseTemplateViewInterface,
+            Y extends Editor<T>>
         extends ComponentBase {
 
     /** A logger */

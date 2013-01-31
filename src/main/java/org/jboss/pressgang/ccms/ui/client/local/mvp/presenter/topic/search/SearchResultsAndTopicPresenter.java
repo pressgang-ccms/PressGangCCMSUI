@@ -13,10 +13,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
@@ -31,6 +28,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTag
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.TopicListReceivedHandler;
@@ -184,7 +182,6 @@ public class SearchResultsAndTopicPresenter
             };
 
             clearContainerAndAddTopLevelPanel(container, display);
-            this.display.getViewActionButtonsPanel().setWidget(display.getTopActionParentPanel());
 
             /* Initialize the other presenters we have pulled in */
             searchResultsComponent.process(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
@@ -711,12 +708,58 @@ public class SearchResultsAndTopicPresenter
         RESTCalls.getTopicRevisionWithTags(topicWithTagsCallback, id, revision);
     }
 
+    /**
+     * This method will replace the top action buttons with their disabled labels based on the
+     * currently displayed view.
+     */
+    private void enableAndDisableActionButtons(final BaseTopicViewInterface displayedView)
+    {
+       this.display.replaceTopActionButton(this.display.getXmlDown(), this.display.getXml());
+       this.display.replaceTopActionButton(this.display.getBugsDown(), this.display.getBugs());
+       this.display.replaceTopActionButton(this.display.getExtendedPropertiesDown(), this.display.getExtendedProperties());
+       this.display.replaceTopActionButton(this.display.getFieldsDown(), this.display.getFields());
+       this.display.replaceTopActionButton(this.display.getHistoryDown(), this.display.getHistory());
+       this.display.replaceTopActionButton(this.display.getRenderedDown(), this.display.getRendered());
+       this.display.replaceTopActionButton(this.display.getTopicTagsDown(), this.display.getTopicTags());
+       this.display.replaceTopActionButton(this.display.getXmlErrorsDown(), this.display.getXmlErrors());
+
+       if (displayedView == this.topicXMLComponent.getDisplay()) {
+           this.display.replaceTopActionButton(this.display.getXml(), this.display.getXmlDown());
+       } else if (displayedView == this.topicBugsPresenter.getDisplay()) {
+           this.display.replaceTopActionButton(this.display.getBugs(), this.display.getBugsDown());
+       } else if (displayedView == this.topicPropertyTagPresenter.getDisplay()) {
+           this.display.replaceTopActionButton(this.display.getExtendedProperties(), this.display.getExtendedPropertiesDown());
+       } else if (displayedView == this.topicViewComponent.getDisplay()) {
+           this.display.replaceTopActionButton(this.display.getFields(), this.display.getFieldsDown());
+       } else if (displayedView == this.topicRevisionsComponent.getDisplay()) {
+           this.display.replaceTopActionButton(this.display.getHistory(), this.display.getHistoryDown());
+       } else if (displayedView == this.topicRenderedPresenter.getDisplay()) {
+           this.display.replaceTopActionButton(this.display.getRendered(), this.display.getRenderedDown());
+       } else if (displayedView == this.topicTagsComponent.getDisplay()) {
+           this.display.replaceTopActionButton(this.display.getTopicTags(), this.display.getTopicTagsDown());
+       } else if (displayedView == this.topicXMLErrorsPresenter.getDisplay()) {
+           this.display.replaceTopActionButton(this.display.getXmlErrors(), this.display.getXmlErrorsDown());
+       }
+
+        if (getTopicOrRevisionTopic().getItem().getXmlErrors() != null && !getTopicOrRevisionTopic().getItem().getXmlErrors().isEmpty()) {
+            this.display.getXmlErrors().addStyleName(CSSConstants.ERROR);
+            this.display.getXmlErrorsDown().addStyleName(CSSConstants.ERROR);
+        } else {
+            this.display.getXmlErrors().removeStyleName(CSSConstants.ERROR);
+            this.display.getXmlErrorsDown().removeStyleName(CSSConstants.ERROR);
+        }
+    }
+
+
     @Override
     protected void switchView(final BaseTopicViewInterface displayedView) {
         try {
             logger.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.switchView(final TopicViewInterface displayedView)");
 
             super.switchView(displayedView);
+
+            this.display.getViewActionButtonsPanel().setWidget(display.getTopActionParentPanel());
+            enableAndDisableActionButtons(displayedView);
 
             /* Save any changes to the xml editor */
             if (lastDisplayedView == this.topicXMLComponent.getDisplay()) {
@@ -1290,9 +1333,19 @@ public class SearchResultsAndTopicPresenter
         PushButton getHistory();
 
         /**
+         * @return The button that is used to switch to the history view
+         */
+        Label getHistoryDown();
+
+        /**
          * @return The button that is used to switch to the rendered view
          */
         PushButton getRendered();
+
+        /**
+         * @return The button that is used to switch to the rendered view
+         */
+        Label getRenderedDown();
 
         /**
          *
@@ -1302,15 +1355,33 @@ public class SearchResultsAndTopicPresenter
 
         /**
          *
+         * @return The label that is used to indicate that the XML view is selected
+         */
+        Label getXmlDown();
+
+        /**
+         *
          * @return The button that is used to switch to the topic fields view
          */
         PushButton getFields();
 
         /**
          *
+         * @return The button that is used to switch to the topic fields view
+         */
+        Label getFieldsDown();
+
+        /**
+         *
          * @return The button that is used to switch to the topic property tags view
          */
         PushButton getExtendedProperties();
+
+        /**
+         *
+         * @return The button that is used to switch to the topic property tags view
+         */
+        Label getExtendedPropertiesDown();
 
         /**
          *
@@ -1326,15 +1397,33 @@ public class SearchResultsAndTopicPresenter
 
         /**
          *
+         * @return The button that is used to switch to the XML errors view
+         */
+        Label getXmlErrorsDown();
+
+        /**
+         *
          * @return The button that is used to switch to the tags view
          */
         PushButton getTopicTags();
 
         /**
          *
+         * @return The button that is used to switch to the tags view
+         */
+        Label getTopicTagsDown();
+
+        /**
+         *
          * @return The button that is used to switch to the bugs view
          */
         PushButton getBugs();
+
+        /**
+         *
+         * @return The button that is used to switch to the bugs view
+         */
+        Label getBugsDown();
 
         /**
          *

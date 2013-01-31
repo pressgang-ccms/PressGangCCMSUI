@@ -206,4 +206,6 @@ public interface BaseTemplateViewInterface {
      * @return The text box that holds the search critera
      */
     TextBox getQuickSearchQuery();
+
+    void replaceTopActionButton(final Widget existing, final Widget replacement);
 }

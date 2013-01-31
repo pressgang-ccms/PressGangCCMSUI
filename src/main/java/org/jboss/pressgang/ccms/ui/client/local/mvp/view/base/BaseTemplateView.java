@@ -544,6 +544,28 @@ public abstract class BaseTemplateView
         topActionParentPanel.add(topActionPanel);
     }
 
+    public void replaceTopActionButton(final Widget existing, final Widget replacement)
+    {
+        replaceTopActionButton(existing, replacement, this.topActionPanel);
+    }
+
+    public void replaceTopActionButton(final Widget existing, final Widget replacement, final FlexTable table) {
+
+        /* Early out if the existing widget isn't actually attached */
+        if (!existing.isAttached() || existing.getParent() != table) {
+            return;
+        }
+
+        for (int row = 0; row < table.getRowCount(); ++row) {
+            for (int column = 0; column < table.getCellCount(row); ++column) {
+                if (table.getWidget(row, column) == existing) {
+                    table.setWidget(row, column, replacement);
+                    return;
+                }
+            }
+        }
+    }
+
     private void addRightAlignedActionButtonPaddingPanel(final FlexTable table) {
         final int rows = table.getRowCount();
         int columns = 0;

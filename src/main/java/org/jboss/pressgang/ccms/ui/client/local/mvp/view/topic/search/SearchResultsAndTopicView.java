@@ -45,6 +45,7 @@ public class SearchResultsAndTopicView extends
     private final Label tagsDown;
     private final Label bugsDown;
     private final Label historyDown;
+    private final Label extendedPropertiesDown;
 
     private final FlexTable renderedSplitViewMenu = new FlexTable();
     private final PushButton renderedSplit;
@@ -59,27 +60,33 @@ public class SearchResultsAndTopicView extends
 
     protected boolean readOnly = false;
 
+    @Override
     public PushButton getCsps() {
         return csps;
     }
 
+    @Override
     public Label getFieldsDown() {
         return fieldsDown;
     }
 
+    @Override
     public Label getXmlDown() {
         return xmlDown;
     }
 
+    @Override
     public Label getXmlErrorsDown() {
         return xmlErrorsDown;
     }
 
+    @Override
     public Label getRenderedDown() {
         return renderedDown;
     }
 
-    public Label getTagsDown() {
+    @Override
+    public Label getTopicTagsDown() {
         return tagsDown;
     }
 
@@ -87,42 +94,52 @@ public class SearchResultsAndTopicView extends
         return bugsDown;
     }
 
+    @Override
     public Label getHistoryDown() {
         return historyDown;
     }
 
+    @Override
     public PushButton getRenderedSplitOpen() {
         return renderedSplitOpen;
     }
 
+    @Override
     public PushButton getRenderedHorizontalSplit() {
         return renderedHorizontalSplit;
     }
 
+    @Override
     public FlexTable getRenderedSplitViewMenu() {
         return renderedSplitViewMenu;
     }
 
+    @Override
     public PushButton getRenderedSplitClose() {
         return renderedSplitClose;
     }
 
+    @Override
     public PushButton getRenderedVerticalSplit() {
         return renderedVerticalSplit;
     }
 
+    @Override
     public PushButton getRenderedNoSplit() {
         return renderedNoSplit;
     }
 
+    @Override
     public PushButton getRenderedSplit() {
         return renderedSplit;
     }
 
+    @Override
     public PushButton getHistory() {
         return history;
     }
 
+    @Override
     public PushButton getBugs() {
         return bugs;
     }
@@ -131,14 +148,17 @@ public class SearchResultsAndTopicView extends
         return topicTags;
     }
 
+    @Override
     public PushButton getXmlErrors() {
         return xmlErrors;
     }
 
+    @Override
     public PushButton getSave() {
         return save;
     }
 
+    @Override
     public PushButton getRendered() {
         return rendered;
     }
@@ -147,10 +167,18 @@ public class SearchResultsAndTopicView extends
         return xml;
     }
 
+    @Override
     public PushButton getFields() {
         return fields;
     }
 
+    @Override
+    public Label getExtendedPropertiesDown()
+    {
+        return extendedPropertiesDown;
+    }
+
+    @Override
     public PushButton getExtendedProperties() {
         return extendedProperties;
     }
@@ -190,6 +218,7 @@ public class SearchResultsAndTopicView extends
         tagsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TopicTags());
         bugsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Bugs());
         historyDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
+        extendedPropertiesDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.PropertyTags());
 
         renderedSplitOpen = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
         renderedNoSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.NoSplit());
