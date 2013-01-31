@@ -15,11 +15,20 @@ public interface BaseTemplatePresenterInterface extends PresenterInterface {
     void parseToken(final String historyToken);
 
     /**
-     * Bind behaviour to the UI elements in the display
+     * Bind behaviour to the UI elements in the display.
+     *
+     * When a view (and its associated presenter) is added to the screen directly,
+     * the go() method will be called. The go() method should then call bindExtended().
+     *
+     * When a view (and its associated presenter) is part of a composite parent
+     * view, the bindExtended() will be called by the parent presenters go() method.
+     *
+     * Other presenter base types may need additional parameters, in which case
+     * they will provide an empty implementation of this method, and then create
+     * and overloaded method.
      *
      * @param topicId the help topic for the page
      * @param pageId The history token of the page
-     * @param display The display that holds the UI elements the user interacts with
      */
     void bindExtended(final int topicId, final String pageId);
 
