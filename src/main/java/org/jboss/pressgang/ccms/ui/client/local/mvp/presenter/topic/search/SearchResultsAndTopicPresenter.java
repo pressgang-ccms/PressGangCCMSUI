@@ -36,15 +36,15 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.TopicListReceivedHandler;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.Component;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.GetCurrentTopic;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringListLoaded;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsAndTopicViewEvent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.TemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringMapLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
@@ -77,23 +77,21 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 @Dependent
 public class SearchResultsAndTopicPresenter
         extends BaseSearchAndEditComponent<
-            SearchResultsPresenter.Display,
-            RESTTopicV1,
-            RESTTopicCollectionV1,
-            RESTTopicCollectionItemV1,
-            BaseTopicViewInterface,
-            TopicPresenter.Display,
-            RESTTopicV1BasicDetailsEditor>
+        SearchResultsPresenter.Display,
+        RESTTopicV1,
+        RESTTopicCollectionV1,
+        RESTTopicCollectionItemV1,
+        BaseTopicViewInterface,
+        TopicPresenter.Display,
+        RESTTopicV1BasicDetailsEditor>
         implements TemplatePresenter {
 
     public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
-
     private static final String LINE_BREAK_ESCAPED = "\\n";
     private static final String CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED = "\\r\\n";
     private static final String LINE_BREAK = "\n";
     private static final String CARRIAGE_RETURN_AND_LINE_BREAK = "\r\n";
     private static final String COMMA = ",";
-
     /**
      * false to indicate that the topic views should display action buttons applicable to established topics (as opposed to new
      * topics)
@@ -111,8 +109,11 @@ public class SearchResultsAndTopicPresenter
             }
         }
     };
-    @Inject private HandlerManager eventBus;
-    /** true if this presenter should be opened with a fresh topic, and false otherwise */
+    @Inject
+    private HandlerManager eventBus;
+    /**
+     * true if this presenter should be opened with a fresh topic, and false otherwise
+     */
     private boolean startWithNewTopic = false;
     /**
      * The last xml that was rendered
@@ -131,23 +132,31 @@ public class SearchResultsAndTopicPresenter
      * A list of locales retrieved from the server
      */
     private List<String> locales;
-
-    @Inject private Display display;
-
-    @Inject private TopicPresenter topicViewComponent;
-
-    @Inject private TopicXMLPresenter topicXMLComponent;
+    @Inject
+    private Display display;
+    @Inject
+    private TopicPresenter topicViewComponent;
+    @Inject
+    private TopicXMLPresenter topicXMLComponent;
     /**
      * The rendered topic view display in a split panel
      */
-    @Inject private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
-    @Inject private SearchResultsPresenter searchResultsComponent;
-    @Inject private TopicXMLErrorsPresenter topicXMLErrorsPresenter;
-    @Inject private TopicTagsPresenter topicTagsComponent;
-    @Inject private TopicRevisionsPresenter topicRevisionsComponent;
-    @Inject private TopicBIRTBugsPresenter topicBugsPresenter;
-    @Inject private TopicRenderedPresenter topicRenderedPresenter;
-    @Inject private TopicPropertyTagsPresenter topicPropertyTagPresenter;
+    @Inject
+    private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
+    @Inject
+    private SearchResultsPresenter searchResultsComponent;
+    @Inject
+    private TopicXMLErrorsPresenter topicXMLErrorsPresenter;
+    @Inject
+    private TopicTagsPresenter topicTagsComponent;
+    @Inject
+    private TopicRevisionsPresenter topicRevisionsComponent;
+    @Inject
+    private TopicBIRTBugsPresenter topicBugsPresenter;
+    @Inject
+    private TopicRenderedPresenter topicRenderedPresenter;
+    @Inject
+    private TopicPropertyTagsPresenter topicPropertyTagPresenter;
     /**
      * How the rendering panel is displayed
      */
@@ -201,7 +210,7 @@ public class SearchResultsAndTopicPresenter
             topicPropertyTagPresenter.process(null, ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
 
             /* When the topics have been loaded, display the first one */
-            searchResultsComponent.addTopicListReceivedHandler(new TopicListReceivedHandler(){
+            searchResultsComponent.addTopicListReceivedHandler(new TopicListReceivedHandler() {
                 @Override
                 public void onTopicsRecieved(final RESTTopicCollectionV1 topics) {
                     if (topics.getItems() != null && topics.getItems().size() == 1) {
@@ -351,8 +360,9 @@ public class SearchResultsAndTopicPresenter
         final RESTTopicCollectionItemV1 sourceTopic = topicRevisionsComponent.getDisplay().getRevisionTopic() == null ? searchResultsComponent
                 .getProviderData().getDisplayedItem() : topicRevisionsComponent.getDisplay().getRevisionTopic();
 
-        if (sourceTopic == null)
+        if (sourceTopic == null) {
             throw new NullPointerException("sourceTopic cannot be null");
+        }
 
         return sourceTopic;
     }
@@ -363,16 +373,22 @@ public class SearchResultsAndTopicPresenter
      * @return true if the UI is in readonly mode, and false otherwise
      */
     private boolean isReadOnlyMode() {
-        return topicRevisionsComponent.getDisplay().getRevisionTopic() != null;
+        return this.topicRevisionsComponent.getDisplay().getRevisionTopic() != null;
     }
 
+    /**
+     * Display the usual menus. This is called after the split rendering pane menu has been closed.
+     */
     private void showRegularMenu() {
-        display.displayChildView(lastDisplayedView);
+        this.display.displayChildView(this.lastDisplayedView);
     }
 
+    /**
+     * Display the split panel menu, which will remove all common and local action buttons
+     */
     private void showRenderedSplitPanelMenu() {
-        display.getViewActionButtonsParentPanel().clear();
-        display.getViewActionButtonsParentPanel().add(display.getRenderedSplitViewMenu());
+        this.display.getViewActionButtonsParentPanel().clear();
+        this.display.getViewActionButtonsParentPanel().setWidget(0, 0, this.display.getRenderedSplitViewMenu());
     }
 
     /**
@@ -380,22 +396,21 @@ public class SearchResultsAndTopicPresenter
      */
     private void loadSplitPanelSize() {
         try {
-            logger.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.loadSplitPanelSize()");
+            this.logger.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.loadSplitPanelSize()");
 
-            if (split == SplitType.HORIZONTAL) {
-                display.getSplitPanel().setSplitPosition(
-                        topicSplitPanelRenderedDisplay.getPanel().getParent(),
+            if (this.split == SplitType.HORIZONTAL) {
+                this.display.getSplitPanel().setSplitPosition(
+                        this.topicSplitPanelRenderedDisplay.getPanel().getParent(),
                         Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH,
                                 Constants.SPLIT_PANEL_SIZE), false);
-            } else if (split == SplitType.VERTICAL) {
-                display.getSplitPanel().setSplitPosition(
-                        topicSplitPanelRenderedDisplay.getPanel().getParent(),
+            } else if (this.split == SplitType.VERTICAL) {
+                this.display.getSplitPanel().setSplitPosition(
+                        this.topicSplitPanelRenderedDisplay.getPanel().getParent(),
                         Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH,
                                 Constants.SPLIT_PANEL_SIZE), false);
             }
-        }
-        finally {
-            logger.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.loadSplitPanelSize()");
+        } finally {
+            this.logger.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.loadSplitPanelSize()");
         }
     }
 
@@ -406,10 +421,10 @@ public class SearchResultsAndTopicPresenter
         final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTopicCollectionItemV1> display) {
-                if (searchResultsComponent.getProviderData().getDisplayedItem() != null
-                        && searchResultsComponent.getProviderData().getDisplayedItem().getItem().getRevisions() != null
-                        && searchResultsComponent.getProviderData().getDisplayedItem().getItem().getRevisions().getItems() != null) {
-                    displayNewFixedList(searchResultsComponent.getProviderData().getDisplayedItem().getItem().getRevisions()
+                if (SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem() != null
+                        && SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getRevisions() != null
+                        && SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getRevisions().getItems() != null) {
+                    displayNewFixedList(SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getRevisions()
                             .getItems());
                 } else {
                     resetProvider();
@@ -426,9 +441,9 @@ public class SearchResultsAndTopicPresenter
         final EnhancedAsyncDataProvider<RESTBugzillaBugCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTBugzillaBugCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTBugzillaBugCollectionItemV1> display) {
-                if (searchResultsComponent.getProviderData().getDisplayedItem() != null
-                        && searchResultsComponent.getProviderData().getDisplayedItem().getItem().getBugzillaBugs_OTM() != null) {
-                    displayNewFixedList(searchResultsComponent.getProviderData().getDisplayedItem().getItem()
+                if (SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem() != null
+                        && SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getBugzillaBugs_OTM() != null) {
+                    displayNewFixedList(SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem()
                             .getBugzillaBugs_OTM().getItems());
                 } else {
                     resetProvider();
@@ -465,8 +480,7 @@ public class SearchResultsAndTopicPresenter
                     }
                 }
             });
-        }
-        finally {
+        } finally {
             logger.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bindSplitPanelResize()");
         }
     }
@@ -582,7 +596,7 @@ public class SearchResultsAndTopicPresenter
     public boolean hasUnsavedChanges() {
 
         /* No topic selected, so no changes need to be saved */
-        if (this.searchResultsComponent.getProviderData().getDisplayedItem() == null)  {
+        if (this.searchResultsComponent.getProviderData().getDisplayedItem() == null) {
             return false;
         }
 
@@ -641,8 +655,7 @@ public class SearchResultsAndTopicPresenter
             }
 
             /* if searchResultsComponent.getProviderData().getSelectedItem() == null, then we are displaying a new topic */
-            if (searchResultsComponent.getProviderData().getSelectedItem() != null)
-            {
+            if (searchResultsComponent.getProviderData().getSelectedItem() != null) {
                 /* A callback to respond to a request for a topic with the revisions expanded */
                 final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
                         topicRevisionsComponent.getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
@@ -676,7 +689,7 @@ public class SearchResultsAndTopicPresenter
     /**
      * The tags and bugs for a topic are loaded as separate operations to minimize the amount of data initially sent when a
      * topic is displayed.
-     *
+     * <p/>
      * We pull down the extended collections from a revision, just to make sure that the collections we are getting are for
      * the entity we are viewing, since there is a slight chance that a new revision could be saved in between us loading
      * the empty entity and then loading the collections.
@@ -731,34 +744,33 @@ public class SearchResultsAndTopicPresenter
      * This method will replace the top action buttons with their disabled labels based on the
      * currently displayed view.
      */
-    private void enableAndDisableActionButtons(final BaseTopicViewInterface displayedView)
-    {
-       this.display.replaceTopActionButton(this.display.getXmlDown(), this.display.getXml());
-       this.display.replaceTopActionButton(this.display.getBugsDown(), this.display.getBugs());
-       this.display.replaceTopActionButton(this.display.getExtendedPropertiesDown(), this.display.getExtendedProperties());
-       this.display.replaceTopActionButton(this.display.getFieldsDown(), this.display.getFields());
-       this.display.replaceTopActionButton(this.display.getHistoryDown(), this.display.getHistory());
-       this.display.replaceTopActionButton(this.display.getRenderedDown(), this.display.getRendered());
-       this.display.replaceTopActionButton(this.display.getTopicTagsDown(), this.display.getTopicTags());
-       this.display.replaceTopActionButton(this.display.getXmlErrorsDown(), this.display.getXmlErrors());
+    private void enableAndDisableActionButtons(final BaseTopicViewInterface displayedView) {
+        this.display.replaceTopActionButton(this.display.getXmlDown(), this.display.getXml());
+        this.display.replaceTopActionButton(this.display.getBugsDown(), this.display.getBugs());
+        this.display.replaceTopActionButton(this.display.getExtendedPropertiesDown(), this.display.getExtendedProperties());
+        this.display.replaceTopActionButton(this.display.getFieldsDown(), this.display.getFields());
+        this.display.replaceTopActionButton(this.display.getHistoryDown(), this.display.getHistory());
+        this.display.replaceTopActionButton(this.display.getRenderedDown(), this.display.getRendered());
+        this.display.replaceTopActionButton(this.display.getTopicTagsDown(), this.display.getTopicTags());
+        this.display.replaceTopActionButton(this.display.getXmlErrorsDown(), this.display.getXmlErrors());
 
-       if (displayedView == this.topicXMLComponent.getDisplay()) {
-           this.display.replaceTopActionButton(this.display.getXml(), this.display.getXmlDown());
-       } else if (displayedView == this.topicBugsPresenter.getDisplay()) {
-           this.display.replaceTopActionButton(this.display.getBugs(), this.display.getBugsDown());
-       } else if (displayedView == this.topicPropertyTagPresenter.getDisplay()) {
-           this.display.replaceTopActionButton(this.display.getExtendedProperties(), this.display.getExtendedPropertiesDown());
-       } else if (displayedView == this.topicViewComponent.getDisplay()) {
-           this.display.replaceTopActionButton(this.display.getFields(), this.display.getFieldsDown());
-       } else if (displayedView == this.topicRevisionsComponent.getDisplay()) {
-           this.display.replaceTopActionButton(this.display.getHistory(), this.display.getHistoryDown());
-       } else if (displayedView == this.topicRenderedPresenter.getDisplay()) {
-           this.display.replaceTopActionButton(this.display.getRendered(), this.display.getRenderedDown());
-       } else if (displayedView == this.topicTagsComponent.getDisplay()) {
-           this.display.replaceTopActionButton(this.display.getTopicTags(), this.display.getTopicTagsDown());
-       } else if (displayedView == this.topicXMLErrorsPresenter.getDisplay()) {
-           this.display.replaceTopActionButton(this.display.getXmlErrors(), this.display.getXmlErrorsDown());
-       }
+        if (displayedView == this.topicXMLComponent.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getXml(), this.display.getXmlDown());
+        } else if (displayedView == this.topicBugsPresenter.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getBugs(), this.display.getBugsDown());
+        } else if (displayedView == this.topicPropertyTagPresenter.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getExtendedProperties(), this.display.getExtendedPropertiesDown());
+        } else if (displayedView == this.topicViewComponent.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getFields(), this.display.getFieldsDown());
+        } else if (displayedView == this.topicRevisionsComponent.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getHistory(), this.display.getHistoryDown());
+        } else if (displayedView == this.topicRenderedPresenter.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getRendered(), this.display.getRenderedDown());
+        } else if (displayedView == this.topicTagsComponent.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getTopicTags(), this.display.getTopicTagsDown());
+        } else if (displayedView == this.topicXMLErrorsPresenter.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getXmlErrors(), this.display.getXmlErrorsDown());
+        }
 
         if (getTopicOrRevisionTopic().getItem().getXmlErrors() != null && !getTopicOrRevisionTopic().getItem().getXmlErrors().isEmpty()) {
             this.display.getXmlErrors().addStyleName(CSSConstants.ERROR);
@@ -770,8 +782,7 @@ public class SearchResultsAndTopicPresenter
     }
 
     /* Update the page name */
-    private void updatePageTitle(final BaseTopicViewInterface displayedView)
-    {
+    private void updatePageTitle(final BaseTopicViewInterface displayedView) {
 
         final StringBuilder title = new StringBuilder(displayedView.getPageName());
         final String id = searchResultsComponent.getProviderData().getDisplayedItem().getItem().getId() == null ?
@@ -783,7 +794,6 @@ public class SearchResultsAndTopicPresenter
         }
         display.getPageTitle().setText(title.toString());
     }
-
 
     @Override
     protected void switchView(final BaseTopicViewInterface displayedView) {
@@ -832,8 +842,7 @@ public class SearchResultsAndTopicPresenter
     /**
      * Called to create a new topic
      */
-    private void createNewTopic()
-    {
+    private void createNewTopic() {
         /* make sure there are no unsaved changes, or that the user is happy to continue without saving */
         if (!isOKToProceed()) {
             return;
@@ -894,8 +903,7 @@ public class SearchResultsAndTopicPresenter
 
                     if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
 
-                        if (searchResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem())
-                        {
+                        if (searchResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
                             final BaseRestCallback<RESTTopicV1, Display> addCallback = new BaseRestCallback<RESTTopicV1, Display>(
                                     display,
                                     new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
@@ -944,7 +952,7 @@ public class SearchResultsAndTopicPresenter
                                                     updateDisplayAfterSave(true);
                                                 }
 
-                                                logger.log(Level.INFO,"Refreshing editor");
+                                                logger.log(Level.INFO, "Refreshing editor");
                                                 if (topicXMLComponent.getDisplay().getEditor() != null) {
                                                     topicXMLComponent.getDisplay().getEditor().redisplay();
                                                 }
@@ -982,9 +990,7 @@ public class SearchResultsAndTopicPresenter
 
                             final String message = display.getMessageLogDialog().getMessage().getText();
                             RESTCalls.createTopic(addCallback, addedTopic, message, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString());
-                        }
-                        else
-                        {
+                        } else {
                             final BaseRestCallback<RESTTopicV1, Display> updateCallback = new BaseRestCallback<RESTTopicV1, Display>(
                                     display,
                                     new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
@@ -1033,11 +1039,11 @@ public class SearchResultsAndTopicPresenter
                                             }
                                         }
                                     }, new BaseRestCallback.FailureAction<Display>() {
-                                        @Override
-                                        public void doFailureAction(final Display display) {
-                                            topicXMLComponent.getDisplay().getEditor().redisplay();
-                                        }
-                                    }
+                                @Override
+                                public void doFailureAction(final Display display) {
+                                    topicXMLComponent.getDisplay().getEditor().redisplay();
+                                }
+                            }
                             );
 
                             /* Sync any changes back to the underlying object */
@@ -1314,14 +1320,12 @@ public class SearchResultsAndTopicPresenter
         addKeyboardShortcutEvents(topicXMLComponent.getDisplay(), display);
     }
 
-    protected void updateDisplayAfterSave(final boolean wasNewEntity)
-    {
+    protected void updateDisplayAfterSave(final boolean wasNewEntity) {
         super.updateDisplayAfterSave(wasNewEntity);
 
         /* Refresh the buttons (especially the xml errors button) after a save */
         enableAndDisableActionButtons(lastDisplayedView);
     }
-
 
     @Override
     protected void bindFilteredResultsButtons() {
@@ -1383,297 +1387,6 @@ public class SearchResultsAndTopicPresenter
     private void initializeSplitViewButtons() {
         /* fix the rendered view button */
         display.buildSplitViewButtons(split);
-    }
-
-    /**
-     * The interface that defines the top level topic list and edit view
-     */
-    public interface Display extends
-            BaseSearchAndEditViewInterface<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
-
-        FlexTable getRenderedSplitViewMenu();
-
-        PushButton getRenderedSplitOpen();
-
-        PushButton getRenderedHorizontalSplit();
-
-        PushButton getRenderedSplitClose();
-
-        PushButton getRenderedVerticalSplit();
-
-        PushButton getRenderedNoSplit();
-
-        PushButton getRenderedSplit();
-
-        /**
-         * @return The button that is used to switch to the history view
-         */
-        PushButton getHistory();
-
-        /**
-         * @return The button that is used to switch to the history view
-         */
-        Label getHistoryDown();
-
-        /**
-         * @return The button that is used to switch to the rendered view
-         */
-        PushButton getRendered();
-
-        /**
-         * @return The button that is used to switch to the rendered view
-         */
-        Label getRenderedDown();
-
-        /**
-         *
-         * @return The button that is used to switch to the XML view
-         */
-        PushButton getXml();
-
-        /**
-         *
-         * @return The label that is used to indicate that the XML view is selected
-         */
-        Label getXmlDown();
-
-        /**
-         *
-         * @return The button that is used to switch to the topic fields view
-         */
-        PushButton getFields();
-
-        /**
-         *
-         * @return The button that is used to switch to the topic fields view
-         */
-        Label getFieldsDown();
-
-        /**
-         *
-         * @return The button that is used to switch to the topic property tags view
-         */
-        PushButton getExtendedProperties();
-
-        /**
-         *
-         * @return The button that is used to switch to the topic property tags view
-         */
-        Label getExtendedPropertiesDown();
-
-        /**
-         *
-         * @return The button that is used to save the topic
-         */
-        PushButton getSave();
-
-        /**
-         *
-         * @return The button that is used to switch to the XML errors view
-         */
-        PushButton getXmlErrors();
-
-        /**
-         *
-         * @return The button that is used to switch to the XML errors view
-         */
-        Label getXmlErrorsDown();
-
-        /**
-         *
-         * @return The button that is used to switch to the tags view
-         */
-        PushButton getTopicTags();
-
-        /**
-         *
-         * @return The button that is used to switch to the tags view
-         */
-        Label getTopicTagsDown();
-
-        /**
-         *
-         * @return The button that is used to switch to the bugs view
-         */
-        PushButton getBugs();
-
-        /**
-         *
-         * @return The button that is used to switch to the bugs view
-         */
-        Label getBugsDown();
-
-        /**
-         *
-         * @return The button this is used to match topics to csps
-         */
-        PushButton getCsps();
-
-        /** Show the rendered split view menu */
-        void showSplitViewButtons();
-
-        /**
-         * Rebuild the split view buttons
-         * @param splitType The screen split
-         */
-        void buildSplitViewButtons(final SplitType splitType);
-
-        LogMessageInterface getMessageLogDialog();
-
-        SplitType getSplitType();
-
-        void initialize(final boolean readOnly, final boolean hasErrors, final SplitType splitType, final Panel panel);
-    }
-
-    /**
-     * A click handler to add a tag to a topic
-     *
-     * @author Matthew Casperson
-     */
-    private class AddTagClickhandler implements ClickHandler {
-
-        @Override
-        public void onClick(final ClickEvent event) {
-            final RESTTagV1 selectedTag = topicTagsComponent.getDisplay().getMyTags().getValue().getTag().getItem();
-
-            /* Need to deal with re-adding removed tags */
-            RESTTagCollectionItemV1 deletedTag = null;
-            for (final RESTTagCollectionItemV1 tag : searchResultsComponent.getProviderData().getDisplayedItem().getItem()
-                    .getTags().getItems()) {
-                if (tag.getItem().getId().equals(selectedTag.getId())) {
-                    if (RESTBaseCollectionItemV1.REMOVE_STATE.equals(tag.getState())) {
-                        deletedTag = tag;
-                        break;
-                    } else {
-                        /* Don't add tags twice */
-                        Window.alert(PressGangCCMSUI.INSTANCE.TagAlreadyExists());
-                        return;
-                    }
-                }
-            }
-
-            /*
-             * If we get this far we are adding a tag to the topic. However, some categories are mutually exclusive, so we need
-             * to remove any conflicting tags.
-             */
-
-            /* Find the mutually exclusive categories that the new tag belongs to */
-            final Collection<RESTCategoryInTagCollectionItemV1> mutuiallyExclusiveCategories = Collections2.filter(selectedTag
-                    .getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
-
-                @Override
-                public boolean apply(final @Nullable RESTCategoryInTagCollectionItemV1 arg0) {
-                    if (arg0 == null || arg0.getItem() == null)
-                        return false;
-                    return arg0.getItem().getMutuallyExclusive();
-                }
-            });
-
-            /* Find existing tags that belong to any of the mutually exclusive categories */
-            final Collection<RESTTagCollectionItemV1> conflictingTags = Collections2.filter(searchResultsComponent
-                    .getProviderData().getDisplayedItem().getItem().getTags().getItems(),
-                    new Predicate<RESTTagCollectionItemV1>() {
-
-                        @Override
-                        public boolean apply(final @Nullable RESTTagCollectionItemV1 existingTag) {
-
-                            /* there is no match if the tag has already been removed */
-                            if (existingTag == null || existingTag.getItem() == null
-                                    || RESTBaseCollectionItemV1.REMOVE_STATE.equals(existingTag.getState())) {
-                                return false;
-                            }
-
-                            /* loop over the categories that the tag belongs to */
-                            return Iterables.any(existingTag.getItem().getCategories().getItems(),
-                                    new Predicate<RESTCategoryInTagCollectionItemV1>() {
-
-                                        @Override
-                                        public boolean apply(
-                                                final @Nullable RESTCategoryInTagCollectionItemV1 existingTagCategory) {
-                                            if (existingTagCategory == null || existingTagCategory.getItem() == null)
-                                                return false;
-
-                                            /*
-                                             * match any categories that the tag belongs to with any of the mutually exclusive
-                                             * categories
-                                             */
-                                            return Iterables.any(mutuiallyExclusiveCategories,
-                                                    new Predicate<RESTCategoryInTagCollectionItemV1>() {
-
-                                                        @Override
-                                                        public boolean apply(
-                                                                final @Nullable RESTCategoryInTagCollectionItemV1 mutuallyExclusiveCategory) {
-                                                            return mutuallyExclusiveCategory.getItem().getId()
-                                                                    .equals(existingTagCategory.getItem().getId());
-                                                        }
-                                                    });
-
-                                        }
-                                    });
-                        }
-                    });
-
-            if (!conflictingTags.isEmpty()) {
-                final StringBuilder tags = new StringBuilder("\n");
-                for (final RESTTagCollectionItemV1 tag : conflictingTags) {
-                    tags.append("\n* " + tag.getItem().getName());
-                }
-
-                /* make sure the user is happy to remove the conflicting tags */
-                if (!Window.confirm(PressGangCCMSUI.INSTANCE.RemoveConflictingTags() + tags.toString()))
-                    return;
-
-                for (final RESTTagCollectionItemV1 tag : conflictingTags) {
-                    tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
-                }
-            }
-
-            if (deletedTag == null) {
-                /* Get the selected tag, and clone it */
-                final RESTTagV1 selectedTagClone = selectedTag.clone(true);
-                /* Add the tag to the topic */
-                searchResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(selectedTagClone);
-            } else {
-                deletedTag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
-            }
-
-            /* Redisplay the view */
-            initializeViews(Arrays.asList(new BaseTopicViewInterface[]{topicTagsComponent.getDisplay()}));
-        }
-    }
-
-    /**
-     * A click handler to remove a tag from a topic
-     *
-     * @author Matthew Casperson
-     */
-    private class DeleteTagClickHandler implements ClickHandler {
-        private final RESTTagCollectionItemV1 tag;
-
-        public DeleteTagClickHandler(final RESTTagCollectionItemV1 tag) {
-            if (tag == null) {
-                throw new IllegalArgumentException("tag cannot be null");
-            }
-
-            this.tag = tag;
-        }
-
-        @Override
-        public void onClick(final ClickEvent event) {
-            if (searchResultsComponent.getProviderData().getDisplayedItem() == null) {
-                throw new IllegalStateException("searchResultsComponent.getProviderData().getDisplayedItem() cannot be null");
-            }
-
-            if (RESTBaseCollectionItemV1.ADD_STATE.equals(tag.getState())) {
-                /* Tag was added and then removed, so we just delete the tag */
-                searchResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().getItems().remove(tag);
-            } else {
-                /* Otherwise we set the tag as removed */
-                tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
-            }
-
-            initializeViews(Arrays.asList(new BaseTopicViewInterface[]{topicTagsComponent.getDisplay()}));
-        }
     }
 
     /**
@@ -1829,7 +1542,7 @@ public class SearchResultsAndTopicPresenter
      * @param currentTopicCallback Called to get the currently displayed topic
      */
     private void addKeyboardShortcutEventHandler(final TopicXMLPresenter.Display topicXMLDisplay,
-                                                       final BaseTemplateViewInterface display, final GetCurrentTopic currentTopicCallback) {
+                                                 final BaseTemplateViewInterface display, final GetCurrentTopic currentTopicCallback) {
         final Event.NativePreviewHandler keyboardShortcutPreviewhandler = new Event.NativePreviewHandler() {
             @Override
             public void onPreviewNativeEvent(final Event.NativePreviewEvent event) {
@@ -1937,7 +1650,7 @@ public class SearchResultsAndTopicPresenter
      * @param display         The main view
      */
     private void addKeyboardShortcutEvents(final TopicXMLPresenter.Display topicXMLDisplay,
-                                                 final BaseTemplateViewInterface display) {
+                                           final BaseTemplateViewInterface display) {
         topicXMLDisplay.getXmlTagsDialog().getOK().addClickHandler(new ClickHandler() {
 
             @Override
@@ -2118,7 +1831,7 @@ public class SearchResultsAndTopicPresenter
     }
 
     private void insertCspDetails(final TopicXMLPresenter.Display topicXMLDisplay,
-                                           final BaseTemplateViewInterface display) {
+                                  final BaseTemplateViewInterface display) {
         final String ids = GWTUtilities.fixUpIdSearchString(topicXMLDisplay.getCSPTopicDetailsDialog().getIds().getValue());
         if (!ids.isEmpty()) {
             final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
@@ -2184,6 +1897,286 @@ public class SearchResultsAndTopicPresenter
             component.setHelpTopicId(ServiceConstants.TOPIC_XML_EDIT_TOPIC);
         } else {
             component.setHelpTopicId(ServiceConstants.DEFAULT_HELP_TOPIC);
+        }
+    }
+
+    /**
+     * The interface that defines the top level topic list and edit view
+     */
+    public interface Display extends
+            BaseSearchAndEditViewInterface<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
+
+        FlexTable getRenderedSplitViewMenu();
+
+        PushButton getRenderedSplitOpen();
+
+        PushButton getRenderedHorizontalSplit();
+
+        PushButton getRenderedSplitClose();
+
+        PushButton getRenderedVerticalSplit();
+
+        PushButton getRenderedNoSplit();
+
+        PushButton getRenderedSplit();
+
+        /**
+         * @return The button that is used to switch to the history view
+         */
+        PushButton getHistory();
+
+        /**
+         * @return The button that is used to switch to the history view
+         */
+        Label getHistoryDown();
+
+        /**
+         * @return The button that is used to switch to the rendered view
+         */
+        PushButton getRendered();
+
+        /**
+         * @return The button that is used to switch to the rendered view
+         */
+        Label getRenderedDown();
+
+        /**
+         * @return The button that is used to switch to the XML view
+         */
+        PushButton getXml();
+
+        /**
+         * @return The label that is used to indicate that the XML view is selected
+         */
+        Label getXmlDown();
+
+        /**
+         * @return The button that is used to switch to the topic fields view
+         */
+        PushButton getFields();
+
+        /**
+         * @return The button that is used to switch to the topic fields view
+         */
+        Label getFieldsDown();
+
+        /**
+         * @return The button that is used to switch to the topic property tags view
+         */
+        PushButton getExtendedProperties();
+
+        /**
+         * @return The button that is used to switch to the topic property tags view
+         */
+        Label getExtendedPropertiesDown();
+
+        /**
+         * @return The button that is used to save the topic
+         */
+        PushButton getSave();
+
+        /**
+         * @return The button that is used to switch to the XML errors view
+         */
+        PushButton getXmlErrors();
+
+        /**
+         * @return The button that is used to switch to the XML errors view
+         */
+        Label getXmlErrorsDown();
+
+        /**
+         * @return The button that is used to switch to the tags view
+         */
+        PushButton getTopicTags();
+
+        /**
+         * @return The button that is used to switch to the tags view
+         */
+        Label getTopicTagsDown();
+
+        /**
+         * @return The button that is used to switch to the bugs view
+         */
+        PushButton getBugs();
+
+        /**
+         * @return The button that is used to switch to the bugs view
+         */
+        Label getBugsDown();
+
+        /**
+         * @return The button this is used to match topics to csps
+         */
+        PushButton getCsps();
+
+        /**
+         * Show the rendered split view menu
+         */
+        void showSplitViewButtons();
+
+        /**
+         * Rebuild the split view buttons
+         *
+         * @param splitType The screen split
+         */
+        void buildSplitViewButtons(final SplitType splitType);
+
+        LogMessageInterface getMessageLogDialog();
+
+        SplitType getSplitType();
+
+        void initialize(final boolean readOnly, final boolean hasErrors, final SplitType splitType, final Panel panel);
+    }
+
+    /**
+     * A click handler to add a tag to a topic
+     *
+     * @author Matthew Casperson
+     */
+    private class AddTagClickhandler implements ClickHandler {
+
+        @Override
+        public void onClick(final ClickEvent event) {
+            final RESTTagV1 selectedTag = topicTagsComponent.getDisplay().getMyTags().getValue().getTag().getItem();
+
+            /* Need to deal with re-adding removed tags */
+            RESTTagCollectionItemV1 deletedTag = null;
+            for (final RESTTagCollectionItemV1 tag : searchResultsComponent.getProviderData().getDisplayedItem().getItem()
+                    .getTags().getItems()) {
+                if (tag.getItem().getId().equals(selectedTag.getId())) {
+                    if (RESTBaseCollectionItemV1.REMOVE_STATE.equals(tag.getState())) {
+                        deletedTag = tag;
+                        break;
+                    } else {
+                        /* Don't add tags twice */
+                        Window.alert(PressGangCCMSUI.INSTANCE.TagAlreadyExists());
+                        return;
+                    }
+                }
+            }
+
+            /*
+             * If we get this far we are adding a tag to the topic. However, some categories are mutually exclusive, so we need
+             * to remove any conflicting tags.
+             */
+
+            /* Find the mutually exclusive categories that the new tag belongs to */
+            final Collection<RESTCategoryInTagCollectionItemV1> mutuiallyExclusiveCategories = Collections2.filter(selectedTag
+                    .getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
+
+                @Override
+                public boolean apply(final @Nullable RESTCategoryInTagCollectionItemV1 arg0) {
+                    if (arg0 == null || arg0.getItem() == null)
+                        return false;
+                    return arg0.getItem().getMutuallyExclusive();
+                }
+            });
+
+            /* Find existing tags that belong to any of the mutually exclusive categories */
+            final Collection<RESTTagCollectionItemV1> conflictingTags = Collections2.filter(searchResultsComponent
+                    .getProviderData().getDisplayedItem().getItem().getTags().getItems(),
+                    new Predicate<RESTTagCollectionItemV1>() {
+
+                        @Override
+                        public boolean apply(final @Nullable RESTTagCollectionItemV1 existingTag) {
+
+                            /* there is no match if the tag has already been removed */
+                            if (existingTag == null || existingTag.getItem() == null
+                                    || RESTBaseCollectionItemV1.REMOVE_STATE.equals(existingTag.getState())) {
+                                return false;
+                            }
+
+                            /* loop over the categories that the tag belongs to */
+                            return Iterables.any(existingTag.getItem().getCategories().getItems(),
+                                    new Predicate<RESTCategoryInTagCollectionItemV1>() {
+
+                                        @Override
+                                        public boolean apply(
+                                                final @Nullable RESTCategoryInTagCollectionItemV1 existingTagCategory) {
+                                            if (existingTagCategory == null || existingTagCategory.getItem() == null)
+                                                return false;
+
+                                            /*
+                                             * match any categories that the tag belongs to with any of the mutually exclusive
+                                             * categories
+                                             */
+                                            return Iterables.any(mutuiallyExclusiveCategories,
+                                                    new Predicate<RESTCategoryInTagCollectionItemV1>() {
+
+                                                        @Override
+                                                        public boolean apply(
+                                                                final @Nullable RESTCategoryInTagCollectionItemV1 mutuallyExclusiveCategory) {
+                                                            return mutuallyExclusiveCategory.getItem().getId()
+                                                                    .equals(existingTagCategory.getItem().getId());
+                                                        }
+                                                    });
+
+                                        }
+                                    });
+                        }
+                    });
+
+            if (!conflictingTags.isEmpty()) {
+                final StringBuilder tags = new StringBuilder("\n");
+                for (final RESTTagCollectionItemV1 tag : conflictingTags) {
+                    tags.append("\n* " + tag.getItem().getName());
+                }
+
+                /* make sure the user is happy to remove the conflicting tags */
+                if (!Window.confirm(PressGangCCMSUI.INSTANCE.RemoveConflictingTags() + tags.toString()))
+                    return;
+
+                for (final RESTTagCollectionItemV1 tag : conflictingTags) {
+                    tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+                }
+            }
+
+            if (deletedTag == null) {
+                /* Get the selected tag, and clone it */
+                final RESTTagV1 selectedTagClone = selectedTag.clone(true);
+                /* Add the tag to the topic */
+                searchResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(selectedTagClone);
+            } else {
+                deletedTag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+            }
+
+            /* Redisplay the view */
+            initializeViews(Arrays.asList(new BaseTopicViewInterface[]{topicTagsComponent.getDisplay()}));
+        }
+    }
+
+    /**
+     * A click handler to remove a tag from a topic
+     *
+     * @author Matthew Casperson
+     */
+    private class DeleteTagClickHandler implements ClickHandler {
+        private final RESTTagCollectionItemV1 tag;
+
+        public DeleteTagClickHandler(final RESTTagCollectionItemV1 tag) {
+            if (tag == null) {
+                throw new IllegalArgumentException("tag cannot be null");
+            }
+
+            this.tag = tag;
+        }
+
+        @Override
+        public void onClick(final ClickEvent event) {
+            if (searchResultsComponent.getProviderData().getDisplayedItem() == null) {
+                throw new IllegalStateException("searchResultsComponent.getProviderData().getDisplayedItem() cannot be null");
+            }
+
+            if (RESTBaseCollectionItemV1.ADD_STATE.equals(tag.getState())) {
+                /* Tag was added and then removed, so we just delete the tag */
+                searchResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().getItems().remove(tag);
+            } else {
+                /* Otherwise we set the tag as removed */
+                tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+            }
+
+            initializeViews(Arrays.asList(new BaseTopicViewInterface[]{topicTagsComponent.getDisplay()}));
         }
     }
 }
