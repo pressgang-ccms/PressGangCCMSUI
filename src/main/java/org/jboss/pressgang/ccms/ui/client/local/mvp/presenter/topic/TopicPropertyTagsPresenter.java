@@ -52,6 +52,7 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
                 RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1>,
             BaseTopicViewInterface {
         Column<RESTAssignedPropertyTagCollectionItemV1, String> getPropertyTagRemoveColumn();
+        Column<RESTAssignedPropertyTagCollectionItemV1, String> getPropertyTagValueColumn();
     }
 
     public static final String HISTORY_TOKEN = "TopicPropertyTagsView";

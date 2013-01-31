@@ -24,14 +24,14 @@ import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.*;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTAssignedPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -70,6 +70,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1.REMOVE_STATE;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
@@ -231,6 +232,7 @@ public class SearchResultsAndTopicPresenter
             bindViewTopicRevisionButton();
             bindSplitPanelResize();
             bindTagEditingButtons();
+            bindPropertyTagButtons();
             loadSplitPanelSize();
 
             this.topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
@@ -482,6 +484,60 @@ public class SearchResultsAndTopicPresenter
     }
 
     /**
+     * Add behaviour to the property tag add and remove buttons, and the value text edit field.
+     */
+    private void bindPropertyTagButtons()
+    {
+        this.topicPropertyTagPresenter.getDisplay().getPossibleChildrenButtonColumn().setFieldUpdater(
+                new FieldUpdater<RESTPropertyTagCollectionItemV1, String>() {
+                    @Override
+                    public void update(final int index, final RESTPropertyTagCollectionItemV1 object, final String value) {
+
+                        /* Create a new property tag child */
+                        final RESTAssignedPropertyTagV1 restAssignedPropertyTagV1 = new RESTAssignedPropertyTagV1();
+                        restAssignedPropertyTagV1.setId(object.getItem().getId());
+                        restAssignedPropertyTagV1.setName(object.getItem().getName());
+                        restAssignedPropertyTagV1.setDescription(object.getItem().getDescription());
+
+                        SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().addNewItem(restAssignedPropertyTagV1);
+
+                        /* Update the list of existing children */
+                        SearchResultsAndTopicPresenter.this.topicPropertyTagPresenter.refreshExistingChildList(
+                                SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem());
+                    }
+                }
+        );
+
+        this.topicPropertyTagPresenter.getDisplay().getPropertyTagRemoveColumn().setFieldUpdater(
+                new FieldUpdater<RESTAssignedPropertyTagCollectionItemV1, String>() {
+                    @Override
+                    public void update(final int index, final RESTAssignedPropertyTagCollectionItemV1 object, final String value) {
+
+                        /*
+                            Note that the relationship between topic and property tag is many to many.
+                         */
+
+                        if (object.returnIsAddItem()) {
+                            /* Previously added items are just removed from the collection */
+                            SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().getItems().remove(object);
+                        } else {
+                            /* Existing children are marked for removal */
+                            object.setState(REMOVE_STATE);
+                        }
+                    }
+                }
+        );
+
+        this.topicPropertyTagPresenter.getDisplay().getPropertyTagValueColumn().setFieldUpdater(new FieldUpdater<RESTAssignedPropertyTagCollectionItemV1, String>() {
+            @Override
+            public void update(final int index, final RESTAssignedPropertyTagCollectionItemV1 object, final String value) {
+                object.getItem().explicitSetValue(value);
+            }
+        });
+    }
+
+
+    /**
      * Add behaviour to the tag delete buttons
      */
     private void bindTagEditingButtons() {
@@ -611,6 +667,11 @@ public class SearchResultsAndTopicPresenter
 
         /* If there are any modified tags in newTopic, we have unsaved changes */
         if (!displayedTopic.getTags().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
+            unsavedChanges = true;
+        }
+
+        /* If there are any modified property tags in newTopic, we have unsaved changes */
+        if (!displayedTopic.getProperties().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
             unsavedChanges = true;
         }
 

@@ -124,6 +124,11 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
         return propertyTagRemoveColumn;
     }
 
+    @Override
+    public Column<RESTAssignedPropertyTagCollectionItemV1, String> getPropertyTagValueColumn() {
+        return propertyTagValueColumn;
+    }
+
     public TopicPropertyTagsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.PropertyTags());
 
