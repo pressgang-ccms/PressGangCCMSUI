@@ -538,7 +538,9 @@ public class SearchResultsAndTopicPresenter
             @Override
             public void update(final int index, final RESTAssignedPropertyTagCollectionItemV1 object, final String value) {
                 object.getItem().explicitSetValue(value);
-                object.setState(UPDATE_STATE);
+                if (!object.returnIsAddItem()) {
+                    object.setState(UPDATE_STATE);
+                }
             }
         });
     }
@@ -974,8 +976,9 @@ public class SearchResultsAndTopicPresenter
 
                          /*
                          * Create a new instance of the topic, and copy out any updated, added or deleted fields. We don't
-                         * do a clone here because cloning will send back a whole lot of data that was never modified,
-                         * wasting bandwidth, and chewing up CPU cycles as Errai serializes the data into JSON.
+                         * do a clone or send the original object here because a full object will send back a whole lot of
+                         * data that was never modified, wasting bandwidth, and chewing up CPU cycles as Errai serializes
+                         * the data into JSON.
                          */
                         final RESTTopicV1 sourceTopic = searchResultsComponent.getProviderData().getDisplayedItem().getItem();
 
@@ -987,18 +990,22 @@ public class SearchResultsAndTopicPresenter
                         /*
                             Only assign those modified children to the topic that is to be added/updated
                          */
+                        logger.log(Level.INFO, "Copying modified collections");
                         newTopic.getProperties().setItems(sourceTopic.getProperties().returnDeletedAddedAndUpdatedCollectionItems());
-                        newTopic.getSourceUrls_OTM().setItems(sourceTopic.getSourceUrls_OTM().returnDeletedAddedAndUpdatedCollectionItems());
+                        if (sourceTopic.getSourceUrls_OTM() != null && sourceTopic.getSourceUrls_OTM().getItems() != null) {
+                            newTopic.getSourceUrls_OTM().setItems(sourceTopic.getSourceUrls_OTM().returnDeletedAddedAndUpdatedCollectionItems());
+                        }
                         newTopic.getTags().setItems(sourceTopic.getTags().returnDeletedAddedAndUpdatedCollectionItems());
 
                         /*
                             Assume all the text fields have been updated
                          */
+                        logger.log(Level.INFO, "Copying modified fields");
                         newTopic.setId(sourceTopic.getId());
-                        newTopic.explicitSetDescription(newTopic.getDescription());
-                        newTopic.explicitSetLocale(newTopic.getLocale());
-                        newTopic.explicitSetTitle(newTopic.getTitle());
-                        newTopic.explicitSetXml(newTopic.getXml());
+                        newTopic.explicitSetDescription(sourceTopic.getDescription());
+                        newTopic.explicitSetLocale(sourceTopic.getLocale());
+                        newTopic.explicitSetTitle(sourceTopic.getTitle());
+                        newTopic.explicitSetXml(sourceTopic.getXml());
 
                         if (searchResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem()) {
                             final BaseRestCallback<RESTTopicV1, Display> addCallback = new BaseRestCallback<RESTTopicV1, Display>(
@@ -1008,7 +1015,7 @@ public class SearchResultsAndTopicPresenter
                                         public void doSuccessAction(final RESTTopicV1 retValue, final Display display) {
                                             try {
                                                 logger.log(Level.INFO,
-                                                        "ENTER SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction()");
+                                                        "ENTER SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
 
                                                 // Create the topic wrapper
                                                 final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
@@ -1057,7 +1064,7 @@ public class SearchResultsAndTopicPresenter
                                                 Window.alert(PressGangCCMSUI.INSTANCE.TopicSaveSuccessWithID() + " " + retValue.getId());
                                             } finally {
                                                 logger.log(Level.INFO,
-                                                        "EXIT SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction()");
+                                                        "EXIT SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
                                             }
                                         }
                                     }, new BaseRestCallback.FailureAction<Display>() {
@@ -1077,13 +1084,13 @@ public class SearchResultsAndTopicPresenter
                                         @Override
                                         public void doSuccessAction(final RESTTopicV1 retValue, final Display display) {
                                             try {
+                                                logger.log(Level.INFO,
+                                                        "ENTER SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - Existing Topic");
 
                                                 boolean overwroteChanges = false;
 
-                                                if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null
-                                                        && retValue.getRevisions().getItems().size() >= 2) {
-                                                    Collections.sort(retValue.getRevisions().getItems(),
-                                                            new RESTTopicCollectionItemV1RevisionSort());
+                                                if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null && retValue.getRevisions().getItems().size() >= 2) {
+                                                    Collections.sort(retValue.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
                                                     /* Get the second last revision (the last one is the current one) */
                                                     final Integer overwriteRevision = retValue.getRevisions().getItems()
                                                             .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
@@ -1113,6 +1120,9 @@ public class SearchResultsAndTopicPresenter
                                                     Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                                                 }
                                             } finally {
+                                                logger.log(Level.INFO,
+                                                        "EXIT SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - Existing Topic");
+
                                                 if (topicXMLComponent.getDisplay().getEditor() != null) {
                                                     topicXMLComponent.getDisplay().getEditor().redisplay();
                                                 }
@@ -1126,17 +1136,16 @@ public class SearchResultsAndTopicPresenter
                             }
                             );
 
-
                             final String message = display.getMessageLogDialog().getMessage().getText();
                             final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
                                     : ServiceConstants.MAJOR_CHANGE);
                             RESTCalls.saveTopic(updateCallback, newTopic, message, flag, ServiceConstants.NULL_USER_ID.toString());
                         }
                     }
-
+                } finally {
                     display.getMessageLogDialog().reset();
                     display.getMessageLogDialog().getDialogBox().hide();
-                } finally {
+
                     logger.log(Level.INFO,
                             "EXIT SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick()");
                 }

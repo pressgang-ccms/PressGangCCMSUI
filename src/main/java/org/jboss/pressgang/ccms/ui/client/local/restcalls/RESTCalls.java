@@ -34,7 +34,7 @@ public final class RESTCalls {
      * A topic with expanded revisions
      */
     private static final String TOPIC_REVISIONS_EXPANSION_WO_MESSASGES = "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME
-            + "\"}}";
+            + "\"}},{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}";
     /**
      * A topic with expanded bugs
      */
@@ -212,11 +212,11 @@ public final class RESTCalls {
     }
 
     public static void createTopic(final RESTCallback<RESTTopicV1> callback, final RESTTopicV1 topic) {
-        // final String expand = "{\"branches\":[" + TOPIC_EXPANSION + "]}";
+        final String expand = "{\"branches\":[" + "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}" + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).createJSONTopic("", topic);
+                createRestMethod(callback).createJSONTopic(expand, topic);
             }
         });
     }
