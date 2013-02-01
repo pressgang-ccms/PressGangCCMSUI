@@ -985,6 +985,16 @@ public class SearchResultsAndTopicPresenter
                             "ENTER SearchResultsAndTopicPresenter.bindActionButtons() saveClickHandler.onClick()");
 
                     if (hasUnsavedChanges()) {
+
+                        /*
+                            Default to using the major change for new topics
+                         */
+                        if (searchResultsComponent.getProviderData().getDisplayedItem() != null &&
+                                searchResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem())
+                        {
+                            display.getMessageLogDialog().getMajorChange().setValue(true);
+                        }
+
                         display.getMessageLogDialog().getDialogBox().center();
                         display.getMessageLogDialog().getDialogBox().show();
                     } else {
@@ -1004,6 +1014,10 @@ public class SearchResultsAndTopicPresenter
                             "ENTER SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick()");
 
                     if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
+
+                        final String message = display.getMessageLogDialog().getMessage().getText();
+                        final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
+                                : ServiceConstants.MAJOR_CHANGE);
 
                         /* Sync any changes back to the underlying object */
                         flushChanges();
@@ -1109,8 +1123,7 @@ public class SearchResultsAndTopicPresenter
                             }
                             );
 
-                            final String message = display.getMessageLogDialog().getMessage().getText();
-                            RESTCalls.createTopic(addCallback, newTopic, message, (int) ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString());
+                            RESTCalls.createTopic(addCallback, newTopic, message, flag, ServiceConstants.NULL_USER_ID.toString());
                         } else {
                             final BaseRestCallback<RESTTopicV1, Display> updateCallback = new BaseRestCallback<RESTTopicV1, Display>(
                                     display,
@@ -1202,9 +1215,7 @@ public class SearchResultsAndTopicPresenter
                             }
                             );
 
-                            final String message = display.getMessageLogDialog().getMessage().getText();
-                            final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
-                                    : ServiceConstants.MAJOR_CHANGE);
+
                             RESTCalls.saveTopic(updateCallback, newTopic, message, flag, ServiceConstants.NULL_USER_ID.toString());
                         }
                     }
