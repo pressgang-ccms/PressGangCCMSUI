@@ -55,6 +55,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTopicCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
@@ -504,6 +505,8 @@ public class SearchResultsAndTopicPresenter
                         SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().addNewItem(restAssignedPropertyTagV1);
 
                         /* Update the list of existing children */
+                        Collections.sort(SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
+                                new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
                         SearchResultsAndTopicPresenter.this.topicPropertyTagPresenter.refreshExistingChildList(
                                 SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem());
                     }
@@ -537,9 +540,38 @@ public class SearchResultsAndTopicPresenter
         this.topicPropertyTagPresenter.getDisplay().getPropertyTagValueColumn().setFieldUpdater(new FieldUpdater<RESTAssignedPropertyTagCollectionItemV1, String>() {
             @Override
             public void update(final int index, final RESTAssignedPropertyTagCollectionItemV1 object, final String value) {
-                object.getItem().explicitSetValue(value);
-                if (!object.returnIsAddItem()) {
-                    object.setState(UPDATE_STATE);
+
+                /*
+                    Updating just the value (and no other topic fields or children) will not create a new Envers revision
+                    for the topic. This makes it incredibly difficult to get the state of the topic, including the state
+                    or the property tags, as the topic existed at a particular point in time because the state of the
+                    assigned property tags may have been changed.
+
+                    To force a new topic revision to be created, any time a value is updated the existing mapping is removed
+                     and a new one created. This has the effect of creating a new topic revision to match the fact that
+                     the value of a property tag has been changed.
+                 */
+
+                if (object.returnIsAddItem()) {
+                    object.getItem().setValue(value);
+                }
+                else {
+                    object.setState(REMOVE_STATE);
+
+                    /* Create a new property tag child */
+                    final RESTAssignedPropertyTagV1 restAssignedPropertyTagV1 = new RESTAssignedPropertyTagV1();
+                    restAssignedPropertyTagV1.setId(object.getItem().getId());
+                    restAssignedPropertyTagV1.setName(object.getItem().getName());
+                    restAssignedPropertyTagV1.setDescription(object.getItem().getDescription());
+                    restAssignedPropertyTagV1.setValue(value);
+
+                    SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().addNewItem(restAssignedPropertyTagV1);
+
+                    /* Update the list of existing children */
+                    Collections.sort(SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
+                            new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
+                    SearchResultsAndTopicPresenter.this.topicPropertyTagPresenter.refreshExistingChildList(
+                            SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem());
                 }
             }
         });
@@ -707,6 +739,8 @@ public class SearchResultsAndTopicPresenter
             logger.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.loadAdditionalDisplayedItemData()");
 
             /* Display the tags that are added to the category */
+            Collections.sort(SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
+                    new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
             topicPropertyTagPresenter.refreshExistingChildList(searchResultsComponent.getProviderData().getDisplayedItem().getItem());
 
             /* Get a new collection of tags */
@@ -1088,18 +1122,44 @@ public class SearchResultsAndTopicPresenter
                                                         "ENTER SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - Existing Topic");
 
                                                 boolean overwroteChanges = false;
+                                                final Integer originalRevision = searchResultsComponent.getProviderData().getSelectedItem().getItem().getRevision();
 
-                                                if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null && retValue.getRevisions().getItems().size() >= 2) {
+                                                if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null) {
                                                     Collections.sort(retValue.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
-                                                    /* Get the second last revision (the last one is the current one) */
-                                                    final Integer overwriteRevision = retValue.getRevisions().getItems()
-                                                            .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
+
                                                     /*
-                                                     * if the second last revision doesn't match the revision of the topic when editing was
-                                                     * started, then we have overwritten someone elses changes
+                                                        If no changes were made to the topic itself (i.e. we just update some children),
+                                                        then the revision number will not change. So if what is sent back has the same
+                                                        revision number as the topic we were editing, then we have not overwritten background
+                                                        changes.
+                                                    */
+                                                    if (retValue.getRevisions().getItems().size() >= 1) {
+                                                        final Integer overwriteRevision = retValue.getRevisions().getItems()
+                                                                .get(retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
+
+                                                        logger.log(Level.INFO, "originalRevision: " + originalRevision + " new revision: " + overwriteRevision);
+
+                                                        overwroteChanges = !originalRevision.equals(overwriteRevision);
+                                                    }
+
+                                                    /*
+                                                        Otherwise we need to make sure that the second last revision matches the revision
+                                                         of the topic we were editing.
                                                      */
-                                                    overwroteChanges = !(searchResultsComponent.getProviderData().getSelectedItem().getItem()
-                                                            .getRevision().equals(overwriteRevision));
+                                                    if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2)
+                                                    {
+                                                        /* Get the second last revision (the last one is the current one) */
+                                                        final Integer overwriteRevision = retValue.getRevisions().getItems()
+                                                                .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
+
+                                                        logger.log(Level.INFO, "originalRevision: " + originalRevision + " last revision: " + overwriteRevision);
+
+                                                        /*
+                                                         * if the second last revision doesn't match the revision of the topic when editing was
+                                                         * started, then we have overwritten someone elses changes
+                                                         */
+                                                        overwroteChanges = !originalRevision.equals(overwriteRevision);
+                                                    }
                                                 }
 
                                                 /* Update the displayed topic */
