@@ -223,11 +223,11 @@ public final class RESTCalls {
 
     public static void createTopic(final RESTCallback<RESTTopicV1> callback, final RESTTopicV1 topic, final String message,
             final Integer flag, final String userId) {
-        // final String expand = "{\"branches\":[" + TOPIC_EXPANSION + "]}";
+        final String expand = "{\"branches\":[" + "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}" + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).createJSONTopic("", topic, message, flag, userId);
+                createRestMethod(callback).createJSONTopic(expand, topic, message, flag, userId);
             }
         });
     }

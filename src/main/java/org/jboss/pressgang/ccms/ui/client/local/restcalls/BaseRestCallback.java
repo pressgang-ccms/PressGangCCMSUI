@@ -52,15 +52,12 @@ public class BaseRestCallback<C, D extends BaseTemplateViewInterface> implements
         
         try
         {
-            if (failureAction != null)
-            {
+            if (failureAction != null) {
                 failureAction.doFailureAction(display);    
             }
             
-        }
-        catch (final Exception ex)
-        {
-            
+        } catch (final Exception ex) {
+            logger.log(Level.WARNING, "ENTER BaseRestCallback.generalException() threw an exception");
         }
     }
 
@@ -68,6 +65,8 @@ public class BaseRestCallback<C, D extends BaseTemplateViewInterface> implements
     public void success(final C retValue) {
         try {
             successAction.doSuccessAction(retValue, display);
+        } catch (final Throwable ex) {
+            logger.log(Level.WARNING, "ENTER BaseRestCallback.generalException() threw an exception");
         } finally {
             display.removeWaitOperation();
         }
@@ -78,22 +77,21 @@ public class BaseRestCallback<C, D extends BaseTemplateViewInterface> implements
         
         try
         {
-            if (failureAction != null)
-            {
+            if (failureAction != null) {
                 failureAction.doFailureAction(display);    
             }            
-        }
-        catch (final Exception ex)
-        {
-            
+        } catch (final Exception ex) {
+            logger.log(Level.WARNING, "ENTER BaseRestCallback.failed() threw an exception");
         }
         
         try {
             
-            if (message != null)
+            if (message != null) {
                 logger.log(Level.SEVERE, message.toString());
-            if (throwable != null)
+            }
+            if (throwable != null) {
                 logger.log(Level.SEVERE, throwable.getMessage());
+            }
             
             if (throwable instanceof ResponseException) {
                 final ResponseException ex = (ResponseException) throwable;

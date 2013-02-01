@@ -159,48 +159,50 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
      * @param selectedItem         The item that was selected from a collection of entities
      */
     protected void loadNewEntity(final GetNewEntityCallback<T> getNewEntityCallback, final V selectedItem) {
-        /*
-         * When an entity is selected we will get afresh copy from the database. This is to deal with a
-         * situation where the search screen has been left for a while and the entity has been edited by someone
-         * else in the mean time.
-         */
-        getNewEntityCallback.getNewEntity(selectedItem.getItem().getId(), new DisplayNewEntityCallback<T>() {
+        try  {
+            logger.log(Level.INFO, "ENTER BaseSearchAndEditComponent.loadNewEntity()");
 
-            @Override
-            public void displayNewEntity(final T entity) {
+            /*
+             * When an entity is selected we will get afresh copy from the database. This is to deal with a
+             * situation where the search screen has been left for a while and the entity has been edited by someone
+             * else in the mean time.
+             */
+            getNewEntityCallback.getNewEntity(selectedItem.getItem().getId(), new DisplayNewEntityCallback<T>() {
 
-                try {
-                    logger.log(
-                            Level.INFO,
-                            "ENTER BaseSearchAndEditComponent.loadNewEntity() DisplayNewEntityCallback.displayNewEntity(final T entity)");
+                @Override
+                public void displayNewEntity(final T entity) {
 
-                    // update the filtered list with the new entity
-                    selectedItem.setItem(entity);
+                    try {
+                        logger.log(Level.INFO, "ENTER BaseSearchAndEditComponent.loadNewEntity() DisplayNewEntityCallback.displayNewEntity(final T entity)");
 
-                    /*
-                     * The selected item will be the category from the list. This is the unedited, unexpanded
-                     * copy of the category
-                     */
-                    filteredResultsComponent.getProviderData().setSelectedItem(selectedItem);
+                        // update the filtered list with the new entity
+                        selectedItem.setItem(entity);
 
-                    /*
-                     * All editing is done in a clone of the selected category. Any expanded collections will be
-                     * copied into this category
-                     */
-                    filteredResultsComponent.getProviderData().setDisplayedItem(selectedItem.clone(true));
+                        /*
+                         * The selected item will be the category from the list. This is the unedited, unexpanded
+                         * copy of the category
+                         */
+                        filteredResultsComponent.getProviderData().setSelectedItem(selectedItem);
 
-                    /* Refresh the list */
-                    updateDisplayAfterSave(false);
+                        /*
+                         * All editing is done in a clone of the selected category. Any expanded collections will be
+                         * copied into this category
+                         */
+                        filteredResultsComponent.getProviderData().setDisplayedItem(selectedItem.clone(true));
 
-                    updateViewsAfterNewEntityLoaded();
-                } finally {
-                    logger.log(
-                            Level.INFO,
-                            "EXIT BaseSearchAndEditComponent.loadNewEntity() DisplayNewEntityCallback.displayNewEntity(final T entity)");
+                        /* Refresh the list */
+                        updateDisplayAfterSave(false);
+
+                        updateViewsAfterNewEntityLoaded();
+                    } finally {
+                        logger.log(Level.INFO, "EXIT BaseSearchAndEditComponent.loadNewEntity() DisplayNewEntityCallback.displayNewEntity(final T entity)");
+                    }
+
                 }
-
-            }
-        });
+            });
+        } finally {
+            logger.log(Level.INFO, "EXIT BaseSearchAndEditComponent.loadNewEntity()");
+        }
     }
 
     /**
@@ -230,8 +232,7 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
 
                 if (isClick) {
                     try {
-                        logger.log(Level.INFO,
-                                "ENTER BaseSearchAndEditComponent.bindResultsListRowClicks() Anonymous.onCellPreview(final CellPreviewEvent<V> event)");
+                        logger.log(Level.INFO, "ENTER BaseSearchAndEditComponent.bindResultsListRowClicks() Anonymous.onCellPreview(final CellPreviewEvent<V> event)");
 
                         if (!isOKToProceed()) {
                             return;
@@ -242,8 +243,7 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
                         loadNewEntity(getNewEntityCallback, selectedItem);
 
                     } finally {
-                        logger.log(Level.INFO,
-                                "EXIT BaseSearchAndEditComponent.bindResultsListRowClicks() Anonymous.onCellPreview(final CellPreviewEvent<V> event)");
+                        logger.log(Level.INFO, "EXIT BaseSearchAndEditComponent.bindResultsListRowClicks() Anonymous.onCellPreview(final CellPreviewEvent<V> event)");
                     }
                 }
             }

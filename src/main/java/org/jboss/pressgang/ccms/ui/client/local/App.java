@@ -56,10 +56,15 @@ public class App {
             GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
                 @Override
                 public void onUncaughtException(final Throwable ex) {
-                    ex.printStackTrace();
+                    final StringBuilder sb = new StringBuilder();
+                    for (final StackTraceElement element : ex.getStackTrace()) {
+                        sb.append(element.toString());
+                        sb.append("\n");
+                    }
+
                     LOGGER.log(Level.SEVERE, ex.getMessage());
-                    Window.alert("Uncaught exception was detected. Redirecting you to the home page.\nException: "
-                            + ex.getMessage());
+                    LOGGER.log(Level.SEVERE, sb.toString());
+                    Window.alert("Uncaught exception was detected. Redirecting you to the home page.\nException: " + ex.getMessage());
                     History.newItem(WelcomePresenter.HISTORY_TOKEN);
                 }
             });

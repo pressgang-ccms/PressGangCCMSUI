@@ -164,6 +164,7 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
                 @Override
                 public void success(final RESTPropertyTagCollectionV1 retValue) {
                     try {
+                        LOGGER.log(Level.INFO, "ENTER TopicPropertyTagsPresenter.refreshPossibleChildrenDataAndList() callback.success()");
                         LOGGER.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
                         /* Zero results can be a null list */
                         providerData.setStartRow(0);
@@ -174,6 +175,7 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
                         getDisplay().getPossibleChildrenProvider().displayNewFixedList(providerData.getItems());
 
                     } finally {
+                        LOGGER.log(Level.INFO, "EXIT TopicPropertyTagsPresenter.refreshPossibleChildrenDataAndList() callback.success()");
                         getDisplay().removeWaitOperation();
                     }
                 }

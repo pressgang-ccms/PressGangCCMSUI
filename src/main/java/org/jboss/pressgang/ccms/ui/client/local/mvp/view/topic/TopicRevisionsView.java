@@ -139,15 +139,16 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
             if (revisionTopic == null || !revisionTopic.getItem().getRevision().equals(object.getItem().getRevision())) {
 
                 final String viewingXML = revisionTopic == null ? mainTopic.getXml() : revisionTopic.getItem().getXml();
+                final String fixedViewingXML =  viewingXML == null ? "" : viewingXML.trim();
 
-                if (object.getItem().getXml().trim().equals(viewingXML.trim())) {
-                    /* The XML is the same */
-                    diffButtonCell.setEnabled(false);
-                    return PressGangCCMSUI.INSTANCE.SameXML();
-                } else if (object.getItem().getXml().trim().isEmpty()) {
+                if (object.getItem().getXml() == null || object.getItem().getXml().trim().isEmpty()) {
                     /* Diffs don't work if there is no XML to compare to */
                     diffButtonCell.setEnabled(false);
                     return PressGangCCMSUI.INSTANCE.NoXML();
+                } else if (object.getItem().getXml().trim().equals(fixedViewingXML)) {
+                    /* The XML is the same */
+                    diffButtonCell.setEnabled(false);
+                    return PressGangCCMSUI.INSTANCE.SameXML();
                 } else {
                     return PressGangCCMSUI.INSTANCE.Diff();
                 }

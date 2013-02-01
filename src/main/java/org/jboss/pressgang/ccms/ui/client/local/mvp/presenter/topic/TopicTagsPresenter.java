@@ -22,6 +22,9 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 
 import javax.inject.Inject;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
@@ -47,6 +50,8 @@ public class TopicTagsPresenter extends BaseTopicViewPresenter implements
     }
 
     public static final String HISTORY_TOKEN = "TopicTagsView";
+
+    private static final Logger logger = Logger.getLogger(TopicTagsPresenter.class.getName());
 
     private Integer topicId;
 
@@ -91,15 +96,27 @@ public class TopicTagsPresenter extends BaseTopicViewPresenter implements
      * Gets the tags, so they can be displayed and added to topics
      */
     private void getTags() {
-        final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, TopicTagsPresenter.Display>(
-                display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, TopicTagsPresenter.Display>() {
-            @Override
-            public void doSuccessAction(final RESTTagCollectionV1 retValue, final TopicTagsPresenter.Display display) {
-                searchUIProjects.initialize(retValue);
-                display.initializeNewTags(searchUIProjects);
-            }
-        });
-        RESTCalls.getTags(callback);
+        try {
+            logger.log(Level.INFO, "ENTER TopicTagsPresenter.getTags()");
+
+            final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, TopicTagsPresenter.Display>(
+                    display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, TopicTagsPresenter.Display>() {
+                @Override
+                public void doSuccessAction(final RESTTagCollectionV1 retValue, final TopicTagsPresenter.Display display) {
+                    try {
+                        logger.log(Level.INFO, "ENTER TopicTagsPresenter.getTags() callback.doSuccessAction()");
+
+                        searchUIProjects.initialize(retValue);
+                        display.initializeNewTags(searchUIProjects);
+                    } finally {
+                        logger.log(Level.INFO, "EXIT TopicTagsPresenter.getTags() callback.doSuccessAction()");
+                    }
+                }
+            });
+            RESTCalls.getTags(callback);
+        } finally {
+            logger.log(Level.INFO, "EXIT TopicTagsPresenter.getTags()");
+        }
     }
 
     /**
