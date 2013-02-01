@@ -10,13 +10,13 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm
      */
-    public static final String VERSION = "201302011149";
+    public static final String VERSION = "201302011657";
 
     /**
      * The newer versions of the REST interface encode the query PathParam elements (so as to allow for searches to
      * include characters like the semicolon). If this constant is true, the query elements will be encoded.
      */
-    public static final boolean ENCODE_QUERY_OPTIONS = true;
+    public static final boolean ENCODE_QUERY_OPTIONS = false;
     
     /**
      * The sort order to apply to a newly added child
@@ -116,7 +116,8 @@ public final class Constants {
     /**
      * The BIRT URL
      */
-    public static final String BIRT_URL =  "http://skynet-dev.usersys.redhat.com:8080/birt/";
+    public static final String BIRT_URL =  "http://skynet.usersys.redhat.com:8080/birt/";
+    //public static final String BIRT_URL =  "http://skynet-dev.usersys.redhat.com:8080/birt/";
     /**
      * The report that run a report with no other options
      */
@@ -129,8 +130,8 @@ public final class Constants {
      * The REST server.
      */
     //public static final String BASE_URL = "http://localhost:8080/TopicIndex/";
-    public static final String BASE_URL = "http://skynet-dev.usersys.redhat.com:8080/TopicIndex/";
-    //public static final String BASE_URL = "http://skynet.usersys.redhat.com:8080/TopicIndex/";
+    //public static final String BASE_URL = "http://skynet-dev.usersys.redhat.com:8080/TopicIndex/";
+    public static final String BASE_URL = "http://skynet.usersys.redhat.com:8080/TopicIndex/";
     /**
      * The REST URL.
      */

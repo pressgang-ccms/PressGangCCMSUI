@@ -92,8 +92,7 @@ public class TopicRevisionsPresenter extends BaseTopicViewPresenter implements B
             diffview : "sidebyside"
         })[0];
 
-        var win = $wnd.open("", "_blank", "width=" + (screen.width - 200)
-            + ", height=" + (screen.height - 200)); // a window object
+        var win = $wnd.open("", "_blank", "width=" + (screen.width - 200) + ", height=" + (screen.height - 200) + ",scrollbars=yes"); // a window object
         if (win != null) {
             win.document.open("text/html", "replace");
             win.document
