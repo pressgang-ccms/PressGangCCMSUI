@@ -993,6 +993,7 @@ public class SearchResultsAndTopicPresenter
                                 searchResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem())
                         {
                             display.getMessageLogDialog().getMajorChange().setValue(true);
+                            display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.InitialTopicCreation());
                         }
 
                         display.getMessageLogDialog().getDialogBox().center();
