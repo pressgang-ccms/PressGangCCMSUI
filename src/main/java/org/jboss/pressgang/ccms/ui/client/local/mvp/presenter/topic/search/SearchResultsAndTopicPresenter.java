@@ -1132,6 +1132,12 @@ public class SearchResultsAndTopicPresenter
                                                         then the revision number will not change. So if what is sent back has the same
                                                         revision number as the topic we were editing, then we have not overwritten background
                                                         changes.
+
+                                                        Note that this should not happen because we don't actually just update the property tags;
+                                                        any change to the property tag value results in the mapping being deleted and recreated.
+
+                                                        The code is left here as a reminder that some additional checking might be required with
+                                                        new children that are exposed through the UI.
                                                     */
                                                     if (retValue.getRevisions().getItems().size() >= 1) {
                                                         final Integer overwriteRevision = retValue.getRevisions().getItems()
