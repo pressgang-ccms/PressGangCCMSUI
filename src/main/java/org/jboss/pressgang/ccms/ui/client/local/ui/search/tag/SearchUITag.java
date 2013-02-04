@@ -8,7 +8,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
  *
  * @author Matthew Casperson
  */
-public class SearchUITag extends SearchUIBase {
+public final class SearchUITag extends SearchUIBase {
     private TriStateSelectionState state = TriStateSelectionState.NONE;
     private RESTTagCollectionItemV1 tag;
 

@@ -8,7 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
 
-public class TagView extends BaseTemplateView implements TagPresenter.Display {
+public final class TagView extends BaseTemplateView implements TagPresenter.Display {
 
     /** The GWT Editor Driver */
     private final TagPresenterDriver driver = GWT.create(TagPresenterDriver.class);

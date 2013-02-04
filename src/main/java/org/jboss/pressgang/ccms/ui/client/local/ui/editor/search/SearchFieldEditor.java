@@ -8,7 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 
-public class SearchFieldEditor extends FlexTable implements LeafValueEditor<SearchUIFields> {
+public final class SearchFieldEditor extends FlexTable implements LeafValueEditor<SearchUIFields> {
 
     /** The default format for the DateBoxes */
     private final static DateTimeFormat dateFormat = DateTimeFormat.getLongDateFormat();

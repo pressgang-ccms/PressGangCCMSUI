@@ -12,11 +12,11 @@ public class SearchUIBase {
     /** Each entity has an ID */
     private final String id;
 
-    public String getId() {
+    public final String getId() {
         return id;
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 

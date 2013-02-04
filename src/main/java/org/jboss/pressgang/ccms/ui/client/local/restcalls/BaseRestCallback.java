@@ -64,8 +64,6 @@ public class BaseRestCallback<C, D extends BaseTemplateViewInterface> implements
     public void success(final C retValue) {
         try {
             successAction.doSuccessAction(retValue, display);
-        } catch (final Throwable ex) {
-            logger.log(Level.WARNING, "ENTER BaseRestCallback.generalException() threw an exception");
         } finally {
             display.removeWaitOperation();
         }

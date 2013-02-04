@@ -16,7 +16,7 @@ public class ViewOpenEventHandler implements EventHandler {
         this.historyToken = historyToken;
     }
 
-    void onViewOpen(final ViewOpenEvent<?> event) {
+    protected void onViewOpen(final ViewOpenEvent<?> event) {
         History.newItem(historyToken);
     }
 }

@@ -10,7 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.Base
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 
-public class CategoriesFilteredResultsAndCategoryView extends
+public final class CategoriesFilteredResultsAndCategoryView extends
         BaseSearchAndEditView<RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1> implements
         CategoriesFilteredResultsAndCategoryPresenter.Display {
 
@@ -37,7 +37,7 @@ public class CategoriesFilteredResultsAndCategoryView extends
     }
 
     @Override
-    public Label getChildrenDown() {
+    public  Label getChildrenDown() {
         return childrenDown;
     }
 

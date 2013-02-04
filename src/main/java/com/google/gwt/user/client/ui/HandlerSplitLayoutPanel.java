@@ -32,10 +32,11 @@ public class HandlerSplitLayoutPanel extends SplitLayoutPanel implements HasResi
         final LayoutData layout = (LayoutData) widgetBeforeTheSplitter.getLayoutData();
         layout.oldSize = layout.size;
         layout.size = size;
-        if (animate)
+        if (animate) {
             animate(ANIMATION_TIME_MILLISECONDS);
-        else
+        } else {
             forceLayout();
+        }
     }
     
     public double getSplitPosition(final Widget widgetBeforeTheSplitter)

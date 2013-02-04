@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public class TroubleshootingPresenter extends BaseTemplatePresenter {
+public final class TroubleshootingPresenter extends BaseTemplatePresenter {
     
     public static final String HISTORY_TOKEN = "TroubleshootingView";
     

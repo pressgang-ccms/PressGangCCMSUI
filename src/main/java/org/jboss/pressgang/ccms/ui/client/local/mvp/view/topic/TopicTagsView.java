@@ -24,7 +24,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TopicTagsView extends BaseTemplateView implements TopicTagsPresenter.Display {
+public final class TopicTagsView extends BaseTemplateView implements TopicTagsPresenter.Display {
 
     final FlexTable layout = new FlexTable();
 

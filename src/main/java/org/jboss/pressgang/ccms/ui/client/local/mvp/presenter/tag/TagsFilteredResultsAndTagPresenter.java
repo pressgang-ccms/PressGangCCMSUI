@@ -58,7 +58,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class TagsFilteredResultsAndTagPresenter
+public final class TagsFilteredResultsAndTagPresenter
         extends
         BaseSearchAndEditComponent<TagFilteredResultsPresenter.Display, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, TagViewInterface, TagPresenter.Display, RESTTagV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
@@ -660,9 +660,10 @@ public class TagsFilteredResultsAndTagPresenter
         filteredResultsComponent.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (isOKToProceed())
+                if (isOKToProceed()) {
                     eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(filteredResultsComponent.getQuery(), GWTUtilities
                             .isEventToOpenNewWindow(event)));
+                }
             }
         });
 

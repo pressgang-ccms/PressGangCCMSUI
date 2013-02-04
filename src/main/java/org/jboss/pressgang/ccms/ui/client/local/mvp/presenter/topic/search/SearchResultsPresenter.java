@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
-public class SearchResultsPresenter
+public final class SearchResultsPresenter
         extends
         BaseFilteredResultsComponent<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1>
         implements BaseTemplatePresenterInterface {

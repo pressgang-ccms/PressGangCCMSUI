@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTopicV1> {
+public final class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTopicV1> {
     
     private static final int ROWS = 7;
     private static final int COLS = 2;

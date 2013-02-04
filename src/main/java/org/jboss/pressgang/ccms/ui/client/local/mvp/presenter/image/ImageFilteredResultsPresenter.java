@@ -27,7 +27,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class ImageFilteredResultsPresenter
+public final class ImageFilteredResultsPresenter
         extends
         BaseFilteredResultsComponent<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1>
         implements BaseTemplatePresenterInterface {
@@ -61,17 +61,17 @@ public class ImageFilteredResultsPresenter
     }
 
     @Override
-    public final void parseToken(final String searchToken) {
+    public void parseToken(final String searchToken) {
         this.queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
     @Override
-    public final void go(final HasWidgets container) {
+    public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
-    public final void bindExtendedFilteredResults(final int topicId, final String pageId, final String queryString) {
+    public void bindExtendedFilteredResults(final int topicId, final String pageId, final String queryString) {
         super.bindFilteredResults(topicId, pageId, queryString, display);
         display.setProvider(generateListProvider(queryString, display));
     }

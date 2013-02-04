@@ -10,7 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.Base
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 
-public class ProjectsFilteredResultsAndProjectView extends
+public final class ProjectsFilteredResultsAndProjectView extends
         BaseSearchAndEditView<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> implements
         ProjectsFilteredResultsAndProjectPresenter.Display {
 

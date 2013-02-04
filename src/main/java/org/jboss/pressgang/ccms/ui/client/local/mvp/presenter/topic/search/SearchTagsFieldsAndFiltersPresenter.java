@@ -17,7 +17,7 @@ import javax.inject.Inject;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface
+public final class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface
 {
     /** The history token used to access this page */
     public static final String HISTORY_TOKEN = "SearchTagsFieldsAndFiltersView";

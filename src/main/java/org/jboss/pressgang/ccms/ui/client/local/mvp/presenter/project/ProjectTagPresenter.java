@@ -25,7 +25,7 @@ import javax.inject.Inject;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public class ProjectTagPresenter
+public final class ProjectTagPresenter
         extends BaseChildrenComponent<
         RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1,    // The main REST types 
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,                // The possible children types
@@ -106,10 +106,11 @@ public class ProjectTagPresenter
 
                 getProviderData().setStartRow(display.getVisibleRange().getStart());
 
-                if (getProviderData().getItems() != null)
+                if (getProviderData().getItems() != null) {
                     displayNewFixedList(getProviderData().getItems());
-                else
+                } else {
                     resetProvider();
+                }
 
             }
         };

@@ -9,7 +9,7 @@ import com.google.gwt.editor.client.LeafValueEditor;
  * @author Matthew Casperson
  * 
  */
-public class ImageStringEditor extends Image implements IsEditor<LeafValueEditor<String>> {
+public final class ImageStringEditor extends Image implements IsEditor<LeafValueEditor<String>> {
     @Override
     public LeafValueEditor<String> asEditor() {
         return new LeafValueEditor<String>() {

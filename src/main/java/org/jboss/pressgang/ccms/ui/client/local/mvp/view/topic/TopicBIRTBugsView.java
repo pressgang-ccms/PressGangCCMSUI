@@ -18,7 +18,7 @@ import java.util.List;
  * 
  * @author Matthew Casperson
  */
-public class TopicBIRTBugsView extends BaseTemplateView implements TopicBIRTBugsPresenter.Display {
+public final class TopicBIRTBugsView extends BaseTemplateView implements TopicBIRTBugsPresenter.Display {
 
     private final Frame iFrame;
 

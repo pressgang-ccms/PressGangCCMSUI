@@ -88,7 +88,7 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
      * @param display                    The view that this component adds logic to
      * @param waitDisplay                The view that displays the wait dialog
      */
-    protected void bindSearchAndEdit(final int topicId, final String pageId, final String mainSplitSizePreferenceKey,
+    protected final void bindSearchAndEdit(final int topicId, final String pageId, final String mainSplitSizePreferenceKey,
                      final W firstDisplayedView, final X entityPropertiesView, final R filteredResultsDisplay,
                      final BaseFilteredResultsComponentInterface<T, U, V> filteredResultsComponent, final BaseSearchAndEditViewInterface display,
                      final BaseTemplateViewInterface waitDisplay, final GetNewEntityCallback<T> getNewEntityCallback) {
@@ -208,21 +208,21 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
     /**
      * When a new entity is selected ore created, this method will update the views
      */
-    protected void updateViewsAfterNewEntityLoaded() {
+    protected final void updateViewsAfterNewEntityLoaded() {
         /* Refresh the view, or display the properties view if none is shown */
         switchView(lastDisplayedView == null ? firstDisplayedView : lastDisplayedView);
 
-                    /* Initialize the views */
+        /* Initialize the views */
         initializeViews();
 
-                    /* Allow overriding classes to display any additional details */
+        /* Allow overriding classes to display any additional details */
         loadAdditionalDisplayedItemData();
     }
 
     /**
      * Binds logic to the search results list row click event
      */
-    protected void bindResultsListRowClicks(final GetNewEntityCallback<T> getNewEntityCallback) {
+    protected final void bindResultsListRowClicks(final GetNewEntityCallback<T> getNewEntityCallback) {
         filteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<V>() {
             @Override
             public void onCellPreview(final CellPreviewEvent<V> event) {
@@ -323,9 +323,10 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
      * @param view   The view to test against the filter
      * @return true if the filter is null or if it contains the view, and false otherwise
      */
-    protected boolean viewIsInFilter(final List<W> filter, final W view) {
-        if (filter == null)
+    protected final boolean viewIsInFilter(final List<W> filter, final W view) {
+        if (filter == null) {
             return true;
+        }
 
         return filter.contains(view);
     }

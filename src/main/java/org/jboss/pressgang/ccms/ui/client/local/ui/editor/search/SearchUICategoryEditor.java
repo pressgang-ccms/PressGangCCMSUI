@@ -15,7 +15,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 
-public class SearchUICategoryEditor extends ScrollPanel implements ValueAwareEditor<SearchUICategory> {
+public final class SearchUICategoryEditor extends ScrollPanel implements ValueAwareEditor<SearchUICategory> {
     private static final int COLUMNS = 2;
     private final SearchPresenterDriver driver;
     private final SearchUIProjects searchUIProjects;

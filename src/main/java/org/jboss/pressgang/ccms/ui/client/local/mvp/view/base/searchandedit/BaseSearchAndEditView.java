@@ -49,36 +49,36 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
     private final WaitingDialog waiting = new WaitingDialog();
 
     @Override
-    public DockLayoutPanel getResultsViewLayoutPanel() {
+    public final DockLayoutPanel getResultsViewLayoutPanel() {
         return resultsViewLayoutPanel;
     }
 
-    public DockLayoutPanel getViewLayoutPanel() {
+    public final DockLayoutPanel getViewLayoutPanel() {
         return viewLayoutPanel;
     }
 
     @Override
-    public HandlerSplitLayoutPanel getSplitPanel() {
+    public final HandlerSplitLayoutPanel getSplitPanel() {
         return splitPanel;
     }
 
     @Override
-    public FlexTable getResultsActionButtonsParentPanel() {
+    public final FlexTable getResultsActionButtonsParentPanel() {
         return resultsActionButtonsParentPanel;
     }
 
     @Override
-    public SimpleLayoutPanel getResultsPanel() {
+    public final SimpleLayoutPanel getResultsPanel() {
         return resultsPanel;
     }
 
     @Override
-    public SimpleLayoutPanel getViewPanel() {
+    public final SimpleLayoutPanel getViewPanel() {
         return viewPanel;
     }
 
     @Override
-    public FlexTable getViewActionButtonsParentPanel() {
+    public final FlexTable getViewActionButtonsParentPanel() {
         return viewActionButtonsParentPanel;
     }
 
@@ -119,13 +119,13 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
     }
 
     @Override
-    protected void showWaiting() {
+    protected final void showWaiting() {
         waiting.center();
         waiting.show();
     }
 
     @Override
-    protected void hideWaiting() {
+    protected final void hideWaiting() {
         waiting.hide();
     }
 
@@ -136,7 +136,7 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
      * @param displayedView The view to be displayed, or null if no view is to be displayed
      */
     @Override
-    public void displayChildView(final BaseTemplateViewInterface displayedView) {
+    public final void displayChildView(final BaseTemplateViewInterface displayedView) {
         this.getViewPanel().clear();
         this.viewActionButtonsParentPanel.clear();
         this.viewActionButtonsPanel.clear();
@@ -166,7 +166,7 @@ abstract public class BaseSearchAndEditView<T extends RESTBaseEntityV1<T, U, V>,
      * @param filteredResultsView The filtered view to be displayed, or null if no view is to be displayed
      */
     @Override
-    public void displaySearchResultsView(final BaseFilteredResultsViewInterface<T, U, V> filteredResultsView) {
+    public final void displaySearchResultsView(final BaseFilteredResultsViewInterface<T, U, V> filteredResultsView) {
         this.getResultsPanel().clear();
         this.resultsActionButtonsParentPanel.clear();
         this.resultsActionButtonsPanel.clear();

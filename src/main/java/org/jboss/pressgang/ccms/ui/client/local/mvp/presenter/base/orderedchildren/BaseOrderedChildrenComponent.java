@@ -49,7 +49,7 @@ abstract public class BaseOrderedChildrenComponent<
      * @return
      */
     @Override
-    public void setSortOrderOfChildren(final SetNewChildSortCallback<D, E, F> sortCallback) {
+    public final void setSortOrderOfChildren(final SetNewChildSortCallback<D, E, F> sortCallback) {
         if (sortCallback == null) {
             throw new NullPointerException("sortCallback cannot be null");
         }
@@ -70,7 +70,7 @@ abstract public class BaseOrderedChildrenComponent<
      * @return true if the sort order of any child was modified, false otherwise
      */
     @Override
-    public boolean moveTagsUpAndDown(final W parent, final F object, final boolean down,
+    public final boolean moveTagsUpAndDown(final W parent, final F object, final boolean down,
                                      final SetNewChildSortCallback<D, E, F> sortCallback) {
 
         if (parent == null) {

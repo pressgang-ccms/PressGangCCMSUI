@@ -25,12 +25,12 @@ abstract public class BaseFilteredResultsComponent<
     protected ProviderUpdateData<V> providerData = new ProviderUpdateData<V>();
 
     @Override
-    public ProviderUpdateData<V> getProviderData() {
+    public final ProviderUpdateData<V> getProviderData() {
         return providerData;
     }
 
     @Override
-    public void setTagProviderData(final ProviderUpdateData<V> providerData) {
+    public final void setTagProviderData(final ProviderUpdateData<V> providerData) {
         this.providerData = providerData;
     }
     /**
@@ -57,7 +57,7 @@ abstract public class BaseFilteredResultsComponent<
      * and the collection being displayed by the filtered results. This methods will go through and set the selected item to the
      * item in the filtered results list (if it exists).
      */
-    protected void relinkSelectedItem()
+    protected final void relinkSelectedItem()
     {
         if (this.providerData.getSelectedItem() != null && this.providerData.getItems() != null) {
             for (final V filteredResultEntity : this.providerData.getItems()) {

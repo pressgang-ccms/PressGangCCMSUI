@@ -8,7 +8,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
-public class RESTImageV1Editor extends DockPanel implements ValueAwareEditor<RESTImageV1> {
+public final class RESTImageV1Editor extends DockPanel implements ValueAwareEditor<RESTImageV1> {
     private RESTImageV1 value;
 
     /**

@@ -21,7 +21,7 @@ import org.vectomatic.file.FileUploadExt;
  * @author Matthew Casperson
  * 
  */
-public class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEditor<RESTLanguageImageCollectionItemV1> {
+public final class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEditor<RESTLanguageImageCollectionItemV1> {
     private static final String JPG_BASE64_PREFIX = "data:image/jpg;base64,";
 
     /** Keep a reference to the object this editor gets its values from. */

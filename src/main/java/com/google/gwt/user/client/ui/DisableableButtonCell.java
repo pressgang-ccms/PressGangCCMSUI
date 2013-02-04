@@ -26,11 +26,11 @@ public class DisableableButtonCell extends ButtonCell {
     /** whether or not the button is enabled */
     private boolean enabled = true;
 
-    public boolean isEnabled() {
+    public final boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(final boolean enabled) {
+    public final void setEnabled(final boolean enabled) {
         this.enabled = enabled;
     }
 

@@ -15,7 +15,7 @@ import javax.inject.Inject;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
-public class TopicRevisionsPresenter extends BaseTopicViewPresenter implements BaseTemplatePresenterInterface {
+public final class TopicRevisionsPresenter extends BaseTopicViewPresenter implements BaseTemplatePresenterInterface {
 
     public interface Display extends BaseTopicViewInterface {
         EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> getProvider();

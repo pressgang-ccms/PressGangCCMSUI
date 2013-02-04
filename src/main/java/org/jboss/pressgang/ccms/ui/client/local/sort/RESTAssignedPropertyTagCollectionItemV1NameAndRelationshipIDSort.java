@@ -8,7 +8,7 @@ import java.util.Comparator;
 /**
  * Compares two RESTAssignedPropertyTagCollectionItemV1s based on their names and relationship ids.
  */
-public class RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort implements Comparator<RESTAssignedPropertyTagCollectionItemV1>, Serializable {
+public final class RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort implements Comparator<RESTAssignedPropertyTagCollectionItemV1>, Serializable {
 
     @Override
     public int compare(final RESTAssignedPropertyTagCollectionItemV1 arg0, final RESTAssignedPropertyTagCollectionItemV1 arg1) {

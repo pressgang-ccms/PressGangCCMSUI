@@ -10,7 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.Ba
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
 
-public class CategoryFilteredResultsView extends
+public final class CategoryFilteredResultsView extends
         BaseFilteredResultsView<RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1> implements
         CategoryFilteredResultsPresenter.Display {
 
@@ -18,7 +18,7 @@ public class CategoryFilteredResultsView extends
     private final TextBox nameFilter = new TextBox();
     private final TextBox descriptionFilter = new TextBox();
 
-    private final TextColumn<RESTCategoryCollectionItemV1> idColumn = new TextColumn<RESTCategoryCollectionItemV1>() {
+    private TextColumn<RESTCategoryCollectionItemV1> idColumn = new TextColumn<RESTCategoryCollectionItemV1>() {
         @Override
         public String getValue(final RESTCategoryCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getId() != null) {
@@ -28,7 +28,7 @@ public class CategoryFilteredResultsView extends
         }
     };
 
-    private final TextColumn<RESTCategoryCollectionItemV1> nameColumn = new TextColumn<RESTCategoryCollectionItemV1>() {
+    private TextColumn<RESTCategoryCollectionItemV1> nameColumn = new TextColumn<RESTCategoryCollectionItemV1>() {
         @Override
         public String getValue(final RESTCategoryCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getName() != null) {

@@ -38,7 +38,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
  * The presenter used to add logic to the category tag view.
  */
 @Dependent
-public class CategoryTagPresenter
+public final class CategoryTagPresenter
         extends BaseOrderedChildrenComponent<
         RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1,
         RESTCategoryV1,
@@ -79,19 +79,19 @@ public class CategoryTagPresenter
     }
 
     @Override
-    public final void go(final HasWidgets container) {
+    public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, this.getDisplay());
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public final void bindExtended(final int topicId, final String pageId)
+    public void bindExtended(final int topicId, final String pageId)
     {
         super.bind(topicId, pageId, Preferences.CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH, display);
         display.initialize(null, false);
     }
 
     @Override
-    public final void parseToken(final String historyToken) {
+    public void parseToken(final String historyToken) {
         try {
             entityId = Integer.parseInt(GWTUtilities.removeHistoryToken(HISTORY_TOKEN, historyToken));
         } catch (final NumberFormatException ex) {
@@ -153,7 +153,7 @@ public class CategoryTagPresenter
     }
 
     @Override
-    public final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generatePossibleChildrenProvider() {
+    public EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generatePossibleChildrenProvider() {
 
         return new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override
@@ -172,7 +172,7 @@ public class CategoryTagPresenter
     }
 
     @Override
-    public final EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> generateExistingProvider(final RESTCategoryV1 entity) {
+    public EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> generateExistingProvider(final RESTCategoryV1 entity) {
         return new EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTagInCategoryCollectionItemV1> display) {

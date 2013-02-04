@@ -32,7 +32,7 @@ import java.util.List;
  * 
  * @author Matthew Casperson
  */
-public class TopicRevisionsView extends BaseTemplateView implements TopicRevisionsPresenter.Display {
+public final class TopicRevisionsView extends BaseTemplateView implements TopicRevisionsPresenter.Display {
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
 

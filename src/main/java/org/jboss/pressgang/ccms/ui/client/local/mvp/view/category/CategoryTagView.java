@@ -17,7 +17,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryT
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
-public class CategoryTagView
+public final class CategoryTagView
     extends BaseOrderedChildrenView<
                 RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1,
                 RESTCategoryV1,
@@ -28,8 +28,9 @@ public class CategoryTagView
     private final TextColumn<RESTTagCollectionItemV1> tagsIdColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
         public String getValue(final RESTTagCollectionItemV1 object) {
-            if (object != null && object.getItem() != null && object.getItem().getId() != null)
+            if (object != null && object.getItem() != null && object.getItem().getId() != null) {
                 return object.getItem().getId().toString();
+            }
             return null + "";
         }
     };
@@ -37,8 +38,9 @@ public class CategoryTagView
     private final TextColumn<RESTTagCollectionItemV1> tagsNameColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
         public String getValue(final RESTTagCollectionItemV1 object) {
-            if (object != null && object.getItem() != null && object.getItem().getName() != null)
+            if (object != null && object.getItem() != null && object.getItem().getName() != null) {
                 return object.getItem().getName();
+            }
             return null + "";
         }
     };
@@ -62,8 +64,9 @@ public class CategoryTagView
     private final TextColumn<RESTTagInCategoryCollectionItemV1> tagIdColumn = new TextColumn<RESTTagInCategoryCollectionItemV1>() {
         @Override
         public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
-            if (object != null && object.getItem() != null && object.getItem().getId() != null)
+            if (object != null && object.getItem() != null && object.getItem().getId() != null) {
                 return object.getItem().getId().toString();
+            }
             return null + "";
 
         }
@@ -72,8 +75,9 @@ public class CategoryTagView
     private final TextColumn<RESTTagInCategoryCollectionItemV1> tagNameColumn = new TextColumn<RESTTagInCategoryCollectionItemV1>() {
         @Override
         public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
-            if (object != null && object.getItem() != null && object.getItem().getName() != null)
+            if (object != null && object.getItem() != null && object.getItem().getName() != null) {
                 return object.getItem().getName();
+            }
             return null + "";
         }
     };
@@ -95,7 +99,7 @@ public class CategoryTagView
     };
 
     @Override
-    public Column<RESTTagCollectionItemV1, String> getPossibleChildrenButtonColumn() {
+    public final Column<RESTTagCollectionItemV1, String> getPossibleChildrenButtonColumn() {
         return tagsButtonColumn;
     }
 
@@ -115,12 +119,12 @@ public class CategoryTagView
     }
 
     @Override
-    public Column<RESTTagInCategoryCollectionItemV1, String> getExistingChildUpButtonColumn() {
+    public final Column<RESTTagInCategoryCollectionItemV1, String> getExistingChildUpButtonColumn() {
         return tagUpButtonColumn;
     }
 
     @Override
-    public Column<RESTTagInCategoryCollectionItemV1, String> getExistingChildDownButtonColumn() {
+    public final Column<RESTTagInCategoryCollectionItemV1, String> getExistingChildDownButtonColumn() {
         return tagDownButtonColumn;
     }
 

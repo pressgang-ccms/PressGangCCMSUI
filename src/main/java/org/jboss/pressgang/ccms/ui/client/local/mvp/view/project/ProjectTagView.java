@@ -14,7 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectTag
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
-public class ProjectTagView
+public final class ProjectTagView
     extends BaseChildrenView<
         RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1,  // The main entity types
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,             // The possible child types
@@ -24,8 +24,9 @@ public class ProjectTagView
     private final TextColumn<RESTTagCollectionItemV1> tagsIdColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
         public String getValue(final RESTTagCollectionItemV1 object) {
-            if (object != null && object.getItem() != null && object.getItem().getId() != null)
+            if (object != null && object.getItem() != null && object.getItem().getId() != null) {
                 return object.getItem().getId().toString();
+            }
             return null + "";
         }
     };
@@ -33,8 +34,9 @@ public class ProjectTagView
     private final TextColumn<RESTTagCollectionItemV1> tagsNameColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
         public String getValue(final RESTTagCollectionItemV1 object) {
-            if (object != null && object.getItem() != null && object.getItem().getName() != null)
+            if (object != null && object.getItem() != null && object.getItem().getName() != null) {
                 return object.getItem().getName();
+            }
             return null + "";
         }
     };

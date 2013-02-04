@@ -44,8 +44,9 @@ final public class GWTUtilities {
      */
     public static Date createDateCopy(final Date input)
     {
-        if (input == null)
+        if (input == null) {
             return null;
+        }
         return new Date(input.getTime());
     }
 

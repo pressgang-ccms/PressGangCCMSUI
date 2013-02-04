@@ -16,7 +16,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class TopicXMLErrorsPresenter extends BaseTopicViewPresenter implements BaseTemplatePresenterInterface {
+public final class TopicXMLErrorsPresenter extends BaseTopicViewPresenter implements BaseTemplatePresenterInterface {
     public static final String HISTORY_TOKEN = "TopicXMLErrorsView";
 
     // Empty interface declaration, similar to UiBinder

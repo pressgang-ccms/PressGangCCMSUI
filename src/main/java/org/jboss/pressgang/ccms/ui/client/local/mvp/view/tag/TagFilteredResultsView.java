@@ -11,7 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.Ba
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
 
-public class TagFilteredResultsView extends BaseFilteredResultsView<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> implements
+public final class TagFilteredResultsView extends BaseFilteredResultsView<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> implements
         TagFilteredResultsPresenter.Display {
 
     private final TextBox idFilter = new TextBox();
@@ -36,8 +36,9 @@ public class TagFilteredResultsView extends BaseFilteredResultsView<RESTTagV1, R
     private final TextColumn<RESTTagCollectionItemV1> nameColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
         public String getValue(final RESTTagCollectionItemV1 object) {
-            if (object != null && object.getItem() != null)
+            if (object != null && object.getItem() != null) {
                 return object.getItem().getName();
+            }
             return null + "";
         }
     };

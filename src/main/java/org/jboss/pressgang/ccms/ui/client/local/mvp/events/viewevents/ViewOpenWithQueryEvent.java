@@ -12,7 +12,7 @@ public abstract class ViewOpenWithQueryEvent <T extends ViewOpenWithQueryEventHa
     protected final String query;
     private final boolean newWindow;
 
-    public boolean isNewWindow() {
+    public final boolean isNewWindow() {
         return newWindow;
     }
 
@@ -26,12 +26,12 @@ public abstract class ViewOpenWithQueryEvent <T extends ViewOpenWithQueryEventHa
         this.newWindow = newWindow;
     }
 
-    public String getQuery() {
+    public final String getQuery() {
         return query;
     }
     
     @Override
-    protected void dispatch(final T handler) {
+    protected final void dispatch(final T handler) {
         handler.onViewOpen(this);
     }
 }

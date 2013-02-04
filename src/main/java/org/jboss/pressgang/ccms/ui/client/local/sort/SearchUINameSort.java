@@ -8,7 +8,7 @@ import java.util.Comparator;
 /**
  * Compares SearchUIBase's objects based on their name.
  */
-public class SearchUINameSort implements Comparator<SearchUIBase>, Serializable {
+public final class SearchUINameSort implements Comparator<SearchUIBase>, Serializable {
 
     @Override
     public int compare(final SearchUIBase arg0, final SearchUIBase arg1) {

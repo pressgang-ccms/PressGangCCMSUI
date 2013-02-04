@@ -385,9 +385,10 @@ public class CategoriesFilteredResultsAndCategoryPresenter
             filteredResultsPresenter.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
-                    if (isOKToProceed())
+                    if (isOKToProceed()) {
                         eventBus.fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(filteredResultsPresenter.getQuery(),
                                 GWTUtilities.isEventToOpenNewWindow(event)));
+                    }
                 }
             });
 

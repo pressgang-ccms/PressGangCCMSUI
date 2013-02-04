@@ -9,7 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 
-public class TopicTagViewTagEditor implements Editor<SearchUITag> {
+public final class TopicTagViewTagEditor implements Editor<SearchUITag> {
     private final boolean readOnly;
     /** bound to the SearchUITag itself */
     @Path("")

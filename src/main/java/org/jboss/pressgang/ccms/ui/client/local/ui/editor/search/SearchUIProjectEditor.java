@@ -16,7 +16,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 
-public class SearchUIProjectEditor extends Grid implements ValueAwareEditor<SearchUIProject> {
+public final class SearchUIProjectEditor extends Grid implements ValueAwareEditor<SearchUIProject> {
     private final SearchPresenterDriver driver;
     private final SearchUIProjects searchUIProjects;
     private SearchUIProject value;

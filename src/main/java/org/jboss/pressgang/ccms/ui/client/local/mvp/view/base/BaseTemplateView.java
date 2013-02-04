@@ -634,8 +634,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      */
     @Override
     public void removeWaitOperation() {
-        if (waitingCount < 1)
+        if (waitingCount < 1) {
             throw new IllegalStateException("waitingCount should never be less than one when removeWaitOperation() is called.");
+        }
 
         --waitingCount;
         updateDisplay();

@@ -12,7 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1X
 
 import java.util.List;
 
-public class TopicXMLErrorsView extends BaseTemplateView implements TopicXMLErrorsPresenter.Display {
+public final class TopicXMLErrorsView extends BaseTemplateView implements TopicXMLErrorsPresenter.Display {
 
     /** The GWT Editor Driver */
     private final TopicXMLErrorsPresenterDriver driver = GWT.create(TopicXMLErrorsPresenterDriver.class);

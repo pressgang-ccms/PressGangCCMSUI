@@ -81,7 +81,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class SearchResultsAndTopicPresenter
+public final class SearchResultsAndTopicPresenter
         extends BaseSearchAndEditComponent<
         SearchResultsPresenter.Display,
         RESTTopicV1,
@@ -828,15 +828,19 @@ public class SearchResultsAndTopicPresenter
             /*
              * If any values in selectedTopic don't match displayedTopic, we have unsaved changes
              */
-            if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getTitle(), displayedTopic.getTitle()))
+            if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getTitle(), displayedTopic.getTitle())) {
                 unsavedChanges = true;
-            if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getLocale(), displayedTopic.getLocale()))
+            }
+            if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getLocale(), displayedTopic.getLocale())) {
                 unsavedChanges = true;
+            }
             if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getDescription(),
-                    displayedTopic.getDescription()))
+                    displayedTopic.getDescription()))                                                 {
                 unsavedChanges = true;
-            if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getXml(), displayedTopic.getXml()))
+            }
+            if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getXml(), displayedTopic.getXml())) {
                 unsavedChanges = true;
+            }
 
             return unsavedChanges;
         } finally {
@@ -1209,7 +1213,6 @@ public class SearchResultsAndTopicPresenter
                                                     topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
                                                     // create the topic, and add to the wrapper
-                                                    final RESTTopicV1 restTopic = new RESTTopicV1();
                                                     topicCollectionItem.setItem(retValue);
 
                                                     /* Update the displayed topic */
@@ -2184,8 +2187,9 @@ public class SearchResultsAndTopicPresenter
                         final StringBuilder details = new StringBuilder();
                         for (final RESTTopicCollectionItemV1 topicCollectionItem : retValue.getItems()) {
                             final RESTTopicV1 topic = topicCollectionItem.getItem();
-                            if (!details.toString().isEmpty())
+                            if (!details.toString().isEmpty()) {
                                 details.append("\n");
+                            }
                             details.append(topic.getTitle() + " [" + topic.getId() + "]");
                         }
 
@@ -2399,8 +2403,9 @@ public class SearchResultsAndTopicPresenter
 
                 @Override
                 public boolean apply(final @Nullable RESTCategoryInTagCollectionItemV1 arg0) {
-                    if (arg0 == null || arg0.getItem() == null)
+                    if (arg0 == null || arg0.getItem() == null) {
                         return false;
+                    }
                     return arg0.getItem().getMutuallyExclusive();
                 }
             });
@@ -2426,8 +2431,9 @@ public class SearchResultsAndTopicPresenter
                                         @Override
                                         public boolean apply(
                                                 final @Nullable RESTCategoryInTagCollectionItemV1 existingTagCategory) {
-                                            if (existingTagCategory == null || existingTagCategory.getItem() == null)
+                                            if (existingTagCategory == null || existingTagCategory.getItem() == null) {
                                                 return false;
+                                            }
 
                                             /*
                                              * match any categories that the tag belongs to with any of the mutually exclusive
@@ -2456,8 +2462,9 @@ public class SearchResultsAndTopicPresenter
                 }
 
                 /* make sure the user is happy to remove the conflicting tags */
-                if (!Window.confirm(PressGangCCMSUI.INSTANCE.RemoveConflictingTags() + tags.toString()))
+                if (!Window.confirm(PressGangCCMSUI.INSTANCE.RemoveConflictingTags() + tags.toString())) {
                     return;
+                }
 
                 for (final RESTTagCollectionItemV1 tag : conflictingTags) {
                     tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);

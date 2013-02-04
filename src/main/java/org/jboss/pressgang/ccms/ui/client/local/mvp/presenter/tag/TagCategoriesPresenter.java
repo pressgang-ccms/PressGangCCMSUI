@@ -40,7 +40,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class TagCategoriesPresenter
+public final class TagCategoriesPresenter
         extends
         BaseOrderedChildrenComponent<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, RESTCategoryV1, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
         implements BaseTemplatePresenterInterface {
@@ -129,10 +129,11 @@ public class TagCategoriesPresenter
 
                 getPossibleChildrenProviderData().setStartRow(display.getVisibleRange().getStart());
 
-                if (getPossibleChildrenProviderData().getItems() != null)
+                if (getPossibleChildrenProviderData().getItems() != null) {
                     displayNewFixedList(getPossibleChildrenProviderData().getItems());
-                else
+                } else {
                     resetProvider();
+                }
 
             }
         };

@@ -8,7 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCategoryV1BasicDetailsEditor;
 
-public class CategoryView extends BaseTemplateView
+public final class CategoryView extends BaseTemplateView
         implements CategoryPresenter.Display {
 
 
@@ -19,7 +19,7 @@ public class CategoryView extends BaseTemplateView
     private boolean readOnly = false;
 
     @Override
-    public CategoryPresenterDriver getDriver() {
+    public final CategoryPresenterDriver getDriver() {
         return driver;
     }
 
@@ -28,7 +28,7 @@ public class CategoryView extends BaseTemplateView
     }
 
     @Override
-    public void initialize(final RESTCategoryV1 category, final boolean readOnly) {
+    public final void initialize(final RESTCategoryV1 category, final boolean readOnly) {
         this.readOnly = readOnly;
 
         /* SearchUIProjectsEditor is a grid */

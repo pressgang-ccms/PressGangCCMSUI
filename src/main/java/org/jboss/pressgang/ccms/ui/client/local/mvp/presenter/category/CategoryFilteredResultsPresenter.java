@@ -32,7 +32,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
  * The presenter used to add logic to the category filtered list view.
  */
 @Dependent
-public class CategoryFilteredResultsPresenter
+public final class CategoryFilteredResultsPresenter
         extends BaseFilteredResultsComponent<
         RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1>
         implements BaseTemplatePresenterInterface {
@@ -74,11 +74,11 @@ public class CategoryFilteredResultsPresenter
     }
 
     @Override
-    public final void parseToken(final String searchToken) {
+    public void parseToken(final String searchToken) {
         this.queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
-    public final void bindExtendedFilteredResults(final int topicId, final String pageId, final String queryString) {
+    public void bindExtendedFilteredResults(final int topicId, final String pageId, final String queryString) {
         try {
             logger.log(Level.INFO, "ENTER CategoryFilteredResultsPresenter.bind()");
             super.bindFilteredResults(topicId, pageId, queryString, display);
@@ -89,7 +89,7 @@ public class CategoryFilteredResultsPresenter
     }
 
     @Override
-    protected final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateListProvider(final String queryString, final BaseTemplateViewInterface waitDisplay) {
+    protected EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateListProvider(final String queryString, final BaseTemplateViewInterface waitDisplay) {
         return new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTCategoryCollectionItemV1> list) {
@@ -141,7 +141,7 @@ public class CategoryFilteredResultsPresenter
     }
 
     @Override
-    public final String getQuery() {
+    public String getQuery() {
         final StringBuilder retValue = new StringBuilder();
         if (!this.display.getIdFilter().getText().isEmpty()) {
             retValue.append(";catIds=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.display.getIdFilter().getText()) : this.display.getIdFilter().getText()));
@@ -158,7 +158,7 @@ public class CategoryFilteredResultsPresenter
     }
 
     @Override
-    protected final void displayQueryElements(final String queryString) {
+    protected void displayQueryElements(final String queryString) {
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
         for (final String queryStringElement : queryStringElements) {
             final String[] queryElements = queryStringElement.split("=");

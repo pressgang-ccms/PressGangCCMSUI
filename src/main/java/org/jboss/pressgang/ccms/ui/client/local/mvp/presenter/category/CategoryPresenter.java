@@ -22,7 +22,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
  * The presenter used to add logic to the category view.
  */
 @Dependent
-public class CategoryPresenter extends
+public final class CategoryPresenter extends
         BaseTemplatePresenter
         implements BaseTemplatePresenterInterface {
 
@@ -61,7 +61,7 @@ public class CategoryPresenter extends
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public final void bindExtended(final int topicId, final String pageId)
+    public void bindExtended(final int topicId, final String pageId)
     {
         super.bind(topicId, pageId, display);
         this.getEntity();

@@ -9,7 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
 
-public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Display {
+public final class WelcomeView extends BaseTemplateView implements WelcomePresenter.Display {
 
     private final HTML content = new HTML("<div/>");
     
@@ -28,7 +28,7 @@ public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Di
             processor.setParameter("externalImages", true + "");
 
             processor.importSource(topic.getXml());
-            String resultString = processor.transform();
+            final String resultString = processor.transform();
             content.setHTML(resultString);
 
             this.getPanel().setWidget(content);

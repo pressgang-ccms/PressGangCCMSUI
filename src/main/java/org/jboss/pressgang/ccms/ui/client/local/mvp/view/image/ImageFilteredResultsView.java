@@ -10,7 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.Ba
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
 
-public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1>
+public final class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1>
         implements ImageFilteredResultsPresenter.Display {
 
     private final TextBox imageIdFilter = new TextBox();
@@ -18,7 +18,7 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageV
     private final TextBox imageOriginalFileNameFilter = new TextBox();
 
 
-    private final TextColumn<RESTImageCollectionItemV1> idColumn = new TextColumn<RESTImageCollectionItemV1>() {
+    private TextColumn<RESTImageCollectionItemV1> idColumn = new TextColumn<RESTImageCollectionItemV1>() {
         @Override
         public String getValue(final RESTImageCollectionItemV1 object) {
             if (object == null)
@@ -31,7 +31,7 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageV
         }
     };
 
-    private final TextColumn<RESTImageCollectionItemV1> descriptionColumn = new TextColumn<RESTImageCollectionItemV1>() {
+    private TextColumn<RESTImageCollectionItemV1> descriptionColumn = new TextColumn<RESTImageCollectionItemV1>() {
         @Override
         public String getValue(final RESTImageCollectionItemV1 object) {
             if (object == null)
@@ -49,7 +49,7 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageV
     }
 
     @Override
-    public TextBox getImageIdFilter() {
+    public final TextBox getImageIdFilter() {
         return imageIdFilter;
     }
 

@@ -6,7 +6,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
-public class RESTProjectV1BasicDetailsEditor extends FlexTable implements Editor<RESTProjectV1> {
+public final class RESTProjectV1BasicDetailsEditor extends FlexTable implements Editor<RESTProjectV1> {
     private final SimpleIntegerBox id = new SimpleIntegerBox();
     private final TextBox name = new TextBox();
     private final TextArea description = new TextArea();

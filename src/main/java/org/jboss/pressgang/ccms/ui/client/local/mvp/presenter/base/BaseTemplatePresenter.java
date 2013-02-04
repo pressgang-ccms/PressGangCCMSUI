@@ -45,7 +45,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      * @return The topic of the ID to be used for the help dialog
      */
     @Override
-   public int getHelpTopicId() {
+   public final int getHelpTopicId() {
         return helpTopicId;
     }
 
@@ -54,7 +54,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      * @param helpTopicId The topic of the ID to be used for the help dialog
      */
     @Override
-    public void setHelpTopicId(final int helpTopicId) {
+    public final void setHelpTopicId(final int helpTopicId) {
         this.helpTopicId = helpTopicId;
     }
 
@@ -76,16 +76,18 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getHome().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (isOKToProceed())
+                if (isOKToProceed()) {
                     eventBus.fireEvent(new WelcomeViewEvent());
+                }
             }
         });
 
         display.getSearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (isOKToProceed())
+                if (isOKToProceed()) {
                     eventBus.fireEvent(new SearchTagsFieldsAndFiltersViewEvent());
+                }
             }
         });
 
@@ -124,16 +126,18 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getTags().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (isOKToProceed())
+                if (isOKToProceed()) {
                     eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
+                }
             }
         });
 
         display.getCategories().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (isOKToProceed())
+                if (isOKToProceed()) {
                     eventBus.fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
+                }
             }
         });
 

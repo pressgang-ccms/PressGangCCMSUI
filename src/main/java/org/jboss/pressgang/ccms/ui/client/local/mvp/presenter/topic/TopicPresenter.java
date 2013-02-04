@@ -17,7 +17,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class TopicPresenter extends BaseTopicViewPresenter implements BaseTemplatePresenterInterface {
+public final class TopicPresenter extends BaseTopicViewPresenter implements BaseTemplatePresenterInterface {
 
     public static final String HISTORY_TOKEN = "TopicView";
 

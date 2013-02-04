@@ -42,7 +42,7 @@ import java.util.List;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 
 @Dependent
-public class ProjectsFilteredResultsAndProjectPresenter
+public final class ProjectsFilteredResultsAndProjectPresenter
         extends
         BaseSearchAndEditComponent<ProjectFilteredResultsPresenter.Display, RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1, ProjectViewInterface, ProjectPresenter.Display, RESTProjectV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
@@ -287,9 +287,10 @@ public class ProjectsFilteredResultsAndProjectPresenter
         filteredResultsComponent.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (isOKToProceed())
+                if (isOKToProceed()) {
                     eventBus.fireEvent(new ProjectsFilteredResultsAndProjectViewEvent(filteredResultsComponent.getQuery(),
                             GWTUtilities.isEventToOpenNewWindow(event)));
+                }
             }
         });
 

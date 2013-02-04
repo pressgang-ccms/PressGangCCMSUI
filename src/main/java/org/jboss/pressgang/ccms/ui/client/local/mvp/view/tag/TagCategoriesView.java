@@ -18,7 +18,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
-public class TagCategoriesView
+public final class TagCategoriesView
         extends
         BaseExtendedChildrenView<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, RESTCategoryV1, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
         implements TagCategoriesPresenter.Display {
@@ -27,8 +27,9 @@ public class TagCategoriesView
     private final TextColumn<RESTCategoryCollectionItemV1> idColumn = new TextColumn<RESTCategoryCollectionItemV1>() {
         @Override
         public String getValue(final RESTCategoryCollectionItemV1 object) {
-            if (object == null)
+            if (object == null) {
                 return null + "";
+            }
             return object.getItem().getId().toString();
 
         }
@@ -37,8 +38,9 @@ public class TagCategoriesView
     private final TextColumn<RESTCategoryCollectionItemV1> nameColumn = new TextColumn<RESTCategoryCollectionItemV1>() {
         @Override
         public String getValue(final RESTCategoryCollectionItemV1 object) {
-            if (object == null)
+            if (object == null) {
                 return null + "";
+            }
             return object.getItem().getName();
         }
     };
@@ -62,8 +64,9 @@ public class TagCategoriesView
     private final TextColumn<RESTTagInCategoryCollectionItemV1> tagIdColumn = new TextColumn<RESTTagInCategoryCollectionItemV1>() {
         @Override
         public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
-            if (object == null)
+            if (object == null) {
                 return null + "";
+            }
             return object.getItem().getId().toString();
 
         }
@@ -72,8 +75,9 @@ public class TagCategoriesView
     private final TextColumn<RESTTagInCategoryCollectionItemV1> tagNameColumn = new TextColumn<RESTTagInCategoryCollectionItemV1>() {
         @Override
         public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
-            if (object == null)
+            if (object == null) {
                 return null + "";
+            }
             return object.getItem().getName();
         }
     };
