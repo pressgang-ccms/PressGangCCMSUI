@@ -1,15 +1,13 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view;
 
+import com.google.gwt.user.client.ui.HTML;
 import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
 import hu.szaboaz.gwt.xslt.client.XsltProcessor;
-
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
-
-import com.google.gwt.user.client.ui.HTML;
 
 public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Display {
 

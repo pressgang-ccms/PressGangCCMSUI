@@ -1,18 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren;
 
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenComponent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
-import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -45,7 +38,7 @@ abstract public class BaseOrderedChildrenComponent<
     /**
      * A logger.
      */
-    private static final Logger logger = Logger.getLogger(BaseOrderedChildrenComponent.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BaseOrderedChildrenComponent.class.getName());
 
 
     /**

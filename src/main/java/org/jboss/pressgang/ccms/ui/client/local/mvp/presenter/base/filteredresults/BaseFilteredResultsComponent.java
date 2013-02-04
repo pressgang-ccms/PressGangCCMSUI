@@ -59,12 +59,9 @@ abstract public class BaseFilteredResultsComponent<
      */
     protected void relinkSelectedItem()
     {
-        if (this.providerData.getSelectedItem() != null && this.providerData.getItems() != null)
-        {
-            for (final V filteredResultEntity : this.providerData.getItems())
-            {
-                if (filteredResultEntity.getItem().getId().equals(this.providerData.getSelectedItem().getItem().getId()))
-                {
+        if (this.providerData.getSelectedItem() != null && this.providerData.getItems() != null) {
+            for (final V filteredResultEntity : this.providerData.getItems()) {
+                if (filteredResultEntity.getItem().getId().equals(this.providerData.getSelectedItem().getItem().getId())) {
                     this.providerData.setSelectedItem(filteredResultEntity);
                     break;
                 }
@@ -73,7 +70,7 @@ abstract public class BaseFilteredResultsComponent<
     }
 
     /**
-     * Display the current filter options
+     * Display the current filter options.
      * 
      * @param queryString The string that contains the filter options
      */

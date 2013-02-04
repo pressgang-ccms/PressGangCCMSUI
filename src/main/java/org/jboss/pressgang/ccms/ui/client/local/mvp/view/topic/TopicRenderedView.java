@@ -1,10 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.user.client.ui.HTML;
 import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
 import hu.szaboaz.gwt.xslt.client.XsltProcessor;
-
-import java.util.List;
-
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
@@ -13,8 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 
-import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.ui.HTML;
+import java.util.List;
 
 public class TopicRenderedView extends BaseTemplateView implements TopicRenderedPresenter.Display {
 

@@ -26,7 +26,6 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;

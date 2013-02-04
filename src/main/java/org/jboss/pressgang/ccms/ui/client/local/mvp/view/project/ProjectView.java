@@ -1,16 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.project;
 
+import com.google.gwt.core.client.GWT;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectPresenter.ProjectPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjectV1BasicDetailsEditor;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.ui.PushButton;
 
 public class ProjectView extends BaseTemplateView
         implements ProjectPresenter.Display {

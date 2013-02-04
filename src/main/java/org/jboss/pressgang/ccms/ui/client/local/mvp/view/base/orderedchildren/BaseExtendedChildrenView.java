@@ -1,5 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren;
 
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
@@ -8,11 +12,6 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
-
-import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * The base class for views that display a collection of existing children and a second collection of possible children.
@@ -75,8 +74,7 @@ abstract public class BaseExtendedChildrenView<
 
     @Override
     public final void setExistingChildrenProvider(final EnhancedAsyncDataProvider<F> existingChildrenProvider) {
-        if (this.existingChildrenProvider != null)
-        {
+        if (this.existingChildrenProvider != null) {
             this.existingChildrenProvider.removeDataDisplay(this.existingChildrenResults);
         }
 

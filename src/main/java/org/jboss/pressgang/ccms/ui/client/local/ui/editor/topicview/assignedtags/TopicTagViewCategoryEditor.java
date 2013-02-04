@@ -1,15 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags;
 
-import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
-
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.adapters.EditorSource;
 import com.google.gwt.editor.client.adapters.ListEditor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 
 public class TopicTagViewCategoryEditor extends Grid implements Editor<SearchUICategory> {
     private final boolean readOnly;

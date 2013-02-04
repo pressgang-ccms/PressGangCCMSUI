@@ -1,15 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.Window;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.errai.enterprise.client.jaxrs.api.ResponseException;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
-import com.google.gwt.http.client.Response;
-import com.google.gwt.user.client.Window;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Most REST calls have the same responses to starting the call, exceptions during the call, and failure of the call. This class

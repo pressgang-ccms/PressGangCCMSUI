@@ -1,15 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.image;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
-import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
-import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.adapters.EditorSource;
 import com.google.gwt.editor.client.adapters.ListEditor;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
 /**
  * This class provides a UI object to represent the collection of language images in an image.

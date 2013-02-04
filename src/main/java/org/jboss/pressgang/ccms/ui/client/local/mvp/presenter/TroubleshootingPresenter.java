@@ -1,13 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
+import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 
-import com.google.gwt.user.client.ui.HasWidgets;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 

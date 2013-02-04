@@ -1,14 +1,13 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags;
 
-import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
-
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.adapters.EditorSource;
 import com.google.gwt.editor.client.adapters.ListEditor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.SimplePanel;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 
 public class TopicTagViewProjectsEditor extends SimplePanel implements Editor<SearchUIProjects> {
     private final boolean readOnly;

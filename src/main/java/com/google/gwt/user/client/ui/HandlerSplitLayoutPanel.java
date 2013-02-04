@@ -40,7 +40,6 @@ public class HandlerSplitLayoutPanel extends SplitLayoutPanel implements HasResi
     
     public double getSplitPosition(final Widget widgetBeforeTheSplitter)
     {
-        final LayoutData layout = (LayoutData) widgetBeforeTheSplitter.getLayoutData();
-        return layout.size;
+        return ((LayoutData) widgetBeforeTheSplitter.getLayoutData()).size;
     }
 }

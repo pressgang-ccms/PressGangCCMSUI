@@ -1,11 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.search;
 
-import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter.Display.SearchPresenterDriver;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
-
 import com.google.gwt.editor.client.EditorDelegate;
 import com.google.gwt.editor.client.ValueAwareEditor;
 import com.google.gwt.editor.client.adapters.EditorSource;
@@ -15,6 +9,11 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FourTextAndImageButtonSearchUICategoryEditor;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter.Display.SearchPresenterDriver;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 
 public class SearchUICategoryEditor extends ScrollPanel implements ValueAwareEditor<SearchUICategory> {
     private static final int COLUMNS = 2;

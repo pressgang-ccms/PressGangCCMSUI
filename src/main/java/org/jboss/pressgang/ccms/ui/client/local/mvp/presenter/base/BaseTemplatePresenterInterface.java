@@ -1,8 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base;
 
 
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-
 /**
  * The base interface for all presenters.
  */

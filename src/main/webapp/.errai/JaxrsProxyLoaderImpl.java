@@ -1,15 +1,7 @@
 package org.jboss.errai.enterprise.client.jaxrs;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
-import java.lang.annotation.Annotation;
-import java.util.List;
-import javax.ws.rs.core.PathSegment;
+import com.google.gwt.http.client.*;
 import org.jboss.errai.bus.client.api.ErrorCallback;
 import org.jboss.errai.bus.client.api.RemoteCallback;
 import org.jboss.errai.bus.client.framework.ProxyProvider;
@@ -18,37 +10,15 @@ import org.jboss.errai.enterprise.client.jaxrs.api.PathSegmentImpl;
 import org.jboss.errai.enterprise.client.jaxrs.api.ResponseCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.ResponseException;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTBlobConstantCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTIntegerConstantCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyCategoryCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTRoleCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTUserCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyCategoryV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTRoleV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTUserV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.*;
+import org.jboss.pressgang.ccms.rest.v1.entities.*;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTLogDetailsV1;
 import org.jboss.pressgang.ccms.rest.v1.expansion.ExpandDataTrunk;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
+
+import javax.ws.rs.core.PathSegment;
+import java.lang.annotation.Annotation;
+import java.util.List;
 
 public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
   public void loadProxies() {

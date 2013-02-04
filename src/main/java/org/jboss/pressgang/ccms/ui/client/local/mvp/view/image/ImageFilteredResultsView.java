@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.image;
 
+import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
@@ -7,9 +9,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFiltere
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
-
-import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.TextBox;
 
 public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1>
         implements ImageFilteredResultsPresenter.Display {

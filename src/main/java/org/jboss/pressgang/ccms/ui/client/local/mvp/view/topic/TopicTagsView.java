@@ -1,8 +1,13 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.editor.client.SimpleBeanEditorDriver;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.ValueListBox;
+import com.google.gwt.view.client.ProvidesKey;
+import com.google.web.bindery.requestfactory.gwt.ui.client.ProxyRenderer;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
@@ -16,14 +21,8 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.ValueListBox;
-import com.google.gwt.view.client.ProvidesKey;
-import com.google.web.bindery.requestfactory.gwt.ui.client.ProxyRenderer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TopicTagsView extends BaseTemplateView implements TopicTagsPresenter.Display {
 

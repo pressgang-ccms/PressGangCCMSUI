@@ -1,10 +1,9 @@
 package com.google.gwt.user.client.ui;
 
-import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
-
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 
 /**
  * http://blog.js-development.com/2010/03/gwt-button-with-image-and-text.html

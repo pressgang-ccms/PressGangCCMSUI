@@ -1,14 +1,13 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags;
 
-import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
-import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
-
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.adapters.SimpleEditor;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 
 public class TopicTagViewTagEditor implements Editor<SearchUITag> {
     private final boolean readOnly;

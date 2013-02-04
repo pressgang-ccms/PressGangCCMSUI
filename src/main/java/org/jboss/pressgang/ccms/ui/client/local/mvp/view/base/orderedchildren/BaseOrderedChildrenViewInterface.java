@@ -1,15 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren;
 
+import com.google.gwt.user.cellview.client.Column;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
-
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * 

@@ -1,11 +1,10 @@
 package com.google.gwt.user.client.ui;
 
-import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
-
 import com.google.gwt.editor.client.IsEditor;
 import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 
 /**
  * A PushButton to perform the functionality of a tristate checkbox.

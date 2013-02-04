@@ -1,13 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview;
 
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
-
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.user.client.ui.SimplePanel;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditorMode;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditorTheme;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 
 public class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RESTTopicV1> {
     public final AceEditor xml = new AceEditor(true);

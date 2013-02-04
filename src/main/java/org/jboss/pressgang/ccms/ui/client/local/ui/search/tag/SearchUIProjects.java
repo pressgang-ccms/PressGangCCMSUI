@@ -1,9 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.search.tag;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.google.gwt.user.client.ui.TriStateSelectionState;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
@@ -12,7 +9,9 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchViewBase;
 
-import com.google.gwt.user.client.ui.TriStateSelectionState;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * The REST interface does not define a hierarchy or projects->categories->tags. Instead, tags belong to both categories and

@@ -1,9 +1,10 @@
 package org.jboss.errai.ioc.client;
 
-import java.lang.annotation.Annotation;
-import java.util.HashMap;
 import org.jboss.errai.ioc.client.api.ReplyTo;
 import org.jboss.errai.ioc.client.api.ToSubject;
+
+import java.lang.annotation.Annotation;
+import java.util.HashMap;
 
 public class QualifierEqualityFactoryImpl implements QualifierEqualityFactory {
   private HashMap<String, AnnotationComparator> comparatorMap = new HashMap<String, AnnotationComparator>();

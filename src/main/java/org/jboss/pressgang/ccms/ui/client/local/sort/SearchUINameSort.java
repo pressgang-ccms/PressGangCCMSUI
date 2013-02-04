@@ -1,9 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.sort;
 
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIBase;
+
 import java.io.Serializable;
 import java.util.Comparator;
-
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIBase;
 
 /**
  * Compares SearchUIBase's objects based on their name.

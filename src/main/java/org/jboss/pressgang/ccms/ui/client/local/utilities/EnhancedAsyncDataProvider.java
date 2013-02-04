@@ -1,8 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
-import java.util.List;
-
 import com.google.gwt.view.client.AsyncDataProvider;
+
+import java.util.List;
 
 /**
  * An extension of the AsyncDataProvider class that provides methods for common procedures such as resetting the list,

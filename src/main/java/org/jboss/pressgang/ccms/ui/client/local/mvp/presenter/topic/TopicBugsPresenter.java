@@ -1,8 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBugzillaBugCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -10,17 +10,14 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTop
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
-import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.HasWidgets;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
 public class TopicBugsPresenter extends BaseTopicViewPresenter implements BaseTemplatePresenterInterface {
     public static final String HISTORY_TOKEN = "TopicBugsView";
-    
-    private String topicId;
 
     public interface Display extends BaseTopicViewInterface {
 

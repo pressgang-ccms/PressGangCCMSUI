@@ -1,17 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.image;
 
+import com.google.gwt.editor.client.EditorDelegate;
+import com.google.gwt.editor.client.ValueAwareEditor;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-
-import com.google.gwt.editor.client.EditorDelegate;
-import com.google.gwt.editor.client.ValueAwareEditor;
-import com.google.gwt.user.client.ui.DockPanel;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 
 public class RESTImageV1Editor extends DockPanel implements ValueAwareEditor<RESTImageV1> {
     private RESTImageV1 value;

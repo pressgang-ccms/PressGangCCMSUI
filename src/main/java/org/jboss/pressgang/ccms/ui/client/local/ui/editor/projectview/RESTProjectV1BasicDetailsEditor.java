@@ -1,15 +1,10 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview;
 
+import com.google.gwt.editor.client.Editor;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-
-import com.google.gwt.editor.client.Editor;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimpleIntegerBox;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 
 public class RESTProjectV1BasicDetailsEditor extends FlexTable implements Editor<RESTProjectV1> {
     private final SimpleIntegerBox id = new SimpleIntegerBox();

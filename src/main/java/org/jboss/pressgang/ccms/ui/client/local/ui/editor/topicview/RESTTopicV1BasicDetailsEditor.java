@@ -1,23 +1,17 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.gwt.editor.client.Editor;
+import com.google.gwt.text.shared.Renderer;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.datepicker.client.DateBox;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
-import com.google.gwt.editor.client.Editor;
-import com.google.gwt.text.shared.Renderer;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimpleIntegerBox;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.ValueListBox;
-import com.google.gwt.user.datepicker.client.DateBox;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTopicV1> {
     

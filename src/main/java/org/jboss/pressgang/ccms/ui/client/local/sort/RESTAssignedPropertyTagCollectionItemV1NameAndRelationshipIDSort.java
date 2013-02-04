@@ -1,6 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.sort;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTAssignedPropertyTagCollectionItemV1;
 
 import java.io.Serializable;

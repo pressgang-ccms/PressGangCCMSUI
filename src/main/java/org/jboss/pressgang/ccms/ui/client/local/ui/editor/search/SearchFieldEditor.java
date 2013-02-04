@@ -1,18 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.search;
 
+import com.google.gwt.editor.client.LeafValueEditor;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.datepicker.client.DateBox;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
-
-import com.google.gwt.editor.client.LeafValueEditor;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.SimpleIntegerBox;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.TriStatePushButton;
-import com.google.gwt.user.datepicker.client.DateBox;
 
 public class SearchFieldEditor extends FlexTable implements LeafValueEditor<SearchUIFields> {
 

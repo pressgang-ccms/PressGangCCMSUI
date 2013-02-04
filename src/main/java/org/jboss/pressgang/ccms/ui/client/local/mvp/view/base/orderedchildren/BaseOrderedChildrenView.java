@@ -3,16 +3,6 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
-import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
-import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
-import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
-
-import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * The base class for views that display a collection of ordered children and a second collection of possible children

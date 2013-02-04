@@ -14,8 +14,6 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 @Dependent
 public class TopicBIRTBugsPresenter extends BaseTopicViewPresenter implements BaseTemplatePresenterInterface {
     public static final String HISTORY_TOKEN = "TopicBIRTBugsView";
-    
-    private String topicId;
 
     public interface Display extends BaseTopicViewInterface {
 

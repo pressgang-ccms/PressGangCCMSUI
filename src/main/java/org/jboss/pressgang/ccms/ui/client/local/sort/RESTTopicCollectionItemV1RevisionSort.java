@@ -1,9 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.sort;
 
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+
 import java.io.Serializable;
 import java.util.Comparator;
-
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 
 /**
  * Compares two RESTTopicCollectionItemV1's based on their revision numbers.

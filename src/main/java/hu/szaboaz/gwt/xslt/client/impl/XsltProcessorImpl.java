@@ -17,7 +17,6 @@ package hu.szaboaz.gwt.xslt.client.impl;
 
 import com.google.gwt.core.client.JavaScriptException;
 import com.google.gwt.core.client.JavaScriptObject;
-
 import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
 
 /**

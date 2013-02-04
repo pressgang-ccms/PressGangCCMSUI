@@ -1,11 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler;
 
-import com.google.gwt.event.dom.client.*;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
-
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.ValueBoxBase;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 /**
  * Cancels and key press that is not a digit or comma, and removes any non digit or comma character on
