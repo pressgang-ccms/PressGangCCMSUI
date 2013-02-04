@@ -246,8 +246,7 @@ public final class ProjectsFilteredResultsAndProjectPresenter
 
                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                             }
-                        }) {
-                };
+                        });
 
                 if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
 

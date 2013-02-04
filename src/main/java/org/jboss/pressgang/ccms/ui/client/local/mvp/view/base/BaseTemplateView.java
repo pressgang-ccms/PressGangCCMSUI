@@ -180,9 +180,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
                             HelpDialogImpl.this.center();
                             HelpDialogImpl.this.show();
                         }
-                    }) {
-
-            };
+                    });
             RESTCalls.getTopic(callback, topicId);
 
         }

@@ -83,8 +83,7 @@ public final class SearchPresenter extends BaseTemplatePresenter implements Base
             public void doSuccessAction(final RESTTagCollectionV1 retValue, final BaseTemplateViewInterface waitDisplay) {
                 display.initialise(retValue);
             }
-        }) {
-        };
+        });
         RESTCalls.getTags(callback);
     }
 

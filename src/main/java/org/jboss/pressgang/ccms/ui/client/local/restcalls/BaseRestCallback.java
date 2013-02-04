@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  * @author kamiller@redhat.com (Katie Miller)
  * 
  */
-public class BaseRestCallback<C, D extends BaseTemplateViewInterface> implements RESTCalls.RESTCallback<C> {
+public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> implements RESTCalls.RESTCallback<C> {
 
     private final D display;
     private final SuccessAction<C, D> successAction;

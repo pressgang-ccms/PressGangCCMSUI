@@ -74,8 +74,7 @@ public final class ProjectPresenter extends BaseTemplatePresenter implements Bas
                     public void doSuccessAction(final RESTProjectV1 retValue, final ProjectPresenter.Display display) {
                         display.initialize(retValue, false);
                     }
-                }) {
-        };
+                });
         RESTCalls.getUnexpandedProject(callback, entityId);
     }
 }

@@ -754,9 +754,7 @@ public final class SearchResultsAndTopicPresenter
                                     topicRevisionsComponent.displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getItem()
                                             .getXml(), sourceTopicLabel, isXML);
                                 }
-                            }) {
-
-                    };
+                            });
                     RESTCalls.getTopicRevision(callback, revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision());
                 }
             });

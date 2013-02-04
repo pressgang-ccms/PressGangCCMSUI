@@ -153,8 +153,7 @@ public final class ImagesFilteredResultsAndImagePresenter
 
                 finishLoading();
             }
-        }) {
-        };
+        });
 
         RESTCalls.getImage(callback, imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId());
     }
@@ -213,8 +212,7 @@ public final class ImagesFilteredResultsAndImagePresenter
 
                 finishLoading();
             }
-        }) {
-        };
+        });
 
         RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
     }
@@ -278,8 +276,7 @@ public final class ImagesFilteredResultsAndImagePresenter
                                     updateImage.getLanguageImages_OTM().addUpdateItem(updatedLanguageImage);
 
                                     final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                                            display, getDefaultImageRestCallback(), getDefaultImageRestFailureCallback()) {
-                                    };
+                                            display, getDefaultImageRestCallback(), getDefaultImageRestFailureCallback());
 
                                     RESTCalls.updateImage(callback, updateImage);
                                 } finally {
@@ -364,8 +361,7 @@ public final class ImagesFilteredResultsAndImagePresenter
                             .getDescription());
 
                     final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                            display, getDefaultImageRestCallback()) {
-                    };
+                            display, getDefaultImageRestCallback());
 
                     RESTCalls.updateImage(callback, updateImage);
                 } else {
@@ -413,8 +409,7 @@ public final class ImagesFilteredResultsAndImagePresenter
                         updateImage.getLanguageImages_OTM().addRemoveItem(languageImage);
 
                         final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                                display, getDefaultImageRestCallback()) {
-                        };
+                                display, getDefaultImageRestCallback());
 
                         RESTCalls.updateImage(callback, updateImage);
                     }
@@ -460,8 +455,7 @@ public final class ImagesFilteredResultsAndImagePresenter
                 updateImage.getLanguageImages_OTM().addNewItem(languageImage);
 
                 final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                        display, getDefaultImageRestCallback()) {
-                };
+                        display, getDefaultImageRestCallback());
 
                 RESTCalls.updateImage(callback, updateImage);
             }
@@ -579,13 +573,11 @@ public final class ImagesFilteredResultsAndImagePresenter
                                                     /* Reload the filtered results view */
                                                     updateDisplayAfterSave(true);
                                                 }
-                                            }) {
-                                    };
+                                            });
 
                                     RESTCalls.createImage(imageCallback, newImage);
                                 }
-                            }) {
-                    };
+                            });
 
                     RESTCalls.getStringConstant(callback, ServiceConstants.DEFAULT_LOCALE_ID);
 

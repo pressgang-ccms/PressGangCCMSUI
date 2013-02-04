@@ -87,8 +87,7 @@ public final class ProjectTagPresenter
                             /* Refresh the list */
                         display.getPossibleChildrenProvider().displayNewFixedList(getProviderData().getItems());
                     }
-                }) {
-        };
+                });
 
         /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
         getProviderData().reset();
