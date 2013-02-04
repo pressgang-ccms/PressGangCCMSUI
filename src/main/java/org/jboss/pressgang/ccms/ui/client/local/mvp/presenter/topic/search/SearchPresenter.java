@@ -33,6 +33,8 @@ public final class SearchPresenter extends BaseTemplatePresenter implements Base
 
         PushButton getFields();
 
+        PushButton getSearchTopics();
+
         void initialise(final RESTTagCollectionV1 tags);
     }
 

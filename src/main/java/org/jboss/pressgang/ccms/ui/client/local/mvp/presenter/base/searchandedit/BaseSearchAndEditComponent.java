@@ -305,7 +305,7 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
     /**
      * Called when a new entity is selected
      */
-    protected void initializeViews() {
+    protected final void initializeViews() {
         initializeViews(null);
     }
 
@@ -334,7 +334,7 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
     /**
      * Called when displaying changes to a entity or when changing views
      */
-    protected void switchView(final W displayedView) {
+    protected final void switchView(final W displayedView) {
 
         try {
             logger.log(Level.INFO, "ENTER BaseSearchAndEditComponent.switchView(final W displayedView)");
@@ -362,8 +362,16 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
                 logger.log(Level.INFO, "\tFlushing data from properties view");
                 this.entityPropertiesView.getDriver().flush();
             }
+
+            afterSwitchView(displayedView);
+
+            lastDisplayedView = displayedView;
+
+
         } finally {
             logger.log(Level.INFO, "EXIT BaseSearchAndEditComponent.switchView(final W displayedView)");
         }
     }
+
+    protected void afterSwitchView(final W displayedView) {}
 }

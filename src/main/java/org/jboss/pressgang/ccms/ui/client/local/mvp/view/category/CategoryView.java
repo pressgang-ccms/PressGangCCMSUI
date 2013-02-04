@@ -19,7 +19,7 @@ public final class CategoryView extends BaseTemplateView
     private boolean readOnly = false;
 
     @Override
-    public final CategoryPresenterDriver getDriver() {
+    public CategoryPresenterDriver getDriver() {
         return driver;
     }
 
@@ -28,7 +28,7 @@ public final class CategoryView extends BaseTemplateView
     }
 
     @Override
-    public final void initialize(final RESTCategoryV1 category, final boolean readOnly) {
+    public void initialize(final RESTCategoryV1 category, final boolean readOnly) {
         this.readOnly = readOnly;
 
         /* SearchUIProjectsEditor is a grid */

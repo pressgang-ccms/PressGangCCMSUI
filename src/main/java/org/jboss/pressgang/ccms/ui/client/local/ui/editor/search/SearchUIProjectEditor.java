@@ -112,7 +112,7 @@ public final class SearchUIProjectEditor extends Grid implements ValueAwareEdito
     }
 
     @Override
-    public final void setValue(final SearchUIProject value) {
+    public void setValue(final SearchUIProject value) {
         this.value = value;
     }
 }

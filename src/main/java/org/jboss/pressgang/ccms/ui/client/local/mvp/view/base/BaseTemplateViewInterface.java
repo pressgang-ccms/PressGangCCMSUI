@@ -14,7 +14,7 @@ public interface BaseTemplateViewInterface {
      * @author Matthew Casperson
      *
      */
-    public interface HelpDialog
+    interface HelpDialog
     {
         DialogBox getDialogBox();
         HTML getContents();

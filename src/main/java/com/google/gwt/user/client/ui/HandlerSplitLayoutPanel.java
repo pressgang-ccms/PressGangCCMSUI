@@ -10,7 +10,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * 
  * @author Matthew Casperson
  */
-public class HandlerSplitLayoutPanel extends SplitLayoutPanel implements HasResizeHandlers {
+public final class HandlerSplitLayoutPanel extends SplitLayoutPanel implements HasResizeHandlers {
     private static final int ANIMATION_TIME_MILLISECONDS = 500;
     
     public HandlerSplitLayoutPanel(final int size) {

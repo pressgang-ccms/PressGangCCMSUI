@@ -6,7 +6,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 
 public class TroubleshootingView extends BaseTemplateView implements TroubleshootingPresenter.Display {
 
-    public TroubleshootingView(final String applicationName, final String pageName) {
+    public TroubleshootingView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Troubleshooting());
     }
 }

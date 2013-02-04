@@ -24,7 +24,7 @@ import com.google.gwt.core.client.JavaScriptObject;
  * 
  * @author Szabó Árpád Zoltán, szabo.arpad.zoltan at gmail.com
  */
-public class XsltProcessorImplIe extends XsltProcessorImpl {
+public final class XsltProcessorImplIe extends XsltProcessorImpl {
 
     protected native JavaScriptObject createDocumentImpl() /*-{
                                                            var doc = @hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImplIe::selectDOMDocumentVersion()();

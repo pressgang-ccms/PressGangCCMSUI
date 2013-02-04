@@ -99,7 +99,7 @@ public final class CategoryTagView
     };
 
     @Override
-    public final Column<RESTTagCollectionItemV1, String> getPossibleChildrenButtonColumn() {
+    public Column<RESTTagCollectionItemV1, String> getPossibleChildrenButtonColumn() {
         return tagsButtonColumn;
     }
 
@@ -119,12 +119,12 @@ public final class CategoryTagView
     }
 
     @Override
-    public final Column<RESTTagInCategoryCollectionItemV1, String> getExistingChildUpButtonColumn() {
+    public Column<RESTTagInCategoryCollectionItemV1, String> getExistingChildUpButtonColumn() {
         return tagUpButtonColumn;
     }
 
     @Override
-    public final Column<RESTTagInCategoryCollectionItemV1, String> getExistingChildDownButtonColumn() {
+    public Column<RESTTagInCategoryCollectionItemV1, String> getExistingChildDownButtonColumn() {
         return tagDownButtonColumn;
     }
 

@@ -68,7 +68,7 @@ public final class CategoryFilteredResultsPresenter
     }
 
     @Override
-    public final void go(final HasWidgets container) {
+    public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, this.queryString);
     }

@@ -461,7 +461,7 @@ public final class TagsFilteredResultsAndTagPresenter
     }
 
     @Override
-    public final void parseToken(final String historyToken) {
+    public void parseToken(final String historyToken) {
         queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
@@ -706,7 +706,7 @@ public final class TagsFilteredResultsAndTagPresenter
      * Called when the selected tag is changed, or the selected view is changed.
      */
     @Override
-    protected void switchView(final TagViewInterface displayedView) {
+    protected void afterSwitchView(final TagViewInterface displayedView) {
 
         super.switchView(displayedView);
 
@@ -760,8 +760,6 @@ public final class TagsFilteredResultsAndTagPresenter
             title.append(": " + (tagTitle == null ? PressGangCCMSUI.INSTANCE.NoTitle() : tagTitle));
         }
         display.getPageTitle().setText(title.toString());
-
-        lastDisplayedView = displayedView;
     }
 
     /**

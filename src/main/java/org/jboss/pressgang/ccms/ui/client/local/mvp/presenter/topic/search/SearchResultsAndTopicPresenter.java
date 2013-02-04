@@ -1034,7 +1034,7 @@ public final class SearchResultsAndTopicPresenter
     }
 
     @Override
-    protected void switchView(final BaseTopicViewInterface displayedView) {
+    protected void afterSwitchView(final BaseTopicViewInterface displayedView) {
         try {
             logger.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.switchView(final TopicViewInterface displayedView)");
 
@@ -1055,10 +1055,8 @@ public final class SearchResultsAndTopicPresenter
                         display.getSplitType(), locales, true);
             }
             /* Set the projects combo box as the focsed element */
-            else if (displayedView == this.topicTagsComponent.getDisplay()) {
-                if (topicTagsComponent.getDisplay().getProjectsList().isAttached()) {
-                    topicTagsComponent.getDisplay().getProjectsList().getElement().focus();
-                }
+            else if (displayedView == this.topicTagsComponent.getDisplay() && topicTagsComponent.getDisplay().getProjectsList().isAttached()) {
+                topicTagsComponent.getDisplay().getProjectsList().getElement().focus();
             }
 
             /* While editing the XML, we need to setup a refresh of the rendered view */
@@ -1070,8 +1068,6 @@ public final class SearchResultsAndTopicPresenter
             }
 
             setHelpTopicForView(this, displayedView);
-
-            lastDisplayedView = displayedView;
         } finally {
             logger.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.switchView(final TopicViewInterface displayedView)");
         }

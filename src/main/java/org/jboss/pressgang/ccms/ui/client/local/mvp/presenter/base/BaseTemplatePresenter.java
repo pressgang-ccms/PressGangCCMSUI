@@ -59,7 +59,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     }
 
     @Override
-    public boolean isOKToProceed() {
+    public final boolean isOKToProceed() {
         return !hasUnsavedChanges() || Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
     }
 
@@ -226,12 +226,8 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
             @Override
             public void onWindowClosing(final ClosingEvent event) {
-                if (display.getTopLevelPanel().isAttached())
-                {
-                    if (hasUnsavedChanges())
-                    {
-                        event.setMessage(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
-                    }
+                if (display.getTopLevelPanel().isAttached() && hasUnsavedChanges()) {
+                    event.setMessage(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
                 }
             }
         });

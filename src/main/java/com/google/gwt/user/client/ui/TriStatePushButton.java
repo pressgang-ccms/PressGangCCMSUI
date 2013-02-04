@@ -12,7 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
  * @author Matthew Casperson
  * 
  */
-public class TriStatePushButton extends PushButton implements IsEditor<LeafValueEditor<TriStateSelectionState>> {
+public final class TriStatePushButton extends PushButton implements IsEditor<LeafValueEditor<TriStateSelectionState>> {
     private TriStateSelectionState state = TriStateSelectionState.NONE;
 
     public TriStatePushButton() {

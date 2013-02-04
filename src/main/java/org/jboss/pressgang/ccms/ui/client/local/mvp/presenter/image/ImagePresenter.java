@@ -24,7 +24,7 @@ public final class ImagePresenter extends BaseTemplatePresenter implements BaseT
 
     public interface Display extends BaseTemplateViewInterface, BaseEditorViewInterface<RESTImageV1, RESTImageV1Editor> {
 
-        public interface AddLocaleInterface {
+        interface AddLocaleInterface {
             PushButton getCancel();
 
             PushButton getOk();

@@ -354,15 +354,6 @@ public final class ProjectsFilteredResultsAndProjectPresenter
                 .returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
     }
 
-    @Override
-    protected void switchView(final ProjectViewInterface displayedView) {
-
-        super.switchView(displayedView);
-        enableAndDisableActionButtons(displayedView);
-
-        lastDisplayedView = displayedView;
-    }
-
     private void enableAndDisableActionButtons(final ProjectViewInterface displayedView)
     {
         this.display.replaceTopActionButton(this.display.getChildrenDown(), this.display.getChildren());

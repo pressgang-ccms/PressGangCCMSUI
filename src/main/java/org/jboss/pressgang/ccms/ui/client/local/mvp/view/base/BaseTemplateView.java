@@ -114,24 +114,24 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      * Defines the help dialog box.
      * @author Matthew Casperson
      */
-    public static class HelpDialogImpl extends DialogBox implements HelpDialog {
+    public final static class HelpDialogImpl extends DialogBox implements HelpDialog {
 
         private final VerticalPanel layout = new VerticalPanel();
         private final HTML contents = new HTML("div");
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
 
         @Override
-        public final PushButton getOK() {
+        public PushButton getOK() {
             return this.ok;
         }
 
         @Override
-        public final DialogBox getDialogBox() {
+        public DialogBox getDialogBox() {
             return this;
         }
 
         @Override
-        public final HTML getContents() {
+        public HTML getContents() {
             return this.contents;
         }
         
@@ -182,40 +182,38 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
                         }
                     });
             RESTCalls.getTopic(callback, topicId);
-
         }
-
     }
 
     private final HelpDialog helpDialog = new HelpDialogImpl();
 
     @Override
-    public PushButton getHome() {
+    public final PushButton getHome() {
         return home;
     }
 
     @Override
-    public Anchor getHelp() {
+    public final Anchor getHelp() {
         return help;
     }
 
     @Override
-    public HelpDialog getHelpDialog() {
+    public final HelpDialog getHelpDialog() {
         return helpDialog;
     }
 
     @Override
-    public PushButton getQuickSearch() {
+    public final PushButton getQuickSearch() {
         return quickSearch;
     }
 
     @Override
-    public TextBox getQuickSearchQuery() {
+    public final TextBox getQuickSearchQuery() {
         return quickSearchQuery;
     }
 
     @Override
-    public PushButton getCreateTopic() {
+    public final PushButton getCreateTopic() {
         return createTopic;
     }
 
@@ -223,7 +221,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      * @return true when the view is visible, false otherwise
      */
     @Override
-    public boolean isViewShown() {
+    public final boolean isViewShown() {
         return isViewShown;
     }
 
@@ -231,158 +229,158 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      * @param isViewShown true if the view is visible, false otherwise
      */
     @Override
-    public void setViewShown(final boolean isViewShown) {
+    public final void setViewShown(final boolean isViewShown) {
         this.isViewShown = isViewShown;
         updateDisplay();
     }
 
     @Override
-    public PushButton getClose() {
+    public final PushButton getClose() {
         return close;
     }
 
     @Override
-    public PushButton getAdvancedOpen() {
+    public final PushButton getAdvancedOpen() {
         return advancedOpen;
     }
 
     @Override
-    public SimplePanel getShortCutPanelParent() {
+    public final SimplePanel getShortCutPanelParent() {
         return shortCutPanelParent;
     }
 
     @Override
-    public FlexTable getAdvancedShortcutPanel() {
+    public final FlexTable getAdvancedShortcutPanel() {
         return advancedShortcutPanel;
     }
 
     @Override
-    public PushButton getAdvanced() {
+    public final PushButton getAdvanced() {
         return advanced;
     }
 
     @Override
-    public PushButton getPropertyTagCategories() {
+    public final PushButton getPropertyTagCategories() {
         return propertyTagCategories;
     }
 
     @Override
-    public PushButton getPropertyTags() {
+    public final PushButton getPropertyTags() {
         return propertyTags;
     }
 
     @Override
-    public PushButton getRoles() {
+    public final PushButton getRoles() {
         return roles;
     }
 
     @Override
-    public PushButton getUsers() {
+    public final PushButton getUsers() {
         return users;
     }
 
     @Override
-    public PushButton getIntegerConstants() {
+    public final PushButton getIntegerConstants() {
         return integerConstants;
     }
 
     @Override
-    public PushButton getBlobConstants() {
+    public final PushButton getBlobConstants() {
         return blobConstants;
     }
 
     @Override
-    public PushButton getStringConstants() {
+    public final  PushButton getStringConstants() {
         return stringConstants;
     }
 
     @Override
-    public PushButton getProjects() {
+    public final PushButton getProjects() {
         return projects;
     }
 
     @Override
-    public PushButton getCategories() {
+    public final PushButton getCategories() {
         return categories;
     }
 
     @Override
-    public PushButton getTags() {
+    public final PushButton getTags() {
         return tags;
     }
 
     @Override
-    public PushButton getImages() {
+    public final PushButton getImages() {
         return images;
     }
 
     @Override
-    public Label getPageTitle() {
+    public final Label getPageTitle() {
         return pageTitle;
     }
 
     @Override
-    public String getPageName() {
+    public final String getPageName() {
         return pageName;
     }
 
     @Override
-    public String getApplicationName() {
+    public final String getApplicationName() {
         return applicationName;
     }
 
     @Override
-    public FlexTable getTopActionParentPanel() {
+    public final FlexTable getTopActionParentPanel() {
         return topActionParentPanel;
     }
 
     @Override
-    public FlexTable getShortcutPanel() {
+    public final FlexTable getShortcutPanel() {
         return shortcutPanel;
     }
 
     @Override
-    public DockLayoutPanel getTopLevelPanel() {
+    public final DockLayoutPanel getTopLevelPanel() {
         return topLevelLayoutPanel;
     }
 
     @Override
-    public SimpleLayoutPanel getPanel() {
+    public final SimpleLayoutPanel getPanel() {
         return panel;
     }
 
     @Override
-    public PushButton getReports() {
+    public final PushButton getReports() {
         return reports;
     }
 
-    public PushButton getSearchTranslations() {
+    public final PushButton getSearchTranslations() {
         return searchTranslations;
     }
 
     @Override
-    public SimplePanel getTopActionGrandParentPanel()
+    public final SimplePanel getTopActionGrandParentPanel()
     {
         return topActionGrandParentPanel;
     }
 
     @Override
-    public FlexTable getTopActionPanel() {
+    public final FlexTable getTopActionPanel() {
         return topActionPanel;
     }
 
     @Override
-    public FlexTable getTopViewSpecificActionPanel() {
+    public final FlexTable getTopViewSpecificActionPanel() {
         return topViewSpecificActionPanel;
     }
 
     @Override
-    public PushButton getBug() {
+    public final PushButton getBug() {
         return bug;
     }
 
     @Override
-    public PushButton getSearch() {
+    public final PushButton getSearch() {
         return search;
     }
 
@@ -539,17 +537,17 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     }
 
     @Override
-    public void showRegularMenu() {
+    public final void showRegularMenu() {
         topActionParentPanel.clear();
         topActionParentPanel.add(topActionPanel);
     }
 
-    public void replaceTopActionButton(final Widget existing, final Widget replacement)
+    public final void replaceTopActionButton(final Widget existing, final Widget replacement)
     {
         replaceTopActionButton(existing, replacement, this.topActionPanel);
     }
 
-    public void replaceTopActionButton(final Widget existing, final Widget replacement, final FlexTable table) {
+    public final void replaceTopActionButton(final Widget existing, final Widget replacement, final FlexTable table) {
 
         /* Early out if the existing widget isn't actually attached */
         if (!existing.isAttached() || existing.getParent() != table) {
@@ -577,7 +575,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         table.getCellFormatter().addStyleName(0, columns, CSSConstants.RIGHT_ALIGNED_ACTION_BUTTONS);
     }
 
-    protected void addActionButton(final Widget widget, final FlexTable table) {
+    protected final void addActionButton(final Widget widget, final FlexTable table) {
         final int rows = table.getRowCount();
         int columns = 0;
         if (rows != 0) {
@@ -587,11 +585,11 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         table.setWidget(0, columns, widget);
     }
 
-    protected void addLocalActionButton(final Widget widget) {
+    protected final void addLocalActionButton(final Widget widget) {
         addActionButton(widget, this.getTopViewSpecificActionPanel());
     }
 
-    protected void addActionButton(final Widget widget) {
+    protected final void addActionButton(final Widget widget) {
         addActionButton(widget, this.getTopActionPanel());
     }
 
@@ -608,7 +606,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      * When combining views into a single merged view, the shortcuit panels need to have a spacer placed above them to replace
      * the template action bar, which is removed.
      */
-    protected void addSpacerToShortcutPanels() {
+    protected final void addSpacerToShortcutPanels() {
         final String spacerDiv = "<div style=\"height: " + Constants.ACTION_BAR_HEIGHT + "px;\"></div>";
         final HTML spacer = new HTML(spacerDiv);
         final HTML spacer2 = new HTML(spacerDiv);
@@ -622,7 +620,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      * Called when some background operation that would cause this view to be locked is started.
      */
     @Override
-    public void addWaitOperation() {
+    public final void addWaitOperation() {
         ++waitingCount;
         updateDisplay();
     }
@@ -631,7 +629,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      * Called when some background operation that would cause this view to be locked is ended.
      */
     @Override
-    public void removeWaitOperation() {
+    public final void removeWaitOperation() {
         if (waitingCount < 1) {
             throw new IllegalStateException("waitingCount should never be less than one when removeWaitOperation() is called.");
         }
@@ -666,7 +664,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     }
 
     @Override
-    public void setFeedbackLink(final String link) {
+    public final void setFeedbackLink(final String link) {
         feedback.setHref(link);
     }
  

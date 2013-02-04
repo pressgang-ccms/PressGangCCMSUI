@@ -55,7 +55,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
  * @author Matthew Casperson
  */
 @Dependent
-public class CategoriesFilteredResultsAndCategoryPresenter
+public final class CategoriesFilteredResultsAndCategoryPresenter
         extends
         BaseSearchAndEditComponent<CategoryFilteredResultsPresenter.Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, CategoryViewInterface, CategoryPresenter.Display, RESTCategoryV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
@@ -121,7 +121,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     private String queryString;
 
     @Override
-    public final void go(final HasWidgets container) {
+    public void go(final HasWidgets container) {
 
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTCategoryV1> getNewEntityCallback = new GetNewEntityCallback<RESTCategoryV1>() {
@@ -155,7 +155,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     }
 
     @Override
-    public final void parseToken(final String historyToken) {
+    public void parseToken(final String historyToken) {
         queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
@@ -213,7 +213,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
 
 
     @Override
-    protected final void loadAdditionalDisplayedItemData() {
+    protected void loadAdditionalDisplayedItemData() {
         try {
             logger.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.loadAdditionalDisplayedItemData()");
 
@@ -229,7 +229,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     }
 
     @Override
-    protected final void initializeViews(final List<CategoryViewInterface> filter) {
+    protected void initializeViews(final List<CategoryViewInterface> filter) {
         try {
             logger.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.initializeViews()");
 
@@ -275,7 +275,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     }
 
     @Override
-    protected final void bindActionButtons() {
+    protected void bindActionButtons() {
         /**
          * A click handler used to display the category fields view
          */
@@ -378,7 +378,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
      * Binds behaviour to the tag search and list view
      */
     @Override
-    protected final void bindFilteredResultsButtons() {
+    protected void bindFilteredResultsButtons() {
         try {
             logger.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.bindFilteredResultsButtons()");
 
@@ -425,7 +425,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     }
 
     @Override
-    public final boolean hasUnsavedChanges() {
+    public boolean hasUnsavedChanges() {
         /* sync the UI with the underlying tag */
         if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
             categoryPresenter.getDisplay().getDriver().flush();
@@ -464,7 +464,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     }
 
     @Override
-    protected final void switchView(final CategoryViewInterface displayedView) {
+    protected void afterSwitchView(final CategoryViewInterface displayedView) {
 
         super.switchView(displayedView);
 
@@ -474,8 +474,6 @@ public class CategoriesFilteredResultsAndCategoryPresenter
         if (displayedView != null) {
             displayedView.setViewShown(true);
         }
-
-        lastDisplayedView = displayedView;
     }
 
     private void enableAndDisableActionButtons(final CategoryViewInterface displayedView)

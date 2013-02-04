@@ -180,14 +180,6 @@ public final class ImagesFilteredResultsAndImagePresenter
         };
     }
 
-    @Override
-    protected void switchView(final ImagePresenter.Display displayedView) {
-
-        super.switchView(displayedView);
-
-        lastDisplayedView = displayedView;
-    }
-
     private List<String> getUnassignedLocales() {
         final List<String> newLocales = new ArrayList<String>(Arrays.asList(locales));
 

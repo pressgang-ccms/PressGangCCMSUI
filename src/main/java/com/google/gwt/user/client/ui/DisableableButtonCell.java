@@ -9,7 +9,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
  * 
  * @author Matthew Casperson
  */
-public class DisableableButtonCell extends ButtonCell {
+public final class DisableableButtonCell extends ButtonCell {
     /**
      * A HTML string representation of an unchecked input box.
      */
@@ -26,11 +26,11 @@ public class DisableableButtonCell extends ButtonCell {
     /** whether or not the button is enabled */
     private boolean enabled = true;
 
-    public final boolean isEnabled() {
+    public boolean isEnabled() {
         return enabled;
     }
 
-    public final void setEnabled(final boolean enabled) {
+    public void setEnabled(final boolean enabled) {
         this.enabled = enabled;
     }
 

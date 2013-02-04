@@ -28,7 +28,7 @@ public final class TopicXMLPresenter extends BaseTopicViewPresenter implements
 
     public interface Display extends BaseTopicViewInterface {
 
-        public interface PlainTextXMLDialog
+        interface PlainTextXMLDialog
         {
             PushButton getOK();
             PushButton getCancel();
@@ -41,7 +41,7 @@ public final class TopicXMLPresenter extends BaseTopicViewPresenter implements
          * The interface that defines the tag selection dialog box
          * @author Matthew Casperson
          */
-        public interface XmlTagsDialog
+        interface XmlTagsDialog
         {
             PushButton getOK();
             PushButton getCancel();
@@ -51,7 +51,7 @@ public final class TopicXMLPresenter extends BaseTopicViewPresenter implements
             void setSuggestions(final List<String> suggestions);
         }
 
-        public interface XmlTemplatesDialog
+        interface XmlTemplatesDialog
         {
             PushButton getOK();
             PushButton getCancel();
@@ -60,7 +60,7 @@ public final class TopicXMLPresenter extends BaseTopicViewPresenter implements
             void setSuggestions(final Map<String, String> suggestions);
         }
 
-        public interface CSPTopicDetailsDialog
+        interface CSPTopicDetailsDialog
         {
             PushButton getOK();
             PushButton getCancel();

@@ -10,7 +10,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
  * 
  * @author Matthew Casperson
  */
-public class DisableableCheckboxCell extends CheckboxCell {
+public final class DisableableCheckboxCell extends CheckboxCell {
     /**
      * A HTML string representation of a checked input box.
      */

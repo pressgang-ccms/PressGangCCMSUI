@@ -12,7 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
  * 
  * @author Matthew Casperson
  */
-public class FourTextAndImageButtonSearchUICategoryEditor extends FourTextAndImageButton implements
+public final class FourTextAndImageButtonSearchUICategoryEditor extends FourTextAndImageButton implements
         IsEditor<LeafValueEditor<SearchUICategory.TagSummary>> {
     private SearchUICategory.TagSummary details;
 

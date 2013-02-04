@@ -28,24 +28,24 @@ public final class TopicXMLView extends BaseTemplateView implements TopicXMLPres
     private final ToggleButton lineWrap = UIUtilities.createToggleButton(PressGangCCMSUI.INSTANCE.LineWrap());
     private final ToggleButton showInvisibles = UIUtilities.createToggleButton(PressGangCCMSUI.INSTANCE.ShowHiddenCharacters());
 
-    public static class PlainTextXMLDialog extends DialogBox implements TopicXMLPresenter.Display.PlainTextXMLDialog {
+    public final static class PlainTextXMLDialog extends DialogBox implements TopicXMLPresenter.Display.PlainTextXMLDialog {
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
         private TextArea textArea;
         private final FlexTable layout = new FlexTable();
 
         @Override
-        public final PushButton getOK() {
+        public PushButton getOK() {
             return this.ok;
         }
 
         @Override
-        public final PushButton getCancel() {
+        public PushButton getCancel() {
             return this.cancel;
         }
 
         @Override
-        public final void setText(final String text) {
+        public void setText(final String text) {
             /*
              * Create a new textarea to work around a situation where a After the Deadline check was not cleared before the
              * dialog was closed
@@ -96,7 +96,7 @@ public final class TopicXMLView extends BaseTemplateView implements TopicXMLPres
     }
 
     /** The dialog box that displays a list of docbook tags. */
-    public static class XmlTagsDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTagsDialog {
+    public final static class XmlTagsDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTagsDialog {
         private static final int NUMBER_OF_VISIBLE_ITEMS = 10;
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
@@ -175,7 +175,7 @@ public final class TopicXMLView extends BaseTemplateView implements TopicXMLPres
     }
 
     /** The dialog box that displays a list of docbook templates. */
-    public static class XmlTemplatesDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTemplatesDialog {
+    public final static class XmlTemplatesDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTemplatesDialog {
         private static final int NUMBER_OF_VISIBLE_ITEMS = 10;
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
@@ -183,27 +183,27 @@ public final class TopicXMLView extends BaseTemplateView implements TopicXMLPres
         private final FlexTable layout = new FlexTable();
 
         @Override
-        public final PushButton getOK() {
+        public PushButton getOK() {
             return this.ok;
         }
 
         @Override
-        public final PushButton getCancel() {
+        public PushButton getCancel() {
             return this.cancel;
         }
 
         @Override
-        public final ListBox getOptions() {
+        public ListBox getOptions() {
             return this.options;
         }
 
         @Override
-        public final DialogBox getDialogBox() {
+        public DialogBox getDialogBox() {
             return this;
         }
 
         @Override
-        public final void setSuggestions(final Map<String, String> suggestions) {
+        public void setSuggestions(final Map<String, String> suggestions) {
             this.options.clear();
 
             if (suggestions != null) {
@@ -231,7 +231,7 @@ public final class TopicXMLView extends BaseTemplateView implements TopicXMLPres
         }
 
         @Override
-        public final void show() {
+        public void show() {
             super.show();
             this.options.setFocus(true);
         }
@@ -240,35 +240,35 @@ public final class TopicXMLView extends BaseTemplateView implements TopicXMLPres
          * Select the first item when the box is closed.
          */
         @Override
-        public final void hide() {
+        public void hide() {
             super.hide();
             this.options.setSelectedIndex(0);
         }
     }
 
-    public static class CSPTopicDetailsDialog extends DialogBox implements TopicXMLPresenter.Display.CSPTopicDetailsDialog {
+    public final static class CSPTopicDetailsDialog extends DialogBox implements TopicXMLPresenter.Display.CSPTopicDetailsDialog {
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
         private final TextBox ids = new TextBox();
         private final FlexTable layout = new FlexTable();
 
         @Override
-        public final PushButton getOK() {
+        public PushButton getOK() {
             return this.ok;
         }
 
         @Override
-        public final PushButton getCancel() {
+        public PushButton getCancel() {
             return this.cancel;
         }
 
         @Override
-        public final TextBox getIds() {
+        public TextBox getIds() {
             return this.ids;
         }
 
         @Override
-        public final DialogBox getDialogBox() {
+        public DialogBox getDialogBox() {
             return this;
         }
 
@@ -290,7 +290,7 @@ public final class TopicXMLView extends BaseTemplateView implements TopicXMLPres
         }
 
         @Override
-        public final void show() {
+        public void show() {
             super.show();
             this.ids.setFocus(true);
         }

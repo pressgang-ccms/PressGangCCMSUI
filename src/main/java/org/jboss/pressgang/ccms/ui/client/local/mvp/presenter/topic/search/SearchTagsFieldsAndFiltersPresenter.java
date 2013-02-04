@@ -92,8 +92,8 @@ public final class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePrese
         fieldsComponent.getDisplay().getTagsSearch().addClickHandler(tagsHandler);
         tagsComponent.getDisplay().getFields().addClickHandler(fieldsHandler);
 
-        tagsComponent.getDisplay().getSearch().addClickHandler(searchHandler);
-        fieldsComponent.getDisplay().getSearch().addClickHandler(searchHandler);
+        tagsComponent.getDisplay().getSearchTopics().addClickHandler(searchHandler);
+        fieldsComponent.getDisplay().getSearchTopics().addClickHandler(searchHandler);
     }
 
     private void displayTags()

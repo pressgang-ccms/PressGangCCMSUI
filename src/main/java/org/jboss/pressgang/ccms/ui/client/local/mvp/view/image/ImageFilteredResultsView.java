@@ -49,7 +49,7 @@ public final class ImageFilteredResultsView extends BaseFilteredResultsView<REST
     }
 
     @Override
-    public final TextBox getImageIdFilter() {
+    public TextBox getImageIdFilter() {
         return imageIdFilter;
     }
 

@@ -18,7 +18,7 @@ public final class SearchFieldView extends BaseTemplateView implements
     /** The UI hierarchy */
     private final SearchUIFields searchUIFields = new SearchUIFields();
 
-    private final PushButton search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
+    private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
     private final PushButton tagsSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Tags());
     private final Label fields = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Fields());
 
@@ -33,8 +33,8 @@ public final class SearchFieldView extends BaseTemplateView implements
     }
 
     @Override
-    public PushButton getSearch() {
-        return search;
+    public PushButton getSearchTopics() {
+        return searchTopics;
     }
 
     @Override
@@ -46,7 +46,7 @@ public final class SearchFieldView extends BaseTemplateView implements
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchFields());
 
         /* Build the action bar icons */
-        addActionButton(search);
+        addActionButton(searchTopics);
         addActionButton(tagsSearch);
         addActionButton(fields);
 

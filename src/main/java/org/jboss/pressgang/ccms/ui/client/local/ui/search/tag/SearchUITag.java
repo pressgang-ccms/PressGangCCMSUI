@@ -24,28 +24,28 @@ public final class SearchUITag extends SearchUIBase {
     /**
      * @return The tag referenced by this object
      */
-    public final RESTTagCollectionItemV1 getTag() {
+    public RESTTagCollectionItemV1 getTag() {
         return this.tag;
     }
 
     /**
      * @param tag The tag referenced by this object
      */
-    public final void setTag(final RESTTagCollectionItemV1 tag) {
+    public void setTag(final RESTTagCollectionItemV1 tag) {
         this.tag = tag;
     }
 
     /**
      * @return The selection state of the tag
      */
-    public final TriStateSelectionState getState() {
+    public TriStateSelectionState getState() {
         return this.state;
     }
 
     /**
      * @param state The selection state of the tag
      */
-    public final void setState(final TriStateSelectionState state) {
+    public void setState(final TriStateSelectionState state) {
         this.state = state;
     }
 

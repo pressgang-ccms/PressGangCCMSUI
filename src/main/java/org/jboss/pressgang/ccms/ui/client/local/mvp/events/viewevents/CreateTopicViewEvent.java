@@ -4,7 +4,7 @@ public final class CreateTopicViewEvent extends ViewOpenEvent<ViewOpenEventHandl
     public static final Type<ViewOpenEventHandler> TYPE = new Type<ViewOpenEventHandler>();
 
     @Override
-    public final Type<ViewOpenEventHandler> getAssociatedType() {
+    public Type<ViewOpenEventHandler> getAssociatedType() {
         return TYPE;
     }
 }

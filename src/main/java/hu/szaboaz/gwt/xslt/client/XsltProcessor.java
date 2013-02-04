@@ -46,7 +46,7 @@ import hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl;
  * 
  * @author Szabó Árpád Zoltán, szabo.arpad.zoltan at gmail.com
  */
-public class XsltProcessor {
+public final class XsltProcessor {
 
     private XsltProcessorImpl impl;
 

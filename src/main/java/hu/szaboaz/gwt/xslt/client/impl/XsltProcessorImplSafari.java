@@ -24,7 +24,7 @@ import com.google.gwt.core.client.JavaScriptObject;
  * 
  * @author Szabó Árpád Zoltán, szabo.arpad.zoltan at gmail.com
  */
-public class XsltProcessorImplSafari extends XsltProcessorImplStandard {
+public final class XsltProcessorImplSafari extends XsltProcessorImplStandard {
 
     @Override
     protected native JavaScriptObject parseImpl(final String contents) /*-{

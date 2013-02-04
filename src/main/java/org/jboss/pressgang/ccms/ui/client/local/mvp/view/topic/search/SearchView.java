@@ -15,7 +15,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 public final class SearchView extends BaseTemplateView implements
         SearchPresenter.Display {
 
-    private final PushButton search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
+    private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
     private final Label tags = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Fields());
 
@@ -38,8 +38,8 @@ public final class SearchView extends BaseTemplateView implements
     }
 
     @Override
-    public PushButton getSearch() {
-        return search;
+    public PushButton getSearchTopics() {
+        return searchTopics;
     }
 
     @Override

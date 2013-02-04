@@ -22,7 +22,7 @@ public final class SearchFieldPresenter extends BaseTemplatePresenter implements
     public interface Display extends BaseEditorViewInterface<SearchUIFields, SearchFieldEditor> {
         interface SearchFieldPresenterDriver extends SimpleBeanEditorDriver<SearchUIFields, SearchFieldEditor> {
         }
-        PushButton getSearch();
+        PushButton getSearchTopics();
         PushButton getTagsSearch();
         SearchUIFields getSearchUIFields();
     }

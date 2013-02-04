@@ -29,7 +29,7 @@ public abstract class XsltProcessorImpl {
     protected JavaScriptObject processor;
     protected JavaScriptObject sourceJsObject;
 
-    public void importSource(final String source) throws XsltProcessingException {
+    public final void importSource(final String source) throws XsltProcessingException {
         try {
             sourceJsObject = parseImpl(source);
         } catch (JavaScriptException e) {
@@ -37,7 +37,7 @@ public abstract class XsltProcessorImpl {
         }
     }
 
-    public void importStyleSheet(final String styleSheet) throws XsltProcessingException {
+    public final void importStyleSheet(final String styleSheet) throws XsltProcessingException {
         try {
             importStyleSheetImpl(styleSheet);
         } catch (JavaScriptException e) {
@@ -45,7 +45,7 @@ public abstract class XsltProcessorImpl {
         }
     }
 
-    public void setParameter(final String name, final String value) throws XsltProcessingException {
+    public final void setParameter(final String name, final String value) throws XsltProcessingException {
         try {
             setParameterImpl(name, value);
         } catch (JavaScriptException e) {
@@ -53,7 +53,7 @@ public abstract class XsltProcessorImpl {
         }
     }
 
-    public String transform() throws XsltProcessingException {
+    public final String transform() throws XsltProcessingException {
         try {
             return transformImpl();
         } catch (JavaScriptException e) {
