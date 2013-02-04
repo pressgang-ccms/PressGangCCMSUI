@@ -1,10 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler;
 
+import com.google.gwt.event.dom.client.*;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.ValueBoxBase;
@@ -12,9 +10,12 @@ import com.google.gwt.user.client.ui.ValueBoxBase;
 /**
  * Cancels and key press that is not a digit or comma, and removes any non digit or comma character on
  * value change.
+ *
+ * Use KeyDownHandler rather than KeyPresshandler because of http://code.google.com/p/google-web-toolkit/issues/detail?id=5557
+ *
  * @author Matthew Casperson
  */
-public class NumbersAndCommaValidator implements KeyPressHandler, ValueChangeHandler<String> {
+public class NumbersAndCommaValidator implements KeyDownHandler, ValueChangeHandler<String> {
 
     private final ValueBoxBase<String> source;
     
@@ -22,13 +23,13 @@ public class NumbersAndCommaValidator implements KeyPressHandler, ValueChangeHan
     public NumbersAndCommaValidator(final ValueBoxBase<String> source)
     {
         this.source = source;
-        source.addKeyPressHandler(this);
+        source.addKeyDownHandler(this);
         source.addValueChangeHandler(this);
     }
     
     @Override
-    public void onKeyPress(final KeyPressEvent event) {
-        final char keyCode = event.getCharCode();
+    public void onKeyDown(KeyDownEvent event) {
+        final int keyCode = event.getNativeKeyCode();
 
         /* Allow navigation keys */
         if (keyCode == KeyCodes.KEY_DELETE ||
