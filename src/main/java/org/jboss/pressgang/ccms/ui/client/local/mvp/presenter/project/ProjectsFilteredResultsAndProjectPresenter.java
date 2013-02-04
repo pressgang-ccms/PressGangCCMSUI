@@ -42,7 +42,7 @@ import java.util.List;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 
 @Dependent
-public final class ProjectsFilteredResultsAndProjectPresenter
+public class ProjectsFilteredResultsAndProjectPresenter
         extends
         BaseSearchAndEditComponent<ProjectFilteredResultsPresenter.Display, RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1, ProjectViewInterface, ProjectPresenter.Display, RESTProjectV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {

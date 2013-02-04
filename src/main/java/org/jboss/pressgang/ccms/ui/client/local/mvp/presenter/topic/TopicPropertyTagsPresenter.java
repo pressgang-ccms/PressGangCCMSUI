@@ -37,7 +37,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
     The presenter used to populate the tables of possible and existing topic property tags.
  */
 @Dependent
-public final class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
+public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
             RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1,
             RESTTopicV1,
             RESTPropertyTagV1, RESTPropertyTagCollectionV1, RESTPropertyTagCollectionItemV1,

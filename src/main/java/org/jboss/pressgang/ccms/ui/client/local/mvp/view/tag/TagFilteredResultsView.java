@@ -11,7 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.Ba
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
 
-public final class TagFilteredResultsView extends BaseFilteredResultsView<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> implements
+public class TagFilteredResultsView extends BaseFilteredResultsView<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> implements
         TagFilteredResultsPresenter.Display {
 
     private final TextBox idFilter = new TextBox();

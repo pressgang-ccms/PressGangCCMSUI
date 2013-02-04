@@ -10,7 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.Ba
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
 
-public final class ProjectedFilteredResultsView extends
+public class ProjectedFilteredResultsView extends
         BaseFilteredResultsView<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> implements
         ProjectFilteredResultsPresenter.Display {
 

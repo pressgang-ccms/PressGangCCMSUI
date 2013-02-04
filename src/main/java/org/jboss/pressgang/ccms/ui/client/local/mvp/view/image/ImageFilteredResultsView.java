@@ -10,7 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.Ba
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
 
-public final class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1>
+public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1>
         implements ImageFilteredResultsPresenter.Display {
 
     private final TextBox imageIdFilter = new TextBox();

@@ -5,7 +5,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.WaitingDialog;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
-public final class SearchTagsFieldsAndFiltersView extends
+public class SearchTagsFieldsAndFiltersView extends
         BaseTemplateView implements
         SearchTagsFieldsAndFiltersPresenter.Display {
 

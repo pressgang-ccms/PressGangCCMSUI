@@ -32,7 +32,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
  * The presenter used to add logic to the category filtered list view.
  */
 @Dependent
-public final class CategoryFilteredResultsPresenter
+public class CategoryFilteredResultsPresenter
         extends BaseFilteredResultsComponent<
         RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1>
         implements BaseTemplatePresenterInterface {

@@ -25,7 +25,7 @@ import javax.inject.Inject;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public final class TagFilteredResultsPresenter
+public class TagFilteredResultsPresenter
         extends
         BaseFilteredResultsComponent<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>
         implements BaseTemplatePresenterInterface {

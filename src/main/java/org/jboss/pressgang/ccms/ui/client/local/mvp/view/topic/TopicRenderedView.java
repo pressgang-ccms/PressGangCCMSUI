@@ -14,7 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 
 import java.util.List;
 
-public final class TopicRenderedView extends BaseTemplateView implements TopicRenderedPresenter.Display {
+public class TopicRenderedView extends BaseTemplateView implements TopicRenderedPresenter.Display {
 
     private final HTML div = new HTML("div");
 

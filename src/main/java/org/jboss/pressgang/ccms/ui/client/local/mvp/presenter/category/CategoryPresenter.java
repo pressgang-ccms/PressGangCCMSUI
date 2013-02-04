@@ -22,7 +22,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
  * The presenter used to add logic to the category view.
  */
 @Dependent
-public final class CategoryPresenter extends
+public class CategoryPresenter extends
         BaseTemplatePresenter
         implements BaseTemplatePresenterInterface {
 

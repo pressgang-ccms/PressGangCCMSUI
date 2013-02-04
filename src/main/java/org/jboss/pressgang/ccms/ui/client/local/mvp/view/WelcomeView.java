@@ -9,7 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
 
-public final class WelcomeView extends BaseTemplateView implements WelcomePresenter.Display {
+public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Display {
 
     private final HTML content = new HTML("<div/>");
     

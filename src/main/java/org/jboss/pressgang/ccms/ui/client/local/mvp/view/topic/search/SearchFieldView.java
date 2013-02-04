@@ -10,7 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchFieldEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 
-public final class SearchFieldView extends BaseTemplateView implements
+public class SearchFieldView extends BaseTemplateView implements
         SearchFieldPresenter.Display {
 
     /** The GWT Editor Driver */

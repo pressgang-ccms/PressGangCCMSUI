@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
-public final class TopicTagsPresenter extends BaseTopicViewPresenter implements
+public class TopicTagsPresenter extends BaseTopicViewPresenter implements
         BaseTemplatePresenterInterface {
 
     public interface Display extends BaseTopicViewInterface {

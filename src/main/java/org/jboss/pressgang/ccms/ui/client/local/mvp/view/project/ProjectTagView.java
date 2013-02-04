@@ -14,7 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectTag
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
-public final class ProjectTagView
+public class ProjectTagView
     extends BaseChildrenView<
         RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1,  // The main entity types
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,             // The possible child types

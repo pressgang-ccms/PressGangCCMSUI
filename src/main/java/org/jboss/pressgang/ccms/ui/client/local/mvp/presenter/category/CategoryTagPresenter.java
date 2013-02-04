@@ -38,7 +38,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
  * The presenter used to add logic to the category tag view.
  */
 @Dependent
-public final class CategoryTagPresenter
+public class CategoryTagPresenter
         extends BaseOrderedChildrenComponent<
         RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1,
         RESTCategoryV1,

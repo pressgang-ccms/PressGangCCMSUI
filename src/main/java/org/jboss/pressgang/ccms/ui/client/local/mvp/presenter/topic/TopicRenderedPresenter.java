@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public final class TopicRenderedPresenter extends BaseTopicViewPresenter implements BaseTemplatePresenterInterface {
+public class TopicRenderedPresenter extends BaseTopicViewPresenter implements BaseTemplatePresenterInterface {
     public static final String HISTORY_TOKEN = "TopicRenderedView";
 
     public interface Display extends BaseTopicViewInterface {

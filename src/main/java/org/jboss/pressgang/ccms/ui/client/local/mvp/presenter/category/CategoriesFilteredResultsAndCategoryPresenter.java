@@ -55,7 +55,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
  * @author Matthew Casperson
  */
 @Dependent
-public final class CategoriesFilteredResultsAndCategoryPresenter
+public class CategoriesFilteredResultsAndCategoryPresenter
         extends
         BaseSearchAndEditComponent<CategoryFilteredResultsPresenter.Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, CategoryViewInterface, CategoryPresenter.Display, RESTCategoryV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {

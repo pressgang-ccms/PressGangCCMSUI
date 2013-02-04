@@ -19,7 +19,7 @@ import java.util.Map;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
-public final class TopicXMLPresenter extends BaseTopicViewPresenter implements
+public class TopicXMLPresenter extends BaseTopicViewPresenter implements
         BaseTemplatePresenterInterface {
 
     // Empty interface declaration, similar to UiBinder

@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public final class ImageView extends BaseTemplateView implements
+public class ImageView extends BaseTemplateView implements
         ImagePresenter.Display {
 
     private RESTImageV1Editor editor;

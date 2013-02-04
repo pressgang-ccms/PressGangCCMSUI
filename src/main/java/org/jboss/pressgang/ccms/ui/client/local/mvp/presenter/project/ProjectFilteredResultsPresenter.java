@@ -27,7 +27,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public final class ProjectFilteredResultsPresenter
+public class ProjectFilteredResultsPresenter
         extends
         BaseFilteredResultsComponent<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1>
         implements BaseTemplatePresenterInterface {

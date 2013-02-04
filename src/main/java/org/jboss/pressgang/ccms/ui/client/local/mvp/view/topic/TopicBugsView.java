@@ -30,7 +30,7 @@ import java.util.List;
  * 
  * @author Matthew Casperson
  */
-public final class TopicBugsView extends BaseTemplateView implements TopicBugsPresenter.Display {
+public class TopicBugsView extends BaseTemplateView implements TopicBugsPresenter.Display {
 
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
 

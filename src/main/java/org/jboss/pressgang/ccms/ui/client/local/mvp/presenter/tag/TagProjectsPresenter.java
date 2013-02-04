@@ -25,7 +25,7 @@ import javax.inject.Inject;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public final class TagProjectsPresenter extends BaseChildrenComponent<
+public class TagProjectsPresenter extends BaseChildrenComponent<
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
         RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1,
         RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> implements

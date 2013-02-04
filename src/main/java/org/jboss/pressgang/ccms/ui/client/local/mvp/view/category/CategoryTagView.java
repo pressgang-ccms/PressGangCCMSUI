@@ -17,7 +17,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryT
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
-public final class CategoryTagView
+public class CategoryTagView
     extends BaseOrderedChildrenView<
                 RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1,
                 RESTCategoryV1,

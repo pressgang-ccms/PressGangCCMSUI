@@ -22,7 +22,7 @@ import javax.inject.Inject;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public final class SearchPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
+public class SearchPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
 
     public interface Display extends BaseEditorViewInterface<SearchUIProjects, SearchUIProjectsEditor> {
         // Empty interface declaration, similar to UiBinder

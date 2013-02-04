@@ -17,7 +17,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
  * The view that combines the topic search results with the individual topic views 
  * @author Matthew Casperson
  */
-public final class SearchResultsAndTopicView extends
+public class SearchResultsAndTopicView extends
         BaseSearchAndEditView<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> implements
         SearchResultsAndTopicPresenter.Display {
 

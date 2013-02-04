@@ -7,7 +7,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
  * Represents an event that is raised when the topics from a query have been returned from the
  * REST server.
  */
-public final class TopicListReceived extends GwtEvent<TopicListReceivedHandler> {
+public class TopicListReceived extends GwtEvent<TopicListReceivedHandler> {
 
     private static final Type TYPE = new Type<TopicListReceivedHandler>();
     private final RESTTopicCollectionV1 topics;

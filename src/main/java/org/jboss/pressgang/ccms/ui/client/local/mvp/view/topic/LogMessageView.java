@@ -11,7 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
      * 
      * @author Matthew Casperson
      */
-    public final class LogMessageView extends DialogBox implements LogMessageInterface {
+    public class LogMessageView extends DialogBox implements LogMessageInterface {
         
         /** Used to group the radio buttons */
         private static final String CHANGE_TYPE_GROUP = "ChangeType";

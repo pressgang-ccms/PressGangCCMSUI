@@ -15,7 +15,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
-public final class SearchFieldPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
+public class SearchFieldPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
 
     public static final String HISTORY_TOKEN = "SearchFieldView";
 

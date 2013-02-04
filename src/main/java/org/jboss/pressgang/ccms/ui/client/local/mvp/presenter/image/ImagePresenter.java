@@ -20,7 +20,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public final class ImagePresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
+public class ImagePresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
 
     public interface Display extends BaseTemplateViewInterface, BaseEditorViewInterface<RESTImageV1, RESTImageV1Editor> {
 

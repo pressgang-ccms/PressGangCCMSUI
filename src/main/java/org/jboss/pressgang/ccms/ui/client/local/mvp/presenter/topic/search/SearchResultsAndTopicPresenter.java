@@ -81,7 +81,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public final class SearchResultsAndTopicPresenter
+public class SearchResultsAndTopicPresenter
         extends BaseSearchAndEditComponent<
         SearchResultsPresenter.Display,
         RESTTopicV1,

@@ -27,7 +27,7 @@ import java.util.List;
 
  */
 @Dependent
-public final class TopicPropertyTagsView extends BaseExtendedChildrenView<
+public class TopicPropertyTagsView extends BaseExtendedChildrenView<
         RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1,
         RESTTopicV1,
         RESTPropertyTagV1, RESTPropertyTagCollectionV1, RESTPropertyTagCollectionItemV1,

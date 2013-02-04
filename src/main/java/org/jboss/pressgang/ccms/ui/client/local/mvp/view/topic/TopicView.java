@@ -11,7 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1B
 
 import java.util.List;
 
-public final class TopicView extends BaseTemplateView implements TopicPresenter.Display {
+public class TopicView extends BaseTemplateView implements TopicPresenter.Display {
 
     /** The GWT Editor Driver */
     private final TopicPresenterDriver driver = GWT.create(TopicPresenterDriver.class);

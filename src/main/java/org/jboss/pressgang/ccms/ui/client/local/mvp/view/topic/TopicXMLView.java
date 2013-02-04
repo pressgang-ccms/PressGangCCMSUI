@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public final class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.Display {
+public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.Display {
 
     /** The GWT Editor Driver */
     private final TopicXMLPresenterDriver driver = GWT.create(TopicXMLPresenterDriver.class);
