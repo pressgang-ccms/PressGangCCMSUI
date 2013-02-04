@@ -4,7 +4,6 @@ import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenComponent;
@@ -45,25 +44,32 @@ abstract public class BaseExtendedChildrenPresenter<
     /**
      * A logger.
      */
-    private static final Logger logger = Logger.getLogger(BaseOrderedChildrenComponent.class.getName());
-    protected ProviderUpdateData<F> existingProviderData = new ProviderUpdateData<F>();
+    private static final Logger LOGGER = Logger.getLogger(BaseOrderedChildrenComponent.class.getName());
+
+    private ProviderUpdateData<F> existingProviderData = new ProviderUpdateData<F>();
 
     /**
      * The ordered children display.
      */
     private BaseExtendedChildrenViewInterface display;
 
+    /**
+     * @return The provider that exposes the existing children children of an entity.
+     */
     @Override
-    public ProviderUpdateData<F> getExistingProviderData() {
-        return existingProviderData;
+    public final ProviderUpdateData<F> getExistingProviderData() {
+        return this.existingProviderData;
     }
 
+    /**
+     * @param existingProviderData The provider that exposes the existing children chidlren of an entity.
+     */
     @Override
-    public void setExistingProviderData(final ProviderUpdateData<F> existingProviderData) {
+    public final void setExistingProviderData(final ProviderUpdateData<F> existingProviderData) {
         this.existingProviderData = existingProviderData;
     }
 
-    public void bind(final int topicId, final String pageId, final String preferencesKey, final BaseExtendedChildrenViewInterface display) {
+    public final void bind(final int topicId, final String pageId, final String preferencesKey, final BaseExtendedChildrenViewInterface display) {
         if (pageId == null) {
             throw new NullPointerException("BaseExtendedChildrenPresenter.bind(): pageId cannot be null");
         }
@@ -95,15 +101,16 @@ abstract public class BaseExtendedChildrenPresenter<
      * @param preferencesKey The key against which the previous size was saved
      */
     private void bindChildSplitResize(final String preferencesKey) {
-        if (preferencesKey == null)
+        if (preferencesKey == null) {
             throw new NullPointerException("preferencesKey cannot be null");
+        }
 
-        display.getSplit().addResizeHandler(new ResizeHandler() {
+        this.display.getSplit().addResizeHandler(new ResizeHandler() {
 
             @Override
             public void onResize(final ResizeEvent event) {
                 Preferences.INSTANCE.saveSetting(preferencesKey,
-                        display.getSplit().getSplitPosition(display.getPossibleChildrenResultsPanel()) + "");
+                    BaseExtendedChildrenPresenter.this.display.getSplit().getSplitPosition(BaseExtendedChildrenPresenter.this.display.getPossibleChildrenResultsPanel()) + "");
             }
         });
     }
@@ -114,10 +121,11 @@ abstract public class BaseExtendedChildrenPresenter<
      * @param preferencesKey The key against which the previous size was saved
      */
     private void loadChildSplitResize(final String preferencesKey) {
-        if (preferencesKey == null)
+        if (preferencesKey == null) {
             throw new NullPointerException("preferencesKey cannot be null");
+        }
 
-        display.getSplit().setSplitPosition(display.getPossibleChildrenResultsPanel(),
+        this.display.getSplit().setSplitPosition(this.display.getPossibleChildrenResultsPanel(),
                 Preferences.INSTANCE.getInt(preferencesKey, Constants.SPLIT_PANEL_SIZE), false);
     }
 
@@ -125,21 +133,21 @@ abstract public class BaseExtendedChildrenPresenter<
      * @inheritDoc
      */
     @Override
-    public void refreshExistingChildList(final W parent) {
+    public final void refreshExistingChildList(final W parent) {
         try {
-            logger.log(Level.INFO, "ENTER BaseOrderedChildrenComponent.refreshExistingChildList()");
+            LOGGER.log(Level.INFO, "ENTER BaseOrderedChildrenComponent.refreshExistingChildList()");
 
             if (parent == null) {
                 throw new NullPointerException("BaseOrderedChildrenComponent.refreshExistingChildList(): parent cannot be null");
             }
 
-            if (display == null) {
+            if (this.display == null) {
                 throw new NullPointerException("BaseOrderedChildrenComponent.refreshExistingChildList(): display cannot be null");
             }
 
-            display.setExistingChildrenProvider(generateExistingProvider(parent));
+            this.display.setExistingChildrenProvider(generateExistingProvider(parent));
         } finally {
-            logger.log(Level.INFO, "EXIT BaseOrderedChildrenComponent.refreshExistingChildList()");
+            LOGGER.log(Level.INFO, "EXIT BaseOrderedChildrenComponent.refreshExistingChildList()");
         }
     }
 }

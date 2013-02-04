@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
- * The base class for views that display a collection of existing children and a second collection of possible children
+ * The base class for views that display a collection of existing children and a second collection of possible children.
  *
  * @author Matthew Casperson
  *
@@ -40,97 +40,81 @@ abstract public class BaseExtendedChildrenView<
         D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
         extends BaseChildrenView<T, U, V, A, B, C, D, E, F> implements BaseExtendedChildrenViewInterface<T, U, V, W, A, B, C, D, E, F> {
 
-    /** A reference to the entity that this view will be modifying. */
-    private T originalEntity;
-
     /** The panel that defines the split between the current children and the possible children */
-    private HandlerSplitLayoutPanel split = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
+    private final HandlerSplitLayoutPanel split = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
 
     private final VerticalPanel existingChildrenResultsPanel = new VerticalPanel();
     private final SimplePager existingChildrenPager = UIUtilities.createSimplePager();
     private final CellTable<F> existingChildrenResults = UIUtilities.<F> createCellTable();
     private EnhancedAsyncDataProvider<F> existingChildrenProvider;
 
-    public CellTable<F> getExistingChildrenResults() {
-        return existingChildrenResults;
+    @Override
+    public final CellTable<F> getExistingChildrenResults() {
+        return this.existingChildrenResults;
     }
 
     @Override
-    public SimplePager getExistingChildrenPager() {
-        return existingChildrenPager;
+    public final SimplePager getExistingChildrenPager() {
+        return this.existingChildrenPager;
     }
 
     @Override
-    public VerticalPanel getExistingChildrenResultsPanel() {
-        return existingChildrenResultsPanel;
+    public final VerticalPanel getExistingChildrenResultsPanel() {
+        return this.existingChildrenResultsPanel;
     }
 
     @Override
-    public HandlerSplitLayoutPanel getSplit() {
-        return split;
+    public final HandlerSplitLayoutPanel getSplit() {
+        return this.split;
     }
 
     @Override
-    public void setSplit(final HandlerSplitLayoutPanel split) {
-        this.split = split;
+    public final EnhancedAsyncDataProvider<F> getExistingChildrenProvider() {
+        return this.existingChildrenProvider;
     }
 
     @Override
-    public T getOriginalEntity() {
-        return originalEntity;
-    }
-
-    @Override
-    public void setOriginalEntity(final T originalEntity) {
-        this.originalEntity = originalEntity;
-    }
-
-    @Override
-    public EnhancedAsyncDataProvider<F> getExistingChildrenProvider() {
-        return existingChildrenProvider;
-    }
-
-    @Override
-    public void setExistingChildrenProvider(final EnhancedAsyncDataProvider<F> existingChildrenProvider) {
+    public final void setExistingChildrenProvider(final EnhancedAsyncDataProvider<F> existingChildrenProvider) {
         if (this.existingChildrenProvider != null)
         {
-            this.existingChildrenProvider.removeDataDisplay(existingChildrenResults);
+            this.existingChildrenProvider.removeDataDisplay(this.existingChildrenResults);
         }
 
         this.existingChildrenProvider = existingChildrenProvider;
-        existingChildrenProvider.addDataDisplay(existingChildrenResults);
+        existingChildrenProvider.addDataDisplay(this.existingChildrenResults);
     }
 
-    @Override
-    public void initialize(final T originalEntity, final boolean readOnly) {
-        this.originalEntity = originalEntity;
-    }
-
+    /**
+     * Initializes the UI elements required to display the existing and possible children.
+     *
+     * @param applicationName The name of the application, which will be added to the page's title field
+     * @param pageName The name of the page that is being displayed, which will be added to the page's title field
+     */
     public BaseExtendedChildrenView(final String applicationName, final String pageName) {
         super(applicationName, pageName);
 
-        split.addStyleName(CSSConstants.OrderedChildrenResultsView.ORDERED_CHILDREN_SPLIT_PANEL);
+        this.split.addStyleName(CSSConstants.OrderedChildrenResultsView.ORDERED_CHILDREN_SPLIT_PANEL);
 
         getPossibleChildrenResultsPanel().addStyleName(CSSConstants.OrderedChildrenResultsView.ORDERED_CHILDREN_LIST_PANEL);
         getPossibleChildrenResultsPanel().add(getPossibleChildrenResults());
         getPossibleChildrenResultsPanel().add(getPossibleChildrenPager());
         getPossibleChildrenPager().setDisplay(getPossibleChildrenResults());
 
-        split.addWest(getPossibleChildrenResultsPanel(), Constants.SPLIT_PANEL_SIZE);
+        this.split.addWest(getPossibleChildrenResultsPanel(), Constants.SPLIT_PANEL_SIZE);
 
-        existingChildrenResultsPanel.addStyleName(CSSConstants.OrderedChildrenResultsView.ORDERED_CHILDREN_EXISTING_LIST_PANEL);
-        existingChildrenResultsPanel.add(existingChildrenResults);
-        existingChildrenResultsPanel.add(existingChildrenPager);
-        existingChildrenPager.setDisplay(existingChildrenResults);
+        this.existingChildrenResultsPanel.addStyleName(CSSConstants.OrderedChildrenResultsView.ORDERED_CHILDREN_EXISTING_LIST_PANEL);
+        this.existingChildrenResultsPanel.add(this.existingChildrenResults);
+        this.existingChildrenResultsPanel.add(this.existingChildrenPager);
+        this.existingChildrenPager.setDisplay(this.existingChildrenResults);
 
-        this.getPanel().setWidget(split);
+        this.getPanel().setWidget(this.split);
     }
 
     /**
      * This method will add the existing results panel to the view. This might be called when the view is constructed, or left
      * if the existing children panel should not be shown straight away.
      */
-    protected void addExistingChildrenPanel() {
-        split.add(existingChildrenResultsPanel);
+    protected final void addExistingChildrenPanel() {
+        this.split.add(this.existingChildrenResultsPanel);
     }
 }

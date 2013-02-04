@@ -39,8 +39,16 @@ public interface BaseExtendedChildrenPresenterInterface<
             F extends RESTBaseCollectionItemV1<D, E, F>>
         extends BaseChildrenComponentInterface<T, U, V, A, B, C, D, E, F>, EditableView {
 
+    /**
+     *
+     * @return The provider that exposes the existing children.
+     */
     ProviderUpdateData<F> getExistingProviderData();
 
+    /**
+     *
+     * @param existingProviderData The provider that exposes the existing children.
+     */
     void setExistingProviderData(final ProviderUpdateData<F> existingProviderData);
 
     /**
@@ -62,7 +70,5 @@ public interface BaseExtendedChildrenPresenterInterface<
      * Called to refresh the list of existing children.
      * @param parent The entity that contains the existing children.
      */
-    public void refreshExistingChildList(final W parent);
-
-
+    void refreshExistingChildList(final W parent);
 }

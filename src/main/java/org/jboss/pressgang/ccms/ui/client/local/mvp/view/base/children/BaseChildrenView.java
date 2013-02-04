@@ -100,6 +100,4 @@ abstract public class BaseChildrenView<
     public final void initialize(final T originalEntity, final boolean readOnly) {
         this.originalEntity = originalEntity;
     }
-
-
 }
