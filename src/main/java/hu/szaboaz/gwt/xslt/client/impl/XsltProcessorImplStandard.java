@@ -24,7 +24,7 @@ import com.google.gwt.core.client.JavaScriptObject;
  * 
  * @author Szabó Árpád Zoltán, szabo.arpad.zoltan at gmail.com
  */
-public final class XsltProcessorImplStandard extends XsltProcessorImpl {
+public class XsltProcessorImplStandard extends XsltProcessorImpl {
 
     protected static native JavaScriptObject createDOMParser() /*-{
                                                                return new DOMParser();
@@ -33,11 +33,11 @@ public final class XsltProcessorImplStandard extends XsltProcessorImpl {
     protected final JavaScriptObject domParser = createDOMParser();
 
     @Override
-    protected void importStyleSheetImpl(final String styleSheet) {
+    protected final void importStyleSheetImpl(final String styleSheet) {
         importStyleSheetImpl(parseImpl(styleSheet));
     }
 
-    protected native void importStyleSheetImpl(final JavaScriptObject styleSheet) /*-{
+    protected final native void importStyleSheetImpl(final JavaScriptObject styleSheet) /*-{
                                                                             this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl::processor = new $wnd.XSLTProcessor();
                                                                             this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl::processor.importStylesheet(styleSheet);
                                                                             }-*/;
@@ -56,7 +56,7 @@ public final class XsltProcessorImplStandard extends XsltProcessorImpl {
                                                                  }-*/;
 
     @Override
-    protected native void setParameterImpl(final String name, final String value) /*-{
+    protected final native void setParameterImpl(final String name, final String value) /*-{
                                                                       if (this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl::processor != null) {
                                                                       this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl::processor.setParameter(null, name, value);
                                                                       }
@@ -66,7 +66,7 @@ public final class XsltProcessorImplStandard extends XsltProcessorImpl {
                                                                       }-*/;
 
     @Override
-    protected native String transformImpl() /*-{
+    protected final native String transformImpl() /*-{
                                             if (this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl::processor != null) {
                                             if (this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl::sourceJsObject != null) {
                                             var newFragment = this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl::processor.transformToFragment(

@@ -55,7 +55,7 @@ public final class SearchView extends BaseTemplateView implements
     public void initialise(final RESTTagCollectionV1 tagCollection) {
 
         /* Build the action bar icons */
-        addActionButton(search);
+        addActionButton(searchTopics);
         addActionButton(tags);
         addActionButton(fields);
 
