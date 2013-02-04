@@ -14,7 +14,7 @@ public class ViewOpenWithQueryEventHandler extends ViewOpenEventHandler {
         super(historyToken);
     }
 
-    void onViewOpen(final ViewOpenWithQueryEvent<?> event) {
+    protected final void onViewOpen(final ViewOpenWithQueryEvent<?> event) {
         if (event.isNewWindow()) {
             final String newWindowURL = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/"
                     + Window.Location.getPath() + "#" + historyToken + ";"

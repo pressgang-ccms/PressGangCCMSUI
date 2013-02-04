@@ -119,7 +119,7 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
      *
      * @param wasNewEntity true if the entity that was saved was a new entity, and false otherwise
      */
-    protected void updateDisplayAfterSave(final boolean wasNewEntity) {
+    protected final void updateDisplayAfterSave(final boolean wasNewEntity) {
         try {
 
             logger.log(Level.INFO, "ENTER BaseSearchAndEditComponent.updateDisplayAfterSave()");
@@ -158,7 +158,7 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
      * @param getNewEntityCallback The callback used to load a fresh entity
      * @param selectedItem         The item that was selected from a collection of entities
      */
-    protected void loadNewEntity(final GetNewEntityCallback<T> getNewEntityCallback, final V selectedItem) {
+    protected final void loadNewEntity(final GetNewEntityCallback<T> getNewEntityCallback, final V selectedItem) {
         try  {
             logger.log(Level.INFO, "ENTER BaseSearchAndEditComponent.loadNewEntity()");
 

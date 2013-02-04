@@ -852,6 +852,8 @@ public final class SearchResultsAndTopicPresenter
         try {
             logger.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.loadAdditionalDisplayedItemData()");
 
+            enableAndDisableActionButtons(lastDisplayedView);
+
             /* Display the tags that are added to the category */
             Collections.sort(SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
                     new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
@@ -1606,13 +1608,6 @@ public final class SearchResultsAndTopicPresenter
         } finally {
             logger.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bindActionButtons()");
         }
-    }
-
-    protected void updateDisplayAfterSave(final boolean wasNewEntity) {
-        super.updateDisplayAfterSave(wasNewEntity);
-
-        /* Refresh the buttons (especially the xml errors button) after a save */
-        enableAndDisableActionButtons(lastDisplayedView);
     }
 
     @Override

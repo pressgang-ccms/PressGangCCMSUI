@@ -43,13 +43,13 @@ public class TextAndImageButton extends Button {
     }
 
     @Override
-    public void setText(final String text) {
+    public final void setText(final String text) {
         this.text = text;
         div.setInnerText(text);
     }
 
     @Override
-    public String getText() {
+    public final String getText() {
         return this.text;
     }
 }

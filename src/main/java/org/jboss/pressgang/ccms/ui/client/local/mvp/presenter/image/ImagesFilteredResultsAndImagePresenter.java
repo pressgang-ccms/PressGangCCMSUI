@@ -140,6 +140,7 @@ public final class ImagesFilteredResultsAndImagePresenter
      */
     @Override
     protected void loadAdditionalDisplayedItemData() {
+
         final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, ImagesFilteredResultsAndImagePresenter.Display>(
                 display, new BaseRestCallback.SuccessAction<RESTImageV1, ImagesFilteredResultsAndImagePresenter.Display>() {
             @Override
@@ -313,36 +314,6 @@ public final class ImagesFilteredResultsAndImagePresenter
         if (locales != null && imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             initializeViews();
         }
-    }
-
-    /**
-     * Called once an entity has been saved to refresh the various lists that may have been modified by the edited or created
-     * entity.
-     *
-     *
-     * @param wasNewEntity true if the entity that was saved was a new entity, and false otherwise
-     */
-    @Override
-    protected void updateDisplayAfterSave(final boolean wasNewEntity) {
-        /* refresh the list of tags from the existing list that was modified */
-        if (!wasNewEntity) {
-            imageFilteredResultsComponent.getDisplay().getProvider().displayAsynchronousList(imageFilteredResultsComponent.getProviderData().getItems(),
-                    imageFilteredResultsComponent.getProviderData().getSize(),
-                    imageFilteredResultsComponent.getProviderData().getStartRow());
-        }
-        /* If we just created a new entity, refresh the list of entities from the database */
-        else {
-            imageFilteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", imageFilteredResultsComponent.getQuery());
-
-            /*
-             * reInitialiseView will flush the ui, which will flush the null ID back to the displayed object. To prevent that we
-             * need to call edit on the newly saved entity
-             */
-            imageComponent.getDisplay().getDriver().edit(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem());
-
-        }
-
-        initializeViews();
     }
 
     @Override

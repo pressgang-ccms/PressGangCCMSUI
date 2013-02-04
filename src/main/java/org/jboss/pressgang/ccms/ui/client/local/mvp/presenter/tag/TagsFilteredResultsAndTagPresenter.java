@@ -417,13 +417,6 @@ public final class TagsFilteredResultsAndTagPresenter
     };
 
     @Override
-    protected void updateDisplayAfterSave(final boolean wasNewEntity) {
-        super.updateDisplayAfterSave(wasNewEntity);
-
-        resetCategoryAndProjectsLists(true);
-    }
-
-    @Override
     public void go(final HasWidgets container) {
         try {
             logger.log(Level.INFO, "ENTER TagsFilteredResultsAndTagPresenter.go()");
