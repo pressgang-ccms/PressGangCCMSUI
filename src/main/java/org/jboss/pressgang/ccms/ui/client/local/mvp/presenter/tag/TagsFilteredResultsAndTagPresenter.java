@@ -96,7 +96,7 @@ public final class TagsFilteredResultsAndTagPresenter
     /**
      * A logger.
      */
-    private static final Logger logger = Logger.getLogger(TagsFilteredResultsAndTagPresenter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TagsFilteredResultsAndTagPresenter.class.getName());
 
     /**
      * An Errai injected instance of a class that implements Display. This is the view that holds all other views
@@ -180,15 +180,15 @@ public final class TagsFilteredResultsAndTagPresenter
         @Override
         public void onClick(final ClickEvent event) {
             try {
-                logger.log(Level.INFO, "ENTER saveClickHandler.onClick()");
+                LOGGER.log(Level.INFO, "ENTER saveClickHandler.onClick()");
 
                 if (hasUnsavedChanges()) {
 
                     final boolean unsavedTagChanges = unsavedTagChanged();
                     final boolean unsavedCategoryChanges = categoriesComponent.hasUnsavedChanges();
 
-                    logger.log(Level.INFO, "unsavedTagChanges: " + unsavedTagChanges);
-                    logger.log(Level.INFO, "unsavedCategoryChanges: " + unsavedCategoryChanges);
+                    LOGGER.log(Level.INFO, "unsavedTagChanges: " + unsavedTagChanges);
+                    LOGGER.log(Level.INFO, "unsavedCategoryChanges: " + unsavedCategoryChanges);
 
                     /* Create the tag first */
                     saveTagChanges(unsavedTagChanges, unsavedCategoryChanges);
@@ -196,7 +196,7 @@ public final class TagsFilteredResultsAndTagPresenter
                     Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                 }
             } finally {
-                logger.log(Level.INFO, "EXIT saveClickHandler.onClick()");
+                LOGGER.log(Level.INFO, "EXIT saveClickHandler.onClick()");
             }
 
         }
@@ -204,7 +204,7 @@ public final class TagsFilteredResultsAndTagPresenter
         private void saveTagChanges(final boolean unsavedTagChanges, final boolean unsavedCategoryChanges) {
 
             try {
-                logger.log(Level.INFO, "ENTER TagsFilteredResultsAndTagPresenter.saveTagChanges()");
+                LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndTagPresenter.saveTagChanges()");
 
                 /* Was the tag we just saved a new tag? */
                 final boolean wasNewTag = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
@@ -319,7 +319,7 @@ public final class TagsFilteredResultsAndTagPresenter
                     saveCategoryChanges(false, filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                 }
             } finally {
-                logger.log(Level.INFO, "EXIT TagsFilteredResultsAndTagPresenter.saveTagChanges()");
+                LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndTagPresenter.saveTagChanges()");
             }
         }
 
@@ -331,7 +331,7 @@ public final class TagsFilteredResultsAndTagPresenter
          */
         private void saveCategoryChanges(final boolean wasNewTag, final Integer newTagId) {
             try {
-                logger.log(Level.INFO, "ENTER TagsFilteredResultsAndTagPresenter.saveCategoryChanges()");
+                LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndTagPresenter.saveCategoryChanges()");
 
                 /* Save any changes made to the tag entity itself */
                 final RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
@@ -410,7 +410,7 @@ public final class TagsFilteredResultsAndTagPresenter
 
                 RESTCalls.updateCategories(callback, updatedCategories);
             } finally {
-                logger.log(Level.INFO, "EXIT TagsFilteredResultsAndTagPresenter.saveCategoryChanges()");
+                LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndTagPresenter.saveCategoryChanges()");
             }
         }
 
@@ -419,7 +419,7 @@ public final class TagsFilteredResultsAndTagPresenter
     @Override
     public void go(final HasWidgets container) {
         try {
-            logger.log(Level.INFO, "ENTER TagsFilteredResultsAndTagPresenter.go()");
+            LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndTagPresenter.go()");
 
             /* A call back used to get a fresh copy of the entity that was selected */
             final GetNewEntityCallback<RESTTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTTagV1>() {
@@ -456,7 +456,7 @@ public final class TagsFilteredResultsAndTagPresenter
             bindProjectColumnButtons();
         }
         finally {
-            logger.log(Level.INFO, "EXIT TagsFilteredResultsAndTagPresenter.go()");
+            LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndTagPresenter.go()");
         }
     }
 

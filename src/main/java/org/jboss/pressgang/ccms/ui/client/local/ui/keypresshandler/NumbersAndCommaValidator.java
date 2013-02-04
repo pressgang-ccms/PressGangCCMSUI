@@ -29,7 +29,7 @@ public final class NumbersAndCommaValidator implements KeyDownHandler, ValueChan
     }
     
     @Override
-    public void onKeyDown(KeyDownEvent event) {
+    public void onKeyDown(final KeyDownEvent event) {
         final int keyCode = event.getNativeKeyCode();
 
         /* Allow navigation keys */

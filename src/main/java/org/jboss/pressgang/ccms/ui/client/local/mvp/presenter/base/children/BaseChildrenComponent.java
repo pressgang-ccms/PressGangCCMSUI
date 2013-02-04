@@ -51,7 +51,7 @@ public abstract class BaseChildrenComponent<
     /**
      * @param providerData An instance of the provider data.
      */
-    protected final void setProviderData(ProviderUpdateData<C> providerData) {
+    protected final void setProviderData(final ProviderUpdateData<C> providerData) {
         this.providerData = providerData;
     }
 

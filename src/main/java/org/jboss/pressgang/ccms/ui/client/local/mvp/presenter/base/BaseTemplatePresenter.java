@@ -176,10 +176,10 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
             @Override
             public void onKeyPress(final KeyPressEvent event) {
-                int charCode = event.getUnicodeCharCode();
+                final int charCode = event.getUnicodeCharCode();
                 if (charCode == 0) {
                     // it's probably Firefox
-                    int keyCode = event.getNativeEvent().getKeyCode();
+                    final int keyCode = event.getNativeEvent().getKeyCode();
                     // beware! keyCode=40 means "down arrow", while charCode=40 means '('
                     // always check the keyCode against a list of "known to be buggy" codes!
                     if (keyCode == KeyCodes.KEY_ENTER) {

@@ -108,7 +108,7 @@ public final class TopicBugsView extends BaseTemplateView implements TopicBugsPr
     }
 
     @Override
-    public void initialize(RESTTopicV1 topic, boolean readOnly, boolean newTopic, SplitType splitType, List<String> locales, Boolean showImages) {
+    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
 
     }
 

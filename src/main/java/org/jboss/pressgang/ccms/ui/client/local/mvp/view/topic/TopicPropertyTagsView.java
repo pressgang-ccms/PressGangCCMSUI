@@ -40,7 +40,7 @@ public final class TopicPropertyTagsView extends BaseExtendedChildrenView<
     private final Column<RESTAssignedPropertyTagCollectionItemV1, String> propertyTagValueColumn = new Column<RESTAssignedPropertyTagCollectionItemV1, String>(
             new EditTextCell()) {
         @Override
-        public String getValue(RESTAssignedPropertyTagCollectionItemV1 object) {
+        public String getValue(final RESTAssignedPropertyTagCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getValue() != null) {
                 return object.getItem().getValue();
             }
@@ -153,7 +153,7 @@ public final class TopicPropertyTagsView extends BaseExtendedChildrenView<
 
 
     @Override
-    public void initialize(RESTTopicV1 topic, boolean readOnly, boolean newTopic, SplitType splitType, List<String> locales, Boolean showImages) {
+    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
         super.initialize(topic, readOnly);
     }
 

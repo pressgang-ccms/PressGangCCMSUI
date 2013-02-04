@@ -53,7 +53,7 @@ public final class CategoryTagPresenter
     /**
      * A logger.
      */
-    private static final Logger logger = Logger.getLogger(CategoryTagPresenter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CategoryTagPresenter.class.getName());
     /**
      * The id of the category to display.
      */
@@ -102,7 +102,7 @@ public final class CategoryTagPresenter
     @Override
     public void refreshPossibleChildrenDataAndList() {
         try {
-            logger.log(Level.INFO, "ENTER CategoryTagPresenter.refreshPossibleChildrenDataAndList()");
+            LOGGER.log(Level.INFO, "ENTER CategoryTagPresenter.refreshPossibleChildrenDataAndList()");
 
             final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
                 @Override
@@ -112,7 +112,7 @@ public final class CategoryTagPresenter
 
                 @Override
                 public void generalException(final Exception ex) {
-                    logger.log(Level.SEVERE, "RESTCallback.generalException()\n\tException: " + ex.toString());
+                    LOGGER.log(Level.SEVERE, "RESTCallback.generalException()\n\tException: " + ex.toString());
                     Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     getDisplay().removeWaitOperation();
                 }
@@ -120,7 +120,7 @@ public final class CategoryTagPresenter
                 @Override
                 public void success(final RESTTagCollectionV1 retValue) {
                     try {
-                        logger.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
+                        LOGGER.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
                         /* Zero results can be a null list */
                         getProviderData().setStartRow(0);
                         getProviderData().setItems(retValue.getItems());
@@ -137,7 +137,7 @@ public final class CategoryTagPresenter
                 @Override
                 public void failed(final Message message, final Throwable throwable) {
                     getDisplay().removeWaitOperation();
-                    logger.log(Level.SEVERE, "RESTCallback.failed()\n\tMessage: " + message.toString() + "\n\t Throwable: " + throwable.toString());
+                    LOGGER.log(Level.SEVERE, "RESTCallback.failed()\n\tMessage: " + message.toString() + "\n\t Throwable: " + throwable.toString());
                     Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                 }
             };
@@ -148,7 +148,7 @@ public final class CategoryTagPresenter
 
             RESTCalls.getTags(callback);
         } finally {
-            logger.log(Level.INFO, "EXIT CategoryTagPresenter.refreshPossibleChildrenDataAndList()");
+            LOGGER.log(Level.INFO, "EXIT CategoryTagPresenter.refreshPossibleChildrenDataAndList()");
         }
     }
 

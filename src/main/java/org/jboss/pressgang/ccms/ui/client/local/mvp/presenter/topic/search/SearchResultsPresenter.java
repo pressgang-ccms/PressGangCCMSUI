@@ -50,7 +50,7 @@ public final class SearchResultsPresenter
     @Inject
     private HandlerManager eventBus;
 
-    public void addTopicListReceivedHandler(TopicListReceivedHandler handler) {
+    public void addTopicListReceivedHandler(final TopicListReceivedHandler handler) {
         handlerManager.addHandler(TopicListReceived.getType(), handler);
     }
 

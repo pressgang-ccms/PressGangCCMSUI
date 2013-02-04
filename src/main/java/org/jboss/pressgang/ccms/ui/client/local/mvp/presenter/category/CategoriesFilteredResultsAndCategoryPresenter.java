@@ -67,7 +67,7 @@ public final class CategoriesFilteredResultsAndCategoryPresenter
     /**
      * A logger.
      */
-    private static final Logger logger = Logger.getLogger(CategoriesFilteredResultsAndCategoryPresenter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CategoriesFilteredResultsAndCategoryPresenter.class.getName());
     /**
      * Used when moving children up and down
      */
@@ -215,7 +215,7 @@ public final class CategoriesFilteredResultsAndCategoryPresenter
     @Override
     protected void loadAdditionalDisplayedItemData() {
         try {
-            logger.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.loadAdditionalDisplayedItemData()");
+            LOGGER.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.loadAdditionalDisplayedItemData()");
 
             /* Display the tags that are added to the category */
             categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
@@ -224,14 +224,14 @@ public final class CategoriesFilteredResultsAndCategoryPresenter
             categoryTagPresenter.refreshPossibleChildrenDataAndList();
         }
         finally {
-            logger.log(Level.INFO, "EXIT CategoriesFilteredResultsAndCategoryPresenter.loadAdditionalDisplayedItemData()");
+            LOGGER.log(Level.INFO, "EXIT CategoriesFilteredResultsAndCategoryPresenter.loadAdditionalDisplayedItemData()");
         }
     }
 
     @Override
     protected void initializeViews(final List<CategoryViewInterface> filter) {
         try {
-            logger.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.initializeViews()");
+            LOGGER.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.initializeViews()");
 
             /* We need to initialize the view so the celltable buttons can display the correct labels */
             if (viewIsInFilter(filter, categoryTagPresenter.getDisplay()))  {
@@ -244,7 +244,7 @@ public final class CategoriesFilteredResultsAndCategoryPresenter
                         .initialize(this.filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
             }
         } finally {
-            logger.log(Level.INFO, "EXIT CategoriesFilteredResultsAndCategoryPresenter.initializeViews()");
+            LOGGER.log(Level.INFO, "EXIT CategoriesFilteredResultsAndCategoryPresenter.initializeViews()");
         }
     }
 
@@ -380,7 +380,7 @@ public final class CategoriesFilteredResultsAndCategoryPresenter
     @Override
     protected void bindFilteredResultsButtons() {
         try {
-            logger.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.bindFilteredResultsButtons()");
+            LOGGER.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.bindFilteredResultsButtons()");
 
             filteredResultsPresenter.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
                 @Override
@@ -420,7 +420,7 @@ public final class CategoriesFilteredResultsAndCategoryPresenter
                 }
             });
         } finally {
-            logger.log(Level.INFO, "EXIT CategoriesFilteredResultsAndCategoryPresenter.bindFilteredResultsButtons()");
+            LOGGER.log(Level.INFO, "EXIT CategoriesFilteredResultsAndCategoryPresenter.bindFilteredResultsButtons()");
         }
     }
 

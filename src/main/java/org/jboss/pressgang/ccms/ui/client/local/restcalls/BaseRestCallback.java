@@ -25,7 +25,7 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
     private final SuccessAction<C, D> successAction;
     private final FailureAction<D> failureAction;
     
-    private static final Logger logger = Logger.getLogger(BaseRestCallback.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BaseRestCallback.class.getName());
 
     public BaseRestCallback(final D display, final SuccessAction<C, D> successAction) {
         this.display = display;
@@ -46,7 +46,7 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
 
     @Override
     public void generalException(final Exception e) {
-        logger.log(Level.SEVERE, e.toString());
+        LOGGER.log(Level.SEVERE, e.toString());
         display.removeWaitOperation();
         
         try
@@ -56,7 +56,7 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
             }
             
         } catch (final Exception ex) {
-            logger.log(Level.WARNING, "ENTER BaseRestCallback.generalException() threw an exception");
+            LOGGER.log(Level.WARNING, "ENTER BaseRestCallback.generalException() threw an exception");
         }
     }
 
@@ -78,16 +78,16 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
                 failureAction.doFailureAction(display);    
             }            
         } catch (final Exception ex) {
-            logger.log(Level.WARNING, "ENTER BaseRestCallback.failed() threw an exception");
+            LOGGER.log(Level.WARNING, "ENTER BaseRestCallback.failed() threw an exception");
         }
         
         try {
             
             if (message != null) {
-                logger.log(Level.SEVERE, message.toString());
+                LOGGER.log(Level.SEVERE, message.toString());
             }
             if (throwable != null) {
-                logger.log(Level.SEVERE, throwable.getMessage());
+                LOGGER.log(Level.SEVERE, throwable.getMessage());
             }
             
             if (throwable instanceof ResponseException) {

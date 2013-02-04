@@ -11,7 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 public final class SearchFieldEditor extends FlexTable implements LeafValueEditor<SearchUIFields> {
 
     /** The default format for the DateBoxes */
-    private final static DateTimeFormat dateFormat = DateTimeFormat.getLongDateFormat();
+    private static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getLongDateFormat();
     /** The name of the group that the matching option checkboxes belong to */
     private static final String MATCH_GROUP = "match";
 
@@ -41,25 +41,25 @@ public final class SearchFieldEditor extends FlexTable implements LeafValueEdito
 
     public SearchFieldEditor() {
         final Label topicCreatedAfterLabel = new Label(PressGangCCMSUI.INSTANCE.TopicCreatedAfter());
-        createdAfter.setFormat(new DateBox.DefaultFormat(dateFormat));
+        createdAfter.setFormat(new DateBox.DefaultFormat(DATE_FORMAT));
         createdAfter.getTextBox().setReadOnly(true);
         this.setWidget(this.getRowCount(), 0, topicCreatedAfterLabel);
         this.setWidget(this.getRowCount() - 1, 1, createdAfter);
 
         final Label topicCreatedBeforeLabel = new Label(PressGangCCMSUI.INSTANCE.TopicCreatedBefore());
-        createdBefore.setFormat(new DateBox.DefaultFormat(dateFormat));
+        createdBefore.setFormat(new DateBox.DefaultFormat(DATE_FORMAT));
         createdBefore.getTextBox().setReadOnly(true);
         this.setWidget(this.getRowCount(), 0, topicCreatedBeforeLabel);
         this.setWidget(this.getRowCount() - 1, 1, createdBefore);
 
         final Label topicEditedAfterLabel = new Label(PressGangCCMSUI.INSTANCE.TopicEditedAfter());
-        editedAfter.setFormat(new DateBox.DefaultFormat(dateFormat));
+        editedAfter.setFormat(new DateBox.DefaultFormat(DATE_FORMAT));
         editedAfter.getTextBox().setReadOnly(true);
         this.setWidget(this.getRowCount(), 0, topicEditedAfterLabel);
         this.setWidget(this.getRowCount() - 1, 1, editedAfter);
 
         final Label topicEditedBeforeLabel = new Label(PressGangCCMSUI.INSTANCE.TopicEditedBefore());
-        editedBefore.setFormat(new DateBox.DefaultFormat(dateFormat));
+        editedBefore.setFormat(new DateBox.DefaultFormat(DATE_FORMAT));
         editedBefore.getTextBox().setReadOnly(true);
         this.setWidget(this.getRowCount(), 0, topicEditedBeforeLabel);
         this.setWidget(this.getRowCount() - 1, 1, editedBefore);

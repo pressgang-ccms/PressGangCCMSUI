@@ -44,7 +44,7 @@ public final class CategoryFilteredResultsPresenter
     /**
      * A logger.
      */
-    private static final Logger logger = Logger.getLogger(CategoryFilteredResultsPresenter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CategoryFilteredResultsPresenter.class.getName());
     /**
      * The display used to show the list of categories.
      */
@@ -80,11 +80,11 @@ public final class CategoryFilteredResultsPresenter
 
     public void bindExtendedFilteredResults(final int topicId, final String pageId, final String queryString) {
         try {
-            logger.log(Level.INFO, "ENTER CategoryFilteredResultsPresenter.bind()");
+            LOGGER.log(Level.INFO, "ENTER CategoryFilteredResultsPresenter.bind()");
             super.bindFilteredResults(topicId, pageId, queryString, display);
             display.setProvider(generateListProvider(queryString, display));
         } finally {
-            logger.log(Level.INFO, "EXIT CategoryFilteredResultsPresenter.bind()");
+            LOGGER.log(Level.INFO, "EXIT CategoryFilteredResultsPresenter.bind()");
         }
     }
 
@@ -97,14 +97,14 @@ public final class CategoryFilteredResultsPresenter
                 final RESTCallback<RESTCategoryCollectionV1> callback = new RESTCallback<RESTCategoryCollectionV1>() {
                     @Override
                     public void begin() {
-                        logger.log(Level.INFO, "RESTCallback.begin()");
+                        LOGGER.log(Level.INFO, "RESTCallback.begin()");
                         resetProvider();
                         display.addWaitOperation();
                     }
 
                     @Override
                     public void generalException(final Exception ex) {
-                        logger.log(Level.SEVERE, "RESTCallback.generalException()\n\tException: " + ex.toString());
+                        LOGGER.log(Level.SEVERE, "RESTCallback.generalException()\n\tException: " + ex.toString());
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                         display.removeWaitOperation();
                     }
@@ -112,7 +112,7 @@ public final class CategoryFilteredResultsPresenter
                     @Override
                     public void success(final RESTCategoryCollectionV1 retValue) {
                         try {
-                            logger.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
+                            LOGGER.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
                             getProviderData().setItems(retValue.getItems());
                             getProviderData().setSize(retValue.getSize());
                             relinkSelectedItem();
@@ -126,7 +126,7 @@ public final class CategoryFilteredResultsPresenter
                     @Override
                     public void failed(final Message message, final Throwable throwable) {
                         display.removeWaitOperation();
-                        logger.log(Level.SEVERE, "RESTCallback.failed()\n\tMessage: " + message.toString() + "\n\t Throwable: " + throwable.toString());
+                        LOGGER.log(Level.SEVERE, "RESTCallback.failed()\n\tMessage: " + message.toString() + "\n\t Throwable: " + throwable.toString());
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
                 };
