@@ -79,8 +79,7 @@ public class App {
             CSSResources.INSTANCE.appCss().ensureInjected();
 
             this.appController.go(root);
-        }
-        finally {
+        } finally {
             LOGGER.log(Level.INFO, "EXIT App.startApp()");
         }
     }

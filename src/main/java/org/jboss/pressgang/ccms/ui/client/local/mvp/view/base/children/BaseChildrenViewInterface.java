@@ -32,22 +32,52 @@ public interface BaseChildrenViewInterface<
     A extends RESTBaseEntityV1<A, B, C>, B extends RESTBaseCollectionV1<A, B, C>, C extends RESTBaseCollectionItemV1<A, B, C>,
     D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
         extends BaseTemplateViewInterface {
-    
+
+    /**
+     *
+     * @return The entity that will have the possible children added to it.
+     */
     T getOriginalEntity();
 
+    /**
+     *
+     * @param originalEntity The entity that will have the possible children added to it.
+     */
     void setOriginalEntity(final T originalEntity);
 
+    /**
+     *
+     * @return The panel used to hold the table and pager
+     */
     VerticalPanel getPossibleChildrenResultsPanel();
 
+    /**
+     *
+     * @return The table pager.
+     */
     SimplePager getPossibleChildrenPager();
 
+    /**
+     *
+     * @return The table used to display the possible children
+     */
     CellTable<C> getPossibleChildrenResults();
 
+    /**
+     *
+     * @return The provider used as the source for the possible children.
+     */
     EnhancedAsyncDataProvider<C> getPossibleChildrenProvider();
 
+    /**
+     *
+     * @param possibleChildrenProvider The provider used as the source for the possible children.
+     */
     void setPossibleChildrenProvider(final EnhancedAsyncDataProvider<C> possibleChildrenProvider);
 
-    
-
+    /**
+     *
+     * @return The column that holds the buttons used to add or remove the possible children.
+     */
     Column<C, String> getPossibleChildrenButtonColumn();
 }

@@ -122,12 +122,12 @@ public class CategoryTagPresenter
                     try {
                         logger.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
                         /* Zero results can be a null list */
-                        providerData.setStartRow(0);
-                        providerData.setItems(retValue.getItems());
-                        providerData.setSize(retValue.getItems().size());
+                        getProviderData().setStartRow(0);
+                        getProviderData().setItems(retValue.getItems());
+                        getProviderData().setSize(retValue.getItems().size());
 
                         /* Refresh the list */
-                        getDisplay().getPossibleChildrenProvider().displayNewFixedList(providerData.getItems());
+                        getDisplay().getPossibleChildrenProvider().displayNewFixedList(getProviderData().getItems());
 
                     } finally {
                         getDisplay().removeWaitOperation();
@@ -143,7 +143,7 @@ public class CategoryTagPresenter
             };
 
             /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
-            providerData.reset();
+            getProviderData().reset();
             this.getDisplay().getPossibleChildrenProvider().resetProvider();
 
             RESTCalls.getTags(callback);
@@ -159,10 +159,10 @@ public class CategoryTagPresenter
             @Override
             protected void onRangeChanged(final HasData<RESTTagCollectionItemV1> display) {
 
-                providerData.setStartRow(display.getVisibleRange().getStart());
+                getProviderData().setStartRow(display.getVisibleRange().getStart());
 
-                if (providerData.getItems() != null) {
-                    displayNewFixedList(providerData.getItems());
+                if (getProviderData().getItems() != null) {
+                    displayNewFixedList(getProviderData().getItems());
                 } else {
                     resetProvider();
                 }
@@ -182,8 +182,7 @@ public class CategoryTagPresenter
                 /* Zero results can be a null list. Also selecting a new tag will reset getProviderData(). */
                 if (entity != null && entity.getTags() != null) {
                     /* Don't display removed tags */
-                    for (final RESTTagInCategoryCollectionItemV1 tagInCategory : entity.getTags()
-                            .returnExistingAddedAndUpdatedCollectionItems()) {
+                    for (final RESTTagInCategoryCollectionItemV1 tagInCategory : entity.getTags().returnExistingAddedAndUpdatedCollectionItems()) {
                         getExistingProviderData().getItems().add(tagInCategory);
                     }
                 }

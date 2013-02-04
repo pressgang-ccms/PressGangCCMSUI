@@ -441,10 +441,17 @@ public class CategoriesFilteredResultsAndCategoryPresenter
      */
 
     private boolean unsavedCategoryChanges() {
-        return !(stringEqualsEquatingNullWithEmptyString(filteredResultsPresenter.getProviderData().getSelectedItem().getItem()
-                .getName(), filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName()) && stringEqualsEquatingNullWithEmptyString(
-                filteredResultsPresenter.getProviderData().getSelectedItem().getItem().getDescription(),
-                filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getDescription()));
+        if (!stringEqualsEquatingNullWithEmptyString(filteredResultsPresenter.getProviderData().getSelectedItem().getItem().getName(),
+                filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName())) {
+            return true;
+        }
+
+        if (!stringEqualsEquatingNullWithEmptyString(filteredResultsPresenter.getProviderData().getSelectedItem().getItem().getDescription(),
+                filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getDescription())) {
+            return true;
+        }
+
+        return false;
     }
 
     /*

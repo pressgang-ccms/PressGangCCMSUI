@@ -77,7 +77,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
     /**
      * Adds event handlers to the event bus.
      */
-    public void bind() {
+    public final void bind() {
         try {
             LOGGER.log(Level.INFO, "ENTER AppController.bind()");
 
@@ -106,7 +106,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public final void go(final HasWidgets container) {
         try {
             LOGGER.log(Level.INFO, "ENTER AppController.go()");
 
@@ -126,7 +126,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
     }
 
     @Override
-    public void onValueChange(final ValueChangeEvent<String> event) {
+    public final void onValueChange(final ValueChangeEvent<String> event) {
 
         final String token = event.getValue();
 

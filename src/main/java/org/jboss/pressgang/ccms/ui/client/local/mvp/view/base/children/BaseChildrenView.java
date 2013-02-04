@@ -42,59 +42,64 @@ abstract public class BaseChildrenView<
     private EnhancedAsyncDataProvider<C> possibleChildrenProvider;
 
     @Override
-    public T getOriginalEntity() {
-        return originalEntity;
+    public final T getOriginalEntity() {
+        return this.originalEntity;
     }
 
     @Override
-    public void setOriginalEntity(final T originalEntity) {
+    public final void setOriginalEntity(final T originalEntity) {
         this.originalEntity = originalEntity;
     }
 
     @Override
-    public VerticalPanel getPossibleChildrenResultsPanel() {
-        return possibleChildrenResultsPanel;
+    public final VerticalPanel getPossibleChildrenResultsPanel() {
+        return this.possibleChildrenResultsPanel;
     }
 
     @Override
-    public SimplePager getPossibleChildrenPager() {
-        return possibleChildrenPager;
+    public final SimplePager getPossibleChildrenPager() {
+        return this.possibleChildrenPager;
     }
 
     @Override
-    public CellTable<C> getPossibleChildrenResults() {
-        return possibleChildrenResults;
+    public final CellTable<C> getPossibleChildrenResults() {
+        return this.possibleChildrenResults;
     }
 
     @Override
-    public EnhancedAsyncDataProvider<C> getPossibleChildrenProvider() {
-        return possibleChildrenProvider;
+    public final EnhancedAsyncDataProvider<C> getPossibleChildrenProvider() {
+        return this.possibleChildrenProvider;
     }
 
     @Override
-    public void setPossibleChildrenProvider(final EnhancedAsyncDataProvider<C> possibleChildrenProvider) {
+    public final void setPossibleChildrenProvider(final EnhancedAsyncDataProvider<C> possibleChildrenProvider) {
         
-        if (this.possibleChildrenProvider != null)
-        {
-            this.possibleChildrenProvider.removeDataDisplay(possibleChildrenResults);
+        if (this.possibleChildrenProvider != null) {
+            this.possibleChildrenProvider.removeDataDisplay(this.possibleChildrenResults);
         }
         
         this.possibleChildrenProvider = possibleChildrenProvider;
-        possibleChildrenProvider.addDataDisplay(possibleChildrenResults);
+        possibleChildrenProvider.addDataDisplay(this.possibleChildrenResults);
     }
 
-    public void initialize(final T originalEntity, final boolean readOnly) {
-        this.originalEntity = originalEntity;
-    }
-
+    /**
+     * @param applicationName The name of the application, which will be added to the page's title field
+     * @param pageName The name of the page that is being displayed, which will be added to the page's title field
+     */
     public BaseChildrenView(final String applicationName, final String pageName) {
         super(applicationName, pageName);
 
-        possibleChildrenPager.setDisplay(possibleChildrenResults);
+        this.possibleChildrenPager.setDisplay(this.possibleChildrenResults);
 
-        possibleChildrenResultsPanel.add(possibleChildrenResults);
-        possibleChildrenResultsPanel.add(possibleChildrenPager);
+        this.possibleChildrenResultsPanel.add(this.possibleChildrenResults);
+        this.possibleChildrenResultsPanel.add(this.possibleChildrenPager);
 
-        this.getPanel().setWidget(possibleChildrenResultsPanel);
+        this.getPanel().setWidget(this.possibleChildrenResultsPanel);
     }
+
+    public final void initialize(final T originalEntity, final boolean readOnly) {
+        this.originalEntity = originalEntity;
+    }
+
+
 }

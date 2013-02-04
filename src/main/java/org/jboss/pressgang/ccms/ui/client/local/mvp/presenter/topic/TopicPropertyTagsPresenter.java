@@ -109,9 +109,7 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
                                 .returnExistingAddedAndUpdatedCollectionItems()) {
                             getExistingProviderData().getItems().add(propertyTagInTopic);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         LOGGER.log(Level.WARNING, "entity == null: " + (entity == null) + " entity.getProperties() == null: " + (entity.getProperties() == null));
                     }
 
@@ -131,10 +129,10 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
             @Override
             protected void onRangeChanged(final HasData<RESTPropertyTagCollectionItemV1> display) {
 
-                providerData.setStartRow(display.getVisibleRange().getStart());
+                getProviderData().setStartRow(display.getVisibleRange().getStart());
 
-                if (providerData.getItems() != null) {
-                    displayNewFixedList(providerData.getItems());
+                if (getProviderData().getItems() != null) {
+                    displayNewFixedList(getProviderData().getItems());
                 } else {
                     resetProvider();
                 }
@@ -167,12 +165,12 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
                         LOGGER.log(Level.INFO, "ENTER TopicPropertyTagsPresenter.refreshPossibleChildrenDataAndList() callback.success()");
                         LOGGER.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
                         /* Zero results can be a null list */
-                        providerData.setStartRow(0);
-                        providerData.setItems(retValue.getItems());
-                        providerData.setSize(retValue.getItems().size());
+                        getProviderData().setStartRow(0);
+                        getProviderData().setItems(retValue.getItems());
+                        getProviderData().setSize(retValue.getItems().size());
 
                         /* Refresh the list */
-                        getDisplay().getPossibleChildrenProvider().displayNewFixedList(providerData.getItems());
+                        getDisplay().getPossibleChildrenProvider().displayNewFixedList(getProviderData().getItems());
 
                     } finally {
                         LOGGER.log(Level.INFO, "EXIT TopicPropertyTagsPresenter.refreshPossibleChildrenDataAndList() callback.success()");
@@ -189,7 +187,7 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
             };
 
             /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
-            providerData.reset();
+            getProviderData().reset();
             this.getDisplay().getPossibleChildrenProvider().resetProvider();
 
             RESTCalls.getPropertyTags(callback);

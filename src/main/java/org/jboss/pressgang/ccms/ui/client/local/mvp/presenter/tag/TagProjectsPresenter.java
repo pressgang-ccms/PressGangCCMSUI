@@ -81,10 +81,10 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
             @Override
             protected void onRangeChanged(final HasData<RESTProjectCollectionItemV1> display) {
 
-                providerData.setStartRow(display.getVisibleRange().getStart());
+                getProviderData().setStartRow(display.getVisibleRange().getStart());
 
-                if (providerData.getItems() != null)
-                    displayNewFixedList(providerData.getItems());
+                if (getProviderData().getItems() != null)
+                    displayNewFixedList(getProviderData().getItems());
                 else
                     resetProvider();
 
@@ -96,8 +96,8 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
     @Override
     public boolean hasUnsavedChanges() {
         /* It is possible that the list of categories has not loaded yet, in which case no changes could have been made */
-        if (providerData.getItems() != null) {
-            for (final RESTProjectCollectionItemV1 project : providerData.getItems()) {
+        if (getProviderData().getItems() != null) {
+            for (final RESTProjectCollectionItemV1 project : getProviderData().getItems()) {
                 if (project.getItem().getTags().returnDeletedAddedAndUpdatedCollectionItems().size() != 0) {
                     return true;
                 }
@@ -132,12 +132,12 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
             public void success(final RESTProjectCollectionV1 retValue) {
                 try {
                     /* Zero results can be a null list */
-                    providerData.setStartRow(0);
-                    providerData.setItems(retValue.getItems());
-                    providerData.setSize(retValue.getItems().size());
+                    getProviderData().setStartRow(0);
+                    getProviderData().setItems(retValue.getItems());
+                    getProviderData().setSize(retValue.getItems().size());
 
                     /* Refresh the list */
-                    display.getPossibleChildrenProvider().displayNewFixedList(providerData.getItems());
+                    display.getPossibleChildrenProvider().displayNewFixedList(getProviderData().getItems());
 
                 } finally {
                     display.removeWaitOperation();
@@ -152,7 +152,7 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
         };
 
         /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
-        providerData.reset();
+        getProviderData().reset();
         display.getPossibleChildrenProvider().resetProvider();
 
         RESTCalls.getProjects(callback);

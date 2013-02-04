@@ -10,6 +10,18 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 
 /**
  * @inheritDoc
+ *
+ * @param <T> The entity type
+ * @param <U> The collection type for entity T
+ * @param <V> The collection item type for entity T
+ *
+ * @param <A> The possible child type
+ * @param <B> The collection type for entity A
+ * @param <C> The collection item type for entity A
+ *
+ * @param <D> The existing child type
+ * @param <E> The collection type for entity D
+ * @param <F> The collection item type for entity D
  */
 public abstract class BaseChildrenComponent<
         T extends RESTBaseEntityV1<T, U, V>,
@@ -23,35 +35,47 @@ public abstract class BaseChildrenComponent<
         F extends RESTBaseCollectionItemV1<D, E, F>>
         extends BaseTemplatePresenter implements BaseChildrenComponentInterface<T, U, V, A, B, C, D, E, F> {
 
-    /**
-     * An instance of the provider data.
-     */
-    protected ProviderUpdateData<C> providerData = new ProviderUpdateData<C>();
+    private ProviderUpdateData<C> providerData = new ProviderUpdateData<C>();
     /**
      * The display that shows the children of a given entity.
      */
     private BaseChildrenViewInterface display;
 
     /**
-     * @inheritDoc
+     * @return An instance of the provider data.
      */
-    @Override
-    public ProviderUpdateData<C> getPossibleChildrenProviderData() {
+    protected final ProviderUpdateData<C> getProviderData() {
         return this.providerData;
     }
 
     /**
-     * @inheritDoc
+     * @param providerData An instance of the provider data.
+     */
+    protected final void setProviderData(ProviderUpdateData<C> providerData) {
+        this.providerData = providerData;
+    }
+
+
+    /**
+     *  @return An instance of the possible children provider data.
      */
     @Override
-    public void setPossibleChildrenProviderData(final ProviderUpdateData<C> providerData) {
-        this.providerData = providerData;
+    public final ProviderUpdateData<C> getPossibleChildrenProviderData() {
+        return this.getProviderData();
     }
 
     /**
      * @inheritDoc
      */
-    public void bind(final int topicId, final String pageId, final BaseChildrenViewInterface display) {
+    @Override
+    public final void setPossibleChildrenProviderData(final ProviderUpdateData<C> providerData) {
+        this.setProviderData(providerData);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public final void bind(final int topicId, final String pageId, final BaseChildrenViewInterface display) {
         this.display = display;
 
         super.bind(topicId, pageId, display);
@@ -63,7 +87,7 @@ public abstract class BaseChildrenComponent<
      * @inheritDoc
      */
     @Override
-    public void bindPossibleChildrenListButtonClicks(final GetExistingCollectionCallback<D, E, F> getExistingCollectionCallback,
+    public final void bindPossibleChildrenListButtonClicks(final GetExistingCollectionCallback<D, E, F> getExistingCollectionCallback,
                                                      final AddPossibleChildCallback<A, B, C> addChildCallback,
                                                      final UpdateAfterChildModfiedCallback updateAfterChildModfied) {
         this.display.getPossibleChildrenButtonColumn().setFieldUpdater(new FieldUpdater<C, String>() {
@@ -113,4 +137,6 @@ public abstract class BaseChildrenComponent<
     public final void refreshPossibleChildList() {
         this.display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
     }
+
+
 }

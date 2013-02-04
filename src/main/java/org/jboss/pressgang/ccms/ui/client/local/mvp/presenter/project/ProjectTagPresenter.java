@@ -81,18 +81,18 @@ public class ProjectTagPresenter
                     public void doSuccessAction(final RESTTagCollectionV1 retValue, final ProjectTagPresenter.Display display) {
 
                             /* Zero results can be a null list */
-                        providerData.setStartRow(0);
-                        providerData.setItems(retValue.getItems());
-                        providerData.setSize(retValue.getItems().size());
+                        getProviderData().setStartRow(0);
+                        getProviderData().setItems(retValue.getItems());
+                        getProviderData().setSize(retValue.getItems().size());
 
                             /* Refresh the list */
-                        display.getPossibleChildrenProvider().displayNewFixedList(providerData.getItems());
+                        display.getPossibleChildrenProvider().displayNewFixedList(getProviderData().getItems());
                     }
                 }) {
         };
 
         /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
-        providerData.reset();
+        getProviderData().reset();
         display.getPossibleChildrenProvider().resetProvider();
 
         RESTCalls.getTags(callback);
@@ -105,10 +105,10 @@ public class ProjectTagPresenter
             @Override
             protected void onRangeChanged(final HasData<RESTTagCollectionItemV1> display) {
 
-                providerData.setStartRow(display.getVisibleRange().getStart());
+                getProviderData().setStartRow(display.getVisibleRange().getStart());
 
-                if (providerData.getItems() != null)
-                    displayNewFixedList(providerData.getItems());
+                if (getProviderData().getItems() != null)
+                    displayNewFixedList(getProviderData().getItems());
                 else
                     resetProvider();
 
