@@ -178,8 +178,7 @@ public class TagCategoriesPresenter
     /**
      * Bind behaviour to the buttons found in the celltable listing the categories
      */
-    @Override
-    protected void initLifecycleBindPossibleChildrenRowClick() {
+    private void initLifecycleBindPossibleChildrenRowClick() {
         display.getPossibleChildrenResults().addCellPreviewHandler(new Handler<RESTCategoryCollectionItemV1>() {
             @Override
             public void onCellPreview(final CellPreviewEvent<RESTCategoryCollectionItemV1> event) {

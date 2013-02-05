@@ -112,14 +112,6 @@ public abstract class BaseChildrenComponent<
     }
 
     /**
-     * Used to bind logic to mouse clicks on the list of possible children. This is not mandatory, as sometimes selecting an
-     * item in this list has no effect in the UI.
-     */
-    protected void initLifecycleBindPossibleChildrenRowClick() {
-
-    }
-
-    /**
      * @inheritDoc
      */
     public final void refreshPossibleChildList(final T parent) {

@@ -160,12 +160,6 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
 
         RESTCalls.getProjects(callback);
     }
-
-    @Override
-    public void initLifecycleBindPossibleChildrenRowClick()
-    {
-
-    }
 }
 
 
