@@ -240,8 +240,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
 
             /* Initialize the properties view */
             if (viewIsInFilter(filter, categoryPresenter.getDisplay())) {
-                categoryPresenter.getDisplay()
-                        .initialize(this.filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+                categoryPresenter.getDisplay().initialize(this.filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT CategoriesFilteredResultsAndCategoryPresenter.initializeViews()");
@@ -347,12 +346,9 @@ public class CategoriesFilteredResultsAndCategoryPresenter
 
                             final RESTCategoryV1 category = new RESTCategoryV1();
                             category.setId(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
-                            category.explicitSetName(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
-                                    .getName());
-                            category.explicitSetDescription(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
-                                    .getDescription());
-                            category.explicitSetTags(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem()
-                                    .getTags());
+                            category.explicitSetName(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
+                            category.explicitSetDescription(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getDescription());
+                            category.explicitSetTags(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getTags());
 
                             if (wasNewEntity) {
                                 RESTCalls.createCategory(callback, category);
@@ -465,8 +461,6 @@ public class CategoriesFilteredResultsAndCategoryPresenter
 
     @Override
     protected void afterSwitchView(final CategoryViewInterface displayedView) {
-
-        super.switchView(displayedView);
 
         enableAndDisableActionButtons(displayedView);
 

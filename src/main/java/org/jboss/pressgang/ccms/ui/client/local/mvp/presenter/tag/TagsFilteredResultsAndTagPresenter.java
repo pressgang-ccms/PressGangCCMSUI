@@ -708,8 +708,6 @@ public class TagsFilteredResultsAndTagPresenter
     @Override
     protected void afterSwitchView(final TagViewInterface displayedView) {
 
-        super.switchView(displayedView);
-
         this.enableAndDisableActionButtons(displayedView);
 
         /* save any changes to the tag details */
