@@ -23,8 +23,7 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
         void initialize(final RESTTopicV1 topic);
     }
 
-    @Inject
-    private Display display;
+    @Inject private Display display;
 
     @Override
     public void go(final HasWidgets container) {

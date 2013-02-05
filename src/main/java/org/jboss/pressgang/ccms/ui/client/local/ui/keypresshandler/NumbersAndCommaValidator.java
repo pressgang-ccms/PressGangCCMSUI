@@ -18,6 +18,9 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
  */
 public final class NumbersAndCommaValidator implements KeyDownHandler, ValueChangeHandler<String> {
 
+    private static final int COMMA_KEY_CODE = 188;
+    private static final int ZERO_KEY_CODE = 48;
+    private static final int NINE_KEY_CODE = 57;
     private final ValueBoxBase<String> source;
     
     
@@ -46,12 +49,12 @@ public final class NumbersAndCommaValidator implements KeyDownHandler, ValueChan
         }
         
         /* Allow numeric keys */
-        if (keyCode >= '0' && keyCode <= '9') {
+        if (keyCode >= ZERO_KEY_CODE && keyCode <= NINE_KEY_CODE) {
             return;
         }
         
         /* Allow the comma */
-        if (keyCode == ',') {
+        if (keyCode == COMMA_KEY_CODE) {
             return;
         }
         
