@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.Base
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,7 +47,7 @@ abstract public class BaseExtendedChildrenPresenter<
      */
     private static final Logger LOGGER = Logger.getLogger(BaseOrderedChildrenComponent.class.getName());
 
-    private ProviderUpdateData<F> existingProviderData = new ProviderUpdateData<F>();
+    private final ProviderUpdateData<F> existingProviderData = new ProviderUpdateData<F>();
 
     /**
      * The ordered children display.
@@ -57,28 +58,12 @@ abstract public class BaseExtendedChildrenPresenter<
      * @return The provider that exposes the existing children children of an entity.
      */
     @Override
+    @NotNull
     public final ProviderUpdateData<F> getExistingProviderData() {
         return this.existingProviderData;
     }
 
-    /**
-     * @param existingProviderData The provider that exposes the existing children chidlren of an entity.
-     */
-    @Override
-    public final void setExistingProviderData(final ProviderUpdateData<F> existingProviderData) {
-        this.existingProviderData = existingProviderData;
-    }
-
-    public final void bind(final int topicId, final String pageId, final String preferencesKey, final BaseExtendedChildrenViewInterface display) {
-        if (pageId == null) {
-            throw new NullPointerException("BaseExtendedChildrenPresenter.bind(): pageId cannot be null");
-        }
-        if (preferencesKey == null) {
-            throw new NullPointerException("BaseExtendedChildrenPresenter.bind(): preferencesKey cannot be null");
-        }
-        if (display == null) {
-            throw new NullPointerException("BaseExtendedChildrenPresenter.bind(): display cannot be null");
-        }
+    public final void bind(final int topicId, @NotNull final String pageId, @NotNull final String preferencesKey, @NotNull final BaseExtendedChildrenViewInterface display) {
 
         this.display = display;
 
@@ -100,10 +85,7 @@ abstract public class BaseExtendedChildrenPresenter<
      *
      * @param preferencesKey The key against which the previous size was saved
      */
-    private void bindChildSplitResize(final String preferencesKey) {
-        if (preferencesKey == null) {
-            throw new NullPointerException("preferencesKey cannot be null");
-        }
+    private void bindChildSplitResize(@NotNull final String preferencesKey) {
 
         this.display.getSplit().addResizeHandler(new ResizeHandler() {
 
@@ -120,10 +102,7 @@ abstract public class BaseExtendedChildrenPresenter<
      *
      * @param preferencesKey The key against which the previous size was saved
      */
-    private void loadChildSplitResize(final String preferencesKey) {
-        if (preferencesKey == null) {
-            throw new NullPointerException("preferencesKey cannot be null");
-        }
+    private void loadChildSplitResize(@NotNull final String preferencesKey) {
 
         this.display.getSplit().setSplitPosition(this.display.getPossibleChildrenResultsPanel(),
                 Preferences.INSTANCE.getInt(preferencesKey, Constants.SPLIT_PANEL_SIZE), false);
@@ -133,13 +112,9 @@ abstract public class BaseExtendedChildrenPresenter<
      * @inheritDoc
      */
     @Override
-    public final void refreshExistingChildList(final W parent) {
+    public final void refreshExistingChildList(@NotNull final W parent) {
         try {
             LOGGER.log(Level.INFO, "ENTER BaseOrderedChildrenComponent.refreshExistingChildList()");
-
-            if (parent == null) {
-                throw new NullPointerException("BaseOrderedChildrenComponent.refreshExistingChildList(): parent cannot be null");
-            }
 
             if (this.display == null) {
                 throw new NullPointerException("BaseOrderedChildrenComponent.refreshExistingChildList(): display cannot be null");

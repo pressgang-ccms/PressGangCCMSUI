@@ -19,6 +19,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -68,17 +69,17 @@ public class CategoryFilteredResultsPresenter
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, this.queryString);
     }
 
     @Override
-    public void parseToken(final String searchToken) {
+    public void parseToken(@NotNull final String searchToken) {
         this.queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
-    public void bindExtendedFilteredResults(final int topicId, final String pageId, final String queryString) {
+    public void bindExtendedFilteredResults(final int topicId, final String pageId, @NotNull final String queryString) {
         try {
             LOGGER.log(Level.INFO, "ENTER CategoryFilteredResultsPresenter.bind()");
             super.bindFilteredResults(topicId, pageId, queryString, display);
@@ -89,7 +90,7 @@ public class CategoryFilteredResultsPresenter
     }
 
     @Override
-    protected EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateListProvider(final String queryString, final BaseTemplateViewInterface waitDisplay) {
+    protected EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
         return new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTCategoryCollectionItemV1> list) {
@@ -158,7 +159,7 @@ public class CategoryFilteredResultsPresenter
     }
 
     @Override
-    protected void displayQueryElements(final String queryString) {
+    protected void displayQueryElements(@NotNull final String queryString) {
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
         for (final String queryStringElement : queryStringElements) {
             final String[] queryElements = queryStringElement.split("=");

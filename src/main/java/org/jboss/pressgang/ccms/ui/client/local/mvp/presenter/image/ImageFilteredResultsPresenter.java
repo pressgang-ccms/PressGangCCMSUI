@@ -102,9 +102,9 @@ public class ImageFilteredResultsPresenter
         final EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTImageCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTImageCollectionItemV1> item) {
-                providerData.setStartRow(item.getVisibleRange().getStart());
+                getProviderData().setStartRow(item.getVisibleRange().getStart());
                 final int length = item.getVisibleRange().getLength();
-                final int end = providerData.getStartRow() + length;
+                final int end = getProviderData().getStartRow() + length;
 
                 final RESTCalls.RESTCallback<RESTImageCollectionV1> callback = new RESTCalls.RESTCallback<RESTImageCollectionV1>() {
                     @Override
@@ -121,10 +121,10 @@ public class ImageFilteredResultsPresenter
                     @Override
                     public void success(final RESTImageCollectionV1 retValue) {
                         try {
-                            providerData.setItems(retValue.getItems());
-                            providerData.setSize(retValue.getSize());
+                            getProviderData().setItems(retValue.getItems());
+                            getProviderData().setSize(retValue.getSize());
                             relinkSelectedItem();
-                            displayAsynchronousList(providerData.getItems(), providerData.getSize(), providerData.getStartRow());
+                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                         } finally {
                             display.removeWaitOperation();
                         }
@@ -137,7 +137,7 @@ public class ImageFilteredResultsPresenter
                     }
                 };
 
-                RESTCalls.getImagesFromQuery(callback, queryString, providerData.getStartRow(), end);
+                RESTCalls.getImagesFromQuery(callback, queryString, getProviderData().getStartRow(), end);
             }
         };
         return provider;

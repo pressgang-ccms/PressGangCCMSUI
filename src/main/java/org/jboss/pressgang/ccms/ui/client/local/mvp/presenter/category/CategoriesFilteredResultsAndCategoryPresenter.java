@@ -40,6 +40,8 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCategoryV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -121,7 +123,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     private String queryString;
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
 
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTCategoryV1> getNewEntityCallback = new GetNewEntityCallback<RESTCategoryV1>() {
@@ -155,7 +157,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     }
 
     @Override
-    public void parseToken(final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
         queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
@@ -229,7 +231,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     }
 
     @Override
-    protected void initializeViews(final List<CategoryViewInterface> filter) {
+    protected void initializeViews(@Nullable final List<CategoryViewInterface> filter) {
         try {
             LOGGER.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.initializeViews()");
 
@@ -460,7 +462,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     }
 
     @Override
-    protected void afterSwitchView(final CategoryViewInterface displayedView) {
+    protected void afterSwitchView(@NotNull final CategoryViewInterface displayedView) {
 
         enableAndDisableActionButtons(displayedView);
 
@@ -470,7 +472,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
         }
     }
 
-    private void enableAndDisableActionButtons(final CategoryViewInterface displayedView)
+    private void enableAndDisableActionButtons(@NotNull final CategoryViewInterface displayedView)
     {
         this.display.replaceTopActionButton(this.display.getChildrenDown(), this.display.getChildren());
         this.display.replaceTopActionButton(this.display.getDetailsDown(), this.display.getDetails());

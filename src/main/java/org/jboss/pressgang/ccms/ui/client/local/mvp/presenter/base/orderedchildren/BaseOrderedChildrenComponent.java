@@ -5,6 +5,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Logger;
 
@@ -49,7 +50,7 @@ abstract public class BaseOrderedChildrenComponent<
      * @return
      */
     @Override
-    public final void setSortOrderOfChildren(final SetNewChildSortCallback<D, E, F> sortCallback) {
+    public final void setSortOrderOfChildren(@NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {
         if (sortCallback == null) {
             throw new NullPointerException("sortCallback cannot be null");
         }
@@ -70,8 +71,8 @@ abstract public class BaseOrderedChildrenComponent<
      * @return true if the sort order of any child was modified, false otherwise
      */
     @Override
-    public final boolean moveTagsUpAndDown(final W parent, final F object, final boolean down,
-                                     final SetNewChildSortCallback<D, E, F> sortCallback) {
+    public final boolean moveTagsUpAndDown(@NotNull final W parent, @NotNull final F object, final boolean down,
+                                           @NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {
 
         if (parent == null) {
             throw new NullPointerException("parent cannot be null");

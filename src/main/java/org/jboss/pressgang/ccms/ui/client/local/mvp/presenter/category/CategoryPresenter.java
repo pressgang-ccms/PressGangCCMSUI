@@ -11,6 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.category.CategoryViewIn
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCategoryV1BasicDetailsEditor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -56,7 +57,7 @@ public class CategoryPresenter extends
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
@@ -69,7 +70,7 @@ public class CategoryPresenter extends
 
 
     @Override
-    public void parseToken(final String searchToken) {
+    public void parseToken(@NotNull final String searchToken) {
         try {
             categoryId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
         } catch (final NumberFormatException ex) {

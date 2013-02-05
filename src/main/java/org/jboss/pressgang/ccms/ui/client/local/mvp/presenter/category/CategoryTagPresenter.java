@@ -24,6 +24,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -79,19 +80,19 @@ public class CategoryTagPresenter
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, this.getDisplay());
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void bindExtended(final int topicId, final String pageId)
+    public void bindExtended(final int topicId, @NotNull final String pageId)
     {
         super.bind(topicId, pageId, Preferences.CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH, display);
         display.initialize(null, false);
     }
 
     @Override
-    public void parseToken(final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
         try {
             entityId = Integer.parseInt(GWTUtilities.removeHistoryToken(HISTORY_TOKEN, historyToken));
         } catch (final NumberFormatException ex) {
@@ -122,12 +123,12 @@ public class CategoryTagPresenter
                     try {
                         LOGGER.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
                         /* Zero results can be a null list */
-                        getProviderData().setStartRow(0);
-                        getProviderData().setItems(retValue.getItems());
-                        getProviderData().setSize(retValue.getItems().size());
+                        getPossibleChildrenProviderData().setStartRow(0);
+                        getPossibleChildrenProviderData().setItems(retValue.getItems());
+                        getPossibleChildrenProviderData().setSize(retValue.getItems().size());
 
                         /* Refresh the list */
-                        getDisplay().getPossibleChildrenProvider().displayNewFixedList(getProviderData().getItems());
+                        getDisplay().getPossibleChildrenProvider().displayNewFixedList(getPossibleChildrenProviderData().getItems());
 
                     } finally {
                         getDisplay().removeWaitOperation();
@@ -143,7 +144,7 @@ public class CategoryTagPresenter
             };
 
             /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
-            getProviderData().reset();
+            getPossibleChildrenProviderData().reset();
             this.getDisplay().getPossibleChildrenProvider().resetProvider();
 
             RESTCalls.getTags(callback);
@@ -153,16 +154,17 @@ public class CategoryTagPresenter
     }
 
     @Override
+    @NotNull
     public EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generatePossibleChildrenProvider() {
 
         return new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTagCollectionItemV1> display) {
 
-                getProviderData().setStartRow(display.getVisibleRange().getStart());
+                getPossibleChildrenProviderData().setStartRow(display.getVisibleRange().getStart());
 
-                if (getProviderData().getItems() != null) {
-                    displayNewFixedList(getProviderData().getItems());
+                if (getPossibleChildrenProviderData().getItems() != null) {
+                    displayNewFixedList(getPossibleChildrenProviderData().getItems());
                 } else {
                     resetProvider();
                 }
@@ -172,6 +174,7 @@ public class CategoryTagPresenter
     }
 
     @Override
+    @NotNull
     public EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> generateExistingProvider(final RESTCategoryV1 entity) {
         return new EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1>() {
             @Override

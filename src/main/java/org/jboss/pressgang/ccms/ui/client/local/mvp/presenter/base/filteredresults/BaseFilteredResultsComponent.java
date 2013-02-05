@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This is the base class that is used for components adding logic to views that list the results of a query
@@ -22,24 +23,21 @@ abstract public class BaseFilteredResultsComponent<
     extends BaseTemplatePresenter implements BaseFilteredResultsComponentInterface<T, U, V> {
 
     /** Holds the data required to populate and refresh the tags list */
-    protected ProviderUpdateData<V> providerData = new ProviderUpdateData<V>();
+    private final ProviderUpdateData<V> providerData = new ProviderUpdateData<V>();
 
     @Override
+    @NotNull
     public final ProviderUpdateData<V> getProviderData() {
         return providerData;
     }
 
-    @Override
-    public final void setTagProviderData(final ProviderUpdateData<V> providerData) {
-        this.providerData = providerData;
-    }
     /**
     * @param topicId The ID of the help topic associated with this view
     * @param pageId The history token associated with this view
     * @param queryString The query that defines the results to be displayed
     * @param display The filtered results view
     */
-    protected final void bindFilteredResults(final int topicId, final String pageId, final String queryString, final BaseFilteredResultsViewInterface display)
+    protected final void bindFilteredResults(final int topicId, final String pageId, @NotNull final String queryString, @NotNull final BaseFilteredResultsViewInterface display)
     {
          super.bind(topicId, pageId, display);
          displayQueryElements(queryString);        
@@ -74,13 +72,13 @@ abstract public class BaseFilteredResultsComponent<
      * 
      * @param queryString The string that contains the filter options
      */
-    abstract protected void displayQueryElements(final String queryString);
+    abstract protected void displayQueryElements(@NotNull final String queryString);
 
     /**
      * @param queryString The query string passed to the rest interface
      * @param waitDisplay The main view used to notify the user that an ongoing operation is in progress
      * @return A provider to be used for the category display list
      */
-    abstract protected EnhancedAsyncDataProvider<V> generateListProvider(final String queryString, final BaseTemplateViewInterface waitDisplay);
+    abstract protected EnhancedAsyncDataProvider<V> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay);
 
 }

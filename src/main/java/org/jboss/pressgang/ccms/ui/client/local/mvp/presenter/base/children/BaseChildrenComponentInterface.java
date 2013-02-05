@@ -45,7 +45,7 @@ public interface BaseChildrenComponentInterface< T extends RESTBaseEntityV1<T, U
     /**
      * @param providerData the data that is used to back the list of potential children
      */
-    void setPossibleChildrenProviderData(final ProviderUpdateData<C> providerData);
+    //void setPossibleChildrenProviderData(final ProviderUpdateData<C> providerData);
 
     /**
      * @return the provider that displays the entities found in getPossibleChildrenProviderData().

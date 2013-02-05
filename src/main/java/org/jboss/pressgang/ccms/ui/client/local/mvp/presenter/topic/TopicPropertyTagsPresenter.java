@@ -128,10 +128,10 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
             @Override
             protected void onRangeChanged(final HasData<RESTPropertyTagCollectionItemV1> display) {
 
-                getProviderData().setStartRow(display.getVisibleRange().getStart());
+                getPossibleChildrenProviderData().setStartRow(display.getVisibleRange().getStart());
 
-                if (getProviderData().getItems() != null) {
-                    displayNewFixedList(getProviderData().getItems());
+                if (getPossibleChildrenProviderData().getItems() != null) {
+                    displayNewFixedList(getPossibleChildrenProviderData().getItems());
                 } else {
                     resetProvider();
                 }
@@ -164,12 +164,12 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
                         LOGGER.log(Level.INFO, "ENTER TopicPropertyTagsPresenter.refreshPossibleChildrenDataAndList() callback.success()");
                         LOGGER.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
                         /* Zero results can be a null list */
-                        getProviderData().setStartRow(0);
-                        getProviderData().setItems(retValue.getItems());
-                        getProviderData().setSize(retValue.getItems().size());
+                        getPossibleChildrenProviderData().setStartRow(0);
+                        getPossibleChildrenProviderData().setItems(retValue.getItems());
+                        getPossibleChildrenProviderData().setSize(retValue.getItems().size());
 
                         /* Refresh the list */
-                        getDisplay().getPossibleChildrenProvider().displayNewFixedList(getProviderData().getItems());
+                        getDisplay().getPossibleChildrenProvider().displayNewFixedList(getPossibleChildrenProviderData().getItems());
 
                     } finally {
                         LOGGER.log(Level.INFO, "EXIT TopicPropertyTagsPresenter.refreshPossibleChildrenDataAndList() callback.success()");
@@ -186,7 +186,7 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
             };
 
             /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
-            getProviderData().reset();
+            getPossibleChildrenProviderData().reset();
             this.getDisplay().getPossibleChildrenProvider().resetProvider();
 
             RESTCalls.getPropertyTags(callback);

@@ -137,6 +137,15 @@
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.1" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.pressgang.ccms:acegwt-client:1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.vectomatic:lib-gwt-file:0.3.1" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/annotations.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
   <component name="org.twodividedbyzero.idea.findbugs">
     <option name="_basePreferences">

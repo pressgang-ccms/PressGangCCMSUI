@@ -12,6 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
@@ -214,7 +215,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         }
     }
 
-    protected final void bind(final int topicId, final String pageId, final BaseTemplateViewInterface display) {
+    protected final void bind(final int topicId, final String pageId, @NotNull final BaseTemplateViewInterface display) {
         this.display = display;
         this.helpTopicId = topicId;
 

@@ -80,17 +80,17 @@ public class ProjectTagPresenter
                     public void doSuccessAction(final RESTTagCollectionV1 retValue, final ProjectTagPresenter.Display display) {
 
                             /* Zero results can be a null list */
-                        getProviderData().setStartRow(0);
-                        getProviderData().setItems(retValue.getItems());
-                        getProviderData().setSize(retValue.getItems().size());
+                        getPossibleChildrenProviderData().setStartRow(0);
+                        getPossibleChildrenProviderData().setItems(retValue.getItems());
+                        getPossibleChildrenProviderData().setSize(retValue.getItems().size());
 
                             /* Refresh the list */
-                        display.getPossibleChildrenProvider().displayNewFixedList(getProviderData().getItems());
+                        display.getPossibleChildrenProvider().displayNewFixedList(getPossibleChildrenProviderData().getItems());
                     }
                 });
 
         /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
-        getProviderData().reset();
+        getPossibleChildrenProviderData().reset();
         display.getPossibleChildrenProvider().resetProvider();
 
         RESTCalls.getTags(callback);
@@ -103,10 +103,10 @@ public class ProjectTagPresenter
             @Override
             protected void onRangeChanged(final HasData<RESTTagCollectionItemV1> display) {
 
-                getProviderData().setStartRow(display.getVisibleRange().getStart());
+                getPossibleChildrenProviderData().setStartRow(display.getVisibleRange().getStart());
 
-                if (getProviderData().getItems() != null) {
-                    displayNewFixedList(getProviderData().getItems());
+                if (getPossibleChildrenProviderData().getItems() != null) {
+                    displayNewFixedList(getPossibleChildrenProviderData().getItems());
                 } else {
                     resetProvider();
                 }

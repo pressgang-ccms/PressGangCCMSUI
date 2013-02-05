@@ -7,6 +7,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @inheritDoc
@@ -35,47 +36,25 @@ public abstract class BaseChildrenComponent<
         F extends RESTBaseCollectionItemV1<D, E, F>>
         extends BaseTemplatePresenter implements BaseChildrenComponentInterface<T, U, V, A, B, C, D, E, F> {
 
-    private ProviderUpdateData<C> providerData = new ProviderUpdateData<C>();
+    private final ProviderUpdateData<C> providerData = new ProviderUpdateData<C>();
     /**
      * The display that shows the children of a given entity.
      */
     private BaseChildrenViewInterface display;
 
     /**
-     * @return An instance of the provider data.
+     *  @return An instance of the possible children provider data.
      */
-    protected final ProviderUpdateData<C> getProviderData() {
+    @Override
+    @NotNull
+    public final ProviderUpdateData<C> getPossibleChildrenProviderData() {
         return this.providerData;
     }
 
     /**
-     * @param providerData An instance of the provider data.
-     */
-    protected final void setProviderData(final ProviderUpdateData<C> providerData) {
-        this.providerData = providerData;
-    }
-
-
-    /**
-     *  @return An instance of the possible children provider data.
-     */
-    @Override
-    public final ProviderUpdateData<C> getPossibleChildrenProviderData() {
-        return this.getProviderData();
-    }
-
-    /**
      * @inheritDoc
      */
-    @Override
-    public final void setPossibleChildrenProviderData(final ProviderUpdateData<C> providerData) {
-        this.setProviderData(providerData);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public final void bind(final int topicId, final String pageId, final BaseChildrenViewInterface display) {
+    public final void bind(final int topicId, final String pageId, @NotNull final BaseChildrenViewInterface display) {
         this.display = display;
 
         super.bind(topicId, pageId, display);
@@ -87,9 +66,9 @@ public abstract class BaseChildrenComponent<
      * @inheritDoc
      */
     @Override
-    public final void bindPossibleChildrenListButtonClicks(final GetExistingCollectionCallback<D, E, F> getExistingCollectionCallback,
-                                                     final AddPossibleChildCallback<A, B, C> addChildCallback,
-                                                     final UpdateAfterChildModfiedCallback updateAfterChildModfied) {
+    public final void bindPossibleChildrenListButtonClicks(@NotNull final GetExistingCollectionCallback<D, E, F> getExistingCollectionCallback,
+                                                           @NotNull final AddPossibleChildCallback<A, B, C> addChildCallback,
+                                                           @NotNull final UpdateAfterChildModfiedCallback updateAfterChildModfied) {
         this.display.getPossibleChildrenButtonColumn().setFieldUpdater(new FieldUpdater<C, String>() {
             @Override
             public void update(final int index, final C object, final String value) {

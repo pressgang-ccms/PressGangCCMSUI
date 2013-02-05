@@ -28,11 +28,6 @@ public interface BaseFilteredResultsComponentInterface<T extends RESTBaseEntityV
     ProviderUpdateData<V> getProviderData();
 
     /**
-     * @param providerData The provider data used to populate the celltable
-     */
-    void setTagProviderData(final ProviderUpdateData<V> providerData);
-
-    /**
      * Perform any initialisation required by filtered results presenters.
      *
      * @param topicId The help topic that is associated with the view
