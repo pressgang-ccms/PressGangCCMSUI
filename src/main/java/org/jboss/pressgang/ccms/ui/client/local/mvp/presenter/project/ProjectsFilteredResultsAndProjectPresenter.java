@@ -27,6 +27,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.project.ProjectViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -352,6 +353,15 @@ public class ProjectsFilteredResultsAndProjectPresenter
     private boolean unsavedTagChanges() {
         return !filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags()
                 .returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
+    }
+
+    /**
+     * Called when the selected tag is changed, or the selected view is changed.
+     */
+    @Override
+    protected void afterSwitchView(final ProjectViewInterface displayedView) {
+
+        this.enableAndDisableActionButtons(displayedView);
     }
 
     private void enableAndDisableActionButtons(final ProjectViewInterface displayedView)
