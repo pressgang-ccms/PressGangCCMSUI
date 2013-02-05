@@ -147,23 +147,7 @@ abstract public class BaseSearchAndEditComponent<
 
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.updateDisplayAfterSave()");
 
-            if (!wasNewEntity) {
-                /* refresh the list of tags from the existing list that was modified */
-
-                filteredResultsDisplay.getProvider().displayAsynchronousList(filteredResultsComponent.getProviderData().getItems(),
-                        filteredResultsComponent.getProviderData().getSize(),
-                        filteredResultsComponent.getProviderData().getStartRow());
-            } else {
-                /* If we just created a new entity, refresh the list of entities from the database */
-
-                filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", filteredResultsComponent.getQuery());
-
-                /*
-                 * reInitialiseView will flush the ui, which will flush the null ID back to the displayed object. To prevent that we
-                 * need to call edit on the newly saved entity
-                 */
-                entityPropertiesView.getDriver().edit(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
-            }
+            refreshFilteredResulsts(wasNewEntity);
 
             /* refresh the display */
             initializeViews();
@@ -172,6 +156,30 @@ abstract public class BaseSearchAndEditComponent<
             loadAdditionalDisplayedItemData();
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditComponent.updateDisplayAfterSave()");
+        }
+    }
+
+    /**
+     * Update the list of results
+     * @param wasNewEntity true if the update happened after a entity was created, false otherwise
+     */
+    private void refreshFilteredResulsts(final boolean wasNewEntity) {
+        if (!wasNewEntity) {
+                /* refresh the list of tags from the existing list that was modified */
+
+            filteredResultsDisplay.getProvider().displayAsynchronousList(filteredResultsComponent.getProviderData().getItems(),
+                    filteredResultsComponent.getProviderData().getSize(),
+                    filteredResultsComponent.getProviderData().getStartRow());
+        } else {
+                /* If we just created a new entity, refresh the list of entities from the database */
+
+            filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", filteredResultsComponent.getQuery());
+
+                /*
+                 * reInitialiseView will flush the ui, which will flush the null ID back to the displayed object. To prevent that we
+                 * need to call edit on the newly saved entity
+                 */
+            entityPropertiesView.getDriver().edit(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
         }
     }
 
@@ -212,9 +220,6 @@ abstract public class BaseSearchAndEditComponent<
                          * copied into this category
                          */
                         filteredResultsComponent.getProviderData().setDisplayedItem(selectedItem.clone(true));
-
-                        /* Refresh the list */
-                        updateDisplayAfterSave(false);
 
                         updateViewsAfterNewEntityLoaded();
                     } finally {

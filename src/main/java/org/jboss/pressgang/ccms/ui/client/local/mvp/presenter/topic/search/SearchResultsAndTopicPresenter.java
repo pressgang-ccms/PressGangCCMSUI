@@ -848,6 +848,9 @@ public class SearchResultsAndTopicPresenter
 
             enableAndDisableActionButtons(lastDisplayedView);
 
+            /* fix the rendered view buttons */
+            initializeSplitViewButtons();
+
             /* Display the property tags that are added to the category */
             Collections.sort(searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
                     new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
@@ -890,9 +893,6 @@ public class SearchResultsAndTopicPresenter
             }
 
 
-
-            /* fix the rendered view buttons */
-            initializeSplitViewButtons();
         } finally {
             LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.loadAdditionalDisplayedItemData()");
         }
