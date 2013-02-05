@@ -860,7 +860,7 @@ public class SearchResultsAndTopicPresenter
             topicPropertyTagPresenter.refreshExistingChildList(searchResultsComponent.getProviderData().getDisplayedItem().getItem());
 
             /* Get a new collection of tags */
-            topicPropertyTagPresenter.refreshPossibleChildrenDataAndList();
+            topicPropertyTagPresenter.refreshPossibleChildrenDataAndList(searchResultsComponent.getProviderData().getDisplayedItem().getItem());
 
             /* reset the topic review view */
             topicRevisionsComponent.getDisplay().setRevisionTopic(null);

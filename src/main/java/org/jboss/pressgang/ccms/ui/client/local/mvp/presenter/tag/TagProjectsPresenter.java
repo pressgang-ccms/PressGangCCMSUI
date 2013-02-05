@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionI
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenComponent;
@@ -61,14 +62,14 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, new RESTTagV1());
     }
 
-    public void bindExtended(final int topicId, @NotNull final String pageId)
-    {
-        super.bind(topicId, pageId, display);
-        display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
-        refreshPossibleChildrenDataAndList();
+    @Override
+    public void bindChildrenExtended(final int helpTopicId, @NotNull final String pageId, @NotNull final RESTTagV1 parent) {
+        super.bindChildren(helpTopicId, pageId, parent, display);
+        display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
+        refreshPossibleChildrenDataAndList(parent);
     }
 
     /**
@@ -76,7 +77,7 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
      */
     @Override
     @NotNull
-    public EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> generatePossibleChildrenProvider() {
+    public EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> generatePossibleChildrenProvider(@NotNull final RESTTagV1 parent) {
 
         final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTProjectCollectionItemV1>() {
             @Override
@@ -117,7 +118,7 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
      * added to a project, that will actually be persisted through the REST interface as a project added to the displayed tag.
      */
     @Override
-    public void refreshPossibleChildrenDataAndList() {
+    public void refreshPossibleChildrenDataAndList(@NotNull final RESTTagV1 parent) {
         final RESTCalls.RESTCallback<RESTProjectCollectionV1> callback = new RESTCalls.RESTCallback<RESTProjectCollectionV1>() {
             @Override
             public void begin() {

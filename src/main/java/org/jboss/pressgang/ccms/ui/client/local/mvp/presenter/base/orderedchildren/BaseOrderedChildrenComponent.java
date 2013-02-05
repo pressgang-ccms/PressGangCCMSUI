@@ -66,12 +66,14 @@ abstract public class BaseOrderedChildrenComponent<
     /**
      * Reorder a collection and move a child entity up or down
      *
+     * @param editingParent The entity being edited
+     * @param parent The parent of the list of items shown as existing children
      * @param object The child to be moved
      * @param down   true if the child is to be moved down, false if it is to be moved up
      * @return true if the sort order of any child was modified, false otherwise
      */
     @Override
-    public final boolean moveTagsUpAndDown(@NotNull final W parent, @NotNull final F object, final boolean down,
+    public final boolean moveTagsUpAndDown(@NotNull final T editingParent, @NotNull final W parent, @NotNull final F object, final boolean down,
                                            @NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {
 
         if (parent == null) {
@@ -135,7 +137,7 @@ abstract public class BaseOrderedChildrenComponent<
 
         if (modifiedSort) {
             refreshExistingChildList(parent);
-            refreshPossibleChildList();
+            refreshPossibleChildList(editingParent);
         }
 
         return modifiedSort;

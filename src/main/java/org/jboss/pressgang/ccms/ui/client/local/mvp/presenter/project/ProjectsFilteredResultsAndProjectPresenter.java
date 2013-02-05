@@ -154,7 +154,7 @@ public class ProjectsFilteredResultsAndProjectPresenter
                         /*
                          * refresh the list of possible tags
                          */
-                        tagComponent.refreshPossibleChildList();
+                        tagComponent.refreshPossibleChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
                     }
 
                 });
@@ -186,7 +186,7 @@ public class ProjectsFilteredResultsAndProjectPresenter
     @Override
     protected void loadAdditionalDisplayedItemData() {
         /* Get a new collection of tags */
-        tagComponent.refreshPossibleChildrenDataAndList();
+        tagComponent.refreshPossibleChildrenDataAndList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
     }
 
     @Override
@@ -241,9 +241,8 @@ public class ProjectsFilteredResultsAndProjectPresenter
                                         filteredResultsComponent.getProviderData().getStartRow(),
                                         filteredResultsComponent.getProviderData().getItems());
 
-                                tagComponent.getDisplay().initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                                        false);
-                                tagComponent.refreshPossibleChildrenDataAndList();
+                                tagComponent.getDisplay().initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+                                tagComponent.refreshPossibleChildrenDataAndList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
                                 updateDisplayAfterSave(wasNewEntity);
 
@@ -319,7 +318,7 @@ public class ProjectsFilteredResultsAndProjectPresenter
 
                 switchView(lastDisplayedView == null ? resultComponent.getDisplay() : lastDisplayedView);
 
-                tagComponent.refreshPossibleChildrenDataAndList();
+                tagComponent.refreshPossibleChildrenDataAndList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
             }
         });
     }

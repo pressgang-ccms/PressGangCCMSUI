@@ -5,8 +5,10 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.EditableView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenComponentInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jetbrains.annotations.NotNull;
 
 /**
  *
@@ -65,4 +67,6 @@ public interface BaseExtendedChildrenPresenterInterface<
      * @param parent The entity that contains the existing children.
      */
     void refreshExistingChildList(final W parent);
+
+    void bindExtendedChildrenExtended(final int topicId, final String pageId, final String preferencesKey, final T parent);
 }

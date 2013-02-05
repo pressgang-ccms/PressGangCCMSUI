@@ -12,11 +12,13 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategory
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.sort.RESTTagCategoryCollectionItemV1SortComparator;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.BaseOrderedChildrenComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.category.CategoryViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -82,12 +84,12 @@ public class CategoryTagPresenter
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, this.getDisplay());
-        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtendedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Preferences.CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH, new RESTCategoryV1());
     }
 
-    public void bindExtended(final int topicId, @NotNull final String pageId)
+    public void bindExtendedChildrenExtended(final int helpTopicId, @NotNull final String pageId, @NotNull final String preferencesKey, @NotNull final RESTCategoryV1 parent)
     {
-        super.bind(topicId, pageId, Preferences.CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH, display);
+        super.bindExtendedChildren(helpTopicId, pageId, preferencesKey, parent, display);
         display.initialize(null, false);
     }
 
@@ -101,7 +103,7 @@ public class CategoryTagPresenter
     }
 
     @Override
-    public void refreshPossibleChildrenDataAndList() {
+    public void refreshPossibleChildrenDataAndList(@NotNull final RESTCategoryV1 parent) {
         try {
             LOGGER.log(Level.INFO, "ENTER CategoryTagPresenter.refreshPossibleChildrenDataAndList()");
 
@@ -155,7 +157,7 @@ public class CategoryTagPresenter
 
     @Override
     @NotNull
-    public EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generatePossibleChildrenProvider() {
+    public EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generatePossibleChildrenProvider(@NotNull final RESTCategoryV1 parent) {
 
         return new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override

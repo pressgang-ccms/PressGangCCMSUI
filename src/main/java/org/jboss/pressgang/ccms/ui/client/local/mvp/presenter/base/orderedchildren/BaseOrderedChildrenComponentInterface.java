@@ -37,5 +37,5 @@ public interface BaseOrderedChildrenComponentInterface<
 
     void setSortOrderOfChildren(final SetNewChildSortCallback<D, E, F> sortCallback);
     
-    boolean moveTagsUpAndDown(final W parent, final F object, final boolean down, final SetNewChildSortCallback<D, E, F> sortCallback);
+    boolean moveTagsUpAndDown(final T editingParent, final W parent, final F object, final boolean down, final SetNewChildSortCallback<D, E, F> sortCallback);
 }

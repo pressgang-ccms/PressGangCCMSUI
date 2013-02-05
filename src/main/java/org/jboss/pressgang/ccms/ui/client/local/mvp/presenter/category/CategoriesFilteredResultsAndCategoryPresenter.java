@@ -205,7 +205,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                                 /*
                                  * refresh the list of possible tags
                                  */
-                                categoryTagPresenter.refreshPossibleChildList();
+                                categoryTagPresenter.refreshPossibleChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
                             }
 
                         }
@@ -223,7 +223,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
             categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
 
             /* Get a new collection of tags */
-            categoryTagPresenter.refreshPossibleChildrenDataAndList();
+            categoryTagPresenter.refreshPossibleChildrenDataAndList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
         }
         finally {
             LOGGER.log(Level.INFO, "EXIT CategoriesFilteredResultsAndCategoryPresenter.loadAdditionalDisplayedItemData()");
@@ -256,6 +256,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                     @Override
                     public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
                         categoryTagPresenter.moveTagsUpAndDown(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
+                                filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
                                 object, false, sortCallback);
                     }
 
@@ -270,6 +271,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                     @Override
                     public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
                         categoryTagPresenter.moveTagsUpAndDown(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
+                                filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
                                 object, true, sortCallback);
                     }
                 });
@@ -323,12 +325,10 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                                             true);
 
                                     /* This category is no longer a new category */
-                                    filteredResultsPresenter.getProviderData().getDisplayedItem()
-                                            .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                                    filteredResultsPresenter.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
-                                    categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData()
-                                            .getDisplayedItem().getItem());
-                                    categoryTagPresenter.refreshPossibleChildrenDataAndList();
+                                    categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+                                    categoryTagPresenter.refreshPossibleChildrenDataAndList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
 
                                     updateDisplayAfterSave(wasNewEntity);
 
@@ -410,7 +410,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                     filteredResultsPresenter.getProviderData().setDisplayedItem(displayedTagWrapper);
 
                     categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
-                    categoryTagPresenter.refreshPossibleChildrenDataAndList();
+                    categoryTagPresenter.refreshPossibleChildrenDataAndList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
 
                     initializeViews();
 

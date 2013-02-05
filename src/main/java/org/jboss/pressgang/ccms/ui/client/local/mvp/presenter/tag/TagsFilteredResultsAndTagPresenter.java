@@ -227,7 +227,7 @@ public class TagsFilteredResultsAndTagPresenter
                         retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
 
                         /* refresh the projects list */
-                        projectsComponent.refreshPossibleChildrenDataAndList();
+                        projectsComponent.refreshPossibleChildrenDataAndList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
                         if (unsavedCategoryChanges) {
                             saveCategoryChanges(wasNewTag, filteredResultsComponent.getProviderData().getDisplayedItem()
@@ -358,7 +358,7 @@ public class TagsFilteredResultsAndTagPresenter
                                 categoriesComponent.refreshExistingChildList(categoriesComponent.getPossibleChildrenProviderData()
                                         .getDisplayedItem().getItem());
                             }
-                            categoriesComponent.refreshPossibleChildrenDataAndList();
+                            categoriesComponent.refreshPossibleChildrenDataAndList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
                             updateDisplayAfterSave(wasNewTag);
                             Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + newTagId);
@@ -785,7 +785,7 @@ public class TagsFilteredResultsAndTagPresenter
      */
     private void resetCategoryLists() {
         categoriesComponent.getPossibleChildrenProviderData().reset();
-        categoriesComponent.refreshPossibleChildrenDataAndList();
+        categoriesComponent.refreshPossibleChildrenDataAndList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
     }
 
     /**
@@ -793,7 +793,7 @@ public class TagsFilteredResultsAndTagPresenter
      */
     private void resetProjectList() {
         projectsComponent.getPossibleChildrenProviderData().reset();
-        projectsComponent.refreshPossibleChildrenDataAndList();
+        projectsComponent.refreshPossibleChildrenDataAndList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
     }
 
     @Override

@@ -23,6 +23,7 @@ import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -61,8 +62,7 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
      */
     private static final Logger LOGGER = Logger.getLogger(TopicPropertyTagsPresenter.class.getName());
     private Integer topicId;
-    @Inject
-    private Display display;
+    @Inject private Display display;
 
     public Display getDisplay() {
         return display;
@@ -80,12 +80,13 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtendedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Preferences.TOPIC_PROPERTYTAG_VIEW_MAIN_SPLIT_WIDTH, new RESTTopicV1());
 
     }
 
-    public void bindExtended(final int helpTopicId, final String pageId) {
-        super.bind(helpTopicId, pageId, Preferences.TOPIC_PROPERTYTAG_VIEW_MAIN_SPLIT_WIDTH, display);
+    @Override
+    public void bindExtendedChildrenExtended(final int helpTopicId, @NotNull final String pageId, @NotNull final String preferencesKey, @NotNull final RESTTopicV1 parent) {
+        super.bindExtendedChildren(helpTopicId, pageId, preferencesKey, parent, display);
     }
 
     @Override
@@ -123,12 +124,12 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
     }
 
     @Override
-    public EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> generatePossibleChildrenProvider() {
+    public EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> generatePossibleChildrenProvider(final RESTTopicV1 parent) {
         return new EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTPropertyTagCollectionItemV1> display) {
+            protected void onRangeChanged(final HasData<RESTPropertyTagCollectionItemV1> data) {
 
-                getPossibleChildrenProviderData().setStartRow(display.getVisibleRange().getStart());
+                getPossibleChildrenProviderData().setStartRow(data.getVisibleRange().getStart());
 
                 if (getPossibleChildrenProviderData().getItems() != null) {
                     displayNewFixedList(getPossibleChildrenProviderData().getItems());
@@ -141,7 +142,7 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
     }
 
     @Override
-    public void refreshPossibleChildrenDataAndList() {
+    public void refreshPossibleChildrenDataAndList(@NotNull final RESTTopicV1 parent) {
         try {
             LOGGER.log(Level.INFO, "ENTER TopicPropertyTagsPresenter.refreshPossibleChildrenDataAndList()");
 

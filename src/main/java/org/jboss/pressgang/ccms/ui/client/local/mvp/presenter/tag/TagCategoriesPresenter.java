@@ -24,6 +24,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.BaseOrderedChildrenComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.SetNewChildSortCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -79,18 +80,19 @@ public class TagCategoriesPresenter
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtendedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, new RESTTagV1());
     }
 
-    public void bindExtended(final int topicId, @NotNull final String pageId)
+    @Override
+    public void bindExtendedChildrenExtended(final int topicId, @NotNull final String pageId, @NotNull final String preferencesKey, @NotNull final RESTTagV1 parent)
     {
-        super.bind(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display);
+        super.bindExtendedChildren(topicId, pageId, preferencesKey, parent, display);
 
-        display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
+        display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
         // display.setExistingChildrenProvider(generateExistingProvider());
         initLifecycleBindPossibleChildrenRowClick();
-        initLifecycleBindExistingChildrenRowClick();
-        refreshPossibleChildrenDataAndList();
+        initLifecycleBindExistingChildrenRowClick(parent);
+        refreshPossibleChildrenDataAndList(parent);
     }
 
 
@@ -125,7 +127,7 @@ public class TagCategoriesPresenter
      */
     @Override
     @NotNull
-    public EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generatePossibleChildrenProvider() {
+    public EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generatePossibleChildrenProvider(@NotNull final RESTTagV1 parent) {
         final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTCategoryCollectionItemV1> display) {
@@ -233,12 +235,12 @@ public class TagCategoriesPresenter
     }
 
     @Override
-    protected void initLifecycleBindExistingChildrenRowClick() {
+    protected void initLifecycleBindExistingChildrenRowClick(@NotNull final RESTTagV1 editingParent) {
         display.getExistingChildUpButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
             @Override
             public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
-                moveTagsUpAndDown(getPossibleChildrenProviderData().getDisplayedItem().getItem(), object, false, sortCallback);
+                moveTagsUpAndDown(editingParent, getPossibleChildrenProviderData().getDisplayedItem().getItem(), object, false, sortCallback);
             }
 
         });
@@ -251,8 +253,7 @@ public class TagCategoriesPresenter
                      */
                     @Override
                     public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
-                        moveTagsUpAndDown(getPossibleChildrenProviderData().getDisplayedItem().getItem(), object, true,
-                                sortCallback);
+                        moveTagsUpAndDown(editingParent, getPossibleChildrenProviderData().getDisplayedItem().getItem(), object, true, sortCallback);
                     }
                 });
     }
@@ -263,7 +264,7 @@ public class TagCategoriesPresenter
      * added to a project, that will actually be persisted through the REST interface as a category added to the displayed tag.
      */
     @Override
-    public void refreshPossibleChildrenDataAndList() {
+    public void refreshPossibleChildrenDataAndList(@NotNull final RESTTagV1 parent) {
         final RESTCalls.RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
             @Override
             public void begin() {

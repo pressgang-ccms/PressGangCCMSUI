@@ -6,6 +6,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -67,14 +68,15 @@ public class ProjectTagPresenter
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void bindExtended(final int topicId, @NotNull final String pageId)
+    @Override
+    public void bindChildrenExtended(final int topicId, @NotNull final String pageId, @NotNull final RESTProjectV1 parent)
     {
+        super.bindChildren(topicId, pageId, parent, display);
         display.initialize(null, false);
-        super.bind(topicId, pageId, display);
     }
 
     @Override
-    public void refreshPossibleChildrenDataAndList() {
+    public void refreshPossibleChildrenDataAndList(@NotNull final RESTProjectV1 parent) {
 
         final RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, ProjectTagPresenter.Display>(display,
                 new BaseRestCallback.SuccessAction<RESTTagCollectionV1, ProjectTagPresenter.Display>() {
@@ -100,7 +102,7 @@ public class ProjectTagPresenter
 
     @Override
     @NotNull
-    public EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generatePossibleChildrenProvider() {
+    public EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generatePossibleChildrenProvider(@NotNull final RESTProjectV1 parent) {
 
         final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override

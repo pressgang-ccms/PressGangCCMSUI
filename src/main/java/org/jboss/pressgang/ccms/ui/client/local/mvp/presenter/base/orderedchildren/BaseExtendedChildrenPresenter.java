@@ -4,6 +4,7 @@ import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenComponent;
@@ -63,13 +64,28 @@ abstract public class BaseExtendedChildrenPresenter<
         return this.existingProviderData;
     }
 
-    public final void bind(final int topicId, @NotNull final String pageId, @NotNull final String preferencesKey, @NotNull final BaseExtendedChildrenViewInterface display) {
+    /**
+     * An empty implementation of the extended bind method. Classes extending BaseExtendedChildrenPresenter should implement
+     * bindChildrenExtended().
+     * @param topicId
+     * @param pageId The history token of the page
+     * @param parent A reference to the entity being edited
+     */
+    public final void bindChildrenExtended(final int topicId, final String pageId, @NotNull final T parent) {
+
+    }
+
+    public void bindExtendedChildrenExtended(final int topicId, final String pageId, final String preferencesKey, final T parent) {
+
+    }
+
+    protected final void bindExtendedChildren(final int topicId, @NotNull final String pageId, @NotNull final String preferencesKey, @NotNull final T parent, @NotNull final BaseExtendedChildrenViewInterface display) {
 
         this.display = display;
 
         super.bind(topicId, pageId, display);
-        display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
-        refreshPossibleChildrenDataAndList();
+        display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
+        refreshPossibleChildrenDataAndList(parent);
         loadChildSplitResize(preferencesKey);
         bindChildSplitResize(preferencesKey);
     }
@@ -77,7 +93,7 @@ abstract public class BaseExtendedChildrenPresenter<
     /**
      * Used to bind logic to the selection of an existing child. Optional, as most of the time this won't trigger any action.
      */
-    protected void initLifecycleBindExistingChildrenRowClick() {
+    protected void initLifecycleBindExistingChildrenRowClick(@NotNull final RESTTagV1 editingParent) {
     }
 
     /**

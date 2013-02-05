@@ -52,14 +52,24 @@ public abstract class BaseChildrenComponent<
     }
 
     /**
+     * An empty implementation of the extended bind method. Classes extending BaseChildrenComponent should implement
+     * bindChildrenExtended().
+     * @param topicId the help topic for the page
+     * @param pageId The history token of the page
+     */
+    public final void bindExtended(final int topicId, final String pageId)  {
+
+    }
+
+    /**
      * @inheritDoc
      */
-    public final void bind(final int topicId, final String pageId, @NotNull final BaseChildrenViewInterface display) {
+    protected final void bindChildren(final int topicId, final String pageId, @NotNull final T parent, @NotNull final BaseChildrenViewInterface display) {
         this.display = display;
 
         super.bind(topicId, pageId, display);
 
-        refreshPossibleChildList();
+        refreshPossibleChildList(parent);
     }
 
     /**
@@ -113,8 +123,15 @@ public abstract class BaseChildrenComponent<
      * @inheritDoc
      */
     @Override
-    public final void refreshPossibleChildList() {
-        this.display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
+    public final void refreshPossibleChildList(final T parent) {
+        this.display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
+    }
+
+    /**
+     * Default empty implementation.
+     */
+    public void refreshPossibleChildrenDataAndList(final T parent) {
+
     }
 
 
