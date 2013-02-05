@@ -47,6 +47,8 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -417,7 +419,7 @@ public class TagsFilteredResultsAndTagPresenter
     };
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         try {
             LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndTagPresenter.go()");
 
@@ -461,7 +463,7 @@ public class TagsFilteredResultsAndTagPresenter
     }
 
     @Override
-    public void parseToken(final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
         queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
@@ -706,7 +708,7 @@ public class TagsFilteredResultsAndTagPresenter
      * Called when the selected tag is changed, or the selected view is changed.
      */
     @Override
-    protected void afterSwitchView(final TagViewInterface displayedView) {
+    protected void afterSwitchView(@NotNull final TagViewInterface displayedView) {
 
         this.enableAndDisableActionButtons(displayedView);
 
@@ -808,7 +810,7 @@ public class TagsFilteredResultsAndTagPresenter
     }
 
     @Override
-    protected void initializeViews(final List<TagViewInterface> filter) {
+    protected void initializeViews(@Nullable final List<TagViewInterface> filter) {
         for (final TagViewInterface view : new TagViewInterface[] { resultComponent.getDisplay(), projectsComponent.getDisplay(), categoriesComponent.getDisplay() }) {
             if (viewIsInFilter(filter, view)) {
                 view.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);

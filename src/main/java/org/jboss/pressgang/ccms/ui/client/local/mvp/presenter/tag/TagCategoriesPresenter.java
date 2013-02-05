@@ -30,6 +30,7 @@ import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -63,6 +64,7 @@ public class TagCategoriesPresenter
 
     private String queryString;
 
+    @NotNull
     public Display getDisplay()
     {
         return display;
@@ -70,17 +72,17 @@ public class TagCategoriesPresenter
 
 
     @Override
-    public void parseToken(final String searchToken) {
+    public void parseToken(@NotNull final String searchToken) {
         queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void bindExtended(final int topicId, final String pageId)
+    public void bindExtended(final int topicId, @NotNull final String pageId)
     {
         super.bind(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display);
 
@@ -122,6 +124,7 @@ public class TagCategoriesPresenter
      * @return A provider to be used for the category display list.
      */
     @Override
+    @NotNull
     public EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generatePossibleChildrenProvider() {
         final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
@@ -144,6 +147,7 @@ public class TagCategoriesPresenter
      * @return A provider to be used for the tag display list
      */
     @Override
+    @NotNull
     public EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> generateExistingProvider(final RESTCategoryV1 entity) {
         final EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1>() {
             @Override

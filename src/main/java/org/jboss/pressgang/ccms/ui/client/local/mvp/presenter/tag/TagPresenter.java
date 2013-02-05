@@ -11,6 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -36,11 +37,12 @@ public class TagPresenter extends BaseTemplatePresenter implements BaseTemplateP
     @Inject
     private Display display;
 
+    @NotNull
     public Display getDisplay() {
         return display;
     }
 
-    public void getEntity(final Integer tagId) {
+    public void getEntity(@NotNull final Integer tagId) {
         final RESTCalls.RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, Display>(display,
                 new BaseRestCallback.SuccessAction<RESTTagV1, Display>() {
                     @Override
@@ -52,7 +54,7 @@ public class TagPresenter extends BaseTemplatePresenter implements BaseTemplateP
     }
 
     @Override
-    public void parseToken(final String searchToken) {
+    public void parseToken(@NotNull final String searchToken) {
         try {
             tagId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
         } catch (final NumberFormatException ex) {
@@ -62,12 +64,12 @@ public class TagPresenter extends BaseTemplatePresenter implements BaseTemplateP
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void bindExtended(final int topicId, final String pageId) {
+    public void bindExtended(final int topicId, @NotNull final String pageId) {
         super.bind(topicId, pageId, display);
 
         if (tagId != null)

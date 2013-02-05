@@ -18,6 +18,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.Ba
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -49,29 +50,30 @@ public class TagFilteredResultsPresenter
 
     private String queryString;
 
+    @NotNull
     public Display getDisplay() {
         return display;
     }
 
     @Override
-    public void parseToken(final String searchToken) {
+    public void parseToken(@NotNull final String searchToken) {
         queryString = searchToken.replace(HISTORY_TOKEN + ";", "");
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
-    public void bindExtendedFilteredResults(final int topicId, final String pageId, final String queryString) {
+    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         display.setProvider(generateListProvider(queryString, display));
         displayQueryElements(queryString);
         super.bindFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString, display);
     }
 
     @Override
-    protected void displayQueryElements(final String queryString) {
+    protected void displayQueryElements(@NotNull final String queryString) {
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
         for (final String queryStringElement : queryStringElements) {
             final String[] queryElements = queryStringElement.split("=");
@@ -93,7 +95,8 @@ public class TagFilteredResultsPresenter
      * @return A provider to be used for the tag display list
      */
     @Override
-    protected EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generateListProvider(final String queryString, final BaseTemplateViewInterface waitDisplay) {
+    @NotNull
+    protected EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTagCollectionItemV1> range) {
@@ -144,6 +147,7 @@ public class TagFilteredResultsPresenter
     }
 
     @Override
+    @NotNull
     public String getQuery() {
         final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {

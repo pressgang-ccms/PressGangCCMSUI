@@ -11,6 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.project.ProjectViewInte
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjectV1BasicDetailsEditor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -40,13 +41,14 @@ public class ProjectPresenter extends BaseTemplatePresenter implements BaseTempl
     @Inject
     private Display display;
 
+    @NotNull
     public Display getDisplay()
     {
         return display;
     }
 
     @Override
-    public void parseToken(final String searchToken) {
+    public void parseToken(@NotNull final String searchToken) {
         try {
             entityId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
         } catch (final NumberFormatException ex) {
@@ -55,19 +57,19 @@ public class ProjectPresenter extends BaseTemplatePresenter implements BaseTempl
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void bindExtended(final int topicId, final String pageId) {
+    public void bindExtended(final int topicId, @NotNull final String pageId) {
         super.bind(topicId, pageId,  display);
     }
 
     /**
      * Get the category from the database and use it to populate the editor in the view
      */
-    public void getEntity(final Integer entityId) {
+    public void getEntity(@NotNull final Integer entityId) {
         final RESTCalls.RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, ProjectPresenter.Display>(display,
                 new BaseRestCallback.SuccessAction<RESTProjectV1, ProjectPresenter.Display>() {
                     @Override

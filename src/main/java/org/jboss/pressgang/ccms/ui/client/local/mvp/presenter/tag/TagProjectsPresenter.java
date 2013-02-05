@@ -18,6 +18,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -47,22 +48,23 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
     @Inject
     private Display display;
 
+    @NotNull
     public Display getDisplay() {
         return display;
     }
 
     @Override
-    public void parseToken(final String searchToken) {
+    public void parseToken(@NotNull final String searchToken) {
 
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void bindExtended(final int topicId, final String pageId)
+    public void bindExtended(final int topicId, @NotNull final String pageId)
     {
         super.bind(topicId, pageId, display);
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider());
@@ -73,6 +75,7 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
      * @return A provider to be used for the project display list
      */
     @Override
+    @NotNull
     public EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> generatePossibleChildrenProvider() {
 
         final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTProjectCollectionItemV1>() {

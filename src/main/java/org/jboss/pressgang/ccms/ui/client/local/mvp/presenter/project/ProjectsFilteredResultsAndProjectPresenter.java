@@ -35,6 +35,8 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjectV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -98,7 +100,7 @@ public class ProjectsFilteredResultsAndProjectPresenter
     private String queryString;
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
 
 
         /* A call back used to get a fresh copy of the entity that was selected */
@@ -159,7 +161,7 @@ public class ProjectsFilteredResultsAndProjectPresenter
     }
 
     @Override
-    public void parseToken(final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
         queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
@@ -359,12 +361,12 @@ public class ProjectsFilteredResultsAndProjectPresenter
      * Called when the selected tag is changed, or the selected view is changed.
      */
     @Override
-    protected void afterSwitchView(final ProjectViewInterface displayedView) {
+    protected void afterSwitchView(@NotNull final ProjectViewInterface displayedView) {
 
         this.enableAndDisableActionButtons(displayedView);
     }
 
-    private void enableAndDisableActionButtons(final ProjectViewInterface displayedView)
+    private void enableAndDisableActionButtons(@NotNull final ProjectViewInterface displayedView)
     {
         this.display.replaceTopActionButton(this.display.getChildrenDown(), this.display.getChildren());
         this.display.replaceTopActionButton(this.display.getDetailsDown(), this.display.getDetails());
@@ -377,7 +379,7 @@ public class ProjectsFilteredResultsAndProjectPresenter
     }
 
     @Override
-    protected void initializeViews(final List<ProjectViewInterface> filter) {
+    protected void initializeViews(@Nullable final List<ProjectViewInterface> filter) {
         for (final ProjectViewInterface view : new ProjectViewInterface[] {  resultComponent.getDisplay(), tagComponent.getDisplay() }) {
             if (viewIsInFilter(filter, view)) {
                 view.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);

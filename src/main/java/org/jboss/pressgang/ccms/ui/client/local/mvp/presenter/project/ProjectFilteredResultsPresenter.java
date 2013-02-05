@@ -19,6 +19,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -40,12 +41,13 @@ public class ProjectFilteredResultsPresenter
     private Display display;
     private String queryString;
 
+    @NotNull
     public Display getDisplay() {
         return display;
     }
 
     @Override
-    public void parseToken(final String searchToken) {
+    public void parseToken(@NotNull final String searchToken) {
         queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
@@ -55,7 +57,7 @@ public class ProjectFilteredResultsPresenter
         bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
-    public void bindExtendedFilteredResults(final int topicId, final String pageId, final String queryString) {
+    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
 
         super.bindFilteredResults(topicId, pageId, queryString, display);
         display.setProvider(generateListProvider(queryString, display));
@@ -66,7 +68,8 @@ public class ProjectFilteredResultsPresenter
      * @return A provider to be used for the category display list
      */
     @Override
-    protected EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> generateListProvider(final String queryString, final BaseTemplateViewInterface waitDisplay) {
+    @NotNull
+    protected EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTProjectCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTProjectCollectionItemV1> list) {
@@ -115,6 +118,7 @@ public class ProjectFilteredResultsPresenter
     }
 
     @Override
+    @NotNull
     public String getQuery() {
         final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
@@ -132,7 +136,7 @@ public class ProjectFilteredResultsPresenter
     }
 
     @Override
-    protected void displayQueryElements(final String queryString) {
+    protected void displayQueryElements(@NotNull final String queryString) {
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
         for (final String queryStringElement : queryStringElements) {
             final String[] queryElements = queryStringElement.split("=");
