@@ -36,7 +36,14 @@ import java.util.logging.Logger;
  * @param <Y> The type of the Editor that is displayed by this component
  * @author Matthew Casperson
  */
-abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsViewInterface<T, U, V>, T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, W extends BaseTemplateViewInterface, X extends BaseEditorViewInterface<T, Y> & BaseTemplateViewInterface, Y extends Editor<T>>
+abstract public class BaseSearchAndEditComponent<
+        R extends BaseFilteredResultsViewInterface<T, U, V>,
+        T extends RESTBaseEntityV1<T, U, V>,
+        U extends RESTBaseCollectionV1<T, U, V>,
+        V extends RESTBaseCollectionItemV1<T, U, V>,
+        W extends BaseTemplateViewInterface,
+        X extends BaseEditorViewInterface<T, Y> & BaseTemplateViewInterface,
+        Y extends Editor<T>>
         extends BaseTemplatePresenter {
 
     /**
@@ -69,7 +76,23 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
     private BaseSearchAndEditViewInterface display;
 
     /**
-     * Empty implementation.
+     * Empty implementation. All logic should be implemented in go().
+     *
+     * Presenters that extend this class are always managing the top level view i.e. there
+     * is no presenter that builds on top of a Search and Edit presenter.
+     *
+     * Usually presenters would use the go() method to display themselves on the screen, and
+     * then defer to a bindBlahExtended method to actually implement the logic (like
+     * event listeners). This way presenters can be added to the screen individually, or skip
+     * being added to the screen (i.e. not have go() called), and just call the bindBlahExtended method
+     * directly to implement the logic in the presenter.
+     *
+     * The BaseSearchAndEditComponent class does not have a bindBaseSearchAndEditExtended method
+     * because all the logic is implemented in the go() method in classes that extend BaseSearchAndEditComponent.
+     * There is no parent presenter layer above a Search and Edit presenter - every time a Search and Edit presenter
+     * is created it is added to the screen, so the go method is used to both add the Search and Edit presenter
+     * to the screen and to implement the logic.
+     *
      * @param topicId the help topic for the page
      * @param pageId The history token of the page
      */
@@ -373,5 +396,10 @@ abstract public class BaseSearchAndEditComponent<R extends BaseFilteredResultsVi
         }
     }
 
+    /**
+     * Called once switchView has completed. Override this method to perform some
+     * additional logic after a new screen has been displayed.
+     * @param displayedView The newly displayed screen.
+     */
     protected void afterSwitchView(final W displayedView) {}
 }
