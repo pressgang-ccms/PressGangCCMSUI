@@ -122,7 +122,6 @@ public abstract class BaseChildrenComponent<
     /**
      * @inheritDoc
      */
-    @Override
     public final void refreshPossibleChildList(final T parent) {
         this.display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
     }

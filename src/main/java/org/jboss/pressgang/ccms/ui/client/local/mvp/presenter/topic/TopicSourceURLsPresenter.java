@@ -77,7 +77,6 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
                 } else {
                     resetProvider();
                 }
-
             }
         };
     }
