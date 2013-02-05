@@ -32,6 +32,8 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTLanguageImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.vectomatic.file.File;
 import org.vectomatic.file.FileReader;
 import org.vectomatic.file.events.ErrorHandler;
@@ -97,7 +99,7 @@ public class ImagesFilteredResultsAndImagePresenter
     private String queryString;
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
         clearContainerAndAddTopLevelPanel(container, display);
@@ -128,7 +130,7 @@ public class ImagesFilteredResultsAndImagePresenter
     }
 
     @Override
-    public void parseToken(final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
         queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
@@ -159,6 +161,7 @@ public class ImagesFilteredResultsAndImagePresenter
         RESTCalls.getImage(callback, imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem().getId());
     }
 
+    @NotNull
     private BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface> getDefaultImageRestCallback() {
         return new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
             @Override
@@ -171,6 +174,7 @@ public class ImagesFilteredResultsAndImagePresenter
         };
     }
 
+    @NotNull
     private BaseRestCallback.FailureAction<BaseTemplateViewInterface> getDefaultImageRestFailureCallback() {
         return new BaseRestCallback.FailureAction<BaseTemplateViewInterface>() {
             @Override
@@ -180,6 +184,7 @@ public class ImagesFilteredResultsAndImagePresenter
         };
     }
 
+    @NotNull
     private List<String> getUnassignedLocales() {
         final List<String> newLocales = new ArrayList<String>(Arrays.asList(locales));
 
@@ -472,7 +477,7 @@ public class ImagesFilteredResultsAndImagePresenter
      *
      * @param base64 The BASE64 representation of the image to be displayed
      */
-    native private void displayImageInPopup(final String base64) /*-{
+    native private void displayImageInPopup(@NotNull final String base64) /*-{
         var win = $wnd.open("data:image/jpeg;base64," + base64, "_blank",
             "width=" + (screen.width - 200) + ", height="
                 + (screen.height - 200) + ", left=100, top=100"); // a window object
@@ -551,7 +556,7 @@ public class ImagesFilteredResultsAndImagePresenter
     }
 
     @Override
-    protected void initializeViews(final List<ImagePresenter.Display> filter) {
+    protected void initializeViews(@Nullable final List<ImagePresenter.Display> filter) {
 
         if (viewIsInFilter(filter, imageComponent.getDisplay())) {
             imageComponent.getDisplay().initialize(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(),

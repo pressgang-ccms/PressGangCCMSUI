@@ -12,6 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -66,6 +67,7 @@ public class ImagePresenter extends BaseTemplatePresenter implements BaseTemplat
      */
     private Integer imageId;
 
+    @NotNull
     public Display getDisplay()
     {
         return display;
@@ -79,14 +81,14 @@ public class ImagePresenter extends BaseTemplatePresenter implements BaseTemplat
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
 
     }
 
     @Override
-    public void parseToken(final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
         try {
             imageId = Integer.parseInt(removeHistoryToken(historyToken, HISTORY_TOKEN));
         } catch (final Exception ex) {
@@ -95,7 +97,7 @@ public class ImagePresenter extends BaseTemplatePresenter implements BaseTemplat
         }
     }
 
-    public void bindExtended(final int topicId, final String pageId) {
+    public void bindExtended(final int topicId, @NotNull final String pageId) {
         super.bind(topicId, pageId, display);
     }
 }
