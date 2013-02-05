@@ -8,6 +8,7 @@
           <element id="module-output" name="pressgang-ccms-ui" />
         </element>
         <element id="directory" name="lib">
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/intellij/annotations/9.0.4/annotations-9.0.4.jar" output-file-name="annotations-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/log4j/log4j/1.2.16/log4j-1.2.16.jar" output-file-name="log4j-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar" output-file-name="jsr250-api-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-bus/2.2.0.Final/errai-bus-2.2.0.Final.jar" output-file-name="errai-bus-.jar" />
