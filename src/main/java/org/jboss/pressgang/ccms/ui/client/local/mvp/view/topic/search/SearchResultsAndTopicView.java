@@ -37,6 +37,7 @@ public class SearchResultsAndTopicView extends
     private final PushButton bugs;
     private final PushButton history;
     private final PushButton csps;
+    private final PushButton urls;
 
     private final Label fieldsDown;
     private final Label xmlDown;
@@ -46,6 +47,7 @@ public class SearchResultsAndTopicView extends
     private final Label bugsDown;
     private final Label historyDown;
     private final Label extendedPropertiesDown;
+    private final Label urlsDown;
 
     private final FlexTable renderedSplitViewMenu = new FlexTable();
     private final PushButton renderedSplit;
@@ -59,6 +61,16 @@ public class SearchResultsAndTopicView extends
     private final PushButton renderedSplitOpen;
 
     protected boolean readOnly = false;
+
+    @Override
+    public PushButton getUrls() {
+        return urls;
+    }
+
+    @Override
+    public Label getUrlsDown() {
+        return urlsDown;
+    }
 
     @Override
     public PushButton getCsps() {
@@ -210,6 +222,7 @@ public class SearchResultsAndTopicView extends
         bugs = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Bugs());
         history = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Revisions());
         csps = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ContentSpecifications());
+        urls = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TopicSourceUrls());
 
         fieldsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Properties());
         xmlDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.XMLEditing());
@@ -219,6 +232,7 @@ public class SearchResultsAndTopicView extends
         bugsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Bugs());
         historyDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
         extendedPropertiesDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.PropertyTags());
+        urlsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TopicSourceUrls());
 
         renderedSplitOpen = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
         renderedNoSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.NoSplit());
@@ -361,6 +375,7 @@ public class SearchResultsAndTopicView extends
         addActionButton(this.getXmlErrors());
         addActionButton(this.getFields());
         addActionButton(this.getExtendedProperties());
+        addActionButton(this.getUrls());
         addActionButton(this.getTopicTags());
         addActionButton(this.getBugs());
         addActionButton(this.getHistory());

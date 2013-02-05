@@ -75,15 +75,11 @@ abstract public class BaseExtendedChildrenPresenter<
 
     }
 
-    public void bindExtendedChildrenExtended(final int topicId, final String pageId, final String preferencesKey, final T parent) {
-
-    }
-
-    protected final void bindExtendedChildren(final int topicId, @NotNull final String pageId, @NotNull final String preferencesKey, @NotNull final T parent, @NotNull final BaseExtendedChildrenViewInterface display) {
+    protected final void bindExtendedChildren(final int topicId, @NotNull final String pageId, @NotNull final String preferencesKey, final T parent, @NotNull final BaseExtendedChildrenViewInterface display) {
 
         this.display = display;
 
-        super.bind(topicId, pageId, display);
+        super.bindChildren(topicId, pageId, parent, display);
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
         refreshPossibleChildrenDataAndList(parent);
         loadChildSplitResize(preferencesKey);

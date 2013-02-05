@@ -147,22 +147,15 @@ public class SearchResultsAndTopicPresenter
     /**
      * The rendered topic view display in a split panel
      */
-    @Inject
-    private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
-    @Inject
-    private SearchResultsPresenter searchResultsComponent;
-    @Inject
-    private TopicXMLErrorsPresenter topicXMLErrorsPresenter;
-    @Inject
-    private TopicTagsPresenter topicTagsComponent;
-    @Inject
-    private TopicRevisionsPresenter topicRevisionsComponent;
-    @Inject
-    private TopicBIRTBugsPresenter topicBugsPresenter;
-    @Inject
-    private TopicRenderedPresenter topicRenderedPresenter;
-    @Inject
-    private TopicPropertyTagsPresenter topicPropertyTagPresenter;
+    @Inject private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
+    @Inject private SearchResultsPresenter searchResultsComponent;
+    @Inject private TopicXMLErrorsPresenter topicXMLErrorsPresenter;
+    @Inject private TopicTagsPresenter topicTagsComponent;
+    @Inject private TopicRevisionsPresenter topicRevisionsComponent;
+    @Inject private TopicBIRTBugsPresenter topicBugsPresenter;
+    @Inject private TopicRenderedPresenter topicRenderedPresenter;
+    @Inject private TopicPropertyTagsPresenter topicPropertyTagPresenter;
+    @Inject private TopicSourceURLsPresenter topicSourceURLsPresenter;
     /**
      * How the rendering panel is displayed
      */
@@ -217,7 +210,8 @@ public class SearchResultsAndTopicPresenter
             /* Initialize the other presenters we have pulled in */
             searchResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
             topicTagsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-            topicPropertyTagPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+            topicPropertyTagPresenter.bindExtendedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, null);
+            topicSourceURLsPresenter.bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, null);
 
             super.bindSearchAndEdit(ServiceConstants.TOPIC_EDIT_VIEW_CONTENT_TOPIC, HISTORY_TOKEN, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLComponent.getDisplay(), topicViewComponent.getDisplay(),
                     searchResultsComponent.getDisplay(), searchResultsComponent, display, display, getNewEntityCallback);
@@ -854,13 +848,16 @@ public class SearchResultsAndTopicPresenter
 
             enableAndDisableActionButtons(lastDisplayedView);
 
-            /* Display the tags that are added to the category */
-            Collections.sort(SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
+            /* Display the property tags that are added to the category */
+            Collections.sort(searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
                     new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
             topicPropertyTagPresenter.refreshExistingChildList(searchResultsComponent.getProviderData().getDisplayedItem().getItem());
 
-            /* Get a new collection of tags */
+            /* Get a new collection of property tags */
             topicPropertyTagPresenter.refreshPossibleChildrenDataAndList(searchResultsComponent.getProviderData().getDisplayedItem().getItem());
+
+            /* Display the list of property tags */
+            topicSourceURLsPresenter.refreshPossibleChildList(searchResultsComponent.getProviderData().getDisplayedItem().getItem());
 
             /* reset the topic review view */
             topicRevisionsComponent.getDisplay().setRevisionTopic(null);
@@ -981,6 +978,7 @@ public class SearchResultsAndTopicPresenter
             this.display.replaceTopActionButton(this.display.getRenderedDown(), this.display.getRendered());
             this.display.replaceTopActionButton(this.display.getTopicTagsDown(), this.display.getTopicTags());
             this.display.replaceTopActionButton(this.display.getXmlErrorsDown(), this.display.getXmlErrors());
+            this.display.replaceTopActionButton(this.display.getUrlsDown(), this.display.getUrls());
 
             if (displayedView == this.topicXMLComponent.getDisplay()) {
                 this.display.replaceTopActionButton(this.display.getXml(), this.display.getXmlDown());
@@ -998,6 +996,8 @@ public class SearchResultsAndTopicPresenter
                 this.display.replaceTopActionButton(this.display.getTopicTags(), this.display.getTopicTagsDown());
             } else if (displayedView == this.topicXMLErrorsPresenter.getDisplay()) {
                 this.display.replaceTopActionButton(this.display.getXmlErrors(), this.display.getXmlErrorsDown());
+            } else if (displayedView == this.topicSourceURLsPresenter.getDisplay()) {
+                this.display.replaceTopActionButton(this.display.getUrls(), this.display.getUrlsDown());
             }
 
             if (getTopicOrRevisionTopic() != null &&
@@ -1397,6 +1397,18 @@ public class SearchResultsAndTopicPresenter
                 }
             };
 
+            final ClickHandler topicSourceUrlsClickHandler = new ClickHandler() {
+                @Override
+                public void onClick(final ClickEvent event) {
+                    /* Sync any changes back to the underlying object */
+                    flushChanges();
+
+                    if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
+                        switchView(topicSourceURLsPresenter.getDisplay());
+                    }
+                }
+            };
+
             final ClickHandler topicXMLClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
@@ -1578,6 +1590,7 @@ public class SearchResultsAndTopicPresenter
             display.getBugs().addClickHandler(topicBugsClickHandler);
             display.getHistory().addClickHandler(topicRevisionsClickHanlder);
             display.getCsps().addClickHandler(cspsHandler);
+            display.getUrls().addClickHandler(topicSourceUrlsClickHandler);
 
             display.getRenderedSplitOpen().addClickHandler(splitMenuCloseHandler);
             display.getRenderedSplitClose().addClickHandler(splitMenuCloseHandler);
@@ -2244,6 +2257,10 @@ public class SearchResultsAndTopicPresenter
         PushButton getRenderedNoSplit();
 
         PushButton getRenderedSplit();
+
+        PushButton getUrls();
+
+        Label getUrlsDown();
 
         /**
          * @return The button that is used to switch to the history view

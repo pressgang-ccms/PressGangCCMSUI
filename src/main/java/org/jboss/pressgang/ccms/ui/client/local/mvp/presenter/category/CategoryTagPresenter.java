@@ -27,6 +27,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -84,12 +85,12 @@ public class CategoryTagPresenter
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, this.getDisplay());
-        bindExtendedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Preferences.CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH, new RESTCategoryV1());
+        bindExtendedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, new RESTCategoryV1());
     }
 
-    public void bindExtendedChildrenExtended(final int helpTopicId, @NotNull final String pageId, @NotNull final String preferencesKey, @NotNull final RESTCategoryV1 parent)
+    public void bindExtendedChildrenExtended(final int helpTopicId, @NotNull final String pageId, @Nullable final RESTCategoryV1 parent)
     {
-        super.bindExtendedChildren(helpTopicId, pageId, preferencesKey, parent, display);
+        super.bindExtendedChildren(helpTopicId, pageId, Preferences.CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH, parent, display);
         display.initialize(null, false);
     }
 

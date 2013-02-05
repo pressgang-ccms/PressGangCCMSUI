@@ -80,13 +80,13 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtendedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Preferences.TOPIC_PROPERTYTAG_VIEW_MAIN_SPLIT_WIDTH, new RESTTopicV1());
+        bindExtendedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, new RESTTopicV1());
 
     }
 
     @Override
-    public void bindExtendedChildrenExtended(final int helpTopicId, @NotNull final String pageId, @NotNull final String preferencesKey, @NotNull final RESTTopicV1 parent) {
-        super.bindExtendedChildren(helpTopicId, pageId, preferencesKey, parent, display);
+    public void bindExtendedChildrenExtended(final int helpTopicId, @NotNull final String pageId, final RESTTopicV1 parent) {
+        super.bindExtendedChildren(helpTopicId, pageId, Preferences.TOPIC_PROPERTYTAG_VIEW_MAIN_SPLIT_WIDTH, parent, display);
     }
 
     @Override

@@ -339,7 +339,11 @@ public final class RESTCalls {
     }
 
     public static void getTopic(final RESTCallback<RESTTopicV1> callback, final Integer id) {
-        final String expand = "{\"branches\":[" + "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}" + "]}";
+        final String expand =
+                "{\"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
+                "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {

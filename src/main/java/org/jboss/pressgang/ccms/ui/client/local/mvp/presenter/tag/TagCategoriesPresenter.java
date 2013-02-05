@@ -32,6 +32,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -80,13 +81,13 @@ public class TagCategoriesPresenter
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtendedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, new RESTTagV1());
+        bindExtendedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, new RESTTagV1());
     }
 
     @Override
-    public void bindExtendedChildrenExtended(final int topicId, @NotNull final String pageId, @NotNull final String preferencesKey, @NotNull final RESTTagV1 parent)
+    public void bindExtendedChildrenExtended(final int topicId, @NotNull final String pageId, @Nullable final RESTTagV1 parent)
     {
-        super.bindExtendedChildren(topicId, pageId, preferencesKey, parent, display);
+        super.bindExtendedChildren(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, parent, display);
 
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
         // display.setExistingChildrenProvider(generateExistingProvider());

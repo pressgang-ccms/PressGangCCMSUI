@@ -68,5 +68,5 @@ public interface BaseExtendedChildrenPresenterInterface<
      */
     void refreshExistingChildList(final W parent);
 
-    void bindExtendedChildrenExtended(final int topicId, final String pageId, final String preferencesKey, final T parent);
+    void bindExtendedChildrenExtended(final int topicId, final String pageId, final T parent);
 }
