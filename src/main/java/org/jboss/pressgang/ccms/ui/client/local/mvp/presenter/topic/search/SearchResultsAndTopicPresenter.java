@@ -138,12 +138,9 @@ public class SearchResultsAndTopicPresenter
      * A list of locales retrieved from the server
      */
     private List<String> locales;
-    @Inject
-    private Display display;
-    @Inject
-    private TopicPresenter topicViewComponent;
-    @Inject
-    private TopicXMLPresenter topicXMLComponent;
+    @Inject private Display display;
+    @Inject private TopicPresenter topicViewComponent;
+    @Inject private TopicXMLPresenter topicXMLComponent;
     /**
      * The rendered topic view display in a split panel
      */
@@ -336,23 +333,32 @@ public class SearchResultsAndTopicPresenter
      *                            after the topics has not been edited after a period of time
      */
     private void refreshRenderedView(final boolean forceExternalImages) {
-        topicXMLComponent.getDisplay().getDriver().flush();
+        try {
+            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.refreshRenderedView()");
 
-        final boolean xmlHasChanges = lastXML == null || !lastXML.equals(getTopicOrRevisionTopic().getItem().getXml());
+            try {
+                topicXMLComponent.getDisplay().getDriver().flush();
+            } catch (final IllegalStateException ex) {
+                LOGGER.log(Level.WARNING, "topicXMLComponent.getDisplay().getDriver().flush() threw an IllegalStateException. This probably happened because the rendered view was refreshed before the XML editor was bound.");
+            }
 
-        if (xmlHasChanges) {
-            lastXMLChange = System.currentTimeMillis();
+            final boolean xmlHasChanges = lastXML == null || !lastXML.equals(getTopicOrRevisionTopic().getItem().getXml());
+
+            if (xmlHasChanges) {
+                lastXMLChange = System.currentTimeMillis();
+            }
+
+            final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >= Constants.REFRESH_RATE_WTH_IMAGES;
+
+            if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
+                isDisplayingImage = timeToDisplayImage;
+                topicSplitPanelRenderedDisplay.displayTopicRendered(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), isDisplayingImage);
+            }
+
+            lastXML = getTopicOrRevisionTopic().getItem().getXml();
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.refreshRenderedView()");
         }
-
-        final Boolean timeToDisplayImage = forceExternalImages
-                || System.currentTimeMillis() - lastXMLChange >= Constants.REFRESH_RATE_WTH_IMAGES;
-
-        if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
-            isDisplayingImage = timeToDisplayImage;
-            topicSplitPanelRenderedDisplay.display(getTopicOrRevisionTopic().getItem(), isReadOnlyMode());
-        }
-
-        lastXML = getTopicOrRevisionTopic().getItem().getXml();
     }
 
     /**
@@ -1014,7 +1020,7 @@ public class SearchResultsAndTopicPresenter
     @Override
     protected void afterSwitchView(final BaseTemplateViewInterface displayedView) {
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.switchView(final TopicViewInterface displayedView)");
+            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.afterSwitchView()");
 
             enableAndDisableActionButtons(displayedView);
 
@@ -1029,7 +1035,7 @@ public class SearchResultsAndTopicPresenter
             if (displayedView == this.topicRenderedPresenter.getDisplay()) {
                 topicRenderedPresenter.getDisplay().display(getTopicOrRevisionTopic().getItem(), isReadOnlyMode());
             }
-            /* Set the projects combo box as the focsed element */
+            /* Set the projects combo box as the focused element */
             else if (displayedView == this.topicTagsComponent.getDisplay() && topicTagsComponent.getDisplay().getProjectsList().isAttached()) {
                 topicTagsComponent.getDisplay().getProjectsList().getElement().focus();
             }
@@ -1044,7 +1050,7 @@ public class SearchResultsAndTopicPresenter
 
             setHelpTopicForView(this, displayedView);
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.switchView(final TopicViewInterface displayedView)");
+            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.afterSwitchView()");
         }
     }
 
@@ -1626,13 +1632,10 @@ public class SearchResultsAndTopicPresenter
                 or topic revision
             */
             final List<BaseCustomViewInterface<RESTTopicV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTTopicV1>>();
-            displayableViews.add(topicViewComponent.getDisplay());
             displayableViews.add(topicXMLComponent.getDisplay());
-            displayableViews.add(topicRenderedPresenter.getDisplay());
             displayableViews.add(topicXMLErrorsPresenter.getDisplay());
             displayableViews.add(topicTagsComponent.getDisplay());
             displayableViews.add(topicBugsPresenter.getDisplay());
-            displayableViews.add(topicSplitPanelRenderedDisplay);
             displayableViews.add(topicPropertyTagPresenter.getDisplay());
 
             final RESTTopicCollectionItemV1 topicToDisplay = getTopicOrRevisionTopic();
@@ -1640,6 +1643,20 @@ public class SearchResultsAndTopicPresenter
                 if (viewIsInFilter(filter, view)) {
                     view.display(topicToDisplay.getItem(), isReadOnlyMode());
                 }
+            }
+
+            if (viewIsInFilter(filter, topicViewComponent.getDisplay())) {
+                topicViewComponent.getDisplay().displayTopicDetails(topicToDisplay.getItem(), isReadOnlyMode(), locales);
+            }
+
+            /* We display the rendered view with images */
+            if (viewIsInFilter(filter, topicRenderedPresenter.getDisplay())) {
+                topicRenderedPresenter.getDisplay().displayTopicRendered(topicToDisplay.getItem(), isReadOnlyMode(), true);
+            }
+
+            /* We initailly display the split pane rendered view without images */
+            if (viewIsInFilter(filter, topicSplitPanelRenderedDisplay)) {
+                topicSplitPanelRenderedDisplay.displayTopicRendered(topicToDisplay.getItem(), isReadOnlyMode(), false);
             }
 
             /*

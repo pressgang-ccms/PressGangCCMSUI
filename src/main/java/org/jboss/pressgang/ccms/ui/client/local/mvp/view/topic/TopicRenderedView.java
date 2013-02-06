@@ -27,7 +27,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
     @Override
     public final void display(final RESTTopicV1 topic, final boolean readOnly) {
-        throw new UnsupportedOperationException("display() is not supported. Use displayTopicRendered() instead.");
+        throw new UnsupportedOperationException("TopicRenderedView.display() is not supported. Use TopicRenderedView.displayTopicRendered() instead.");
     }
 
     @Override

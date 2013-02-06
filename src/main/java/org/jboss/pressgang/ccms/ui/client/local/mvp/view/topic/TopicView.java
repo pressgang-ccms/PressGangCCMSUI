@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -29,11 +30,11 @@ public class TopicView extends BaseTemplateView implements TopicPresenter.Displa
 
     @Override
     public final void display(final RESTTopicV1 topic, final boolean readOnly) {
-        throw new UnsupportedOperationException("display() is not supported. Use displayTopicDetails() instead.");
+        throw new UnsupportedOperationException("TopicView.display() is not supported. Use TopicView.displayTopicDetails() instead.");
     }
 
     @Override
-    public final void displayTopicDetails(final RESTTopicV1 topic, final boolean readOnly, final List<String> locales) {
+    public final void displayTopicDetails(@NotNull final RESTTopicV1 topic, @NotNull final boolean readOnly, @NotNull final List<String> locales) {
         /* SearchUIProjectsEditor is a grid */
         final RESTTopicV1BasicDetailsEditor editor = new RESTTopicV1BasicDetailsEditor(readOnly, locales);
         /* Initialize the driver with the top-level editor */
