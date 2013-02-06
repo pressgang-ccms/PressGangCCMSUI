@@ -822,6 +822,11 @@ public class SearchResultsAndTopicPresenter
                 unsavedChanges = true;
             }
 
+            /* If there are any modified source urls in newTopic, we have unsaved changes */
+            if (!displayedTopic.getSourceUrls_OTM().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
+                unsavedChanges = true;
+            }
+
             /*
              * If any values in selectedTopic don't match displayedTopic, we have unsaved changes
              */
@@ -1032,7 +1037,7 @@ public class SearchResultsAndTopicPresenter
 
             /* Refresh the rendered view (when there is no page splitting) */
             if (displayedView == this.topicRenderedPresenter.getDisplay()) {
-                topicRenderedPresenter.getDisplay().display(getTopicOrRevisionTopic().getItem(), isReadOnlyMode());
+                topicRenderedPresenter.getDisplay().displayTopicRendered(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), true);
             }
             /* Set the projects combo box as the focused element */
             else if (displayedView == this.topicTagsComponent.getDisplay() && topicTagsComponent.getDisplay().getProjectsList().isAttached()) {
@@ -1623,6 +1628,14 @@ public class SearchResultsAndTopicPresenter
 
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.initializeViews()");
+
+            /**
+             * Initialize the views first, as quite often the tables have columns whose
+             * values depend on the parent entity set when initialzing the views. This is
+             * common for "Add" and "Remove" column buttons that need to know if the
+             * entity in the row is in the parent in order to choose between the add and
+             * remove lables.
+             */
 
             LOGGER.log(Level.INFO, "\tInitializing topic views");
 
