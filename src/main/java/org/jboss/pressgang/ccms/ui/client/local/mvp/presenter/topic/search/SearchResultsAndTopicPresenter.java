@@ -1038,8 +1038,6 @@ public class SearchResultsAndTopicPresenter
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.switchView(final TopicViewInterface displayedView)");
 
-            super.switchView(displayedView);
-
             enableAndDisableActionButtons(displayedView);
 
             updatePageTitle(displayedView);
