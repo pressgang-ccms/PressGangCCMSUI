@@ -12,6 +12,8 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1B
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import java.util.List;
+
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
@@ -25,7 +27,7 @@ public class TopicPresenter extends BaseTemplatePresenter {
     }
 
     public interface Display extends BaseTemplateViewInterface, BasePopulatedEditorViewInterface<RESTTopicV1, RESTTopicV1, RESTTopicV1BasicDetailsEditor> {
-
+        void displayTopicDetails(final RESTTopicV1 topic, final boolean readOnly, final List<String> locales);
     }
 
     private Integer topicId;

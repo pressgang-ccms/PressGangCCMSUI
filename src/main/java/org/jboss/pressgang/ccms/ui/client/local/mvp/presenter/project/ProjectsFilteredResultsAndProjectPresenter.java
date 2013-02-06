@@ -245,7 +245,7 @@ public class ProjectsFilteredResultsAndProjectPresenter
                                         filteredResultsComponent.getProviderData().getStartRow(),
                                         filteredResultsComponent.getProviderData().getItems());
 
-                                tagComponent.getDisplay().initialize(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+                                tagComponent.getDisplay().displayExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
                                 tagComponent.refreshPossibleChildrenDataAndList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
                                 updateDisplayAfterSave(wasNewEntity);

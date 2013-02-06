@@ -47,7 +47,7 @@ abstract public class BaseFilteredResultsComponent<
      * An empty implementation. Extending classes should use bindExtendedFilteredResults.
      */
     public final void bindExtended(final int topicId, final String pageId) {
-
+        throw new UnsupportedOperationException("bindExtended() is not supported. Use bindFilteredResults() instead.");
     }
     
     /**

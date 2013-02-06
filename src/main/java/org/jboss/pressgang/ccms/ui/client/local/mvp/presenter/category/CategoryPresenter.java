@@ -64,9 +64,7 @@ public class CategoryPresenter extends
     public void bindExtended(final int topicId, final String pageId)
     {
         super.bind(topicId, pageId, display);
-        this.getEntity();
     }
-
 
     @Override
     public void parseToken(@NotNull final String searchToken) {
@@ -74,24 +72,6 @@ public class CategoryPresenter extends
             categoryId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
         } catch (final NumberFormatException ex) {
             categoryId = null;
-        }
-    }
-
-    /**
-     * Get the category from the database and use it to populate the editor in the view
-     */
-    public void getEntity() {
-        final RESTCalls.RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, Display>(display,
-                new BaseRestCallback.SuccessAction<RESTCategoryV1, Display>() {
-                    @Override
-                    public void doSuccessAction(final RESTCategoryV1 retValue, final Display display) {
-                        display.initialize(retValue, false);
-                    }
-                });
-
-        if (categoryId != null)
-        {
-            RESTCalls.getUnexpandedCategory(callback, categoryId);
         }
     }
 }

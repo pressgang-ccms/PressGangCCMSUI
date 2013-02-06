@@ -51,7 +51,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
     }
 
     @Override
-    public void initialise(final RESTTagCollectionV1 tagCollection, final boolean readOnly) {
+    public void display(final RESTTagCollectionV1 tagCollection, final boolean readOnly) {
 
         /* Build the action bar icons */
         addActionButton(searchTopics);

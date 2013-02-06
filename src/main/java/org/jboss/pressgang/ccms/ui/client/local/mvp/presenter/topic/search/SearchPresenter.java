@@ -34,8 +34,6 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
         PushButton getFields();
 
         PushButton getSearchTopics();
-
-        void initialise(final RESTTagCollectionV1 tags);
     }
 
     public static final String HISTORY_TOKEN = "SearchView";
@@ -83,7 +81,7 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
                 display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, BaseTemplateViewInterface>() {
             @Override
             public void doSuccessAction(final RESTTagCollectionV1 retValue, final BaseTemplateViewInterface waitDisplay) {
-                display.initialise(retValue);
+                display.display(retValue, false);
             }
         });
         RESTCalls.getTags(callback);

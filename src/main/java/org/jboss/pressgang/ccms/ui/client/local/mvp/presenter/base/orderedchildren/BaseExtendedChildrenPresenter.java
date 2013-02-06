@@ -72,7 +72,7 @@ abstract public class BaseExtendedChildrenPresenter<
      * @param parent A reference to the entity being edited
      */
     public final void bindChildrenExtended(final int topicId, final String pageId, @NotNull final T parent) {
-
+        throw new UnsupportedOperationException("bindChildrenExtended() is not supported. Use bindExtendedChildren() instead.");
     }
 
     protected final void bindExtendedChildren(final int topicId, @NotNull final String pageId, @NotNull final String preferencesKey, final T parent, @NotNull final BaseExtendedChildrenViewInterface display) {

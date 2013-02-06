@@ -26,7 +26,12 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     }
 
     @Override
-    public void display(final RESTTopicV1 topic, final boolean readOnly) {
+    public final void display(final RESTTopicV1 topic, final boolean readOnly) {
+        throw new UnsupportedOperationException("display() is not supported. Use displayTopicRendered() instead.");
+    }
+
+    @Override
+    public final void displayTopicRendered(final RESTTopicV1 topic, final boolean readOnly, final boolean showImages) {
 
         try {
             // Any number of processors can be created, they will behave
@@ -36,7 +41,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
             // Setting the stylesheet to transform with
 
             processor.importStyleSheet(DocbookToHTML.XSL);
-            processor.setParameter("externalImages", showImages.toString());
+            processor.setParameter("externalImages", showImages + "");
             
             //processor.importSource(Constants.DOCBOOK_XSL_FILE);
 

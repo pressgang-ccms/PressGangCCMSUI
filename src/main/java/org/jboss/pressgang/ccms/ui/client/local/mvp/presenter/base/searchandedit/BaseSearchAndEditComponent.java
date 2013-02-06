@@ -95,7 +95,7 @@ abstract public class BaseSearchAndEditComponent<
      * @param pageId The history token of the page
      */
     public void bindExtended(final int topicId, final String pageId) {
-
+        throw new UnsupportedOperationException("bindExtended() is not supported. Use go() instead.");
     }
 
     /**

@@ -17,7 +17,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
     public static final String HISTORY_TOKEN = "TopicRenderedView";
 
     public interface Display extends BaseTemplateViewInterface, BaseCustomViewInterface<RESTTopicV1> {
-
+        void displayTopicRendered(final RESTTopicV1 topic, final boolean readOnly, final boolean showImages);
     }
 
     /**
