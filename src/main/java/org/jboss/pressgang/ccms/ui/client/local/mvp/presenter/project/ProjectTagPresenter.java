@@ -67,10 +67,14 @@ public class ProjectTagPresenter
     }
 
     @Override
-    public void bindChildrenExtended(final int topicId, @NotNull final String pageId, @NotNull final RESTProjectV1 parent)
+    public void bindChildrenExtended(final int topicId, @NotNull final String pageId)
     {
-        super.bindChildren(topicId, pageId, parent, display);
-        display.initialize(null, false);
+        super.bindChildren(topicId, pageId, display);
+    }
+
+    @Override
+    public void displayChildrenExtended(final @NotNull RESTProjectV1 parent) {
+        display.display(parent, false);
     }
 
     @Override

@@ -61,12 +61,17 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, new RESTTagV1());
+        bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
     @Override
-    public void bindChildrenExtended(final int helpTopicId, @NotNull final String pageId, @NotNull final RESTTagV1 parent) {
-        super.bindChildren(helpTopicId, pageId, parent, display);
+    public void bindChildrenExtended(final int helpTopicId, @NotNull final String pageId) {
+        super.bindChildren(helpTopicId, pageId, display);
+
+    }
+
+    @Override
+    public void displayChildrenExtended(final @NotNull RESTTagV1 parent) {
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
         refreshPossibleChildrenDataAndList(parent);
     }

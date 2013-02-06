@@ -10,7 +10,10 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlColl
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicSourceUrlV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.AddPossibleChildCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.GetExistingCollectionCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.UpdateAfterChildModfiedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
@@ -91,32 +94,35 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
     @Override
     public final void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, new RESTTopicV1());
+        bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
     @Override
-    public final void bindChildrenExtended(final int helpTopicId, @NotNull final String pageId, @Nullable final RESTTopicV1 parent) {
-        bindChildren(helpTopicId, pageId, parent, display);
+    public final void bindChildrenExtended(final int helpTopicId, @NotNull final String pageId) {
+        bindChildren(helpTopicId, pageId, display);
+    }
 
-        /*bindPossibleChildrenListButtonClicks(
-            new GetExistingCollectionCallback<RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1>() {
-                @Override
-                public RESTTopicSourceUrlCollectionV1 getExistingCollection() {
-                    return parent.getSourceUrls_OTM();
-                }
-            },
-            new AddPossibleChildCallback<RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1>() {
-                @Override
-                public void createAndAddChild(final RESTTopicSourceUrlCollectionItemV1 copy) {
-                    // Do nothing here, because the button always removed a URL
-                }
-            },
-            new UpdateAfterChildModfiedCallback() {
-                @Override
-                public void updateAfterChidModfied() {
+    @Override
+    public void displayChildrenExtended(final @NotNull RESTTopicV1 parent) {
+        bindPossibleChildrenListButtonClicks(
+                new GetExistingCollectionCallback<RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1>() {
+                    @Override
+                    public RESTTopicSourceUrlCollectionV1 getExistingCollection() {
+                        return parent.getSourceUrls_OTM();
+                    }
+                },
+                new AddPossibleChildCallback<RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1>() {
+                    @Override
+                    public void createAndAddChild(final RESTTopicSourceUrlCollectionItemV1 copy) {
+                        // Do nothing here, because the button always removed a URL
+                    }
+                },
+                new UpdateAfterChildModfiedCallback() {
+                    @Override
+                    public void updateAfterChidModfied() {
 
+                    }
                 }
-            }
-        ); */
+        );
     }
 }

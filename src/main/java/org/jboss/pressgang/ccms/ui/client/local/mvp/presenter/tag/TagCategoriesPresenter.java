@@ -43,7 +43,17 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 @Dependent
 public class TagCategoriesPresenter
         extends
-        BaseOrderedChildrenComponent<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, RESTCategoryV1, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
+        BaseOrderedChildrenComponent<
+                RESTTagV1,
+                RESTTagCollectionV1,
+                RESTTagCollectionItemV1,
+                RESTCategoryV1,
+                RESTCategoryV1,
+                RESTCategoryCollectionV1,
+                RESTCategoryCollectionItemV1,
+                RESTTagInCategoryV1,
+                RESTTagInCategoryCollectionV1,
+                RESTTagInCategoryCollectionItemV1>
         implements BaseTemplatePresenterInterface {
 
     public interface Display extends BaseOrderedChildrenViewInterface<
@@ -79,21 +89,24 @@ public class TagCategoriesPresenter
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtendedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, new RESTTagV1());
+        bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
     @Override
-    public void bindExtendedChildrenExtended(final int topicId, @NotNull final String pageId, @Nullable final RESTTagV1 parent)
+    public void bindDetailedChildrenExtended(final int topicId, @NotNull final String pageId)
     {
-        super.bindDetailedChildren(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, parent, display);
-
-        display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
+        super.bindDetailedChildren(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display);
         // display.setExistingChildrenProvider(generateExistingProvider());
         initLifecycleBindPossibleChildrenRowClick();
+    }
+
+    @Override
+    public void displayDetailedChildrenExtended(final RESTTagV1 parent) {
+
+        display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
         initLifecycleBindExistingChildrenRowClick(parent);
         refreshPossibleChildrenDataAndList(parent);
     }
-
 
     /**
      * Used when moving children up and down
