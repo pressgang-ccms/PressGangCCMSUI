@@ -70,5 +70,9 @@ public interface BaseDetailedChildrenPresenterInterface<
 
     void bindDetailedChildrenExtended(final int topicId, final String pageId);
 
+    /**
+     * Display the data held in parent. Must call displayDetailedChildren();
+     * @param parent The object holding the data to be displayed.
+     */
     void displayDetailedChildrenExtended(final T parent);
 }
