@@ -103,6 +103,9 @@ public class SearchResultsAndTopicPresenter
      * topics)
      */
     private static final boolean NEW_TOPIC = false;
+    /**
+     * A Logger
+     */
     private static final Logger LOGGER = Logger.getLogger(SearchResultsAndTopicPresenter.class.getName());
     /**
      * Setup automatic flushing and rendering.
@@ -222,7 +225,6 @@ public class SearchResultsAndTopicPresenter
 
             bindViewTopicRevisionButton();
             bindSplitPanelResize();
-            bindPropertyTagButtons();
             loadSplitPanelSize();
 
             this.topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
@@ -560,102 +562,7 @@ public class SearchResultsAndTopicPresenter
         }
     }
 
-    /**
-     * Add behaviour to the property tag add and remove buttons, and the value text edit field.
-     */
-    private void bindPropertyTagButtons()
-    {
-        try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bindPropertyTagButtons()");
 
-            this.topicPropertyTagPresenter.getDisplay().getPossibleChildrenButtonColumn().setFieldUpdater(
-                    new FieldUpdater<RESTPropertyTagCollectionItemV1, String>() {
-                        @Override
-                        public void update(final int index, final RESTPropertyTagCollectionItemV1 object, final String value) {
-
-                            /* Create a new property tag child */
-                            final RESTAssignedPropertyTagV1 restAssignedPropertyTagV1 = new RESTAssignedPropertyTagV1();
-                            restAssignedPropertyTagV1.setId(object.getItem().getId());
-                            restAssignedPropertyTagV1.setName(object.getItem().getName());
-                            restAssignedPropertyTagV1.setDescription(object.getItem().getDescription());
-
-                            SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().addNewItem(restAssignedPropertyTagV1);
-
-                            /* Update the list of existing children */
-                            Collections.sort(SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
-                                    new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
-                            SearchResultsAndTopicPresenter.this.topicPropertyTagPresenter.refreshExistingChildList(
-                                    SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem());
-                        }
-                    }
-            );
-
-            this.topicPropertyTagPresenter.getDisplay().getPropertyTagRemoveColumn().setFieldUpdater(
-                    new FieldUpdater<RESTAssignedPropertyTagCollectionItemV1, String>() {
-                        @Override
-                        public void update(final int index, final RESTAssignedPropertyTagCollectionItemV1 object, final String value) {
-
-                            /*
-                                Note that the relationship between topic and property tag is many to many.
-                             */
-
-                            if (object.returnIsAddItem()) {
-                                /* Previously added items are just removed from the collection */
-                                SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().getItems().remove(object);
-                            } else {
-                                /* Existing children are marked for removal */
-                                object.setState(REMOVE_STATE);
-                            }
-
-                            /* Update the list of existing children */
-                            SearchResultsAndTopicPresenter.this.topicPropertyTagPresenter.refreshExistingChildList(
-                                    SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem());
-                        }
-                    }
-            );
-
-            this.topicPropertyTagPresenter.getDisplay().getPropertyTagValueColumn().setFieldUpdater(new FieldUpdater<RESTAssignedPropertyTagCollectionItemV1, String>() {
-                @Override
-                public void update(final int index, final RESTAssignedPropertyTagCollectionItemV1 object, final String value) {
-
-                    /*
-                        Updating just the value (and no other topic fields or children) will not create a new Envers revision
-                        for the topic. This makes it incredibly difficult to get the state of the topic, including the state
-                        or the property tags, as the topic existed at a particular point in time because the state of the
-                        assigned property tags may have been changed.
-
-                        To force a new topic revision to be created, any time a value is updated the existing mapping is removed
-                         and a new one created. This has the effect of creating a new topic revision to match the fact that
-                         the value of a property tag has been changed.
-                     */
-
-                    if (object.returnIsAddItem()) {
-                        object.getItem().setValue(value);
-                    }
-                    else {
-                        object.setState(REMOVE_STATE);
-
-                        /* Create a new property tag child */
-                        final RESTAssignedPropertyTagV1 restAssignedPropertyTagV1 = new RESTAssignedPropertyTagV1();
-                        restAssignedPropertyTagV1.setId(object.getItem().getId());
-                        restAssignedPropertyTagV1.setName(object.getItem().getName());
-                        restAssignedPropertyTagV1.setDescription(object.getItem().getDescription());
-                        restAssignedPropertyTagV1.setValue(value);
-
-                        SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().addNewItem(restAssignedPropertyTagV1);
-
-                        /* Update the list of existing children */
-                        Collections.sort(SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
-                                new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
-                        SearchResultsAndTopicPresenter.this.topicPropertyTagPresenter.refreshExistingChildList(
-                                SearchResultsAndTopicPresenter.this.searchResultsComponent.getProviderData().getDisplayedItem().getItem());
-                    }
-                }
-            });
-        } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bindPropertyTagButtons()");
-        }
-    }
 
 
     /**

@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -21,15 +22,18 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.Ba
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1.REMOVE_STATE;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
@@ -89,6 +93,99 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     @Override
     public void displayDetailedChildrenExtended(final RESTTopicV1 parent) {
         super.displayDetailedChildren(parent);
+        bindPropertyTagButtons(parent);
+    }
+
+    /**
+     * Add behaviour to the property tag add and remove buttons, and the value text edit field.
+     */
+    private void bindPropertyTagButtons(@NotNull final RESTTopicV1 parent)
+    {
+        try {
+            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bindPropertyTagButtons()");
+
+            display.getPossibleChildrenButtonColumn().setFieldUpdater(
+                    new FieldUpdater<RESTPropertyTagCollectionItemV1, String>() {
+                        @Override
+                        public void update(final int index, final RESTPropertyTagCollectionItemV1 object, final String value) {
+
+                            /* Create a new property tag child */
+                            final RESTAssignedPropertyTagV1 restAssignedPropertyTagV1 = new RESTAssignedPropertyTagV1();
+                            restAssignedPropertyTagV1.setId(object.getItem().getId());
+                            restAssignedPropertyTagV1.setName(object.getItem().getName());
+                            restAssignedPropertyTagV1.setDescription(object.getItem().getDescription());
+
+                            parent.getProperties().addNewItem(restAssignedPropertyTagV1);
+
+                            /* Update the list of existing children */
+                            Collections.sort(parent.getProperties().getItems(), new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
+                            refreshExistingChildList(parent);
+                        }
+                    }
+            );
+
+            display.getPropertyTagRemoveColumn().setFieldUpdater(
+                    new FieldUpdater<RESTAssignedPropertyTagCollectionItemV1, String>() {
+                        @Override
+                        public void update(final int index, final RESTAssignedPropertyTagCollectionItemV1 object, final String value) {
+
+                            /*
+                                Note that the relationship between topic and property tag is many to many.
+                             */
+
+                            if (object.returnIsAddItem()) {
+                                /* Previously added items are just removed from the collection */
+                                parent.getProperties().getItems().remove(object);
+                            } else {
+                                /* Existing children are marked for removal */
+                                object.setState(REMOVE_STATE);
+                            }
+
+                            /* Update the list of existing children */
+                            refreshExistingChildList(parent);
+                        }
+                    }
+            );
+
+               display.getPropertyTagValueColumn().setFieldUpdater(new FieldUpdater<RESTAssignedPropertyTagCollectionItemV1, String>() {
+                @Override
+                public void update(final int index, final RESTAssignedPropertyTagCollectionItemV1 object, final String value) {
+
+                    /*
+                        Updating just the value (and no other topic fields or children) will not create a new Envers revision
+                        for the topic. This makes it incredibly difficult to get the state of the topic, including the state
+                        or the property tags, as the topic existed at a particular point in time because the state of the
+                        assigned property tags may have been changed.
+
+                        To force a new topic revision to be created, any time a value is updated the existing mapping is removed
+                         and a new one created. This has the effect of creating a new topic revision to match the fact that
+                         the value of a property tag has been changed.
+                     */
+
+                    if (object.returnIsAddItem()) {
+                        object.getItem().setValue(value);
+                    }
+                    else {
+                        object.setState(REMOVE_STATE);
+
+                        /* Create a new property tag child */
+                        final RESTAssignedPropertyTagV1 restAssignedPropertyTagV1 = new RESTAssignedPropertyTagV1();
+                        restAssignedPropertyTagV1.setId(object.getItem().getId());
+                        restAssignedPropertyTagV1.setName(object.getItem().getName());
+                        restAssignedPropertyTagV1.setDescription(object.getItem().getDescription());
+                        restAssignedPropertyTagV1.setValue(value);
+
+                        parent.getProperties().addNewItem(restAssignedPropertyTagV1);
+
+                        /* Update the list of existing children */
+                        Collections.sort(parent.getProperties().getItems(), new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
+                        refreshExistingChildList(parent);
+                    }
+                }
+            });
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bindPropertyTagButtons()");
+        }
     }
 
     @Override

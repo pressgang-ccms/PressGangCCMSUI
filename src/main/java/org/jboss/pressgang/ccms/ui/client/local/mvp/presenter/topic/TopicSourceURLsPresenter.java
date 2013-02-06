@@ -1,20 +1,26 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTAssignedPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicSourceUrlV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.AddPossibleChildCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.GetExistingCollectionCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.UpdateAfterChildModfiedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,6 +28,12 @@ import org.jetbrains.annotations.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1.REMOVE_STATE;
+import static org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1.UNCHANGED_STATE;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 /**
@@ -57,6 +69,11 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
     public static final String HISTORY_TOKEN = "TopicSourceURLView";
 
     /**
+     * A Logger
+     */
+    private static final Logger LOGGER = Logger.getLogger(TopicSourceURLsPresenter.class.getName());
+
+    /**
      * The view that displays the source urls.
      */
     @Inject private Display display;
@@ -78,7 +95,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
                 getPossibleChildrenProviderData().setStartRow(data.getVisibleRange().getStart());
 
                 if (parent != null && parent.getSourceUrls_OTM() != null) {
-                    getPossibleChildrenProviderData().setItems(parent.getSourceUrls_OTM().getItems());
+                    getPossibleChildrenProviderData().setItems(parent.getSourceUrls_OTM().returnExistingAddedAndUpdatedCollectionItems());
                     displayNewFixedList(getPossibleChildrenProviderData().getItems());
                 } else {
                     resetProvider();
@@ -106,6 +123,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
     @Override
     public final void displayChildrenExtended(@NotNull final RESTTopicV1 parent) {
         super.displayChildren(parent);
+        bindPropertyTagButtons(parent);
 
         bindPossibleChildrenListButtonClicks(
                 new GetExistingCollectionCallback<RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1>() {
@@ -127,5 +145,42 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
                     }
                 }
         );
+    }
+
+    /**
+     * Add behaviour to the property tag add and remove buttons, and the value text edit field.
+     */
+    private void bindPropertyTagButtons(@NotNull final RESTTopicV1 parent)
+    {
+        try {
+            LOGGER.log(Level.INFO, "ENTER TopicSourceURLsPresenter.bindPropertyTagButtons()");
+
+            display.getNameValueColumn().setFieldUpdater(
+                    new FieldUpdater<RESTTopicSourceUrlCollectionItemV1, String>() {
+                        @Override
+                        public void update(final int index, final RESTTopicSourceUrlCollectionItemV1 object, final String value) {
+                            if (object.getState() == UNCHANGED_STATE) {
+                                object.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                            }
+
+                            object.getItem().explicitSetTitle(value);
+                        }
+                    }
+            );
+
+            display.getURLValueColumn().setFieldUpdater(new FieldUpdater<RESTTopicSourceUrlCollectionItemV1, String>() {
+                @Override
+                public void update(final int index, final RESTTopicSourceUrlCollectionItemV1 object, final String value) {
+
+                    if (object.getState() == UNCHANGED_STATE) {
+                        object.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
+                    }
+
+                    object.getItem().explicitSetUrl(value);
+                }
+            });
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT TopicSourceURLsPresenter.bindPropertyTagButtons()");
+        }
     }
 }
