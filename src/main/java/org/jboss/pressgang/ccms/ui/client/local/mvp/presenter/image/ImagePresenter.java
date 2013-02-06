@@ -9,8 +9,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseEditorViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,7 +22,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 @Dependent
 public class ImagePresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
 
-    public interface Display extends BaseEditorViewInterface<RESTImageV1, RESTImageV1, RESTImageV1Editor> {
+    public interface Display extends BasePopulatedEditorViewInterface<RESTImageV1, RESTImageV1, RESTImageV1Editor> {
 
         interface AddLocaleInterface {
             PushButton getCancel();

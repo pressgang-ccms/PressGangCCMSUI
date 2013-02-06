@@ -6,7 +6,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseEditorViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjectV1BasicDetailsEditor;
@@ -25,7 +25,7 @@ public class ProjectPresenter extends BaseTemplatePresenter implements BaseTempl
     public interface ProjectPresenterDriver extends SimpleBeanEditorDriver<RESTProjectV1, RESTProjectV1BasicDetailsEditor> {
     }
 
-    public interface Display extends BaseEditorViewInterface<RESTProjectV1, RESTProjectV1, RESTProjectV1BasicDetailsEditor> {
+    public interface Display extends BasePopulatedEditorViewInterface<RESTProjectV1, RESTProjectV1, RESTProjectV1BasicDetailsEditor> {
 
     }
 

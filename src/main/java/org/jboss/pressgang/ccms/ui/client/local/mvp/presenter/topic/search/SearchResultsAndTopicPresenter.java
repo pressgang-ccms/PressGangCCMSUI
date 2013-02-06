@@ -51,7 +51,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringL
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringMapLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseEditorViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicXMLView;
@@ -402,7 +402,7 @@ public class SearchResultsAndTopicPresenter
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.flushChanges()");
 
-            if (lastDisplayedView == null || !(lastDisplayedView instanceof BaseEditorViewInterface)) {
+            if (lastDisplayedView == null || !(lastDisplayedView instanceof BasePopulatedEditorViewInterface)) {
                 return;
             }
 
@@ -411,7 +411,7 @@ public class SearchResultsAndTopicPresenter
                 return;
             }
 
-            ((BaseEditorViewInterface)lastDisplayedView).getDriver().flush();
+            ((BasePopulatedEditorViewInterface)lastDisplayedView).getDriver().flush();
         } finally {
             LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.flushChanges()");
         }

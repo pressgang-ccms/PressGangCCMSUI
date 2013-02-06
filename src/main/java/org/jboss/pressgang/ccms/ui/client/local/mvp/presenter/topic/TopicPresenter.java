@@ -5,8 +5,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseEditorViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 
@@ -25,7 +24,7 @@ public class TopicPresenter extends BaseTemplatePresenter {
     public interface TopicPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1BasicDetailsEditor> {
     }
 
-    public interface Display extends BaseTemplateViewInterface, BaseEditorViewInterface<RESTTopicV1, RESTTopicV1, RESTTopicV1BasicDetailsEditor> {
+    public interface Display extends BaseTemplateViewInterface, BasePopulatedEditorViewInterface<RESTTopicV1, RESTTopicV1, RESTTopicV1BasicDetailsEditor> {
 
     }
 

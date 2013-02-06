@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseEditorViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLErrorsEditor;
 
@@ -23,7 +23,7 @@ public class TopicXMLErrorsPresenter extends BaseTemplatePresenter {
     public interface TopicXMLErrorsPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1XMLErrorsEditor> {
     }
 
-    public interface Display extends BaseTemplateViewInterface, BaseEditorViewInterface<RESTTopicV1, RESTTopicV1, RESTTopicV1XMLErrorsEditor> {
+    public interface Display extends BaseTemplateViewInterface, BasePopulatedEditorViewInterface<RESTTopicV1, RESTTopicV1, RESTTopicV1XMLErrorsEditor> {
     }
 
     private Integer topicId;
