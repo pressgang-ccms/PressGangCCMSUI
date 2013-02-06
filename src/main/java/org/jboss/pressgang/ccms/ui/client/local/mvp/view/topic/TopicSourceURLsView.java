@@ -76,6 +76,10 @@ public class TopicSourceURLsView extends BaseChildrenView<
      */
     public TopicSourceURLsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.TopicSourceUrls());
+
+        getPossibleChildrenResults().addColumn(urlValueColumn, PressGangCCMSUI.INSTANCE.URLTitle());
+        getPossibleChildrenResults().addColumn(nameValueColumn, PressGangCCMSUI.INSTANCE.URL());
+        getPossibleChildrenResults().addColumn(sourceUrlRemoveColumn, PressGangCCMSUI.INSTANCE.Remove());
     }
 
     @Override

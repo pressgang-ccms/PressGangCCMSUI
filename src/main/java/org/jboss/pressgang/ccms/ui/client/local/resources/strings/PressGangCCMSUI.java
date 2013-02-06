@@ -370,4 +370,8 @@ public interface PressGangCCMSUI extends Constants {
     String ImageUploadFailure();
 
     String TopicSourceUrls();
+
+    String URLTitle();
+
+    String URL();
 }

@@ -77,8 +77,9 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
 
                 getPossibleChildrenProviderData().setStartRow(data.getVisibleRange().getStart());
 
-                if (parent != null && parent.getSourceUrls_OTM() != null && getPossibleChildrenProviderData().getItems() != null) {
-                    displayNewFixedList(parent.getSourceUrls_OTM().getItems());
+                if (parent != null && parent.getSourceUrls_OTM() != null) {
+                    getPossibleChildrenProviderData().setItems(parent.getSourceUrls_OTM().getItems());
+                    displayNewFixedList(getPossibleChildrenProviderData().getItems());
                 } else {
                     resetProvider();
                 }

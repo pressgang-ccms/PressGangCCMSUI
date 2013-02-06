@@ -1636,6 +1636,7 @@ public class SearchResultsAndTopicPresenter
             displayableViews.add(topicTagsComponent.getDisplay());
             displayableViews.add(topicBugsPresenter.getDisplay());
             displayableViews.add(topicPropertyTagPresenter.getDisplay());
+            displayableViews.add(topicSourceURLsPresenter.getDisplay());
 
             final RESTTopicCollectionItemV1 topicToDisplay = getTopicOrRevisionTopic();
             for (final BaseCustomViewInterface<RESTTopicV1> view : displayableViews) {
