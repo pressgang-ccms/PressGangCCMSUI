@@ -24,6 +24,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.Upda
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -38,6 +39,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
@@ -383,8 +385,20 @@ public class ProjectsFilteredResultsAndProjectPresenter
 
     @Override
     protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
-        if (viewIsInFilter(filter, resultComponent.getDisplay())) {
-            resultComponent.getDisplay().display(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+
+        final List<BaseCustomViewInterface<RESTProjectV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTProjectV1>>();
+        displayableViews.add(resultComponent.getDisplay());
+        displayableViews.add(tagComponent.getDisplay());
+
+        for (final BaseCustomViewInterface<RESTProjectV1> view : displayableViews) {
+            if (viewIsInFilter(filter, view)) {
+                view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+            }
         }
+
+        if (viewIsInFilter(filter, tagComponent.getDisplay())) {
+            tagComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+        }
+
     }
 }

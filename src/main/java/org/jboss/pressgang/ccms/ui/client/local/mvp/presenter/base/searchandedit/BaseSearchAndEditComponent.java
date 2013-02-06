@@ -286,7 +286,13 @@ abstract public class BaseSearchAndEditComponent<
 
     /**
      * Called when a new entity is selected. This method is used to display any data that is contained
-     * in the selected object when it is initially loaded. Additional data (usually child collections)
+     * in the selected object when it is initially loaded.
+     *
+     * Typically, this method is called when the entity is loaded with no filter (i.e. filter = null), meaning
+     * that the displayBlah() methods on the views are called. Then, as new data is loaded, say for collections
+     * loaded asynchronously, initializeViews is called again with the filter set to the view that needs to updated.
+     *
+     * Additional data (usually child collections)
      * are expected to be loaded and displayed in the loadAdditionalDisplayedItemData() method.
      *
      * @param filter null if all views are to be initialized, or includes a list of views to be initialized

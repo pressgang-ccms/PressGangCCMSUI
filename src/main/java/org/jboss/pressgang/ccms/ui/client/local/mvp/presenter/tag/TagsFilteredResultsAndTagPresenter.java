@@ -17,6 +17,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectio
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryInTagCollectionV1;
@@ -26,6 +27,7 @@ import org.jboss.pressgang.ccms.rest.v1.components.ComponentRESTBaseEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryInTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
@@ -37,6 +39,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildr
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -51,6 +54,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -811,10 +815,24 @@ public class TagsFilteredResultsAndTagPresenter
     @Override
     protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
 
-        if (viewIsInFilter(filter, resultComponent.getDisplay())) {
-            resultComponent.getDisplay().display(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+        final List<BaseCustomViewInterface<RESTTagV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTTagV1>>();
+        displayableViews.add(resultComponent.getDisplay());
+        displayableViews.add(projectsComponent.getDisplay());
+        displayableViews.add(categoriesComponent.getDisplay());
+
+        for (final BaseCustomViewInterface<RESTTagV1> view : displayableViews) {
+            if (viewIsInFilter(filter, view)) {
+                view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+            }
         }
 
+        if (viewIsInFilter(filter, projectsComponent.getDisplay())) {
+            projectsComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+        }
+
+        if (viewIsInFilter(filter, categoriesComponent.getDisplay())) {
+            categoriesComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+        }
     }
 
 }

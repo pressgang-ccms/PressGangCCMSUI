@@ -1654,7 +1654,7 @@ public class SearchResultsAndTopicPresenter
                 topicRenderedPresenter.getDisplay().displayTopicRendered(topicToDisplay.getItem(), isReadOnlyMode(), true);
             }
 
-            /* We initailly display the split pane rendered view without images */
+            /* We initially display the split pane rendered view without images */
             if (viewIsInFilter(filter, topicSplitPanelRenderedDisplay)) {
                 topicSplitPanelRenderedDisplay.displayTopicRendered(topicToDisplay.getItem(), isReadOnlyMode(), false);
             }
@@ -1684,8 +1684,13 @@ public class SearchResultsAndTopicPresenter
 
             LOGGER.log(Level.INFO, "\tInitializing topic presenters");
 
-            topicPropertyTagPresenter.displayDetailedChildrenExtended(topicToDisplay.getItem());
-            topicSourceURLsPresenter.displayChildrenExtended(topicToDisplay.getItem());
+            if (viewIsInFilter(filter, topicPropertyTagPresenter.getDisplay())) {
+                topicPropertyTagPresenter.displayDetailedChildrenExtended(topicToDisplay.getItem());
+            }
+
+            if (viewIsInFilter(filter, topicSourceURLsPresenter.getDisplay())) {
+                topicSourceURLsPresenter.displayChildrenExtended(topicToDisplay.getItem());
+            }
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.initializeViews()");
