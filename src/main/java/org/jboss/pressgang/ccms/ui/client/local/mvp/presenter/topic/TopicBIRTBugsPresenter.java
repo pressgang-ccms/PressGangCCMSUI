@@ -1,9 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
 import com.google.gwt.user.client.ui.HasWidgets;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicViewPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
 
 import javax.enterprise.context.Dependent;
@@ -15,7 +17,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 public class TopicBIRTBugsPresenter extends BaseTopicViewPresenter implements BaseTemplatePresenterInterface {
     public static final String HISTORY_TOKEN = "TopicBIRTBugsView";
 
-    public interface Display extends BaseTopicViewInterface {
+    public interface Display extends BaseCustomViewInterface<RESTTopicV1> {
 
     }
 

@@ -34,15 +34,14 @@ public class TopicBIRTBugsView extends BaseTemplateView implements TopicBIRTBugs
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
-        if (topic.getId() != null) {
-            iFrame.setUrl(Constants.BIRT_URL + Constants.BIRT_RUN_REPORT + Constants.BIRT_TOPIC_BUGZILLA_REPORT + topic.getId());
+    public void displayCustomElements(final RESTTopicV1 entity, final boolean readonly) {
+        if (entity.getId() != null) {
+            iFrame.setUrl(Constants.BIRT_URL + Constants.BIRT_RUN_REPORT + Constants.BIRT_TOPIC_BUGZILLA_REPORT + entity.getId());
         }
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public SimpleBeanEditorDriver getDriver() {
-        return null;
+    public void prepareView() {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }
