@@ -15,10 +15,9 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.BaseExtendedChildrenPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
@@ -42,15 +41,14 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
             RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1,
             RESTTopicV1,
             RESTPropertyTagV1, RESTPropertyTagCollectionV1, RESTPropertyTagCollectionItemV1,
-            RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1>
-        implements BaseTemplatePresenterInterface {
+            RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1> {
 
     public interface Display extends BaseExtendedChildrenViewInterface<
                 RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1,
                 RESTTopicV1,
                 RESTPropertyTagV1, RESTPropertyTagCollectionV1, RESTPropertyTagCollectionItemV1,
                 RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1>,
-            BaseTopicViewInterface {
+            BaseTemplateViewInterface {
         Column<RESTAssignedPropertyTagCollectionItemV1, String> getPropertyTagRemoveColumn();
         Column<RESTAssignedPropertyTagCollectionItemV1, String> getPropertyTagValueColumn();
     }

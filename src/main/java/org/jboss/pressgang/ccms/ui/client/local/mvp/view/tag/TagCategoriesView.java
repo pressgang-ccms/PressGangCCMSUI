@@ -20,7 +20,17 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 
 public class TagCategoriesView
         extends
-        BaseExtendedChildrenView<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, RESTCategoryV1, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
+        BaseExtendedChildrenView<
+                RESTTagV1,
+                RESTTagCollectionV1,
+                RESTTagCollectionItemV1,
+                RESTCategoryV1,
+                RESTCategoryV1,
+                RESTCategoryCollectionV1,
+                RESTCategoryCollectionItemV1,
+                RESTTagInCategoryV1,
+                RESTTagInCategoryCollectionV1,
+                RESTTagInCategoryCollectionItemV1>
         implements TagCategoriesPresenter.Display {
 
 
@@ -113,6 +123,11 @@ public class TagCategoriesView
     @Override
     public Column<RESTCategoryCollectionItemV1, String> getPossibleChildrenButtonColumn() {
         return buttonColumn;
+    }
+
+    @Override
+    public void displayExtended(final RESTTagV1 originalEntity, final boolean readOnly) {
+        super.display(originalEntity, readOnly);
     }
 
     public TagCategoriesView() {

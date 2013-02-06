@@ -6,8 +6,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.project.ProjectViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjectV1BasicDetailsEditor;
@@ -26,8 +25,7 @@ public class ProjectPresenter extends BaseTemplatePresenter implements BaseTempl
     public interface ProjectPresenterDriver extends SimpleBeanEditorDriver<RESTProjectV1, RESTProjectV1BasicDetailsEditor> {
     }
 
-    public interface Display extends ProjectViewInterface,
-            BaseEditorViewInterface<RESTProjectV1, RESTProjectV1BasicDetailsEditor> {
+    public interface Display extends BaseEditorViewInterface<RESTProjectV1, RESTProjectV1, RESTProjectV1BasicDetailsEditor> {
 
     }
 
@@ -74,7 +72,7 @@ public class ProjectPresenter extends BaseTemplatePresenter implements BaseTempl
                 new BaseRestCallback.SuccessAction<RESTProjectV1, ProjectPresenter.Display>() {
                     @Override
                     public void doSuccessAction(final RESTProjectV1 retValue, final ProjectPresenter.Display display) {
-                        display.initialize(retValue, false);
+                        display.display(retValue, false);
                     }
                 });
         RESTCalls.getUnexpandedProject(callback, entityId);

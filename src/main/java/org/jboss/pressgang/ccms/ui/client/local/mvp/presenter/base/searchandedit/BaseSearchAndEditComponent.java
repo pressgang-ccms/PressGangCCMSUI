@@ -14,7 +14,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -32,7 +31,6 @@ import java.util.logging.Logger;
  * @param <T> The entity type
  * @param <U> The entity collection type of T
  * @param <V> The entity collection item type of T
- * @param <W> The common type to all views
  * @param <X> The type of the entity properties view
  * @param <Y> The type of the Editor that is displayed by this component
  * @author Matthew Casperson
@@ -42,8 +40,7 @@ abstract public class BaseSearchAndEditComponent<
         T extends RESTBaseEntityV1<T, U, V>,
         U extends RESTBaseCollectionV1<T, U, V>,
         V extends RESTBaseCollectionItemV1<T, U, V>,
-        W extends BaseTemplateViewInterface,
-        X extends BaseEditorViewInterface<T, Y> & BaseTemplateViewInterface,
+        X extends BaseEditorViewInterface<T, T, Y> & BaseTemplateViewInterface,
         Y extends Editor<T>>
         extends BaseTemplatePresenter {
 
@@ -54,11 +51,11 @@ abstract public class BaseSearchAndEditComponent<
     /**
      * The last displayed view
      */
-    protected W lastDisplayedView;
+    protected BaseTemplateViewInterface lastDisplayedView;
     /**
      * The default view to display when an entity is selected for the first time
      */
-    private W firstDisplayedView;
+    private BaseTemplateViewInterface firstDisplayedView;
     /**
      * The view that displays the entity properties (namely the id)
      */
@@ -113,7 +110,7 @@ abstract public class BaseSearchAndEditComponent<
      * @param waitDisplay                The view that displays the wait dialog
      */
     protected final void bindSearchAndEdit(final int topicId, final String pageId, final String mainSplitSizePreferenceKey,
-                     final W firstDisplayedView, final X entityPropertiesView, final R filteredResultsDisplay,
+                     final BaseTemplateViewInterface firstDisplayedView, final X entityPropertiesView, final R filteredResultsDisplay,
                      final BaseFilteredResultsComponentInterface<T, U, V> filteredResultsComponent, final BaseSearchAndEditViewInterface display,
                      final BaseTemplateViewInterface waitDisplay, final GetNewEntityCallback<T> getNewEntityCallback) {
 
@@ -343,7 +340,7 @@ abstract public class BaseSearchAndEditComponent<
      *
      * @param filter null if all views are to be initialized, or includes a list of views to be initialized
      */
-    abstract protected void initializeViews(final List<W> filter);
+    abstract protected void initializeViews(final List<BaseTemplateViewInterface> filter);
 
     /**
      * Used by the initializeViews method
@@ -352,7 +349,7 @@ abstract public class BaseSearchAndEditComponent<
      * @param view   The view to test against the filter
      * @return true if the filter is null or if it contains the view, and false otherwise
      */
-    protected final boolean viewIsInFilter(final List<W> filter, final W view) {
+    protected final boolean viewIsInFilter(final List<BaseTemplateViewInterface> filter, final BaseTemplateViewInterface view) {
         if (filter == null) {
             return true;
         }
@@ -363,7 +360,7 @@ abstract public class BaseSearchAndEditComponent<
     /**
      * Called when displaying changes to a entity or when changing views
      */
-    protected final void switchView(final W displayedView) {
+    protected final void switchView(final BaseTemplateViewInterface displayedView) {
 
         try {
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.switchView(final W displayedView)");
@@ -407,5 +404,5 @@ abstract public class BaseSearchAndEditComponent<
      * additional logic after a new screen has been displayed.
      * @param displayedView The newly displayed screen.
      */
-    protected void afterSwitchView(final W displayedView) {}
+    protected void afterSwitchView(final BaseTemplateViewInterface displayedView) {}
 }

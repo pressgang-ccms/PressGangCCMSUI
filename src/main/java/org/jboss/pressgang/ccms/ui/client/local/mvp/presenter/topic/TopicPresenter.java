@@ -4,10 +4,10 @@ import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicViewPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseEditorViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 
 import javax.enterprise.context.Dependent;
@@ -17,7 +17,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class TopicPresenter extends BaseTopicViewPresenter implements BaseTemplatePresenterInterface {
+public class TopicPresenter extends BaseTemplatePresenter {
 
     public static final String HISTORY_TOKEN = "TopicView";
 
@@ -25,7 +25,7 @@ public class TopicPresenter extends BaseTopicViewPresenter implements BaseTempla
     public interface TopicPresenterDriver extends SimpleBeanEditorDriver<RESTTopicV1, RESTTopicV1BasicDetailsEditor> {
     }
 
-    public interface Display extends BaseTopicViewInterface, BaseEditorViewInterface<RESTTopicV1, RESTTopicV1BasicDetailsEditor> {
+    public interface Display extends BaseTemplateViewInterface, BaseEditorViewInterface<RESTTopicV1, RESTTopicV1, RESTTopicV1BasicDetailsEditor> {
 
     }
 

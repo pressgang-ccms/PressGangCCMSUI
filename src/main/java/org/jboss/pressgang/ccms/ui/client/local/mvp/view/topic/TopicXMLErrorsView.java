@@ -17,9 +17,8 @@ public class TopicXMLErrorsView extends BaseTemplateView implements TopicXMLErro
     /** The GWT Editor Driver */
     private final TopicXMLErrorsPresenterDriver driver = GWT.create(TopicXMLErrorsPresenterDriver.class);
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public SimpleBeanEditorDriver getDriver() {
+    public TopicXMLErrorsPresenterDriver getDriver() {
         return driver;
     }
 
@@ -30,7 +29,7 @@ public class TopicXMLErrorsView extends BaseTemplateView implements TopicXMLErro
 
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
+    public void display(final RESTTopicV1 topic, final boolean readOnly) {
         /* SearchUIProjectsEditor is a grid */
         final RESTTopicV1XMLErrorsEditor editor = new RESTTopicV1XMLErrorsEditor();
         /* Initialize the driver with the top-level editor */

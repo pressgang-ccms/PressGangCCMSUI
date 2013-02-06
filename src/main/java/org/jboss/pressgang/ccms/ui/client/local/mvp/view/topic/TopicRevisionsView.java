@@ -221,15 +221,8 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         this.getPanel().add(searchResultsPanel);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public SimpleBeanEditorDriver getDriver() {
-        return null;
-    }
-
-    @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType,
-            final List<String> locales, final Boolean showImages) {
+    public void display(final RESTTopicV1 topic, final boolean readOnly) {
         this.mainTopic = topic;
     }
 

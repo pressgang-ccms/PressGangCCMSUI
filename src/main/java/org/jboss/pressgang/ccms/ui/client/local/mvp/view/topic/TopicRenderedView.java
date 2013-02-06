@@ -16,13 +16,7 @@ import java.util.List;
 
 public class TopicRenderedView extends BaseTemplateView implements TopicRenderedPresenter.Display {
 
-    private final HTML div = new HTML("div");
-
-    @SuppressWarnings("rawtypes")
-    @Override
-    public SimpleBeanEditorDriver getDriver() {
-        return null;
-    }
+    private final HTML div = new HTML();
 
     public TopicRenderedView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
@@ -32,7 +26,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
+    public void display(final RESTTopicV1 topic, final boolean readOnly) {
 
         try {
             // Any number of processors can be created, they will behave

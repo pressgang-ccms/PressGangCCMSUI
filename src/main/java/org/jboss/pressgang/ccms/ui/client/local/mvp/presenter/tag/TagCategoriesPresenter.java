@@ -26,7 +26,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildr
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.SetNewChildSortCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
@@ -52,7 +51,7 @@ public class TagCategoriesPresenter
                         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
                         RESTCategoryV1,
                         RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1,
-                        RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>, TagViewInterface {
+                        RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> {
 
     }
 

@@ -37,9 +37,10 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildr
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -62,7 +63,13 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 @Dependent
 public class TagsFilteredResultsAndTagPresenter
         extends
-        BaseSearchAndEditComponent<TagFilteredResultsPresenter.Display, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, TagViewInterface, TagPresenter.Display, RESTTagV1BasicDetailsEditor>
+        BaseSearchAndEditComponent<
+                TagFilteredResultsPresenter.Display,
+                RESTTagV1,
+                RESTTagCollectionV1,
+                RESTTagCollectionItemV1,
+                TagPresenter.Display,
+                RESTTagV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
 
     /**
@@ -106,19 +113,15 @@ public class TagsFilteredResultsAndTagPresenter
     @Inject
     private Display display;
 
-    @Inject
-    private TagFilteredResultsPresenter filteredResultsComponent;
+    @Inject private TagFilteredResultsPresenter filteredResultsComponent;
 
 
-    @Inject
-    private TagPresenter resultComponent;
+    @Inject private TagPresenter resultComponent;
 
 
-    @Inject
-    private TagProjectsPresenter projectsComponent;
+    @Inject private TagProjectsPresenter projectsComponent;
 
-    @Inject
-    private TagCategoriesPresenter categoriesComponent;
+    @Inject private TagCategoriesPresenter categoriesComponent;
 
     /** The tag query string extracted from the history token */
     private String queryString;
@@ -689,7 +692,7 @@ public class TagsFilteredResultsAndTagPresenter
         });
     }
 
-    private void enableAndDisableActionButtons(final TagViewInterface displayedView)
+    private void enableAndDisableActionButtons(final BaseTemplateViewInterface displayedView)
     {
         this.display.replaceTopActionButton(this.display.getTagCategoriesDown(), this.display.getTagCategories());
         this.display.replaceTopActionButton(this.display.getTagDetailsDown(), this.display.getTagDetails());
@@ -708,7 +711,7 @@ public class TagsFilteredResultsAndTagPresenter
      * Called when the selected tag is changed, or the selected view is changed.
      */
     @Override
-    protected void afterSwitchView(@NotNull final TagViewInterface displayedView) {
+    protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
 
         this.enableAndDisableActionButtons(displayedView);
 
@@ -810,12 +813,12 @@ public class TagsFilteredResultsAndTagPresenter
     }
 
     @Override
-    protected void initializeViews(@Nullable final List<TagViewInterface> filter) {
-        for (final TagViewInterface view : new TagViewInterface[] { resultComponent.getDisplay(), projectsComponent.getDisplay(), categoriesComponent.getDisplay() }) {
-            if (viewIsInFilter(filter, view)) {
-                view.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
-            }
+    protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
+
+        if (viewIsInFilter(filter, resultComponent.getDisplay())) {
+            resultComponent.getDisplay().display(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
         }
+
     }
 
 }

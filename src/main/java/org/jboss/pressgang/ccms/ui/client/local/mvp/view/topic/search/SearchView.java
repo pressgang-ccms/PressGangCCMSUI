@@ -12,8 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUIProjectsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 
-public class SearchView extends BaseTemplateView implements
-        SearchPresenter.Display {
+public class SearchView extends BaseTemplateView implements SearchPresenter.Display {
 
     private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
     private final Label tags = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Tags());
@@ -52,7 +51,7 @@ public class SearchView extends BaseTemplateView implements
     }
 
     @Override
-    public void initialise(final RESTTagCollectionV1 tagCollection) {
+    public void initialise(final RESTTagCollectionV1 tagCollection, final boolean readOnly) {
 
         /* Build the action bar icons */
         addActionButton(searchTopics);

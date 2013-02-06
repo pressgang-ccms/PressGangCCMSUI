@@ -6,8 +6,8 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
@@ -20,7 +20,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class TagPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
+public class TagPresenter extends BaseTemplatePresenter {
 
     public static final String HISTORY_TOKEN = "TagView";
 
@@ -28,7 +28,7 @@ public class TagPresenter extends BaseTemplatePresenter implements BaseTemplateP
     public interface TagPresenterDriver extends SimpleBeanEditorDriver<RESTTagV1, RESTTagV1BasicDetailsEditor> {
     }
 
-    public interface Display extends TagViewInterface, BaseEditorViewInterface<RESTTagV1, RESTTagV1BasicDetailsEditor> {
+    public interface Display extends BaseEditorViewInterface<RESTTagV1, RESTTagV1, RESTTagV1BasicDetailsEditor> {
 
     }
 
@@ -40,17 +40,6 @@ public class TagPresenter extends BaseTemplatePresenter implements BaseTemplateP
     @NotNull
     public Display getDisplay() {
         return display;
-    }
-
-    public void getEntity(@NotNull final Integer tagId) {
-        final RESTCalls.RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, Display>(display,
-                new BaseRestCallback.SuccessAction<RESTTagV1, Display>() {
-                    @Override
-                    public void doSuccessAction(final RESTTagV1 retValue, final Display display) {
-                        display.initialize(retValue, false);
-                    }
-                });
-        RESTCalls.getUnexpandedTag(callback, tagId);
     }
 
     @Override
@@ -71,10 +60,5 @@ public class TagPresenter extends BaseTemplatePresenter implements BaseTemplateP
 
     public void bindExtended(final int topicId, @NotNull final String pageId) {
         super.bind(topicId, pageId, display);
-
-        if (tagId != null)
-        {
-            getEntity(tagId);
-        }
     }
 }

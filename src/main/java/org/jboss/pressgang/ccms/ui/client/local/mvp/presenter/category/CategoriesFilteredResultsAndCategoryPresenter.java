@@ -32,7 +32,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.category.CategoryViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -59,7 +58,13 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 @Dependent
 public class CategoriesFilteredResultsAndCategoryPresenter
         extends
-        BaseSearchAndEditComponent<CategoryFilteredResultsPresenter.Display, RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1, CategoryViewInterface, CategoryPresenter.Display, RESTCategoryV1BasicDetailsEditor>
+        BaseSearchAndEditComponent<
+                CategoryFilteredResultsPresenter.Display,
+                RESTCategoryV1,
+                RESTCategoryCollectionV1,
+                RESTCategoryCollectionItemV1,
+                CategoryPresenter.Display,
+                RESTCategoryV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
 
     /**
@@ -231,18 +236,18 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     }
 
     @Override
-    protected void initializeViews(@Nullable final List<CategoryViewInterface> filter) {
+    protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
         try {
             LOGGER.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.initializeViews()");
 
             /* We need to initialize the view so the celltable buttons can display the correct labels */
             if (viewIsInFilter(filter, categoryTagPresenter.getDisplay()))  {
-                categoryTagPresenter.getDisplay().initialize(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+                categoryTagPresenter.getDisplay().displayExtended(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
             }
 
             /* Initialize the properties view */
             if (viewIsInFilter(filter, categoryPresenter.getDisplay())) {
-                categoryPresenter.getDisplay().initialize(this.filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+                categoryPresenter.getDisplay().display(this.filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT CategoriesFilteredResultsAndCategoryPresenter.initializeViews()");
@@ -462,7 +467,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     }
 
     @Override
-    protected void afterSwitchView(@NotNull final CategoryViewInterface displayedView) {
+    protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
 
         enableAndDisableActionButtons(displayedView);
 
@@ -472,7 +477,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
         }
     }
 
-    private void enableAndDisableActionButtons(@NotNull final CategoryViewInterface displayedView)
+    private void enableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView)
     {
         this.display.replaceTopActionButton(this.display.getChildrenDown(), this.display.getChildren());
         this.display.replaceTopActionButton(this.display.getDetailsDown(), this.display.getDetails());

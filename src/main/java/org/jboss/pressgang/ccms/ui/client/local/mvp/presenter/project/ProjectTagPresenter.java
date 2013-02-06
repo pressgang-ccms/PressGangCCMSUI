@@ -13,7 +13,6 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.project.ProjectViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
@@ -36,8 +35,7 @@ public class ProjectTagPresenter
 
     public interface Display
             extends
-            BaseChildrenViewInterface<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>,
-            ProjectViewInterface {
+            BaseChildrenViewInterface<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
     }
 
     public static final String HISTORY_TOKEN = "ProjectTagView";

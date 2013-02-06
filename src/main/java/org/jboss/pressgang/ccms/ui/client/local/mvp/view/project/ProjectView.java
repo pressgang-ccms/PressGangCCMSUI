@@ -8,8 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjectV1BasicDetailsEditor;
 
-public class ProjectView extends BaseTemplateView
-        implements ProjectPresenter.Display {
+public class ProjectView extends BaseTemplateView implements ProjectPresenter.Display {
 
 
   
@@ -28,7 +27,7 @@ public class ProjectView extends BaseTemplateView
     }
 
     @Override
-    public void initialize(final RESTProjectV1 entity, final boolean readOnly) {
+    public void display(final RESTProjectV1 entity, final boolean readOnly) {
         this.readOnly = readOnly;
 
         /* SearchUIProjectsEditor is a grid */

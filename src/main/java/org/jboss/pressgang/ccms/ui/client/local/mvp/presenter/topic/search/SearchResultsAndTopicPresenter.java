@@ -50,9 +50,10 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.GetCurr
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringMapLoaded;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicXMLView;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -87,7 +88,6 @@ public class SearchResultsAndTopicPresenter
         RESTTopicV1,
         RESTTopicCollectionV1,
         RESTTopicCollectionItemV1,
-        BaseTopicViewInterface,
         TopicPresenter.Display,
         RESTTopicV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
@@ -349,8 +349,7 @@ public class SearchResultsAndTopicPresenter
 
         if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
             isDisplayingImage = timeToDisplayImage;
-            topicSplitPanelRenderedDisplay.initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
-                    display.getSplitType(), locales, isDisplayingImage);
+            topicSplitPanelRenderedDisplay.display(getTopicOrRevisionTopic().getItem(), isReadOnlyMode());
         }
 
         lastXML = getTopicOrRevisionTopic().getItem().getXml();
@@ -403,7 +402,7 @@ public class SearchResultsAndTopicPresenter
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.flushChanges()");
 
-            if (lastDisplayedView == null || lastDisplayedView.getDriver() == null) {
+            if (lastDisplayedView == null || !(lastDisplayedView instanceof BaseEditorViewInterface)) {
                 return;
             }
 
@@ -412,7 +411,7 @@ public class SearchResultsAndTopicPresenter
                 return;
             }
 
-            lastDisplayedView.getDriver().flush();
+            ((BaseEditorViewInterface)lastDisplayedView).getDriver().flush();
         } finally {
             LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.flushChanges()");
         }
@@ -928,7 +927,7 @@ public class SearchResultsAndTopicPresenter
                         getTopicOrRevisionTopic().getItem().setTags(retValue.getTags());
 
                         /* update the view */
-                        initializeViews(Arrays.asList(new BaseTopicViewInterface[]{topicTagsComponent.getDisplay()}));
+                        initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{topicTagsComponent.getDisplay()}));
                     } finally {
                         LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.loadTagsAndBugs() topicWithTagsCallback.doSuccessAction()");
                     }
@@ -966,7 +965,7 @@ public class SearchResultsAndTopicPresenter
      * This method will replace the top action buttons with their disabled labels based on the
      * currently displayed view.
      */
-    private void enableAndDisableActionButtons(final BaseTopicViewInterface displayedView) {
+    private void enableAndDisableActionButtons(final BaseTemplateViewInterface displayedView) {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.enableAndDisableActionButtons()");
 
@@ -1015,7 +1014,7 @@ public class SearchResultsAndTopicPresenter
     }
 
     /* Update the page name */
-    private void updatePageTitle(final BaseTopicViewInterface displayedView) {
+    private void updatePageTitle(final BaseTemplateViewInterface displayedView) {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.updatePageTitle()");
 
@@ -1034,7 +1033,7 @@ public class SearchResultsAndTopicPresenter
     }
 
     @Override
-    protected void afterSwitchView(final BaseTopicViewInterface displayedView) {
+    protected void afterSwitchView(final BaseTemplateViewInterface displayedView) {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.switchView(final TopicViewInterface displayedView)");
 
@@ -1049,8 +1048,7 @@ public class SearchResultsAndTopicPresenter
 
             /* Refresh the rendered view (when there is no page splitting) */
             if (displayedView == this.topicRenderedPresenter.getDisplay()) {
-                topicRenderedPresenter.getDisplay().initialize(getTopicOrRevisionTopic().getItem(), isReadOnlyMode(), NEW_TOPIC,
-                        display.getSplitType(), locales, true);
+                topicRenderedPresenter.getDisplay().display(getTopicOrRevisionTopic().getItem(), isReadOnlyMode());
             }
             /* Set the projects combo box as the focsed element */
             else if (displayedView == this.topicTagsComponent.getDisplay() && topicTagsComponent.getDisplay().getProjectsList().isAttached()) {
@@ -1637,28 +1635,35 @@ public class SearchResultsAndTopicPresenter
     }
 
     @Override
-    protected void initializeViews(final List<BaseTopicViewInterface> filter) {
+    protected void initializeViews(final List<BaseTemplateViewInterface> filter) {
 
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.initializeViews()");
 
             LOGGER.log(Level.INFO, "\tInitializing topic views");
 
-            for (final BaseTopicViewInterface view : new BaseTopicViewInterface[]{topicViewComponent.getDisplay(), topicXMLComponent.getDisplay(),
-                    topicRenderedPresenter.getDisplay(), topicXMLErrorsPresenter.getDisplay(), topicTagsComponent.getDisplay(), topicBugsPresenter.getDisplay(),
-                    topicSplitPanelRenderedDisplay, topicPropertyTagPresenter.getDisplay()}) {
+            final List<BaseCustomViewInterface<RESTTopicV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTTopicV1>>();
+            displayableViews.add(topicViewComponent.getDisplay());
+            displayableViews.add(topicXMLComponent.getDisplay());
+            displayableViews.add(topicRenderedPresenter.getDisplay());
+            displayableViews.add(topicXMLErrorsPresenter.getDisplay());
+            displayableViews.add(topicTagsComponent.getDisplay());
+            displayableViews.add(topicBugsPresenter.getDisplay());
+            displayableViews.add(topicSplitPanelRenderedDisplay);
+            displayableViews.add(topicPropertyTagPresenter.getDisplay());
+
+            for (final BaseCustomViewInterface<RESTTopicV1> view : displayableViews) {
                 if (viewIsInFilter(filter, view)) {
 
                     final RESTTopicCollectionItemV1 topicToDisplay = getTopicOrRevisionTopic();
 
-                    view.initialize(topicToDisplay.getItem(), isReadOnlyMode(), NEW_TOPIC, this.split, locales, false);
+                    view.display(topicToDisplay.getItem(), isReadOnlyMode());
                 }
             }
 
             if (viewIsInFilter(filter, topicRevisionsComponent.getDisplay())) {
                 LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
-                topicRevisionsComponent.getDisplay().initialize(searchResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                        isReadOnlyMode(), NEW_TOPIC, display.getSplitType(), locales, false);
+                topicRevisionsComponent.getDisplay().display(searchResultsComponent.getProviderData().getDisplayedItem().getItem(), isReadOnlyMode());
             }
 
             if (viewIsInFilter(filter, topicTagsComponent.getDisplay())) {
@@ -2227,7 +2232,7 @@ public class SearchResultsAndTopicPresenter
             component.setHelpTopicId(ServiceConstants.TOPIC_TAGS_TOPIC);
         } else if (view instanceof TopicRevisionsPresenter.Display) {
             component.setHelpTopicId(ServiceConstants.TOPIC_REVISIONS_TOPIC);
-        } else if (view instanceof TopicBugsPresenter.Display) {
+        } else if (view instanceof TopicBIRTBugsPresenter.Display) {
             component.setHelpTopicId(ServiceConstants.TOPIC_BUGS_TOPIC);
         } else if (view instanceof TopicXMLView) {
             component.setHelpTopicId(ServiceConstants.TOPIC_XML_EDIT_TOPIC);
@@ -2485,7 +2490,7 @@ public class SearchResultsAndTopicPresenter
             }
 
             /* Redisplay the view */
-            initializeViews(Arrays.asList(new BaseTopicViewInterface[]{topicTagsComponent.getDisplay()}));
+            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{topicTagsComponent.getDisplay()}));
         }
     }
 
@@ -2519,7 +2524,7 @@ public class SearchResultsAndTopicPresenter
                 tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
             }
 
-            initializeViews(Arrays.asList(new BaseTopicViewInterface[]{topicTagsComponent.getDisplay()}));
+            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{topicTagsComponent.getDisplay()}));
         }
     }
 }

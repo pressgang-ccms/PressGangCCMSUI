@@ -84,13 +84,8 @@ public class TopicSourceURLsView extends BaseChildrenView<
     }
 
     @Override
-    public final void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
-        super.initialize(topic, readOnly);
-    }
-
-    @Override
-    public final SimpleBeanEditorDriver getDriver() {
-        return null;
+    public final void displayExtended(final RESTTopicV1 topic, final boolean readOnly) {
+        super.display(topic, readOnly);
     }
 
     @Override

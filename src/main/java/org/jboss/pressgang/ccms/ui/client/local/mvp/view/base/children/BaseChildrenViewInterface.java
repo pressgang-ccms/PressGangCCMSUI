@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
@@ -30,7 +31,7 @@ public interface BaseChildrenViewInterface<
     T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>, 
     A extends RESTBaseEntityV1<A, B, C>, B extends RESTBaseCollectionV1<A, B, C>, C extends RESTBaseCollectionItemV1<A, B, C>,
     D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
-        extends BaseTemplateViewInterface {
+        extends BaseCustomViewInterface<T> {
 
     /**
      *
@@ -79,4 +80,6 @@ public interface BaseChildrenViewInterface<
      * @return The column that holds the buttons used to add or remove the possible children.
      */
     Column<C, String> getPossibleChildrenButtonColumn();
+
+    void displayExtended(final T originalEntity, final boolean readOnly);
 }

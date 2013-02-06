@@ -26,7 +26,7 @@ public class TagView extends BaseTemplateView implements TagPresenter.Display {
 
 
     @Override
-    public void initialize(final RESTTagV1 tag, final boolean readOnly) {
+    public void display(final RESTTagV1 tag, final boolean readOnly) {
         this.readOnly = readOnly;
 
         /* SearchUIProjectsEditor is a grid */

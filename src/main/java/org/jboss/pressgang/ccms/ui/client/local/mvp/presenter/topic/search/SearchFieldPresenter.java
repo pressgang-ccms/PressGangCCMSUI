@@ -6,7 +6,8 @@ import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.editor.BaseEditorViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseEditorViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchFieldEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -19,7 +20,7 @@ public class SearchFieldPresenter extends BaseTemplatePresenter implements BaseT
 
     public static final String HISTORY_TOKEN = "SearchFieldView";
 
-    public interface Display extends BaseEditorViewInterface<SearchUIFields, SearchFieldEditor> {
+    public interface Display extends BaseTemplateViewInterface, BaseEditorViewInterface<SearchUIFields, SearchFieldEditor> {
         interface SearchFieldPresenterDriver extends SimpleBeanEditorDriver<SearchUIFields, SearchFieldEditor> {
         }
         PushButton getSearchTopics();

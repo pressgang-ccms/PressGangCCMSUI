@@ -16,8 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class ImageView extends BaseTemplateView implements
-        ImagePresenter.Display {
+public class ImageView extends BaseTemplateView implements ImagePresenter.Display {
 
     private RESTImageV1Editor editor;
     private final ImagePresenterDriver driver = GWT.create(ImagePresenterDriver.class);
@@ -141,7 +140,12 @@ public class ImageView extends BaseTemplateView implements
     }
 
     @Override
-    public void initialize(final RESTImageV1 image, final String[] locales) {
+    public final void display(final RESTImageV1 image, final boolean readOnly) {
+
+    }
+
+    @Override
+    public final void displayExtended(final RESTImageV1 image, final boolean readOnly, final String[] locales) {
         if (image == null) {
             throw new IllegalArgumentException("image cannot be null");
         }

@@ -5,19 +5,21 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.BaseTopicViewPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.BaseTopicViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 import javax.inject.Inject;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
-public class TopicRevisionsPresenter extends BaseTopicViewPresenter implements BaseTemplatePresenterInterface {
+public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 
-    public interface Display extends BaseTopicViewInterface {
+    public interface Display extends BaseTemplateViewInterface, BaseCustomViewInterface<RESTTopicV1> {
+
         EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> getProvider();
 
         void setProvider(final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider);

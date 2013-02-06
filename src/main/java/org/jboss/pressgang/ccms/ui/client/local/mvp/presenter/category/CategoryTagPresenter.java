@@ -20,7 +20,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.BaseOrderedChildrenComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.category.CategoryViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
@@ -205,11 +204,10 @@ public class CategoryTagPresenter
      */
     public interface Display extends
             BaseOrderedChildrenViewInterface<
-                                            RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1,
-                                            RESTCategoryV1,
-                                            RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
-                                            RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>,
-            CategoryViewInterface {
+                RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1,
+                RESTCategoryV1,
+                RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
+                RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> {
 
 
     }

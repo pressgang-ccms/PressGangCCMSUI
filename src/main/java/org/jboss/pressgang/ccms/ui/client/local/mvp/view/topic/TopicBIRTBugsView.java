@@ -34,14 +34,9 @@ public class TopicBIRTBugsView extends BaseTemplateView implements TopicBIRTBugs
     }
 
     @Override
-    public void displayCustomElements(final RESTTopicV1 entity, final boolean readonly) {
+    public void display(final RESTTopicV1 entity, final boolean readonly) {
         if (entity.getId() != null) {
             iFrame.setUrl(Constants.BIRT_URL + Constants.BIRT_RUN_REPORT + Constants.BIRT_TOPIC_BUGZILLA_REPORT + entity.getId());
         }
-    }
-
-    @Override
-    public void prepareView() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

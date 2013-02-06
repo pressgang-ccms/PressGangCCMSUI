@@ -63,6 +63,11 @@ public class TagProjectsView extends
         return buttonColumn;
     }
 
+    @Override
+    public void displayExtended(final RESTTagV1 originalEntity, final boolean readOnly) {
+        super.display(originalEntity, readOnly);
+    }
+
     public TagProjectsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.TagProjects());
 

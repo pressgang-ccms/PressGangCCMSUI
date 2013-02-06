@@ -153,14 +153,8 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
 
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
-        super.initialize(topic, readOnly);
-    }
-
-    @SuppressWarnings("rawtypes")
-    @Override
-    public SimpleBeanEditorDriver getDriver() {
-        return null;
+    public void displayExtended(final RESTTopicV1 topic, final boolean readOnly) {
+        super.display(topic, readOnly);
     }
 
 }

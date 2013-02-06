@@ -10,12 +10,6 @@ import com.google.gwt.user.client.ui.*;
 public interface BaseTemplateViewInterface {
 
     /**
-     * This method is called to initialise any ui elements before any data is available to
-     * be actually displayed.
-     */
-    void prepareView();
-
-    /**
      * The interface to the help dialog popup box
      * @author Matthew Casperson
      *

@@ -103,6 +103,11 @@ public class CategoryTagView
         return tagsButtonColumn;
     }
 
+    @Override
+    public void displayExtended(final RESTCategoryV1 originalEntity, final boolean readOnly) {
+        super.display(originalEntity, readOnly);
+    }
+
     public CategoryTagView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Categories());
 

@@ -15,7 +15,6 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -33,7 +32,7 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
         RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> implements
         BaseTemplatePresenterInterface {
 
-    public interface Display extends TagViewInterface, BaseChildrenViewInterface<
+    public interface Display extends BaseChildrenViewInterface<
                 RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
                 RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1,
                 RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> {

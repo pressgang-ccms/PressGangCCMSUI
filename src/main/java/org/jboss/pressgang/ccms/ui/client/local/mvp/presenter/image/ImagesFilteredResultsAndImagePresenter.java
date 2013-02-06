@@ -66,7 +66,13 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 @Dependent
 public class ImagesFilteredResultsAndImagePresenter
         extends
-        BaseSearchAndEditComponent<ImageFilteredResultsPresenter.Display, RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1, ImagePresenter.Display, ImagePresenter.Display, RESTImageV1Editor>
+        BaseSearchAndEditComponent<
+                ImageFilteredResultsPresenter.Display,
+                RESTImageV1,
+                RESTImageCollectionV1,
+                RESTImageCollectionItemV1,
+                ImagePresenter.Display,
+                RESTImageV1Editor>
         implements BaseTemplatePresenterInterface {
 
     public interface Display extends
@@ -556,10 +562,10 @@ public class ImagesFilteredResultsAndImagePresenter
     }
 
     @Override
-    protected void initializeViews(@Nullable final List<ImagePresenter.Display> filter) {
+    protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
 
         if (viewIsInFilter(filter, imageComponent.getDisplay())) {
-            imageComponent.getDisplay().initialize(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
+            imageComponent.getDisplay().displayExtended(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false,
                     getUnassignedLocales().toArray(new String[0]));
         }
 

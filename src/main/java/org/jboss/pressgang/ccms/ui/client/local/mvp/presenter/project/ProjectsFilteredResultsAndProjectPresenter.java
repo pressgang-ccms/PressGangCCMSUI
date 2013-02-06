@@ -26,8 +26,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.project.ProjectViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag.TagViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -47,7 +45,13 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 @Dependent
 public class ProjectsFilteredResultsAndProjectPresenter
         extends
-        BaseSearchAndEditComponent<ProjectFilteredResultsPresenter.Display, RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1, ProjectViewInterface, ProjectPresenter.Display, RESTProjectV1BasicDetailsEditor>
+        BaseSearchAndEditComponent<
+                ProjectFilteredResultsPresenter.Display,
+                RESTProjectV1,
+                RESTProjectCollectionV1,
+                RESTProjectCollectionItemV1,
+                ProjectPresenter.Display,
+                RESTProjectV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
 
     /**
@@ -360,12 +364,12 @@ public class ProjectsFilteredResultsAndProjectPresenter
      * Called when the selected tag is changed, or the selected view is changed.
      */
     @Override
-    protected void afterSwitchView(@NotNull final ProjectViewInterface displayedView) {
+    protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
 
         this.enableAndDisableActionButtons(displayedView);
     }
 
-    private void enableAndDisableActionButtons(@NotNull final ProjectViewInterface displayedView)
+    private void enableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView)
     {
         this.display.replaceTopActionButton(this.display.getChildrenDown(), this.display.getChildren());
         this.display.replaceTopActionButton(this.display.getDetailsDown(), this.display.getDetails());
@@ -378,12 +382,9 @@ public class ProjectsFilteredResultsAndProjectPresenter
     }
 
     @Override
-    protected void initializeViews(@Nullable final List<ProjectViewInterface> filter) {
-        for (final ProjectViewInterface view : new ProjectViewInterface[] {  resultComponent.getDisplay(), tagComponent.getDisplay() }) {
-            if (viewIsInFilter(filter, view)) {
-                view.initialize(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
-            }
+    protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
+        if (viewIsInFilter(filter, resultComponent.getDisplay())) {
+            resultComponent.getDisplay().display(this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
         }
-
     }
 }

@@ -206,7 +206,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType, final List<String> locales, final Boolean showImages) {
+    public final void display(final RESTTopicV1 topic, final boolean readOnly) {
 
         /* reset the layout */
         layout.clear();

@@ -354,8 +354,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic, final boolean readOnly, final boolean newTopic, final SplitType splitType,
-            final List<String> locales, final Boolean showImages) {
+    public void display(final RESTTopicV1 topic, final boolean readOnly) {
 
         /* SearchUIProjectsEditor is a grid */
         this.editor = new RESTTopicV1XMLEditor(readOnly);
