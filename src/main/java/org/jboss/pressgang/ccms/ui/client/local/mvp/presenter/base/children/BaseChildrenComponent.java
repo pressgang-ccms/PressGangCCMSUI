@@ -58,18 +58,23 @@ public abstract class BaseChildrenComponent<
      * @param pageId The history token of the page
      */
     public final void bindExtended(final int topicId, final String pageId)  {
+        throw new UnsupportedOperationException("bindExtended() is not supported. Use bindChildren() instead.");
+    }
 
+    /**
+     * Display the data held by parent.
+     * @param parent The object that holds the data we want to display
+     */
+    protected final void displayChildren(@NotNull final T parent) {
+        refreshPossibleChildList(parent);
     }
 
     /**
      * @inheritDoc
      */
-    protected final void bindChildren(final int topicId, final String pageId, @NotNull final T parent, @NotNull final BaseChildrenViewInterface display) {
+    protected final void bindChildren(final int topicId, final String pageId, @NotNull final BaseChildrenViewInterface display) {
         this.display = display;
-
         super.bind(topicId, pageId, display);
-
-        refreshPossibleChildList(parent);
     }
 
     /**

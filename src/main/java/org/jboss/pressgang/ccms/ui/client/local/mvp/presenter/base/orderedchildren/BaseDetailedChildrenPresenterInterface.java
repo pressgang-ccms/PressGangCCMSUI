@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
  * @param <E> The collection type of D
  * @param <F> The collection item type of D
  */
-public interface BaseExtendedChildrenPresenterInterface<
+public interface BaseDetailedChildrenPresenterInterface<
             T extends RESTBaseEntityV1<T, U, V>,
             U extends RESTBaseCollectionV1<T, U, V>,
             V extends RESTBaseCollectionItemV1<T, U, V>,
@@ -68,5 +68,7 @@ public interface BaseExtendedChildrenPresenterInterface<
      */
     void refreshExistingChildList(final W parent);
 
-    void bindExtendedChildrenExtended(final int topicId, final String pageId, final T parent);
+    void bindDetailedChildrenExtended(final int topicId, final String pageId);
+
+    void displayDetailedChildrenExtended(final T parent);
 }

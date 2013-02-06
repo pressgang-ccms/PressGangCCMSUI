@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  * @param <F> The collection item type of D
  * @author Matthew Casperson
  */
-abstract public class BaseExtendedChildrenPresenter<
+abstract public class BaseDetailedChildrenPresenter<
             T extends RESTBaseEntityV1<T, U, V>,
             U extends RESTBaseCollectionV1<T, U, V>,
             V extends RESTBaseCollectionItemV1<T, U, V>,
@@ -41,7 +41,7 @@ abstract public class BaseExtendedChildrenPresenter<
             E extends RESTBaseCollectionV1<D, E, F>,
             F extends RESTBaseCollectionItemV1<D, E, F>>
         extends BaseChildrenComponent<T, U, V, A, B, C, D, E, F>
-        implements BaseExtendedChildrenPresenterInterface<T, U, V, W, A, B, C, D, E, F> {
+        implements BaseDetailedChildrenPresenterInterface<T, U, V, W, A, B, C, D, E, F> {
 
     /**
      * A logger.
@@ -65,25 +65,33 @@ abstract public class BaseExtendedChildrenPresenter<
     }
 
     /**
-     * An empty implementation of the extended bind method. Classes extending BaseExtendedChildrenPresenter should implement
+     * An empty implementation of the extended bind method. Classes extending BaseDetailedChildrenPresenter should implement
      * bindChildrenExtended().
      * @param topicId
      * @param pageId The history token of the page
      * @param parent A reference to the entity being edited
      */
-    public final void bindChildrenExtended(final int topicId, final String pageId, @NotNull final T parent) {
-        throw new UnsupportedOperationException("bindChildrenExtended() is not supported. Use bindExtendedChildren() instead.");
+    public final void bindChildrenExtended(final int topicId, final String pageId) {
+        throw new UnsupportedOperationException("bindChildrenExtended() is not supported. Use bindDetailedChildren() instead.");
     }
 
-    protected final void bindExtendedChildren(final int topicId, @NotNull final String pageId, @NotNull final String preferencesKey, final T parent, @NotNull final BaseExtendedChildrenViewInterface display) {
+    protected final void bindDetailedChildren(final int topicId, @NotNull final String pageId, @NotNull final String preferencesKey, @NotNull final BaseExtendedChildrenViewInterface display) {
 
         this.display = display;
 
-        super.bindChildren(topicId, pageId, parent, display);
-        display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
-        refreshPossibleChildrenDataAndList(parent);
+        super.bindChildren(topicId, pageId, display);
         loadChildSplitResize(preferencesKey);
         bindChildSplitResize(preferencesKey);
+    }
+
+    @Override
+    public final void displayChildrenExtended(@NotNull final T parent) {
+        throw new UnsupportedOperationException("displayChildrenExtended() is not supported. Use displayDetailedChildren() instead.");
+    }
+
+    protected final void displayDetailedChildren(@NotNull final T parent) {
+        display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
+        refreshPossibleChildrenDataAndList(parent);
     }
 
     /**
@@ -104,7 +112,7 @@ abstract public class BaseExtendedChildrenPresenter<
             @Override
             public void onResize(final ResizeEvent event) {
                 Preferences.INSTANCE.saveSetting(preferencesKey,
-                    BaseExtendedChildrenPresenter.this.display.getSplit().getSplitPosition(BaseExtendedChildrenPresenter.this.display.getPossibleChildrenResultsPanel()) + "");
+                    BaseDetailedChildrenPresenter.this.display.getSplit().getSplitPosition(BaseDetailedChildrenPresenter.this.display.getPossibleChildrenResultsPanel()) + "");
             }
         });
     }

@@ -33,7 +33,7 @@ abstract public class BaseOrderedChildrenComponent<
             D extends RESTBaseEntityV1<D, E, F>,
             E extends RESTBaseCollectionV1<D, E, F>,
             F extends RESTBaseCollectionItemV1<D, E, F>>
-        extends BaseExtendedChildrenPresenter<T, U, V, W, A, B, C, D, E, F>
+        extends BaseDetailedChildrenPresenter<T, U, V, W, A, B, C, D, E, F>
         implements BaseOrderedChildrenComponentInterface<T, U, V, W, A, B, C, D, E, F> {
 
     /**

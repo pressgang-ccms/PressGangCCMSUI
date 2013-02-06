@@ -33,7 +33,7 @@ public interface BaseOrderedChildrenComponentInterface<
             D extends RESTBaseEntityV1<D, E, F>,
             E extends RESTBaseCollectionV1<D, E, F>,
             F extends RESTBaseCollectionItemV1<D, E, F>>
-        extends BaseExtendedChildrenPresenterInterface<T, U, V, W, A, B, C, D, E, F> {
+        extends BaseDetailedChildrenPresenterInterface<T, U, V, W, A, B, C, D, E, F> {
 
     void setSortOrderOfChildren(final SetNewChildSortCallback<D, E, F> sortCallback);
     

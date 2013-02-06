@@ -53,9 +53,14 @@ public interface BaseChildrenComponentInterface<
      * call bindChildren().
      * @param helpTopicId the help topic for the page
      * @param pageId The history token of the page
-     * @param parent A reference to the entity being edited
      */
-    void bindChildrenExtended(final int helpTopicId, @NotNull final String pageId, @NotNull final T parent);
+    void bindChildrenExtended(final int helpTopicId, @NotNull final String pageId);
+
+    /**
+     * Display the data held by parent. This methods must call displayChildren().
+     * @param parent The object that holds the data we want to display
+     */
+    void displayChildrenExtended(@NotNull final T parent);
 
     /**
      * @return the data that is used to back the list of potential children.

@@ -15,7 +15,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.BaseExtendedChildrenPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.BaseDetailedChildrenPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -37,7 +37,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
     The presenter used to populate the tables of possible and existing topic property tags.
  */
 @Dependent
-public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
+public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
             RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1,
             RESTTopicV1,
             RESTPropertyTagV1, RESTPropertyTagCollectionV1, RESTPropertyTagCollectionItemV1,
@@ -84,7 +84,7 @@ public class TopicPropertyTagsPresenter extends BaseExtendedChildrenPresenter<
 
     @Override
     public void bindExtendedChildrenExtended(final int helpTopicId, @NotNull final String pageId, final RESTTopicV1 parent) {
-        super.bindExtendedChildren(helpTopicId, pageId, Preferences.TOPIC_PROPERTYTAG_VIEW_MAIN_SPLIT_WIDTH, parent, display);
+        super.bindDetailedChildren(helpTopicId, pageId, Preferences.TOPIC_PROPERTYTAG_VIEW_MAIN_SPLIT_WIDTH, parent, display);
     }
 
     @Override
