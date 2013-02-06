@@ -785,7 +785,6 @@ public class TagsFilteredResultsAndTagPresenter
      * Reset the category list
      */
     private void resetCategoryLists() {
-        categoriesComponent.getPossibleChildrenProviderData().reset();
         categoriesComponent.refreshPossibleChildrenDataAndList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
     }
 
@@ -793,7 +792,6 @@ public class TagsFilteredResultsAndTagPresenter
      * Reset the project list
      */
     private void resetProjectList() {
-        projectsComponent.getPossibleChildrenProviderData().reset();
         projectsComponent.refreshPossibleChildrenDataAndList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
     }
 

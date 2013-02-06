@@ -910,11 +910,6 @@ public class SearchResultsAndTopicPresenter
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.loadTagsAndBugs()");
 
-            /* set the bugs to show the loading widget */
-            /*if (topicBugsPresenter.getDisplay().getProvider() != null) {
-                topicBugsPresenter.getDisplay().getProvider().resetProvider();
-            }*/
-
             /* A callback to respond to a request for a topic with the tags expanded */
             final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
                     topicTagsComponent.getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
@@ -934,27 +929,11 @@ public class SearchResultsAndTopicPresenter
                 }
             });
 
-            /* A callback to respond to a request for a topic with the bugzilla bugs expanded */
-            /*final RESTCalls.RESTCallback<RESTTopicV1> topicWithBugsCallback = new BaseRestCallback<RESTTopicV1, TopicBugsPresenter.Display>(
-                    topicBugsPresenter.getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicBugsPresenter.Display>() {
-                @Override
-                public void doSuccessAction(final RESTTopicV1 retValue, final TopicBugsPresenter.Display display) {
-                    final RESTBugzillaBugCollectionV1 collection = retValue.getBugzillaBugs_OTM();
-                    // copy the revisions into the displayed Topic
-                    getTopicOrRevisionTopic().getItem().setBugzillaBugs_OTM(collection);
-                    // refresh the celltable
-                    topicBugsPresenter.getDisplay().getProvider().displayNewFixedList(collection.getItems());
-                }
-            }) {
-
-            };*/
-
             /* Initiate the REST calls */
             final Integer id = getTopicOrRevisionTopic().getItem().getId();
             final Integer revision = getTopicOrRevisionTopic().getItem().getRevision();
 
             LOGGER.log(Level.INFO, "SearchResultsAndTopicPresenter.loadTagsAndBugs() Starting REST calls");
-            //RESTCalls.getTopicRevisionWithBugs(topicWithBugsCallback, id, revision);
             RESTCalls.getTopicRevisionWithTags(topicWithTagsCallback, id, revision);
         } finally {
             LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.loadTagsAndBugs()");
@@ -1642,6 +1621,10 @@ public class SearchResultsAndTopicPresenter
 
             LOGGER.log(Level.INFO, "\tInitializing topic views");
 
+            /*
+                Loop over all the standard view i.e. those that will display details from the selected topic
+                or topic revision
+            */
             final List<BaseCustomViewInterface<RESTTopicV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTTopicV1>>();
             displayableViews.add(topicViewComponent.getDisplay());
             displayableViews.add(topicXMLComponent.getDisplay());
@@ -1652,20 +1635,24 @@ public class SearchResultsAndTopicPresenter
             displayableViews.add(topicSplitPanelRenderedDisplay);
             displayableViews.add(topicPropertyTagPresenter.getDisplay());
 
+            final RESTTopicCollectionItemV1 topicToDisplay = getTopicOrRevisionTopic();
             for (final BaseCustomViewInterface<RESTTopicV1> view : displayableViews) {
                 if (viewIsInFilter(filter, view)) {
-
-                    final RESTTopicCollectionItemV1 topicToDisplay = getTopicOrRevisionTopic();
-
                     view.display(topicToDisplay.getItem(), isReadOnlyMode());
                 }
             }
 
+            /*
+                The revision display always displays details from the main topic, and not the selected revision.
+             */
             if (viewIsInFilter(filter, topicRevisionsComponent.getDisplay())) {
                 LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
                 topicRevisionsComponent.getDisplay().display(searchResultsComponent.getProviderData().getDisplayedItem().getItem(), isReadOnlyMode());
             }
 
+            /*
+                Bind logic to the tag buttons
+             */
             if (viewIsInFilter(filter, topicTagsComponent.getDisplay())) {
                 LOGGER.log(Level.INFO, "\tInitializing topic tags view");
                 bindTagEditingButtons();

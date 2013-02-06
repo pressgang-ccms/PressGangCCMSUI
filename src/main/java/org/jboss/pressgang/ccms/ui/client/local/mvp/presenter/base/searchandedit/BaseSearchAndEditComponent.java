@@ -278,9 +278,20 @@ abstract public class BaseSearchAndEditComponent<
     }
 
     /**
-     * Called once a new entity has been selected from the filtered results view
+     * Called once a new entity has been selected from the filtered results view. This method
+     * is expected to be used to make additional calls to the REST service to load data that
+     * was not included when the selected entity was fetched.
      */
     abstract protected void loadAdditionalDisplayedItemData();
+
+    /**
+     * Called when a new entity is selected. This method is used to display any data that is contained
+     * in the selected object when it is initially loaded. Additional data (usually child collections)
+     * are expected to be loaded and displayed in the loadAdditionalDisplayedItemData() method.
+     *
+     * @param filter null if all views are to be initialized, or includes a list of views to be initialized
+     */
+    abstract protected void initializeViews(final List<BaseTemplateViewInterface> filter);
 
     /**
      * Binds logic to the action buttons
@@ -335,12 +346,7 @@ abstract public class BaseSearchAndEditComponent<
         initializeViews(null);
     }
 
-    /**
-     * Called when a new entity is selected
-     *
-     * @param filter null if all views are to be initialized, or includes a list of views to be initialized
-     */
-    abstract protected void initializeViews(final List<BaseTemplateViewInterface> filter);
+
 
     /**
      * Used by the initializeViews method

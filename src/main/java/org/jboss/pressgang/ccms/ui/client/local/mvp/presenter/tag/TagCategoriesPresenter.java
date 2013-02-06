@@ -27,6 +27,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildr
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
@@ -276,38 +277,17 @@ public class TagCategoriesPresenter
      */
     @Override
     public void refreshPossibleChildrenDataAndList(@NotNull final RESTTagV1 parent) {
-        final RESTCalls.RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
+
+        final BaseRestCallback<RESTCategoryCollectionV1, Display> callback = new BaseRestCallback<RESTCategoryCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTCategoryCollectionV1, Display>() {
             @Override
-            public void begin() {
-                display.addWaitOperation();
+            public void doSuccessAction(final RESTCategoryCollectionV1 retValue, final Display display) {
+                getPossibleChildrenProviderData().setStartRow(0);
+                /* Zero results can be a null list */
+                getPossibleChildrenProviderData().setItems(retValue.getItems());
+
+                display.getPossibleChildrenProvider().displayNewFixedList(getPossibleChildrenProviderData().getItems());
             }
-
-            @Override
-            public void generalException(final Exception e) {
-                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                display.removeWaitOperation();
-            }
-
-            @Override
-            public void success(final RESTCategoryCollectionV1 retValue) {
-                try {
-                    getPossibleChildrenProviderData().setStartRow(0);
-                    /* Zero results can be a null list */
-                    getPossibleChildrenProviderData().setItems(retValue.getItems());
-
-                    display.getPossibleChildrenProvider().displayNewFixedList(getPossibleChildrenProviderData().getItems());
-
-                } finally {
-                    display.removeWaitOperation();
-                }
-            }
-
-            @Override
-            public void failed(final Message message, final Throwable throwable) {
-                display.removeWaitOperation();
-                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-            }
-        };
+        });
 
         /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
         getPossibleChildrenProviderData().reset();
