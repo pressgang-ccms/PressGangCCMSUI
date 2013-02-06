@@ -104,6 +104,8 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
 
     @Override
     public final void displayChildrenExtended(@NotNull final RESTTopicV1 parent) {
+        super.displayChildren(parent);
+
         bindPossibleChildrenListButtonClicks(
                 new GetExistingCollectionCallback<RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1>() {
                     @Override

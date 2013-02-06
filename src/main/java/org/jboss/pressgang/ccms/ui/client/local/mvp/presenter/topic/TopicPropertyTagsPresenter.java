@@ -87,8 +87,8 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     }
 
     @Override
-    public void displayDetailedChildrenExtended(RESTTopicV1 parent) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void displayDetailedChildrenExtended(final RESTTopicV1 parent) {
+        super.displayDetailedChildren(parent);
     }
 
     @Override
@@ -107,8 +107,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
                     if (entity != null && entity.getProperties() != null) {
                         LOGGER.log(Level.INFO, "Found " + entity.getProperties().getItems().size() + " Property Tags.");
                         /* Don't display removed tags */
-                        for (final RESTAssignedPropertyTagCollectionItemV1 propertyTagInTopic : entity.getProperties()
-                                .returnExistingAddedAndUpdatedCollectionItems()) {
+                        for (final RESTAssignedPropertyTagCollectionItemV1 propertyTagInTopic : entity.getProperties().returnExistingAddedAndUpdatedCollectionItems()) {
                             getExistingProviderData().getItems().add(propertyTagInTopic);
                         }
                     } else {
@@ -190,7 +189,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
 
             /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
             getPossibleChildrenProviderData().reset();
-            this.getDisplay().getPossibleChildrenProvider().resetProvider();
+            display.getPossibleChildrenProvider().resetProvider();
 
             RESTCalls.getPropertyTags(callback);
         } finally {

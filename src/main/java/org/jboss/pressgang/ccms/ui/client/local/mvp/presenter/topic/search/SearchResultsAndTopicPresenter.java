@@ -879,19 +879,18 @@ public class SearchResultsAndTopicPresenter
             if (searchResultsComponent.getProviderData().getSelectedItem() != null) {
                 /* A callback to respond to a request for a topic with the revisions expanded */
                 final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
-                        topicRevisionsComponent.getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
-                    @Override
-                    public void doSuccessAction(final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
-                        searchResultsComponent.getProviderData().getDisplayedItem().getItem()
-                                .setRevisions(retValue.getRevisions());
+                        topicRevisionsComponent.getDisplay(),
+                        new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
+                            @Override
+                            public void doSuccessAction(final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
+                                searchResultsComponent.getProviderData().getDisplayedItem().getItem().setRevisions(retValue.getRevisions());
 
                                 /* refresh the list */
-                        topicRevisionsComponent.getDisplay().getProvider().displayNewFixedList(retValue.getRevisions().getItems());
-                    }
-                });
+                                topicRevisionsComponent.getDisplay().getProvider().displayNewFixedList(retValue.getRevisions().getItems());
+                            }
+                    });
 
-                RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, searchResultsComponent.getProviderData()
-                        .getSelectedItem().getItem().getId());
+                RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, searchResultsComponent.getProviderData().getSelectedItem().getItem().getId());
 
                 /* got on to load the tags and bugs */
                 loadTagsAndBugs();
@@ -1681,6 +1680,11 @@ public class SearchResultsAndTopicPresenter
                 setXMLEditorButtonsToEditorState();
                 topicXMLComponent.getDisplay().getEditor().redisplay();
             }
+
+            LOGGER.log(Level.INFO, "\tInitializing topic presenters");
+
+            topicPropertyTagPresenter.displayDetailedChildrenExtended(topicToDisplay.getItem());
+            topicSourceURLsPresenter.displayChildrenExtended(topicToDisplay.getItem());
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.initializeViews()");
