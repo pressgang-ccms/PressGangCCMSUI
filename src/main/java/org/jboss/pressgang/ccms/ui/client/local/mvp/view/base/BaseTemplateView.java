@@ -469,7 +469,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
             restServer.setText(PressGangCCMSUI.INSTANCE.OtherServer());
         }
 
-
+        footerPanel.setWidget(0, footerPanel.getCellCount(0), new Label("|"));
         footerPanel.setWidget(0, footerPanel.getCellCount(0), restServer);
 
         /* Add the feedback link */

@@ -114,7 +114,7 @@ public class TopicSourceURLsView extends BaseChildrenView<
     }
 
     @Override
-    public Column<RESTTopicSourceUrlCollectionItemV1, String> getOpenUrlRemoveColumn() {
+    public final Column<RESTTopicSourceUrlCollectionItemV1, String> getOpenUrlRemoveColumn() {
         return openUrlRemoveColumn;
     }
 }
