@@ -68,21 +68,14 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
 
             this.eventBus.addHandler(WelcomeViewEvent.TYPE, new ViewOpenEventHandler(WelcomePresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(SearchViewEvent.TYPE, new ViewOpenEventHandler(SearchPresenter.HISTORY_TOKEN));
-            this.eventBus.addHandler(SearchResultsViewEvent.TYPE,
-                    new ViewOpenWithQueryEventHandler(SearchResultsPresenter.HISTORY_TOKEN));
-            this.eventBus.addHandler(SearchResultsAndTopicViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
-                    SearchResultsAndTopicPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(SearchResultsViewEvent.TYPE, new ViewOpenWithQueryEventHandler(SearchResultsPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(SearchResultsAndTopicViewEvent.TYPE, new ViewOpenWithQueryEventHandler(SearchResultsAndTopicPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(ImagesViewEvent.TYPE, new ViewOpenEventHandler(ImagePresenter.HISTORY_TOKEN));
-            this.eventBus.addHandler(ImagesFilteredResultsAndImageViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
-                    ImagesFilteredResultsAndImagePresenter.HISTORY_TOKEN));
-            this.eventBus.addHandler(TagsFilteredResultsAndTagViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
-                    TagsFilteredResultsAndTagPresenter.HISTORY_TOKEN));
-            this.eventBus.addHandler(CategoriesFilteredResultsAndCategoryViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
-                    CategoriesFilteredResultsAndCategoryPresenter.HISTORY_TOKEN));
-            this.eventBus.addHandler(SearchTagsFieldsAndFiltersViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
-                    SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN));
-            this.eventBus.addHandler(ProjectsFilteredResultsAndProjectViewEvent.TYPE, new ViewOpenWithQueryEventHandler(
-                    ProjectsFilteredResultsAndProjectPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(ImagesFilteredResultsAndImageViewEvent.TYPE, new ViewOpenWithQueryEventHandler(ImagesFilteredResultsAndImagePresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(TagsFilteredResultsAndTagViewEvent.TYPE, new ViewOpenWithQueryEventHandler(TagsFilteredResultsAndTagPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(CategoriesFilteredResultsAndCategoryViewEvent.TYPE, new ViewOpenWithQueryEventHandler(CategoriesFilteredResultsAndCategoryPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(SearchTagsFieldsAndFiltersViewEvent.TYPE, new ViewOpenWithQueryEventHandler(SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(ProjectsFilteredResultsAndProjectViewEvent.TYPE, new ViewOpenWithQueryEventHandler(ProjectsFilteredResultsAndProjectPresenter.HISTORY_TOKEN));
         } finally {
             LOGGER.log(Level.INFO, "EXIT AppController.bind()");
         }

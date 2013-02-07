@@ -44,8 +44,6 @@ TAGS / CATEGORIES / PROJECTS
 
 
 7 Feb 2013
-image rendering not working for revisions
-Create topic link need not check for unsaved changes if already in new topic screen
 Need a way to add source urls
 End create and edit dates not working
 Need way to regenerate lucene index
