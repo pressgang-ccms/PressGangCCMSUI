@@ -59,8 +59,9 @@ public interface BaseChildrenComponentInterface<
     /**
      * Display the data held by parent. This methods must call displayChildren().
      * @param parent The object that holds the data we want to display
+     * @param readOnly true if the view is read only , false otherwise
      */
-    void displayChildrenExtended(@NotNull final T parent);
+    void displayChildrenExtended(@NotNull final T parent, final boolean readOnly);
 
     /**
      * @return the data that is used to back the list of potential children.

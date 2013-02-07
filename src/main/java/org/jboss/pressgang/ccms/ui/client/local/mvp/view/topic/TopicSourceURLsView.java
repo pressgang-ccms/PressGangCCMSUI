@@ -4,6 +4,7 @@ import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.client.ui.DisableableButtonCell;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
@@ -59,10 +60,13 @@ public class TopicSourceURLsView extends BaseChildrenView<
     /**
      * The column that provides the remove url button.
      */
+    private final DisableableButtonCell removeButtonCell = new DisableableButtonCell();
     private final Column<RESTTopicSourceUrlCollectionItemV1, String> sourceUrlRemoveColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(
-            new ButtonCell()) {
+            removeButtonCell) {
         @Override
         public String getValue(final RESTTopicSourceUrlCollectionItemV1 object) {
+            removeButtonCell.setEnabled(!isReadOnly());
+
             if (getOriginalEntity() != null && object != null && object.getItem().getId() != null) {
                 return PressGangCCMSUI.INSTANCE.Remove();
             }

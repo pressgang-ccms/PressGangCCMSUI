@@ -91,8 +91,8 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     }
 
     @Override
-    public void displayDetailedChildrenExtended(final RESTTopicV1 parent) {
-        super.displayDetailedChildren(parent);
+    public void displayDetailedChildrenExtended(final RESTTopicV1 parent, final boolean readOnly) {
+        super.displayDetailedChildren(parent, readOnly);
         bindPropertyTagButtons(parent);
     }
 

@@ -6,6 +6,7 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.DisableableButtonCell;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
@@ -68,10 +69,13 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
         }
     };
 
+    private final DisableableButtonCell removeButtonCell = new DisableableButtonCell();
     private final Column<RESTAssignedPropertyTagCollectionItemV1, String> propertyTagRemoveColumn = new Column<RESTAssignedPropertyTagCollectionItemV1, String>(
-        new ButtonCell()) {
+            removeButtonCell) {
             @Override
             public String getValue(final RESTAssignedPropertyTagCollectionItemV1 object) {
+                removeButtonCell.setEnabled(!isReadOnly());
+
                 if (getOriginalEntity() != null && object != null && object.getItem().getId() != null) {
                     return PressGangCCMSUI.INSTANCE.Remove();
                 }

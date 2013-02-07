@@ -121,8 +121,8 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
     }
 
     @Override
-    public final void displayChildrenExtended(@NotNull final RESTTopicV1 parent) {
-        super.displayChildren(parent);
+    public final void displayChildrenExtended(@NotNull final RESTTopicV1 parent, final boolean readOnly) {
+        super.displayChildren(parent, readOnly);
         bindPropertyTagButtons(parent);
 
         bindPossibleChildrenListButtonClicks(

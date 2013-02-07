@@ -827,11 +827,11 @@ public class TagsFilteredResultsAndTagPresenter
         }
 
         if (viewIsInFilter(filter, projectsComponent.getDisplay())) {
-            projectsComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+            projectsComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
         }
 
         if (viewIsInFilter(filter, categoriesComponent.getDisplay())) {
-            categoriesComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+            categoriesComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
         }
     }
 

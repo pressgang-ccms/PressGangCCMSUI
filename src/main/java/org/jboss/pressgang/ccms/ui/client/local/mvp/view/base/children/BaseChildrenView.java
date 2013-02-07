@@ -35,6 +35,8 @@ abstract public class BaseChildrenView<
     /** A reference to the tag that this view will be modifying */
     private T originalEntity;
 
+    private boolean readOnly;
+
     private final VerticalPanel possibleChildrenResultsPanel = new VerticalPanel();
     private final SimplePager possibleChildrenPager = UIUtilities.createSimplePager();
     private final CellTable<C> possibleChildrenResults = UIUtilities.<C> createCellTable();
@@ -98,5 +100,10 @@ abstract public class BaseChildrenView<
 
     public final void display(final T originalEntity, final boolean readOnly) {
         this.originalEntity = originalEntity;
+    }
+
+    /** true if this view is readonly, false otherwise */
+    public boolean isReadOnly() {
+        return readOnly;
     }
 }

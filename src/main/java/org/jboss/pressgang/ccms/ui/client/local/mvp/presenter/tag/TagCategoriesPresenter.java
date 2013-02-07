@@ -102,7 +102,8 @@ public class TagCategoriesPresenter
     }
 
     @Override
-    public void displayDetailedChildrenExtended(final RESTTagV1 parent) {
+    public void displayDetailedChildrenExtended(final RESTTagV1 parent, final boolean readOnly) {
+        super.displayDetailedChildren(parent, readOnly);
 
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
         initLifecycleBindExistingChildrenRowClick(parent);

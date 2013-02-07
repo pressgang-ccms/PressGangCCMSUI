@@ -1614,11 +1614,11 @@ public class SearchResultsAndTopicPresenter
             LOGGER.log(Level.INFO, "\tInitializing topic presenters");
 
             if (viewIsInFilter(filter, topicPropertyTagPresenter.getDisplay())) {
-                topicPropertyTagPresenter.displayDetailedChildrenExtended(topicToDisplay.getItem());
+                topicPropertyTagPresenter.displayDetailedChildrenExtended(topicToDisplay.getItem(), isReadOnlyMode());
             }
 
             if (viewIsInFilter(filter, topicSourceURLsPresenter.getDisplay())) {
-                topicSourceURLsPresenter.displayChildrenExtended(topicToDisplay.getItem());
+                topicSourceURLsPresenter.displayChildrenExtended(topicToDisplay.getItem(), isReadOnlyMode());
             }
 
         } finally {

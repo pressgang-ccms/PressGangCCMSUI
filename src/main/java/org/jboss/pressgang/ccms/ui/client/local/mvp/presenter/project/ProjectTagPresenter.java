@@ -73,8 +73,8 @@ public class ProjectTagPresenter
     }
 
     @Override
-    public void displayChildrenExtended(final @NotNull RESTProjectV1 parent) {
-        display.display(parent, false);
+    public void displayChildrenExtended(final @NotNull RESTProjectV1 parent, final boolean readOnly) {
+        display.display(parent, readOnly);
     }
 
     @Override

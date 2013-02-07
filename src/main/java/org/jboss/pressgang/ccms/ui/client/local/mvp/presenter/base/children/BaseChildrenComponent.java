@@ -36,6 +36,8 @@ public abstract class BaseChildrenComponent<
         F extends RESTBaseCollectionItemV1<D, E, F>>
         extends BaseTemplatePresenter implements BaseChildrenComponentInterface<T, U, V, A, B, C, D, E, F> {
 
+    private boolean readOnly;
+
     private final ProviderUpdateData<C> providerData = new ProviderUpdateData<C>();
     /**
      * The display that shows the children of a given entity.
@@ -64,8 +66,10 @@ public abstract class BaseChildrenComponent<
     /**
      * Display the data held by parent.
      * @param parent The object that holds the data we want to display
+     * @param readOnly true if the view is readonly, false otherwise
      */
-    protected final void displayChildren(@NotNull final T parent) {
+    protected final void displayChildren(@NotNull final T parent, final boolean readOnly) {
+        this.readOnly = readOnly;
         refreshPossibleChildList(parent);
     }
 
@@ -131,4 +135,7 @@ public abstract class BaseChildrenComponent<
     }
 
 
+    protected boolean isReadOnly() {
+        return readOnly;
+    }
 }

@@ -73,6 +73,7 @@ public interface BaseDetailedChildrenPresenterInterface<
     /**
      * Display the data held in parent. Must call displayDetailedChildren();
      * @param parent The object holding the data to be displayed.
+     * @param readOnly true if the view is read only , false otherwise
      */
-    void displayDetailedChildrenExtended(final T parent);
+    void displayDetailedChildrenExtended(final T parent, final boolean readOnly);
 }

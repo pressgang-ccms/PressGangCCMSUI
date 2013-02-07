@@ -397,7 +397,7 @@ public class ProjectsFilteredResultsAndProjectPresenter
         }
 
         if (viewIsInFilter(filter, tagComponent.getDisplay())) {
-            tagComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+            tagComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
         }
 
     }
