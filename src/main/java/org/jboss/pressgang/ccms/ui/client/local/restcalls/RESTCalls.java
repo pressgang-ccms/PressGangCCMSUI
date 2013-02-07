@@ -16,25 +16,15 @@ import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
  */
 public final class RESTCalls {
     /**
-     * The required expansion details for the topics.
-     */
-    private static final String TOPIC_EXPANSION =
-            "{\"trunk\":{\"name\": \"" + RESTTopicV1.BUGZILLABUGS_NAME + "\"}}," +
-            "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"},\"branches\":[{\"trunk\":{\"name\": \""
-            + RESTTopicV1.LOG_DETAILS_NAME + "\"}}]}, {\"trunk\":{\"name\": \"" + RESTTopicV1.TAGS_NAME
-            + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTTagV1.PROJECTS_NAME + "\"}},{\"trunk\":{\"name\":\""
-            + RESTTagV1.CATEGORIES_NAME + "\"}}]}";
-    /**
      * A topic with expanded revisions
      */
-    private static final String TOPIC_REVISIONS_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME
-            + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTTopicV1.LOG_DETAILS_NAME + "\"}}]}";
-    
-    /**
-     * A topic with expanded revisions
-     */
-    private static final String TOPIC_REVISIONS_EXPANSION_WO_MESSASGES = "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME
-            + "\"}},{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}";
+    private static final String TOPIC_REVISIONS_EXPANSION =
+            "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"},\"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.LOG_DETAILS_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
+            "]}";
+
     /**
      * A topic with expanded bugs
      */
@@ -58,6 +48,16 @@ public final class RESTCalls {
      * The required expansion details for the projects.
      */
     private static final String PROJECT_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTProjectV1.TAGS_NAME + "\"}}";
+    /**
+     * The required expansion details for a topic. The revisions are required so we can check to see if
+     * the last revision was the one we edited. If not, there was a conflicting save.
+     */
+    private static final String TOPIC_EXPANSION =
+            "{\"branches\":[" +
+                "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
+                "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}," +
+                "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"}}" +
+            "]}";
 
     /**
      * All REST calls follow a similar pattern: Before it starts An Exception may be thrown The call succeeds or The call fails
@@ -191,43 +191,39 @@ public final class RESTCalls {
     }
 
     public static void saveTopic(final RESTCallback<RESTTopicV1> callback, final RESTTopicV1 topic) {
-        final String expand = "{\"branches\":[" + TOPIC_REVISIONS_EXPANSION_WO_MESSASGES + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).updateJSONTopic(expand, topic);
+                createRestMethod(callback).updateJSONTopic(TOPIC_EXPANSION, topic);
             }
         });
     }
 
     public static void saveTopic(final RESTCallback<RESTTopicV1> callback, final RESTTopicV1 topic, final String message,
             final Integer flag, final String userId) {
-        final String expand = "{\"branches\":[" + TOPIC_REVISIONS_EXPANSION_WO_MESSASGES + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).updateJSONTopic(expand, topic, message, flag, userId);
+                createRestMethod(callback).updateJSONTopic(TOPIC_EXPANSION, topic, message, flag, userId);
             }
         });
     }
 
     public static void createTopic(final RESTCallback<RESTTopicV1> callback, final RESTTopicV1 topic) {
-        final String expand = "{\"branches\":[" + "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}" + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).createJSONTopic(expand, topic);
+                createRestMethod(callback).createJSONTopic(TOPIC_EXPANSION, topic);
             }
         });
     }
 
     public static void createTopic(final RESTCallback<RESTTopicV1> callback, final RESTTopicV1 topic, final String message,
             final Integer flag, final String userId) {
-        final String expand = "{\"branches\":[" + "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}" + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).createJSONTopic(expand, topic, message, flag, userId);
+                createRestMethod(callback).createJSONTopic(TOPIC_EXPANSION, topic, message, flag, userId);
             }
         });
     }
@@ -339,15 +335,10 @@ public final class RESTCalls {
     }
 
     public static void getTopic(final RESTCallback<RESTTopicV1> callback, final Integer id) {
-        final String expand =
-                "{\"branches\":[" +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
-                "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).getJSONTopic(id, expand);
+                createRestMethod(callback).getJSONTopic(id, TOPIC_EXPANSION);
             }
         });
     }

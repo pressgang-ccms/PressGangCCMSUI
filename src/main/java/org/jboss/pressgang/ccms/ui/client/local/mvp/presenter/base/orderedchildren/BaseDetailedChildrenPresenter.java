@@ -90,8 +90,7 @@ abstract public class BaseDetailedChildrenPresenter<
     }
 
     protected final void displayDetailedChildren(@NotNull final T parent) {
-        display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
-        refreshPossibleChildrenDataAndList(parent);
+        super.displayChildren(parent);
     }
 
     /**

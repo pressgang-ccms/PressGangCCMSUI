@@ -669,22 +669,29 @@ public class SearchResultsAndTopicPresenter
                 @Override
                 public void update(final int index, final RESTTopicCollectionItemV1 revisionTopic, final String value) {
 
-                    /* Reset the reference to the revision topic */
-                    topicRevisionsComponent.getDisplay().setRevisionTopic(null);
+                    try {
+                        LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bindViewTopicRevisionButton() FieldUpdater.update()");
 
-                    if (!revisionTopic.getItem().getRevision()
-                            .equals(searchResultsComponent.getProviderData().getDisplayedItem().getItem().getRevision())) {
                         /* Reset the reference to the revision topic */
-                        topicRevisionsComponent.getDisplay().setRevisionTopic(revisionTopic);
+                        topicRevisionsComponent.getDisplay().setRevisionTopic(null);
+
+                        if (!revisionTopic.getItem().getRevision().equals(searchResultsComponent.getProviderData().getDisplayedItem().getItem().getRevision())) {
+                            /* Reset the reference to the revision topic */
+                            topicRevisionsComponent.getDisplay().setRevisionTopic(revisionTopic);
+                        }
+
+                        initializeViews();
+
+                        /* Load the tags and bugs */
+                        loadTagsAndBugs();
+
+                        topicRevisionsComponent.getDisplay().setProvider(generateTopicRevisionsListProvider());
+                        topicPropertyTagPresenter.getDisplay().setExistingChildrenProvider(topicPropertyTagPresenter.generateExistingProvider(getTopicOrRevisionTopic().getItem()));
+
+                        switchView(topicRevisionsComponent.getDisplay());
+                    } finally {
+                        LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bindViewTopicRevisionButton() FieldUpdater.update()");
                     }
-
-                    initializeViews();
-
-                    /* Load the tags and bugs */
-                    loadTagsAndBugs();
-
-                    topicRevisionsComponent.getDisplay().setProvider(generateTopicRevisionsListProvider());
-                    switchView(topicRevisionsComponent.getDisplay());
                 }
             });
         } finally {
@@ -904,6 +911,8 @@ public class SearchResultsAndTopicPresenter
                 this.display.getXmlErrors().removeStyleName(CSSConstants.ERROR);
                 this.display.getXmlErrorsDown().removeStyleName(CSSConstants.ERROR);
             }
+
+            this.display.getSave().setEnabled(!isReadOnlyMode());
         } finally {
             LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.enableAndDisableActionButtons()");
         }
@@ -1541,7 +1550,7 @@ public class SearchResultsAndTopicPresenter
              * values depend on the parent entity set when initialzing the views. This is
              * common for "Add" and "Remove" column buttons that need to know if the
              * entity in the row is in the parent in order to choose between the add and
-             * remove lables.
+             * remove labels.
              */
 
             LOGGER.log(Level.INFO, "\tInitializing topic views");

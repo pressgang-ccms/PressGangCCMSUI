@@ -135,13 +135,13 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
                 new AddPossibleChildCallback<RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1>() {
                     @Override
                     public void createAndAddChild(final RESTTopicSourceUrlCollectionItemV1 copy) {
-                        // Do nothing here, because the button always removed a URL
+
                     }
                 },
                 new UpdateAfterChildModfiedCallback() {
                     @Override
                     public void updateAfterChidModfied() {
-
+                        TopicSourceURLsPresenter.this.refreshPossibleChildList(parent);
                     }
                 }
         );
