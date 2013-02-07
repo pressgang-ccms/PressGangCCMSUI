@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
@@ -469,8 +470,10 @@ public class ImagesFilteredResultsAndImagePresenter
 
                 if (docbookFileName != null && !docbookFileName.isEmpty() && isOKToProceed()) {
 
+                    final String searchQuery = "images/" + docbookFileName;
+
                     eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
-                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=images/" + docbookFileName, event.getNativeEvent()
+                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(searchQuery) : searchQuery), event.getNativeEvent()
                             .getKeyCode() == KeyCodes.KEY_CTRL));
                 }
 
