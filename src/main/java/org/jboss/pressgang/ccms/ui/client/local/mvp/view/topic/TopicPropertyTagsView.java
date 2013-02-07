@@ -38,8 +38,8 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
     /**
      * The column to display the assigned property tag's value.
      */
-    private final Column<RESTAssignedPropertyTagCollectionItemV1, String> propertyTagValueColumn = new Column<RESTAssignedPropertyTagCollectionItemV1, String>(
-            new EditTextCell()) {
+    final EditTextCell valueTextCell = new EditTextCell();
+    private final Column<RESTAssignedPropertyTagCollectionItemV1, String> propertyTagValueColumn = new Column<RESTAssignedPropertyTagCollectionItemV1, String>(valueTextCell) {
         @Override
         public String getValue(final RESTAssignedPropertyTagCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getValue() != null) {

@@ -620,8 +620,7 @@ public class SearchResultsAndTopicPresenter
                             topicRevisionsComponent.getDisplay(),
                             new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
                                 @Override
-                                public void doSuccessAction(final RESTTopicV1 retValue,
-                                                            final TopicRevisionsPresenter.Display display) {
+                                public void doSuccessAction(final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
                                     final RESTTopicCollectionItemV1 sourceTopic = getTopicOrRevisionTopic();
                                     final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID()
                                             + ": "
@@ -657,8 +656,7 @@ public class SearchResultsAndTopicPresenter
                                         isXML = false;
                                     }
 
-                                    topicRevisionsComponent.displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getItem()
-                                            .getXml(), sourceTopicLabel, isXML);
+                                    topicRevisionsComponent.displayDiff(retValue.getXml(), retValueLabel, sourceTopic.getItem().getXml(), sourceTopicLabel, isXML);
                                 }
                             });
                     RESTCalls.getTopicRevision(callback, revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision());

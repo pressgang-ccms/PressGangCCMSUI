@@ -392,11 +392,11 @@ public final class RESTCalls {
 
     public static void getTopicRevision(final RESTCallback<RESTTopicV1> callback, final Integer id, final Integer revision) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[" + TOPIC_EXPANSION + "]}";
+        //final String expand = "{\"branches\":[" + TOPIC_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).getJSONTopicRevision(id, revision, expand);
+                createRestMethod(callback).getJSONTopicRevision(id, revision, "");
             }
         });
     }
