@@ -10,7 +10,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm
      */
-    public static final String VERSION = "201302071554";
+    public static final String VERSION = "201302071847";
 
     
     /**

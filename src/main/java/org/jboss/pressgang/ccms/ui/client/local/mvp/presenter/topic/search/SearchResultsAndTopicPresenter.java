@@ -1583,7 +1583,7 @@ public class SearchResultsAndTopicPresenter
 
             /* We initially display the split pane rendered view without images */
             if (viewIsInFilter(filter, topicSplitPanelRenderedDisplay)) {
-                topicSplitPanelRenderedDisplay.displayTopicRendered(topicToDisplay.getItem(), isReadOnlyMode(), false);
+                topicSplitPanelRenderedDisplay.displayTopicRendered(topicToDisplay.getItem(), isReadOnlyMode(), true);
             }
 
             /*

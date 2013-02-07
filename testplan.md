@@ -36,10 +36,10 @@ IMAGES
 * find topics that include the image
 * check that unsaved changes to the description results in a prompt
 
-TAGS
+TAGS / CATEGORIES / PROJECTS
 * make sure all search fields work
 * add and remove projects
-* add, remove and reorder categories
+* add, remove and reorder child categories, tags and projects
 * make sure unsaved changes work
 
 
@@ -49,5 +49,4 @@ Create topic link need not check for unsaved changes if already in new topic scr
 Need a way to add source urls
 End create and edit dates not working
 Need way to regenerate lucene index
-image search by original file name not working - but might be encoding issue
 image search not updating when locales added
