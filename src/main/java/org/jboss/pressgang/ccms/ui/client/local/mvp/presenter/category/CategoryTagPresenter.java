@@ -92,6 +92,7 @@ public class CategoryTagPresenter
 
     @Override
     public void displayDetailedChildrenExtended(final RESTCategoryV1 parent, final boolean readOnly) {
+        super.displayDetailedChildren(parent, readOnly);
         display.display(parent, readOnly);
     }
 
