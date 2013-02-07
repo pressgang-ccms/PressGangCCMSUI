@@ -135,7 +135,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
 
                             if (object.returnIsAddItem()) {
                                 /* Previously added items are just removed from the collection */
-                                parent.getProperties().getItems().remove(object);
+                                parent.getProperties().getItems().remove(index);
                             } else {
                                 /* Existing children are marked for removal */
                                 object.setState(REMOVE_STATE);
