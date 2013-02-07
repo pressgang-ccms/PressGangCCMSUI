@@ -81,5 +81,5 @@ public interface BaseChildrenViewInterface<
      */
     Column<C, String> getPossibleChildrenButtonColumn();
 
-    void displayExtended(final T originalEntity, final boolean readOnly);
+    void displayChildrenExtended(final T originalEntity, final boolean readOnly);
 }

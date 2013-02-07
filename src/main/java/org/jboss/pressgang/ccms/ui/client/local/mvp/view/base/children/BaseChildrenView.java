@@ -100,6 +100,7 @@ abstract public class BaseChildrenView<
 
     public final void display(final T originalEntity, final boolean readOnly) {
         this.originalEntity = originalEntity;
+        this.readOnly = readOnly;
     }
 
     /** true if this view is readonly, false otherwise */

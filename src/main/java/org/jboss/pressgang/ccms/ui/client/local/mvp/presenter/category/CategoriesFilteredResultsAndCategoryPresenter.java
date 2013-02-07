@@ -242,7 +242,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
 
             /* We need to initialize the view so the celltable buttons can display the correct labels */
             if (viewIsInFilter(filter, categoryTagPresenter.getDisplay()))  {
-                categoryTagPresenter.getDisplay().displayExtended(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+                categoryTagPresenter.getDisplay().displayChildrenExtended(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
                 categoryTagPresenter.displayDetailedChildrenExtended(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
             }
 

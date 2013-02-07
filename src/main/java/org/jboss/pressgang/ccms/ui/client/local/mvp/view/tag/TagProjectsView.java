@@ -64,7 +64,7 @@ public class TagProjectsView extends
     }
 
     @Override
-    public void displayExtended(final RESTTagV1 originalEntity, final boolean readOnly) {
+    public void displayChildrenExtended(final RESTTagV1 originalEntity, final boolean readOnly) {
         super.display(originalEntity, readOnly);
     }
 

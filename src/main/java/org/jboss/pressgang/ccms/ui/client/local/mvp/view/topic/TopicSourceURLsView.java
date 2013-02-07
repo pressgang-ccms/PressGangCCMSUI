@@ -92,7 +92,7 @@ public class TopicSourceURLsView extends BaseChildrenView<
     }
 
     @Override
-    public final void displayExtended(final RESTTopicV1 topic, final boolean readOnly) {
+    public final void displayChildrenExtended(final RESTTopicV1 topic, final boolean readOnly) {
         super.display(topic, readOnly);
     }
 

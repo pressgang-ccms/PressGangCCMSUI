@@ -104,10 +104,13 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
         }
     };
 
+    private final DisableableButtonCell addButtonCell = new DisableableButtonCell();
     private final Column<RESTPropertyTagCollectionItemV1, String> propertyTagAddColumn = new Column<RESTPropertyTagCollectionItemV1, String>(
-            new ButtonCell()) {
+            addButtonCell) {
         @Override
         public String getValue(final RESTPropertyTagCollectionItemV1 object) {
+            addButtonCell.setEnabled(!isReadOnly());
+
             if (getOriginalEntity() != null && object != null && object.getItem().getId() != null) {
                 return PressGangCCMSUI.INSTANCE.Add();
             }
@@ -157,7 +160,7 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
 
 
     @Override
-    public void displayExtended(final RESTTopicV1 topic, final boolean readOnly) {
+    public void displayChildrenExtended(final RESTTopicV1 topic, final boolean readOnly) {
         super.display(topic, readOnly);
     }
 
