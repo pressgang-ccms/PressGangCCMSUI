@@ -72,13 +72,12 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
     };
 
     private final DisableableButtonCell removeButtonCell = new DisableableButtonCell();
-    private final Column<RESTAssignedPropertyTagCollectionItemV1, String> propertyTagRemoveColumn = new Column<RESTAssignedPropertyTagCollectionItemV1, String>(
-            removeButtonCell) {
+    private final Column<RESTAssignedPropertyTagCollectionItemV1, String> propertyTagRemoveColumn = new Column<RESTAssignedPropertyTagCollectionItemV1, String>(removeButtonCell) {
             @Override
             public String getValue(final RESTAssignedPropertyTagCollectionItemV1 object) {
                 removeButtonCell.setEnabled(!isReadOnly());
 
-                if (getOriginalEntity() != null && object != null && object.getItem().getId() != null) {
+                if (getOriginalEntity() != null && object != null) {
                     return PressGangCCMSUI.INSTANCE.Remove();
                 }
 

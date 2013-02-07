@@ -44,7 +44,6 @@ TAGS / CATEGORIES / PROJECTS
 
 
 7 Feb 2013
-Need a way to add source urls
 End create and edit dates not working
 Need way to regenerate lucene index
-image search not updating when locales added
+Image file name search not working

@@ -993,6 +993,7 @@ public class SearchResultsAndTopicPresenter
             restTopic.setProperties(new RESTAssignedPropertyTagCollectionV1());
             restTopic.setTags(new RESTTagCollectionV1());
             restTopic.setRevisions(new RESTTopicCollectionV1());
+            restTopic.setSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
             restTopic.setLocale(defaultLocale);
             topicCollectionItem.setItem(restTopic);
 

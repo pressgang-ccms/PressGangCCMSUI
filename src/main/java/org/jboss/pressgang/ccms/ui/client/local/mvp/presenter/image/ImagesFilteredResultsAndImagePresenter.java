@@ -498,8 +498,7 @@ public class ImagesFilteredResultsAndImagePresenter
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed()) {
-                    eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(imageFilteredResultsComponent.getQuery(), event
-                            .getNativeEvent().getKeyCode() == KeyCodes.KEY_CTRL));
+                    eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(imageFilteredResultsComponent.getQuery(), event.getNativeEvent().getKeyCode() == KeyCodes.KEY_CTRL));
                 }
             }
         });

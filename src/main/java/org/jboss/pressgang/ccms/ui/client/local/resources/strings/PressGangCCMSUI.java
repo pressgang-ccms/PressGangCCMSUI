@@ -384,4 +384,8 @@ public interface PressGangCCMSUI extends Constants {
     String OtherServer();
 
     String OpenURL();
+
+    String NewURLTitle();
+
+    String NewURLLink();
 }

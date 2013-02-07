@@ -1,10 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.view.client.HasData;
+import com.google.gwt.widget.client.TextButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
@@ -21,6 +25,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.Base
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.GetExistingCollectionCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.UpdateAfterChildModfiedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -66,7 +72,12 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
         /**
          * @return The column that holds opens the URL
          */
-        Column<RESTTopicSourceUrlCollectionItemV1, String> getOpenUrlRemoveColumn();
+        Column<RESTTopicSourceUrlCollectionItemV1, String> getOpenUrlColumn();
+
+        /**
+         * @return The button used to add a source URL
+         */
+        PushButton getAdd();
     }
 
     /**
@@ -99,13 +110,13 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
             protected void onRangeChanged(final HasData<RESTTopicSourceUrlCollectionItemV1> data) {
 
                 getPossibleChildrenProviderData().setStartRow(data.getVisibleRange().getStart());
+                getPossibleChildrenProviderData().setItems(new ArrayList<RESTTopicSourceUrlCollectionItemV1>());
 
                 if (parent != null && parent.getSourceUrls_OTM() != null) {
-                    getPossibleChildrenProviderData().setItems(parent.getSourceUrls_OTM().returnExistingAddedAndUpdatedCollectionItems());
-                    displayNewFixedList(getPossibleChildrenProviderData().getItems());
-                } else {
-                    resetProvider();
+                    getPossibleChildrenProviderData().getItems().addAll(parent.getSourceUrls_OTM().returnExistingAddedAndUpdatedCollectionItems());
                 }
+
+                displayNewFixedList(getPossibleChildrenProviderData().getItems());
             }
         };
     }
@@ -123,34 +134,13 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
 
     @Override
     public final void bindChildrenExtended(final int helpTopicId, @NotNull final String pageId) {
-        bindChildren(helpTopicId, pageId, display);
+        super.bindChildren(helpTopicId, pageId, display);
     }
 
     @Override
     public final void displayChildrenExtended(@NotNull final RESTTopicV1 parent, final boolean readOnly) {
         super.displayChildren(parent, readOnly);
         bindPropertyTagButtons(parent);
-
-        bindPossibleChildrenListButtonClicks(
-                new GetExistingCollectionCallback<RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1>() {
-                    @Override
-                    public RESTTopicSourceUrlCollectionV1 getExistingCollection() {
-                        return parent.getSourceUrls_OTM();
-                    }
-                },
-                new AddPossibleChildCallback<RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1>() {
-                    @Override
-                    public void createAndAddChild(final RESTTopicSourceUrlCollectionItemV1 copy) {
-
-                    }
-                },
-                new UpdateAfterChildModfiedCallback() {
-                    @Override
-                    public void updateAfterChidModfied() {
-                        TopicSourceURLsPresenter.this.refreshPossibleChildList(parent);
-                    }
-                }
-        );
     }
 
     /**
@@ -186,7 +176,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
                 }
             });
 
-            display.getOpenUrlRemoveColumn().setFieldUpdater(
+            display.getOpenUrlColumn().setFieldUpdater(
                     new FieldUpdater<RESTTopicSourceUrlCollectionItemV1, String>() {
                         @Override
                         public void update(final int index, final RESTTopicSourceUrlCollectionItemV1 object, final String value) {
@@ -194,6 +184,38 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
                         }
                     }
             );
+
+            display.getPossibleChildrenButtonColumn().setFieldUpdater(new FieldUpdater<RESTTopicSourceUrlCollectionItemV1, String>() {
+                @Override
+                public void update(final int index, final RESTTopicSourceUrlCollectionItemV1 object, final String value) {
+                    try {
+                        LOGGER.log(Level.INFO, "ENTER Remove Column FieldUpdater.update()");
+
+                        if (object.returnIsAddItem()) {
+                            LOGGER.log(Level.INFO, "Item is new, so removing from collection");
+                            parent.getSourceUrls_OTM().getItems().remove(index);
+                        } else {
+                            LOGGER.log(Level.INFO, "Item is existing, so marking as removed from collection");
+                            object.setState(REMOVE_STATE);
+                        }
+
+                        refreshPossibleChildList(parent);
+                    } finally {
+                        LOGGER.log(Level.INFO, "EXIT Remove Column FieldUpdater.update()");
+                    }
+                }
+            });
+
+            display.getAdd().addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(final ClickEvent event) {
+                    final RESTTopicSourceUrlV1 newUrl = new RESTTopicSourceUrlV1();
+                    newUrl.explicitSetUrl(PressGangCCMSUI.INSTANCE.NewURLLink());
+                    newUrl.explicitSetTitle(PressGangCCMSUI.INSTANCE.NewURLTitle());
+                    parent.getSourceUrls_OTM().addNewItem(newUrl);
+                    refreshPossibleChildList(parent);
+                }
+            });
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicSourceURLsPresenter.bindPropertyTagButtons()");
         }

@@ -1,10 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
 import com.google.gwt.cell.client.ButtonCell;
-import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.DisableEditTextCell;
 import com.google.gwt.user.client.ui.DisableableButtonCell;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
@@ -14,6 +15,8 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicSourceURLsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
+import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 
@@ -61,12 +64,12 @@ public class TopicSourceURLsView extends BaseChildrenView<
      * The column that provides the remove url button.
      */
     private final DisableableButtonCell removeButtonCell = new DisableableButtonCell();
-    private final Column<RESTTopicSourceUrlCollectionItemV1, String> sourceUrlRemoveColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(removeButtonCell) {
+    private final Column<RESTTopicSourceUrlCollectionItemV1, String> removeSourceUrlColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(removeButtonCell) {
         @Override
         public String getValue(final RESTTopicSourceUrlCollectionItemV1 object) {
             removeButtonCell.setEnabled(!isReadOnly());
 
-            if (getOriginalEntity() != null && object != null && object.getItem().getId() != null) {
+            if (getOriginalEntity() != null && object != null) {
                 return PressGangCCMSUI.INSTANCE.Remove();
             }
 
@@ -74,12 +77,14 @@ public class TopicSourceURLsView extends BaseChildrenView<
         }
     };
 
-    private final Column<RESTTopicSourceUrlCollectionItemV1, String> openUrlRemoveColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(new ButtonCell()) {
+    private final Column<RESTTopicSourceUrlCollectionItemV1, String> openSourceUrlColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(new ButtonCell()) {
         @Override
         public String getValue(final RESTTopicSourceUrlCollectionItemV1 object) {
             return PressGangCCMSUI.INSTANCE.OpenURL();
         }
     };
+
+    private final PushButton add = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Add());
 
     /**
         Constructor. Sets the page and title name.
@@ -89,14 +94,18 @@ public class TopicSourceURLsView extends BaseChildrenView<
 
         getPossibleChildrenResults().addColumn(urlValueColumn, PressGangCCMSUI.INSTANCE.URL());
         getPossibleChildrenResults().addColumn(nameValueColumn, PressGangCCMSUI.INSTANCE.URLTitle());
-        getPossibleChildrenResults().addColumn(sourceUrlRemoveColumn, PressGangCCMSUI.INSTANCE.Remove());
-        getPossibleChildrenResults().addColumn(getOpenUrlRemoveColumn(), PressGangCCMSUI.INSTANCE.OpenURL());
+        getPossibleChildrenResults().addColumn(removeSourceUrlColumn, PressGangCCMSUI.INSTANCE.Remove());
+        getPossibleChildrenResults().addColumn(openSourceUrlColumn, PressGangCCMSUI.INSTANCE.OpenURL());
+
+        final HorizontalPanel addButtonPanel = new HorizontalPanel();
+        addButtonPanel.add(add);
+        this.getPossibleChildrenResultsPanel().add(addButtonPanel);
 
     }
 
     @Override
     public final Column<RESTTopicSourceUrlCollectionItemV1, String> getPossibleChildrenButtonColumn() {
-        return sourceUrlRemoveColumn;
+        return removeSourceUrlColumn;
     }
 
     @Override
@@ -115,7 +124,14 @@ public class TopicSourceURLsView extends BaseChildrenView<
     }
 
     @Override
-    public final Column<RESTTopicSourceUrlCollectionItemV1, String> getOpenUrlRemoveColumn() {
-        return openUrlRemoveColumn;
+    public final Column<RESTTopicSourceUrlCollectionItemV1, String> getOpenUrlColumn() {
+        return openSourceUrlColumn;
+    }
+
+
+    @Override
+    @NotNull
+    public PushButton getAdd() {
+        return add;
     }
 }
