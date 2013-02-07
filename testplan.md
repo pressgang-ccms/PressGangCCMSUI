@@ -34,6 +34,13 @@ IMAGES
 * add and remove locales
 * upload mismatches image types (png, jpg etc), make sure it fails
 * find topics that include the image
+* check that unsaved changes to the description results in a prompt
+
+TAGS
+* make sure all search fields work
+* add and remove projects
+* add, remove and reorder categories
+* make sure unsaved changes work
 
 
 7 Feb 2013
