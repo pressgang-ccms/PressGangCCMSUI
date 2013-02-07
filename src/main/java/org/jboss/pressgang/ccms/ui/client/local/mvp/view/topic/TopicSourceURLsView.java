@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.client.ui.DisableEditTextCell;
 import com.google.gwt.user.client.ui.DisableableButtonCell;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
@@ -29,10 +30,11 @@ public class TopicSourceURLsView extends BaseChildrenView<
     /**
      * The column to display the source url.
      */
-    private final Column<RESTTopicSourceUrlCollectionItemV1, String> urlValueColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(
-            new EditTextCell()) {
+    private final DisableEditTextCell urlTextCell = new DisableEditTextCell();
+    private final Column<RESTTopicSourceUrlCollectionItemV1, String> urlValueColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(urlTextCell) {
         @Override
         public String getValue(final RESTTopicSourceUrlCollectionItemV1 object) {
+            urlTextCell.setEnabled(!isReadOnly());
             if (object != null && object.getItem() != null && object.getItem().getUrl() != null) {
                 return object.getItem().getUrl();
             }
@@ -43,10 +45,11 @@ public class TopicSourceURLsView extends BaseChildrenView<
     /**
      * The column to display the source url.
      */
-    private final Column<RESTTopicSourceUrlCollectionItemV1, String> nameValueColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(
-            new EditTextCell()) {
+    private final DisableEditTextCell nameTextCell = new DisableEditTextCell();
+    private final Column<RESTTopicSourceUrlCollectionItemV1, String> nameValueColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(nameTextCell) {
         @Override
         public String getValue(final RESTTopicSourceUrlCollectionItemV1 object) {
+            nameTextCell.setEnabled(!isReadOnly());
             if (object != null && object.getItem() != null && object.getItem().getTitle() != null) {
                 return object.getItem().getTitle();
             }
@@ -58,8 +61,7 @@ public class TopicSourceURLsView extends BaseChildrenView<
      * The column that provides the remove url button.
      */
     private final DisableableButtonCell removeButtonCell = new DisableableButtonCell();
-    private final Column<RESTTopicSourceUrlCollectionItemV1, String> sourceUrlRemoveColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(
-            removeButtonCell) {
+    private final Column<RESTTopicSourceUrlCollectionItemV1, String> sourceUrlRemoveColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(removeButtonCell) {
         @Override
         public String getValue(final RESTTopicSourceUrlCollectionItemV1 object) {
             removeButtonCell.setEnabled(!isReadOnly());
@@ -72,8 +74,7 @@ public class TopicSourceURLsView extends BaseChildrenView<
         }
     };
 
-    private final Column<RESTTopicSourceUrlCollectionItemV1, String> openUrlRemoveColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(
-            new ButtonCell()) {
+    private final Column<RESTTopicSourceUrlCollectionItemV1, String> openUrlRemoveColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(new ButtonCell()) {
         @Override
         public String getValue(final RESTTopicSourceUrlCollectionItemV1 object) {
             return PressGangCCMSUI.INSTANCE.OpenURL();

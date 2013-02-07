@@ -6,6 +6,7 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.DisableEditTextCell;
 import com.google.gwt.user.client.ui.DisableableButtonCell;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
@@ -38,10 +39,11 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
     /**
      * The column to display the assigned property tag's value.
      */
-    final EditTextCell valueTextCell = new EditTextCell();
+    private final DisableEditTextCell valueTextCell = new DisableEditTextCell();
     private final Column<RESTAssignedPropertyTagCollectionItemV1, String> propertyTagValueColumn = new Column<RESTAssignedPropertyTagCollectionItemV1, String>(valueTextCell) {
         @Override
         public String getValue(final RESTAssignedPropertyTagCollectionItemV1 object) {
+            valueTextCell.setEnabled(!isReadOnly());
             if (object != null && object.getItem() != null && object.getItem().getValue() != null) {
                 return object.getItem().getValue();
             }
