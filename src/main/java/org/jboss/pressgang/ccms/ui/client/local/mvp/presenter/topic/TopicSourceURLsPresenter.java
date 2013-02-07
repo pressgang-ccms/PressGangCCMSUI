@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
@@ -61,6 +62,11 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
          * @return The column that holds the URL title.
          */
         Column<RESTTopicSourceUrlCollectionItemV1, String> getNameValueColumn();
+
+        /**
+         * @return The column that holds opens the URL
+         */
+        Column<RESTTopicSourceUrlCollectionItemV1, String> getOpenUrlRemoveColumn();
     }
 
     /**
@@ -179,6 +185,15 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
                     object.getItem().explicitSetUrl(value);
                 }
             });
+
+            display.getOpenUrlRemoveColumn().setFieldUpdater(
+                    new FieldUpdater<RESTTopicSourceUrlCollectionItemV1, String>() {
+                        @Override
+                        public void update(final int index, final RESTTopicSourceUrlCollectionItemV1 object, final String value) {
+                            Window.open(object.getItem().getUrl(), "_blank", "");
+                        }
+                    }
+            );
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicSourceURLsPresenter.bindPropertyTagButtons()");
         }

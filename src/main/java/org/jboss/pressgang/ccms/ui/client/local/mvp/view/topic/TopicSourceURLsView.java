@@ -2,7 +2,6 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.EditTextCell;
-import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.DisableableButtonCell;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
@@ -14,10 +13,8 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicSourceURLsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 
 import javax.enterprise.context.Dependent;
-import java.util.List;
 
 /**
  * The view that displays the source urls.
@@ -75,15 +72,25 @@ public class TopicSourceURLsView extends BaseChildrenView<
         }
     };
 
+    private final Column<RESTTopicSourceUrlCollectionItemV1, String> openUrlRemoveColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(
+            new ButtonCell()) {
+        @Override
+        public String getValue(final RESTTopicSourceUrlCollectionItemV1 object) {
+            return PressGangCCMSUI.INSTANCE.OpenURL();
+        }
+    };
+
     /**
         Constructor. Sets the page and title name.
      */
     public TopicSourceURLsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.TopicSourceUrls());
 
-        getPossibleChildrenResults().addColumn(urlValueColumn, PressGangCCMSUI.INSTANCE.URLTitle());
-        getPossibleChildrenResults().addColumn(nameValueColumn, PressGangCCMSUI.INSTANCE.URL());
+        getPossibleChildrenResults().addColumn(urlValueColumn, PressGangCCMSUI.INSTANCE.URL());
+        getPossibleChildrenResults().addColumn(nameValueColumn, PressGangCCMSUI.INSTANCE.URLTitle());
         getPossibleChildrenResults().addColumn(sourceUrlRemoveColumn, PressGangCCMSUI.INSTANCE.Remove());
+        getPossibleChildrenResults().addColumn(getOpenUrlRemoveColumn(), PressGangCCMSUI.INSTANCE.OpenURL());
+
     }
 
     @Override
@@ -104,5 +111,10 @@ public class TopicSourceURLsView extends BaseChildrenView<
     @Override
     public final Column<RESTTopicSourceUrlCollectionItemV1, String> getNameValueColumn() {
         return nameValueColumn;
+    }
+
+    @Override
+    public Column<RESTTopicSourceUrlCollectionItemV1, String> getOpenUrlRemoveColumn() {
+        return openUrlRemoveColumn;
     }
 }
