@@ -72,6 +72,7 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
 
     @Override
     public void displayChildrenExtended(final @NotNull RESTTagV1 parent, final boolean readOnly) {
+        super.displayChildren(parent, readOnly);
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
         refreshPossibleChildrenDataAndList(parent);
     }
