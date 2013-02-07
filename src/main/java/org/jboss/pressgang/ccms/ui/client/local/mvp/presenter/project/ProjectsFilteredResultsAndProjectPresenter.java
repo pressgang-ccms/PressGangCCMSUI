@@ -130,7 +130,7 @@ public class ProjectsFilteredResultsAndProjectPresenter
 
         filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
         resultComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-        tagComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        tagComponent.bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
         super.bindSearchAndEdit(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Preferences.PROJECT_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
                 filteredResultsComponent.getDisplay(), filteredResultsComponent, display, display, getNewEntityCallback);
 

@@ -452,8 +452,8 @@ public class TagsFilteredResultsAndTagPresenter
                     Preferences.INSTANCE.getInt(Preferences.TAG_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
 
             filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
-            projectsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-            categoriesComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+            projectsComponent.bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+            categoriesComponent.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
             resultComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
 
             super.bindSearchAndEdit(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
@@ -831,7 +831,7 @@ public class TagsFilteredResultsAndTagPresenter
         }
 
         if (viewIsInFilter(filter, categoriesComponent.getDisplay())) {
-            categoriesComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+            categoriesComponent.displayDetailedChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
         }
     }
 

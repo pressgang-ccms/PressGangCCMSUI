@@ -151,7 +151,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
         categoryPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-        categoryTagPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        categoryTagPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
         filteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
 
         super.bindSearchAndEdit(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, categoryPresenter.getDisplay(), categoryPresenter.getDisplay(),
