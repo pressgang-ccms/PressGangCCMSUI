@@ -10,7 +10,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm
      */
-    public static final String VERSION = "201302071239";
+    public static final String VERSION = "201302071454";
 
     
     /**
@@ -126,12 +126,17 @@ public final class Constants {
      * include characters like the semicolon). If this constant is true, the query elements will be encoded.
      */
     public static final boolean ENCODE_QUERY_OPTIONS = true;
+
+    public static final String LOCAL_REST_SERVER = "http://localhost:8080/TopicIndex/";
+    public static final String DEV_REST_SERVER = "http://skynet-dev.usersys.redhat.com:8080/TopicIndex/";
+    public static final String PROD_REST_SERVER = "http://skynet.usersys.redhat.com:8080/TopicIndex/";
+
     /**
      * The REST server.
      */
-    //public static final String BASE_URL = "http://localhost:8080/TopicIndex/";
-    public static final String BASE_URL = "http://skynet-dev.usersys.redhat.com:8080/TopicIndex/";
-    //public static final String BASE_URL = "http://skynet.usersys.redhat.com:8080/TopicIndex/";
+    //public static final String BASE_URL = LOCAL_REST_SERVER;
+    public static final String BASE_URL = DEV_REST_SERVER;
+    //public static final String BASE_URL = PROD_REST_SERVER;
     /**
      * The REST URL.
      */

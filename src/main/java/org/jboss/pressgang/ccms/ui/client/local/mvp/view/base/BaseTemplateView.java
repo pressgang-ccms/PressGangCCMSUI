@@ -14,6 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class is used to build the standard page template.
@@ -384,7 +385,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         return search;
     }
 
-    public BaseTemplateView(final String applicationName, final String pageName) {
+    public BaseTemplateView(@NotNull final String applicationName, @NotNull final String pageName) {
         this.applicationName = applicationName;
         this.pageName = pageName;
 
@@ -452,9 +453,26 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         thirdLevelLayoutPanel.addWest(shortCutPanelParent, Constants.SHORTCUT_BAR_WIDTH);
 
-        /* Add the feedback link */
-  
+
+        /* Add the version */
         footerPanel.setWidget(0, 0, version);
+
+        /* Add the REST server */
+        final Label restServer = new Label();
+        if (Constants.BASE_URL == Constants.DEV_REST_SERVER) {
+            restServer.setText(PressGangCCMSUI.INSTANCE.DevelopmentServer());
+        } else if (Constants.BASE_URL == Constants.PROD_REST_SERVER) {
+            restServer.setText(PressGangCCMSUI.INSTANCE.ProductionServer());
+        } else if (Constants.BASE_URL == Constants.LOCAL_REST_SERVER) {
+            restServer.setText(PressGangCCMSUI.INSTANCE.LocalServer());
+        } else {
+            restServer.setText(PressGangCCMSUI.INSTANCE.OtherServer());
+        }
+
+
+        footerPanel.setWidget(0, footerPanel.getCellCount(0), restServer);
+
+        /* Add the feedback link */
         addRightAlignedActionButtonPaddingPanel(footerPanel);
         footerPanel.setWidget(0, footerPanel.getCellCount(0), help);
         footerPanel.setWidget(0, footerPanel.getCellCount(0), new Label("|"));

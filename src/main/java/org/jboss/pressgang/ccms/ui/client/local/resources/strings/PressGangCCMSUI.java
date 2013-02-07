@@ -374,4 +374,12 @@ public interface PressGangCCMSUI extends Constants {
     String URLTitle();
 
     String URL();
+
+    String ProductionServer();
+
+    String LocalServer();
+
+    String DevelopmentServer();
+
+    String OtherServer();
 }
