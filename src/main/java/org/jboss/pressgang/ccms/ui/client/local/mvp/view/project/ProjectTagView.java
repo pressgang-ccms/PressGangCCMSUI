@@ -70,7 +70,7 @@ public class ProjectTagView
         getPossibleChildrenResults().addColumn(tagsButtonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
     }
 
-    public void displayChildrenExtended(final RESTProjectV1 entity, final boolean readOnly) {
-        super.display(entity, readOnly);
+    public void display(final RESTProjectV1 entity, final boolean readOnly) {
+        super.displayChildren(entity, readOnly);
     }
 }

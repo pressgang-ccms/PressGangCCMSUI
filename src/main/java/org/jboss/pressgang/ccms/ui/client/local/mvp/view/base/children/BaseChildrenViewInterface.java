@@ -80,6 +80,4 @@ public interface BaseChildrenViewInterface<
      * @return The column that holds the buttons used to add or remove the possible children.
      */
     Column<C, String> getPossibleChildrenButtonColumn();
-
-    void displayChildrenExtended(final T originalEntity, final boolean readOnly);
 }

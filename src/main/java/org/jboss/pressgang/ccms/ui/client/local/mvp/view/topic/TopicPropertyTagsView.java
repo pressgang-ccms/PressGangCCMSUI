@@ -160,8 +160,8 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
 
 
     @Override
-    public void displayChildrenExtended(final RESTTopicV1 topic, final boolean readOnly) {
-        super.display(topic, readOnly);
+    public void display(final RESTTopicV1 topic, final boolean readOnly) {
+        super.displayChildren(topic, readOnly);
     }
 
 }

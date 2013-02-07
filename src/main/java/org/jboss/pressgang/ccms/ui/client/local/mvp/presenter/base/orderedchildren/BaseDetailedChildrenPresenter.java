@@ -86,7 +86,7 @@ abstract public class BaseDetailedChildrenPresenter<
 
     @Override
     public final void displayChildrenExtended(@NotNull final T parent, final boolean readOnly) {
-        throw new UnsupportedOperationException("displayChildrenExtended() is not supported. Use displayDetailedChildren() instead.");
+        throw new UnsupportedOperationException("display() is not supported. Use displayDetailedChildren() instead.");
     }
 
     protected final void displayDetailedChildren(@NotNull final T parent, final boolean readOnly) {

@@ -126,8 +126,8 @@ public class TagCategoriesView
     }
 
     @Override
-    public void displayChildrenExtended(final RESTTagV1 originalEntity, final boolean readOnly) {
-        super.display(originalEntity, readOnly);
+    public void display(final RESTTagV1 originalEntity, final boolean readOnly) {
+        super.displayChildren(originalEntity, readOnly);
     }
 
     public TagCategoriesView() {

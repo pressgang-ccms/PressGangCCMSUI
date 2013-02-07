@@ -104,8 +104,8 @@ public class CategoryTagView
     }
 
     @Override
-    public void displayChildrenExtended(final RESTCategoryV1 originalEntity, final boolean readOnly) {
-        super.display(originalEntity, readOnly);
+    public void display(final RESTCategoryV1 originalEntity, final boolean readOnly) {
+        super.displayChildren(originalEntity, readOnly);
     }
 
     public CategoryTagView() {

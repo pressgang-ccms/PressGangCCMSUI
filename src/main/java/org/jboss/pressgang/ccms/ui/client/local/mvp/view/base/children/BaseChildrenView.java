@@ -98,7 +98,7 @@ abstract public class BaseChildrenView<
         this.getPanel().setWidget(this.possibleChildrenResultsPanel);
     }
 
-    public final void display(final T originalEntity, final boolean readOnly) {
+    public final void displayChildren(final T originalEntity, final boolean readOnly) {
         this.originalEntity = originalEntity;
         this.readOnly = readOnly;
     }
