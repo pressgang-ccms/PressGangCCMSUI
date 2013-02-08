@@ -47,3 +47,4 @@ TAGS / CATEGORIES / PROJECTS
 End create and edit dates not working
 Need way to regenerate lucene index
 Image file name search not working
+Switching between topics when a revision is selected doesn't work.
