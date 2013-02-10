@@ -75,13 +75,6 @@
 	width: 100%;
 }
 
-.ProjectsScrollPanelTD, .CategoriesScrollPanelTD, .TagsScrollPanelTD
-{
-    /*position: absolute;
-    top: 0;
-    bottom: 0;/*
-}
-
 .ProjectsScrollPanel, .CategoriesScrollPanel, .CategoryTagScroll
 {
 	width: 100%;
@@ -294,10 +287,6 @@ html {
 
 .ProjectLayout td {
 	vertical-align: top;
-}
-
-.CategoryTagLayout {
-	/*width: 100%;*/
 }
 
 .CategoryTagLayout td {
