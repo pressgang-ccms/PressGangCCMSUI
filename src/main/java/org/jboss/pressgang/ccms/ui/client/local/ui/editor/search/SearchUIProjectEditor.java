@@ -1,22 +1,22 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.search;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.editor.client.EditorDelegate;
 import com.google.gwt.editor.client.ValueAwareEditor;
 import com.google.gwt.editor.client.adapters.EditorSource;
 import com.google.gwt.editor.client.adapters.ListEditor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FourTextAndImageButtonSearchUIProjectEditor;
-import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 
-public final class SearchUIProjectEditor extends Grid implements ValueAwareEditor<SearchUIProject> {
+public final class SearchUIProjectEditor extends DockLayoutPanel implements ValueAwareEditor<SearchUIProject> {
+    private static final int BUTTON_COLUMN_WIDTH = 16;
+
     private final SearchPresenterDriver driver;
     private final SearchUIProjects searchUIProjects;
     private SearchUIProject value;
@@ -41,7 +41,10 @@ public final class SearchUIProjectEditor extends Grid implements ValueAwareEdito
             subEditor.summary.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
-                    SearchUIProjectEditor.this.setWidget(0, 1, subEditor);
+                    if (SearchUIProjectEditor.this.getCenter() != null) {
+                        SearchUIProjectEditor.this.remove(SearchUIProjectEditor.this.getCenter());
+                    }
+                    SearchUIProjectEditor.this.add(subEditor);
 
                     /* Untoggle the other buttons */
                     for (final SearchUICategoryEditor editor : categories.getEditors()) {
@@ -71,7 +74,7 @@ public final class SearchUIProjectEditor extends Grid implements ValueAwareEdito
     }
 
     public SearchUIProjectEditor(final SearchPresenterDriver driver, final SearchUIProjects searchUIProjects) {
-        super(1, 2);
+        super(Style.Unit.EM);
 
         this.driver = driver;
         this.searchUIProjects = searchUIProjects;
@@ -83,7 +86,7 @@ public final class SearchUIProjectEditor extends Grid implements ValueAwareEdito
         scroll.addStyleName(CSSConstants.CATEGORIES_SCROLL_PANEL);
 
         scroll.setWidget(categoriesButtonPanel);
-        this.setWidget(0, 0, scroll);
+        this.addWest(scroll, BUTTON_COLUMN_WIDTH);
 
         summary.addClickHandler(new ClickHandler() {
             @Override
