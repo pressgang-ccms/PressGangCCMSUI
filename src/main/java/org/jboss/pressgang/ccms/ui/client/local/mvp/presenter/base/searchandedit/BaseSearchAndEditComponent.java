@@ -235,11 +235,11 @@ abstract public class BaseSearchAndEditComponent<
      * When a new entity is selected ore created, this method will update the views
      */
     protected final void updateViewsAfterNewEntityLoaded() {
-        /* Initialize the views */
-        initializeViews();
-
         /* Allow overriding classes to display any additional details */
         loadAdditionalDisplayedItemData();
+
+        /* Initialize the views */
+        initializeViews();
 
         /* Refresh the view, or display the properties view if none is shown */
         switchView(lastDisplayedView == null ? firstDisplayedView : lastDisplayedView);

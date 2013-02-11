@@ -27,7 +27,9 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
      * Reset the provider so no items are shown and the loading widget is displayed.
      */
     public final void resetProvider() {
-        this.updateRowCount(0, false);
+        if (this.getDataDisplays() != null) {
+            this.updateRowCount(0, false);
+        }
     }
 
     /**

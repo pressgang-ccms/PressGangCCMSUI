@@ -671,7 +671,7 @@ public class SearchResultsAndTopicPresenter
                         LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bindViewTopicRevisionButton() FieldUpdater.update()");
 
                         /* Reset the reference to the revision topic */
-                        topicRevisionsComponent.getDisplay().setRevisionTopic(null);
+                        viewLatestTopicRevision();
 
                         if (!revisionTopic.getItem().getRevision().equals(searchResultsComponent.getProviderData().getDisplayedItem().getItem().getRevision())) {
                             /* Reset the reference to the revision topic */
@@ -762,11 +762,22 @@ public class SearchResultsAndTopicPresenter
         }
     }
 
+    /**
+     *   topicRevisionsComponent.getDisplay().getRevisionTopic() is used to indicate which revision
+     *   of a topic we are looking at. Setting it to null means that we are not looking at a revision.
+     */
+    private void viewLatestTopicRevision() {
+        topicRevisionsComponent.getDisplay().setRevisionTopic(null);
+    }
+
     @Override
     protected void loadAdditionalDisplayedItemData() {
 
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.loadAdditionalDisplayedItemData()");
+
+            /* Disable the topic revision view */
+            viewLatestTopicRevision();
 
             enableAndDisableActionButtons(lastDisplayedView);
 
@@ -783,9 +794,6 @@ public class SearchResultsAndTopicPresenter
 
             /* Display the list of property tags */
             topicSourceURLsPresenter.refreshPossibleChildList(searchResultsComponent.getProviderData().getDisplayedItem().getItem());
-
-            /* reset the topic review view */
-            topicRevisionsComponent.getDisplay().setRevisionTopic(null);
 
             /* set the revisions to show the loading widget */
             if (topicRevisionsComponent.getDisplay().getProvider() != null) {
