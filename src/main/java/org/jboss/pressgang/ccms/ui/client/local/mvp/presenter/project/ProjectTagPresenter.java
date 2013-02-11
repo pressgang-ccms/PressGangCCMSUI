@@ -78,26 +78,24 @@ public class ProjectTagPresenter
     }
 
     @Override
-    public void refreshPossibleChildrenDataAndList(@NotNull final RESTProjectV1 parent) {
+    public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTProjectV1 parent) {
 
         final RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, ProjectTagPresenter.Display>(display,
                 new BaseRestCallback.SuccessAction<RESTTagCollectionV1, ProjectTagPresenter.Display>() {
                     @Override
                     public void doSuccessAction(final RESTTagCollectionV1 retValue, final ProjectTagPresenter.Display display) {
 
-                            /* Zero results can be a null list */
+                        /* Zero results can be a null list */
                         getPossibleChildrenProviderData().setStartRow(0);
                         getPossibleChildrenProviderData().setItems(retValue.getItems());
                         getPossibleChildrenProviderData().setSize(retValue.getItems().size());
 
-                            /* Refresh the list */
-                        display.getPossibleChildrenProvider().displayNewFixedList(getPossibleChildrenProviderData().getItems());
+                        /* Refresh the list */
+                        redisplayPossibleChildList(parent);
                     }
                 });
 
-        /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
         getPossibleChildrenProviderData().reset();
-        display.getPossibleChildrenProvider().resetProvider();
 
         RESTCalls.getTags(callback);
     }

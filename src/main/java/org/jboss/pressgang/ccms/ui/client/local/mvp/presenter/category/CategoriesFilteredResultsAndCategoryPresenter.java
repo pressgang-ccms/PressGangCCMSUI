@@ -210,7 +210,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                                 /*
                                  * refresh the list of possible tags
                                  */
-                                categoryTagPresenter.refreshPossibleChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+                                categoryTagPresenter.redisplayPossibleChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
                             }
 
                         }
@@ -228,7 +228,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
             categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
 
             /* Get a new collection of tags */
-            categoryTagPresenter.refreshPossibleChildrenDataAndList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+            categoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
         }
         finally {
             LOGGER.log(Level.INFO, "EXIT CategoriesFilteredResultsAndCategoryPresenter.loadAdditionalDisplayedItemData()");
@@ -334,7 +334,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                                     filteredResultsPresenter.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
                                     categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
-                                    categoryTagPresenter.refreshPossibleChildrenDataAndList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+                                    categoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
 
                                     updateDisplayAfterSave(wasNewEntity);
 
@@ -416,7 +416,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                     filteredResultsPresenter.getProviderData().setDisplayedItem(displayedTagWrapper);
 
                     categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
-                    categoryTagPresenter.refreshPossibleChildrenDataAndList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+                    categoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
 
                     initializeViews();
 

@@ -1,12 +1,10 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag;
 
 import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
-import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
@@ -26,12 +24,10 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildr
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.SetNewChildSortCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
-import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -107,7 +103,7 @@ public class TagCategoriesPresenter
 
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
         initLifecycleBindExistingChildrenRowClick(parent);
-        refreshPossibleChildrenDataAndList(parent);
+        refreshPossibleChildrenDataFromRESTAndRedisplayList(parent);
     }
 
     /**
@@ -277,7 +273,7 @@ public class TagCategoriesPresenter
      * added to a project, that will actually be persisted through the REST interface as a category added to the displayed tag.
      */
     @Override
-    public void refreshPossibleChildrenDataAndList(@NotNull final RESTTagV1 parent) {
+    public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTTagV1 parent) {
 
         final BaseRestCallback<RESTCategoryCollectionV1, Display> callback = new BaseRestCallback<RESTCategoryCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTCategoryCollectionV1, Display>() {
             @Override
@@ -286,13 +282,11 @@ public class TagCategoriesPresenter
                 /* Zero results can be a null list */
                 getPossibleChildrenProviderData().setItems(retValue.getItems());
 
-                display.getPossibleChildrenProvider().displayNewFixedList(getPossibleChildrenProviderData().getItems());
+                redisplayPossibleChildList(parent);
             }
         });
 
-        /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
         getPossibleChildrenProviderData().reset();
-        display.getPossibleChildrenProvider().resetProvider();
 
         RESTCalls.getCategories(callback);
     }

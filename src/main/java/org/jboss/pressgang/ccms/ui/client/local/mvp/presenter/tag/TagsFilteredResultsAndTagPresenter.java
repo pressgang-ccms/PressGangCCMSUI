@@ -17,7 +17,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectio
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryInTagCollectionV1;
@@ -27,7 +26,6 @@ import org.jboss.pressgang.ccms.rest.v1.components.ComponentRESTBaseEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTCategoryInTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
@@ -232,7 +230,7 @@ public class TagsFilteredResultsAndTagPresenter
                         retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
 
                         /* refresh the projects list */
-                        projectsComponent.refreshPossibleChildrenDataAndList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+                        projectsComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
                         if (unsavedCategoryChanges) {
                             saveCategoryChanges(wasNewTag, filteredResultsComponent.getProviderData().getDisplayedItem()
@@ -363,7 +361,7 @@ public class TagsFilteredResultsAndTagPresenter
                                 categoriesComponent.refreshExistingChildList(categoriesComponent.getPossibleChildrenProviderData()
                                         .getDisplayedItem().getItem());
                             }
-                            categoriesComponent.refreshPossibleChildrenDataAndList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+                            categoriesComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
                             updateDisplayAfterSave(wasNewTag);
                             Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + newTagId);
@@ -789,14 +787,14 @@ public class TagsFilteredResultsAndTagPresenter
      * Reset the category list
      */
     private void resetCategoryLists() {
-        categoriesComponent.refreshPossibleChildrenDataAndList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+        categoriesComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
     }
 
     /**
      * Reset the project list
      */
     private void resetProjectList() {
-        projectsComponent.refreshPossibleChildrenDataAndList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+        projectsComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
     }
 
     @Override

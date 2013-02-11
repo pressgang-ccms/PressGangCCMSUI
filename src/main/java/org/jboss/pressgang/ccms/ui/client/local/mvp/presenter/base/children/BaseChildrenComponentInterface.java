@@ -102,7 +102,7 @@ public interface BaseChildrenComponentInterface<
      * Get a list of potential children from the REST service and refresh the list of potential children. Used when we
      * want to get a fresh list of potential children from the REST interface.
      */
-    void refreshPossibleChildrenDataAndList(final T parent);
+    void refreshPossibleChildrenDataFromRESTAndRedisplayList(final T parent);
 
     /**
      * Called to refresh the list of potential children. Used when the update needs to be displayed (because a potential
@@ -113,5 +113,5 @@ public interface BaseChildrenComponentInterface<
      *               Many-To-Many collections, the list of potential children will usually ignore this parameter and
      *               just get a collection from the REST interface.
      */
-    void refreshPossibleChildList(final T parent);
+    void redisplayPossibleChildList(final T parent);
 }

@@ -106,9 +106,9 @@ public class CategoryTagPresenter
     }
 
     @Override
-    public void refreshPossibleChildrenDataAndList(@NotNull final RESTCategoryV1 parent) {
+    public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTCategoryV1 parent) {
         try {
-            LOGGER.log(Level.INFO, "ENTER CategoryTagPresenter.refreshPossibleChildrenDataAndList()");
+            LOGGER.log(Level.INFO, "ENTER CategoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
 
             final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
                 @Override
@@ -154,7 +154,7 @@ public class CategoryTagPresenter
 
             RESTCalls.getTags(callback);
         } finally {
-            LOGGER.log(Level.INFO, "EXIT CategoryTagPresenter.refreshPossibleChildrenDataAndList()");
+            LOGGER.log(Level.INFO, "EXIT CategoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
         }
     }
 

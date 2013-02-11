@@ -137,7 +137,7 @@ abstract public class BaseOrderedChildrenComponent<
 
         if (modifiedSort) {
             refreshExistingChildList(parent);
-            refreshPossibleChildList(editingParent);
+            redisplayPossibleChildList(editingParent);
         }
 
         return modifiedSort;

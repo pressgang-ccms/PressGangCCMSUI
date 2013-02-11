@@ -70,7 +70,7 @@ public abstract class BaseChildrenComponent<
      */
     protected final void displayChildren(@NotNull final T parent, final boolean readOnly) {
         this.readOnly = readOnly;
-        refreshPossibleChildList(parent);
+        redisplayPossibleChildList(parent);
     }
 
     /**
@@ -123,14 +123,14 @@ public abstract class BaseChildrenComponent<
     /**
      * @inheritDoc
      */
-    public final void refreshPossibleChildList(final T parent) {
+    public final void redisplayPossibleChildList(final T parent) {
         this.display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
     }
 
     /**
      * Default empty implementation.
      */
-    public void refreshPossibleChildrenDataAndList(final T parent) {
+    public void refreshPossibleChildrenDataFromRESTAndRedisplayList(final T parent) {
 
     }
 

@@ -10,7 +10,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionI
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenComponent;
@@ -74,7 +73,7 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
     public void displayChildrenExtended(final @NotNull RESTTagV1 parent, final boolean readOnly) {
         super.displayChildren(parent, readOnly);
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
-        refreshPossibleChildrenDataAndList(parent);
+        refreshPossibleChildrenDataFromRESTAndRedisplayList(parent);
     }
 
     /**
@@ -123,7 +122,7 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
      * added to a project, that will actually be persisted through the REST interface as a project added to the displayed tag.
      */
     @Override
-    public void refreshPossibleChildrenDataAndList(@NotNull final RESTTagV1 parent) {
+    public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTTagV1 parent) {
         final RESTCalls.RESTCallback<RESTProjectCollectionV1> callback = new RESTCalls.RESTCallback<RESTProjectCollectionV1>() {
             @Override
             public void begin() {
@@ -145,7 +144,7 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
                     getPossibleChildrenProviderData().setSize(retValue.getItems().size());
 
                     /* Refresh the list */
-                    display.getPossibleChildrenProvider().displayNewFixedList(getPossibleChildrenProviderData().getItems());
+                    redisplayPossibleChildList(parent);
 
                 } finally {
                     display.removeWaitOperation();
@@ -159,9 +158,7 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
             }
         };
 
-        /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
         getPossibleChildrenProviderData().reset();
-        display.getPossibleChildrenProvider().resetProvider();
 
         RESTCalls.getProjects(callback);
     }
