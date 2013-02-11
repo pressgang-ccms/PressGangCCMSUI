@@ -10,7 +10,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm
      */
-    public static final String VERSION = "201302111615";
+    public static final String VERSION = "201302120604";
 
     
     /**
@@ -122,22 +122,31 @@ public final class Constants {
      */
     public static final String BIRT_TOPIC_BUGZILLA_REPORT = "General/Bugs_Per_Topic.rptdesign&ShowOnlyData=True&AlternateTableHeaderBackgroundColour=True&TopicIDParameter=";
 
-
+    /**
+     * A link to a locally hosted REST server
+     */
     public static final String LOCAL_REST_SERVER = "http://localhost:8080/TopicIndex/";
+    /**
+     * The dev server
+     */
     public static final String DEV_REST_SERVER = "http://skynet-dev.usersys.redhat.com:8080/TopicIndex/";
+    /**
+     * The production server
+     */
     public static final String PROD_REST_SERVER = "http://skynet.usersys.redhat.com:8080/TopicIndex/";
 
     /**
      * The REST server.
      */
     //public static final String BASE_URL = LOCAL_REST_SERVER;
-    //public static final String BASE_URL = DEV_REST_SERVER;
-    public static final String BASE_URL = PROD_REST_SERVER;
+    public static final String BASE_URL = DEV_REST_SERVER;
+    //public static final String BASE_URL = PROD_REST_SERVER;
     /**
      * The newer versions of the REST interface encode the query PathParam elements (so as to allow for searches to
      * include characters like the semicolon). If this constant is true, the query elements will be encoded.
      */
-    public static final boolean ENCODE_QUERY_OPTIONS = false;
+    //public static final boolean ENCODE_QUERY_OPTIONS = false;
+    public static final boolean ENCODE_QUERY_OPTIONS = true;
     /**
      * The REST URL.
      */

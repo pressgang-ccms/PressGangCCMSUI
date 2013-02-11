@@ -133,7 +133,7 @@ public class CategoryTagPresenter
                         getPossibleChildrenProviderData().setSize(retValue.getItems().size());
 
                         /* Refresh the list */
-                        getDisplay().getPossibleChildrenProvider().displayNewFixedList(getPossibleChildrenProviderData().getItems());
+                        redisplayPossibleChildList(parent);
 
                     } finally {
                         getDisplay().removeWaitOperation();
@@ -148,9 +148,7 @@ public class CategoryTagPresenter
                 }
             };
 
-            /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
             getPossibleChildrenProviderData().reset();
-            this.getDisplay().getPossibleChildrenProvider().resetProvider();
 
             RESTCalls.getTags(callback);
         } finally {
