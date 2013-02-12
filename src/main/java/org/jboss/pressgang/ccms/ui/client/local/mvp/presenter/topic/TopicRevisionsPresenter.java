@@ -103,6 +103,4 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
             win.document.close();
         }
     }-*/;
-
-
 }
