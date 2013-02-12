@@ -37,6 +37,13 @@ public class SearchFilterPresenter extends BaseTemplatePresenter {
      */
     @Inject private Display display;
 
+    /**
+     * @return The display.
+     */
+    public final Display getDisplay() {
+        return display;
+    }
+
     @Override
     public final void parseToken(final String historyToken) {
 

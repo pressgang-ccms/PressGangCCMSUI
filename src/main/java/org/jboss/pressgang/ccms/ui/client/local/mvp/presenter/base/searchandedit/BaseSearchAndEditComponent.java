@@ -109,10 +109,17 @@ abstract public class BaseSearchAndEditComponent<
      * @param display                    The view that this component adds logic to
      * @param waitDisplay                The view that displays the wait dialog
      */
-    protected final void bindSearchAndEdit(final int topicId, final String pageId, final String mainSplitSizePreferenceKey,
-                     final BaseTemplateViewInterface firstDisplayedView, final X entityPropertiesView, final R filteredResultsDisplay,
-                     final BaseFilteredResultsComponentInterface<T, U, V> filteredResultsComponent, final BaseSearchAndEditViewInterface display,
-                     final BaseTemplateViewInterface waitDisplay, final GetNewEntityCallback<T> getNewEntityCallback) {
+    protected final void bindSearchAndEdit(
+            final int topicId,
+            final String pageId,
+            final String mainSplitSizePreferenceKey,
+            final BaseTemplateViewInterface firstDisplayedView,
+            final X entityPropertiesView,
+            final R filteredResultsDisplay,
+            final BaseFilteredResultsComponentInterface<T, U, V> filteredResultsComponent,
+            final BaseSearchAndEditViewInterface display,
+            final BaseTemplateViewInterface waitDisplay,
+            final GetNewEntityCallback<T> getNewEntityCallback) {
 
         super.bind(topicId, pageId, display);
 

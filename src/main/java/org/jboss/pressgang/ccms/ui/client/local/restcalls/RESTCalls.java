@@ -59,6 +59,16 @@ public final class RESTCalls {
                 "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}," +
                 "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"}}" +
             "]}";
+    /**
+     * The required expansion details for a filter.
+     */
+    private static final String FILTER_EXPANSION =
+            "{\"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_CATEGORIES_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_FIELDS_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_LOCALES_NAME + "\"}}" +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_TAGS_NAME + "\"}}" +
+                    "]}";
 
     /**
      * All REST calls follow a similar pattern: Before it starts An Exception may be thrown The call succeeds or The call fails
@@ -397,7 +407,16 @@ public final class RESTCalls {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).getJSONTopicsWithQuery(new PathSegmentImpl(queryString), expand);
+                createRestMethod(callback).getJSONFiltersWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        });
+    }
+
+    public static void getFilter(final RESTCallback<RESTFilterV1> callback, final Integer id) {
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONFilter(id, FILTER_EXPANSION);
             }
         });
     }

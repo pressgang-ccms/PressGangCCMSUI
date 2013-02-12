@@ -38,6 +38,8 @@ final public class Preferences {
     public static final String  TOPIC_RENDERED_VIEW_SPLIT_VERTICAL = "VerticalSplit";
     /** The setting that saves defines no split */
     public static final String  TOPIC_RENDERED_VIEW_SPLIT_NONE = "NoSplit";
+    /** The setting that saves the width of the split screen on the filter list screen */
+    public static final String FILTER_VIEW_MAIN_SPLIT_WIDTH = "FilterViewMainSplitWidth";
 
     
     /** A singelton instance of this class. */

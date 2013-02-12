@@ -46,6 +46,13 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsCom
     /** The display. */
     @Inject private Display display;
 
+    /**
+     * @return The display.
+     */
+    public final Display getDisplay() {
+        return display;
+    }
+
     @Override
     protected final EnhancedAsyncDataProvider<RESTFilterCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTFilterCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTFilterCollectionItemV1>() {
