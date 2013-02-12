@@ -68,8 +68,6 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<
         super(ROWS, COLS);
 
         this.addStyleName(CSSConstants.TOPIC_VIEW_PANEL);
-        
-
 
         title.setReadOnly(readOnly);
         /* http://code.google.com/p/google-web-toolkit/issues/detail?id=6112 */
@@ -117,16 +115,14 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<
         ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicDescription()));        
         this.setWidget(row, 1, description);
-        
-        final int TOPIC_VIEW_ROWS = 7;
 
-        for (int i = 0; i < TOPIC_VIEW_ROWS; ++i) {
+        for (int i = 0; i < ROWS; ++i) {
             this.getCellFormatter().addStyleName(i, 0, CSSConstants.TOPIC_VIEW_LABEL);
         }
 
-        for (int i = 0; i < TOPIC_VIEW_ROWS - 1; ++i) {
+        for (int i = 0; i < ROWS - 1; ++i) {
             this.getCellFormatter().addStyleName(i, 1, CSSConstants.TOPIC_VIEW_DETAIL);
         }
-        this.getCellFormatter().addStyleName(TOPIC_VIEW_ROWS - 1, 1, CSSConstants.TOPIC_VIEW_DESCRIPTION_DETAIL);
+        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.TOPIC_VIEW_DESCRIPTION_DETAIL);
     }
 }

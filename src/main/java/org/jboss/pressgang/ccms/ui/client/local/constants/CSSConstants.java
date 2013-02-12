@@ -13,6 +13,32 @@ public interface CSSConstants {
     {
         String HELP_CONTENTS = "HelpContents";        
     }
+
+    /**
+     * The CSS style names applied to the search filter editor
+     */
+    interface FilterEditor {
+        /**
+         * The style name of the filter's name textbox.
+         */
+        String FILTER_VIEW_NAME_FIELD = "FilterViewNameField";
+        /**
+         * The style name of the filter's description textarea.
+         */
+        String FILTER_VIEW_DESCRIPTION_FIELD = "FilterViewDescriptionField";
+        /**
+         * The style name of the cell that holds the label next to the filter's details.
+         */
+        String FILTER_VIEW_LABEL = "FilterViewLabel";
+        /**
+         * The style name of the cell that holds the filter's details.
+         */
+        String FILTER_VIEW_DETAIL = "FilterViewDetail";
+        /**
+         * The style name of the cell that holds the filter's description textarea.
+          */
+        String FILTER_VIEW_DESCRIPTION_DETAIL = "FilterViewDescriptionDetail";
+    }
     
     public interface PlainTextXMLDialog
     {
