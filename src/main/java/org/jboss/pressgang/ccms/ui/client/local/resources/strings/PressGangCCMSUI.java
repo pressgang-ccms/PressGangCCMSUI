@@ -115,6 +115,8 @@ public interface PressGangCCMSUI extends Constants {
 
     String RevisionMessage();
 
+    String Username();
+
     String View();
 
     String Diff();
