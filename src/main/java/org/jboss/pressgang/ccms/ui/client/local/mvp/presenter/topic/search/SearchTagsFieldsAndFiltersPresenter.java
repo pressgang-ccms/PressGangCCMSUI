@@ -47,12 +47,12 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     @Inject
     private HandlerManager eventBus;
 
-
-
+    private HasWidgets container;
 
     @Override
     public void go(final HasWidgets container) {
 
+        this.container = container;
         clearContainerAndAddTopLevelPanel(container, display);
 
         display.setViewShown(true);
@@ -129,8 +129,8 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
     private void displayTags()
     {
+        clearContainerAndAddTopLevelPanel(container, display);
         display.getTopActionGrandParentPanel().clear();
-        display.getTopActionParentPanel().setVisible(true);
         display.getTopActionGrandParentPanel().setWidget(tagsComponent.getDisplay().getTopActionParentPanel());
 
         display.getPanel().clear();
@@ -143,8 +143,8 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
     private void displayFields()
     {
+        clearContainerAndAddTopLevelPanel(container, display);
         display.getTopActionGrandParentPanel().clear();
-        display.getTopActionParentPanel().setVisible(true);
         display.getTopActionGrandParentPanel().setWidget(fieldsComponent.getDisplay().getTopActionParentPanel());
 
         display.getPanel().clear();
@@ -157,11 +157,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
     private void displayFilters()
     {
-        display.getTopActionGrandParentPanel().clear();
-        display.getTopActionParentPanel().setVisible(false);
-
-        display.getPanel().clear();
-        display.getPanel().setWidget(searchFilterResultsAndFilterPresenter.getDisplay().getPanel());
+        clearContainerAndAddTopLevelPanel(container, searchFilterResultsAndFilterPresenter.getDisplay());
 
         fieldsComponent.getDisplay().setViewShown(false);
         tagsComponent.getDisplay().setViewShown(false);
