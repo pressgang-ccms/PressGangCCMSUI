@@ -19,6 +19,10 @@ public interface CSSConstants {
      */
     interface FilterEditor {
         /**
+         * The style name of the filter's parent panel.
+         */
+        String FILTER_VIEW_PANEL = "FilterViewPanel";
+        /**
          * The style name of the filter's name textbox.
          */
         String FILTER_VIEW_NAME_FIELD = "FilterViewNameField";

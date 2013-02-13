@@ -392,4 +392,8 @@ public interface PressGangCCMSUI extends Constants {
     String NewURLTitle();
 
     String NewURLLink();
+
+    String FilterName();
+
+    String FilterDescription();
 }

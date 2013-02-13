@@ -59,6 +59,8 @@ public final class RESTFilterV1BasicDetailsEditor extends Grid implements Editor
     public RESTFilterV1BasicDetailsEditor(final boolean readOnly) {
         super(ROWS, COLS);
 
+        this.addStyleName(CSSConstants.FilterEditor.FILTER_VIEW_PANEL);
+
         name.setReadOnly(readOnly);
         description.setReadOnly(readOnly);
 
@@ -66,11 +68,11 @@ public final class RESTFilterV1BasicDetailsEditor extends Grid implements Editor
         description.addStyleName(CSSConstants.FilterEditor.FILTER_VIEW_DESCRIPTION_FIELD);
 
         int row = 0;
-        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicID()));
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.FilterName()));
         this.setWidget(row, 1, name);
 
         ++row;
-        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicRevision()));
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.FilterDescription()));
         this.setWidget(row, 1, description);
 
         for (int i = 0; i < ROWS; ++i) {

@@ -140,7 +140,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
             LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.initializeViews()");
 
             if (this.viewIsInFilter(filter, this.searchFilterPresenter.getDisplay())) {
-                this.searchFilterPresenter.getDisplay().display(this.searchFilterFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+                this.searchFilterPresenter.getDisplay().display(this.searchFilterFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT SearchFilterResultsAndFilterPresenter.initializeViews()") ;
