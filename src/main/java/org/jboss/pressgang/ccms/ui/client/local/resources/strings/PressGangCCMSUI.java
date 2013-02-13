@@ -139,6 +139,8 @@ public interface PressGangCCMSUI extends Constants {
 
     String Properties();
 
+    String Filters();
+
     String Bugs();
 
     String Revisions();

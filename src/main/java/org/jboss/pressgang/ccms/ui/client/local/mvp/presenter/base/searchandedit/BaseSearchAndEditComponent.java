@@ -287,7 +287,8 @@ abstract public class BaseSearchAndEditComponent<
     /**
      * Called once a new entity has been selected from the filtered results view. This method
      * is expected to be used to make additional calls to the REST service to load data that
-     * was not included when the selected entity was fetched.
+     * was not included when the selected entity was fetched, and then call initializeViews()
+     * to display that data.
      */
     abstract protected void loadAdditionalDisplayedItemData();
 
@@ -295,24 +296,26 @@ abstract public class BaseSearchAndEditComponent<
      * Called when a new entity is selected. This method is used to display any data that is contained
      * in the selected object when it is initially loaded.
      *
-     * Typically, this method is called when the entity is loaded with no filter (i.e. filter = null), meaning
-     * that the displayBlah() methods on the views are called. Then, as new data is loaded, say for collections
-     * loaded asynchronously, initializeViews is called again with the filter set to the view that needs to updated.
+     * Typically, this method is initially called when the entity is loaded with no filter (i.e. filter = null), meaning
+     * that the displayBlah() methods on the views are called.
      *
-     * Additional data (usually child collections)
-     * are expected to be loaded and displayed in the loadAdditionalDisplayedItemData() method.
+     * Additional data (usually child collections) is expected to be loaded and displayed in the
+     * loadAdditionalDisplayedItemData() method. The loadAdditionalDisplayedItemData() will then
+     * call initializeViews() with a filter set to the view that needs to be updated with the new data.
      *
      * @param filter null if all views are to be initialized, or includes a list of views to be initialized
      */
     abstract protected void initializeViews(final List<BaseTemplateViewInterface> filter);
 
     /**
-     * Binds logic to the action buttons
+     * Binds logic to the action buttons. This is called by the bind() method, and so should not
+     * be called from an extending class.
      */
     abstract protected void bindActionButtons();
 
     /**
-     * Bind logic to the filtered results buttons
+     * Bind logic to the filtered results buttons. This is called by the bind() method, and so should not
+     * be called from an extending class.
      */
     abstract protected void bindFilteredResultsButtons();
 

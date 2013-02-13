@@ -4,7 +4,6 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
@@ -23,7 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
-      The presenter used to display the list of filter's and their details.
+ * The presenter used to display the list of filter's and their details.
  */
 @Dependent
 public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComponent<
@@ -34,17 +33,10 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
         SearchFilterPresenter.Display,
         RESTFilterV1BasicDetailsEditor> {
 
-    public interface Display extends BaseSearchAndEditViewInterface<
-            RESTFilterV1,
-            RESTFilterCollectionV1,
-            RESTFilterCollectionItemV1> {
-
-    }
-
     /**
      * History token.
      */
-    private static final String HISTORY_TOKEN = "SearchFilterResultsAndFilterView";
+    public static final String HISTORY_TOKEN = "SearchFilterResultsAndFilterView";
     /**
      * A Logger
      */
@@ -52,35 +44,18 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
     /**
      * The presenter used to display the filter's details.
      */
-    @Inject private SearchFilterPresenter searchFilterPresenter;
+    @Inject
+    private SearchFilterPresenter searchFilterPresenter;
     /**
      * The presenter used to display the list of filters.
      */
-    @Inject private SearchFilterFilteredResultsPresenter searchFilterFilteredResultsPresenter;
+    @Inject
+    private SearchFilterFilteredResultsPresenter searchFilterFilteredResultsPresenter;
     /**
      * The display.
-      */
-    @Inject private Display display;
-
-    @Override
-    protected final void loadAdditionalDisplayedItemData() {
-        /* There are no additional details that need to be loaded */
-    }
-
-    @Override
-    protected final void initializeViews(final List<BaseTemplateViewInterface> filter) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    protected final void bindActionButtons() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    protected final void bindFilteredResultsButtons() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+     */
+    @Inject
+    private Display display;
 
     @Override
     public final void parseToken(final String historyToken) {
@@ -132,5 +107,34 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
                 display,
                 getNewEntityCallback);
     }
-}
 
+    @Override
+    protected final void bindActionButtons() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected final void bindFilteredResultsButtons() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected final void loadAdditionalDisplayedItemData() {
+        /* There are no additional details that need to be loaded */
+    }
+
+    @Override
+    protected final void initializeViews(final List<BaseTemplateViewInterface> filter) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    /**
+     * The interface that defines the view that this presenter displays.
+     */
+    public interface Display extends BaseSearchAndEditViewInterface<
+            RESTFilterV1,
+            RESTFilterCollectionV1,
+            RESTFilterCollectionItemV1> {
+
+    }
+}
