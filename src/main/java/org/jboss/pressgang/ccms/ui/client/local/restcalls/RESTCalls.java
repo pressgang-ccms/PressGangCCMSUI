@@ -66,9 +66,9 @@ public final class RESTCalls {
             "{\"branches\":[" +
                     "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_CATEGORIES_NAME + "\"}}," +
                     "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_FIELDS_NAME + "\"}}," +
-                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_LOCALES_NAME + "\"}}" +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_LOCALES_NAME + "\"}}," +
                     "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_TAGS_NAME + "\"}}" +
-                    "]}";
+            "]}";
 
     /**
      * All REST calls follow a similar pattern: Before it starts An Exception may be thrown The call succeeds or The call fails

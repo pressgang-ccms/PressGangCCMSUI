@@ -136,7 +136,15 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
 
     @Override
     protected final void initializeViews(final List<BaseTemplateViewInterface> filter) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        try {
+            LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.initializeViews()");
+
+            if (this.viewIsInFilter(filter, this.searchFilterPresenter.getDisplay())) {
+                this.searchFilterPresenter.getDisplay().display(this.searchFilterFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+            }
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT SearchFilterResultsAndFilterPresenter.initializeViews()") ;
+        }
     }
 
     /**
