@@ -29,6 +29,7 @@ public class SearchFilterView extends BaseTemplateView implements SearchFilterPr
 
     private final PushButton overwrite = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Overwrite());
     private final PushButton load = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Load());
+    private final PushButton loadAndSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.LoadAndSearch());
 
     /**
      * Sets the application and page titles.
@@ -37,6 +38,7 @@ public class SearchFilterView extends BaseTemplateView implements SearchFilterPr
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Filters());
 
         addActionButton(load);
+        addActionButton(loadAndSearch);
         addActionButton(overwrite);
 
     }
@@ -66,5 +68,10 @@ public class SearchFilterView extends BaseTemplateView implements SearchFilterPr
     @Override
     public PushButton getLoad() {
         return load;
+    }
+
+    @Override
+    public PushButton getLoadAndSearch() {
+        return loadAndSearch;
     }
 }

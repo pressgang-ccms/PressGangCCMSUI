@@ -400,4 +400,6 @@ public interface PressGangCCMSUI extends Constants {
     String Overwrite();
 
     String Load();
+
+    String LoadAndSearch();
 }

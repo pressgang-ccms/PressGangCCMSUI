@@ -27,6 +27,7 @@ public class SearchFilterPresenter extends BaseTemplatePresenter {
     public interface Display extends BaseTemplateViewInterface, BasePopulatedEditorViewInterface<RESTFilterV1, RESTFilterV1, RESTFilterV1BasicDetailsEditor> {
         PushButton getOverwrite();
         PushButton getLoad();
+        PushButton getLoadAndSearch();
     }
 
     /**
