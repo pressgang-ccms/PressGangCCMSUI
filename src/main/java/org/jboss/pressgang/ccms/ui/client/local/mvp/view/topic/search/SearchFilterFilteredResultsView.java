@@ -73,13 +73,12 @@ public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<
             Remove both the search and create buttons. The search button should not be displayed,
             and the create button should be added to the end.
          */
-        this.getTopActionPanel().clear();
+        this.getTopActionPanel().removeAllRows();
 
         addActionButton(searchTopics);
         addActionButton(tagsSearch);
         addActionButton(fields);
         addActionButton(filters);
         addActionButton(getCreate());
-
     }
 }
