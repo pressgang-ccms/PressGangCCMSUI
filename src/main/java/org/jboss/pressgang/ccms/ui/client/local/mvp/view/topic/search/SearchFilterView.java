@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.search;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
@@ -11,13 +12,14 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresent
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFilterPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.filter.RESTFilterV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 
 import javax.enterprise.context.Dependent;
 
 /**
- * The view that displays a filter's details
+ * The view that displays a filter's details.
  */
 @Dependent
 public class SearchFilterView extends BaseTemplateView implements SearchFilterPresenter.Display {
@@ -25,11 +27,18 @@ public class SearchFilterView extends BaseTemplateView implements SearchFilterPr
     /** The GWT Editor Driver */
     private final SearchFilterPresenter.FilterPresenterDriver driver = GWT.create(SearchFilterPresenter.FilterPresenterDriver.class);
 
+    private final PushButton overwrite = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Overwrite());
+    private final PushButton load = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Load());
+
     /**
      * Sets the application and page titles.
      */
     public SearchFilterView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Filters());
+
+        addActionButton(load);
+        addActionButton(overwrite);
+
     }
 
     @Override
@@ -47,5 +56,15 @@ public class SearchFilterView extends BaseTemplateView implements SearchFilterPr
     @Override
     public SimpleBeanEditorDriver<RESTFilterV1, RESTFilterV1BasicDetailsEditor> getDriver() {
         return driver;
+    }
+
+    @Override
+    public PushButton getOverwrite() {
+        return overwrite;
+    }
+
+    @Override
+    public PushButton getLoad() {
+        return load;
     }
 }

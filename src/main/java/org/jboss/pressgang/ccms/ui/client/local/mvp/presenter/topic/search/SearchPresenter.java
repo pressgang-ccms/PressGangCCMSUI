@@ -14,6 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUIProjectsEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 
 import javax.enterprise.context.Dependent;
@@ -34,6 +35,8 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
         PushButton getFields();
 
         PushButton getSearchTopics();
+
+        PushButton getFilters();
     }
 
     public static final String HISTORY_TOKEN = "SearchView";

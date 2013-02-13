@@ -17,6 +17,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
     private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
     private final Label tags = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Fields());
+    private final PushButton filters = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Filters());
 
     /** The GWT Editor Driver */
     private final SearchPresenterDriver driver = GWT.create(SearchPresenterDriver.class);
@@ -46,6 +47,11 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
         return fields;
     }
 
+    @Override
+    public PushButton getFilters() {
+        return filters;
+    }
+
     public SearchView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Search());
     }
@@ -57,6 +63,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
         addActionButton(searchTopics);
         addActionButton(tags);
         addActionButton(fields);
+        addActionButton(filters);
 
         /* Construct a hierarchy of tags from the tag collection */
         getSearchUIProjects().initialize(tagCollection);

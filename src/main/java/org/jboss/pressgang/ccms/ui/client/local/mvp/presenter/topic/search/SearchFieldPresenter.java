@@ -27,6 +27,7 @@ public class SearchFieldPresenter extends BaseTemplatePresenter implements BaseT
         PushButton getSearchTopics();
         PushButton getTagsSearch();
         SearchUIFields getSearchUIFields();
+        PushButton getFilters();
     }
 
     @Inject

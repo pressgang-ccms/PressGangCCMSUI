@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.view.client.HasData;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
@@ -18,6 +19,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.Ba
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,7 +37,9 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsCom
      * The interface that defines the display used by this presenter.
      */
     public interface Display extends BaseFilteredResultsViewInterface<RESTFilterV1, RESTFilterCollectionV1, RESTFilterCollectionItemV1> {
-
+        PushButton getSearchTopics();
+        PushButton getTagsSearch();
+        PushButton getFields();
     }
 
     /**

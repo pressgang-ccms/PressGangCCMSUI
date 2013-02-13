@@ -1,615 +1,554 @@
-.HelpContents
-{
-	margin: 8px;
+.HelpContents {
+    margin: 8px;
 }
 
-
-.PlainTextXMLDialogTextArea
-{
-	width: 640px;
-	height: 480px;
+.PlainTextXMLDialogTextArea {
+    width: 640px;
+    height: 480px;
 }
 
-
-.gwt-DialogBox
-{
-	/* needs to be higer than the z-index of the .gwt-PopupPanelGlass  */
-	z-index: 15;
+.gwt-DialogBox {
+    /* needs to be higer than the z-index of the .gwt-PopupPanelGlass  */
+    z-index: 15;
 }
 
-.gwt-PopupPanelGlass
-{
-	/* The ACE editor uses a z-index of 3, so we need something higher here */
-	z-index: 10;
+.gwt-PopupPanelGlass {
+    /* The ACE editor uses a z-index of 3, so we need something higher here */
+    z-index: 10;
 }
 
-.OrderedChildrenExistingListPanel
-{
-	margin-left: 8px;	
+.OrderedChildrenExistingListPanel {
+    margin-left: 8px;
 }
 
-.OrderedChildrenSplitPanel > div
-{
-	overflow: auto !important;
+.OrderedChildrenSplitPanel > div {
+    overflow: auto !important;
 }
 
-
-.OrderedChildrenListPanel
-{
-	margin-right: 8px;
+.OrderedChildrenListPanel {
+    margin-right: 8px;
 }
 
-.FooterPanel
-{
-	white-space: nowrap;
+.FooterPanel {
+    white-space: nowrap;
 }
 
-.TagCategoriesSplitPanel>div
-{
-	overflow: auto !important;
+.TagCategoriesSplitPanel>div {
+    overflow: auto !important;
 }
 
-.TagCategoriesListPanel
-{
-	margin-right: 8px;
+.TagCategoriesListPanel {
+    margin-right: 8px;
 }
 
-.TagCategoryTagsListPanel
-{
-	margin-right: 8px;
-	margin-left: 8px;
+.TagCategoryTagsListPanel {
+    margin-right: 8px;
+    margin-left: 8px;
 }
 
-.TagCategoryTagsListPanel
-{
-	margin-left: 8px;
+.TagCategoryTagsListPanel {
+    margin-left: 8px;
 }
 
-.TagViewPanel, .CategoryViewPanel, .ProjectViewPanel
-{
-	width: 100%;
+.TagViewPanel, .CategoryViewPanel, .ProjectViewPanel {
+    width: 100%;
 }
 
-.TagViewDescriptionTextCell, .CategoryViewDescriptionTextCell, .ProjectViewDescriptionTextCell
-{
-	width: 100%;
+.TagViewDescriptionTextCell, .CategoryViewDescriptionTextCell, .ProjectViewDescriptionTextCell {
+    width: 100%;
 }
 
-.ProjectsScrollPanel, .CategoriesScrollPanel, .CategoryTagScroll
-{
-	width: 100%;
-	height: 100%;
+.ProjectsScrollPanel, .CategoriesScrollPanel, .CategoryTagScroll {
+    width: 100%;
+    height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
 }
 
-.FilteredOptionsPanel, .ImageFilteredOptionsPanel, .TagFilteredOptionsPanel
-{
-	margin-bottom: 8px;
+.FilteredOptionsPanel, .ImageFilteredOptionsPanel, .TagFilteredOptionsPanel {
+    margin-bottom: 8px;
 }
 
-.DialogBoxOKCancelPanel
-{
-	margin-left: auto;
-	border-spacing: 4px;
+.DialogBoxOKCancelPanel {
+    margin-left: auto;
+    border-spacing: 4px;
 }
 
-.ImageViewLanguageImageUploadButtonsCell
-{
-	height: 3em;
+.ImageViewLanguageImageUploadButtonsCell {
+    height: 3em;
 }
 
-.ImageViewDocbookFileNameLabelCell
-{
-	white-space: nowrap;
+.ImageViewDocbookFileNameLabelCell {
+    white-space: nowrap;
 }
 
-.ImageViewLanguageImageFilenameLabel, .ImageViewLanguageImageDisplayLabel
-{
-	white-space: nowrap;
+.ImageViewLanguageImageFilenameLabel, .ImageViewLanguageImageDisplayLabel {
+    white-space: nowrap;
 }
 
 body {
-	background-color: #ffffff;
-	color: black;
-	font-family: Arial, sans-serif;
-	font-size: small;
-	margin: 0px;
-	padding: 0px;
-	height: 100%;
+    background-color: #ffffff;
+    color: black;
+    font-family: Arial, sans-serif;
+    font-size: small;
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
 }
 
 html {
-	margin: 0px;
-	padding: 0px;
-	height: 100%;
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
 }
 
-.TopActionGrandParentPanel
-{
+.TopActionGrandParentPanel {
     margin-left: 100px;
     margin-top: 8px;
     margin-bottom: 8px;
 }
 
-.TopActionParentPanel
-{
+.TopActionParentPanel {
     overflow: hidden;
     height: 100%;
     border-spacing: 0px;
-	/*bottom: 16px !important;*/
+    /*bottom: 16px !important;*/
 }
 
-.CreateTopicViewButtonsPanel
-{
-	bottom: 16px !important;
+.CreateTopicViewButtonsPanel {
+    bottom: 16px !important;
 }
 
 .TopActionPanel, .RenderedSplitViewMenuTable {
-	width: 100%;	
-	border-spacing: 0px;
-	height: 100%;
-	/*padding-bottom: 8px;
-	padding-top: 8px;    */
+    width: 100%;
+    border-spacing: 0px;
+    height: 100%;
+    /*padding-bottom: 8px;
+    padding-top: 8px;    */
 }
 
 .TopActionPanel td, .RenderedSplitViewMenuTable td {
-	padding: 1px;
-	height: 100%;
+    padding: 1px;
+    height: 100%;
 }
 
-.TopActionPanel
-{
-	position: relative;
+.TopActionPanel {
+    position: relative;
 }
 
 .ShortcutPanelParent {
-	margin-right: 8px;
+    margin-right: 8px;
 }
-
 
 .ShortcutPanel td {
-	padding: 1px;	
+    padding: 1px;
 }
 
-.gwt-ToggleButton-down
-{
-	background-color: #005492 !important;
+.gwt-ToggleButton-down {
+    background-color: #005492 !important;
 }
 
 .TextButton {
-	border-style: solid;
-	border-width: 1px;
-	background-color: #0072C6;
-	border-color: #005492;
-	padding: 8px;
-	color: white;
-	height: 100%;
+    border-style: solid;
+    border-width: 1px;
+    background-color: #0072C6;
+    border-color: #005492;
+    padding: 8px;
+    color: white;
+    height: 100%;
     -moz-box-sizing: border-box;
 }
 
-.TextButton.SubMenu
-{
-	background-color: #00C618;
-	border-color: #009200;
+.TextButton.SubMenu {
+    background-color: #00C618;
+    border-color: #009200;
 }
 
-.TextButton.Error
-{
-	background-color: #C60000;
-	border-color: #920000;
+.TextButton.Error {
+    background-color: #C60000;
+    border-color: #920000;
 }
 
-.TextButton.Error:hover, .DownLabel.Error
-{
-	background-color: #920000;
-	border-color: #920000;
+.TextButton.Error:hover, .DownLabel.Error {
+    background-color: #920000;
+    border-color: #920000;
 }
 
 .TextButton:hover, .DownLabel {
-	border-style: solid;
-	border-width: 1px;
-	background-color: #005492;
-	border-color: #005492;
-	padding: 8px;
-	color: white;
-	height: 100%;
+    border-style: solid;
+    border-width: 1px;
+    background-color: #005492;
+    border-color: #005492;
+    padding: 8px;
+    color: white;
+    height: 100%;
     -moz-box-sizing: border-box;
 }
 
-.TextButton.SubMenu:hover
-{
-	background-color: #009200;
-	border-color: #009200;
+.TextButton.SubMenu:hover {
+    background-color: #009200;
+    border-color: #009200;
 }
 
-.TextButton.gwt-PushButton-up-disabled
-{
-	background-color: #B4B4B4;
+.TextButton.gwt-PushButton-up-disabled {
+    background-color: #B4B4B4;
 }
 
 .ImageButton {
-	margin: 8px;
+    margin: 8px;
 }
 
 .SpacedButton {
-	margin: 8px;
+    margin: 8px;
 }
 
 .ContentLayoutPanel>div {
-	overflow-y: auto !important;
+    overflow-y: auto !important;
 }
 
 .PageTitleParentLayoutPanel {
-	background-color: #EFEFEF;
-	padding-left: 1em;
-	font-size: x-large;
-	width: 100%;
-	height: 100%;
+    background-color: #EFEFEF;
+    padding-left: 1em;
+    font-size: x-large;
+    width: 100%;
+    height: 100%;
 }
 
-.QuickSearchParentPanel
-{
-	width: 100%;
-	padding-right: 8px;
-	font-size: medium;
+.QuickSearchParentPanel {
+    width: 100%;
+    padding-right: 8px;
+    font-size: medium;
 }
 
-.ProjectsLayout, .CategoriesLayout
-{
-	height: 100%;
+.ProjectsLayout, .CategoriesLayout {
+    height: 100%;
 }
 
 .ProjectsLayout td {
-	vertical-align: top;
-	padding: 0px;
+    vertical-align: top;
+    padding: 0px;
 }
 
-.ProjectsButtonsLayout, .CategoriesButtonsLayout, .CategoryTagLayout
-{
-	margin-right: 16px;
+.ProjectsButtonsLayout, .CategoriesButtonsLayout, .CategoryTagLayout {
+    margin-right: 16px;
 }
 
 .ProjectsButtonsLayout td {
-	padding-bottom: 2px;
-	padding-top: 2px;
+    padding-bottom: 2px;
+    padding-top: 2px;
 }
 
 .CategoriesButtonsLayout td {
-	padding-bottom: 2px;
-	padding-top: 2px;
+    padding-bottom: 2px;
+    padding-top: 2px;
 }
 
 .ProjectLayout {
-	border-spacing: 0px;
-	padding: 0px;
+    border-spacing: 0px;
+    padding: 0px;
 }
 
 .ProjectLayout td {
-	vertical-align: top;
+    vertical-align: top;
 }
 
 .CategoryTagLayout td {
-	padding: 16px;
-	vertical-align: middle;
+    padding: 16px;
+    vertical-align: middle;
 }
 
 .TagLabel {
-	min-width: 200px;
+    min-width: 200px;
 }
 
 .CustomButton {
-	width: 14em;
-	height: 6em;
-	vertical-align: top;
-	border: 0px;
-	color: white;
-	/*background-color: #0097B4;*/
-	background-image: linear-gradient(bottom, rgb(36, 50, 70) 32%,
-		rgb(59, 77, 100) 66% );
-	background-image: -o-linear-gradient(bottom, rgb(36, 50, 70) 32%,
-		rgb(59, 77, 100) 66% );
-	background-image: -moz-linear-gradient(bottom, rgb(36, 50, 70) 32%,
-		rgb(59, 77, 100) 66% );
-	background-image: -webkit-linear-gradient(bottom, rgb(36, 50, 70) 32%,
-		rgb(59, 77, 100) 66% );
-	background-image: -ms-linear-gradient(bottom, rgb(36, 50, 70) 32%,
-		rgb(59, 77, 100) 66% );
-	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.32, rgb(36,
-		50, 70) ), color-stop(0.66, rgb(59, 77, 100) ) );
+    width: 14em;
+    height: 6em;
+    vertical-align: top;
+    border: 0px;
+    color: white;
+    /*background-color: #0097B4;*/
+    background-image: linear-gradient(bottom, rgb(36, 50, 70) 32%, rgb(59, 77, 100) 66%);
+    background-image: -o-linear-gradient(bottom, rgb(36, 50, 70) 32%, rgb(59, 77, 100) 66%);
+    background-image: -moz-linear-gradient(bottom, rgb(36, 50, 70) 32%, rgb(59, 77, 100) 66%);
+    background-image: -webkit-linear-gradient(bottom, rgb(36, 50, 70) 32%, rgb(59, 77, 100) 66%);
+    background-image: -ms-linear-gradient(bottom, rgb(36, 50, 70) 32%, rgb(59, 77, 100) 66%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.32, rgb(36, 50, 70)), color-stop(0.66, rgb(59, 77, 100)));
 }
 
-.CustomButton:hover { /*background-color: #1AAAC5;*/
-	background-image: linear-gradient(bottom, rgb(52, 73, 102) 32%,
-		rgb(90, 118, 153) 66% );
-	background-image: -o-linear-gradient(bottom, rgb(52, 73, 102) 32%,
-		rgb(90, 118, 153) 66% );
-	background-image: -moz-linear-gradient(bottom, rgb(52, 73, 102) 32%,
-		rgb(90, 118, 153) 66% );
-	background-image: -webkit-linear-gradient(bottom, rgb(52, 73, 102) 32%,
-		rgb(90, 118, 153) 66% );
-	background-image: -ms-linear-gradient(bottom, rgb(52, 73, 102) 32%,
-		rgb(90, 118, 153) 66% );
-	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.32, rgb(52,
-		73, 102) ), color-stop(0.66, rgb(90, 118, 153) ) );
+.CustomButton:hover {
+    /*background-color: #1AAAC5;*/
+    background-image: linear-gradient(bottom, rgb(52, 73, 102) 32%, rgb(90, 118, 153) 66%);
+    background-image: -o-linear-gradient(bottom, rgb(52, 73, 102) 32%, rgb(90, 118, 153) 66%);
+    background-image: -moz-linear-gradient(bottom, rgb(52, 73, 102) 32%, rgb(90, 118, 153) 66%);
+    background-image: -webkit-linear-gradient(bottom, rgb(52, 73, 102) 32%, rgb(90, 118, 153) 66%);
+    background-image: -ms-linear-gradient(bottom, rgb(52, 73, 102) 32%, rgb(90, 118, 153) 66%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.32, rgb(52, 73, 102)), color-stop(0.66, rgb(90, 118, 153)));
 }
 
 .CustomButtonDown {
-	width: 14em;
-	height: 6em;
-	vertical-align: top;
-	border: 0px;
-	color: white;
-	/*background-color: #006F85;*/
-	background-image: linear-gradient(bottom, rgb(13, 18, 26) 32%,
-		rgb(45, 59, 76) 66% );
-	background-image: -o-linear-gradient(bottom, rgb(13, 18, 26) 32%,
-		rgb(45, 59, 76) 66% );
-	background-image: -moz-linear-gradient(bottom, rgb(13, 18, 26) 32%,
-		rgb(45, 59, 76) 66% );
-	background-image: -webkit-linear-gradient(bottom, rgb(13, 18, 26) 32%,
-		rgb(45, 59, 76) 66% );
-	background-image: -ms-linear-gradient(bottom, rgb(13, 18, 26) 32%,
-		rgb(45, 59, 76) 66% );
-	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.32, rgb(13,
-		18, 26) ), color-stop(0.66, rgb(45, 59, 76) ) );
+    width: 14em;
+    height: 6em;
+    vertical-align: top;
+    border: 0px;
+    color: white;
+    /*background-color: #006F85;*/
+    background-image: linear-gradient(bottom, rgb(13, 18, 26) 32%, rgb(45, 59, 76) 66%);
+    background-image: -o-linear-gradient(bottom, rgb(13, 18, 26) 32%, rgb(45, 59, 76) 66%);
+    background-image: -moz-linear-gradient(bottom, rgb(13, 18, 26) 32%, rgb(45, 59, 76) 66%);
+    background-image: -webkit-linear-gradient(bottom, rgb(13, 18, 26) 32%, rgb(45, 59, 76) 66%);
+    background-image: -ms-linear-gradient(bottom, rgb(13, 18, 26) 32%, rgb(45, 59, 76) 66%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.32, rgb(13, 18, 26)), color-stop(0.66, rgb(45, 59, 76)));
 }
 
 .CustomButtonText {
-	padding-left: 3px;
-	vertical-align: middle;
+    padding-left: 3px;
+    vertical-align: middle;
 }
 
 .CustomButtonTextBold {
-	padding-left: 3px;
-	vertical-align: middle;
-	font-weight: bold;
+    padding-left: 3px;
+    vertical-align: middle;
+    font-weight: bold;
 }
 
 .CustomButtonTagsInclued {
-	color: greenyellow;
+    color: greenyellow;
 }
 
 .CustomButtonTagsExcluded {
-	color: #FF3333
+    color: #FF3333
 }
 
 .TopicSearchResultsAndViewParentPanel {
-	height: 100%;
+    height: 100%;
 }
 
 .TopicViewDescriptionDetail, .FilterViewDescriptionDetail {
-	height: 100%;
+    height: 100%;
 }
 
-.EntityViewLayoutPanel
-{
-	margin-left: 8px;
+.EntityViewLayoutPanel {
+    margin-left: 8px;
 }
-
 
 .TopicViewDescriptionField, .FilterViewDescriptionField {
-	width: 100%;
-	height: 100%;
-	min-height: 5em;
-	box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    min-height: 5em;
+    box-sizing: border-box;
 }
 
-.TopicViewTitleField, .FilterViewNameField
-	{
-	width: 100%;
-	box-sizing: border-box;
+.TopicViewTitleField, .FilterViewNameField {
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .TopicViewPanel, .FilterViewPanel {
-	width: 100%;
-	height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 .TopicViewDetail, .FilterViewDetail {
-	width: 100%;
+    width: 100%;
 }
 
 .TopicViewLabel, .FilterViewLabel {
-	white-space: nowrap;
-	vertical-align: top;
+    white-space: nowrap;
+    vertical-align: top;
 }
 
 .TopicXMLViewPanel {
-	width: 100%;
-	height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 .TopicXMLViewACEPanel {
-	width: 100%;
-	height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 .TopicXMLViewXMLField {
-	height: 100%;
+    height: 100%;
 }
 
 .RightAlignedActionButtons {
-	width: 100%;
+    width: 100%;
 }
 
 .TopicXMLErrorsViewPanel {
-	width: 100%;
+    width: 100%;
 }
 
 .TopicXMLErrorsViewField {
-	width: 100%;
-	height: 100%;
-	box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .TopicSearchTopicViewDetailsPanel {
-	height: 100%;
-	overflow-y: auto;
+    height: 100%;
+    overflow-y: auto;
 }
 
-.TopicSearchResultsAndViewParentPanel { /*border: 3px solid #e7e7e7;*/
-	
+.TopicSearchResultsAndViewParentPanel {
+    /*border: 3px solid #e7e7e7;*/
+
 }
 
 .ThirdLevelLayoutPanel {
-	margin-left: 8px;
-	margin-right: 8px;
-	margin-bottom: 8px;
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-bottom: 8px;
 }
 
 .TopicRenderedViewDiv {
-	overflow-y: auto;
-	padding-right: 8px;
+    overflow-y: auto;
+    padding-right: 8px;
 }
 
 .TopicViewLayoutPanel {
-	margin-left: 8px;
-	margin-bottom: 8px;
+    margin-left: 8px;
+    margin-bottom: 8px;
 }
 
 .ResultsViewLayoutPanel {
-	margin-right: 8px;
+    margin-right: 8px;
 }
 
 .TopicTagViewProjectRow {
-	font-size: 2em;
+    font-size: 2em;
 }
 
 .TopicTagViewCategoryRow {
-	font-size: 1.5em;
+    font-size: 1.5em;
 }
 
-.TopicTagViewCategoryRow,.TopicTagViewProjectRow {
-	min-width: 250px;
-	vertical-align: middle;
+.TopicTagViewCategoryRow, .TopicTagViewProjectRow {
+    min-width: 250px;
+    vertical-align: middle;
 }
 
 .TopicTagViewTagRow {
-	min-width: 150px;
-	vertical-align: middle;
+    min-width: 150px;
+    vertical-align: middle;
 }
 
 .TopicTagViewContentPanel div {
-	overflow-y: auto !important;
+    overflow-y: auto !important;
 }
 
 .TopicTagViewProjectsTable td {
-	padding: 0px;
+    padding: 0px;
 }
 
 .TopicTagViewProjectTable {
-	border-spacing: 0px;
+    border-spacing: 0px;
 }
 
 .TopicTagViewNewTagTable td {
-	padding: 0px;
+    padding: 0px;
 }
 
 .TopicTagViewCategoryTable {
-	border-top: thin solid black;
+    border-top: thin solid black;
 }
 
 .TopicTagViewProjectsTable {
-	border-spacing: 0px;
+    border-spacing: 0px;
 }
 
 .TopicTagViewProjectsTable>tbody>tr:nth-child(even) td {
-	background-color: #E2EFFC;
+    background-color: #E2EFFC;
 }
 
 .TopicTagViewCategoriesTable {
-	border-spacing: 0px;
+    border-spacing: 0px;
 }
 
 .TopicTagViewCategoriesTable>tbody>tr:nth-child(even) td {
-	/*background-color: #FDFFEA;*/
-	
+    /*background-color: #FDFFEA;*/
+
 }
 
-.TopicTagViewNewTagProjectsList,.TopicTagViewNewTagCategoriesList,.TopicTagViewNewTagTagsList
-	{
-	min-width: 150px;
+.TopicTagViewNewTagProjectsList, .TopicTagViewNewTagCategoriesList, .TopicTagViewNewTagTagsList {
+    min-width: 150px;
 }
 
 .TopicTagViewNewTagParentPanel td {
-	vertical-align: middle !important;
+    vertical-align: middle !important;
 }
 
 .ImageViewParentDockPanel {
-	height: 100%;
-	width: 100%;
+    height: 100%;
+    width: 100%;
 }
 
 .ImageViewParentDockPanel>tbody>tr:nth-child(2)>td {
-	height: 100%;
+    height: 100%;
 }
 
 .ImageViewLanguageImageTabPanel {
-	height: 100%;
-	width: 100%;
+    height: 100%;
+    width: 100%;
 }
 
 .ImageViewLanguageImageTab {
-	width: 100%;
-	height: 100%;
-	padding: 8px;
+    width: 100%;
+    height: 100%;
+    padding: 8px;
 }
 
 .ImageViewLanguageImageTab td {
-	vertical-align: top;
+    vertical-align: top;
 }
 
 .ImageViewDetailsTable td {
-	vertical-align: top;
+    vertical-align: top;
 }
 
 .ImageViewLanguageImageDisplayLabelCell {
-	height: 100%;
+    height: 100%;
 }
 
 .ImageViewLanguageImageTabPanel>div:nth-child(3)>div>div {
-	overflow: auto !important;
+    overflow: auto !important;
 }
 
 .ImageViewDescriptionText, .ImageViewTemplateText, .TagViewDescriptionText, .CategoryViewDescriptionText, .ProjectViewDescriptionText {
-	width: 100%;
-	height: 5em;
-	box-sizing: border-box;
+    width: 100%;
+    height: 5em;
+    box-sizing: border-box;
 }
 
 .ImageViewDescriptionTextCell {
-	width: 100%;
+    width: 100%;
 }
 
 .ImageViewDescriptionLabelCell {
-	white-space: nowrap;
+    white-space: nowrap;
 }
 
 .ImageViewLanguageImageFilenameText {
-	width: 100%;
-	box-sizing : border-box;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.TopicSearchTopicViewButtonsPanel, .EntitySearchTagViewButtonsParentPanel, .EntitySearchTagsResultButtonsParentPanel
-{
-	padding-top: 8px;
+.TopicSearchTopicViewButtonsPanel, .EntitySearchTagViewButtonsParentPanel, .EntitySearchTagsResultButtonsParentPanel {
+    padding-top: 8px;
     padding-bottom: 8px;
     border-spacing: 0px;
     height: 100%;
 }
 
-.EntitySearchTagViewButtonsPanel, .EntitySearchTagsResultButtonsPanel
-{
+.EntitySearchTagViewButtonsPanel, .EntitySearchTagsResultButtonsPanel {
     height: 100%;
 }
 
-.EntitySearchTopicViewDetailsPanel
-{
+.EntitySearchTopicViewDetailsPanel {
     margin-bottom: 8px;
 }
 
-.TopicSearchTopicViewButtonsPanel>div
-{
-	overflow-x: auto;
+.TopicSearchTopicViewButtonsPanel>div {
+    overflow-x: auto;
 }

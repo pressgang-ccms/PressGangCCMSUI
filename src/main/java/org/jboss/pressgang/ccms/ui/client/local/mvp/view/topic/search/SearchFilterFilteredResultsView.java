@@ -1,12 +1,15 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.search;
 
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFilterFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 
 import javax.enterprise.context.Dependent;
 
@@ -19,6 +22,11 @@ public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<
         RESTFilterCollectionV1,
         RESTFilterCollectionItemV1>
         implements SearchFilterFilteredResultsPresenter.Display {
+
+    private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
+    private final PushButton tagsSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Tags());
+    private final PushButton fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Fields());
+    private final Label filters = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Filters());
 
     private final TextColumn<RESTFilterCollectionItemV1> idColumn = new TextColumn<RESTFilterCollectionItemV1>() {
         @Override
@@ -40,11 +48,34 @@ public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<
         }
     };
 
+    @Override
+    public PushButton getSearchTopics() {
+        return searchTopics;
+    }
+
+    @Override
+    public PushButton getTagsSearch() {
+        return tagsSearch;
+    }
+
+    @Override
+    public PushButton getFields() {
+        return fields;
+    }
+
     public SearchFilterFilteredResultsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Filters());
 
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.TopicID());
         getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.TopicTitle());
+
+        this.getCreate().removeFromParent();
+        addActionButton(searchTopics);
+        addActionButton(tagsSearch);
+        addActionButton(fields);
+        addActionButton(filters);
+        addActionButton(getCreate());
+
 
         /* the filter results don't have a search button */
         this.getEntitySearch().removeFromParent();

@@ -19,6 +19,7 @@ public class SearchFieldView extends BaseTemplateView implements SearchFieldPres
 
     private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
     private final PushButton tagsSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Tags());
+    private final PushButton filters = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Filters());
     private final Label fields = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Fields());
 
     @Override
@@ -41,6 +42,11 @@ public class SearchFieldView extends BaseTemplateView implements SearchFieldPres
         return tagsSearch;
     }
 
+    @Override
+    public PushButton getFilters() {
+        return filters;
+    }
+
     public SearchFieldView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchFields());
 
@@ -48,6 +54,7 @@ public class SearchFieldView extends BaseTemplateView implements SearchFieldPres
         addActionButton(searchTopics);
         addActionButton(tagsSearch);
         addActionButton(fields);
+        addActionButton(filters);
 
         /* SearchUIProjectsEditor is a grid */
         final SearchFieldEditor editor = new SearchFieldEditor();
