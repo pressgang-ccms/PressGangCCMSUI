@@ -76,6 +76,11 @@ public final class Constants {
      */
     public static final int ACTION_BAR_HEIGHT = 80;
     /**
+     * The height of the spacer to add to the shortcut bar to make up for the loss of the action bar.
+     * This value is ACTION_BAR_HEIGHT - (border spacing * 2)
+     */
+    public static final int SHORTCUT_BAR_SPACER_HEIGHT = 76;
+    /**
      * The width of the shortcut bar.
      */
     public static final int SHORTCUT_BAR_WIDTH = 110;

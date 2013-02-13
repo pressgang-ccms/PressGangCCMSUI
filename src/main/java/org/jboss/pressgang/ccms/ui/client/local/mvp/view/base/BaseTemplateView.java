@@ -625,7 +625,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      * the template action bar, which is removed.
      */
     protected final void addSpacerToShortcutPanels() {
-        final String spacerDiv = "<div style=\"height: " + Constants.ACTION_BAR_HEIGHT + "px;\"></div>";
+        final String spacerDiv = "<div style=\"height: " + Constants.SHORTCUT_BAR_SPACER_HEIGHT + "px;\"></div>";
         final HTML spacer = new HTML(spacerDiv);
         final HTML spacer2 = new HTML(spacerDiv);
         this.getShortcutPanel().insertRow(0);
