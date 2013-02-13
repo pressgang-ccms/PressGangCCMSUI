@@ -129,8 +129,13 @@ public class CategoriesFilteredResultsAndCategoryPresenter
 
     @Override
     public void go(@NotNull final HasWidgets container) {
+        clearContainerAndAddTopLevelPanel(container, display);
+        bindSearchAndEditExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
+    }
 
-        /* A call back used to get a fresh copy of the entity that was selected */
+    @Override
+    public void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
+       /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTCategoryV1> getNewEntityCallback = new GetNewEntityCallback<RESTCategoryV1>() {
 
             @Override
@@ -146,15 +151,14 @@ public class CategoriesFilteredResultsAndCategoryPresenter
             }
         };
 
-        clearContainerAndAddTopLevelPanel(container, display);
 
-        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
+        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);
 
-        categoryPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-        categoryTagPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-        filteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        categoryPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        categoryTagPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        filteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, pageId, queryString);
 
-        super.bindSearchAndEdit(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, categoryPresenter.getDisplay(), categoryPresenter.getDisplay(),
+        super.bindSearchAndEdit(topicId, pageId, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, categoryPresenter.getDisplay(), categoryPresenter.getDisplay(),
                 filteredResultsPresenter.getDisplay(), filteredResultsPresenter, display, display, getNewEntityCallback);
 
         bindExistingChildrenAddAndRemoveButtons();
@@ -489,6 +493,8 @@ public class CategoriesFilteredResultsAndCategoryPresenter
             this.display.replaceTopActionButton(this.display.getChildren(), this.display.getChildrenDown());
         }
     }
+
+
 
     /**
      * This interface describes the required UI elements for the parent view (i.e. the view that holds the two views

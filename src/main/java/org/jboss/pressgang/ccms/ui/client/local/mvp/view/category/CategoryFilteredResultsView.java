@@ -55,7 +55,7 @@ public class CategoryFilteredResultsView extends
     }
 
     public CategoryFilteredResultsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Categories());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Categories(), PressGangCCMSUI.INSTANCE.CreateCategory());
 
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.CategoryID());
         getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.CategoryName());

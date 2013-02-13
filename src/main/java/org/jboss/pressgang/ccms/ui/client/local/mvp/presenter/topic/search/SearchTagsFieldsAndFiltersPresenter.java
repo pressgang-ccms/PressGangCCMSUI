@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
@@ -33,8 +34,21 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     @Inject
     private SearchFieldPresenter fieldsComponent;
 
+    /**
+     * The presenter used to display the list of filters
+     */
+    @Inject private SearchFilterResultsAndFilterPresenter searchFilterResultsAndFilterPresenter;
+
+    /**
+     * The dialog used when saving or overwriting a filter
+     */
+    @Inject private SaveFilterDialogInterface saveFilterDialog;
+
     @Inject
     private HandlerManager eventBus;
+
+
+
 
     @Override
     public void go(final HasWidgets container) {
@@ -47,6 +61,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
         tagsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
         fieldsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        searchFilterResultsAndFilterPresenter.bindSearchAndEditExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Constants.QUERY_PATH_SEGMENT_PREFIX);
 
         bindSearchButtons();
 
@@ -89,16 +104,33 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             }
         };
 
-        fieldsComponent.getDisplay().getTagsSearch().addClickHandler(tagsHandler);
-        tagsComponent.getDisplay().getFields().addClickHandler(fieldsHandler);
+        final ClickHandler filtersHandler = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                fieldsComponent.getDisplay().getDriver().flush();
+                tagsComponent.getDisplay().getDriver().flush();
+                displayFilters();
+            }
+        };
 
         tagsComponent.getDisplay().getSearchTopics().addClickHandler(searchHandler);
         fieldsComponent.getDisplay().getSearchTopics().addClickHandler(searchHandler);
+        searchFilterResultsAndFilterPresenter.getFilteredResulstsDisplay().getSearchTopics().addClickHandler(searchHandler);
+
+        fieldsComponent.getDisplay().getTagsSearch().addClickHandler(tagsHandler);
+        searchFilterResultsAndFilterPresenter.getFilteredResulstsDisplay().getTagsSearch().addClickHandler(tagsHandler);
+
+        tagsComponent.getDisplay().getFields().addClickHandler(fieldsHandler);
+        searchFilterResultsAndFilterPresenter.getFilteredResulstsDisplay().getFields().addClickHandler(fieldsHandler);
+
+        tagsComponent.getDisplay().getFilters().addClickHandler(filtersHandler);
+        fieldsComponent.getDisplay().getFilters().addClickHandler(filtersHandler);
     }
 
     private void displayTags()
     {
         display.getTopActionGrandParentPanel().clear();
+        display.getTopActionParentPanel().setVisible(true);
         display.getTopActionGrandParentPanel().setWidget(tagsComponent.getDisplay().getTopActionParentPanel());
 
         display.getPanel().clear();
@@ -106,11 +138,13 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
         fieldsComponent.getDisplay().setViewShown(false);
         tagsComponent.getDisplay().setViewShown(true);
+        searchFilterResultsAndFilterPresenter.getDisplay().setViewShown(false);
     }
 
     private void displayFields()
     {
         display.getTopActionGrandParentPanel().clear();
+        display.getTopActionParentPanel().setVisible(true);
         display.getTopActionGrandParentPanel().setWidget(fieldsComponent.getDisplay().getTopActionParentPanel());
 
         display.getPanel().clear();
@@ -118,5 +152,20 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
         fieldsComponent.getDisplay().setViewShown(true);
         tagsComponent.getDisplay().setViewShown(false);
+        searchFilterResultsAndFilterPresenter.getDisplay().setViewShown(false);
     }
+
+    private void displayFilters()
+    {
+        display.getTopActionGrandParentPanel().clear();
+        display.getTopActionParentPanel().setVisible(false);
+
+        display.getPanel().clear();
+        display.getPanel().setWidget(searchFilterResultsAndFilterPresenter.getDisplay().getPanel());
+
+        fieldsComponent.getDisplay().setViewShown(false);
+        tagsComponent.getDisplay().setViewShown(false);
+        searchFilterResultsAndFilterPresenter.getDisplay().setViewShown(true);
+    }
+
 }

@@ -59,7 +59,7 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageV
     }
 
     public ImageFilteredResultsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Images());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Images(), PressGangCCMSUI.INSTANCE.CreateImage());
        
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ImageID());
         getResults().addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.ImageDescription());

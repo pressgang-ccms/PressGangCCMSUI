@@ -76,6 +76,8 @@ public class ImagesFilteredResultsAndImagePresenter
                 RESTImageV1Editor>
         implements BaseTemplatePresenterInterface {
 
+
+
     public interface Display extends
             BaseSearchAndEditViewInterface<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1> {
 
@@ -107,12 +109,16 @@ public class ImagesFilteredResultsAndImagePresenter
 
     @Override
     public void go(@NotNull final HasWidgets container) {
+        clearContainerAndAddTopLevelPanel(container, display);
+        bindSearchAndEditExtended(ServiceConstants.IMAGES_TOPIC, HISTORY_TOKEN, queryString);
+    }
+
+    @Override
+    public void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
-        clearContainerAndAddTopLevelPanel(container, display);
-
-        imageComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-        imageFilteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        imageComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        imageFilteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
 
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTImageV1> getNewEntityCallback = new GetNewEntityCallback<RESTImageV1>() {
@@ -130,7 +136,7 @@ public class ImagesFilteredResultsAndImagePresenter
             }
         };
 
-        super.bindSearchAndEdit(ServiceConstants.IMAGES_TOPIC, HISTORY_TOKEN, Preferences.IMAGE_VIEW_MAIN_SPLIT_WIDTH, imageComponent.getDisplay(), imageComponent.getDisplay(), imageFilteredResultsComponent.getDisplay(),
+        super.bindSearchAndEdit(topicId, pageId, Preferences.IMAGE_VIEW_MAIN_SPLIT_WIDTH, imageComponent.getDisplay(), imageComponent.getDisplay(), imageFilteredResultsComponent.getDisplay(),
                 imageFilteredResultsComponent, display, display, getNewEntityCallback);
 
         populateLocales();

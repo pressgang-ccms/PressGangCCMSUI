@@ -59,7 +59,7 @@ public class TagFilteredResultsView extends BaseFilteredResultsView<RESTTagV1, R
     }
 
     public TagFilteredResultsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Images());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Tags(), PressGangCCMSUI.INSTANCE.CreateTag());
 
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.TagID());
         getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.TagName());

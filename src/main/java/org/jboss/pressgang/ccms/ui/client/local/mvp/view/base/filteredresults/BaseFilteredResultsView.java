@@ -30,7 +30,7 @@ abstract public class BaseFilteredResultsView<T extends RESTBaseEntityV1<T, U, V
     /**
      * The button that creates a new entity
      */
-    private final PushButton create = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Create());
+    private final PushButton create;
     /**
      * The pager used to move over the results
      */
@@ -52,8 +52,10 @@ abstract public class BaseFilteredResultsView<T extends RESTBaseEntityV1<T, U, V
      */
     private EnhancedAsyncDataProvider<V> provider;
 
-    public BaseFilteredResultsView(final String applicationName, final String pageName) {
+    public BaseFilteredResultsView(final String applicationName, final String pageName, final String createLabel) {
         super(applicationName, pageName);
+
+        create = UIUtilities.createPushButton(createLabel);
 
         searchResultsPanel.addStyleName(CSSConstants.FilteredResultsView.FILTERED_RESULTS_PANEL);
         filterTable.addStyleName(CSSConstants.FilteredResultsView.FILTERED_OPTIONS_PANEL);

@@ -402,4 +402,14 @@ public interface PressGangCCMSUI extends Constants {
     String Load();
 
     String LoadAndSearch();
+
+    String CreateFilter();
+
+    String CreateCategory();
+
+    String CreateProject();
+
+    String CreateImage();
+
+    String CreateTag();
 }

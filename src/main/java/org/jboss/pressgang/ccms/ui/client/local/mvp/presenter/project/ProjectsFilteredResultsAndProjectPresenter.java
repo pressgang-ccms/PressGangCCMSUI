@@ -56,6 +56,8 @@ public class ProjectsFilteredResultsAndProjectPresenter
                 RESTProjectV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
 
+
+
     /**
      * This interface describes the required UI elements for the parent view (i.e. the view that holds the two views
      * CategoryFilteredResults view to provide a list of categories and the CategoryView.
@@ -107,8 +109,12 @@ public class ProjectsFilteredResultsAndProjectPresenter
 
     @Override
     public void go(@NotNull final HasWidgets container) {
+        clearContainerAndAddTopLevelPanel(container, display);
+        bindSearchAndEditExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
+    }
 
-
+    @Override
+    public void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTProjectV1> getNewEntityCallback = new GetNewEntityCallback<RESTProjectV1>() {
 
@@ -125,13 +131,13 @@ public class ProjectsFilteredResultsAndProjectPresenter
             }
         };
 
-        clearContainerAndAddTopLevelPanel(container, display);
+
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
-        filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
-        resultComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-        tagComponent.bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-        super.bindSearchAndEdit(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Preferences.PROJECT_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
+        filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
+        resultComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        tagComponent.bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        super.bindSearchAndEdit(topicId, pageId, Preferences.PROJECT_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
                 filteredResultsComponent.getDisplay(), filteredResultsComponent, display, display, getNewEntityCallback);
 
         /* Bind the logic to add and remove possible children */

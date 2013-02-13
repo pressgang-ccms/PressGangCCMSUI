@@ -72,6 +72,8 @@ public class TagsFilteredResultsAndTagPresenter
                 RESTTagV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
 
+
+
     /**
      * This interface describes the required UI elements for the parent view (i.e. the view that holds the four views
      * TagFilteredResults view to provide a list of tags, and the TagView, TagProjectsView and TagCategoriesView.
@@ -426,43 +428,47 @@ public class TagsFilteredResultsAndTagPresenter
         try {
             LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndTagPresenter.go()");
 
-            /* A call back used to get a fresh copy of the entity that was selected */
-            final GetNewEntityCallback<RESTTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTTagV1>() {
-
-                @Override
-                public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTTagV1> displayCallback) {
-                    final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, BaseTemplateViewInterface>(
-                            display, new BaseRestCallback.SuccessAction<RESTTagV1, BaseTemplateViewInterface>() {
-                        @Override
-                        public void doSuccessAction(final RESTTagV1 retValue, final BaseTemplateViewInterface display) {
-                            displayCallback.displayNewEntity(retValue);
-                        }
-                    });
-                    RESTCalls.getTag(callback, id);
-                }
-            };
-
             clearContainerAndAddTopLevelPanel(container, display);
-
-            display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
-
-            display.getSplitPanel().setSplitPosition(display.getResultsPanel(),
-                    Preferences.INSTANCE.getInt(Preferences.TAG_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
-
-            filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
-            projectsComponent.bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-            categoriesComponent.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-            resultComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-
-            super.bindSearchAndEdit(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
-                    filteredResultsComponent.getDisplay(), filteredResultsComponent, display, display, getNewEntityCallback);
-
-            bindCategoryColumnButtons();
-            bindProjectColumnButtons();
+            bindSearchAndEditExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
         }
         finally {
             LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndTagPresenter.go()");
         }
+    }
+
+    @Override
+    public void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
+                    /* A call back used to get a fresh copy of the entity that was selected */
+        final GetNewEntityCallback<RESTTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTTagV1>() {
+
+            @Override
+            public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTTagV1> displayCallback) {
+                final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, BaseTemplateViewInterface>(
+                        display, new BaseRestCallback.SuccessAction<RESTTagV1, BaseTemplateViewInterface>() {
+                    @Override
+                    public void doSuccessAction(final RESTTagV1 retValue, final BaseTemplateViewInterface display) {
+                        displayCallback.displayNewEntity(retValue);
+                    }
+                });
+                RESTCalls.getTag(callback, id);
+            }
+        };
+
+        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
+
+        display.getSplitPanel().setSplitPosition(display.getResultsPanel(),
+                Preferences.INSTANCE.getInt(Preferences.TAG_VIEW_MAIN_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE), false);
+
+        filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
+        projectsComponent.bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        categoriesComponent.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        resultComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+
+        super.bindSearchAndEdit(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
+                filteredResultsComponent.getDisplay(), filteredResultsComponent, display, display, getNewEntityCallback);
+
+        bindCategoryColumnButtons();
+        bindProjectColumnButtons();
     }
 
     @Override

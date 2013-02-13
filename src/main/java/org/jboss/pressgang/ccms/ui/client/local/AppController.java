@@ -26,6 +26,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredRe
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.*;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.SearchResultsAndTopicPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.SearchResultsPresenter;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.logging.Level;

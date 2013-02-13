@@ -55,7 +55,7 @@ public class ProjectedFilteredResultsView extends
     }
 
     public ProjectedFilteredResultsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Projects());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Projects(), PressGangCCMSUI.INSTANCE.CreateProject());
 
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ProjectID());
         getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.ProjectName());

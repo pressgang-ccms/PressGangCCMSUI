@@ -1,10 +1,10 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.search;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults;
 
 import com.google.gwt.user.cellview.client.TextColumn;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchResultsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.SearchResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
@@ -32,7 +32,7 @@ public class SearchResultsView extends BaseFilteredResultsView<RESTTopicV1, REST
     };
 
     public SearchResultsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults(), PressGangCCMSUI.INSTANCE.CreateTopic());
 
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.TopicID());
         getResults().addColumn(titleColumn, PressGangCCMSUI.INSTANCE.TopicTitle());

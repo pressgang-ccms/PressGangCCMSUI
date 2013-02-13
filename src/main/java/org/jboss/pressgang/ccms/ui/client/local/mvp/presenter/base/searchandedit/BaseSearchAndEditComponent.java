@@ -42,7 +42,7 @@ abstract public class BaseSearchAndEditComponent<
         V extends RESTBaseCollectionItemV1<T, U, V>,
         X extends BasePopulatedEditorViewInterface<T, T, Y> & BaseTemplateViewInterface,
         Y extends Editor<T>>
-        extends BaseTemplatePresenter {
+        extends BaseTemplatePresenter implements BaseSearchAndEditPresenterInterface {
 
     /**
      * A logger
@@ -74,28 +74,13 @@ abstract public class BaseSearchAndEditComponent<
     private BaseSearchAndEditViewInterface display;
 
     /**
-     * Empty implementation. All logic should be implemented in go().
-     *
-     * Presenters that extend this class are always managing the top level view i.e. there
-     * is no presenter that builds on top of a Search and Edit presenter.
-     *
-     * Usually presenters would use the go() method to display themselves on the screen, and
-     * then defer to a bindBlahExtended method to actually implement the logic (like
-     * event listeners). This way presenters can be added to the screen individually, or skip
-     * being added to the screen (i.e. not have go() called), and just call the bindBlahExtended method
-     * directly to implement the logic in the presenter.
-     *
-     * The BaseSearchAndEditComponent class does not have a bindBaseSearchAndEditExtended method
-     * because all the logic is implemented in the go() method in classes that extend BaseSearchAndEditComponent.
-     * There is no parent presenter layer above a Search and Edit presenter - every time a Search and Edit presenter
-     * is created it is added to the screen, so the go method is used to both add the Search and Edit presenter
-     * to the screen and to implement the logic.
+     * Unsupported method. Call bindSearchAndEdit() instead.
      *
      * @param topicId the help topic for the page
      * @param pageId The history token of the page
      */
     public void bindExtended(final int topicId, final String pageId) {
-        throw new UnsupportedOperationException("bindExtended() is not supported. Use go() instead.");
+        throw new UnsupportedOperationException("bindExtended() is not supported. Use bindSearchAndEdit() instead.");
     }
 
     /**

@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -170,100 +170,103 @@ public class SearchResultsAndTopicPresenter
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.go()");
 
-            /* A call back used to get a fresh copy of the entity that was selected */
-            final GetNewEntityCallback<RESTTopicV1> getNewEntityCallback = new GetNewEntityCallback<RESTTopicV1>() {
-
-                @Override
-                public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTTopicV1> displayCallback) {
-
-                    try {
-                        LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bind() GetNewEntityCallback.getNewEntity()");
-
-                        final RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
-                                display, new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {
-                            @Override
-                            public void doSuccessAction(final RESTTopicV1 retValue, final BaseTemplateViewInterface display) {
-                                try {
-                                    LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bind() RESTCallback.doSuccessAction()");
-
-                                    LOGGER.log(Level.INFO, "retValue.getProperties().getItems().size(): " + retValue.getProperties().getItems().size());
-
-                                    displayCallback.displayNewEntity(retValue);
-                                } finally {
-                                    LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bind() RESTCallback.doSuccessAction()");
-                                }
-                            }
-                        });
-                        RESTCalls.getTopic(callback, id);
-                    } finally {
-                        LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bind() GetNewEntityCallback.getNewEntity()");
-                    }
-                }
-            };
-
             clearContainerAndAddTopLevelPanel(container, display);
-
-            /* Initialize the other presenters we have pulled in */
-            searchResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
-            topicTagsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-            topicPropertyTagPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-            topicSourceURLsPresenter.bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-
-            super.bindSearchAndEdit(ServiceConstants.TOPIC_EDIT_VIEW_CONTENT_TOPIC, HISTORY_TOKEN, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLComponent.getDisplay(), topicViewComponent.getDisplay(),
-                    searchResultsComponent.getDisplay(), searchResultsComponent, display, display, getNewEntityCallback);
-
-            /* Display the split panes */
-            initializeDisplay();
-
-            // the birt bugs presenter is just an iframe, and doesn't need any providers
-            // this.topicBugsPresenter.getDisplay().setProvider(generateTopicBugListProvider());
-            this.topicRevisionsComponent.getDisplay().setProvider(generateTopicRevisionsListProvider());
-
-            bindViewTopicRevisionButton();
-            bindSplitPanelResize();
-            loadSplitPanelSize();
-
-            this.topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
-
-            populateLocales(new StringListLoaded() {
-                @Override
-                public void stringListLoaded(final List<String> locales) {
-                    SearchResultsAndTopicPresenter.this.locales = locales;
-                    localesLoaded = true;
-                    displayNewTopic();
-                    displayInitialTopic(getNewEntityCallback);
-                }
-            });
-
-            loadDefaultLocale(new StringLoaded() {
-                @Override
-                public void stringLoaded(final String string) {
-                    defaultLocale = string;
-                    displayNewTopic();
-                }
-            });
-
-            addKeyboardShortcutEventHandler(this.topicXMLComponent.getDisplay(), this.display, new GetCurrentTopic() {
-
-                @Override
-                public RESTTopicV1 getCurrentlyEditedTopic() {
-                    return searchResultsComponent.getProviderData().getDisplayedItem().getItem();
-                }
-            });
-
-            /* When the topics have been loaded, display the first one */
-            searchResultsComponent.addTopicListReceivedHandler(new TopicListReceivedHandler() {
-                @Override
-                public void onTopicsRecieved(final RESTTopicCollectionV1 topics) {
-                    topicListLoaded = true;
-                    displayInitialTopic(getNewEntityCallback);
-                }
-            });
-
+            bindSearchAndEditExtended(ServiceConstants.TOPIC_EDIT_VIEW_CONTENT_TOPIC, HISTORY_TOKEN, queryString);
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.go()");
         }
+    }
+
+    @Override
+    public void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
+         /* A call back used to get a fresh copy of the entity that was selected */
+        final GetNewEntityCallback<RESTTopicV1> getNewEntityCallback = new GetNewEntityCallback<RESTTopicV1>() {
+
+            @Override
+            public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTTopicV1> displayCallback) {
+
+                try {
+                    LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bind() GetNewEntityCallback.getNewEntity()");
+
+                    final RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
+                            display, new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {
+                        @Override
+                        public void doSuccessAction(final RESTTopicV1 retValue, final BaseTemplateViewInterface display) {
+                            try {
+                                LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bind() RESTCallback.doSuccessAction()");
+
+                                LOGGER.log(Level.INFO, "retValue.getProperties().getItems().size(): " + retValue.getProperties().getItems().size());
+
+                                displayCallback.displayNewEntity(retValue);
+                            } finally {
+                                LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bind() RESTCallback.doSuccessAction()");
+                            }
+                        }
+                    });
+                    RESTCalls.getTopic(callback, id);
+                } finally {
+                    LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bind() GetNewEntityCallback.getNewEntity()");
+                }
+            }
+        };
+
+        /* Initialize the other presenters we have pulled in */
+        searchResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
+        topicTagsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        topicPropertyTagPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        topicSourceURLsPresenter.bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+
+        super.bindSearchAndEdit(topicId, pageId, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, topicXMLComponent.getDisplay(), topicViewComponent.getDisplay(),
+                searchResultsComponent.getDisplay(), searchResultsComponent, display, display, getNewEntityCallback);
+
+            /* Display the split panes */
+        initializeDisplay();
+
+        // the birt bugs presenter is just an iframe, and doesn't need any providers
+        // this.topicBugsPresenter.getDisplay().setProvider(generateTopicBugListProvider());
+        this.topicRevisionsComponent.getDisplay().setProvider(generateTopicRevisionsListProvider());
+
+        bindViewTopicRevisionButton();
+        bindSplitPanelResize();
+        loadSplitPanelSize();
+
+        this.topicTagsComponent.bindNewTagListBoxes(new AddTagClickhandler());
+
+        populateLocales(new StringListLoaded() {
+            @Override
+            public void stringListLoaded(final List<String> locales) {
+                SearchResultsAndTopicPresenter.this.locales = locales;
+                localesLoaded = true;
+                displayNewTopic();
+                displayInitialTopic(getNewEntityCallback);
+            }
+        });
+
+        loadDefaultLocale(new StringLoaded() {
+            @Override
+            public void stringLoaded(final String string) {
+                defaultLocale = string;
+                displayNewTopic();
+            }
+        });
+
+        addKeyboardShortcutEventHandler(this.topicXMLComponent.getDisplay(), this.display, new GetCurrentTopic() {
+
+            @Override
+            public RESTTopicV1 getCurrentlyEditedTopic() {
+                return searchResultsComponent.getProviderData().getDisplayedItem().getItem();
+            }
+        });
+
+            /* When the topics have been loaded, display the first one */
+        searchResultsComponent.addTopicListReceivedHandler(new TopicListReceivedHandler() {
+            @Override
+            public void onTopicsRecieved(final RESTTopicCollectionV1 topics) {
+                topicListLoaded = true;
+                displayInitialTopic(getNewEntityCallback);
+            }
+        });
     }
 
     /**
@@ -2186,6 +2189,8 @@ public class SearchResultsAndTopicPresenter
             component.setHelpTopicId(ServiceConstants.DEFAULT_HELP_TOPIC);
         }
     }
+
+
 
     /**
      * The interface that defines the top level topic list and edit view

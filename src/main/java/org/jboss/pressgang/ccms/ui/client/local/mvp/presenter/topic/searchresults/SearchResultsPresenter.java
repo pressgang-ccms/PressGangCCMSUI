@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
