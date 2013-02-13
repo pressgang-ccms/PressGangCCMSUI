@@ -89,6 +89,7 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsCom
     @Override
     public final void bindExtendedFilteredResults(final int topicId, final String pageId, final String queryString) {
         super.bindFilteredResults(topicId, pageId, queryString, display);
+        display.setProvider(generateListProvider(queryString, display));
     }
 
     @Override

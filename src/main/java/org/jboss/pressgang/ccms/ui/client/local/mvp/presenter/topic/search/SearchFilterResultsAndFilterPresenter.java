@@ -4,6 +4,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
@@ -20,6 +21,8 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 /**
  * The presenter used to display the list of filter's and their details.
@@ -59,53 +62,61 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
 
     @Override
     public final void parseToken(final String historyToken) {
-
+        LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.parseToken()");
     }
 
     @Override
     public final void go(final HasWidgets container) {
 
-        /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTFilterV1> getNewEntityCallback = new GetNewEntityCallback<RESTFilterV1>() {
+        try {
+            LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.go()");
 
-            @Override
-            public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTFilterV1> displayCallback) {
+            clearContainerAndAddTopLevelPanel(container, display);
 
-                try {
-                    LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.go() GetNewEntityCallback.getNewEntity()");
+            /* A call back used to get a fresh copy of the entity that was selected */
+            final GetNewEntityCallback<RESTFilterV1> getNewEntityCallback = new GetNewEntityCallback<RESTFilterV1>() {
 
-                    final RESTCalls.RESTCallback<RESTFilterV1> callback = new BaseRestCallback<RESTFilterV1, BaseTemplateViewInterface>(
-                            display, new BaseRestCallback.SuccessAction<RESTFilterV1, BaseTemplateViewInterface>() {
-                        @Override
-                        public void doSuccessAction(final RESTFilterV1 retValue, final BaseTemplateViewInterface display) {
-                            try {
-                                LOGGER.log(Level.INFO, "ENTERSearchFilterResultsAndFilterPresenter.go() RESTCallback.doSuccessAction()");
+                @Override
+                public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTFilterV1> displayCallback) {
 
-                                displayCallback.displayNewEntity(retValue);
-                            } finally {
-                                LOGGER.log(Level.INFO, "EXIT SearchFilterResultsAndFilterPresenter.go() RESTCallback.doSuccessAction()");
+                    try {
+                        LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.go() GetNewEntityCallback.getNewEntity()");
+
+                        final RESTCalls.RESTCallback<RESTFilterV1> callback = new BaseRestCallback<RESTFilterV1, BaseTemplateViewInterface>(
+                                display, new BaseRestCallback.SuccessAction<RESTFilterV1, BaseTemplateViewInterface>() {
+                            @Override
+                            public void doSuccessAction(final RESTFilterV1 retValue, final BaseTemplateViewInterface display) {
+                                try {
+                                    LOGGER.log(Level.INFO, "ENTERSearchFilterResultsAndFilterPresenter.go() RESTCallback.doSuccessAction()");
+
+                                    displayCallback.displayNewEntity(retValue);
+                                } finally {
+                                    LOGGER.log(Level.INFO, "EXIT SearchFilterResultsAndFilterPresenter.go() RESTCallback.doSuccessAction()");
+                                }
                             }
-                        }
-                    });
-                    RESTCalls.getFilter(callback, id);
-                } finally {
-                    LOGGER.log(Level.INFO, "EXIT SearchFilterResultsAndFilterPresenter.go() GetNewEntityCallback.getNewEntity()");
+                        });
+                        RESTCalls.getFilter(callback, id);
+                    } finally {
+                        LOGGER.log(Level.INFO, "EXIT SearchFilterResultsAndFilterPresenter.go() GetNewEntityCallback.getNewEntity()");
+                    }
                 }
-            }
-        };
+            };
 
-        searchFilterPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-        searchFilterFilteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, "");
-        super.bindSearchAndEdit(
-                ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN,
-                Preferences.FILTER_VIEW_MAIN_SPLIT_WIDTH,
-                searchFilterPresenter.getDisplay(),
-                searchFilterPresenter.getDisplay(),
-                searchFilterFilteredResultsPresenter.getDisplay(),
-                searchFilterFilteredResultsPresenter,
-                display,
-                display,
-                getNewEntityCallback);
+            searchFilterPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+            searchFilterFilteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Constants.QUERY_PATH_SEGMENT_PREFIX);
+            super.bindSearchAndEdit(
+                    ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN,
+                    Preferences.FILTER_VIEW_MAIN_SPLIT_WIDTH,
+                    searchFilterPresenter.getDisplay(),
+                    searchFilterPresenter.getDisplay(),
+                    searchFilterFilteredResultsPresenter.getDisplay(),
+                    searchFilterFilteredResultsPresenter,
+                    display,
+                    display,
+                    getNewEntityCallback);
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT SearchFilterResultsAndFilterPresenter.go()");
+        }
     }
 
     @Override
