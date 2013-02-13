@@ -69,15 +69,17 @@ public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.TopicID());
         getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.TopicTitle());
 
-        this.getCreate().removeFromParent();
-        addLocalActionButton(searchTopics);
-        addLocalActionButton(tagsSearch);
-        addLocalActionButton(fields);
-        addLocalActionButton(filters);
-        addLocalActionButton(getCreate());
+        /*
+            Remove both the search and create buttons. The search button should not be displayed,
+            and the create button should be added to the end.
+         */
+        this.getTopActionPanel().clear();
 
+        addActionButton(searchTopics);
+        addActionButton(tagsSearch);
+        addActionButton(fields);
+        addActionButton(filters);
+        addActionButton(getCreate());
 
-        /* the filter results don't have a search button */
-        this.getEntitySearch().removeFromParent();
     }
 }
