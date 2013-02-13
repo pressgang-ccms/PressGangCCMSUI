@@ -70,11 +70,11 @@ public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<
         getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.TopicTitle());
 
         this.getCreate().removeFromParent();
-        addActionButton(searchTopics);
-        addActionButton(tagsSearch);
-        addActionButton(fields);
-        addActionButton(filters);
-        addActionButton(getCreate());
+        addLocalActionButton(searchTopics);
+        addLocalActionButton(tagsSearch);
+        addLocalActionButton(fields);
+        addLocalActionButton(filters);
+        addLocalActionButton(getCreate());
 
 
         /* the filter results don't have a search button */

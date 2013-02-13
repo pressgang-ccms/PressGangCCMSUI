@@ -47,10 +47,43 @@ abstract public class BaseSearchAndEditView<
      * The panel that will hold the view specific action buttons
      */
     private final HorizontalPanel viewViewSpecificActionButtonsPanel = new HorizontalPanel();
-    /**
-     * The dialog that is presented when the view is unavailable.
-     */
+
+    /** The dialog that is presented when the view is unavailable. */
     private final WaitingDialog waiting = new WaitingDialog();
+
+    @Override
+    public final DockLayoutPanel getResultsViewLayoutPanel() {
+        return resultsViewLayoutPanel;
+    }
+
+    public final DockLayoutPanel getViewLayoutPanel() {
+        return viewLayoutPanel;
+    }
+
+    @Override
+    public final HandlerSplitLayoutPanel getSplitPanel() {
+        return splitPanel;
+    }
+
+    @Override
+    public final FlexTable getResultsActionButtonsParentPanel() {
+        return resultsActionButtonsParentPanel;
+    }
+
+    @Override
+    public final SimpleLayoutPanel getResultsPanel() {
+        return resultsPanel;
+    }
+
+    @Override
+    public final SimpleLayoutPanel getViewPanel() {
+        return viewPanel;
+    }
+
+    @Override
+    public final FlexTable getViewActionButtonsParentPanel() {
+        return viewActionButtonsParentPanel;
+    }
 
     public BaseSearchAndEditView(final String applicationName, final String pageName) {
         super(applicationName, pageName);
@@ -89,40 +122,6 @@ abstract public class BaseSearchAndEditView<
     }
 
     @Override
-    public final DockLayoutPanel getResultsViewLayoutPanel() {
-        return resultsViewLayoutPanel;
-    }
-
-    public final DockLayoutPanel getViewLayoutPanel() {
-        return viewLayoutPanel;
-    }
-
-    @Override
-    public final HandlerSplitLayoutPanel getSplitPanel() {
-        return splitPanel;
-    }
-
-    @Override
-    public final FlexTable getResultsActionButtonsParentPanel() {
-        return resultsActionButtonsParentPanel;
-    }
-
-    @Override
-    public final SimpleLayoutPanel getResultsPanel() {
-        return resultsPanel;
-    }
-
-    @Override
-    public final SimpleLayoutPanel getViewPanel() {
-        return viewPanel;
-    }
-
-    @Override
-    public final FlexTable getViewActionButtonsParentPanel() {
-        return viewActionButtonsParentPanel;
-    }
-
-    @Override
     protected final void showWaiting() {
         waiting.center();
         waiting.show();
@@ -146,22 +145,11 @@ abstract public class BaseSearchAndEditView<
         this.viewActionButtonsPanel.clear();
         this.viewViewSpecificActionButtonsPanel.clear();
 
-        if (resultsActionButtonsPanel.getWidgetCount() != 0) {
-            /*
-                If the parent view has filter buttons, add them to the left, then add a spacer, and then add the view
-                specific buttons
-            */
-            viewActionButtonsParentPanel.setWidget(0, 0, viewActionButtonsPanel);
-            /* A spacer cell, to push the next cell to the right */
-            viewActionButtonsParentPanel.setWidget(0, 1, new SimplePanel());
-            viewActionButtonsParentPanel.setWidget(0, 2, viewViewSpecificActionButtonsPanel);
-            viewActionButtonsParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
-        } else {
-            /*
-                Otherwise just add the view specific buttons
-            */
-            viewActionButtonsParentPanel.setWidget(0, 0, viewViewSpecificActionButtonsPanel);
-        }
+        viewActionButtonsParentPanel.setWidget(0, 0, viewActionButtonsPanel);
+        /* A spacer cell, to push the next cell to the right */
+        viewActionButtonsParentPanel.setWidget(0, 1, new SimplePanel());
+        viewActionButtonsParentPanel.setWidget(0, 2, viewViewSpecificActionButtonsPanel);
+        viewActionButtonsParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
 
         this.viewActionButtonsPanel.add(this.getTopActionPanel());
         this.viewViewSpecificActionButtonsPanel.add(this.getTopViewSpecificActionPanel());
@@ -187,28 +175,11 @@ abstract public class BaseSearchAndEditView<
         this.resultsActionButtonsPanel.clear();
         this.resultsViewSpecificActionButtonsPanel.clear();
 
-
-        if (resultsActionButtonsPanel.getWidgetCount() != 0) {
-            /*
-                If the parent view has filter buttons, add them to the left, then add a spacer, and then add the view
-                specific buttons
-            */
-
-            resultsActionButtonsParentPanel.setWidget(0, 0, resultsActionButtonsPanel);
-            /* A spacer cell, to push the next cell to the right */
-            resultsActionButtonsParentPanel.setWidget(0, 1, new SimplePanel());
-            resultsActionButtonsParentPanel.setWidget(0, 2, resultsViewSpecificActionButtonsPanel);
-            resultsActionButtonsParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
-        } else {
-            /*
-                Otherwise just add the view specific buttons
-            */
-
-            resultsActionButtonsParentPanel.setWidget(0, 0, resultsViewSpecificActionButtonsPanel);
-        }
-
-        //this.resultsActionButtonsPanel.add(this.getTopActionPanel());
-        //this.resultsViewSpecificActionButtonsPanel.add(this.getTopViewSpecificActionPanel());
+        resultsActionButtonsParentPanel.setWidget(0, 0, resultsActionButtonsPanel);
+        /* A spacer cell, to push the next cell to the right */
+        resultsActionButtonsParentPanel.setWidget(0, 1, new SimplePanel());
+        resultsActionButtonsParentPanel.setWidget(0, 2, resultsViewSpecificActionButtonsPanel);
+        resultsActionButtonsParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
 
         if (filteredResultsView != null) {
             this.getResultsPanel().setWidget(filteredResultsView.getPanel());
