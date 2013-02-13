@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsAndTopicViewEvent;
@@ -64,6 +65,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         searchFilterResultsAndFilterPresenter.bindSearchAndEditExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Constants.QUERY_PATH_SEGMENT_PREFIX);
 
         bindSearchButtons();
+        bindFilterActionButtons();
 
         displayTags();
     }
@@ -71,6 +73,21 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     public void bindExtended(final int helpTopicId, final String pageId)
     {
         bind(helpTopicId, pageId, display);
+    }
+
+    /**
+     * Adds logic to the filter action buttons
+     */
+    private void  bindFilterActionButtons() {
+        final ClickHandler loadClickHanlder = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
+                tagsComponent.displayTags(displayedFilter);
+            }
+        };
+
+        searchFilterResultsAndFilterPresenter.getSearchFilterPresenter().getDisplay().getLoad().addClickHandler(loadClickHanlder);
     }
 
     @Override

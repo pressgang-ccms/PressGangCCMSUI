@@ -5,6 +5,7 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
@@ -16,6 +17,8 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUIProjectsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -29,6 +32,8 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
         // Empty interface declaration, similar to UiBinder
         interface SearchPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor> {
         }
+
+        void displayExtended(final RESTTagCollectionV1 tagCollection, final RESTFilterV1 filter, final boolean readOnly);
 
         SearchUIProjects getSearchUIProjects();
 
@@ -55,36 +60,35 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
         display.setViewShown(true);
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void bindExtended(final int helpTopicId, final String pageId)
+    public void bindExtended(final int helpTopicId, @NotNull final String pageId)
     {
         bind(helpTopicId, pageId, display);
+        displayTags(null);
     }
 
     @Override
-    public void parseToken(final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
 
     }
 
-    public void bind(final int topicId, final String pageId, final SearchPresenter.Display display) {
-
-        super.bind(topicId, pageId, display);
-
-        getProjects(display);
-    }
-
-    private void getProjects(final SearchPresenter.Display display) {
+    /**
+     * Gets the tags from the REST server, and optionally sets their state against a filter
+     *
+     * @param filter a filter that defines the state of the tags, or null if no initial state is required
+     */
+    public void displayTags(@Nullable final RESTFilterV1 filter) {
         final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, BaseTemplateViewInterface>(
                 display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, BaseTemplateViewInterface>() {
             @Override
-            public void doSuccessAction(final RESTTagCollectionV1 retValue, final BaseTemplateViewInterface waitDisplay) {
-                display.display(retValue, false);
+            public void doSuccessAction(@NotNull final RESTTagCollectionV1 retValue, @NotNull final BaseTemplateViewInterface waitDisplay) {
+                display.displayExtended(retValue, filter, false);
             }
         });
         RESTCalls.getTags(callback);

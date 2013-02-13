@@ -5,6 +5,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
 
 import java.util.ArrayList;
@@ -79,8 +80,9 @@ public final class SearchUIProject extends SearchUIBase {
      *
      * @param project The project that this object represents
      * @param tags    The tags that will be populated under this project
+     * @param filter The filter that defines the state of the tags
      */
-    public void populateCategories(final RESTProjectCollectionItemV1 project, final RESTTagCollectionV1 tags) {
+    public void populateCategories(final RESTProjectCollectionItemV1 project, final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
         if (tags == null) {
             throw new IllegalArgumentException("tags parameter cannot be null");
         }
@@ -98,11 +100,10 @@ public final class SearchUIProject extends SearchUIBase {
                     throw new IllegalArgumentException("tag.getItem().getCategories().getItems() cannot be null");
                 }
 
-                for (final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories()
-                        .returnExistingAndAddedCollectionItems()) {
+                for (final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories().returnExistingAndAddedCollectionItems()) {
                     final SearchUICategory searchUICategory = new SearchUICategory(this, category);
                     if (!this.categories.contains(searchUICategory)) {
-                        searchUICategory.populateCategories(project, category, tags);
+                        searchUICategory.populateCategories(project, category, tags, filter);
                         this.categories.add(searchUICategory);
                     }
                 }
@@ -117,8 +118,9 @@ public final class SearchUIProject extends SearchUIBase {
      * Populate the tags into categories under the "Common" project.
      *
      * @param tags The tags that will be populated under this project
+     * @param filter The filter that defines the state of the tags
      */
-    public void populateCategoriesWithoutProject(final RESTTagCollectionV1 tags) {
+    public void populateCategoriesWithoutProject(final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
         if (tags == null) {
             throw new IllegalArgumentException("tags parameter cannot be null");
         }
@@ -140,7 +142,7 @@ public final class SearchUIProject extends SearchUIBase {
                         .returnExistingAndAddedCollectionItems()) {
                     final SearchUICategory searchUICategory = new SearchUICategory(this, category);
                     if (!this.categories.contains(searchUICategory)) {
-                        searchUICategory.populateCategoriesWithoutProject(category, tags);
+                        searchUICategory.populateCategoriesWithoutProject(category, tags, filter);
                         this.categories.add(searchUICategory);
                     }
                 }

@@ -4,10 +4,13 @@ import com.google.gwt.user.client.ui.TriStateSelectionState;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchViewBase;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -25,10 +28,7 @@ import java.util.List;
 public class SearchUIProjects implements SearchViewBase {
     /** The string that appears in the query to indicate the presence or absence of a tag */
     private static final String TAG_PREFIX = "tag";
-    /** Indicates that a tag should be present in the returned topics */
-    private static final int TAG_INCLUDED = 1;
-    /** Indicates that a tag should be absent in the returned topics */
-    private static final int TAG_EXCLUDED = 0;
+
 
     private final LinkedList<SearchUIProject> projects = new LinkedList<SearchUIProject>();
 
@@ -45,8 +45,19 @@ public class SearchUIProjects implements SearchViewBase {
      * @param tags The collection of tags that is used to build the hierarchy of projects, categories and tags
      */
     public SearchUIProjects(final RESTTagCollectionV1 tags) {
-        initialize(tags);
+        initialize(tags, null);
     }
+
+    /**
+     *
+     * @param tags The collection of tags that is used to build the hierarchy of projects, categories and tags
+     * @param filter The filter that defines the state of the tags
+     */
+    public SearchUIProjects(final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
+        initialize(tags, filter);
+    }
+
+
     
     /**
      * 
@@ -59,11 +70,14 @@ public class SearchUIProjects implements SearchViewBase {
     /**
      * 
      * @param tags The collection of tags that is used to build the hierarchy of projects, categories and tags
+     * @param filter The filter that defines the state of the tags
      */
-    public final void initialize(final RESTTagCollectionV1 tags) {
+    public final void initialize(@NotNull final RESTTagCollectionV1 tags, @Nullable final RESTFilterV1 filter) {
         if (tags == null) {
             throw new IllegalArgumentException("tags parameter cannot be null");
         }
+
+        this.projects.clear();
 
         for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
             if (tag.getItem().getProjects() == null) {
@@ -74,7 +88,7 @@ public class SearchUIProjects implements SearchViewBase {
             for (final RESTProjectCollectionItemV1 project : tag.getItem().getProjects().returnExistingCollectionItems()) {
                 final SearchUIProject searchUIProject = new SearchUIProject(project);
                 if (!this.projects.contains(searchUIProject)) {
-                    searchUIProject.populateCategories(project, tags);
+                    searchUIProject.populateCategories(project, tags, filter);
                     this.projects.add(searchUIProject);
                 }
             }
@@ -87,7 +101,7 @@ public class SearchUIProjects implements SearchViewBase {
          * confused with a project that might be called common.
          */
         final SearchUIProject common = new SearchUIProject(PressGangCCMSUI.INSTANCE.Common());
-        common.populateCategoriesWithoutProject(tags);
+        common.populateCategoriesWithoutProject(tags, filter);
         if (common.getChildCount() != 0) {
             this.projects.addFirst(common);
         }
@@ -106,9 +120,9 @@ public class SearchUIProjects implements SearchViewBase {
                         builder.append(";");
 
                         if (tag.getState() == TriStateSelectionState.SELECTED) {
-                            builder.append(TAG_PREFIX + tag.getTag().getItem().getId() + "=" + TAG_INCLUDED);
+                            builder.append(TAG_PREFIX + tag.getTag().getItem().getId() + "=" + Constants.TAG_INCLUDED);
                         } else if (tag.getState() == TriStateSelectionState.UNSELECTED) {
-                            builder.append(TAG_PREFIX + tag.getTag().getItem().getId() + "=" + TAG_EXCLUDED);
+                            builder.append(TAG_PREFIX + tag.getTag().getItem().getId() + "=" + Constants.TAG_EXCLUDED);
                         }
                     }
                 }

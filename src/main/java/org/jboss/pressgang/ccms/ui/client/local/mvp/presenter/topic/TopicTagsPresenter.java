@@ -103,7 +103,7 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
                     try {
                         LOGGER.log(Level.INFO, "ENTER TopicTagsPresenter.getTags() callback.doSuccessAction()");
 
-                        searchUIProjects.initialize(retValue);
+                        searchUIProjects.initialize(retValue, null);
                         display.initializeNewTags(searchUIProjects);
                     } finally {
                         LOGGER.log(Level.INFO, "EXIT TopicTagsPresenter.getTags() callback.doSuccessAction()");

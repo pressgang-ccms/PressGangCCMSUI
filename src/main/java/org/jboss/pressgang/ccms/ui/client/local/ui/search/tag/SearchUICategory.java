@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
 
 import java.util.ArrayList;
@@ -71,9 +72,10 @@ public final class SearchUICategory extends SearchUIBase {
      * @param project  The project this category belongs to
      * @param category The category that this object represents
      * @param tags     The tags collection from which tags will be selected for this category
+     * @param filter The filter that defines the state of the tags
      */
     public void populateCategories(final RESTProjectCollectionItemV1 project, final RESTCategoryInTagCollectionItemV1 category,
-                                   final RESTTagCollectionV1 tags) {
+                                   final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
         if (tags == null) {
             throw new IllegalArgumentException("tags parameter cannot be null");
         }
@@ -109,7 +111,7 @@ public final class SearchUICategory extends SearchUIBase {
             });
 
             if (matchingCategory.isPresent() && matchingProject.isPresent()) {
-                final SearchUITag searchUITag = new SearchUITag(this, tag);
+                final SearchUITag searchUITag = new SearchUITag(this, tag, filter);
                 if (!this.myTags.contains(searchUITag)) {
                     this.myTags.add(searchUITag);
                 }
@@ -124,9 +126,10 @@ public final class SearchUICategory extends SearchUIBase {
      *
      * @param category The category that this object represents
      * @param tags     The tags collection from which tags will be selected for this category
+     * @param filter The filter that defines the state of the tags
      */
     public void populateCategoriesWithoutProject(final RESTCategoryInTagCollectionItemV1 category,
-                                                 final RESTTagCollectionV1 tags) {
+                                                 final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
         if (tags == null) {
             throw new IllegalArgumentException("tags parameter cannot be null");
         }
@@ -153,7 +156,7 @@ public final class SearchUICategory extends SearchUIBase {
                 });
 
                 if (matchingCategory.isPresent()) {
-                    final SearchUITag searchUITag = new SearchUITag(this, tag);
+                    final SearchUITag searchUITag = new SearchUITag(this, tag, filter);
                     if (!this.myTags.contains(searchUITag)) {
                         this.myTags.add(searchUITag);
                     }

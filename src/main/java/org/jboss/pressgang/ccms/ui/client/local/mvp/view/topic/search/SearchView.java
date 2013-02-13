@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.WaitingDialog;
@@ -59,6 +60,11 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
     @Override
     public void display(final RESTTagCollectionV1 tagCollection, final boolean readOnly) {
 
+        throw new UnsupportedOperationException("display() is not supported. Use displayExtended() instead.");
+    }
+
+    public final void displayExtended(final RESTTagCollectionV1 tagCollection, final RESTFilterV1 filter, final boolean readOnly) {
+
         /* Build the action bar icons */
         addActionButton(searchTopics);
         addActionButton(tags);
@@ -66,7 +72,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
         addActionButton(filters);
 
         /* Construct a hierarchy of tags from the tag collection */
-        getSearchUIProjects().initialize(tagCollection);
+        getSearchUIProjects().initialize(tagCollection, filter);
 
         /* SearchUIProjectsEditor is a grid */
         final SearchUIProjectsEditor editor = new SearchUIProjectsEditor(driver, searchUIProjects);

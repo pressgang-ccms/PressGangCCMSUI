@@ -7,10 +7,17 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
  */
 public final class Constants {
 
+
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201302131307";
+    public static final String VERSION = "201302140905";
+
+    /** Indicates that a tag should be present in the returned topics */
+    public static final int TAG_INCLUDED = 1;
+    /** Indicates that a tag should be absent in the returned topics */
+    public static final int TAG_EXCLUDED = 0;
+
     /**
      * The sort order to apply to a newly added child.
      */

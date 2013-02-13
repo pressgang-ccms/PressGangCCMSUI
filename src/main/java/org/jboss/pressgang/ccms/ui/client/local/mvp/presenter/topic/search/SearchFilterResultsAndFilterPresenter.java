@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
@@ -45,14 +47,8 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(SearchFilterResultsAndFilterPresenter.class.getName());
-    /**
-     * The presenter used to display the filter's details.
-     */
     @Inject
     private SearchFilterPresenter searchFilterPresenter;
-    /**
-     * The presenter used to display the list of filters.
-     */
     @Inject
     private SearchFilterFilteredResultsPresenter searchFilterFilteredResultsPresenter;
     /**
@@ -143,7 +139,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
 
     @Override
     protected final void bindActionButtons() {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     @Override
@@ -169,6 +165,27 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
         }
     }
 
+    /**
+     * The presenter used to display the filter's details.
+     */
+    public SearchFilterPresenter getSearchFilterPresenter() {
+        return searchFilterPresenter;
+    }
+
+    public void setSearchFilterPresenter(SearchFilterPresenter searchFilterPresenter) {
+        this.searchFilterPresenter = searchFilterPresenter;
+    }
+
+    /**
+     * The presenter used to display the list of filters.
+     */
+    public SearchFilterFilteredResultsPresenter getSearchFilterFilteredResultsPresenter() {
+        return searchFilterFilteredResultsPresenter;
+    }
+
+    public void setSearchFilterFilteredResultsPresenter(SearchFilterFilteredResultsPresenter searchFilterFilteredResultsPresenter) {
+        this.searchFilterFilteredResultsPresenter = searchFilterFilteredResultsPresenter;
+    }
 
 
     /**
