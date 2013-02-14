@@ -99,7 +99,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
              * Display a message if we are using an updated version
              */
             final String lastBuild = Preferences.INSTANCE.getString(Preferences.LAST_BUILD, null);
-            if (lastBuild != null && !lastBuild.equals(Constants.VERSION))  {
+            if (lastBuild === null || !lastBuild.equals(Constants.VERSION))  {
                 Window.alert(PressGangCCMSUI.INSTANCE.ApplicationUpdated());
             }
             Preferences.INSTANCE.saveSetting(Preferences.LAST_BUILD, Constants.VERSION);

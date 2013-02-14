@@ -94,6 +94,10 @@ public final class ServiceConstants {
      */
     public static final int DEFAULT_HELP_TOPIC = 12558;
     /**
+     * The help topic for the search filters screen.
+      */
+    public static final int FILTERS_HELP_TOPIC = 13434;
+    /**
      * A private constructor to prevent instantiation.
      */
     private ServiceConstants() {
