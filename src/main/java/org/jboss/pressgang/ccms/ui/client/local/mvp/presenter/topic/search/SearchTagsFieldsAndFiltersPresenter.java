@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -11,7 +12,11 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResu
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -65,7 +70,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         searchFilterResultsAndFilterPresenter.bindSearchAndEditExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Constants.QUERY_PATH_SEGMENT_PREFIX);
 
         bindSearchButtons();
-        bindFilterActionButtons();
+        loadSearchTags();
 
         displayTags();
     }
@@ -76,18 +81,49 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     }
 
     /**
+     * Gets the tags from the REST server
+     */
+    private void loadSearchTags() {
+
+        final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, BaseTemplateViewInterface>(
+                display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, BaseTemplateViewInterface>() {
+            @Override
+            public void doSuccessAction(@NotNull final RESTTagCollectionV1 retValue, @NotNull final BaseTemplateViewInterface waitDisplay) {
+
+                /* Bind the load, load and search and overwrite buttons */
+                bindFilterActionButtons(retValue);
+
+                /* Display the tags */
+                tagsComponent.getDisplay().displayExtended(retValue, null, false);
+            }
+        });
+        RESTCalls.getTags(callback);
+    }
+
+    /**
      * Adds logic to the filter action buttons
      */
-    private void  bindFilterActionButtons() {
+    private void  bindFilterActionButtons(@NotNull final RESTTagCollectionV1 tags) {
         final ClickHandler loadClickHanlder = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
-                tagsComponent.updateTagState(displayedFilter);
+                tagsComponent.updateTagState(tags, displayedFilter);
+            }
+        };
+
+        final ClickHandler loadAndSearchClickHandler = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
+                final SearchUIProjects projects = new SearchUIProjects(tags, displayedFilter);
+                final String query = projects.getSearchQuery(true);
+                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
             }
         };
 
         searchFilterResultsAndFilterPresenter.getSearchFilterPresenter().getDisplay().getLoad().addClickHandler(loadClickHanlder);
+        searchFilterResultsAndFilterPresenter.getSearchFilterPresenter().getDisplay().getLoadAndSearch().addClickHandler(loadAndSearchClickHandler);
     }
 
     @Override
