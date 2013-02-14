@@ -208,6 +208,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             public void onClick(final ClickEvent event) {
 
                 tagsComponent.getDisplay().getSearchUIProjects().populateFilter(filter);
+                fieldsComponent.getDisplay().getSearchUIFields().populateFilter(filter);
 
                 filter.explicitSetName(saveFilterDialog.getName().getValue());
                 filter.explicitSetDescription(saveFilterDialog.getDescription().getValue());
