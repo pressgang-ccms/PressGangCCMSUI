@@ -8,7 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresult
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
-public class SearchResultsView extends BaseFilteredResultsView<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1>
+public class SearchResultsView extends BaseFilteredResultsView<RESTTopicCollectionItemV1>
         implements SearchResultsPresenter.Display {
 
     private final TextColumn<RESTTopicCollectionItemV1> idColumn = new TextColumn<RESTTopicCollectionItemV1>() {

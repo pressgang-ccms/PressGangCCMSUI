@@ -11,7 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
 
 public class CategoryFilteredResultsView extends
-        BaseFilteredResultsView<RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1> implements
+        BaseFilteredResultsView<RESTCategoryCollectionItemV1> implements
         CategoryFilteredResultsPresenter.Display {
 
     private final TextBox idFilter = new TextBox();

@@ -169,7 +169,7 @@ abstract public class BaseSearchAndEditView<
      * @param filteredResultsView The filtered view to be displayed, or null if no view is to be displayed
      */
     @Override
-    public final void displaySearchResultsView(final BaseFilteredResultsViewInterface<T, U, V> filteredResultsView) {
+    public final void displaySearchResultsView(final BaseFilteredResultsViewInterface<V> filteredResultsView) {
         this.getResultsPanel().clear();
         this.resultsActionButtonsParentPanel.clear();
         this.resultsActionButtonsPanel.clear();

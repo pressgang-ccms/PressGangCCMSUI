@@ -36,7 +36,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  * The presenter used to display the list of search filters.
  */
 @Dependent
-public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsComponent<RESTFilterV1, RESTFilterCollectionV1, RESTFilterCollectionItemV1> {
+public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsComponent<RESTFilterCollectionItemV1> {
 
     /**
      * A Logger
@@ -46,7 +46,7 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsCom
     /**
      * The interface that defines the display used by this presenter.
      */
-    public interface Display extends BaseFilteredResultsViewInterface<RESTFilterV1, RESTFilterCollectionV1, RESTFilterCollectionItemV1> {
+    public interface Display extends BaseFilteredResultsViewInterface<RESTFilterCollectionItemV1> {
         PushButton getSearchTopics();
         PushButton getTagsSearch();
         PushButton getFields();

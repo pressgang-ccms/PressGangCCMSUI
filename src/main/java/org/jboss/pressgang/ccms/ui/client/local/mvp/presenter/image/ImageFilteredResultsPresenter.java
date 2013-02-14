@@ -30,11 +30,10 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 @Dependent
 public class ImageFilteredResultsPresenter
         extends
-        BaseFilteredResultsComponent<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1>
+        BaseFilteredResultsComponent<RESTImageCollectionItemV1>
         implements BaseTemplatePresenterInterface {
 
-    public interface Display extends
-            BaseFilteredResultsViewInterface<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1> {
+    public interface Display extends BaseFilteredResultsViewInterface<RESTImageCollectionItemV1> {
 
         TextBox getImageIdFilter();
 

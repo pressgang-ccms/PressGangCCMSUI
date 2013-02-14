@@ -34,8 +34,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
  */
 @Dependent
 public class CategoryFilteredResultsPresenter
-        extends BaseFilteredResultsComponent<
-        RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1>
+        extends BaseFilteredResultsComponent<RESTCategoryCollectionItemV1>
         implements BaseTemplatePresenterInterface {
 
     /**
@@ -180,7 +179,7 @@ public class CategoryFilteredResultsPresenter
      * The interface used to define the category filtered list view.
      */
     public interface Display extends
-            BaseFilteredResultsViewInterface<RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1> {
+            BaseFilteredResultsViewInterface<RESTCategoryCollectionItemV1> {
 
         /**
          * @return The fields used to specify the category ids filter

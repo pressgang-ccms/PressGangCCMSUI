@@ -27,11 +27,11 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 
 public class SearchResultsPresenter
         extends
-        BaseFilteredResultsComponent<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1>
+        BaseFilteredResultsComponent<RESTTopicCollectionItemV1>
         implements BaseTemplatePresenterInterface {
 
     public interface Display extends
-            BaseFilteredResultsViewInterface<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
+            BaseFilteredResultsViewInterface<RESTTopicCollectionItemV1> {
 
     }
 

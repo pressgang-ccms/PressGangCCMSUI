@@ -12,17 +12,12 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 /**
  * This interface defines the base for all views displaying a filtered results set
  *
- * @param <T> The entity type
- * @param <U> The collection type for entity T
  * @param <V> The collection item type for entity T
  *
  * @author Matthew Casperson
  * 
  */
-public interface BaseFilteredResultsViewInterface<
-        T extends RESTBaseEntityV1<T, U, V>,
-        U extends RESTBaseCollectionV1<T, U, V>,
-        V extends RESTBaseCollectionItemV1<T, U, V>>
+public interface BaseFilteredResultsViewInterface<V extends RESTBaseCollectionItemV1<?, ?, ?>>
         extends BaseTemplateViewInterface {
     /**
      * @return The button that initiates a new search

@@ -14,15 +14,10 @@ import org.jetbrains.annotations.NotNull;
  * This is the base class that is used for components adding logic to views that list the results of a query
  * @author Matthew Casperson
  *
- * @param <T> The entity type
- * @param <U> The collection type for entity T
  * @param <V> The collection item type for entity T
  */
-abstract public class BaseFilteredResultsComponent<
-        T extends RESTBaseEntityV1<T, U, V>,
-        U extends RESTBaseCollectionV1<T, U, V>,
-        V extends RESTBaseCollectionItemV1<T, U, V>>
-    extends BaseTemplatePresenter implements BaseFilteredResultsComponentInterface<T, U, V> {
+abstract public class BaseFilteredResultsComponent<V extends RESTBaseCollectionItemV1<?, ?, ?>>
+    extends BaseTemplatePresenter implements BaseFilteredResultsComponentInterface<V> {
 
     /** Holds the data required to populate and refresh the tags list */
     private final ProviderUpdateData<V> providerData = new ProviderUpdateData<V>();

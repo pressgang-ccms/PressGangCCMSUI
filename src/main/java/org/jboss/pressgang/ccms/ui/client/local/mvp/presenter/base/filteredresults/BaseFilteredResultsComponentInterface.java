@@ -10,11 +10,9 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
  * 
  * @author Matthew Casperson
  *
- * @param <T> The entity type
- * @param <U> The collection type for entity T
  * @param <V> The collection item type for entity T
  */
-public interface BaseFilteredResultsComponentInterface<T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>>
+public interface BaseFilteredResultsComponentInterface<V extends RESTBaseCollectionItemV1<?, ?, ?>>
         extends PresenterInterface {
 
     /**

@@ -30,7 +30,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 @Dependent
 public class ProjectFilteredResultsPresenter
         extends
-        BaseFilteredResultsComponent<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1>
+        BaseFilteredResultsComponent<RESTProjectCollectionItemV1>
         implements BaseTemplatePresenterInterface {
 
     /**
@@ -154,8 +154,7 @@ public class ProjectFilteredResultsPresenter
 
     }
 
-    public interface Display extends
-            BaseFilteredResultsViewInterface<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> {
+    public interface Display extends BaseFilteredResultsViewInterface<RESTProjectCollectionItemV1> {
 
         TextBox getIdFilter();
 

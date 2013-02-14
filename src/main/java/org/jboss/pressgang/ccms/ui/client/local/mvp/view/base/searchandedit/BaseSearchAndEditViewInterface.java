@@ -46,5 +46,5 @@ public interface BaseSearchAndEditViewInterface<T extends RESTBaseEntityV1<T, U,
      */
     void displayChildView(final BaseTemplateViewInterface displayedView);
 
-    void displaySearchResultsView(final BaseFilteredResultsViewInterface<T, U, V> filteredResultsView);
+    void displaySearchResultsView(final BaseFilteredResultsViewInterface<V> filteredResultsView);
 }

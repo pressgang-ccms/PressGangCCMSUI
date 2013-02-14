@@ -36,7 +36,7 @@ import java.util.logging.Logger;
  * @author Matthew Casperson
  */
 abstract public class BaseSearchAndEditComponent<
-        R extends BaseFilteredResultsViewInterface<T, U, V>,
+        R extends BaseFilteredResultsViewInterface<V>,
         T extends RESTBaseEntityV1<T, U, V>,
         U extends RESTBaseCollectionV1<T, U, V>,
         V extends RESTBaseCollectionItemV1<T, U, V>,
@@ -67,7 +67,7 @@ abstract public class BaseSearchAndEditComponent<
     /**
      * The component that adds logic to the filtered results view
      */
-    private BaseFilteredResultsComponentInterface<T, U, V> filteredResultsComponent;
+    private BaseFilteredResultsComponentInterface<V> filteredResultsComponent;
     /**
      * The top level display
      */
@@ -101,7 +101,7 @@ abstract public class BaseSearchAndEditComponent<
             final BaseTemplateViewInterface firstDisplayedView,
             final X entityPropertiesView,
             final R filteredResultsDisplay,
-            final BaseFilteredResultsComponentInterface<T, U, V> filteredResultsComponent,
+            final BaseFilteredResultsComponentInterface<V> filteredResultsComponent,
             final BaseSearchAndEditViewInterface display,
             final BaseTemplateViewInterface waitDisplay,
             final GetNewEntityCallback<T> getNewEntityCallback) {

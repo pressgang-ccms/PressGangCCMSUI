@@ -28,10 +28,10 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 @Dependent
 public class TagFilteredResultsPresenter
         extends
-        BaseFilteredResultsComponent<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>
+        BaseFilteredResultsComponent<RESTTagCollectionItemV1>
         implements BaseTemplatePresenterInterface {
 
-    public interface Display extends BaseFilteredResultsViewInterface<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
+    public interface Display extends BaseFilteredResultsViewInterface<RESTTagCollectionItemV1> {
 
         TextBox getIdFilter();
 

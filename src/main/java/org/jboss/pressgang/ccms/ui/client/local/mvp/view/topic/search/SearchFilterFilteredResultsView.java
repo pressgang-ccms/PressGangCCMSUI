@@ -17,10 +17,7 @@ import javax.enterprise.context.Dependent;
  *  The view to display a list of filters
  */
 @Dependent
-public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<
-        RESTFilterV1,
-        RESTFilterCollectionV1,
-        RESTFilterCollectionItemV1>
+public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<RESTFilterCollectionItemV1>
         implements SearchFilterFilteredResultsPresenter.Display {
 
     private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
