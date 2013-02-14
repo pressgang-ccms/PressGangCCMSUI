@@ -69,6 +69,8 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         fieldsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
         searchFilterResultsAndFilterPresenter.bindSearchAndEditExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Constants.QUERY_PATH_SEGMENT_PREFIX);
 
+        fieldsComponent.getDisplay().display(null, false);
+
         bindSearchButtons();
         loadSearchTags();
 
@@ -108,7 +110,8 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             @Override
             public void onClick(final ClickEvent event) {
                 final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
-                tagsComponent.updateTagState(tags, displayedFilter);
+                tagsComponent.getDisplay().displayExtended(tags, displayedFilter, false);
+                fieldsComponent.getDisplay().display(displayedFilter, false);
             }
         };
 

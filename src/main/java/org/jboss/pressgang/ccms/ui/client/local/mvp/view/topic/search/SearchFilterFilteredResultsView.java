@@ -66,7 +66,7 @@ public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<
     public SearchFilterFilteredResultsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Filters(), PressGangCCMSUI.INSTANCE.CreateFilter());
 
-        getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.FilterID());
+        getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.FilterId());
         getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.FilterName());
 
         /*

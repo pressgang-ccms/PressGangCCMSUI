@@ -85,17 +85,6 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
         bind(helpTopicId, pageId, display);
     }
 
-    public void updateTagState(@NotNull final RESTTagCollectionV1 tags, @Nullable final RESTFilterV1 filter) {
-        try {
-            LOGGER.log(Level.INFO, "ENTER SearchPresenter.updateTagState()");
-
-            display.displayExtended(tags, this.filter, false);
-
-        } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchPresenter.updateTagState()");
-        }
-    }
-
     @Override
     public void parseToken(@NotNull final String historyToken) {
 

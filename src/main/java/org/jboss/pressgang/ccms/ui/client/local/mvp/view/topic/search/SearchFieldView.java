@@ -3,11 +3,14 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.search;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFieldPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchFieldEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUIProjectsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 
 public class SearchFieldView extends BaseTemplateView implements SearchFieldPresenter.Display {
@@ -56,6 +59,12 @@ public class SearchFieldView extends BaseTemplateView implements SearchFieldPres
         addActionButton(fields);
         addActionButton(filters);
 
+
+    }
+
+    @Override
+    public void display(final RESTFilterV1 filter, final boolean readOnly) {
+        searchUIFields.initialize(filter);
         /* SearchUIProjectsEditor is a grid */
         final SearchFieldEditor editor = new SearchFieldEditor();
         /* Initialize the driver with the top-level editor */
