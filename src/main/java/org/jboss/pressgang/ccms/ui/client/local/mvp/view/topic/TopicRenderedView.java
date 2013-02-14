@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.HTML;
 import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
 import hu.szaboaz.gwt.xslt.client.XsltProcessor;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
@@ -26,12 +27,12 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     }
 
     @Override
-    public final void display(final RESTTopicV1 topic, final boolean readOnly) {
+    public final void display(final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
         throw new UnsupportedOperationException("TopicRenderedView.display() is not supported. Use TopicRenderedView.displayTopicRendered() instead.");
     }
 
     @Override
-    public final void displayTopicRendered(final RESTTopicV1 topic, final boolean readOnly, final boolean showImages) {
+    public final void displayTopicRendered(final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly, final boolean showImages) {
 
         try {
             // Any number of processors can be created, they will behave
