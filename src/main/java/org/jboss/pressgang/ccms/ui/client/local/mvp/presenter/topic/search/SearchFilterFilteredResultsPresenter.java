@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * The presenter used to display the list of search filters.
  */
@@ -70,6 +72,8 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsCom
         try {
             LOGGER.log(Level.INFO, "ENTER SearchFilterFilteredResultsPresenter.generateListProvider()");
 
+            checkArgument(queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX), "queryString must begin with " + Constants.QUERY_PATH_SEGMENT_PREFIX);
+
             final EnhancedAsyncDataProvider<RESTFilterCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTFilterCollectionItemV1>() {
                 @Override
                 protected void onRangeChanged(@NotNull final HasData<RESTFilterCollectionItemV1> list) {
@@ -107,7 +111,7 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsCom
 
     @Override
     public final String getQuery() {
-        return null;
+        return Constants.QUERY_PATH_SEGMENT_PREFIX;
     }
 
     @Override

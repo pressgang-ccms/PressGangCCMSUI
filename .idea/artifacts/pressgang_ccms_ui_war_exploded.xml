@@ -35,7 +35,7 @@
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/weld/weld-spi/1.1.Final/weld-spi-1.1.Final.jar" output-file-name="weld-spi-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/weld/weld-api/1.1.Final/weld-api-1.1.Final.jar" output-file-name="weld-api-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/errai/errai-data-binding/2.2.0.Final/errai-data-binding-2.2.0.Final.jar" output-file-name="errai-data-binding-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/google/guava/guava-gwt/12.0/guava-gwt-12.0.jar" output-file-name="guava-gwt-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/google/guava/guava-gwt/13.0/guava-gwt-13.0.jar" output-file-name="guava-gwt-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/javax/mail/mail/1.4/mail-1.4.jar" output-file-name="mail-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/javax/activation/activation/1.1/activation-1.1.jar" output-file-name="activation-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging/3.0.0.Beta4/jboss-logging-3.0.0.Beta4.jar" output-file-name="jboss-logging-.jar" />
