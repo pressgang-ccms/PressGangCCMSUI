@@ -66,8 +66,8 @@ public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<
     public SearchFilterFilteredResultsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Filters(), PressGangCCMSUI.INSTANCE.CreateFilter());
 
-        getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.TopicID());
-        getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.TopicTitle());
+        getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.FilterID());
+        getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.FilterName());
 
         /*
             Remove both the search and create buttons. The search button should not be displayed,

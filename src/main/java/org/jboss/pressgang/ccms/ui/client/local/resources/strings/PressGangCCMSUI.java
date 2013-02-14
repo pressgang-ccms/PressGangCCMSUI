@@ -395,6 +395,8 @@ public interface PressGangCCMSUI extends Constants {
 
     String FilterName();
 
+    String FilterId();
+
     String FilterDescription();
 
     String Overwrite();
