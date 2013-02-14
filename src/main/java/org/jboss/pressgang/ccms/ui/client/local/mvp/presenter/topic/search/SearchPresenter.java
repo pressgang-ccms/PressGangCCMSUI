@@ -54,6 +54,15 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
     @Inject
     private Display display;
 
+    /**
+     * The tag collection that is loaded when this presenter is displayed
+     */
+    private RESTTagCollectionV1 tagCollection;
+    /**
+     * The filter that will be used to set the tag's initial state
+     */
+    private RESTFilterV1 filter;
+
     public Display getDisplay()
     {
         return display;
@@ -70,7 +79,20 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
     public void bindExtended(final int helpTopicId, @NotNull final String pageId)
     {
         bind(helpTopicId, pageId, display);
-        displayTags(null);
+        displayTags();
+    }
+
+    public void updateTagState(@Nullable final RESTFilterV1 filter) {
+        this.filter = filter;
+
+        /*
+            If  tagCollection == null, it means that the async call in displayTags has not
+            returned. In this case we simply set the filter variable and let displayTags()
+            apply the filter.
+         */
+        if (tagCollection != null)  {
+            display.displayExtended(tagCollection, filter, false);
+        }
     }
 
     @Override
@@ -80,15 +102,14 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
 
     /**
      * Gets the tags from the REST server, and optionally sets their state against a filter
-     *
-     * @param filter a filter that defines the state of the tags, or null if no initial state is required
      */
-    public void displayTags(@Nullable final RESTFilterV1 filter) {
+    public void displayTags() {
         final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, BaseTemplateViewInterface>(
                 display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, BaseTemplateViewInterface>() {
             @Override
             public void doSuccessAction(@NotNull final RESTTagCollectionV1 retValue, @NotNull final BaseTemplateViewInterface waitDisplay) {
-                display.displayExtended(retValue, filter, false);
+                tagCollection = retValue;
+                display.displayExtended(tagCollection, filter, false);
             }
         });
         RESTCalls.getTags(callback);
