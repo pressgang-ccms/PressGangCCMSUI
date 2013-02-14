@@ -18,7 +18,7 @@ public class SaveFilterDialog extends DialogBox implements SaveFilterDialogInter
     /**
      * A Logger
      */
-    private static final Logger LOGGER = Logger.getLogger(SaveFilterDialog.class.getName()
+    private static final Logger LOGGER = Logger.getLogger(SaveFilterDialog.class.getName());
 
     /**
      * The table that holds the various UI elements.
