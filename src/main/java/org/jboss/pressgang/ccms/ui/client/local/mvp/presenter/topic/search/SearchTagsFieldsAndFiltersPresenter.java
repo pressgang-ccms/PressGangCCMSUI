@@ -14,6 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -120,7 +121,8 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             public void onClick(final ClickEvent event) {
                 final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
                 final SearchUIProjects projects = new SearchUIProjects(tags, displayedFilter);
-                final String query = projects.getSearchQuery(true);
+                final SearchUIFields fields = new SearchUIFields(displayedFilter);
+                final String query = projects.getSearchQuery(true) + fields.getSearchQuery(false);
                 eventBus.fireEvent(new SearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
             }
         };
