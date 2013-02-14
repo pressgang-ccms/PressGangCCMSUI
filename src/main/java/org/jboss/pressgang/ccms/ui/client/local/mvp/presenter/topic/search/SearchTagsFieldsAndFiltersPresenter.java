@@ -170,6 +170,11 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         final ClickHandler overwriteFilter = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
+
+                /* Save any changes back to the underlying object */
+                fieldsComponent.getDisplay().getDriver().flush();
+                tagsComponent.getDisplay().getDriver().flush();
+
                 final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
 
                 /* Setting the id to the value of the displayed filter is the indication that this is an updated filter */
