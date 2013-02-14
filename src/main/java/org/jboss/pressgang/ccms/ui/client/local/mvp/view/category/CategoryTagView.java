@@ -19,7 +19,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 
 public class CategoryTagView
     extends BaseOrderedChildrenView<
-                RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1,
+                RESTCategoryV1,
                 RESTCategoryV1,
                 RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
                 RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>

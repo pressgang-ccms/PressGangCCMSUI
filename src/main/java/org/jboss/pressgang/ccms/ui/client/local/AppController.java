@@ -92,17 +92,10 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
         try {
             LOGGER.log(Level.INFO, "ENTER AppController.go()");
 
+            displayWelcomeMessage();
+
             this.container = container;
             this.bind();
-
-            /**
-             * Display a message if we are using an updated version
-             */
-            final String lastBuild = Preferences.INSTANCE.getString(Preferences.LAST_BUILD, null);
-            if (lastBuild == null || !lastBuild.equals(Constants.VERSION))  {
-                Window.alert(PressGangCCMSUI.INSTANCE.ApplicationUpdated());
-            }
-            Preferences.INSTANCE.saveSetting(Preferences.LAST_BUILD, Constants.VERSION);
 
             if ("".equals(History.getToken())) {
                 LOGGER.log(Level.INFO, "Setting default history token");
@@ -114,6 +107,17 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
         } finally {
             LOGGER.log(Level.INFO, "EXIT AppController.go()");
         }
+    }
+
+    /**
+     * Display a message if we are using an updated version
+     */
+    private void displayWelcomeMessage() {
+        final String lastBuild = Preferences.INSTANCE.getString(Preferences.LAST_BUILD, null);
+        if (lastBuild == null || !lastBuild.equals(Constants.VERSION))  {
+            Window.alert(PressGangCCMSUI.INSTANCE.ApplicationUpdated());
+        }
+        Preferences.INSTANCE.saveSetting(Preferences.LAST_BUILD, Constants.VERSION);
     }
 
     @Override

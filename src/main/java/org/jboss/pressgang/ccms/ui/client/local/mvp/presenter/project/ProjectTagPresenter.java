@@ -28,14 +28,14 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 @Dependent
 public class ProjectTagPresenter
         extends BaseChildrenComponent<
-        RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1,    // The main REST types 
-        RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,                // The possible children types
+        RESTProjectV1,    // The main REST types
+        RESTTagCollectionItemV1,                // The possible children types
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>                // The existing children types
         implements BaseTemplatePresenterInterface {
 
     public interface Display
             extends
-            BaseChildrenViewInterface<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
+            BaseChildrenViewInterface<RESTProjectV1, RESTTagCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
     }
 
     public static final String HISTORY_TOKEN = "ProjectTagView";

@@ -19,8 +19,6 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
  * @author Matthew Casperson
  *
  * @param <T> The entity type
- * @param <U> The collection type for entity T
- * @param <V> The collection item type for entity T
  *
  * @param <W> The parent of the children
  *
@@ -33,11 +31,13 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
  * @param <F> The collection item type for entity D
  */
 abstract public class BaseExtendedChildrenView<
-        T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>,
+        T extends RESTBaseEntityV1<?, ?, ?>,
         W extends RESTBaseEntityV1<?, ?, ?>,
-        A extends RESTBaseEntityV1<A, B, C>, B extends RESTBaseCollectionV1<A, B, C>, C extends RESTBaseCollectionItemV1<A, B, C>,
-        D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
-        extends BaseChildrenView<T, U, V, A, B, C, D, E, F> implements BaseExtendedChildrenViewInterface<T, U, V, W, A, B, C, D, E, F> {
+        C extends RESTBaseCollectionItemV1<?, ?, ?>,
+        D extends RESTBaseEntityV1<D, E, F>,
+        E extends RESTBaseCollectionV1<D, E, F>,
+        F extends RESTBaseCollectionItemV1<D, E, F>>
+        extends BaseChildrenView<T, C, D, E, F> implements BaseExtendedChildrenViewInterface<T, W, C, D, E, F> {
 
     /** The panel that defines the split between the current children and the possible children */
     private final HandlerSplitLayoutPanel split = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);

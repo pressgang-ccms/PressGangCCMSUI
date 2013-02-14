@@ -18,11 +18,7 @@ import java.util.logging.Logger;
 
 /**
  * @param <T> The type of the entity being edited by the view
- * @param <U> The collection type of T
- * @param <V> The collection Item type of T
  * @param <W> The type of the parent of A and D
- * @param <A> The type of the potential children
- * @param <B> The collection type of A
  * @param <C> The collection item type of A
  * @param <D> The type of the existing children
  * @param <E> The collection type of D
@@ -30,18 +26,14 @@ import java.util.logging.Logger;
  * @author Matthew Casperson
  */
 abstract public class BaseDetailedChildrenPresenter<
-            T extends RESTBaseEntityV1<T, U, V>,
-            U extends RESTBaseCollectionV1<T, U, V>,
-            V extends RESTBaseCollectionItemV1<T, U, V>,
+            T extends RESTBaseEntityV1<?, ?, ?>,
             W extends RESTBaseEntityV1<?, ?, ?>,
-            A extends RESTBaseEntityV1<A, B, C>,
-            B extends RESTBaseCollectionV1<A, B, C>,
-            C extends RESTBaseCollectionItemV1<A, B, C>,
+            C extends RESTBaseCollectionItemV1<?, ?, ?>,
             D extends RESTBaseEntityV1<D, E, F>,
             E extends RESTBaseCollectionV1<D, E, F>,
             F extends RESTBaseCollectionItemV1<D, E, F>>
-        extends BaseChildrenComponent<T, U, V, A, B, C, D, E, F>
-        implements BaseDetailedChildrenPresenterInterface<T, U, V, W, A, B, C, D, E, F> {
+        extends BaseChildrenComponent<T, C, D, E, F>
+        implements BaseDetailedChildrenPresenterInterface<T, W, C, D, E, F> {
 
     /**
      * A logger.
@@ -69,7 +61,6 @@ abstract public class BaseDetailedChildrenPresenter<
      * bindChildrenExtended().
      * @param topicId
      * @param pageId The history token of the page
-     * @param parent A reference to the entity being edited
      */
     public final void bindChildrenExtended(final int topicId, final String pageId) {
         throw new UnsupportedOperationException("bindChildrenExtended() is not supported. Use bindDetailedChildren() instead.");

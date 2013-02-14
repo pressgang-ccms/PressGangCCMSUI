@@ -15,6 +15,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionIte
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicSourceUrlV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
@@ -39,16 +40,16 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
  */
 @Dependent
 public class TopicSourceURLsPresenter extends BaseChildrenComponent<
-        RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1,
-        RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1,
+        RESTTopicV1,
+        RESTTopicSourceUrlCollectionItemV1,
         RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1> {
 
     /**
      * The interface that defines the display used by this presenter.
      */
     public interface Display extends BaseChildrenViewInterface<
-                RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1,
-                RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1,
+            RESTBaseTopicV1<?, ?, ?>,
+                RESTTopicSourceUrlCollectionItemV1,
                 RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1> {
         /**
          * @return The column that holds the url.

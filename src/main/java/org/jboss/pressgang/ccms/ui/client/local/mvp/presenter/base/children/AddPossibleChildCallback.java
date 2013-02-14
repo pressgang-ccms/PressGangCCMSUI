@@ -14,9 +14,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
  * @param <Y> The collection wrapper type for W in X
  */
 public interface AddPossibleChildCallback<
-        W extends RESTBaseEntityV1<W, X, Y>,
-        X extends RESTBaseCollectionV1<W, X, Y>,
-        Y extends RESTBaseCollectionItemV1<W, X, Y>> {
+        Y extends RESTBaseCollectionItemV1<?, ?, ?>> {
 
     /**
      * Create a new child relationship and add it to the parent collection.

@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.*;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.TopicXMLPresenterDriver;
@@ -354,7 +355,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     }
 
     @Override
-    public void display(final RESTTopicV1 topic, final boolean readOnly) {
+    public void display(final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
 
         /* SearchUIProjectsEditor is a grid */
         this.editor = new RESTTopicV1XMLEditor(readOnly);

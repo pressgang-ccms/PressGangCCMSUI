@@ -10,8 +10,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
  * @author Matthew Casperson
  *
  * @param <T> The entity type
- * @param <U> The collection type for entity T
- * @param <V> The collection item type for entity T
  *
  * @param <W> The parent of the children
  *
@@ -24,11 +22,11 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
  * @param <F> The collection item type for entity D
  */
 abstract public class BaseOrderedChildrenView<
-    T extends RESTBaseEntityV1<T, U, V>, U extends RESTBaseCollectionV1<T, U, V>, V extends RESTBaseCollectionItemV1<T, U, V>,
+    T extends RESTBaseEntityV1<T, ?, ?>,
     W extends RESTBaseEntityV1<?, ?, ?>,
     A extends RESTBaseEntityV1<A, B, C>, B extends RESTBaseCollectionV1<A, B, C>, C extends RESTBaseCollectionItemV1<A, B, C>,
     D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
-        extends BaseExtendedChildrenView<T, U, V, W, A, B, C, D, E, F> implements BaseOrderedChildrenViewInterface<T, U, V, W, A, B, C, D, E, F> {
+        extends BaseExtendedChildrenView<T, W, C, D, E, F> implements BaseOrderedChildrenViewInterface<T, W, C, D, E, F> {
 
     public BaseOrderedChildrenView(final String applicationName, final String pageName) {
         super(applicationName, pageName);

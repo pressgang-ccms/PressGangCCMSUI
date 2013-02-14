@@ -213,6 +213,8 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 filter.explicitSetName(saveFilterDialog.getName().getValue());
                 filter.explicitSetDescription(saveFilterDialog.getDescription().getValue());
 
+                saveFilterDialog.getDialogBox().hide();
+
                 final BaseRestCallback<RESTFilterV1, Display> createFilter = new BaseRestCallback<RESTFilterV1, Display>(display, new BaseRestCallback.SuccessAction<RESTFilterV1, Display>() {
                     @Override
                     public void doSuccessAction(final RESTFilterV1 retValue, final Display display) {
@@ -233,7 +235,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                             /* if filter.getId() == null, we created a new filter */
                             searchFilterResultsAndFilterPresenter.updateDisplayAfterSave(filter.getId() == null);
 
-                            saveFilterDialog.getDialogBox().hide();
+
                         } finally {
                             LOGGER.log(Level.INFO, "EXIT SearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.saveOKHandler() SuccessAction.doSuccessAction()");
                         }

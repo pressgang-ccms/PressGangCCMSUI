@@ -16,6 +16,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTAssignedPrope
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPropertyTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenView;
@@ -30,9 +31,9 @@ import java.util.List;
  */
 @Dependent
 public class TopicPropertyTagsView extends BaseExtendedChildrenView<
-        RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1,
+        RESTBaseTopicV1<?, ?, ?>,
         RESTTopicV1,
-        RESTPropertyTagV1, RESTPropertyTagCollectionV1, RESTPropertyTagCollectionItemV1,
+        RESTPropertyTagCollectionItemV1,
         RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1>
         implements TopicPropertyTagsPresenter.Display {
 
@@ -161,7 +162,7 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
 
 
     @Override
-    public void display(final RESTTopicV1 topic, final boolean readOnly) {
+    public void display(final RESTBaseTopicV1 topic, final boolean readOnly) {
         super.displayChildren(topic, readOnly);
     }
 

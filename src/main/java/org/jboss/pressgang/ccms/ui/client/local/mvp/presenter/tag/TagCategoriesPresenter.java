@@ -42,11 +42,7 @@ public class TagCategoriesPresenter
         extends
         BaseOrderedChildrenComponent<
                 RESTTagV1,
-                RESTTagCollectionV1,
-                RESTTagCollectionItemV1,
                 RESTCategoryV1,
-                RESTCategoryV1,
-                RESTCategoryCollectionV1,
                 RESTCategoryCollectionItemV1,
                 RESTTagInCategoryV1,
                 RESTTagInCategoryCollectionV1,
@@ -54,9 +50,9 @@ public class TagCategoriesPresenter
         implements BaseTemplatePresenterInterface {
 
     public interface Display extends BaseOrderedChildrenViewInterface<
-                        RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
+                        RESTTagV1,
                         RESTCategoryV1,
-                        RESTCategoryV1, RESTCategoryCollectionV1, RESTCategoryCollectionItemV1,
+                        RESTCategoryCollectionItemV1,
                         RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> {
 
     }

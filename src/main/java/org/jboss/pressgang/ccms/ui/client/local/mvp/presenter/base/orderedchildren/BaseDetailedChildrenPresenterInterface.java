@@ -15,8 +15,6 @@ import org.jetbrains.annotations.NotNull;
  * @author Matthew Casperson
  *
  * @param <T> The type of the entity being edited by the view
- * @param <U> The collection type of T
- * @param <V> The collection Item type of T
  *
  * @param <W> The type of the parent of X
  *
@@ -29,17 +27,13 @@ import org.jetbrains.annotations.NotNull;
  * @param <F> The collection item type of D
  */
 public interface BaseDetailedChildrenPresenterInterface<
-            T extends RESTBaseEntityV1<T, U, V>,
-            U extends RESTBaseCollectionV1<T, U, V>,
-            V extends RESTBaseCollectionItemV1<T, U, V>,
+            T extends RESTBaseEntityV1<?, ?, ?>,
             W extends RESTBaseEntityV1<?, ?, ?>,
-            A extends RESTBaseEntityV1<A, B, C>,
-            B extends RESTBaseCollectionV1<A, B, C>,
-            C extends RESTBaseCollectionItemV1<A, B, C>,
+            C extends RESTBaseCollectionItemV1<?, ?, ?>,
             D extends RESTBaseEntityV1<D, E, F>,
             E extends RESTBaseCollectionV1<D, E, F>,
             F extends RESTBaseCollectionItemV1<D, E, F>>
-        extends BaseChildrenComponentInterface<T, U, V, A, B, C, D, E, F>, EditableView {
+        extends BaseChildrenComponentInterface<T, C, D, E, F>, EditableView {
 
     /**
      *

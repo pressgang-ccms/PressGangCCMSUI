@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.web.bindery.requestfactory.gwt.ui.client.ProxyRenderer;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
@@ -206,7 +207,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
     }
 
     @Override
-    public final void display(final RESTTopicV1 topic, final boolean readOnly) {
+    public final void display(final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
 
         /* reset the layout */
         layout.clear();

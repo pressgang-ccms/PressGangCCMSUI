@@ -26,14 +26,14 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 
 @Dependent
 public class TagProjectsPresenter extends BaseChildrenComponent<
-        RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
-        RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1,
+        RESTTagV1,
+        RESTProjectCollectionItemV1,
         RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> implements
         BaseTemplatePresenterInterface {
 
     public interface Display extends BaseChildrenViewInterface<
-                RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
-                RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1,
+                RESTTagV1,
+                RESTProjectCollectionItemV1,
                 RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> {
 
     }

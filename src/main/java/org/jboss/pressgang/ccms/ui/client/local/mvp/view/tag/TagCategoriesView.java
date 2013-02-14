@@ -22,11 +22,7 @@ public class TagCategoriesView
         extends
         BaseExtendedChildrenView<
                 RESTTagV1,
-                RESTTagCollectionV1,
-                RESTTagCollectionItemV1,
                 RESTCategoryV1,
-                RESTCategoryV1,
-                RESTCategoryCollectionV1,
                 RESTCategoryCollectionItemV1,
                 RESTTagInCategoryV1,
                 RESTTagInCategoryCollectionV1,

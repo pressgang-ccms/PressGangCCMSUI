@@ -15,8 +15,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChild
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
 public class TagProjectsView extends
-        BaseChildrenView<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1, 
-        RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1,
+        BaseChildrenView<RESTTagV1,
+        RESTProjectCollectionItemV1,
         RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> implements
         TagProjectsPresenter.Display {
 

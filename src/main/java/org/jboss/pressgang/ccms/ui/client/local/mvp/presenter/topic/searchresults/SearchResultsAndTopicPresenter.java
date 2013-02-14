@@ -33,6 +33,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTag
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -1565,7 +1566,7 @@ public class SearchResultsAndTopicPresenter
                 Loop over all the standard view i.e. those that will display details from the selected topic
                 or topic revision
             */
-            final List<BaseCustomViewInterface<RESTTopicV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTTopicV1>>();
+            final List<BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>>>();
             displayableViews.add(topicXMLComponent.getDisplay());
             displayableViews.add(topicXMLErrorsPresenter.getDisplay());
             displayableViews.add(topicTagsComponent.getDisplay());
@@ -1574,7 +1575,7 @@ public class SearchResultsAndTopicPresenter
             displayableViews.add(topicSourceURLsPresenter.getDisplay());
 
             final RESTTopicCollectionItemV1 topicToDisplay = getTopicOrRevisionTopic();
-            for (final BaseCustomViewInterface<RESTTopicV1> view : displayableViews) {
+            for (final BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>> view : displayableViews) {
                 if (viewIsInFilter(filter, view)) {
                     view.display(topicToDisplay.getItem(), isReadOnlyMode());
                 }

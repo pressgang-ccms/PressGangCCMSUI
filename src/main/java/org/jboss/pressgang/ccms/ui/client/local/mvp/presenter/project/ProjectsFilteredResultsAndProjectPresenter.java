@@ -149,7 +149,7 @@ public class ProjectsFilteredResultsAndProjectPresenter
                         return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags();
                     }
 
-                }, new AddPossibleChildCallback<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>() {
+                }, new AddPossibleChildCallback<RESTTagCollectionItemV1>() {
 
                     @Override
                     public void createAndAddChild(final RESTTagCollectionItemV1 copy) {

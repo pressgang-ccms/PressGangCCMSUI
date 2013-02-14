@@ -12,6 +12,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionIte
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicSourceUrlV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicSourceURLsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -25,8 +26,8 @@ import javax.enterprise.context.Dependent;
  */
 @Dependent
 public class TopicSourceURLsView extends BaseChildrenView<
-        RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1,
-        RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1,
+        RESTBaseTopicV1<?, ?, ?>,
+        RESTTopicSourceUrlCollectionItemV1,
         RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1>
         implements TopicSourceURLsPresenter.Display {
 
@@ -109,7 +110,7 @@ public class TopicSourceURLsView extends BaseChildrenView<
     }
 
     @Override
-    public final void display(final RESTTopicV1 topic, final boolean readOnly) {
+    public final void display(final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
         super.displayChildren(topic, readOnly);
     }
 

@@ -29,7 +29,10 @@
     <set-property name="compiler.stackMode" value="emulated" />
     <set-configuration-property name="compiler.emulatedStack.recordLineNumbers" value="true" />
 
-        <!-- Super Dev Mode -->
+    <!-- Super Dev Mode -->
 	<add-linker name="xsiframe" />
 	<set-configuration-property name="devModeRedirectEnabled" value="true" />
+
+    <!-- Logging level -->
+    <set-property name="gwt.logging.logLevel" value="SEVERE"/>
 </module>
