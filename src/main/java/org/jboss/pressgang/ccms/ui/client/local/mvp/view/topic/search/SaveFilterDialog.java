@@ -95,12 +95,14 @@ public class SaveFilterDialog extends DialogBox implements SaveFilterDialogInter
     @Override
     public void show()
     {
+        super.show();
+
         try {
             LOGGER.log(Level.INFO, "ENTER SaveFilterDialog.show()");
 
             reset();
             super.center();
-            super.show();
+
             name.setFocus(true);
         } finally {
             LOGGER.log(Level.INFO, "EXIT SaveFilterDialog.show()");
