@@ -137,13 +137,15 @@ abstract public class BaseSearchAndEditComponent<
 
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.updateDisplayAfterSave()");
 
-            refreshFilteredResulsts(wasNewEntity);
+            refreshFilteredResults(wasNewEntity);
 
-            /* refresh the display */
-            initializeViews();
+            if (lastDisplayedView != null) {
+                /* refresh the display */
+                initializeViews();
 
-            /* Load the data that is loaded when a new entity is selected */
-            loadAdditionalDisplayedItemData();
+                /* Load the data that is loaded when a new entity is selected */
+                loadAdditionalDisplayedItemData();
+            }
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditComponent.updateDisplayAfterSave()");
         }
@@ -153,23 +155,34 @@ abstract public class BaseSearchAndEditComponent<
      * Update the list of results
      * @param wasNewEntity true if the update happened after a entity was created, false otherwise
      */
-    private void refreshFilteredResulsts(final boolean wasNewEntity) {
-        if (!wasNewEntity) {
-                /* refresh the list of tags from the existing list that was modified */
+    private void refreshFilteredResults(final boolean wasNewEntity) {
+        try {
+            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.refreshFilteredResults()");
 
-            filteredResultsDisplay.getProvider().displayAsynchronousList(filteredResultsComponent.getProviderData().getItems(),
-                    filteredResultsComponent.getProviderData().getSize(),
-                    filteredResultsComponent.getProviderData().getStartRow());
-        } else {
-                /* If we just created a new entity, refresh the list of entities from the database */
+            if (!wasNewEntity) {
+                    /* refresh the list of tags from the existing list that was modified */
 
-            filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", filteredResultsComponent.getQuery());
+                filteredResultsDisplay.getProvider().displayAsynchronousList(filteredResultsComponent.getProviderData().getItems(),
+                        filteredResultsComponent.getProviderData().getSize(),
+                        filteredResultsComponent.getProviderData().getStartRow());
+            } else {
+                    /* If we just created a new entity, refresh the list of entities from the database */
+
+                filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", filteredResultsComponent.getQuery());
 
                 /*
                  * reInitialiseView will flush the ui, which will flush the null ID back to the displayed object. To prevent that we
-                 * need to call edit on the newly saved entity
+                 * need to call edit on the newly saved entity.
+                 *
+                 * lastDisplayedView might be null if we have never viewed any entity (like when creating a filter). If so,
+                 * don't edit the new entity because there is no view open to display it.
                  */
-            entityPropertiesView.getDriver().edit(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+                if (lastDisplayedView != null) {
+                    entityPropertiesView.getDriver().edit(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+                }
+            }
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditComponent.refreshFilteredResults()");
         }
     }
 

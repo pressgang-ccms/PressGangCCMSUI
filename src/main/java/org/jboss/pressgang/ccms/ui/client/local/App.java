@@ -11,6 +11,7 @@ import org.jboss.errai.ioc.client.api.EntryPoint;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
@@ -54,14 +55,8 @@ public class App {
             GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
                 @Override
                 public void onUncaughtException(final Throwable ex) {
-                    final StringBuilder sb = new StringBuilder();
-                    for (final StackTraceElement element : ex.getStackTrace()) {
-                        sb.append(element.toString());
-                        sb.append("\n");
-                    }
-
                     LOGGER.log(Level.SEVERE, ex.getMessage());
-                    LOGGER.log(Level.SEVERE, sb.toString());
+                    LOGGER.log(Level.SEVERE, GWTUtilities.convertExceptionStackToString(ex));
                     Window.alert("Uncaught exception was detected. Redirecting you to the home page.\nException: " + ex.getMessage());
                     History.newItem(WelcomePresenter.HISTORY_TOKEN);
                 }

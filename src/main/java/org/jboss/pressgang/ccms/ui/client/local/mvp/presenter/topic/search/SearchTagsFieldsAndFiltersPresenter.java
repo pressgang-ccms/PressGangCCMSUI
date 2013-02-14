@@ -179,12 +179,16 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 filter.explicitSetFilterTags_OTM(new RESTFilterTagCollectionV1());
                 filter.explicitSetFilterFields_OTM(new RESTFilterFieldCollectionV1());
 
-                for (final RESTFilterTagCollectionItemV1 tag : displayedFilter.getFilterTags_OTM().getItems()) {
-                    filter.getFilterTags_OTM().addRemoveItem(tag.getItem());
+                if (displayedFilter.getFilterTags_OTM() != null) {
+                    for (final RESTFilterTagCollectionItemV1 tag : displayedFilter.getFilterTags_OTM().getItems()) {
+                        filter.getFilterTags_OTM().addRemoveItem(tag.getItem());
+                    }
                 }
 
-                for (final RESTFilterFieldCollectionItemV1 field : displayedFilter.getFilterFields_OTM().getItems()) {
-                    filter.getFilterFields_OTM().addRemoveItem(field.getItem());
+                if (displayedFilter.getFilterFields_OTM() != null) {
+                    for (final RESTFilterFieldCollectionItemV1 field : displayedFilter.getFilterFields_OTM().getItems()) {
+                        filter.getFilterFields_OTM().addRemoveItem(field.getItem());
+                    }
                 }
 
                 saveFilterDialog.getDialogBox().show();
@@ -206,21 +210,27 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 final BaseRestCallback<RESTFilterV1, Display> createFilter = new BaseRestCallback<RESTFilterV1, Display>(display, new BaseRestCallback.SuccessAction<RESTFilterV1, Display>() {
                     @Override
                     public void doSuccessAction(final RESTFilterV1 retValue, final Display display) {
-                        // Create the topic wrapper
-                        final RESTFilterCollectionItemV1 collectionItem = new RESTFilterCollectionItemV1();
-                        collectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                        try {
+                            LOGGER.log(Level.INFO, "ENTER SearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.saveOKHandler() SuccessAction.doSuccessAction()");
 
-                        // create the topic, and add to the wrapper
-                        collectionItem.setItem(retValue);
+                            // Create the topic wrapper
+                            final RESTFilterCollectionItemV1 collectionItem = new RESTFilterCollectionItemV1();
+                            collectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
-                        /* Update the displayed topic */
-                        searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().setDisplayedItem(collectionItem.clone(true));
-                        searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().setSelectedItem(collectionItem);
+                            // create the topic, and add to the wrapper
+                            collectionItem.setItem(retValue);
 
-                        /* if filter.getId() == null, we created a new filter */
-                        searchFilterResultsAndFilterPresenter.updateDisplayAfterSave(filter.getId() == null);
+                            /* Update the displayed topic */
+                            searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().setDisplayedItem(collectionItem.clone(true));
+                            searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().setSelectedItem(collectionItem);
 
-                        saveFilterDialog.getDialogBox().hide();
+                            /* if filter.getId() == null, we created a new filter */
+                            searchFilterResultsAndFilterPresenter.updateDisplayAfterSave(filter.getId() == null);
+
+                            saveFilterDialog.getDialogBox().hide();
+                        } finally {
+                            LOGGER.log(Level.INFO, "EXIT SearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.saveOKHandler() SuccessAction.doSuccessAction()");
+                        }
                     }
                 }, new BaseRestCallback.FailureAction<Display>() {
                     @Override

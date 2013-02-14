@@ -27,6 +27,20 @@ final public class GWTUtilities {
     }
 
     /**
+     * Writes out a stack trace into a string.
+     * @param ex The exception to process
+     * @return A string version of the stack trace
+     */
+    public static String convertExceptionStackToString(final Throwable ex) {
+        final StringBuilder sb = new StringBuilder();
+        for (final StackTraceElement element : ex.getStackTrace()) {
+            sb.append(element.toString());
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
+    /**
      * This does not work. See http://stackoverflow.com/questions/13406964/detect-ctrl-click-on-pushbutton
      * 
      * @param event the event to test

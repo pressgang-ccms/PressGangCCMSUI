@@ -6,6 +6,7 @@ import org.jboss.errai.bus.client.api.Message;
 import org.jboss.errai.enterprise.client.jaxrs.api.ResponseException;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,7 +47,8 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
 
     @Override
     public void generalException(final Exception e) {
-        LOGGER.log(Level.SEVERE, e.toString());
+        LOGGER.log(Level.SEVERE, "BaseRestCallback.generalException(): A general exception was thrown by the REST operation: " + e.toString());
+        LOGGER.log(Level.SEVERE, GWTUtilities.convertExceptionStackToString(e));
         display.removeWaitOperation();
         
         try

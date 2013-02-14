@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.TopicListReceived;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponent;
@@ -26,12 +27,19 @@ import org.jetbrains.annotations.NotNull;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The presenter used to display the list of search filters.
  */
 @Dependent
 public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsComponent<RESTFilterV1, RESTFilterCollectionV1, RESTFilterCollectionItemV1> {
+
+    /**
+     * A Logger
+     */
+    private static final Logger LOGGER = Logger.getLogger(SearchFilterFilteredResultsPresenter.class.getName());
 
     /**
      * The interface that defines the display used by this presenter.
@@ -59,30 +67,42 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsCom
 
     @Override
     protected final EnhancedAsyncDataProvider<RESTFilterCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
-        final EnhancedAsyncDataProvider<RESTFilterCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTFilterCollectionItemV1>() {
-            @Override
-            protected void onRangeChanged(final HasData<RESTFilterCollectionItemV1> list) {
+        try {
+            LOGGER.log(Level.INFO, "ENTER SearchFilterFilteredResultsPresenter.generateListProvider()");
 
-                final RESTCalls.RESTCallback<RESTFilterCollectionV1> callback = new BaseRestCallback<RESTFilterCollectionV1, Display>(
-                        display,
-                        new BaseRestCallback.SuccessAction<RESTFilterCollectionV1, Display>() {
-                            @Override
-                            public void doSuccessAction(final RESTFilterCollectionV1 retValue, final Display display) {
-                                getProviderData().setItems(retValue.getItems());
-                                getProviderData().setSize(retValue.getSize());
-                                relinkSelectedItem();
-                                displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
-                            }
-                    });
+            final EnhancedAsyncDataProvider<RESTFilterCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTFilterCollectionItemV1>() {
+                @Override
+                protected void onRangeChanged(@NotNull final HasData<RESTFilterCollectionItemV1> list) {
 
-                getProviderData().setStartRow(list.getVisibleRange().getStart());
-                final int length = list.getVisibleRange().getLength();
-                final int end = getProviderData().getStartRow() + length;
+                    final RESTCalls.RESTCallback<RESTFilterCollectionV1> callback = new BaseRestCallback<RESTFilterCollectionV1, Display>(
+                            display,
+                            new BaseRestCallback.SuccessAction<RESTFilterCollectionV1, Display>() {
+                                @Override
+                                public void doSuccessAction(@NotNull final RESTFilterCollectionV1 retValue, @NotNull final Display display) {
+                                    try {
+                                        LOGGER.log(Level.INFO, "ENTER SearchFilterFilteredResultsPresenter.generateListProvider() SuccessAction.doSuccessAction()");
 
-                RESTCalls.getFiltersFromQuery(callback, queryString, getProviderData().getStartRow(), end);
-            }
-        };
-        return provider;
+                                        getProviderData().setItems(retValue.getItems());
+                                        getProviderData().setSize(retValue.getSize());
+                                        relinkSelectedItem();
+                                        displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
+                                    } finally {
+                                        LOGGER.log(Level.INFO, "EXIT SearchFilterFilteredResultsPresenter.generateListProvider() SuccessAction.doSuccessAction()");
+                                    }
+                                }
+                        });
+
+                    getProviderData().setStartRow(list.getVisibleRange().getStart());
+                    final int length = list.getVisibleRange().getLength();
+                    final int end = getProviderData().getStartRow() + length;
+
+                    RESTCalls.getFiltersFromQuery(callback, queryString, getProviderData().getStartRow(), end);
+                }
+            };
+            return provider;
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT SearchFilterFilteredResultsPresenter.generateListProvider()");
+        }
     }
 
     @Override
@@ -93,12 +113,19 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsCom
     @Override
     public final void bindExtendedFilteredResults(final int topicId, final String pageId, final String queryString) {
         super.bindFilteredResults(topicId, pageId, queryString, display);
-        display.setProvider(generateListProvider(queryString, display));
+
+        try {
+            LOGGER.log(Level.INFO, "ENTER SearchFilterFilteredResultsPresenter.bindExtendedFilteredResults()");
+
+            display.setProvider(generateListProvider(queryString, display));
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT SearchFilterFilteredResultsPresenter.bindExtendedFilteredResults()");
+        }
     }
 
     @Override
     public final void go(final HasWidgets container) {
-        bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, "");
+        bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Constants.QUERY_PATH_SEGMENT_PREFIX);
     }
 
     @Override
