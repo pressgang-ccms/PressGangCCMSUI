@@ -29,6 +29,9 @@ import org.jetbrains.annotations.NotNull;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
@@ -36,6 +39,11 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 {
     /** The history token used to access this page */
     public static final String HISTORY_TOKEN = "SearchTagsFieldsAndFiltersView";
+
+    /**
+     * A Logger
+     */
+    private static final Logger LOGGER = Logger.getLogger(SearchTagsFieldsAndFiltersPresenter.class.getName());
 
     public interface Display extends BaseTemplateViewInterface {
 
@@ -143,13 +151,19 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         final ClickHandler createFilter = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                /* Setting the ID to null indicates that this is a new filter */
-                filter.setId(null);
-                /* The collections are new for a new filter */
-                filter.explicitSetFilterTags_OTM(new RESTFilterTagCollectionV1());
-                filter.explicitSetFilterFields_OTM(new RESTFilterFieldCollectionV1());
+                try {
+                    LOGGER.log(Level.INFO, "ENTER SearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.onClick()");
 
-                saveFilterDialog.getDialogBox().show();
+                    /* Setting the ID to null indicates that this is a new filter */
+                    filter.setId(null);
+                    /* The collections are new for a new filter */
+                    filter.explicitSetFilterTags_OTM(new RESTFilterTagCollectionV1());
+                    filter.explicitSetFilterFields_OTM(new RESTFilterFieldCollectionV1());
+
+                    saveFilterDialog.getDialogBox().show();
+                } finally {
+                    LOGGER.log(Level.INFO, "EXIT SearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.onClick()");
+                }
             }
         };
 

@@ -6,11 +6,19 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SaveF
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * The dialog box shown when a new filter is created, or an existing one is
  * overwritten.
  */
 public class SaveFilterDialog extends DialogBox implements SaveFilterDialogInterface {
+
+    /**
+     * A Logger
+     */
+    private static final Logger LOGGER = Logger.getLogger(SaveFilterDialog.class.getName()
 
     /**
      * The table that holds the various UI elements.
@@ -87,10 +95,16 @@ public class SaveFilterDialog extends DialogBox implements SaveFilterDialogInter
     @Override
     public void show()
     {
-        reset();
-        super.center();
-        super.show();
-        name.setFocus(true);
+        try {
+            LOGGER.log(Level.INFO, "ENTER SaveFilterDialog.show()");
+
+            reset();
+            super.center();
+            super.show();
+            name.setFocus(true);
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT SaveFilterDialog.show()");
+        }
     }
 
     @Override
