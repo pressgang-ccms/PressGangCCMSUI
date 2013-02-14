@@ -239,55 +239,57 @@ public class SearchUIFields implements SearchViewBase {
             hasBugzillaBugs = TriStateSelectionState.NONE;
             hasOpenBugzillaBugs = TriStateSelectionState.NONE;
             matchAll = true;
-            
-            for (final RESTFilterFieldCollectionItemV1 field : filter.getFilterFields_OTM().getItems()) {
 
-                final RESTFilterFieldV1 fieldItem = field.getItem();
+            if (filter.getFilterFields_OTM() != null) {
+                for (final RESTFilterFieldCollectionItemV1 field : filter.getFilterFields_OTM().getItems()) {
 
-                if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_IDS_FILTER_VAR)) {
-                    this.setIds(fieldItem.getValue());
-                } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR)) {
-                    this.setNotIds(fieldItem.getValue());
-                } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR)) {
-                    this.setDescription(fieldItem.getValue());
-                } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_DESCRIPTION_NOT_FILTER_VAR)) {
-                    this.setNotDescription(fieldItem.getValue());
-                } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_TITLE_FILTER_VAR)) {
-                    this.setTitle(fieldItem.getValue());
-                } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR)) {
-                    this.setNotTitle(fieldItem.getValue());
-                } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS)) {
-                    try {
-                        this.setEditedInLastXDays(Integer.parseInt(fieldItem.getValue()));
-                    } catch (final NumberFormatException ex) {
-                        // do nothing
+                    final RESTFilterFieldV1 fieldItem = field.getItem();
+
+                    if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_IDS_FILTER_VAR)) {
+                        this.setIds(fieldItem.getValue());
+                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR)) {
+                        this.setNotIds(fieldItem.getValue());
+                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR)) {
+                        this.setDescription(fieldItem.getValue());
+                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_DESCRIPTION_NOT_FILTER_VAR)) {
+                        this.setNotDescription(fieldItem.getValue());
+                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_TITLE_FILTER_VAR)) {
+                        this.setTitle(fieldItem.getValue());
+                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR)) {
+                        this.setNotTitle(fieldItem.getValue());
+                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS)) {
+                        try {
+                            this.setEditedInLastXDays(Integer.parseInt(fieldItem.getValue()));
+                        } catch (final NumberFormatException ex) {
+                            // do nothing
+                        }
+                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS)) {
+                        try {
+                            this.setNotEditedInLastXDays(Integer.parseInt(fieldItem.getValue()));
+                        } catch (final NumberFormatException ex) {
+                            // do nothing
+                        }
+                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_XML_FILTER_VAR)) {
+                        this.setContents(fieldItem.getValue());
+                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_XML_NOT_FILTER_VAR)) {
+                        this.setNotContents(fieldItem.getValue());
+                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC)) {
+                        this.setIncludedInContentSpecs(fieldItem.getValue());
+                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC)) {
+                        this.setNotIncludedInContentSpecs(fieldItem.getValue());
+                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR)) {
+                        this.setFreeTextSearch(fieldItem.getValue());
+                    } else  if (fieldItem.getName().equals(CommonFilterConstants.LOGIC_FILTER_VAR)) {
+                        this.setMatchAll(Boolean.parseBoolean(fieldItem.getValue()));
+                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR)) {
+                        this.setCreatedBefore(this.dateformat.parse(fieldItem.getValue()));
+                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_ENDEDITDATE_FILTER_VAR)) {
+                        this.setEditedBefore(this.dateformat.parse(fieldItem.getValue()));
+                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR)) {
+                        this.setCreatedAfter(this.dateformat.parse(fieldItem.getValue()));
+                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR)) {
+                        this.setEditedAfter(this.dateformat.parse(fieldItem.getValue()));
                     }
-                } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS)) {
-                    try {
-                        this.setNotEditedInLastXDays(Integer.parseInt(fieldItem.getValue()));
-                    } catch (final NumberFormatException ex) {
-                        // do nothing
-                    }
-                } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_XML_FILTER_VAR)) {
-                    this.setContents(fieldItem.getValue());
-                } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_XML_NOT_FILTER_VAR)) {
-                    this.setNotContents(fieldItem.getValue());
-                } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC)) {
-                    this.setIncludedInContentSpecs(fieldItem.getValue());
-                } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC)) {
-                    this.setNotIncludedInContentSpecs(fieldItem.getValue());
-                } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR)) {
-                    this.setFreeTextSearch(fieldItem.getValue());
-                } else  if (fieldItem.getName().equals(CommonFilterConstants.LOGIC_FILTER_VAR)) {
-                    this.setMatchAll(Boolean.parseBoolean(fieldItem.getValue()));
-                } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR)) {
-                    this.setCreatedBefore(this.dateformat.parse(fieldItem.getValue()));
-                } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_ENDEDITDATE_FILTER_VAR)) {
-                    this.setEditedBefore(this.dateformat.parse(fieldItem.getValue()));
-                } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR)) {
-                    this.setCreatedAfter(this.dateformat.parse(fieldItem.getValue()));
-                } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR)) {
-                    this.setEditedAfter(this.dateformat.parse(fieldItem.getValue()));
                 }
             }
         }
