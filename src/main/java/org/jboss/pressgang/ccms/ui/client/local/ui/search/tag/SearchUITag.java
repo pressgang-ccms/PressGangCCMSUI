@@ -41,12 +41,13 @@ public final class SearchUITag extends SearchUIBase {
             this.tag = tag;
 
             if (filter != null) {
+                LOGGER.log(Level.INFO, "Processing filter with " + filter.getFilterTags_OTM().getItems().size() + " tags");
                 for (final RESTFilterTagCollectionItemV1 filterTag : filter.getFilterTags_OTM().getItems())  {
-                    if (filterTag.getItem().getTag().getId() == tag.getItem().getId()) {
-                        if (filterTag.getItem().getState() ==  Constants.TAG_INCLUDED) {
+                    if (filterTag.getItem().getTag().getId().equals(tag.getItem().getId())) {
+                        if (filterTag.getItem().getState().equals(Constants.TAG_INCLUDED)) {
                             LOGGER.log(Level.INFO, "Found included tag");
                             state = TriStateSelectionState.SELECTED;
-                        } else if (filterTag.getItem().getState() == Constants.TAG_EXCLUDED) {
+                        } else if (filterTag.getItem().getState().equals(Constants.TAG_EXCLUDED)) {
                             LOGGER.log(Level.INFO, "Found excluded tag");
                             state = TriStateSelectionState.UNSELECTED;
                         }
@@ -62,14 +63,14 @@ public final class SearchUITag extends SearchUIBase {
     /**
      * @return The tag referenced by this object
      */
-    public RESTTagCollectionItemV1 getTag() {
+    public @NotNull RESTTagCollectionItemV1 getTag() {
         return this.tag;
     }
 
     /**
      * @param tag The tag referenced by this object
      */
-    public void setTag(final RESTTagCollectionItemV1 tag) {
+    public void setTag(@NotNull final RESTTagCollectionItemV1 tag) {
         this.tag = tag;
     }
 
