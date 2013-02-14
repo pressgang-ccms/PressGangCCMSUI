@@ -29,7 +29,7 @@ public final class SearchUITag extends SearchUIBase {
 
         if (filter != null) {
             for (final RESTFilterTagCollectionItemV1 filterTag : filter.getFilterTags_OTM().getItems())  {
-                if (filterTag.getItem().getId() == tag.getItem().getId()) {
+                if (filterTag.getItem().getTag().getId() == tag.getItem().getId()) {
                     if (filterTag.getItem().getState() ==  Constants.TAG_INCLUDED) {
                         state = TriStateSelectionState.SELECTED;
                     } else if (filterTag.getItem().getState() ==  Constants.TAG_INCLUDED) {
