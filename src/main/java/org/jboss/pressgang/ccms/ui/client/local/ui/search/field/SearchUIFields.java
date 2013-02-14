@@ -392,6 +392,7 @@ public class SearchUIFields implements SearchViewBase {
             matchAll = true;
 
             if (filter.getFilterFields_OTM() != null) {
+
                 for (final RESTFilterFieldCollectionItemV1 field : filter.getFilterFields_OTM().getItems()) {
 
                     final RESTFilterFieldV1 fieldItem = field.getItem();

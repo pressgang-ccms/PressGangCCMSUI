@@ -58,8 +58,6 @@ public class SearchFieldView extends BaseTemplateView implements SearchFieldPres
         addActionButton(tagsSearch);
         addActionButton(fields);
         addActionButton(filters);
-
-
     }
 
     @Override
