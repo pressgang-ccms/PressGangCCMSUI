@@ -83,7 +83,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             @Override
             public void onClick(final ClickEvent event) {
                 final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
-                tagsComponent.displayTags(displayedFilter);
+                tagsComponent.updateTagState(displayedFilter);
             }
         };
 
