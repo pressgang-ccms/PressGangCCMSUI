@@ -132,7 +132,7 @@ abstract public class BaseSearchAndEditComponent<
      *
      * @param wasNewEntity true if the entity that was saved was a new entity, and false otherwise
      */
-    protected final void updateDisplayAfterSave(final boolean wasNewEntity) {
+    public final void updateDisplayAfterSave(final boolean wasNewEntity) {
         try {
 
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.updateDisplayAfterSave()");

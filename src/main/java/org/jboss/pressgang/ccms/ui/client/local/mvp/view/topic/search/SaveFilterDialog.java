@@ -72,8 +72,17 @@ public class SaveFilterDialog extends DialogBox implements SaveFilterDialogInter
     @Override
     public void show()
     {
-        super.show();
+        reset();
+        center();
+        show();
         getName().setFocus(true);
+    }
+
+    @Override
+    public void reset()
+    {
+        this.name.setValue("");
+        this.description.setValue("");
     }
 
 }

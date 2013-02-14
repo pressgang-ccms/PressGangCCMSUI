@@ -18,4 +18,6 @@ public interface SaveFilterDialogInterface {
     PushButton getCancel() ;
 
     DialogBox getDialogBox();
+
+    void reset();
 }

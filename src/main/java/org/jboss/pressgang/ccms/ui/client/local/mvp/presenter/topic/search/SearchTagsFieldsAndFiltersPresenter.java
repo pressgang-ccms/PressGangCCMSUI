@@ -4,7 +4,14 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -127,8 +134,105 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             }
         };
 
+        /*
+            A filter instance to be shared between the click handlers for create and overwrite, and the save
+            dialog ok click handler.
+        */
+        final RESTFilterV1 filter = new RESTFilterV1();
+
+        final ClickHandler createFilter = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                /* Setting the ID to null indicates that this is a new filter */
+                filter.setId(null);
+                /* The collections are new for a new filter */
+                filter.explicitSetFilterTags_OTM(new RESTFilterTagCollectionV1());
+                filter.explicitSetFilterFields_OTM(new RESTFilterFieldCollectionV1());
+
+                saveFilterDialog.getDialogBox().show();
+            }
+        };
+
+        final ClickHandler overwriteFilter = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
+
+                /* Setting the id to the value of the displayed filter is the indication that this is an updated filter */
+                filter.setId(displayedFilter.getId());
+
+                /* An overwritten filter will delete any existing children before adding new ones */
+                filter.explicitSetFilterTags_OTM(new RESTFilterTagCollectionV1());
+                filter.explicitSetFilterFields_OTM(new RESTFilterFieldCollectionV1());
+
+                for (final RESTFilterTagCollectionItemV1 tag : displayedFilter.getFilterTags_OTM().getItems()) {
+                    filter.getFilterTags_OTM().addRemoveItem(tag.getItem());
+                }
+
+                for (final RESTFilterFieldCollectionItemV1 field : displayedFilter.getFilterFields_OTM().getItems()) {
+                    filter.getFilterFields_OTM().addRemoveItem(field.getItem());
+                }
+
+                saveFilterDialog.getDialogBox().show();
+            }
+        };
+
+        final ClickHandler saveOKHandler = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+
+                tagsComponent.getDisplay().getSearchUIProjects().populateFilter(filter);
+
+                filter.explicitSetName(saveFilterDialog.getName().getValue());
+                filter.explicitSetDescription(saveFilterDialog.getDescription().getValue());
+
+                final BaseRestCallback<RESTFilterV1, Display> createFilter = new BaseRestCallback<RESTFilterV1, Display>(display, new BaseRestCallback.SuccessAction<RESTFilterV1, Display>() {
+                    @Override
+                    public void doSuccessAction(final RESTFilterV1 retValue, final Display display) {
+                        // Create the topic wrapper
+                        final RESTFilterCollectionItemV1 collectionItem = new RESTFilterCollectionItemV1();
+                        collectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+
+                        // create the topic, and add to the wrapper
+                        collectionItem.setItem(retValue);
+
+                        /* Update the displayed topic */
+                        searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().setDisplayedItem(collectionItem.clone(true));
+                        searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().setSelectedItem(collectionItem);
+
+                        /* if filter.getId() == null, we created a new filter */
+                        searchFilterResultsAndFilterPresenter.updateDisplayAfterSave(filter.getId() == null);
+
+                        saveFilterDialog.getDialogBox().hide();
+                    }
+                }, new BaseRestCallback.FailureAction<Display>() {
+                    @Override
+                    public void doFailureAction(final Display display) {
+                        saveFilterDialog.getDialogBox().hide();
+                    }
+                });
+
+                if (filter.getId() == null) {
+                    RESTCalls.createFilter(createFilter, filter);
+                } else {
+                    RESTCalls.updateFilter(createFilter, filter);
+                }
+            }
+        };
+
+        final ClickHandler saveCancelHandler = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                saveFilterDialog.getDialogBox().hide();
+            }
+        };
+
         searchFilterResultsAndFilterPresenter.getSearchFilterPresenter().getDisplay().getLoad().addClickHandler(loadClickHanlder);
         searchFilterResultsAndFilterPresenter.getSearchFilterPresenter().getDisplay().getLoadAndSearch().addClickHandler(loadAndSearchClickHandler);
+        searchFilterResultsAndFilterPresenter.getSearchFilterPresenter().getDisplay().getOverwrite().addClickHandler(overwriteFilter);
+        searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getDisplay().getCreate().addClickHandler(createFilter);
+        saveFilterDialog.getOk().addClickHandler(saveOKHandler);
+        saveFilterDialog.getCancel().addClickHandler(saveCancelHandler);
     }
 
     @Override

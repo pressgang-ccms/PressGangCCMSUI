@@ -102,6 +102,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
             if (lastBuild != null && !lastBuild.equals(Constants.VERSION))  {
                 Window.alert(PressGangCCMSUI.INSTANCE.ApplicationUpdated());
             }
+            Preferences.INSTANCE.saveSetting(Preferences.LAST_BUILD, Constants.VERSION);
 
             if ("".equals(History.getToken())) {
                 LOGGER.log(Level.INFO, "Setting default history token");

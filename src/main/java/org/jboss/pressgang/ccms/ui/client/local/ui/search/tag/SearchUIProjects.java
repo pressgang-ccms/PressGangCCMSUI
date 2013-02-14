@@ -4,6 +4,7 @@ import com.google.gwt.user.client.ui.TriStateSelectionState;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -12,6 +13,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.SearchViewBase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -117,6 +119,28 @@ public class SearchUIProjects implements SearchViewBase {
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT SearchUIProjects.initialize()");
+        }
+    }
+
+    public void populateFilter(@NotNull final RESTFilterV1 filter) {
+        // because a tag can be listed under multiple categories with different values,
+        // we keep a track of the tags we have processed here
+        final List<Integer> processedIds = new ArrayList<Integer>();
+
+        for (final SearchUIProject project : projects) {
+            for (final SearchUICategory category : project.getCategories()) {
+                for (final SearchUITag tag : category.getMyTags()) {
+                    if (!processedIds.contains(tag.getTag().getItem().getId())) {
+                        if (tag.getState() != TriStateSelectionState.NONE) {
+                            final RESTFilterTagV1 filterTag = new RESTFilterTagV1();
+                            filterTag.explicitSetTag(tag.getTag().getItem());
+                            filterTag.explicitSetState(tag.getState() == TriStateSelectionState.SELECTED ? Constants.TAG_INCLUDED : Constants.TAG_EXCLUDED);
+                            filter.getFilterTags_OTM().addNewItem(filterTag);
+                            processedIds.add(tag.getTag().getItem().getId());
+                        }
+                    }
+                }
+            }
         }
     }
 
