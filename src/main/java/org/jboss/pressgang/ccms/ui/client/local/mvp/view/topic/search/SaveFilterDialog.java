@@ -12,16 +12,31 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
  */
 public class SaveFilterDialog extends DialogBox implements SaveFilterDialogInterface {
 
+    /**
+     * The table that holds the various UI elements.
+     */
     private final FlexTable layout = new FlexTable();
 
-    private final TextArea name = new TextArea();
+    /**
+     * The textbox representing the name of the filter.
+     */
+    private final TextBox name = new TextBox();
+    /**
+     * The textarea representing the description of the filter.
+     */
     private final TextArea description = new TextArea();
-
+    /**
+     * The OK button.
+     */
     private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
+    /**
+     * The cancel button.
+     */
     private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
 
+
     @Override
-    public TextArea getName() {
+    public TextBox getName() {
         return name;
     }
 
@@ -73,9 +88,9 @@ public class SaveFilterDialog extends DialogBox implements SaveFilterDialogInter
     public void show()
     {
         reset();
-        center();
-        show();
-        getName().setFocus(true);
+        super.center();
+        super.show();
+        name.setFocus(true);
     }
 
     @Override
