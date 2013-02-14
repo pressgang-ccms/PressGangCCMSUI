@@ -17,6 +17,8 @@ public interface PressGangCCMSUI extends Constants {
      */
     PressGangCCMSUI INSTANCE = GWT.create(PressGangCCMSUI.class);
 
+    String ApplicationUpdated();
+
     String New();
 
     String Build();

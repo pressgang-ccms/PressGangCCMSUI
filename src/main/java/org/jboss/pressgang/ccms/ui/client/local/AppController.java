@@ -5,10 +5,12 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 import org.jboss.errai.ioc.client.container.IOCBeanDef;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -28,6 +30,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPres
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.SearchResultsAndTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.SearchResultsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.logging.Level;
@@ -90,6 +94,14 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
 
             this.container = container;
             this.bind();
+
+            /**
+             * Display a message if we are using an updated version
+             */
+            final String lastBuild = Preferences.INSTANCE.getString(Preferences.LAST_BUILD, null);
+            if (lastBuild != null && !lastBuild.equals(Constants.VERSION))  {
+                Window.alert(PressGangCCMSUI.INSTANCE.ApplicationUpdated());
+            }
 
             if ("".equals(History.getToken())) {
                 LOGGER.log(Level.INFO, "Setting default history token");
