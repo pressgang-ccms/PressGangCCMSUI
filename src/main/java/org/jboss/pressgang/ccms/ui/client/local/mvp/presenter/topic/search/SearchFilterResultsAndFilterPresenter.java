@@ -85,7 +85,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
             LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.go()");
 
             clearContainerAndAddTopLevelPanel(container, display);
-            bindSearchAndEditExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Constants.QUERY_PATH_SEGMENT_PREFIX);
+            bindSearchAndEditExtended(ServiceConstants.FILTERS_HELP_TOPIC, HISTORY_TOKEN, Constants.QUERY_PATH_SEGMENT_PREFIX);
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT SearchFilterResultsAndFilterPresenter.go()");
@@ -123,10 +123,11 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
             }
         };
 
-        searchFilterPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-        searchFilterFilteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Constants.QUERY_PATH_SEGMENT_PREFIX);
+        searchFilterPresenter.bindExtended(topicId, pageId);
+        searchFilterFilteredResultsPresenter.bindExtendedFilteredResults(topicId, pageId, Constants.QUERY_PATH_SEGMENT_PREFIX);
         super.bindSearchAndEdit(
-                ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN,
+                topicId,
+                pageId,
                 Preferences.FILTER_VIEW_MAIN_SPLIT_WIDTH,
                 searchFilterPresenter.getDisplay(),
                 searchFilterPresenter.getDisplay(),
