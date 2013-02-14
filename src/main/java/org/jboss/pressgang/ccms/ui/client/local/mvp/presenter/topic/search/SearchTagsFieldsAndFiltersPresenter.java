@@ -174,6 +174,9 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 }
 
                 saveFilterDialog.getDialogBox().show();
+
+                saveFilterDialog.getName().setValue(displayedFilter.getName());
+                saveFilterDialog.getDescription().setValue(displayedFilter.getDescription());
             }
         };
 
