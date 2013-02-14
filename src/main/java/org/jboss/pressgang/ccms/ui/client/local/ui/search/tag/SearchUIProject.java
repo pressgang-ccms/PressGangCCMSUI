@@ -11,6 +11,8 @@ import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class represents a single project, with child categories.
@@ -18,6 +20,11 @@ import java.util.List;
  * @author Matthew Casperson
  */
 public final class SearchUIProject extends SearchUIBase {
+
+    /**
+     * A logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(SearchUIProject.class.getName());
 
     /**
      * The categories held by this project *
@@ -83,35 +90,41 @@ public final class SearchUIProject extends SearchUIBase {
      * @param filter The filter that defines the state of the tags
      */
     public void populateCategories(final RESTProjectCollectionItemV1 project, final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
-        if (tags == null) {
-            throw new IllegalArgumentException("tags parameter cannot be null");
-        }
-        if (project == null) {
-            throw new IllegalArgumentException("project cannot be null");
-        }
+        try {
+            LOGGER.log(Level.INFO, "ENTER SearchUIProject.populateCategories()");
 
-        for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
-            if (tag.getItem().getProjects() == null) {
-                throw new IllegalArgumentException("tag.getItem().getProjects() cannot be null");
+            if (tags == null) {
+                throw new IllegalArgumentException("tags parameter cannot be null");
+            }
+            if (project == null) {
+                throw new IllegalArgumentException("project cannot be null");
             }
 
-            if (tag.getItem().getProjects().getItems().contains(project)) {
-                if (tag.getItem().getCategories().getItems() == null) {
-                    throw new IllegalArgumentException("tag.getItem().getCategories().getItems() cannot be null");
+            for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
+                if (tag.getItem().getProjects() == null) {
+                    throw new IllegalArgumentException("tag.getItem().getProjects() cannot be null");
                 }
 
-                for (final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories().returnExistingAndAddedCollectionItems()) {
-                    final SearchUICategory searchUICategory = new SearchUICategory(this, category);
-                    if (!this.categories.contains(searchUICategory)) {
-                        searchUICategory.populateCategories(project, category, tags, filter);
-                        this.categories.add(searchUICategory);
+                if (tag.getItem().getProjects().getItems().contains(project)) {
+                    if (tag.getItem().getCategories().getItems() == null) {
+                        throw new IllegalArgumentException("tag.getItem().getCategories().getItems() cannot be null");
                     }
+
+                    for (final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories().returnExistingAndAddedCollectionItems()) {
+                        final SearchUICategory searchUICategory = new SearchUICategory(this, category);
+                        if (!this.categories.contains(searchUICategory)) {
+                            searchUICategory.populateCategories(project, category, tags, filter);
+                            this.categories.add(searchUICategory);
+                        }
+                    }
+
                 }
-
             }
-        }
 
-        Collections.sort(this.categories, new SearchUINameSort());
+            Collections.sort(this.categories, new SearchUINameSort());
+        } finally {
+            LOGGER.log(Level.INFO, "ENTER SearchUIProject.populateCategories()");
+        }
     }
 
     /**
@@ -121,36 +134,42 @@ public final class SearchUIProject extends SearchUIBase {
      * @param filter The filter that defines the state of the tags
      */
     public void populateCategoriesWithoutProject(final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
-        if (tags == null) {
-            throw new IllegalArgumentException("tags parameter cannot be null");
-        }
-        if (tags.getItems() == null) {
-            throw new IllegalArgumentException("tags.getItems() cannot be null");
-        }
+        try {
+            LOGGER.log(Level.INFO, "ENTER SearchUIProject.populateCategoriesWithoutProject()");
 
-        for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
-            if (tag.getItem().getProjects() == null) {
-                throw new IllegalArgumentException("tag.getItem().getProjects() cannot be null");
+            if (tags == null) {
+                throw new IllegalArgumentException("tags parameter cannot be null");
+            }
+            if (tags.getItems() == null) {
+                throw new IllegalArgumentException("tags.getItems() cannot be null");
             }
 
-            if (tag.getItem().getProjects().getItems().isEmpty()) {
-                if (tag.getItem().getCategories().getItems() == null) {
-                    throw new IllegalArgumentException("tag.getItem().getCategories().getItems() cannot be null");
+            for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
+                if (tag.getItem().getProjects() == null) {
+                    throw new IllegalArgumentException("tag.getItem().getProjects() cannot be null");
                 }
 
-                for (final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories()
-                        .returnExistingAndAddedCollectionItems()) {
-                    final SearchUICategory searchUICategory = new SearchUICategory(this, category);
-                    if (!this.categories.contains(searchUICategory)) {
-                        searchUICategory.populateCategoriesWithoutProject(category, tags, filter);
-                        this.categories.add(searchUICategory);
+                if (tag.getItem().getProjects().getItems().isEmpty()) {
+                    if (tag.getItem().getCategories().getItems() == null) {
+                        throw new IllegalArgumentException("tag.getItem().getCategories().getItems() cannot be null");
+                    }
+
+                    for (final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories()
+                            .returnExistingAndAddedCollectionItems()) {
+                        final SearchUICategory searchUICategory = new SearchUICategory(this, category);
+                        if (!this.categories.contains(searchUICategory)) {
+                            searchUICategory.populateCategoriesWithoutProject(category, tags, filter);
+                            this.categories.add(searchUICategory);
+                        }
                     }
                 }
+
             }
 
+            Collections.sort(this.categories, new SearchUINameSort());
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT SearchUIProject.populateCategoriesWithoutProject()");
         }
-
-        Collections.sort(this.categories, new SearchUINameSort());
     }
 
     @Override

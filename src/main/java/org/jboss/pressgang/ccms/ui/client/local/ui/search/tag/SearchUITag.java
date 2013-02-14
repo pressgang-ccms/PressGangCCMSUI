@@ -6,8 +6,12 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.BaseOrderedChildrenComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class represents a single tag under a parent category.
@@ -19,25 +23,39 @@ public final class SearchUITag extends SearchUIBase {
     private RESTTagCollectionItemV1 tag;
 
     /**
+     * A logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(SearchUITag.class.getName());
+
+    /**
      * @param parent The parent category that this tag belongs to
      * @param tag    The tag referenced by this object
      * @param filter The filter that defines the state of the tags
      */
     public SearchUITag(@NotNull final SearchUICategory parent, @NotNull final RESTTagCollectionItemV1 tag, @Nullable final RESTFilterV1 filter) {
         super(tag.getItem().getName(), parent.getId() + "-" + tag.getItem().getId());
-        this.tag = tag;
 
-        if (filter != null) {
-            for (final RESTFilterTagCollectionItemV1 filterTag : filter.getFilterTags_OTM().getItems())  {
-                if (filterTag.getItem().getTag().getId() == tag.getItem().getId()) {
-                    if (filterTag.getItem().getState() ==  Constants.TAG_INCLUDED) {
-                        state = TriStateSelectionState.SELECTED;
-                    } else if (filterTag.getItem().getState() ==  Constants.TAG_INCLUDED) {
-                        state = TriStateSelectionState.UNSELECTED;
+        try {
+            LOGGER.log(Level.INFO, "ENTER SearchUITag()");
+
+            this.tag = tag;
+
+            if (filter != null) {
+                for (final RESTFilterTagCollectionItemV1 filterTag : filter.getFilterTags_OTM().getItems())  {
+                    if (filterTag.getItem().getTag().getId() == tag.getItem().getId()) {
+                        if (filterTag.getItem().getState() ==  Constants.TAG_INCLUDED) {
+                            LOGGER.log(Level.INFO, "Found included tag");
+                            state = TriStateSelectionState.SELECTED;
+                        } else if (filterTag.getItem().getState() == Constants.TAG_EXCLUDED) {
+                            LOGGER.log(Level.INFO, "Found excluded tag");
+                            state = TriStateSelectionState.UNSELECTED;
+                        }
+                        break;
                     }
-                    break;
                 }
             }
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT SearchUITag()");
         }
     }
 

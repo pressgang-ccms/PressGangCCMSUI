@@ -55,6 +55,12 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 
     public SearchView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Search());
+
+        /* Build the action bar icons */
+        addActionButton(searchTopics);
+        addActionButton(tags);
+        addActionButton(fields);
+        addActionButton(filters);
     }
 
     @Override
@@ -65,14 +71,8 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 
     public final void displayExtended(final RESTTagCollectionV1 tagCollection, final RESTFilterV1 filter, final boolean readOnly) {
 
-        /* Build the action bar icons */
-        addActionButton(searchTopics);
-        addActionButton(tags);
-        addActionButton(fields);
-        addActionButton(filters);
-
         /* Construct a hierarchy of tags from the tag collection */
-        getSearchUIProjects().initialize(tagCollection, filter);
+        searchUIProjects.initialize(tagCollection, filter);
 
         /* SearchUIProjectsEditor is a grid */
         final SearchUIProjectsEditor editor = new SearchUIProjectsEditor(driver, searchUIProjects);

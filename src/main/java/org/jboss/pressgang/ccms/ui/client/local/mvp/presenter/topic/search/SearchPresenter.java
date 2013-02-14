@@ -23,6 +23,9 @@ import org.jetbrains.annotations.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
@@ -45,6 +48,11 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
     }
 
     public static final String HISTORY_TOKEN = "SearchView";
+
+    /**
+     * A logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(SearchPresenter.class.getName());
 
     @Inject
     private HandlerManager eventBus;
@@ -83,15 +91,21 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
     }
 
     public void updateTagState(@Nullable final RESTFilterV1 filter) {
-        this.filter = filter;
+        try {
+            LOGGER.log(Level.INFO, "ENTER SearchPresenter.updateTagState()");
 
-        /*
-            If  tagCollection == null, it means that the async call in displayTags has not
-            returned. In this case we simply set the filter variable and let displayTags()
-            apply the filter.
-         */
-        if (tagCollection != null)  {
-            display.displayExtended(tagCollection, filter, false);
+            this.filter = filter;
+
+            /*
+                If  tagCollection == null, it means that the async call in displayTags has not
+                returned. In this case we simply set the filter variable and let displayTags()
+                apply the filter.
+             */
+            if (tagCollection != null)  {
+                display.displayExtended(tagCollection, this.filter, false);
+            }
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT SearchPresenter.updateTagState()");
         }
     }
 
