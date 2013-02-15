@@ -24,6 +24,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTranslatedTopicV1BasicDetailsEditor;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.logging.Level;
@@ -35,6 +36,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
  Extends the BaseSearchResultsAndTopicPresenter class to provide the functionality required to
  display translated topics.
  */
+@Dependent
 public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearchResultsAndTopicPresenter<
         RESTTranslatedTopicV1,
         RESTTranslatedTopicCollectionV1,
