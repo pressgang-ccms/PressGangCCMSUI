@@ -8,6 +8,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresult
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
+/**
+ * This class defines the view for the translated topics filtered results.
+ */
 public class TranslatedTopicsFilteredResultsView extends BaseFilteredResultsView<RESTTranslatedTopicCollectionItemV1>
         implements TranslatedTopicsFilteredResultsPresenter.Display {
 
