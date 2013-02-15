@@ -385,6 +385,8 @@ abstract public class BaseSearchAndEditComponent<
         try {
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.switchView(final W displayedView)");
 
+            beforeSwitchView(displayedView);
+
             /* Show/Hide any localised loading dialogs */
             if (lastDisplayedView != null) {
                 LOGGER.log(Level.INFO, "\tSetting old view to not shown");
@@ -425,4 +427,11 @@ abstract public class BaseSearchAndEditComponent<
      * @param displayedView The newly displayed screen.
      */
     protected void afterSwitchView(final BaseTemplateViewInterface displayedView) {}
+
+    /**
+     * Called when switchView has been called. Override this method to perform some
+     * additional logic before a new screen has been displayed.
+     * @param displayedView The newly displayed screen.
+     */
+    protected void beforeSwitchView(final BaseTemplateViewInterface displayedView) {}
 }
