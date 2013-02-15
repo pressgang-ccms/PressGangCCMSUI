@@ -857,6 +857,9 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
 
                         initializeViews();
 
+                        /* Load the tags and bugs */
+                        loadTagsAndBugs();
+
                         topicRevisionsComponent.getDisplay().setProvider(generateTopicRevisionsListProvider());
                         getTopicPropertyTagPresenter().getDisplay().setExistingChildrenProvider(getTopicPropertyTagPresenter().generateExistingProvider(getDisplayedTopic()));
 

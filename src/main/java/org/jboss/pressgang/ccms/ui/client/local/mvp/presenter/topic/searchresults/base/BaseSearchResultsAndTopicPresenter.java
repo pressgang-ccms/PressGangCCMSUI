@@ -359,7 +359,7 @@ public abstract class BaseSearchResultsAndTopicPresenter
      * the entity we are viewing, since there is a slight chance that a new revision could be saved in between us loading
      * the empty entity and then loading the collections.
      */
-    private void loadTagsAndBugs() {
+    protected final void loadTagsAndBugs() {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.loadTagsAndBugs()");
 
