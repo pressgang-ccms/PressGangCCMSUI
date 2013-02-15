@@ -145,23 +145,17 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
 
     @Override
     public final void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
-
-
         /* Initialize the other presenters we have pulled in */
         getSearchResultsComponent().bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
         topicTagsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicPropertyTagPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicSourceURLsPresenter.bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
 
-
-
         /* Display the split panes */
         initializeDisplay();
 
         bindSplitPanelResize();
         loadSplitPanelSize();
-
-
 
         postBindSearchAndEditExtended(topicId, pageId, queryString);
     }
