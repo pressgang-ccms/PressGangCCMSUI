@@ -51,7 +51,7 @@ public class TranslatedTopicsFilteredResultsView extends BaseFilteredResultsView
         getResults().addColumn(titleColumn, PressGangCCMSUI.INSTANCE.TopicTitle());
         getResults().addColumn(localeColumn, PressGangCCMSUI.INSTANCE.TopicLocale());
         
-        /* Unlike every other results view, the topic results don't have a search button */
-        this.getEntitySearch().removeFromParent();
+        /* remove the search and create buttons */
+        this.getTopActionPanel().removeAllRows();
     }
 }
