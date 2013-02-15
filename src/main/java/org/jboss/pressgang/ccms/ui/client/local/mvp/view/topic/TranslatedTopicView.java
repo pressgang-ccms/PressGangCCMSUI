@@ -2,16 +2,12 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
 
 import com.google.gwt.core.client.GWT;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicPresenter.TranslatedTopicPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTranslatedTopicV1BasicDetailsEditor;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 /**
  * The view to display translated topics details. Unlike the other views, which are generalized
@@ -23,7 +19,7 @@ public class TranslatedTopicView extends BaseTemplateView implements TranslatedT
     /**
      * The GWT Editor Driver
      */
-    private final TranslatedTopicPresenter.TranslatedTopicPresenterDriver driver = GWT.create(TranslatedTopicPresenter.TranslatedTopicPresenterDriver.class);
+    private final TranslatedTopicPresenterDriver driver = GWT.create(TranslatedTopicPresenterDriver.class);
 
     public TranslatedTopicView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
@@ -32,7 +28,7 @@ public class TranslatedTopicView extends BaseTemplateView implements TranslatedT
     }
 
     @Override
-    public TranslatedTopicPresenter.TranslatedTopicPresenterDriver getDriver() {
+    public TranslatedTopicPresenterDriver getDriver() {
         return driver;
     }
 

@@ -14,36 +14,30 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An editor to bind the details in a RESTTranslatedTopicV1 to UI elements. This is similar but not the same
+ * as RESTTopicV1BasicDetailsEditor, which has some slightly different properties being displayed.
+ */
 public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTranslatedTopicV1> {
 
-    private static final int ROWS = 7;
+    private static final int ROWS = 4;
     private static final int COLS = 2;
 
     private final SimpleIntegerBox id = new SimpleIntegerBox();
-    private final SimpleIntegerBox revision = new SimpleIntegerBox();
+    private final SimpleIntegerBox topicRevision = new SimpleIntegerBox();
+    private final SimpleIntegerBox topicId = new SimpleIntegerBox();
     private final TextArea locale = new TextArea();
-    private final TextBox title = new TextBox();
-    private final TextArea description = new TextArea();
-    private final DateBox created = new DateBox();
-
-    public DateBox createdEditor() {
-        return created;
-    }
-
-    public TextArea descriptionEditor() {
-        return description;
-    }
-
-    public TextBox titleEditor() {
-        return title;
-    }
 
     public TextArea localeEditor() {
         return locale;
     }
 
-    public SimpleIntegerBox revisionEditor() {
-        return revision;
+    public SimpleIntegerBox topicIdEditor() {
+        return topicId;
+    }
+
+    public SimpleIntegerBox topicRevisionEditor() {
+        return topicRevision;
     }
 
     public SimpleIntegerBox idEditor() {
@@ -55,19 +49,11 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
 
         this.addStyleName(CSSConstants.TOPIC_VIEW_PANEL);
 
-        title.setReadOnly(readOnly);
+        topicId.setReadOnly(readOnly);
+        topicRevision.setReadOnly(readOnly);
         locale.setReadOnly(readOnly);
-        description.setReadOnly(readOnly);
-
         id.setReadOnly(true);
-        revision.setReadOnly(true);
-        created.setEnabled(false);
 
-        id.addStyleName(CSSConstants.TOPIC_VIEW_ID_FIELD);
-        revision.addStyleName(CSSConstants.TOPIC_VIEW_REVISION_NUMBER_FIELD);
-        title.addStyleName(CSSConstants.TOPIC_VIEW_TITLE_FIELD);
-        locale.addStyleName(CSSConstants.TOPIC_VIEW_LOCALE_FIELD);
-        description.addStyleName(CSSConstants.TOPIC_VIEW_DESCRIPTION_FIELD);
 
         int row = 0;        
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicID()));
@@ -75,11 +61,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
         
         ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicRevision()));
-        this.setWidget(row, 1, revision);
-        
-        ++row;
-        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicCreated()));
-        this.setWidget(row, 1, created);
+        this.setWidget(row, 1, topicId);
 
         ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLocale()));
@@ -87,11 +69,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
 
         ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicTitle()));
-        this.setWidget(row, 1, title);
-
-        ++row;
-        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicDescription()));        
-        this.setWidget(row, 1, description);
+        this.setWidget(row, 1, topicRevision);
 
         for (int i = 0; i < ROWS; ++i) {
             this.getCellFormatter().addStyleName(i, 0, CSSConstants.TOPIC_VIEW_LABEL);
