@@ -27,20 +27,16 @@ import java.util.logging.Logger;
  * list on the left, and the entity details on the right, with at least one of those views being a "properties view", which
  * shows the fields associated with an entity (especially the ID).
  *
- * @param <R> The results view type
  * @param <T> The entity type
  * @param <U> The entity collection type of T
  * @param <V> The entity collection item type of T
- * @param <X> The type of the entity properties view
  * @param <Y> The type of the Editor that is displayed by this component
  * @author Matthew Casperson
  */
 abstract public class BaseSearchAndEditComponent<
-        R extends BaseFilteredResultsViewInterface<V>,
         T extends RESTBaseEntityV1<T, U, V>,
         U extends RESTBaseCollectionV1<T, U, V>,
         V extends RESTBaseCollectionItemV1<T, U, V>,
-        X extends BasePopulatedEditorViewInterface<T, T, Y> & BaseTemplateViewInterface,
         Y extends Editor<T>>
         extends BaseTemplatePresenter implements BaseSearchAndEditPresenterInterface {
 
@@ -59,11 +55,11 @@ abstract public class BaseSearchAndEditComponent<
     /**
      * The view that displays the entity properties (namely the id)
      */
-    private X entityPropertiesView;
+    private BasePopulatedEditorViewInterface<T, T, Y> entityPropertiesView;
     /**
      * The view that displays the list of results
      */
-    private BaseFilteredResultsViewInterface filteredResultsDisplay;
+    private BaseFilteredResultsViewInterface<V> filteredResultsDisplay;
     /**
      * The component that adds logic to the filtered results view
      */
@@ -99,8 +95,8 @@ abstract public class BaseSearchAndEditComponent<
             final String pageId,
             final String mainSplitSizePreferenceKey,
             final BaseTemplateViewInterface firstDisplayedView,
-            final X entityPropertiesView,
-            final R filteredResultsDisplay,
+            final BasePopulatedEditorViewInterface<T, T, Y> entityPropertiesView,
+            final BaseFilteredResultsViewInterface<V> filteredResultsDisplay,
             final BaseFilteredResultsComponentInterface<V> filteredResultsComponent,
             final BaseSearchAndEditViewInterface display,
             final BaseTemplateViewInterface waitDisplay,

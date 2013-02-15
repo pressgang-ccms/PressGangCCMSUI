@@ -13,6 +13,6 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
  * the data source for the editor. This object is either used by the editor directly, in which case T and W
  * will be the same type, or indirectly, in which case W will usually be constructed with a reference to T.
  */
-public interface BasePopulatedEditorViewInterface<T, W, X extends Editor<W>> extends BaseCustomViewInterface<T>, BaseEditorViewInterface<W, X> {
+public interface BasePopulatedEditorViewInterface<T, W, X extends Editor<W>> extends BaseCustomViewInterface<T>, BaseEditorViewInterface<W, X>, BaseTemplateViewInterface {
 
 }

@@ -32,7 +32,6 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
  */
 @Dependent
 public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComponent<
-        SearchFilterFilteredResultsPresenter.Display,
         RESTFilterV1,
         RESTFilterCollectionV1,
         RESTFilterCollectionItemV1,

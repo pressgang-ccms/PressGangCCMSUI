@@ -48,7 +48,6 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 public class ProjectsFilteredResultsAndProjectPresenter
         extends
         BaseSearchAndEditComponent<
-                ProjectFilteredResultsPresenter.Display,
                 RESTProjectV1,
                 RESTProjectCollectionV1,
                 RESTProjectCollectionItemV1,

@@ -64,7 +64,6 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 public class TagsFilteredResultsAndTagPresenter
         extends
         BaseSearchAndEditComponent<
-                TagFilteredResultsPresenter.Display,
                 RESTTagV1,
                 RESTTagCollectionV1,
                 RESTTagCollectionItemV1,

@@ -7,10 +7,8 @@ import com.google.gwt.view.client.HasData;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.TopicListReceived;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.TopicListReceivedHandler;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -25,22 +23,14 @@ import java.util.ArrayList;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
-public class SearchResultsPresenter
-        extends
-        BaseFilteredResultsComponent<RESTTopicCollectionItemV1>
+public class SearchResultsPresenter extends BaseFilteredResultsComponent<RESTTopicCollectionItemV1>
         implements BaseTemplatePresenterInterface {
 
-    public interface Display extends
-            BaseFilteredResultsViewInterface<RESTTopicCollectionItemV1> {
+    public interface Display extends BaseFilteredResultsViewInterface<RESTTopicCollectionItemV1> {
 
     }
 
     public static final String HISTORY_TOKEN = "SearchResultsView";
-
-    /**
-     * Manages event registration and notification.
-     */
-    final private HandlerManager handlerManager = new HandlerManager(this);
 
     @Inject
     private Display display;
@@ -49,10 +39,6 @@ public class SearchResultsPresenter
 
     @Inject
     private HandlerManager eventBus;
-
-    public void addTopicListReceivedHandler(final TopicListReceivedHandler handler) {
-        handlerManager.addHandler(TopicListReceived.getType(), handler);
-    }
 
     public Display getDisplay()
     {
@@ -131,7 +117,7 @@ public class SearchResultsPresenter
                             displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                         } finally {
                             display.removeWaitOperation();
-                            handlerManager.fireEvent(new TopicListReceived(retValue));
+                            getHandlerManager().fireEvent(new EntityListReceived(retValue));
                         }
                     }
 

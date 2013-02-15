@@ -1,32 +1,22 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.view.client.HasData;
-import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.TopicListReceived;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

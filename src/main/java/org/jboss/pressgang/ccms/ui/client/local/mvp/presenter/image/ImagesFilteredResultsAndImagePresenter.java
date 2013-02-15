@@ -68,7 +68,6 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 public class ImagesFilteredResultsAndImagePresenter
         extends
         BaseSearchAndEditComponent<
-                ImageFilteredResultsPresenter.Display,
                 RESTImageV1,
                 RESTImageCollectionV1,
                 RESTImageCollectionItemV1,

@@ -29,10 +29,10 @@ import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTag
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.TopicListReceivedHandler;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
@@ -51,6 +51,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTopicCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewCategoryEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
@@ -71,8 +72,15 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
     display, edit and create topics.
  */
 @Dependent
-public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPresenter {
+public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPresenter<
+        RESTTopicV1,
+        RESTTopicCollectionV1,
+        RESTTopicCollectionItemV1,
+        RESTTopicV1BasicDetailsEditor> {
 
+    /**
+     * The history token.
+     */
     public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
     private static final String LINE_BREAK_ESCAPED = "\\n";
     private static final String CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED = "\\r\\n";
@@ -127,15 +135,19 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
     /** true after the topics have been loaded */
     private boolean topicListLoaded = false;
 
-    @Inject
-    private TopicPresenter topicViewComponent;
-    @Inject
-    private TopicRevisionsPresenter topicRevisionsComponent;
+    @Inject private SearchResultsPresenter searchResultsComponent;
+    @Inject private TopicPresenter topicViewComponent;
+    @Inject private TopicRevisionsPresenter topicRevisionsComponent;
     @Inject private Display display;
 
     @Override
     protected final Display getDisplay() {
         return display;
+    }
+
+    @Override
+    protected BaseFilteredResultsComponent<RESTTopicCollectionItemV1> getSearchResultsComponent() {
+        return searchResultsComponent;
     }
 
     @Override
@@ -180,9 +192,9 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
         bindViewTopicRevisionButton();
 
         /* When the topics have been loaded, display the first one */
-        getSearchResultsComponent().addTopicListReceivedHandler(new TopicListReceivedHandler() {
+        getSearchResultsComponent().addTopicListReceivedHandler(new EntityListReceivedHandler<RESTTopicCollectionV1>() {
             @Override
-            public void onTopicsRecieved(final RESTTopicCollectionV1 topics) {
+            public void onCollectionRecieved(final RESTTopicCollectionV1 topics) {
                 topicListLoaded = true;
                 displayInitialTopic(getNewEntityCallback);
             }
@@ -244,7 +256,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
                         public void doSuccessAction(final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
                             getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().setRevisions(retValue.getRevisions());
 
-                                /* refresh the list */
+                            /* refresh the list */
                             topicRevisionsComponent.getDisplay().getProvider().displayNewFixedList(retValue.getRevisions().getItems());
                         }
                     });

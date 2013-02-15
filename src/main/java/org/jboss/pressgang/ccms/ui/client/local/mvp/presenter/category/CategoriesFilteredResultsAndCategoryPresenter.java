@@ -59,7 +59,6 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 public class CategoriesFilteredResultsAndCategoryPresenter
         extends
         BaseSearchAndEditComponent<
-                CategoryFilteredResultsPresenter.Display,
                 RESTCategoryV1,
                 RESTCategoryCollectionV1,
                 RESTCategoryCollectionItemV1,

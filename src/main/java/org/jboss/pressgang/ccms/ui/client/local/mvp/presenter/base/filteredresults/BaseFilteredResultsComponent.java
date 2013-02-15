@@ -1,10 +1,12 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults;
 
+import com.google.gwt.event.shared.HandlerManager;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -22,11 +24,26 @@ abstract public class BaseFilteredResultsComponent<V extends RESTBaseCollectionI
     /** Holds the data required to populate and refresh the tags list */
     private final ProviderUpdateData<V> providerData = new ProviderUpdateData<V>();
 
+    final private HandlerManager handlerManager = new HandlerManager(this);
+
+    /**
+     * Manages event registration and notification.
+     */
+    public HandlerManager getHandlerManager() {
+        return handlerManager;
+    }
+
     @Override
     @NotNull
     public final ProviderUpdateData<V> getProviderData() {
         return providerData;
     }
+
+    public final void addTopicListReceivedHandler(final EntityListReceivedHandler handler) {
+        handlerManager.addHandler(EntityListReceived.getType(), handler);
+    }
+
+
 
     /**
     * @param topicId The ID of the help topic associated with this view
@@ -77,5 +94,6 @@ abstract public class BaseFilteredResultsComponent<V extends RESTBaseCollectionI
      * @return A provider to be used for the category display list
      */
     abstract protected EnhancedAsyncDataProvider<V> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay);
+
 
 }

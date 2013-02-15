@@ -1,19 +1,24 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base;
 
+import com.google.gwt.editor.client.Editor;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
@@ -47,14 +52,12 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
  * provide additional functionality specific to the needs of either the topic
  * or translated topic screens.
  */
-public abstract class BaseSearchResultsAndTopicPresenter
-        extends BaseSearchAndEditComponent<
-        SearchResultsPresenter.Display,
-        RESTTopicV1,
-        RESTTopicCollectionV1,
-        RESTTopicCollectionItemV1,
-        TopicPresenter.Display,
-        RESTTopicV1BasicDetailsEditor>
+public abstract class BaseSearchResultsAndTopicPresenter  <
+            T extends RESTBaseTopicV1<T, U, V>,
+            U extends RESTBaseCollectionV1<T, U, V>,
+            V extends RESTBaseCollectionItemV1<T, U, V>,
+            Y extends Editor<T>>
+        extends BaseSearchAndEditComponent<T, U, V, Y>
         implements BaseTemplatePresenterInterface {
 
     public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
@@ -74,7 +77,7 @@ public abstract class BaseSearchResultsAndTopicPresenter
      * The rendered topic view display in a split panel
      */
     @Inject private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
-    @Inject private SearchResultsPresenter searchResultsComponent;
+
     @Inject private TopicXMLErrorsPresenter topicXMLErrorsPresenter;
     @Inject private TopicTagsPresenter topicTagsComponent;
     @Inject private TopicBIRTBugsPresenter topicBugsPresenter;
@@ -92,9 +95,7 @@ public abstract class BaseSearchResultsAndTopicPresenter
         return topicXMLComponent;
     }
 
-    protected final SearchResultsPresenter getSearchResultsComponent() {
-        return searchResultsComponent;
-    }
+    protected abstract BaseFilteredResultsComponent<V> getSearchResultsComponent();
 
     protected final TopicTagsPresenter getTopicTagsComponent() {
         return topicTagsComponent;
@@ -147,7 +148,7 @@ public abstract class BaseSearchResultsAndTopicPresenter
 
 
         /* Initialize the other presenters we have pulled in */
-        searchResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
+        getSearchResultsComponent().bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
         topicTagsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicPropertyTagPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicSourceURLsPresenter.bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
@@ -177,15 +178,15 @@ public abstract class BaseSearchResultsAndTopicPresenter
      * When the locales and the topic list have been loaded we can display the fisrt topic if only
      * one was returned.
      */
-    protected void displayInitialTopic(final GetNewEntityCallback<RESTTopicV1> getNewEntityCallback)
+    protected void displayInitialTopic(final GetNewEntityCallback<T> getNewEntityCallback)
     {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.displayInitialTopic()");
 
             if (isInitialTopicReadyToBeLoaded() &&
-                    searchResultsComponent.getProviderData().getItems() != null &&
-                    searchResultsComponent.getProviderData().getItems().size() == 1) {
-                loadNewEntity(getNewEntityCallback, searchResultsComponent.getProviderData().getItems().get(0));
+                    getSearchResultsComponent().getProviderData().getItems() != null &&
+                    getSearchResultsComponent().getProviderData().getItems().size() == 1) {
+                loadNewEntity(getNewEntityCallback, getSearchResultsComponent().getProviderData().getItems().get(0));
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.displayInitialTopic()");
@@ -316,15 +317,15 @@ public abstract class BaseSearchResultsAndTopicPresenter
             initializeSplitViewButtons();
 
             /* Display the property tags that are added to the category */
-            Collections.sort(searchResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
+            Collections.sort(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
                     new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
-            topicPropertyTagPresenter.refreshExistingChildList(searchResultsComponent.getProviderData().getDisplayedItem().getItem());
+            topicPropertyTagPresenter.refreshExistingChildList(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem());
 
             /* Get a new collection of property tags */
-            topicPropertyTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(searchResultsComponent.getProviderData().getDisplayedItem().getItem());
+            topicPropertyTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem());
 
             /* Display the list of property tags */
-            topicSourceURLsPresenter.redisplayPossibleChildList(searchResultsComponent.getProviderData().getDisplayedItem().getItem());
+            topicSourceURLsPresenter.redisplayPossibleChildList(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem());
 
             loadTagsAndBugs();
 
@@ -456,11 +457,11 @@ public abstract class BaseSearchResultsAndTopicPresenter
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.updatePageTitle()");
 
             final StringBuilder title = new StringBuilder(displayedView.getPageName());
-            final String id = searchResultsComponent.getProviderData().getDisplayedItem().getItem().getId() == null ?
-                    PressGangCCMSUI.INSTANCE.New() : searchResultsComponent.getProviderData().getDisplayedItem().getItem().getId().toString();
-            final String displayTitle = searchResultsComponent.getProviderData().getDisplayedItem().getItem().getTitle() == null ?
-                    "" : searchResultsComponent.getProviderData().getDisplayedItem().getItem().getTitle();
-            if (this.searchResultsComponent.getProviderData().getDisplayedItem() != null) {
+            final String id = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId() == null ?
+                    PressGangCCMSUI.INSTANCE.New() : getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId().toString();
+            final String displayTitle = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTitle() == null ?
+                    "" : getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTitle();
+            if (this.getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                 title.append(": [" + id + "] " + displayTitle);
             }
             getDisplay().getPageTitle().setText(title.toString());
@@ -501,7 +502,7 @@ public abstract class BaseSearchResultsAndTopicPresenter
             final ClickHandler topicPropertyTagsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
-                    if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
+                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                         switchView(topicPropertyTagPresenter.getDisplay());
                     }
                 }
@@ -510,7 +511,7 @@ public abstract class BaseSearchResultsAndTopicPresenter
             final ClickHandler topicSourceUrlsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
-                    if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
+                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                         switchView(topicSourceURLsPresenter.getDisplay());
                     }
                 }
@@ -519,7 +520,7 @@ public abstract class BaseSearchResultsAndTopicPresenter
             final ClickHandler topicXMLClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
-                    if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
+                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                         switchView(topicXMLComponent.getDisplay());
 
                     }
@@ -529,7 +530,7 @@ public abstract class BaseSearchResultsAndTopicPresenter
             final ClickHandler topicRenderedClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
-                    if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
+                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                         switchView(topicRenderedPresenter.getDisplay());
                     }
                 }
@@ -538,7 +539,7 @@ public abstract class BaseSearchResultsAndTopicPresenter
             final ClickHandler topicXMLErrorsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
-                    if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
+                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                         switchView(topicXMLErrorsPresenter.getDisplay());
                     }
                 }
@@ -547,7 +548,7 @@ public abstract class BaseSearchResultsAndTopicPresenter
             final ClickHandler topicTagsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
-                    if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
+                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                         switchView(topicTagsComponent.getDisplay());
                     }
                 }
@@ -556,7 +557,7 @@ public abstract class BaseSearchResultsAndTopicPresenter
             final ClickHandler topicBugsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
-                    if (searchResultsComponent.getProviderData().getDisplayedItem() != null) {
+                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                         switchView(topicBugsPresenter.getDisplay());
                     }
                 }
@@ -624,9 +625,9 @@ public abstract class BaseSearchResultsAndTopicPresenter
                 @Override
                 public void onClick(final ClickEvent event) {
 
-                    if (searchResultsComponent.getProviderData().getDisplayedItem() != null && isOKToProceed()) {
+                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null && isOKToProceed()) {
 
-                        final RESTTopicV1 topic = searchResultsComponent.getProviderData().getDisplayedItem().getItem();
+                        final RESTBaseTopicV1<?, ?, ?> topic = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
 
                         eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
                                 + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "="

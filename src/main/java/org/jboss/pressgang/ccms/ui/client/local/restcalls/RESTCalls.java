@@ -452,11 +452,9 @@ public final class RESTCalls {
         });
     }
 
-    public static void getTopicsFromQuery(@NotNull final RESTCallback<RESTTopicCollectionV1> callback, @NotNull final String queryString,
-            final int start, final int end) {
+    public static void getTopicsFromQuery(@NotNull final RESTCallback<RESTTopicCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
-                + ", \"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}}]}";
+        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -476,8 +474,27 @@ public final class RESTCalls {
         });
     }
 
-    public static void getTagsFromQuery(@NotNull final RESTCallback<RESTTagCollectionV1> callback, @NotNull final String queryString, final int start,
-            final int end) {
+    public static void getTranslatedTopicsFromQuery(@NotNull final RESTCallback<RESTTranslatedTopicCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
+        /* Expand the categories and projects in the tags */
+        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}}]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONTranslatedTopicsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        });
+    }
+
+    public static void getTranslatedTopic(@NotNull final RESTCallback<RESTTranslatedTopicV1> callback, @NotNull final Integer id) {
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONTranslatedTopic(id, TOPIC_EXPANSION);
+            }
+        });
+    }
+
+    public static void getTagsFromQuery(@NotNull final RESTCallback<RESTTagCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TAGS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
