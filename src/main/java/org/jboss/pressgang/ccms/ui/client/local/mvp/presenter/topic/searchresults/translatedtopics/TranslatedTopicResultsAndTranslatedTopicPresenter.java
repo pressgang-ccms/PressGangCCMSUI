@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
@@ -12,6 +14,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityList
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseSearchResultsAndTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -51,6 +55,7 @@ public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearc
      */
     @Inject private Display display;
 
+    @Inject private TranslatedTopicPresenter translatedTopicPresenter;
     @Inject private TranslatedTopicsFilteredResultsPresenter translatedTopicsFilteredResultsPresenter;
 
     @Override
@@ -96,7 +101,7 @@ public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearc
             }
         };
 
-        super.bindSearchAndEdit(topicId, pageId, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, getTopicXMLComponent().getDisplay(), topicViewComponent.getDisplay(),
+        super.bindSearchAndEdit(topicId, pageId, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, getTopicXMLComponent().getDisplay(), translatedTopicPresenter.getDisplay(),
                 getSearchResultsComponent().getDisplay(), getSearchResultsComponent(), getDisplay(), getDisplay(), getNewEntityCallback);
 
                 /* When the topics have been loaded, display the first one */
@@ -129,7 +134,7 @@ public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearc
     }
 
     @Override
-    protected RESTBaseTopicV1<?, ?, ?> getDisplayedTopic() {
+    protected RESTTranslatedTopicV1 getDisplayedTopic() {
         final RESTTranslatedTopicCollectionItemV1 displayedItem = this.getSearchResultsComponent().getProviderData().getDisplayedItem();
         return displayedItem == null ? null : displayedItem.getItem();
     }
@@ -150,12 +155,23 @@ public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearc
 
     @Override
     protected void postBindActionButtons() {
-        fill me in
+        final ClickHandler topicViewClickHandler = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
+                    switchView(translatedTopicPresenter.getDisplay());
+                }
+            }
+        };
+
+        getDisplay().getFields().addClickHandler(topicViewClickHandler);
     }
 
     @Override
     protected void postInitializeViews(List<BaseTemplateViewInterface> filter) {
-        fill me in
+        if (viewIsInFilter(filter, translatedTopicPresenter.getDisplay())) {
+            translatedTopicPresenter.getDisplay().display(this.getDisplayedTopic(), isReadOnlyMode());
+        }
     }
 
     @Override

@@ -21,17 +21,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
 
     private final SimpleIntegerBox id = new SimpleIntegerBox();
     private final SimpleIntegerBox revision = new SimpleIntegerBox();
-    private final ValueListBox<String> locale = new ValueListBox<String>(new Renderer<String>() {
-
-        @Override
-        public String render(final String object) {
-            return object;
-        }
-
-        @Override
-        public void render(final String object, final Appendable appendable) throws IOException {
-        }
-    });
+    private final TextArea locale = new TextArea();
     private final TextBox title = new TextBox();
     private final TextArea description = new TextArea();
     private final DateBox created = new DateBox();
@@ -48,7 +38,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
         return title;
     }
 
-    public ValueListBox<String> localeEditor() {
+    public TextArea localeEditor() {
         return locale;
     }
 
@@ -60,17 +50,13 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
         return id;
     }
 
-    public RESTTranslatedTopicV1BasicDetailsEditor(final boolean readOnly, final List<String> locales) {
+    public RESTTranslatedTopicV1BasicDetailsEditor(final boolean readOnly) {
         super(ROWS, COLS);
 
         this.addStyleName(CSSConstants.TOPIC_VIEW_PANEL);
 
         title.setReadOnly(readOnly);
-        /* http://code.google.com/p/google-web-toolkit/issues/detail?id=6112 */
-        DOM.setElementPropertyBoolean(locale.getElement(), "disabled", readOnly);
-        /* http://stackoverflow.com/a/11176707/157605 */
-        locale.setValue("");
-        locale.setAcceptableValues(locales == null ? new ArrayList<String>() : locales);
+        locale.setReadOnly(readOnly);
         description.setReadOnly(readOnly);
 
         id.setReadOnly(true);
