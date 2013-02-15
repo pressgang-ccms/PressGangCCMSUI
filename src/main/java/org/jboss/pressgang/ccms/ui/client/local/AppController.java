@@ -30,6 +30,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPres
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.SearchResultsAndTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.SearchResultsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics.TranslatedTopicResultsAndTranslatedTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
@@ -166,6 +167,8 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                 presenter = getBeanInstance(ProjectsFilteredResultsAndProjectPresenter.class);
             } else if (token.startsWith(SearchFilterResultsAndFilterPresenter.HISTORY_TOKEN)) {
                 presenter = getBeanInstance(SearchFilterResultsAndFilterPresenter.class);
+            } else if (token.startsWith(TranslatedTopicResultsAndTranslatedTopicPresenter.HISTORY_TOKEN)) {
+                presenter = getBeanInstance(TranslatedTopicResultsAndTranslatedTopicPresenter.class);
             }
 
             if (presenter.isPresent()) {
