@@ -791,7 +791,10 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
     /**
      * The interface that defines the top level topic list and edit view
      */
-    public interface Display extends BaseSearchAndEditViewInterface<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
+    public interface Display<
+            T extends RESTBaseEntityV1<T, U, V>,
+            U extends RESTBaseCollectionV1<T, U, V>,
+            V extends RESTBaseCollectionItemV1<T, U, V>> extends BaseSearchAndEditViewInterface<T, U, V> {
 
         FlexTable getRenderedSplitViewMenu();
 

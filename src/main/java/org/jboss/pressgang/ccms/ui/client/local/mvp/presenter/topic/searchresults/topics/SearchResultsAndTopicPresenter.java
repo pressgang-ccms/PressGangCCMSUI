@@ -1675,7 +1675,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
         }
     }
 
-    public interface Display extends BaseSearchResultsAndTopicPresenter.Display {
+    public interface Display extends BaseSearchResultsAndTopicPresenter.Display<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
         PushButton getSave();
         PushButton getHistory();
         Label getHistoryDown();

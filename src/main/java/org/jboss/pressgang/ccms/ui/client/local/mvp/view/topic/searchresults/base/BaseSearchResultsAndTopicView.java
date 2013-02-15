@@ -1,11 +1,15 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.base;
 
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseSearchResultsAndTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.SearchResultsAndTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.LogMessageView;
@@ -17,13 +21,15 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
  * The view that combines the topic search results with the individual topic views 
  * @author Matthew Casperson
  */
-public class SearchResultsAndTopicView extends
-        BaseSearchAndEditView<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> implements
-        SearchResultsAndTopicPresenter.Display {
+public abstract class BaseSearchResultsAndTopicView<
+        T extends RESTBaseEntityV1<T, U, V>,
+        U extends RESTBaseCollectionV1<T, U, V>,
+        V extends RESTBaseCollectionItemV1<T, U, V>> extends
+        BaseSearchAndEditView<T, U, V> implements BaseSearchResultsAndTopicPresenter.Display<T, U, V> {
 
     /** An instance of the message log dialog box */
     private final LogMessageView messageLogDialog = new LogMessageView();
-    
+
     /** The type of split used to display the rendered XML */
     private SplitType splitType = SplitType.NULL;
 
@@ -33,9 +39,7 @@ public class SearchResultsAndTopicView extends
     private final PushButton xmlErrors;
     private final PushButton rendered;
     private final PushButton topicTags;
-    private final PushButton save;
     private final PushButton bugs;
-    private final PushButton history;
     private final PushButton csps;
     private final PushButton urls;
 
@@ -45,7 +49,6 @@ public class SearchResultsAndTopicView extends
     private final Label renderedDown;
     private final Label tagsDown;
     private final Label bugsDown;
-    private final Label historyDown;
     private final Label extendedPropertiesDown;
     private final Label urlsDown;
 
@@ -108,11 +111,6 @@ public class SearchResultsAndTopicView extends
     }
 
     @Override
-    public Label getHistoryDown() {
-        return historyDown;
-    }
-
-    @Override
     public PushButton getRenderedSplitOpen() {
         return renderedSplitOpen;
     }
@@ -148,11 +146,6 @@ public class SearchResultsAndTopicView extends
     }
 
     @Override
-    public PushButton getHistory() {
-        return history;
-    }
-
-    @Override
     public PushButton getBugs() {
         return bugs;
     }
@@ -165,11 +158,6 @@ public class SearchResultsAndTopicView extends
     @Override
     public PushButton getXmlErrors() {
         return xmlErrors;
-    }
-
-    @Override
-    public PushButton getSave() {
-        return save;
     }
 
     @Override
@@ -208,8 +196,8 @@ public class SearchResultsAndTopicView extends
         return splitType;
     }
 
-    public SearchResultsAndTopicView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
+    public BaseSearchResultsAndTopicView(final String applicationName, final String pageName) {
+        super(applicationName, pageName);
 
         renderedSplitViewMenu.addStyleName(CSSConstants.RENDERED_SPLIT_VIEW_MENU_TABLE);
 
@@ -220,10 +208,8 @@ public class SearchResultsAndTopicView extends
         xmlErrors = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
         fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Properties());
         extendedProperties = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.PropertyTags());
-        save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
         topicTags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TopicTags());
         bugs = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Bugs());
-        history = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Revisions());
         csps = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ContentSpecifications());
         urls = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TopicSourceUrls());
 
@@ -233,7 +219,6 @@ public class SearchResultsAndTopicView extends
         renderedDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.RenderedView());
         tagsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TopicTags());
         bugsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Bugs());
-        historyDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
         extendedPropertiesDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.PropertyTags());
         urlsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TopicSourceUrls());
 
@@ -289,19 +274,7 @@ public class SearchResultsAndTopicView extends
         buildSplitViewButtons(splitType);
     }
 
-    /**
-     * This method enables or disables the save button based on the read only state, and also highlights the history button if
-     * needed.
-     */
-    private void fixReadOnlyButtons() {
-        this.getSave().setEnabled(!readOnly);
 
-        if (readOnly) {
-            this.getHistory().addStyleName(CSSConstants.ALERT_BUTTON);
-        } else {
-            this.getHistory().removeStyleName(CSSConstants.ALERT_BUTTON);
-        }
-    }
 
     private void addOrRemoveRenderedButton(final SplitType splitType)
     {
@@ -370,7 +343,6 @@ public class SearchResultsAndTopicView extends
     private void populateTopActionBar()
     {
         this.getTopActionPanel().removeAllRows();
-        fixReadOnlyButtons();
 
         addActionButton(this.getRenderedSplit());
         addActionButton(this.getRendered());
@@ -381,8 +353,10 @@ public class SearchResultsAndTopicView extends
         addActionButton(this.getUrls());
         addActionButton(this.getTopicTags());
         addActionButton(this.getBugs());
-        addActionButton(this.getHistory());
         addActionButton(this.getCsps());
-        addActionButton(this.getSave());
+
+        postPopulateTopActionBar();
     }
+
+    protected abstract void postPopulateTopActionBar();
 }

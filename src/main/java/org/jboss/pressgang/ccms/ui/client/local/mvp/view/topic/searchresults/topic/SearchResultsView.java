@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.topic;
 
 import com.google.gwt.user.cellview.client.TextColumn;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;

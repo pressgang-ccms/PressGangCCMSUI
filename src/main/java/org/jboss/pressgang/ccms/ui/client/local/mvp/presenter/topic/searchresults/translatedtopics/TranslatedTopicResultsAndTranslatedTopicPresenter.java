@@ -209,7 +209,7 @@ public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearc
      * This interface defines nothing over BaseSearchResultsAndTopicPresenter.Display,
      * but exists for the benefit of the injection.
      */
-    public interface Display extends BaseSearchResultsAndTopicPresenter.Display {
+    public interface Display extends BaseSearchResultsAndTopicPresenter.Display<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
 
     }
 }
