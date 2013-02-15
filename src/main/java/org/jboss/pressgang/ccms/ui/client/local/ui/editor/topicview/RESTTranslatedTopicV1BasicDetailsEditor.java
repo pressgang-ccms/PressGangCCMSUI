@@ -64,12 +64,12 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
         this.setWidget(row, 1, topicId);
 
         ++row;
-        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLocale()));
-        this.setWidget(row, 1, locale);
-
-        ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicTitle()));
         this.setWidget(row, 1, topicRevision);
+
+        ++row;
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLocale()));
+        this.setWidget(row, 1, locale);
 
         for (int i = 0; i < ROWS; ++i) {
             this.getCellFormatter().addStyleName(i, 0, CSSConstants.TOPIC_VIEW_LABEL);
