@@ -83,7 +83,7 @@ public class SearchUIProjects implements SearchViewBase {
      */
     public final void initialize(@NotNull final RESTTagCollectionV1 tags, @Nullable final RESTFilterV1 filter) {
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchUIProjects.initialize()");
+            //LOGGER.log(Level.INFO, "ENTER SearchUIProjects.initialize()");
 
             if (tags == null) {
                 throw new IllegalArgumentException("tags parameter cannot be null");
@@ -118,7 +118,7 @@ public class SearchUIProjects implements SearchViewBase {
                 this.projects.addFirst(common);
             }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchUIProjects.initialize()");
+            //LOGGER.log(Level.INFO, "EXIT SearchUIProjects.initialize()");
         }
     }
 

@@ -36,19 +36,19 @@ public final class SearchUITag extends SearchUIBase {
         super(tag.getItem().getName(), parent.getId() + "-" + tag.getItem().getId());
 
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchUITag()");
+            //LOGGER.log(Level.INFO, "ENTER SearchUITag()");
 
             this.tag = tag;
 
             if (filter != null) {
-                LOGGER.log(Level.INFO, "Processing filter with " + filter.getFilterTags_OTM().getItems().size() + " tags");
+                //LOGGER.log(Level.INFO, "Processing filter with " + filter.getFilterTags_OTM().getItems().size() + " tags");
                 for (final RESTFilterTagCollectionItemV1 filterTag : filter.getFilterTags_OTM().getItems())  {
                     if (filterTag.getItem().getTag().getId().equals(tag.getItem().getId())) {
                         if (filterTag.getItem().getState().equals(Constants.TAG_INCLUDED)) {
-                            LOGGER.log(Level.INFO, "Found included tag");
+                            //LOGGER.log(Level.INFO, "Found included tag");
                             state = TriStateSelectionState.SELECTED;
                         } else if (filterTag.getItem().getState().equals(Constants.TAG_EXCLUDED)) {
-                            LOGGER.log(Level.INFO, "Found excluded tag");
+                            //LOGGER.log(Level.INFO, "Found excluded tag");
                             state = TriStateSelectionState.UNSELECTED;
                         }
                         break;
@@ -56,7 +56,7 @@ public final class SearchUITag extends SearchUIBase {
                 }
             }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchUITag()");
+            //LOGGER.log(Level.INFO, "EXIT SearchUITag()");
         }
     }
 

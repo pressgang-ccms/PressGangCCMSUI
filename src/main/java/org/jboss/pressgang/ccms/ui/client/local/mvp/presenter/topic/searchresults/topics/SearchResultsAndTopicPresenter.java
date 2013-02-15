@@ -67,7 +67,8 @@ import java.util.logging.Logger;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
-
+    Extends the BaseSearchResultsAndTopicPresenter class to provide the functionality required to
+    display, edit and create topics.
  */
 @Dependent
 public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPresenter {
@@ -120,11 +121,6 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
      * A list of locales retrieved from the server
      */
     private List<String> locales;
-
-    /**
-     * The query string passed to this presenter via the URL.
-     */
-    private String queryString;
 
     /** true after the locales have been loaded */
     private boolean localesLoaded = false;
@@ -181,7 +177,9 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
         this.topicRevisionsComponent.getDisplay().setProvider(generateTopicRevisionsListProvider());
         this.getTopicTagsComponent().bindNewTagListBoxes(new AddTagClickhandler());
 
-                /* When the topics have been loaded, display the first one */
+        bindViewTopicRevisionButton();
+
+        /* When the topics have been loaded, display the first one */
         getSearchResultsComponent().addTopicListReceivedHandler(new TopicListReceivedHandler() {
             @Override
             public void onTopicsRecieved(final RESTTopicCollectionV1 topics) {
@@ -263,7 +261,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
             final RESTTopicCollectionItemV1 sourceTopic = topicRevisionsComponent.getDisplay().getRevisionTopic() == null ? this.getSearchResultsComponent()
                     .getProviderData().getDisplayedItem() : topicRevisionsComponent.getDisplay().getRevisionTopic();
 
-            return sourceTopic.getItem();
+            return sourceTopic == null ? null : sourceTopic.getItem();
         } finally {
             LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.getDisplayedTopic()");
         }
@@ -633,14 +631,14 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.parseToken()");
 
-            queryString = removeHistoryToken(historyToken, SearchResultsAndTopicPresenter.HISTORY_TOKEN);
+            setQueryString(removeHistoryToken(historyToken, SearchResultsAndTopicPresenter.HISTORY_TOKEN));
 
-            if (queryString.startsWith(Constants.CREATE_PATH_SEGMENT_PREFIX)) {
+            if (getQueryString().startsWith(Constants.CREATE_PATH_SEGMENT_PREFIX)) {
                 startWithNewTopic = true;
-                queryString = null;
-            } else if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
+                setQueryString(null);
+            } else if (!getQueryString().startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
                 /* Make sure that the query string has at least the prefix */
-                queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
+                setQueryString(Constants.QUERY_PATH_SEGMENT_PREFIX);
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.parseToken()");

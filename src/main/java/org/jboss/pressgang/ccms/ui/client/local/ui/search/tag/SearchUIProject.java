@@ -91,7 +91,7 @@ public final class SearchUIProject extends SearchUIBase {
      */
     public void populateCategories(final RESTProjectCollectionItemV1 project, final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchUIProject.populateCategories()");
+            //LOGGER.log(Level.INFO, "ENTER SearchUIProject.populateCategories()");
 
             if (tags == null) {
                 throw new IllegalArgumentException("tags parameter cannot be null");
@@ -123,7 +123,7 @@ public final class SearchUIProject extends SearchUIBase {
 
             Collections.sort(this.categories, new SearchUINameSort());
         } finally {
-            LOGGER.log(Level.INFO, "ENTER SearchUIProject.populateCategories()");
+            //LOGGER.log(Level.INFO, "ENTER SearchUIProject.populateCategories()");
         }
     }
 

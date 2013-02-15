@@ -6,7 +6,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionIte
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.SearchResultsAndTopicPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.SearchResultsAndTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.LogMessageView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -102,6 +102,7 @@ public class SearchResultsAndTopicView extends
         return tagsDown;
     }
 
+    @Override
     public Label getBugsDown() {
         return bugsDown;
     }
@@ -156,6 +157,7 @@ public class SearchResultsAndTopicView extends
         return bugs;
     }
 
+    @Override
     public PushButton getTopicTags() {
         return topicTags;
     }
@@ -175,6 +177,7 @@ public class SearchResultsAndTopicView extends
         return rendered;
     }
 
+    @Override
     public PushButton getXml() {
         return xml;
     }

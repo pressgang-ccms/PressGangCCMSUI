@@ -43,8 +43,8 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
  */
 @Dependent
 public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
-            RESTTopicV1,
-            RESTTopicV1,
+            RESTBaseTopicV1<?, ?, ?>,
+            RESTBaseTopicV1<?, ?, ?>,
             RESTPropertyTagCollectionItemV1,
             RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1> {
 
@@ -92,7 +92,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     }
 
     @Override
-    public void displayDetailedChildrenExtended(final RESTTopicV1 parent, final boolean readOnly) {
+    public void displayDetailedChildrenExtended(final RESTBaseTopicV1<?, ?, ?> parent, final boolean readOnly) {
         super.displayDetailedChildren(parent, readOnly);
         bindPropertyTagButtons(parent);
     }
@@ -100,7 +100,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     /**
      * Add behaviour to the property tag add and remove buttons, and the value text edit field.
      */
-    private void bindPropertyTagButtons(@NotNull final RESTTopicV1 parent)
+    private void bindPropertyTagButtons(@NotNull final RESTBaseTopicV1<?, ?, ?> parent)
     {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bindPropertyTagButtons()");
@@ -190,7 +190,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     }
 
     @Override
-    public EnhancedAsyncDataProvider<RESTAssignedPropertyTagCollectionItemV1> generateExistingProvider(final RESTTopicV1 entity) {
+    public EnhancedAsyncDataProvider<RESTAssignedPropertyTagCollectionItemV1> generateExistingProvider(final RESTBaseTopicV1<?, ?, ?> entity) {
         return new EnhancedAsyncDataProvider<RESTAssignedPropertyTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTAssignedPropertyTagCollectionItemV1> display) {
@@ -223,7 +223,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     }
 
     @Override
-    public EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> generatePossibleChildrenProvider(final RESTTopicV1 parent) {
+    public EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> generatePossibleChildrenProvider(final RESTBaseTopicV1<?, ?, ?> parent) {
         return new EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTPropertyTagCollectionItemV1> data) {
@@ -241,7 +241,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     }
 
     @Override
-    public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTTopicV1 parent) {
+    public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTBaseTopicV1<?, ?, ?> parent) {
         try {
             LOGGER.log(Level.INFO, "ENTER TopicPropertyTagsPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
 

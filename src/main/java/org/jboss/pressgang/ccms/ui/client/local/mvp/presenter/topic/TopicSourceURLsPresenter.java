@@ -40,7 +40,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
  */
 @Dependent
 public class TopicSourceURLsPresenter extends BaseChildrenComponent<
-        RESTTopicV1,
+        RESTBaseTopicV1<?, ?, ?>,
         RESTTopicSourceUrlCollectionItemV1,
         RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1> {
 
@@ -96,7 +96,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
 
     @Override
     @NotNull
-    public final EnhancedAsyncDataProvider<RESTTopicSourceUrlCollectionItemV1> generatePossibleChildrenProvider(@Nullable final RESTTopicV1 parent) {
+    public final EnhancedAsyncDataProvider<RESTTopicSourceUrlCollectionItemV1> generatePossibleChildrenProvider(@Nullable final RESTBaseTopicV1<?, ?, ?> parent) {
         return new EnhancedAsyncDataProvider<RESTTopicSourceUrlCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTopicSourceUrlCollectionItemV1> data) {
@@ -130,7 +130,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
     }
 
     @Override
-    public final void displayChildrenExtended(@NotNull final RESTTopicV1 parent, final boolean readOnly) {
+    public final void displayChildrenExtended(@NotNull final RESTBaseTopicV1<?, ?, ?> parent, final boolean readOnly) {
         super.displayChildren(parent, readOnly);
         bindPropertyTagButtons(parent);
     }
@@ -138,7 +138,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
     /**
      * Add behaviour to the property tag add and remove buttons, and the value text edit field.
      */
-    private void bindPropertyTagButtons(@NotNull final RESTTopicV1 parent)
+    private void bindPropertyTagButtons(@NotNull final RESTBaseTopicV1<?, ?, ?> parent)
     {
         try {
             LOGGER.log(Level.INFO, "ENTER TopicSourceURLsPresenter.bindPropertyTagButtons()");
