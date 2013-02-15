@@ -67,7 +67,6 @@ public class TagsFilteredResultsAndTagPresenter
                 RESTTagV1,
                 RESTTagCollectionV1,
                 RESTTagCollectionItemV1,
-                TagPresenter.Display,
                 RESTTagV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
 

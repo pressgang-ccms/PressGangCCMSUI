@@ -62,7 +62,6 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                 RESTCategoryV1,
                 RESTCategoryCollectionV1,
                 RESTCategoryCollectionItemV1,
-                CategoryPresenter.Display,
                 RESTCategoryV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
 

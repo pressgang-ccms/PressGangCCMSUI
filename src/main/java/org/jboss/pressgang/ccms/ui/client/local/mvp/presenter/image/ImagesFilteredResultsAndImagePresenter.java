@@ -71,7 +71,6 @@ public class ImagesFilteredResultsAndImagePresenter
                 RESTImageV1,
                 RESTImageCollectionV1,
                 RESTImageCollectionItemV1,
-                ImagePresenter.Display,
                 RESTImageV1Editor>
         implements BaseTemplatePresenterInterface {
 

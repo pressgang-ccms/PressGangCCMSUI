@@ -51,7 +51,6 @@ public class ProjectsFilteredResultsAndProjectPresenter
                 RESTProjectV1,
                 RESTProjectCollectionV1,
                 RESTProjectCollectionItemV1,
-                ProjectPresenter.Display,
                 RESTProjectV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
 

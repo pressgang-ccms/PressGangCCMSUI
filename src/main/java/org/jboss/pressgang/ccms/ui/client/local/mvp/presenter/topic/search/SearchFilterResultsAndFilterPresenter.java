@@ -35,7 +35,6 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
         RESTFilterV1,
         RESTFilterCollectionV1,
         RESTFilterCollectionItemV1,
-        SearchFilterPresenter.Display,
         RESTFilterV1BasicDetailsEditor> {
 
     /**
