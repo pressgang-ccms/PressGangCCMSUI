@@ -63,13 +63,5 @@ public class SearchResultsAndTopicView extends
     protected void postPopulateTopActionBar() {
         this.addActionButton(history);
         this.addActionButton(save);
-
-        save.setEnabled(!readOnly);
-
-        if (readOnly) {
-            this.getHistory().addStyleName(CSSConstants.ALERT_BUTTON);
-        } else {
-            this.getHistory().removeStyleName(CSSConstants.ALERT_BUTTON);
-        }
     }
 }

@@ -30,6 +30,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
@@ -295,11 +296,18 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
 
             this.getDisplay().replaceTopActionButton(this.getDisplay().getHistoryDown(), this.getDisplay().getHistory());
 
+            if (isReadOnlyMode()) {
+                this.getDisplay().getHistory().addStyleName(CSSConstants.ALERT_BUTTON);
+            } else {
+                this.getDisplay().getHistory().removeStyleName(CSSConstants.ALERT_BUTTON);
+            }
+
             if (displayedView == this.topicRevisionsComponent.getDisplay()) {
                 this.getDisplay().replaceTopActionButton(this.getDisplay().getHistory(), this.getDisplay().getHistoryDown());
             }
 
             this.getDisplay().getSave().setEnabled(!isReadOnlyMode());
+
         } finally {
             LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.postEnableAndDisableActionButtons()");
         }
