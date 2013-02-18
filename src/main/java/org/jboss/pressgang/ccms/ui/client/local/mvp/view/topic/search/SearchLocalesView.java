@@ -55,6 +55,11 @@ public class SearchLocalesView extends BaseTemplateView implements SearchLocaleP
         return filters;
     }
 
+    @Override
+    public PushButton getFields() {
+        return fields;
+    }
+
     public SearchLocalesView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchFields());
     }
