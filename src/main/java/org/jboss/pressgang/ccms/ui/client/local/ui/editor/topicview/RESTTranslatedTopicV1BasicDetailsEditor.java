@@ -18,7 +18,6 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
     private final SimpleIntegerBox id = new SimpleIntegerBox();
     private final SimpleIntegerBox topicRevision = new SimpleIntegerBox();
     private final SimpleIntegerBox topicId = new SimpleIntegerBox();
-    private final TextBox topicTitle = new TextBox();
     private final TextBox locale = new TextBox();
 
     public TextBox localeEditor() {
@@ -31,10 +30,6 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
 
     public SimpleIntegerBox topicRevisionEditor() {
         return topicRevision;
-    }
-
-    public TextBox topicTitleEditor() {
-        return topicTitle;
     }
 
     public SimpleIntegerBox idEditor() {
@@ -63,10 +58,6 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
         ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicRevision()));
         this.setWidget(row, 1, topicRevision);
-
-        ++row;
-        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicTitle()));
-        this.setWidget(row, 1, topicTitle);
 
         ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLocale()));
