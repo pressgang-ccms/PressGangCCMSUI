@@ -17,11 +17,4 @@ public class TranslatedTopicResultsAndTranslatedTopicView extends BaseSearchResu
     public TranslatedTopicResultsAndTranslatedTopicView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
     }
-
-    @Override
-    protected void postPopulateTopActionBar() {
-        /*
-            Do nothing.
-         */
-    }
 }

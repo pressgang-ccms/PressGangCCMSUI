@@ -29,11 +29,18 @@ public class SearchResultsAndTopicView extends
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(SearchResultsAndTopicView.class.getName());
-
-    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-    private final PushButton history = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Revisions());
-
-    private final Label historyDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
+    /**
+     * The save button.
+     */
+    private final PushButton save;
+    /**
+     * The revisions button.
+     */
+    private final PushButton history;
+    /**
+     * The label used to represent the history button in a down state.
+     */
+    private final Label historyDown;
 
     @Override
     public Label getHistoryDown() {
@@ -52,21 +59,15 @@ public class SearchResultsAndTopicView extends
 
     public SearchResultsAndTopicView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
+
+        /* Build the action bar icons */
+        save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+        history = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Revisions());
+
+        historyDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
+
+        this.addActionButton(history);
+        this.addActionButton(save);
     }
 
-    /**
-     * This method enables or disables the save button based on the read only state, and also highlights the history button if
-     * needed.
-     */
-    @Override
-    protected void postPopulateTopActionBar() {
-        try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicView.postPopulateTopActionBar()");
-
-            this.addActionButton(history);
-            this.addActionButton(save);
-        } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicView.postPopulateTopActionBar()");
-        }
-    }
 }
