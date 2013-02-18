@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.*;
 import org.jboss.pressgang.ccms.rest.v1.constants.RESTv1Constants;
 import org.jboss.pressgang.ccms.rest.v1.entities.*;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jetbrains.annotations.NotNull;
@@ -25,11 +26,7 @@ import java.util.List;
  */
 public final class RESTCalls {
 
-    private static final String LINE_BREAK_ESCAPED = "\\n";
-    private static final String CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED = "\\r\\n";
-    private static final String LINE_BREAK = "\n";
-    private static final String CARRIAGE_RETURN_AND_LINE_BREAK = "\r\n";
-    private static final String COMMA = ",";
+
 
     /**
      * A topic with expanded revisions
@@ -679,8 +676,8 @@ public final class RESTCalls {
                 public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
                             /* Get the list of locales from the StringConstant */
                     final List<String> locales = new LinkedList<String>(Arrays.asList(retValue.getValue()
-                            .replaceAll(CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED, "").replaceAll(LINE_BREAK_ESCAPED, "")
-                            .replaceAll(" ", "").split(COMMA)));
+                            .replaceAll(Constants.CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED, "").replaceAll(Constants.LINE_BREAK_ESCAPED, "")
+                            .replaceAll(" ", "").split(Constants.COMMA)));
 
                             /* Clean the list */
                     while (locales.contains("")) {

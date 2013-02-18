@@ -1083,7 +1083,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
 
                         /* Get the list of locales from the StringConstant */
                         final List<String> xmlElements = new LinkedList<String>(Arrays.asList(retValue.getValue()
-                                .replaceAll(CARRIAGE_RETURN_AND_LINE_BREAK, LINE_BREAK).replaceAll(" ", "").split(LINE_BREAK)));
+                                .replaceAll(Constants.CARRIAGE_RETURN_AND_LINE_BREAK, Constants.LINE_BREAK).replaceAll(" ", "").split(Constants.LINE_BREAK)));
 
                         /* Clean the list */
                         while (xmlElements.contains("")) {
@@ -1119,7 +1119,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
 
                 /* Get the list of template string constant ids from the StringConstant */
                 final Set<String> xmlElements = new HashSet<String>(Arrays.asList(GWTUtilities.fixUpIdSearchString(
-                        retValue.getValue()).split(COMMA)));
+                        retValue.getValue()).split(Constants.COMMA)));
                 final Map<String, String> data = new TreeMap<String, String>();
 
                 /* work around the inability to modify an int from an anonymous class */

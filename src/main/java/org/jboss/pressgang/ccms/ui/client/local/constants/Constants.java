@@ -174,6 +174,12 @@ public final class Constants {
      */
     public static final String HELP_DIALOG_HEIGHT = "480px";
 
+    public static final String LINE_BREAK_ESCAPED = "\\n";
+    public static final String CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED = "\\r\\n";
+    public static final String LINE_BREAK = "\n";
+    public static final String CARRIAGE_RETURN_AND_LINE_BREAK = "\r\n";
+    public static final String COMMA = ",";
+
     /**
      * A private constructor to prevent instantiation.
      */

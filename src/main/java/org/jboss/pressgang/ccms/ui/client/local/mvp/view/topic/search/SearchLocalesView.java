@@ -36,7 +36,7 @@ public class SearchLocalesView extends BaseTemplateView implements SearchLocaleP
     private final Label locales = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Locales());
 
     @Override
-    public Label getSearchLocales() {
+    public Label getLocales() {
         return locales;
     }
 
