@@ -5,7 +5,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.*;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
@@ -28,49 +27,65 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
 
     public interface Display extends BaseTemplateViewInterface, BasePopulatedEditorViewInterface<RESTBaseTopicV1<?, ?, ?>, RESTBaseTopicV1<?, ?, ?>, RESTTopicV1XMLEditor> {
 
-        interface PlainTextXMLDialog
-        {
+        interface PlainTextXMLDialog {
             PushButton getOK();
+
             PushButton getCancel();
+
             void setText(final String text);
+
             String getText();
+
             DialogBox getDialogBox();
         }
 
         /**
          * The interface that defines the tag selection dialog box
+         *
          * @author Matthew Casperson
          */
-        interface XmlTagsDialog
-        {
+        interface XmlTagsDialog {
             PushButton getOK();
+
             PushButton getCancel();
+
             PushButton getMoreInfo();
+
             ListBox getOptions();
+
             DialogBox getDialogBox();
+
             void setSuggestions(final List<String> suggestions);
         }
 
-        interface XmlTemplatesDialog
-        {
+        interface XmlTemplatesDialog {
             PushButton getOK();
+
             PushButton getCancel();
+
             ListBox getOptions();
+
             DialogBox getDialogBox();
+
             void setSuggestions(final Map<String, String> suggestions);
         }
 
-        interface CSPTopicDetailsDialog
-        {
+        interface CSPTopicDetailsDialog {
             PushButton getOK();
+
             PushButton getCancel();
+
             TextBox getIds();
+
             DialogBox getDialogBox();
         }
 
         XmlTagsDialog getXmlTagsDialog();
+
         CSPTopicDetailsDialog getCSPTopicDetailsDialog();
+
         XmlTemplatesDialog getXmlTemplatesDialog();
+
         PlainTextXMLDialog getPlainTextXMLDialog();
 
         ToggleButton getLineWrap();
@@ -87,8 +102,7 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
     @Inject
     private Display display;
 
-    public Display getDisplay()
-    {
+    public Display getDisplay() {
         return display;
     }
 

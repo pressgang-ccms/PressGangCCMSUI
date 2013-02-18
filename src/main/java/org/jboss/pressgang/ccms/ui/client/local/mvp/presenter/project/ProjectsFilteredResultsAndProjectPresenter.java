@@ -55,7 +55,6 @@ public class ProjectsFilteredResultsAndProjectPresenter
         implements BaseTemplatePresenterInterface {
 
 
-
     /**
      * This interface describes the required UI elements for the parent view (i.e. the view that holds the two views
      * CategoryFilteredResults view to provide a list of categories and the CategoryView.
@@ -89,11 +88,15 @@ public class ProjectsFilteredResultsAndProjectPresenter
     @Inject
     private Display display;
 
-    /** An Errai injected instance of a class that implements ProjectFilteredResultsPresenter.LogicCompnent */
+    /**
+     * An Errai injected instance of a class that implements ProjectFilteredResultsPresenter.LogicCompnent
+     */
     @Inject
     private ProjectFilteredResultsPresenter filteredResultsComponent;
 
-    /** An Errai injected instance of a class that implements ProjectPresenter.LogicComponent */
+    /**
+     * An Errai injected instance of a class that implements ProjectPresenter.LogicComponent
+     */
     @Inject
     private ProjectPresenter resultComponent;
 
@@ -167,7 +170,8 @@ public class ProjectsFilteredResultsAndProjectPresenter
                         tagComponent.redisplayPossibleChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
                     }
 
-                });
+                }
+        );
     }
 
     @Override
@@ -375,8 +379,7 @@ public class ProjectsFilteredResultsAndProjectPresenter
         this.enableAndDisableActionButtons(displayedView);
     }
 
-    private void enableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView)
-    {
+    private void enableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView) {
         this.display.replaceTopActionButton(this.display.getChildrenDown(), this.display.getChildren());
         this.display.replaceTopActionButton(this.display.getDetailsDown(), this.display.getDetails());
 

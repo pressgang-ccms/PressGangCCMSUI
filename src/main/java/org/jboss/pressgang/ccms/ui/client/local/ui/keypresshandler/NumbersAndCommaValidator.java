@@ -11,7 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 /**
  * Cancels and key press that is not a digit or comma, and removes any non digit or comma character on
  * value change.
- *
+ * <p/>
  * Use KeyDownHandler rather than KeyPresshandler because of http://code.google.com/p/google-web-toolkit/issues/detail?id=5557
  *
  * @author Matthew Casperson
@@ -22,15 +22,14 @@ public final class NumbersAndCommaValidator implements KeyDownHandler, ValueChan
     private static final int ZERO_KEY_CODE = 48;
     private static final int NINE_KEY_CODE = 57;
     private final ValueBoxBase<String> source;
-    
-    
-    public NumbersAndCommaValidator(final ValueBoxBase<String> source)
-    {
+
+
+    public NumbersAndCommaValidator(final ValueBoxBase<String> source) {
         this.source = source;
         source.addKeyDownHandler(this);
         source.addValueChangeHandler(this);
     }
-    
+
     @Override
     public void onKeyDown(final KeyDownEvent event) {
         final int keyCode = event.getNativeKeyCode();
@@ -43,8 +42,7 @@ public final class NumbersAndCommaValidator implements KeyDownHandler, ValueChan
                 keyCode == KeyCodes.KEY_UP ||
                 keyCode == KeyCodes.KEY_DOWN ||
                 keyCode == KeyCodes.KEY_HOME ||
-                keyCode == KeyCodes.KEY_END )
-        {
+                keyCode == KeyCodes.KEY_END) {
             return;
         }
         

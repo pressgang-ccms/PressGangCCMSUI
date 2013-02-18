@@ -67,8 +67,7 @@ public class ImagePresenter extends BaseTemplatePresenter implements BaseTemplat
     private Integer imageId;
 
     @NotNull
-    public Display getDisplay()
-    {
+    public Display getDisplay() {
         return display;
     }
 

@@ -21,7 +21,7 @@ import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
 
 /**
  * Abstraction for native implementations associated with {@link hu.szaboaz.gwt.xslt.client.XSLTProcessor}.
- * 
+ *
  * @author Szabó Árpád Zoltán, szabo.arpad.zoltan at gmail.com
  */
 public abstract class XsltProcessorImpl {

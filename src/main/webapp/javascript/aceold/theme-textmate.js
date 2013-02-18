@@ -35,12 +35,12 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/textmate', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
+ace.define('ace/theme/textmate', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
 
 
-exports.isDark = false;
-exports.cssClass = "ace-tm";
-exports.cssText = ".ace-tm .ace_editor {\
+    exports.isDark = false;
+    exports.cssClass = "ace-tm";
+    exports.cssText = ".ace-tm .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
 \
@@ -211,6 +211,6 @@ exports.cssText = ".ace-tm .ace_editor {\
 }\
 ";
 
-var dom = require("../lib/dom");
-dom.importCssString(exports.cssText, exports.cssClass);
+    var dom = require("../lib/dom");
+    dom.importCssString(exports.cssText, exports.cssClass);
 });

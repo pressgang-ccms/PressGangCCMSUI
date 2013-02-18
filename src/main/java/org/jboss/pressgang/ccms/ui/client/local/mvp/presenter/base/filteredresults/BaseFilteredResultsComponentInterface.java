@@ -1,18 +1,13 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.PresenterInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 
 /**
- * 
- * @author Matthew Casperson
- *
  * @param <V> The collection item type for entity T
+ * @author Matthew Casperson
  */
 public interface BaseFilteredResultsComponentInterface<V extends RESTBaseCollectionItemV1<?, ?, ?>> extends PresenterInterface {
 
@@ -34,8 +29,8 @@ public interface BaseFilteredResultsComponentInterface<V extends RESTBaseCollect
     /**
      * Perform any initialisation required by filtered results presenters.
      *
-     * @param topicId The help topic that is associated with the view
-     * @param pageId  The string that identifies the page
+     * @param topicId     The help topic that is associated with the view
+     * @param pageId      The string that identifies the page
      * @param queryString The query string that is passed to the REST interface
      */
     void bindExtendedFilteredResults(final int topicId, final String pageId, final String queryString);

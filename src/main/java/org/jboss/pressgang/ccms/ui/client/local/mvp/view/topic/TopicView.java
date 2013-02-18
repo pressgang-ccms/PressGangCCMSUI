@@ -6,7 +6,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresent
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter.TopicPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +13,9 @@ import java.util.List;
 
 public class TopicView extends BaseTemplateView implements TopicPresenter.Display {
 
-    /** The GWT Editor Driver */
+    /**
+     * The GWT Editor Driver
+     */
     private final TopicPresenterDriver driver = GWT.create(TopicPresenterDriver.class);
 
     @Override
@@ -25,7 +26,7 @@ public class TopicView extends BaseTemplateView implements TopicPresenter.Displa
     public TopicView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
                 + PressGangCCMSUI.INSTANCE.Properties());
-        
+
     }
 
     @Override

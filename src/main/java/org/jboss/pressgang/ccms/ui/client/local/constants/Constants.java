@@ -13,9 +13,13 @@ public final class Constants {
      */
     public static final String VERSION = "201302190709";
 
-    /** Indicates that a tag should be present in the returned topics */
+    /**
+     * Indicates that a tag should be present in the returned topics
+     */
     public static final int TAG_INCLUDED = 1;
-    /** Indicates that a tag should be absent in the returned topics */
+    /**
+     * Indicates that a tag should be absent in the returned topics
+     */
     public static final int TAG_EXCLUDED = 0;
 
     /**

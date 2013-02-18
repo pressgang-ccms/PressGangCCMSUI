@@ -27,7 +27,7 @@ public final class RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDS
         if (arg1 == null) {
             return 1;
         }
-        
+
         if (arg0.getItem() == null && arg1.getItem() == null) {
             return 0;
         }
@@ -48,7 +48,7 @@ public final class RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDS
             Second order sort when names are equal or null
          */
         if ((arg0.getItem().getName() == null && arg1.getItem().getName() == null) ||
-             (arg0.getItem().getName() != null && arg1.getItem().getName() != null && arg0.getItem().getName().equals(arg1.getItem().getName()))) {
+                (arg0.getItem().getName() != null && arg1.getItem().getName() != null && arg0.getItem().getName().equals(arg1.getItem().getName()))) {
             if (arg0.getItem().getRelationshipId() == null && arg1.getItem().getRelationshipId() == null) {
                 return 0;
             }

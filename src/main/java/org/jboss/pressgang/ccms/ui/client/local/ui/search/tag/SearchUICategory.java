@@ -79,7 +79,7 @@ public final class SearchUICategory extends SearchUIBase {
      * @param project  The project this category belongs to
      * @param category The category that this object represents
      * @param tags     The tags collection from which tags will be selected for this category
-     * @param filter The filter that defines the state of the tags
+     * @param filter   The filter that defines the state of the tags
      */
     public void populateCategories(final RESTProjectCollectionItemV1 project, final RESTCategoryInTagCollectionItemV1 category,
                                    final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
@@ -139,7 +139,7 @@ public final class SearchUICategory extends SearchUIBase {
      *
      * @param category The category that this object represents
      * @param tags     The tags collection from which tags will be selected for this category
-     * @param filter The filter that defines the state of the tags
+     * @param filter   The filter that defines the state of the tags
      */
     public void populateCategoriesWithoutProject(final RESTCategoryInTagCollectionItemV1 category,
                                                  final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {

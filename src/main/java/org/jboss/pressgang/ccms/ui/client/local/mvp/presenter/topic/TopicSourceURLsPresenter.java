@@ -8,13 +8,10 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.view.client.HasData;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicSourceUrlCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicSourceUrlV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenComponent;
@@ -26,7 +23,6 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,8 +45,8 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
      */
     public interface Display extends BaseChildrenViewInterface<
             RESTBaseTopicV1<?, ?, ?>,
-                RESTTopicSourceUrlCollectionItemV1,
-                RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1> {
+            RESTTopicSourceUrlCollectionItemV1,
+            RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1> {
         /**
          * @return The column that holds the url.
          */
@@ -85,12 +81,14 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
     /**
      * The view that displays the source urls.
      */
-    @Inject private Display display;
+    @Inject
+    private Display display;
 
     /**
      * @return The view that displays the source urls
      */
-    @NotNull public final Display getDisplay() {
+    @NotNull
+    public final Display getDisplay() {
         return display;
     }
 
@@ -138,8 +136,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
     /**
      * Add behaviour to the property tag add and remove buttons, and the value text edit field.
      */
-    private void bindPropertyTagButtons(@NotNull final RESTBaseTopicV1<?, ?, ?> parent)
-    {
+    private void bindPropertyTagButtons(@NotNull final RESTBaseTopicV1<?, ?, ?> parent) {
         try {
             LOGGER.log(Level.INFO, "ENTER TopicSourceURLsPresenter.bindPropertyTagButtons()");
 
@@ -147,7 +144,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
                     new FieldUpdater<RESTTopicSourceUrlCollectionItemV1, String>() {
                         @Override
                         public void update(final int index, final RESTTopicSourceUrlCollectionItemV1 object, final String value) {
-                            if (object.getState() == UNCHANGED_STATE) {
+                            if (UNCHANGED_STATE.equals(object.getState())) {
                                 object.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
                             }
 
@@ -160,7 +157,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
                 @Override
                 public void update(final int index, final RESTTopicSourceUrlCollectionItemV1 object, final String value) {
 
-                    if (object.getState() == UNCHANGED_STATE) {
+                    if (UNCHANGED_STATE.equals(object.getState())) {
                         object.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
                     }
 

@@ -7,12 +7,12 @@ import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * A SplitLayoutPanel that manages resize event listeners.
- * 
+ *
  * @author Matthew Casperson
  */
 public final class HandlerSplitLayoutPanel extends SplitLayoutPanel implements HasResizeHandlers {
     private static final int ANIMATION_TIME_MILLISECONDS = 500;
-    
+
     public HandlerSplitLayoutPanel(final int size) {
         super(size);
     }
@@ -38,9 +38,8 @@ public final class HandlerSplitLayoutPanel extends SplitLayoutPanel implements H
             forceLayout();
         }
     }
-    
-    public double getSplitPosition(final Widget widgetBeforeTheSplitter)
-    {
+
+    public double getSplitPosition(final Widget widgetBeforeTheSplitter) {
         return ((LayoutData) widgetBeforeTheSplitter.getLayoutData()).size;
     }
 }

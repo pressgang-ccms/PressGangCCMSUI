@@ -15,9 +15,8 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
 
 /**
  * This class contains helper methods for creating and managing UI elements
- * 
+ *
  * @author Matthew Casperson
- * 
  */
 final public class UIUtilities {
     private UIUtilities() {

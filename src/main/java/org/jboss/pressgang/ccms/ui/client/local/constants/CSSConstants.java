@@ -3,15 +3,13 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
 /**
  * This interface lists all of the CSS class names used by the application. The nested interfaces are just used to group the
  * styles assigned to particular views.
- * 
+ *
  * @author Matthew Casperson
- * 
  */
 public interface CSSConstants {
 
-    public interface HelpDialog
-    {
-        String HELP_CONTENTS = "HelpContents";        
+    public interface HelpDialog {
+        String HELP_CONTENTS = "HelpContents";
     }
 
     /**
@@ -40,52 +38,56 @@ public interface CSSConstants {
         String FILTER_VIEW_DETAIL = "FilterViewDetail";
         /**
          * The style name of the cell that holds the filter's description textarea.
-          */
+         */
         String FILTER_VIEW_DESCRIPTION_DETAIL = "FilterViewDescriptionDetail";
     }
-    
-    public interface PlainTextXMLDialog
-    {
+
+    public interface PlainTextXMLDialog {
         String PLAIN_TEXT_XML_DIALOG_TEXTAREA = "PlainTextXMLDialogTextArea";
     }
-    
+
     public interface FilteredResultsView {
-        /** Assigned to the panel that holds the list of images. */
+        /**
+         * Assigned to the panel that holds the list of images.
+         */
         String FILTERED_RESULTS_PANEL = "FilteredResultsPanel";
-        /** Assigned to the panel that holds the filter options for images. */
+        /**
+         * Assigned to the panel that holds the filter options for images.
+         */
         String FILTERED_OPTIONS_PANEL = "FilteredOptionsPanel";
     }
-    
+
     public interface OrderedChildrenResultsView {
         String ORDERED_CHILDREN_LIST_PANEL = "OrderedChildrenListPanel";
         String ORDERED_CHILDREN_EXISTING_LIST_PANEL = "OrderedChildrenExistingListPanel";
         String ORDERED_CHILDREN_SPLIT_PANEL = "OrderedChildrenSplitPanel";
     }
-    
-    public interface BaseSearchAndEditView
-    {
+
+    public interface BaseSearchAndEditView {
         String RESULTS_VIEW_LAYOUT_PANEL = "ResultsViewLayoutPanel";
         String ENTITY_VIEW_LAYOUT_PANEL = "EntityViewLayoutPanel";
-        /** Assigned to the panel that holds the action buttons above the entity search results lists */
+        /**
+         * Assigned to the panel that holds the action buttons above the entity search results lists
+         */
         String ENTITY_SEARCH_TAGS_RESULT_BUTTONS_PANEL = "EntitySearchTagsResultButtonsPanel";
         String ENTITY_SEARCH_TAGS_RESULT_BUTTONS_PARENT_PANEL = "EntitySearchTagsResultButtonsParentPanel";
-        /** Assigned to the panel that holds the action buttons above the entity search result view */
+        /**
+         * Assigned to the panel that holds the action buttons above the entity search result view
+         */
         String ENTITY_SEARCH_TAG_VIEW_BUTTONS_PANEL = "EntitySearchTagViewButtonsPanel";
         String ENTITY_SEARCH_TAG_VIEW_BUTTONS_PARENT_PANEL = "EntitySearchTagViewButtonsParentPanel";
         String ENTITY_SEARCH_TOPIC_VIEW_BUTTONS_PANEL = "EntitySearchTopicViewButtonsPanel";
         String ENTITY_SEARCH_TOPIC_VIEW_DETAILS_PANEL = "EntitySearchTopicViewDetailsPanel";
         String ENTITY_SEARCH_RESULTS_AND_VIEW_PARENT_PANEL = "EntitySearchResultsAndViewParentPanel";
     }
-    
-    public interface CreateTopicView
-    {
+
+    public interface CreateTopicView {
         String CREATE_TOPIC_VIEW_BUTTONS_PANEL = "CreateTopicViewButtonsPanel";
         String CREATE_TOPIC_VIEW_DETAILS_PANEL = "CreateTopicViewDetailsPanel";
         String CREATE_RESULTS_AND_VIEW_PARENT_PANEL = "CreateResultsAndViewPanelParent";
     }
-    
 
-    
+
     public interface TagView {
         String TAG_VIEW_PANEL = "TagViewPanel";
         String TAG_VIEW_ID_LABEL = "TagViewIDLabel";
@@ -119,7 +121,7 @@ public interface CSSConstants {
         String CATEGORY_VIEW_DESCRIPTION_LABEL_CELL = "CategoryViewDescriptionLabelCell";
         String CATEGORY_VIEW_DESCRIPTION_TEXT_CELL = "CategoryViewDescriptionTextCell";
     }
-    
+
     public interface ProjectView {
         String PROJECT_VIEW_PANEL = "ProjectViewPanel";
         String PROJECT_VIEW_ID_LABEL = "ProjectViewIDLabel";
@@ -160,8 +162,8 @@ public interface CSSConstants {
     String RIGHT_ALIGNED_ACTION_BUTTONS = "RightAlignedActionButtons";
     String PAGE_TITLE_PARENT_LAYOUT_PANEL = "PageTitleParentLayoutPanel";
     String QUICK_SEARCH_PARENT_PANEL = "QuickSearchParentPanel";
-    
-    String TOPIC_VIEW_LAYOUT_PANEL = "TopicViewLayoutPanel";    
+
+    String TOPIC_VIEW_LAYOUT_PANEL = "TopicViewLayoutPanel";
     String TOPIC_RENDERED_VIEW_DIV = "TopicRenderedViewDiv";
     String SEARCH_RESULTS_PANEL = "SearchResultsPanel";
     String TOPIC_VIEW_PANEL = "TopicViewPanel";
@@ -204,7 +206,9 @@ public interface CSSConstants {
      * Assigned to the FlexTable rows that list a project in the topic tags view.
      */
     String TOPIC_TAG_VIEW_PROJECT_ROW = "TopicTagViewProjectRow";
-    /** Assigned to the FlexTable rows that list a tag in the topic tags view. */
+    /**
+     * Assigned to the FlexTable rows that list a tag in the topic tags view.
+     */
     String TOPIC_TAG_VIEW_TAG_ROW = "TopicTagViewTagRow";
     /**
      * Assigned to the panel that holds all the TOPIC_TAG_VIEW_PROJECT_STABLE element in the topic tags view.
@@ -214,21 +218,29 @@ public interface CSSConstants {
      * Assigned to the table that holds all the projects, categories and tags in the topic tags view.
      */
     String TOPIC_TAG_VIEW_PROJECT_STABLE = "TopicTagViewProjectsTable";
-    /** Assigned to the table that holds a project in the topic tags view. */
+    /**
+     * Assigned to the table that holds a project in the topic tags view.
+     */
     String TOPIC_TAG_VIEW_PROJECT_TABLE = "TopicTagViewProjectTable";
     /**
      * Assigned to the table that holds multiple categories in the topic tags view.
      */
     String TOPIC_TAG_VIEW_CATEGORIES_TABLE = "TopicTagViewCategoriesTable";
-    /** Assigned to the table that holds a category in the topic tags view. */
+    /**
+     * Assigned to the table that holds a category in the topic tags view.
+     */
     String TOPIC_TAG_VIEW_CATEGORY_TABLE = "TopicTagViewCategoryTable";
-    /** Assigned to the table that holds multiple tags in the topic tags view. */
+    /**
+     * Assigned to the table that holds multiple tags in the topic tags view.
+     */
     String TOPIC_TAG_VIEW_TAG_STABLE = "TopicTagViewTagsTable";
     /**
      * Assigned to the table that holds the new tag project, category and tag lists.
      */
     String TOPIC_TAG_VIEW_NEW_TAG_TABLE = "TopicTagViewNewTagTable";
-    /** Assigned to the panel that holds the topic tag view. */
+    /**
+     * Assigned to the panel that holds the topic tag view.
+     */
     String TOPIC_TAG_VIEW_CONTENT_PANEL = "TopicTagViewContentPanel";
     /**
      * Assigned to the list that holds the available projects in the topic tags view.
@@ -242,81 +254,149 @@ public interface CSSConstants {
      * Assigned to the list that holds the available tags in the topic tags view.
      */
     String TOPIC_TAG_VIEW_NEW_TAG_TAGS_LIST = "TopicTagViewNewTagTagsList";
-    /** Assigned to the panel that holds the new tag ui elements. */
+    /**
+     * Assigned to the panel that holds the new tag ui elements.
+     */
     String TOPIC_TAG_VIEW_NEW_TAG_PARENT_PANEL = "TopicTagViewNewTagParentPanel";
     /**
      * Assigned to the dock panel that hosts the image description and the tab view of specific language images.
      */
     String IMAGE_VIEW_PARENT_DOCK_PANEL = "ImageViewParentDockPanel";
-    /** Assigned to the tab panel of specific language images. */
+    /**
+     * Assigned to the tab panel of specific language images.
+     */
     String IMAGE_VIEW_LANGUAGE_IMAGE_TAB_PANEL = "ImageViewLanguageImageTabPanel";
-    /** Assigned to the tab that shows a specific language image. */
+    /**
+     * Assigned to the tab that shows a specific language image.
+     */
     String IMAGE_VIEW_LANGUAGE_IMAGE_TAB = "ImageViewLanguageImageTab";
-    /** Assigned to the cell that holds the language file name label. */
+    /**
+     * Assigned to the cell that holds the language file name label.
+     */
     String IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_LABEL = "ImageViewLanguageImageFilenameLabel";
-    /** Assigned to the cell that holds the language file name text. */
+    /**
+     * Assigned to the cell that holds the language file name text.
+     */
     String IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_TEXT = "ImageViewLanguageImageFilenameText";
-    /** Assigned to the cell that holds the language display label. */
+    /**
+     * Assigned to the cell that holds the language display label.
+     */
     String IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_LABEL = "ImageViewLanguageImageDisplayLabel";
-    /** Assigned to the cell that holds the language display image. */
+    /**
+     * Assigned to the cell that holds the language display image.
+     */
     String IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_IMAGE = "ImageViewLanguageImageDisplayImage";
-    /** Assigned to the cell that holds the language file name label cell. */
+    /**
+     * Assigned to the cell that holds the language file name label cell.
+     */
     String IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_LABEL_CELL = "ImageViewLanguageImageFilenameLabelCell";
-    /** Assigned to the cell that holds the language file name text cell. */
+    /**
+     * Assigned to the cell that holds the language file name text cell.
+     */
     String IMAGE_VIEW_LANGUAGE_IMAGE_FILENAME_TEXT_CELL = "ImageViewLanguageImageFilenameTextCell";
-    /** Assigned to the cell that holds the language display label cell. */
+    /**
+     * Assigned to the cell that holds the language display label cell.
+     */
     String IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_LABEL_CELL = "ImageViewLanguageImageDisplayLabelCell";
-    /** Assigned to the cell that holds the language display image cell. */
+    /**
+     * Assigned to the cell that holds the language display image cell.
+     */
     String IMAGE_VIEW_LANGUAGE_IMAGE_DISPLAY_IMAGE_CELL = "ImageViewLanguageImageDisplayImageCell";
-    /** Assigned to the cell that holds the language display label cell. */
+    /**
+     * Assigned to the cell that holds the language display label cell.
+     */
     String IMAGE_VIEW_LANGUAGE_IMAGE_DIMENSION_LABEL_CELL = "ImageViewLanguageImageDimensionLabelCell";
-    /** Assigned to the cell that holds the language display image cell. */
+    /**
+     * Assigned to the cell that holds the language display image cell.
+     */
     String IMAGE_VIEW_LANGUAGE_IMAGE_DIMENSION_TEXT_CELL = "ImageViewLanguageImageDimensionTextCell";
-    /** Assigned to the image description label. */
+    /**
+     * Assigned to the image description label.
+     */
     String IMAGE_VIEW_DESCRIPTION_LABEL = "ImageViewDescriptionLabel";
-    /** Assigned to the image description text. */
+    /**
+     * Assigned to the image description text.
+     */
     String IMAGE_VIEW_DESCRIPTION_TEXT = "ImageViewDescriptionText";
-    /** Assigned to the image template text. */
+    /**
+     * Assigned to the image template text.
+     */
     String IMAGE_VIEW_TEMPLATE_TEXT = "ImageViewTemplateText";
-    /** Assigned to the image description label cell. */
+    /**
+     * Assigned to the image description label cell.
+     */
     String IMAGE_VIEW_DESCRIPTION_LABEL_CELL = "ImageViewDescriptionLabelCell";
-    /** Assigned to the image description text cell. */
+    /**
+     * Assigned to the image description text cell.
+     */
     String IMAGE_VIEW_DESCRIPTION_TEXT_CELL = "ImageViewDescriptionTextCell";
-    /** Assigned to the cell that holds the image template label. */
+    /**
+     * Assigned to the cell that holds the image template label.
+     */
     String IMAGE_VIEW_TEMPLATE_LABEL_CELL = "ImageViewTemplateLabelCell";
-    /** Assigned to the cell that holds the image template text. */
+    /**
+     * Assigned to the cell that holds the image template text.
+     */
     String IMAGE_VIEW_TEMPLATE_TEXT_CELL = "ImageViewTemplateTextCell";
-    /** Assigned to the image docbook file name label cell. */
+    /**
+     * Assigned to the image docbook file name label cell.
+     */
     String IMAGE_VIEW_DOCBOOK_FILENAME_LABEL_CELL = "ImageViewDocbookFileNameLabelCell";
-    /** Assigned to the image docbook file name text cell. */
+    /**
+     * Assigned to the image docbook file name text cell.
+     */
     String IMAGE_VIEW_DOCBOOK_FILENAME_TEXT_CELL = "ImageViewDocbookFileNameTextCell";
-    /** Assigned to the table that holds the image details. */
+    /**
+     * Assigned to the table that holds the image details.
+     */
     String IMAGE_VIEW_DETAILS_TABLE = "ImageViewDetailsTable";
-    /** Assigned to image buttons. */
+    /**
+     * Assigned to image buttons.
+     */
     String TEXT_BUTTON = "TextButton";
-    /** Assigned to text buttons. */
+    /**
+     * Assigned to text buttons.
+     */
     String IMAGE_BUTTON = "ImageButton";
-    /** Assigned to the table that holds the split view menu. */
+    /**
+     * Assigned to the table that holds the split view menu.
+     */
     String RENDERED_SPLIT_VIEW_MENU_TABLE = "RenderedSplitViewMenuTable";
-    /** Assigned to labels that represent down pushbuttons. */
+    /**
+     * Assigned to labels that represent down pushbuttons.
+     */
     String DOWN_LABEL = "DownLabel";
-    /** Assigned to push buttons that are sub menus. */
+    /**
+     * Assigned to push buttons that are sub menus.
+     */
     String SUB_MENU = "SubMenu";
-    /** Assigned to push buttons that have an error state. */
+    /**
+     * Assigned to push buttons that have an error state.
+     */
     String ERROR = "Error";
-    /** Assigned to buttons that need to show some kind of alert status. */
+    /**
+     * Assigned to buttons that need to show some kind of alert status.
+     */
     String ALERT_BUTTON = "AlertButton";
     /**
      * Assigned to the panel that holds the OK and Cancel buttons in a popup dialog box.
      */
     String DIALOG_BOX_OK_CANCEL_PANEL = "DialogBoxOKCancelPanel";
-    /** Assigned to the cell that holds the image upload label. */
+    /**
+     * Assigned to the cell that holds the image upload label.
+     */
     String IMAGE_VIEW_LANGUAGE_IMAGE_UPLOAD_LABEL_CELL = "ImageViewLanguageImageUploadLabelCell";
-    /** Assigned to the cell that holds the image upload buttons. */
+    /**
+     * Assigned to the cell that holds the image upload buttons.
+     */
     String IMAGE_VIEW_LANGUAGE_IMAGE_UPLOAD_BUTTONS_CELL = "ImageViewLanguageImageUploadButtonsCell";
-    /** Assigned to the panel that holds the list of images. */
+    /**
+     * Assigned to the panel that holds the list of images.
+     */
     String IMAGE_FILTERED_RESULTS_PANEL = "ImageFilteredResultsPanel";
-    /** Assigned to the panel that holds the filter options for images. */
+    /**
+     * Assigned to the panel that holds the filter options for images.
+     */
     String IMAGE_FILTERED_OPTIONS_PANEL = "ImageFilteredOptionsPanel";
-    
+
 }

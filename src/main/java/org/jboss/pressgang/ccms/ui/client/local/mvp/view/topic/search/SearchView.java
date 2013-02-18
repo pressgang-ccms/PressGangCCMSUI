@@ -20,12 +20,18 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
     private final PushButton fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Fields());
     private final PushButton filters = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Filters());
 
-    /** The GWT Editor Driver */
+    /**
+     * The GWT Editor Driver
+     */
     private final SearchPresenterDriver driver = GWT.create(SearchPresenterDriver.class);
-    /** The UI hierarchy */
+    /**
+     * The UI hierarchy
+     */
     private final SearchUIProjects searchUIProjects = new SearchUIProjects();
 
-    /** The dialog that is presented when the view is unavailable. */
+    /**
+     * The dialog that is presented when the view is unavailable.
+     */
     private final WaitingDialog waiting = new WaitingDialog();
 
     @Override

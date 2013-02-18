@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/tomorrow', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
+ace.define('ace/theme/tomorrow', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
 
-exports.isDark = false;
-exports.cssClass = "ace-tomorrow";
-exports.cssText = "\
+    exports.isDark = false;
+    exports.cssClass = "ace-tomorrow";
+    exports.cssText = "\
 .ace-tomorrow .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\

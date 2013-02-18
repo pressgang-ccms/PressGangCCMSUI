@@ -16,19 +16,15 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 /**
  * The base class for views that display a collection of existing children and a second collection of possible children.
  *
- * @author Matthew Casperson
- *
  * @param <T> The entity type
- *
  * @param <W> The parent of the children
- *
  * @param <A> The possible child type
  * @param <B> The collection type for entity A
  * @param <C> The collection item type for entity A
- *
  * @param <D> The existing child type
  * @param <E> The collection type for entity D
  * @param <F> The collection item type for entity D
+ * @author Matthew Casperson
  */
 abstract public class BaseExtendedChildrenView<
         T extends RESTBaseEntityV1<?, ?, ?>,
@@ -39,12 +35,14 @@ abstract public class BaseExtendedChildrenView<
         F extends RESTBaseCollectionItemV1<D, E, F>>
         extends BaseChildrenView<T, C, D, E, F> implements BaseExtendedChildrenViewInterface<T, W, C, D, E, F> {
 
-    /** The panel that defines the split between the current children and the possible children */
+    /**
+     * The panel that defines the split between the current children and the possible children
+     */
     private final HandlerSplitLayoutPanel split = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
 
     private final VerticalPanel existingChildrenResultsPanel = new VerticalPanel();
     private final SimplePager existingChildrenPager = UIUtilities.createSimplePager();
-    private final CellTable<F> existingChildrenResults = UIUtilities.<F> createCellTable();
+    private final CellTable<F> existingChildrenResults = UIUtilities.<F>createCellTable();
     private EnhancedAsyncDataProvider<F> existingChildrenProvider;
 
     @Override
@@ -86,7 +84,7 @@ abstract public class BaseExtendedChildrenView<
      * Initializes the UI elements required to display the existing and possible children.
      *
      * @param applicationName The name of the application, which will be added to the page's title field
-     * @param pageName The name of the page that is being displayed, which will be added to the page's title field
+     * @param pageName        The name of the page that is being displayed, which will be added to the page's title field
      */
     public BaseExtendedChildrenView(final String applicationName, final String pageName) {
         super(applicationName, pageName);

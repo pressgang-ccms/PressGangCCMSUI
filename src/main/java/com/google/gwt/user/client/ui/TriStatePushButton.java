@@ -8,9 +8,8 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 
 /**
  * A PushButton to perform the functionality of a tristate checkbox.
- * 
+ *
  * @author Matthew Casperson
- * 
  */
 public final class TriStatePushButton extends PushButton implements IsEditor<LeafValueEditor<TriStateSelectionState>> {
     private TriStateSelectionState state = TriStateSelectionState.NONE;

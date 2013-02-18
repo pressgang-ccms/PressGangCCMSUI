@@ -40,8 +40,7 @@ public class ProjectPresenter extends BaseTemplatePresenter implements BaseTempl
     private Display display;
 
     @NotNull
-    public Display getDisplay()
-    {
+    public Display getDisplay() {
         return display;
     }
 
@@ -61,7 +60,7 @@ public class ProjectPresenter extends BaseTemplatePresenter implements BaseTempl
     }
 
     public void bindExtended(final int topicId, @NotNull final String pageId) {
-        super.bind(topicId, pageId,  display);
+        super.bind(topicId, pageId, display);
     }
 
     /**

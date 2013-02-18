@@ -1,24 +1,20 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.topic;
 
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
-import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.SearchResultsAndTopicPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditView;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.LogMessageView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.base.BaseSearchResultsAndTopicView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The view that combines the topic search results with the individual topic views 
+ * The view that combines the topic search results with the individual topic views
+ *
  * @author Matthew Casperson
  */
 public class SearchResultsAndTopicView extends

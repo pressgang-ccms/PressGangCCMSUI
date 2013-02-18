@@ -11,7 +11,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -28,16 +27,16 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface
-{
-    /** The history token used to access this page */
+public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
+    /**
+     * The history token used to access this page
+     */
     public static final String HISTORY_TOKEN = "SearchTagsFieldsAndFiltersView";
 
     /**
@@ -59,12 +58,14 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     /**
      * The presenter used to display the list of filters
      */
-    @Inject private SearchFilterResultsAndFilterPresenter searchFilterResultsAndFilterPresenter;
+    @Inject
+    private SearchFilterResultsAndFilterPresenter searchFilterResultsAndFilterPresenter;
 
     /**
      * The dialog used when saving or overwriting a filter
      */
-    @Inject private SaveFilterDialogInterface saveFilterDialog;
+    @Inject
+    private SaveFilterDialogInterface saveFilterDialog;
 
     @Inject
     private HandlerManager eventBus;
@@ -93,8 +94,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         displayTags();
     }
 
-    public void bindExtended(final int helpTopicId, final String pageId)
-    {
+    public void bindExtended(final int helpTopicId, final String pageId) {
         bind(helpTopicId, pageId, display);
     }
 
@@ -121,7 +121,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     /**
      * Adds logic to the filter action buttons
      */
-    private void  bindFilterActionButtons(@NotNull final RESTTagCollectionV1 tags) {
+    private void bindFilterActionButtons(@NotNull final RESTTagCollectionV1 tags) {
         final ClickHandler loadClickHanlder = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
@@ -245,7 +245,8 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                     public void doFailureAction(final Display display) {
                         saveFilterDialog.getDialogBox().hide();
                     }
-                });
+                }
+                );
 
                 if (filter.getId() == null) {
                     RESTCalls.createFilter(createFilter, filter);
@@ -324,8 +325,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         fieldsComponent.getDisplay().getFilters().addClickHandler(filtersHandler);
     }
 
-    private void displayTags()
-    {
+    private void displayTags() {
         clearContainerAndAddTopLevelPanel(container, display);
         display.getTopActionGrandParentPanel().clear();
         display.getTopActionGrandParentPanel().setWidget(tagsComponent.getDisplay().getTopActionParentPanel());
@@ -338,8 +338,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         searchFilterResultsAndFilterPresenter.getDisplay().setViewShown(false);
     }
 
-    private void displayFields()
-    {
+    private void displayFields() {
         clearContainerAndAddTopLevelPanel(container, display);
         display.getTopActionGrandParentPanel().clear();
         display.getTopActionGrandParentPanel().setWidget(fieldsComponent.getDisplay().getTopActionParentPanel());
@@ -352,8 +351,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         searchFilterResultsAndFilterPresenter.getDisplay().setViewShown(false);
     }
 
-    private void displayFilters()
-    {
+    private void displayFilters() {
         clearContainerAndAddTopLevelPanel(container, searchFilterResultsAndFilterPresenter.getDisplay());
 
         fieldsComponent.getDisplay().setViewShown(false);

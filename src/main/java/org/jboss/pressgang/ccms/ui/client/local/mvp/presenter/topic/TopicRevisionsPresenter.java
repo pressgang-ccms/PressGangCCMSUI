@@ -55,8 +55,7 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
     @Inject
     private Display display;
 
-    public Display getDisplay()
-    {
+    public Display getDisplay() {
         return display;
     }
 
@@ -66,8 +65,7 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void bindExtended(final int topicId, final String pageId)
-    {
+    public void bindExtended(final int topicId, final String pageId) {
         super.bind(topicId, pageId, display);
     }
 
@@ -79,21 +77,21 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
     /**
      * Open a new window with the results of a prettydiff comparison
      *
-     * @param source The source XML
+     * @param source      The source XML
      * @param sourceLabel The source XML label
-     * @param diff The diff XML
-     * @param diffLabel The diff XML label
+     * @param diff        The diff XML
+     * @param diffLabel   The diff XML label
      */
     native public void displayDiff(final String source, final String sourceLabel, final String diff, final String diffLabel, final boolean isXML)
     /*-{
         var diffTable = $wnd.prettydiff({
-            source : source,
-            sourcelabel : sourceLabel,
-            diff : diff,
-            difflabel : diffLabel,
-            lang : isXML ? "markup" : "text",
-            mode : "diff",
-            diffview : "sidebyside"
+            source: source,
+            sourcelabel: sourceLabel,
+            diff: diff,
+            difflabel: diffLabel,
+            lang: isXML ? "markup" : "text",
+            mode: "diff",
+            diffview: "sidebyside"
         })[0];
 
         var win = $wnd.open("", "_blank", "width=" + (screen.width - 200) + ", height=" + (screen.height - 200) + ",scrollbars=yes"); // a window object

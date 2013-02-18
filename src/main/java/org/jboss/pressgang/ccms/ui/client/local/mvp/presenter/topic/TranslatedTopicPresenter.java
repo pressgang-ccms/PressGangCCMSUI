@@ -2,18 +2,14 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTranslatedTopicV1BasicDetailsEditor;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-import java.util.List;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
@@ -39,8 +35,7 @@ public class TranslatedTopicPresenter extends BaseTemplatePresenter {
     @Inject
     private Display display;
 
-    public Display getDisplay()
-    {
+    public Display getDisplay() {
         return display;
     }
 
@@ -61,8 +56,7 @@ public class TranslatedTopicPresenter extends BaseTemplatePresenter {
 
     }
 
-    public void bindExtended(final int helpTopicId, final String pageId)
-    {
+    public void bindExtended(final int helpTopicId, final String pageId) {
         bind(helpTopicId, pageId, display);
     }
 }

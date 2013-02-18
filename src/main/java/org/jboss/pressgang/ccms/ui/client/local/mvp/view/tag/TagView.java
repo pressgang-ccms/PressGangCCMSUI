@@ -10,7 +10,9 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1Basic
 
 public class TagView extends BaseTemplateView implements TagPresenter.Display {
 
-    /** The GWT Editor Driver */
+    /**
+     * The GWT Editor Driver
+     */
     private final TagPresenterDriver driver = GWT.create(TagPresenterDriver.class);
 
     private boolean readOnly = false;

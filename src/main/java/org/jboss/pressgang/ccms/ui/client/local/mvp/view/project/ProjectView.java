@@ -11,8 +11,9 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjec
 public class ProjectView extends BaseTemplateView implements ProjectPresenter.Display {
 
 
-  
-    /** The GWT Editor Driver */
+    /**
+     * The GWT Editor Driver
+     */
     private final ProjectPresenterDriver driver = GWT.create(ProjectPresenterDriver.class);
 
     private boolean readOnly = false;

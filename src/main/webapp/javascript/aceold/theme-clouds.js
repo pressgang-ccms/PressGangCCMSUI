@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/clouds', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
+ace.define('ace/theme/clouds', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
 
-exports.isDark = false;
-exports.cssClass = "ace-clouds";
-exports.cssText = "\
+    exports.isDark = false;
+    exports.cssClass = "ace-clouds";
+    exports.cssText = "\
 .ace-clouds .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\

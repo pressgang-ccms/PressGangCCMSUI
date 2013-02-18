@@ -30,7 +30,8 @@ public class TagPresenter extends BaseTemplatePresenter {
 
     private Integer tagId;
 
-    @Inject private Display display;
+    @Inject
+    private Display display;
 
     @NotNull
     public Display getDisplay() {

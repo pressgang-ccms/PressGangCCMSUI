@@ -37,7 +37,7 @@ public class CategoriesFilteredResultsAndCategoryView extends
     }
 
     @Override
-    public  Label getChildrenDown() {
+    public Label getChildrenDown() {
         return childrenDown;
     }
 

@@ -28,7 +28,7 @@ public interface SaveFilterDialogInterface {
     /**
      * @return The cancel button.
      */
-    PushButton getCancel() ;
+    PushButton getCancel();
 
     /**
      * @return The dialog box itself.

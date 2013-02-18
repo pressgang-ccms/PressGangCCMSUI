@@ -8,20 +8,17 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionIte
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseSearchResultsAndTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTranslatedTopicV1BasicDetailsEditor;
 
 import javax.enterprise.context.Dependent;
@@ -33,8 +30,8 @@ import java.util.logging.Logger;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
- Extends the BaseSearchResultsAndTopicPresenter class to provide the functionality required to
- display translated topics.
+ * Extends the BaseSearchResultsAndTopicPresenter class to provide the functionality required to
+ * display translated topics.
  */
 @Dependent
 public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearchResultsAndTopicPresenter<
@@ -55,10 +52,13 @@ public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearc
     /**
      * The main view.
      */
-    @Inject private Display display;
+    @Inject
+    private Display display;
 
-    @Inject private TranslatedTopicPresenter translatedTopicPresenter;
-    @Inject private TranslatedTopicsFilteredResultsPresenter translatedTopicsFilteredResultsPresenter;
+    @Inject
+    private TranslatedTopicPresenter translatedTopicPresenter;
+    @Inject
+    private TranslatedTopicsFilteredResultsPresenter translatedTopicsFilteredResultsPresenter;
 
     @Override
     protected final Display getDisplay() {

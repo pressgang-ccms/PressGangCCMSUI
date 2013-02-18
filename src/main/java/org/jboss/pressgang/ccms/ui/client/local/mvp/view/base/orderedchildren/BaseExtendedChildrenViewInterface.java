@@ -11,18 +11,13 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChild
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 /**
- *
- * @author Matthew Casperson
- *
  * @param <T> The entity type
- *
  * @param <W> The parent of the children
- *
  * @param <C> The collection item type for entity A
- *
  * @param <D> The existing child type
  * @param <E> The collection type for entity D
  * @param <F> The collection item type for entity D
+ * @author Matthew Casperson
  */
 public interface BaseExtendedChildrenViewInterface<
         T extends RESTBaseEntityV1<?, ?, ?>,
@@ -34,19 +29,16 @@ public interface BaseExtendedChildrenViewInterface<
         extends BaseChildrenViewInterface<T, C, D, E, F> {
 
     /**
-     *
      * @return The table that displays the existing children.
      */
     CellTable<F> getExistingChildrenResults();
 
     /**
-     *
      * @return The pager this is used to page over the table of existing children
      */
     SimplePager getExistingChildrenPager();
 
     /**
-     *
      * @return The panel this is used to holds the table and pager for the existing children
      */
     VerticalPanel getExistingChildrenResultsPanel();
@@ -57,25 +49,21 @@ public interface BaseExtendedChildrenViewInterface<
     EnhancedAsyncDataProvider<F> getExistingChildrenProvider();
 
     /**
-     *
      * @param possibleExistingProvider The provider that exposes the existing children
      */
     void setExistingChildrenProvider(final EnhancedAsyncDataProvider<F> possibleExistingProvider);
 
     /**
-     *
      * @return The split panel between the possible children and the existing children
      */
     HandlerSplitLayoutPanel getSplit();
 
     /**
-     *
      * @return The parent entity that holds the existing children
      */
     T getOriginalEntity();
 
     /**
-     *
      * @param originalEntity The entity that will have the possible children added to it, and that holds the existing
      *                       children that will be modified.
      */

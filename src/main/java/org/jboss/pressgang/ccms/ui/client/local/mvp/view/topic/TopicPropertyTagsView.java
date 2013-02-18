@@ -1,30 +1,21 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
-import com.google.gwt.cell.client.ButtonCell;
-import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.DisableEditTextCell;
 import com.google.gwt.user.client.ui.DisableableButtonCell;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTAssignedPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPropertyTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 
 import javax.enterprise.context.Dependent;
-import java.util.List;
 
 /**
 
@@ -74,17 +65,17 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
 
     private final DisableableButtonCell removeButtonCell = new DisableableButtonCell();
     private final Column<RESTAssignedPropertyTagCollectionItemV1, String> propertyTagRemoveColumn = new Column<RESTAssignedPropertyTagCollectionItemV1, String>(removeButtonCell) {
-            @Override
-            public String getValue(final RESTAssignedPropertyTagCollectionItemV1 object) {
-                removeButtonCell.setEnabled(!isReadOnly());
+        @Override
+        public String getValue(final RESTAssignedPropertyTagCollectionItemV1 object) {
+            removeButtonCell.setEnabled(!isReadOnly());
 
-                if (getOriginalEntity() != null && object != null) {
-                    return PressGangCCMSUI.INSTANCE.Remove();
-                }
-
-                return PressGangCCMSUI.INSTANCE.NoAction();
+            if (getOriginalEntity() != null && object != null) {
+                return PressGangCCMSUI.INSTANCE.Remove();
             }
-        };
+
+            return PressGangCCMSUI.INSTANCE.NoAction();
+        }
+    };
 
     private final TextColumn<RESTPropertyTagCollectionItemV1> possiblePropertyTagNameColumn = new TextColumn<RESTPropertyTagCollectionItemV1>() {
         @Override

@@ -2,9 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag;
 
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.TextBox;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
@@ -67,7 +65,7 @@ public class TagFilteredResultsView extends BaseFilteredResultsView<RESTTagColle
         this.addFilterField(PressGangCCMSUI.INSTANCE.TagIDs(), idFilter);
         this.addFilterField(PressGangCCMSUI.INSTANCE.TagName(), nameFilter);
         this.addFilterField(PressGangCCMSUI.INSTANCE.TagDescription(), descriptionFilter);
-        
+
         new NumbersAndCommaValidator(idFilter);
 
     }

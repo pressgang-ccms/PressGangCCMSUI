@@ -1,14 +1,11 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponentInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
@@ -56,7 +53,6 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
     private Display display;
 
     /**
-     *
      * @return The display
      */
     public final Display getDisplay() {
@@ -64,7 +60,6 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
     }
 
     /**
-     *
      * @return The display
      */
     public final SearchFilterFilteredResultsPresenter.Display getFilteredResulstsDisplay() {
@@ -160,7 +155,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
                 this.searchFilterPresenter.getDisplay().display(this.searchFilterFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
             }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchFilterResultsAndFilterPresenter.initializeViews()") ;
+            LOGGER.log(Level.INFO, "EXIT SearchFilterResultsAndFilterPresenter.initializeViews()");
         }
     }
 

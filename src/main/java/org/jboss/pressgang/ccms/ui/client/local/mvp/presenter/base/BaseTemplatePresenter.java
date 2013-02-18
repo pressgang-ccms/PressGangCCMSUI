@@ -20,7 +20,7 @@ import javax.inject.Inject;
 
 /**
  * Provides the basic functionality added to a template view.
- * 
+ *
  * @author Matthew Casperson
  */
 abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInterface, EditableView {
@@ -44,16 +44,14 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     private int helpTopicId = ServiceConstants.DEFAULT_HELP_TOPIC;
 
     /**
-     *
      * @return The topic of the ID to be used for the help dialog
      */
     @Override
-   public final int getHelpTopicId() {
+    public final int getHelpTopicId() {
         return helpTopicId;
     }
 
     /**
-     *
      * @param helpTopicId The topic of the ID to be used for the help dialog
      */
     @Override
@@ -261,6 +259,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
     /**
      * Set the feedback URL for the page.
+     *
      * @param pageId The id of the page
      */
     protected final void setFeedbackLink(final String pageId) {

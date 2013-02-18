@@ -6,18 +6,24 @@ import com.google.gwt.resources.client.ImageResource;
 
 /**
  * A GWT resource class to hold some CSS Styles.
- * @author Matthew Casperson
  *
+ * @author Matthew Casperson
  */
 public interface CSSResources extends ClientBundle {
-    /** An instance of the CSSResources class created by GWT. */
+    /**
+     * An instance of the CSSResources class created by GWT.
+     */
     CSSResources INSTANCE = GWT.create(CSSResources.class);
 
-    /** @return The CSS resource. */
+    /**
+     * @return The CSS resource.
+     */
     @Source("App.css")
     MyCssResource appCss();
 
-    /** @return The image to be displayed in the background of the header. */
+    /**
+     * @return The image to be displayed in the background of the header.
+     */
     @Source("headingBackground.png")
     ImageResource headingBackground();
 }

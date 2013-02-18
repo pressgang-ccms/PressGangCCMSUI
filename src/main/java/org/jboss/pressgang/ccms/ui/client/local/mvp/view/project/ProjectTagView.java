@@ -3,9 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.project;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
@@ -15,11 +13,11 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChild
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
 public class ProjectTagView
-    extends BaseChildrenView<
+        extends BaseChildrenView<
         RESTProjectV1,  // The main entity types
         RESTTagCollectionItemV1,             // The possible child types
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>             // The existing child types
-    implements ProjectTagPresenter.Display {
+        implements ProjectTagPresenter.Display {
 
     private final TextColumn<RESTTagCollectionItemV1> tagsIdColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override

@@ -1,15 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base;
 
 import com.google.gwt.editor.client.Editor;
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.*;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
@@ -22,7 +21,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresul
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.SearchResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
@@ -34,13 +32,15 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,16 +49,16 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 /**
  * This class provides the common functionality shared between the topic and
  * translated topic screen.
- *
+ * <p/>
  * This class has a number of abstract protected methods that can be used to
  * provide additional functionality specific to the needs of either the topic
  * or translated topic screens.
  */
-public abstract class BaseSearchResultsAndTopicPresenter  <
-            T extends RESTBaseTopicV1<T, U, V>,
-            U extends RESTBaseCollectionV1<T, U, V>,
-            V extends RESTBaseCollectionItemV1<T, U, V>,
-            Y extends Editor<T>>
+public abstract class BaseSearchResultsAndTopicPresenter<
+        T extends RESTBaseTopicV1<T, U, V>,
+        U extends RESTBaseCollectionV1<T, U, V>,
+        V extends RESTBaseCollectionItemV1<T, U, V>,
+        Y extends Editor<T>>
         extends BaseSearchAndEditComponent<T, U, V, Y>
         implements BaseTemplatePresenterInterface {
 
@@ -74,23 +74,31 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
 
     private String queryString;
 
-    @Inject private TopicXMLPresenter topicXMLComponent;
+    @Inject
+    private TopicXMLPresenter topicXMLComponent;
     /**
      * The rendered topic view display in a split panel
      */
-    @Inject private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
+    @Inject
+    private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
 
-    @Inject private TopicXMLErrorsPresenter topicXMLErrorsPresenter;
-    @Inject private TopicTagsPresenter topicTagsComponent;
-    @Inject private TopicBIRTBugsPresenter topicBugsPresenter;
-    @Inject private TopicRenderedPresenter topicRenderedPresenter;
-    @Inject private TopicPropertyTagsPresenter topicPropertyTagPresenter;
-    @Inject private TopicSourceURLsPresenter topicSourceURLsPresenter;
+    @Inject
+    private TopicXMLErrorsPresenter topicXMLErrorsPresenter;
+    @Inject
+    private TopicTagsPresenter topicTagsComponent;
+    @Inject
+    private TopicBIRTBugsPresenter topicBugsPresenter;
+    @Inject
+    private TopicRenderedPresenter topicRenderedPresenter;
+    @Inject
+    private TopicPropertyTagsPresenter topicPropertyTagPresenter;
+    @Inject
+    private TopicSourceURLsPresenter topicSourceURLsPresenter;
     /**
      * How the rendering panel is displayed
      */
     private SplitType split = SplitType.NONE;
-    
+
     protected abstract Display getDisplay();
 
     protected final TopicXMLPresenter getTopicXMLComponent() {
@@ -125,6 +133,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
 
     /**
      * To be set in the overriding classes parseToken() method.
+     *
      * @param queryString The parsed query string
      */
     protected final void setQueryString(@Nullable final String queryString) {
@@ -167,7 +176,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
 
     /**
      * @return true if all the data that is required to be loaded before the first
-     * topic is displayed has been loaded, and false otherwise.
+     *         topic is displayed has been loaded, and false otherwise.
      */
     abstract protected boolean isInitialTopicReadyToBeLoaded();
 
@@ -175,8 +184,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
      * When the locales and the topic list have been loaded we can display the fisrt topic if only
      * one was returned.
      */
-    protected void displayInitialTopic(@NotNull final GetNewEntityCallback<T> getNewEntityCallback)
-    {
+    protected void displayInitialTopic(@NotNull final GetNewEntityCallback<T> getNewEntityCallback) {
         try {
             LOGGER.log(Level.INFO, "ENTER BaseSearchResultsAndTopicPresenter.displayInitialTopic()");
 
@@ -352,7 +360,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
     /**
      * The tags and bugs for a topic are loaded as separate operations to minimize the amount of data initially sent when a
      * topic is displayed.
-     *
+     * <p/>
      * We pull down the extended collections from a revision, just to make sure that the collections we are getting are for
      * the entity we are viewing, since there is a slight chance that a new revision could be saved in between us loading
      * the empty entity and then loading the collections.
@@ -781,8 +789,6 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
             component.setHelpTopicId(ServiceConstants.DEFAULT_HELP_TOPIC);
         }
     }
-
-
 
 
     /**

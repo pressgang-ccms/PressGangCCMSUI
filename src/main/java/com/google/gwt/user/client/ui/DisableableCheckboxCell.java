@@ -7,7 +7,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 
 /**
  * A version of CheckboxCell that can display a disabled checkbox.
- * 
+ *
  * @author Matthew Casperson
  */
 public final class DisableableCheckboxCell extends CheckboxCell {
@@ -40,7 +40,7 @@ public final class DisableableCheckboxCell extends CheckboxCell {
     public DisableableCheckboxCell(final boolean enabled) {
         this.enabled = enabled;
     }
-    
+
     public DisableableCheckboxCell(final boolean enabled, final boolean dependsOnSelection, final boolean handlesSelection) {
         super(dependsOnSelection, handlesSelection);
         this.enabled = enabled;

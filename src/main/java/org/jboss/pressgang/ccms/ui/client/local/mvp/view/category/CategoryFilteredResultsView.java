@@ -2,9 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.category;
 
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.TextBox;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -63,7 +61,7 @@ public class CategoryFilteredResultsView extends
         addFilterField(PressGangCCMSUI.INSTANCE.CategoryIDs(), idFilter);
         addFilterField(PressGangCCMSUI.INSTANCE.CategoryName(), nameFilter);
         addFilterField(PressGangCCMSUI.INSTANCE.CategoryDescription(), descriptionFilter);
-        
+
         new NumbersAndCommaValidator(idFilter);
     }
 }

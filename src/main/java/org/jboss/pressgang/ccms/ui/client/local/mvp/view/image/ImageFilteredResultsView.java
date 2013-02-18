@@ -2,9 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.image;
 
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.TextBox;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -21,11 +19,10 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageC
     private TextColumn<RESTImageCollectionItemV1> idColumn = new TextColumn<RESTImageCollectionItemV1>() {
         @Override
         public String getValue(final RESTImageCollectionItemV1 object) {
-            if (object == null)
-            {
+            if (object == null) {
                 return null + "";
             }
-            
+
             return object.getItem().getId().toString();
 
         }
@@ -34,11 +31,10 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageC
     private TextColumn<RESTImageCollectionItemV1> descriptionColumn = new TextColumn<RESTImageCollectionItemV1>() {
         @Override
         public String getValue(final RESTImageCollectionItemV1 object) {
-            if (object == null)
-            {
+            if (object == null) {
                 return null + "";
             }
-            
+
             return object.getItem().getDescription();
         }
     };
@@ -60,14 +56,14 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageC
 
     public ImageFilteredResultsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Images(), PressGangCCMSUI.INSTANCE.CreateImage());
-       
+
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ImageID());
         getResults().addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.ImageDescription());
 
         addFilterField(PressGangCCMSUI.INSTANCE.ImageID(), imageIdFilter);
         addFilterField(PressGangCCMSUI.INSTANCE.ImageDescription(), imageDescriptionFilter);
         addFilterField(PressGangCCMSUI.INSTANCE.ImageOriginalFileName(), imageOriginalFileNameFilter);
-        
+
         new NumbersAndCommaValidator(imageIdFilter);
     }
 

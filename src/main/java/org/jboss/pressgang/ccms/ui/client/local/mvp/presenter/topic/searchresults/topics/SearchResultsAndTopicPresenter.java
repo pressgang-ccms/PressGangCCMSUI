@@ -29,7 +29,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTag
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -71,8 +70,8 @@ import java.util.logging.Logger;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
-    Extends the BaseSearchResultsAndTopicPresenter class to provide the functionality required to
-    display, edit and create topics.
+ * Extends the BaseSearchResultsAndTopicPresenter class to provide the functionality required to
+ * display, edit and create topics.
  */
 @Dependent
 public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPresenter<
@@ -82,11 +81,14 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
         RESTTopicV1BasicDetailsEditor> {
 
 
-
-    @Inject private SearchResultsPresenter searchResultsComponent;
-    @Inject private TopicPresenter topicViewComponent;
-    @Inject private TopicRevisionsPresenter topicRevisionsComponent;
-    @Inject private Display display;
+    @Inject
+    private SearchResultsPresenter searchResultsComponent;
+    @Inject
+    private TopicPresenter topicViewComponent;
+    @Inject
+    private TopicRevisionsPresenter topicRevisionsComponent;
+    @Inject
+    private Display display;
 
 
     /**
@@ -120,7 +122,9 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
      */
     private boolean startWithNewTopic = false;
 
-    /** true after the default locale has been loaded */
+    /**
+     * true after the default locale has been loaded
+     */
     private String defaultLocale = null;
 
     /**
@@ -141,9 +145,13 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
      */
     private List<String> locales;
 
-    /** true after the locales have been loaded */
+    /**
+     * true after the locales have been loaded
+     */
     private boolean localesLoaded = false;
-    /** true after the topics have been loaded */
+    /**
+     * true after the topics have been loaded
+     */
     private boolean topicListLoaded = false;
 
     @Override
@@ -352,8 +360,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
                                     Default to using the major change for new topics
                                  */
                             if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null &&
-                                    getSearchResultsComponent().getProviderData().getDisplayedItem().returnIsAddItem())
-                            {
+                                    getSearchResultsComponent().getProviderData().getDisplayedItem().returnIsAddItem()) {
                                 display.getMessageLogDialog().getMajorChange().setValue(true);
                                 display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.InitialTopicCreation());
                             }
@@ -524,8 +531,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
                                                                 Otherwise we need to make sure that the second last revision matches the revision
                                                                  of the topic we were editing.
                                                              */
-                                                        if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2)
-                                                        {
+                                                        if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2) {
                                                                 /* Get the second last revision (the last one is the current one) */
                                                             final Integer overwriteRevision = retValue.getRevisions().getItems()
                                                                     .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
@@ -702,8 +708,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
      * When the default locale and the topic list have been loaded we can display the fisrt topic if only
      * one was returned.
      */
-    private void displayNewTopic()
-    {
+    private void displayNewTopic() {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.displayNewTopic()");
 
@@ -770,7 +775,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
                 return;
             }
 
-            ((BasePopulatedEditorViewInterface)lastDisplayedView).getDriver().flush();
+            ((BasePopulatedEditorViewInterface) lastDisplayedView).getDriver().flush();
         } finally {
             LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.flushChanges()");
         }
@@ -979,7 +984,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
                 unsavedChanges = true;
             }
             if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getDescription(),
-                    displayedTopic.getDescription()))                                                 {
+                    displayedTopic.getDescription())) {
                 unsavedChanges = true;
             }
             if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getXml(), displayedTopic.getXml())) {
@@ -993,8 +998,8 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
     }
 
     /**
-     *   topicRevisionsComponent.getDisplay().getRevisionTopic() is used to indicate which revision
-     *   of a topic we are looking at. Setting it to null means that we are not looking at a revision.
+     * topicRevisionsComponent.getDisplay().getRevisionTopic() is used to indicate which revision
+     * of a topic we are looking at. Setting it to null means that we are not looking at a revision.
      */
     private void viewLatestTopicRevision() {
         topicRevisionsComponent.getDisplay().setRevisionTopic(null);
@@ -1073,8 +1078,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
         }
     }
 
-    private void loadDefaultLocale(@NotNull final StringLoaded loadedCallback)
-    {
+    private void loadDefaultLocale(@NotNull final StringLoaded loadedCallback) {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.loadDefaultLocale()");
 
@@ -1718,7 +1722,9 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
 
     public interface Display extends BaseSearchResultsAndTopicPresenter.Display<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
         PushButton getSave();
+
         PushButton getHistory();
+
         Label getHistoryDown();
     }
 }

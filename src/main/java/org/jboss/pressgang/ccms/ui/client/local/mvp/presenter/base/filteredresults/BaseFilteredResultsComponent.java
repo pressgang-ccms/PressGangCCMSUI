@@ -6,7 +6,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityList
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -14,14 +13,16 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * This is the base class that is used for components adding logic to views that list the results of a query
- * @author Matthew Casperson
  *
  * @param <V> The collection item type for entity T
+ * @author Matthew Casperson
  */
 abstract public class BaseFilteredResultsComponent<V extends RESTBaseCollectionItemV1<?, ?, ?>>
-    extends BaseTemplatePresenter implements BaseFilteredResultsComponentInterface<V> {
+        extends BaseTemplatePresenter implements BaseFilteredResultsComponentInterface<V> {
 
-    /** Holds the data required to populate and refresh the tags list */
+    /**
+     * Holds the data required to populate and refresh the tags list
+     */
     private final ProviderUpdateData<V> providerData = new ProviderUpdateData<V>();
 
     final private HandlerManager handlerManager = new HandlerManager(this);
@@ -44,17 +45,15 @@ abstract public class BaseFilteredResultsComponent<V extends RESTBaseCollectionI
     }
 
 
-
     /**
-    * @param topicId The ID of the help topic associated with this view
-    * @param pageId The history token associated with this view
-    * @param queryString The query that defines the results to be displayed
-    * @param display The filtered results view
-    */
-    protected final void bindFilteredResults(final int topicId, final String pageId, @NotNull final String queryString, @NotNull final BaseFilteredResultsViewInterface display)
-    {
-         super.bind(topicId, pageId, display);
-         displayQueryElements(queryString);        
+     * @param topicId     The ID of the help topic associated with this view
+     * @param pageId      The history token associated with this view
+     * @param queryString The query that defines the results to be displayed
+     * @param display     The filtered results view
+     */
+    protected final void bindFilteredResults(final int topicId, final String pageId, @NotNull final String queryString, @NotNull final BaseFilteredResultsViewInterface display) {
+        super.bind(topicId, pageId, display);
+        displayQueryElements(queryString);
     }
 
     /**
@@ -63,14 +62,13 @@ abstract public class BaseFilteredResultsComponent<V extends RESTBaseCollectionI
     public final void bindExtended(final int topicId, final String pageId) {
         throw new UnsupportedOperationException("bindExtended() is not supported. Use bindFilteredResults() instead.");
     }
-    
+
     /**
      * When a new entity is created, the filtered results are reloaded. This process breaks the link between the selected item
      * and the collection being displayed by the filtered results. This methods will go through and set the selected item to the
      * item in the filtered results list (if it exists).
      */
-    protected final void relinkSelectedItem()
-    {
+    protected final void relinkSelectedItem() {
         if (this.providerData.getSelectedItem() != null && this.providerData.getItems() != null) {
             for (final V filteredResultEntity : this.providerData.getItems()) {
                 if (filteredResultEntity.getItem().getId().equals(this.providerData.getSelectedItem().getItem().getId())) {
@@ -83,7 +81,7 @@ abstract public class BaseFilteredResultsComponent<V extends RESTBaseCollectionI
 
     /**
      * Display the current filter options.
-     * 
+     *
      * @param queryString The string that contains the filter options
      */
     abstract protected void displayQueryElements(@NotNull final String queryString);

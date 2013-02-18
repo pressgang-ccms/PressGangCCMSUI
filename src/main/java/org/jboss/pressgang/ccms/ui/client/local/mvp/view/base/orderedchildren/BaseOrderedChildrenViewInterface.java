@@ -6,28 +6,23 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 
 /**
- * 
- * @author Matthew Casperson
- *
  * @param <T> The entity type
  * @param <U> The collection type for entity T
  * @param <V> The collection item type for entity T
- * 
  * @param <W> The parent of the children
- * 
  * @param <A> The possible child type
  * @param <B> The collection type for entity A
  * @param <C> The collection item type for entity A
- * 
  * @param <D> The existing child type
  * @param <E> The collection type for entity D
  * @param <F> The collection item type for entity D
+ * @author Matthew Casperson
  */
 public interface BaseOrderedChildrenViewInterface<
-    T extends RESTBaseEntityV1<T, ?, ?>,
-    W extends RESTBaseEntityV1<?, ?, ?>,
-    C extends RESTBaseCollectionItemV1<?, ?, ?>,
-    D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
+        T extends RESTBaseEntityV1<T, ?, ?>,
+        W extends RESTBaseEntityV1<?, ?, ?>,
+        C extends RESTBaseCollectionItemV1<?, ?, ?>,
+        D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
         extends BaseExtendedChildrenViewInterface<T, W, C, D, E, F> {
 
     Column<F, String> getExistingChildUpButtonColumn();

@@ -2,11 +2,8 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -46,8 +43,7 @@ public class ProjectTagPresenter
     private Display display;
 
     @NotNull
-    public Display getDisplay()
-    {
+    public Display getDisplay() {
         return display;
     }
 

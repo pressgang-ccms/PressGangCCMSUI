@@ -2,7 +2,6 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
@@ -32,20 +31,16 @@ public class TopicXMLErrorsPresenter extends BaseTemplatePresenter {
     @Inject
     private Display display;
 
-    public Display getDisplay()
-    {
+    public Display getDisplay() {
         return display;
     }
 
     @Override
     public void parseToken(final String searchToken) {
 
-        try
-        {
+        try {
             topicId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
-        }
-        catch (final NumberFormatException ex)
-        {
+        } catch (final NumberFormatException ex) {
             topicId = null;
         }
     }
@@ -56,8 +51,7 @@ public class TopicXMLErrorsPresenter extends BaseTemplatePresenter {
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void bindExtended(final int helpTopicId, final String pageId)
-    {
+    public void bindExtended(final int helpTopicId, final String pageId) {
         super.bind(helpTopicId, pageId, display);
     }
 }

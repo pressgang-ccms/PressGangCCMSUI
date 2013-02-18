@@ -20,30 +20,30 @@ import hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl;
 
 /**
  * This class represents the client interface to XSLT processing.
- * 
+ * <p/>
  * Usage: <code>
  * //Any number of processors can be created, they will behave
  * //independently. Every stylesheet have to have its own processor.
  * XsltProcessor processor = new XsltProcessor();
- * 
+ * <p/>
  * //Setting the stylesheet to transform with
  * processor.importStyleSheet(styleSheetText);
- * 
+ * <p/>
  * //Setting the document to be transformed
  * processor.importSource(sourceText);
- * 
+ * <p/>
  * //Order of setting the stylesheet and document is indifferent.
- * 
+ * <p/>
  * //Optional, must be called after importStyleSheet
  * processor.setParameter(paramNameString, paramValueString);
- * 
+ * <p/>
  * //Getting the result
  * String resultString = processor.transform();
  * DOM.getElementById("resultContainer").setInnerHTML(resultString);
  * </code>
- * 
+ * <p/>
  * The importSource-setParameter-transform cycle can be repeated multiple times.
- * 
+ *
  * @author Szabó Árpád Zoltán, szabo.arpad.zoltan at gmail.com
  */
 public final class XsltProcessor {

@@ -6,12 +6,10 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-
 import java.util.List;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
@@ -35,8 +33,7 @@ public class TopicPresenter extends BaseTemplatePresenter {
     @Inject
     private Display display;
 
-    public Display getDisplay()
-    {
+    public Display getDisplay() {
         return display;
     }
 
@@ -57,8 +54,7 @@ public class TopicPresenter extends BaseTemplatePresenter {
 
     }
 
-    public void bindExtended(final int helpTopicId, final String pageId)
-    {
+    public void bindExtended(final int helpTopicId, final String pageId) {
         bind(helpTopicId, pageId, display);
     }
 }

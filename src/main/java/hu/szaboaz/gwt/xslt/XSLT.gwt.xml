@@ -15,26 +15,26 @@
 <!-- XSL Transformation support.                                            -->
 <!--                                                                        -->
 <module>
-  <inherits name="com.google.gwt.core.Core"/>
-  <inherits name="com.google.gwt.user.UserAgent"/>
-  
-  <source path="client"/>
-  
-  <!-- Fall through to this rule for all other browsers -->
-  <replace-with class="hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImplStandard">
-    <when-type-is class="hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl"/>
-  </replace-with>
-  
-  <replace-with class="hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImplIe">
-    <when-type-is class="hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl"/>
-    <any>
-      <when-property-is name="user.agent" value="ie6"/>
-      <when-property-is name="user.agent" value="ie8"/>
-    </any>
-  </replace-with>
-  
-  <replace-with class="hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImplSafari">
-    <when-type-is class="hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl"/>
-    <when-property-is name="user.agent" value="safari"/>
-  </replace-with>
+    <inherits name="com.google.gwt.core.Core"/>
+    <inherits name="com.google.gwt.user.UserAgent"/>
+
+    <source path="client"/>
+
+    <!-- Fall through to this rule for all other browsers -->
+    <replace-with class="hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImplStandard">
+        <when-type-is class="hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl"/>
+    </replace-with>
+
+    <replace-with class="hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImplIe">
+        <when-type-is class="hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl"/>
+        <any>
+            <when-property-is name="user.agent" value="ie6"/>
+            <when-property-is name="user.agent" value="ie8"/>
+        </any>
+    </replace-with>
+
+    <replace-with class="hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImplSafari">
+        <when-type-is class="hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl"/>
+        <when-property-is name="user.agent" value="safari"/>
+    </replace-with>
 </module>

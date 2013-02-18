@@ -8,7 +8,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter.Display.SearchPresenterDriver;
@@ -27,7 +26,7 @@ public class SearchUIProjectsEditor extends DockLayoutPanel implements Editor<Se
 
     /**
      * The EditorSource is used to create and orgainse the Editors that go into a ListEditor
-     * 
+     *
      * @author Matthew Casperson
      */
     private class SearchUIProjectEditorSource extends EditorSource<SearchUIProjectEditor> {

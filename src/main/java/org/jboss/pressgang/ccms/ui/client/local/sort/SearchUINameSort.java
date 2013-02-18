@@ -36,8 +36,7 @@ public final class SearchUINameSort implements Comparator<SearchUIBase>, Seriali
             return -1;
         }
 
-        if (arg1.getName() == null)
-        {
+        if (arg1.getName() == null) {
             return 1;
         }
 

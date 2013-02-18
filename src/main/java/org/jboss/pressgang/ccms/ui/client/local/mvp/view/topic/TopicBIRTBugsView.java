@@ -1,22 +1,17 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.Frame;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBIRTBugsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
-
-import java.util.List;
 
 /**
  * A MVP view for displaying a topic's Bugzilla Bugs. This view simply displays an iFrame
  * to a BIRT report.
- * 
+ *
  * @author Matthew Casperson
  */
 public class TopicBIRTBugsView extends BaseTemplateView implements TopicBIRTBugsPresenter.Display {

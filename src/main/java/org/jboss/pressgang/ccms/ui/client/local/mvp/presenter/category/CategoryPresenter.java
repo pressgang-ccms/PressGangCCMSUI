@@ -7,8 +7,6 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCategoryV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
 
@@ -50,8 +48,7 @@ public class CategoryPresenter extends
     @Inject
     private Display display;
 
-    public Display getDisplay()
-    {
+    public Display getDisplay() {
         return display;
     }
 
@@ -61,8 +58,7 @@ public class CategoryPresenter extends
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void bindExtended(final int topicId, final String pageId)
-    {
+    public void bindExtended(final int topicId, final String pageId) {
         super.bind(topicId, pageId, display);
     }
 

@@ -5,9 +5,8 @@ import com.google.gwt.editor.client.LeafValueEditor;
 
 /**
  * An Image that can be bound to a Base64 representation of an image.
- * 
+ *
  * @author Matthew Casperson
- * 
  */
 public final class ImageStringEditor extends Image implements IsEditor<LeafValueEditor<String>> {
     @Override

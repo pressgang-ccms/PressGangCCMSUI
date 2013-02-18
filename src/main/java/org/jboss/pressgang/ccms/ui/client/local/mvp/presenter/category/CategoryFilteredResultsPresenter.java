@@ -8,7 +8,6 @@ import com.google.gwt.view.client.HasData;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -55,8 +54,7 @@ public class CategoryFilteredResultsPresenter
      */
     private String queryString;
 
-    public Display getDisplay()
-    {
+    public Display getDisplay() {
         return display;
     }
 
@@ -147,10 +145,10 @@ public class CategoryFilteredResultsPresenter
             retValue.append(";catIds=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.display.getIdFilter().getText()) : this.display.getIdFilter().getText()));
         }
         if (!this.display.getNameFilter().getText().isEmpty()) {
-            retValue.append(";catName=").append((Constants.ENCODE_QUERY_OPTIONS ?URL.encodeQueryString(this.display.getNameFilter().getText()) : this.display.getNameFilter().getText()));
+            retValue.append(";catName=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.display.getNameFilter().getText()) : this.display.getNameFilter().getText()));
         }
         if (!this.display.getDescriptionFilter().getText().isEmpty()) {
-            retValue.append(";catDesc=").append((Constants.ENCODE_QUERY_OPTIONS ?URL.encodeQueryString(this.display.getDescriptionFilter().getText()) : this.display.getDescriptionFilter().getText()));
+            retValue.append(";catDesc=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.display.getDescriptionFilter().getText()) : this.display.getDescriptionFilter().getText()));
         }
 
         return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX

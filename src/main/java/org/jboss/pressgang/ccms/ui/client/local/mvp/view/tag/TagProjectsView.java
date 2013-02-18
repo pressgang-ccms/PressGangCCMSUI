@@ -4,9 +4,7 @@ import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
@@ -16,8 +14,8 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 
 public class TagProjectsView extends
         BaseChildrenView<RESTTagV1,
-        RESTProjectCollectionItemV1,
-        RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> implements
+                RESTProjectCollectionItemV1,
+                RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> implements
         TagProjectsPresenter.Display {
 
     private final TextColumn<RESTProjectCollectionItemV1> idColumn = new TextColumn<RESTProjectCollectionItemV1>() {

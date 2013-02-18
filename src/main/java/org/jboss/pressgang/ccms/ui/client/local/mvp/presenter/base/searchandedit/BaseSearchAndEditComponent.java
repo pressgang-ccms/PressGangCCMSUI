@@ -75,7 +75,7 @@ abstract public class BaseSearchAndEditComponent<
      * Unsupported method. Call bindSearchAndEdit() instead.
      *
      * @param topicId the help topic for the page
-     * @param pageId The history token of the page
+     * @param pageId  The history token of the page
      */
     public void bindExtended(final int topicId, @NotNull final String pageId) {
         throw new UnsupportedOperationException("bindExtended() is not supported. Use bindSearchAndEdit() instead.");
@@ -151,6 +151,7 @@ abstract public class BaseSearchAndEditComponent<
 
     /**
      * Update the list of results
+     *
      * @param wasNewEntity true if the update happened after a entity was created, false otherwise
      */
     private void refreshFilteredResults(final boolean wasNewEntity) {
@@ -191,7 +192,7 @@ abstract public class BaseSearchAndEditComponent<
      * @param selectedItem         The item that was selected from a collection of entities
      */
     protected final void loadNewEntity(@NotNull final GetNewEntityCallback<T> getNewEntityCallback, @NotNull final V selectedItem) {
-        try  {
+        try {
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.loadNewEntity()");
 
             /*
@@ -291,10 +292,10 @@ abstract public class BaseSearchAndEditComponent<
     /**
      * Called when a new entity is selected. This method is used to display any data that is contained
      * in the selected object when it is initially loaded.
-     *
+     * <p/>
      * Typically, this method is initially called when the entity is loaded with no filter (i.e. filter = null), meaning
      * that the displayBlah() methods on the views are called.
-     *
+     * <p/>
      * Additional data (usually child collections) is expected to be loaded and displayed in the
      * loadAdditionalDisplayedItemData() method. The loadAdditionalDisplayedItemData() will then
      * call initializeViews() with a filter set to the view that needs to be updated with the new data.
@@ -359,7 +360,6 @@ abstract public class BaseSearchAndEditComponent<
     }
 
 
-
     /**
      * Used by the initializeViews method
      *
@@ -422,14 +422,18 @@ abstract public class BaseSearchAndEditComponent<
     /**
      * Called once switchView has completed. Override this method to perform some
      * additional logic after a new screen has been displayed.
+     *
      * @param displayedView The newly displayed screen.
      */
-    protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {}
+    protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
+    }
 
     /**
      * Called when switchView has been called. Override this method to perform some
      * additional logic before a new screen has been displayed.
+     *
      * @param displayedView The newly displayed screen.
      */
-    protected void beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {}
+    protected void beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
+    }
 }

@@ -4,8 +4,6 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
@@ -13,9 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
  * This interface defines the base for all views displaying a filtered results set
  *
  * @param <V> The collection item type for entity T
- *
  * @author Matthew Casperson
- * 
  */
 public interface BaseFilteredResultsViewInterface<V extends RESTBaseCollectionItemV1<?, ?, ?>>
         extends BaseTemplateViewInterface {
@@ -29,13 +25,19 @@ public interface BaseFilteredResultsViewInterface<V extends RESTBaseCollectionIt
      */
     PushButton getEntitySearch();
 
-    /** @return The celltable that displays the results */
+    /**
+     * @return The celltable that displays the results
+     */
     CellTable<V> getResults();
 
-    /** @return The pager used to move over the results */
+    /**
+     * @return The pager used to move over the results
+     */
     SimplePager getPager();
 
-    /** @return The provider used to populate the celltable */
+    /**
+     * @return The provider used to populate the celltable
+     */
     EnhancedAsyncDataProvider<V> getProvider();
 
     /**

@@ -12,7 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 
 /**
  * A GWT Editor to provide a visual representation of SearchUITag
- * 
+ *
  * @author Matthew Casperson
  */
 public class SearchUITagEditor implements Editor<SearchUITag> {

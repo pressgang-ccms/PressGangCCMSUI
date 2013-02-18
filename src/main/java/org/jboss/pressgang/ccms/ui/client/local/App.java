@@ -20,14 +20,19 @@ import java.util.logging.Logger;
 
 /**
  * The entry point to the GWT application.
+ *
  * @author Matthew Casperson
  */
 @EntryPoint
 public class App {
-    /** The Errai event bus. */
+    /**
+     * The Errai event bus.
+     */
     private HandlerManager eventBus = new HandlerManager(null);
 
-    /** The controller that handles the transitions between views. */
+    /**
+     * The controller that handles the transitions between views.
+     */
     @Inject
     private AppController appController;
 

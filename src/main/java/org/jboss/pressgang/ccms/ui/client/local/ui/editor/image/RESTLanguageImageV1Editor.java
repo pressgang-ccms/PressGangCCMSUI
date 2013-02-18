@@ -14,17 +14,18 @@ import org.vectomatic.file.FileUploadExt;
 
 /**
  * Provides a UI for viewing and editing a RESTLanguageImageV1 object.
- * 
+ * <p/>
  * We can't bind to a byte array directly (http://code.google.com/p/google-web-toolkit/issues/detail?id=6600), so we need to use
  * the ValueAwareEditor to do some manual binding.
- * 
+ *
  * @author Matthew Casperson
- * 
  */
 public final class RESTLanguageImageV1Editor extends FlexTable implements ValueAwareEditor<RESTLanguageImageCollectionItemV1> {
     private static final String JPG_BASE64_PREFIX = "data:image/jpg;base64,";
 
-    /** Keep a reference to the object this editor gets its values from. */
+    /**
+     * Keep a reference to the object this editor gets its values from.
+     */
     public RESTLanguageImageCollectionItemV1 self;
 
     /**

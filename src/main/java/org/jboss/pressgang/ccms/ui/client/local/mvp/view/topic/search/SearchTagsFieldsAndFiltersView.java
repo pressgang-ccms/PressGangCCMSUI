@@ -9,7 +9,9 @@ public class SearchTagsFieldsAndFiltersView extends
         BaseTemplateView implements
         SearchTagsFieldsAndFiltersPresenter.Display {
 
-    /** The dialog that is presented when the view is unavailable. */
+    /**
+     * The dialog that is presented when the view is unavailable.
+     */
     private final WaitingDialog waiting = new WaitingDialog();
 
     public SearchTagsFieldsAndFiltersView() {

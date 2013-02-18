@@ -8,13 +8,11 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.web.bindery.requestfactory.gwt.ui.client.ProxyRenderer;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
@@ -29,7 +27,9 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
 
     final FlexTable layout = new FlexTable();
 
-    /** The GWT Editor Driver */
+    /**
+     * The GWT Editor Driver
+     */
     private final TopicTagsPresenterDriver driver = GWT.create(TopicTagsPresenterDriver.class);
     private TopicTagViewProjectsEditor editor;
     private final PushButton add = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Add());
@@ -91,7 +91,8 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
             public Object getKey(final SearchUIProject item) {
                 return item.getId();
             }
-        });
+        }
+        );
         projects.addStyleName(CSSConstants.TOPIC_TAG_VIEW_NEW_TAG_PROJECTS_LIST);
 
         categories = new ValueListBox<SearchUICategory>(new ProxyRenderer<SearchUICategory>(null) {
@@ -104,7 +105,8 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
             public Object getKey(final SearchUICategory item) {
                 return item.getId();
             }
-        });
+        }
+        );
         categories.addStyleName(CSSConstants.TOPIC_TAG_VIEW_NEW_TAG_CATEGORIES_LIST);
 
         myTags = new ValueListBox<SearchUITag>(new ProxyRenderer<SearchUITag>(null) {
@@ -117,7 +119,8 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
             public Object getKey(final SearchUITag item) {
                 return item.getId();
             }
-        });
+        }
+        );
         myTags.addStyleName(CSSConstants.TOPIC_TAG_VIEW_NEW_TAG_TAGS_LIST);
 
         newTagUIElementsPanel.addStyleName(CSSConstants.TOPIC_TAG_VIEW_NEW_TAG_PARENT_PANEL);
@@ -213,7 +216,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
         layout.clear();
 
         if (!readOnly) {
-            layout.setWidget(0, 0, newTagUIElementsPanel);            
+            layout.setWidget(0, 0, newTagUIElementsPanel);
         }
 
         /* We can't assume the tags have been loaded by the time we initialize the view */

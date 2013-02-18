@@ -7,7 +7,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectio
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -40,8 +39,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
     @Inject
     private HandlerManager eventBus;
 
-    public Display getDisplay()
-    {
+    public Display getDisplay() {
         return display;
     }
 
@@ -109,14 +107,15 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
                                     getHandlerManager().fireEvent(new EntityListReceived<RESTTranslatedTopicCollectionV1>(retValue));
                                 }
                             }
-                    }, new BaseRestCallback.FailureAction<Display>() {
-                        @Override
-                        public void doFailureAction(Display display) {
-                            getProviderData().setItems(new ArrayList<RESTTranslatedTopicCollectionItemV1>());
-                            getProviderData().setSize(0);
-                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
-                        }
-                    });
+                        }, new BaseRestCallback.FailureAction<Display>() {
+                    @Override
+                    public void doFailureAction(Display display) {
+                        getProviderData().setItems(new ArrayList<RESTTranslatedTopicCollectionItemV1>());
+                        getProviderData().setSize(0);
+                        displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
+                    }
+                }
+                );
 
                 getProviderData().setStartRow(list.getVisibleRange().getStart());
                 final int length = list.getVisibleRange().getLength();

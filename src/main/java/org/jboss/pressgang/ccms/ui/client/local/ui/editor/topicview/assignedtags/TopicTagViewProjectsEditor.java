@@ -17,7 +17,7 @@ public class TopicTagViewProjectsEditor extends SimplePanel implements Editor<Se
 
     /**
      * The EditorSource is used to create and orgainse the Editors that go into a ListEditor
-     * 
+     *
      * @author Matthew Casperson
      */
     private class TopicTagViewProjectEditorSource extends EditorSource<TopicTagViewProjectEditor> {

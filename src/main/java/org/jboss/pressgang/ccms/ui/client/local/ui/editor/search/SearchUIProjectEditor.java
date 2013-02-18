@@ -7,7 +7,10 @@ import com.google.gwt.editor.client.adapters.EditorSource;
 import com.google.gwt.editor.client.adapters.ListEditor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FourTextAndImageButtonSearchUIProjectEditor;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
@@ -28,7 +31,7 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
 
     /**
      * The EditorSource is used to create and orgainse the Editors that go into a ListEditor
-     * 
+     *
      * @author Matthew Casperson
      */
     private class SearchUICategoryEditorSource extends EditorSource<SearchUICategoryEditor> {

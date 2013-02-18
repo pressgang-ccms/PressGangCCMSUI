@@ -27,7 +27,7 @@ public final class RESTTopicCollectionItemV1RevisionSort implements Comparator<R
         if (arg1 == null) {
             return 1;
         }
-        
+
         if (arg0.getItem() == null && arg1.getItem() == null) {
             return 0;
         }
@@ -52,8 +52,7 @@ public final class RESTTopicCollectionItemV1RevisionSort implements Comparator<R
             return -1;
         }
 
-        if (arg1.getItem().getRevision() == null)
-        {
+        if (arg1.getItem().getRevision() == null) {
             return 1;
         }
 

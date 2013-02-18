@@ -17,20 +17,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * The REST interface does not define a hierarchy or projects->categories->tags. Instead, tags belong to both categories and
  * projects, but the projects and categories don't have any direct relationship.
- * 
+ * <p/>
  * When being viewed however tags are displayed in the projects->categories->tags hierarchy. This class defines the top level
  * collection of projects.
- * 
+ *
  * @author Matthew Casperson
  */
 public class SearchUIProjects implements SearchViewBase {
-    /** The string that appears in the query to indicate the presence or absence of a tag */
+    /**
+     * The string that appears in the query to indicate the presence or absence of a tag
+     */
     private static final String TAG_PREFIX = "tag";
 
     /**
@@ -50,7 +51,6 @@ public class SearchUIProjects implements SearchViewBase {
     }
 
     /**
-     * 
      * @param tags The collection of tags that is used to build the hierarchy of projects, categories and tags
      */
     public SearchUIProjects(final RESTTagCollectionV1 tags) {
@@ -58,8 +58,7 @@ public class SearchUIProjects implements SearchViewBase {
     }
 
     /**
-     *
-     * @param tags The collection of tags that is used to build the hierarchy of projects, categories and tags
+     * @param tags   The collection of tags that is used to build the hierarchy of projects, categories and tags
      * @param filter The filter that defines the state of the tags
      */
     public SearchUIProjects(final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
@@ -67,9 +66,7 @@ public class SearchUIProjects implements SearchViewBase {
     }
 
 
-    
     /**
-     * 
      * @return The list of projects
      */
     public final List<SearchUIProject> getProjects() {
@@ -77,8 +74,7 @@ public class SearchUIProjects implements SearchViewBase {
     }
 
     /**
-     * 
-     * @param tags The collection of tags that is used to build the hierarchy of projects, categories and tags
+     * @param tags   The collection of tags that is used to build the hierarchy of projects, categories and tags
      * @param filter The filter that defines the state of the tags
      */
     public final void initialize(@NotNull final RESTTagCollectionV1 tags, @Nullable final RESTFilterV1 filter) {
@@ -149,7 +145,7 @@ public class SearchUIProjects implements SearchViewBase {
 
         final StringBuilder builder = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON
                 : "");
-        
+
         for (final SearchUIProject project : this.projects) {
             for (final SearchUICategory category : project.getCategories()) {
                 for (final SearchUITag tag : category.getMyTags()) {

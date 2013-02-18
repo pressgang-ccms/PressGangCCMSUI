@@ -48,7 +48,9 @@ abstract public class BaseSearchAndEditView<
      */
     private final HorizontalPanel viewViewSpecificActionButtonsPanel = new HorizontalPanel();
 
-    /** The dialog that is presented when the view is unavailable. */
+    /**
+     * The dialog that is presented when the view is unavailable.
+     */
     private final WaitingDialog waiting = new WaitingDialog();
 
     @Override

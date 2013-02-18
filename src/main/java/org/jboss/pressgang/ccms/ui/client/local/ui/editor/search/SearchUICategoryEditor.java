@@ -27,7 +27,7 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
 
     /**
      * The EditorSource is used to create and orgainse the Editors that go into a ListEditor
-     * 
+     *
      * @author Matthew Casperson
      */
     private class SearchUITagEditorSource extends EditorSource<SearchUITagEditor> {

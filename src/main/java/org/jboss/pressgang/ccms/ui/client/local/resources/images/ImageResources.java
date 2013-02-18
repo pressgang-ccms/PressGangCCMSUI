@@ -6,7 +6,7 @@ import com.google.gwt.resources.client.ImageResource;
 
 /**
  * Embeds image resources into the GWT app.
- * 
+ *
  * @author Matthew Casperson
  */
 public interface ImageResources extends ClientBundle {

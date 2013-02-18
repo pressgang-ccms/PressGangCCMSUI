@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/idle_fingers', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
+ace.define('ace/theme/idle_fingers', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
 
-exports.isDark = true;
-exports.cssClass = "ace-idle-fingers";
-exports.cssText = "\
+    exports.isDark = true;
+    exports.cssClass = "ace-idle-fingers";
+    exports.cssText = "\
 .ace-idle-fingers .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\

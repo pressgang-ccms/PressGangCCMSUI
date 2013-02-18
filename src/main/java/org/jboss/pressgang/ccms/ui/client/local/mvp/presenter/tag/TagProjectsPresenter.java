@@ -5,9 +5,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -32,9 +30,9 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
         BaseTemplatePresenterInterface {
 
     public interface Display extends BaseChildrenViewInterface<
-                RESTTagV1,
-                RESTProjectCollectionItemV1,
-                RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> {
+            RESTTagV1,
+            RESTProjectCollectionItemV1,
+            RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> {
 
     }
 
@@ -113,7 +111,6 @@ public class TagProjectsPresenter extends BaseChildrenComponent<
 
         return false;
     }
-
 
 
     /**

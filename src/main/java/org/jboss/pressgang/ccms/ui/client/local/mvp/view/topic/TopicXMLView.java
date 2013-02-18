@@ -3,14 +3,12 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.*;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.TopicXMLPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
@@ -21,7 +19,9 @@ import java.util.Map.Entry;
 
 public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.Display {
 
-    /** The GWT Editor Driver */
+    /**
+     * The GWT Editor Driver
+     */
     private final TopicXMLPresenterDriver driver = GWT.create(TopicXMLPresenterDriver.class);
 
     private RESTTopicV1XMLEditor editor;
@@ -96,7 +96,9 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
 
     }
 
-    /** The dialog box that displays a list of docbook tags. */
+    /**
+     * The dialog box that displays a list of docbook tags.
+     */
     public final static class XmlTagsDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTagsDialog {
         private static final int NUMBER_OF_VISIBLE_ITEMS = 10;
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
@@ -175,7 +177,9 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
         }
     }
 
-    /** The dialog box that displays a list of docbook templates. */
+    /**
+     * The dialog box that displays a list of docbook templates.
+     */
     public final static class XmlTemplatesDialog extends DialogBox implements TopicXMLPresenter.Display.XmlTemplatesDialog {
         private static final int NUMBER_OF_VISIBLE_ITEMS = 10;
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());

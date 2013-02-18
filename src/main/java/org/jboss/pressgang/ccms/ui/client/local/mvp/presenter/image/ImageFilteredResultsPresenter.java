@@ -9,7 +9,6 @@ import com.google.gwt.view.client.HasData;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -56,8 +55,7 @@ public class ImageFilteredResultsPresenter
     private HandlerManager eventBus;
 
     @NotNull
-    public Display getDisplay()
-    {
+    public Display getDisplay() {
         return display;
     }
 

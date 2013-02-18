@@ -8,7 +8,7 @@ public interface SetNewChildSortCallback<D extends RESTBaseEntityV1<D, E, F>, E 
     /**
      * The sort property is not exposed via a consistent interface, so this method is used to allow overriding components to set
      * the sort order on the children being modified.
-     * 
+     *
      * @param child The child entity whose sort order is to be modified
      * @param index The new sort index
      * @return true if a change was made, false otherwise

@@ -36,285 +36,316 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/mode/tcl', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/text', 'ace/tokenizer', 'ace/mode/tcl_highlight_rules', 'ace/mode/matching_brace_outdent', 'ace/range'], function(require, exports, module) {
+ace.define('ace/mode/tcl', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/text', 'ace/tokenizer', 'ace/mode/tcl_highlight_rules', 'ace/mode/matching_brace_outdent', 'ace/range'], function (require, exports, module) {
 
 
-var oop = require("../lib/oop");
-var TextMode = require("./text").Mode;
-var Tokenizer = require("../tokenizer").Tokenizer;
-var TclHighlightRules = require("./tcl_highlight_rules").TclHighlightRules;
-var MatchingBraceOutdent = require("./matching_brace_outdent").MatchingBraceOutdent;
-var Range = require("../range").Range;
+    var oop = require("../lib/oop");
+    var TextMode = require("./text").Mode;
+    var Tokenizer = require("../tokenizer").Tokenizer;
+    var TclHighlightRules = require("./tcl_highlight_rules").TclHighlightRules;
+    var MatchingBraceOutdent = require("./matching_brace_outdent").MatchingBraceOutdent;
+    var Range = require("../range").Range;
 
-var Mode = function() {
-    this.$tokenizer = new Tokenizer(new TclHighlightRules().getRules());
-    this.$outdent = new MatchingBraceOutdent();
-};
-oop.inherits(Mode, TextMode);
-
-(function() {
-
-    this.toggleCommentLines = function(state, doc, startRow, endRow) {
-        var outdent = true;
-        var re = /^(\s*)#/;
-
-        for (var i=startRow; i<= endRow; i++) {
-            if (!re.test(doc.getLine(i))) {
-                outdent = false;
-                break;
-            }
-        }
-
-        if (outdent) {
-            var deleteRange = new Range(0, 0, 0, 0);
-            for (var i=startRow; i<= endRow; i++)
-            {
-                var line = doc.getLine(i);
-                var m = line.match(re);
-                deleteRange.start.row = i;
-                deleteRange.end.row = i;
-                deleteRange.end.column = m[0].length;
-                doc.replace(deleteRange, m[1]);
-            }
-        }
-        else {
-            doc.indentRows(startRow, endRow, "#");
-        }
+    var Mode = function () {
+        this.$tokenizer = new Tokenizer(new TclHighlightRules().getRules());
+        this.$outdent = new MatchingBraceOutdent();
     };
+    oop.inherits(Mode, TextMode);
 
-    this.getNextLineIndent = function(state, line, tab) {
-        var indent = this.$getIndent(line);
+    (function () {
 
-        var tokenizedLine = this.$tokenizer.getLineTokens(line, state);
-        var tokens = tokenizedLine.tokens;
+        this.toggleCommentLines = function (state, doc, startRow, endRow) {
+            var outdent = true;
+            var re = /^(\s*)#/;
 
-        if (tokens.length && tokens[tokens.length-1].type == "comment") {
+            for (var i = startRow; i <= endRow; i++) {
+                if (!re.test(doc.getLine(i))) {
+                    outdent = false;
+                    break;
+                }
+            }
+
+            if (outdent) {
+                var deleteRange = new Range(0, 0, 0, 0);
+                for (var i = startRow; i <= endRow; i++) {
+                    var line = doc.getLine(i);
+                    var m = line.match(re);
+                    deleteRange.start.row = i;
+                    deleteRange.end.row = i;
+                    deleteRange.end.column = m[0].length;
+                    doc.replace(deleteRange, m[1]);
+                }
+            }
+            else {
+                doc.indentRows(startRow, endRow, "#");
+            }
+        };
+
+        this.getNextLineIndent = function (state, line, tab) {
+            var indent = this.$getIndent(line);
+
+            var tokenizedLine = this.$tokenizer.getLineTokens(line, state);
+            var tokens = tokenizedLine.tokens;
+
+            if (tokens.length && tokens[tokens.length - 1].type == "comment") {
+                return indent;
+            }
+
+            if (state == "start") {
+                var match = line.match(/^.*[\{\(\[]\s*$/);
+                if (match) {
+                    indent += tab;
+                }
+            }
+
             return indent;
-        }
-        
-        if (state == "start") {
-            var match = line.match(/^.*[\{\(\[]\s*$/);
-            if (match) {
-                indent += tab;
-            }
-        }
+        };
 
-        return indent;
-    };
+        this.checkOutdent = function (state, line, input) {
+            return this.$outdent.checkOutdent(line, input);
+        };
 
-    this.checkOutdent = function(state, line, input) {
-        return this.$outdent.checkOutdent(line, input);
-    };
+        this.autoOutdent = function (state, doc, row) {
+            this.$outdent.autoOutdent(doc, row);
+        };
 
-    this.autoOutdent = function(state, doc, row) {
-        this.$outdent.autoOutdent(doc, row);
-    };
+    }).call(Mode.prototype);
 
-}).call(Mode.prototype);
-
-exports.Mode = Mode;
+    exports.Mode = Mode;
 });
 
-ace.define('ace/mode/tcl_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/lib/lang', 'ace/mode/text_highlight_rules'], function(require, exports, module) {
+ace.define('ace/mode/tcl_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/lib/lang', 'ace/mode/text_highlight_rules'], function (require, exports, module) {
 
 
-var oop = require("../lib/oop");
-var lang = require("../lib/lang");
-var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
+    var oop = require("../lib/oop");
+    var lang = require("../lib/lang");
+    var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 
-var TclHighlightRules = function() {
+    var TclHighlightRules = function () {
 
-    var builtinFunctions = lang.arrayToMap(
-        ("").split("|")
-        
-    ); 
-    this.$rules = {
-        "start" : [
-           {
-                token : "comment",
-                merge : true,
-                regex : "#.*\\\\$",
-                next  : "commentfollow"
-            }, {
-                token : "comment",
-                regex : "#.*$"
-            }, {
-                token : "support.function",
-                regex : '[\\\\]$',
-                next  : "splitlineStart"
-            }, {
-                token : "text",
-                regex : '[\\\\](?:["]|[{]|[}]|[[]|[]]|[$]|[\])'
-            }, {
-                token : "text", // last value before command
-                regex : '^|[^{][;][^}]|[/\r/]',
-                next  : "commandItem"
-            }, {
-                token : "string", // single line
-                regex : '[ ]*["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
-            }, {
-                token : "string", // multi line """ string start
-                merge : true,
-                regex : '[ ]*["]',
-                next  : "qqstring"
-            }, {
-                token : "variable.instancce", // variable xotcl with braces
-                merge : true,
-                regex : "[$]",
-                next  : "variable"
-            }, {
-                token : "support.function",
-                regex : "!|\\$|%|&|\\*|\\-\\-|\\-|\\+\\+|\\+|~|===|==|=|!=|!==|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\\|\\||\\?\\:|\\*=|%=|\\+=|\\-=|&=|\\^=|{\\*}|;|::"
-            }, {
-                token : function(value) {
-                    if (builtinFunctions.hasOwnProperty(value))
-                        return "keyword";
-                    else
-                        return "identifier";
+        var builtinFunctions = lang.arrayToMap(
+            ("").split("|")
+
+        );
+        this.$rules = {
+            "start": [
+                {
+                    token: "comment",
+                    merge: true,
+                    regex: "#.*\\\\$",
+                    next: "commentfollow"
                 },
-                regex : "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
-            }, {
-                token : "paren.lparen",
-                regex : "[[{]",
-                next  : "commandItem"
-            }, {
-                token : "paren.lparen",
-                regex : "[(]"
-            },  {
-                token : "paren.rparen",
-                regex : "[\\])}]"
-            }, {
-                token : "text",
-                regex : "\\s+"
-            }
-        ],
-        "commandItem" : [
-            {
-                token : "comment",
-                merge : true,
-                regex : "#.*\\\\$",
-                next  : "commentfollow"
-            }, {
-                token : "comment",
-                regex : "#.*$",
-                next  : "start"
-            }, {
-                token : "string", // single line
-                regex : '[ ]*["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
-            }, {
-                token : "variable.instancce", // variable xotcl with braces
-                merge : true,
-                regex : "[$]",
-                next  : "variable"
-            }, {
-                token : "support.function",
-                regex : "(?:[:][:])[a-zA-Z0-9_/]+(?:[:][:])",
-                next  : "commandItem"
-            }, {
-                token : "support.function",
-                regex : "[a-zA-Z0-9_/]+(?:[:][:])",
-                next  : "commandItem"
-            }, {
-                token : "support.function",
-                regex : "(?:[:][:])",
-                next  : "commandItem"
-            }, {
-                token : "support.function",
-                regex : "!|\\$|%|&|\\*|\\-\\-|\\-|\\+\\+|\\+|~|===|==|=|!=|!==|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\\|\\||\\?\\:|\\*=|%=|\\+=|\\-=|&=|\\^=|{\\*}|;|::"
-            }, {
-                token : "keyword",
-                regex : "[a-zA-Z0-9_/]+",
-                next  : "start"
-            } ],
-        "commentfollow" : [ 
-            {
-                token : "comment",
-                regex : ".*\\\\$",
-                next  : "commentfollow"
-            }, {
-                token : "comment",
-                merge : true,
-                regex : '.+',
-                next  : "start"
-        } ],
-        "splitlineStart" : [ 
-            {
-                token : "text",
-                regex : "^.",
-                next  : "start"
-            }],
-        "variable" : [ 
-            {
-                token : "variable.instancce", // variable xotcl with braces
-                regex : "(?:[:][:])?(?:[a-zA-Z_]|\d)+(?:(?:[:][:])?(?:[a-zA-Z_]|\d)+)?(?:[(](?:[a-zA-Z_]|\d)+[)])?",
-                next : "start"
-            }, {
-                token : "variable.instancce", // variable tcl
-                regex : "(?:[a-zA-Z_]|\d)+(?:[(](?:[a-zA-Z_]|\d)+[)])?",
-                next  : "start"
-            }, {
-                token : "variable.instancce", // variable tcl with braces
-                regex : "{?(?:[a-zA-Z_]|\d)+}?",
-                next  : "start"
-            }],  
-        "qqstring" : [ {
-            token : "string", // multi line """ string end
-            regex : '(?:[^\\\\]|\\\\.)*?["]',
-            next : "start"
-        }, {
-            token : "string",
-            merge : true,
-            regex : '.+'
-        } ]
+                {
+                    token: "comment",
+                    regex: "#.*$"
+                },
+                {
+                    token: "support.function",
+                    regex: '[\\\\]$',
+                    next: "splitlineStart"
+                },
+                {
+                    token: "text",
+                    regex: '[\\\\](?:["]|[{]|[}]|[[]|[]]|[$]|[\])'
+                },
+                {
+                    token: "text", // last value before command
+                    regex: '^|[^{][;][^}]|[/\r/]',
+                    next: "commandItem"
+                },
+                {
+                    token: "string", // single line
+                    regex: '[ ]*["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
+                },
+                {
+                    token: "string", // multi line """ string start
+                    merge: true,
+                    regex: '[ ]*["]',
+                    next: "qqstring"
+                },
+                {
+                    token: "variable.instancce", // variable xotcl with braces
+                    merge: true,
+                    regex: "[$]",
+                    next: "variable"
+                },
+                {
+                    token: "support.function",
+                    regex: "!|\\$|%|&|\\*|\\-\\-|\\-|\\+\\+|\\+|~|===|==|=|!=|!==|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\\|\\||\\?\\:|\\*=|%=|\\+=|\\-=|&=|\\^=|{\\*}|;|::"
+                },
+                {
+                    token: function (value) {
+                        if (builtinFunctions.hasOwnProperty(value))
+                            return "keyword";
+                        else
+                            return "identifier";
+                    },
+                    regex: "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
+                },
+                {
+                    token: "paren.lparen",
+                    regex: "[[{]",
+                    next: "commandItem"
+                },
+                {
+                    token: "paren.lparen",
+                    regex: "[(]"
+                },
+                {
+                    token: "paren.rparen",
+                    regex: "[\\])}]"
+                },
+                {
+                    token: "text",
+                    regex: "\\s+"
+                }
+            ],
+            "commandItem": [
+                {
+                    token: "comment",
+                    merge: true,
+                    regex: "#.*\\\\$",
+                    next: "commentfollow"
+                },
+                {
+                    token: "comment",
+                    regex: "#.*$",
+                    next: "start"
+                },
+                {
+                    token: "string", // single line
+                    regex: '[ ]*["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
+                },
+                {
+                    token: "variable.instancce", // variable xotcl with braces
+                    merge: true,
+                    regex: "[$]",
+                    next: "variable"
+                },
+                {
+                    token: "support.function",
+                    regex: "(?:[:][:])[a-zA-Z0-9_/]+(?:[:][:])",
+                    next: "commandItem"
+                },
+                {
+                    token: "support.function",
+                    regex: "[a-zA-Z0-9_/]+(?:[:][:])",
+                    next: "commandItem"
+                },
+                {
+                    token: "support.function",
+                    regex: "(?:[:][:])",
+                    next: "commandItem"
+                },
+                {
+                    token: "support.function",
+                    regex: "!|\\$|%|&|\\*|\\-\\-|\\-|\\+\\+|\\+|~|===|==|=|!=|!==|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\\|\\||\\?\\:|\\*=|%=|\\+=|\\-=|&=|\\^=|{\\*}|;|::"
+                },
+                {
+                    token: "keyword",
+                    regex: "[a-zA-Z0-9_/]+",
+                    next: "start"
+                }
+            ],
+            "commentfollow": [
+                {
+                    token: "comment",
+                    regex: ".*\\\\$",
+                    next: "commentfollow"
+                },
+                {
+                    token: "comment",
+                    merge: true,
+                    regex: '.+',
+                    next: "start"
+                }
+            ],
+            "splitlineStart": [
+                {
+                    token: "text",
+                    regex: "^.",
+                    next: "start"
+                }
+            ],
+            "variable": [
+                {
+                    token: "variable.instancce", // variable xotcl with braces
+                    regex: "(?:[:][:])?(?:[a-zA-Z_]|\d)+(?:(?:[:][:])?(?:[a-zA-Z_]|\d)+)?(?:[(](?:[a-zA-Z_]|\d)+[)])?",
+                    next: "start"
+                },
+                {
+                    token: "variable.instancce", // variable tcl
+                    regex: "(?:[a-zA-Z_]|\d)+(?:[(](?:[a-zA-Z_]|\d)+[)])?",
+                    next: "start"
+                },
+                {
+                    token: "variable.instancce", // variable tcl with braces
+                    regex: "{?(?:[a-zA-Z_]|\d)+}?",
+                    next: "start"
+                }
+            ],
+            "qqstring": [
+                {
+                    token: "string", // multi line """ string end
+                    regex: '(?:[^\\\\]|\\\\.)*?["]',
+                    next: "start"
+                },
+                {
+                    token: "string",
+                    merge: true,
+                    regex: '.+'
+                }
+            ]
+        };
     };
-};
 
-oop.inherits(TclHighlightRules, TextHighlightRules);
+    oop.inherits(TclHighlightRules, TextHighlightRules);
 
-exports.TclHighlightRules = TclHighlightRules;
+    exports.TclHighlightRules = TclHighlightRules;
 });
 
-ace.define('ace/mode/matching_brace_outdent', ['require', 'exports', 'module' , 'ace/range'], function(require, exports, module) {
+ace.define('ace/mode/matching_brace_outdent', ['require', 'exports', 'module' , 'ace/range'], function (require, exports, module) {
 
 
-var Range = require("../range").Range;
+    var Range = require("../range").Range;
 
-var MatchingBraceOutdent = function() {};
-
-(function() {
-
-    this.checkOutdent = function(line, input) {
-        if (! /^\s+$/.test(line))
-            return false;
-
-        return /^\s*\}/.test(input);
+    var MatchingBraceOutdent = function () {
     };
 
-    this.autoOutdent = function(doc, row) {
-        var line = doc.getLine(row);
-        var match = line.match(/^(\s*\})/);
+    (function () {
 
-        if (!match) return 0;
+        this.checkOutdent = function (line, input) {
+            if (!/^\s+$/.test(line))
+                return false;
 
-        var column = match[1].length;
-        var openBracePos = doc.findMatchingBracket({row: row, column: column});
+            return /^\s*\}/.test(input);
+        };
 
-        if (!openBracePos || openBracePos.row == row) return 0;
+        this.autoOutdent = function (doc, row) {
+            var line = doc.getLine(row);
+            var match = line.match(/^(\s*\})/);
 
-        var indent = this.$getIndent(doc.getLine(openBracePos.row));
-        doc.replace(new Range(row, 0, row, column-1), indent);
-    };
+            if (!match) return 0;
 
-    this.$getIndent = function(line) {
-        var match = line.match(/^(\s+)/);
-        if (match) {
-            return match[1];
-        }
+            var column = match[1].length;
+            var openBracePos = doc.findMatchingBracket({row: row, column: column});
 
-        return "";
-    };
+            if (!openBracePos || openBracePos.row == row) return 0;
 
-}).call(MatchingBraceOutdent.prototype);
+            var indent = this.$getIndent(doc.getLine(openBracePos.row));
+            doc.replace(new Range(row, 0, row, column - 1), indent);
+        };
 
-exports.MatchingBraceOutdent = MatchingBraceOutdent;
+        this.$getIndent = function (line) {
+            var match = line.match(/^(\s+)/);
+            if (match) {
+                return match[1];
+            }
+
+            return "";
+        };
+
+    }).call(MatchingBraceOutdent.prototype);
+
+    exports.MatchingBraceOutdent = MatchingBraceOutdent;
 });

@@ -23,7 +23,8 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
         void initialize(final RESTTopicV1 topic);
     }
 
-    @Inject private Display display;
+    @Inject
+    private Display display;
 
     @Override
     public void go(final HasWidgets container) {
@@ -32,8 +33,7 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void bindExtended(final int topicId, final String pageId)
-    {
+    public void bindExtended(final int topicId, final String pageId) {
         super.bind(topicId, pageId, display);
 
         final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, Display>(

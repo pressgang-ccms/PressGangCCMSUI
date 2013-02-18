@@ -11,8 +11,9 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCateg
 public class CategoryView extends BaseTemplateView implements CategoryPresenter.Display {
 
 
-
-    /** The GWT Editor Driver */
+    /**
+     * The GWT Editor Driver
+     */
     private final CategoryPresenterDriver driver = GWT.create(CategoryPresenterDriver.class);
 
     private boolean readOnly = false;

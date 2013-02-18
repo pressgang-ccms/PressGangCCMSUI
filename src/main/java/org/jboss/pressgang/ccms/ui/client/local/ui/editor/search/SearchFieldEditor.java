@@ -10,9 +10,13 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 
 public final class SearchFieldEditor extends FlexTable implements LeafValueEditor<SearchUIFields> {
 
-    /** The default format for the DateBoxes */
+    /**
+     * The default format for the DateBoxes
+     */
     private static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getLongDateFormat();
-    /** The name of the group that the matching option checkboxes belong to */
+    /**
+     * The name of the group that the matching option checkboxes belong to
+     */
     private static final String MATCH_GROUP = "match";
 
     private final DateBox createdAfter = new DateBox();
@@ -36,7 +40,7 @@ public final class SearchFieldEditor extends FlexTable implements LeafValueEdito
     //private final TriStatePushButton hasOpenBugzillaBugs = new TriStatePushButton();
     private final RadioButton matchAll = new RadioButton(MATCH_GROUP, PressGangCCMSUI.INSTANCE.MatchAll());
     private final RadioButton matchAny = new RadioButton(MATCH_GROUP, PressGangCCMSUI.INSTANCE.MatchAny());
-    
+
     private SearchUIFields value;
 
     public SearchFieldEditor() {
@@ -126,7 +130,7 @@ public final class SearchFieldEditor extends FlexTable implements LeafValueEdito
 
         this.setWidget(this.getRowCount(), 0, matchAll);
         this.setWidget(this.getRowCount() - 1, 1, matchAny);
-        
+
         new NumbersAndCommaValidator(ids);
         new NumbersAndCommaValidator(notIds);
     }
@@ -134,7 +138,7 @@ public final class SearchFieldEditor extends FlexTable implements LeafValueEdito
     @Override
     public void setValue(final SearchUIFields value) {
         this.value = value;
-        
+
         createdAfter.setValue(value.getCreatedAfter());
         createdBefore.setValue(value.getCreatedBefore());
         editedAfter.setValue(value.getEditedAfter());
@@ -146,7 +150,7 @@ public final class SearchFieldEditor extends FlexTable implements LeafValueEdito
         title.setValue(value.getTitle());
         notTitle.setValue(value.getNotTitle());
         contents.setValue(value.getContents());
-        notContents.setValue(value.getNotContents());        
+        notContents.setValue(value.getNotContents());
         description.setValue(value.getDescription());
         notDescription.setValue(value.getNotDescription());
         includedInContentSpecs.setValue(value.getIncludedInContentSpecs());
@@ -160,7 +164,7 @@ public final class SearchFieldEditor extends FlexTable implements LeafValueEdito
 
     @Override
     public SearchUIFields getValue() {
-                
+
         value.setCreatedAfter(createdAfter.getValue());
         value.setCreatedBefore(createdBefore.getValue());
         value.setEditedAfter(editedAfter.getValue());
@@ -182,7 +186,7 @@ public final class SearchFieldEditor extends FlexTable implements LeafValueEdito
         value.setHasOpenBugzillaBugs(hasOpenBugzillaBugs.getState());*/
         value.setMatchAll(matchAll.getValue());
         value.setMatchAll(!matchAny.getValue());
-        
+
         return value;
     }
 }

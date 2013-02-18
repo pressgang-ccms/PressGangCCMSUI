@@ -12,16 +12,15 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
 public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Display {
 
     private final HTML content = new HTML("<div/>");
-    
+
     public WelcomeView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Welcome());
-        
+
         this.getPanel().setWidget(content);
     }
-    
+
     @Override
-    public void initialize(final RESTTopicV1 topic)
-    {
+    public void initialize(final RESTTopicV1 topic) {
         try {
             final XsltProcessor processor = new XsltProcessor();
             processor.importStyleSheet(DocbookToHTML.XSL);

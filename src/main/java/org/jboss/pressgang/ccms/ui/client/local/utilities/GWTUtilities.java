@@ -13,11 +13,10 @@ import java.util.Date;
  * GWT has some limitations, like not being able to bind an Editor to an array
  * (http://code.google.com/p/google-web-toolkit/issues/detail?id=6600) and not supporting conversion from a byte array to a
  * String.
- * 
+ * <p/>
  * This class provides some GWT friendly methods to work around these issues, especially for the RESTLanguageImageV1 class.
- * 
+ *
  * @author Matthew Casperson
- * 
  */
 final public class GWTUtilities {
     private static final int BITS_PER_BYTE = 8;
@@ -30,6 +29,7 @@ final public class GWTUtilities {
 
     /**
      * Writes out a stack trace into a string.
+     *
      * @param ex The exception to process
      * @return A string version of the stack trace
      */
@@ -45,7 +45,7 @@ final public class GWTUtilities {
 
     /**
      * This does not work. See http://stackoverflow.com/questions/13406964/detect-ctrl-click-on-pushbutton
-     * 
+     *
      * @param event the event to test
      * @return true if the CTRL key is down
      */
@@ -56,12 +56,12 @@ final public class GWTUtilities {
 
     /**
      * Creates a copy of the given date
+     *
      * @param input The date to copy
      * @return null if input is null, and a copy of the date otherwise
      */
     @Nullable
-    public static Date createDateCopy(@Nullable final Date input)
-    {
+    public static Date createDateCopy(@Nullable final Date input) {
         if (input == null) {
             return null;
         }
@@ -70,7 +70,7 @@ final public class GWTUtilities {
 
     /**
      * Test to see if a String is null or contains only whitespace.
-     * 
+     *
      * @param input The String to test
      * @return true if input is null or contains only whitespace, and false otherwise
      */
@@ -85,7 +85,7 @@ final public class GWTUtilities {
     /**
      * Takes a string and returns only integers separated by single commas. Useful for cleaning up a string used to search for a
      * list of IDs.
-     * 
+     *
      * @param input The string to be cleaned
      * @return The cleaned string
      */
@@ -115,7 +115,7 @@ final public class GWTUtilities {
 
     /**
      * A GWT friendly way to turn a String into a byte[].
-     * 
+     *
      * @param string The source String
      * @return the string converted into a byte[]
      */
@@ -126,8 +126,8 @@ final public class GWTUtilities {
 
     /**
      * A GWT friendly way to turn a String into a byte[].
-     * 
-     * @param string The source String
+     *
+     * @param string       The source String
      * @param bytesPerChar The number of bytes per character
      * @return the string converted into a byte[]
      */
@@ -149,7 +149,7 @@ final public class GWTUtilities {
 
     /**
      * A GWT friendly way to turn a String into a byte[].
-     * 
+     *
      * @param bytes The source byte[]
      * @return the string converted into a byte[]
      */
@@ -160,13 +160,13 @@ final public class GWTUtilities {
 
     /**
      * A GWT friendly way to turn a byte[] into a String.
-     * 
-     * @param bytes The source byte[]
+     *
+     * @param bytes        The source byte[]
      * @param bytesPerChar The number of bytes per character
      * @return the string converted from a byte[]
      */
     @NotNull
-    public static String getString(@NotNull  final byte[] bytes, final int bytesPerChar) {
+    public static String getString(@NotNull final byte[] bytes, final int bytesPerChar) {
         if (bytesPerChar < 1) {
             throw new IllegalArgumentException("bytesPerChar must be greater than 1");
         }
@@ -190,8 +190,8 @@ final public class GWTUtilities {
 
     /**
      * Replacement for String.toByteArray().
-     * 
-     * @param string The string to convert
+     *
+     * @param string       The string to convert
      * @param bytesPerChar The number of bytes per character
      * @return the same as the standard Java String.toByteArray() method
      */
@@ -209,7 +209,7 @@ final public class GWTUtilities {
 
     /**
      * Compares two strings.
-     * 
+     *
      * @param a The first string
      * @param b The second string
      * @return true if both strings are null, or if both strings are equal
@@ -228,7 +228,7 @@ final public class GWTUtilities {
 
     /**
      * Compares two strings for equality, considering null and empty string to be equal.
-     * 
+     *
      * @param a The first string
      * @param b The second string
      * @return true if both strings are either null or empty string, or if both strings are equal
@@ -248,10 +248,10 @@ final public class GWTUtilities {
     /**
      * Removes a history token and its suffix semicolon from a token string. For example,"TagsFilteredResultsAndTagView;query;"
      * would become "query;".
-     * 
-     * @param token The token string to remove the history token from
+     *
+     * @param token        The token string to remove the history token from
      * @param historyToken The history token to remove
-     * @return the token with the history token and semi-colon suffix removed 
+     * @return the token with the history token and semi-colon suffix removed
      */
     @NotNull
     public static String removeHistoryToken(@NotNull final String token, @NotNull final String historyToken) {
@@ -260,9 +260,9 @@ final public class GWTUtilities {
 
     /**
      * Clears the container and adds the display's top-level panel to the container, an often-repeated combination.
-     * 
+     *
      * @param container The parent container to clear and then add the display to
-     * @param display The display to be added to the parent container
+     * @param display   The display to be added to the parent container
      */
     public static void clearContainerAndAddTopLevelPanel(@NotNull final HasWidgets container, @NotNull final BaseTemplateViewInterface display) {
         container.clear();

@@ -12,7 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 
 /**
  * This class provides a UI object to represent the collection of language images in an image.
- * 
+ *
  * @author Matthew Casperson
  */
 public final class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel implements Editor<RESTLanguageImageCollectionV1> {
@@ -24,7 +24,7 @@ public final class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel im
 
     /**
      * The EditorSource is used to create and orgainse the Editors that go into a ListEditor.
-     * 
+     *
      * @author Matthew Casperson
      */
     private class LanguageImageEditorSource extends EditorSource<RESTLanguageImageV1Editor> {

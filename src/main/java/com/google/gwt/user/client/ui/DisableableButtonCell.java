@@ -6,7 +6,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 
 /**
  * A version of ButtonCell that can display a disabled button.
- * 
+ *
  * @author Matthew Casperson
  */
 public final class DisableableButtonCell extends ButtonCell {
@@ -20,10 +20,14 @@ public final class DisableableButtonCell extends ButtonCell {
      */
     private static final String INPUT_DISABLED = "<button type=\"button\" tabindex=\"-1\" disabled=\"disabled\">";
 
-    /** The close tag */
+    /**
+     * The close tag
+     */
     private static final String INPUT_CLOSE = "</button>";
 
-    /** whether or not the button is enabled */
+    /**
+     * whether or not the button is enabled
+     */
     private boolean enabled = true;
 
     public boolean isEnabled() {

@@ -7,22 +7,22 @@ import com.google.gwt.user.client.ui.TextArea;
 
 /**
  * The interface that defines the save log message dialog box
+ *
  * @author Matthew Casperson
  */
-public interface LogMessageInterface
-{
+public interface LogMessageInterface {
     PushButton getCancel();
 
     PushButton getOk();
-    
+
     TextArea getMessage();
-    
+
     RadioButton getMinorChange();
-    
+
     RadioButton getMajorChange();
 
     DialogBox getDialogBox();
-    
+
     /**
      * Reset all the ui elements to default states
      */

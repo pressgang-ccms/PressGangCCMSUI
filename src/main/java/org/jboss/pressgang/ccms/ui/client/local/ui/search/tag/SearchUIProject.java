@@ -87,7 +87,7 @@ public final class SearchUIProject extends SearchUIBase {
      *
      * @param project The project that this object represents
      * @param tags    The tags that will be populated under this project
-     * @param filter The filter that defines the state of the tags
+     * @param filter  The filter that defines the state of the tags
      */
     public void populateCategories(final RESTProjectCollectionItemV1 project, final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
         try {
@@ -130,7 +130,7 @@ public final class SearchUIProject extends SearchUIBase {
     /**
      * Populate the tags into categories under the "Common" project.
      *
-     * @param tags The tags that will be populated under this project
+     * @param tags   The tags that will be populated under this project
      * @param filter The filter that defines the state of the tags
      */
     public void populateCategoriesWithoutProject(final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {

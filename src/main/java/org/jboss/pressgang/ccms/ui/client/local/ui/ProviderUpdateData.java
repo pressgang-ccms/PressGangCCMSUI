@@ -6,20 +6,30 @@ import java.util.List;
 /**
  * Calling updateRowData on a provider requires knowing the start row and the list of items that should be displayed. This class
  * keeps those pieces of information.
- * 
- * @author Matthew Casperson
+ *
  * @param <T> The type of the entity to be displayed by the provider.
+ * @author Matthew Casperson
  */
 public class ProviderUpdateData<T> {
-    /** References the providers start row. */
+    /**
+     * References the providers start row.
+     */
     private Integer startRow;
-    /** References the items that the provider will display. */
+    /**
+     * References the items that the provider will display.
+     */
     private List<T> items;
-    /** References the currently selected item. */
+    /**
+     * References the currently selected item.
+     */
     private T selectedItem;
-    /** References the currently displayed item. */
+    /**
+     * References the currently displayed item.
+     */
     private T displayedItem;
-    /** The total size of the collection - for async lists */
+    /**
+     * The total size of the collection - for async lists
+     */
     private Integer size;
 
     public final T getSelectedItem() {
@@ -47,9 +57,9 @@ public class ProviderUpdateData<T> {
     }
 
     public ProviderUpdateData() {
-        
+
     }
-    
+
     /**
      * @param displayedItem The initially displayed item
      */
@@ -61,7 +71,7 @@ public class ProviderUpdateData<T> {
         this.startRow = startRow;
         this.items = items;
     }
-    
+
     public ProviderUpdateData(final Integer startRow, final List<T> items, final Integer size) {
         this(startRow, items);
         this.size = size;
@@ -74,16 +84,14 @@ public class ProviderUpdateData<T> {
     public final void setDisplayedItem(final T displayedItem) {
         this.displayedItem = displayedItem;
     }
-    
-    public final void reset()
-    {
+
+    public final void reset() {
         this.items = null;
         this.startRow = null;
         this.size = null;
     }
 
-    public final void resetToEmpty()
-    {
+    public final void resetToEmpty() {
         this.items = new ArrayList<T>();
         this.startRow = 0;
         this.size = 0;

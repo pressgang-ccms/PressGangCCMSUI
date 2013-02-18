@@ -38,7 +38,9 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsCom
      */
     public interface Display extends BaseFilteredResultsViewInterface<RESTFilterCollectionItemV1> {
         PushButton getSearchTopics();
+
         PushButton getTagsSearch();
+
         PushButton getFields();
     }
 
@@ -47,8 +49,11 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsCom
      */
     public static final String HISTORY_TOKEN = "SearchFilterFilteredResultsView";
 
-    /** The display. */
-    @Inject private Display display;
+    /**
+     * The display.
+     */
+    @Inject
+    private Display display;
 
     /**
      * @return The display.
@@ -84,7 +89,7 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsCom
                                         LOGGER.log(Level.INFO, "EXIT SearchFilterFilteredResultsPresenter.generateListProvider() SuccessAction.doSuccessAction()");
                                     }
                                 }
-                        });
+                            });
 
                     getProviderData().setStartRow(list.getVisibleRange().getStart());
                     final int length = list.getVisibleRange().getLength();

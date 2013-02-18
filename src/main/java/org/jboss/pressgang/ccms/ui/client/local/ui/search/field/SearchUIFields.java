@@ -2,7 +2,6 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.search.field;
 
 import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.user.client.ui.TriStateSelectionState;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1;
@@ -18,9 +17,8 @@ import java.util.Date;
 
 /**
  * The backing object for the search fields view. Instance of this class will be manipulated by a GWT Editor
- * 
+ *
  * @author Matthew Casperson
- * 
  */
 public class SearchUIFields implements SearchViewBase {
     private static final boolean MATCH_ALL_DEFAULT = true;
@@ -212,7 +210,6 @@ public class SearchUIFields implements SearchViewBase {
     }
 
     /**
-     *
      * @param filter The filter that defines the state of the tags
      */
     public SearchUIFields(@Nullable final RESTFilterV1 filter) {
@@ -221,153 +218,134 @@ public class SearchUIFields implements SearchViewBase {
 
     public void populateFilter(@NotNull final RESTFilterV1 filter) {
 
-        if (!GWTUtilities.isStringNullOrEmpty(this.getIds()))
-        {
+        if (!GWTUtilities.isStringNullOrEmpty(this.getIds())) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_IDS_FILTER_VAR);
             field.explicitSetValue(this.getIds());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
-        if (!GWTUtilities.isStringNullOrEmpty(this.getNotIds()))
-        {
+        if (!GWTUtilities.isStringNullOrEmpty(this.getNotIds())) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR);
             field.explicitSetValue(this.getNotIds());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
-        if (!GWTUtilities.isStringNullOrEmpty(this.getDescription()))
-        {
+        if (!GWTUtilities.isStringNullOrEmpty(this.getDescription())) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR);
             field.explicitSetValue(this.getDescription());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
-        if (!GWTUtilities.isStringNullOrEmpty(this.getNotDescription()))
-        {
+        if (!GWTUtilities.isStringNullOrEmpty(this.getNotDescription())) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_DESCRIPTION_NOT_FILTER_VAR);
             field.explicitSetValue(this.getNotDescription());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
-        if (!GWTUtilities.isStringNullOrEmpty(this.getTitle()))
-        {
+        if (!GWTUtilities.isStringNullOrEmpty(this.getTitle())) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_TITLE_FILTER_VAR);
             field.explicitSetValue(this.getTitle());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
-        if (!GWTUtilities.isStringNullOrEmpty(this.getNotTitle()))
-        {
+        if (!GWTUtilities.isStringNullOrEmpty(this.getNotTitle())) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR);
             field.explicitSetValue(this.getNotTitle());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
-        if (getEditedInLastXDays() != null)
-        {
+        if (getEditedInLastXDays() != null) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS);
             field.explicitSetValue(this.getEditedInLastXDays().toString());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
-        if (getNotEditedInLastXDays() != null)
-        {
+        if (getNotEditedInLastXDays() != null) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS);
             field.explicitSetValue(this.getNotEditedInLastXDays().toString());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
-        if (!GWTUtilities.isStringNullOrEmpty(this.getContents()))
-        {
+        if (!GWTUtilities.isStringNullOrEmpty(this.getContents())) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_XML_FILTER_VAR);
             field.explicitSetValue(this.getContents());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
-        if (!GWTUtilities.isStringNullOrEmpty(this.getNotContents()))
-        {
+        if (!GWTUtilities.isStringNullOrEmpty(this.getNotContents())) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_XML_NOT_FILTER_VAR);
             field.explicitSetValue(this.getNotContents());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
-        if (!GWTUtilities.isStringNullOrEmpty(this.getIncludedInContentSpecs()))
-        {
+        if (!GWTUtilities.isStringNullOrEmpty(this.getIncludedInContentSpecs())) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC);
             field.explicitSetValue(this.getIncludedInContentSpecs());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
-        if (!GWTUtilities.isStringNullOrEmpty(this.getNotIncludedInContentSpecs()))
-        {
+        if (!GWTUtilities.isStringNullOrEmpty(this.getNotIncludedInContentSpecs())) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC);
             field.explicitSetValue(this.getNotIncludedInContentSpecs());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
-        if (!GWTUtilities.isStringNullOrEmpty(this.getFreeTextSearch()))
-        {
+        if (!GWTUtilities.isStringNullOrEmpty(this.getFreeTextSearch())) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR);
             field.explicitSetValue(this.getFreeTextSearch());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
-        if (this.isMatchAll() != MATCH_ALL_DEFAULT)
-        {
+        if (this.isMatchAll() != MATCH_ALL_DEFAULT) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.LOGIC_FILTER_VAR);
             field.explicitSetValue(this.isMatchAll() + "");
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
-        if (getCreatedBefore() != null)
-        {
+        if (getCreatedBefore() != null) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR);
             field.explicitSetValue(this.dateformat.format(getCreatedBefore()));
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
-        if (getEditedBefore() != null)
-        {
+        if (getEditedBefore() != null) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_ENDEDITDATE_FILTER_VAR);
             field.explicitSetValue(this.dateformat.format(getEditedBefore()));
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
-        if (getCreatedAfter() != null)
-        {
+        if (getCreatedAfter() != null) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR);
             field.explicitSetValue(this.dateformat.format(getCreatedAfter()));
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
-        if (getEditedAfter() != null)
-        {
+        if (getEditedAfter() != null) {
             final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR);
             field.explicitSetValue(this.dateformat.format(getEditedAfter()));
             filter.getFilterFields_OTM().addNewItem(field);
         }
     }
-    
-    public void initialize(@Nullable final RESTFilterV1 filter)
-    {
+
+    public final void initialize(@Nullable final RESTFilterV1 filter) {
         if (filter != null) {
 
             createdAfter = null;
@@ -399,47 +377,47 @@ public class SearchUIFields implements SearchViewBase {
 
                     if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_IDS_FILTER_VAR)) {
                         this.setIds(fieldItem.getValue());
-                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR)) {
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR)) {
                         this.setNotIds(fieldItem.getValue());
-                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR)) {
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR)) {
                         this.setDescription(fieldItem.getValue());
-                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_DESCRIPTION_NOT_FILTER_VAR)) {
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_DESCRIPTION_NOT_FILTER_VAR)) {
                         this.setNotDescription(fieldItem.getValue());
-                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_TITLE_FILTER_VAR)) {
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_TITLE_FILTER_VAR)) {
                         this.setTitle(fieldItem.getValue());
-                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR)) {
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR)) {
                         this.setNotTitle(fieldItem.getValue());
-                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS)) {
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS)) {
                         try {
                             this.setEditedInLastXDays(Integer.parseInt(fieldItem.getValue()));
                         } catch (final NumberFormatException ex) {
                             // do nothing
                         }
-                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS)) {
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS)) {
                         try {
                             this.setNotEditedInLastXDays(Integer.parseInt(fieldItem.getValue()));
                         } catch (final NumberFormatException ex) {
                             // do nothing
                         }
-                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_XML_FILTER_VAR)) {
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_XML_FILTER_VAR)) {
                         this.setContents(fieldItem.getValue());
-                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_XML_NOT_FILTER_VAR)) {
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_XML_NOT_FILTER_VAR)) {
                         this.setNotContents(fieldItem.getValue());
-                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC)) {
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC)) {
                         this.setIncludedInContentSpecs(fieldItem.getValue());
-                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC)) {
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC)) {
                         this.setNotIncludedInContentSpecs(fieldItem.getValue());
-                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR)) {
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR)) {
                         this.setFreeTextSearch(fieldItem.getValue());
-                    } else  if (fieldItem.getName().equals(CommonFilterConstants.LOGIC_FILTER_VAR)) {
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.LOGIC_FILTER_VAR)) {
                         this.setMatchAll(Boolean.parseBoolean(fieldItem.getValue()));
-                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR)) {
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR)) {
                         this.setCreatedBefore(this.dateformat.parse(fieldItem.getValue()));
-                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_ENDEDITDATE_FILTER_VAR)) {
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_ENDEDITDATE_FILTER_VAR)) {
                         this.setEditedBefore(this.dateformat.parse(fieldItem.getValue()));
-                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR)) {
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR)) {
                         this.setCreatedAfter(this.dateformat.parse(fieldItem.getValue()));
-                    } else  if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR)) {
+                    } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR)) {
                         this.setEditedAfter(this.dateformat.parse(fieldItem.getValue()));
                     }
                 }

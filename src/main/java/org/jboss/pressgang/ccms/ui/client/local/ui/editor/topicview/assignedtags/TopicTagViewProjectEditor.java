@@ -19,7 +19,7 @@ public final class TopicTagViewProjectEditor extends Grid implements Editor<Sear
 
     /**
      * The EditorSource is used to create and orgainse the Editors that go into a ListEditor
-     * 
+     *
      * @author Matthew Casperson
      */
     private class TopicTagViewCategoryEditorSource extends EditorSource<TopicTagViewCategoryEditor> {

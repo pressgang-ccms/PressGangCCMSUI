@@ -3,9 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.search;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFilterFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -14,7 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import javax.enterprise.context.Dependent;
 
 /**
- *  The view to display a list of filters
+ * The view to display a list of filters
  */
 @Dependent
 public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<RESTFilterCollectionItemV1>

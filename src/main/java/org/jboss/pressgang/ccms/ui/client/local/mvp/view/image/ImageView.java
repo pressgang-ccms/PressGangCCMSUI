@@ -30,7 +30,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
 
     /**
      * The dialog box that presents the list of locales for the user to select from.
-     * 
+     *
      * @author Matthew Casperson
      */
     public final static class AddLocaleDialog extends DialogBox implements ImagePresenter.Display.AddLocaleInterface {

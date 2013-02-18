@@ -12,9 +12,9 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 
 @Dependent
 public class TroubleshootingPresenter extends BaseTemplatePresenter {
-    
+
     public static final String HISTORY_TOKEN = "TroubleshootingView";
-    
+
     public interface Display extends BaseTemplateViewInterface {
 
     }

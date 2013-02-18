@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/monokai', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
+ace.define('ace/theme/monokai', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
 
-exports.isDark = true;
-exports.cssClass = "ace-monokai";
-exports.cssText = "\
+    exports.isDark = true;
+    exports.cssClass = "ace-monokai";
+    exports.cssText = "\
 .ace-monokai .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\

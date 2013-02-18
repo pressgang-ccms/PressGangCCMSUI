@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
 import com.google.gwt.user.client.ui.HasWidgets;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
@@ -23,8 +22,7 @@ public class TopicBIRTBugsPresenter extends BaseTemplatePresenter {
     @Inject
     private Display display;
 
-    public Display getDisplay()
-    {
+    public Display getDisplay() {
         return display;
     }
 
@@ -34,8 +32,7 @@ public class TopicBIRTBugsPresenter extends BaseTemplatePresenter {
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void bindExtended(final int topicId, final String pageId)
-    {
+    public void bindExtended(final int topicId, final String pageId) {
         super.bind(topicId, pageId, display);
     }
 

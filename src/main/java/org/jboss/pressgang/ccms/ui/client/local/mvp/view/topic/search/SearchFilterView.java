@@ -18,7 +18,9 @@ import javax.enterprise.context.Dependent;
 @Dependent
 public class SearchFilterView extends BaseTemplateView implements SearchFilterPresenter.Display {
 
-    /** The GWT Editor Driver */
+    /**
+     * The GWT Editor Driver
+     */
     private final SearchFilterPresenter.FilterPresenterDriver driver = GWT.create(SearchFilterPresenter.FilterPresenterDriver.class);
 
     private final PushButton overwrite = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Overwrite());

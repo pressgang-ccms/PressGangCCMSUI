@@ -71,13 +71,11 @@ public class TagsFilteredResultsAndTagPresenter
         implements BaseTemplatePresenterInterface {
 
 
-
     /**
      * This interface describes the required UI elements for the parent view (i.e. the view that holds the four views
      * TagFilteredResults view to provide a list of tags, and the TagView, TagProjectsView and TagCategoriesView.
      *
      * @author Matthew Casperson
-     *
      */
     public interface Display extends BaseSearchAndEditViewInterface<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
 
@@ -96,7 +94,9 @@ public class TagsFilteredResultsAndTagPresenter
         Label getTagDetailsDown();
     }
 
-    /** The history token used to identify this view */
+    /**
+     * The history token used to identify this view
+     */
     public static final String HISTORY_TOKEN = "TagsFilteredResultsAndTagView";
 
     @Inject
@@ -113,17 +113,23 @@ public class TagsFilteredResultsAndTagPresenter
     @Inject
     private Display display;
 
-    @Inject private TagFilteredResultsPresenter filteredResultsComponent;
+    @Inject
+    private TagFilteredResultsPresenter filteredResultsComponent;
 
 
-    @Inject private TagPresenter resultComponent;
+    @Inject
+    private TagPresenter resultComponent;
 
 
-    @Inject private TagProjectsPresenter projectsComponent;
+    @Inject
+    private TagProjectsPresenter projectsComponent;
 
-    @Inject private TagCategoriesPresenter categoriesComponent;
+    @Inject
+    private TagCategoriesPresenter categoriesComponent;
 
-    /** The tag query string extracted from the history token */
+    /**
+     * The tag query string extracted from the history token
+     */
     private String queryString;
 
     /**
@@ -133,7 +139,7 @@ public class TagsFilteredResultsAndTagPresenter
 
         @Override
         public boolean setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
-            if (child.getItem().getRelationshipSort() != index)  {
+            if (child.getItem().getRelationshipSort() != index) {
                 child.getItem().explicitSetRelationshipSort(index);
                 /* Set any unchanged items to updated */
                 if (RESTBaseCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {
@@ -428,8 +434,7 @@ public class TagsFilteredResultsAndTagPresenter
 
             clearContainerAndAddTopLevelPanel(container, display);
             bindSearchAndEditExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
-        }
-        finally {
+        } finally {
             LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndTagPresenter.go()");
         }
     }
@@ -627,7 +632,6 @@ public class TagsFilteredResultsAndTagPresenter
     }
 
     /**
-     *
      * @return true if the tag has any unsaved changes
      */
     public boolean unsavedTagChanged() {
@@ -696,8 +700,7 @@ public class TagsFilteredResultsAndTagPresenter
         });
     }
 
-    private void enableAndDisableActionButtons(final BaseTemplateViewInterface displayedView)
-    {
+    private void enableAndDisableActionButtons(final BaseTemplateViewInterface displayedView) {
         this.display.replaceTopActionButton(this.display.getTagCategoriesDown(), this.display.getTagCategories());
         this.display.replaceTopActionButton(this.display.getTagDetailsDown(), this.display.getTagDetails());
         this.display.replaceTopActionButton(this.display.getTagProjectsDown(), this.display.getTagProjects());
@@ -772,7 +775,8 @@ public class TagsFilteredResultsAndTagPresenter
     /**
      * Called when a new tag is selected or the tag is saved. This refreshes the list of categories and projects.
      *
-     * @param removeCatgeoryTagListFromScreen true if the list of tags within a category is to be removed from the screen
+     * @param removeCatgeoryTagListFromScreen
+     *         true if the list of tags within a category is to be removed from the screen
      */
     private void resetCategoryAndProjectsLists(final boolean removeCatgeoryTagListFromScreen) {
 

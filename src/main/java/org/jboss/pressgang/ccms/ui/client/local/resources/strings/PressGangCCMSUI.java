@@ -6,9 +6,8 @@ import com.google.gwt.i18n.client.Constants;
 /**
  * This interface contains all the strings displayed by the UI. These strings can then be localized with the functionality
  * provided by GWT.
- * 
+ *
  * @author Matthew Casperson
- * 
  */
 public interface PressGangCCMSUI extends Constants {
 

@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * This class provides a standard way to call the REST server and respond to the various success and failure paths.
- * 
+ *
  * @author Matthew Casperson
  */
 public final class RESTCalls {
@@ -25,7 +25,7 @@ public final class RESTCalls {
                     "{\"trunk\":{\"name\": \"" + RESTTopicV1.LOG_DETAILS_NAME + "\"}}," +
                     "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
                     "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
-            "]}";
+                    "]}";
 
     /**
      * A topic with expanded bugs
@@ -56,10 +56,10 @@ public final class RESTCalls {
      */
     private static final String TOPIC_EXPANSION =
             "{\"branches\":[" +
-                "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
-                "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}," +
-                "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"}}" +
-            "]}";
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"}}" +
+                    "]}";
     /**
      * The required expansion details for a filter.
      */
@@ -69,15 +69,15 @@ public final class RESTCalls {
                     "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_FIELDS_NAME + "\"}}," +
                     "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_LOCALES_NAME + "\"}}," +
                     "{\"trunk\":{\"name\": \"" + RESTFilterV1.FILTER_TAGS_NAME + "\"}, \"branches\":[" +
-                        "{\"trunk\":{\"name\": \"" + RESTFilterTagV1.TAG_NAME + "\"}}" +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterTagV1.TAG_NAME + "\"}}" +
                     "]}" +
-            "]}";
+                    "]}";
 
     /**
      * All REST calls follow a similar pattern: Before it starts An Exception may be thrown The call succeeds or The call fails
-     * 
+     * <p/>
      * This interface defines callbacks for these events.
-     * 
+     *
      * @param <T> The type that is returned by the REST call
      * @author Matthew Casperson
      */
@@ -90,21 +90,22 @@ public final class RESTCalls {
 
         /**
          * Called if an exception is thrown when attempting to call the REST service
-         * 
+         *
          * @param e The exception that was thrown
          */
         void generalException(final Exception e);
 
         /**
          * Called if the REST call was successful
-         * 
+         *
          * @param retValue The value returned from the REST service
          */
         void success(final T retValue);
 
         /**
          * Called if the REST call was unsuccessful
-         * @param message The message that accompanied the failure
+         *
+         * @param message   The message that accompanied the failure
          * @param throwable The exception that accompanied the failure
          */
         void failed(final Message message, final Throwable throwable);
@@ -195,7 +196,7 @@ public final class RESTCalls {
     }
 
     public static void updateCategories(@NotNull final RESTCallback<RESTCategoryCollectionV1> callback,
-            final RESTCategoryCollectionV1 categories) {
+                                        final RESTCategoryCollectionV1 categories) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -314,7 +315,7 @@ public final class RESTCalls {
             }
         });
     }
-    
+
     public static void getTopicRevisionWithBugs(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id, @NotNull final Integer revision) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[" + TOPIC_BUGS_EXPANSION + "]}";
@@ -336,7 +337,7 @@ public final class RESTCalls {
             }
         });
     }
-    
+
     public static void getTopicRevisionWithTags(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id, @NotNull final Integer revision) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[" + TOPIC_TAGS_EXPANSION + "]}";
@@ -562,7 +563,7 @@ public final class RESTCalls {
     }
 
     public static void getCategoriesFromQuery(@NotNull final RESTCallback<RESTCategoryCollectionV1> callback, @NotNull final String queryString,
-            final int start, final int end) {
+                                              final int start, final int end) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
                 + ", \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}, \"branches\":[" + CATEGORY_EXPANSION + "]}]}";
@@ -575,7 +576,7 @@ public final class RESTCalls {
     }
 
     public static void getProjectsFromQuery(@NotNull final RESTCallback<RESTProjectCollectionV1> callback, @NotNull final String queryString,
-            final int start, final int end) {
+                                            final int start, final int end) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
                 + ", \"name\": \"" + RESTv1Constants.PROJECTS_EXPANSION_NAME + "\"}, \"branches\":[" + PROJECT_EXPANSION + "]}]}";
@@ -639,7 +640,7 @@ public final class RESTCalls {
     }
 
     public static void getImagesFromQuery(@NotNull final RESTCallback<RESTImageCollectionV1> callback, @NotNull final String queryString,
-            final int start, final int end) {
+                                          final int start, final int end) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end
                 + ",\"name\": \"" + RESTv1Constants.IMAGES_EXPANSION_NAME + "\"}}]}";

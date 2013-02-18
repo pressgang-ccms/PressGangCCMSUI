@@ -10,15 +10,12 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @inheritDoc
- *
  * @param <T> The entity type
- *
  * @param <C> The collection item type for the possible child
- *
  * @param <D> The existing child type
  * @param <E> The collection type for entity D
  * @param <F> The collection item type for entity D
+ * @inheritDoc
  */
 public abstract class BaseChildrenComponent<
         T extends RESTBaseEntityV1<?, ?, ?>,
@@ -37,7 +34,7 @@ public abstract class BaseChildrenComponent<
     private BaseChildrenViewInterface display;
 
     /**
-     *  @return An instance of the possible children provider data.
+     * @return An instance of the possible children provider data.
      */
     @Override
     @NotNull
@@ -48,16 +45,18 @@ public abstract class BaseChildrenComponent<
     /**
      * An empty implementation of the extended bind method. Classes extending BaseChildrenComponent should implement
      * bindChildrenExtended().
+     *
      * @param topicId the help topic for the page
-     * @param pageId The history token of the page
+     * @param pageId  The history token of the page
      */
-    public final void bindExtended(final int topicId, final String pageId)  {
+    public final void bindExtended(final int topicId, final String pageId) {
         throw new UnsupportedOperationException("bindExtended() is not supported. Use bindChildren() instead.");
     }
 
     /**
      * Display the data held by parent.
-     * @param parent The object that holds the data we want to display
+     *
+     * @param parent   The object that holds the data we want to display
      * @param readOnly true if the view is readonly, false otherwise
      */
     protected final void displayChildren(@NotNull final T parent, final boolean readOnly) {

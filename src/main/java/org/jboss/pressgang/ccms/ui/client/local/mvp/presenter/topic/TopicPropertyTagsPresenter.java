@@ -7,12 +7,9 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTAssignedPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
@@ -39,22 +36,23 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
-    The presenter used to populate the tables of possible and existing topic property tags.
+ * The presenter used to populate the tables of possible and existing topic property tags.
  */
 @Dependent
 public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
-            RESTBaseTopicV1<?, ?, ?>,
-            RESTBaseTopicV1<?, ?, ?>,
-            RESTPropertyTagCollectionItemV1,
-            RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1> {
+        RESTBaseTopicV1<?, ?, ?>,
+        RESTBaseTopicV1<?, ?, ?>,
+        RESTPropertyTagCollectionItemV1,
+        RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1> {
 
     public interface Display extends BaseExtendedChildrenViewInterface<
             RESTBaseTopicV1<?, ?, ?>,
-                RESTTopicV1,
-                RESTPropertyTagCollectionItemV1,
-                RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1>,
+            RESTTopicV1,
+            RESTPropertyTagCollectionItemV1,
+            RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1>,
             BaseTemplateViewInterface {
         Column<RESTAssignedPropertyTagCollectionItemV1, String> getPropertyTagRemoveColumn();
+
         Column<RESTAssignedPropertyTagCollectionItemV1, String> getPropertyTagValueColumn();
     }
 
@@ -65,7 +63,8 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
      */
     private static final Logger LOGGER = Logger.getLogger(TopicPropertyTagsPresenter.class.getName());
     private Integer topicId;
-    @Inject private Display display;
+    @Inject
+    private Display display;
 
     public Display getDisplay() {
         return display;
@@ -100,8 +99,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     /**
      * Add behaviour to the property tag add and remove buttons, and the value text edit field.
      */
-    private void bindPropertyTagButtons(@NotNull final RESTBaseTopicV1<?, ?, ?> parent)
-    {
+    private void bindPropertyTagButtons(@NotNull final RESTBaseTopicV1<?, ?, ?> parent) {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bindPropertyTagButtons()");
 
@@ -148,7 +146,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
                     }
             );
 
-               display.getPropertyTagValueColumn().setFieldUpdater(new FieldUpdater<RESTAssignedPropertyTagCollectionItemV1, String>() {
+            display.getPropertyTagValueColumn().setFieldUpdater(new FieldUpdater<RESTAssignedPropertyTagCollectionItemV1, String>() {
                 @Override
                 public void update(final int index, final RESTAssignedPropertyTagCollectionItemV1 object, final String value) {
 
@@ -165,8 +163,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
 
                     if (object.returnIsAddItem()) {
                         object.getItem().setValue(value);
-                    }
-                    else {
+                    } else {
                         object.setState(REMOVE_STATE);
 
                         /* Create a new property tag child */
@@ -194,8 +191,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
         return new EnhancedAsyncDataProvider<RESTAssignedPropertyTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTAssignedPropertyTagCollectionItemV1> display) {
-                try
-                {
+                try {
                     LOGGER.log(Level.INFO, "ENTER TopicPropertyTagsPresenter.generateExistingProvider() EnhancedAsyncDataProvider.onRangeChanged()");
 
                     getExistingProviderData().setStartRow(display.getVisibleRange().getStart());

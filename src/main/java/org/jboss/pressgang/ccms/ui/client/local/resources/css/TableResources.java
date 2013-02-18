@@ -11,6 +11,6 @@ public interface TableResources extends CellTable.Resources {
     }
 
     @Override
-    @Source({ CellTable.Style.DEFAULT_CSS, "CustomCellTable.css" })
+    @Source({CellTable.Style.DEFAULT_CSS, "CustomCellTable.css"})
     TableStyle cellTableStyle();
 }

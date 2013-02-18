@@ -3,14 +3,11 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.search.tag;
 import com.google.gwt.user.client.ui.TriStateSelectionState;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.BaseOrderedChildrenComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -42,7 +39,7 @@ public final class SearchUITag extends SearchUIBase {
 
             if (filter != null) {
                 //LOGGER.log(Level.INFO, "Processing filter with " + filter.getFilterTags_OTM().getItems().size() + " tags");
-                for (final RESTFilterTagCollectionItemV1 filterTag : filter.getFilterTags_OTM().getItems())  {
+                for (final RESTFilterTagCollectionItemV1 filterTag : filter.getFilterTags_OTM().getItems()) {
                     if (filterTag.getItem().getTag().getId().equals(tag.getItem().getId())) {
                         if (filterTag.getItem().getState().equals(Constants.TAG_INCLUDED)) {
                             //LOGGER.log(Level.INFO, "Found included tag");
@@ -63,7 +60,9 @@ public final class SearchUITag extends SearchUIBase {
     /**
      * @return The tag referenced by this object
      */
-    public @NotNull RESTTagCollectionItemV1 getTag() {
+    public
+    @NotNull
+    RESTTagCollectionItemV1 getTag() {
         return this.tag;
     }
 

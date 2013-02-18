@@ -3,9 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.category;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
@@ -18,12 +16,12 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.Ba
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
 public class CategoryTagView
-    extends BaseOrderedChildrenView<
-                RESTCategoryV1,
-                RESTCategoryV1,
-                RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
-                RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
-    implements CategoryTagPresenter.Display {
+        extends BaseOrderedChildrenView<
+        RESTCategoryV1,
+        RESTCategoryV1,
+        RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
+        RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
+        implements CategoryTagPresenter.Display {
 
     private final TextColumn<RESTTagCollectionItemV1> tagsIdColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override

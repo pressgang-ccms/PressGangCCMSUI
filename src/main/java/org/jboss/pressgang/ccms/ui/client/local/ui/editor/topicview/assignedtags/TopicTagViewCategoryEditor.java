@@ -18,7 +18,7 @@ public class TopicTagViewCategoryEditor extends Grid implements Editor<SearchUIC
 
     /**
      * The EditorSource is used to create and orgainse the Editors that go into a ListEditor
-     * 
+     *
      * @author Matthew Casperson
      */
     private class TopicTagViewTagEditorSource extends EditorSource<TopicTagViewTagEditor> {

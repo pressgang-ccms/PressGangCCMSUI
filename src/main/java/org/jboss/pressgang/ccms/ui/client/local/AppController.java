@@ -27,7 +27,10 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.*;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFieldPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFilterResultsAndFilterPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchTagsFieldsAndFiltersPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.SearchResultsAndTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.SearchResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics.TranslatedTopicResultsAndTranslatedTopicPresenter;
@@ -116,7 +119,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
      */
     private void displayWelcomeMessage() {
         final String lastBuild = Preferences.INSTANCE.getString(Preferences.LAST_BUILD, null);
-        if (lastBuild == null || !lastBuild.equals(Constants.VERSION))  {
+        if (lastBuild == null || !lastBuild.equals(Constants.VERSION)) {
             Window.alert(PressGangCCMSUI.INSTANCE.ApplicationUpdated());
         }
         Preferences.INSTANCE.saveSetting(Preferences.LAST_BUILD, Constants.VERSION);

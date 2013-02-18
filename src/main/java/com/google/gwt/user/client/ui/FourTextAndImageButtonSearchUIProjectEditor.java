@@ -9,7 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 /**
  * This is a custom button that can be databound to a SearchUIProject.CategorySummary object. This button is used to display a
  * project selection button.
- * 
+ *
  * @author Matthew Casperson
  */
 public final class FourTextAndImageButtonSearchUIProjectEditor extends FourTextAndImageButton implements

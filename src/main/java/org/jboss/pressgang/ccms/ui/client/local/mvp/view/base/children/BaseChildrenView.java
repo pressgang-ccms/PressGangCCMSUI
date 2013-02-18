@@ -11,16 +11,12 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
 /**
- * 
- * @author Matthew Casperson
- *
  * @param <T> The entity type
- *
  * @param <C> The collection item type for entity A
- * 
  * @param <D> The existing child type
  * @param <E> The collection type for entity D
  * @param <F> The collection item type for entity D
+ * @author Matthew Casperson
  */
 abstract public class BaseChildrenView<
         T extends RESTBaseEntityV1<?, ?, ?>,
@@ -29,15 +25,17 @@ abstract public class BaseChildrenView<
         E extends RESTBaseCollectionV1<D, E, F>,
         F extends RESTBaseCollectionItemV1<D, E, F>>
         extends BaseTemplateView implements BaseChildrenViewInterface<T, C, D, E, F> {
-    
-    /** A reference to the tag that this view will be modifying */
+
+    /**
+     * A reference to the tag that this view will be modifying
+     */
     private T originalEntity;
 
     private boolean readOnly;
 
     private final VerticalPanel possibleChildrenResultsPanel = new VerticalPanel();
     private final SimplePager possibleChildrenPager = UIUtilities.createSimplePager();
-    private final CellTable<C> possibleChildrenResults = UIUtilities.<C> createCellTable();
+    private final CellTable<C> possibleChildrenResults = UIUtilities.<C>createCellTable();
     private EnhancedAsyncDataProvider<C> possibleChildrenProvider;
 
     @Override
@@ -72,18 +70,18 @@ abstract public class BaseChildrenView<
 
     @Override
     public final void setPossibleChildrenProvider(final EnhancedAsyncDataProvider<C> possibleChildrenProvider) {
-        
+
         if (this.possibleChildrenProvider != null) {
             this.possibleChildrenProvider.removeDataDisplay(this.possibleChildrenResults);
         }
-        
+
         this.possibleChildrenProvider = possibleChildrenProvider;
         possibleChildrenProvider.addDataDisplay(this.possibleChildrenResults);
     }
 
     /**
      * @param applicationName The name of the application, which will be added to the page's title field
-     * @param pageName The name of the page that is being displayed, which will be added to the page's title field
+     * @param pageName        The name of the page that is being displayed, which will be added to the page's title field
      */
     public BaseChildrenView(final String applicationName, final String pageName) {
         super(applicationName, pageName);
@@ -101,7 +99,9 @@ abstract public class BaseChildrenView<
         this.readOnly = readOnly;
     }
 
-    /** true if this view is readonly, false otherwise */
+    /**
+     * true if this view is readonly, false otherwise
+     */
     public boolean isReadOnly() {
         return readOnly;
     }

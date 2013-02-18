@@ -1,18 +1,13 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview;
 
 import com.google.gwt.editor.client.Editor;
-import com.google.gwt.text.shared.Renderer;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.*;
-import com.google.gwt.user.datepicker.client.DateBox;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimpleIntegerBox;
+import com.google.gwt.user.client.ui.TextArea;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * An editor to bind the details in a RESTTranslatedTopicV1 to UI elements. This is similar but not the same
@@ -55,10 +50,10 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
         id.setReadOnly(true);
 
 
-        int row = 0;        
+        int row = 0;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicID()));
         this.setWidget(row, 1, id);
-        
+
         ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicRevision()));
         this.setWidget(row, 1, topicId);

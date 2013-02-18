@@ -2,14 +2,16 @@ package com.google.gwt.user.client.ui;
 
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.ValueUpdater;
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NativeEvent;
 
 /**
  * A version of the EditTextCell element that can be disabled.
  */
 public final class DisableEditTextCell extends EditTextCell {
-    /** true if the text bos should permit editing, and false otherwise */
+    /**
+     * true if the text bos should permit editing, and false otherwise
+     */
     private boolean enabled;
 
     @Override

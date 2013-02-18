@@ -19,26 +19,26 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 /**
  * This class is the Safari implementation of the XsltProcessor interface.
- * 
+ * <p/>
  * Code was copied from com.google.gwt.xml.client.impl.XMLParserImplSafari.
- * 
+ *
  * @author Szabó Árpád Zoltán, szabo.arpad.zoltan at gmail.com
  */
 public final class XsltProcessorImplSafari extends XsltProcessorImplStandard {
 
     @Override
     protected native JavaScriptObject parseImpl(final String contents) /*-{
-                                                                 var domParser = 
-                                                                 this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImplStandard::domParser;
-                                                                 var result = domParser.parseFromString(contents,"text/xml");
-                                                                 var parseerrors = result.getElementsByTagName("parsererror");
-                                                                 if (parseerrors.length > 0) {
-                                                                 var err = parseerrors.item(0);
-                                                                 if (err.parentNode.tagName == 'body') {
-                                                                 throw new Error(err.childNodes[1].innerHTML);
-                                                                 }
-                                                                 } 
-                                                                 return result;
-                                                                 }-*/;
+        var domParser =
+            this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImplStandard::domParser;
+        var result = domParser.parseFromString(contents, "text/xml");
+        var parseerrors = result.getElementsByTagName("parsererror");
+        if (parseerrors.length > 0) {
+            var err = parseerrors.item(0);
+            if (err.parentNode.tagName == 'body') {
+                throw new Error(err.childNodes[1].innerHTML);
+            }
+        }
+        return result;
+    }-*/;
 
 }

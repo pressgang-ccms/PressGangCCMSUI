@@ -16,8 +16,7 @@ public class EntityListReceived<T extends RESTBaseCollectionV1<?, ?, ?>> extends
         return TYPE;
     }
 
-    public EntityListReceived(final T topics)
-    {
+    public EntityListReceived(final T topics) {
         this.topics = topics;
     }
 

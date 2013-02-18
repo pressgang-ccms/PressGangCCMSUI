@@ -11,15 +11,23 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 
 public final class TopicTagViewTagEditor implements Editor<SearchUITag> {
     private final boolean readOnly;
-    /** bound to the SearchUITag itself */
+    /**
+     * bound to the SearchUITag itself
+     */
     @Path("")
     final SimpleEditor<SearchUITag> self = SimpleEditor.of();
-    /** bound to SearchUITag.getName() */
+    /**
+     * bound to SearchUITag.getName()
+     */
     final Label name = new Label();
-    /** A button used to delete this tag */
+    /**
+     * A button used to delete this tag
+     */
     private final PushButton delete = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Remove());
 
-    /** @return a reference to the SearchUITag that was used to bind this Editor */
+    /**
+     * @return a reference to the SearchUITag that was used to bind this Editor
+     */
     public SearchUITag getTag() {
         if (self != null) {
             return self.getValue();

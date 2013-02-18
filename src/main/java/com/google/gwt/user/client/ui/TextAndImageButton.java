@@ -7,7 +7,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 
 /**
  * http://blog.js-development.com/2010/03/gwt-button-with-image-and-text.html
- * 
+ *
  * @author Matthew Casperson
  */
 public class TextAndImageButton extends Button {
@@ -29,7 +29,7 @@ public class TextAndImageButton extends Button {
         this.text = text;
         setResource(imageResource);
     }
-    
+
     private void initialize(final String divClass) {
         div.setAttribute("class", divClass);
         DOM.insertChild(getElement(), div, 0);

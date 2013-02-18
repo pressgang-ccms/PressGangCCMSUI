@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.search;
 /**
  * Defines the interface implemented by all backing objects that populate the editors
  * that are displayed by the topics search views.
+ *
  * @author Matthew Casperson
  */
 public interface SearchViewBase {

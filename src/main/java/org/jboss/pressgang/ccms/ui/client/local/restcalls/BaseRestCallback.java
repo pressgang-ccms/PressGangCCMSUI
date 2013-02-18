@@ -14,30 +14,29 @@ import java.util.logging.Logger;
 /**
  * Most REST calls have the same responses to starting the call, exceptions during the call, and failure of the call. This class
  * wraps up these generic responses.
- * 
+ *
  * @param <C> The type of the returned entity
  * @param <D> The type of the wait view
  * @author kamiller@redhat.com (Katie Miller)
- * 
  */
 public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> implements RESTCalls.RESTCallback<C> {
 
     private final D display;
     private final SuccessAction<C, D> successAction;
     private final FailureAction<D> failureAction;
-    
+
     private static final Logger LOGGER = Logger.getLogger(BaseRestCallback.class.getName());
 
     public BaseRestCallback(final D display, final SuccessAction<C, D> successAction) {
         this.display = display;
         this.successAction = successAction;
-        this.failureAction = null; 
+        this.failureAction = null;
     }
-    
+
     public BaseRestCallback(final D display, final SuccessAction<C, D> successAction, final FailureAction<D> failureAction) {
         this.display = display;
         this.successAction = successAction;
-        this.failureAction = failureAction; 
+        this.failureAction = failureAction;
     }
 
     @Override
@@ -50,13 +49,12 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
         LOGGER.log(Level.SEVERE, "BaseRestCallback.generalException(): A general exception was thrown by the REST operation: " + e.toString());
         LOGGER.log(Level.SEVERE, GWTUtilities.convertExceptionStackToString(e));
         display.removeWaitOperation();
-        
-        try
-        {
+
+        try {
             if (failureAction != null) {
-                failureAction.doFailureAction(display);    
+                failureAction.doFailureAction(display);
             }
-            
+
         } catch (final Exception ex) {
             LOGGER.log(Level.WARNING, "ENTER BaseRestCallback.generalException() threw an exception");
         }
@@ -73,18 +71,17 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
 
     @Override
     public void failed(final Message message, final Throwable throwable) {
-        
-        try
-        {
+
+        try {
             if (failureAction != null) {
-                failureAction.doFailureAction(display);    
-            }            
+                failureAction.doFailureAction(display);
+            }
         } catch (final Exception ex) {
             LOGGER.log(Level.WARNING, "ENTER BaseRestCallback.failed() threw an exception");
         }
-        
+
         try {
-            
+
             if (message != null) {
                 LOGGER.log(Level.SEVERE, message.toString());
             }
@@ -92,7 +89,7 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
                 LOGGER.log(Level.SEVERE, "BaseRestCallback.generalException(): A general exception was thrown by the REST operation: " + throwable.toString());
                 LOGGER.log(Level.SEVERE, GWTUtilities.convertExceptionStackToString(throwable));
             }
-            
+
             if (throwable instanceof ResponseException) {
                 final ResponseException ex = (ResponseException) throwable;
                 /* A bad request means invalid input, like a duplicated name */
@@ -112,7 +109,7 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
     public interface SuccessAction<C, D extends BaseTemplateViewInterface> {
         void doSuccessAction(C retValue, D display);
     }
-    
+
     public interface FailureAction<D extends BaseTemplateViewInterface> {
         void doFailureAction(D display);
     }

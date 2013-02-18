@@ -9,7 +9,6 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
@@ -17,7 +16,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -80,7 +78,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
 
         @Override
         public boolean setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
-            if (child.getItem().getRelationshipSort() != index)  {
+            if (child.getItem().getRelationshipSort() != index) {
                 child.getItem().explicitSetRelationshipSort(index);
                 /* Set any unchanged items to updated */
                 if (RESTBaseCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {
@@ -220,7 +218,6 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     }
 
 
-
     @Override
     protected void loadAdditionalDisplayedItemData() {
         try {
@@ -231,8 +228,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
 
             /* Get a new collection of tags */
             categoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
-        }
-        finally {
+        } finally {
             LOGGER.log(Level.INFO, "EXIT CategoriesFilteredResultsAndCategoryPresenter.loadAdditionalDisplayedItemData()");
         }
     }
@@ -243,7 +239,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
             LOGGER.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.initializeViews()");
 
             /* We need to initialize the view so the celltable buttons can display the correct labels */
-            if (viewIsInFilter(filter, categoryTagPresenter.getDisplay()))  {
+            if (viewIsInFilter(filter, categoryTagPresenter.getDisplay())) {
                 categoryTagPresenter.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
                 categoryTagPresenter.displayDetailedChildrenExtended(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
             }
@@ -315,62 +311,62 @@ public class CategoriesFilteredResultsAndCategoryPresenter
          * A click handler used to save any changes to the category
          */
         final ClickHandler saveClickHandler = new ClickHandler() {
-                @Override
-                public void onClick(final ClickEvent event) {
+            @Override
+            public void onClick(final ClickEvent event) {
 
                     /* Was the tag we just saved a new tag? */
-                    final boolean wasNewEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem();
+                final boolean wasNewEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem();
 
                      /* Sync the UI to the underlying object */
-                    categoryPresenter.getDisplay().getDriver().flush();
+                categoryPresenter.getDisplay().getDriver().flush();
 
-                    final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, Display>(display,
-                            new BaseRestCallback.SuccessAction<RESTCategoryV1, Display>() {
-                                @Override
-                                public void doSuccessAction(final RESTCategoryV1 retValue, final Display display) {
-                                    retValue.cloneInto(filteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
-                                    retValue.cloneInto(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
-                                            true);
+                final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, Display>(display,
+                        new BaseRestCallback.SuccessAction<RESTCategoryV1, Display>() {
+                            @Override
+                            public void doSuccessAction(final RESTCategoryV1 retValue, final Display display) {
+                                retValue.cloneInto(filteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
+                                retValue.cloneInto(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
+                                        true);
 
                                     /* This category is no longer a new category */
-                                    filteredResultsPresenter.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                                filteredResultsPresenter.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
-                                    categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
-                                    categoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+                                categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+                                categoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
 
-                                    updateDisplayAfterSave(wasNewEntity);
+                                updateDisplayAfterSave(wasNewEntity);
 
-                                    Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                                }
-                            });
+                                Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                            }
+                        });
 
-                    if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
+                if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
 
                         /*
                          * If this is a new category, it needs to be saved in order to get the tag id to complete the category
                          * updates. Upon success, the categories will be updated.
                          */
-                        final boolean unsavedTagChanges = unsavedCategoryChanges() || unsavedTagChanges();
+                    final boolean unsavedTagChanges = unsavedCategoryChanges() || unsavedTagChanges();
 
-                        if (unsavedTagChanges) {
+                    if (unsavedTagChanges) {
 
-                            final RESTCategoryV1 category = new RESTCategoryV1();
-                            category.setId(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
-                            category.explicitSetName(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
-                            category.explicitSetDescription(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getDescription());
-                            category.explicitSetTags(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getTags());
+                        final RESTCategoryV1 category = new RESTCategoryV1();
+                        category.setId(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
+                        category.explicitSetName(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
+                        category.explicitSetDescription(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getDescription());
+                        category.explicitSetTags(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getTags());
 
-                            if (wasNewEntity) {
-                                RESTCalls.createCategory(callback, category);
-                            } else {
-                                RESTCalls.saveCategory(callback, category);
-                            }
+                        if (wasNewEntity) {
+                            RESTCalls.createCategory(callback, category);
                         } else {
-                            Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                            RESTCalls.saveCategory(callback, category);
                         }
+                    } else {
+                        Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
                     }
                 }
-            };
+            }
+        };
 
 
         display.getDetails().addClickHandler(categoryDetailsClickHandler);
@@ -480,8 +476,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
         }
     }
 
-    private void enableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView)
-    {
+    private void enableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView) {
         this.display.replaceTopActionButton(this.display.getChildrenDown(), this.display.getChildren());
         this.display.replaceTopActionButton(this.display.getDetailsDown(), this.display.getDetails());
 
@@ -491,7 +486,6 @@ public class CategoriesFilteredResultsAndCategoryPresenter
             this.display.replaceTopActionButton(this.display.getChildren(), this.display.getChildrenDown());
         }
     }
-
 
 
     /**

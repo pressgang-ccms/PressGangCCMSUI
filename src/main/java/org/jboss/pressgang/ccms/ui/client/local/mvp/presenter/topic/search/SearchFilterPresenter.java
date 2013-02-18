@@ -4,19 +4,16 @@ import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.filter.RESTFilterV1BasicDetailsEditor;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 
 import javax.inject.Inject;
 
 /**
-  The presenter used to display the information about a filter.
+ * The presenter used to display the information about a filter.
  */
 public class SearchFilterPresenter extends BaseTemplatePresenter {
 
@@ -26,7 +23,9 @@ public class SearchFilterPresenter extends BaseTemplatePresenter {
 
     public interface Display extends BaseTemplateViewInterface, BasePopulatedEditorViewInterface<RESTFilterV1, RESTFilterV1, RESTFilterV1BasicDetailsEditor> {
         PushButton getOverwrite();
+
         PushButton getLoad();
+
         PushButton getLoadAndSearch();
     }
 
@@ -38,7 +37,8 @@ public class SearchFilterPresenter extends BaseTemplatePresenter {
     /**
      * This display.
      */
-    @Inject private Display display;
+    @Inject
+    private Display display;
 
     /**
      * @return The display.

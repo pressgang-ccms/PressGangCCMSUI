@@ -1,21 +1,16 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.filter;
 
 import com.google.gwt.editor.client.Editor;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
-    An editor that binds the data in a RESTFilterV1 to UI elements.
+ * An editor that binds the data in a RESTFilterV1 to UI elements.
  */
 public final class RESTFilterV1BasicDetailsEditor extends Grid implements Editor<RESTFilterV1> {
     /**
@@ -38,6 +33,7 @@ public final class RESTFilterV1BasicDetailsEditor extends Grid implements Editor
 
     /**
      * The method used by the editor framework to manipulate the description field.
+     *
      * @return The ui element displaying the filter's description.
      */
     public TextArea descriptionEditor() {
@@ -46,6 +42,7 @@ public final class RESTFilterV1BasicDetailsEditor extends Grid implements Editor
 
     /**
      * The method used by the editor framework to manipulate the name field.
+     *
      * @return The ui element displaying the filter's name.
      */
     public TextBox nameEditor() {
@@ -53,7 +50,6 @@ public final class RESTFilterV1BasicDetailsEditor extends Grid implements Editor
     }
 
     /**
-     *
      * @param readOnly true if this editor should be readonly
      */
     public RESTFilterV1BasicDetailsEditor(final boolean readOnly) {

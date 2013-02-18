@@ -1,19 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
-import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HTML;
 import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
 import hu.szaboaz.gwt.xslt.client.XsltProcessor;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
-import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
-
-import java.util.List;
 
 public class TopicRenderedView extends BaseTemplateView implements TopicRenderedPresenter.Display {
 
@@ -43,7 +38,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
             processor.importStyleSheet(DocbookToHTML.XSL);
             processor.setParameter("externalImages", showImages + "");
-            
+
             //processor.importSource(Constants.DOCBOOK_XSL_FILE);
 
             // Setting the document to be transformed

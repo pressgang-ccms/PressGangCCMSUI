@@ -23,12 +23,12 @@ import java.util.logging.Logger;
  * @author Matthew Casperson
  */
 abstract public class BaseOrderedChildrenComponent<
-            T extends RESTBaseEntityV1<?, ?, ?>,
-            W extends RESTBaseEntityV1<?, ?, ?>,
-            C extends RESTBaseCollectionItemV1<?, ?, ?>,
-            D extends RESTBaseEntityV1<D, E, F>,
-            E extends RESTBaseCollectionV1<D, E, F>,
-            F extends RESTBaseCollectionItemV1<D, E, F>>
+        T extends RESTBaseEntityV1<?, ?, ?>,
+        W extends RESTBaseEntityV1<?, ?, ?>,
+        C extends RESTBaseCollectionItemV1<?, ?, ?>,
+        D extends RESTBaseEntityV1<D, E, F>,
+        E extends RESTBaseCollectionV1<D, E, F>,
+        F extends RESTBaseCollectionItemV1<D, E, F>>
         extends BaseDetailedChildrenPresenter<T, W, C, D, E, F>
         implements BaseOrderedChildrenComponentInterface<T, W, C, D, E, F> {
 
@@ -63,9 +63,9 @@ abstract public class BaseOrderedChildrenComponent<
      * Reorder a collection and move a child entity up or down
      *
      * @param editingParent The entity being edited
-     * @param parent The parent of the list of items shown as existing children
-     * @param object The child to be moved
-     * @param down   true if the child is to be moved down, false if it is to be moved up
+     * @param parent        The parent of the list of items shown as existing children
+     * @param object        The child to be moved
+     * @param down          true if the child is to be moved down, false if it is to be moved up
      * @return true if the sort order of any child was modified, false otherwise
      */
     @Override

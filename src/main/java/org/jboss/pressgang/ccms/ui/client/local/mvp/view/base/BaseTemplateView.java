@@ -18,47 +18,61 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * This class is used to build the standard page template.
- *
+ * <p/>
  * The top of the page is a simple header image.
- *
+ * <p/>
  * Next is the page title and quick search box.
- *
+ * <p/>
  * Next is the top action bar. For a single view, this will be housed in the topActionGrandParentPanel container. For
  * compound views the topActionGrandParentPanel will be removed, and replaced with another container that will pull
  * the topActionParentPanel and topViewSpecificActionPanel containers out. The topActionParentPanel container holds the
  * "common" action buttons. These are buttons that are usually navigation related, and will remain in place as the user
  * moves through the various views in the UI. The "local" action buttons are specific to a view, like line wrapping
  * buttons in a text editing view. These are displayed to the right, and disappear as the user moves to another view.
- *
+ * <p/>
  * Next, on the left, is the main navigation column.
- *
+ * <p/>
  * To the right of that is the main view area.
- *
+ * <p/>
  * Finally, at the bottom, there is the footer.
- *
+ * <p/>
  * When a child view is included in a parent view, the parent will usually pull out the action buttons and content panel,
  * displaying them in containers defined by the parent.
- * 
+ *
  * @author Matthew Casperson
  */
 public abstract class BaseTemplateView implements BaseTemplateViewInterface {
-    /** true when the view is visible, false otherwise */
+    /**
+     * true when the view is visible, false otherwise
+     */
     private boolean isViewShown;
-    /** Maintains a count of how many waiting operations are in progress */
+    /**
+     * Maintains a count of how many waiting operations are in progress
+     */
     private int waitingCount;
 
-    /** The name of the application. */
+    /**
+     * The name of the application.
+     */
     private final String applicationName;
-    /** The name of the current page. */
+    /**
+     * The name of the current page.
+     */
     private final String pageName;
 
-    /** Defines the top level layout that holds the header and the other content. */
+    /**
+     * Defines the top level layout that holds the header and the other content.
+     */
     private final DockLayoutPanel topLevelLayoutPanel = new DockLayoutPanel(Unit.PX);
 
-    /** Defines the panel that holds the page title and the other content. */
+    /**
+     * Defines the panel that holds the page title and the other content.
+     */
     private final DockLayoutPanel secondLevelLayoutPanel = new DockLayoutPanel(Unit.EM);
 
-    /** Defines the panel that holds the shortcut bar, content and footer. */
+    /**
+     * Defines the panel that holds the shortcut bar, content and footer.
+     */
     private final DockLayoutPanel thirdLevelLayoutPanel = new DockLayoutPanel(Unit.PX);
 
     private final SimplePanel headingBanner = new SimplePanel();
@@ -71,20 +85,32 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     private SimpleLayoutPanel panel = new SimpleLayoutPanel();
 
-    /** This panel holds the topActionParentPanel panel. */
+    /**
+     * This panel holds the topActionParentPanel panel.
+     */
     private final SimplePanel topActionGrandParentPanel = new SimplePanel();
-    /** This panel holds the common action buttons in the top action bar. */
+    /**
+     * This panel holds the common action buttons in the top action bar.
+     */
     private final FlexTable topActionParentPanel = new FlexTable();
-    /** This is the collection the local action panel buttons. */
+    /**
+     * This is the collection the local action panel buttons.
+     */
     private final FlexTable topViewSpecificActionPanel = new FlexTable();
-    /** This is the collection of view specific action buttons. */
+    /**
+     * This is the collection of view specific action buttons.
+     */
     private final FlexTable topActionPanel = new FlexTable();
     private final FlexTable footerPanel = new FlexTable();
 
-    /** The feedback link */
+    /**
+     * The feedback link
+     */
     private final Anchor feedback = new Anchor(PressGangCCMSUI.INSTANCE.Feedback());
     private final Anchor help = new Anchor(PressGangCCMSUI.INSTANCE.Help());
-    /** The version label */
+    /**
+     * The version label
+     */
     private final Label version = new Label(PressGangCCMSUI.INSTANCE.Build() + " " + Constants.VERSION);
 
     private final PushButton home;
@@ -113,6 +139,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     /**
      * Defines the help dialog box.
+     *
      * @author Matthew Casperson
      */
     public final static class HelpDialogImpl extends DialogBox implements HelpDialog {
@@ -135,14 +162,13 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         public HTML getContents() {
             return this.contents;
         }
-        
-        public HelpDialogImpl()
-        {
+
+        public HelpDialogImpl() {
             this.setGlassEnabled(true);
             this.setText(PressGangCCMSUI.INSTANCE.Help());
-            
+
             contents.addStyleName(CSSConstants.HelpDialog.HELP_CONTENTS);
-            
+
             final ScrollPanel scroll = new ScrollPanel(contents);
             scroll.setWidth(Constants.HELP_DIALOG_WIDTH);
             scroll.setHeight(Constants.HELP_DIALOG_HEIGHT);
@@ -162,26 +188,26 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         public void show(final int topicId, final BaseTemplateViewInterface waitDisplay) {
             final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
                     waitDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {
-                        @Override
-                        public void doSuccessAction(final RESTTopicV1 retValue, final BaseTemplateViewInterface display) {
+                @Override
+                public void doSuccessAction(final RESTTopicV1 retValue, final BaseTemplateViewInterface display) {
 
-                            try {
-                                final XsltProcessor processor = new XsltProcessor();                                
-                                processor.importStyleSheet(DocbookToHTML.XSL);                                
-                                processor.importSource(retValue.getXml());
-                                processor.setParameter("externalImages", true + "");
-                                final String resultString = processor.transform();
-                                contents.setHTML(resultString);
-                                
+                    try {
+                        final XsltProcessor processor = new XsltProcessor();
+                        processor.importStyleSheet(DocbookToHTML.XSL);
+                        processor.importSource(retValue.getXml());
+                        processor.setParameter("externalImages", true + "");
+                        final String resultString = processor.transform();
+                        contents.setHTML(resultString);
 
-                            } catch (final XsltProcessingException ex) {
-                                // this should not happen
-                            }
 
-                            HelpDialogImpl.this.center();
-                            HelpDialogImpl.this.show();
-                        }
-                    });
+                    } catch (final XsltProcessingException ex) {
+                        // this should not happen
+                    }
+
+                    HelpDialogImpl.this.center();
+                    HelpDialogImpl.this.show();
+                }
+            });
             RESTCalls.getTopic(callback, topicId);
         }
     }
@@ -291,7 +317,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     }
 
     @Override
-    public final  PushButton getStringConstants() {
+    public final PushButton getStringConstants() {
         return stringConstants;
     }
 
@@ -360,8 +386,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     }
 
     @Override
-    public final SimplePanel getTopActionGrandParentPanel()
-    {
+    public final SimplePanel getTopActionGrandParentPanel() {
         return topActionGrandParentPanel;
     }
 
@@ -560,8 +585,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         topActionParentPanel.add(topActionPanel);
     }
 
-    public final void replaceTopActionButton(final Widget existing, final Widget replacement)
-    {
+    public final void replaceTopActionButton(final Widget existing, final Widget replacement) {
         replaceTopActionButton(existing, replacement, this.topActionPanel);
     }
 
@@ -685,5 +709,5 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     public final void setFeedbackLink(final String link) {
         feedback.setHref(link);
     }
- 
+
 }

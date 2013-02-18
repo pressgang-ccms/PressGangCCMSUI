@@ -6,11 +6,9 @@ import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
@@ -50,10 +48,10 @@ public class TagCategoriesPresenter
         implements BaseTemplatePresenterInterface {
 
     public interface Display extends BaseOrderedChildrenViewInterface<
-                        RESTTagV1,
-                        RESTCategoryV1,
-                        RESTCategoryCollectionItemV1,
-                        RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> {
+            RESTTagV1,
+            RESTCategoryV1,
+            RESTCategoryCollectionItemV1,
+            RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> {
 
     }
 
@@ -68,8 +66,7 @@ public class TagCategoriesPresenter
     private String queryString;
 
     @NotNull
-    public Display getDisplay()
-    {
+    public Display getDisplay() {
         return display;
     }
 
@@ -86,8 +83,7 @@ public class TagCategoriesPresenter
     }
 
     @Override
-    public void bindDetailedChildrenExtended(final int topicId, @NotNull final String pageId)
-    {
+    public void bindDetailedChildrenExtended(final int topicId, @NotNull final String pageId) {
         super.bindDetailedChildren(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display);
         // display.setExistingChildrenProvider(generateExistingProvider());
         initLifecycleBindPossibleChildrenRowClick();
@@ -109,8 +105,7 @@ public class TagCategoriesPresenter
 
         @Override
         public boolean setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
-            if (child.getItem().getRelationshipSort() != index)
-            {
+            if (child.getItem().getRelationshipSort() != index) {
                 child.getItem().explicitSetRelationshipSort(index);
                 /* Set any unchanged items to updated */
                 if (RESTBaseCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {

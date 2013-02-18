@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTopicV1> {
-    
+
     private static final int ROWS = 7;
     private static final int COLS = 2;
-    
+
     private final SimpleIntegerBox id = new SimpleIntegerBox();
     private final SimpleIntegerBox revision = new SimpleIntegerBox();
     private final ValueListBox<String> locale = new ValueListBox<String>(new Renderer<String>() {
@@ -88,18 +88,18 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<
         locale.addStyleName(CSSConstants.TOPIC_VIEW_LOCALE_FIELD);
         description.addStyleName(CSSConstants.TOPIC_VIEW_DESCRIPTION_FIELD);
 
-        int row = 0;        
+        int row = 0;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicID()));
         this.setWidget(row, 1, id);
-        
+
         ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicRevision()));
         this.setWidget(row, 1, revision);
-        
+
         ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicCreated()));
         this.setWidget(row, 1, created);
-        
+
         ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLastModified()));
         this.setWidget(row, 1, lastModified);
@@ -113,7 +113,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<
         this.setWidget(row, 1, title);
 
         ++row;
-        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicDescription()));        
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicDescription()));
         this.setWidget(row, 1, description);
 
         for (int i = 0; i < ROWS; ++i) {

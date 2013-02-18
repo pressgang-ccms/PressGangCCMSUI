@@ -93,8 +93,7 @@ public class SaveFilterDialog extends DialogBox implements SaveFilterDialogInter
     }
 
     @Override
-    public void show()
-    {
+    public void show() {
         super.show();
 
         try {
@@ -110,8 +109,7 @@ public class SaveFilterDialog extends DialogBox implements SaveFilterDialogInter
     }
 
     @Override
-    public void reset()
-    {
+    public void reset() {
         this.name.setValue("");
         this.description.setValue("");
     }

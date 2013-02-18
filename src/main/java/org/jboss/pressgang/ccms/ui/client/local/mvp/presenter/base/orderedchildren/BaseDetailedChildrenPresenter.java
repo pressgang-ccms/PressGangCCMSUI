@@ -26,12 +26,12 @@ import java.util.logging.Logger;
  * @author Matthew Casperson
  */
 abstract public class BaseDetailedChildrenPresenter<
-            T extends RESTBaseEntityV1<?, ?, ?>,
-            W extends RESTBaseEntityV1<?, ?, ?>,
-            C extends RESTBaseCollectionItemV1<?, ?, ?>,
-            D extends RESTBaseEntityV1<D, E, F>,
-            E extends RESTBaseCollectionV1<D, E, F>,
-            F extends RESTBaseCollectionItemV1<D, E, F>>
+        T extends RESTBaseEntityV1<?, ?, ?>,
+        W extends RESTBaseEntityV1<?, ?, ?>,
+        C extends RESTBaseCollectionItemV1<?, ?, ?>,
+        D extends RESTBaseEntityV1<D, E, F>,
+        E extends RESTBaseCollectionV1<D, E, F>,
+        F extends RESTBaseCollectionItemV1<D, E, F>>
         extends BaseChildrenComponent<T, C, D, E, F>
         implements BaseDetailedChildrenPresenterInterface<T, W, C, D, E, F> {
 
@@ -59,8 +59,9 @@ abstract public class BaseDetailedChildrenPresenter<
     /**
      * An empty implementation of the extended bind method. Classes extending BaseDetailedChildrenPresenter should implement
      * bindChildrenExtended().
+     *
      * @param topicId
-     * @param pageId The history token of the page
+     * @param pageId  The history token of the page
      */
     public final void bindChildrenExtended(final int topicId, final String pageId) {
         throw new UnsupportedOperationException("bindChildrenExtended() is not supported. Use bindDetailedChildren() instead.");
@@ -102,7 +103,7 @@ abstract public class BaseDetailedChildrenPresenter<
             @Override
             public void onResize(final ResizeEvent event) {
                 Preferences.INSTANCE.saveSetting(preferencesKey,
-                    BaseDetailedChildrenPresenter.this.display.getSplit().getSplitPosition(BaseDetailedChildrenPresenter.this.display.getPossibleChildrenResultsPanel()) + "");
+                        BaseDetailedChildrenPresenter.this.display.getSplit().getSplitPosition(BaseDetailedChildrenPresenter.this.display.getPossibleChildrenResultsPanel()) + "");
             }
         });
     }
