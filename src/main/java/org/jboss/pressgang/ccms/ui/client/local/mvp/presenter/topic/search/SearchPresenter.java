@@ -38,6 +38,8 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
         PushButton getSearchTopics();
 
         PushButton getFilters();
+
+        PushButton getLocales();
     }
 
     public static final String HISTORY_TOKEN = "SearchView";

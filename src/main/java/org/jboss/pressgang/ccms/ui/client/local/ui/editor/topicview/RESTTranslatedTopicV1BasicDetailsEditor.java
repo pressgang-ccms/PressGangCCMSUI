@@ -1,10 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview;
 
 import com.google.gwt.editor.client.Editor;
-import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimpleIntegerBox;
-import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -21,9 +18,10 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
     private final SimpleIntegerBox id = new SimpleIntegerBox();
     private final SimpleIntegerBox topicRevision = new SimpleIntegerBox();
     private final SimpleIntegerBox topicId = new SimpleIntegerBox();
-    private final TextArea locale = new TextArea();
+    private final TextBox topicTitle = new TextBox();
+    private final TextBox locale = new TextBox();
 
-    public TextArea localeEditor() {
+    public TextBox localeEditor() {
         return locale;
     }
 
@@ -33,6 +31,10 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
 
     public SimpleIntegerBox topicRevisionEditor() {
         return topicRevision;
+    }
+
+    public TextBox topicTitleEditor() {
+        return topicTitle;
     }
 
     public SimpleIntegerBox idEditor() {
@@ -51,16 +53,20 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
 
 
         int row = 0;
-        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicID()));
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TranslatedTopicID()));
         this.setWidget(row, 1, id);
 
         ++row;
-        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicRevision()));
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicID()));
         this.setWidget(row, 1, topicId);
 
         ++row;
-        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicTitle()));
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicRevision()));
         this.setWidget(row, 1, topicRevision);
+
+        ++row;
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicTitle()));
+        this.setWidget(row, 1, topicTitle);
 
         ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLocale()));
@@ -70,9 +76,9 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
             this.getCellFormatter().addStyleName(i, 0, CSSConstants.TOPIC_VIEW_LABEL);
         }
 
-        for (int i = 0; i < ROWS - 1; ++i) {
+        for (int i = 0; i < ROWS; ++i) {
             this.getCellFormatter().addStyleName(i, 1, CSSConstants.TOPIC_VIEW_DETAIL);
         }
-        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.TOPIC_VIEW_DESCRIPTION_DETAIL);
+
     }
 }

@@ -32,6 +32,8 @@ public class SearchFieldPresenter extends BaseTemplatePresenter implements BaseT
         SearchUIFields getSearchUIFields();
 
         PushButton getFilters();
+
+        PushButton getLocales();
     }
 
     @Inject

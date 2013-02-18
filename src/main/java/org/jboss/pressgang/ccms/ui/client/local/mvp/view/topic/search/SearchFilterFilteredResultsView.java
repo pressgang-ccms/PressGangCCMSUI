@@ -22,6 +22,7 @@ public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<RES
     private final PushButton tagsSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Fields());
     private final Label filters = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Filters());
+    private final PushButton locales = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Locales());
 
     private final TextColumn<RESTFilterCollectionItemV1> idColumn = new TextColumn<RESTFilterCollectionItemV1>() {
         @Override
@@ -58,6 +59,11 @@ public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<RES
         return fields;
     }
 
+    @Override
+    public PushButton getLocales() {
+        return locales;
+    }
+
     public SearchFilterFilteredResultsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Filters(), PressGangCCMSUI.INSTANCE.CreateFilter());
 
@@ -73,6 +79,7 @@ public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<RES
         addActionButton(searchTopics);
         addActionButton(tagsSearch);
         addActionButton(fields);
+        addActionButton(locales);
         addActionButton(filters);
         addActionButton(getCreate());
     }

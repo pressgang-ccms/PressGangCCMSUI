@@ -1,6 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.search;
 
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchTagsFieldsAndFiltersPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.topics.SearchTagsFieldsAndFiltersPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.WaitingDialog;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;

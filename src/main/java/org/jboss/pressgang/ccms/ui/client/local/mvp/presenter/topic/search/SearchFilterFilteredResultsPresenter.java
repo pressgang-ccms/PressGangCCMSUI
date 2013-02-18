@@ -42,6 +42,8 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsCom
         PushButton getTagsSearch();
 
         PushButton getFields();
+
+        PushButton getLocales();
     }
 
     /**

@@ -1,41 +1,43 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.search;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFieldPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFilterPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchLocalePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchFieldEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.filter.RESTFilterV1BasicDetailsEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUILocaleEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.locale.SearchUILocales;
+import org.jetbrains.annotations.NotNull;
 
-public class SearchFieldView extends BaseTemplateView implements SearchFieldPresenter.Display {
+import javax.enterprise.context.Dependent;
+import java.util.List;
+
+/**
+ * The search locales view.
+ */
+@Dependent
+public class SearchLocalesView extends BaseTemplateView implements SearchLocalePresenter.Display {
 
     /**
      * The GWT Editor Driver
      */
-    private final SearchFieldPresenterDriver driver = GWT.create(SearchFieldPresenterDriver.class);
-    /**
-     * The UI hierarchy
-     */
-    private final SearchUIFields searchUIFields = new SearchUIFields();
+    private final SearchLocalePresenter.LocalesPresenterDriver driver = GWT.create(SearchLocalePresenter.LocalesPresenterDriver.class);
 
     private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
     private final PushButton tagsSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton filters = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Filters());
-    private final PushButton locales = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Locales());
-    private final Label fields = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Fields());
+    private final PushButton fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Fields());
+    private final Label locales = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Locales());
 
     @Override
-    public SearchFieldPresenterDriver getDriver() {
-        return driver;
-    }
-
-    @Override
-    public SearchUIFields getSearchUIFields() {
-        return searchUIFields;
+    public Label getSearchLocales() {
+        return locales;
     }
 
     @Override
@@ -53,34 +55,24 @@ public class SearchFieldView extends BaseTemplateView implements SearchFieldPres
         return filters;
     }
 
-    @Override
-    public PushButton getLocales() {
-        return locales;
-    }
-
-    public SearchFieldView() {
+    public SearchLocalesView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchFields());
-
-        /* Build the action bar icons */
-        addActionButton(searchTopics);
-        addActionButton(tagsSearch);
-        addActionButton(fields);
-        addActionButton(locales);
-        addActionButton(filters);
     }
 
     @Override
-    public void display(final RESTFilterV1 filter, final boolean readOnly) {
-        searchUIFields.initialize(filter);
+    public void display(@NotNull final  List<String> entity, final boolean readonly) {
         /* SearchUIProjectsEditor is a grid */
-        final SearchFieldEditor editor = new SearchFieldEditor();
+        final SearchUILocaleEditor editor = new SearchUILocaleEditor();
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */
-        driver.edit(searchUIFields);
+        driver.edit(new SearchUILocales(entity));
         /* Add the projects */
         this.getPanel().setWidget(editor);
     }
 
-
+    @Override
+    public SimpleBeanEditorDriver<SearchUILocales, SearchUILocaleEditor> getDriver() {
+        return driver;
+    }
 }

@@ -19,6 +19,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
     private final Label tags = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Fields());
     private final PushButton filters = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Filters());
+    private final PushButton locales = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Locales());
 
     /**
      * The GWT Editor Driver
@@ -57,6 +58,11 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
     @Override
     public PushButton getFilters() {
         return filters;
+    }
+
+    @Override
+    public PushButton getLocales() {
+        return locales;
     }
 
     public SearchView() {

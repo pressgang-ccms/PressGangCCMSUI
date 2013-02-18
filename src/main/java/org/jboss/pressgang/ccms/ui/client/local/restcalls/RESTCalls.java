@@ -9,7 +9,14 @@ import org.jboss.pressgang.ccms.rest.v1.collections.*;
 import org.jboss.pressgang.ccms.rest.v1.constants.RESTv1Constants;
 import org.jboss.pressgang.ccms.rest.v1.entities.*;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class provides a standard way to call the REST server and respond to the various success and failure paths.
@@ -17,6 +24,13 @@ import org.jetbrains.annotations.NotNull;
  * @author Matthew Casperson
  */
 public final class RESTCalls {
+
+    private static final String LINE_BREAK_ESCAPED = "\\n";
+    private static final String CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED = "\\r\\n";
+    private static final String LINE_BREAK = "\n";
+    private static final String CARRIAGE_RETURN_AND_LINE_BREAK = "\r\n";
+    private static final String COMMA = ",";
+
     /**
      * A topic with expanded revisions
      */
@@ -650,5 +664,35 @@ public final class RESTCalls {
                 createRestMethod(callback).getJSONImagesWithQuery(new PathSegmentImpl(queryString), expand);
             }
         });
+    }
+
+    /**
+     * Retrieve a list of locales from the server.
+     *
+     * @param loadedCallback The callback to call when the locales are loaded
+     */
+    public static void populateLocales(@NotNull final StringListLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display) {
+
+            final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+                    display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
+                @Override
+                public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
+                            /* Get the list of locales from the StringConstant */
+                    final List<String> locales = new LinkedList<String>(Arrays.asList(retValue.getValue()
+                            .replaceAll(CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED, "").replaceAll(LINE_BREAK_ESCAPED, "")
+                            .replaceAll(" ", "").split(COMMA)));
+
+                            /* Clean the list */
+                    while (locales.contains("")) {
+                        locales.remove("");
+                    }
+
+                    Collections.sort(locales);
+
+                    loadedCallback.stringListLoaded(locales);
+                }
+            });
+
+            RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
     }
 }

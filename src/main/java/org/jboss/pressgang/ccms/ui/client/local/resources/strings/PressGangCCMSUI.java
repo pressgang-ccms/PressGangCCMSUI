@@ -42,6 +42,8 @@ public interface PressGangCCMSUI extends Constants {
 
     String SearchFields();
 
+    String SearchLocales();
+
     String Common();
 
     String Troubleshooting();
@@ -61,6 +63,8 @@ public interface PressGangCCMSUI extends Constants {
     String TopicView();
 
     String TopicID();
+
+    String TranslatedTopicID();
 
     String TopicIDs();
 

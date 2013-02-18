@@ -143,9 +143,10 @@ public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearc
 
     @Override
     protected void postEnableAndDisableActionButtons(BaseTemplateViewInterface displayedView) {
-        /*
-            Nothing needs to be done here
-        */
+        this.getDisplay().replaceTopActionButton(this.getDisplay().getFieldsDown(), this.getDisplay().getFields());
+        if (displayedView == this.translatedTopicPresenter.getDisplay()) {
+            getDisplay().replaceTopActionButton(getDisplay().getFields(), getDisplay().getFieldsDown());
+        }
     }
 
     @Override

@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base;
+package org.jboss.pressgang.ccms.ui.client.local.restcalls;
 
 import java.util.List;
 

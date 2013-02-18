@@ -40,7 +40,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresent
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.GetCurrentTopic;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringListLoaded;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringMapLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseSearchResultsAndTopicPresenter;
@@ -95,11 +95,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
      * The history token.
      */
     public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
-    private static final String LINE_BREAK_ESCAPED = "\\n";
-    private static final String CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED = "\\r\\n";
-    private static final String LINE_BREAK = "\n";
-    private static final String CARRIAGE_RETURN_AND_LINE_BREAK = "\r\n";
-    private static final String COMMA = ",";
+
 
     /**
      * A Logger
@@ -218,7 +214,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
             }
         });
 
-        populateLocales(new StringListLoaded() {
+        RESTCalls.populateLocales(new StringListLoaded() {
             @Override
             public void stringListLoaded(final List<String> locales) {
                 SearchResultsAndTopicPresenter.this.locales = locales;
@@ -226,7 +222,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
                 displayNewTopic();
                 displayInitialTopic(getNewEntityCallback);
             }
-        });
+        }, display);
 
         loadDefaultLocale(new StringLoaded() {
             @Override
@@ -303,6 +299,13 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.postEnableAndDisableActionButtons()");
 
             this.getDisplay().replaceTopActionButton(this.getDisplay().getHistoryDown(), this.getDisplay().getHistory());
+            this.getDisplay().replaceTopActionButton(this.getDisplay().getFieldsDown(), this.getDisplay().getFields());
+
+            if (displayedView == this.topicViewComponent.getDisplay()) {
+                getDisplay().replaceTopActionButton(getDisplay().getFields(), getDisplay().getFieldsDown());
+            } else if (displayedView == this.topicRevisionsComponent.getDisplay()) {
+                this.getDisplay().replaceTopActionButton(this.getDisplay().getHistory(), this.getDisplay().getHistoryDown());
+            }
 
             if (isReadOnlyMode()) {
                 this.getDisplay().getHistory().addStyleName(CSSConstants.ALERT_BUTTON);
@@ -310,9 +313,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
                 this.getDisplay().getHistory().removeStyleName(CSSConstants.ALERT_BUTTON);
             }
 
-            if (displayedView == this.topicRevisionsComponent.getDisplay()) {
-                this.getDisplay().replaceTopActionButton(this.getDisplay().getHistory(), this.getDisplay().getHistoryDown());
-            }
+
 
             this.getDisplay().getSave().setEnabled(!isReadOnlyMode());
 
@@ -1043,40 +1044,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
         }
     }
 
-    /**
-     * Retrieve a list of locales from the server.
-     *
-     * @param loadedCallback The callback to call when the locales are loaded
-     */
-    private void populateLocales(@NotNull final StringListLoaded loadedCallback) {
-        try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.populateLocales()");
 
-            final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
-                    display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
-                @Override
-                public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
-                            /* Get the list of locales from the StringConstant */
-                    final List<String> locales = new LinkedList<String>(Arrays.asList(retValue.getValue()
-                            .replaceAll(CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED, "").replaceAll(LINE_BREAK_ESCAPED, "")
-                            .replaceAll(" ", "").split(COMMA)));
-
-                            /* Clean the list */
-                    while (locales.contains("")) {
-                        locales.remove("");
-                    }
-
-                    Collections.sort(locales);
-
-                    loadedCallback.stringListLoaded(locales);
-                }
-            });
-
-            RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
-        } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.populateLocales()");
-        }
-    }
 
     private void loadDefaultLocale(@NotNull final StringLoaded loadedCallback) {
         try {
