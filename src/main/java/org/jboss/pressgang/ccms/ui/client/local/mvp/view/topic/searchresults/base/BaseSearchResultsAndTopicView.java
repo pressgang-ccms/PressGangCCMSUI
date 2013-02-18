@@ -358,5 +358,12 @@ public abstract class BaseSearchResultsAndTopicView<
         postPopulateTopActionBar();
     }
 
+    /**
+     * Called from populateTopActionBar(), which is in turn called from the constructor. If any buttons
+     * need to be added here they should have been initialized in the extending class when they were
+     * defined (i.e. as final initialized fields), because any called to super() from an extending
+     * class is going to call this function before the extending constructor can initialize
+     * any variables.
+     */
     protected abstract void postPopulateTopActionBar();
 }

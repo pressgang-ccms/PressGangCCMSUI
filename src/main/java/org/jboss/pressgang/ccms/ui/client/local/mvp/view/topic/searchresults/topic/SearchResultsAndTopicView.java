@@ -54,7 +54,6 @@ public class SearchResultsAndTopicView extends
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
     }
 
-
     /**
      * This method enables or disables the save button based on the read only state, and also highlights the history button if
      * needed.
