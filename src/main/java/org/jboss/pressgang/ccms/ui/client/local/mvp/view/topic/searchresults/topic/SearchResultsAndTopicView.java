@@ -27,8 +27,6 @@ public class SearchResultsAndTopicView extends
 
     private final Label historyDown;
 
-
-
     @Override
     public Label getHistoryDown() {
         return historyDown;
@@ -63,7 +61,10 @@ public class SearchResultsAndTopicView extends
      */
     @Override
     protected void postPopulateTopActionBar() {
-        this.getSave().setEnabled(!readOnly);
+        this.addActionButton(history);
+        this.addActionButton(save);
+
+        save.setEnabled(!readOnly);
 
         if (readOnly) {
             this.getHistory().addStyleName(CSSConstants.ALERT_BUTTON);

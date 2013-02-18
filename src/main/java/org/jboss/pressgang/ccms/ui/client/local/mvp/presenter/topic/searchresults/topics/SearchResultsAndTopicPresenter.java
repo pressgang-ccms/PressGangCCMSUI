@@ -29,6 +29,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTag
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
@@ -78,6 +79,14 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
         RESTTopicCollectionV1,
         RESTTopicCollectionItemV1,
         RESTTopicV1BasicDetailsEditor> {
+
+
+
+    @Inject private SearchResultsPresenter searchResultsComponent;
+    @Inject private TopicPresenter topicViewComponent;
+    @Inject private TopicRevisionsPresenter topicRevisionsComponent;
+    @Inject private Display display;
+
 
     /**
      * The history token.
@@ -135,11 +144,6 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
     private boolean localesLoaded = false;
     /** true after the topics have been loaded */
     private boolean topicListLoaded = false;
-
-    @Inject private SearchResultsPresenter searchResultsComponent;
-    @Inject private TopicPresenter topicViewComponent;
-    @Inject private TopicRevisionsPresenter topicRevisionsComponent;
-    @Inject private Display display;
 
     @Override
     protected Display getDisplay() {
