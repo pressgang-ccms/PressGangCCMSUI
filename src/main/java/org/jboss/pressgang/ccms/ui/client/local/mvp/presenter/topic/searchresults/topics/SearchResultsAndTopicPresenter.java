@@ -57,6 +57,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import javax.enterprise.context.Dependent;
@@ -141,7 +142,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
     @Inject private Display display;
 
     @Override
-    protected final Display getDisplay() {
+    protected Display getDisplay() {
         return display;
     }
 
@@ -150,8 +151,12 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
         return searchResultsComponent;
     }
 
+    public SearchResultsAndTopicPresenter() {
+        LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter()");
+    }
+
     @Override
-    protected void postBindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
+    protected void postBindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @Nullable final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTTopicV1> getNewEntityCallback = new GetNewEntityCallback<RESTTopicV1>() {
 
@@ -280,336 +285,360 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
     }
 
     @Override
-    protected void postEnableAndDisableActionButtons(BaseTemplateViewInterface displayedView) {
-        this.getDisplay().replaceTopActionButton(this.getDisplay().getHistoryDown(), this.getDisplay().getHistory());
+    protected void postEnableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView) {
+        try {
+            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.postEnableAndDisableActionButtons()");
 
-        if (displayedView == this.topicRevisionsComponent.getDisplay()) {
-            this.getDisplay().replaceTopActionButton(this.getDisplay().getHistory(), this.getDisplay().getHistoryDown());
+            this.getDisplay().replaceTopActionButton(this.getDisplay().getHistoryDown(), this.getDisplay().getHistory());
+
+            if (displayedView == this.topicRevisionsComponent.getDisplay()) {
+                this.getDisplay().replaceTopActionButton(this.getDisplay().getHistory(), this.getDisplay().getHistoryDown());
+            }
+
+            this.getDisplay().getSave().setEnabled(!isReadOnlyMode());
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.postEnableAndDisableActionButtons()");
         }
-
-        this.getDisplay().getSave().setEnabled(!isReadOnlyMode());
     }
 
-    protected void postAfterSwitchView(final BaseTemplateViewInterface displayedView) {
-        /* Set the projects combo box as the focused element */
-        if (displayedView == this.getTopicTagsComponent().getDisplay() && getTopicTagsComponent().getDisplay().getProjectsList().isAttached()) {
-            getTopicTagsComponent().getDisplay().getProjectsList().getElement().focus();
-        }
+    protected void postAfterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
+        try {
+            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.postAfterSwitchView()");
 
-            /* While editing the XML, we need to setup a refresh of the rendered view */
-        if (displayedView == this.getTopicXMLComponent().getDisplay() && this.getDisplay().getSplitType() != SplitType.NONE && !isReadOnlyMode()) {
-            timer.scheduleRepeating(Constants.REFRESH_RATE);
-        } else {
-            timer.cancel();
-            refreshRenderedView(true);
+            /* Set the projects combo box as the focused element */
+            if (displayedView == this.getTopicTagsComponent().getDisplay() && getTopicTagsComponent().getDisplay().getProjectsList().isAttached()) {
+                getTopicTagsComponent().getDisplay().getProjectsList().getElement().focus();
+            }
+
+                /* While editing the XML, we need to setup a refresh of the rendered view */
+            if (displayedView == this.getTopicXMLComponent().getDisplay() && this.getDisplay().getSplitType() != SplitType.NONE && !isReadOnlyMode()) {
+                timer.scheduleRepeating(Constants.REFRESH_RATE);
+            } else {
+                timer.cancel();
+                refreshRenderedView(true);
+            }
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.postAfterSwitchView()");
         }
     }
 
     @Override
     protected void postBindActionButtons() {
-        /* Build up a click handler to save the topic */
-        final ClickHandler saveClickHandler = new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
+        try {
+            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.postAfterSwitchView()");
 
-                try {
-                    LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bindActionButtons() saveClickHandler.onClick()");
+            /* Build up a click handler to save the topic */
+            final ClickHandler saveClickHandler = new ClickHandler() {
+                @Override
+                public void onClick(final ClickEvent event) {
 
-                    if (hasUnsavedChanges()) {
-                            /*
-                                Default to using the major change for new topics
-                             */
-                        if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null &&
-                                getSearchResultsComponent().getProviderData().getDisplayedItem().returnIsAddItem())
-                        {
-                            display.getMessageLogDialog().getMajorChange().setValue(true);
-                            display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.InitialTopicCreation());
-                        }
+                    try {
+                        LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bindActionButtons() saveClickHandler.onClick()");
 
-                        display.getMessageLogDialog().getDialogBox().center();
-                        display.getMessageLogDialog().getDialogBox().show();
-                    } else {
-                        Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
-                    }
-                } finally {
-                    LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bindActionButtons() saveClickHandler.onClick()");
-                }
-            }
-        };
-
-        final ClickHandler messageLogDialogOK = new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-                try {
-                    LOGGER.log(Level.INFO,
-                            "ENTER SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick()");
-
-                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
-
-                        final String message = display.getMessageLogDialog().getMessage().getText();
-                        final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
-                                : ServiceConstants.MAJOR_CHANGE);
-
-                            /* Sync any changes back to the underlying object */
-                        flushChanges();
-
-                             /*
-                             * Create a new instance of the topic, and copy out any updated, added or deleted fields. We don't
-                             * do a clone or send the original object here because a full object will send back a whole lot of
-                             * data that was never modified, wasting bandwidth, and chewing up CPU cycles as Errai serializes
-                             * the data into JSON.
-                             */
-                        final RESTTopicV1 sourceTopic = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
-
-                        final RESTTopicV1 newTopic = new RESTTopicV1();
-                        newTopic.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
-                        newTopic.explicitSetSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
-                        newTopic.explicitSetTags(new RESTTagCollectionV1());
-
-                            /*
-                                Only assign those modified children to the topic that is to be added/updated
-                             */
-                        LOGGER.log(Level.INFO, "Copying modified collections");
-                        newTopic.getProperties().setItems(sourceTopic.getProperties().returnDeletedAddedAndUpdatedCollectionItems());
-                        if (sourceTopic.getSourceUrls_OTM() != null && sourceTopic.getSourceUrls_OTM().getItems() != null) {
-                            newTopic.getSourceUrls_OTM().setItems(sourceTopic.getSourceUrls_OTM().returnDeletedAddedAndUpdatedCollectionItems());
-                        }
-                        newTopic.getTags().setItems(sourceTopic.getTags().returnDeletedAddedAndUpdatedCollectionItems());
-
-                            /*
-                                Assume all the text fields have been updated
-                             */
-                        LOGGER.log(Level.INFO, "Copying modified fields");
-                        newTopic.setId(sourceTopic.getId());
-                        newTopic.explicitSetDescription(sourceTopic.getDescription());
-                        newTopic.explicitSetLocale(sourceTopic.getLocale());
-                        newTopic.explicitSetTitle(sourceTopic.getTitle());
-                        newTopic.explicitSetXml(sourceTopic.getXml());
-
-                        if (getSearchResultsComponent().getProviderData().getDisplayedItem().returnIsAddItem()) {
-                            final BaseRestCallback<RESTTopicV1, Display> addCallback = new BaseRestCallback<RESTTopicV1, Display>(
-                                    display,
-                                    new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
-                                        @Override
-                                        public void doSuccessAction(final RESTTopicV1 retValue, final Display display) {
-                                            try {
-                                                LOGGER.log(Level.INFO,
-                                                        "ENTER SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
-
-                                                // Create the topic wrapper
-                                                final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
-                                                topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
-
-                                                // create the topic, and add to the wrapper
-                                                topicCollectionItem.setItem(retValue);
-
-                                                    /* Update the displayed topic */
-                                                getSearchResultsComponent().getProviderData().setDisplayedItem(topicCollectionItem.clone(true));
-
-                                                    /*
-                                                        Two things can happen to the selected item at this point. Either we are in the
-                                                        "create topic" mode, in which we simply add the new topics to the data provider, and
-                                                        never refresh from the database. In this case, the selected item and the item
-                                                        in the data provider are the same, and always linked.
-
-                                                        The second mode is where we have created a topic when already displaying a query.
-                                                        In this case the selected item will be relinked in the relinkSelectedItem() method,
-                                                        or it will remain referencing the returned value here if the query doesn't actually
-                                                        return the topic that was saved.
-                                                     */
-                                                getSearchResultsComponent().getProviderData().setSelectedItem(topicCollectionItem);
-
-                                                lastXML = null;
-
-                                                if (startWithNewTopic) {
-                                                    LOGGER.log(Level.INFO, "Adding new topic to static list");
-                                                    getSearchResultsComponent().getProviderData().getItems().add(topicCollectionItem);
-                                                    getSearchResultsComponent().getProviderData().setSize(getSearchResultsComponent().getProviderData().getItems().size());
-                                                    updateDisplayAfterSave(false);
-                                                } else {
-                                                        /* Update the selected topic */
-                                                    LOGGER.log(Level.INFO, "Redisplaying query");
-                                                    updateDisplayAfterSave(true);
-                                                }
-
-                                                LOGGER.log(Level.INFO, "Refreshing editor");
-                                                if (getTopicXMLComponent().getDisplay().getEditor() != null) {
-                                                    getTopicXMLComponent().getDisplay().getEditor().redisplay();
-                                                }
-
-                                                Window.alert(PressGangCCMSUI.INSTANCE.TopicSaveSuccessWithID() + " " + retValue.getId());
-                                            } finally {
-                                                LOGGER.log(Level.INFO,
-                                                        "EXIT SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
-                                            }
-                                        }
-                                    }, new BaseRestCallback.FailureAction<Display>() {
-                                @Override
-                                public void doFailureAction(final Display display) {
-                                    getTopicXMLComponent().getDisplay().getEditor().redisplay();
-                                }
+                        if (hasUnsavedChanges()) {
+                                /*
+                                    Default to using the major change for new topics
+                                 */
+                            if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null &&
+                                    getSearchResultsComponent().getProviderData().getDisplayedItem().returnIsAddItem())
+                            {
+                                display.getMessageLogDialog().getMajorChange().setValue(true);
+                                display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.InitialTopicCreation());
                             }
-                            );
 
-                            RESTCalls.createTopic(addCallback, newTopic, message, flag, ServiceConstants.NULL_USER_ID.toString());
+                            display.getMessageLogDialog().getDialogBox().center();
+                            display.getMessageLogDialog().getDialogBox().show();
                         } else {
-                            final BaseRestCallback<RESTTopicV1, Display> updateCallback = new BaseRestCallback<RESTTopicV1, Display>(
-                                    display,
-                                    new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
-                                        @Override
-                                        public void doSuccessAction(final RESTTopicV1 retValue, final Display display) {
-                                            try {
-                                                LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - Existing Topic");
+                            Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                        }
+                    } finally {
+                        LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bindActionButtons() saveClickHandler.onClick()");
+                    }
+                }
+            };
 
-                                                boolean overwroteChanges = false;
-                                                final Integer originalRevision = getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getRevision();
+            final ClickHandler messageLogDialogOK = new ClickHandler() {
+                @Override
+                public void onClick(final ClickEvent event) {
+                    try {
+                        LOGGER.log(Level.INFO,
+                                "ENTER SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick()");
 
-                                                if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null) {
-                                                    Collections.sort(retValue.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
+                        if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
+
+                            final String message = display.getMessageLogDialog().getMessage().getText();
+                            final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
+                                    : ServiceConstants.MAJOR_CHANGE);
+
+                                /* Sync any changes back to the underlying object */
+                            flushChanges();
+
+                                 /*
+                                 * Create a new instance of the topic, and copy out any updated, added or deleted fields. We don't
+                                 * do a clone or send the original object here because a full object will send back a whole lot of
+                                 * data that was never modified, wasting bandwidth, and chewing up CPU cycles as Errai serializes
+                                 * the data into JSON.
+                                 */
+                            final RESTTopicV1 sourceTopic = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
+
+                            final RESTTopicV1 newTopic = new RESTTopicV1();
+                            newTopic.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
+                            newTopic.explicitSetSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
+                            newTopic.explicitSetTags(new RESTTagCollectionV1());
+
+                                /*
+                                    Only assign those modified children to the topic that is to be added/updated
+                                 */
+                            LOGGER.log(Level.INFO, "Copying modified collections");
+                            newTopic.getProperties().setItems(sourceTopic.getProperties().returnDeletedAddedAndUpdatedCollectionItems());
+                            if (sourceTopic.getSourceUrls_OTM() != null && sourceTopic.getSourceUrls_OTM().getItems() != null) {
+                                newTopic.getSourceUrls_OTM().setItems(sourceTopic.getSourceUrls_OTM().returnDeletedAddedAndUpdatedCollectionItems());
+                            }
+                            newTopic.getTags().setItems(sourceTopic.getTags().returnDeletedAddedAndUpdatedCollectionItems());
+
+                                /*
+                                    Assume all the text fields have been updated
+                                 */
+                            LOGGER.log(Level.INFO, "Copying modified fields");
+                            newTopic.setId(sourceTopic.getId());
+                            newTopic.explicitSetDescription(sourceTopic.getDescription());
+                            newTopic.explicitSetLocale(sourceTopic.getLocale());
+                            newTopic.explicitSetTitle(sourceTopic.getTitle());
+                            newTopic.explicitSetXml(sourceTopic.getXml());
+
+                            if (getSearchResultsComponent().getProviderData().getDisplayedItem().returnIsAddItem()) {
+                                final BaseRestCallback<RESTTopicV1, Display> addCallback = new BaseRestCallback<RESTTopicV1, Display>(
+                                        display,
+                                        new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
+                                            @Override
+                                            public void doSuccessAction(final RESTTopicV1 retValue, final Display display) {
+                                                try {
+                                                    LOGGER.log(Level.INFO,
+                                                            "ENTER SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
+
+                                                    // Create the topic wrapper
+                                                    final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
+                                                    topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+
+                                                    // create the topic, and add to the wrapper
+                                                    topicCollectionItem.setItem(retValue);
+
+                                                        /* Update the displayed topic */
+                                                    getSearchResultsComponent().getProviderData().setDisplayedItem(topicCollectionItem.clone(true));
 
                                                         /*
-                                                            If no changes were made to the topic itself (i.e. we just update some children),
-                                                            then the revision number will not change. So if what is sent back has the same
-                                                            revision number as the topic we were editing, then we have not overwritten background
-                                                            changes.
+                                                            Two things can happen to the selected item at this point. Either we are in the
+                                                            "create topic" mode, in which we simply add the new topics to the data provider, and
+                                                            never refresh from the database. In this case, the selected item and the item
+                                                            in the data provider are the same, and always linked.
 
-                                                            Note that this should not happen because we don't actually just update the property tags;
-                                                            any change to the property tag value results in the mapping being deleted and recreated.
+                                                            The second mode is where we have created a topic when already displaying a query.
+                                                            In this case the selected item will be relinked in the relinkSelectedItem() method,
+                                                            or it will remain referencing the returned value here if the query doesn't actually
+                                                            return the topic that was saved.
+                                                         */
+                                                    getSearchResultsComponent().getProviderData().setSelectedItem(topicCollectionItem);
 
-                                                            The code is left here as a reminder that some additional checking might be required with
-                                                            new children that are exposed through the UI.
-                                                        */
-                                                    if (retValue.getRevisions().getItems().size() >= 1) {
-                                                        final Integer overwriteRevision = retValue.getRevisions().getItems()
-                                                                .get(retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
+                                                    lastXML = null;
 
-                                                        LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " new revision: " + overwriteRevision);
-
-                                                        overwroteChanges = !originalRevision.equals(overwriteRevision);
+                                                    if (startWithNewTopic) {
+                                                        LOGGER.log(Level.INFO, "Adding new topic to static list");
+                                                        getSearchResultsComponent().getProviderData().getItems().add(topicCollectionItem);
+                                                        getSearchResultsComponent().getProviderData().setSize(getSearchResultsComponent().getProviderData().getItems().size());
+                                                        updateDisplayAfterSave(false);
+                                                    } else {
+                                                            /* Update the selected topic */
+                                                        LOGGER.log(Level.INFO, "Redisplaying query");
+                                                        updateDisplayAfterSave(true);
                                                     }
 
-                                                        /*
-                                                            Otherwise we need to make sure that the second last revision matches the revision
-                                                             of the topic we were editing.
-                                                         */
-                                                    if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2)
-                                                    {
-                                                            /* Get the second last revision (the last one is the current one) */
-                                                        final Integer overwriteRevision = retValue.getRevisions().getItems()
-                                                                .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
+                                                    LOGGER.log(Level.INFO, "Refreshing editor");
+                                                    if (getTopicXMLComponent().getDisplay().getEditor() != null) {
+                                                        getTopicXMLComponent().getDisplay().getEditor().redisplay();
+                                                    }
 
-                                                        LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " last revision: " + overwriteRevision);
+                                                    Window.alert(PressGangCCMSUI.INSTANCE.TopicSaveSuccessWithID() + " " + retValue.getId());
+                                                } finally {
+                                                    LOGGER.log(Level.INFO,
+                                                            "EXIT SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
+                                                }
+                                            }
+                                        }, new BaseRestCallback.FailureAction<Display>() {
+                                    @Override
+                                    public void doFailureAction(final Display display) {
+                                        getTopicXMLComponent().getDisplay().getEditor().redisplay();
+                                    }
+                                }
+                                );
+
+                                RESTCalls.createTopic(addCallback, newTopic, message, flag, ServiceConstants.NULL_USER_ID.toString());
+                            } else {
+                                final BaseRestCallback<RESTTopicV1, Display> updateCallback = new BaseRestCallback<RESTTopicV1, Display>(
+                                        display,
+                                        new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
+                                            @Override
+                                            public void doSuccessAction(final RESTTopicV1 retValue, final Display display) {
+                                                try {
+                                                    LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - Existing Topic");
+
+                                                    boolean overwroteChanges = false;
+                                                    final Integer originalRevision = getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getRevision();
+
+                                                    if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null) {
+                                                        Collections.sort(retValue.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
 
                                                             /*
-                                                             * if the second last revision doesn't match the revision of the topic when editing was
-                                                             * started, then we have overwritten someone elses changes
+                                                                If no changes were made to the topic itself (i.e. we just update some children),
+                                                                then the revision number will not change. So if what is sent back has the same
+                                                                revision number as the topic we were editing, then we have not overwritten background
+                                                                changes.
+
+                                                                Note that this should not happen because we don't actually just update the property tags;
+                                                                any change to the property tag value results in the mapping being deleted and recreated.
+
+                                                                The code is left here as a reminder that some additional checking might be required with
+                                                                new children that are exposed through the UI.
+                                                            */
+                                                        if (retValue.getRevisions().getItems().size() >= 1) {
+                                                            final Integer overwriteRevision = retValue.getRevisions().getItems()
+                                                                    .get(retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
+
+                                                            LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " new revision: " + overwriteRevision);
+
+                                                            overwroteChanges = !originalRevision.equals(overwriteRevision);
+                                                        }
+
+                                                            /*
+                                                                Otherwise we need to make sure that the second last revision matches the revision
+                                                                 of the topic we were editing.
                                                              */
-                                                        overwroteChanges = !originalRevision.equals(overwriteRevision);
+                                                        if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2)
+                                                        {
+                                                                /* Get the second last revision (the last one is the current one) */
+                                                            final Integer overwriteRevision = retValue.getRevisions().getItems()
+                                                                    .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
+
+                                                            LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " last revision: " + overwriteRevision);
+
+                                                                /*
+                                                                 * if the second last revision doesn't match the revision of the topic when editing was
+                                                                 * started, then we have overwritten someone elses changes
+                                                                 */
+                                                            overwroteChanges = !originalRevision.equals(overwriteRevision);
+                                                        }
+                                                    }
+
+                                                        /* Update the displayed topic */
+                                                    retValue.cloneInto(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem(),
+                                                            true);
+                                                        /* Update the selected topic */
+                                                    retValue.cloneInto(getSearchResultsComponent().getProviderData().getSelectedItem().getItem(), true);
+
+                                                    lastXML = null;
+
+                                                    updateDisplayAfterSave(false);
+
+                                                    if (overwroteChanges) {
+                                                        Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
+                                                    } else {
+                                                        Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                                                    }
+                                                } finally {
+                                                    LOGGER.log(Level.INFO,
+                                                            "EXIT SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - Existing Topic");
+
+                                                    if (getTopicXMLComponent().getDisplay().getEditor() != null) {
+                                                        getTopicXMLComponent().getDisplay().getEditor().redisplay();
                                                     }
                                                 }
-
-                                                    /* Update the displayed topic */
-                                                retValue.cloneInto(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem(),
-                                                        true);
-                                                    /* Update the selected topic */
-                                                retValue.cloneInto(getSearchResultsComponent().getProviderData().getSelectedItem().getItem(), true);
-
-                                                lastXML = null;
-
-                                                updateDisplayAfterSave(false);
-
-                                                if (overwroteChanges) {
-                                                    Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
-                                                } else {
-                                                    Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                                                }
-                                            } finally {
-                                                LOGGER.log(Level.INFO,
-                                                        "EXIT SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - Existing Topic");
-
-                                                if (getTopicXMLComponent().getDisplay().getEditor() != null) {
-                                                    getTopicXMLComponent().getDisplay().getEditor().redisplay();
-                                                }
                                             }
-                                        }
-                                    }, new BaseRestCallback.FailureAction<Display>() {
-                                @Override
-                                public void doFailureAction(final Display display) {
-                                    getTopicXMLComponent().getDisplay().getEditor().redisplay();
+                                        }, new BaseRestCallback.FailureAction<Display>() {
+                                    @Override
+                                    public void doFailureAction(final Display display) {
+                                        getTopicXMLComponent().getDisplay().getEditor().redisplay();
+                                    }
                                 }
+                                );
+
+
+                                RESTCalls.saveTopic(updateCallback, newTopic, message, flag, ServiceConstants.NULL_USER_ID.toString());
                             }
-                            );
-
-
-                            RESTCalls.saveTopic(updateCallback, newTopic, message, flag, ServiceConstants.NULL_USER_ID.toString());
                         }
+                    } finally {
+                        display.getMessageLogDialog().reset();
+                        display.getMessageLogDialog().getDialogBox().hide();
+
+                        LOGGER.log(Level.INFO,
+                                "EXIT SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick()");
                     }
-                } finally {
+                }
+            };
+
+            display.getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
+
+            display.getMessageLogDialog().getCancel().addClickHandler(new ClickHandler() {
+
+                @Override
+                public void onClick(final ClickEvent event) {
                     display.getMessageLogDialog().reset();
                     display.getMessageLogDialog().getDialogBox().hide();
-
-                    LOGGER.log(Level.INFO,
-                            "EXIT SearchResultsAndTopicPresenter.bindActionButtons() messageLogDialogOK.onClick()");
                 }
-            }
-        };
+            });
 
-        display.getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
-
-        display.getMessageLogDialog().getCancel().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(final ClickEvent event) {
-                display.getMessageLogDialog().reset();
-                display.getMessageLogDialog().getDialogBox().hide();
-            }
-        });
-
-        final ClickHandler topicViewClickHandler = new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-                if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
-                    switchView(topicViewComponent.getDisplay());
+            final ClickHandler topicViewClickHandler = new ClickHandler() {
+                @Override
+                public void onClick(final ClickEvent event) {
+                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
+                        switchView(topicViewComponent.getDisplay());
+                    }
                 }
-            }
-        };
+            };
 
-        final ClickHandler topicRevisionsClickHanlder = new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-                if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
-                    switchView(topicRevisionsComponent.getDisplay());
+            final ClickHandler topicRevisionsClickHanlder = new ClickHandler() {
+                @Override
+                public void onClick(final ClickEvent event) {
+                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
+                        switchView(topicRevisionsComponent.getDisplay());
+                    }
                 }
-            }
-        };
+            };
 
-        getDisplay().getSave().addClickHandler(saveClickHandler);
-        getDisplay().getHistory().addClickHandler(topicRevisionsClickHanlder);
-        getDisplay().getFields().addClickHandler(topicViewClickHandler);
+            getDisplay().getSave().addClickHandler(saveClickHandler);
+            getDisplay().getHistory().addClickHandler(topicRevisionsClickHanlder);
+            getDisplay().getFields().addClickHandler(topicViewClickHandler);
 
-        addKeyboardShortcutEvents(getTopicXMLComponent().getDisplay(), display);
+            addKeyboardShortcutEvents(getTopicXMLComponent().getDisplay(), display);
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.postAfterSwitchView()");
+        }
     }
 
     @Override
-    protected void postInitializeViews(final List<BaseTemplateViewInterface> filter) {
-        if (viewIsInFilter(filter, topicViewComponent.getDisplay())) {
-            topicViewComponent.getDisplay().displayTopicDetails(this.getDisplayedTopic(), isReadOnlyMode(), locales);
-        }
+    protected void postInitializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
+        try {
+            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.postInitializeViews()");
 
-        /*
-            The revision display always displays details from the main topic, and not the selected revision.
-        */
-        if (viewIsInFilter(filter, topicRevisionsComponent.getDisplay())) {
-            LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
-            topicRevisionsComponent.getDisplay().display(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem(), isReadOnlyMode());
-        }
+            if (viewIsInFilter(filter, topicViewComponent.getDisplay())) {
+                topicViewComponent.getDisplay().displayTopicDetails(this.getDisplayedTopic(), isReadOnlyMode(), locales);
+            }
 
-        /*
-            Bind logic to the tag buttons
-         */
-        if (viewIsInFilter(filter, getTopicTagsComponent().getDisplay())) {
-            LOGGER.log(Level.INFO, "\tInitializing topic tags view");
-            bindTagEditingButtons();
+            /*
+                The revision display always displays details from the main topic, and not the selected revision.
+            */
+            if (viewIsInFilter(filter, topicRevisionsComponent.getDisplay())) {
+                LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
+                topicRevisionsComponent.getDisplay().display(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem(), isReadOnlyMode());
+            }
+
+            /*
+                Bind logic to the tag buttons
+             */
+            if (viewIsInFilter(filter, getTopicTagsComponent().getDisplay())) {
+                LOGGER.log(Level.INFO, "\tInitializing topic tags view");
+                bindTagEditingButtons();
+            }
+        } finally {
+            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.postInitializeViews()");
         }
     }
 
@@ -638,7 +667,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
     }
 
     @Override
-    public void parseToken(final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
 
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.parseToken()");
@@ -709,7 +738,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
         }
     }
 
-    protected final void beforeSwitchView(final BaseTemplateViewInterface displayedView) {
+    protected void beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
         flushChanges();
     }
 
@@ -1002,7 +1031,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
      *
      * @param loadedCallback The callback to call when the locales are loaded
      */
-    private void populateLocales(final StringListLoaded loadedCallback) {
+    private void populateLocales(@NotNull final StringListLoaded loadedCallback) {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.populateLocales()");
 
@@ -1032,7 +1061,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
         }
     }
 
-    private void loadDefaultLocale(final StringLoaded loadedCallback)
+    private void loadDefaultLocale(@NotNull final StringLoaded loadedCallback)
     {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.loadDefaultLocale()");
@@ -1057,7 +1086,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
      * @param waitDisplay    The view used to notify the user that an ongoing operation is in progress
      * @param loadedCallback The callback to call when the data is loaded
      */
-    private void populateXMLElements(final BaseTemplateViewInterface waitDisplay, final StringListLoaded loadedCallback) {
+    private void populateXMLElements(@NotNull final BaseTemplateViewInterface waitDisplay, @NotNull final StringListLoaded loadedCallback) {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.populateXMLElements()");
 
@@ -1098,7 +1127,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
      * @param waitDisplay    The view used to notify the user that an ongoing operation is in progress
      * @param loadedCallback The callback to call when the data is loaded
      */
-    private void populateXMLTemplates(final BaseTemplateViewInterface waitDisplay, final StringMapLoaded loadedCallback) {
+    private void populateXMLTemplates(@NotNull final BaseTemplateViewInterface waitDisplay, @NotNull final StringMapLoaded loadedCallback) {
         final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
                 waitDisplay, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
             @Override
@@ -1156,7 +1185,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
         RESTCalls.getStringConstant(callback, ServiceConstants.DOCBOOK_TEMPLATES_STRING_CONSTANT_ID);
     }
 
-    private boolean isAnyDialogBoxesOpen(final TopicXMLPresenter.Display topicXMLDisplay) {
+    private boolean isAnyDialogBoxesOpen(@NotNull final TopicXMLPresenter.Display topicXMLDisplay) {
         if (topicXMLDisplay.getXmlTagsDialog().getDialogBox().isShowing()) {
             return true;
         }
@@ -1183,8 +1212,8 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
      * @param display              The main view
      * @param currentTopicCallback Called to get the currently displayed topic
      */
-    private void addKeyboardShortcutEventHandler(final TopicXMLPresenter.Display topicXMLDisplay,
-                                                 final BaseTemplateViewInterface display, final GetCurrentTopic currentTopicCallback) {
+    private void addKeyboardShortcutEventHandler(@NotNull final TopicXMLPresenter.Display topicXMLDisplay,
+                                                 @NotNull final BaseTemplateViewInterface display, @NotNull final GetCurrentTopic currentTopicCallback) {
         final Event.NativePreviewHandler keyboardShortcutPreviewhandler = new Event.NativePreviewHandler() {
             @Override
             public void onPreviewNativeEvent(final Event.NativePreviewEvent event) {
@@ -1291,8 +1320,8 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
      * @param topicXMLDisplay The XML editing view
      * @param display         The main view
      */
-    private void addKeyboardShortcutEvents(final TopicXMLPresenter.Display topicXMLDisplay,
-                                           final BaseTemplateViewInterface display) {
+    private void addKeyboardShortcutEvents(@NotNull final TopicXMLPresenter.Display topicXMLDisplay,
+                                           @NotNull final BaseTemplateViewInterface display) {
         topicXMLDisplay.getXmlTagsDialog().getOK().addClickHandler(new ClickHandler() {
 
             @Override
@@ -1429,32 +1458,32 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
         });
     }
 
-    private void hidePlainTextXMLDialog(final TopicXMLPresenter.Display topicXMLDisplay) {
+    private void hidePlainTextXMLDialog(@NotNull final TopicXMLPresenter.Display topicXMLDisplay) {
         topicXMLDisplay.getPlainTextXMLDialog().getDialogBox().hide();
         topicXMLDisplay.getEditor().focus();
     }
 
-    private void copyTextToTopic(final TopicXMLPresenter.Display topicXMLDisplay) {
+    private void copyTextToTopic(@NotNull final TopicXMLPresenter.Display topicXMLDisplay) {
         topicXMLDisplay.getEditor().setText(topicXMLDisplay.getPlainTextXMLDialog().getText());
         hidePlainTextXMLDialog(topicXMLDisplay);
     }
 
-    private void hideCspDetailsDialogBox(final TopicXMLPresenter.Display topicXMLDisplay) {
+    private void hideCspDetailsDialogBox(@NotNull final TopicXMLPresenter.Display topicXMLDisplay) {
         topicXMLDisplay.getCSPTopicDetailsDialog().getDialogBox().hide();
         topicXMLDisplay.getEditor().focus();
     }
 
-    private void hideElementDialogBox(final TopicXMLPresenter.Display topicXMLDisplay) {
+    private void hideElementDialogBox(@NotNull final TopicXMLPresenter.Display topicXMLDisplay) {
         topicXMLDisplay.getXmlTagsDialog().getDialogBox().hide();
         topicXMLDisplay.getEditor().focus();
     }
 
-    private void hideTemplateDialogBox(final TopicXMLPresenter.Display topicXMLDisplay) {
+    private void hideTemplateDialogBox(@NotNull final TopicXMLPresenter.Display topicXMLDisplay) {
         topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().hide();
         topicXMLDisplay.getEditor().focus();
     }
 
-    private void insertElement(final TopicXMLPresenter.Display topicXMLDisplay) {
+    private void insertElement(@NotNull final TopicXMLPresenter.Display topicXMLDisplay) {
         final int selectedItem = topicXMLDisplay.getXmlTagsDialog().getOptions().getSelectedIndex();
         if (selectedItem != -1) {
             final String value = topicXMLDisplay.getXmlTagsDialog().getOptions().getItemText(selectedItem);
@@ -1463,7 +1492,7 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
         hideElementDialogBox(topicXMLDisplay);
     }
 
-    private void insertTemplate(final TopicXMLPresenter.Display topicXMLDisplay) {
+    private void insertTemplate(@NotNull final TopicXMLPresenter.Display topicXMLDisplay) {
         final int selectedItem = topicXMLDisplay.getXmlTemplatesDialog().getOptions().getSelectedIndex();
         if (selectedItem != -1) {
             final String value = topicXMLDisplay.getXmlTemplatesDialog().getOptions().getValue(selectedItem);
@@ -1472,8 +1501,8 @@ public class SearchResultsAndTopicPresenter extends BaseSearchResultsAndTopicPre
         hideTemplateDialogBox(topicXMLDisplay);
     }
 
-    private void insertCspDetails(final TopicXMLPresenter.Display topicXMLDisplay,
-                                  final BaseTemplateViewInterface display) {
+    private void insertCspDetails(@NotNull final TopicXMLPresenter.Display topicXMLDisplay,
+                                  @NotNull final BaseTemplateViewInterface display) {
         final String ids = GWTUtilities.fixUpIdSearchString(topicXMLDisplay.getCSPTopicDetailsDialog().getIds().getValue());
         if (!ids.isEmpty()) {
             final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {

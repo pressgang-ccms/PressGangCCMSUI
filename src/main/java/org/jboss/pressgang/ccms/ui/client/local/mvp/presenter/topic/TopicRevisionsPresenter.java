@@ -12,10 +12,12 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInte
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
+@Dependent
 public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 
     public interface Display extends BaseTemplateViewInterface, BaseCustomViewInterface<RESTTopicV1> {

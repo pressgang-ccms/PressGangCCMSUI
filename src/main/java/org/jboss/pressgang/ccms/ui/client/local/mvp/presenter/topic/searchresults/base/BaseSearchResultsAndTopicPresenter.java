@@ -36,6 +36,8 @@ import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagColl
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -116,6 +118,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
     /**
      * @return The parsed query string
      */
+    @Nullable
     protected final String getQueryString() {
         return queryString;
     }
@@ -124,27 +127,27 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
      * To be set in the overriding classes parseToken() method.
      * @param queryString The parsed query string
      */
-    protected final void setQueryString(final String queryString) {
+    protected final void setQueryString(@Nullable final String queryString) {
         this.queryString = queryString;
     }
 
 
     @Override
-    public final void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
 
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.go()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchResultsAndTopicPresenter.go()");
 
             clearContainerAndAddTopLevelPanel(container, getDisplay());
             bindSearchAndEditExtended(ServiceConstants.TOPIC_EDIT_VIEW_CONTENT_TOPIC, HISTORY_TOKEN, queryString);
 
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.go()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchResultsAndTopicPresenter.go()");
         }
     }
 
     @Override
-    public final void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
+    public void bindSearchAndEditExtended(final int topicId, final String pageId, @Nullable final String queryString) {
         /* Initialize the other presenters we have pulled in */
         getSearchResultsComponent().bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
         topicTagsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
@@ -160,7 +163,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
         postBindSearchAndEditExtended(topicId, pageId, queryString);
     }
 
-    abstract protected void postBindSearchAndEditExtended(final int topicId, final String pageId, final String queryString);
+    abstract protected void postBindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @Nullable final String queryString);
 
     /**
      * @return true if all the data that is required to be loaded before the first
@@ -172,10 +175,10 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
      * When the locales and the topic list have been loaded we can display the fisrt topic if only
      * one was returned.
      */
-    protected void displayInitialTopic(final GetNewEntityCallback<T> getNewEntityCallback)
+    protected void displayInitialTopic(@NotNull final GetNewEntityCallback<T> getNewEntityCallback)
     {
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.displayInitialTopic()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchResultsAndTopicPresenter.displayInitialTopic()");
 
             if (isInitialTopicReadyToBeLoaded() &&
                     getSearchResultsComponent().getProviderData().getItems() != null &&
@@ -183,7 +186,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
                 loadNewEntity(getNewEntityCallback, getSearchResultsComponent().getProviderData().getItems().get(0));
             }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.displayInitialTopic()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchResultsAndTopicPresenter.displayInitialTopic()");
         }
     }
 
@@ -192,12 +195,12 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
      */
     private void setXMLEditorButtonsToEditorState() {
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.setXMLEditorButtonsToEditorState()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchResultsAndTopicPresenter.setXMLEditorButtonsToEditorState()");
 
             topicXMLComponent.getDisplay().getLineWrap().setDown(topicXMLComponent.getDisplay().getEditor().getUserWrapMode());
             topicXMLComponent.getDisplay().getShowInvisibles().setDown(topicXMLComponent.getDisplay().getEditor().getShowInvisibles());
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.setXMLEditorButtonsToEditorState()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchResultsAndTopicPresenter.setXMLEditorButtonsToEditorState()");
         }
     }
 
@@ -206,7 +209,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
      */
     private void initializeDisplay() {
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.initializeDisplay()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchResultsAndTopicPresenter.initializeDisplay()");
 
             final String savedSplit = Preferences.INSTANCE.getString(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE, "");
             if (Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE.equals(savedSplit)) {
@@ -223,7 +226,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
 
             loadSplitPanelSize();
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.initializeDisplay()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchResultsAndTopicPresenter.initializeDisplay()");
         }
     }
 
@@ -247,7 +250,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
      */
     private void loadSplitPanelSize() {
         try {
-            this.LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.loadSplitPanelSize()");
+            this.LOGGER.log(Level.INFO, "ENTER BaseSearchResultsAndTopicPresenter.loadSplitPanelSize()");
 
             if (this.split == SplitType.HORIZONTAL) {
                 this.getDisplay().getSplitPanel().setSplitPosition(
@@ -261,7 +264,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
                                 Constants.SPLIT_PANEL_SIZE), false);
             }
         } finally {
-            this.LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.loadSplitPanelSize()");
+            this.LOGGER.log(Level.INFO, "EXIT BaseSearchResultsAndTopicPresenter.loadSplitPanelSize()");
         }
     }
 
@@ -271,7 +274,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
     private void bindSplitPanelResize() {
 
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bindSplitPanelResize()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchResultsAndTopicPresenter.bindSplitPanelResize()");
 
             getDisplay().getSplitPanel().addResizeHandler(new ResizeHandler() {
                 @Override
@@ -293,7 +296,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
                 }
             });
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bindSplitPanelResize()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchResultsAndTopicPresenter.bindSplitPanelResize()");
         }
     }
 
@@ -301,7 +304,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
     protected final void loadAdditionalDisplayedItemData() {
 
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.loadAdditionalDisplayedItemData()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchResultsAndTopicPresenter.loadAdditionalDisplayedItemData()");
 
             preLoadAdditionalDisplayedItemData();
 
@@ -326,7 +329,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
             postLoadAdditionalDisplayedItemData();
 
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.loadAdditionalDisplayedItemData()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchResultsAndTopicPresenter.loadAdditionalDisplayedItemData()");
         }
 
     }
@@ -356,7 +359,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
      */
     protected final void loadTagsAndBugs() {
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.loadTagsAndBugs()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchResultsAndTopicPresenter.loadTagsAndBugs()");
 
             /* Initiate the REST calls */
             final Integer id = getDisplayedTopic().getId();
@@ -371,7 +374,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
                     @Override
                     public void doSuccessAction(final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
                         try {
-                            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.loadTagsAndBugs() topicWithTagsCallback.doSuccessAction()");
+                            LOGGER.log(Level.INFO, "ENTER BaseSearchResultsAndTopicPresenter.loadTagsAndBugs() topicWithTagsCallback.doSuccessAction()");
 
                             /* copy the revisions into the displayed Topic */
                             getDisplayedTopic().setTags(retValue.getTags());
@@ -379,7 +382,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
                             /* update the view */
                             initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{topicTagsComponent.getDisplay()}));
                         } finally {
-                            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.loadTagsAndBugs() topicWithTagsCallback.doSuccessAction()");
+                            LOGGER.log(Level.INFO, "EXIT BaseSearchResultsAndTopicPresenter.loadTagsAndBugs() topicWithTagsCallback.doSuccessAction()");
                         }
                     }
                 });
@@ -387,17 +390,19 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
                 RESTCalls.getTopicRevisionWithTags(topicWithTagsCallback, id, revision);
             }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.loadTagsAndBugs()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchResultsAndTopicPresenter.loadTagsAndBugs()");
         }
     }
 
     /**
      * This method will replace the top action buttons with their disabled labels based on the
      * currently displayed view.
+     *
+     * @param displayedView the view to be displayed
      */
-    private void enableAndDisableActionButtons(final BaseTemplateViewInterface displayedView) {
+    private void enableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView) {
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.enableAndDisableActionButtons()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchResultsAndTopicPresenter.enableAndDisableActionButtons()");
 
             this.getDisplay().replaceTopActionButton(this.getDisplay().getXmlDown(), getDisplay().getXml());
             this.getDisplay().replaceTopActionButton(this.getDisplay().getBugsDown(), getDisplay().getBugs());
@@ -424,9 +429,7 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
                 getDisplay().replaceTopActionButton(getDisplay().getUrls(), getDisplay().getUrlsDown());
             }
 
-            if (getDisplayedTopic() != null &&
-                    getDisplayedTopic().getXmlErrors() != null &&
-                    !getDisplayedTopic().getXmlErrors().isEmpty()) {
+            if (getDisplayedTopic() != null && getDisplayedTopic().getXmlErrors() != null && !getDisplayedTopic().getXmlErrors().isEmpty()) {
                 getDisplay().getXmlErrors().addStyleName(CSSConstants.ERROR);
                 getDisplay().getXmlErrorsDown().addStyleName(CSSConstants.ERROR);
             } else {
@@ -436,19 +439,19 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
 
             postEnableAndDisableActionButtons(displayedView);
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.enableAndDisableActionButtons()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchResultsAndTopicPresenter.enableAndDisableActionButtons()");
         }
     }
 
     /**
      * Enable or disable any additional buttons that were added by the extending class.
      */
-    protected abstract void postEnableAndDisableActionButtons(final BaseTemplateViewInterface displayedView);
+    protected abstract void postEnableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView);
 
     /* Update the page name */
-    private void updatePageTitle(final BaseTemplateViewInterface displayedView) {
+    private void updatePageTitle(@NotNull final BaseTemplateViewInterface displayedView) {
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.updatePageTitle()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchResultsAndTopicPresenter.updatePageTitle()");
 
             final StringBuilder title = new StringBuilder(displayedView.getPageName());
             final String id = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId() == null ?
@@ -460,14 +463,14 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
             }
             getDisplay().getPageTitle().setText(title.toString());
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.updatePageTitle()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchResultsAndTopicPresenter.updatePageTitle()");
         }
     }
 
     @Override
-    protected final void afterSwitchView(final BaseTemplateViewInterface displayedView) {
+    protected final void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.afterSwitchView()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchResultsAndTopicPresenter.afterSwitchView()");
 
             enableAndDisableActionButtons(displayedView);
 
@@ -482,16 +485,16 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
 
             postAfterSwitchView(displayedView);
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.afterSwitchView()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchResultsAndTopicPresenter.afterSwitchView()");
         }
     }
 
-    protected abstract void postAfterSwitchView(final BaseTemplateViewInterface displayedView);
+    protected abstract void postAfterSwitchView(@NotNull final BaseTemplateViewInterface displayedView);
 
     @Override
     protected void bindActionButtons() {
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bindActionButtons()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchResultsAndTopicPresenter.bindActionButtons()");
 
             final ClickHandler topicPropertyTagsClickHandler = new ClickHandler() {
                 @Override
@@ -666,17 +669,17 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
 
             postBindActionButtons();
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bindActionButtons()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchResultsAndTopicPresenter.bindActionButtons()");
         }
     }
 
     protected abstract void postBindActionButtons();
 
     @Override
-    protected final void initializeViews(final List<BaseTemplateViewInterface> filter) {
+    protected final void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
 
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.initializeViews()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchResultsAndTopicPresenter.initializeViews()");
 
             /**
              * Initialize the views first, as quite often the tables have columns whose
@@ -737,30 +740,30 @@ public abstract class BaseSearchResultsAndTopicPresenter  <
             postInitializeViews(filter);
 
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.initializeViews()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchResultsAndTopicPresenter.initializeViews()");
         }
 
     }
 
-    protected abstract void postInitializeViews(final List<BaseTemplateViewInterface> filter);
+    protected abstract void postInitializeViews(@Nullable final List<BaseTemplateViewInterface> filter);
 
     protected abstract boolean isReadOnlyMode();
 
     private void initializeSplitViewButtons() {
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.initializeSplitViewButtons()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchResultsAndTopicPresenter.initializeSplitViewButtons()");
 
             /* fix the rendered view button */
             getDisplay().buildSplitViewButtons(split);
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.initializeSplitViewButtons()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchResultsAndTopicPresenter.initializeSplitViewButtons()");
         }
     }
 
     /**
      * Set the help link topic ids.
      */
-    private void setHelpTopicForView(final BaseTemplatePresenterInterface component, final BaseTemplateViewInterface view) {
+    private void setHelpTopicForView(@NotNull final BaseTemplatePresenterInterface component, @NotNull final BaseTemplateViewInterface view) {
 
         if (view instanceof TopicXMLErrorsPresenter.Display) {
             component.setHelpTopicId(ServiceConstants.TOPIC_VALIDATION_ERRORS_TOPIC);

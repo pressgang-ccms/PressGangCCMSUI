@@ -6,6 +6,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresult
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
+import javax.enterprise.context.Dependent;
+
+@Dependent
 public class SearchResultsView extends BaseFilteredResultsView<RESTTopicCollectionItemV1>
         implements SearchResultsPresenter.Display {
 

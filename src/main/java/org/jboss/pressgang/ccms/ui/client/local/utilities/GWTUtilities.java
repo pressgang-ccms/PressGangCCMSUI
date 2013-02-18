@@ -4,6 +4,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
@@ -31,7 +33,8 @@ final public class GWTUtilities {
      * @param ex The exception to process
      * @return A string version of the stack trace
      */
-    public static String convertExceptionStackToString(final Throwable ex) {
+    @NotNull
+    public static String convertExceptionStackToString(@NotNull final Throwable ex) {
         final StringBuilder sb = new StringBuilder();
         for (final StackTraceElement element : ex.getStackTrace()) {
             sb.append(element.toString());
@@ -56,7 +59,8 @@ final public class GWTUtilities {
      * @param input The date to copy
      * @return null if input is null, and a copy of the date otherwise
      */
-    public static Date createDateCopy(final Date input)
+    @Nullable
+    public static Date createDateCopy(@Nullable final Date input)
     {
         if (input == null) {
             return null;
@@ -70,7 +74,7 @@ final public class GWTUtilities {
      * @param input The String to test
      * @return true if input is null or contains only whitespace, and false otherwise
      */
-    public static boolean isStringNullOrEmpty(final String input) {
+    public static boolean isStringNullOrEmpty(@Nullable final String input) {
         if (input == null || input.trim().isEmpty()) {
             return true;
         }
@@ -85,7 +89,8 @@ final public class GWTUtilities {
      * @param input The string to be cleaned
      * @return The cleaned string
      */
-    public static String fixUpIdSearchString(final String input) {
+    @NotNull
+    public static String fixUpIdSearchString(@NotNull final String input) {
         final RegExp regex = RegExp.compile("[^0-9,]", "g");
 
         String retValue = regex.replace(input, "");
@@ -114,7 +119,8 @@ final public class GWTUtilities {
      * @param string The source String
      * @return the string converted into a byte[]
      */
-    public static byte[] getBytesUTF8(final String string) {
+    @NotNull
+    public static byte[] getBytesUTF8(@NotNull final String string) {
         return getBytes(string, 1);
     }
 
@@ -125,10 +131,8 @@ final public class GWTUtilities {
      * @param bytesPerChar The number of bytes per character
      * @return the string converted into a byte[]
      */
-    public static byte[] getBytes(final String string, final int bytesPerChar) {
-        if (string == null) {
-            throw new IllegalArgumentException("string cannot be null");
-        }
+    @NotNull
+    public static byte[] getBytes(@NotNull final String string, final int bytesPerChar) {
         if (bytesPerChar < 1) {
             throw new IllegalArgumentException("bytesPerChar must be greater than 1");
         }
@@ -149,7 +153,8 @@ final public class GWTUtilities {
      * @param bytes The source byte[]
      * @return the string converted into a byte[]
      */
-    public static String getStringUTF8(final byte[] bytes) {
+    @NotNull
+    public static String getStringUTF8(@NotNull final byte[] bytes) {
         return getString(bytes, 1);
     }
 
@@ -160,10 +165,8 @@ final public class GWTUtilities {
      * @param bytesPerChar The number of bytes per character
      * @return the string converted from a byte[]
      */
-    public static String getString(final byte[] bytes, final int bytesPerChar) {
-        if (bytes == null) {
-            throw new IllegalArgumentException("bytes cannot be null");
-        }
+    @NotNull
+    public static String getString(@NotNull  final byte[] bytes, final int bytesPerChar) {
         if (bytesPerChar < 1) {
             throw new IllegalArgumentException("bytesPerChar must be greater than 1");
         }
@@ -192,7 +195,8 @@ final public class GWTUtilities {
      * @param bytesPerChar The number of bytes per character
      * @return the same as the standard Java String.toByteArray() method
      */
-    public static byte[] getByteArray(final String string, final int bytesPerChar) {
+    @NotNull
+    public static byte[] getByteArray(@NotNull final String string, final int bytesPerChar) {
         final char[] chars = string.toCharArray();
         final byte[] toReturn = new byte[chars.length * bytesPerChar];
         for (int i = 0; i < chars.length; ++i) {
@@ -210,7 +214,7 @@ final public class GWTUtilities {
      * @param b The second string
      * @return true if both strings are null, or if both strings are equal
      */
-    public static boolean compareStrings(final String a, final String b) {
+    public static boolean compareStrings(@Nullable final String a, @Nullable final String b) {
         if (a == null && b == null) {
             return true;
         }
@@ -229,7 +233,7 @@ final public class GWTUtilities {
      * @param b The second string
      * @return true if both strings are either null or empty string, or if both strings are equal
      */
-    public static boolean stringEqualsEquatingNullWithEmptyString(final String a, final String b) {
+    public static boolean stringEqualsEquatingNullWithEmptyString(@Nullable final String a, @Nullable final String b) {
         if ((a == null || a.isEmpty()) && (b == null || b.isEmpty())) {
             return true;
         }
@@ -249,7 +253,8 @@ final public class GWTUtilities {
      * @param historyToken The history token to remove
      * @return the token with the history token and semi-colon suffix removed 
      */
-    public static String removeHistoryToken(final String token, final String historyToken) {
+    @NotNull
+    public static String removeHistoryToken(@NotNull final String token, @NotNull final String historyToken) {
         return token.replace(historyToken + ";", "");
     }
 
@@ -259,7 +264,7 @@ final public class GWTUtilities {
      * @param container The parent container to clear and then add the display to
      * @param display The display to be added to the parent container
      */
-    public static void clearContainerAndAddTopLevelPanel(final HasWidgets container, final BaseTemplateViewInterface display) {
+    public static void clearContainerAndAddTopLevelPanel(@NotNull final HasWidgets container, @NotNull final BaseTemplateViewInterface display) {
         container.clear();
         container.add(display.getTopLevelPanel());
     }

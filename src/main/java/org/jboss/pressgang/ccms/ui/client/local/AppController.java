@@ -33,6 +33,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresult
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics.TranslatedTopicResultsAndTranslatedTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.logging.Level;
@@ -122,68 +123,86 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
     }
 
     @Override
-    public void onValueChange(final ValueChangeEvent<String> event) {
+    public void onValueChange(@Nullable final ValueChangeEvent<String> event) {
+        try {
+            LOGGER.log(Level.INFO, "ENTER AppController.onValueChange()");
 
-        final String token = event.getValue();
+            final String token = event.getValue();
 
-        if (token != null) {
-            Optional<BaseTemplatePresenterInterface> presenter = Optional.absent();
+            if (token != null) {
+                Optional<BaseTemplatePresenterInterface> presenter = Optional.absent();
 
-            if (token.startsWith(WelcomePresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(WelcomePresenter.class);
-            } else if (token.startsWith(SearchPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(SearchPresenter.class);
-            } else if (token.startsWith(SearchResultsPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(SearchResultsPresenter.class);
-            } else if (token.startsWith(TopicPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(TopicPresenter.class);
-            } else if (token.startsWith(TopicXMLPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(TopicXMLPresenter.class);
-            } else if (token.startsWith(TagPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(TagPresenter.class);
-            } else if (token.startsWith(SearchResultsAndTopicPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(SearchResultsAndTopicPresenter.class);
-            } else if (token.startsWith(ImagePresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(ImagePresenter.class);
-            } else if (token.startsWith(ImagesFilteredResultsAndImagePresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(ImagesFilteredResultsAndImagePresenter.class);
-            } else if (token.startsWith(TagsFilteredResultsAndTagPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(TagsFilteredResultsAndTagPresenter.class);
-            } else if (token.startsWith(ImageFilteredResultsPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(ImageFilteredResultsPresenter.class);
-            } else if (token.startsWith(CategoryFilteredResultsPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(CategoryFilteredResultsPresenter.class);
-            } else if (token.startsWith(CategoryPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(CategoryPresenter.class);
-            } else if (token.startsWith(CategoriesFilteredResultsAndCategoryPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(CategoriesFilteredResultsAndCategoryPresenter.class);
-            } else if (token.startsWith(TagFilteredResultsPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(TagFilteredResultsPresenter.class);
-            } else if (token.startsWith(SearchFieldPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(SearchFieldPresenter.class);
-            } else if (token.startsWith(SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(SearchTagsFieldsAndFiltersPresenter.class);
-            } else if (token.startsWith(ProjectsFilteredResultsAndProjectPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(ProjectsFilteredResultsAndProjectPresenter.class);
-            } else if (token.startsWith(SearchFilterResultsAndFilterPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(SearchFilterResultsAndFilterPresenter.class);
-            } else if (token.startsWith(TranslatedTopicResultsAndTranslatedTopicPresenter.HISTORY_TOKEN)) {
-                presenter = getBeanInstance(TranslatedTopicResultsAndTranslatedTopicPresenter.class);
+                if (token.startsWith(WelcomePresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(WelcomePresenter.class);
+                } else if (token.startsWith(SearchPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(SearchPresenter.class);
+                } else if (token.startsWith(SearchResultsPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(SearchResultsPresenter.class);
+                } else if (token.startsWith(TopicPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(TopicPresenter.class);
+                } else if (token.startsWith(TopicXMLPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(TopicXMLPresenter.class);
+                } else if (token.startsWith(TagPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(TagPresenter.class);
+                } else if (token.startsWith(SearchResultsAndTopicPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(SearchResultsAndTopicPresenter.class);
+                } else if (token.startsWith(ImagePresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(ImagePresenter.class);
+                } else if (token.startsWith(ImagesFilteredResultsAndImagePresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(ImagesFilteredResultsAndImagePresenter.class);
+                } else if (token.startsWith(TagsFilteredResultsAndTagPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(TagsFilteredResultsAndTagPresenter.class);
+                } else if (token.startsWith(ImageFilteredResultsPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(ImageFilteredResultsPresenter.class);
+                } else if (token.startsWith(CategoryFilteredResultsPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(CategoryFilteredResultsPresenter.class);
+                } else if (token.startsWith(CategoryPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(CategoryPresenter.class);
+                } else if (token.startsWith(CategoriesFilteredResultsAndCategoryPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(CategoriesFilteredResultsAndCategoryPresenter.class);
+                } else if (token.startsWith(TagFilteredResultsPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(TagFilteredResultsPresenter.class);
+                } else if (token.startsWith(SearchFieldPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(SearchFieldPresenter.class);
+                } else if (token.startsWith(SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(SearchTagsFieldsAndFiltersPresenter.class);
+                } else if (token.startsWith(ProjectsFilteredResultsAndProjectPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(ProjectsFilteredResultsAndProjectPresenter.class);
+                } else if (token.startsWith(SearchFilterResultsAndFilterPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(SearchFilterResultsAndFilterPresenter.class);
+                } else if (token.startsWith(TranslatedTopicResultsAndTranslatedTopicPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(TranslatedTopicResultsAndTranslatedTopicPresenter.class);
+                }
+
+                if (presenter.isPresent()) {
+                    LOGGER.log(Level.INFO, "Displaying Presenter");
+                    presenter.get().parseToken(token);
+                    presenter.get().go(this.container);
+                }
             }
-
-            if (presenter.isPresent()) {
-                presenter.get().parseToken(token);
-                presenter.get().go(this.container);
-            }
+        } catch (final Exception ex) {
+            LOGGER.log(Level.INFO, "AppController.onValueChange() generated an exception.");
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT AppController.onValueChange()");
         }
     }
 
-    private <T extends BaseTemplatePresenterInterface> Optional<BaseTemplatePresenterInterface> getBeanInstance(final Class<T> presenterType) {
-        final IOCBeanDef<T> bean = this.manager.lookupBean(presenterType);
-        if (bean != null) {
-            final BaseTemplatePresenterInterface presenter = bean.getInstance();
-            return Optional.of(presenter);
+    private <T extends BaseTemplatePresenterInterface> Optional<BaseTemplatePresenterInterface> getBeanInstance(final Class<T> presenterType) throws Exception {
+        try {
+            LOGGER.log(Level.INFO, "ENTER AppController.getBeanInstance()");
+
+            final IOCBeanDef<T> bean = this.manager.lookupBean(presenterType);
+            if (bean != null) {
+                LOGGER.log(Level.INFO, "Found bean.");
+                final BaseTemplatePresenterInterface presenter = bean.getInstance();
+                return Optional.of(presenter);
+            }
+            return Optional.absent();
+        } catch (final Exception ex) {
+            LOGGER.log(Level.INFO, "AppController.getBeanInstance() generated an exception looking up an instance of " + presenterType.getName());
+            throw ex;
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT AppController.getBeanInstance()");
         }
-        return Optional.absent();
     }
 }

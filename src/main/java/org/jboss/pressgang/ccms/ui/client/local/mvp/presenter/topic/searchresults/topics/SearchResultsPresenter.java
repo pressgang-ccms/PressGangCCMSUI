@@ -16,6 +16,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.Ba
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -42,9 +44,12 @@ public class SearchResultsPresenter extends BaseFilteredResultsComponent<RESTTop
     @Inject
     private HandlerManager eventBus;
 
-    public Display getDisplay()
-    {
+    public Display getDisplay() {
         return display;
+    }
+
+    public SearchResultsPresenter() {
+
     }
 
     @Override
@@ -58,7 +63,7 @@ public class SearchResultsPresenter extends BaseFilteredResultsComponent<RESTTop
         bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
-    public void bindExtendedFilteredResults(final int topicId, final String pageId, final String queryString) {
+    public void bindExtendedFilteredResults(final int topicId, final String pageId, @Nullable final String queryString) {
         super.bindFilteredResults(topicId, pageId, queryString, display);
         this.queryString = queryString;
 
@@ -75,7 +80,7 @@ public class SearchResultsPresenter extends BaseFilteredResultsComponent<RESTTop
     }
 
     @Override
-    protected void displayQueryElements(final String queryString) {
+    protected void displayQueryElements(@Nullable final String queryString) {
         // TODO Auto-generated method stub
     }
 
@@ -92,7 +97,12 @@ public class SearchResultsPresenter extends BaseFilteredResultsComponent<RESTTop
     }
 
     @Override
-    protected EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateListProvider(final String queryString, final BaseTemplateViewInterface waitDisplay) {
+    protected EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateListProvider(@Nullable final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
+
+        if (queryString == null) {
+            return null;
+        }
+
         final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTopicCollectionItemV1> list) {
@@ -128,8 +138,7 @@ public class SearchResultsPresenter extends BaseFilteredResultsComponent<RESTTop
                         display.removeWaitOperation();
                         getProviderData().setItems(new ArrayList<RESTTopicCollectionItemV1>());
                         getProviderData().setSize(0);
-                        displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(),
-                                getProviderData().getStartRow());
+                        displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
                 };

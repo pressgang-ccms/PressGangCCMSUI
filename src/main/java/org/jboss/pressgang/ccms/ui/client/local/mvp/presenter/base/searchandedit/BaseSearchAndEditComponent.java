@@ -17,6 +17,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -75,7 +77,7 @@ abstract public class BaseSearchAndEditComponent<
      * @param topicId the help topic for the page
      * @param pageId The history token of the page
      */
-    public void bindExtended(final int topicId, final String pageId) {
+    public void bindExtended(final int topicId, @NotNull final String pageId) {
         throw new UnsupportedOperationException("bindExtended() is not supported. Use bindSearchAndEdit() instead.");
     }
 
@@ -92,15 +94,15 @@ abstract public class BaseSearchAndEditComponent<
      */
     protected final void bindSearchAndEdit(
             final int topicId,
-            final String pageId,
-            final String mainSplitSizePreferenceKey,
-            final BaseTemplateViewInterface firstDisplayedView,
-            final BasePopulatedEditorViewInterface<T, T, Y> entityPropertiesView,
-            final BaseFilteredResultsViewInterface<V> filteredResultsDisplay,
-            final BaseFilteredResultsComponentInterface<V> filteredResultsComponent,
-            final BaseSearchAndEditViewInterface display,
-            final BaseTemplateViewInterface waitDisplay,
-            final GetNewEntityCallback<T> getNewEntityCallback) {
+            @NotNull final String pageId,
+            @NotNull final String mainSplitSizePreferenceKey,
+            @NotNull final BaseTemplateViewInterface firstDisplayedView,
+            @NotNull final BasePopulatedEditorViewInterface<T, T, Y> entityPropertiesView,
+            @NotNull final BaseFilteredResultsViewInterface<V> filteredResultsDisplay,
+            @NotNull final BaseFilteredResultsComponentInterface<V> filteredResultsComponent,
+            @NotNull final BaseSearchAndEditViewInterface display,
+            @NotNull final BaseTemplateViewInterface waitDisplay,
+            @NotNull final GetNewEntityCallback<T> getNewEntityCallback) {
 
         super.bind(topicId, pageId, display);
 
@@ -188,7 +190,7 @@ abstract public class BaseSearchAndEditComponent<
      * @param getNewEntityCallback The callback used to load a fresh entity
      * @param selectedItem         The item that was selected from a collection of entities
      */
-    protected final void loadNewEntity(final GetNewEntityCallback<T> getNewEntityCallback, final V selectedItem) {
+    protected final void loadNewEntity(@NotNull final GetNewEntityCallback<T> getNewEntityCallback, @NotNull final V selectedItem) {
         try  {
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.loadNewEntity()");
 
@@ -249,7 +251,7 @@ abstract public class BaseSearchAndEditComponent<
     /**
      * Binds logic to the search results list row click event
      */
-    protected final void bindResultsListRowClicks(final GetNewEntityCallback<T> getNewEntityCallback) {
+    protected final void bindResultsListRowClicks(@NotNull final GetNewEntityCallback<T> getNewEntityCallback) {
         filteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<V>() {
             @Override
             public void onCellPreview(final CellPreviewEvent<V> event) {
@@ -299,7 +301,7 @@ abstract public class BaseSearchAndEditComponent<
      *
      * @param filter null if all views are to be initialized, or includes a list of views to be initialized
      */
-    abstract protected void initializeViews(final List<BaseTemplateViewInterface> filter);
+    abstract protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter);
 
     /**
      * Binds logic to the action buttons. This is called by the bind() method, and so should not
@@ -316,7 +318,7 @@ abstract public class BaseSearchAndEditComponent<
     /**
      * Saves the position of the main split
      */
-    private void bindMainSplitResize(final String saveKey) {
+    private void bindMainSplitResize(@NotNull final String saveKey) {
         try {
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.bindMainSplitResize()");
 
@@ -338,7 +340,7 @@ abstract public class BaseSearchAndEditComponent<
      *
      * @param preferencesKey The key against which the previous size was saved
      */
-    private void loadMainSplitResize(final String preferencesKey) {
+    private void loadMainSplitResize(@NotNull final String preferencesKey) {
         try {
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.loadMainSplitResize()");
 
@@ -365,7 +367,7 @@ abstract public class BaseSearchAndEditComponent<
      * @param view   The view to test against the filter
      * @return true if the filter is null or if it contains the view, and false otherwise
      */
-    protected final boolean viewIsInFilter(final List<BaseTemplateViewInterface> filter, final BaseTemplateViewInterface view) {
+    protected final boolean viewIsInFilter(@Nullable final List<BaseTemplateViewInterface> filter, @NotNull final BaseTemplateViewInterface view) {
         if (filter == null) {
             return true;
         }
@@ -376,7 +378,7 @@ abstract public class BaseSearchAndEditComponent<
     /**
      * Called when displaying changes to a entity or when changing views
      */
-    protected final void switchView(final BaseTemplateViewInterface displayedView) {
+    protected final void switchView(@NotNull final BaseTemplateViewInterface displayedView) {
 
         try {
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.switchView(final W displayedView)");
@@ -422,12 +424,12 @@ abstract public class BaseSearchAndEditComponent<
      * additional logic after a new screen has been displayed.
      * @param displayedView The newly displayed screen.
      */
-    protected void afterSwitchView(final BaseTemplateViewInterface displayedView) {}
+    protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {}
 
     /**
      * Called when switchView has been called. Override this method to perform some
      * additional logic before a new screen has been displayed.
      * @param displayedView The newly displayed screen.
      */
-    protected void beforeSwitchView(final BaseTemplateViewInterface displayedView) {}
+    protected void beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {}
 }
