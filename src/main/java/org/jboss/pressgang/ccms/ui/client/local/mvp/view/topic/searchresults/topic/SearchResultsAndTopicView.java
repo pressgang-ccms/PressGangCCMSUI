@@ -14,6 +14,9 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * The view that combines the topic search results with the individual topic views 
  * @author Matthew Casperson
@@ -22,22 +25,25 @@ public class SearchResultsAndTopicView extends
         BaseSearchResultsAndTopicView<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> implements
         SearchResultsAndTopicPresenter.Display {
 
-    private final PushButton save;
-    private final PushButton history;
+    /**
+     * A Logger
+     */
+    private static final Logger LOGGER = Logger.getLogger(SearchResultsAndTopicView.class.getName());
 
-    private final Label historyDown;
+    private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+    private final PushButton history = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Revisions());
+
+    private final Label historyDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
 
     @Override
     public Label getHistoryDown() {
         return historyDown;
     }
 
-
     @Override
     public PushButton getHistory() {
         return history;
     }
-
 
     @Override
     public PushButton getSave() {
@@ -46,12 +52,6 @@ public class SearchResultsAndTopicView extends
 
     public SearchResultsAndTopicView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
-
-        /* Build the action bar icons */
-        save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-        history = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Revisions());
-
-        historyDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
     }
 
 
@@ -61,7 +61,13 @@ public class SearchResultsAndTopicView extends
      */
     @Override
     protected void postPopulateTopActionBar() {
-        this.addActionButton(history);
-        this.addActionButton(save);
+        try {
+            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicView.postPopulateTopActionBar()");
+
+            this.addActionButton(history);
+            this.addActionButton(save);
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicView.postPopulateTopActionBar()");
+        }
     }
 }
