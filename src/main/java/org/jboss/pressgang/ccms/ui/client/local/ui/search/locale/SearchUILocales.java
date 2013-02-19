@@ -44,7 +44,14 @@ public class SearchUILocales {
 
     /**
      * Build the query string that is used to search topics based on locale. Locales to be found or excluded are
-     * defined in "locale#" query parameters, where the # is just a unique number.
+     * defined in "locale#=ja[0 or 1]" query parameters, where the "#" is just a unique number, and [0 or 1] is either
+     * "0" or "1" depending on whether the locale is to be specifically excluded or included.
+     *
+     * For example:
+     *
+     * locale1=ja1;locale2=de0
+     *
+     * means include topics that have the Japanese locale, and exclude those with the German locale.
      *
      * @param includeQueryPrefix  true if the "query;" prefix is to be included, and false otherwise
      * @return the query string
@@ -59,9 +66,9 @@ public class SearchUILocales {
 
                 retValue.append(";");
                 if (locale.getLocale() == TriStateSelectionState.SELECTED) {
-                    retValue.append(CommonFilterConstants.MATCH_LOCALE + index + "=" + locale.getName());
+                    retValue.append(CommonFilterConstants.MATCH_LOCALE + index + "=" + locale.getName() + CommonFilterConstants.MATCH_LOCALE_STATE);
                 } else {
-                    retValue.append(CommonFilterConstants.NOT_MATCH_LOCALE_STATE + index + "=" + locale.getName());
+                    retValue.append(CommonFilterConstants.MATCH_LOCALE + index + "=" + locale.getName() + CommonFilterConstants.NOT_MATCH_LOCALE_STATE);
                 }
             }
         }
