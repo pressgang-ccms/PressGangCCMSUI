@@ -12,30 +12,68 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
  */
 public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTranslatedTopicV1> {
 
+    /**
+     * The number of rows displayed by this editor.
+     */
     private static final int ROWS = 4;
+    /**
+     * The number of columns displayed by this editor.
+     */
     private static final int COLS = 2;
 
+    /**
+     * The interger text box that displays the translated topic id
+     */
     private final SimpleIntegerBox id = new SimpleIntegerBox();
+    /**
+     * The integer text box that display the topic revision.
+     */
     private final SimpleIntegerBox topicRevision = new SimpleIntegerBox();
+    /**
+     * The integer text box that displays the topic id
+     */
     private final SimpleIntegerBox topicId = new SimpleIntegerBox();
+    /**
+     * The text box that displays the translation locale
+     */
     private final TextBox locale = new TextBox();
 
+    /**
+     * The property used by the editor framework to bind the locale to the ui element.
+     * @return The locale ui element
+     */
     public TextBox localeEditor() {
         return locale;
     }
 
+    /**
+     * The property used by the editor framework to bind the topic id to the ui element.
+     * @return The topic id ui element
+     */
     public SimpleIntegerBox topicIdEditor() {
         return topicId;
     }
 
+    /**
+     * The property used by the editor framework to bind the topic revision to the ui element.
+     * @return The revision ui element
+     */
     public SimpleIntegerBox topicRevisionEditor() {
         return topicRevision;
     }
 
+    /**
+     * The property used by the editor framework to bind the translated topic id to the ui element.
+     * @return The translated topic id ui element
+     */
     public SimpleIntegerBox idEditor() {
         return id;
     }
 
+    /**
+     *
+     * @param readOnly true if the ui elements presented by this editor should be readonly
+     */
     public RESTTranslatedTopicV1BasicDetailsEditor(final boolean readOnly) {
         super(ROWS, COLS);
 

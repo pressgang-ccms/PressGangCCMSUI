@@ -62,6 +62,13 @@ public class SearchLocalesView extends BaseTemplateView implements SearchLocaleP
 
     public SearchLocalesView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchFields());
+
+        /* Build the action bar icons */
+        addActionButton(searchTopics);
+        addActionButton(tagsSearch);
+        addActionButton(fields);
+        addActionButton(locales);
+        addActionButton(filters);
     }
 
     @Override
