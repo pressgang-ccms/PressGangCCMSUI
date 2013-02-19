@@ -73,5 +73,7 @@ public class SearchLocalePresenter  extends BaseTemplatePresenter implements Bas
         PushButton getFilters();
 
         PushButton getFields();
+
+        SearchUILocales getSearchUILocales();
     }
 }

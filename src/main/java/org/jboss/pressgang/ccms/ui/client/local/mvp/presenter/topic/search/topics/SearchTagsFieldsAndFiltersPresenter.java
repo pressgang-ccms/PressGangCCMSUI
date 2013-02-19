@@ -43,6 +43,11 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     public static final String HISTORY_TOKEN = "SearchTagsFieldsAndFiltersView";
 
     /**
+     * The history token used when searching for translated topics
+     */
+    public static final String TRANSLATED_HISTORY_TOKEN = "TranslatedSearchTagsFieldsAndFiltersView";
+
+    /**
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(SearchTagsFieldsAndFiltersPresenter.class.getName());
@@ -75,6 +80,11 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     private HandlerManager eventBus;
 
     private HasWidgets container;
+
+    /**
+     * This is set to true if the history token indicates that we are trying to do a search of translated topics.
+     */
+    private boolean doingTransleatedSearch = false;
 
     @Override
     public void go(final HasWidgets container) {
@@ -288,7 +298,9 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
     @Override
     public void parseToken(final String historyToken) {
-
+        if (historyToken.startsWith(TRANSLATED_HISTORY_TOKEN)) {
+            doingTransleatedSearch = true;
+        }
     }
 
     private void bindSearchButtons() {
@@ -328,7 +340,8 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 localePresenter.getDisplay().getDriver().flush();
 
                 final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
-                        + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false);
+                        + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
+                        + localePresenter.getDisplay().getSearchUILocales().buidlQueryString(false);
                 eventBus.fireEvent(new SearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
             }
         };

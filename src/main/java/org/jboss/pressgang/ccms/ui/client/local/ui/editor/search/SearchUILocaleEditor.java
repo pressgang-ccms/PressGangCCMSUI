@@ -4,6 +4,7 @@ import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TriStatePushButton;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.locale.SearchUILocale;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.locale.SearchUILocales;
@@ -17,6 +18,8 @@ import java.util.Map;
  * The editor that binds a list of locales and their states to buttons and labels.
  */
 public class SearchUILocaleEditor extends FlexTable implements LeafValueEditor<SearchUILocales> {
+    private static final int COLUMNS = 2;
+
     private final Map<TriStatePushButton, SearchUILocale> buttonsMap = new HashMap<TriStatePushButton, SearchUILocale>();
 
     @Override
@@ -25,15 +28,21 @@ public class SearchUILocaleEditor extends FlexTable implements LeafValueEditor<S
         buttonsMap.clear();
 
         if (value != null) {
+
+            int index = 0;
             for (final SearchUILocale locale : value.getLocales()) {
 
+                final int fixedIndex = index / COLUMNS;
+                final int column = index % COLUMNS;
+
                 final TriStatePushButton button = new TriStatePushButton();
+                button.addStyleName(CSSConstants.TAG_LABEL);
                 buttonsMap.put(button, locale);
 
                 final int row = this.getRowCount();
 
-                this.setWidget(row, 0, new Label(locale.getName()));
-                this.setWidget(row, 1, button);
+                this.setWidget(fixedIndex, column * 2,  new Label(locale.getName()));
+                this.setWidget(fixedIndex, (column * 2) + 1, button);
             }
         }
     }

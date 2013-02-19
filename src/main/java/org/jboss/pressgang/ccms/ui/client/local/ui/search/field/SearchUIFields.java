@@ -428,8 +428,7 @@ public class SearchUIFields implements SearchViewBase {
     @Override
     public final String getSearchQuery(final boolean includeQueryPrefix) {
 
-        final StringBuilder retValue = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON
-                : "");
+        final StringBuilder retValue = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
 
         if (!GWTUtilities.isStringNullOrEmpty(this.ids)) {
             retValue.append(";" + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "="

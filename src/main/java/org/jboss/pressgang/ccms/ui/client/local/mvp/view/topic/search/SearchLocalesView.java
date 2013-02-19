@@ -35,6 +35,8 @@ public class SearchLocalesView extends BaseTemplateView implements SearchLocaleP
     private final PushButton fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Fields());
     private final Label locales = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Locales());
 
+    private final SearchUILocales searchUILocales = new SearchUILocales();
+
     @Override
     public Label getLocales() {
         return locales;
@@ -73,12 +75,14 @@ public class SearchLocalesView extends BaseTemplateView implements SearchLocaleP
 
     @Override
     public void display(@NotNull final  List<String> entity, final boolean readonly) {
+        searchUILocales.initialize(entity);
+
         /* SearchUIProjectsEditor is a grid */
         final SearchUILocaleEditor editor = new SearchUILocaleEditor();
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */
-        driver.edit(new SearchUILocales(entity));
+        driver.edit(searchUILocales);
         /* Add the projects */
         this.getPanel().setWidget(editor);
     }
@@ -86,5 +90,10 @@ public class SearchLocalesView extends BaseTemplateView implements SearchLocaleP
     @Override
     public SimpleBeanEditorDriver<SearchUILocales, SearchUILocaleEditor> getDriver() {
         return driver;
+    }
+
+    @Override
+    public SearchUILocales getSearchUILocales() {
+        return searchUILocales;
     }
 }
