@@ -56,12 +56,9 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
     }
 
-    @Inject
-    private Display display;
-    @Inject
-    private SearchPresenter tagsComponent;
-    @Inject
-    private SearchFieldPresenter fieldsComponent;
+    @Inject private Display display;
+    @Inject private SearchPresenter tagsComponent;
+    @Inject private SearchFieldPresenter fieldsComponent;
     @Inject private SearchLocalePresenter localePresenter;
 
     /**
@@ -342,11 +339,15 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
                         + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
                         + localePresenter.getDisplay().getSearchUILocales().buidlQueryString(false);
-                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
+
+                if (doingTransleatedSearch) {
+                    eventBus.fireEvent(new SearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
+                }
+                else {
+
+                }
             }
         };
-
-
 
         tagsComponent.getDisplay().getSearchTopics().addClickHandler(searchHandler);
         fieldsComponent.getDisplay().getSearchTopics().addClickHandler(searchHandler);
