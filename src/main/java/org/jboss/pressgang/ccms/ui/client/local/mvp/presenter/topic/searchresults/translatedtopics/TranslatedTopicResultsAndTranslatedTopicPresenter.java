@@ -42,7 +42,7 @@ public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearc
     /**
      * The history token.
      */
-    public static final String HISTORY_TOKEN = "TranslatedTopicResultsAndTranslatedTopicView";
+    public static final String HISTORY_TOKEN = "c";
 
     /**
      * A Logger

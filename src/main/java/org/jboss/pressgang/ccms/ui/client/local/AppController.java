@@ -168,7 +168,12 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                     presenter = getBeanInstance(TagFilteredResultsPresenter.class);
                 } else if (token.startsWith(SearchFieldPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(SearchFieldPresenter.class);
-                } else if (token.startsWith(SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN)) {
+                } else if (token.startsWith(SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN) ||
+                        token.startsWith(SearchTagsFieldsAndFiltersPresenter.TRANSLATED_HISTORY_TOKEN)) {
+                    /*
+                        Both SearchTagsFieldsAndFiltersView and TranslatedSearchTagsFieldsAndFiltersView
+                        history tokens will launch the search view.
+                     */
                     presenter = getBeanInstance(SearchTagsFieldsAndFiltersPresenter.class);
                 } else if (token.startsWith(ProjectsFilteredResultsAndProjectPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(ProjectsFilteredResultsAndProjectPresenter.class);

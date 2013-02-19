@@ -35,13 +35,15 @@ public class SearchUILocaleEditor extends FlexTable implements LeafValueEditor<S
                 final int fixedIndex = index / COLUMNS;
                 final int column = index % COLUMNS;
 
+                final Label label = new Label(locale.getName());
+                label.addStyleName(CSSConstants.TAG_LABEL);
                 final TriStatePushButton button = new TriStatePushButton();
-                button.addStyleName(CSSConstants.TAG_LABEL);
+
                 buttonsMap.put(button, locale);
 
                 final int row = this.getRowCount();
 
-                this.setWidget(fixedIndex, column * 2,  new Label(locale.getName()));
+                this.setWidget(fixedIndex, column * 2, label));
                 this.setWidget(fixedIndex, (column * 2) + 1, button);
 
                 ++index;
