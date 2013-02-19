@@ -28,6 +28,10 @@ public class SearchUILocales {
 
     }
 
+    /**
+     * Initialize the list of locales that can be searched on.
+     * @param localeNames The list of locales to include in the UI
+     */
     public void initialize(@NotNull final List<String> localeNames) {
         locales.clear();
         for (final String locale : localeNames) {

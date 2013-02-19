@@ -381,6 +381,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         return reports;
     }
 
+    @Override
     public final PushButton getSearchTranslations() {
         return searchTranslations;
     }
@@ -520,7 +521,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         addShortcutButton(search);
 
         searchTranslations = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.SearchTranslations());
-        searchTranslations.setEnabled(false);
         addShortcutButton(searchTranslations);
 
         images = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Images());

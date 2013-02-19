@@ -146,6 +146,8 @@ public interface BaseTemplateViewInterface {
 
     PushButton getReports();
 
+    PushButton getSearchTranslations();
+
     Anchor getHelp();
 
     /**
