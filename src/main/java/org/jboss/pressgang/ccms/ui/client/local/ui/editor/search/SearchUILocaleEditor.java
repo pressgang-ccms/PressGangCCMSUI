@@ -43,7 +43,7 @@ public class SearchUILocaleEditor extends FlexTable implements LeafValueEditor<S
 
                 final int row = this.getRowCount();
 
-                this.setWidget(fixedIndex, column * 2, label));
+                this.setWidget(fixedIndex, column * 2, label);
                 this.setWidget(fixedIndex, (column * 2) + 1, button);
 
                 ++index;

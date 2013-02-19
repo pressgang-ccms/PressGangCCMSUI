@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.topics;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -18,7 +18,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResu
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TranslatedSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
@@ -65,17 +64,14 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     /**
      * The presenter used to display the list of filters
      */
-    @Inject
-    private SearchFilterResultsAndFilterPresenter searchFilterResultsAndFilterPresenter;
+    @Inject private SearchFilterResultsAndFilterPresenter searchFilterResultsAndFilterPresenter;
 
     /**
      * The dialog used when saving or overwriting a filter
      */
-    @Inject
-    private SaveFilterDialogInterface saveFilterDialog;
+    @Inject private SaveFilterDialogInterface saveFilterDialog;
 
-    @Inject
-    private HandlerManager eventBus;
+    @Inject private HandlerManager eventBus;
 
     private HasWidgets container;
 

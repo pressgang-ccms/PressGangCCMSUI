@@ -30,7 +30,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPres
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFieldPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFilterResultsAndFilterPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.topics.SearchTagsFieldsAndFiltersPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchTagsFieldsAndFiltersPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.SearchResultsAndTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.SearchResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics.TranslatedTopicResultsAndTranslatedTopicPresenter;
