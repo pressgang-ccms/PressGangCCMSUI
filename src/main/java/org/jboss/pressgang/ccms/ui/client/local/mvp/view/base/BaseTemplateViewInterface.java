@@ -22,6 +22,10 @@ public interface BaseTemplateViewInterface {
 
         PushButton getOK();
 
+        PushButton getEdit();
+
+        int getHelpTopic();
+
         void show(final int topicId, final BaseTemplateViewInterface waitDisplay);
     }
 

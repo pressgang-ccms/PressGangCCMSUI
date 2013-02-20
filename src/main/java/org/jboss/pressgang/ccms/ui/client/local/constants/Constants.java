@@ -11,7 +11,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201302201512";
+    public static final String VERSION = "201302210601";
 
     /**
      * Indicates that a tag should be present in the returned topics
@@ -94,7 +94,7 @@ public final class Constants {
     /**
      * The width of the shortcut bar.
      */
-    public static final int SHORTCUT_BAR_WIDTH = 110;
+    public static final int SHORTCUT_BAR_WIDTH = 120;
     /**
      * The height of the footer.
      */

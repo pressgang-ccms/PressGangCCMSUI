@@ -147,10 +147,17 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         private final VerticalPanel layout = new VerticalPanel();
         private final HTML contents = new HTML();
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
+        private final PushButton edit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Edit());
+        private int helpTopic;
 
         @Override
         public PushButton getOK() {
             return this.ok;
+        }
+
+        @Override
+        public PushButton getEdit() {
+            return this.edit;
         }
 
         @Override
@@ -161,6 +168,11 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         @Override
         public HTML getContents() {
             return this.contents;
+        }
+
+        @Override
+        public int getHelpTopic() {
+            return helpTopic;
         }
 
         public HelpDialogImpl() {
@@ -177,6 +189,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
+
+            buttonPanel.add(edit);
             buttonPanel.add(ok);
 
             layout.add(buttonPanel);
@@ -186,6 +200,8 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         @Override
         public void show(final int topicId, final BaseTemplateViewInterface waitDisplay) {
+            this.helpTopic = helpTopic;
+
             final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
                     waitDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {
                 @Override
@@ -206,7 +222,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
                     HelpDialogImpl.this.center();
                     HelpDialogImpl.this.show();
-                    setTitle(PressGangCCMSUI.INSTANCE.Help() + "[" + topicId + "]");
+                    setTitle(PressGangCCMSUI.INSTANCE.Help());
                 }
             });
             RESTCalls.getTopic(callback, topicId);
@@ -522,6 +538,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         addShortcutButton(search);
 
         searchTranslations = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.SearchTranslations());
+        searchTranslations.setEnabled(false);
         addShortcutButton(searchTranslations);
 
         images = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Images());

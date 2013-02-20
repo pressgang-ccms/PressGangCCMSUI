@@ -262,8 +262,19 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         };
 
+        final ClickHandler editClickHandler = new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                if (isOKToProceed()) {
+                    eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
+                        + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + display.getHelpDialog().getHelpTopic(), false));
+                }
+            }
+        };
+
         display.getHelp().addClickHandler(openHelpClickHandler);
         display.getHelpDialog().getOK().addClickHandler(okClickHandler);
+        display.getHelpDialog().getEdit().addClickHandler(editClickHandler);
     }
 
     /**
