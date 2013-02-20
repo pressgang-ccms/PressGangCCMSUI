@@ -30,7 +30,7 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
     public void go(final HasWidgets container) {
         display.setViewShown(true);
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended(ServiceConstants.HOME_HELP_TOPIC, HISTORY_TOKEN);
     }
 
     public void bindExtended(final int topicId, final String pageId) {

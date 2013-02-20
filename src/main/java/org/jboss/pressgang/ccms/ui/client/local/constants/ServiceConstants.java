@@ -173,6 +173,11 @@ public final class ServiceConstants {
     public static final int TOPIC_EXTENDED_PROPERTIES_HELP_TOPIC = 13595;
 
     /**
+     * The help topic for the home view.
+     */
+    public static final int HOME_HELP_TOPIC = 13596;
+
+    /**
      * A private constructor to prevent instantiation.
      */
     private ServiceConstants() {
