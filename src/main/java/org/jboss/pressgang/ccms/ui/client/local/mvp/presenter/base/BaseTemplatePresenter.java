@@ -268,6 +268,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
                         + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + display.getHelpDialog().getHelpTopic(), false));
+                    display.getHelpDialog().getDialogBox().hide();
                 }
             }
         };
