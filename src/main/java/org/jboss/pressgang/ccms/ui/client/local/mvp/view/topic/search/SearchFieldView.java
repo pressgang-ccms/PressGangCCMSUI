@@ -65,7 +65,7 @@ public class SearchFieldView extends BaseTemplateView implements SearchFieldPres
         addActionButton(searchTopics);
         addActionButton(tagsSearch);
         addActionButton(fields);
-        addActionButton(locales);
+        //addActionButton(locales);
         addActionButton(filters);
     }
 

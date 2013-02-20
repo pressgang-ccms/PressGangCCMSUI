@@ -79,7 +79,7 @@ public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<RES
         addActionButton(searchTopics);
         addActionButton(tagsSearch);
         addActionButton(fields);
-        addActionButton(locales);
+        //addActionButton(locales);
         addActionButton(filters);
         addActionButton(getCreate());
     }
