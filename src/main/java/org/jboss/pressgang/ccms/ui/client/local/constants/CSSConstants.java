@@ -363,6 +363,10 @@ public interface CSSConstants {
      */
     String LEFT_TAB_BUTTON = "LeftTab";
     /**
+     * Assigned to image buttons that open external links
+     */
+    String EXTERNAL_BUTTON = "ExternalLink";
+    /**
      * Assigned to text buttons.
      */
     String IMAGE_BUTTON = "ImageButton";

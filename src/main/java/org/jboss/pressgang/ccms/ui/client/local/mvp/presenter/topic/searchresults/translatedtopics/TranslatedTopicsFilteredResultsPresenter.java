@@ -121,6 +121,9 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
 
                         localeTab.addClickHandler(clickHandler);
 
+                        /*
+                            Load the first locale by default
+                         */
                         if (first) {
                             clickHandler.onClick(null);
                         }

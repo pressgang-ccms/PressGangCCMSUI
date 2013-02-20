@@ -174,6 +174,11 @@ html {
     border-color: #009200;
 }
 
+.TextButton.ExternalLink {
+    background-color: rgb(93, 0, 146);
+    border-color: rgb(49, 0, 99);
+}
+
 .TextButton.Error {
     background-color: #C60000;
     border-color: #920000;
@@ -354,9 +359,13 @@ html {
     box-sizing: border-box;
 }
 
-.TopicViewPanel, .FilterViewPanel {
+.TopicViewPanel {
     width: 100%;
     height: 100%;
+}
+
+.FilterViewPanel {
+    width: 100%;
 }
 
 .TopicViewDetail, .FilterViewDetail {

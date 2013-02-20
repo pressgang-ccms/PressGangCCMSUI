@@ -25,6 +25,16 @@ public class TranslatedTopicsFilteredResultsView extends BaseFilteredResultsView
         }
     };
 
+    private final TextColumn<RESTTranslatedTopicCollectionItemV1> revisionColumn = new TextColumn<RESTTranslatedTopicCollectionItemV1>() {
+        @Override
+        public String getValue(final RESTTranslatedTopicCollectionItemV1 object) {
+            if (object == null) {
+                return null + "";
+            }
+            return object.getItem().getRevision().toString();
+        }
+    };
+
     private final TextColumn<RESTTranslatedTopicCollectionItemV1> titleColumn = new TextColumn<RESTTranslatedTopicCollectionItemV1>() {
         @Override
         public String getValue(final RESTTranslatedTopicCollectionItemV1 object) {
@@ -35,22 +45,15 @@ public class TranslatedTopicsFilteredResultsView extends BaseFilteredResultsView
         }
     };
 
-    private final TextColumn<RESTTranslatedTopicCollectionItemV1> localeColumn = new TextColumn<RESTTranslatedTopicCollectionItemV1>() {
-        @Override
-        public String getValue(final RESTTranslatedTopicCollectionItemV1 object) {
-            if (object == null) {
-                return null + "";
-            }
-            return object.getItem().getLocale();
-        }
-    };
+
 
     public TranslatedTopicsFilteredResultsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults(), PressGangCCMSUI.INSTANCE.CreateTopic());
 
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.TopicID());
+        getResults().addColumn(revisionColumn, PressGangCCMSUI.INSTANCE.TopicRevision());
         getResults().addColumn(titleColumn, PressGangCCMSUI.INSTANCE.TopicTitle());
-        getResults().addColumn(localeColumn, PressGangCCMSUI.INSTANCE.TopicLocale());
+
         
         /* remove the search and create buttons */
         this.getTopActionPanel().removeAllRows();

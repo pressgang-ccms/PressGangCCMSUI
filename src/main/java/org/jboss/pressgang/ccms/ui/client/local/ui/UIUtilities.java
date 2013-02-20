@@ -24,36 +24,42 @@ final public class UIUtilities {
     }
 
     public static PushButton createPushButton(final String text) {
-        return createPushButton(text, false);
+        return createPushButton(text, false, false);
     }
 
     public static PushButton createPushButton(final String text, final boolean subMenu) {
+        return createPushButton(text, subMenu, false);
+    }
+
+    public static PushButton createPushButton(final String text, final boolean subMenu, final boolean externalLink) {
         final PushButton retvalue = new PushButton(text);
         retvalue.addStyleName(CSSConstants.TEXT_BUTTON);
 
         if (subMenu) {
             retvalue.addStyleName(CSSConstants.SUB_MENU);
+        } else if (externalLink) {
+            retvalue.addStyleName(CSSConstants.EXTERNAL_BUTTON);
         }
 
         return retvalue;
     }
 
     public static PushButton createTopTabPushButton(final String text) {
-        return createTopTabPushButton(text, false);
+        return createTopTabPushButton(text, false, false);
     }
 
-    public static PushButton createTopTabPushButton(final String text, final boolean subMenu) {
-        final PushButton retvalue = createPushButton(text, subMenu);
+    public static PushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink) {
+        final PushButton retvalue = createPushButton(text, subMenu, externalLink);
         retvalue.addStyleName(CSSConstants.TOP_TAB_BUTTON);
         return retvalue;
     }
 
     public static PushButton createLeftSideTabPushButton(final String text) {
-        return createLeftSideTabPushButton(text, false);
+        return createLeftSideTabPushButton(text, false, false);
     }
 
-    public static PushButton createLeftSideTabPushButton(final String text, final boolean subMenu) {
-        final PushButton retvalue = createPushButton(text, subMenu);
+    public static PushButton createLeftSideTabPushButton(final String text, final boolean subMenu, final boolean externalLink) {
+        final PushButton retvalue = createPushButton(text, subMenu, externalLink);
         retvalue.addStyleName(CSSConstants.LEFT_TAB_BUTTON);
         return retvalue;
     }

@@ -535,10 +535,10 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         projects = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Projects());
         addShortcutButton(projects);
 
-        reports = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Reports());
+        reports = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Reports(), false, true);
         addShortcutButton(reports);
 
-        bug = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CreateBug());
+        bug = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CreateBug(), false, true);
         addShortcutButton(bug);
 
         advanced = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Advanced(), true);
