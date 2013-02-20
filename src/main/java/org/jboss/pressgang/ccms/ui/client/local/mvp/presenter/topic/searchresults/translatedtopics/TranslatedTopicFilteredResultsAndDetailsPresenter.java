@@ -14,7 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresul
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseSearchResultsAndTopicPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseTopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -30,11 +30,11 @@ import java.util.logging.Logger;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
- * Extends the BaseSearchResultsAndTopicPresenter class to provide the functionality required to
+ * Extends the BaseTopicFilteredResultsAndDetailsPresenter class to provide the functionality required to
  * display translated topics.
  */
 @Dependent
-public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseSearchResultsAndTopicPresenter<
+public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredResultsAndDetailsPresenter<
         RESTTranslatedTopicV1,
         RESTTranslatedTopicCollectionV1,
         RESTTranslatedTopicCollectionItemV1,
@@ -230,10 +230,10 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseSearc
 
 
     /**
-     * This interface defines nothing over BaseSearchResultsAndTopicPresenter.Display,
+     * This interface defines nothing over BaseTopicFilteredResultsAndDetailsPresenter.Display,
      * but exists for the benefit of the injection.
      */
-    public interface Display extends BaseSearchResultsAndTopicPresenter.Display<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
+    public interface Display extends BaseTopicFilteredResultsAndDetailsPresenter.Display<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
 
     }
 }

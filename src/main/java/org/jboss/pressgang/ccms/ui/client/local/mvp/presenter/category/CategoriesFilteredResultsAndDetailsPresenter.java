@@ -54,7 +54,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
  * @author Matthew Casperson
  */
 @Dependent
-public class CategoriesFilteredResultsAndCategoryPresenter
+public class CategoriesFilteredResultsAndDetailsPresenter
         extends
         BaseSearchAndEditComponent<
                 RESTCategoryV1,
@@ -70,7 +70,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     /**
      * A logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CategoriesFilteredResultsAndCategoryPresenter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CategoriesFilteredResultsAndDetailsPresenter.class.getName());
     /**
      * Used when moving children up and down
      */
@@ -221,7 +221,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     @Override
     protected void loadAdditionalDisplayedItemData() {
         try {
-            LOGGER.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.loadAdditionalDisplayedItemData()");
+            LOGGER.log(Level.INFO, "ENTER CategoriesFilteredResultsAndDetailsPresenter.loadAdditionalDisplayedItemData()");
 
             /* Display the tags that are added to the category */
             categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
@@ -229,14 +229,14 @@ public class CategoriesFilteredResultsAndCategoryPresenter
             /* Get a new collection of tags */
             categoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
         } finally {
-            LOGGER.log(Level.INFO, "EXIT CategoriesFilteredResultsAndCategoryPresenter.loadAdditionalDisplayedItemData()");
+            LOGGER.log(Level.INFO, "EXIT CategoriesFilteredResultsAndDetailsPresenter.loadAdditionalDisplayedItemData()");
         }
     }
 
     @Override
     protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
         try {
-            LOGGER.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.initializeViews()");
+            LOGGER.log(Level.INFO, "ENTER CategoriesFilteredResultsAndDetailsPresenter.initializeViews()");
 
             /* We need to initialize the view so the celltable buttons can display the correct labels */
             if (viewIsInFilter(filter, categoryTagPresenter.getDisplay())) {
@@ -249,7 +249,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                 categoryPresenter.getDisplay().display(this.filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
             }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT CategoriesFilteredResultsAndCategoryPresenter.initializeViews()");
+            LOGGER.log(Level.INFO, "EXIT CategoriesFilteredResultsAndDetailsPresenter.initializeViews()");
         }
     }
 
@@ -382,7 +382,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
     @Override
     protected void bindFilteredResultsButtons() {
         try {
-            LOGGER.log(Level.INFO, "ENTER CategoriesFilteredResultsAndCategoryPresenter.bindFilteredResultsButtons()");
+            LOGGER.log(Level.INFO, "ENTER CategoriesFilteredResultsAndDetailsPresenter.bindFilteredResultsButtons()");
 
             filteredResultsPresenter.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
                 @Override
@@ -422,7 +422,7 @@ public class CategoriesFilteredResultsAndCategoryPresenter
                 }
             });
         } finally {
-            LOGGER.log(Level.INFO, "EXIT CategoriesFilteredResultsAndCategoryPresenter.bindFilteredResultsButtons()");
+            LOGGER.log(Level.INFO, "EXIT CategoriesFilteredResultsAndDetailsPresenter.bindFilteredResultsButtons()");
         }
     }
 
