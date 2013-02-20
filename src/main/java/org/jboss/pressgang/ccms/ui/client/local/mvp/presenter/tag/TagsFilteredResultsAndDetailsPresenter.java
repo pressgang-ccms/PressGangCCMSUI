@@ -160,7 +160,6 @@ public class TagsFilteredResultsAndDetailsPresenter
         @Override
         public void onClick(final ClickEvent event) {
             switchView(resultComponent.getDisplay());
-            setHelpTopicId(resultComponent.getHelpTopicId());
         }
 
     };
@@ -172,7 +171,6 @@ public class TagsFilteredResultsAndDetailsPresenter
         @Override
         public void onClick(final ClickEvent event) {
             switchView(projectsComponent.getDisplay());
-            setHelpTopicId(projectsComponent.getHelpTopicId());
         }
     };
 
@@ -183,7 +181,6 @@ public class TagsFilteredResultsAndDetailsPresenter
         @Override
         public void onClick(final ClickEvent event) {
             switchView(categoriesComponent.getDisplay());
-            setHelpTopicId(categoriesComponent.getHelpTopicId());
         }
     };
 
@@ -724,6 +721,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
 
         this.enableAndDisableActionButtons(displayedView);
+        setHelpTopicForView(displayedView);
 
         /* save any changes to the tag details */
         if (lastDisplayedView == this.resultComponent.getDisplay()) {
@@ -841,6 +839,16 @@ public class TagsFilteredResultsAndDetailsPresenter
 
         if (viewIsInFilter(filter, categoriesComponent.getDisplay())) {
             categoriesComponent.displayDetailedChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+        }
+    }
+
+    private void setHelpTopicForView(@NotNull final BaseTemplateViewInterface view) {
+        if (view == projectsComponent.getDisplay()) {
+            setHelpTopicId(projectsComponent.getHelpTopicId());
+        } else if (view == categoriesComponent.getDisplay()) {
+            setHelpTopicId(categoriesComponent.getHelpTopicId());
+        } else if (view == resultComponent.getDisplay()) {
+            setHelpTopicId(resultComponent.getHelpTopicId());
         }
     }
 

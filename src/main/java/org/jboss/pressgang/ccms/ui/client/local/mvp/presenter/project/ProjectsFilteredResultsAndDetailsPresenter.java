@@ -212,7 +212,6 @@ public class ProjectsFilteredResultsAndDetailsPresenter
             @Override
             public void onClick(final ClickEvent event) {
                 switchView(resultComponent.getDisplay());
-                setHelpTopicId(resultComponent.getHelpTopicId());
             }
 
         };
@@ -224,7 +223,6 @@ public class ProjectsFilteredResultsAndDetailsPresenter
             @Override
             public void onClick(final ClickEvent event) {
                 switchView(tagComponent.getDisplay());
-                setHelpTopicId(tagComponent.getHelpTopicId());
             }
 
         };
@@ -379,6 +377,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
     protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
 
         this.enableAndDisableActionButtons(displayedView);
+        setHelpTopicForView(displayedView);
     }
 
     private void enableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView) {
@@ -409,5 +408,13 @@ public class ProjectsFilteredResultsAndDetailsPresenter
             tagComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
         }
 
+    }
+
+    private void setHelpTopicForView(@NotNull final BaseTemplateViewInterface view) {
+        if (view == tagComponent.getDisplay()) {
+            setHelpTopicId(tagComponent.getHelpTopicId());
+        } else if (view == resultComponent.getDisplay()) {
+            setHelpTopicId(resultComponent.getHelpTopicId());
+        }
     }
 }

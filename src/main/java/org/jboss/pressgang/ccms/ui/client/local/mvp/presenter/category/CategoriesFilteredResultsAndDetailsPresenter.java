@@ -290,7 +290,6 @@ public class CategoriesFilteredResultsAndDetailsPresenter
             @Override
             public void onClick(final ClickEvent event) {
                 switchView(categoryPresenter.getDisplay());
-                setHelpTopicId(categoryPresenter.getHelpTopicId());
             }
 
         };
@@ -304,7 +303,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                     @Override
                     public void onClick(final ClickEvent event) {
                         switchView(categoryTagPresenter.getDisplay());
-                        setHelpTopicId(categoryTagPresenter.getHelpTopicId());
+
                     }
 
                 };
@@ -471,6 +470,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
     protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
 
         enableAndDisableActionButtons(displayedView);
+        setHelpTopicForView(displayedView);
 
         /* Show any wait dialogs from the new view, and update the view with the currently displayed entity */
         if (displayedView != null) {
@@ -486,6 +486,14 @@ public class CategoriesFilteredResultsAndDetailsPresenter
             this.display.replaceTopActionButton(this.display.getDetails(), this.display.getDetailsDown());
         } else if (displayedView == this.categoryTagPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getChildren(), this.display.getChildrenDown());
+        }
+    }
+
+    private void setHelpTopicForView(@NotNull final BaseTemplateViewInterface view) {
+        if (view == categoryPresenter.getDisplay()) {
+            setHelpTopicId(categoryPresenter.getHelpTopicId());
+        } else if (view == categoryTagPresenter.getDisplay()) {
+            setHelpTopicId(categoryTagPresenter.getHelpTopicId());
         }
     }
 
