@@ -24,6 +24,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicPropertyTagsView;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicSourceURLsView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicXMLView;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -161,7 +163,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         getSearchResultsComponent().bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
         topicTagsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicPropertyTagPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
-        topicSourceURLsPresenter.bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        topicSourceURLsPresenter.bindChildrenExtended(ServiceConstants.TOPIC_SOURCE_URLS_HELP_TOPIC, pageId);
 
         /* Display the split panes */
         initializeDisplay();
@@ -785,9 +787,15 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             component.setHelpTopicId(ServiceConstants.TOPIC_BUGS_TOPIC);
         } else if (view instanceof TopicXMLView) {
             component.setHelpTopicId(ServiceConstants.TOPIC_XML_EDIT_TOPIC);
+        } else if (view instanceof TopicSourceURLsView) {
+            component.setHelpTopicId(ServiceConstants.TOPIC_SOURCE_URLS_HELP_TOPIC);
+        } else if (view instanceof TopicPropertyTagsView) {
+            component.setHelpTopicId(ServiceConstants.TOPIC_EXTENDED_PROPERTIES_HELP_TOPIC);
         } else {
             component.setHelpTopicId(ServiceConstants.DEFAULT_HELP_TOPIC);
         }
+
+
     }
 
 

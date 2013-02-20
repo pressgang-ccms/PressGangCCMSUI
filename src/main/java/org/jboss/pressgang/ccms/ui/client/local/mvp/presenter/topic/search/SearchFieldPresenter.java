@@ -46,7 +46,7 @@ public class SearchFieldPresenter extends BaseTemplatePresenter implements BaseT
     @Override
     public void go(final HasWidgets container) {
         GWTUtilities.clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended(ServiceConstants.SEARCH_FIELDS_HELP_TOPIC, HISTORY_TOKEN);
     }
 
     public void bindExtended(final int helpTopicId, final String pageId) {

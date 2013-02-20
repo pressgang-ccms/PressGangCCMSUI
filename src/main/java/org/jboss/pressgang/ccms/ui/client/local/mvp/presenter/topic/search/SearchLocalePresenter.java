@@ -60,7 +60,7 @@ public class SearchLocalePresenter  extends BaseTemplatePresenter implements Bas
     @Override
     public void go(@NotNull final HasWidgets container) {
         GWTUtilities.clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended(ServiceConstants.SEARCH_LOCALES_HELP_TOPIC, HISTORY_TOKEN);
     }
 
     public interface Display extends BaseTemplateViewInterface, BasePopulatedEditorViewInterface<List<String>, SearchUILocales, SearchUILocaleEditor> {

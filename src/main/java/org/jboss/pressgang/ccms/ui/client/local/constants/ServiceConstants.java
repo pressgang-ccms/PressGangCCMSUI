@@ -99,6 +99,80 @@ public final class ServiceConstants {
     public static final int FILTERS_HELP_TOPIC = 13434;
 
     /**
+     * The help topic for the project details view.
+     */
+    public static final int PROJECT_DETAILS_HELP_TOPIC = 13581;
+
+    /**
+     * The help topic for the project tags view.
+     */
+    public static final int PROJECT_TAGS_HELP_TOPIC = 13582;
+    /**
+     * The help topic for the project view.
+     */
+    public static final int PROJECT_HELP_TOPIC = 13583;
+
+    /**
+     * The help topic for the category view.
+     */
+    public static final int CATEGORY_HELP_TOPIC = 13584;
+
+    /**
+     * The help topic for the category detail view.
+     */
+    public static final int CATEGORY_DETAIL_HELP_TOPIC = 13585;
+
+    /**
+     * The help topic for the category tag view.
+     */
+    public static final int CATEGORY_TAG_HELP_TOPIC = 13586;
+
+    /**
+     * The help topic for the image view.
+     */
+    public static final int IMAGE_HELP_TOPIC = 13587;
+
+    /**
+     * The help topic for the tag view.
+     */
+    public static final int TAG_HELP_TOPIC = 13588;
+
+    /**
+     * The help topic for the tag projects view.
+     */
+    public static final int TAG_PROJECTS_HELP_TOPIC = 13589;
+
+    /**
+     * The help topic for the tag categories view.
+     */
+    public static final int TAG_CATEGORIES_HELP_TOPIC = 13590;
+
+    /**
+     * The help topic for the tag details view.
+     */
+    public static final int TAG_DETAIL_HELP_TOPIC = 13591;
+
+    /**
+     * The help topic for the search fields view.
+     */
+    public static final int SEARCH_FIELDS_HELP_TOPIC = 13592;
+
+    /**
+     * The help topic for the search locales view.
+     */
+    public static final int SEARCH_LOCALES_HELP_TOPIC = 13593;
+
+    /**
+     * The help topic for the topics source url view.
+     */
+    public static final int TOPIC_SOURCE_URLS_HELP_TOPIC = 13594;
+
+    /**
+     * The help topic for the topics extended properties view.
+     */
+    public static final int TOPIC_EXTENDED_PROPERTIES_HELP_TOPIC = 13595;
+
+    /**
      * A private constructor to prevent instantiation.
      */
     private ServiceConstants() {

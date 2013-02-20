@@ -113,7 +113,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
     public void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
-        imageComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        imageComponent.bindExtended(ServiceConstants.IMAGE_HELP_TOPIC, pageId);
         imageFilteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
 
         /* A call back used to get a fresh copy of the entity that was selected */

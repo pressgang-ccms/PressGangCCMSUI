@@ -111,7 +111,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindSearchAndEditExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        bindSearchAndEditExtended(ServiceConstants.PROJECT_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
     @Override
@@ -136,8 +136,8 @@ public class ProjectsFilteredResultsAndDetailsPresenter
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
         filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
-        resultComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
-        tagComponent.bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        resultComponent.bindExtended(ServiceConstants.PROJECT_DETAILS_HELP_TOPIC, pageId);
+        tagComponent.bindChildrenExtended(ServiceConstants.PROJECT_TAGS_HELP_TOPIC, pageId);
         super.bindSearchAndEdit(topicId, pageId, Preferences.PROJECT_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
                 filteredResultsComponent.getDisplay(), filteredResultsComponent, display, display, getNewEntityCallback);
 

@@ -50,7 +50,7 @@ public class TopicPresenter extends BaseTemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended(ServiceConstants.TOPIC_PROPERTIES_TOPIC, HISTORY_TOKEN);
 
     }
 

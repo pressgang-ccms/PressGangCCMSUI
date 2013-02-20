@@ -119,7 +119,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenComponent<
     @Override
     public final void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindChildrenExtended(ServiceConstants.TOPIC_SOURCE_URLS_HELP_TOPIC, HISTORY_TOKEN);
     }
 
     @Override

@@ -90,9 +90,9 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
         bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
 
-        tagsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-        fieldsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
-        localePresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        tagsComponent.bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
+        fieldsComponent.bindExtended(ServiceConstants.SEARCH_FIELDS_HELP_TOPIC, HISTORY_TOKEN);
+        localePresenter.bindExtended(ServiceConstants.SEARCH_LOCALES_HELP_TOPIC, HISTORY_TOKEN);
         searchFilterResultsAndFilterPresenter.bindSearchAndEditExtended(ServiceConstants.FILTERS_HELP_TOPIC, HISTORY_TOKEN, Constants.QUERY_PATH_SEGMENT_PREFIX);
 
         fieldsComponent.getDisplay().display(null, false);
@@ -372,6 +372,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         clearContainerAndAddTopLevelPanel(container, display);
         display.getTopActionGrandParentPanel().clear();
         display.getTopActionGrandParentPanel().setWidget(localePresenter.getDisplay().getTopActionParentPanel());
+        this.setHelpTopicId(localePresenter.getHelpTopicId());
 
         display.getPanel().clear();
         display.getPanel().setWidget(localePresenter.getDisplay().getPanel());
@@ -386,6 +387,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         clearContainerAndAddTopLevelPanel(container, display);
         display.getTopActionGrandParentPanel().clear();
         display.getTopActionGrandParentPanel().setWidget(tagsComponent.getDisplay().getTopActionParentPanel());
+        this.setHelpTopicId(tagsComponent.getHelpTopicId());
 
         display.getPanel().clear();
         display.getPanel().setWidget(tagsComponent.getDisplay().getPanel());
@@ -400,6 +402,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         clearContainerAndAddTopLevelPanel(container, display);
         display.getTopActionGrandParentPanel().clear();
         display.getTopActionGrandParentPanel().setWidget(fieldsComponent.getDisplay().getTopActionParentPanel());
+        this.setHelpTopicId(fieldsComponent.getHelpTopicId());
 
         display.getPanel().clear();
         display.getPanel().setWidget(fieldsComponent.getDisplay().getPanel());
@@ -412,6 +415,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
     private void displayFilters() {
         clearContainerAndAddTopLevelPanel(container, searchFilterResultsAndFilterPresenter.getDisplay());
+        this.setHelpTopicId(searchFilterResultsAndFilterPresenter.getHelpTopicId());
 
         fieldsComponent.getDisplay().setViewShown(false);
         tagsComponent.getDisplay().setViewShown(false);

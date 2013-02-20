@@ -71,7 +71,7 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
         display.setViewShown(true);
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
     }
 
     public void bindExtended(final int helpTopicId, @NotNull final String pageId) {

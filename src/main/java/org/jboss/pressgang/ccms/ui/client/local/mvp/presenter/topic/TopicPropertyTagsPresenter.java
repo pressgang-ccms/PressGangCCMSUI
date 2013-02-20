@@ -82,7 +82,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindDetailedChildrenExtended(ServiceConstants.TOPIC_EXTENDED_PROPERTIES_HELP_TOPIC, HISTORY_TOKEN);
     }
 
     @Override

@@ -126,7 +126,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindSearchAndEditExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        bindSearchAndEditExtended(ServiceConstants.CATEGORY_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
     @Override
@@ -150,8 +150,8 @@ public class CategoriesFilteredResultsAndDetailsPresenter
 
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);
 
-        categoryPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
-        categoryTagPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        categoryPresenter.bindExtended(ServiceConstants.CATEGORY_DETAIL_HELP_TOPIC, pageId);
+        categoryTagPresenter.bindDetailedChildrenExtended(ServiceConstants.CATEGORY_TAG_HELP_TOPIC, pageId);
         filteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, pageId, queryString);
 
         super.bindSearchAndEdit(topicId, pageId, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, categoryPresenter.getDisplay(), categoryPresenter.getDisplay(),

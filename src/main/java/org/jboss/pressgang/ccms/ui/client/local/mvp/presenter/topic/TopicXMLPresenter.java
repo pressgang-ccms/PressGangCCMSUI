@@ -119,7 +119,7 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended(ServiceConstants.TOPIC_XML_EDIT_TOPIC, HISTORY_TOKEN);
     }
 
     public void bindExtended(final int helpTopicId, final String pageId) {

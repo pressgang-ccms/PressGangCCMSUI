@@ -416,9 +416,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             }
                             newTopic.getTags().setItems(sourceTopic.getTags().returnDeletedAddedAndUpdatedCollectionItems());
 
-                                /*
-                                    Assume all the text fields have been updated
-                                 */
+                            /*
+                                Assume all the text fields have been updated
+                             */
                             LOGGER.log(Level.INFO, "Copying modified fields");
                             newTopic.setId(sourceTopic.getId());
                             newTopic.explicitSetDescription(sourceTopic.getDescription());
