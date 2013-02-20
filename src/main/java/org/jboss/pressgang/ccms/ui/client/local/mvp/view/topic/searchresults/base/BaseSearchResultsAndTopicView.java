@@ -203,7 +203,7 @@ public abstract class BaseSearchResultsAndTopicView<
 
         /* Build the action bar icons */
         renderedSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
-        rendered = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedView());
+        rendered = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.RenderedView());
         xml = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.XMLEditing());
         xmlErrors = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
         fields = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Properties());

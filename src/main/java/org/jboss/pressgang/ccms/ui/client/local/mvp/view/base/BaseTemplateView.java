@@ -145,7 +145,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     public final static class HelpDialogImpl extends DialogBox implements HelpDialog {
 
         private final VerticalPanel layout = new VerticalPanel();
-        private final HTML contents = new HTML("div");
+        private final HTML contents = new HTML();
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
 
         @Override
@@ -206,6 +206,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
                     HelpDialogImpl.this.center();
                     HelpDialogImpl.this.show();
+                    setTitle(PressGangCCMSUI.INSTANCE.Help() + "[" + topicId + "]");
                 }
             });
             RESTCalls.getTopic(callback, topicId);
