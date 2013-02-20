@@ -119,6 +119,11 @@ html {
     bottom: 16px !important;
 }
 
+.FilteredResultsTabMenu {
+    border-spacing: 0px;
+    height: 100%;
+}
+
 .TopActionPanel, .RenderedSplitViewMenuTable {
     width: 100%;
     border-spacing: 0px;

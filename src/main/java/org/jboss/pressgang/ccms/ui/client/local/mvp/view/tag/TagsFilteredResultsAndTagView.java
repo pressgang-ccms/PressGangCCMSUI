@@ -15,13 +15,13 @@ public class TagsFilteredResultsAndTagView
         implements TagsFilteredResultsAndTagPresenter.Display {
 
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-    private final PushButton tagDetails = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagDetails());
-    private final PushButton tagProjects = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagProjects());
-    private final PushButton tagCategories = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TagCategories());
+    private final PushButton tagDetails = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TagDetails());
+    private final PushButton tagProjects = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TagProjects());
+    private final PushButton tagCategories = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TagCategories());
 
-    private final Label tagDetailsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TagDetails());
-    private final Label tagProjectsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TagProjects());
-    private final Label tagCategoriesDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TagCategories());
+    private final Label tagDetailsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.TagDetails());
+    private final Label tagProjectsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.TagProjects());
+    private final Label tagCategoriesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.TagCategories());
 
     @Override
     public PushButton getTagCategories() {

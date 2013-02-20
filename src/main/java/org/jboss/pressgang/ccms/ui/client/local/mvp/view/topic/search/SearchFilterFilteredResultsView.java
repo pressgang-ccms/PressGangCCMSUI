@@ -19,10 +19,10 @@ public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<RES
         implements SearchFilterFilteredResultsPresenter.Display {
 
     private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
-    private final PushButton tagsSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Tags());
-    private final PushButton fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Fields());
-    private final Label filters = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Filters());
-    private final PushButton locales = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Locales());
+    private final PushButton tagsSearch = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
+    private final PushButton fields = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Fields());
+    private final Label filters = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Filters());
+    private final PushButton locales = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Locales());
 
     private final TextColumn<RESTFilterCollectionItemV1> idColumn = new TextColumn<RESTFilterCollectionItemV1>() {
         @Override

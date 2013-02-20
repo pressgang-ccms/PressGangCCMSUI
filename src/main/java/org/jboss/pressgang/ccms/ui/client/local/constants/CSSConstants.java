@@ -375,6 +375,10 @@ public interface CSSConstants {
      */
     String RENDERED_SPLIT_VIEW_MENU_TABLE = "RenderedSplitViewMenuTable";
     /**
+     * Assigned to the table that holds the split view menu.
+     */
+    String FILTERED_RESULTS_TAB_MENU_TABLE = "FilteredResultsTabMenu";
+    /**
      * Assigned to labels that represent down pushbuttons.
      */
     String DOWN_LABEL = "DownLabel";

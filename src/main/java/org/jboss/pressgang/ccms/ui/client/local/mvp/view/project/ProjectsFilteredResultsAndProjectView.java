@@ -15,11 +15,11 @@ public class ProjectsFilteredResultsAndProjectView extends
         ProjectsFilteredResultsAndProjectPresenter.Display {
 
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-    private final PushButton details = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ProjectDetails());
-    private final PushButton children = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ProjectTags());
+    private final PushButton details = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ProjectDetails());
+    private final PushButton children = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ProjectTags());
 
-    private final Label detailsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.ProjectDetails());
-    private final Label childrenDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.ProjectTags());
+    private final Label detailsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ProjectDetails());
+    private final Label childrenDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ProjectTags());
 
     @Override
     public PushButton getChildren() {

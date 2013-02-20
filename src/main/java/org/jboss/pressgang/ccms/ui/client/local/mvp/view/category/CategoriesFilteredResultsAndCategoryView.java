@@ -15,11 +15,11 @@ public class CategoriesFilteredResultsAndCategoryView extends
         CategoriesFilteredResultsAndCategoryPresenter.Display {
 
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-    private final PushButton details = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CategoryDetails());
-    private final PushButton children = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CategoryTags());
+    private final PushButton details = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.CategoryDetails());
+    private final PushButton children = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.CategoryTags());
 
-    private final Label detailsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.CategoryDetails());
-    private final Label childrenDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.CategoryTags());
+    private final Label detailsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.CategoryDetails());
+    private final Label childrenDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.CategoryTags());
 
     @Override
     public PushButton getChildren() {

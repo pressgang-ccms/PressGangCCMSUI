@@ -58,9 +58,9 @@ public class SearchResultsAndTopicView extends
 
         /* Build the action bar icons */
         save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-        history = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Revisions());
+        history = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Revisions());
 
-        historyDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
+        historyDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
 
         this.addActionButton(history);
         this.addActionButton(save);

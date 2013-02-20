@@ -23,10 +23,10 @@ public class SearchFieldView extends BaseTemplateView implements SearchFieldPres
     private final SearchUIFields searchUIFields = new SearchUIFields();
 
     private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
-    private final PushButton tagsSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Tags());
-    private final PushButton filters = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Filters());
-    private final PushButton locales = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Locales());
-    private final Label fields = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Fields());
+    private final PushButton tagsSearch = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
+    private final PushButton filters = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Filters());
+    private final PushButton locales = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Locales());
+    private final Label fields = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Fields());
 
     @Override
     public SearchFieldPresenterDriver getDriver() {

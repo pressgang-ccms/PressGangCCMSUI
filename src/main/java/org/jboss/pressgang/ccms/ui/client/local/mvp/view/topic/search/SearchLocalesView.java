@@ -30,10 +30,10 @@ public class SearchLocalesView extends BaseTemplateView implements SearchLocaleP
     private final SearchLocalePresenter.LocalesPresenterDriver driver = GWT.create(SearchLocalePresenter.LocalesPresenterDriver.class);
 
     private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
-    private final PushButton tagsSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Tags());
-    private final PushButton filters = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Filters());
-    private final PushButton fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Fields());
-    private final Label locales = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Locales());
+    private final PushButton tagsSearch = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
+    private final PushButton filters = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Filters());
+    private final PushButton fields = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Fields());
+    private final Label locales = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Locales());
 
     private final SearchUILocales searchUILocales = new SearchUILocales();
 
