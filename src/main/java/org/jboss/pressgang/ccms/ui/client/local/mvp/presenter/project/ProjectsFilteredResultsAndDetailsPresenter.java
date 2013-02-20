@@ -212,6 +212,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
             @Override
             public void onClick(final ClickEvent event) {
                 switchView(resultComponent.getDisplay());
+                setHelpTopicId(resultComponent.getHelpTopicId());
             }
 
         };
@@ -223,6 +224,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
             @Override
             public void onClick(final ClickEvent event) {
                 switchView(tagComponent.getDisplay());
+                setHelpTopicId(tagComponent.getHelpTopicId());
             }
 
         };

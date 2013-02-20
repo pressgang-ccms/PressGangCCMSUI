@@ -290,6 +290,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
             @Override
             public void onClick(final ClickEvent event) {
                 switchView(categoryPresenter.getDisplay());
+                setHelpTopicId(categoryPresenter.getHelpTopicId());
             }
 
         };
@@ -303,6 +304,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                     @Override
                     public void onClick(final ClickEvent event) {
                         switchView(categoryTagPresenter.getDisplay());
+                        setHelpTopicId(categoryTagPresenter.getHelpTopicId());
                     }
 
                 };

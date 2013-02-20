@@ -160,6 +160,7 @@ public class TagsFilteredResultsAndDetailsPresenter
         @Override
         public void onClick(final ClickEvent event) {
             switchView(resultComponent.getDisplay());
+            setHelpTopicId(resultComponent.getHelpTopicId());
         }
 
     };
@@ -171,6 +172,7 @@ public class TagsFilteredResultsAndDetailsPresenter
         @Override
         public void onClick(final ClickEvent event) {
             switchView(projectsComponent.getDisplay());
+            setHelpTopicId(projectsComponent.getHelpTopicId());
         }
     };
 
@@ -181,6 +183,7 @@ public class TagsFilteredResultsAndDetailsPresenter
         @Override
         public void onClick(final ClickEvent event) {
             switchView(categoriesComponent.getDisplay());
+            setHelpTopicId(categoriesComponent.getHelpTopicId());
         }
     };
 
