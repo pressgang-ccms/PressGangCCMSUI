@@ -61,7 +61,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class TagsFilteredResultsAndTagPresenter
+public class TagsFilteredResultsAndDetailsPresenter
         extends
         BaseSearchAndEditComponent<
                 RESTTagV1,
@@ -105,7 +105,7 @@ public class TagsFilteredResultsAndTagPresenter
     /**
      * A logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagsFilteredResultsAndTagPresenter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TagsFilteredResultsAndDetailsPresenter.class.getName());
 
     /**
      * An Errai injected instance of a class that implements Display. This is the view that holds all other views
@@ -215,17 +215,17 @@ public class TagsFilteredResultsAndTagPresenter
         private void saveTagChanges(final boolean unsavedTagChanges, final boolean unsavedCategoryChanges) {
 
             try {
-                LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndTagPresenter.saveTagChanges()");
+                LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndDetailsPresenter.saveTagChanges()");
 
                 /* Was the tag we just saved a new tag? */
                 final boolean wasNewTag = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
 
                 /* Save any changes made to the tag entity itself */
-                final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, TagsFilteredResultsAndTagPresenter.Display>(
-                        display, new BaseRestCallback.SuccessAction<RESTTagV1, TagsFilteredResultsAndTagPresenter.Display>() {
+                final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, TagsFilteredResultsAndDetailsPresenter.Display>(
+                        display, new BaseRestCallback.SuccessAction<RESTTagV1, TagsFilteredResultsAndDetailsPresenter.Display>() {
                     @Override
                     public void doSuccessAction(final RESTTagV1 retValue,
-                                                final TagsFilteredResultsAndTagPresenter.Display display) {
+                                                final TagsFilteredResultsAndDetailsPresenter.Display display) {
 
                         /* we are now viewing the object returned by the save */
                         retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
@@ -330,7 +330,7 @@ public class TagsFilteredResultsAndTagPresenter
                     saveCategoryChanges(false, filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                 }
             } finally {
-                LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndTagPresenter.saveTagChanges()");
+                LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndDetailsPresenter.saveTagChanges()");
             }
         }
 
@@ -342,7 +342,7 @@ public class TagsFilteredResultsAndTagPresenter
          */
         private void saveCategoryChanges(final boolean wasNewTag, final Integer newTagId) {
             try {
-                LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndTagPresenter.saveCategoryChanges()");
+                LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndDetailsPresenter.saveCategoryChanges()");
 
                 /* Save any changes made to the tag entity itself */
                 final RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
@@ -421,7 +421,7 @@ public class TagsFilteredResultsAndTagPresenter
 
                 RESTCalls.updateCategories(callback, updatedCategories);
             } finally {
-                LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndTagPresenter.saveCategoryChanges()");
+                LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndDetailsPresenter.saveCategoryChanges()");
             }
         }
 
@@ -430,12 +430,12 @@ public class TagsFilteredResultsAndTagPresenter
     @Override
     public void go(@NotNull final HasWidgets container) {
         try {
-            LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndTagPresenter.go()");
+            LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndDetailsPresenter.go()");
 
             clearContainerAndAddTopLevelPanel(container, display);
             bindSearchAndEditExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
         } finally {
-            LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndTagPresenter.go()");
+            LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndDetailsPresenter.go()");
         }
     }
 

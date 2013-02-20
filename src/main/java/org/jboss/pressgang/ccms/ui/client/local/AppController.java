@@ -20,20 +20,20 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryF
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectsFilteredResultsAndProjectPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectsFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFieldPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFilterResultsAndFilterPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchTagsFieldsAndFiltersPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.SearchResultsAndTopicPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.SearchResultsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics.TranslatedTopicResultsAndTranslatedTopicPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics.TranslatedTopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.Nullable;
@@ -79,16 +79,16 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
 
             this.eventBus.addHandler(WelcomeViewEvent.TYPE, new ViewOpenEventHandler(WelcomePresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(SearchViewEvent.TYPE, new ViewOpenEventHandler(SearchPresenter.HISTORY_TOKEN));
-            this.eventBus.addHandler(SearchResultsViewEvent.TYPE, new ViewOpenWithQueryEventHandler(SearchResultsPresenter.HISTORY_TOKEN));
-            this.eventBus.addHandler(SearchResultsAndTopicViewEvent.TYPE, new ViewOpenWithQueryEventHandler(SearchResultsAndTopicPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(SearchResultsViewEvent.TYPE, new ViewOpenWithQueryEventHandler(TopicFilteredResultsPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(SearchResultsAndTopicViewEvent.TYPE, new ViewOpenWithQueryEventHandler(TopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(ImagesViewEvent.TYPE, new ViewOpenEventHandler(ImagePresenter.HISTORY_TOKEN));
-            this.eventBus.addHandler(ImagesFilteredResultsAndImageViewEvent.TYPE, new ViewOpenWithQueryEventHandler(ImagesFilteredResultsAndImagePresenter.HISTORY_TOKEN));
-            this.eventBus.addHandler(TagsFilteredResultsAndTagViewEvent.TYPE, new ViewOpenWithQueryEventHandler(TagsFilteredResultsAndTagPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(ImagesFilteredResultsAndImageViewEvent.TYPE, new ViewOpenWithQueryEventHandler(ImagesFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(TagsFilteredResultsAndTagViewEvent.TYPE, new ViewOpenWithQueryEventHandler(TagsFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(CategoriesFilteredResultsAndCategoryViewEvent.TYPE, new ViewOpenWithQueryEventHandler(CategoriesFilteredResultsAndCategoryPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(SearchTagsFieldsAndFiltersViewEvent.TYPE, new ViewOpenWithQueryEventHandler(SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(TranslatedSearchTagsFieldsAndFiltersViewEvent.TYPE, new ViewOpenWithQueryEventHandler(SearchTagsFieldsAndFiltersPresenter.TRANSLATED_HISTORY_TOKEN));
-            this.eventBus.addHandler(ProjectsFilteredResultsAndProjectViewEvent.TYPE, new ViewOpenWithQueryEventHandler(ProjectsFilteredResultsAndProjectPresenter.HISTORY_TOKEN));
-            this.eventBus.addHandler(TranslatedSearchResultsAndTopicViewEvent.TYPE, new ViewOpenWithQueryEventHandler(TranslatedTopicResultsAndTranslatedTopicPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(ProjectsFilteredResultsAndProjectViewEvent.TYPE, new ViewOpenWithQueryEventHandler(ProjectsFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(TranslatedSearchResultsAndTopicViewEvent.TYPE, new ViewOpenWithQueryEventHandler(TranslatedTopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
         } finally {
             LOGGER.log(Level.INFO, "EXIT AppController.bind()");
         }
@@ -141,22 +141,22 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                     presenter = getBeanInstance(WelcomePresenter.class);
                 } else if (token.startsWith(SearchPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(SearchPresenter.class);
-                } else if (token.startsWith(SearchResultsPresenter.HISTORY_TOKEN)) {
-                    presenter = getBeanInstance(SearchResultsPresenter.class);
+                } else if (token.startsWith(TopicFilteredResultsPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(TopicFilteredResultsPresenter.class);
                 } else if (token.startsWith(TopicPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(TopicPresenter.class);
                 } else if (token.startsWith(TopicXMLPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(TopicXMLPresenter.class);
                 } else if (token.startsWith(TagPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(TagPresenter.class);
-                } else if (token.startsWith(SearchResultsAndTopicPresenter.HISTORY_TOKEN)) {
-                    presenter = getBeanInstance(SearchResultsAndTopicPresenter.class);
+                } else if (token.startsWith(TopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(TopicFilteredResultsAndDetailsPresenter.class);
                 } else if (token.startsWith(ImagePresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(ImagePresenter.class);
-                } else if (token.startsWith(ImagesFilteredResultsAndImagePresenter.HISTORY_TOKEN)) {
-                    presenter = getBeanInstance(ImagesFilteredResultsAndImagePresenter.class);
-                } else if (token.startsWith(TagsFilteredResultsAndTagPresenter.HISTORY_TOKEN)) {
-                    presenter = getBeanInstance(TagsFilteredResultsAndTagPresenter.class);
+                } else if (token.startsWith(ImagesFilteredResultsAndDetailsPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(ImagesFilteredResultsAndDetailsPresenter.class);
+                } else if (token.startsWith(TagsFilteredResultsAndDetailsPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(TagsFilteredResultsAndDetailsPresenter.class);
                 } else if (token.startsWith(ImageFilteredResultsPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(ImageFilteredResultsPresenter.class);
                 } else if (token.startsWith(CategoryFilteredResultsPresenter.HISTORY_TOKEN)) {
@@ -176,12 +176,12 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                         history tokens will launch the search view.
                      */
                     presenter = getBeanInstance(SearchTagsFieldsAndFiltersPresenter.class);
-                } else if (token.startsWith(ProjectsFilteredResultsAndProjectPresenter.HISTORY_TOKEN)) {
-                    presenter = getBeanInstance(ProjectsFilteredResultsAndProjectPresenter.class);
+                } else if (token.startsWith(ProjectsFilteredResultsAndDetailsPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(ProjectsFilteredResultsAndDetailsPresenter.class);
                 } else if (token.startsWith(SearchFilterResultsAndFilterPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(SearchFilterResultsAndFilterPresenter.class);
-                } else if (token.startsWith(TranslatedTopicResultsAndTranslatedTopicPresenter.HISTORY_TOKEN)) {
-                    presenter = getBeanInstance(TranslatedTopicResultsAndTranslatedTopicPresenter.class);
+                } else if (token.startsWith(TranslatedTopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(TranslatedTopicFilteredResultsAndDetailsPresenter.class);
                 }
 
                 if (presenter.isPresent()) {

@@ -64,7 +64,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
  * @author Matthew Casperson
  */
 @Dependent
-public class ImagesFilteredResultsAndImagePresenter
+public class ImagesFilteredResultsAndDetailsPresenter
         extends
         BaseSearchAndEditComponent<
                 RESTImageV1,
@@ -152,11 +152,11 @@ public class ImagesFilteredResultsAndImagePresenter
     @Override
     protected void loadAdditionalDisplayedItemData() {
 
-        final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, ImagesFilteredResultsAndImagePresenter.Display>(
-                display, new BaseRestCallback.SuccessAction<RESTImageV1, ImagesFilteredResultsAndImagePresenter.Display>() {
+        final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
+                display, new BaseRestCallback.SuccessAction<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
             @Override
             public void doSuccessAction(final RESTImageV1 retValue,
-                                        final ImagesFilteredResultsAndImagePresenter.Display display) {
+                                        final ImagesFilteredResultsAndDetailsPresenter.Display display) {
                         /*
                          * Do a shallow copy here, because Chrome has issues with System.arraycopy - see
                          * http://code.google.com/p/chromium/issues/detail?id=56588
@@ -513,12 +513,12 @@ public class ImagesFilteredResultsAndImagePresenter
                 if (isOKToProceed()) {
 
                     /* Start by getting the default locale */
-                    final RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, ImagesFilteredResultsAndImagePresenter.Display>(
+                    final RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
                             display,
-                            new BaseRestCallback.SuccessAction<RESTStringConstantV1, ImagesFilteredResultsAndImagePresenter.Display>() {
+                            new BaseRestCallback.SuccessAction<RESTStringConstantV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
                                 @Override
                                 public void doSuccessAction(final RESTStringConstantV1 retValue,
-                                                            final ImagesFilteredResultsAndImagePresenter.Display display) {
+                                                            final ImagesFilteredResultsAndDetailsPresenter.Display display) {
 
                                     /* When we have the default locale, create a new image */
                                     final RESTLanguageImageV1 langImage = new RESTLanguageImageV1();
@@ -528,12 +528,12 @@ public class ImagesFilteredResultsAndImagePresenter
                                     newImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                                     newImage.getLanguageImages_OTM().addNewItem(langImage);
 
-                                    final RESTCallback<RESTImageV1> imageCallback = new BaseRestCallback<RESTImageV1, ImagesFilteredResultsAndImagePresenter.Display>(
+                                    final RESTCallback<RESTImageV1> imageCallback = new BaseRestCallback<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
                                             display,
-                                            new BaseRestCallback.SuccessAction<RESTImageV1, ImagesFilteredResultsAndImagePresenter.Display>() {
+                                            new BaseRestCallback.SuccessAction<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
                                                 @Override
                                                 public void doSuccessAction(final RESTImageV1 retValue,
-                                                                            final ImagesFilteredResultsAndImagePresenter.Display display) {
+                                                                            final ImagesFilteredResultsAndDetailsPresenter.Display display) {
 
                                                     final RESTImageCollectionItemV1 selectedImageCollectionItem = new RESTImageCollectionItemV1();
                                                     selectedImageCollectionItem.setItem(retValue.clone(false));

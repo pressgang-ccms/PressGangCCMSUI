@@ -27,7 +27,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class SearchResultsPresenter extends BaseFilteredResultsComponent<RESTTopicCollectionItemV1>
+public class TopicFilteredResultsPresenter extends BaseFilteredResultsComponent<RESTTopicCollectionItemV1>
         implements BaseTemplatePresenterInterface {
 
     public interface Display extends BaseFilteredResultsViewInterface<RESTTopicCollectionItemV1> {
@@ -48,7 +48,7 @@ public class SearchResultsPresenter extends BaseFilteredResultsComponent<RESTTop
         return display;
     }
 
-    public SearchResultsPresenter() {
+    public TopicFilteredResultsPresenter() {
 
     }
 

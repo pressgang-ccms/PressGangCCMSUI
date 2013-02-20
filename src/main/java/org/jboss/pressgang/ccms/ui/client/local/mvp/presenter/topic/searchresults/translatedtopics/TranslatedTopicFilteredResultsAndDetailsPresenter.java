@@ -2,12 +2,10 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresul
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.regexp.shared.RegExp;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -21,19 +19,14 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTranslatedTopicV1BasicDetailsEditor;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.isStringNullOrEmpty;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
@@ -41,7 +34,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
  * display translated topics.
  */
 @Dependent
-public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearchResultsAndTopicPresenter<
+public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseSearchResultsAndTopicPresenter<
         RESTTranslatedTopicV1,
         RESTTranslatedTopicCollectionV1,
         RESTTranslatedTopicCollectionItemV1,
@@ -57,7 +50,7 @@ public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearc
     /**
      * A Logger
      */
-    private static final Logger LOGGER = Logger.getLogger(TranslatedTopicResultsAndTranslatedTopicPresenter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TranslatedTopicFilteredResultsAndDetailsPresenter.class.getName());
 
     /**
      * The main view.
@@ -99,26 +92,26 @@ public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearc
             public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTTranslatedTopicV1> displayCallback) {
 
                 try {
-                    LOGGER.log(Level.INFO, "ENTER TranslatedTopicResultsAndTranslatedTopicPresenter.bind() GetNewEntityCallback.getNewEntity()");
+                    LOGGER.log(Level.INFO, "ENTER TranslatedTopicFilteredResultsAndDetailsPresenter.bind() GetNewEntityCallback.getNewEntity()");
 
                     final RESTCalls.RESTCallback<RESTTranslatedTopicV1> callback = new BaseRestCallback<RESTTranslatedTopicV1, BaseTemplateViewInterface>(
                             getDisplay(), new BaseRestCallback.SuccessAction<RESTTranslatedTopicV1, BaseTemplateViewInterface>() {
                         @Override
                         public void doSuccessAction(final RESTTranslatedTopicV1 retValue, final BaseTemplateViewInterface display) {
                             try {
-                                LOGGER.log(Level.INFO, "ENTER TranslatedTopicResultsAndTranslatedTopicPresenter.bind() RESTCallback.doSuccessAction()");
+                                LOGGER.log(Level.INFO, "ENTER TranslatedTopicFilteredResultsAndDetailsPresenter.bind() RESTCallback.doSuccessAction()");
 
                                 LOGGER.log(Level.INFO, "retValue.getProperties().getItems().size(): " + retValue.getProperties().getItems().size());
 
                                 displayCallback.displayNewEntity(retValue);
                             } finally {
-                                LOGGER.log(Level.INFO, "EXIT TranslatedTopicResultsAndTranslatedTopicPresenter.bind() RESTCallback.doSuccessAction()");
+                                LOGGER.log(Level.INFO, "EXIT TranslatedTopicFilteredResultsAndDetailsPresenter.bind() RESTCallback.doSuccessAction()");
                             }
                         }
                     });
                     RESTCalls.getTranslatedTopic(callback, id);
                 } finally {
-                    LOGGER.log(Level.INFO, "EXIT TranslatedTopicResultsAndTranslatedTopicPresenter.bind() GetNewEntityCallback.getNewEntity()");
+                    LOGGER.log(Level.INFO, "EXIT TranslatedTopicFilteredResultsAndDetailsPresenter.bind() GetNewEntityCallback.getNewEntity()");
                 }
             }
         };
@@ -213,7 +206,7 @@ public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearc
     @Override
     public void parseToken(final String historyToken) {
         try {
-            LOGGER.log(Level.INFO, "ENTER TranslatedTopicResultsAndTranslatedTopicPresenter.parseToken()");
+            LOGGER.log(Level.INFO, "ENTER TranslatedTopicFilteredResultsAndDetailsPresenter.parseToken()");
 
             setQueryString(removeHistoryToken(historyToken, HISTORY_TOKEN));
 
@@ -228,7 +221,7 @@ public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearc
 
 
         } finally {
-            LOGGER.log(Level.INFO, "EXIT TranslatedTopicResultsAndTranslatedTopicPresenter.parseToken()");
+            LOGGER.log(Level.INFO, "EXIT TranslatedTopicFilteredResultsAndDetailsPresenter.parseToken()");
         }
     }
 

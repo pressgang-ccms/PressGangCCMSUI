@@ -2,7 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.to
 
 import com.google.gwt.user.cellview.client.TextColumn;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.SearchResultsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
@@ -10,7 +10,7 @@ import javax.enterprise.context.Dependent;
 
 @Dependent
 public class SearchResultsView extends BaseFilteredResultsView<RESTTopicCollectionItemV1>
-        implements SearchResultsPresenter.Display {
+        implements TopicFilteredResultsPresenter.Display {
 
     private final TextColumn<RESTTopicCollectionItemV1> idColumn = new TextColumn<RESTTopicCollectionItemV1>() {
         @Override

@@ -101,7 +101,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
      */
     private void bindPropertyTagButtons(@NotNull final RESTBaseTopicV1<?, ?, ?> parent) {
         try {
-            LOGGER.log(Level.INFO, "ENTER SearchResultsAndTopicPresenter.bindPropertyTagButtons()");
+            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindPropertyTagButtons()");
 
             display.getPossibleChildrenButtonColumn().setFieldUpdater(
                     new FieldUpdater<RESTPropertyTagCollectionItemV1, String>() {
@@ -182,7 +182,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
                 }
             });
         } finally {
-            LOGGER.log(Level.INFO, "EXIT SearchResultsAndTopicPresenter.bindPropertyTagButtons()");
+            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindPropertyTagButtons()");
         }
     }
 

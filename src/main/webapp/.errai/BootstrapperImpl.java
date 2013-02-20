@@ -27,7 +27,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenterBase;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter.Display;
@@ -203,10 +203,10 @@ public class BootstrapperImpl implements Bootstrapper {
             return inj4037_TagCategoriesView;
         }
     };
-    private final CreationalCallback<TagsFilteredResultsAndTagPresenter> inj4235_TagsFilteredResultsAndTagPresenter_creational = new CreationalCallback<TagsFilteredResultsAndTagPresenter>() {
-        public TagsFilteredResultsAndTagPresenter getInstance(final CreationalContext context) {
-            final TagsFilteredResultsAndTagPresenter inj4234_TagsFilteredResultsAndTagPresenter = new TagsFilteredResultsAndTagPresenter();
-            context.addBean(context.getBeanReference(TagsFilteredResultsAndTagPresenter.class, arrayOf_19635043Annotation_27515521), inj4234_TagsFilteredResultsAndTagPresenter);
+    private final CreationalCallback<TagsFilteredResultsAndDetailsPresenter> inj4235_TagsFilteredResultsAndTagPresenter_creational = new CreationalCallback<TagsFilteredResultsAndDetailsPresenter>() {
+        public TagsFilteredResultsAndDetailsPresenter getInstance(final CreationalContext context) {
+            final TagsFilteredResultsAndDetailsPresenter inj4234_TagsFilteredResultsAndTagPresenter = new TagsFilteredResultsAndDetailsPresenter();
+            context.addBean(context.getBeanReference(TagsFilteredResultsAndDetailsPresenter.class, arrayOf_19635043Annotation_27515521), inj4234_TagsFilteredResultsAndTagPresenter);
             _$525173285_display(inj4234_TagsFilteredResultsAndTagPresenter, inj4236_TagsFilteredResultsAndTagView_creational.getInstance(context));
             _$525173285_filteredResultsDisplay(inj4234_TagsFilteredResultsAndTagPresenter, inj4237_TagFilteredResultsView_creational.getInstance(context));
             _$525173285_resultDisplay(inj4234_TagsFilteredResultsAndTagPresenter, inj4238_TagView_creational.getInstance(context));
@@ -398,10 +398,10 @@ public class BootstrapperImpl implements Bootstrapper {
             return inj2394_ImageView;
         }
     };
-    private final CreationalCallback<ImagesFilteredResultsAndImagePresenter> inj4269_ImagesFilteredResultsAndImagePresenter_creational = new CreationalCallback<ImagesFilteredResultsAndImagePresenter>() {
-        public ImagesFilteredResultsAndImagePresenter getInstance(final CreationalContext context) {
-            final ImagesFilteredResultsAndImagePresenter inj4268_ImagesFilteredResultsAndImagePresenter = new ImagesFilteredResultsAndImagePresenter();
-            context.addBean(context.getBeanReference(ImagesFilteredResultsAndImagePresenter.class, arrayOf_19635043Annotation_27515521), inj4268_ImagesFilteredResultsAndImagePresenter);
+    private final CreationalCallback<ImagesFilteredResultsAndDetailsPresenter> inj4269_ImagesFilteredResultsAndImagePresenter_creational = new CreationalCallback<ImagesFilteredResultsAndDetailsPresenter>() {
+        public ImagesFilteredResultsAndDetailsPresenter getInstance(final CreationalContext context) {
+            final ImagesFilteredResultsAndDetailsPresenter inj4268_ImagesFilteredResultsAndImagePresenter = new ImagesFilteredResultsAndDetailsPresenter();
+            context.addBean(context.getBeanReference(ImagesFilteredResultsAndDetailsPresenter.class, arrayOf_19635043Annotation_27515521), inj4268_ImagesFilteredResultsAndImagePresenter);
             _491824760_display(inj4268_ImagesFilteredResultsAndImagePresenter, inj4270_ImagesFilteredResultsAndImageView_creational.getInstance(context));
             _491824760_imageFilteredResultsDisplay(inj4268_ImagesFilteredResultsAndImagePresenter, inj4271_ImageFilteredResultsView_creational.getInstance(context));
             _491824760_imageDisplay(inj4268_ImagesFilteredResultsAndImagePresenter, inj4272_ImageView_creational.getInstance(context));
@@ -559,7 +559,7 @@ public class BootstrapperImpl implements Bootstrapper {
         injContext.addBean(BaseTemplatePresenterInterface.class, CategoryPresenter.class, inj4232_CategoryPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(PresenterInterface.class, CategoryPresenter.class, inj4232_CategoryPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(TagsFilteredResultsAndTagView.class, TagsFilteredResultsAndTagView.class, inj4236_TagsFilteredResultsAndTagView_creational, null, arrayOf_19635043Annotation_27515521, null, true);
-        injContext.addBean(org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.Display.class, TagsFilteredResultsAndTagView.class, inj4236_TagsFilteredResultsAndTagView_creational, null, arrayOf_19635043Annotation_27515521, null, false);
+        injContext.addBean(TagsFilteredResultsAndDetailsPresenter.Display.class, TagsFilteredResultsAndTagView.class, inj4236_TagsFilteredResultsAndTagView_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(BaseTemplateViewInterface.class, TagsFilteredResultsAndTagView.class, inj4236_TagsFilteredResultsAndTagView_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(BaseTemplateView.class, TagsFilteredResultsAndTagView.class, inj4236_TagsFilteredResultsAndTagView_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(TagFilteredResultsView.class, TagFilteredResultsView.class, inj4237_TagFilteredResultsView_creational, null, arrayOf_19635043Annotation_27515521, null, true);
@@ -584,11 +584,11 @@ public class BootstrapperImpl implements Bootstrapper {
         injContext.addBean(BaseTemplateViewInterface.class, TagCategoriesView.class, inj4240_TagCategoriesView_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(TagViewBase.class, TagCategoriesView.class, inj4240_TagCategoriesView_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(BaseTemplateView.class, TagCategoriesView.class, inj4240_TagCategoriesView_creational, null, arrayOf_19635043Annotation_27515521, null, false);
-        injContext.addBean(TagsFilteredResultsAndTagPresenter.class, TagsFilteredResultsAndTagPresenter.class, inj4235_TagsFilteredResultsAndTagPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, true);
-        injContext.addBean(CategoryPresenterBase.class, TagsFilteredResultsAndTagPresenter.class, inj4235_TagsFilteredResultsAndTagPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
-        injContext.addBean(EditableView.class, TagsFilteredResultsAndTagPresenter.class, inj4235_TagsFilteredResultsAndTagPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
-        injContext.addBean(BaseTemplatePresenterInterface.class, TagsFilteredResultsAndTagPresenter.class, inj4235_TagsFilteredResultsAndTagPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
-        injContext.addBean(PresenterInterface.class, TagsFilteredResultsAndTagPresenter.class, inj4235_TagsFilteredResultsAndTagPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
+        injContext.addBean(TagsFilteredResultsAndDetailsPresenter.class, TagsFilteredResultsAndDetailsPresenter.class, inj4235_TagsFilteredResultsAndTagPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, true);
+        injContext.addBean(CategoryPresenterBase.class, TagsFilteredResultsAndDetailsPresenter.class, inj4235_TagsFilteredResultsAndTagPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
+        injContext.addBean(EditableView.class, TagsFilteredResultsAndDetailsPresenter.class, inj4235_TagsFilteredResultsAndTagPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
+        injContext.addBean(BaseTemplatePresenterInterface.class, TagsFilteredResultsAndDetailsPresenter.class, inj4235_TagsFilteredResultsAndTagPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
+        injContext.addBean(PresenterInterface.class, TagsFilteredResultsAndDetailsPresenter.class, inj4235_TagsFilteredResultsAndTagPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(TagFilteredResultsPresenter.class, TagFilteredResultsPresenter.class, inj4242_TagFilteredResultsPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, true);
         injContext.addBean(EditableView.class, TagFilteredResultsPresenter.class, inj4242_TagFilteredResultsPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(BaseTemplatePresenterInterface.class, TagFilteredResultsPresenter.class, inj4242_TagFilteredResultsPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
@@ -677,7 +677,7 @@ public class BootstrapperImpl implements Bootstrapper {
         injContext.addBean(BaseTemplatePresenterInterface.class, CategoriesFilteredResultsAndCategoryPresenter.class, inj4266_CategoriesFilteredResultsAndCategoryPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(PresenterInterface.class, CategoriesFilteredResultsAndCategoryPresenter.class, inj4266_CategoriesFilteredResultsAndCategoryPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(ImagesFilteredResultsAndImageView.class, ImagesFilteredResultsAndImageView.class, inj4270_ImagesFilteredResultsAndImageView_creational, null, arrayOf_19635043Annotation_27515521, null, true);
-        injContext.addBean(org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.Display.class, ImagesFilteredResultsAndImageView.class, inj4270_ImagesFilteredResultsAndImageView_creational, null, arrayOf_19635043Annotation_27515521, null, false);
+        injContext.addBean(ImagesFilteredResultsAndDetailsPresenter.Display.class, ImagesFilteredResultsAndImageView.class, inj4270_ImagesFilteredResultsAndImageView_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(BaseTemplateViewInterface.class, ImagesFilteredResultsAndImageView.class, inj4270_ImagesFilteredResultsAndImageView_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(BaseTemplateView.class, ImagesFilteredResultsAndImageView.class, inj4270_ImagesFilteredResultsAndImageView_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(ImageFilteredResultsView.class, ImageFilteredResultsView.class, inj4271_ImageFilteredResultsView_creational, null, arrayOf_19635043Annotation_27515521, null, true);
@@ -688,11 +688,11 @@ public class BootstrapperImpl implements Bootstrapper {
         injContext.addBean(org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.Display.class, ImageView.class, inj4272_ImageView_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(BaseTemplateViewInterface.class, ImageView.class, inj4272_ImageView_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(BaseTemplateView.class, ImageView.class, inj4272_ImageView_creational, null, arrayOf_19635043Annotation_27515521, null, false);
-        injContext.addBean(ImagesFilteredResultsAndImagePresenter.class, ImagesFilteredResultsAndImagePresenter.class, inj4269_ImagesFilteredResultsAndImagePresenter_creational, null, arrayOf_19635043Annotation_27515521, null, true);
-        injContext.addBean(EditableView.class, ImagesFilteredResultsAndImagePresenter.class, inj4269_ImagesFilteredResultsAndImagePresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
-        injContext.addBean(ImagePresenterBase.class, ImagesFilteredResultsAndImagePresenter.class, inj4269_ImagesFilteredResultsAndImagePresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
-        injContext.addBean(BaseTemplatePresenterInterface.class, ImagesFilteredResultsAndImagePresenter.class, inj4269_ImagesFilteredResultsAndImagePresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
-        injContext.addBean(PresenterInterface.class, ImagesFilteredResultsAndImagePresenter.class, inj4269_ImagesFilteredResultsAndImagePresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
+        injContext.addBean(ImagesFilteredResultsAndDetailsPresenter.class, ImagesFilteredResultsAndDetailsPresenter.class, inj4269_ImagesFilteredResultsAndImagePresenter_creational, null, arrayOf_19635043Annotation_27515521, null, true);
+        injContext.addBean(EditableView.class, ImagesFilteredResultsAndDetailsPresenter.class, inj4269_ImagesFilteredResultsAndImagePresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
+        injContext.addBean(ImagePresenterBase.class, ImagesFilteredResultsAndDetailsPresenter.class, inj4269_ImagesFilteredResultsAndImagePresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
+        injContext.addBean(BaseTemplatePresenterInterface.class, ImagesFilteredResultsAndDetailsPresenter.class, inj4269_ImagesFilteredResultsAndImagePresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
+        injContext.addBean(PresenterInterface.class, ImagesFilteredResultsAndDetailsPresenter.class, inj4269_ImagesFilteredResultsAndImagePresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(TagCategoriesPresenter.class, TagCategoriesPresenter.class, inj4274_TagCategoriesPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, true);
         injContext.addBean(EditableView.class, TagCategoriesPresenter.class, inj4274_TagCategoriesPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
         injContext.addBean(BaseTemplatePresenterInterface.class, TagCategoriesPresenter.class, inj4274_TagCategoriesPresenter_creational, null, arrayOf_19635043Annotation_27515521, null, false);
@@ -746,8 +746,8 @@ public class BootstrapperImpl implements Bootstrapper {
         instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter::topicXMLDisplay = value;
     }-*/;
 
-    private native static void _$525173285_filteredResultsDisplay(TagsFilteredResultsAndTagPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter::filteredResultsDisplay = value;
+    private native static void _$525173285_filteredResultsDisplay(TagsFilteredResultsAndDetailsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter.Display value) /*-{
+        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter::filteredResultsDisplay = value;
     }-*/;
 
     private native static void _392006560_display(TopicPresenter instance, Display value) /*-{
@@ -758,8 +758,8 @@ public class BootstrapperImpl implements Bootstrapper {
         instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter::display = value;
     }-*/;
 
-    private native static void _$525173285_projectsDisplay(TagsFilteredResultsAndTagPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter::projectsDisplay = value;
+    private native static void _$525173285_projectsDisplay(TagsFilteredResultsAndDetailsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter.Display value) /*-{
+        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter::projectsDisplay = value;
     }-*/;
 
     private native static void _1567125089_display(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsAndTopicPresenter.Display value) /*-{
@@ -774,8 +774,8 @@ public class BootstrapperImpl implements Bootstrapper {
         instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topicsearch.SearchResultsPresenter::display = value;
     }-*/;
 
-    private native static void _491824760_imageDisplay(ImagesFilteredResultsAndImagePresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter::imageDisplay = value;
+    private native static void _491824760_imageDisplay(ImagesFilteredResultsAndDetailsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagePresenter.Display value) /*-{
+        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndDetailsPresenter::imageDisplay = value;
     }-*/;
 
     private native static void _1500219897_eventBus(BaseTemplatePresenterInterface instance, HandlerManager value) /*-{
@@ -786,8 +786,8 @@ public class BootstrapperImpl implements Bootstrapper {
         instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndCategoryPresenter::display = value;
     }-*/;
 
-    private native static void _$525173285_resultDisplay(TagsFilteredResultsAndTagPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter::resultDisplay = value;
+    private native static void _$525173285_resultDisplay(TagsFilteredResultsAndDetailsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter.Display value) /*-{
+        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter::resultDisplay = value;
     }-*/;
 
     private native static void _$192804415_eventBus(SearchPresenter instance, HandlerManager value) /*-{
@@ -810,16 +810,16 @@ public class BootstrapperImpl implements Bootstrapper {
         instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter::display = value;
     }-*/;
 
-    private native static void _$525173285_display(TagsFilteredResultsAndTagPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter::display = value;
+    private native static void _$525173285_display(TagsFilteredResultsAndDetailsPresenter instance, TagsFilteredResultsAndDetailsPresenter.Display value) /*-{
+        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter::display = value;
     }-*/;
 
     private native static void _1748359463_display(TagFilteredResultsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter.Display value) /*-{
         instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredResultsPresenter::display = value;
     }-*/;
 
-    private native static void _491824760_imageFilteredResultsDisplay(ImagesFilteredResultsAndImagePresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter::imageFilteredResultsDisplay = value;
+    private native static void _491824760_imageFilteredResultsDisplay(ImagesFilteredResultsAndDetailsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter.Display value) /*-{
+        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndDetailsPresenter::imageFilteredResultsDisplay = value;
     }-*/;
 
     private native static void _1643984526_resultDisplay(CategoriesFilteredResultsAndCategoryPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter.Display value) /*-{
@@ -870,16 +870,16 @@ public class BootstrapperImpl implements Bootstrapper {
         instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErrorsPresenter::display = value;
     }-*/;
 
-    private native static void _$525173285_categoriesDisplay(TagsFilteredResultsAndTagPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndTagPresenter::categoriesDisplay = value;
+    private native static void _$525173285_categoriesDisplay(TagsFilteredResultsAndDetailsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter.Display value) /*-{
+        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredResultsAndDetailsPresenter::categoriesDisplay = value;
     }-*/;
 
     private native static void _$1522350201_display(TopicTagsPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter.Display value) /*-{
         instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter::display = value;
     }-*/;
 
-    private native static void _491824760_display(ImagesFilteredResultsAndImagePresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter.Display value) /*-{
-        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndImagePresenter::display = value;
+    private native static void _491824760_display(ImagesFilteredResultsAndDetailsPresenter instance, ImagesFilteredResultsAndDetailsPresenter.Display value) /*-{
+        instance.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImagesFilteredResultsAndDetailsPresenter::display = value;
     }-*/;
 
     private native static void _1567125089_topicRenderedDisplay(SearchResultsAndTopicPresenter instance, org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter.Display value) /*-{
