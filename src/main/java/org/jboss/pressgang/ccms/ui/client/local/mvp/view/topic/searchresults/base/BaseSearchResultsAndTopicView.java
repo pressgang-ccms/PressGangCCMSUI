@@ -204,23 +204,23 @@ public abstract class BaseSearchResultsAndTopicView<
         /* Build the action bar icons */
         renderedSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
         rendered = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedView());
-        xml = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.XMLEditing());
-        xmlErrors = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
-        fields = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Properties());
-        extendedProperties = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.PropertyTags());
-        topicTags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TopicTags());
-        bugs = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Bugs());
+        xml = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.XMLEditing());
+        xmlErrors = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
+        fields = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Properties());
+        extendedProperties = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTags());
+        topicTags = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TopicTags());
+        bugs = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Bugs());
         csps = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ContentSpecifications());
-        urls = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.TopicSourceUrls());
+        urls = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TopicSourceUrls());
 
-        fieldsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Properties());
-        xmlDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.XMLEditing());
-        xmlErrorsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
-        renderedDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.RenderedView());
-        tagsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TopicTags());
-        bugsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.Bugs());
-        extendedPropertiesDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.PropertyTags());
-        urlsDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.TopicSourceUrls());
+        fieldsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Properties());
+        xmlDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.XMLEditing());
+        xmlErrorsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
+        renderedDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.RenderedView());
+        tagsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.TopicTags());
+        bugsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Bugs());
+        extendedPropertiesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.PropertyTags());
+        urlsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.TopicSourceUrls());
 
         renderedSplitOpen = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
         renderedNoSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.NoSplit());
@@ -351,7 +351,7 @@ public abstract class BaseSearchResultsAndTopicView<
         addActionButton(this.getUrls());
         addActionButton(this.getTopicTags());
         addActionButton(this.getBugs());
-        addActionButton(this.getCsps());
+        //addActionButton(this.getCsps());
     }
 
 }

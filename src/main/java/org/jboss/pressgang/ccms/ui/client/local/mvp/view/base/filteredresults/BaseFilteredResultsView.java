@@ -39,6 +39,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
      * The panel that holds the filter fields and the search results
      */
     private final VerticalPanel searchResultsPanel = new VerticalPanel();
+    private final FlexTable tabPanel = new FlexTable();
     /**
      * The table that holds the filter fields
      */
@@ -60,6 +61,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
         this.addActionButton(create);
 
         searchResultsPanel.add(filterTable);
+        searchResultsPanel.add(tabPanel);
         searchResultsPanel.add(results);
         searchResultsPanel.add(pager);
 
@@ -145,5 +147,13 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
         final int rowCount = filterTable.getRowCount();
         filterTable.setWidget(rowCount, 0, new Label(label));
         filterTable.setWidget(rowCount, 1, field);
+    }
+
+    /**
+     * @return The panel that holds the buttons used as tabs.
+     */
+    @Override
+    public FlexTable getTabPanel() {
+        return tabPanel;
     }
 }

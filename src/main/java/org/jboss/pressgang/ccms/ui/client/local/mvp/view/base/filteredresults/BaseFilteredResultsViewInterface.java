@@ -2,6 +2,8 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults;
 
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -39,7 +41,10 @@ public interface BaseFilteredResultsViewInterface<V extends RESTBaseCollectionIt
      * @return The provider used to populate the celltable
      */
     EnhancedAsyncDataProvider<V> getProvider();
-
+    /**
+     * @return The panel that holds the buttons used as tabs.
+     */
+    FlexTable getTabPanel();
     /**
      * @param provider The provider used to populate the celltable
      */

@@ -511,28 +511,28 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         /* Build the shortcut panel */
 
-        home = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Home());
+        home = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Home());
         addShortcutButton(home);
 
-        createTopic = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CreateTopic());
+        createTopic = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.CreateTopic());
         addShortcutButton(createTopic);
 
-        search = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
+        search = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Search());
         addShortcutButton(search);
 
-        searchTranslations = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.SearchTranslations());
+        searchTranslations = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.SearchTranslations());
         addShortcutButton(searchTranslations);
 
-        images = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Images());
+        images = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Images());
         addShortcutButton(images);
 
-        tags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Tags());
+        tags = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
         addShortcutButton(tags);
 
-        categories = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Categories());
+        categories = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Categories());
         addShortcutButton(categories);
 
-        projects = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Projects());
+        projects = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Projects());
         addShortcutButton(projects);
 
         reports = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Reports());
@@ -617,7 +617,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         table.getCellFormatter().addStyleName(0, columns, CSSConstants.RIGHT_ALIGNED_ACTION_BUTTONS);
     }
 
-    protected final void addActionButton(final Widget widget, final FlexTable table) {
+    public final void addActionButton(final Widget widget, final FlexTable table) {
         final int rows = table.getRowCount();
         int columns = 0;
         if (rows != 0) {

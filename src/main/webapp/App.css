@@ -159,6 +159,16 @@ html {
     -moz-box-sizing: border-box;
 }
 
+.TextButton.TopTab, .DownLabel.TopTab {
+    border-top-left-radius: 0.5em 0.5em;
+    border-top-right-radius: 0.5em 0.5em;
+}
+
+.TextButton.LeftTab, .DownLabel.LeftTab {
+    border-top-left-radius: 0.5em 0.5em;
+    border-bottom-left-radius: 0.5em 0.5em;
+}
+
 .TextButton.SubMenu {
     background-color: #00C618;
     border-color: #009200;

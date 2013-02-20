@@ -202,4 +202,8 @@ public interface BaseTemplateViewInterface {
     TextBox getQuickSearchQuery();
 
     void replaceTopActionButton(final Widget existing, final Widget replacement);
+
+    void replaceTopActionButton(final Widget existing, final Widget replacement, final FlexTable table);
+
+    void addActionButton(final Widget widget, final FlexTable table);
 }

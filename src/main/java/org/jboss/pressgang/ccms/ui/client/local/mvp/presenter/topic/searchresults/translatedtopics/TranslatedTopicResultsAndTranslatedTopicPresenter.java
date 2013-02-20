@@ -2,10 +2,12 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresul
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.regexp.shared.RegExp;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -19,14 +21,19 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTranslatedTopicV1BasicDetailsEditor;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.isStringNullOrEmpty;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
@@ -44,6 +51,9 @@ public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearc
      */
     public static final String HISTORY_TOKEN = "TranslatedTopicResultsAndTranslatedTopicView";
 
+
+
+
     /**
      * A Logger
      */
@@ -60,6 +70,16 @@ public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearc
     @Inject
     private TranslatedTopicsFilteredResultsPresenter translatedTopicsFilteredResultsPresenter;
 
+
+
+    /**
+     * A list of locales retrieved from the server
+     */
+    private List<String> locales;
+
+    /**
+     * @return The display.
+     */
     @Override
     protected final Display getDisplay() {
         return display;
@@ -103,10 +123,10 @@ public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearc
             }
         };
 
-        super.bindSearchAndEdit(topicId, pageId, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, getTopicXMLComponent().getDisplay(), translatedTopicPresenter.getDisplay(),
+        bindSearchAndEdit(topicId, pageId, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, getTopicXMLComponent().getDisplay(), translatedTopicPresenter.getDisplay(),
                 getSearchResultsComponent().getDisplay(), getSearchResultsComponent(), getDisplay(), getDisplay(), getNewEntityCallback);
 
-                /* When the topics have been loaded, display the first one */
+        /* When the topics have been loaded, display the first one */
         getSearchResultsComponent().addTopicListReceivedHandler(new EntityListReceivedHandler<RESTTranslatedTopicCollectionV1>() {
             @Override
             public void onCollectionRecieved(final RESTTranslatedTopicCollectionV1 topics) {
@@ -201,10 +221,20 @@ public class TranslatedTopicResultsAndTranslatedTopicPresenter extends BaseSearc
                 /* Make sure that the query string has at least the prefix */
                 setQueryString(Constants.QUERY_PATH_SEGMENT_PREFIX);
             }
+
+
+
+
+
+
         } finally {
             LOGGER.log(Level.INFO, "EXIT TranslatedTopicResultsAndTranslatedTopicPresenter.parseToken()");
         }
     }
+
+
+
+
 
     /**
      * This interface defines nothing over BaseSearchResultsAndTopicPresenter.Display,

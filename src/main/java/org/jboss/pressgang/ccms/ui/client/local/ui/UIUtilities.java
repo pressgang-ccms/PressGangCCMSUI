@@ -38,6 +38,27 @@ final public class UIUtilities {
         return retvalue;
     }
 
+    public static PushButton createTopTabPushButton(final String text) {
+        return createTopTabPushButton(text, false);
+    }
+
+    public static PushButton createTopTabPushButton(final String text, final boolean subMenu) {
+        final PushButton retvalue = createPushButton(text, subMenu);
+        retvalue.addStyleName(CSSConstants.TOP_TAB_BUTTON);
+        return retvalue;
+    }
+
+    public static PushButton createLeftSideTabPushButton(final String text) {
+        return createLeftSideTabPushButton(text, false);
+    }
+
+    public static PushButton createLeftSideTabPushButton(final String text, final boolean subMenu) {
+        final PushButton retvalue = createPushButton(text, subMenu);
+        retvalue.addStyleName(CSSConstants.LEFT_TAB_BUTTON);
+        return retvalue;
+    }
+
+
     public static ToggleButton createToggleButton(final String text, final boolean subMenu) {
         final ToggleButton retvalue = new ToggleButton(text);
         retvalue.addStyleName(CSSConstants.TEXT_BUTTON);
@@ -56,6 +77,26 @@ final public class UIUtilities {
     public static Label createDownLabel(final String text) {
         final Label retvalue = new Label(text);
         retvalue.addStyleName(CSSConstants.DOWN_LABEL);
+        return retvalue;
+    }
+
+    public static Label createTopTabDownLabel(final String text) {
+        return createTopTabDownLabel(text, false)    ;
+    }
+
+    public static Label createTopTabDownLabel(final String text, final boolean subMenu) {
+        final Label retvalue = createDownLabel(text);
+        retvalue.addStyleName(CSSConstants.TOP_TAB_BUTTON);
+        return retvalue;
+    }
+
+    public static Label createLeftSideTabDownLabel(final String text) {
+        return createLeftSideTabDownLabel(text, false);
+    }
+
+    public static Label createLeftSideTabDownLabel(final String text, final boolean subMenu) {
+        final Label retvalue = createDownLabel(text);
+        retvalue.addStyleName(CSSConstants.LEFT_TAB_BUTTON);
         return retvalue;
     }
 

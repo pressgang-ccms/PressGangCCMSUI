@@ -355,6 +355,14 @@ public interface CSSConstants {
      */
     String TEXT_BUTTON = "TextButton";
     /**
+     * Assigned to image buttons that are top tabs
+     */
+    String TOP_TAB_BUTTON = "TopTab";
+    /**
+     * Assigned to image buttons that are top tabs
+     */
+    String LEFT_TAB_BUTTON = "LeftTab";
+    /**
      * Assigned to text buttons.
      */
     String IMAGE_BUTTON = "ImageButton";
