@@ -72,7 +72,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
         addActionButton(searchTopics);
         addActionButton(tags);
         addActionButton(fields);
-        addActionButton(locales);
+        //addActionButton(locales);
         addActionButton(filters);
     }
 
