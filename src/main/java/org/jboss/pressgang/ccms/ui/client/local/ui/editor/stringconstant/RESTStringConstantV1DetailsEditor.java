@@ -16,15 +16,15 @@ public class RESTStringConstantV1DetailsEditor extends Grid implements Editor<RE
     private final TextBox name = new TextBox();
     private final TextArea value = new TextArea();
 
-    public SimpleIntegerBox getIdEditor() {
+    public SimpleIntegerBox idEditor() {
         return id;
     }
 
-    public TextBox getNameEditor() {
+    public TextBox nameEditor() {
         return name;
     }
 
-    public TextArea getValueEditor() {
+    public TextArea valueEditor() {
         return value;
     }
 

@@ -36,7 +36,7 @@ public class StringConstantPresenter extends BaseTemplatePresenter {
 
     @Override
     public void parseToken(@NotNull final String historyToken) {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     @Override
