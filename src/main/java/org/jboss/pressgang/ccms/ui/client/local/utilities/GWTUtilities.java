@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.utilities;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.HasWidgets;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -243,6 +244,29 @@ final public class GWTUtilities {
         }
 
         return b.equals(a);
+    }
+
+    /**
+     * Compares two strings for equality, considering null and empty string to be equal. Different line breaks (\r\n or \n)
+     * are also ignored.
+     *
+     * @param a The first string
+     * @param b The second string
+     * @return true if both strings are either null or empty string, or if both strings are equal
+     */
+    public static boolean stringEqualsEquatingNullWithEmptyStringAndIgnoreLineBreaks(@Nullable final String a, @Nullable final String b) {
+        if ((a == null || a.isEmpty()) && (b == null || b.isEmpty())) {
+            return true;
+        }
+
+        if (a != null && b != null) {
+            final String fixedA = a.replaceAll(Constants.CARRIAGE_RETURN_AND_LINE_BREAK, Constants.LINE_BREAK);
+            final String fixedB = a.replaceAll(Constants.CARRIAGE_RETURN_AND_LINE_BREAK, Constants.LINE_BREAK);
+
+            return fixedA.equals(fixedB);
+        }
+
+        return false;
     }
 
     /**

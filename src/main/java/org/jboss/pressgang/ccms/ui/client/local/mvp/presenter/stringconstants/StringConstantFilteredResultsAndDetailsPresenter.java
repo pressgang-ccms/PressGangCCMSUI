@@ -41,10 +41,10 @@ import org.jetbrains.annotations.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.stringEqualsEquatingNullWithEmptyString;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 
 /**
  * The presenter used to display a list of string constants and their details.
@@ -62,6 +62,11 @@ implements BaseTemplatePresenterInterface {
      * The history token used to identify this view
      */
     public static final String HISTORY_TOKEN = "StringConstantFilteredResultsAndDetailsView";
+
+    /**
+     * A logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(StringConstantFilteredResultsAndDetailsPresenter.class.getName());
 
     /**
      * An Errai injected instance of a class that implements Display. This is the view that holds all other views
@@ -230,10 +235,11 @@ implements BaseTemplatePresenterInterface {
         if (stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
             stringConstantPresenter.getDisplay().getDriver().flush();
 
-            return !(stringEqualsEquatingNullWithEmptyString(stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem().getName(),
-                    stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName())
-                    && stringEqualsEquatingNullWithEmptyString(stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem().getValue(),
-                    stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getValue()));
+            final RESTStringConstantV1 selectedItem = stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem();
+            final RESTStringConstantV1 displayedItem = stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem();;
+
+            return !(stringEqualsEquatingNullWithEmptyStringAndIgnoreLineBreaks(selectedItem.getName(), displayedItem.getName())
+                    && stringEqualsEquatingNullWithEmptyStringAndIgnoreLineBreaks(selectedItem.getValue(), displayedItem.getValue()));
         }
         return false;
     }
