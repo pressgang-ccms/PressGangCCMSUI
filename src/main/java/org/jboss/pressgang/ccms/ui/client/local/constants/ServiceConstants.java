@@ -188,6 +188,16 @@ public final class ServiceConstants {
     public static final int HOME_HELP_TOPIC = 13596;
 
     /**
+     * The help topic for the integer constants view.
+     */
+    public static final int INTEGER_CONSTANT_HELP_TOPIC = 13653;
+
+    /**
+     * The help topic for the blob constants view.
+     */
+    public static final int BLOB_CONSTANT_HELP_TOPIC = 13654;
+
+    /**
      * A private constructor to prevent instantiation.
      */
     private ServiceConstants() {

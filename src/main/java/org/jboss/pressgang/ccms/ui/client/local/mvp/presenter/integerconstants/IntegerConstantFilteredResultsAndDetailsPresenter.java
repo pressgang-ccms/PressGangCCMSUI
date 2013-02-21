@@ -214,7 +214,7 @@ implements BaseTemplatePresenterInterface {
     @Override
     public void go(final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindSearchAndEditExtended(ServiceConstants.STRING_CONSTANT_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        bindSearchAndEditExtended(ServiceConstants.INTEGER_CONSTANT_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
     @Override

@@ -600,7 +600,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void updateIntegerConstant(@NotNull final RESTCallback<RESTBlobConstantV1> callback, @NotNull final RESTBlobConstantV1 entity) {
+    public static void updateBlobConstant(@NotNull final RESTCallback<RESTBlobConstantV1> callback, @NotNull final RESTBlobConstantV1 entity) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
