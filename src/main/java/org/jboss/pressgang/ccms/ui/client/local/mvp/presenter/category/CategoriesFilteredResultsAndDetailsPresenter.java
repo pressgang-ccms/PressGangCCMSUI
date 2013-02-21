@@ -135,7 +135,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
         final GetNewEntityCallback<RESTCategoryV1> getNewEntityCallback = new GetNewEntityCallback<RESTCategoryV1>() {
 
             @Override
-            public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTCategoryV1> displayCallback) {
+            public void getNewEntity(final RESTCategoryV1 selectedEntity, final DisplayNewEntityCallback<RESTCategoryV1> displayCallback) {
                 final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, BaseTemplateViewInterface>(
                         display, new BaseRestCallback.SuccessAction<RESTCategoryV1, BaseTemplateViewInterface>() {
                     @Override
@@ -143,7 +143,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                         displayCallback.displayNewEntity(retValue);
                     }
                 });
-                RESTCalls.getCategory(callback, id);
+                RESTCalls.getCategory(callback, selectedEntity.getId());
             }
         };
 

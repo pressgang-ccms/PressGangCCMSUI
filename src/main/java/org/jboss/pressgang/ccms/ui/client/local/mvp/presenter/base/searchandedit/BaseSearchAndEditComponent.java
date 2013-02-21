@@ -200,7 +200,7 @@ abstract public class BaseSearchAndEditComponent<
              * situation where the search screen has been left for a while and the entity has been edited by someone
              * else in the mean time.
              */
-            getNewEntityCallback.getNewEntity(selectedItem.getItem().getId(), new DisplayNewEntityCallback<T>() {
+            getNewEntityCallback.getNewEntity(selectedItem.getItem(), new DisplayNewEntityCallback<T>() {
 
                 @Override
                 public void displayNewEntity(final T entity) {

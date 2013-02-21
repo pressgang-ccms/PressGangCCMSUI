@@ -120,7 +120,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
         final GetNewEntityCallback<RESTProjectV1> getNewEntityCallback = new GetNewEntityCallback<RESTProjectV1>() {
 
             @Override
-            public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTProjectV1> displayCallback) {
+            public void getNewEntity(final RESTProjectV1 selectedEntity, final DisplayNewEntityCallback<RESTProjectV1> displayCallback) {
                 final RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, BaseTemplateViewInterface>(display,
                         new BaseRestCallback.SuccessAction<RESTProjectV1, BaseTemplateViewInterface>() {
                             @Override
@@ -128,7 +128,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
                                 displayCallback.displayNewEntity(retValue);
                             }
                         });
-                RESTCalls.getProject(callback, id);
+                RESTCalls.getProject(callback, selectedEntity.getId());
             }
         };
 

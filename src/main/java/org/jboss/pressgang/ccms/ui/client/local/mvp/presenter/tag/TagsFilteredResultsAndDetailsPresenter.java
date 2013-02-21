@@ -445,7 +445,7 @@ public class TagsFilteredResultsAndDetailsPresenter
         final GetNewEntityCallback<RESTTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTTagV1>() {
 
             @Override
-            public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTTagV1> displayCallback) {
+            public void getNewEntity(final RESTTagV1 selectedEntity, final DisplayNewEntityCallback<RESTTagV1> displayCallback) {
                 final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, BaseTemplateViewInterface>(
                         display, new BaseRestCallback.SuccessAction<RESTTagV1, BaseTemplateViewInterface>() {
                     @Override
@@ -453,7 +453,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                         displayCallback.displayNewEntity(retValue);
                     }
                 });
-                RESTCalls.getTag(callback, id);
+                RESTCalls.getTag(callback, selectedEntity.getId());
             }
         };
 

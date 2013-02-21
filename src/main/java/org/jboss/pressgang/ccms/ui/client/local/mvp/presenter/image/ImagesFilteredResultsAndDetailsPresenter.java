@@ -120,7 +120,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
         final GetNewEntityCallback<RESTImageV1> getNewEntityCallback = new GetNewEntityCallback<RESTImageV1>() {
 
             @Override
-            public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTImageV1> displayCallback) {
+            public void getNewEntity(final RESTImageV1 selectedEntity, final DisplayNewEntityCallback<RESTImageV1> displayCallback) {
                 final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(display,
                         new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
                             @Override
@@ -128,7 +128,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                                 displayCallback.displayNewEntity(retValue);
                             }
                         });
-                RESTCalls.getImage(callback, id);
+                RESTCalls.getImage(callback, selectedEntity.getId());
             }
         };
 

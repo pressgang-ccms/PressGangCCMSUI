@@ -107,7 +107,7 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsC
 
     @Override
     @NotNull
-    public BaseFilteredResultsViewInterface<RESTStringConstantCollectionItemV1> getDisplay() {
+    public Display getDisplay() {
         return display;
     }
 

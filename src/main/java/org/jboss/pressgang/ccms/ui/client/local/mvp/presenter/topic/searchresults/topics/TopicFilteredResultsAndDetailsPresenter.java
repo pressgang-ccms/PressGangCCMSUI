@@ -170,7 +170,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         final GetNewEntityCallback<RESTTopicV1> getNewEntityCallback = new GetNewEntityCallback<RESTTopicV1>() {
 
             @Override
-            public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTTopicV1> displayCallback) {
+            public void getNewEntity(final RESTTopicV1 selectedEntity, final DisplayNewEntityCallback<RESTTopicV1> displayCallback) {
 
                 try {
                     LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bind() GetNewEntityCallback.getNewEntity()");
@@ -190,7 +190,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             }
                         }
                     });
-                    RESTCalls.getTopic(callback, id);
+                    RESTCalls.getTopic(callback, selectedEntity.getId());
                 } finally {
                     LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bind() GetNewEntityCallback.getNewEntity()");
                 }

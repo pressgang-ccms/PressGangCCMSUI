@@ -24,6 +24,11 @@ public class StringConstantPresenter extends BaseTemplatePresenter {
     @Inject
     private Display display;
 
+    @NotNull
+    public Display getDisplay() {
+        return display;
+    }
+
     @Override
     public void parseToken(@NotNull final String historyToken) {
         //To change body of implemented methods use File | Settings | File Templates.

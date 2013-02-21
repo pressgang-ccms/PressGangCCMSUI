@@ -89,7 +89,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         final GetNewEntityCallback<RESTTranslatedTopicV1> getNewEntityCallback = new GetNewEntityCallback<RESTTranslatedTopicV1>() {
 
             @Override
-            public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTTranslatedTopicV1> displayCallback) {
+            public void getNewEntity(final RESTTranslatedTopicV1 selectedEntity, final DisplayNewEntityCallback<RESTTranslatedTopicV1> displayCallback) {
 
                 try {
                     LOGGER.log(Level.INFO, "ENTER TranslatedTopicFilteredResultsAndDetailsPresenter.bind() GetNewEntityCallback.getNewEntity()");
@@ -109,7 +109,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                             }
                         }
                     });
-                    RESTCalls.getTranslatedTopic(callback, id);
+                    RESTCalls.getTranslatedTopic(callback, selectedEntity.getId());
                 } finally {
                     LOGGER.log(Level.INFO, "EXIT TranslatedTopicFilteredResultsAndDetailsPresenter.bind() GetNewEntityCallback.getNewEntity()");
                 }

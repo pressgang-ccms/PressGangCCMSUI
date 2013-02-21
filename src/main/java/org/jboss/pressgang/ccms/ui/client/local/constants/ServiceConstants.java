@@ -113,6 +113,11 @@ public final class ServiceConstants {
     public static final int PROJECT_HELP_TOPIC = 13583;
 
     /**
+     * The help topic for the project view.
+     */
+    public static final int STRING_CONSTANT_HELP_TOPIC = 13598;
+
+    /**
      * The help topic for the category view.
      */
     public static final int CATEGORY_HELP_TOPIC = 13584;

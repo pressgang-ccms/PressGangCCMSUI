@@ -91,7 +91,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
         final GetNewEntityCallback<RESTFilterV1> getNewEntityCallback = new GetNewEntityCallback<RESTFilterV1>() {
 
             @Override
-            public void getNewEntity(final Integer id, final DisplayNewEntityCallback<RESTFilterV1> displayCallback) {
+            public void getNewEntity(final RESTFilterV1 selectedEntity, final DisplayNewEntityCallback<RESTFilterV1> displayCallback) {
 
                 try {
                     LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.go() GetNewEntityCallback.getNewEntity()");
@@ -109,7 +109,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
                             }
                         }
                     });
-                    RESTCalls.getFilter(callback, id);
+                    RESTCalls.getFilter(callback, selectedEntity.getId());
                 } finally {
                     LOGGER.log(Level.INFO, "EXIT SearchFilterResultsAndFilterPresenter.go() GetNewEntityCallback.getNewEntity()");
                 }
