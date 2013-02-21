@@ -224,7 +224,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        display.getIntegerConstants().addClickHandler(new ClickHandler() {
+        display.getBlobConstants().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed()) {
