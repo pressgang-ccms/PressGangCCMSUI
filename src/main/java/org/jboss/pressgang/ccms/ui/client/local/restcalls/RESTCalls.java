@@ -528,6 +528,36 @@ public final class RESTCalls {
         });
     }
 
+    public static void getStringConstantsFromQuery(@NotNull final RESTCallback<RESTStringConstantCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
+        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.STRINGCONSTANTS_EXPANSION_NAME + "\"}}]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONStringConstantsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        });
+    }
+
+    public static void getIntegerConstantsFromQuery(@NotNull final RESTCallback<RESTIntegerConstantCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
+        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.INTEGERCONSTANTS_EXPANSION_NAME + "\"}}]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONIntegerConstantsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        });
+    }
+
+    public static void getBlobConstantsFromQuery(@NotNull final RESTCallback<RESTBlobConstantCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
+        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.BLOBCONSTANTS_EXPANSION_NAME + "\"}}]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONBlobConstantsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        });
+    }
+
     public static void getCategory(@NotNull final RESTCallback<RESTCategoryV1> callback, @NotNull final Integer id) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[" + CATEGORY_EXPANSION + "]}";

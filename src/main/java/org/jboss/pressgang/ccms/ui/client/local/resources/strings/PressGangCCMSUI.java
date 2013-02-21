@@ -419,4 +419,10 @@ public interface PressGangCCMSUI extends Constants {
     String CreateImage();
 
     String CreateTag();
+
+    String StringConstantId();
+
+    String StringConstantName();
+
+    String StringConstantValue();
 }

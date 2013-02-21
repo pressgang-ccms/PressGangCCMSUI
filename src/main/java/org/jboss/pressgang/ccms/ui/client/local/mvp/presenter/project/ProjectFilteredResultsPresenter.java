@@ -40,6 +40,7 @@ public class ProjectFilteredResultsPresenter
     private Display display;
     private String queryString;
 
+    @Override
     @NotNull
     public Display getDisplay() {
         return display;

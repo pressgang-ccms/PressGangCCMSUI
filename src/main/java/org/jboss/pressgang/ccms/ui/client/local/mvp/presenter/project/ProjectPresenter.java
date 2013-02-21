@@ -19,7 +19,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 @Dependent
-public class ProjectPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
+public class ProjectPresenter extends BaseTemplatePresenter {
 
     // Empty interface declaration, similar to UiBinder
     public interface ProjectPresenterDriver extends SimpleBeanEditorDriver<RESTProjectV1, RESTProjectV1BasicDetailsEditor> {
