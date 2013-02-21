@@ -180,21 +180,6 @@ public class ProjectsFilteredResultsAndDetailsPresenter
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
         }
-
-        final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
-        for (final String queryStringElement : queryStringElements) {
-            final String[] queryElements = queryStringElement.split("=");
-
-            if (queryElements.length == 2) {
-                if (queryElements[0].equals("entityIds")) {
-                    this.filteredResultsComponent.getDisplay().getIdFilter().setText(queryElements[1]);
-                } else if (queryElements[0].equals("entityName")) {
-                    this.filteredResultsComponent.getDisplay().getNameFilter().setText(queryElements[1]);
-                } else if (queryElements[0].equals("entityDesc")) {
-                    this.filteredResultsComponent.getDisplay().getDescriptionFilter().setText(queryElements[1]);
-                }
-            }
-        }
     }
 
     @Override

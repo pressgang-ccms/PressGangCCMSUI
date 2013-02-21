@@ -216,21 +216,6 @@ implements BaseTemplatePresenterInterface {
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
         }
-
-        final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
-        for (final String queryStringElement : queryStringElements) {
-            final String[] queryElements = queryStringElement.split("=");
-
-            if (queryElements.length == 2) {
-                if (queryElements[0].equals(CommonFilterConstants.STRING_CONSTANT_IDS_FILTER_VAR)) {
-                    this.stringConstantFilteredResultsPresenter.getDisplay().getIdFilter().setText(queryElements[1]);
-                } else if (queryElements[0].equals(CommonFilterConstants.STRING_CONSTANT_VALUE_FILTER_VAR)) {
-                    this.stringConstantFilteredResultsPresenter.getDisplay().getValueFilter().setText(queryElements[1]);
-                } else if (queryElements[0].equals(CommonFilterConstants.STRING_CONSTANT_NAME_FILTER_VAR)) {
-                    this.stringConstantFilteredResultsPresenter.getDisplay().getNameFilter().setText(queryElements[1]);
-                }
-            }
-        }
     }
 
     @Override

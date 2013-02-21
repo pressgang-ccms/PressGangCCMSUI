@@ -47,7 +47,7 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsC
     private String queryString;
 
     @Override
-    protected void displayQueryElements(@NotNull String queryString) {
+    protected void displayQueryElements(@NotNull final String queryString) {
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
         for (final String queryStringElement : queryStringElements) {
             final String[] queryElements = queryStringElement.split("=");
@@ -94,13 +94,13 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsC
     public String getQuery() {
         final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.STRING_CONSTANT_IDS_FILTER_VAR).append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getIdFilter().getText()) : display.getIdFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.STRING_CONSTANT_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getIdFilter().getText()) : display.getIdFilter().getText()));
         }
         if (!display.getValueFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.STRING_CONSTANT_VALUE_FILTER_VAR).append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getValueFilter().getText()) : display.getValueFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.STRING_CONSTANT_VALUE_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getValueFilter().getText()) : display.getValueFilter().getText()));
         }
         if (!display.getNameFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.STRING_CONSTANT_NAME_FILTER_VAR).append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getNameFilter().getText()) : display.getNameFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.STRING_CONSTANT_NAME_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getNameFilter().getText()) : display.getNameFilter().getText()));
         }
 
         return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX
