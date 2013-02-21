@@ -25,9 +25,6 @@ import java.util.List;
  * @author Matthew Casperson
  */
 public final class RESTCalls {
-
-
-
     /**
      * A topic with expanded revisions
      */
@@ -534,6 +531,24 @@ public final class RESTCalls {
             @Override
             public void call() throws Exception {
                 createRestMethod(callback).getJSONStringConstantsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        });
+    }
+
+    public static void createStringConstant(@NotNull final RESTCallback<RESTStringConstantV1> callback, @NotNull final RESTStringConstantV1 entity) {
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).createJSONStringConstant(FILTER_EXPANSION, entity);
+            }
+        });
+    }
+
+    public static void updateStringConstant(@NotNull final RESTCallback<RESTStringConstantV1> callback, @NotNull final RESTStringConstantV1 entity) {
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).updateJSONStringConstant(FILTER_EXPANSION, entity);
             }
         });
     }

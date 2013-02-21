@@ -136,7 +136,7 @@ implements BaseTemplatePresenterInterface {
                         if (wasNewEntity) {
                             RESTCalls.createStringConstant(callback, project);
                         } else {
-                            RESTCalls.saveStringConstant(callback, project);
+                            RESTCalls.updateStringConstant(callback, project);
                         }
                     } else {
                         Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
