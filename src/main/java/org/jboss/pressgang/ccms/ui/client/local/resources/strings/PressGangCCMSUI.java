@@ -429,4 +429,14 @@ public interface PressGangCCMSUI extends Constants {
     String StringConstantDetails();
 
     String CreateStringConstant();
+
+    String IntegerConstantId();
+
+    String IntegerConstantName();
+
+    String IntegerConstantValue();
+
+    String IntegerConstantDetails();
+
+    String CreateIntegerConstant();
 }

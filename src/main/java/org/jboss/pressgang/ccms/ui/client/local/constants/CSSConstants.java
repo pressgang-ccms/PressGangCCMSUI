@@ -94,6 +94,13 @@ public interface CSSConstants {
         String STRING_CONSTANT_VIEW_VALUE_FIELD = "StringConstantViewValueField";
     }
 
+    interface IntegerConstantView {
+        String INTEGER_CONSTANT_VIEW_PANEL = "IntegerConstantViewPanel";
+        String INTEGER_CONSTANT_VIEW_ID_FIELD = "IntegerConstantViewIdField";
+        String INTEGER_CONSTANT_VIEW_NAME_FIELD = "IntegerConstantViewNameField";
+        String INTEGER_CONSTANT_VIEW_VALUE_FIELD = "IntegerConstantViewValueField";
+    }
+
     interface TagView {
         String TAG_VIEW_PANEL = "TagViewPanel";
         String TAG_VIEW_ID_LABEL = "TagViewIDLabel";

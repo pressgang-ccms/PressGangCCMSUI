@@ -7,11 +7,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 
 /**
  * @param <T> The entity type
- * @param <U> The collection type for entity T
- * @param <V> The collection item type for entity T
  * @param <W> The parent of the children
- * @param <A> The possible child type
- * @param <B> The collection type for entity A
  * @param <C> The collection item type for entity A
  * @param <D> The existing child type
  * @param <E> The collection type for entity D

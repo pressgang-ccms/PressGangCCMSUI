@@ -5,8 +5,6 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 /**
  * When the BaseChildrenComponent needs to add a new child to a collection, it will call the method defined in this interface.
  *
- * @param <W> The REST entity type
- * @param <X> The collection that holds type Y
  * @param <Y> The collection wrapper type for W in X
  * @author Matthew Casperson
  */

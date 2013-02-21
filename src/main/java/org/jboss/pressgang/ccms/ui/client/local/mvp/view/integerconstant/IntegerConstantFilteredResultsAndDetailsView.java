@@ -1,25 +1,25 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.view.stringconstant;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.view.integerconstant;
 
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTIntegerConstantCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTStringConstantCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTIntegerConstantCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndDetailsPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.stringconstants.StringConstantFilteredResultsAndDetailsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.integerconstants.IntegerConstantFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 
 /**
- * The view used to display the string constants results and their details
+ * The view used to display the integer constants results and their details.
  */
-public class StringConstantFilteredResultsAndDetailsView extends
-        BaseSearchAndEditView<RESTStringConstantV1, RESTStringConstantCollectionV1, RESTStringConstantCollectionItemV1> implements
-        StringConstantFilteredResultsAndDetailsPresenter.Display {
+public class IntegerConstantFilteredResultsAndDetailsView extends
+        BaseSearchAndEditView<RESTIntegerConstantV1, RESTIntegerConstantCollectionV1, RESTIntegerConstantCollectionItemV1> implements
+        IntegerConstantFilteredResultsAndDetailsPresenter.Display {
 
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
 
@@ -30,7 +30,7 @@ public class StringConstantFilteredResultsAndDetailsView extends
     }
 
 
-    public StringConstantFilteredResultsAndDetailsView() {
+    public IntegerConstantFilteredResultsAndDetailsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Categories());
         populateTopActionBar();
     }

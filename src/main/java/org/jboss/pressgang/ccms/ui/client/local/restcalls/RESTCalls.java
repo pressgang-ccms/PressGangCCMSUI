@@ -563,12 +563,48 @@ public final class RESTCalls {
         });
     }
 
+    public static void createIntegerConstant(@NotNull final RESTCallback<RESTIntegerConstantV1> callback, @NotNull final RESTIntegerConstantV1 entity) {
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).createJSONIntegerConstant(FILTER_EXPANSION, entity);
+            }
+        });
+    }
+
+    public static void updateIntegerConstant(@NotNull final RESTCallback<RESTIntegerConstantV1> callback, @NotNull final RESTIntegerConstantV1 entity) {
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).updateJSONIntegerConstant(FILTER_EXPANSION, entity);
+            }
+        });
+    }
+
     public static void getBlobConstantsFromQuery(@NotNull final RESTCallback<RESTBlobConstantCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.BLOBCONSTANTS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
                 createRestMethod(callback).getJSONBlobConstantsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        });
+    }
+
+    public static void createBlobConstant(@NotNull final RESTCallback<RESTBlobConstantV1> callback, @NotNull final RESTBlobConstantV1 entity) {
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).createJSONBlobConstant(FILTER_EXPANSION, entity);
+            }
+        });
+    }
+
+    public static void updateIntegerConstant(@NotNull final RESTCallback<RESTBlobConstantV1> callback, @NotNull final RESTBlobConstantV1 entity) {
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).updateJSONBlobConstant(FILTER_EXPANSION, entity);
             }
         });
     }

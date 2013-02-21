@@ -581,7 +581,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         addShortcutButton(blobConstants, advancedShortcutPanel);
 
         integerConstants = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.IntegerConstants());
-        integerConstants.setEnabled(false);
         addShortcutButton(integerConstants, advancedShortcutPanel);
 
         propertyTags = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTags());

@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.*;
 public interface BaseTemplateViewInterface {
 
     /**
-     * The interface to the help dialog popup box
+     * The interface to the help dialog popup box.
      *
      * @author Matthew Casperson
      */
@@ -188,7 +188,7 @@ public interface BaseTemplateViewInterface {
     void setViewShown(boolean isViewShown);
 
     /**
-     * Sets the link on the feedback anchor
+     * Sets the link on the feedback anchor.
      *
      * @param link A link to a survey
      */
@@ -201,7 +201,7 @@ public interface BaseTemplateViewInterface {
 
 
     /**
-     * @return The text box that holds the search critera
+     * @return The text box that holds the search criteria
      */
     TextBox getQuickSearchQuery();
 

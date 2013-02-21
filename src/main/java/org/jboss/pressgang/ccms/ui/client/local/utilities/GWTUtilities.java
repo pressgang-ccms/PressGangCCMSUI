@@ -228,6 +228,25 @@ final public class GWTUtilities {
     }
 
     /**
+     * Compares two strings for equality, considering null to be equal.
+     *
+     * @param a The first string
+     * @param b The second string
+     * @return true if both strings are either null or empty string, or if both strings are equal
+     */
+    public static boolean integerEquals(@Nullable final Integer a, @Nullable final Integer b) {
+        if (a == null && b == null) {
+            return true;
+        }
+
+        if (a != null) {
+            return a.equals(b);
+        }
+
+        return b.equals(a);
+    }
+
+    /**
      * Compares two strings for equality, considering null and empty string to be equal.
      *
      * @param a The first string
