@@ -4,6 +4,7 @@ import com.google.gwt.editor.client.Editor;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 
 import java.util.List;
@@ -12,6 +13,9 @@ import java.util.List;
  * An editor used to bind the string constant's details to ui elements
  */
 public class RESTStringConstantV1DetailsEditor extends Grid implements Editor<RESTStringConstantV1> {
+    private static final int ROWS = 3;
+    private static final int COLS = 2;
+
     private final SimpleIntegerBox id = new SimpleIntegerBox();
     private final TextBox name = new TextBox();
     private final TextArea value = new TextArea();
@@ -29,7 +33,9 @@ public class RESTStringConstantV1DetailsEditor extends Grid implements Editor<RE
     }
 
     public RESTStringConstantV1DetailsEditor(final boolean readOnly) {
-        super(3, 2);
+        super(ROWS, COLS);
+
+        id.setReadOnly(true);
 
         final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.StringConstantId());
         this.setWidget(0, 0, idLabel);
@@ -42,6 +48,15 @@ public class RESTStringConstantV1DetailsEditor extends Grid implements Editor<RE
         final Label valueLabel = new Label(PressGangCCMSUI.INSTANCE.StringConstantValue());
         this.setWidget(2, 0, valueLabel);
         this.setWidget(2, 1, value);
+
+        for (int i = 0; i < ROWS; ++i) {
+            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TOPIC_VIEW_LABEL);
+        }
+
+        for (int i = 0; i < ROWS - 1; ++i) {
+            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TOPIC_VIEW_DETAIL);
+        }
+        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.TOPIC_VIEW_DESCRIPTION_DETAIL);
     }
 
 }
