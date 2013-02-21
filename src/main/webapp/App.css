@@ -364,7 +364,7 @@ html {
     box-sizing: border-box;
 }
 
-.TopicViewPanel {
+.TopicViewPanel, .StringConstantViewPanel {
     width: 100%;
     height: 100%;
 }

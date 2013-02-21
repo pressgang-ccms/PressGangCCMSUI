@@ -87,6 +87,9 @@ public interface CSSConstants {
         String CREATE_RESULTS_AND_VIEW_PARENT_PANEL = "CreateResultsAndViewPanelParent";
     }
 
+    interface StringConstantView {
+        String STRING_CONSTANT_VIEW_PANEL = "StringConstantViewPanel";
+    }
 
     public interface TagView {
         String TAG_VIEW_PANEL = "TagViewPanel";

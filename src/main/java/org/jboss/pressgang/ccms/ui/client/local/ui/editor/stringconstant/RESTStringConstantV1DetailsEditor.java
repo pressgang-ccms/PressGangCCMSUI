@@ -35,6 +35,8 @@ public class RESTStringConstantV1DetailsEditor extends Grid implements Editor<RE
     public RESTStringConstantV1DetailsEditor(final boolean readOnly) {
         super(ROWS, COLS);
 
+        this.addStyleName(CSSConstants.StringConstantView.STRING_CONSTANT_VIEW_PANEL);
+
         id.setReadOnly(true);
 
         final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.StringConstantId());
