@@ -5,7 +5,7 @@ import com.google.gwt.editor.client.Editor;
 /**
  * The interface for views that display ui elements defined in an editor that
  * is populated from an external object.
- * <p/>
+ *
  * This interface just combines the BaseCustomViewInterface and BaseEditorViewInterface interfaces.
  * The BaseCustomViewInterface interface provides a method for supplying the object that will be used as
  * the data source for the editor. This object is either used by the editor directly, in which case T and W

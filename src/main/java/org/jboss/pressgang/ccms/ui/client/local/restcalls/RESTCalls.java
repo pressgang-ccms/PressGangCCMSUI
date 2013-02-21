@@ -715,26 +715,26 @@ public final class RESTCalls {
      */
     public static void populateLocales(@NotNull final StringListLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display) {
 
-        final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
-                display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
-            @Override
-            public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
+            final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+                    display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
+                @Override
+                public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
                             /* Get the list of locales from the StringConstant */
-                final List<String> locales = new LinkedList<String>(Arrays.asList(retValue.getValue()
-                        .replaceAll(Constants.CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED, "").replaceAll(Constants.LINE_BREAK_ESCAPED, "")
-                        .replaceAll(" ", "").split(Constants.COMMA)));
+                    final List<String> locales = new LinkedList<String>(Arrays.asList(retValue.getValue()
+                            .replaceAll(Constants.CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED, "").replaceAll(Constants.LINE_BREAK_ESCAPED, "")
+                            .replaceAll(" ", "").split(Constants.COMMA)));
 
                             /* Clean the list */
-                while (locales.contains("")) {
-                    locales.remove("");
+                    while (locales.contains("")) {
+                        locales.remove("");
+                    }
+
+                    Collections.sort(locales);
+
+                    loadedCallback.stringListLoaded(locales);
                 }
+            });
 
-                Collections.sort(locales);
-
-                loadedCallback.stringListLoaded(locales);
-            }
-        });
-
-        RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
+            RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
     }
 }

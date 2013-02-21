@@ -1,10 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview;
 
 import com.google.gwt.editor.client.Editor;
-import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimpleIntegerBox;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -43,7 +40,6 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
 
     /**
      * The property used by the editor framework to bind the locale to the ui element.
-     *
      * @return The locale ui element
      */
     public TextBox localeEditor() {
@@ -52,7 +48,6 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
 
     /**
      * The property used by the editor framework to bind the topic id to the ui element.
-     *
      * @return The topic id ui element
      */
     public SimpleIntegerBox topicIdEditor() {
@@ -61,7 +56,6 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
 
     /**
      * The property used by the editor framework to bind the topic revision to the ui element.
-     *
      * @return The revision ui element
      */
     public SimpleIntegerBox topicRevisionEditor() {
@@ -70,7 +64,6 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
 
     /**
      * The property used by the editor framework to bind the translated topic id to the ui element.
-     *
      * @return The translated topic id ui element
      */
     public SimpleIntegerBox idEditor() {
@@ -78,6 +71,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
     }
 
     /**
+     *
      * @param readOnly true if the ui elements presented by this editor should be readonly
      */
     public RESTTranslatedTopicV1BasicDetailsEditor(final boolean readOnly) {

@@ -17,6 +17,7 @@ public class SearchUILocale {
     private String name;
 
     /**
+     *
      * @param name The locale name.
      */
     public SearchUILocale(@NotNull final String name) {
@@ -24,6 +25,7 @@ public class SearchUILocale {
     }
 
     /**
+     *
      * @return Whether the locale is include, excluded or ignored.
      */
     public TriStateSelectionState getLocale() {
@@ -31,6 +33,7 @@ public class SearchUILocale {
     }
 
     /**
+     *
      * @param locale Whether the locale is include, excluded or ignored.
      */
     public void setLocale(final TriStateSelectionState locale) {
@@ -38,6 +41,7 @@ public class SearchUILocale {
     }
 
     /**
+     *
      * @return The locale name.
      */
     public String getName() {

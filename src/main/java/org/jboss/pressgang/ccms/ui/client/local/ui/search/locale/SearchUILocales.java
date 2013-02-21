@@ -30,7 +30,6 @@ public class SearchUILocales {
 
     /**
      * Initialize the list of locales that can be searched on.
-     *
      * @param localeNames The list of locales to include in the UI
      */
     public void initialize(@NotNull final List<String> localeNames) {
@@ -51,14 +50,14 @@ public class SearchUILocales {
      * Build the query string that is used to search topics based on locale. Locales to be found or excluded are
      * defined in "locale#=ja[0 or 1]" query parameters, where the "#" is just a unique number, and [0 or 1] is either
      * "0" or "1" depending on whether the locale is to be specifically excluded or included.
-     * <p/>
+     *
      * For example:
-     * <p/>
+     *
      * locale1=ja1;locale2=de0
-     * <p/>
+     *
      * means include topics that have the Japanese locale, and exclude those with the German locale.
      *
-     * @param includeQueryPrefix true if the "query;" prefix is to be included, and false otherwise
+     * @param includeQueryPrefix  true if the "query;" prefix is to be included, and false otherwise
      * @return the query string
      */
     public String buidlQueryString(final boolean includeQueryPrefix) {
@@ -78,6 +77,6 @@ public class SearchUILocales {
             }
         }
 
-        return retValue.toString();
+        return  retValue.toString();
     }
 }

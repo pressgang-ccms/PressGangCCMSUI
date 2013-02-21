@@ -46,6 +46,7 @@ public class TranslatedTopicsFilteredResultsView extends BaseFilteredResultsView
     };
 
 
+
     public TranslatedTopicsFilteredResultsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults(), PressGangCCMSUI.INSTANCE.CreateTopic());
 

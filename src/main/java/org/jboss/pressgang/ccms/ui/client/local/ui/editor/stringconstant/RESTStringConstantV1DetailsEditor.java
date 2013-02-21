@@ -3,8 +3,11 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.editor.stringconstant;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+
+import java.util.List;
 
 /**
  * An editor used to bind the string constant's details to ui elements

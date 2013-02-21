@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.uibinder.client.UiBinderUtil;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
@@ -18,6 +19,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
@@ -211,7 +213,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
     }
 
     /**
-     * Break down the query into individual locales
+     Break down the query into individual locales
      */
     private void breakDownQuery(final List<String> locales) {
 
@@ -255,7 +257,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
                     }
                 }
 
-                if (!isExcluded) {
+                if (!isExcluded)  {
                     localeQueries.put(locale, CommonFilterConstants.MATCH_LOCALE + "1=" + locale + "1");
                 }
             }

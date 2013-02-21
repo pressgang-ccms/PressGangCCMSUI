@@ -45,6 +45,8 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     public static final String HISTORY_TOKEN = "TranslatedTopicResultsAndTranslatedTopicView";
 
 
+
+
     /**
      * A Logger
      */
@@ -60,6 +62,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     private TranslatedTopicPresenter translatedTopicPresenter;
     @Inject
     private TranslatedTopicsFilteredResultsPresenter translatedTopicsFilteredResultsPresenter;
+
 
 
     /**
@@ -213,10 +216,17 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
             }
 
 
+
+
+
+
         } finally {
             LOGGER.log(Level.INFO, "EXIT TranslatedTopicFilteredResultsAndDetailsPresenter.parseToken()");
         }
     }
+
+
+
 
 
     /**

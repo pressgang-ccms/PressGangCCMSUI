@@ -50,7 +50,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
             // processor.setParameter(paramNameString, paramValueString);
 
             // Getting the result
-            final String resultString = processor.transform();
+            String resultString = processor.transform();
             div.setHTML(resultString);
 
             this.getPanel().setWidget(div);

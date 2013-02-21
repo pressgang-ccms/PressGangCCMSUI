@@ -7,17 +7,28 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTStringConstantCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTStringConstantCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ProjectsFilteredResultsAndProjectViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.StringConstantFilteredResultsAndDetailsViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.AddPossibleChildCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.GetExistingCollectionCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.UpdateAfterChildModfiedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -30,6 +41,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
@@ -44,7 +56,7 @@ public class StringConstantFilteredResultsAndDetailsPresenter extends
                 RESTStringConstantCollectionV1,
                 RESTStringConstantCollectionItemV1,
                 RESTStringConstantV1DetailsEditor>
-        implements BaseTemplatePresenterInterface {
+implements BaseTemplatePresenterInterface {
 
     /**
      * The history token used to identify this view
@@ -62,10 +74,8 @@ public class StringConstantFilteredResultsAndDetailsPresenter extends
     @Inject
     private Display display;
 
-    @Inject
-    private StringConstantFilteredResultsPresenter stringConstantFilteredResultsPresenter;
-    @Inject
-    private StringConstantPresenter stringConstantPresenter;
+    @Inject private StringConstantFilteredResultsPresenter stringConstantFilteredResultsPresenter;
+    @Inject private StringConstantPresenter stringConstantPresenter;
 
     /**
      * The category query string extracted from the history token
@@ -235,9 +245,9 @@ public class StringConstantFilteredResultsAndDetailsPresenter extends
     }
 
     public interface Display extends BaseSearchAndEditViewInterface<
-            RESTStringConstantV1,
-            RESTStringConstantCollectionV1,
-            RESTStringConstantCollectionItemV1> {
+                RESTStringConstantV1,
+                RESTStringConstantCollectionV1,
+                RESTStringConstantCollectionItemV1> {
         PushButton getSave();
     }
 }
