@@ -236,7 +236,7 @@ implements BaseTemplatePresenterInterface {
             stringConstantPresenter.getDisplay().getDriver().flush();
 
             final RESTStringConstantV1 selectedItem = stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem();
-            final RESTStringConstantV1 displayedItem = stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem();;
+            final RESTStringConstantV1 displayedItem = stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
 
             return !(stringEqualsEquatingNullWithEmptyStringAndIgnoreLineBreaks(selectedItem.getName(), displayedItem.getName())
                     && stringEqualsEquatingNullWithEmptyStringAndIgnoreLineBreaks(selectedItem.getValue(), displayedItem.getValue()));

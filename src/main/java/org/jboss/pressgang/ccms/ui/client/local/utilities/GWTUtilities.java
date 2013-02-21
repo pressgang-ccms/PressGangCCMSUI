@@ -261,7 +261,7 @@ final public class GWTUtilities {
 
         if (a != null && b != null) {
             final String fixedA = a.replaceAll(Constants.CARRIAGE_RETURN_AND_LINE_BREAK, Constants.LINE_BREAK);
-            final String fixedB = a.replaceAll(Constants.CARRIAGE_RETURN_AND_LINE_BREAK, Constants.LINE_BREAK);
+            final String fixedB = b.replaceAll(Constants.CARRIAGE_RETURN_AND_LINE_BREAK, Constants.LINE_BREAK);
 
             return fixedA.equals(fixedB);
         }
