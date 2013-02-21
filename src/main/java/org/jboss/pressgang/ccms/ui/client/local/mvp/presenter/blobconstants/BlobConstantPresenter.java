@@ -51,6 +51,6 @@ public class BlobConstantPresenter extends BaseTemplatePresenter {
     }
 
     public interface Display extends BasePopulatedEditorViewInterface<RESTBlobConstantV1, RESTBlobConstantV1, RESTBlobConstantV1DetailsEditor> {
-
+        RESTBlobConstantV1DetailsEditor getEditor();
     }
 }

@@ -101,6 +101,13 @@ public interface CSSConstants {
         String INTEGER_CONSTANT_VIEW_VALUE_FIELD = "IntegerConstantViewValueField";
     }
 
+    interface BlobConstantView {
+        String BLOB_CONSTANT_VIEW_PANEL = "BlobConstantViewPanel";
+        String BLOB_CONSTANT_VIEW_ID_FIELD = "BlobConstantViewIdField";
+        String BLOB_CONSTANT_VIEW_NAME_FIELD = "BlobConstantViewNameField";
+        String BLOB_CONSTANT_VIEW_VALUE_FIELD = "BlobConstantViewValueField";
+    }
+
     interface TagView {
         String TAG_VIEW_PANEL = "TagViewPanel";
         String TAG_VIEW_ID_LABEL = "TagViewIDLabel";

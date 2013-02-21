@@ -17,8 +17,14 @@ public class BlobConstantView extends BaseTemplateView implements BlobConstantPr
      * The GWT Editor Driver
      */
     private final BlobConstantPresenter.BlobConstantPresenterDriver driver = GWT.create(BlobConstantPresenter.BlobConstantPresenterDriver.class);
+    private RESTBlobConstantV1DetailsEditor editor;
 
     private boolean readOnly = false;
+
+    @Override
+    public RESTBlobConstantV1DetailsEditor getEditor() {
+        return editor;
+    }
 
     public BlobConstantView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.BlobConstantDetails());
@@ -29,7 +35,7 @@ public class BlobConstantView extends BaseTemplateView implements BlobConstantPr
         this.readOnly = readonly;
 
         /* SearchUIProjectsEditor is a grid */
-        final RESTBlobConstantV1DetailsEditor editor = new RESTBlobConstantV1DetailsEditor(this.readOnly);
+        editor = new RESTBlobConstantV1DetailsEditor(this.readOnly);
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */
@@ -42,4 +48,6 @@ public class BlobConstantView extends BaseTemplateView implements BlobConstantPr
     public BlobConstantPresenter.BlobConstantPresenterDriver getDriver() {
         return driver;
     }
+
+
 }

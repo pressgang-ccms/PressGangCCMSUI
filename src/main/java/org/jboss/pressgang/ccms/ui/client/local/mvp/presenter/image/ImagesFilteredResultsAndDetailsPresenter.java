@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.google.inject.internal.util.$Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
@@ -228,12 +229,10 @@ public class ImagesFilteredResultsAndDetailsPresenter
      * Each Language Image has an upload button that needs to be bound to some behaviour.
      */
     private void bindImageUploadButtons() {
-        if (imageComponent.getDisplay().getEditor() == null) {
-            throw new IllegalStateException("display.getEditor() cannot be null");
-        }
 
-        for (final RESTLanguageImageV1Editor editor : imageComponent.getDisplay().getEditor().languageImages_OTMEditor().itemsEditor()
-                .getEditors()) {
+        checkState(imageComponent.getDisplay().getEditor() != null, "display.getEditor() cannot be null");
+
+        for (final RESTLanguageImageV1Editor editor : imageComponent.getDisplay().getEditor().languageImages_OTMEditor().itemsEditor().getEditors()) {
             editor.getUploadButton().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
@@ -293,6 +292,9 @@ public class ImagesFilteredResultsAndDetailsPresenter
                         });
 
                         reader.readAsBinaryString(file);
+
+                        /* we only upload one file */
+                        break;
                     }
                 }
             });

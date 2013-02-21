@@ -15,6 +15,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.PresenterInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.blobconstants.BlobConstantFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoriesFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter;
@@ -93,6 +94,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
             this.eventBus.addHandler(TranslatedSearchResultsAndTopicViewEvent.TYPE, new ViewOpenWithQueryEventHandler(TranslatedTopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(StringConstantFilteredResultsAndDetailsViewEvent.TYPE, new ViewOpenWithQueryEventHandler(StringConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(IntegerConstantFilteredResultsAndDetailsViewEvent.TYPE, new ViewOpenWithQueryEventHandler(IntegerConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(BlobConstantFilteredResultsAndDetailsViewEvent.TYPE, new ViewOpenWithQueryEventHandler(BlobConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
 
         } finally {
             LOGGER.log(Level.INFO, "EXIT AppController.bind()");
@@ -191,6 +193,8 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                     presenter = getBeanInstance(StringConstantFilteredResultsAndDetailsPresenter.class);
                 } else if (token.startsWith(IntegerConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(IntegerConstantFilteredResultsAndDetailsPresenter.class);
+                } else if (token.startsWith(BlobConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(BlobConstantFilteredResultsAndDetailsPresenter.class);
                 }
 
                 if (presenter.isPresent()) {

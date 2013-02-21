@@ -7,9 +7,12 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTBlobConstantCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTBlobConstantCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTLanguageImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.BlobConstantFilteredResultsAndDetailsViewEvent;
@@ -26,6 +29,11 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.blobconstant.RESTBlobConstantV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.Nullable;
+import org.vectomatic.file.File;
+import org.vectomatic.file.FileReader;
+import org.vectomatic.file.events.ErrorHandler;
+import org.vectomatic.file.events.LoadEndEvent;
+import org.vectomatic.file.events.LoadEndHandler;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -229,6 +237,84 @@ implements BaseTemplatePresenterInterface {
             return !stringEqualsEquatingNullWithEmptyStringAndIgnoreLineBreaks(selectedItem.getName(), displayedItem.getName());
         }
         return false;
+    }
+
+    private void bindUploadButton() {
+        blobConstantPresenter.getDisplay().getEditor().getUploadButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+
+                /*
+                 * There should only be one file, but use a loop to accommodate any changes that might implement multiple
+                 * files
+                 */
+                for (final File file : blobConstantPresenter.getDisplay().getEditor().getUpload().getFiles()) {
+                    display.addWaitOperation();
+
+                    final FileReader reader = new FileReader();
+
+                    reader.addErrorHandler(new ErrorHandler() {
+                        @Override
+                        public void onError(final org.vectomatic.file.events.ErrorEvent event) {
+                            display.removeWaitOperation();
+                        }
+                    });
+
+                    reader.addLoadEndHandler(new LoadEndHandler() {
+                        @Override
+                        public void onLoadEnd(final LoadEndEvent event) {
+                            try {
+                                final String result = reader.getStringResult();
+                                final byte[] buffer = GWTUtilities.getByteArray(result, 1);
+
+                                /* Flush any changes */
+                                blobConstantPresenter.getDisplay().getDriver().flush();
+
+                                /*
+                                 * Create the image to be modified. This is so we don't send off unnecessary data.
+                                 */
+                                final boolean wasNewEntity = blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId() == null;
+                                final RESTBlobConstantV1 updateEntity = new RESTBlobConstantV1();
+                                updateEntity.setId(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
+                                updateEntity.explicitSetName(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
+
+                                    /* Create the language image */
+                                final RESTLanguageImageV1 updatedLanguageImage = new RESTLanguageImageV1();
+                                updatedLanguageImage.setId(blobConstantPresenter.getDisplay().getEditor().self.getId());
+                                updatedLanguageImage.explicitSetImageData(buffer);
+                                updatedLanguageImage.explicitSetFilename(file.getName());
+
+                                final RESTCalls.RESTCallback<RESTBlobConstantV1> callback = new BaseRestCallback<RESTBlobConstantV1, BaseTemplateViewInterface>(
+                                        display,
+                                        new BaseRestCallback.SuccessAction<RESTBlobConstantV1, BaseTemplateViewInterface>() {
+                                            @Override
+                                            public void doSuccessAction(final RESTBlobConstantV1 retValue, final BaseTemplateViewInterface display) {
+                                                retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem(), false);
+                                                retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+                                                initializeViews();
+                                                updateDisplayAfterSave(wasNewEntity);
+                                            }
+                                        });
+
+                                if (wasNewEntity) {
+                                    RESTCalls.createBlobConstant(callback, updateEntity);
+                                } else {
+                                    RESTCalls.updateBlobConstant(callback, updateEntity);
+                                }
+
+                            } finally {
+                                display.removeWaitOperation();
+                            }
+                        }
+                    });
+
+                    reader.readAsBinaryString(file);
+
+                    /* we only upload one file */
+                    break;
+                }
+            }
+        });
     }
 
     public interface Display extends BaseSearchAndEditViewInterface<

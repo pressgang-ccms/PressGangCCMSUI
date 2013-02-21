@@ -223,6 +223,15 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 }
             }
         });
+
+        display.getIntegerConstants().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                if (isOKToProceed()) {
+                    eventBus.fireEvent(new BlobConstantFilteredResultsAndDetailsViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
+                }
+            }
+        });
     }
 
     private void doQuickSearch(final boolean newWindow) {
