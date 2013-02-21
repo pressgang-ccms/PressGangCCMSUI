@@ -1,10 +1,13 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.stringconstant;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.stringconstants.StringConstantPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCategoryV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.stringconstant.RESTStringConstantV1DetailsEditor;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,8 +32,8 @@ public class StringConstantView extends BaseTemplateView implements StringConsta
     }
 
     @Override
-    public void display(@NotNull final RESTStringConstantV1 entity, final boolean readOnly) {
-        this.readOnly = readOnly;
+    public void display(@NotNull final RESTStringConstantV1 entity, final boolean readonly) {
+        this.readOnly = readonly;
 
         /* SearchUIProjectsEditor is a grid */
         final RESTStringConstantV1DetailsEditor editor = new RESTStringConstantV1DetailsEditor(this.readOnly);
