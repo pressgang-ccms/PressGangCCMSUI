@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.vectomatic.file.FileUploadExt;
 
 /**
@@ -26,7 +27,7 @@ public class RESTBlobConstantV1DetailsEditor extends Grid implements ValueAwareE
     private final SimpleIntegerBox id = new SimpleIntegerBox();
     private final TextBox name = new TextBox();
     private final FileUploadExt upload = new FileUploadExt(false);
-    private final PushButton uploadButton = new PushButton(PressGangCCMSUI.INSTANCE.Upload());
+    private final PushButton uploadButton = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Upload());
 
     public SimpleIntegerBox idEditor() {
         return id;
