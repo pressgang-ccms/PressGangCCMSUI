@@ -565,30 +565,30 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         advancedOpen = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Advanced(), true);
         addShortcutButton(advancedOpen, advancedShortcutPanel);
 
-        users = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Users());
+        users = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Users());
         users.setEnabled(false);
         addShortcutButton(users, advancedShortcutPanel);
 
-        roles = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Roles());
+        roles = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Roles());
         roles.setEnabled(false);
         addShortcutButton(roles, advancedShortcutPanel);
 
-        stringConstants = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.StringConstants());
+        stringConstants = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.StringConstants());
         addShortcutButton(stringConstants, advancedShortcutPanel);
 
-        blobConstants = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.BlobConstants());
+        blobConstants = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.BlobConstants());
         blobConstants.setEnabled(false);
         addShortcutButton(blobConstants, advancedShortcutPanel);
 
-        integerConstants = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.IntegerConstants());
+        integerConstants = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.IntegerConstants());
         integerConstants.setEnabled(false);
         addShortcutButton(integerConstants, advancedShortcutPanel);
 
-        propertyTags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.PropertyTags());
+        propertyTags = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTags());
         propertyTags.setEnabled(false);
         addShortcutButton(propertyTags, advancedShortcutPanel);
 
-        propertyTagCategories = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.PropertyTagCategories());
+        propertyTagCategories = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTagCategories());
         propertyTagCategories.setEnabled(false);
         addShortcutButton(propertyTagCategories, advancedShortcutPanel);
 
