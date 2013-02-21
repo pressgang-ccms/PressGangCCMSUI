@@ -76,6 +76,10 @@ final public class Preferences {
      * The setting that saves the width of the split screen on the filter list screen
      */
     public static final String FILTER_VIEW_MAIN_SPLIT_WIDTH = "FilterViewMainSplitWidth";
+    /**
+     * The setting that saves the width of the split screen on the string constants list screen
+     */
+    public static final String STRING_CONSTANTS_VIEW_MAIN_SPLIT_WIDTH = "StringConstantsViewMainSplitWidth";
 
 
     /**

@@ -29,7 +29,7 @@ public class RESTStringConstantV1DetailsEditor extends Grid implements Editor<RE
     }
 
     public RESTStringConstantV1DetailsEditor(final boolean readOnly) {
-        super(2, 3);
+        super(3, 2);
 
         final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.StringConstantId());
         this.setWidget(0, 0, idLabel);

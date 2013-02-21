@@ -203,9 +203,9 @@ implements BaseTemplatePresenterInterface {
 
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
-        stringConstantFilteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
-        stringConstantPresenter.bindExtended(ServiceConstants.PROJECT_DETAILS_HELP_TOPIC, pageId);
-        super.bindSearchAndEdit(topicId, pageId, Preferences.PROJECT_VIEW_MAIN_SPLIT_WIDTH, stringConstantPresenter.getDisplay(), stringConstantPresenter.getDisplay(),
+        stringConstantFilteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.STRING_CONSTANT_HELP_TOPIC, pageId, queryString);
+        stringConstantPresenter.bindExtended(ServiceConstants.STRING_CONSTANT_DETAILS_HELP_TOPIC, pageId);
+        super.bindSearchAndEdit(topicId, pageId, Preferences.STRING_CONSTANTS_VIEW_MAIN_SPLIT_WIDTH, stringConstantPresenter.getDisplay(), stringConstantPresenter.getDisplay(),
                 stringConstantFilteredResultsPresenter.getDisplay(), stringConstantFilteredResultsPresenter, display, display, getNewEntityCallback);
     }
 
