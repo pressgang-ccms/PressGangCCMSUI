@@ -36,6 +36,9 @@ public class RESTStringConstantV1DetailsEditor extends Grid implements Editor<RE
         super(ROWS, COLS);
 
         this.addStyleName(CSSConstants.StringConstantView.STRING_CONSTANT_VIEW_PANEL);
+        id.addStyleName(CSSConstants.StringConstantView.STRING_CONSTANT_VIEW_ID_FIELD);
+        name.addStyleName(CSSConstants.StringConstantView.STRING_CONSTANT_VIEW_NAME_FIELD);
+        value.addStyleName(CSSConstants.StringConstantView.STRING_CONSTANT_VIEW_VALUE_FIELD);
 
         id.setReadOnly(true);
 

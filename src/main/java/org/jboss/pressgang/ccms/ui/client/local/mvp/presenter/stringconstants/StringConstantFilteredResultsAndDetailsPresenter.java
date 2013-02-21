@@ -230,9 +230,9 @@ implements BaseTemplatePresenterInterface {
         if (stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
             stringConstantPresenter.getDisplay().getDriver().flush();
 
-            return !(stringEqualsEquatingNullWithEmptyString(stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem()
-                    .getName(), stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName()) && stringEqualsEquatingNullWithEmptyString(
-                    stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem().getValue(),
+            return !(stringEqualsEquatingNullWithEmptyString(stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem().getName(),
+                    stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName())
+                    && stringEqualsEquatingNullWithEmptyString(stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem().getValue(),
                     stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getValue()));
         }
         return false;
