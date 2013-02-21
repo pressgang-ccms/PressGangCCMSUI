@@ -37,6 +37,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.stringconstant.RESTStr
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.Nullable;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.List;
 
@@ -47,6 +48,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.st
 /**
  * The presenter used to display a list of string constants and their details.
  */
+@Dependent
 public class StringConstantFilteredResultsAndDetailsPresenter extends
         BaseSearchAndEditComponent<
                 RESTStringConstantV1,

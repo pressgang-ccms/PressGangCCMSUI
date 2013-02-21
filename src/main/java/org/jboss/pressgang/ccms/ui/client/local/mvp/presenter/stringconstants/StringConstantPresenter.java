@@ -13,6 +13,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjec
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.stringconstant.RESTStringConstantV1DetailsEditor;
 import org.jetbrains.annotations.NotNull;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
@@ -20,6 +21,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 /**
     The presenter used to display the string constants details.
  */
+@Dependent
 public class StringConstantPresenter extends BaseTemplatePresenter {
 
     public static final String HISTORY_TOKEN = "StringConstantView";

@@ -28,6 +28,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
@@ -36,6 +37,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 /**
     The presenter used to display the list of string constants
  */
+@Dependent
 public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsComponent<RESTStringConstantCollectionItemV1> {
 
     public static final String HISTORY_TOKEN = "StringConstantFilteredResultsView";

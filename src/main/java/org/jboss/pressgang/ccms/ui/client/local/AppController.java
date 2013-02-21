@@ -194,14 +194,12 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                     presenter.get().go(this.container);
                 }
             }
-        } catch (final Exception ex) {
-            LOGGER.log(Level.INFO, "AppController.onValueChange() generated an exception.");
         } finally {
             LOGGER.log(Level.INFO, "EXIT AppController.onValueChange()");
         }
     }
 
-    private <T extends BaseTemplatePresenterInterface> Optional<BaseTemplatePresenterInterface> getBeanInstance(final Class<T> presenterType) throws Exception {
+    private <T extends BaseTemplatePresenterInterface> Optional<BaseTemplatePresenterInterface> getBeanInstance(final Class<T> presenterType) {
         try {
             LOGGER.log(Level.INFO, "ENTER AppController.getBeanInstance()");
 
@@ -212,9 +210,6 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                 return Optional.of(presenter);
             }
             return Optional.absent();
-        } catch (final Exception ex) {
-            LOGGER.log(Level.INFO, "AppController.getBeanInstance() generated an exception looking up an instance of " + presenterType.getName());
-            throw ex;
         } finally {
             LOGGER.log(Level.INFO, "EXIT AppController.getBeanInstance()");
         }
