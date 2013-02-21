@@ -86,7 +86,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
     }
 
     @Override
-    public void bindSearchAndEditExtended(int topicId, String pageId, final String queryString) {
+    public void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTFilterV1> getNewEntityCallback = new GetNewEntityCallback<RESTFilterV1>() {
 
@@ -166,7 +166,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
         return searchFilterPresenter;
     }
 
-    public void setSearchFilterPresenter(SearchFilterPresenter searchFilterPresenter) {
+    public void setSearchFilterPresenter(final SearchFilterPresenter searchFilterPresenter) {
         this.searchFilterPresenter = searchFilterPresenter;
     }
 
@@ -177,7 +177,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComp
         return searchFilterFilteredResultsPresenter;
     }
 
-    public void setSearchFilterFilteredResultsPresenter(SearchFilterFilteredResultsPresenter searchFilterFilteredResultsPresenter) {
+    public void setSearchFilterFilteredResultsPresenter(final SearchFilterFilteredResultsPresenter searchFilterFilteredResultsPresenter) {
         this.searchFilterFilteredResultsPresenter = searchFilterFilteredResultsPresenter;
     }
 

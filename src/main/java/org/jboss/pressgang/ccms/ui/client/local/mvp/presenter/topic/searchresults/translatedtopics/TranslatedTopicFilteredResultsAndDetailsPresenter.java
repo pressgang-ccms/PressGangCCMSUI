@@ -45,8 +45,6 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     public static final String HISTORY_TOKEN = "TranslatedTopicResultsAndTranslatedTopicView";
 
 
-
-
     /**
      * A Logger
      */
@@ -62,7 +60,6 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     private TranslatedTopicPresenter translatedTopicPresenter;
     @Inject
     private TranslatedTopicsFilteredResultsPresenter translatedTopicsFilteredResultsPresenter;
-
 
 
     /**
@@ -155,7 +152,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     }
 
     @Override
-    protected void postEnableAndDisableActionButtons(BaseTemplateViewInterface displayedView) {
+    protected void postEnableAndDisableActionButtons(final BaseTemplateViewInterface displayedView) {
         this.getDisplay().replaceTopActionButton(this.getDisplay().getFieldsDown(), this.getDisplay().getFields());
         if (displayedView == this.translatedTopicPresenter.getDisplay()) {
             getDisplay().replaceTopActionButton(getDisplay().getFields(), getDisplay().getFieldsDown());
@@ -163,7 +160,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     }
 
     @Override
-    protected void postAfterSwitchView(BaseTemplateViewInterface displayedView) {
+    protected void postAfterSwitchView(final BaseTemplateViewInterface displayedView) {
         /*
             Nothing needs to be done here
         */
@@ -184,7 +181,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     }
 
     @Override
-    protected void postInitializeViews(List<BaseTemplateViewInterface> filter) {
+    protected void postInitializeViews(final List<BaseTemplateViewInterface> filter) {
         if (viewIsInFilter(filter, translatedTopicPresenter.getDisplay())) {
             translatedTopicPresenter.getDisplay().display(this.getDisplayedTopic(), isReadOnlyMode());
         }
@@ -216,17 +213,10 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
             }
 
 
-
-
-
-
         } finally {
             LOGGER.log(Level.INFO, "EXIT TranslatedTopicFilteredResultsAndDetailsPresenter.parseToken()");
         }
     }
-
-
-
 
 
     /**

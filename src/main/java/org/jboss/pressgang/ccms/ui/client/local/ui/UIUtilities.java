@@ -87,7 +87,7 @@ final public class UIUtilities {
     }
 
     public static Label createTopTabDownLabel(final String text) {
-        return createTopTabDownLabel(text, false)    ;
+        return createTopTabDownLabel(text, false);
     }
 
     public static Label createTopTabDownLabel(final String text, final boolean subMenu) {

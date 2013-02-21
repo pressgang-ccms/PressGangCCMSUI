@@ -200,7 +200,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         @Override
         public void show(final int topicId, final BaseTemplateViewInterface waitDisplay) {
-            this.helpTopic = helpTopic;
+            this.helpTopic = topicId;
 
             final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
                     waitDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {

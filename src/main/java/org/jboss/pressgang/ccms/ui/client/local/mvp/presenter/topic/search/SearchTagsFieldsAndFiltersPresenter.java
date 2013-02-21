@@ -56,22 +56,29 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
     }
 
-    @Inject private Display display;
-    @Inject private SearchPresenter tagsComponent;
-    @Inject private SearchFieldPresenter fieldsComponent;
-    @Inject private SearchLocalePresenter localePresenter;
+    @Inject
+    private Display display;
+    @Inject
+    private SearchPresenter tagsComponent;
+    @Inject
+    private SearchFieldPresenter fieldsComponent;
+    @Inject
+    private SearchLocalePresenter localePresenter;
 
     /**
      * The presenter used to display the list of filters
      */
-    @Inject private SearchFilterResultsAndFilterPresenter searchFilterResultsAndFilterPresenter;
+    @Inject
+    private SearchFilterResultsAndFilterPresenter searchFilterResultsAndFilterPresenter;
 
     /**
      * The dialog used when saving or overwriting a filter
      */
-    @Inject private SaveFilterDialogInterface saveFilterDialog;
+    @Inject
+    private SaveFilterDialogInterface saveFilterDialog;
 
-    @Inject private HandlerManager eventBus;
+    @Inject
+    private HandlerManager eventBus;
 
     private HasWidgets container;
 
@@ -114,7 +121,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             public void stringListLoaded(@NotNull final List<String> stringList) {
                 localePresenter.getDisplay().display(stringList, false);
             }
-        }, display) ;
+        }, display);
     }
 
     /**
@@ -339,8 +346,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
                 if (doingTransleatedSearch) {
                     eventBus.fireEvent(new TranslatedSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
-                }
-                else {
+                } else {
                     eventBus.fireEvent(new SearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
             }

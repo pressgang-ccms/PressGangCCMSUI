@@ -72,16 +72,6 @@ abstract public class BaseOrderedChildrenComponent<
     public final boolean moveTagsUpAndDown(@NotNull final T editingParent, @NotNull final W parent, @NotNull final F object, final boolean down,
                                            @NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {
 
-        if (parent == null) {
-            throw new NullPointerException("parent cannot be null");
-        }
-        if (object == null) {
-            throw new NullPointerException("object cannot be null");
-        }
-        if (sortCallback == null) {
-            throw new NullPointerException("sortCallback cannot be null");
-        }
-
         final int size = getExistingProviderData().getItems().size();
 
         boolean modifiedSort = false;

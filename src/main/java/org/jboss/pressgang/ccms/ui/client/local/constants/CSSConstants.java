@@ -8,7 +8,7 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
  */
 public interface CSSConstants {
 
-    public interface HelpDialog {
+    interface HelpDialog {
         String HELP_CONTENTS = "HelpContents";
     }
 
@@ -42,11 +42,11 @@ public interface CSSConstants {
         String FILTER_VIEW_DESCRIPTION_DETAIL = "FilterViewDescriptionDetail";
     }
 
-    public interface PlainTextXMLDialog {
+    interface PlainTextXMLDialog {
         String PLAIN_TEXT_XML_DIALOG_TEXTAREA = "PlainTextXMLDialogTextArea";
     }
 
-    public interface FilteredResultsView {
+    interface FilteredResultsView {
         /**
          * Assigned to the panel that holds the list of images.
          */
@@ -57,13 +57,13 @@ public interface CSSConstants {
         String FILTERED_OPTIONS_PANEL = "FilteredOptionsPanel";
     }
 
-    public interface OrderedChildrenResultsView {
+    interface OrderedChildrenResultsView {
         String ORDERED_CHILDREN_LIST_PANEL = "OrderedChildrenListPanel";
         String ORDERED_CHILDREN_EXISTING_LIST_PANEL = "OrderedChildrenExistingListPanel";
         String ORDERED_CHILDREN_SPLIT_PANEL = "OrderedChildrenSplitPanel";
     }
 
-    public interface BaseSearchAndEditView {
+    interface BaseSearchAndEditView {
         String RESULTS_VIEW_LAYOUT_PANEL = "ResultsViewLayoutPanel";
         String ENTITY_VIEW_LAYOUT_PANEL = "EntityViewLayoutPanel";
         /**
@@ -81,7 +81,7 @@ public interface CSSConstants {
         String ENTITY_SEARCH_RESULTS_AND_VIEW_PARENT_PANEL = "EntitySearchResultsAndViewParentPanel";
     }
 
-    public interface CreateTopicView {
+    interface CreateTopicView {
         String CREATE_TOPIC_VIEW_BUTTONS_PANEL = "CreateTopicViewButtonsPanel";
         String CREATE_TOPIC_VIEW_DETAILS_PANEL = "CreateTopicViewDetailsPanel";
         String CREATE_RESULTS_AND_VIEW_PARENT_PANEL = "CreateResultsAndViewPanelParent";
@@ -94,7 +94,7 @@ public interface CSSConstants {
         String STRING_CONSTANT_VIEW_VALUE_FIELD = "StringConstantViewValueField";
     }
 
-    public interface TagView {
+    interface TagView {
         String TAG_VIEW_PANEL = "TagViewPanel";
         String TAG_VIEW_ID_LABEL = "TagViewIDLabel";
         String TAG_VIEW_ID_TEXT = "TagViewIDText";
@@ -111,7 +111,7 @@ public interface CSSConstants {
         String TAG_VIEW_DESCRIPTION_TEXT_CELL = "TagViewDescriptionTextCell";
     }
 
-    public interface CategoryView {
+    interface CategoryView {
         String CATEGORY_VIEW_PANEL = "CategoryViewPanel";
         String CATEGORY_VIEW_ID_LABEL = "CategoryViewIDLabel";
         String CATEGORY_VIEW_ID_TEXT = "CategoryViewIDText";
@@ -128,7 +128,7 @@ public interface CSSConstants {
         String CATEGORY_VIEW_DESCRIPTION_TEXT_CELL = "CategoryViewDescriptionTextCell";
     }
 
-    public interface ProjectView {
+    interface ProjectView {
         String PROJECT_VIEW_PANEL = "ProjectViewPanel";
         String PROJECT_VIEW_ID_LABEL = "ProjectViewIDLabel";
         String PROJECT_VIEW_ID_TEXT = "ProjectViewIDText";

@@ -16,6 +16,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.inject.internal.util.$Preconditions.checkState;
+
 /**
  * @param <T> The type of the entity being edited by the view
  * @param <W> The type of the parent of A and D
@@ -127,9 +129,7 @@ abstract public class BaseDetailedChildrenPresenter<
         try {
             LOGGER.log(Level.INFO, "ENTER BaseOrderedChildrenComponent.refreshExistingChildList()");
 
-            if (this.display == null) {
-                throw new NullPointerException("BaseOrderedChildrenComponent.refreshExistingChildList(): display cannot be null");
-            }
+            checkState(this.display != null, "BaseOrderedChildrenComponent.refreshExistingChildList(): display cannot be null");
 
             this.display.setExistingChildrenProvider(generateExistingProvider(parent));
         } finally {

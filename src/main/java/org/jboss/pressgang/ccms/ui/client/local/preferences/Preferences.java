@@ -91,17 +91,32 @@ final public class Preferences {
      */
     private final Storage storage;
 
-
+    /**
+     * private constructor to force usage of singleton.
+     */
     private Preferences() {
         storage = Storage.getLocalStorageIfSupported();
     }
 
+    /**
+     * Save a setting.
+     *
+     * @param key  the setting name
+     * @param data the setting value
+     */
     public void saveSetting(final String key, final String data) {
         if (storage != null) {
             storage.setItem(key, data);
         }
     }
 
+    /**
+     * Get a setting, or return the defaultValue if the setting does not exist.
+     *
+     * @param key          the setting name
+     * @param defaultValue the value to return if the setting does not exist
+     * @return the saved setting if it exists, or defaultValue if it does not
+     */
     public String getString(final String key, final String defaultValue) {
         if (storage != null) {
             final String data = storage.getItem(key);
@@ -113,6 +128,13 @@ final public class Preferences {
         return defaultValue;
     }
 
+    /**
+     * Get a setting as an integer, or return the defaultValue if the setting does not exist or is not a valid integer
+     *
+     * @param key          the setting name
+     * @param defaultValue the value to return if the setting does not exist
+     * @return the saved setting if it exists and is a valid integer, or defaultValue if it does not
+     */
     public Integer getInt(final String key, final Integer defaultValue) {
         try {
             if (storage != null) {
@@ -122,13 +144,23 @@ final public class Preferences {
                 }
             }
 
-        } catch (final Exception NumberFormatException) {
-
+        } catch (final Exception ex) {
+            /*
+                The saved setting was not a valid integer, so we
+                continue on to return the default value.
+             */
         }
 
         return defaultValue;
     }
 
+    /**
+     * Get a setting as an double, or return the defaultValue if the setting does not exist or is not a valid double
+     *
+     * @param key          the setting name
+     * @param defaultValue the value to return if the setting does not exist
+     * @return the saved setting if it exists and is a valid double, or defaultValue if it does not
+     */
     public Double getDouble(final String key, final Double defaultValue) {
         try {
             if (storage != null) {
@@ -138,8 +170,11 @@ final public class Preferences {
                 }
             }
 
-        } catch (final Exception NumberFormatException) {
-
+        } catch (final Exception ex) {
+            /*
+                The saved setting was not a valid double, so we
+                continue on to return the default value.
+             */
         }
 
         return defaultValue;
