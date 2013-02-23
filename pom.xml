@@ -615,7 +615,7 @@
                         <artifactId>gwt-maven-plugin</artifactId>
                         <version>${gwt.maven.version}</version>
                         <configuration>
-                            <extraJvmArgs>-Xmx4096M -Xms1024M -Xss1024k -XX:MaxPermSize=256M -XX:PermSize=128M
+                            <extraJvmArgs>-Xmx1024M -Xms1024M -Xss1024k -XX:MaxPermSize=256M -XX:PermSize=128M
                             </extraJvmArgs>
                             <logLevel>INFO</logLevel>
                             <optimizationLevel>9</optimizationLevel>
