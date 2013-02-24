@@ -38,13 +38,7 @@ abstract public class BaseOrderedChildrenComponent<
     private static final Logger LOGGER = Logger.getLogger(BaseOrderedChildrenComponent.class.getName());
 
 
-    /**
-     * The sort order of child collections is determined by an integer field. This field has no restrictions, and may be set
-     * with duplicate, non-consecutive or null values. This function will take the current sort order (based on the Integer
-     * field and the name) and set the sort field to consecutive, predicable values.
-     *
-     * @return
-     */
+
     @Override
     public final void setSortOrderOfChildren(@NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {
         if (sortCallback == null) {
@@ -59,15 +53,6 @@ abstract public class BaseOrderedChildrenComponent<
         }
     }
 
-    /**
-     * Reorder a collection and move a child entity up or down
-     *
-     * @param editingParent The entity being edited
-     * @param parent        The parent of the list of items shown as existing children
-     * @param object        The child to be moved
-     * @param down          true if the child is to be moved down, false if it is to be moved up
-     * @return true if the sort order of any child was modified, false otherwise
-     */
     @Override
     public final boolean moveTagsUpAndDown(@NotNull final T editingParent, @NotNull final W parent, @NotNull final F object, final boolean down,
                                            @NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {
