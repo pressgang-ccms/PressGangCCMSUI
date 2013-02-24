@@ -12,7 +12,7 @@ import org.vectomatic.file.FileUploadExt;
 /**
  * An editor used to bind the blob constant's details to ui elements.
  */
-public class RESTBlobConstantV1DetailsEditor extends Grid implements ValueAwareEditor<RESTBlobConstantV1> {
+public final class RESTBlobConstantV1DetailsEditor extends Grid implements ValueAwareEditor<RESTBlobConstantV1> {
     private static final int ROWS = 3;
     private static final int COLS = 2;
 
@@ -50,6 +50,7 @@ public class RESTBlobConstantV1DetailsEditor extends Grid implements ValueAwareE
         name.addStyleName(CSSConstants.BlobConstantView.BLOB_CONSTANT_VIEW_NAME_FIELD);
 
         id.setReadOnly(true);
+        name.setReadOnly(readOnly);
 
         final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.BlobConstantId());
         this.setWidget(0, 0, idLabel);

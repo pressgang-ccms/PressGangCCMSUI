@@ -9,7 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 
-public class TopicTagViewProjectsEditor extends SimplePanel implements Editor<SearchUIProjects> {
+public final class TopicTagViewProjectsEditor extends SimplePanel implements Editor<SearchUIProjects> {
     private final boolean readOnly;
     private final FlexTable projectLabelPanel = new FlexTable();
     public final ListEditor<SearchUIProject, TopicTagViewProjectEditor> projects = ListEditor

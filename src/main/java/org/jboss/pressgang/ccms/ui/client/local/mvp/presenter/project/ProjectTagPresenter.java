@@ -23,16 +23,14 @@ import javax.inject.Inject;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public class ProjectTagPresenter
-        extends BaseChildrenComponent<
-        RESTProjectV1,    // The main REST types
-        RESTTagCollectionItemV1,                // The possible children types
+public class ProjectTagPresenter extends BaseChildrenComponent<
+        RESTProjectV1,                                                          // The main REST types
+        RESTTagCollectionItemV1,                                                // The possible children types
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>                // The existing children types
         implements BaseTemplatePresenterInterface {
 
-    public interface Display
-            extends
-            BaseChildrenViewInterface<RESTProjectV1, RESTTagCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
+    public interface Display extends
+        BaseChildrenViewInterface<RESTProjectV1, RESTTagCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
     }
 
     public static final String HISTORY_TOKEN = "ProjectTagView";
@@ -116,5 +114,4 @@ public class ProjectTagPresenter
         };
         return provider;
     }
-
 }

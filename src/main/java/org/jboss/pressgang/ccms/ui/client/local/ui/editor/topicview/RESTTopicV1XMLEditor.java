@@ -8,7 +8,7 @@ import edu.ycp.cs.dh.acegwt.client.ace.AceEditorTheme;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 
-public class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RESTBaseTopicV1<?, ?, ?>> {
+public final class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RESTBaseTopicV1<?, ?, ?>> {
     public final AceEditor xml = new AceEditor(true);
 
     public RESTTopicV1XMLEditor(final boolean readOnly) {

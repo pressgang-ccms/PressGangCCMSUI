@@ -57,6 +57,10 @@ final public class Preferences {
      */
     public static final String PROJECT_TAG_VIEW_MAIN_SPLIT_WIDTH = "ProjectTagViewMainSplitWidth";
     /**
+     * The setting that saves the width of the split screen on the property tags search screen
+     */
+    public static final String PROPERTY_TAG_VIEW_MAIN_SPLIT_WIDTH = "PropertyTagViewMainSplitWidth";
+    /**
      * The setting that saves the type of split on the topic edit screen
      */
     public static final String TOPIC_RENDERED_VIEW_SPLIT_TYPE = "TopicRenderedViewSplitType";

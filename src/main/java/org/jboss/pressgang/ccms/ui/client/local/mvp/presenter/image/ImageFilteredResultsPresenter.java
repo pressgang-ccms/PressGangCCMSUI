@@ -18,6 +18,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.Ba
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
@@ -80,13 +81,13 @@ public class ImageFilteredResultsPresenter
     public String getQuery() {
         final StringBuilder retValue = new StringBuilder();
         if (!display.getImageIdFilter().getText().isEmpty()) {
-            retValue.append(";imageIds=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getImageIdFilter().getText()) : display.getImageIdFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.IMAGE_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getImageIdFilter().getText()) : display.getImageIdFilter().getText()));
         }
         if (!display.getImageDescriptionFilter().getText().isEmpty()) {
-            retValue.append(";imageDesc=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getImageDescriptionFilter().getText()) : display.getImageDescriptionFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.IMAGE_DESCRIPTION_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getImageDescriptionFilter().getText()) : display.getImageDescriptionFilter().getText()));
         }
         if (!display.getImageOriginalFileNameFilter().getText().isEmpty()) {
-            retValue.append(";imageOrigName=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getImageOriginalFileNameFilter().getText()) : display.getImageOriginalFileNameFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.IMAGE_ORIGINAL_FILENAME_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getImageOriginalFileNameFilter().getText()) : display.getImageOriginalFileNameFilter().getText()));
         }
 
         return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX
@@ -151,11 +152,11 @@ public class ImageFilteredResultsPresenter
             final String[] queryElements = queryStringElement.split("=");
 
             if (queryElements.length == 2) {
-                if (queryElements[0].equals("imageIds")) {
+                if (queryElements[0].equals(CommonFilterConstants.IMAGE_IDS_FILTER_VAR)) {
                     this.display.getImageIdFilter().setText(URL.decodeQueryString(queryElements[1]));
-                } else if (queryElements[0].equals("imageDesc")) {
+                } else if (queryElements[0].equals(CommonFilterConstants.IMAGE_DESCRIPTION_FILTER_VAR)) {
                     this.display.getImageDescriptionFilter().setText(URL.decodeQueryString(queryElements[1]));
-                } else if (queryElements[0].equals("imageOrigName")) {
+                } else if (queryElements[0].equals(CommonFilterConstants.IMAGE_ORIGINAL_FILENAME_FILTER_VAR)) {
                     this.display.getImageOriginalFileNameFilter().setText(URL.decodeQueryString(queryElements[1]));
                 }
             }

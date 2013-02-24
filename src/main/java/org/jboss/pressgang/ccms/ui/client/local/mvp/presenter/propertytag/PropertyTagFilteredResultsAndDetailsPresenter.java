@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytag;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -8,12 +8,18 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyCategoryInPropertyTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyTagInPropertyCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTPropertyCategoryInPropertyTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTPropertyTagInPropertyCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTPropertyCategoryInPropertyTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTPropertyTagInPropertyCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ProjectsFilteredResultsAndProjectViewEvent;
@@ -33,6 +39,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjectV1BasicDetailsEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.propertytag.RESTPropertyTagV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -45,13 +52,13 @@ import java.util.List;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 
 @Dependent
-public class ProjectsFilteredResultsAndDetailsPresenter
+public class PropertyTagFilteredResultsAndDetailsPresenter
         extends
         BaseSearchAndEditComponent<
-                RESTProjectV1,
-                RESTProjectCollectionV1,
-                RESTProjectCollectionItemV1,
-                RESTProjectV1BasicDetailsEditor>
+            RESTPropertyTagV1,
+            RESTPropertyTagCollectionV1,
+            RESTPropertyTagCollectionItemV1,
+            RESTPropertyTagV1DetailsEditor>
         implements BaseTemplatePresenterInterface {
 
 
@@ -61,8 +68,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
      *
      * @author Matthew Casperson
      */
-    public interface Display extends
-            BaseSearchAndEditViewInterface<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> {
+    public interface Display extends BaseSearchAndEditViewInterface<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> {
         PushButton getChildren();
 
         PushButton getDetails();
@@ -75,9 +81,9 @@ public class ProjectsFilteredResultsAndDetailsPresenter
     }
 
     /**
-     * The history token used to identify this view
+     * The history token used to identify this view.
      */
-    public static final String HISTORY_TOKEN = "ProjectsFilteredResultsAndProjectView";
+    public static final String HISTORY_TOKEN = "PropertyTagFilteredResultsAndProjectView";
 
     @Inject
     private HandlerManager eventBus;
@@ -92,16 +98,16 @@ public class ProjectsFilteredResultsAndDetailsPresenter
      * An Errai injected instance of a class that implements ProjectFilteredResultsPresenter.LogicCompnent
      */
     @Inject
-    private ProjectFilteredResultsPresenter filteredResultsComponent;
+    private PropertyTagFilteredResultsPresenter filteredResultsComponent;
 
     /**
      * An Errai injected instance of a class that implements PropertyTagPresenter.LogicComponent
      */
     @Inject
-    private ProjectPresenter resultComponent;
+    private PropertyTagPresenter resultComponent;
 
     @Inject
-    private ProjectTagPresenter tagComponent;
+    private PropertyTagCategoryPresenter tagComponent;
 
     /**
      * The category query string extracted from the history token
@@ -111,66 +117,62 @@ public class ProjectsFilteredResultsAndDetailsPresenter
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindSearchAndEditExtended(ServiceConstants.PROJECT_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        bindSearchAndEditExtended(ServiceConstants.PROPERTY_TAG_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
     @Override
     public void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTProjectV1> getNewEntityCallback = new GetNewEntityCallback<RESTProjectV1>() {
+        final GetNewEntityCallback<RESTPropertyTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTPropertyTagV1>() {
 
             @Override
-            public void getNewEntity(final RESTProjectV1 selectedEntity, final DisplayNewEntityCallback<RESTProjectV1> displayCallback) {
-                final RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, BaseTemplateViewInterface>(display,
-                        new BaseRestCallback.SuccessAction<RESTProjectV1, BaseTemplateViewInterface>() {
+            public void getNewEntity(@NotNull final RESTPropertyTagV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTPropertyTagV1> displayCallback) {
+                final RESTCallback<RESTPropertyTagV1> callback = new BaseRestCallback<RESTPropertyTagV1, BaseTemplateViewInterface>(display,
+                        new BaseRestCallback.SuccessAction<RESTPropertyTagV1, BaseTemplateViewInterface>() {
                             @Override
-                            public void doSuccessAction(final RESTProjectV1 retValue, final BaseTemplateViewInterface display) {
+                            public void doSuccessAction(final RESTPropertyTagV1 retValue, final BaseTemplateViewInterface display) {
                                 displayCallback.displayNewEntity(retValue);
                             }
                         });
-                RESTCalls.getProject(callback, selectedEntity.getId());
+                RESTCalls.getPropertyTag(callback, selectedEntity.getId());
             }
         };
 
 
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
-        filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
-        resultComponent.bindExtended(ServiceConstants.PROJECT_DETAILS_HELP_TOPIC, pageId);
-        tagComponent.bindChildrenExtended(ServiceConstants.PROJECT_TAGS_HELP_TOPIC, pageId);
-        super.bindSearchAndEdit(topicId, pageId, Preferences.PROJECT_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
+        filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.PROPERTY_TAG_HELP_TOPIC, pageId, queryString);
+        resultComponent.bindExtended(ServiceConstants.PROPERTY_TAG_DETAILS_HELP_TOPIC, pageId);
+        tagComponent.bindChildrenExtended(ServiceConstants.PROPERTY_TAG_CATEGORIES_HELP_TOPIC, pageId);
+        super.bindSearchAndEdit(topicId, pageId, Preferences.PROPERTY_TAG_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
                 filteredResultsComponent.getDisplay(), filteredResultsComponent, display, display, getNewEntityCallback);
 
         /* Bind the logic to add and remove possible children */
         tagComponent.bindPossibleChildrenListButtonClicks(
-                new GetExistingCollectionCallback<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>() {
-
-                    @Override
-                    public RESTTagCollectionV1 getExistingCollection() {
-                        return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags();
-                    }
-
-                }, new AddPossibleChildCallback<RESTTagCollectionItemV1>() {
-
-                    @Override
-                    public void createAndAddChild(final RESTTagCollectionItemV1 copy) {
-                        final RESTTagV1 newChild = new RESTTagV1();
-                        newChild.setId(copy.getItem().getId());
-                        newChild.setName(copy.getItem().getName());
-                        filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(newChild);
-                    }
-
-                }, new UpdateAfterChildModfiedCallback() {
-
-                    @Override
-                    public void updateAfterChidModfied() {
-                        /*
-                         * refresh the list of possible tags
-                         */
-                        tagComponent.redisplayPossibleChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
-                    }
-
+            new GetExistingCollectionCallback<RESTPropertyCategoryInPropertyTagV1, RESTPropertyCategoryInPropertyTagCollectionV1, RESTPropertyCategoryInPropertyTagCollectionItemV1>() {
+                @Override
+                public RESTPropertyCategoryInPropertyTagCollectionV1 getExistingCollection() {
+                    return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories();
                 }
+            },
+            new AddPossibleChildCallback<RESTPropertyTagCollectionItemV1>() {
+                @Override
+                public void createAndAddChild(@NotNull final RESTPropertyTagCollectionItemV1 copy) {
+                    final RESTPropertyCategoryInPropertyTagV1 newChild = new RESTPropertyCategoryInPropertyTagV1();
+                    newChild.setId(copy.getItem().getId());
+                    newChild.setName(copy.getItem().getName());
+                    filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories().addNewItem(newChild);
+                }
+            },
+            new UpdateAfterChildModfiedCallback() {
+                @Override
+                public void updateAfterChidModfied() {
+                    /*
+                     * refresh the list of possible tags
+                     */
+                    tagComponent.redisplayPossibleChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+                }
+            }
         );
     }
 
@@ -225,17 +227,15 @@ public class ProjectsFilteredResultsAndDetailsPresenter
                 /* Sync the UI to the underlying object */
                 resultComponent.getDisplay().getDriver().flush();
 
-                final RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, Display>(display,
-                        new BaseRestCallback.SuccessAction<RESTProjectV1, Display>() {
+                final RESTCallback<RESTPropertyTagV1> callback = new BaseRestCallback<RESTPropertyTagV1, Display>(display,
+                        new BaseRestCallback.SuccessAction<RESTPropertyTagV1, Display>() {
                             @Override
-                            public void doSuccessAction(final RESTProjectV1 retValue, final Display display) {
+                            public void doSuccessAction(final RESTPropertyTagV1 retValue, final Display display) {
                                 retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
-                                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
-                                        true);
+                                retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
 
                                 /* This project is no longer a new project */
-                                filteredResultsComponent.getProviderData().getDisplayedItem()
-                                        .setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                                filteredResultsComponent.getProviderData().getDisplayedItem().setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
                                 filteredResultsComponent.getDisplay().getProvider().updateRowData(
                                         filteredResultsComponent.getProviderData().getStartRow(),
                                         filteredResultsComponent.getProviderData().getItems());
@@ -253,19 +253,16 @@ public class ProjectsFilteredResultsAndDetailsPresenter
 
                     if (hasUnsavedChanges()) {
 
-                        final RESTProjectV1 project = new RESTProjectV1();
+                        final RESTPropertyTagV1 project = new RESTPropertyTagV1();
                         project.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                        project.explicitSetName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                                .getName());
-                        project.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                                .getDescription());
-                        project.explicitSetTags(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                                .getTags());
+                        project.explicitSetName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
+                        project.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
+                        project.explicitSetPropertyCategories(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories());
 
                         if (wasNewEntity) {
-                            RESTCalls.createProject(callback, project);
+                            RESTCalls.createPropertyTag(callback, project);
                         } else {
-                            RESTCalls.saveProject(callback, project);
+                            RESTCalls.savePropertyTag(callback, project);
                         }
                     } else {
                         Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
@@ -299,16 +296,15 @@ public class ProjectsFilteredResultsAndDetailsPresenter
             public void onClick(final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
-                final RESTProjectV1 selectedEntity = new RESTProjectV1();
+                final RESTPropertyTagV1 selectedEntity = new RESTPropertyTagV1();
                 selectedEntity.setId(Constants.NULL_ID);
-                final RESTProjectCollectionItemV1 selectedTagWrapper = new RESTProjectCollectionItemV1(selectedEntity);
+                final RESTPropertyTagCollectionItemV1 selectedTagWrapper = new RESTPropertyTagCollectionItemV1(selectedEntity);
 
                 /* The displayed tag will also be blank. This is the object that our data will be saved into */
-                final RESTProjectV1 displayedEntity = new RESTProjectV1();
+                final RESTPropertyTagV1 displayedEntity = new RESTPropertyTagV1();
                 displayedEntity.setId(Constants.NULL_ID);
-                displayedEntity.setTags(new RESTTagCollectionV1());
-                final RESTProjectCollectionItemV1 displayedTagWrapper = new RESTProjectCollectionItemV1(displayedEntity,
-                        RESTBaseCollectionItemV1.ADD_STATE);
+                displayedEntity.setPropertyCategories(new RESTPropertyCategoryInPropertyTagCollectionV1());
+                final RESTPropertyTagCollectionItemV1 displayedTagWrapper = new RESTPropertyTagCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
 
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
@@ -328,7 +324,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             resultComponent.getDisplay().getDriver().flush();
 
-            return (unsavedProjectChanges() || unsavedTagChanges());
+            return (unsavedProjectChanges() || unsavedCategoryChanges());
         }
         return false;
     }
@@ -350,9 +346,8 @@ public class ProjectsFilteredResultsAndDetailsPresenter
      *
      * @return true if there are modified tags, false otherwise
      */
-    private boolean unsavedTagChanges() {
-        return !filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags()
-                .returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
+    private boolean unsavedCategoryChanges() {
+        return !filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories().returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
     }
 
     /**
@@ -379,11 +374,11 @@ public class ProjectsFilteredResultsAndDetailsPresenter
     @Override
     protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
 
-        final List<BaseCustomViewInterface<RESTProjectV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTProjectV1>>();
+        final List<BaseCustomViewInterface<RESTPropertyTagV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTPropertyTagV1>>();
         displayableViews.add(resultComponent.getDisplay());
         displayableViews.add(tagComponent.getDisplay());
 
-        for (final BaseCustomViewInterface<RESTProjectV1> view : displayableViews) {
+        for (final BaseCustomViewInterface<RESTPropertyTagV1> view : displayableViews) {
             if (viewIsInFilter(filter, view)) {
                 view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
             }

@@ -12,7 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 /**
  * An editor used to bind the integer constant's details to ui elements
  */
-public class RESTIntegerConstantV1DetailsEditor extends Grid implements Editor<RESTIntegerConstantV1> {
+public final class RESTIntegerConstantV1DetailsEditor extends Grid implements Editor<RESTIntegerConstantV1> {
     private static final int ROWS = 3;
     private static final int COLS = 2;
 
@@ -41,6 +41,8 @@ public class RESTIntegerConstantV1DetailsEditor extends Grid implements Editor<R
         value.addStyleName(CSSConstants.IntegerConstantView.INTEGER_CONSTANT_VIEW_VALUE_FIELD);
 
         id.setReadOnly(true);
+        name.setReadOnly(readOnly);
+        value.setReadOnly(readOnly);
 
         final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.IntegerConstantId());
         this.setWidget(0, 0, idLabel);

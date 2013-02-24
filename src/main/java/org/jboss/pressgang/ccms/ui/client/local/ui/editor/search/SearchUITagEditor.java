@@ -15,7 +15,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
  *
  * @author Matthew Casperson
  */
-public class SearchUITagEditor implements Editor<SearchUITag> {
+public final class SearchUITagEditor implements Editor<SearchUITag> {
     private final SearchUIProjects searchUIProjects;
 
     final Label name = new Label();

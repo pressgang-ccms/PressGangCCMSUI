@@ -63,7 +63,7 @@ abstract public class BaseDetailedChildrenPresenter<
      * @param topicId
      * @param pageId  The history token of the page
      */
-    public final void bindChildrenExtended(final int topicId, final String pageId) {
+    public final void bindChildrenExtended(final int topicId, @NotNull final String pageId) {
         throw new UnsupportedOperationException("bindChildrenExtended() is not supported. Use bindDetailedChildren() instead.");
     }
 

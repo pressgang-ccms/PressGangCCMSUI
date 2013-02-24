@@ -10,7 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 
-public class TopicTagViewCategoryEditor extends Grid implements Editor<SearchUICategory> {
+public final class TopicTagViewCategoryEditor extends Grid implements Editor<SearchUICategory> {
     private final boolean readOnly;
     private final FlexTable tagsTable = new FlexTable();
     final Label name = new Label();

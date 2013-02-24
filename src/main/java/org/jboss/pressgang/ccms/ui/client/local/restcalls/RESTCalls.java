@@ -48,8 +48,7 @@ public final class RESTCalls {
     /**
      * The required expansion details for the tags.
      */
-    private static final String TAG_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTagV1.PROJECTS_NAME
-            + "\"}}, {\"trunk\":{\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}";
+    private static final String TAG_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTagV1.PROJECTS_NAME + "\"}}, {\"trunk\":{\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}";
     /**
      * The required expansion details for the categories.
      */
@@ -681,7 +680,6 @@ public final class RESTCalls {
     }
 
     public static void getProjects(@NotNull final RESTCallback<RESTProjectCollectionV1> callback) {
-        /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROJECTS_EXPANSION_NAME + "\"}, \"branches\":[" + PROJECT_EXPANSION + "]}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -731,15 +729,71 @@ public final class RESTCalls {
         });
     }
 
-    public static void getImagesFromQuery(@NotNull final RESTCallback<RESTImageCollectionV1> callback, @NotNull final String queryString,
-                                          final int start, final int end) {
+    public static void getImagesFromQuery(@NotNull final RESTCallback<RESTImageCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end
-                + ",\"name\": \"" + RESTv1Constants.IMAGES_EXPANSION_NAME + "\"}}]}";
+        final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.IMAGES_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
                 createRestMethod(callback).getJSONImagesWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        });
+    }
+
+    /**
+     * Get a collection of property tags from the rest server.
+     * @param callback The callback to process the results from the REST server
+     */
+    public static void getPropertyTagCategories(@NotNull final RESTCallback<RESTPropertyTagCollectionV1> callback) {
+        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONPropertyCategories(expand);
+            }
+        });
+    }
+
+    /**
+     * Get a collection of property tags from the rest server.
+     * @param callback The callback to process the results from the REST server
+     * @param queryString The query passed to the REST endpoint
+     * @param start The start of the range of returned entities
+     * @param end The end of the range of returned entities
+     */
+    public static void getPropertyTagsFromQuery(@NotNull final RESTCallback<RESTPropertyTagCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
+        final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONPropertyTagsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        });
+    }
+
+    public static void getPropertyTag(@NotNull final RESTCallback<RESTPropertyTagV1> callback, final Integer id) {
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONPropertyTag(id, "");
+            }
+        });
+    }
+
+    public static void savePropertyTag(@NotNull final RESTCallback<RESTPropertyTagV1> callback, @NotNull final RESTPropertyTagV1 category) {
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).updateJSONPropertyTag("", category);
+            }
+        });
+    }
+
+    public static void createPropertyTag(@NotNull final RESTCallback<RESTPropertyTagV1> callback, @NotNull final RESTPropertyTagV1 category) {
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).createJSONPropertyTag("", category);
             }
         });
     }

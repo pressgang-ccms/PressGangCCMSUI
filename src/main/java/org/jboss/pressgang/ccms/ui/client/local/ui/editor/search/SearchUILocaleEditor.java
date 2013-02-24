@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * The editor that binds a list of locales and their states to buttons and labels.
  */
-public class SearchUILocaleEditor extends FlexTable implements LeafValueEditor<SearchUILocales> {
+public final class SearchUILocaleEditor extends FlexTable implements LeafValueEditor<SearchUILocales> {
     private static final int COLUMNS = 2;
 
     private final Map<TriStatePushButton, SearchUILocale> buttonsMap = new HashMap<TriStatePushButton, SearchUILocale>();

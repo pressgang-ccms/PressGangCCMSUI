@@ -8,6 +8,7 @@ import com.google.gwt.view.client.HasData;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -78,11 +79,11 @@ public class TagFilteredResultsPresenter
             final String[] queryElements = queryStringElement.split("=");
 
             if (queryElements.length == 2) {
-                if (queryElements[0].equals("tagIds")) {
+                if (queryElements[0].equals(CommonFilterConstants.TAG_IDS_FILTER_VAR)) {
                     this.display.getIdFilter().setText(URL.decodeQueryString(queryElements[1]));
-                } else if (queryElements[0].equals("tagName")) {
+                } else if (queryElements[0].equals(CommonFilterConstants.TAG_NAME_FILTER_VAR)) {
                     this.display.getNameFilter().setText(URL.decodeQueryString(queryElements[1]));
-                } else if (queryElements[0].equals("tagDesc")) {
+                } else if (queryElements[0].equals(CommonFilterConstants.TAG_DESCRIPTION_FILTER_VAR)) {
                     this.display.getDescriptionFilter().setText(URL.decodeQueryString(queryElements[1]));
                 }
             }
@@ -150,16 +151,15 @@ public class TagFilteredResultsPresenter
     public String getQuery() {
         final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
-            retValue.append(";tagIds=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getIdFilter().getText()) : display.getIdFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.TAG_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getIdFilter().getText()) : display.getIdFilter().getText()));
         }
         if (!display.getNameFilter().getText().isEmpty()) {
-            retValue.append(";tagName=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getNameFilter().getText()) : display.getNameFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.TAG_NAME_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getNameFilter().getText()) : display.getNameFilter().getText()));
         }
         if (!display.getDescriptionFilter().getText().isEmpty()) {
-            retValue.append(";tagDesc=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getDescriptionFilter().getText()) : display.getDescriptionFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.TAG_DESCRIPTION_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getDescriptionFilter().getText()) : display.getDescriptionFilter().getText()));
         }
 
-        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX
-                : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
+        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
     }
 }

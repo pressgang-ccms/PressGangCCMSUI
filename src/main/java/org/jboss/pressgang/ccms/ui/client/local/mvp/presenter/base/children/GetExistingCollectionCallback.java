@@ -9,6 +9,9 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
  *
  * @author Matthew Casperson
  */
-public interface GetExistingCollectionCallback<W extends RESTBaseEntityV1<W, X, Y>, X extends RESTBaseCollectionV1<W, X, Y>, Y extends RESTBaseCollectionItemV1<W, X, Y>> {
+public interface GetExistingCollectionCallback<
+        W extends RESTBaseEntityV1<W, X, Y>,
+        X extends RESTBaseCollectionV1<W, X, Y>,
+        Y extends RESTBaseCollectionItemV1<W, X, Y>> {
     X getExistingCollection();
 }

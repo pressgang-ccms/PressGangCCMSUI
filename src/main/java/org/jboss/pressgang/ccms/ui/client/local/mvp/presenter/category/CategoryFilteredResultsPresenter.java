@@ -8,6 +8,7 @@ import com.google.gwt.view.client.HasData;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -142,17 +143,16 @@ public class CategoryFilteredResultsPresenter
     public String getQuery() {
         final StringBuilder retValue = new StringBuilder();
         if (!this.display.getIdFilter().getText().isEmpty()) {
-            retValue.append(";catIds=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.display.getIdFilter().getText()) : this.display.getIdFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.CATEGORY_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.display.getIdFilter().getText()) : this.display.getIdFilter().getText()));
         }
         if (!this.display.getNameFilter().getText().isEmpty()) {
-            retValue.append(";catName=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.display.getNameFilter().getText()) : this.display.getNameFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.CATEGORY_NAME_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.display.getNameFilter().getText()) : this.display.getNameFilter().getText()));
         }
         if (!this.display.getDescriptionFilter().getText().isEmpty()) {
-            retValue.append(";catDesc=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.display.getDescriptionFilter().getText()) : this.display.getDescriptionFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.CATEGORY_DESCRIPTION_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.display.getDescriptionFilter().getText()) : this.display.getDescriptionFilter().getText()));
         }
 
-        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX
-                : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
+        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
     }
 
     @Override
@@ -162,11 +162,11 @@ public class CategoryFilteredResultsPresenter
             final String[] queryElements = queryStringElement.split("=");
 
             if (queryElements.length == 2) {
-                if (queryElements[0].equals("catIds")) {
+                if (queryElements[0].equals(CommonFilterConstants.CATEGORY_IDS_FILTER_VAR)) {
                     this.display.getIdFilter().setText(URL.decodeQueryString(queryElements[1]));
-                } else if (queryElements[0].equals("catName")) {
+                } else if (queryElements[0].equals(CommonFilterConstants.CATEGORY_NAME_FILTER_VAR)) {
                     this.display.getNameFilter().setText(URL.decodeQueryString(queryElements[1]));
-                } else if (queryElements[0].equals("catDesc")) {
+                } else if (queryElements[0].equals(CommonFilterConstants.CATEGORY_DESCRIPTION_FILTER_VAR)) {
                     this.display.getDescriptionFilter().setText(URL.decodeQueryString(queryElements[1]));
                 }
             }

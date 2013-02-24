@@ -112,6 +112,21 @@ public final class ServiceConstants {
      */
     public static final int PROJECT_HELP_TOPIC = 13583;
 
+
+    /**
+     * The help topic for the property tag details view.
+     */
+    public static final int PROPERTY_TAG_DETAILS_HELP_TOPIC = 13663;
+
+    /**
+     * The help topic for the property tag tags view.
+     */
+    public static final int PROPERTY_TAG_CATEGORIES_HELP_TOPIC = 13664;
+    /**
+     * The help topic for the property tag view.
+     */
+    public static final int PROPERTY_TAG_HELP_TOPIC = 13665;
+
     /**
      * The help topic for the string constants view.
      */
