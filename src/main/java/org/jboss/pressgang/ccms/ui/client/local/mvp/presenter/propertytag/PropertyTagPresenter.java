@@ -19,6 +19,9 @@ import javax.inject.Inject;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
+/**
+ * The presenter for the property tag details view.
+ */
 @Dependent
 public class PropertyTagPresenter extends BaseTemplatePresenter {
 

@@ -17,27 +17,30 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * This class is used to build the standard page template.
- * <p/>
+ * This class is used to build the standard page template. All views extend this class.
+ *
  * The top of the page is a simple header image.
- * <p/>
+ *
  * Next is the page title and quick search box.
- * <p/>
+ *
  * Next is the top action bar. For a single view, this will be housed in the topActionGrandParentPanel container. For
  * compound views the topActionGrandParentPanel will be removed, and replaced with another container that will pull
  * the topActionParentPanel and topViewSpecificActionPanel containers out. The topActionParentPanel container holds the
  * "common" action buttons. These are buttons that are usually navigation related, and will remain in place as the user
  * moves through the various views in the UI. The "local" action buttons are specific to a view, like line wrapping
  * buttons in a text editing view. These are displayed to the right, and disappear as the user moves to another view.
- * <p/>
+ *
  * Next, on the left, is the main navigation column.
- * <p/>
+ *
  * To the right of that is the main view area.
- * <p/>
+ *
  * Finally, at the bottom, there is the footer.
- * <p/>
+ *
  * When a child view is included in a parent view, the parent will usually pull out the action buttons and content panel,
  * displaying them in containers defined by the parent.
+ *
+ * This class defines only the layout, not the logic. The BaseTemplatePresenter class is where logic is applied to
+ * the ui elements.
  *
  * @author Matthew Casperson
  */
@@ -74,15 +77,33 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      * Defines the panel that holds the shortcut bar, content and footer.
      */
     private final DockLayoutPanel thirdLevelLayoutPanel = new DockLayoutPanel(Unit.PX);
-
+    /**
+     * The panel that holds the pressgang logo.
+     */
     private final SimplePanel headingBanner = new SimplePanel();
+    /**
+     * The panel that holds the page title label.
+     */
     private final HorizontalPanel pageTitleParentLayoutPanel = new HorizontalPanel();
+    /**
+     * The page title label.
+     */
     private final Label pageTitle = new Label();
-
+    /**
+     * The panel that holds the vertical shortcut buttons on the left hand side of the screen.
+     */
     private final SimplePanel shortCutPanelParent = new SimplePanel();
+    /**
+     * The panel that holds the shortcut buttons that are visible by default.
+     */
     private final FlexTable shortcutPanel = new FlexTable();
+    /**
+     * The panel that holds the shortcut buttons visible when the advanced submenu is open.
+     */
     private final FlexTable advancedShortcutPanel = new FlexTable();
-
+    /**
+     * This is where the page specific content is held.
+     */
     private SimpleLayoutPanel panel = new SimpleLayoutPanel();
 
     /**
@@ -101,15 +122,21 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      * This is the collection of view specific action buttons.
      */
     private final FlexTable topActionPanel = new FlexTable();
+    /**
+     * The panel that holds the footer items.
+     */
     private final FlexTable footerPanel = new FlexTable();
 
     /**
-     * The feedback link
+     * The feedback link.
      */
     private final Anchor feedback = new Anchor(PressGangCCMSUI.INSTANCE.Feedback());
+    /**
+     * The help link.
+     */
     private final Anchor help = new Anchor(PressGangCCMSUI.INSTANCE.Help());
     /**
-     * The version label
+     * The version label.
      */
     private final Label version = new Label(PressGangCCMSUI.INSTANCE.Build() + " " + Constants.VERSION);
 
@@ -133,12 +160,17 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private final PushButton advanced;
     private final PushButton advancedOpen;
     private final PushButton close;
-
+    /**
+     * The text box where a quick search is entered.
+     */
     private final TextBox quickSearchQuery = new TextBox();
+    /**
+     * The button used to execute the quick search.
+     */
     private final PushButton quickSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.QuickSearch());
 
     /**
-     * Defines the help dialog box.
+     * Defines the help dialog box, which is displayed when the help link is clicked.
      *
      * @author Matthew Casperson
      */
@@ -150,26 +182,31 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         private final PushButton edit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Edit());
         private int helpTopic;
 
+        @NotNull
         @Override
         public PushButton getOK() {
             return this.ok;
         }
 
+        @NotNull
         @Override
         public PushButton getEdit() {
             return this.edit;
         }
 
+        @NotNull
         @Override
         public DialogBox getDialogBox() {
             return this;
         }
 
+        @NotNull
         @Override
         public HTML getContents() {
             return this.contents;
         }
 
+        @NotNull
         @Override
         public int getHelpTopic() {
             return helpTopic;
@@ -199,7 +236,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         }
 
         @Override
-        public void show(final int topicId, final BaseTemplateViewInterface waitDisplay) {
+        public void show(final int topicId, @NotNull final BaseTemplateViewInterface waitDisplay) {
             this.helpTopic = topicId;
 
             final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
@@ -229,33 +266,42 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         }
     }
 
+    /**
+     * An instance of the help dialog box.
+     */
     private final HelpDialog helpDialog = new HelpDialogImpl();
 
+    @NotNull
     @Override
     public final PushButton getHome() {
         return home;
     }
 
+    @NotNull
     @Override
     public final Anchor getHelp() {
         return help;
     }
 
+    @NotNull
     @Override
     public final HelpDialog getHelpDialog() {
         return helpDialog;
     }
 
+    @NotNull
     @Override
     public final PushButton getQuickSearch() {
         return quickSearch;
     }
 
+    @NotNull
     @Override
     public final TextBox getQuickSearchQuery() {
         return quickSearchQuery;
     }
 
+    @NotNull
     @Override
     public final PushButton getCreateTopic() {
         return createTopic;
@@ -278,156 +324,191 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         updateDisplay();
     }
 
+    @NotNull
     @Override
     public final PushButton getClose() {
         return close;
     }
 
+    @NotNull
     @Override
     public final PushButton getAdvancedOpen() {
         return advancedOpen;
     }
 
+    @NotNull
     @Override
     public final SimplePanel getShortCutPanelParent() {
         return shortCutPanelParent;
     }
 
+    @NotNull
     @Override
     public final FlexTable getAdvancedShortcutPanel() {
         return advancedShortcutPanel;
     }
 
+    @NotNull
     @Override
     public final PushButton getAdvanced() {
         return advanced;
     }
 
+    @NotNull
     @Override
     public final PushButton getPropertyTagCategories() {
         return propertyTagCategories;
     }
 
+    @NotNull
     @Override
     public final PushButton getPropertyTags() {
         return propertyTags;
     }
 
+    @NotNull
     @Override
     public final PushButton getRoles() {
         return roles;
     }
 
+    @NotNull
     @Override
     public final PushButton getUsers() {
         return users;
     }
 
+    @NotNull
     @Override
     public final PushButton getIntegerConstants() {
         return integerConstants;
     }
 
+    @NotNull
     @Override
     public final PushButton getBlobConstants() {
         return blobConstants;
     }
 
+    @NotNull
     @Override
     public final PushButton getStringConstants() {
         return stringConstants;
     }
 
+    @NotNull
     @Override
     public final PushButton getProjects() {
         return projects;
     }
 
+    @NotNull
     @Override
     public final PushButton getCategories() {
         return categories;
     }
 
+    @NotNull
     @Override
     public final PushButton getTags() {
         return tags;
     }
 
+    @NotNull
     @Override
     public final PushButton getImages() {
         return images;
     }
 
+    @NotNull
     @Override
     public final Label getPageTitle() {
         return pageTitle;
     }
 
+    @NotNull
     @Override
     public final String getPageName() {
         return pageName;
     }
 
+    @NotNull
     @Override
     public final String getApplicationName() {
         return applicationName;
     }
 
+    @NotNull
     @Override
     public final FlexTable getTopActionParentPanel() {
         return topActionParentPanel;
     }
 
+    @NotNull
     @Override
     public final FlexTable getShortcutPanel() {
         return shortcutPanel;
     }
 
+    @NotNull
     @Override
     public final DockLayoutPanel getTopLevelPanel() {
         return topLevelLayoutPanel;
     }
 
+    @NotNull
     @Override
     public final SimpleLayoutPanel getPanel() {
         return panel;
     }
 
+    @NotNull
     @Override
     public final PushButton getReports() {
         return reports;
     }
 
+    @NotNull
     @Override
     public final PushButton getSearchTranslations() {
         return searchTranslations;
     }
 
+    @NotNull
     @Override
     public final SimplePanel getTopActionGrandParentPanel() {
         return topActionGrandParentPanel;
     }
 
+    @NotNull
     @Override
     public final FlexTable getTopActionPanel() {
         return topActionPanel;
     }
 
+    @NotNull
     @Override
     public final FlexTable getTopViewSpecificActionPanel() {
         return topViewSpecificActionPanel;
     }
 
+    @NotNull
     @Override
     public final PushButton getBug() {
         return bug;
     }
 
+    @NotNull
     @Override
     public final PushButton getSearch() {
         return search;
     }
 
+    /**
+     * The constructor is used to piece the template together.
+     * @param applicationName The name of the application. This is not actually used any more, and should be removed.
+     * @param pageName The name of the page.
+     */
     public BaseTemplateView(@NotNull final String applicationName, @NotNull final String pageName) {
         this.applicationName = applicationName;
         this.pageName = pageName;
@@ -584,7 +665,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         addShortcutButton(integerConstants, advancedShortcutPanel);
 
         propertyTags = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTags());
-        propertyTags.setEnabled(false);
         addShortcutButton(propertyTags, advancedShortcutPanel);
 
         propertyTagCategories = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTagCategories());
@@ -601,11 +681,11 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         topActionParentPanel.add(topActionPanel);
     }
 
-    public final void replaceTopActionButton(final Widget existing, final Widget replacement) {
+    public final void replaceTopActionButton(@NotNull final Widget existing, @NotNull final Widget replacement) {
         replaceTopActionButton(existing, replacement, this.topActionPanel);
     }
 
-    public final void replaceTopActionButton(final Widget existing, final Widget replacement, final FlexTable table) {
+    public final void replaceTopActionButton(@NotNull final Widget existing, @NotNull final Widget replacement, @NotNull final FlexTable table) {
 
         /* Early out if the existing widget isn't actually attached */
         if (!existing.isAttached() || existing.getParent() != table) {
@@ -622,7 +702,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         }
     }
 
-    private void addRightAlignedActionButtonPaddingPanel(final FlexTable table) {
+    private void addRightAlignedActionButtonPaddingPanel(@NotNull final FlexTable table) {
         final int rows = table.getRowCount();
         int columns = 0;
         if (rows != 0) {
@@ -633,7 +713,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         table.getCellFormatter().addStyleName(0, columns, CSSConstants.RIGHT_ALIGNED_ACTION_BUTTONS);
     }
 
-    public final void addActionButton(final Widget widget, final FlexTable table) {
+    public final void addActionButton(@NotNull final Widget widget, @NotNull final FlexTable table) {
         final int rows = table.getRowCount();
         int columns = 0;
         if (rows != 0) {
@@ -643,19 +723,19 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         table.setWidget(0, columns, widget);
     }
 
-    protected final void addLocalActionButton(final Widget widget) {
+    protected final void addLocalActionButton(@NotNull final Widget widget) {
         addActionButton(widget, this.getTopViewSpecificActionPanel());
     }
 
-    protected final void addActionButton(final Widget widget) {
+    protected final void addActionButton(@NotNull final Widget widget) {
         addActionButton(widget, this.getTopActionPanel());
     }
 
-    private void addShortcutButton(final Widget widget) {
+    private void addShortcutButton(@NotNull final Widget widget) {
         addShortcutButton(widget, this.shortcutPanel);
     }
 
-    private void addShortcutButton(final Widget widget, final FlexTable table) {
+    private void addShortcutButton(@NotNull final Widget widget, @NotNull final FlexTable table) {
         final int rows = table.getRowCount();
         table.setWidget(rows, 0, widget);
     }
@@ -722,7 +802,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     }
 
     @Override
-    public final void setFeedbackLink(final String link) {
+    public final void setFeedbackLink(@NotNull final String link) {
         feedback.setHref(link);
     }
 

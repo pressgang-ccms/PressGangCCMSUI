@@ -27,11 +27,7 @@ public final class RESTPropertyTagV1DetailsEditor extends Grid implements Editor
         return name;
     }
 
-    public TextArea valueDescription() {
-        return description;
-    }
-
-    public TextBox regexDescription() {
+    public TextBox regexEditor() {
         return regex;
     }
 

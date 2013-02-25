@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.inject.Inject;
 
 /**
- * Provides the basic functionality added to a template view.
+ * Provides the basic functionality added to a template view defined in BaseTemplateViewInterface.
  *
  * @author Matthew Casperson
  */
@@ -232,6 +232,15 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 }
             }
         });
+
+        display.getPropertyTags().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                if (isOKToProceed()) {
+                    eventBus.fireEvent(new PropertyTagFilteredResultsAndDetailsViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
+                }
+            }
+        });
     }
 
     private void doQuickSearch(final boolean newWindow) {
@@ -256,7 +265,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         }
     }
 
-    protected final void bind(final int topicId, final String pageId, @NotNull final BaseTemplateViewInterface display) {
+    protected final void bind(final int topicId, @NotNull final String pageId, @NotNull final BaseTemplateViewInterface display) {
         this.display = display;
         this.helpTopicId = topicId;
 
@@ -310,7 +319,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
      *
      * @param pageId The id of the page
      */
-    protected final void setFeedbackLink(final String pageId) {
+    protected final void setFeedbackLink(@NotNull final String pageId) {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);
     }
 }

@@ -1,6 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base;
 
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * The base interface for all presenters.
  */
@@ -11,7 +13,7 @@ public interface BaseTemplatePresenterInterface extends PresenterInterface {
      *
      * @param historyToken The URL history token
      */
-    void parseToken(final String historyToken);
+    void parseToken(@NotNull final String historyToken);
 
     /**
      * Bind behaviour to the UI elements in the display.
@@ -29,7 +31,7 @@ public interface BaseTemplatePresenterInterface extends PresenterInterface {
      * @param topicId the help topic for the page
      * @param pageId  The history token of the page
      */
-    void bindExtended(final int topicId, final String pageId);
+    void bindExtended(final int topicId, @NotNull final String pageId);
 
     /**
      * @return false if the view has unsaved changes that the user wishes to save (i.e. don't continue with a navigation event),
