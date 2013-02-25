@@ -23,7 +23,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 public class PropertyTagPresenter extends BaseTemplatePresenter {
 
     // Empty interface declaration, similar to UiBinder
-    public interface ProjectPresenterDriver extends SimpleBeanEditorDriver<RESTPropertyTagV1, RESTPropertyTagV1DetailsEditor> {
+    public interface PropertyTagPresenterDriver extends SimpleBeanEditorDriver<RESTPropertyTagV1, RESTPropertyTagV1DetailsEditor> {
     }
 
     public interface Display extends BasePopulatedEditorViewInterface<RESTPropertyTagV1, RESTPropertyTagV1, RESTPropertyTagV1DetailsEditor> {

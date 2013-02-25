@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytag;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyCategoryInPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyTagInPropertyCategoryCollectionItemV1;
@@ -34,7 +35,7 @@ public class PropertyTagCategoryPresenter extends BaseChildrenComponent<
         RESTPropertyCategoryInPropertyTagV1, RESTPropertyCategoryInPropertyTagCollectionV1, RESTPropertyCategoryInPropertyTagCollectionItemV1>      // The existing children types
         implements BaseTemplatePresenterInterface {
 
-    public static final String HISTORY_TOKEN = "ProjectTagView";
+    public static final String HISTORY_TOKEN = "PropertyTagCategoryView";
     private Integer entityId;
     @Inject
     private Display display;
@@ -116,8 +117,8 @@ public class PropertyTagCategoryPresenter extends BaseChildrenComponent<
 
     public interface Display extends BaseChildrenViewInterface<
             RESTPropertyTagV1,                                                                                                                          // The main REST types
-            RESTPropertyTagCollectionItemV1,                                                                                                            // The possible children types
-            RESTPropertyCategoryInPropertyTagV1, RESTPropertyCategoryInPropertyTagCollectionV1, RESTPropertyCategoryInPropertyTagCollectionItemV1       // The existing children types
-            > {
+            RESTPropertyCategoryCollectionItemV1,                                                                                                            // The possible children types
+            RESTPropertyCategoryInPropertyTagV1, RESTPropertyCategoryInPropertyTagCollectionV1, RESTPropertyCategoryInPropertyTagCollectionItemV1>       // The existing children types
+    {
     }
 }

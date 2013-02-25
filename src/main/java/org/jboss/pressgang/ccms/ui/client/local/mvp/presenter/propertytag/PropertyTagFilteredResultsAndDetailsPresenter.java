@@ -68,7 +68,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
      *
      * @author Matthew Casperson
      */
-    public interface Display extends BaseSearchAndEditViewInterface<RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> {
+    public interface Display extends BaseSearchAndEditViewInterface<RESTPropertyTagV1, RESTPropertyTagCollectionV1, RESTPropertyTagCollectionItemV1> {
         PushButton getChildren();
 
         PushButton getDetails();
