@@ -27,6 +27,8 @@ import org.jetbrains.annotations.NotNull;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
@@ -79,6 +81,8 @@ public class PropertyTagFilteredResultsPresenter extends BaseFilteredResultsComp
                 final BaseRestCallback<RESTPropertyTagCollectionV1, Display> callback = new BaseRestCallback<RESTPropertyTagCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTPropertyTagCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTPropertyTagCollectionV1 retValue, @NotNull final Display display) {
+                        checkArgument(retValue.getItems() != null, "RESTPropertyTagCollectionV1 items are null. This is probably due to incorrect expansion.") ;
+
                         getProviderData().setItems(retValue.getItems());
                         getProviderData().setSize(retValue.getSize());
                         relinkSelectedItem();
