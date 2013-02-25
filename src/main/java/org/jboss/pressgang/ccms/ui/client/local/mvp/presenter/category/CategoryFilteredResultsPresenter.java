@@ -77,7 +77,7 @@ public class CategoryFilteredResultsPresenter
         this.queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
-    public void bindExtendedFilteredResults(final int topicId, final String pageId, @NotNull final String queryString) {
+    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         try {
             LOGGER.log(Level.INFO, "ENTER CategoryFilteredResultsPresenter.bind()");
             super.bindFilteredResults(topicId, pageId, queryString, display);
@@ -88,6 +88,7 @@ public class CategoryFilteredResultsPresenter
     }
 
     @Override
+    @NotNull
     protected EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
         return new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
@@ -140,6 +141,7 @@ public class CategoryFilteredResultsPresenter
     }
 
     @Override
+    @NotNull
     public String getQuery() {
         final StringBuilder retValue = new StringBuilder();
         if (!this.display.getIdFilter().getText().isEmpty()) {

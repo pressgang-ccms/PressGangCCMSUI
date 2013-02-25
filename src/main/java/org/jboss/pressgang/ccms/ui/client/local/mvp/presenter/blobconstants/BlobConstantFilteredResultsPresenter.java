@@ -78,6 +78,7 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsCom
     }
 
     @Override
+    @NotNull
     public String getQuery() {
         final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
@@ -111,7 +112,7 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsCom
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }

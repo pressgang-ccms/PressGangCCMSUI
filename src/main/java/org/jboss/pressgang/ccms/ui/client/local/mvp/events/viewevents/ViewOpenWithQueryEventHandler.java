@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents;
 
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Event handler for events that open a new view and run a query.
@@ -10,11 +11,11 @@ import com.google.gwt.user.client.Window;
  */
 public class ViewOpenWithQueryEventHandler extends ViewOpenEventHandler {
 
-    public ViewOpenWithQueryEventHandler(final String historyToken) {
+    public ViewOpenWithQueryEventHandler(@NotNull final String historyToken) {
         super(historyToken);
     }
 
-    protected final void onViewOpen(final ViewOpenWithQueryEvent<?> event) {
+    protected final void onViewOpen(@NotNull final ViewOpenWithQueryEvent<?> event) {
         if (event.isNewWindow()) {
             final String newWindowURL = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/"
                     + Window.Location.getPath() + "#" + historyToken + ";"

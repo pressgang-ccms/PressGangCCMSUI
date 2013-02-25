@@ -30,6 +30,7 @@ abstract public class BaseFilteredResultsComponent<V extends RESTBaseCollectionI
     /**
      * Manages event registration and notification.
      */
+    @NotNull
     public HandlerManager getHandlerManager() {
         return handlerManager;
     }
@@ -40,7 +41,7 @@ abstract public class BaseFilteredResultsComponent<V extends RESTBaseCollectionI
         return providerData;
     }
 
-    public final void addTopicListReceivedHandler(final EntityListReceivedHandler handler) {
+    public final void addTopicListReceivedHandler(@NotNull final EntityListReceivedHandler handler) {
         handlerManager.addHandler(EntityListReceived.getType(), handler);
     }
 
@@ -51,7 +52,7 @@ abstract public class BaseFilteredResultsComponent<V extends RESTBaseCollectionI
      * @param queryString The query that defines the results to be displayed
      * @param display     The filtered results view
      */
-    protected final void bindFilteredResults(final int topicId, final String pageId, @NotNull final String queryString, @NotNull final BaseFilteredResultsViewInterface display) {
+    protected final void bindFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString, @NotNull final BaseFilteredResultsViewInterface display) {
         super.bind(topicId, pageId, display);
         displayQueryElements(queryString);
     }
@@ -59,7 +60,7 @@ abstract public class BaseFilteredResultsComponent<V extends RESTBaseCollectionI
     /**
      * An empty implementation. Extending classes should use bindExtendedFilteredResults.
      */
-    public final void bindExtended(final int topicId, final String pageId) {
+    public final void bindExtended(final int topicId, @NotNull final String pageId) {
         throw new UnsupportedOperationException("bindExtended() is not supported. Use bindFilteredResults() instead.");
     }
 
@@ -92,6 +93,4 @@ abstract public class BaseFilteredResultsComponent<V extends RESTBaseCollectionI
      * @return A provider to be used for the category display list
      */
     abstract protected EnhancedAsyncDataProvider<V> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay);
-
-
 }

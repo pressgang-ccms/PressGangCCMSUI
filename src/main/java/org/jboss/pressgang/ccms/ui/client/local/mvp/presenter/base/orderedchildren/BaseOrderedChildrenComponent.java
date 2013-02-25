@@ -37,8 +37,6 @@ abstract public class BaseOrderedChildrenComponent<
      */
     private static final Logger LOGGER = Logger.getLogger(BaseOrderedChildrenComponent.class.getName());
 
-
-
     @Override
     public final void setSortOrderOfChildren(@NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {
         if (sortCallback == null) {

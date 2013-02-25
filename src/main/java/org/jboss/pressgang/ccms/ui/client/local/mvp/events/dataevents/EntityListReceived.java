@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents;
 
 import com.google.gwt.event.shared.GwtEvent;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents an event that is raised when the topics from a query have been returned from the
@@ -16,7 +17,7 @@ public class EntityListReceived<T extends RESTBaseCollectionV1<?, ?, ?>> extends
         return TYPE;
     }
 
-    public EntityListReceived(final T topics) {
+    public EntityListReceived(@NotNull final T topics) {
         this.topics = topics;
     }
 
@@ -27,7 +28,7 @@ public class EntityListReceived<T extends RESTBaseCollectionV1<?, ?, ?>> extends
     }
 
     @Override
-    protected void dispatch(final EntityListReceivedHandler<T> collectionRecievedHandler) {
+    protected void dispatch(@NotNull final EntityListReceivedHandler<T> collectionRecievedHandler) {
         collectionRecievedHandler.onCollectionRecieved(topics);
     }
 }

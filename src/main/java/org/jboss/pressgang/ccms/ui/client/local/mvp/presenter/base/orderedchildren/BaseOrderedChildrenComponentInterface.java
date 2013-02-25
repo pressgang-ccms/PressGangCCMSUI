@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchild
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This presenter is used to present the ordered children of an entity.
@@ -29,7 +30,7 @@ public interface BaseOrderedChildrenComponentInterface<
      * with duplicate, non-consecutive or null values. This function will take the current sort order (based on the Integer
      * field and the name) and set the sort field to consecutive, predicable values.
      */
-    void setSortOrderOfChildren(final SetNewChildSortCallback<D, E, F> sortCallback);
+    void setSortOrderOfChildren(@NotNull final SetNewChildSortCallback<D, E, F> sortCallback);
 
     /**
      *
@@ -42,5 +43,5 @@ public interface BaseOrderedChildrenComponentInterface<
      * @param sortCallback a callback used to set the sort property of the child (as this property is not defined in it's own interface or subclass)
      * @return true if the sort order of any child was modified, false otherwise
      */
-    boolean moveTagsUpAndDown(final T editingParent, final W parent, final F object, final boolean down, final SetNewChildSortCallback<D, E, F> sortCallback);
+    boolean moveTagsUpAndDown(@NotNull final T editingParent, @NotNull final W parent, @NotNull final F object, final boolean down, @NotNull final SetNewChildSortCallback<D, E, F> sortCallback);
 }

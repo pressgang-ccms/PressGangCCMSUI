@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents;
 
 import com.google.gwt.event.shared.GwtEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Base for events that open a new view.
@@ -10,7 +11,7 @@ import com.google.gwt.event.shared.GwtEvent;
  */
 public abstract class ViewOpenEvent<T extends ViewOpenEventHandler> extends GwtEvent<T> {
     @Override
-    protected final void dispatch(final T handler) {
+    protected final void dispatch(@NotNull final T handler) {
         handler.onViewOpen(this);
     }
 }

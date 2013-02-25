@@ -48,6 +48,7 @@ public class CategoryPresenter extends
     @Inject
     private Display display;
 
+    @NotNull
     public Display getDisplay() {
         return display;
     }
@@ -58,7 +59,7 @@ public class CategoryPresenter extends
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void bindExtended(final int topicId, final String pageId) {
+    public void bindExtended(final int topicId, @NotNull final String pageId) {
         super.bind(topicId, pageId, display);
     }
 

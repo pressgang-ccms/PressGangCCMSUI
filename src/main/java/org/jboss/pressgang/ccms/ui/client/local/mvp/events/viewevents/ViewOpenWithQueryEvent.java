@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents;
 
 import com.google.gwt.event.shared.GwtEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Base for events that open a new view and run a query.
@@ -20,7 +21,7 @@ public abstract class ViewOpenWithQueryEvent<T extends ViewOpenWithQueryEventHan
      * @param query     The query that is associated with this event
      * @param newWindow true if the event should trigger a new window, false otherwise
      */
-    public ViewOpenWithQueryEvent(final String query, final boolean newWindow) {
+    public ViewOpenWithQueryEvent(@NotNull final String query, final boolean newWindow) {
         this.query = query;
         this.newWindow = newWindow;
     }
@@ -30,7 +31,7 @@ public abstract class ViewOpenWithQueryEvent<T extends ViewOpenWithQueryEventHan
     }
 
     @Override
-    protected final void dispatch(final T handler) {
+    protected final void dispatch(@NotNull final T handler) {
         handler.onViewOpen(this);
     }
 }

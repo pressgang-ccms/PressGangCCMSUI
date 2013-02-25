@@ -4,6 +4,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.PresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @param <V> The collection item type for entity T
@@ -14,16 +15,19 @@ public interface BaseFilteredResultsComponentInterface<V extends RESTBaseCollect
     /**
      * @return The query string that represents the current state of the filters
      */
+    @NotNull
     String getQuery();
 
     /**
      * @return The provider data used to populate the celltable
      */
+    @NotNull
     ProviderUpdateData<V> getProviderData();
 
     /**
      * @return The display that is associated with the presenter.
      */
+    @NotNull
     BaseFilteredResultsViewInterface<V> getDisplay();
 
     /**
@@ -33,5 +37,5 @@ public interface BaseFilteredResultsComponentInterface<V extends RESTBaseCollect
      * @param pageId      The string that identifies the page
      * @param queryString The query string that is passed to the REST interface
      */
-    void bindExtendedFilteredResults(final int topicId, final String pageId, final String queryString);
+    void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString);
 }

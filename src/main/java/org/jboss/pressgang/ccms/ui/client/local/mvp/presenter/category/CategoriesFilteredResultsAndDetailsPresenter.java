@@ -130,7 +130,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
+    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
        /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTCategoryV1> getNewEntityCallback = new GetNewEntityCallback<RESTCategoryV1>() {
 
@@ -288,7 +288,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
          */
         final ClickHandler categoryDetailsClickHandler = new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 switchView(categoryPresenter.getDisplay());
             }
 
@@ -301,7 +301,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
 
                 ClickHandler() {
                     @Override
-                    public void onClick(final ClickEvent event) {
+                    public void onClick(@NotNull final ClickEvent event) {
                         switchView(categoryTagPresenter.getDisplay());
 
                     }
@@ -313,7 +313,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
          */
         final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
 
                     /* Was the tag we just saved a new tag? */
                 final boolean wasNewEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem();
@@ -397,7 +397,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
 
             filteredResultsPresenter.getDisplay().getCreate().addClickHandler(new ClickHandler() {
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
                     final RESTCategoryV1 selectedEntity = new RESTCategoryV1();

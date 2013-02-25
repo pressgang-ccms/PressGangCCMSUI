@@ -56,6 +56,7 @@ public interface BaseChildrenComponentInterface<
     /**
      * @return the data that is used to back the list of potential children.
      */
+    @NotNull
     ProviderUpdateData<C> getPossibleChildrenProviderData();
 
     /**
@@ -70,7 +71,8 @@ public interface BaseChildrenComponentInterface<
      *               just get a collection from the REST interface.
      * @return the provider that displays the entities found in getPossibleChildrenProviderData().
      */
-    EnhancedAsyncDataProvider<C> generatePossibleChildrenProvider(final T parent);
+    @NotNull
+    EnhancedAsyncDataProvider<C> generatePossibleChildrenProvider(@NotNull final T parent);
 
     /**
      * Binds behaviour to the tag list buttons.
@@ -84,15 +86,15 @@ public interface BaseChildrenComponentInterface<
      * @param updateAfterChildModfied       A callback that is used to perform any post-processing required after the
      *                                      child collection has been modified.
      */
-    void bindPossibleChildrenListButtonClicks(final GetExistingCollectionCallback<D, E, F> getExistingCollectionCallback,
-                                              final AddPossibleChildCallback<C> addChildCallback,
-                                              final UpdateAfterChildModfiedCallback updateAfterChildModfied);
+    void bindPossibleChildrenListButtonClicks(@NotNull final GetExistingCollectionCallback<D, E, F> getExistingCollectionCallback,
+                                              @NotNull final AddPossibleChildCallback<C> addChildCallback,
+                                              @NotNull final UpdateAfterChildModfiedCallback updateAfterChildModfied);
 
     /**
      * Get a list of potential children from the REST service and refresh the list of potential children. Used when we
      * want to get a fresh list of potential children from the REST interface.
      */
-    void refreshPossibleChildrenDataFromRESTAndRedisplayList(final T parent);
+    void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final T parent);
 
     /**
      * Called to refresh the list of potential children. Used when the update needs to be displayed (because a potential
@@ -104,5 +106,5 @@ public interface BaseChildrenComponentInterface<
      *               Many-To-Many collections, the list of potential children will usually ignore this parameter and
      *               just get a collection from the REST interface.
      */
-    void redisplayPossibleChildList(final T parent);
+    void redisplayPossibleChildList(@NotNull final T parent);
 }

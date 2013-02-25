@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * When the BaseChildrenComponent needs to add a new child to a collection, it will call the method defined in this interface.
@@ -16,5 +17,5 @@ public interface AddPossibleChildCallback<
      *
      * @param copy The existing child to associated with the new parent
      */
-    void createAndAddChild(final Y copy);
+    void createAndAddChild(@NotNull final Y copy);
 }

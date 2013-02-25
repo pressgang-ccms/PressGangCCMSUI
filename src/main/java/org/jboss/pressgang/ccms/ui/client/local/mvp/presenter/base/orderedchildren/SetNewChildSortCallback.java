@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchild
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
+import org.jetbrains.annotations.NotNull;
 
 public interface SetNewChildSortCallback<D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>> {
     /**
@@ -13,5 +14,5 @@ public interface SetNewChildSortCallback<D extends RESTBaseEntityV1<D, E, F>, E 
      * @param index The new sort index
      * @return true if a change was made, false otherwise
      */
-    boolean setSort(final F child, final int index);
+    boolean setSort(@NotNull final F child, final int index);
 }

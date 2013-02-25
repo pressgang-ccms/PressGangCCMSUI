@@ -64,6 +64,7 @@ public class CategoryTagPresenter
     /**
      * The category tag view.
      */
+    @NotNull
     public Display getDisplay() {
         return display;
     }

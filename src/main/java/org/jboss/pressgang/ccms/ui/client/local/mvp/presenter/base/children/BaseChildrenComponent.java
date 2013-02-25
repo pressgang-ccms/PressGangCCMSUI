@@ -49,7 +49,7 @@ public abstract class BaseChildrenComponent<
      * @param topicId the help topic for the page
      * @param pageId  The history token of the page
      */
-    public final void bindExtended(final int topicId, final String pageId) {
+    public final void bindExtended(final int topicId, @NotNull final String pageId) {
         throw new UnsupportedOperationException("bindExtended() is not supported. Use bindChildren() instead.");
     }
 
@@ -67,7 +67,7 @@ public abstract class BaseChildrenComponent<
     /**
      * @inheritDoc
      */
-    protected final void bindChildren(final int topicId, final String pageId, @NotNull final BaseChildrenViewInterface display) {
+    protected final void bindChildren(final int topicId, @NotNull final String pageId, @NotNull final BaseChildrenViewInterface display) {
         this.display = display;
         super.bind(topicId, pageId, display);
     }
@@ -81,7 +81,7 @@ public abstract class BaseChildrenComponent<
                                                            @NotNull final UpdateAfterChildModfiedCallback updateAfterChildModfied) {
         this.display.getPossibleChildrenButtonColumn().setFieldUpdater(new FieldUpdater<C, String>() {
             @Override
-            public void update(final int index, final C object, final String value) {
+            public void update(final int index, @NotNull final C object, @NotNull final String value) {
                 /* find the tag if it exists in the category */
                 boolean found = false;
                 final E existingCollection = getExistingCollectionCallback.getExistingCollection();
@@ -114,14 +114,14 @@ public abstract class BaseChildrenComponent<
     /**
      * @inheritDoc
      */
-    public final void redisplayPossibleChildList(final T parent) {
+    public final void redisplayPossibleChildList(@NotNull final T parent) {
         this.display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
     }
 
     /**
      * Default empty implementation.
      */
-    public void refreshPossibleChildrenDataFromRESTAndRedisplayList(final T parent) {
+    public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final T parent) {
 
     }
 
