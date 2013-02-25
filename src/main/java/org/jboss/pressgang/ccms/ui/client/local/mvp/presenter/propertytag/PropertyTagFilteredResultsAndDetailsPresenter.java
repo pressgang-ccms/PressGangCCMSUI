@@ -336,9 +336,9 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
      * @return true if there are unsaved changes, false otherwise
      */
     private boolean unsavedProjectChanges() {
-        return !(stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData().getSelectedItem().getItem()
-                .getName(), filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName()) && stringEqualsEquatingNullWithEmptyString(
-                filteredResultsComponent.getProviderData().getSelectedItem().getItem().getDescription(),
+        return !(stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData().getSelectedItem().getItem().getName(),
+                filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName())
+                && stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData().getSelectedItem().getItem().getDescription(),
                 filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription()));
     }
 
@@ -348,6 +348,14 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
      * @return true if there are modified tags, false otherwise
      */
     private boolean unsavedCategoryChanges() {
+
+        /**
+         * The categories may not have been loaded by the time we switch between tags, which means no changes could have been made.
+         */
+        if (filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories() == null) {
+            return false;
+        }
+
         return !filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories().returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
     }
 

@@ -120,8 +120,8 @@ public class PropertyTagCategoryPresenter extends BaseChildrenComponent<
 
     public interface Display extends BaseChildrenViewInterface<
             RESTPropertyTagV1,                                                                                                                          // The main REST types
-            RESTPropertyCategoryCollectionItemV1,                                                                                                            // The possible children types
-            RESTPropertyCategoryInPropertyTagV1, RESTPropertyCategoryInPropertyTagCollectionV1, RESTPropertyCategoryInPropertyTagCollectionItemV1>       // The existing children types
+            RESTPropertyCategoryCollectionItemV1,                                                                                                       // The possible children types
+            RESTPropertyCategoryInPropertyTagV1, RESTPropertyCategoryInPropertyTagCollectionV1, RESTPropertyCategoryInPropertyTagCollectionItemV1>      // The existing children types
     {
     }
 }

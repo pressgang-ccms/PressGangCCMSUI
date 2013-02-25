@@ -255,7 +255,7 @@ abstract public class BaseSearchAndEditComponent<
     protected final void bindResultsListRowClicks(@NotNull final GetNewEntityCallback<T> getNewEntityCallback) {
         filteredResultsDisplay.getResults().addCellPreviewHandler(new Handler<V>() {
             @Override
-            public void onCellPreview(final CellPreviewEvent<V> event) {
+            public void onCellPreview(@NotNull final CellPreviewEvent<V> event) {
 
                 /* Check to see if this was a click event */
                 final boolean isClick = Constants.JAVASCRIPT_CLICK_EVENT.equals(event.getNativeEvent().getType());
