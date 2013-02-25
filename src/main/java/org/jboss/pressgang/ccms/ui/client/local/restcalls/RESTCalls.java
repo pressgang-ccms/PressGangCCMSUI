@@ -745,7 +745,7 @@ public final class RESTCalls {
      * @param callback The callback to process the results from the REST server
      */
     public static void getPropertyTagCategories(@NotNull final RESTCallback<RESTPropertyTagCollectionV1> callback) {
-        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}";
+        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {

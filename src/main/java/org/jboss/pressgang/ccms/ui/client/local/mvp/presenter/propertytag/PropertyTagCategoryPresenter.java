@@ -26,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
@@ -77,7 +78,9 @@ public class PropertyTagCategoryPresenter extends BaseChildrenComponent<
         final RESTCallback<RESTPropertyTagCollectionV1> callback = new BaseRestCallback<RESTPropertyTagCollectionV1, PropertyTagCategoryPresenter.Display>(display,
                 new BaseRestCallback.SuccessAction<RESTPropertyTagCollectionV1, PropertyTagCategoryPresenter.Display>() {
                     @Override
-                    public void doSuccessAction(final RESTPropertyTagCollectionV1 retValue, final PropertyTagCategoryPresenter.Display display) {
+                    public void doSuccessAction(@NotNull final RESTPropertyTagCollectionV1 retValue, @NotNull final PropertyTagCategoryPresenter.Display display) {
+                        checkArgument(retValue.getItems() != null, "RESTPropertyTagCollectionV1 items are null. This is probably due to incorrect expansion.");
+
 
                         /* Zero results can be a null list */
                         getPossibleChildrenProviderData().setStartRow(0);
