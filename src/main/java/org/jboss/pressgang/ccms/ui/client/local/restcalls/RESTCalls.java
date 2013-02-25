@@ -640,8 +640,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getUnexpandedCategoriesFromQuery(@NotNull final RESTCallback<RESTCategoryCollectionV1> callback,
-                                                        @NotNull final String queryString, final int start, final int end) {
+    public static void getUnexpandedCategoriesFromQuery(@NotNull final RESTCallback<RESTCategoryCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
                 + ", \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}}]}";
@@ -653,8 +652,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getCategoriesFromQuery(@NotNull final RESTCallback<RESTCategoryCollectionV1> callback, @NotNull final String queryString,
-                                              final int start, final int end) {
+    public static void getCategoriesFromQuery(@NotNull final RESTCallback<RESTCategoryCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
         final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
                 + ", \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}, \"branches\":[" + CATEGORY_EXPANSION + "]}]}";
@@ -744,7 +742,7 @@ public final class RESTCalls {
      * Get a collection of property tags from the rest server.
      * @param callback The callback to process the results from the REST server
      */
-    public static void getPropertyTagCategories(@NotNull final RESTCallback<RESTPropertyTagCollectionV1> callback) {
+    public static void getPropertyTagCategories(@NotNull final RESTCallback<RESTPropertyCategoryCollectionV1> callback) {
         final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -771,7 +769,7 @@ public final class RESTCalls {
         });
     }
 
-    public static void getPropertyTag(@NotNull final RESTCallback<RESTPropertyTagV1> callback, final Integer id) {
+    public static void getPropertyTag(@NotNull final RESTCallback<RESTPropertyTagV1> callback, @NotNull final Integer id) {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {

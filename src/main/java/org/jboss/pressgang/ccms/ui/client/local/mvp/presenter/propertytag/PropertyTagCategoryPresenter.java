@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytag;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
@@ -32,7 +33,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 @Dependent
 public class PropertyTagCategoryPresenter extends BaseChildrenComponent<
         RESTPropertyTagV1,                                                                                                                          // The main REST types
-        RESTPropertyTagCollectionItemV1,                                                                                                            // The possible children types
+        RESTPropertyCategoryCollectionItemV1,                                                                                                       // The possible children types
         RESTPropertyCategoryInPropertyTagV1, RESTPropertyCategoryInPropertyTagCollectionV1, RESTPropertyCategoryInPropertyTagCollectionItemV1>      // The existing children types
         implements BaseTemplatePresenterInterface {
 
@@ -75,12 +76,11 @@ public class PropertyTagCategoryPresenter extends BaseChildrenComponent<
     @Override
     public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTPropertyTagV1 parent) {
 
-        final RESTCallback<RESTPropertyTagCollectionV1> callback = new BaseRestCallback<RESTPropertyTagCollectionV1, PropertyTagCategoryPresenter.Display>(display,
-                new BaseRestCallback.SuccessAction<RESTPropertyTagCollectionV1, PropertyTagCategoryPresenter.Display>() {
+        final RESTCallback<RESTPropertyCategoryCollectionV1> callback = new BaseRestCallback<RESTPropertyCategoryCollectionV1, PropertyTagCategoryPresenter.Display>(display,
+                new BaseRestCallback.SuccessAction<RESTPropertyCategoryCollectionV1, PropertyTagCategoryPresenter.Display>() {
                     @Override
-                    public void doSuccessAction(@NotNull final RESTPropertyTagCollectionV1 retValue, @NotNull final PropertyTagCategoryPresenter.Display display) {
+                    public void doSuccessAction(@NotNull final RESTPropertyCategoryCollectionV1 retValue, @NotNull final PropertyTagCategoryPresenter.Display display) {
                         checkArgument(retValue.getItems() != null, "RESTPropertyTagCollectionV1 items are null. This is probably due to incorrect expansion.");
-
 
                         /* Zero results can be a null list */
                         getPossibleChildrenProviderData().setStartRow(0);
@@ -99,11 +99,11 @@ public class PropertyTagCategoryPresenter extends BaseChildrenComponent<
 
     @Override
     @NotNull
-    public EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> generatePossibleChildrenProvider(@NotNull final RESTPropertyTagV1 parent) {
+    public EnhancedAsyncDataProvider<RESTPropertyCategoryCollectionItemV1> generatePossibleChildrenProvider(@NotNull final RESTPropertyTagV1 parent) {
 
-        final EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1>() {
+        final EnhancedAsyncDataProvider<RESTPropertyCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTPropertyCategoryCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(@NotNull final HasData<RESTPropertyTagCollectionItemV1> display) {
+            protected void onRangeChanged(@NotNull final HasData<RESTPropertyCategoryCollectionItemV1> display) {
 
                 getPossibleChildrenProviderData().setStartRow(display.getVisibleRange().getStart());
 
