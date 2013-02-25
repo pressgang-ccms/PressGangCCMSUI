@@ -11,6 +11,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyCategoryInPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyTagInPropertyCategoryCollectionItemV1;
@@ -155,9 +156,9 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
                     return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories();
                 }
             },
-            new AddPossibleChildCallback<RESTPropertyTagCollectionItemV1>() {
+            new AddPossibleChildCallback<RESTPropertyCategoryCollectionItemV1>() {
                 @Override
-                public void createAndAddChild(@NotNull final RESTPropertyTagCollectionItemV1 copy) {
+                public void createAndAddChild(@NotNull final RESTPropertyCategoryCollectionItemV1 copy) {
                     final RESTPropertyCategoryInPropertyTagV1 newChild = new RESTPropertyCategoryInPropertyTagV1();
                     newChild.setId(copy.getItem().getId());
                     newChild.setName(copy.getItem().getName());
