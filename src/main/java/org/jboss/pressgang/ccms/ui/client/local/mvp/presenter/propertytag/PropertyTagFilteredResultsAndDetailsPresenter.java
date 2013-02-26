@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.stringEqualsEquatingNullWithEmptyString;
 
 @Dependent
 public class PropertyTagFilteredResultsAndDetailsPresenter
@@ -334,19 +335,23 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
     }
 
     /**
-     * Compare the selected and displayed project, and see if any of the fields have changed
+     * Compare the selected and displayed project, and see if any of the fields have changed.
      *
      * @return true if there are unsaved changes, false otherwise
      */
     private boolean unsavedProjectChanges() {
-        return !(stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData().getSelectedItem().getItem().getName(),
-                filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName())
-                && stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData().getSelectedItem().getItem().getDescription(),
-                filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription()));
+        final RESTPropertyTagV1 selectedItem = filteredResultsComponent.getProviderData().getSelectedItem().getItem();
+        final RESTPropertyTagV1 displayedItem = filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
+
+        return !(stringEqualsEquatingNullWithEmptyString(selectedItem.getName(), displayedItem.getName())
+                && stringEqualsEquatingNullWithEmptyStringAndIgnoreLineBreaks(selectedItem.getDescription(), displayedItem.getDescription())
+                && selectedItem.getCanBeNull() == displayedItem.getCanBeNull()
+                && selectedItem.getIsUnique() == displayedItem.getIsUnique()
+                && stringEqualsEquatingNullWithEmptyString(selectedItem.getRegex(), displayedItem.getRegex()));
     }
 
     /**
-     * Check to see if there are any added, removed or modified tags in the project
+     * Check to see if there are any added, removed or modified tags in the project.
      *
      * @return true if there are modified tags, false otherwise
      */
