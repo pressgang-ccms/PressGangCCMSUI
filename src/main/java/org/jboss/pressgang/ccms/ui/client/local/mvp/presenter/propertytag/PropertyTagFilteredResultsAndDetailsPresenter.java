@@ -259,6 +259,9 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
                         project.explicitSetName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
                         project.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
                         project.explicitSetPropertyCategories(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories());
+                        project.explicitSetCanBeNull(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getCanBeNull());
+                        project.explicitSetIsUnique(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getIsUnique());
+                        project.explicitSetRegex(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getRegex());
 
                         if (wasNewEntity) {
                             RESTCalls.createPropertyTag(callback, project);

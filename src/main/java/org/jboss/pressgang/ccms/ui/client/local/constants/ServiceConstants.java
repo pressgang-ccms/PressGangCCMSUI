@@ -111,8 +111,6 @@ public final class ServiceConstants {
      * The help topic for the project view.
      */
     public static final int PROJECT_HELP_TOPIC = 13583;
-
-
     /**
      * The help topic for the property tag details view.
      */
