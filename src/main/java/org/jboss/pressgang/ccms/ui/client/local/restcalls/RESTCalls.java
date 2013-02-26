@@ -54,6 +54,10 @@ public final class RESTCalls {
      */
     private static final String CATEGORY_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTCategoryV1.TAGS_NAME + "\"}}";
     /**
+     * The required expansion details for the property tags.
+     */
+    private static final String PROPERTY_TAG_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTPropertyTagV1.PROPERTY_CATEGORIES_NAME + "\"}}";
+    /**
      * The required expansion details for the projects.
      */
     private static final String PROJECT_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTProjectV1.TAGS_NAME + "\"}}";
@@ -770,10 +774,11 @@ public final class RESTCalls {
     }
 
     public static void getPropertyTag(@NotNull final RESTCallback<RESTPropertyTagV1> callback, @NotNull final Integer id) {
+        final String expand = "{\"branches\":[" + PROPERTY_TAG_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).getJSONPropertyTag(id, "");
+                createRestMethod(callback).getJSONPropertyTag(id, expand);
             }
         });
     }

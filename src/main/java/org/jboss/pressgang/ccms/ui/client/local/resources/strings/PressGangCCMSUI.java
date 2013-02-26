@@ -449,4 +449,16 @@ public interface PressGangCCMSUI extends Constants {
     String BlobConstantDetails();
 
     String CreateBlobConstant();
+
+    String ExtendedPropertyID();
+
+    String ExtendedPropertyName();
+
+    String ExtendedPropertyDescription();
+
+    String ExtendedPropertyRegex();
+
+    String ExtendedPropertyCanBeNull();
+
+    String ExtendedPropertyUnique();
 }

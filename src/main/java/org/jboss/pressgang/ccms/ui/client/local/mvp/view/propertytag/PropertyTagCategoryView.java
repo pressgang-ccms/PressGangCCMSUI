@@ -20,49 +20,69 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytag.Proper
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+
+/**
+ * The view used to display a property tag's categories.
+ */
 public class PropertyTagCategoryView extends BaseChildrenView<
         RESTPropertyTagV1,                                                                                                                          // The main REST types
         RESTPropertyCategoryCollectionItemV1,                                                                                                       // The possible children types
         RESTPropertyCategoryInPropertyTagV1, RESTPropertyCategoryInPropertyTagCollectionV1, RESTPropertyCategoryInPropertyTagCollectionItemV1>       // The existing children types
         implements PropertyTagCategoryPresenter.Display {
 
+    /**
+     * The column used to render the property tag category's id.
+     */
     private final TextColumn<RESTPropertyCategoryCollectionItemV1> tagsIdColumn = new TextColumn<RESTPropertyCategoryCollectionItemV1>() {
         @Override
-        public String getValue(@NotNull final RESTPropertyCategoryCollectionItemV1 object) {
-            if (object != null && object.getItem() != null && object.getItem().getId() != null) {
+        public String getValue(@Nullable final RESTPropertyCategoryCollectionItemV1 object) {
+            checkArgument(object == null || (object.getItem() != null && object.getItem().getName() != null), "object should be null or it should have a valid item and the item should have a valid id");
+
+            if (object != null) {
                 return object.getItem().getId().toString();
             }
             return null + "";
         }
     };
 
+    /**
+     * The column used to render the property tag category's name.
+     */
     private final TextColumn<RESTPropertyCategoryCollectionItemV1> tagsNameColumn = new TextColumn<RESTPropertyCategoryCollectionItemV1>() {
         @Override
-        public String getValue(@NotNull final RESTPropertyCategoryCollectionItemV1 object) {
-            if (object != null && object.getItem() != null && object.getItem().getName() != null) {
+        public String getValue(@Nullable final RESTPropertyCategoryCollectionItemV1 object) {
+            checkArgument(object == null || (object.getItem() != null && object.getItem().getName() != null), "object should be null or it should have a valid item and the item should have a valid name");
+
+            if (object != null) {
                 return object.getItem().getName();
             }
             return null + "";
         }
     };
 
+    /**
+     * The column used to render the property tag category's add/remove button.
+     */
     private final Column<RESTPropertyCategoryCollectionItemV1, String> tagsButtonColumn = new Column<RESTPropertyCategoryCollectionItemV1, String>(
             new ButtonCell()) {
         @Override
-        public String getValue(@NotNull final RESTPropertyCategoryCollectionItemV1 object) {
-            if (getOriginalEntity() != null && object != null && object.getItem().getId() != null) {
-                if (ComponentPropertyTagV1.isInCategory(getOriginalEntity(), object.getItem().getId())) {
-                    return PressGangCCMSUI.INSTANCE.Remove();
-                } else {
-                    return PressGangCCMSUI.INSTANCE.Add();
-                }
-            }
+        public String getValue(@Nullable final RESTPropertyCategoryCollectionItemV1 object) {
+            checkState(getOriginalEntity() != null, "getOriginalEntity() should not be null");
+            checkArgument(object == null || (object.getItem() != null && object.getItem().getId() != null), "object should be null or it should have a valid item and the item should have a valid id");
 
-            return PressGangCCMSUI.INSTANCE.NoAction();
+            if (ComponentPropertyTagV1.isInCategory(getOriginalEntity(), object.getItem().getId())) {
+                return PressGangCCMSUI.INSTANCE.Remove();
+            } else {
+                return PressGangCCMSUI.INSTANCE.Add();
+            }
         }
     };
 
+    @NotNull
     @Override
     public Column<RESTPropertyCategoryCollectionItemV1, String> getPossibleChildrenButtonColumn() {
         return tagsButtonColumn;
@@ -76,7 +96,7 @@ public class PropertyTagCategoryView extends BaseChildrenView<
         getPossibleChildrenResults().addColumn(tagsButtonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
     }
 
-    public void display(final RESTPropertyTagV1 entity, final boolean readOnly) {
+    public void display(@NotNull final RESTPropertyTagV1 entity, final boolean readOnly) {
         super.displayChildren(entity, readOnly);
     }
 }
