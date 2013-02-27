@@ -16,13 +16,13 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
  * @author Matthew Casperson
  */
 public final class SearchUITagEditor implements Editor<SearchUITag> {
-    private final SearchUIProjects searchUIProjects;
+    private final SearchUICategoryEditor searchUICategory;
 
     final Label name = new Label();
     final TriStatePushButton state = new TriStatePushButton();
 
-    public SearchUITagEditor(final SearchPresenterDriver driver, final SearchUIProjects searchUIProjects) {
-        this.searchUIProjects = searchUIProjects;
+    public SearchUITagEditor(final SearchPresenterDriver driver, final SearchUICategoryEditor searchUICategory) {
+        this.searchUICategory = searchUICategory;
 
         name.addStyleName(CSSConstants.TAG_LABEL);
 

@@ -16,6 +16,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.Searc
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
+import org.jetbrains.annotations.NotNull;
 
 public final class SearchUIProjectEditor extends DockLayoutPanel implements ValueAwareEditor<SearchUIProject> {
     private static final int BUTTON_COLUMN_WIDTH = 16;
@@ -29,6 +30,11 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
     private final FlexTable categoriesButtonPanel = new FlexTable();
     private final ScrollPanel scroll = new ScrollPanel();
 
+    @NotNull
+    public SearchUIProject getValue() {
+        return value;
+    }
+
     /**
      * The EditorSource is used to create and orgainse the Editors that go into a ListEditor
      *
@@ -37,7 +43,7 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
     private class SearchUICategoryEditorSource extends EditorSource<SearchUICategoryEditor> {
         @Override
         public SearchUICategoryEditor create(final int index) {
-            final SearchUICategoryEditor subEditor = new SearchUICategoryEditor(SearchUIProjectEditor.this.driver, SearchUIProjectEditor.this.searchUIProjects);
+            final SearchUICategoryEditor subEditor = new SearchUICategoryEditor(SearchUIProjectEditor.this.driver, SearchUIProjectEditor.this);
 
             SearchUIProjectEditor.this.categoriesButtonPanel.setWidget(index, 0, subEditor.summary);
 

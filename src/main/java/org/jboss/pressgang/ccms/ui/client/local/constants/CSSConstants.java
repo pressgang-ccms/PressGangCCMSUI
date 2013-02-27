@@ -12,6 +12,14 @@ public interface CSSConstants {
         String HELP_CONTENTS = "HelpContents";
     }
 
+    interface SearchView {
+        /**
+         * The style applied to the cell that appears above the
+         * category logic options.
+         */
+        String LOGIC_HEADER_CELL = "LogicHeaderCell";
+    }
+
     /**
      * The CSS style names applied to the search filter editor
      */

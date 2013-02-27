@@ -28,5 +28,4 @@ public class SearchTagsFieldsAndFiltersView extends
     protected void hideWaiting() {
         waiting.hide();
     }
-
 }

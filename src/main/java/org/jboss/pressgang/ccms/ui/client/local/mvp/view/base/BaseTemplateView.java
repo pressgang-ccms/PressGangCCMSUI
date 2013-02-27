@@ -759,7 +759,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private void updateDisplay() {
         if (!isViewShown || waitingCount == 0) {
             hideWaiting();
-        } else if (isViewShown && waitingCount == 1) {
+        } else if (isViewShown && waitingCount != 0) {
             showWaiting();
         }
     }

@@ -1,3 +1,10 @@
+.LogicHeaderCell {
+    background-color: rgb(0, 114, 198);
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
 .HelpContents {
     margin: 8px;
 }
