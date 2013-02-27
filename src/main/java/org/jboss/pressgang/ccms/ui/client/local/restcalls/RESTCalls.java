@@ -819,7 +819,7 @@ public final class RESTCalls {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).getJSONPropertyTagsWithQuery(new PathSegmentImpl(queryString), expand);
+                createRestMethod(callback).getJSONPropertyCategoriesWithQuery(new PathSegmentImpl(queryString), expand);
             }
         });
     }

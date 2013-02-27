@@ -55,10 +55,10 @@ public class PropertyTagFilteredResultsView extends
     }
 
     public PropertyTagFilteredResultsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Projects(), PressGangCCMSUI.INSTANCE.CreateProject());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.ExtendedProperties(), PressGangCCMSUI.INSTANCE.CreateExtendedProperty());
 
-        getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ProjectID());
-        getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.ProjectName());
+        getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ExtendedPropertyID());
+        getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.ExtendedPropertyName());
 
         addFilterField(PressGangCCMSUI.INSTANCE.ProjectIDs(), idFilter);
         addFilterField(PressGangCCMSUI.INSTANCE.ProjectName(), nameFilter);

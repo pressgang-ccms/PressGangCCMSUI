@@ -57,8 +57,8 @@ public class PropertyCategoryFilteredResultsView extends
     public PropertyCategoryFilteredResultsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Projects(), PressGangCCMSUI.INSTANCE.CreateProject());
 
-        getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ProjectID());
-        getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.ProjectName());
+        getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ExtendedPropertyCategoryID());
+        getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.ExtendedPropertyName());
 
         addFilterField(PressGangCCMSUI.INSTANCE.ProjectIDs(), idFilter);
         addFilterField(PressGangCCMSUI.INSTANCE.ProjectName(), nameFilter);
