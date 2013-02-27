@@ -16,10 +16,12 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
@@ -31,8 +33,13 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
 
     public static final String HISTORY_TOKEN = "BlobConstantFilteredResultsView";
 
-    @Inject
-    private Display display;
+    /**
+     * The view this presenter is associated with.
+     */
+    @Inject private Display display;
+    /**
+     * The query string extracted from the history token
+     */
     private String queryString;
 
     @Override
@@ -57,9 +64,11 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
             @Override
             protected void onRangeChanged(final HasData<RESTBlobConstantCollectionItemV1> list) {
 
-                final BaseRestCallback<RESTBlobConstantCollectionV1, Display> callback =new BaseRestCallback<RESTBlobConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTBlobConstantCollectionV1, Display>() {
+                final BaseRestCallback<RESTBlobConstantCollectionV1, Display> callback = new BaseRestCallback<RESTBlobConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTBlobConstantCollectionV1, Display>() {
                     @Override
-                    public void doSuccessAction(final RESTBlobConstantCollectionV1 retValue, final Display display) {
+                    public void doSuccessAction(@NotNull final RESTBlobConstantCollectionV1 retValue, @NotNull final Display display) {
+                        checkArgument(retValue.getItems() != null, "RESTBlobConstantCollectionV1 items are null. This is probably due to incorrect expansion.");
+
                         getProviderData().setItems(retValue.getItems());
                         getProviderData().setSize(retValue.getSize());
                         relinkSelectedItem();
@@ -101,7 +110,7 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
     }
 
     @Override
-    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, final String queryString) {
+    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @Nullable final String queryString) {
         super.bindFilteredResults(topicId, pageId, queryString, display);
         display.setProvider(generateListProvider(queryString, display));
     }
@@ -117,12 +126,27 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
         bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
+    /**
+     * The display that this presenter is associated with.
+     */
     public interface Display extends BaseFilteredResultsViewInterface<RESTBlobConstantCollectionItemV1> {
 
+        /**
+         *
+         * @return The text box that holds the ids to search on
+         */
         TextBox getIdFilter();
 
+        /**
+         *
+         * @return The text box that holds the name to search on
+         */
         TextBox getNameFilter();
 
+        /**
+         *
+         * @return The text box that holds the description to search on
+         */
         TextBox getValueFilter();
     }
 }

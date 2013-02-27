@@ -20,11 +20,17 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 @Dependent
 public class BlobConstantPresenter extends BaseTemplatePresenter {
 
+    /**
+     * The history token.
+     */
     public static final String HISTORY_TOKEN = "BlobConstantView";
 
     @Inject
     private Display display;
 
+    /**
+     * The view this presenter is associated with.
+     */
     @NotNull
     public Display getDisplay() {
         return display;
@@ -50,7 +56,14 @@ public class BlobConstantPresenter extends BaseTemplatePresenter {
     public interface BlobConstantPresenterDriver extends SimpleBeanEditorDriver<RESTBlobConstantV1, RESTBlobConstantV1DetailsEditor> {
     }
 
+    /**
+     * The display that this presenter is associated with.
+     */
     public interface Display extends BasePopulatedEditorViewInterface<RESTBlobConstantV1, RESTBlobConstantV1, RESTBlobConstantV1DetailsEditor> {
+        /**
+         *
+         * @return The editor that has bound the REST entity to the UI elements displayed by the view.
+         */
         RESTBlobConstantV1DetailsEditor getEditor();
     }
 }

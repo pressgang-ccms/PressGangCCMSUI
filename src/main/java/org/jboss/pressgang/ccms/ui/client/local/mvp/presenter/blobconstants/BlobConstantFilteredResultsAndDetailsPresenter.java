@@ -66,19 +66,25 @@ implements BaseTemplatePresenterInterface {
     /**
      * An Errai injected instance of a class that implements Display. This is the view that holds all other views
      */
-    @Inject
-    private Display display;
-
+    @Inject private Display display;
+    /**
+     * The presenter used to display the filtered results.
+     */
     @Inject private BlobConstantFilteredResultsPresenter blobConstantFilteredResultsPresenter;
+    /**
+     * The presenter used to display the blob constant details.
+     */
     @Inject private BlobConstantPresenter blobConstantPresenter;
 
     /**
-     * The category query string extracted from the history token
+     * The query string extracted from the history token
      */
     private String queryString;
 
-    @Inject
-    private HandlerManager eventBus;
+    /**
+     * The global event bus.
+     */
+    @Inject private HandlerManager eventBus;
 
 
     @Override
@@ -100,7 +106,7 @@ implements BaseTemplatePresenterInterface {
          */
         final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
 
                 /* Was the tag we just saved a new tag? */
                 final boolean wasNewEntity = blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem();
@@ -165,7 +171,7 @@ implements BaseTemplatePresenterInterface {
 
         blobConstantFilteredResultsPresenter.getDisplay().getCreate().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
                 final RESTBlobConstantV1 selectedEntity = new RESTBlobConstantV1();
@@ -256,14 +262,14 @@ implements BaseTemplatePresenterInterface {
 
                     reader.addErrorHandler(new ErrorHandler() {
                         @Override
-                        public void onError(final org.vectomatic.file.events.ErrorEvent event) {
+                        public void onError(@NotNull final org.vectomatic.file.events.ErrorEvent event) {
                             display.removeWaitOperation();
                         }
                     });
 
                     reader.addLoadEndHandler(new LoadEndHandler() {
                         @Override
-                        public void onLoadEnd(final LoadEndEvent event) {
+                        public void onLoadEnd(@NotNull final LoadEndEvent event) {
                             try {
                                 final String result = reader.getStringResult();
                                 final byte[] buffer = GWTUtilities.getByteArray(result, 1);
@@ -318,10 +324,17 @@ implements BaseTemplatePresenterInterface {
         });
     }
 
+    /**
+     * The display that this presenter is associated with.
+     */
     public interface Display extends BaseSearchAndEditViewInterface<
                 RESTBlobConstantV1,
                 RESTBlobConstantCollectionV1,
                 RESTBlobConstantCollectionItemV1> {
+        /**
+         *
+         * @return The save button.
+         */
         PushButton getSave();
     }
 }
