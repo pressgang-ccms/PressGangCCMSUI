@@ -10,20 +10,15 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @param <T> The entity type
- * @param <C> The collection item type for the possible child
- * @param <D> The existing child type
- * @param <E> The collection type for entity D
- * @param <F> The collection item type for entity D
- * @inheritDoc
+ * @see BaseChildrenPresenterInterface
  */
-public abstract class BaseChildrenComponent<
+public abstract class BaseChildrenPresenter<
         T extends RESTBaseEntityV1<?, ?, ?>,
         C extends RESTBaseCollectionItemV1<?, ?, ?>,
         D extends RESTBaseEntityV1<D, E, F>,
         E extends RESTBaseCollectionV1<D, E, F>,
         F extends RESTBaseCollectionItemV1<D, E, F>>
-        extends BaseTemplatePresenter implements BaseChildrenComponentInterface<T, C, D, E, F> {
+        extends BaseTemplatePresenter implements BaseChildrenPresenterInterface<T, C, D, E, F> {
 
     private boolean readOnly;
 
@@ -43,7 +38,7 @@ public abstract class BaseChildrenComponent<
     }
 
     /**
-     * An empty implementation of the extended bind method. Classes extending BaseChildrenComponent should implement
+     * An empty implementation of the extended bind method. Classes extending BaseChildrenPresenter should implement
      * bindChildrenExtended().
      *
      * @param topicId the help topic for the page

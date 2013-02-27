@@ -6,7 +6,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Called to get the current collection of existing children
+ * Called to get the current collection of existing children.
  *
  * @author Matthew Casperson
  */

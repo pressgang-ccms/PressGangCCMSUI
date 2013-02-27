@@ -34,7 +34,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TagsFilteredResultsAndTagViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.SetNewChildSortCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
@@ -63,11 +63,11 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 @Dependent
 public class TagsFilteredResultsAndDetailsPresenter
         extends
-        BaseSearchAndEditComponent<
-                RESTTagV1,
-                RESTTagCollectionV1,
-                RESTTagCollectionItemV1,
-                RESTTagV1BasicDetailsEditor>
+        BaseSearchAndEditPresenter<
+                        RESTTagV1,
+                        RESTTagCollectionV1,
+                        RESTTagCollectionItemV1,
+                        RESTTagV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
 
 

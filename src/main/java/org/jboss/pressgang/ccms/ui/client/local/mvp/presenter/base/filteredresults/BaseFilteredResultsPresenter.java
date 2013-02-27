@@ -17,8 +17,8 @@ import org.jetbrains.annotations.NotNull;
  * @param <V> The collection item type for entity T
  * @author Matthew Casperson
  */
-abstract public class BaseFilteredResultsComponent<V extends RESTBaseCollectionItemV1<?, ?, ?>>
-        extends BaseTemplatePresenter implements BaseFilteredResultsComponentInterface<V> {
+abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionItemV1<?, ?, ?>>
+        extends BaseTemplatePresenter implements BaseFilteredResultsPresenterInterface<V> {
 
     /**
      * Holds the data required to populate and refresh the tags list

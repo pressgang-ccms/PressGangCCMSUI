@@ -21,7 +21,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.AddPossibleChildCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.GetExistingCollectionCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.UpdateAfterChildModfiedCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
@@ -47,11 +47,11 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 @Dependent
 public class ProjectsFilteredResultsAndDetailsPresenter
         extends
-        BaseSearchAndEditComponent<
-                RESTProjectV1,
-                RESTProjectCollectionV1,
-                RESTProjectCollectionItemV1,
-                RESTProjectV1BasicDetailsEditor>
+        BaseSearchAndEditPresenter<
+                        RESTProjectV1,
+                        RESTProjectCollectionV1,
+                        RESTProjectCollectionItemV1,
+                        RESTProjectV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
 
 

@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
  * @param <F> The collection item type of D
  * @author Matthew Casperson
  */
-public interface BaseOrderedChildrenComponentInterface<
+public interface BaseOrderedChildrenPresenterInterface<
         T extends RESTBaseEntityV1<?, ?, ?>,
         W extends RESTBaseEntityV1<?, ?, ?>,
         C extends RESTBaseCollectionItemV1<?, ?, ?>,

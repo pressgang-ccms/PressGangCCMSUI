@@ -6,7 +6,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionIt
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -28,7 +28,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
  * The presenter used to display the list of filter's and their details.
  */
 @Dependent
-public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditComponent<
+public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPresenter<
         RESTFilterV1,
         RESTFilterCollectionV1,
         RESTFilterCollectionItemV1,

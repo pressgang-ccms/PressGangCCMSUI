@@ -9,14 +9,16 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jetbrains.annotations.NotNull;
 
 /**
- * This is the base class that is used for components adding logic to views that list the children of an entity.
- * <p/>
+ * The base class for any presenter displaying the children of an entity. Presenters that extend this class directly
+ * usually display a table of possible children, with add or remove buttons allowing the collection of children
+ * held by the parent to be modified.
+ *
  * Even though the child of a parent is the same database entity as the child in the list of potential children,
  * the REST interface wraps up the relationship in a specific type. This is done so the list of children will
  * include any relationship information, like sorting e.g. Parent -> Child Collection -> Child and Relationship Info.
  * This is opposed to having a list of relationship types that then hold a reference to the child itself
  * e.g. Parent -> Child Collection -> Relationship Info -> Child.
- * <p/>
+ *
  * This manifests itself in the generic types defined by this class: A, B and C are the types that represent the potential children (i.e. the "raw" list
  * of entities from the table that holds the entities that can be attached as children); D, E and F are the types
  * that represent the children of the parent entity.
@@ -28,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
  * @param <F> The collection item type for entity D
  * @author Matthew Casperson
  */
-public interface BaseChildrenComponentInterface<
+public interface BaseChildrenPresenterInterface<
         T extends RESTBaseEntityV1<?, ?, ?>,
         C extends RESTBaseCollectionItemV1<?, ?, ?>,
         D extends RESTBaseEntityV1<D, E, F>,
@@ -37,7 +39,7 @@ public interface BaseChildrenComponentInterface<
         extends PresenterInterface {
 
     /**
-     * Classes extending BaseChildrenComponent need to implement this method to initialize the object, making sure to
+     * Classes extending BaseChildrenPresenter need to implement this method to initialize the object, making sure to
      * call bindChildren().
      *
      * @param helpTopicId the help topic for the page

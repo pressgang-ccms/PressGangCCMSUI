@@ -10,7 +10,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicPresenter;
@@ -79,7 +79,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     }
 
     @Override
-    protected BaseFilteredResultsComponent<RESTTranslatedTopicCollectionItemV1> getSearchResultsComponent() {
+    protected BaseFilteredResultsPresenter<RESTTranslatedTopicCollectionItemV1> getSearchResultsComponent() {
         return translatedTopicsFilteredResultsPresenter;
     }
 

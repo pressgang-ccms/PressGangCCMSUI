@@ -11,7 +11,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponentInterface;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
@@ -35,7 +35,7 @@ import java.util.logging.Logger;
  * @param <Y> The type of the Editor that is displayed by this component
  * @author Matthew Casperson
  */
-abstract public class BaseSearchAndEditComponent<
+abstract public class BaseSearchAndEditPresenter<
         T extends RESTBaseEntityV1<T, U, V>,
         U extends RESTBaseCollectionV1<T, U, V>,
         V extends RESTBaseCollectionItemV1<T, U, V>,
@@ -45,7 +45,7 @@ abstract public class BaseSearchAndEditComponent<
     /**
      * A logger
      */
-    private static final Logger LOGGER = Logger.getLogger(BaseSearchAndEditComponent.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BaseSearchAndEditPresenter.class.getName());
     /**
      * The last displayed view
      */
@@ -65,7 +65,7 @@ abstract public class BaseSearchAndEditComponent<
     /**
      * The component that adds logic to the filtered results view
      */
-    private BaseFilteredResultsComponentInterface<V> filteredResultsComponent;
+    private BaseFilteredResultsPresenterInterface<V> filteredResultsComponent;
     /**
      * The top level display
      */
@@ -99,7 +99,7 @@ abstract public class BaseSearchAndEditComponent<
             @NotNull final BaseTemplateViewInterface firstDisplayedView,
             @NotNull final BasePopulatedEditorViewInterface<T, T, Y> entityPropertiesView,
             @NotNull final BaseFilteredResultsViewInterface<V> filteredResultsDisplay,
-            @NotNull final BaseFilteredResultsComponentInterface<V> filteredResultsComponent,
+            @NotNull final BaseFilteredResultsPresenterInterface<V> filteredResultsComponent,
             @NotNull final BaseSearchAndEditViewInterface display,
             @NotNull final BaseTemplateViewInterface waitDisplay,
             @NotNull final GetNewEntityCallback<T> getNewEntityCallback) {
@@ -133,7 +133,7 @@ abstract public class BaseSearchAndEditComponent<
     public final void updateDisplayAfterSave(final boolean wasNewEntity) {
         try {
 
-            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.updateDisplayAfterSave()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.updateDisplayAfterSave()");
 
             refreshFilteredResults(wasNewEntity);
 
@@ -145,7 +145,7 @@ abstract public class BaseSearchAndEditComponent<
                 loadAdditionalDisplayedItemData();
             }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditComponent.updateDisplayAfterSave()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.updateDisplayAfterSave()");
         }
     }
 
@@ -156,7 +156,7 @@ abstract public class BaseSearchAndEditComponent<
      */
     private void refreshFilteredResults(final boolean wasNewEntity) {
         try {
-            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.refreshFilteredResults()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.refreshFilteredResults()");
 
             if (!wasNewEntity) {
                     /* refresh the list of tags from the existing list that was modified */
@@ -181,7 +181,7 @@ abstract public class BaseSearchAndEditComponent<
                 }
             }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditComponent.refreshFilteredResults()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.refreshFilteredResults()");
         }
     }
 
@@ -193,7 +193,7 @@ abstract public class BaseSearchAndEditComponent<
      */
     protected final void loadNewEntity(@NotNull final GetNewEntityCallback<T> getNewEntityCallback, @NotNull final V selectedItem) {
         try {
-            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.loadNewEntity()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.loadNewEntity()");
 
             /*
              * When an entity is selected we will get afresh copy from the database. This is to deal with a
@@ -206,7 +206,7 @@ abstract public class BaseSearchAndEditComponent<
                 public void displayNewEntity(final T entity) {
 
                     try {
-                        LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.loadNewEntity() DisplayNewEntityCallback.displayNewEntity(final T entity)");
+                        LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.loadNewEntity() DisplayNewEntityCallback.displayNewEntity(final T entity)");
 
                         // update the filtered list with the new entity
                         selectedItem.setItem(entity);
@@ -225,13 +225,13 @@ abstract public class BaseSearchAndEditComponent<
 
                         updateViewsAfterNewEntityLoaded();
                     } finally {
-                        LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditComponent.loadNewEntity() DisplayNewEntityCallback.displayNewEntity(final T entity)");
+                        LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.loadNewEntity() DisplayNewEntityCallback.displayNewEntity(final T entity)");
                     }
 
                 }
             });
         } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditComponent.loadNewEntity()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.loadNewEntity()");
         }
     }
 
@@ -262,7 +262,7 @@ abstract public class BaseSearchAndEditComponent<
 
                 if (isClick) {
                     try {
-                        LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.bindResultsListRowClicks() Anonymous.onCellPreview(final CellPreviewEvent<V> event)");
+                        LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.bindResultsListRowClicks() Anonymous.onCellPreview(final CellPreviewEvent<V> event)");
 
                         if (!isOKToProceed()) {
                             return;
@@ -273,7 +273,7 @@ abstract public class BaseSearchAndEditComponent<
                         loadNewEntity(getNewEntityCallback, selectedItem);
 
                     } finally {
-                        LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditComponent.bindResultsListRowClicks() Anonymous.onCellPreview(final CellPreviewEvent<V> event)");
+                        LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.bindResultsListRowClicks() Anonymous.onCellPreview(final CellPreviewEvent<V> event)");
                     }
                 }
             }
@@ -321,7 +321,7 @@ abstract public class BaseSearchAndEditComponent<
      */
     private void bindMainSplitResize(@NotNull final String saveKey) {
         try {
-            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.bindMainSplitResize()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.bindMainSplitResize()");
 
             display.getSplitPanel().addResizeHandler(new ResizeHandler() {
 
@@ -332,7 +332,7 @@ abstract public class BaseSearchAndEditComponent<
                 }
             });
         } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditComponent.bindMainSplitResize()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.bindMainSplitResize()");
         }
     }
 
@@ -343,12 +343,12 @@ abstract public class BaseSearchAndEditComponent<
      */
     private void loadMainSplitResize(@NotNull final String preferencesKey) {
         try {
-            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.loadMainSplitResize()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.loadMainSplitResize()");
 
             display.getSplitPanel().setSplitPosition(display.getResultsViewLayoutPanel(),
                     Preferences.INSTANCE.getInt(preferencesKey, Constants.SPLIT_PANEL_SIZE), false);
         } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditComponent.loadMainSplitResize()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.loadMainSplitResize()");
         }
     }
 
@@ -381,7 +381,7 @@ abstract public class BaseSearchAndEditComponent<
     protected final void switchView(@NotNull final BaseTemplateViewInterface displayedView) {
 
         try {
-            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditComponent.switchView(final W displayedView)");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.switchView(final W displayedView)");
 
             beforeSwitchView(displayedView);
 
@@ -415,7 +415,7 @@ abstract public class BaseSearchAndEditComponent<
 
 
         } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditComponent.switchView(final W displayedView)");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.switchView(final W displayedView)");
         }
     }
 

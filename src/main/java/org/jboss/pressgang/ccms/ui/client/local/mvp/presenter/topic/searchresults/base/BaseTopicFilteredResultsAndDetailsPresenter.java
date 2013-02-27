@@ -17,8 +17,8 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponent;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
@@ -61,7 +61,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         U extends RESTBaseCollectionV1<T, U, V>,
         V extends RESTBaseCollectionItemV1<T, U, V>,
         Y extends Editor<T>>
-        extends BaseSearchAndEditComponent<T, U, V, Y>
+        extends BaseSearchAndEditPresenter<T, U, V, Y>
         implements BaseTemplatePresenterInterface {
 
     public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
@@ -107,7 +107,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         return topicXMLComponent;
     }
 
-    protected abstract BaseFilteredResultsComponent<V> getSearchResultsComponent();
+    protected abstract BaseFilteredResultsPresenter<V> getSearchResultsComponent();
 
     protected final TopicTagsPresenter getTopicTagsComponent() {
         return topicTagsComponent;

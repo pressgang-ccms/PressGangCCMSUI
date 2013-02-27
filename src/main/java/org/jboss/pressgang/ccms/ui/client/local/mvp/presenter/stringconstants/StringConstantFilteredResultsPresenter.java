@@ -9,7 +9,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTStringConstantColl
 import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -27,7 +27,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
     The presenter used to display the list of string constants
  */
 @Dependent
-public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsComponent<RESTStringConstantCollectionItemV1> {
+public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTStringConstantCollectionItemV1> {
 
     public static final String HISTORY_TOKEN = "StringConstantFilteredResultsView";
 

@@ -14,7 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.StringConstantFilteredResultsAndDetailsViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -39,11 +39,11 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
  */
 @Dependent
 public class StringConstantFilteredResultsAndDetailsPresenter extends
-        BaseSearchAndEditComponent<
-                RESTStringConstantV1,
-                RESTStringConstantCollectionV1,
-                RESTStringConstantCollectionItemV1,
-                RESTStringConstantV1DetailsEditor>
+        BaseSearchAndEditPresenter<
+                        RESTStringConstantV1,
+                        RESTStringConstantCollectionV1,
+                        RESTStringConstantCollectionItemV1,
+                        RESTStringConstantV1DetailsEditor>
 implements BaseTemplatePresenterInterface {
 
     /**

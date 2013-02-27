@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  * @param <F> The collection item type of D
  * @author Matthew Casperson
  */
-abstract public class BaseOrderedChildrenComponent<
+abstract public class BaseOrderedChildrenPresenter<
         T extends RESTBaseEntityV1<?, ?, ?>,
         W extends RESTBaseEntityV1<?, ?, ?>,
         C extends RESTBaseCollectionItemV1<?, ?, ?>,
@@ -30,12 +30,12 @@ abstract public class BaseOrderedChildrenComponent<
         E extends RESTBaseCollectionV1<D, E, F>,
         F extends RESTBaseCollectionItemV1<D, E, F>>
         extends BaseDetailedChildrenPresenter<T, W, C, D, E, F>
-        implements BaseOrderedChildrenComponentInterface<T, W, C, D, E, F> {
+        implements BaseOrderedChildrenPresenterInterface<T, W, C, D, E, F> {
 
     /**
      * A logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(BaseOrderedChildrenComponent.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BaseOrderedChildrenPresenter.class.getName());
 
     @Override
     public final void setSortOrderOfChildren(@NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {

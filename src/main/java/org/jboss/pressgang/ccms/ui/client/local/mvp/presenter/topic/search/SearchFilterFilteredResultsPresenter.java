@@ -7,7 +7,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -26,7 +26,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  * The presenter used to display the list of search filters.
  */
 @Dependent
-public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsComponent<RESTFilterCollectionItemV1> {
+public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTFilterCollectionItemV1> {
 
     /**
      * A Logger

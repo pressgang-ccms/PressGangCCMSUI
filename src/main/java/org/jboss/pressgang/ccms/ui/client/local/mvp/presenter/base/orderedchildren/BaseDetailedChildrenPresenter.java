@@ -7,7 +7,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
@@ -32,13 +32,13 @@ abstract public class BaseDetailedChildrenPresenter<
         D extends RESTBaseEntityV1<D, E, F>,
         E extends RESTBaseCollectionV1<D, E, F>,
         F extends RESTBaseCollectionItemV1<D, E, F>>
-        extends BaseChildrenComponent<T, C, D, E, F>
+        extends BaseChildrenPresenter<T, C, D, E, F>
         implements BaseDetailedChildrenPresenterInterface<T, W, C, D, E, F> {
 
     /**
      * A logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(BaseOrderedChildrenComponent.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BaseOrderedChildrenPresenter.class.getName());
 
     private final ProviderUpdateData<F> existingProviderData = new ProviderUpdateData<F>();
 
@@ -125,15 +125,15 @@ abstract public class BaseDetailedChildrenPresenter<
     @Override
     public final void refreshExistingChildList(@NotNull final W parent) {
         try {
-            LOGGER.log(Level.INFO, "ENTER BaseOrderedChildrenComponent.refreshExistingChildList()");
+            LOGGER.log(Level.INFO, "ENTER BaseOrderedChildrenPresenter.refreshExistingChildList()");
 
             if (this.display == null) {
-                throw new NullPointerException("BaseOrderedChildrenComponent.refreshExistingChildList(): display cannot be null");
+                throw new NullPointerException("BaseOrderedChildrenPresenter.refreshExistingChildList(): display cannot be null");
             }
 
             this.display.setExistingChildrenProvider(generateExistingProvider(parent));
         } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseOrderedChildrenComponent.refreshExistingChildList()");
+            LOGGER.log(Level.INFO, "EXIT BaseOrderedChildrenPresenter.refreshExistingChildList()");
         }
     }
 }

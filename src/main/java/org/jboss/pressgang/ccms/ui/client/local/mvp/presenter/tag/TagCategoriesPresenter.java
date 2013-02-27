@@ -18,7 +18,7 @@ import org.jboss.pressgang.ccms.rest.v1.sort.RESTTagCategoryCollectionItemV1Sort
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.BaseOrderedChildrenComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.BaseOrderedChildrenPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.SetNewChildSortCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -38,13 +38,13 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 @Dependent
 public class TagCategoriesPresenter
         extends
-        BaseOrderedChildrenComponent<
-                RESTTagV1,
-                RESTCategoryV1,
-                RESTCategoryCollectionItemV1,
-                RESTTagInCategoryV1,
-                RESTTagInCategoryCollectionV1,
-                RESTTagInCategoryCollectionItemV1>
+        BaseOrderedChildrenPresenter<
+                        RESTTagV1,
+                        RESTCategoryV1,
+                        RESTCategoryCollectionItemV1,
+                        RESTTagInCategoryV1,
+                        RESTTagInCategoryCollectionV1,
+                        RESTTagInCategoryCollectionItemV1>
         implements BaseTemplatePresenterInterface {
 
     public interface Display extends BaseOrderedChildrenViewInterface<

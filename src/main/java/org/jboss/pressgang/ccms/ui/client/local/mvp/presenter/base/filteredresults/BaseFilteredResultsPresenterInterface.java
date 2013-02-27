@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  * @param <V> The collection item type for entity T
  * @author Matthew Casperson
  */
-public interface BaseFilteredResultsComponentInterface<V extends RESTBaseCollectionItemV1<?, ?, ?>> extends PresenterInterface {
+public interface BaseFilteredResultsPresenterInterface<V extends RESTBaseCollectionItemV1<?, ?, ?>> extends PresenterInterface {
 
     /**
      * @return The query string that represents the current state of the filters

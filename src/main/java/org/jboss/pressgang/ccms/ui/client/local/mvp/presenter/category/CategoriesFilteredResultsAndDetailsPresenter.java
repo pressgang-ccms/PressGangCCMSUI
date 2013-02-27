@@ -25,7 +25,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.AddP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.GetExistingCollectionCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.UpdateAfterChildModfiedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.SetNewChildSortCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditComponent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -56,11 +56,11 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 @Dependent
 public class CategoriesFilteredResultsAndDetailsPresenter
         extends
-        BaseSearchAndEditComponent<
-                RESTCategoryV1,
-                RESTCategoryCollectionV1,
-                RESTCategoryCollectionItemV1,
-                RESTCategoryV1BasicDetailsEditor>
+        BaseSearchAndEditPresenter<
+                        RESTCategoryV1,
+                        RESTCategoryCollectionV1,
+                        RESTCategoryCollectionItemV1,
+                        RESTCategoryV1BasicDetailsEditor>
         implements BaseTemplatePresenterInterface {
 
     /**
