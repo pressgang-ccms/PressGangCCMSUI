@@ -72,11 +72,15 @@ public class PropertyCategoryTagView extends BaseChildrenView<
             checkState(getOriginalEntity() != null, "getOriginalEntity() should not be null");
             checkArgument(object == null || (object.getItem() != null && object.getItem().getId() != null), "object should be null or it should have a valid item and the item should have a valid id");
 
-            if (ComponentPropertyCategoryV1.isInCategory(getOriginalEntity(), object.getItem().getId())) {
-                return PressGangCCMSUI.INSTANCE.Remove();
-            } else {
-                return PressGangCCMSUI.INSTANCE.Add();
+            if (object != null) {
+                if (ComponentPropertyCategoryV1.isInCategory(getOriginalEntity(), object.getItem().getId())) {
+                    return PressGangCCMSUI.INSTANCE.Remove();
+                } else {
+                    return PressGangCCMSUI.INSTANCE.Add();
+                }
             }
+
+            return PressGangCCMSUI.INSTANCE.NoAction();
         }
     };
 

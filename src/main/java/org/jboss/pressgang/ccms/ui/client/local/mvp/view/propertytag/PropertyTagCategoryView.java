@@ -67,18 +67,22 @@ public class PropertyTagCategoryView extends BaseChildrenView<
     /**
      * The column used to render the property tag category's add/remove button.
      */
-    private final Column<RESTPropertyCategoryCollectionItemV1, String> tagsButtonColumn = new Column<RESTPropertyCategoryCollectionItemV1, String>(
-            new ButtonCell()) {
+    private final Column<RESTPropertyCategoryCollectionItemV1, String> tagsButtonColumn = new Column<RESTPropertyCategoryCollectionItemV1, String>(new ButtonCell()) {
         @Override
         public String getValue(@Nullable final RESTPropertyCategoryCollectionItemV1 object) {
             checkState(getOriginalEntity() != null, "getOriginalEntity() should not be null");
             checkArgument(object == null || (object.getItem() != null && object.getItem().getId() != null), "object should be null or it should have a valid item and the item should have a valid id");
 
-            if (ComponentPropertyTagV1.isInCategory(getOriginalEntity(), object.getItem().getId())) {
-                return PressGangCCMSUI.INSTANCE.Remove();
-            } else {
-                return PressGangCCMSUI.INSTANCE.Add();
+            if (object != null) {
+
+                if (ComponentPropertyTagV1.isInCategory(getOriginalEntity(), object.getItem().getId())) {
+                    return PressGangCCMSUI.INSTANCE.Remove();
+                } else {
+                    return PressGangCCMSUI.INSTANCE.Add();
+                }
             }
+
+            return PressGangCCMSUI.INSTANCE.NoAction();
         }
     };
 
