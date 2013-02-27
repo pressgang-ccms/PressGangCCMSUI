@@ -11,7 +11,6 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
-import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,6 +18,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 public final class SearchUICategoryEditor extends ScrollPanel implements ValueAwareEditor<SearchUICategory> {
     private static final int COLUMNS = 2;
+    private static final int LOGIC_AND_HEADING_ROW_COUNT = 3;
     private static final String INTERNAL_LOGIC_RADIOBUTTON_GROUP = "InternalLogic";
     private static final String EXTERNAL_LOGIC_RADIOBUTTON_GROUP = "ExternalLogic";
 
@@ -42,7 +42,7 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
     private class SearchUITagEditorSource extends EditorSource<SearchUITagEditor> {
         @Override
         public SearchUITagEditor create(final int index) {
-            final int fixedIndex = (index / COLUMNS) + 2; // add two because the first rows are taken up by the category logic controls
+            final int fixedIndex = (index / COLUMNS) + LOGIC_AND_HEADING_ROW_COUNT; // add 3 because the first rows are taken up by the category logic controls
             final int column = index % COLUMNS;
 
             final SearchUITagEditor subEditor = new SearchUITagEditor(driver, SearchUICategoryEditor.this);
@@ -59,7 +59,7 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
 
         @Override
         public void setIndex(@NotNull final SearchUITagEditor subEditor, final int index) {
-            final int fixedIndex = (index / COLUMNS) + 2; // add two because the first rows are taken up by the category logic controls
+            final int fixedIndex = (index / COLUMNS) + LOGIC_AND_HEADING_ROW_COUNT; // add 3 because the first rows are taken up by the category logic controls
             final int column = index % COLUMNS;
 
             tagsTable.setWidget(fixedIndex, column * 2, subEditor.name);
@@ -145,5 +145,11 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
         externalLogicPanel.add(externalLogicOr);
 
         tagsTable.setWidget(1, 1, externalLogicPanel);
+
+        final Label tags = new Label(PressGangCCMSUI.INSTANCE.Tags());
+        tagsTable.setWidget(2, 0, externalLogicPanel);
+        tagsTable.getFlexCellFormatter().addStyleName(2, 0, CSSConstants.SearchView.LOGIC_HEADER_CELL);
+        tagsTable.getFlexCellFormatter().setColSpan(2, 0, 2);
+
     }
 }
