@@ -60,9 +60,9 @@ public class PropertyTagFilteredResultsView extends
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ExtendedPropertyID());
         getResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.ExtendedPropertyName());
 
-        addFilterField(PressGangCCMSUI.INSTANCE.ProjectIDs(), idFilter);
-        addFilterField(PressGangCCMSUI.INSTANCE.ProjectName(), nameFilter);
-        addFilterField(PressGangCCMSUI.INSTANCE.ProjectDescription(), descriptionFilter);
+        addFilterField(PressGangCCMSUI.INSTANCE.ExtendedPropertyID(), idFilter);
+        addFilterField(PressGangCCMSUI.INSTANCE.ExtendedPropertyName(), nameFilter);
+        addFilterField(PressGangCCMSUI.INSTANCE.ExtendedPropertyDescription(), descriptionFilter);
 
         new NumbersAndCommaValidator(idFilter);
     }

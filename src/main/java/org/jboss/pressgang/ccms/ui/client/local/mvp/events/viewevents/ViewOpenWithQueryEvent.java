@@ -10,15 +10,24 @@ import org.jetbrains.annotations.NotNull;
  * @author kamiller@redhat.com (Katie Miller)
  */
 public abstract class ViewOpenWithQueryEvent<T extends ViewOpenWithQueryEventHandler> extends GwtEvent<T> {
+    /**
+     * The query to be passed in the URL history token, and then ultimately onto the REST service.
+     */
     protected final String query;
+    /**
+     *  true if the event should trigger a new window, false otherwise
+     */
     private final boolean newWindow;
 
+    /**
+     * @return true if the event should trigger a new window, false otherwise
+     */
     public final boolean isNewWindow() {
         return newWindow;
     }
 
     /**
-     * @param query     The query that is associated with this event
+     * @param query     The query to be passed in the URL history token, and then ultimately onto the REST service.
      * @param newWindow true if the event should trigger a new window, false otherwise
      */
     public ViewOpenWithQueryEvent(@NotNull final String query, final boolean newWindow) {
@@ -26,6 +35,9 @@ public abstract class ViewOpenWithQueryEvent<T extends ViewOpenWithQueryEventHan
         this.newWindow = newWindow;
     }
 
+    /**
+     * @return The query to be passed in the URL history token, and then ultimately onto the REST service
+     */
     public final String getQuery() {
         return query;
     }
