@@ -55,6 +55,12 @@ public interface BaseDetailedChildrenPresenterInterface<
      */
     void refreshExistingChildList(@NotNull final W parent);
 
+    /**
+     * This method should be called to initialize any class that extends this interface.
+     *
+     * @param topicId The help topic id for this view.
+     * @param pageId  The history token of the page
+     */
     void bindDetailedChildrenExtended(final int topicId, @NotNull final String pageId);
 
     /**

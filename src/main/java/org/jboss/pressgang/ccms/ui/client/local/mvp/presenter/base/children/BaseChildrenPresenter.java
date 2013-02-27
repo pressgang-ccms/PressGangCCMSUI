@@ -60,7 +60,10 @@ public abstract class BaseChildrenPresenter<
     }
 
     /**
-     * @inheritDoc
+     * Initialize this presenter.
+     * @param topicId The help topic id for this view.
+     * @param pageId The id for this page, used for the survey link.
+     * @param display The view to display the wait dialog.
      */
     protected final void bindChildren(final int topicId, @NotNull final String pageId, @NotNull final BaseChildrenViewInterface display) {
         this.display = display;

@@ -7,6 +7,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * This is the base class that is used for components adding logic to views that list the results of a query.
  * @param <V> The collection item type for entity T
  * @author Matthew Casperson
  */

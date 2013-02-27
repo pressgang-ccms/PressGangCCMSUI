@@ -12,10 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jetbrains.annotations.NotNull;
 
 /**
- * This is the base class that is used for components adding logic to views that list the results of a query
- *
- * @param <V> The collection item type for entity T
- * @author Matthew Casperson
+ * @see BaseFilteredResultsPresenterInterface
  */
 abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionItemV1<?, ?, ?>>
         extends BaseTemplatePresenter implements BaseFilteredResultsPresenterInterface<V> {
@@ -25,6 +22,9 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
      */
     private final ProviderUpdateData<V> providerData = new ProviderUpdateData<V>();
 
+    /**
+     * Used to distribute events, such as when the list of entities has been loaded.
+     */
     final private HandlerManager handlerManager = new HandlerManager(this);
 
     /**
@@ -41,6 +41,10 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
         return providerData;
     }
 
+    /**
+     * Adds an event handler to listen for the entity list loaded event.
+     * @param handler The event handler
+     */
     public final void addTopicListReceivedHandler(@NotNull final EntityListReceivedHandler handler) {
         handlerManager.addHandler(EntityListReceived.getType(), handler);
     }

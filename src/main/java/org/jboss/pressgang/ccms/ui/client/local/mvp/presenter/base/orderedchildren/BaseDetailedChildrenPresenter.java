@@ -17,13 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * @param <T> The type of the entity being edited by the view
- * @param <W> The type of the parent of A and D
- * @param <C> The collection item type of A
- * @param <D> The type of the existing children
- * @param <E> The collection type of D
- * @param <F> The collection item type of D
- * @author Matthew Casperson
+ * @see BaseDetailedChildrenPresenterInterface
  */
 abstract public class BaseDetailedChildrenPresenter<
         T extends RESTBaseEntityV1<?, ?, ?>,
@@ -40,6 +34,9 @@ abstract public class BaseDetailedChildrenPresenter<
      */
     private static final Logger LOGGER = Logger.getLogger(BaseOrderedChildrenPresenter.class.getName());
 
+    /**
+     * The provider data for the list of existing children.
+     */
     private final ProviderUpdateData<F> existingProviderData = new ProviderUpdateData<F>();
 
     /**
@@ -67,6 +64,13 @@ abstract public class BaseDetailedChildrenPresenter<
         throw new UnsupportedOperationException("bindChildrenExtended() is not supported. Use bindDetailedChildren() instead.");
     }
 
+    /**
+     * Initialize this presenter.
+     * @param topicId The help topic id for this view.
+     * @param pageId The id for this page, used for the survey link.
+     * @param preferencesKey The key that saves the width of the split panel which separates the childen and their details.
+     * @param display The view to display the wait dialog.
+     */
     protected final void bindDetailedChildren(final int topicId, @NotNull final String pageId, @NotNull final String preferencesKey, @NotNull final BaseExtendedChildrenViewInterface display) {
 
         this.display = display;
