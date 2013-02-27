@@ -94,6 +94,23 @@ public interface CSSConstants {
         String STRING_CONSTANT_VIEW_VALUE_FIELD = "StringConstantViewValueField";
     }
 
+    interface PropertyTagView {
+        String PROPERTY_TAG_VIEW_PANEL = "PropertyTagViewPanel";
+        String PROPERTY_TAG_VIEW_ID_FIELD = "PropertyTagViewIdField";
+        String PROPERTY_TAG_VIEW_NAME_FIELD = "PropertyTagViewNameField";
+        String PROPERTY_TAG_VIEW_REGEX_FIELD = "PropertyTagViewRegexField";
+        String PROPERTY_TAG_VIEW_DESCRIPTION_FIELD = "PropertyTagViewDescriptionField";
+        String PROPERTY_TAG_VIEW_UNIQUE_FIELD = "PropertyTagViewUniqueField";
+        String PROPERTY_TAG_VIEW_CANBENULL_FIELD = "PropertyTagViewCanBeNullField";
+    }
+
+    interface PropertyCategoryView {
+        String PROPERTY_CATEGORY_VIEW_PANEL = "PropertyCategoryViewPanel";
+        String PROPERTY_CATEGORY_VIEW_ID_FIELD = "PropertyCategoryViewIdField";
+        String PROPERTY_CATEGORY_VIEW_NAME_FIELD = "PropertyCategoryViewNameField";
+        String PROPERTY_CATEGORY_VIEW_DESCRIPTION_FIELD = "PropertyCategoryViewDescriptionField";
+    }
+
     interface IntegerConstantView {
         String INTEGER_CONSTANT_VIEW_PANEL = "IntegerConstantViewPanel";
         String INTEGER_CONSTANT_VIEW_ID_FIELD = "IntegerConstantViewIdField";

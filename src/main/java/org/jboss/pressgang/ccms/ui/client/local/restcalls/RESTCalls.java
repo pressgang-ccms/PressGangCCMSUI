@@ -58,6 +58,10 @@ public final class RESTCalls {
      */
     private static final String PROPERTY_TAG_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTPropertyTagV1.PROPERTY_CATEGORIES_NAME + "\"}}";
     /**
+     * The required expansion details for the property tags.
+     */
+    private static final String PROPERTY_CATEGORY_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTPropertyCategoryV1.PROPERTY_TAGS_NAME + "\"}}";
+    /**
      * The required expansion details for the projects.
      */
     private static final String PROJECT_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTProjectV1.TAGS_NAME + "\"}}";
@@ -783,20 +787,49 @@ public final class RESTCalls {
         });
     }
 
-    public static void savePropertyTag(@NotNull final RESTCallback<RESTPropertyTagV1> callback, @NotNull final RESTPropertyTagV1 category) {
+    public static void savePropertyTag(@NotNull final RESTCallback<RESTPropertyTagV1> callback, @NotNull final RESTPropertyTagV1 propertyTag) {
+        final String expand = "{\"branches\":[" + PROPERTY_TAG_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).updateJSONPropertyTag("", category);
+                createRestMethod(callback).updateJSONPropertyTag(expand, propertyTag);
             }
         });
     }
 
-    public static void createPropertyTag(@NotNull final RESTCallback<RESTPropertyTagV1> callback, @NotNull final RESTPropertyTagV1 category) {
+    public static void createPropertyTag(@NotNull final RESTCallback<RESTPropertyTagV1> callback, @NotNull final RESTPropertyTagV1 propertyTag) {
+        final String expand = "{\"branches\":[" + PROPERTY_TAG_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).createJSONPropertyTag("", category);
+                createRestMethod(callback).createJSONPropertyTag(expand, propertyTag);
+            }
+        });
+    }
+
+    /**
+     * Get a collection of property categories from the rest server.
+     * @param callback The callback to process the results from the REST server
+     * @param queryString The query passed to the REST endpoint
+     * @param start The start of the range of returned entities
+     * @param end The end of the range of returned entities
+     */
+    public static void getPropertyCategoriesFromQuery(@NotNull final RESTCallback<RESTPropertyCategoryCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
+        final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONPropertyTagsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        });
+    }
+
+    public static void getPropertyCategory(@NotNull final RESTCallback<RESTPropertyCategoryV1> callback, @NotNull final Integer id) {
+        final String expand = "{\"branches\":[" + PROPERTY_CATEGORY_EXPANSION + "]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONPropertyCategory(id, expand);
             }
         });
     }

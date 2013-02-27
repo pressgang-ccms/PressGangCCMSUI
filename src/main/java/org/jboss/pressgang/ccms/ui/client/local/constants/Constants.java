@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201302270807";
+    public static final String VERSION = "201302270854";
 
     /**
      * Indicates that a tag should be present in the returned topics

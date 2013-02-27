@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytag;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytagcategory;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -7,20 +7,16 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyCategoryInPropertyTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyTagInPropertyCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTPropertyCategoryInPropertyTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTPropertyTagInPropertyCategoryCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTPropertyCategoryInPropertyTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTPropertyTagInPropertyCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ProjectsFilteredResultsAndProjectViewEvent;
@@ -39,7 +35,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjectV1BasicDetailsEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.editor.propertycategory.RESTPropertyCategoryV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.propertytag.RESTPropertyTagV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -52,16 +48,15 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
-import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.stringEqualsEquatingNullWithEmptyString;
 
 @Dependent
-public class PropertyTagFilteredResultsAndDetailsPresenter
+public class PropertyCategoryFilteredResultsAndDetailsPresenter
         extends
         BaseSearchAndEditComponent<
-            RESTPropertyTagV1,
-            RESTPropertyTagCollectionV1,
-            RESTPropertyTagCollectionItemV1,
-            RESTPropertyTagV1DetailsEditor>
+            RESTPropertyCategoryV1,
+            RESTPropertyCategoryCollectionV1,
+            RESTPropertyCategoryCollectionItemV1,
+            RESTPropertyCategoryV1DetailsEditor>
         implements BaseTemplatePresenterInterface {
 
 
@@ -71,7 +66,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
      *
      * @author Matthew Casperson
      */
-    public interface Display extends BaseSearchAndEditViewInterface<RESTPropertyTagV1, RESTPropertyTagCollectionV1, RESTPropertyTagCollectionItemV1> {
+    public interface Display extends BaseSearchAndEditViewInterface<RESTPropertyCategoryV1, RESTPropertyCategoryCollectionV1, RESTPropertyCategoryCollectionItemV1> {
         PushButton getChildren();
 
         PushButton getDetails();
@@ -86,7 +81,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
     /**
      * The history token used to identify this view.
      */
-    public static final String HISTORY_TOKEN = "PropertyTagFilteredResultsAndDetailView";
+    public static final String HISTORY_TOKEN = "PropertyCategoryFilteredResultsAndDetailView";
 
     @Inject
     private HandlerManager eventBus;
@@ -101,16 +96,16 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
      * An Errai injected instance of a class that implements ProjectFilteredResultsPresenter.LogicCompnent
      */
     @Inject
-    private PropertyTagFilteredResultsPresenter filteredResultsComponent;
+    private PropertyCategoryFilteredResultsPresenter filteredResultsComponent;
 
     /**
      * An Errai injected instance of a class that implements PropertyTagPresenter.LogicComponent
      */
     @Inject
-    private PropertyTagPresenter resultComponent;
+    private PropertyCategoryPresenter resultComponent;
 
     @Inject
-    private PropertyTagCategoryPresenter tagComponent;
+    private PropertyCategoryTagPresenter tagComponent;
 
     /**
      * The category query string extracted from the history token
@@ -120,34 +115,34 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
     @Override
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
-        bindSearchAndEditExtended(ServiceConstants.PROPERTY_TAG_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        bindSearchAndEditExtended(ServiceConstants.PROPERTY_CATEGORY_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
     @Override
     public void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTPropertyTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTPropertyTagV1>() {
+        final GetNewEntityCallback<RESTPropertyCategoryV1> getNewEntityCallback = new GetNewEntityCallback<RESTPropertyCategoryV1>() {
 
             @Override
-            public void getNewEntity(@NotNull final RESTPropertyTagV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTPropertyTagV1> displayCallback) {
-                final RESTCallback<RESTPropertyTagV1> callback = new BaseRestCallback<RESTPropertyTagV1, BaseTemplateViewInterface>(display,
-                        new BaseRestCallback.SuccessAction<RESTPropertyTagV1, BaseTemplateViewInterface>() {
+            public void getNewEntity(@NotNull final RESTPropertyCategoryV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTPropertyCategoryV1> displayCallback) {
+                final RESTCallback<RESTPropertyCategoryV1> callback = new BaseRestCallback<RESTPropertyCategoryV1, BaseTemplateViewInterface>(display,
+                        new BaseRestCallback.SuccessAction<RESTPropertyCategoryV1, BaseTemplateViewInterface>() {
                             @Override
-                            public void doSuccessAction(final RESTPropertyTagV1 retValue, final BaseTemplateViewInterface display) {
+                            public void doSuccessAction(@NotNull final RESTPropertyCategoryV1 retValue, @NotNull final BaseTemplateViewInterface display) {
                                 displayCallback.displayNewEntity(retValue);
                             }
                         });
-                RESTCalls.getPropertyTag(callback, selectedEntity.getId());
+                RESTCalls.getPropertyCategory(callback, selectedEntity.getId());
             }
         };
 
 
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
-        filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.PROPERTY_TAG_HELP_TOPIC, pageId, queryString);
-        resultComponent.bindExtended(ServiceConstants.PROPERTY_TAG_DETAILS_HELP_TOPIC, pageId);
-        tagComponent.bindChildrenExtended(ServiceConstants.PROPERTY_TAG_CATEGORIES_HELP_TOPIC, pageId);
-        super.bindSearchAndEdit(topicId, pageId, Preferences.PROPERTY_TAG_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
+        filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.PROPERTY_CATEGORY_HELP_TOPIC, pageId, queryString);
+        resultComponent.bindExtended(ServiceConstants.PROPERTY_CATEGORY_DETAILS_HELP_TOPIC, pageId);
+        tagComponent.bindChildrenExtended(ServiceConstants.PROPERTY_CATEGORY_TAGS_HELP_TOPIC, pageId);
+        super.bindSearchAndEdit(topicId, pageId, Preferences.PROPERTY_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
                 filteredResultsComponent.getDisplay(), filteredResultsComponent, display, display, getNewEntityCallback);
 
         /* Bind the logic to add and remove possible children */

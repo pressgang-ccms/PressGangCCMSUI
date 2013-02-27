@@ -65,10 +65,13 @@ public final class RESTPropertyTagV1DetailsEditor extends Grid implements Editor
     public RESTPropertyTagV1DetailsEditor(final boolean readOnly) {
         super(ROWS, COLS);
 
-        this.addStyleName(CSSConstants.StringConstantView.STRING_CONSTANT_VIEW_PANEL);
-        id.addStyleName(CSSConstants.StringConstantView.STRING_CONSTANT_VIEW_ID_FIELD);
-        name.addStyleName(CSSConstants.StringConstantView.STRING_CONSTANT_VIEW_NAME_FIELD);
-        description.addStyleName(CSSConstants.StringConstantView.STRING_CONSTANT_VIEW_VALUE_FIELD);
+        this.addStyleName(CSSConstants.PropertyTagView.PROPERTY_TAG_VIEW_PANEL);
+        id.addStyleName(CSSConstants.PropertyTagView.PROPERTY_TAG_VIEW_ID_FIELD);
+        name.addStyleName(CSSConstants.PropertyTagView.PROPERTY_TAG_VIEW_NAME_FIELD);
+        description.addStyleName(CSSConstants.PropertyTagView.PROPERTY_TAG_VIEW_DESCRIPTION_FIELD);
+        regex.addStyleName(CSSConstants.PropertyTagView.PROPERTY_TAG_VIEW_REGEX_FIELD);
+        unique.addStyleName(CSSConstants.PropertyTagView.PROPERTY_TAG_VIEW_UNIQUE_FIELD);
+        canBeNull.addStyleName(CSSConstants.PropertyTagView.PROPERTY_TAG_VIEW_CANBENULL_FIELD);
 
         id.setReadOnly(true);
         name.setReadOnly(readOnly);
