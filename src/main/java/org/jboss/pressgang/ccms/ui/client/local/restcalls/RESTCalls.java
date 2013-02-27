@@ -834,6 +834,26 @@ public final class RESTCalls {
         });
     }
 
+    public static void savePropertyCategory(@NotNull final RESTCallback<RESTPropertyCategoryV1> callback, @NotNull final RESTPropertyCategoryV1 propertyCategory) {
+        final String expand = "{\"branches\":[" + PROPERTY_CATEGORY_EXPANSION + "]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).updateJSONPropertyCategory(expand, propertyCategory);
+            }
+        });
+    }
+
+    public static void createPropertyCategory(@NotNull final RESTCallback<RESTPropertyCategoryV1> callback, @NotNull final RESTPropertyCategoryV1 propertyCategory) {
+        final String expand = "{\"branches\":[" + PROPERTY_CATEGORY_EXPANSION + "]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).createJSONPropertyCategory(expand, propertyCategory);
+            }
+        });
+    }
+
     /**
      * Retrieve a list of locales from the server.
      *

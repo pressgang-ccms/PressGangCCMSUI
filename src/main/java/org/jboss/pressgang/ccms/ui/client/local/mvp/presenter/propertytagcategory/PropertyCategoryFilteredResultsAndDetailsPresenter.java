@@ -13,10 +13,13 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyCategoryInPropertyTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyTagInPropertyCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTPropertyCategoryInPropertyTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTPropertyTagInPropertyCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTPropertyCategoryInPropertyTagV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTPropertyTagInPropertyCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ProjectsFilteredResultsAndProjectViewEvent;
@@ -147,19 +150,19 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
 
         /* Bind the logic to add and remove possible children */
         tagComponent.bindPossibleChildrenListButtonClicks(
-            new GetExistingCollectionCallback<RESTPropertyCategoryInPropertyTagV1, RESTPropertyCategoryInPropertyTagCollectionV1, RESTPropertyCategoryInPropertyTagCollectionItemV1>() {
+            new GetExistingCollectionCallback<RESTPropertyTagInPropertyCategoryV1, RESTPropertyTagInPropertyCategoryCollectionV1, RESTPropertyTagInPropertyCategoryCollectionItemV1>() {
                 @Override
-                public RESTPropertyCategoryInPropertyTagCollectionV1 getExistingCollection() {
-                    return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories();
+                public RESTPropertyTagInPropertyCategoryCollectionV1 getExistingCollection() {
+                    return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags();
                 }
             },
-            new AddPossibleChildCallback<RESTPropertyCategoryCollectionItemV1>() {
+            new AddPossibleChildCallback<RESTPropertyTagCollectionItemV1>() {
                 @Override
-                public void createAndAddChild(@NotNull final RESTPropertyCategoryCollectionItemV1 copy) {
-                    final RESTPropertyCategoryInPropertyTagV1 newChild = new RESTPropertyCategoryInPropertyTagV1();
+                public void createAndAddChild(@NotNull final RESTPropertyTagCollectionItemV1 copy) {
+                    final RESTPropertyTagInPropertyCategoryV1 newChild = new RESTPropertyTagInPropertyCategoryV1();
                     newChild.setId(copy.getItem().getId());
                     newChild.setName(copy.getItem().getName());
-                    filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories().addNewItem(newChild);
+                    filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags().addNewItem(newChild);
                 }
             },
             new UpdateAfterChildModfiedCallback() {
@@ -228,10 +231,10 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
                 /* Sync the UI to the underlying object */
                 resultComponent.getDisplay().getDriver().flush();
 
-                final RESTCallback<RESTPropertyTagV1> callback = new BaseRestCallback<RESTPropertyTagV1, Display>(display,
-                        new BaseRestCallback.SuccessAction<RESTPropertyTagV1, Display>() {
+                final RESTCallback<RESTPropertyCategoryV1> callback = new BaseRestCallback<RESTPropertyCategoryV1, Display>(display,
+                        new BaseRestCallback.SuccessAction<RESTPropertyCategoryV1, Display>() {
                             @Override
-                            public void doSuccessAction(@NotNull final RESTPropertyTagV1 retValue, @NotNull final Display display) {
+                            public void doSuccessAction(@NotNull final RESTPropertyCategoryV1 retValue, @NotNull final Display display) {
                                 retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
                                 retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
 
@@ -254,21 +257,18 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
 
                     if (hasUnsavedChanges()) {
 
-                        final RESTPropertyTagV1 displayedItem = filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
-                        final RESTPropertyTagV1 propertyTag = new RESTPropertyTagV1();
+                        final RESTPropertyCategoryV1 displayedItem = filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
+                        final RESTPropertyCategoryV1 propertyTag = new RESTPropertyCategoryV1();
 
                         propertyTag.setId(displayedItem.getId());
                         propertyTag.explicitSetName(displayedItem.getName());
                         propertyTag.explicitSetDescription(displayedItem.getDescription());
-                        propertyTag.explicitSetPropertyCategories(displayedItem.getPropertyCategories());
-                        propertyTag.explicitSetCanBeNull(displayedItem.getCanBeNull());
-                        propertyTag.explicitSetIsUnique(displayedItem.getIsUnique());
-                        propertyTag.explicitSetRegex(displayedItem.getRegex());
+                        propertyTag.explicitSetPropertyTags(displayedItem.getPropertyTags());
 
                         if (wasNewEntity) {
-                            RESTCalls.createPropertyTag(callback, propertyTag);
+                            RESTCalls.createPropertyCategory(callback, propertyTag);
                         } else {
-                            RESTCalls.savePropertyTag(callback, propertyTag);
+                            RESTCalls.savePropertyCategory(callback, propertyTag);
                         }
                     } else {
                         Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
@@ -302,15 +302,15 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
             public void onClick(final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
-                final RESTPropertyTagV1 selectedEntity = new RESTPropertyTagV1();
+                final RESTPropertyCategoryV1 selectedEntity = new RESTPropertyCategoryV1();
                 selectedEntity.setId(Constants.NULL_ID);
-                final RESTPropertyTagCollectionItemV1 selectedTagWrapper = new RESTPropertyTagCollectionItemV1(selectedEntity);
+                final RESTPropertyCategoryCollectionItemV1 selectedTagWrapper = new RESTPropertyCategoryCollectionItemV1(selectedEntity);
 
                 /* The displayed tag will also be blank. This is the object that our data will be saved into */
-                final RESTPropertyTagV1 displayedEntity = new RESTPropertyTagV1();
+                final RESTPropertyCategoryV1 displayedEntity = new RESTPropertyCategoryV1();
                 displayedEntity.setId(Constants.NULL_ID);
-                displayedEntity.setPropertyCategories(new RESTPropertyCategoryInPropertyTagCollectionV1());
-                final RESTPropertyTagCollectionItemV1 displayedTagWrapper = new RESTPropertyTagCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
+                displayedEntity.setPropertyTags(new RESTPropertyTagInPropertyCategoryCollectionV1());
+                final RESTPropertyCategoryCollectionItemV1 displayedTagWrapper = new RESTPropertyCategoryCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
 
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
@@ -344,14 +344,11 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
         checkState(filteredResultsComponent.getProviderData().getSelectedItem() != null, "An item should have been selected");
         checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "An item should have been displayed");
 
-        final RESTPropertyTagV1 selectedItem = filteredResultsComponent.getProviderData().getSelectedItem().getItem();
-        final RESTPropertyTagV1 displayedItem = filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
+        final RESTPropertyCategoryV1 selectedItem = filteredResultsComponent.getProviderData().getSelectedItem().getItem();
+        final RESTPropertyCategoryV1 displayedItem = filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
 
         return !(stringEqualsEquatingNullWithEmptyString(selectedItem.getName(), displayedItem.getName())
-                && stringEqualsEquatingNullWithEmptyStringAndIgnoreLineBreaks(selectedItem.getDescription(), displayedItem.getDescription())
-                && selectedItem.getCanBeNull() == displayedItem.getCanBeNull()
-                && selectedItem.getIsUnique() == displayedItem.getIsUnique()
-                && stringEqualsEquatingNullWithEmptyString(selectedItem.getRegex(), displayedItem.getRegex()));
+                && stringEqualsEquatingNullWithEmptyStringAndIgnoreLineBreaks(selectedItem.getDescription(), displayedItem.getDescription()));
     }
 
     /**
@@ -360,9 +357,9 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
      * @return true if there are modified tags, false otherwise
      */
     private boolean unsavedCategoryChanges() {
-        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories() != null, "The property tag's collection of categories should have been populated.");
+        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags() != null, "The property collection's collection of tags should have been populated.");
 
-        return !filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories().returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
+        return !filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags().returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
     }
 
     /**
@@ -389,11 +386,11 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
     @Override
     protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
 
-        final List<BaseCustomViewInterface<RESTPropertyTagV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTPropertyTagV1>>();
+        final List<BaseCustomViewInterface<RESTPropertyCategoryV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTPropertyCategoryV1>>();
         displayableViews.add(resultComponent.getDisplay());
         displayableViews.add(tagComponent.getDisplay());
 
-        for (final BaseCustomViewInterface<RESTPropertyTagV1> view : displayableViews) {
+        for (final BaseCustomViewInterface<RESTPropertyCategoryV1> view : displayableViews) {
             if (viewIsInFilter(filter, view)) {
                 view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
             }
