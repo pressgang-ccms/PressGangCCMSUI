@@ -10,9 +10,15 @@ import org.jetbrains.annotations.NotNull;
  * @author kamiller@redhat.com (Katie Miller)
  */
 public class ViewOpenEventHandler implements EventHandler {
-
+    /**
+     * The history token to be appended to the URL.
+     */
     protected String historyToken;
 
+    /**
+     * Initialize the event.
+     * @param historyToken The history token to be appended to the URL.
+     */
     public ViewOpenEventHandler(@NotNull final String historyToken) {
         this.historyToken = historyToken;
     }

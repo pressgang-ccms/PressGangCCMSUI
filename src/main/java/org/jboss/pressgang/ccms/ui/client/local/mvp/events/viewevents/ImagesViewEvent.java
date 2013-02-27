@@ -1,6 +1,10 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents;
 
-public class ImagesViewEvent extends ViewOpenEvent<ViewOpenEventHandler> {
+/**
+ * Event used to display the image details view.
+ */
+
+public final class ImagesViewEvent extends ViewOpenEvent<ViewOpenEventHandler> {
     public static final Type<ViewOpenEventHandler> TYPE = new Type<ViewOpenEventHandler>();
 
     @Override
