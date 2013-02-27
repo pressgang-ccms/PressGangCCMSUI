@@ -136,6 +136,7 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
         internalLogicPanel.add(internalLogicOr);
 
         tagsTable.setWidget(1, 0, internalLogicPanel);
+        tagsTable.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.SearchView.LOGIC_DETAILS_CELL);
 
         final Label externalLogicLabel = new Label(PressGangCCMSUI.INSTANCE.ExternalLogic());
         tagsTable.setWidget(0, 2, externalLogicLabel);

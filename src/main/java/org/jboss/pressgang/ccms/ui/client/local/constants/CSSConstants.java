@@ -12,12 +12,19 @@ public interface CSSConstants {
         String HELP_CONTENTS = "HelpContents";
     }
 
+    /**
+     * These styles are applied to the topic and translated topic search views.
+     */
     interface SearchView {
         /**
          * The style applied to the cell that appears above the
          * category logic options.
          */
         String LOGIC_HEADER_CELL = "LogicHeaderCell";
+        /**
+         * The style applied to the cell that holds the logic details radio buttons.
+         */
+        String LOGIC_DETAILS_CELL = "LogicDetailsCell";
     }
 
     /**
