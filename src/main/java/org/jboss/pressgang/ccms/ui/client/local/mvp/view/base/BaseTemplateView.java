@@ -151,8 +151,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private final PushButton stringConstants;
     private final PushButton blobConstants;
     private final PushButton integerConstants;
-    private final PushButton users;
-    private final PushButton roles;
     private final PushButton propertyTags;
     private final PushButton propertyTagCategories;
     private final PushButton bug;
@@ -364,18 +362,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     @Override
     public final PushButton getPropertyTags() {
         return propertyTags;
-    }
-
-    @NotNull
-    @Override
-    public final PushButton getRoles() {
-        return roles;
-    }
-
-    @NotNull
-    @Override
-    public final PushButton getUsers() {
-        return users;
     }
 
     @NotNull
@@ -645,14 +631,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         advancedOpen = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Advanced(), true);
         addShortcutButton(advancedOpen, advancedShortcutPanel);
-
-        users = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Users());
-        users.setEnabled(false);
-        addShortcutButton(users, advancedShortcutPanel);
-
-        roles = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Roles());
-        roles.setEnabled(false);
-        addShortcutButton(roles, advancedShortcutPanel);
 
         stringConstants = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.StringConstants());
         addShortcutButton(stringConstants, advancedShortcutPanel);

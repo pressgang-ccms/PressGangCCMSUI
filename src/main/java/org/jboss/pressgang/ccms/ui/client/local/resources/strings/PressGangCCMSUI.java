@@ -461,4 +461,16 @@ public interface PressGangCCMSUI extends Constants {
     String ExtendedPropertyCanBeNull();
 
     String ExtendedPropertyUnique();
+
+    String ExtendedPropertyCategoryID();
+
+    String ExtendedPropertyCategoryName();
+
+    String ExtendedPropertyCategoryDescription();
+
+    String CreateExtendedPropertyCategory();
+
+    String ExtendedPropertyCategoryDetails();
+
+    String ExtendedPropertyCategoryExtendedProperties();
 }

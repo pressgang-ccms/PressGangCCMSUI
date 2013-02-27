@@ -16,19 +16,49 @@ public interface BaseTemplateViewInterface {
      * @author Matthew Casperson
      */
     interface HelpDialog {
+        /**
+         *
+         * @return A reference to the dialog box (the class that implements this interface usually also extends
+         * the DialogBox class, so this method usually just returns "this").
+         */
         DialogBox getDialogBox();
 
+        /**
+         *
+         * @return The element that displays the help topic
+         */
         HTML getContents();
 
+        /**
+         *
+         * @return The OK button.
+         */
         PushButton getOK();
 
+        /**
+         *
+         * @return The Edit button
+         */
         PushButton getEdit();
 
+        /**
+         *
+         * @return The id of the topic that the dialog is displaying
+         */
         int getHelpTopic();
 
+        /**
+         * Show the dialog box with the specified topic.
+         * @param topicId The id of the topic that the dialog is displaying
+         * @param waitDisplay The display to display the wait message
+         */
         void show(final int topicId, final BaseTemplateViewInterface waitDisplay);
     }
 
+    /**
+     *
+     * @return The help dialog box.
+     */
     HelpDialog getHelpDialog();
 
     /**
@@ -128,30 +158,60 @@ public interface BaseTemplateViewInterface {
      */
     PushButton getAdvanced();
 
+    /**
+     * @return The button that opens the property tag categories view
+     */
     PushButton getPropertyTagCategories();
 
+    /**
+     * @return The button that opens the property tags view
+     */
     PushButton getPropertyTags();
 
-    PushButton getRoles();
-
-    PushButton getUsers();
-
+    /**
+     * @return The button that opens the integer constants view
+     */
     PushButton getIntegerConstants();
 
+    /**
+     * @return The button that opens the blob constants view
+     */
     PushButton getBlobConstants();
 
+    /**
+     * @return The button that opens the string constants view
+     */
     PushButton getStringConstants();
 
+    /**
+     * @return The button that opens the projects view
+     */
     PushButton getProjects();
 
+    /**
+     * @return The button that opens the categories view
+     */
     PushButton getCategories();
 
+    /**
+     * @return The button that opens the tags view
+     */
     PushButton getTags();
 
+    /**
+     * @return The button that opens the external reports view
+     */
     PushButton getReports();
 
+    /**
+     * @return The button that opens the translated topics search results view
+     */
     PushButton getSearchTranslations();
 
+    /**
+     *
+     * @return The link that opens the help page
+     */
     Anchor getHelp();
 
     /**
