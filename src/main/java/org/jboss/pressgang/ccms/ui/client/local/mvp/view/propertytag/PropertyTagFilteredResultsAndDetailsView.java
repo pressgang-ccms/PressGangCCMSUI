@@ -51,7 +51,7 @@ public class PropertyTagFilteredResultsAndDetailsView extends
     }
 
     public PropertyTagFilteredResultsAndDetailsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Projects());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.ExtendedProperties());
         populateTopActionBar();
     }
 
