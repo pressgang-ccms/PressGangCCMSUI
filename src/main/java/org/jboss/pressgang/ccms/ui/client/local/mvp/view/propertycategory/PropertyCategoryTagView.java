@@ -9,7 +9,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyCateg
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyTagInPropertyCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTPropertyCategoryInPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTPropertyTagInPropertyCategoryCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.components.ComponentPropertyTagV1;
+import org.jboss.pressgang.ccms.rest.v1.components.ComponentPropertyCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTPropertyCategoryInPropertyTagV1;
@@ -73,7 +73,7 @@ public class PropertyCategoryTagView extends BaseChildrenView<
             checkState(getOriginalEntity() != null, "getOriginalEntity() should not be null");
             checkArgument(object == null || (object.getItem() != null && object.getItem().getId() != null), "object should be null or it should have a valid item and the item should have a valid id");
 
-            if (ComponentPropertyTagV1.isInCategory(object.getItem(), getOriginalEntity().getId())) {
+            if (ComponentPropertyCategoryV1.isInCategory(getOriginalEntity(), object.getItem().getId())) {
                 return PressGangCCMSUI.INSTANCE.Remove();
             } else {
                 return PressGangCCMSUI.INSTANCE.Add();

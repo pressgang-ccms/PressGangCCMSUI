@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201302271148";
+    public static final String VERSION = "201302271201";
 
     /**
      * Indicates that a tag should be present in the returned topics
@@ -153,7 +153,7 @@ public final class Constants {
     /**
      * A link to the survey.
      */
-    public static final String KEY_SURVEY_LINK = "http://www.keysurvey.com/votingmodule/s180/f/457744/1909/?LQID=1&source=";
+    public static final String KEY_SURVEY_LINK = "http://www.keysurvey.com/f/457744/149e/?LQID=1&source=";
     /**
      * The start of the url for the documentation of Docbook XML elements.
      */
