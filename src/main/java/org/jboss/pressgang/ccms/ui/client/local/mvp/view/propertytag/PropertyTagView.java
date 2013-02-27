@@ -28,7 +28,7 @@ public class PropertyTagView extends BaseTemplateView implements PropertyTagPres
     }
 
     public PropertyTagView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.ProjectDetails());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.ExtendedProperties());
     }
 
     @Override
