@@ -11,6 +11,4 @@ public interface PresenterInterface {
      * @param container The container that will host the presenter
      */
     void go(@NotNull final HasWidgets container);
-
-
 }

@@ -5,22 +5,13 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.detailedchildren.BaseDetailedChildrenPresenter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Logger;
 
 /**
- * @param <T> The type of the entity being edited by the view
- * @param <U> The collection type of T
- * @param <V> The collection Item type of T
- * @param <W> The type of the parent of A and D
- * @param <A> The type of the potential children
- * @param <B> The collection type of A
- * @param <C> The collection item type of A
- * @param <D> The type of the existing children
- * @param <E> The collection type of D
- * @param <F> The collection item type of D
- * @author Matthew Casperson
+ * @see BaseOrderedChildrenPresenterInterface
  */
 abstract public class BaseOrderedChildrenPresenter<
         T extends RESTBaseEntityV1<?, ?, ?>,
@@ -39,9 +30,6 @@ abstract public class BaseOrderedChildrenPresenter<
 
     @Override
     public final void setSortOrderOfChildren(@NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {
-        if (sortCallback == null) {
-            throw new NullPointerException("sortCallback cannot be null");
-        }
 
         final int size = getExistingProviderData().getItems().size();
 

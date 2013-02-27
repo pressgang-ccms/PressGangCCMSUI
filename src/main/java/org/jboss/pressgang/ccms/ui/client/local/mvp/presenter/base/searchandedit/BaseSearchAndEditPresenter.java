@@ -25,9 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The base class for all components adding logic to search and edit views. This view has a split screen with a filtered results
- * list on the left, and the entity details on the right, with at least one of those views being a "properties view", which
- * shows the fields associated with an entity (especially the ID).
+ * @see BaseSearchAndEditPresenterInterface
  *
  * @param <T> The entity type
  * @param <U> The entity collection type of T

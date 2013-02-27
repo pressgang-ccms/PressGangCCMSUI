@@ -3,7 +3,11 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedi
 import org.jetbrains.annotations.NotNull;
 
 /**
- * The interface that defines the search and edit presenter functionality.
+ * The base class for all components adding logic to search and edit views. This view has a split screen with a filtered results
+ * list on the left, and the entity details on the right, with at least one of those views being a "properties view", which
+ * shows the fields associated with an entity (especially the ID).
+
+ * @author Matthew Casperson
  */
 public interface BaseSearchAndEditPresenterInterface {
 

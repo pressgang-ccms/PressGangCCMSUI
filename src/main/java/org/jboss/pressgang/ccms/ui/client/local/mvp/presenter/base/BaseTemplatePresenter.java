@@ -274,6 +274,12 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         }
     }
 
+    /**
+     * Initialize the common elements of the view.
+     * @param topicId The help topic associated with the view
+     * @param pageId The id of the view
+     * @param display The view that this presenter is associated with
+     */
     protected final void bind(final int topicId, @NotNull final String pageId, @NotNull final BaseTemplateViewInterface display) {
         this.display = display;
         this.helpTopicId = topicId;
