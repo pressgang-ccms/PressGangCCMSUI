@@ -179,8 +179,11 @@ public class SearchUIProjects implements SearchViewBase {
                     for (final SearchUITag tag : category.getMyTags()) {
                         if (!processedIds.contains(tag.getTag().getItem().getId())) {
                             if (tag.getState() != TriStateSelectionState.NONE) {
+                                final RESTTagV1 filterTagReference = new RESTTagV1();
+                                filterTagReference.setId(tag.getTag().getItem().getId());
+
                                 final RESTFilterTagV1 filterTag = new RESTFilterTagV1();
-                                filterTag.explicitSetTag(tag.getTag().getItem());
+                                filterTag.explicitSetTag(filterTagReference);
                                 filterTag.explicitSetState(tag.getState() == TriStateSelectionState.SELECTED ? CommonFilterConstants.MATCH_TAG_STATE : CommonFilterConstants.NOT_MATCH_TAG_STATE);
                                 filter.getFilterTags_OTM().addNewItem(filterTag);
                                 processedIds.add(tag.getTag().getItem().getId());
