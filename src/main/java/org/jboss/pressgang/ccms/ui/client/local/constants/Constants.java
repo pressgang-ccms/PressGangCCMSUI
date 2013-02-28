@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201302281302";
+    public static final String VERSION = "201302281305";
 
     /**
      * The sort order to apply to a newly added child.
@@ -121,14 +121,14 @@ public final class Constants {
      * The REST server.
      */
     //public static final String BASE_URL = LOCAL_REST_SERVER;
-    //public static final String BASE_URL = DEV_REST_SERVER;
-    public static final String BASE_URL = PROD_REST_SERVER;
+    public static final String BASE_URL = DEV_REST_SERVER;
+    //public static final String BASE_URL = PROD_REST_SERVER;
     /**
      * The newer versions of the REST interface encode the query PathParam elements (so as to allow for searches to
      * include characters like the semicolon). If this constant is true, the query elements will be encoded.
      */
-    public static final boolean ENCODE_QUERY_OPTIONS = false;
-    //public static final boolean ENCODE_QUERY_OPTIONS = true;
+    //public static final boolean ENCODE_QUERY_OPTIONS = false;
+    public static final boolean ENCODE_QUERY_OPTIONS = true;
     /**
      * The REST URL.
      */
