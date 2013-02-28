@@ -209,8 +209,7 @@ public final class SearchUICategory extends SearchUIBase {
                 for (final RESTFilterCategoryCollectionItemV1 filterCategory : filter.getFilterCategories_OTM().getItems()) {
                     checkState(filterCategory.getItem().getCategory() != null, "filterCategory.getItem().getCategory() cannot be null");
 
-                    if (filterCategory.getItem().getCategory().getId().equals(category.getItem().getId()) &&
-                            filterCategory.getItem().getProject() != null) {
+                    if (filterCategory.getItem().getCategory().getId().equals(category.getItem().getId()) && filterCategory.getItem().getProject() == null) {
                         if (filterCategory.getItem().getState().equals(CommonFilterConstants.CATEGORY_INTERNAL_AND_STATE)) {
                             internalLogicAnd = true;
                             internalLogicOr = !internalLogicAnd;
