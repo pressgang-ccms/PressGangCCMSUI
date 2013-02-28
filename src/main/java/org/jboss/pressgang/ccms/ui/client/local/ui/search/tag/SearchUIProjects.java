@@ -32,21 +32,6 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class SearchUIProjects implements SearchViewBase {
     /**
-     * The string that appears in the query to indicate the presence or absence of a tag.
-     */
-    private static final String TAG_PREFIX = "tag";
-    /**
-     * The prefix for the query parameter that defines a categories external logic. So a query
-     * parameter of catext10=Or means that category 10 has an external logic of "Or".
-     */
-    private static final String CATEGORY_EXTERNAL_PREFIX = "catext";
-    /**
-     * The prefix for the query parameter that defines a categories internal logic. So a query
-     * parameter of catint10=And means that category 10 has an internal logic of "And".
-     */
-    private static final String CATEGORY_INTERNAL_PREFIX = "catint";
-
-    /**
      * A logger.
      */
     private static final Logger LOGGER = Logger.getLogger(SearchUIProjects.class.getName());
@@ -200,19 +185,19 @@ public class SearchUIProjects implements SearchViewBase {
                         If the internal "and" logic is specified, and the internal "and" logic is not the default value (i.e. Constants.DEFAULT_INTERNAL_AND_LOGIC is false),
                         then add a query parameter.
                      */
-                    builder.append(";").append(CATEGORY_INTERNAL_PREFIX).append(category.getId()).append("=").append(Constants.AND_LOGIC_QUERY_STRING_VALUE);
+                    builder.append(";").append(CommonFilterConstants.CATEORY_INTERNAL_LOGIC).append(category.getId()).append("=").append(Constants.AND_LOGIC_QUERY_STRING_VALUE);
                 } else if (category.isInternalLogicOr() && category.isInternalLogicOr() == Constants.DEFAULT_INTERNAL_AND_LOGIC) {
                     /*
                         If the internal "or" logic is specified, and the internal "or" logic is not the default value (i.e. Constants.DEFAULT_INTERNAL_AND_LOGIC is true),
                         then add a query parameter.
                      */
-                    builder.append(";").append(CATEGORY_INTERNAL_PREFIX).append(category.getId()).append("=").append(Constants.OR_LOGIC_QUERY_STRING_VALUE);
+                    builder.append(";").append(CommonFilterConstants.CATEORY_INTERNAL_LOGIC).append(category.getId()).append("=").append(Constants.OR_LOGIC_QUERY_STRING_VALUE);
                 }
 
                 if (category.isExternalLogicAnd() && category.isExternalLogicAnd() != Constants.DEFAULT_EXTERNAL_AND_LOGIC) {
-                    builder.append(";").append(CATEGORY_EXTERNAL_PREFIX).append(category.getId()).append("=").append(Constants.AND_LOGIC_QUERY_STRING_VALUE);
+                    builder.append(";").append(CommonFilterConstants.CATEORY_EXTERNAL_LOGIC).append(category.getId()).append("=").append(Constants.AND_LOGIC_QUERY_STRING_VALUE);
                 } else if (category.isExternalLogicOr() && category.isExternalLogicOr() == Constants.DEFAULT_EXTERNAL_AND_LOGIC) {
-                    builder.append(";").append(CATEGORY_EXTERNAL_PREFIX).append(category.getId()).append("=").append(Constants.OR_LOGIC_QUERY_STRING_VALUE);
+                    builder.append(";").append(CommonFilterConstants.CATEORY_EXTERNAL_LOGIC).append(category.getId()).append("=").append(Constants.OR_LOGIC_QUERY_STRING_VALUE);
                 }
 
                 for (final SearchUITag tag : category.getMyTags()) {
@@ -220,9 +205,9 @@ public class SearchUIProjects implements SearchViewBase {
                         builder.append(";");
 
                         if (tag.getState() == TriStateSelectionState.SELECTED) {
-                            builder.append(TAG_PREFIX).append(tag.getTag().getItem().getId()).append("=").append(Constants.TAG_INCLUDED);
+                            builder.append(CommonFilterConstants.MATCH_TAG).append(tag.getTag().getItem().getId()).append("=").append(CommonFilterConstants.MATCH_TAG_STATE);
                         } else if (tag.getState() == TriStateSelectionState.UNSELECTED) {
-                            builder.append(TAG_PREFIX).append(tag.getTag().getItem().getId()).append("=").append(Constants.TAG_EXCLUDED);
+                            builder.append(CommonFilterConstants.MATCH_TAG).append(tag.getTag().getItem().getId()).append("=").append(CommonFilterConstants.NOT_MATCH_TAG_STATE);
                         }
                     }
                 }
