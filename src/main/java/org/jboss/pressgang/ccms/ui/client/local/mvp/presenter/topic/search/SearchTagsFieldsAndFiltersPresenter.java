@@ -9,9 +9,13 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -208,13 +212,25 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
                 if (displayedFilter.getFilterTags_OTM() != null) {
                     for (final RESTFilterTagCollectionItemV1 tag : displayedFilter.getFilterTags_OTM().getItems()) {
-                        filter.getFilterTags_OTM().addRemoveItem(tag.getItem());
+                        final RESTFilterTagV1 removeTag = new RESTFilterTagV1();
+                        removeTag.setId(tag.getItem().getId());
+                        filter.getFilterTags_OTM().addRemoveItem(removeTag);
                     }
                 }
 
                 if (displayedFilter.getFilterFields_OTM() != null) {
                     for (final RESTFilterFieldCollectionItemV1 field : displayedFilter.getFilterFields_OTM().getItems()) {
-                        filter.getFilterFields_OTM().addRemoveItem(field.getItem());
+                        final RESTFilterFieldV1 remove = new RESTFilterFieldV1();
+                        remove.setId(field.getItem().getId());
+                        filter.getFilterFields_OTM().addRemoveItem(remove);
+                    }
+                }
+
+                if (displayedFilter.getFilterCategories_OTM() != null) {
+                    for (final RESTFilterCategoryCollectionItemV1 category : displayedFilter.getFilterCategories_OTM().getItems()) {
+                        final RESTFilterCategoryV1 remove = new RESTFilterCategoryV1();
+                        remove.setId(category.getItem().getId());
+                        filter.getFilterCategories_OTM().addRemoveItem(remove);
                     }
                 }
 

@@ -112,15 +112,17 @@ public class SearchUIProjects implements SearchViewBase {
     }
 
     private RESTFilterCategoryV1 generateRESTFilterCategory(@NotNull final SearchUIProject project, @NotNull final SearchUICategory category, @NotNull final RESTFilterV1 filter) {
-        final RESTProjectV1 restProject = new RESTProjectV1();
-        restProject.setId(project.getId());
-
         final RESTCategoryV1 restCategory = new RESTCategoryV1();
         restCategory.setId(category.getId());
 
         final RESTFilterCategoryV1 restFilterCategory = new RESTFilterCategoryV1();
-        restFilterCategory.explicitSetProject(restProject);
         restFilterCategory.explicitSetCategory(restCategory);
+
+        if (project.getId() != -1) {
+            final RESTProjectV1 restProject = new RESTProjectV1();
+            restProject.setId(project.getId());
+            restFilterCategory.explicitSetProject(restProject);
+        }
 
         filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
 
