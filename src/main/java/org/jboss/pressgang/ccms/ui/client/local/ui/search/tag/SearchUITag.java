@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.search.tag;
 import com.google.gwt.user.client.ui.TriStateSelectionState;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jetbrains.annotations.NotNull;
@@ -41,10 +42,10 @@ public final class SearchUITag extends SearchUIBase {
                 //LOGGER.log(Level.INFO, "Processing filter with " + filter.getFilterTags_OTM().getItems().size() + " tags");
                 for (final RESTFilterTagCollectionItemV1 filterTag : filter.getFilterTags_OTM().getItems()) {
                     if (filterTag.getItem().getTag().getId().equals(tag.getItem().getId())) {
-                        if (filterTag.getItem().getState().equals(Constants.TAG_INCLUDED)) {
+                        if (filterTag.getItem().getState().equals(CommonFilterConstants.MATCH_TAG_STATE)) {
                             //LOGGER.log(Level.INFO, "Found included tag");
                             state = TriStateSelectionState.SELECTED;
-                        } else if (filterTag.getItem().getState().equals(Constants.TAG_EXCLUDED)) {
+                        } else if (filterTag.getItem().getState().equals(CommonFilterConstants.NOT_MATCH_TAG_STATE)) {
                             //LOGGER.log(Level.INFO, "Found excluded tag");
                             state = TriStateSelectionState.UNSELECTED;
                         }
