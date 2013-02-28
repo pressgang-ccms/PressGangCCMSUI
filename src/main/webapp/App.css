@@ -585,10 +585,11 @@ html {
 }
 
 .LogicDetailsTable {
-    margin-left: auto;
-    margin-right: auto;
+    width:100%;
 }
 
 .LogicDetailsTable td {
     padding: 0px;
+    text-align: center;
+
 }
