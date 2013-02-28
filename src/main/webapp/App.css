@@ -19,7 +19,7 @@
 }
 
 .gwt-DialogBox {
-    /* needs to be higer than the z-index of the .gwt-PopupPanelGlass  */
+    /* needs to be higher than the z-index of the .gwt-PopupPanelGlass  */
     z-index: 15;
 }
 

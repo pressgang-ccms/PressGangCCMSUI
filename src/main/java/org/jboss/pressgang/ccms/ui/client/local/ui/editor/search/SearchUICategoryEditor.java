@@ -125,11 +125,18 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
         internalLogicOr.setValue(true);
         externalLogicAnd.setValue(true);
 
-        // build the ui
+        // setup the column spans
+        tagsTable.getFlexCellFormatter().setColSpan(0, 0, COLUMNS);
+        tagsTable.getFlexCellFormatter().setColSpan(0, COLUMNS, COLUMNS);
+        tagsTable.getFlexCellFormatter().setColSpan(1, 0, COLUMNS);
+        tagsTable.getFlexCellFormatter().setColSpan(1, COLUMNS, COLUMNS);
+        tagsTable.getFlexCellFormatter().setColSpan(2, 0, COLUMNS * 2);
+
+        // Internal logic
+
         final Label internalLogicLabel = new Label(PressGangCCMSUI.INSTANCE.InternalLogic());
         tagsTable.setWidget(0, 0, internalLogicLabel);
         tagsTable.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.SearchView.LOGIC_HEADER_CELL);
-        tagsTable.getFlexCellFormatter().setColSpan(0, 0, 2);
 
         final HorizontalPanel internalLogicPanel = new HorizontalPanel();
         internalLogicPanel.add(internalLogicAnd);
@@ -138,21 +145,24 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
         tagsTable.setWidget(1, 0, internalLogicPanel);
         tagsTable.getFlexCellFormatter().addStyleName(1, 0, CSSConstants.SearchView.LOGIC_DETAILS_CELL);
 
+        // External logic
+
         final Label externalLogicLabel = new Label(PressGangCCMSUI.INSTANCE.ExternalLogic());
-        tagsTable.setWidget(0, 2, externalLogicLabel);
-        tagsTable.getFlexCellFormatter().addStyleName(0, 2, CSSConstants.SearchView.LOGIC_HEADER_CELL);
-        tagsTable.getFlexCellFormatter().setColSpan(0, 2, 2);
+        tagsTable.setWidget(0, 1, externalLogicLabel);
+        tagsTable.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.SearchView.LOGIC_HEADER_CELL);
+
 
         final HorizontalPanel externalLogicPanel = new HorizontalPanel();
         externalLogicPanel.add(externalLogicAnd);
         externalLogicPanel.add(externalLogicOr);
 
-        tagsTable.setWidget(1, 2, externalLogicPanel);
+        tagsTable.setWidget(1, 1, externalLogicPanel);
+        tagsTable.getFlexCellFormatter().addStyleName(1, 1, CSSConstants.SearchView.LOGIC_DETAILS_CELL);
+
+        // tags heading cell
 
         final Label tags = new Label(PressGangCCMSUI.INSTANCE.Tags());
         tagsTable.setWidget(2, 0, externalLogicPanel);
         tagsTable.getFlexCellFormatter().addStyleName(2, 0, CSSConstants.SearchView.LOGIC_HEADER_CELL);
-        tagsTable.getFlexCellFormatter().setColSpan(2, 0, 4);
-
     }
 }
