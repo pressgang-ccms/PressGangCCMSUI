@@ -11,6 +11,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * This class represents a single tag under a parent category.
  *
@@ -35,6 +37,8 @@ public final class SearchUITag extends SearchUIBase {
 
         try {
             //LOGGER.log(Level.INFO, "ENTER SearchUITag()");
+
+            checkArgument(filter == null || filter.getFilterTags_OTM() != null, "Filter must be null or have a populated collection of tags.");
 
             this.tag = tag;
 

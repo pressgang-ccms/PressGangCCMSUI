@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+
 /**
  * This class represents a single category assigned to a project, with child tags.
  *
@@ -130,9 +133,15 @@ public final class SearchUICategory extends SearchUIBase {
         try {
             //LOGGER.log(Level.INFO, "ENTER SearchUICategory.populateCategories()");
 
+            checkArgument(filter == null || filter.getFilterCategories_OTM() != null, "Filter must be null or have a populated collection of categories.");
+
             if (filter != null) {
                 for (final RESTFilterCategoryCollectionItemV1 filterCategory : filter.getFilterCategories_OTM().getItems()) {
-                    if (filterCategory.getItem().getCategory().getId().equals(category.getItem().getId())) {
+                    checkState(filterCategory.getItem().getCategory() != null, "filterCategory.getItem().getCategory() cannot be null");
+
+                    if (filterCategory.getItem().getCategory().getId().equals(category.getItem().getId()) &&
+                            filterCategory.getItem().getProject() != null &&
+                            filterCategory.getItem().getProject().getId().equals(project.getItem().getId())) {
                         if (filterCategory.getItem().getState().equals(CommonFilterConstants.CATEGORY_INTERNAL_AND_STATE)) {
                             internalLogicAnd = true;
                             internalLogicOr = !internalLogicAnd;
@@ -151,12 +160,8 @@ public final class SearchUICategory extends SearchUIBase {
             }
 
             for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
-                if (tag.getItem().getProjects() == null) {
-                    throw new IllegalArgumentException("tag.getItem().getProjects() cannot be null");
-                }
-                if (tag.getItem().getCategories() == null) {
-                    throw new IllegalArgumentException("tag.getItem().getCategories() cannot be null");
-                }
+                checkState(tag.getItem().getProjects() != null, "tag.getItem().getProjects() cannot be null");
+                checkState(tag.getItem().getCategories() != null, "tag.getItem().getCategories() cannot be null");
 
                 final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory = Iterables.tryFind(tag.getItem()
                         .getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
@@ -195,26 +200,37 @@ public final class SearchUICategory extends SearchUIBase {
      * @param tags     The tags collection from which tags will be selected for this category
      * @param filter   The filter that defines the state of the tags
      */
-    public void populateCategoriesWithoutProject(final RESTCategoryInTagCollectionItemV1 category,
-                                                 final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
+    public void populateCategoriesWithoutProject(@NotNull final RESTCategoryInTagCollectionItemV1 category,
+                                                 @NotNull  final RESTTagCollectionV1 tags, @Nullable final RESTFilterV1 filter) {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchUICategory.populateCategoriesWithoutProject()");
 
+            if (filter != null) {
+                for (final RESTFilterCategoryCollectionItemV1 filterCategory : filter.getFilterCategories_OTM().getItems()) {
+                    checkState(filterCategory.getItem().getCategory() != null, "filterCategory.getItem().getCategory() cannot be null");
 
-            if (tags == null) {
-                throw new IllegalArgumentException("tags parameter cannot be null");
-            }
-            if (category == null) {
-                throw new IllegalArgumentException("category cannot be null");
+                    if (filterCategory.getItem().getCategory().getId().equals(category.getItem().getId()) &&
+                            filterCategory.getItem().getProject() != null) {
+                        if (filterCategory.getItem().getState().equals(CommonFilterConstants.CATEGORY_INTERNAL_AND_STATE)) {
+                            internalLogicAnd = true;
+                            internalLogicOr = !internalLogicAnd;
+                        } else if (filterCategory.getItem().getState().equals(CommonFilterConstants.CATEGORY_INTERNAL_OR_STATE)) {
+                            internalLogicAnd = false;
+                            internalLogicOr = !internalLogicAnd;
+                        } else if (filterCategory.getItem().getState().equals(CommonFilterConstants.CATEGORY_EXTERNAL_AND_STATE)) {
+                            externalLogicAnd = true;
+                            externalLogicOr = !externalLogicAnd;
+                        } else if (filterCategory.getItem().getState().equals(CommonFilterConstants.CATEGORY_EXTERNAL_OR_STATE)) {
+                            externalLogicAnd = false;
+                            externalLogicOr = !externalLogicAnd;
+                        }
+                    }
+                }
             }
 
             for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
-                if (tag.getItem().getProjects() == null) {
-                    throw new IllegalArgumentException("tag.getItem().getProjects() cannot be null");
-                }
-                if (tag.getItem().getCategories() == null) {
-                    throw new IllegalArgumentException("tag.getItem().getCategories() cannot be null");
-                }
+                checkState(tag.getItem().getProjects() != null, "tag.getItem().getProjects() cannot be null");
+                checkState(tag.getItem().getCategories() != null, "tag.getItem().getCategories() cannot be null");
 
                 if (tag.getItem().getProjects().getItems().isEmpty()) {
 
