@@ -120,6 +120,13 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
+        display.getMonitoring().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                Window.open(Constants.MONITORING_URL, "_blank", "");
+            }
+        });
+
         display.getImages().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {

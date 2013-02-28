@@ -153,6 +153,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private final PushButton integerConstants;
     private final PushButton propertyTags;
     private final PushButton propertyTagCategories;
+    private final PushButton monitoring;
     private final PushButton bug;
     private final PushButton reports;
     private final PushButton advanced;
@@ -166,6 +167,11 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      * The button used to execute the quick search.
      */
     private final PushButton quickSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.QuickSearch());
+
+    @Override
+    public PushButton getMonitoring() {
+        return monitoring;
+    }
 
     /**
      * Defines the help dialog box, which is displayed when the help link is clicked.
@@ -652,6 +658,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         propertyTagCategories = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTagCategories());
         addShortcutButton(propertyTagCategories, advancedShortcutPanel);
+
+        monitoring = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Monitoring(), false, true);
+        addShortcutButton(monitoring, advancedShortcutPanel);
 
         close = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CloseSubMenu());
         addShortcutButton(close, advancedShortcutPanel);

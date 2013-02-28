@@ -210,6 +210,12 @@ public interface BaseTemplateViewInterface {
 
     /**
      *
+     * @return The button that launches the monitoring page
+     */
+    PushButton getMonitoring();
+
+    /**
+     *
      * @return The link that opens the help page
      */
     Anchor getHelp();

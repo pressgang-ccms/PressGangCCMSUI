@@ -254,6 +254,8 @@ public interface PressGangCCMSUI extends Constants {
 
     String PropertyTagCategories();
 
+    String Monitoring();
+
     String CreateTopic();
 
     String Tags();

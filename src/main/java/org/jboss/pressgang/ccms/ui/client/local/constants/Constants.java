@@ -106,6 +106,10 @@ public final class Constants {
      */
     public static final String BIRT_TOPIC_BUGZILLA_REPORT = "General/Bugs_Per_Topic.rptdesign&ShowOnlyData=True&AlternateTableHeaderBackgroundColour=True&TopicIDParameter=";
     /**
+     * The JavaMelody URL
+     */
+    public static final String MONITORING_URL = "https://skynet.usersys.redhat.com:8443/TopicIndex/monitoring";
+    /**
      * A link to a locally hosted REST server.
      */
     public static final String LOCAL_REST_SERVER = "http://localhost:8080/TopicIndex/";
