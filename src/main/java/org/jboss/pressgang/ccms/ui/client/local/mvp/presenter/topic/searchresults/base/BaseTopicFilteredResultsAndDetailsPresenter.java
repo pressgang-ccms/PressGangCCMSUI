@@ -103,24 +103,30 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
     protected abstract Display getDisplay();
 
+    @NotNull
     protected final TopicXMLPresenter getTopicXMLComponent() {
         return topicXMLComponent;
     }
 
+    @NotNull
     protected abstract BaseFilteredResultsPresenter<V> getSearchResultsComponent();
 
+    @NotNull
     protected final TopicTagsPresenter getTopicTagsComponent() {
         return topicTagsComponent;
     }
 
+    @NotNull
     protected final TopicPropertyTagsPresenter getTopicPropertyTagPresenter() {
         return topicPropertyTagPresenter;
     }
 
+    @NotNull
     protected final TopicXMLErrorsPresenter getTopicXMLErrorsPresenter() {
         return topicXMLErrorsPresenter;
     }
 
+    @NotNull
     protected final TopicRenderedPresenter.Display getTopicSplitPanelRenderedDisplay() {
         return topicSplitPanelRenderedDisplay;
     }
@@ -158,7 +164,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, final String pageId, @Nullable final String queryString) {
+    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @Nullable final String queryString) {
         /* Initialize the other presenters we have pulled in */
         getSearchResultsComponent().bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
         topicTagsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
@@ -508,7 +514,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             final ClickHandler topicPropertyTagsClickHandler = new ClickHandler() {
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                         switchView(topicPropertyTagPresenter.getDisplay());
                     }
@@ -517,7 +523,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             final ClickHandler topicSourceUrlsClickHandler = new ClickHandler() {
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                         switchView(topicSourceURLsPresenter.getDisplay());
                     }
@@ -526,7 +532,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             final ClickHandler topicXMLClickHandler = new ClickHandler() {
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                         switchView(topicXMLComponent.getDisplay());
 
@@ -536,7 +542,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             final ClickHandler topicRenderedClickHandler = new ClickHandler() {
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                         switchView(topicRenderedPresenter.getDisplay());
                     }
@@ -545,7 +551,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             final ClickHandler topicXMLErrorsClickHandler = new ClickHandler() {
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                         switchView(topicXMLErrorsPresenter.getDisplay());
                     }
@@ -554,7 +560,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             final ClickHandler topicTagsClickHandler = new ClickHandler() {
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                         switchView(topicTagsComponent.getDisplay());
                     }
@@ -563,7 +569,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             final ClickHandler topicBugsClickHandler = new ClickHandler() {
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                         switchView(topicBugsPresenter.getDisplay());
                     }
@@ -572,21 +578,21 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             final ClickHandler splitMenuHandler = new ClickHandler() {
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
                     showRenderedSplitPanelMenu();
                 }
             };
 
             final ClickHandler splitMenuCloseHandler = new ClickHandler() {
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
                     showRegularMenu();
                 }
             };
 
             final ClickHandler splitMenuNoSplitHandler = new ClickHandler() {
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                             Preferences.TOPIC_RENDERED_VIEW_SPLIT_NONE);
 
@@ -597,7 +603,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             final ClickHandler splitMenuVSplitHandler = new ClickHandler() {
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                             Preferences.TOPIC_RENDERED_VIEW_SPLIT_VERTICAL);
 
@@ -613,7 +619,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             final ClickHandler splitMenuHSplitHandler = new ClickHandler() {
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
                             Preferences.TOPIC_RENDERED_VIEW_SPLIT_HOIRZONTAL);
 
@@ -630,7 +636,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             final ClickHandler cspsHandler = new ClickHandler() {
 
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
 
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null && isOKToProceed()) {
 

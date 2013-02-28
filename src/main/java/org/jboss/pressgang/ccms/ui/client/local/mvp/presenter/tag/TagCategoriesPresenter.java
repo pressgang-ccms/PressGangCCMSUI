@@ -90,7 +90,7 @@ public class TagCategoriesPresenter
     }
 
     @Override
-    public void displayDetailedChildrenExtended(final RESTTagV1 parent, final boolean readOnly) {
+    public void displayDetailedChildrenExtended(@NotNull final RESTTagV1 parent, final boolean readOnly) {
         super.displayDetailedChildren(parent, readOnly);
 
         display.setPossibleChildrenProvider(generatePossibleChildrenProvider(parent));
@@ -104,7 +104,7 @@ public class TagCategoriesPresenter
     private final SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> sortCallback = new SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
 
         @Override
-        public boolean setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
+        public boolean setSort(@NotNull final RESTTagInCategoryCollectionItemV1 child, final int index) {
             if (child.getItem().getRelationshipSort() != index) {
                 child.getItem().explicitSetRelationshipSort(index);
                 /* Set any unchanged items to updated */
@@ -131,7 +131,7 @@ public class TagCategoriesPresenter
     public EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generatePossibleChildrenProvider(@NotNull final RESTTagV1 parent) {
         final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTCategoryCollectionItemV1> display) {
+            protected void onRangeChanged(@NotNull final HasData<RESTCategoryCollectionItemV1> display) {
 
                 getPossibleChildrenProviderData().setStartRow(display.getVisibleRange().getStart());
 
@@ -154,7 +154,7 @@ public class TagCategoriesPresenter
     public EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> generateExistingProvider(final RESTCategoryV1 entity) {
         final EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTagInCategoryCollectionItemV1> display) {
+            protected void onRangeChanged(@NotNull final HasData<RESTTagInCategoryCollectionItemV1> display) {
                 getExistingProviderData().setStartRow(display.getVisibleRange().getStart());
                 getExistingProviderData().setItems(new ArrayList<RESTTagInCategoryCollectionItemV1>());
 
@@ -182,7 +182,7 @@ public class TagCategoriesPresenter
     private void initLifecycleBindPossibleChildrenRowClick() {
         display.getPossibleChildrenResults().addCellPreviewHandler(new Handler<RESTCategoryCollectionItemV1>() {
             @Override
-            public void onCellPreview(final CellPreviewEvent<RESTCategoryCollectionItemV1> event) {
+            public void onCellPreview(@NotNull final CellPreviewEvent<RESTCategoryCollectionItemV1> event) {
                 /* Check to see if this was a click event */
                 final boolean isClick = Constants.JAVASCRIPT_CLICK_EVENT.equals(event.getNativeEvent().getType());
 
@@ -268,7 +268,7 @@ public class TagCategoriesPresenter
 
         final BaseRestCallback<RESTCategoryCollectionV1, Display> callback = new BaseRestCallback<RESTCategoryCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTCategoryCollectionV1, Display>() {
             @Override
-            public void doSuccessAction(final RESTCategoryCollectionV1 retValue, final Display display) {
+            public void doSuccessAction(@NotNull final RESTCategoryCollectionV1 retValue, @NotNull final Display display) {
                 getPossibleChildrenProviderData().setStartRow(0);
                 /* Zero results can be a null list */
                 getPossibleChildrenProviderData().setItems(retValue.getItems());

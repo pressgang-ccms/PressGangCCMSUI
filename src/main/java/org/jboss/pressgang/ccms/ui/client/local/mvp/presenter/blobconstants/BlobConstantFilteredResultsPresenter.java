@@ -110,7 +110,7 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
     }
 
     @Override
-    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @Nullable final String queryString) {
+    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         super.bindFilteredResults(topicId, pageId, queryString, display);
         display.setProvider(generateListProvider(queryString, display));
     }

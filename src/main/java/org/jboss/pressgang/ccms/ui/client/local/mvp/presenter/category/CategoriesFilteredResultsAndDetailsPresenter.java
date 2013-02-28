@@ -77,7 +77,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
     private final SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> sortCallback = new SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
 
         @Override
-        public boolean setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
+        public boolean setSort(@NotNull final RESTTagInCategoryCollectionItemV1 child, final int index) {
             if (child.getItem().getRelationshipSort() != index) {
                 child.getItem().explicitSetRelationshipSort(index);
                 /* Set any unchanged items to updated */
@@ -185,7 +185,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                         }, new AddPossibleChildCallback<RESTTagCollectionItemV1>() {
 
                             @Override
-                            public void createAndAddChild(final RESTTagCollectionItemV1 copy) {
+                            public void createAndAddChild(@NotNull final RESTTagCollectionItemV1 copy) {
 
                                 categoryTagPresenter.setSortOrderOfChildren(sortCallback);
 

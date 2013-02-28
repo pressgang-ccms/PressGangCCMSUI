@@ -48,6 +48,7 @@ public class PropertyTagPresenter extends BaseTemplatePresenter {
         return display;
     }
 
+    @NotNull
     @Override
     public void parseToken(@NotNull final String searchToken) {
         try {
@@ -74,7 +75,7 @@ public class PropertyTagPresenter extends BaseTemplatePresenter {
         final RESTCalls.RESTCallback<RESTPropertyTagV1> callback = new BaseRestCallback<RESTPropertyTagV1, PropertyTagPresenter.Display>(display,
                 new BaseRestCallback.SuccessAction<RESTPropertyTagV1, PropertyTagPresenter.Display>() {
                     @Override
-                    public void doSuccessAction(final RESTPropertyTagV1 retValue, final PropertyTagPresenter.Display display) {
+                    public void doSuccessAction(@NotNull final RESTPropertyTagV1 retValue, @NotNull final PropertyTagPresenter.Display display) {
                         display.display(retValue, false);
                     }
                 });

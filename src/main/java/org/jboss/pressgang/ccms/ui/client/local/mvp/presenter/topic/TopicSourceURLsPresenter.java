@@ -197,7 +197,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenPresenter<
 
             display.getAdd().addClickHandler(new ClickHandler() {
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
                     final RESTTopicSourceUrlV1 newUrl = new RESTTopicSourceUrlV1();
                     newUrl.explicitSetUrl(PressGangCCMSUI.INSTANCE.NewURLLink());
                     newUrl.explicitSetTitle(PressGangCCMSUI.INSTANCE.NewURLTitle());

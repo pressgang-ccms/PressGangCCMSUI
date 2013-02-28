@@ -116,7 +116,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
+    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTPropertyCategoryV1> getNewEntityCallback = new GetNewEntityCallback<RESTPropertyCategoryV1>() {
 
@@ -192,7 +192,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
          */
         final ClickHandler projectDetailsClickHandler = new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 switchView(resultComponent.getDisplay());
             }
 
@@ -203,7 +203,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
          */
         final ClickHandler projectTagsClickHandler = new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 switchView(tagComponent.getDisplay());
             }
 
@@ -214,7 +214,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
          */
         final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
 
                 checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "An item should have been displayed.");
                 checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed item should have a valid entity.");
@@ -283,7 +283,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
     protected void bindFilteredResultsButtons() {
         filteredResultsComponent.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new PropertyCategoryFilteredResultsAndDetailsViewEvent(filteredResultsComponent.getQuery(), GWTUtilities.isEventToOpenNewWindow(event)));
                 }
@@ -292,7 +292,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
 
         filteredResultsComponent.getDisplay().getCreate().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
                 final RESTPropertyCategoryV1 selectedEntity = new RESTPropertyCategoryV1();

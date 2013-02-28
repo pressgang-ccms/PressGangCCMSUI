@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -27,13 +28,13 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
     private Display display;
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         display.setViewShown(true);
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtended(ServiceConstants.HOME_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void bindExtended(final int topicId, final String pageId) {
+    public void bindExtended(final int topicId, @NotNull final String pageId) {
         super.bind(topicId, pageId, display);
 
         final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, Display>(
@@ -41,7 +42,7 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
                 new BaseRestCallback.SuccessAction<RESTTopicV1, WelcomePresenter.Display>() {
 
                     @Override
-                    public void doSuccessAction(final RESTTopicV1 retValue, final Display display) {
+                    public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
                         display.initialize(retValue);
                     }
 
@@ -51,7 +52,7 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
 
 
     @Override
-    public void parseToken(final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
 
     }
 }

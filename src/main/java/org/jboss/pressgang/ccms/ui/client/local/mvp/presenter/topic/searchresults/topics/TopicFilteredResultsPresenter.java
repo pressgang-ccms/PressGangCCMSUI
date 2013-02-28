@@ -44,6 +44,7 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
     @Inject
     private HandlerManager eventBus;
 
+    @NotNull
     public Display getDisplay() {
         return display;
     }
@@ -53,17 +54,17 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
     }
 
     @Override
-    public void parseToken(final String searchToken) {
+    public void parseToken(@NotNull final String searchToken) {
         queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
-    public void bindExtendedFilteredResults(final int topicId, final String pageId, @Nullable final String queryString) {
+    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @Nullable final String queryString) {
         super.bindFilteredResults(topicId, pageId, queryString, display);
         this.queryString = queryString;
 
@@ -89,7 +90,7 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
 
         final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTopicCollectionItemV1> list) {
+            protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> list) {
                 displayNewFixedList(getProviderData().getItems());
             }
         };
@@ -105,7 +106,7 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
 
         final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTopicCollectionItemV1> list) {
+            protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> list) {
 
                 final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
                     @Override

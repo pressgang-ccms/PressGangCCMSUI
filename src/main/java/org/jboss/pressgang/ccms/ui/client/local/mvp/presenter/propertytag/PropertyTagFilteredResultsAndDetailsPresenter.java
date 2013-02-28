@@ -117,7 +117,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
+    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTPropertyTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTPropertyTagV1>() {
 
@@ -193,7 +193,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
          */
         final ClickHandler projectDetailsClickHandler = new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 switchView(resultComponent.getDisplay());
             }
 
@@ -204,7 +204,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
          */
         final ClickHandler projectTagsClickHandler = new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 switchView(tagComponent.getDisplay());
             }
 
@@ -215,7 +215,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
          */
         final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
 
                 checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "An item should have been displayed.");
                 checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed item should have a valid entity.");
@@ -287,7 +287,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
     protected void bindFilteredResultsButtons() {
         filteredResultsComponent.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new PropertyCategoryFilteredResultsAndDetailsViewEvent(filteredResultsComponent.getQuery(),
                             GWTUtilities.isEventToOpenNewWindow(event)));

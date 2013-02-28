@@ -23,6 +23,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
@@ -63,82 +64,78 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
     @Inject
     private HandlerManager eventBus;
 
+    @NotNull
     public Display getDisplay() {
         return display;
     }
 
     @Override
-    public void parseToken(final String searchToken) {
+    public void parseToken(@NotNull final String searchToken) {
         queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
-    public void bindExtendedFilteredResults(final int topicId, final String pageId, final String queryString) {
+    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         super.bindFilteredResults(topicId, pageId, queryString, display);
         this.queryString = queryString;
 
-        if (queryString == null) {
-            display.setProvider(generateListProvider());
-        } else {
+        RESTCalls.populateLocales(new StringListLoaded() {
+            @Override
+            public void stringListLoaded(final List<String> locales) {
 
-            RESTCalls.populateLocales(new StringListLoaded() {
-                @Override
-                public void stringListLoaded(final List<String> locales) {
+                /* Get the common query and locales that will make up the grouped results */
+                breakDownQuery(locales);
 
-                    /* Get the common query and locales that will make up the grouped results */
-                    breakDownQuery(locales);
+                /*
+                    Add "tabs" for the locales
+                */
+                boolean first = true;
+                for (final String locale : localeQueries.keySet()) {
+                    final PushButton localeTab = UIUtilities.createTopTabPushButton(locale);
+                    final Label localeTabDown = UIUtilities.createTopTabDownLabel(locale);
+                    tabButtonsAndLabels.put(localeTab, localeTabDown);
+
+                    display.addActionButton(localeTab, display.getTabPanel());
+
+                    final ClickHandler clickHandler = new ClickHandler() {
+                        @Override
+                        public void onClick(final ClickEvent event) {
+                            displayLocaleResults(localeQueries.get(locale));
+
+                            for (final PushButton tab : tabButtonsAndLabels.keySet()) {
+                                display.replaceTopActionButton(tabButtonsAndLabels.get(tab), tab, display.getTabPanel());
+                            }
+
+                            display.replaceTopActionButton(localeTab, localeTabDown, display.getTabPanel());
+                        }
+                    };
+
+                    localeTab.addClickHandler(clickHandler);
 
                     /*
-                        Add "tabs" for the locales
-                    */
-                    boolean first = true;
-                    for (final String locale : localeQueries.keySet()) {
-                        final PushButton localeTab = UIUtilities.createTopTabPushButton(locale);
-                        final Label localeTabDown = UIUtilities.createTopTabDownLabel(locale);
-                        tabButtonsAndLabels.put(localeTab, localeTabDown);
-
-                        display.addActionButton(localeTab, display.getTabPanel());
-
-                        final ClickHandler clickHandler = new ClickHandler() {
-                            @Override
-                            public void onClick(final ClickEvent event) {
-                                displayLocaleResults(localeQueries.get(locale));
-
-                                for (final PushButton tab : tabButtonsAndLabels.keySet()) {
-                                    display.replaceTopActionButton(tabButtonsAndLabels.get(tab), tab, display.getTabPanel());
-                                }
-
-                                display.replaceTopActionButton(localeTab, localeTabDown, display.getTabPanel());
-                            }
-                        };
-
-                        localeTab.addClickHandler(clickHandler);
-
-                        /*
-                            Load the first locale by default
-                         */
-                        if (first) {
-                            clickHandler.onClick(null);
-                        }
-
-                        first = false;
+                        Load the first locale by default
+                     */
+                    if (first) {
+                        clickHandler.onClick(null);
                     }
 
+                    first = false;
                 }
-            }, display);
-        }
+
+            }
+        }, display);
     }
 
     private void displayLocaleResults(@Nullable final String localeSearch) {
         /* Initially we display the results from the first locale */
         final StringBuilder initialQuery = new StringBuilder(commonQuery.toString());
         if (localeSearch != null) {
-            initialQuery.append(";" + localeSearch);
+            initialQuery.append(";").append(localeSearch);
         }
 
         if (display.getProvider() != null) {
@@ -148,13 +145,14 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
         display.setProvider(generateListProvider(Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + initialQuery.toString(), display));
     }
 
+    @NotNull
     @Override
     public String getQuery() {
         return queryString;
     }
 
     @Override
-    protected void displayQueryElements(final String queryString) {
+    protected void displayQueryElements(@NotNull final String queryString) {
         // TODO Auto-generated method stub
     }
 
@@ -171,7 +169,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
     }
 
     @Override
-    protected EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1> generateListProvider(final String queryString, final BaseTemplateViewInterface waitDisplay) {
+    protected EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTTranslatedTopicCollectionItemV1> list) {
@@ -213,7 +211,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
     /**
      Break down the query into individual locales
      */
-    private void breakDownQuery(final List<String> locales) {
+    private void breakDownQuery(@NotNull final List<String> locales) {
 
         final String queryWithoutPrefix = queryString.replaceFirst(Constants.QUERY_PATH_SEGMENT_PREFIX, "");
         final String[] queryOptions = queryWithoutPrefix.split(";");

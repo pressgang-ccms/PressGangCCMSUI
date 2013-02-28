@@ -86,7 +86,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     private boolean doingTransleatedSearch = false;
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
 
         this.container = container;
         clearContainerAndAddTopLevelPanel(container, display);
@@ -109,7 +109,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         displayTags();
     }
 
-    public void bindExtended(final int helpTopicId, final String pageId) {
+    public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
         bind(helpTopicId, pageId, display);
     }
 
@@ -194,7 +194,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
         final ClickHandler overwriteFilter = new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
 
                 /* Save any changes back to the underlying object */
                 fieldsComponent.getDisplay().getDriver().flush();
@@ -243,7 +243,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
         final ClickHandler saveOKHandler = new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
 
                 saveFilterDialog.getDialogBox().hide();
 
@@ -255,7 +255,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
                 final BaseRestCallback<RESTFilterV1, Display> createFilter = new BaseRestCallback<RESTFilterV1, Display>(display, new BaseRestCallback.SuccessAction<RESTFilterV1, Display>() {
                     @Override
-                    public void doSuccessAction(final RESTFilterV1 retValue, final Display display) {
+                    public void doSuccessAction(@NotNull final RESTFilterV1 retValue, @NotNull final Display display) {
                         try {
                             LOGGER.log(Level.INFO, "ENTER SearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.saveOKHandler() SuccessAction.doSuccessAction()");
 
@@ -310,7 +310,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     }
 
     @Override
-    public void parseToken(final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
         if (historyToken.startsWith(TRANSLATED_HISTORY_TOKEN)) {
             doingTransleatedSearch = true;
         }

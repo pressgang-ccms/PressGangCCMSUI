@@ -60,6 +60,7 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsPre
     /**
      * @return The display.
      */
+    @NotNull
     public final Display getDisplay() {
         return display;
     }
@@ -106,13 +107,14 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsPre
         }
     }
 
+    @NotNull
     @Override
     public final String getQuery() {
         return Constants.QUERY_PATH_SEGMENT_PREFIX;
     }
 
     @Override
-    public final void bindExtendedFilteredResults(final int topicId, final String pageId, final String queryString) {
+    public final void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         super.bindFilteredResults(topicId, pageId, queryString, display);
 
         try {
@@ -125,12 +127,12 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsPre
     }
 
     @Override
-    public final void go(final HasWidgets container) {
+    public final void go(@NotNull final HasWidgets container) {
         bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, Constants.QUERY_PATH_SEGMENT_PREFIX);
     }
 
     @Override
-    public final void parseToken(final String historyToken) {
+    public final void parseToken(@NotNull final String historyToken) {
 
     }
 

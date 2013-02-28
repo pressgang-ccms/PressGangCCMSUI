@@ -69,7 +69,7 @@ public class PropertyCategoryFilteredResultsPresenter extends BaseFilteredResult
     protected EnhancedAsyncDataProvider<RESTPropertyCategoryCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTPropertyCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTPropertyCategoryCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTPropertyCategoryCollectionItemV1> list) {
+            protected void onRangeChanged(@NotNull final HasData<RESTPropertyCategoryCollectionItemV1> list) {
 
                 final BaseRestCallback<RESTPropertyCategoryCollectionV1, Display> callback = new BaseRestCallback<RESTPropertyCategoryCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTPropertyCategoryCollectionV1, Display>() {
                     @Override

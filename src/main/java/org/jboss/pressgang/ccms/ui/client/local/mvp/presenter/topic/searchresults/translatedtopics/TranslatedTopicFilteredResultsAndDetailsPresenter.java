@@ -20,6 +20,8 @@ import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTranslatedTopicV1BasicDetailsEditor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -84,7 +86,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     }
 
     @Override
-    protected void postBindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
+    protected void postBindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTTranslatedTopicV1> getNewEntityCallback = new GetNewEntityCallback<RESTTranslatedTopicV1>() {
 
@@ -155,7 +157,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     }
 
     @Override
-    protected void postEnableAndDisableActionButtons(final BaseTemplateViewInterface displayedView) {
+    protected void postEnableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView) {
         this.getDisplay().replaceTopActionButton(this.getDisplay().getFieldsDown(), this.getDisplay().getFields());
         if (displayedView == this.translatedTopicPresenter.getDisplay()) {
             getDisplay().replaceTopActionButton(getDisplay().getFields(), getDisplay().getFieldsDown());
@@ -163,7 +165,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     }
 
     @Override
-    protected void postAfterSwitchView(final BaseTemplateViewInterface displayedView) {
+    protected void postAfterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
         /*
             Nothing needs to be done here
         */
@@ -184,7 +186,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     }
 
     @Override
-    protected void postInitializeViews(final List<BaseTemplateViewInterface> filter) {
+    protected void postInitializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
         if (viewIsInFilter(filter, translatedTopicPresenter.getDisplay())) {
             translatedTopicPresenter.getDisplay().display(this.getDisplayedTopic(), isReadOnlyMode());
         }
@@ -204,7 +206,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
     }
 
     @Override
-    public void parseToken(final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
         try {
             LOGGER.log(Level.INFO, "ENTER TranslatedTopicFilteredResultsAndDetailsPresenter.parseToken()");
 
@@ -214,20 +216,10 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                 /* Make sure that the query string has at least the prefix */
                 setQueryString(Constants.QUERY_PATH_SEGMENT_PREFIX);
             }
-
-
-
-
-
-
         } finally {
             LOGGER.log(Level.INFO, "EXIT TranslatedTopicFilteredResultsAndDetailsPresenter.parseToken()");
         }
     }
-
-
-
-
 
     /**
      * This interface defines nothing over BaseTopicFilteredResultsAndDetailsPresenter.Display,

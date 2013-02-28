@@ -18,6 +18,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 import java.util.logging.Level;
@@ -55,6 +56,7 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
     @Inject
     private Display display;
 
+    @NotNull
     public Display getDisplay() {
         return display;
     }
@@ -69,7 +71,7 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
     }
 
     @Override
-    public void parseToken(final String searchToken) {
+    public void parseToken(@NotNull final String searchToken) {
         try {
             topicId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
         } catch (final NumberFormatException ex) {
@@ -78,12 +80,12 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtended(ServiceConstants.TOPIC_TAGS_TOPIC, HISTORY_TOKEN);
     }
 
-    public void bindExtended(final int helpTopicId, final String pageId) {
+    public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
         super.bind(helpTopicId, pageId, display);
         getTags();
     }
@@ -118,17 +120,17 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
     /**
      * Add behaviour to the tag view screen elements
      */
-    public void bindNewTagListBoxes(final ClickHandler clickHandler) {
+    public void bindNewTagListBoxes(@NotNull final ClickHandler clickHandler) {
         display.getProjectsList().addValueChangeHandler(new ValueChangeHandler<SearchUIProject>() {
             @Override
-            public void onValueChange(final ValueChangeEvent<SearchUIProject> event) {
+            public void onValueChange(@NotNull final ValueChangeEvent<SearchUIProject> event) {
                 display.updateNewTagCategoriesDisplay();
             }
         });
 
         display.getCategoriesList().addValueChangeHandler(new ValueChangeHandler<SearchUICategory>() {
             @Override
-            public void onValueChange(final ValueChangeEvent<SearchUICategory> event) {
+            public void onValueChange(@NotNull final ValueChangeEvent<SearchUICategory> event) {
                 display.updateNewTagTagDisplay();
             }
         });

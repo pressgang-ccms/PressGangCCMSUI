@@ -19,6 +19,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -71,7 +72,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     }
 
     @Override
-    public void parseToken(final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
         try {
             topicId = Integer.parseInt(removeHistoryToken(historyToken, HISTORY_TOKEN));
         } catch (final NumberFormatException ex) {
@@ -80,7 +81,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindDetailedChildrenExtended(ServiceConstants.TOPIC_EXTENDED_PROPERTIES_HELP_TOPIC, HISTORY_TOKEN);
     }
@@ -91,7 +92,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     }
 
     @Override
-    public void displayDetailedChildrenExtended(final RESTBaseTopicV1<?, ?, ?> parent, final boolean readOnly) {
+    public void displayDetailedChildrenExtended(@NotNull final RESTBaseTopicV1<?, ?, ?> parent, final boolean readOnly) {
         super.displayDetailedChildren(parent, readOnly);
         bindPropertyTagButtons(parent);
     }
@@ -187,7 +188,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     }
 
     @Override
-    public EnhancedAsyncDataProvider<RESTAssignedPropertyTagCollectionItemV1> generateExistingProvider(final RESTBaseTopicV1<?, ?, ?> entity) {
+    public EnhancedAsyncDataProvider<RESTAssignedPropertyTagCollectionItemV1> generateExistingProvider(@NotNull final RESTBaseTopicV1<?, ?, ?> entity) {
         return new EnhancedAsyncDataProvider<RESTAssignedPropertyTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTAssignedPropertyTagCollectionItemV1> display) {
@@ -219,7 +220,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     }
 
     @Override
-    public EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> generatePossibleChildrenProvider(final RESTBaseTopicV1<?, ?, ?> parent) {
+    public EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> generatePossibleChildrenProvider(@NotNull final RESTBaseTopicV1<?, ?, ?> parent) {
         return new EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(final HasData<RESTPropertyTagCollectionItemV1> data) {
@@ -241,45 +242,21 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
         try {
             LOGGER.log(Level.INFO, "ENTER TopicPropertyTagsPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
 
-            final RESTCalls.RESTCallback<RESTPropertyTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTPropertyTagCollectionV1>() {
-                @Override
-                public void begin() {
-                    getDisplay().addWaitOperation();
-                }
+            final BaseRestCallback<RESTPropertyTagCollectionV1, Display>  callback = new BaseRestCallback<RESTPropertyTagCollectionV1, Display>(display,
+                    new BaseRestCallback.SuccessAction<RESTPropertyTagCollectionV1, Display>() {
+                        @Override
+                        public void doSuccessAction(@NotNull final RESTPropertyTagCollectionV1 retValue, @NotNull final Display display) {
+                            LOGGER.log(Level.INFO, "ENTER TopicPropertyTagsPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList() callback.success()");
+                            LOGGER.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
+                            /* Zero results can be a null list */
+                            getPossibleChildrenProviderData().setStartRow(0);
+                            getPossibleChildrenProviderData().setItems(retValue.getItems());
+                            getPossibleChildrenProviderData().setSize(retValue.getItems().size());
 
-                @Override
-                public void generalException(final Exception ex) {
-                    LOGGER.log(Level.SEVERE, "RESTCallback.generalException()\n\tException: " + ex.toString());
-                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                    getDisplay().removeWaitOperation();
-                }
-
-                @Override
-                public void success(final RESTPropertyTagCollectionV1 retValue) {
-                    try {
-                        LOGGER.log(Level.INFO, "ENTER TopicPropertyTagsPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList() callback.success()");
-                        LOGGER.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
-                        /* Zero results can be a null list */
-                        getPossibleChildrenProviderData().setStartRow(0);
-                        getPossibleChildrenProviderData().setItems(retValue.getItems());
-                        getPossibleChildrenProviderData().setSize(retValue.getItems().size());
-
-                        /* Refresh the list */
-                        getDisplay().getPossibleChildrenProvider().displayNewFixedList(getPossibleChildrenProviderData().getItems());
-
-                    } finally {
-                        LOGGER.log(Level.INFO, "EXIT TopicPropertyTagsPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList() callback.success()");
-                        getDisplay().removeWaitOperation();
-                    }
-                }
-
-                @Override
-                public void failed(final Message message, final Throwable throwable) {
-                    getDisplay().removeWaitOperation();
-                    LOGGER.log(Level.SEVERE, "RESTCallback.failed()\n\tMessage: " + message.toString() + "\n\t Throwable: " + throwable.toString());
-                    Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                }
-            };
+                            /* Refresh the list */
+                            getDisplay().getPossibleChildrenProvider().displayNewFixedList(getPossibleChildrenProviderData().getItems());
+                        }
+                    });
 
             /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
             getPossibleChildrenProviderData().reset();

@@ -42,6 +42,7 @@ public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
         return display;
     }
 
+    @NotNull
     @Override
     public void parseToken(@NotNull final String historyToken) {
         try {

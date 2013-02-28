@@ -74,7 +74,7 @@ public class PropertyCategoryPresenter extends BaseTemplatePresenter {
         final RESTCalls.RESTCallback<RESTPropertyCategoryV1> callback = new BaseRestCallback<RESTPropertyCategoryV1, PropertyCategoryPresenter.Display>(display,
                 new BaseRestCallback.SuccessAction<RESTPropertyCategoryV1, PropertyCategoryPresenter.Display>() {
                     @Override
-                    public void doSuccessAction(final RESTPropertyCategoryV1 retValue, final PropertyCategoryPresenter.Display display) {
+                    public void doSuccessAction(@NotNull final RESTPropertyCategoryV1 retValue, @NotNull final PropertyCategoryPresenter.Display display) {
                         display.display(retValue, false);
                     }
                 });

@@ -57,7 +57,7 @@ public class IntegerConstantFilteredResultsPresenter extends BaseFilteredResults
     protected EnhancedAsyncDataProvider<RESTIntegerConstantCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTIntegerConstantCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTIntegerConstantCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTIntegerConstantCollectionItemV1> list) {
+            protected void onRangeChanged(@NotNull final HasData<RESTIntegerConstantCollectionItemV1> list) {
 
                 final BaseRestCallback<RESTIntegerConstantCollectionV1, Display> callback =new BaseRestCallback<RESTIntegerConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTIntegerConstantCollectionV1, Display>() {
                     @Override
@@ -79,6 +79,7 @@ public class IntegerConstantFilteredResultsPresenter extends BaseFilteredResults
         return provider;
     }
 
+    @NotNull
     @Override
     public String getQuery() {
         final StringBuilder retValue = new StringBuilder();
@@ -102,7 +103,7 @@ public class IntegerConstantFilteredResultsPresenter extends BaseFilteredResults
     }
 
     @Override
-    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, final String queryString) {
+    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         super.bindFilteredResults(topicId, pageId, queryString, display);
         display.setProvider(generateListProvider(queryString, display));
     }
@@ -113,7 +114,7 @@ public class IntegerConstantFilteredResultsPresenter extends BaseFilteredResults
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }

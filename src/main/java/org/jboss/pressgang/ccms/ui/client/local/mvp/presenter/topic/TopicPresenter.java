@@ -7,6 +7,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -38,7 +39,7 @@ public class TopicPresenter extends BaseTemplatePresenter {
     }
 
     @Override
-    public void parseToken(final String searchToken) {
+    public void parseToken(@NotNull final String searchToken) {
         try {
             topicId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
         } catch (final NumberFormatException ex) {
@@ -48,13 +49,13 @@ public class TopicPresenter extends BaseTemplatePresenter {
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtended(ServiceConstants.TOPIC_PROPERTIES_TOPIC, HISTORY_TOKEN);
 
     }
 
-    public void bindExtended(final int helpTopicId, final String pageId) {
+    public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
         bind(helpTopicId, pageId, display);
     }
 }

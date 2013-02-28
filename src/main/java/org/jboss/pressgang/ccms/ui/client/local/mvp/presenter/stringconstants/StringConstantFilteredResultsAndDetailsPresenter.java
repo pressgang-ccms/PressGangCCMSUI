@@ -25,6 +25,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.stringconstant.RESTStringConstantV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
@@ -93,7 +94,7 @@ implements BaseTemplatePresenterInterface {
          */
         final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
 
                 /* Was the tag we just saved a new tag? */
                 final boolean wasNewEntity = stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem();
@@ -148,7 +149,7 @@ implements BaseTemplatePresenterInterface {
     protected void bindFilteredResultsButtons() {
         stringConstantFilteredResultsPresenter.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new StringConstantFilteredResultsAndDetailsViewEvent(stringConstantFilteredResultsPresenter.getQuery(),
                             GWTUtilities.isEventToOpenNewWindow(event)));
@@ -158,7 +159,7 @@ implements BaseTemplatePresenterInterface {
 
         stringConstantFilteredResultsPresenter.getDisplay().getCreate().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
                 final RESTStringConstantV1 selectedEntity = new RESTStringConstantV1();
@@ -186,7 +187,7 @@ implements BaseTemplatePresenterInterface {
         final GetNewEntityCallback<RESTStringConstantV1> getNewEntityCallback = new GetNewEntityCallback<RESTStringConstantV1>() {
 
             @Override
-            public void getNewEntity(final RESTStringConstantV1 selectedEntity, final DisplayNewEntityCallback<RESTStringConstantV1> displayCallback) {
+            public void getNewEntity(@NotNull final RESTStringConstantV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTStringConstantV1> displayCallback) {
                 /*
                     There is nothing additional to load here, so just return the selected entity.
                  */

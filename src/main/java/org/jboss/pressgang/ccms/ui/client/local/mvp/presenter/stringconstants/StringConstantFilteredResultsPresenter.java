@@ -57,11 +57,11 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
     protected EnhancedAsyncDataProvider<RESTStringConstantCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTStringConstantCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTStringConstantCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTStringConstantCollectionItemV1> list) {
+            protected void onRangeChanged(@NotNull final HasData<RESTStringConstantCollectionItemV1> list) {
 
                 final BaseRestCallback<RESTStringConstantCollectionV1, Display> callback =new BaseRestCallback<RESTStringConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTStringConstantCollectionV1, Display>() {
                     @Override
-                    public void doSuccessAction(final RESTStringConstantCollectionV1 retValue, final Display display) {
+                    public void doSuccessAction(@NotNull final RESTStringConstantCollectionV1 retValue, @NotNull final Display display) {
                         getProviderData().setItems(retValue.getItems());
                         getProviderData().setSize(retValue.getSize());
                         relinkSelectedItem();
@@ -108,6 +108,7 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
         display.setProvider(generateListProvider(queryString, display));
     }
 
+    @NotNull
     @Override
     public void parseToken(@NotNull final String historyToken) {
         queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);

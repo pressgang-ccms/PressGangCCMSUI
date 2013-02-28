@@ -16,6 +16,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresul
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
@@ -95,7 +96,7 @@ public class ImageFilteredResultsPresenter
     }
 
     /**
-     * @param waitDisplay The view used to notify the user that an ongoin operation is in progress
+     * @param waitDisplay The view used to notify the user that an ongoing operation is in progress
      * @return A provider to be used for the image display list.
      */
     @Override
@@ -108,36 +109,15 @@ public class ImageFilteredResultsPresenter
                 final int length = item.getVisibleRange().getLength();
                 final int end = getProviderData().getStartRow() + length;
 
-                final RESTCalls.RESTCallback<RESTImageCollectionV1> callback = new RESTCalls.RESTCallback<RESTImageCollectionV1>() {
+                final BaseRestCallback<RESTImageCollectionV1, Display> callback = new BaseRestCallback<RESTImageCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTImageCollectionV1, Display>() {
                     @Override
-                    public void begin() {
-                        display.addWaitOperation();
+                    public void doSuccessAction(@NotNull final RESTImageCollectionV1 retValue, @NotNull final Display display) {
+                        getProviderData().setItems(retValue.getItems());
+                        getProviderData().setSize(retValue.getSize());
+                        relinkSelectedItem();
+                        displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                     }
-
-                    @Override
-                    public void generalException(final Exception e) {
-                        Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopics());
-                        display.removeWaitOperation();
-                    }
-
-                    @Override
-                    public void success(final RESTImageCollectionV1 retValue) {
-                        try {
-                            getProviderData().setItems(retValue.getItems());
-                            getProviderData().setSize(retValue.getSize());
-                            relinkSelectedItem();
-                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
-                        } finally {
-                            display.removeWaitOperation();
-                        }
-                    }
-
-                    @Override
-                    public void failed(final Message message, final Throwable throwable) {
-                        display.removeWaitOperation();
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                    }
-                };
+                });
 
                 RESTCalls.getImagesFromQuery(callback, queryString, getProviderData().getStartRow(), end);
             }

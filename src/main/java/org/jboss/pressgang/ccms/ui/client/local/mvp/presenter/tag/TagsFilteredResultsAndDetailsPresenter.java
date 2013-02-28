@@ -138,7 +138,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     private final SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> sortCallback = new SetNewChildSortCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
 
         @Override
-        public boolean setSort(final RESTTagInCategoryCollectionItemV1 child, final int index) {
+        public boolean setSort(@NotNull final RESTTagInCategoryCollectionItemV1 child, final int index) {
             if (child.getItem().getRelationshipSort() != index) {
                 child.getItem().explicitSetRelationshipSort(index);
                 /* Set any unchanged items to updated */
@@ -189,7 +189,7 @@ public class TagsFilteredResultsAndDetailsPresenter
      */
     private final ClickHandler saveClickHandler = new ClickHandler() {
         @Override
-        public void onClick(final ClickEvent event) {
+        public void onClick(@NotNull final ClickEvent event) {
             try {
                 LOGGER.log(Level.INFO, "ENTER saveClickHandler.onClick()");
 
@@ -239,8 +239,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                         projectsComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
                         if (unsavedCategoryChanges) {
-                            saveCategoryChanges(wasNewTag, filteredResultsComponent.getProviderData().getDisplayedItem()
-                                    .getItem().getId());
+                            saveCategoryChanges(wasNewTag, filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                         } else {
                             updateDisplayAfterSave(wasNewTag);
                             Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + retValue.getId());
@@ -252,8 +251,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                 /* Sync changes from the tag view */
                 final RESTTagV1 updateTag = new RESTTagV1();
                 updateTag.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                updateTag.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                        .getDescription());
+                updateTag.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
                 updateTag.explicitSetName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
 
                 /*
@@ -340,49 +338,26 @@ public class TagsFilteredResultsAndDetailsPresenter
          * @param wasNewTag true if we just created a new tag
          * @param newTagId the id of the new tag, to replace any tags with the NULL_ID placeholder id if wasNewTag == true
          */
-        private void saveCategoryChanges(final boolean wasNewTag, final Integer newTagId) {
+        private void saveCategoryChanges(final boolean wasNewTag, @NotNull final Integer newTagId) {
             try {
                 LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndDetailsPresenter.saveCategoryChanges()");
 
-                /* Save any changes made to the tag entity itself */
-                final RESTCallback<RESTCategoryCollectionV1> callback = new RESTCalls.RESTCallback<RESTCategoryCollectionV1>() {
-                    @Override
-                    public void begin() {
-                        display.addWaitOperation();
-                    }
-
-                    @Override
-                    public void generalException(final Exception e) {
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        display.removeWaitOperation();
-                    }
-
-                    @Override
-                    public void success(final RESTCategoryCollectionV1 retValue) {
-                        try {
-                            /*
+                final BaseRestCallback<RESTCategoryCollectionV1, Display> callback = new BaseRestCallback<RESTCategoryCollectionV1, Display>(display,
+                        new BaseRestCallback.SuccessAction<RESTCategoryCollectionV1, Display>() {
+                            @Override
+                            public void doSuccessAction(@NotNull final RESTCategoryCollectionV1 retValue, @NotNull final Display display) {
+                                 /*
                              * Reload the list of categories and projects if this is the last REST call to succeed
                              */
-                            if (categoriesComponent.getPossibleChildrenProviderData().getDisplayedItem() != null) {
-                                categoriesComponent.refreshExistingChildList(categoriesComponent.getPossibleChildrenProviderData()
-                                        .getDisplayedItem().getItem());
+                                if (categoriesComponent.getPossibleChildrenProviderData().getDisplayedItem() != null) {
+                                    categoriesComponent.refreshExistingChildList(categoriesComponent.getPossibleChildrenProviderData().getDisplayedItem().getItem());
+                                }
+                                categoriesComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+
+                                updateDisplayAfterSave(wasNewTag);
+                                Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + newTagId);
                             }
-                            categoriesComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
-
-                            updateDisplayAfterSave(wasNewTag);
-                            Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + newTagId);
-                        } finally {
-                            display.removeWaitOperation();
-                        }
-
-                    }
-
-                    @Override
-                    public void failed(final Message message, final Throwable throwable) {
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        display.removeWaitOperation();
-                    }
-                };
+                        });
 
                 final RESTCategoryCollectionV1 updatedCategories = new RESTCategoryCollectionV1();
 
@@ -410,8 +385,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                              * If we were editing a new tag, it is possible that a tag with a NULL_ID is in the category tags
                              * collection. If so, replace it with the id that was assigned to the created tag.
                              */
-                            updatedTag.setId(tag.getItem().getId() == Constants.NULL_ID && wasNewTag ? newTagId : tag.getItem()
-                                    .getId());
+                            updatedTag.setId(tag.getItem().getId() == Constants.NULL_ID && wasNewTag ? newTagId : tag.getItem().getId());
 
                             /* add it to the collection */
                             updatedCategory.getTags().addUpdateItem(updatedTag);
@@ -440,7 +414,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
+    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
                     /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTTagV1>() {
 
@@ -515,8 +489,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                         }
 
                         if (!found) {
-                            final RESTTagV1 newTag = filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                                    .clone(true);
+                            final RESTTagV1 newTag = filteredResultsComponent.getProviderData().getDisplayedItem().getItem().clone(true);
                             object.getItem().getTags().addNewItem(newTag);
                         }
 
@@ -700,7 +673,7 @@ public class TagsFilteredResultsAndDetailsPresenter
         });
     }
 
-    private void enableAndDisableActionButtons(final BaseTemplateViewInterface displayedView) {
+    private void enableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView) {
         this.display.replaceTopActionButton(this.display.getTagCategoriesDown(), this.display.getTagCategories());
         this.display.replaceTopActionButton(this.display.getTagDetailsDown(), this.display.getTagDetails());
         this.display.replaceTopActionButton(this.display.getTagProjectsDown(), this.display.getTagProjects());

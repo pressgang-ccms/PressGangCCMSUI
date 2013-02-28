@@ -30,6 +30,7 @@ public class StringConstantPresenter extends BaseTemplatePresenter {
         return display;
     }
 
+    @NotNull
     @Override
     public void parseToken(@NotNull final String historyToken) {
 

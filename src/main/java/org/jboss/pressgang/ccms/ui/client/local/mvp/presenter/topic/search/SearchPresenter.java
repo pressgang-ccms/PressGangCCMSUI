@@ -62,6 +62,7 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
      */
     private RESTFilterV1 filter;
 
+    @NotNull
     public Display getDisplay() {
         return display;
     }

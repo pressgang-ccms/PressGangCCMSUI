@@ -70,7 +70,7 @@ public class PropertyTagFilteredResultsPresenter extends BaseFilteredResultsPres
     protected EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTPropertyTagCollectionItemV1> list) {
+            protected void onRangeChanged(@NotNull final HasData<RESTPropertyTagCollectionItemV1> list) {
 
                 final BaseRestCallback<RESTPropertyTagCollectionV1, Display> callback = new BaseRestCallback<RESTPropertyTagCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTPropertyTagCollectionV1, Display>() {
                     @Override

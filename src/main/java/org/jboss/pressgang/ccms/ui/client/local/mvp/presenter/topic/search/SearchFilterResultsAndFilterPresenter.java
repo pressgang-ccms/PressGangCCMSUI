@@ -15,6 +15,8 @@ import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.filter.RESTFilterV1BasicDetailsEditor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -55,6 +57,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
     /**
      * @return The display
      */
+    @NotNull
     public final Display getDisplay() {
         return display;
     }
@@ -67,12 +70,12 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
     }
 
     @Override
-    public final void parseToken(final String historyToken) {
+    public final void parseToken(@NotNull final String historyToken) {
         LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.parseToken()");
     }
 
     @Override
-    public final void go(final HasWidgets container) {
+    public final void go(@NotNull final HasWidgets container) {
 
         try {
             LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.go()");
@@ -86,7 +89,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
+    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTFilterV1> getNewEntityCallback = new GetNewEntityCallback<RESTFilterV1>() {
 
@@ -147,7 +150,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
     }
 
     @Override
-    protected final void initializeViews(final List<BaseTemplateViewInterface> filter) {
+    protected final void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.initializeViews()");
 
@@ -166,7 +169,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
         return searchFilterPresenter;
     }
 
-    public void setSearchFilterPresenter(final SearchFilterPresenter searchFilterPresenter) {
+    public void setSearchFilterPresenter(@NotNull final SearchFilterPresenter searchFilterPresenter) {
         this.searchFilterPresenter = searchFilterPresenter;
     }
 
@@ -177,7 +180,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
         return searchFilterFilteredResultsPresenter;
     }
 
-    public void setSearchFilterFilteredResultsPresenter(final SearchFilterFilteredResultsPresenter searchFilterFilteredResultsPresenter) {
+    public void setSearchFilterFilteredResultsPresenter(@NotNull final SearchFilterFilteredResultsPresenter searchFilterFilteredResultsPresenter) {
         this.searchFilterFilteredResultsPresenter = searchFilterFilteredResultsPresenter;
     }
 

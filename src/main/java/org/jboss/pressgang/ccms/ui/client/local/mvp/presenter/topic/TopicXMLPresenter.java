@@ -11,6 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -102,12 +103,13 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
     @Inject
     private Display display;
 
+    @NotNull
     public Display getDisplay() {
         return display;
     }
 
     @Override
-    public void parseToken(final String searchToken) {
+    public void parseToken(@NotNull final String searchToken) {
         try {
             topicId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
         } catch (final NumberFormatException ex) {
@@ -117,12 +119,12 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtended(ServiceConstants.TOPIC_XML_EDIT_TOPIC, HISTORY_TOKEN);
     }
 
-    public void bindExtended(final int helpTopicId, final String pageId) {
+    public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
         super.bind(helpTopicId, pageId, display);
         bindAceEditorButtons();
     }
@@ -133,7 +135,7 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
     private void bindAceEditorButtons() {
         display.getLineWrap().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 display.getEditor().setUseWrapMode(!display.getEditor().getUserWrapMode());
                 display.getLineWrap().setDown(display.getEditor().getUserWrapMode());
             }
@@ -141,7 +143,7 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
 
         display.getShowInvisibles().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 display.getEditor().setShowInvisibles(!display.getEditor().getShowInvisibles());
                 display.getShowInvisibles().setDown(display.getEditor().getShowInvisibles());
             }

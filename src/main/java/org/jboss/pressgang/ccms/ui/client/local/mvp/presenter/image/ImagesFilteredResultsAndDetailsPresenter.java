@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
@@ -75,8 +76,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
         implements BaseTemplatePresenterInterface {
 
 
-    public interface Display extends
-            BaseSearchAndEditViewInterface<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1> {
+    public interface Display extends BaseSearchAndEditViewInterface<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1> {
 
     }
 
@@ -125,7 +125,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                 final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(display,
                         new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
                             @Override
-                            public void doSuccessAction(final RESTImageV1 retValue, final BaseTemplateViewInterface display) {
+                            public void doSuccessAction(@NotNull final RESTImageV1 retValue, @NotNull final BaseTemplateViewInterface display) {
                                 displayCallback.displayNewEntity(retValue);
                             }
                         });
@@ -156,12 +156,13 @@ public class ImagesFilteredResultsAndDetailsPresenter
         final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
                 display, new BaseRestCallback.SuccessAction<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
             @Override
-            public void doSuccessAction(final RESTImageV1 retValue,
-                                        final ImagesFilteredResultsAndDetailsPresenter.Display display) {
-                        /*
-                         * Do a shallow copy here, because Chrome has issues with System.arraycopy - see
-                         * http://code.google.com/p/chromium/issues/detail?id=56588
-                         */
+            public void doSuccessAction(@NotNull final RESTImageV1 retValue, @NotNull final ImagesFilteredResultsAndDetailsPresenter.Display display) {
+                checkArgument(retValue.getLanguageImages_OTM() != null, "The image should have the language image children populated.");
+
+                /*
+                 * Do a shallow copy here, because Chrome has issues with System.arraycopy - see
+                 * http://code.google.com/p/chromium/issues/detail?id=56588
+                 */
                 retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
 
                 finishLoading();
@@ -175,7 +176,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
     private BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface> getDefaultImageRestCallback() {
         return new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
             @Override
-            public void doSuccessAction(final RESTImageV1 retValue, final BaseTemplateViewInterface display) {
+            public void doSuccessAction(@NotNull final RESTImageV1 retValue, @NotNull final BaseTemplateViewInterface display) {
                 retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem(), false);
                 retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
                 initializeViews();
@@ -248,14 +249,14 @@ public class ImagesFilteredResultsAndDetailsPresenter
 
                         reader.addErrorHandler(new ErrorHandler() {
                             @Override
-                            public void onError(final org.vectomatic.file.events.ErrorEvent event) {
+                            public void onError(@NotNull final org.vectomatic.file.events.ErrorEvent event) {
                                 imageComponent.getDisplay().removeWaitOperation();
                             }
                         });
 
                         reader.addLoadEndHandler(new LoadEndHandler() {
                             @Override
-                            public void onLoadEnd(final LoadEndEvent event) {
+                            public void onLoadEnd(@NotNull final LoadEndEvent event) {
                                 try {
                                     final String result = reader.getStringResult();
                                     final byte[] buffer = GWTUtilities.getByteArray(result, 1);

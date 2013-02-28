@@ -150,11 +150,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      */
     private boolean topicListLoaded = false;
 
+    @NotNull
     @Override
     protected Display getDisplay() {
         return display;
     }
 
+    @NotNull
     @Override
     protected BaseFilteredResultsPresenter<RESTTopicCollectionItemV1> getSearchResultsComponent() {
         return searchResultsComponent;
@@ -351,7 +353,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             /* Build up a click handler to save the topic */
             final ClickHandler saveClickHandler = new ClickHandler() {
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
 
                     try {
                         LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() saveClickHandler.onClick()");
@@ -380,7 +382,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             final ClickHandler messageLogDialogOK = new ClickHandler() {
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
                     try {
                         LOGGER.log(Level.INFO,
                                 "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
@@ -438,7 +440,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                         display,
                                         new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
                                             @Override
-                                            public void doSuccessAction(final RESTTopicV1 retValue, final Display display) {
+                                            public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
                                                 try {
                                                     LOGGER.log(Level.INFO,
                                                             "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
@@ -504,7 +506,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                         display,
                                         new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
                                             @Override
-                                            public void doSuccessAction(final RESTTopicV1 retValue, final Display display) {
+                                            public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
                                                 try {
                                                     LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - Existing Topic");
 
@@ -794,12 +796,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     private EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateTopicRevisionsListProvider() {
         final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTopicCollectionItemV1> display) {
+            protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> display) {
                 if (TopicFilteredResultsAndDetailsPresenter.this.getSearchResultsComponent().getProviderData().getDisplayedItem() != null
                         && TopicFilteredResultsAndDetailsPresenter.this.getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevisions() != null
                         && TopicFilteredResultsAndDetailsPresenter.this.getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevisions().getItems() != null) {
-                    displayNewFixedList(TopicFilteredResultsAndDetailsPresenter.this.getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevisions()
-                            .getItems());
+                    displayNewFixedList(TopicFilteredResultsAndDetailsPresenter.this.getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevisions().getItems());
                 } else {
                     resetProvider();
                 }

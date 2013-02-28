@@ -55,6 +55,7 @@ public class TagFilteredResultsPresenter
         return display;
     }
 
+    @NotNull
     @Override
     public void parseToken(@NotNull final String searchToken) {
         queryString = searchToken.replace(HISTORY_TOKEN + ";", "");
@@ -99,7 +100,7 @@ public class TagFilteredResultsPresenter
     protected EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTagCollectionItemV1> range) {
+            protected void onRangeChanged(@NotNull final HasData<RESTTagCollectionItemV1> range) {
 
                 final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
                     @Override
@@ -121,8 +122,7 @@ public class TagFilteredResultsPresenter
                             getProviderData().setItems(retValue.getItems());
                             getProviderData().setSize(retValue.getSize());
                             relinkSelectedItem();
-                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(),
-                                    getProviderData().getStartRow());
+                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                         } finally {
                             display.removeWaitOperation();
                         }

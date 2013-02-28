@@ -12,6 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchFieldEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -39,22 +40,23 @@ public class SearchFieldPresenter extends BaseTemplatePresenter implements BaseT
     @Inject
     private Display display;
 
+    @NotNull
     public Display getDisplay() {
         return display;
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         GWTUtilities.clearContainerAndAddTopLevelPanel(container, display);
         bindExtended(ServiceConstants.SEARCH_FIELDS_HELP_TOPIC, HISTORY_TOKEN);
     }
 
-    public void bindExtended(final int helpTopicId, final String pageId) {
+    public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
         bind(helpTopicId, pageId, display);
     }
 
     @Override
-    public void parseToken(final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
 
     }
 

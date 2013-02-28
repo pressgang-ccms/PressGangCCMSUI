@@ -16,6 +16,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresul
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
@@ -53,7 +54,7 @@ public class ProjectFilteredResultsPresenter
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
@@ -73,40 +74,18 @@ public class ProjectFilteredResultsPresenter
     protected EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
         final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTProjectCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTProjectCollectionItemV1> list) {
+            protected void onRangeChanged(@NotNull final HasData<RESTProjectCollectionItemV1> list) {
 
-                final RESTCallback<RESTProjectCollectionV1> callback = new RESTCallback<RESTProjectCollectionV1>() {
-                    @Override
-                    public void begin() {
-                        resetProvider();
-                        display.addWaitOperation();
-                    }
-
-                    @Override
-                    public void generalException(final Exception ex) {
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                        display.removeWaitOperation();
-                    }
-
-                    @Override
-                    public void success(final RESTProjectCollectionV1 retValue) {
-                        try {
+                final BaseRestCallback<RESTProjectCollectionV1, Display> callback = new BaseRestCallback<RESTProjectCollectionV1, Display>(display,
+                    new BaseRestCallback.SuccessAction<RESTProjectCollectionV1, Display>() {
+                        @Override
+                        public void doSuccessAction(@NotNull final RESTProjectCollectionV1 retValue, @NotNull final Display display) {
                             getProviderData().setItems(retValue.getItems());
                             getProviderData().setSize(retValue.getSize());
                             relinkSelectedItem();
-                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(),
-                                    getProviderData().getStartRow());
-                        } finally {
-                            display.removeWaitOperation();
+                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                         }
-                    }
-
-                    @Override
-                    public void failed(final Message message, final Throwable throwable) {
-                        display.removeWaitOperation();
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                    }
-                };
+                });
 
                 getProviderData().setStartRow(list.getVisibleRange().getStart());
                 final int length = list.getVisibleRange().getLength();

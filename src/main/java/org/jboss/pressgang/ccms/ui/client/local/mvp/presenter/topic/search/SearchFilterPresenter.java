@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.filter.RESTFilterV1BasicDetailsEditor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
@@ -43,22 +44,23 @@ public class SearchFilterPresenter extends BaseTemplatePresenter {
     /**
      * @return The display.
      */
+    @NotNull
     public final Display getDisplay() {
         return display;
     }
 
     @Override
-    public final void parseToken(final String historyToken) {
+    public final void parseToken(@NotNull final String historyToken) {
 
     }
 
     @Override
-    public final void bindExtended(final int topicId, final String pageId) {
+    public final void bindExtended(final int topicId, @NotNull final String pageId) {
         super.bind(topicId, pageId, display);
     }
 
     @Override
-    public final void go(final HasWidgets container) {
+    public final void go(@NotNull final HasWidgets container) {
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 }

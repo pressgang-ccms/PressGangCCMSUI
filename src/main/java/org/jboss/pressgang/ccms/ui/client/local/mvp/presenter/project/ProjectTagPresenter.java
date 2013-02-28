@@ -100,7 +100,7 @@ public class ProjectTagPresenter extends BaseChildrenPresenter<
 
         final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTagCollectionItemV1> display) {
+            protected void onRangeChanged(@NotNull final HasData<RESTTagCollectionItemV1> display) {
 
                 getPossibleChildrenProviderData().setStartRow(display.getVisibleRange().getStart());
 

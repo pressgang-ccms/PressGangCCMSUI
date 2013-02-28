@@ -25,6 +25,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.integerconstant.RESTIntegerConstantV1DetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
@@ -93,7 +94,7 @@ implements BaseTemplatePresenterInterface {
          */
         final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
 
                 /* Was the tag we just saved a new tag? */
                 final boolean wasNewEntity = integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem();
@@ -104,7 +105,7 @@ implements BaseTemplatePresenterInterface {
                 final RESTCalls.RESTCallback<RESTIntegerConstantV1> callback = new BaseRestCallback<RESTIntegerConstantV1, Display>(display,
                         new BaseRestCallback.SuccessAction<RESTIntegerConstantV1, Display>() {
                             @Override
-                            public void doSuccessAction(final RESTIntegerConstantV1 retValue, final Display display) {
+                            public void doSuccessAction(@NotNull final RESTIntegerConstantV1 retValue, @NotNull final Display display) {
                                 retValue.cloneInto(integerConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
                                 retValue.cloneInto(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
 
@@ -148,7 +149,7 @@ implements BaseTemplatePresenterInterface {
     protected void bindFilteredResultsButtons() {
         integerConstantFilteredResultsPresenter.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new IntegerConstantFilteredResultsAndDetailsViewEvent(integerConstantFilteredResultsPresenter.getQuery(),
                             GWTUtilities.isEventToOpenNewWindow(event)));
@@ -158,7 +159,7 @@ implements BaseTemplatePresenterInterface {
 
         integerConstantFilteredResultsPresenter.getDisplay().getCreate().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
                 final RESTIntegerConstantV1 selectedEntity = new RESTIntegerConstantV1();
@@ -181,7 +182,7 @@ implements BaseTemplatePresenterInterface {
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
+    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
         final GetNewEntityCallback<RESTIntegerConstantV1> getNewEntityCallback = new GetNewEntityCallback<RESTIntegerConstantV1>() {
 
@@ -204,7 +205,7 @@ implements BaseTemplatePresenterInterface {
     }
 
     @Override
-    public void parseToken(final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
         queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
@@ -212,7 +213,7 @@ implements BaseTemplatePresenterInterface {
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindSearchAndEditExtended(ServiceConstants.INTEGER_CONSTANT_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }

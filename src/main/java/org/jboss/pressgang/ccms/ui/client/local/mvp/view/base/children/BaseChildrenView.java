@@ -9,6 +9,8 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @param <T> The entity type
@@ -38,38 +40,44 @@ abstract public class BaseChildrenView<
     private final CellTable<C> possibleChildrenResults = UIUtilities.<C>createCellTable();
     private EnhancedAsyncDataProvider<C> possibleChildrenProvider;
 
+    @Nullable
     @Override
     public final T getOriginalEntity() {
         return this.originalEntity;
     }
 
+    @NotNull
     @Override
     public final void setOriginalEntity(final T originalEntity) {
         this.originalEntity = originalEntity;
     }
 
+    @NotNull
     @Override
     public final VerticalPanel getPossibleChildrenResultsPanel() {
         return this.possibleChildrenResultsPanel;
     }
 
+    @NotNull
     @Override
     public final SimplePager getPossibleChildrenPager() {
         return this.possibleChildrenPager;
     }
 
+    @NotNull
     @Override
     public final CellTable<C> getPossibleChildrenResults() {
         return this.possibleChildrenResults;
     }
 
+    @Nullable
     @Override
     public final EnhancedAsyncDataProvider<C> getPossibleChildrenProvider() {
         return this.possibleChildrenProvider;
     }
 
     @Override
-    public final void setPossibleChildrenProvider(final EnhancedAsyncDataProvider<C> possibleChildrenProvider) {
+    public final void setPossibleChildrenProvider(@NotNull final EnhancedAsyncDataProvider<C> possibleChildrenProvider) {
 
         if (this.possibleChildrenProvider != null) {
             this.possibleChildrenProvider.removeDataDisplay(this.possibleChildrenResults);
@@ -83,7 +91,7 @@ abstract public class BaseChildrenView<
      * @param applicationName The name of the application, which will be added to the page's title field
      * @param pageName        The name of the page that is being displayed, which will be added to the page's title field
      */
-    public BaseChildrenView(final String applicationName, final String pageName) {
+    public BaseChildrenView(@NotNull final String applicationName, @NotNull final String pageName) {
         super(applicationName, pageName);
 
         this.possibleChildrenPager.setDisplay(this.possibleChildrenResults);
@@ -94,7 +102,7 @@ abstract public class BaseChildrenView<
         this.getPanel().setWidget(this.possibleChildrenResultsPanel);
     }
 
-    public final void displayChildren(final T originalEntity, final boolean readOnly) {
+    public final void displayChildren(@NotNull final T originalEntity, final boolean readOnly) {
         this.originalEntity = originalEntity;
         this.readOnly = readOnly;
     }
