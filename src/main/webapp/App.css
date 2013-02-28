@@ -10,8 +10,8 @@
     margin-right: auto;
 }
 
-.LogicDetailsTable > td {
-    padding: 8px;
+.LogicDetailsCell {
+    padding: 0px;
 }
 
 .HelpContents {
