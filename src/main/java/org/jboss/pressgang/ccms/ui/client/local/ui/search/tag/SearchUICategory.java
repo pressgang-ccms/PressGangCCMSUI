@@ -3,12 +3,14 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.search.tag;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TriStateSelectionState;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
 
 import java.util.ArrayList;
@@ -33,6 +35,11 @@ public final class SearchUICategory extends SearchUIBase {
      * The tags held by this category
      */
     private final List<SearchUITag> myTags = new ArrayList<SearchUITag>();
+
+    private boolean internalLogicAnd = Constants.DEFAULT_INTERNAL_AND_LOGIC;
+    private boolean internalLogicOr = !Constants.DEFAULT_INTERNAL_AND_LOGIC;
+    private boolean externalLogicAnd = Constants.DEFAULT_EXTERNAL_AND_LOGIC;
+    private boolean externalLogicOr = !Constants.DEFAULT_EXTERNAL_AND_LOGIC;
 
     /**
      * @param project  The project that this object represents
@@ -64,6 +71,38 @@ public final class SearchUICategory extends SearchUIBase {
      */
     public List<SearchUITag> getMyTags() {
         return this.myTags;
+    }
+
+    public boolean isInternalLogicAnd() {
+        return internalLogicAnd;
+    }
+
+    public void setInternalLogicAnd(final boolean internalLogicAnd) {
+        this.internalLogicAnd = internalLogicAnd;
+    }
+
+    public boolean isInternalLogicOr() {
+        return internalLogicOr;
+    }
+
+    public void setInternalLogicOr(final boolean internalLogicOr) {
+        this.internalLogicOr = internalLogicOr;
+    }
+
+    public boolean isExternalLogicAnd() {
+        return externalLogicAnd;
+    }
+
+    public void setExternalLogicAnd(final boolean externalLogicAnd) {
+        this.externalLogicAnd = externalLogicAnd;
+    }
+
+    public boolean isExternalLogicOr() {
+        return externalLogicOr;
+    }
+
+    public void setExternalLogicOr(final boolean externalLogicOr) {
+        this.externalLogicOr = externalLogicOr;
     }
 
     /**
@@ -197,6 +236,8 @@ public final class SearchUICategory extends SearchUIBase {
     public int hashCode() {
         return super.hashCode();
     }
+
+
 
     /**
      * This class contains the summary information to be displayed on a Category tile in the search screen.

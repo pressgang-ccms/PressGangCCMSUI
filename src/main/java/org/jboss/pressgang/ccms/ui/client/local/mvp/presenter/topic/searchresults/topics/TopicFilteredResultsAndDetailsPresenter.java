@@ -360,11 +360,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 /*
                                     Default to using the major change for new topics
                                  */
-                            if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null &&
-                                    getSearchResultsComponent().getProviderData().getDisplayedItem().returnIsAddItem()) {
+                            if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null && getSearchResultsComponent().getProviderData().getDisplayedItem().returnIsAddItem()) {
                                 display.getMessageLogDialog().getMajorChange().setValue(true);
                                 display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.InitialTopicCreation());
                             }
+
+                            display.getMessageLogDialog().getUsername().setText(Preferences.INSTANCE.getString(Preferences.LOG_MESSAGE_USERNAME, ""));
 
                             display.getMessageLogDialog().getDialogBox().center();
                             display.getMessageLogDialog().getDialogBox().show();
@@ -386,9 +387,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                         if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
 
-                            final String message = display.getMessageLogDialog().getMessage().getText();
-                            final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE
-                                    : ServiceConstants.MAJOR_CHANGE);
+                            final String user = display.getMessageLogDialog().getUsername().getText().trim();
+                            Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
+
+                            final StringBuilder message = new StringBuilder();
+                            if (!user.isEmpty()) {
+                                message.append(user).append(": ");
+                            }
+                            message.append(display.getMessageLogDialog().getMessage().getText());
+                            final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
 
                                 /* Sync any changes back to the underlying object */
                             flushChanges();
@@ -491,7 +498,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 }
                                 );
 
-                                RESTCalls.createTopic(addCallback, newTopic, message, flag, ServiceConstants.NULL_USER_ID.toString());
+                                RESTCalls.createTopic(addCallback, newTopic, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
                             } else {
                                 final BaseRestCallback<RESTTopicV1, Display> updateCallback = new BaseRestCallback<RESTTopicV1, Display>(
                                         display,
@@ -580,15 +587,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 );
 
 
-                                RESTCalls.saveTopic(updateCallback, newTopic, message, flag, ServiceConstants.NULL_USER_ID.toString());
+                                RESTCalls.saveTopic(updateCallback, newTopic, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
                             }
                         }
                     } finally {
                         display.getMessageLogDialog().reset();
                         display.getMessageLogDialog().getDialogBox().hide();
 
-                        LOGGER.log(Level.INFO,
-                                "EXIT TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
+                        LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
                     }
                 }
             };

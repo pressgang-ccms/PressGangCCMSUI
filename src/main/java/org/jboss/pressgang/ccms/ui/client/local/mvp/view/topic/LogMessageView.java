@@ -22,6 +22,7 @@ public class LogMessageView extends DialogBox implements LogMessageInterface {
     private final RadioButton minorChange = new RadioButton(CHANGE_TYPE_GROUP, "");
     private final RadioButton majorChange = new RadioButton(CHANGE_TYPE_GROUP, "");
     private final TextArea message = new TextArea();
+    private final TextBox username = new TextBox();
     private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
     private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
 
@@ -55,6 +56,11 @@ public class LogMessageView extends DialogBox implements LogMessageInterface {
         return ok;
     }
 
+    @Override
+    public TextBox getUsername() {
+        return username;
+    }
+
     public LogMessageView() {
         this.setGlassEnabled(true);
         this.setText(PressGangCCMSUI.INSTANCE.SaveLog());
@@ -62,6 +68,10 @@ public class LogMessageView extends DialogBox implements LogMessageInterface {
         int row = 0;
         layout.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.Message()));
         layout.setWidget(row, 1, message);
+
+        ++row;
+        layout.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.Username()));
+        layout.setWidget(row, 1, username);
 
         ++row;
         layout.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.MinorChange()));
@@ -96,5 +106,4 @@ public class LogMessageView extends DialogBox implements LogMessageInterface {
         super.show();
         message.setFocus(true);
     }
-
 }

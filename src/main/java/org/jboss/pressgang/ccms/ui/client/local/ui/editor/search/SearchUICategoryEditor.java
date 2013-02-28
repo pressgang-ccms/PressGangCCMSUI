@@ -26,10 +26,10 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
     private final SearchUIProjectEditor searchUIProject;
     private SearchUICategory value;
     private final FlexTable tagsTable = new FlexTable();
-    private RadioButton internalLogicAnd;
-    private RadioButton internalLogicOr;
-    private RadioButton externalLogicAnd;
-    private RadioButton externalLogicOr;
+    private final RadioButton internalLogicAnd = new RadioButton("", PressGangCCMSUI.INSTANCE.And());
+    private final RadioButton internalLogicOr  = new RadioButton("", PressGangCCMSUI.INSTANCE.Or());
+    private final RadioButton externalLogicAnd  = new RadioButton("", PressGangCCMSUI.INSTANCE.And());
+    private final RadioButton externalLogicOr = new RadioButton("", PressGangCCMSUI.INSTANCE.Or());
 
     final FourTextAndImageButtonSearchUICategoryEditor summary = new FourTextAndImageButtonSearchUICategoryEditor();
     final ListEditor<SearchUITag, SearchUITagEditor> myTags = ListEditor.of(new SearchUITagEditorSource());
@@ -77,53 +77,13 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
 
         this.setWidget(tagsTable);
 
-
-
-        summary.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(final ClickEvent event) {
-                summary.removeStyleName(CSSConstants.CUSTOM_BUTTON);
-                summary.addStyleName(CSSConstants.CUSTOM_BUTTON_DOWN);
-            }
-        });
-    }
-
-    @Override
-    public void setDelegate(@NotNull final EditorDelegate<SearchUICategory> delegate) {
-
-    }
-
-    @Override
-    public void flush() {
-        this.summary.asEditor().setValue(value.getSummary());
-    }
-
-    @Override
-    public void onPropertyChange(@NotNull final String... paths) {
-
-    }
-
-    @Override
-    public void setValue(@NotNull final SearchUICategory value) {
-        this.value = value;
-
-        /*
+         /*
             Build up the internal and external category logic ui elements. We do this here because
             we need to know what category this editor is working with in order to group the
             radio buttons.
          */
 
         checkState(COLUMNS >= 2, "The layout of the category logic ui elements assumes that there are at least 2 columns.");
-
-        // group the radio buttons by project and category id to make them unique
-        internalLogicAnd = new RadioButton(INTERNAL_LOGIC_RADIOBUTTON_GROUP + searchUIProject.getValue().getId() + value.getId(), PressGangCCMSUI.INSTANCE.And());
-        internalLogicOr = new RadioButton(INTERNAL_LOGIC_RADIOBUTTON_GROUP + searchUIProject.getValue().getId() + value.getId(), PressGangCCMSUI.INSTANCE.Or());
-        externalLogicAnd = new RadioButton(EXTERNAL_LOGIC_RADIOBUTTON_GROUP + searchUIProject.getValue().getId() + value.getId(), PressGangCCMSUI.INSTANCE.And());
-        externalLogicOr = new RadioButton(EXTERNAL_LOGIC_RADIOBUTTON_GROUP + searchUIProject.getValue().getId() + value.getId(), PressGangCCMSUI.INSTANCE.Or());
-
-        // set the default values
-        internalLogicOr.setValue(true);
-        externalLogicAnd.setValue(true);
 
         // setup the column spans
         tagsTable.getFlexCellFormatter().setColSpan(0, 0, COLUMNS);
@@ -171,5 +131,51 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
         final Label tags = new Label(PressGangCCMSUI.INSTANCE.Tags());
         tagsTable.setWidget(2, 0, tags);
         tagsTable.getFlexCellFormatter().addStyleName(2, 0, CSSConstants.SearchView.LOGIC_HEADER_CELL);
+
+        summary.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                summary.removeStyleName(CSSConstants.CUSTOM_BUTTON);
+                summary.addStyleName(CSSConstants.CUSTOM_BUTTON_DOWN);
+            }
+        });
+    }
+
+    @Override
+    public void setDelegate(@NotNull final EditorDelegate<SearchUICategory> delegate) {
+
+    }
+
+    @Override
+    public void flush() {
+        this.summary.asEditor().setValue(value.getSummary());
+        externalLogicAnd.setValue(value.isExternalLogicAnd());
+        externalLogicOr.setValue(value.isExternalLogicAnd());
+        internalLogicAnd.setValue(value.isInternalLogicAnd());
+        internalLogicOr.setValue(value.isInternalLogicOr());
+    }
+
+    @Override
+    public void onPropertyChange(@NotNull final String... paths) {
+
+    }
+
+    @Override
+    public void setValue(@NotNull final SearchUICategory value) {
+        this.value = value;
+
+
+
+        // group the radio buttons by project and category id to make them unique
+        internalLogicAnd.setName(INTERNAL_LOGIC_RADIOBUTTON_GROUP + searchUIProject.getValue().getId() + value.getId());
+        internalLogicOr.setName(INTERNAL_LOGIC_RADIOBUTTON_GROUP + searchUIProject.getValue().getId() + value.getId());
+        externalLogicAnd.setName(EXTERNAL_LOGIC_RADIOBUTTON_GROUP + searchUIProject.getValue().getId() + value.getId());
+        externalLogicOr.setName(EXTERNAL_LOGIC_RADIOBUTTON_GROUP + searchUIProject.getValue().getId() + value.getId());
+
+        // set the default values
+        internalLogicAnd.setValue(value.isInternalLogicAnd());
+        internalLogicOr.setValue(value.isInternalLogicOr());
+        externalLogicAnd.setValue(value.isExternalLogicAnd());
+        externalLogicOr.setValue(value.isExternalLogicAnd());
     }
 }

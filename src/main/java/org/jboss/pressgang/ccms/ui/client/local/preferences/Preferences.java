@@ -9,6 +9,10 @@ import com.google.gwt.storage.client.Storage;
  */
 final public class Preferences {
     /**
+     * Saves the last entered username in the topic save log message dialog box.
+     */
+    public static final String LOG_MESSAGE_USERNAME = "LogMessageUsername";
+    /**
      * The setting that saves the build that was used last. This allows us to display a message when the UI has been updated
      */
     public static final String LAST_BUILD = "LastBuild";

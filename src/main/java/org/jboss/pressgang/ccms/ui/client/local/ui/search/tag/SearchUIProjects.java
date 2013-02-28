@@ -30,9 +30,17 @@ import java.util.logging.Logger;
  */
 public class SearchUIProjects implements SearchViewBase {
     /**
-     * The string that appears in the query to indicate the presence or absence of a tag
+     * The string that appears in the query to indicate the presence or absence of a tag.
      */
     private static final String TAG_PREFIX = "tag";
+    /**
+     * The prefix for the query parameter that defines a categories external logic.
+     */
+    private static final String CATEGORY_EXTERNAL_PREFIX = "catext";
+    /**
+     * The prefix for the query parameter that defines a categories internal logic.
+     */
+    private static final String CATEGORY_INTERNAL_PREFIX = "catint";
 
     /**
      * A logger.
@@ -143,11 +151,26 @@ public class SearchUIProjects implements SearchViewBase {
     @Override
     public final String getSearchQuery(final boolean includeQueryPrefix) {
 
-        final StringBuilder builder = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON
-                : "");
+        final StringBuilder builder = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
 
         for (final SearchUIProject project : this.projects) {
             for (final SearchUICategory category : project.getCategories()) {
+
+                /*
+                    Add the parameters for the category logic.
+                 */
+                if (category.isInternalLogicAnd() && category.isInternalLogicAnd() != Constants.DEFAULT_INTERNAL_AND_LOGIC) {
+                    builder.append(CATEGORY_INTERNAL_PREFIX).append(category.getId()).append("=").append(Constants.AND_LOGIC_QUERY_STRING_VALUE);
+                } else if (category.isInternalLogicOr() && category.isInternalLogicOr() == Constants.DEFAULT_INTERNAL_AND_LOGIC) {
+                    builder.append(CATEGORY_INTERNAL_PREFIX).append(category.getId()).append("=").append(Constants.OR_LOGIC_QUERY_STRING_VALUE);
+                }
+
+                if (category.isExternalLogicAnd() && category.isExternalLogicAnd() != Constants.DEFAULT_EXTERNAL_AND_LOGIC) {
+                    builder.append(CATEGORY_EXTERNAL_PREFIX).append(category.getId()).append("=").append(Constants.AND_LOGIC_QUERY_STRING_VALUE);
+                } else if (category.isExternalLogicOr() && category.isInternalLogicOr() == Constants.DEFAULT_EXTERNAL_AND_LOGIC) {
+                    builder.append(CATEGORY_EXTERNAL_PREFIX).append(category.getId()).append("=").append(Constants.OR_LOGIC_QUERY_STRING_VALUE);
+                }
+
                 for (final SearchUITag tag : category.getMyTags()) {
                     if (tag.getState() != TriStateSelectionState.NONE) {
                         builder.append(";");

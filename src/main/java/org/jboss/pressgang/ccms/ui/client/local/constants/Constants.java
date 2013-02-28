@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201302281041";
+    public static final String VERSION = "201302281133";
 
     /**
      * Indicates that a tag should be present in the returned topics
@@ -190,6 +190,22 @@ public final class Constants {
      * A comma.
      */
     public static final String COMMA = ",";
+    /**
+     * The category internal "and" logic to apply when searching. The "or" logic is !DEFAULT_INTERNAL_AND_LOGIC
+     */
+    public static final boolean DEFAULT_INTERNAL_AND_LOGIC = false;
+    /**
+     * The category external "and" category logic to apply when searching. The "or" logic is !DEFAULT_EXTERNAL_AND_LOGIC
+     */
+    public static final boolean DEFAULT_EXTERNAL_AND_LOGIC = true;
+    /**
+     * This is the value for the category logic option "and", as passed by the query strings.
+     */
+    public static final String AND_LOGIC_QUERY_STRING_VALUE = "And";
+    /**
+     * This is the value for the category logic option "or", as passed by the query strings.
+     */
+    public static final String OR_LOGIC_QUERY_STRING_VALUE = "Or";
 
     /**
      * A private constructor to prevent instantiation.

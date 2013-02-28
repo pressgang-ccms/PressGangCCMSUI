@@ -1,9 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.*;
 
 /**
  * The interface that defines the save log message dialog box
@@ -20,6 +17,8 @@ public interface LogMessageInterface {
     RadioButton getMinorChange();
 
     RadioButton getMajorChange();
+
+    TextBox getUsername();
 
     DialogBox getDialogBox();
 
