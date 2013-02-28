@@ -1,6 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
 import com.google.gwt.view.client.AsyncDataProvider;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -37,11 +39,7 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
      * @param listSize The fixed number of items
      * @param startRow The row that this async load represents
      */
-    public final void displayAsynchronousList(final List<T> items, final int listSize, final int startRow) {
-        if (items == null) {
-            throw new IllegalArgumentException("items cannot be null");
-        }
-
+    public final void displayAsynchronousList(@NotNull final List<T> items, final int listSize, final int startRow) {
         this.updateRowData(startRow, items);
         this.updateRowCount(listSize, true);
 
@@ -54,11 +52,7 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
      * @param listSize The fixed number of items
      * @param startRow The row that this async load represents
      */
-    public final void displayFuzzyAsynchronousList(final List<T> items, final int listSize, final int startRow) {
-        if (items == null) {
-            throw new IllegalArgumentException("items cannot be null");
-        }
-
+    public final void displayFuzzyAsynchronousList(@NotNull final List<T> items, final int listSize, final int startRow) {
         this.updateRowData(startRow, items);
         this.updateRowCount(listSize, false);
     }
@@ -69,11 +63,7 @@ abstract public class EnhancedAsyncDataProvider<T> extends AsyncDataProvider<T> 
      *
      * @param items The items to be displayed
      */
-    public final void displayNewFixedList(final List<T> items) {
-        if (items == null) {
-            throw new IllegalArgumentException("items cannot be null");
-        }
-
+    public final void displayNewFixedList(@NotNull final List<T> items) {
         this.updateRowData(0, items);
         this.updateRowCount(items.size(), true);
     }

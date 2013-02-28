@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base;
 
 import com.google.gwt.user.client.ui.*;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This interface defines the UI elements that are exposed from the base template that is
@@ -21,24 +22,28 @@ public interface BaseTemplateViewInterface {
          * @return A reference to the dialog box (the class that implements this interface usually also extends
          * the DialogBox class, so this method usually just returns "this").
          */
+        @NotNull
         DialogBox getDialogBox();
 
         /**
          *
          * @return The element that displays the help topic
          */
+        @NotNull
         HTML getContents();
 
         /**
          *
          * @return The OK button.
          */
+        @NotNull
         PushButton getOK();
 
         /**
          *
          * @return The Edit button
          */
+        @NotNull
         PushButton getEdit();
 
         /**
@@ -59,26 +64,31 @@ public interface BaseTemplateViewInterface {
      *
      * @return The help dialog box.
      */
+    @NotNull
     HelpDialog getHelpDialog();
 
     /**
      * @return The container that holds the actions buttons (i.e. the horizontal row of buttons that are specific to a view)
      */
+    @NotNull
     FlexTable getTopActionPanel();
 
     /**
      * @return The container that holds the view specific actions buttons
      */
+    @NotNull
     FlexTable getTopViewSpecificActionPanel();
 
     /**
      * @return The panel into which a view will add its own content
      */
+    @NotNull
     SimpleLayoutPanel getPanel();
 
     /**
      * @return The panel that defines the page header and the remaining content
      */
+    @NotNull
     DockLayoutPanel getTopLevelPanel();
 
     /**
@@ -91,121 +101,145 @@ public interface BaseTemplateViewInterface {
     /**
      * @return The label that displays the current page title
      */
+    @NotNull
     Label getPageTitle();
 
     /**
      * @return The name of the current view
      */
+    @NotNull
     String getPageName();
 
     /**
      * @return The name of the application
      */
+    @NotNull
     String getApplicationName();
 
     /**
      * @return The panel that holds the advanced links
      */
+    @NotNull
     FlexTable getAdvancedShortcutPanel();
 
     /**
      * @return The panel that holds the standard links
      */
+    @NotNull
     FlexTable getShortcutPanel();
 
     /**
      * @return The panel that holds the standard and advanced shortcut panels
      */
+    @NotNull
     SimplePanel getShortCutPanelParent();
 
     /**
      * @return The panel that holds the top action buttons
      */
+    @NotNull
     FlexTable getTopActionParentPanel();
 
     /**
      * @return The panel that holds the panel that holds the top action buttons
      */
+    @NotNull
     SimplePanel getTopActionGrandParentPanel();
 
     /**
      * @return The button that opens the home view
      */
+    @NotNull
     PushButton getHome();
 
     /**
      * @return The button that opens the bugzilla window
      */
+    @NotNull
     PushButton getBug();
 
     /**
      * @return The button that switches to the topic search view
      */
+    @NotNull
     PushButton getSearch();
 
     /**
      * @return The button that switches to the topic create view
      */
+    @NotNull
     PushButton getCreateTopic();
 
     /**
      * @return The button that switches to the images view
      */
+    @NotNull
     PushButton getImages();
 
     /**
      * @return The button that opens the advanced menu
      */
+    @NotNull
     PushButton getAdvanced();
 
     /**
      * @return The button that opens the property tag categories view
      */
+    @NotNull
     PushButton getPropertyTagCategories();
 
     /**
      * @return The button that opens the property tags view
      */
+    @NotNull
     PushButton getPropertyTags();
 
     /**
      * @return The button that opens the integer constants view
      */
+    @NotNull
     PushButton getIntegerConstants();
 
     /**
      * @return The button that opens the blob constants view
      */
+    @NotNull
     PushButton getBlobConstants();
 
     /**
      * @return The button that opens the string constants view
      */
+    @NotNull
     PushButton getStringConstants();
 
     /**
      * @return The button that opens the projects view
      */
+    @NotNull
     PushButton getProjects();
 
     /**
      * @return The button that opens the categories view
      */
+    @NotNull
     PushButton getCategories();
 
     /**
      * @return The button that opens the tags view
      */
+    @NotNull
     PushButton getTags();
 
     /**
      * @return The button that opens the external reports view
      */
+    @NotNull
     PushButton getReports();
 
     /**
      * @return The button that opens the translated topics search results view
      */
+    @NotNull
     PushButton getSearchTranslations();
 
     /**
@@ -218,16 +252,19 @@ public interface BaseTemplateViewInterface {
      *
      * @return The link that opens the help page
      */
+    @NotNull
     Anchor getHelp();
 
     /**
      * @return The button that closes the advanced menu
      */
+    @NotNull
     PushButton getAdvancedOpen();
 
     /**
      * @return The button that closes the advanced menu
      */
+    @NotNull
     PushButton getClose();
 
     /**
@@ -263,12 +300,14 @@ public interface BaseTemplateViewInterface {
     /**
      * @return the button used to perform a quick search
      */
+    @NotNull
     PushButton getQuickSearch();
 
 
     /**
      * @return The text box that holds the search criteria
      */
+    @NotNull
     TextBox getQuickSearchQuery();
 
     /**

@@ -111,18 +111,18 @@ public class ImagesFilteredResultsAndDetailsPresenter
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
+    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
         imageComponent.bindExtended(ServiceConstants.IMAGE_HELP_TOPIC, pageId);
         imageFilteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
 
         /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTImageV1> getNewEntityCallback = new GetNewEntityCallback<RESTImageV1>() {
+        @NotNull final GetNewEntityCallback<RESTImageV1> getNewEntityCallback = new GetNewEntityCallback<RESTImageV1>() {
 
             @Override
-            public void getNewEntity(final RESTImageV1 selectedEntity, final DisplayNewEntityCallback<RESTImageV1> displayCallback) {
-                final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(display,
+            public void getNewEntity(@NotNull final RESTImageV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTImageV1> displayCallback) {
+                @NotNull final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(display,
                         new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
                             @Override
                             public void doSuccessAction(@NotNull final RESTImageV1 retValue, @NotNull final BaseTemplateViewInterface display) {
@@ -153,7 +153,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
     @Override
     protected void loadAdditionalDisplayedItemData() {
 
-        final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
+        @NotNull final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
                 display, new BaseRestCallback.SuccessAction<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
             @Override
             public void doSuccessAction(@NotNull final RESTImageV1 retValue, @NotNull final ImagesFilteredResultsAndDetailsPresenter.Display display) {
@@ -197,11 +197,11 @@ public class ImagesFilteredResultsAndDetailsPresenter
 
     @NotNull
     private List<String> getUnassignedLocales() {
-        final List<String> newLocales = new ArrayList<String>(Arrays.asList(locales));
+        @NotNull final List<String> newLocales = new ArrayList<String>(Arrays.asList(locales));
 
         /* Make it so you can't add a locale if it already exists */
         if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null) {
-            for (final RESTLanguageImageCollectionItemV1 langImage : imageFilteredResultsComponent.getProviderData()
+            for (@NotNull final RESTLanguageImageCollectionItemV1 langImage : imageFilteredResultsComponent.getProviderData()
                     .getDisplayedItem().getItem().getLanguageImages_OTM().returnExistingAndAddedCollectionItems()) {
                 newLocales.remove(langImage.getItem().getLocale());
             }
@@ -211,10 +211,10 @@ public class ImagesFilteredResultsAndDetailsPresenter
     }
 
     private void populateLocales() {
-        final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+        @NotNull final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
                 display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
             @Override
-            public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
+            public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
                         /* Get the list of locales from the StringConstant */
                 locales = retValue.getValue().replaceAll("\\r\\n", "").replaceAll("\\n", "").replaceAll(" ", "")
                         .split(",");
@@ -233,7 +233,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
 
         checkState(imageComponent.getDisplay().getEditor() != null, "display.getEditor() cannot be null");
 
-        for (final RESTLanguageImageV1Editor editor : imageComponent.getDisplay().getEditor().languageImages_OTMEditor().itemsEditor().getEditors()) {
+        for (@NotNull final RESTLanguageImageV1Editor editor : imageComponent.getDisplay().getEditor().languageImages_OTMEditor().itemsEditor().getEditors()) {
             editor.getUploadButton().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
@@ -242,10 +242,10 @@ public class ImagesFilteredResultsAndDetailsPresenter
                      * There should only be one file, but use a loop to accommodate any changes that might implement multiple
                      * files
                      */
-                    for (final File file : editor.getUpload().getFiles()) {
+                    for (@NotNull final File file : editor.getUpload().getFiles()) {
                         display.addWaitOperation();
 
-                        final FileReader reader = new FileReader();
+                        @NotNull final FileReader reader = new FileReader();
 
                         reader.addErrorHandler(new ErrorHandler() {
                             @Override
@@ -259,7 +259,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                             public void onLoadEnd(@NotNull final LoadEndEvent event) {
                                 try {
                                     final String result = reader.getStringResult();
-                                    final byte[] buffer = GWTUtilities.getByteArray(result, 1);
+                                    @NotNull final byte[] buffer = GWTUtilities.getByteArray(result, 1);
 
                                     /* Flush any changes */
                                     imageComponent.getDisplay().getDriver().flush();
@@ -267,13 +267,13 @@ public class ImagesFilteredResultsAndDetailsPresenter
                                     /*
                                      * Create the image to be modified. This is so we don't send off unnecessary data.
                                      */
-                                    final RESTImageV1 updateImage = new RESTImageV1();
+                                    @NotNull final RESTImageV1 updateImage = new RESTImageV1();
                                     updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                                             .getId());
                                     updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
 
                                     /* Create the language image */
-                                    final RESTLanguageImageV1 updatedLanguageImage = new RESTLanguageImageV1();
+                                    @NotNull final RESTLanguageImageV1 updatedLanguageImage = new RESTLanguageImageV1();
                                     updatedLanguageImage.setId(editor.self.getItem().getId());
                                     updatedLanguageImage.explicitSetImageData(buffer);
                                     updatedLanguageImage.explicitSetFilename(file.getName());
@@ -282,7 +282,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                                     updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                                     updateImage.getLanguageImages_OTM().addUpdateItem(updatedLanguageImage);
 
-                                    final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
+                                    @NotNull final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
                                             display, getDefaultImageRestCallback(), getDefaultImageRestFailureCallback());
 
                                     RESTCalls.updateImage(callback, updateImage);
@@ -335,12 +335,12 @@ public class ImagesFilteredResultsAndDetailsPresenter
                     /*
                      * Create the image to be modified. This is so we don't send off unnessessary data.
                      */
-                    final RESTImageV1 updateImage = new RESTImageV1();
+                    @NotNull final RESTImageV1 updateImage = new RESTImageV1();
                     updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                     updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                             .getDescription());
 
-                    final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
+                    @NotNull final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
                             display, getDefaultImageRestCallback());
 
                     RESTCalls.updateImage(callback, updateImage);
@@ -375,20 +375,20 @@ public class ImagesFilteredResultsAndDetailsPresenter
                         /*
                          * Create the image to be modified. This is so we don't send off unnessessary data.
                          */
-                        final RESTImageV1 updateImage = new RESTImageV1();
+                        @NotNull final RESTImageV1 updateImage = new RESTImageV1();
                         updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                         updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem()
                                 .getItem().getDescription());
 
                         /* Create the language image */
-                        final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
+                        @NotNull final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
                         languageImage.setId(selectedImage.getItem().getId());
 
                         /* Add the langauge image */
                         updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                         updateImage.getLanguageImages_OTM().addRemoveItem(languageImage);
 
-                        final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
+                        @NotNull final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
                                 display, getDefaultImageRestCallback());
 
                         RESTCalls.updateImage(callback, updateImage);
@@ -407,7 +407,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
 
                 /* Don't add locales twice */
                 if (imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null) {
-                    for (final RESTLanguageImageCollectionItemV1 langImage : imageFilteredResultsComponent.getProviderData()
+                    for (@NotNull final RESTLanguageImageCollectionItemV1 langImage : imageFilteredResultsComponent.getProviderData()
                             .getDisplayedItem().getItem().getLanguageImages_OTM().returnExistingAndAddedCollectionItems()) {
                         if (langImage.getItem().getLocale().equals(selectedLocale)) {
                             return;
@@ -421,20 +421,20 @@ public class ImagesFilteredResultsAndDetailsPresenter
                 /*
                  * Create the image to be modified. This is so we don't send off unnessessary data.
                  */
-                final RESTImageV1 updateImage = new RESTImageV1();
+                @NotNull final RESTImageV1 updateImage = new RESTImageV1();
                 updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                 updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                         .getDescription());
 
                 /* Create the language image */
-                final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
+                @NotNull final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
                 languageImage.explicitSetLocale(selectedLocale);
 
                 /* Add the langauge image */
                 updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                 updateImage.getLanguageImages_OTM().addNewItem(languageImage);
 
-                final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
+                @NotNull final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
                         display, getDefaultImageRestCallback());
 
                 RESTCalls.updateImage(callback, updateImage);
@@ -470,14 +470,14 @@ public class ImagesFilteredResultsAndDetailsPresenter
         imageComponent.getDisplay().getFindTopics().addClickHandler(new ClickHandler() {
 
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
 
                 final String docbookFileName = ComponentImageV1.getDocbookFileName(imageFilteredResultsComponent.getProviderData()
                         .getDisplayedItem().getItem());
 
                 if (docbookFileName != null && !docbookFileName.isEmpty() && isOKToProceed()) {
 
-                    final String searchQuery = "images/" + docbookFileName;
+                    @NotNull final String searchQuery = "images/" + docbookFileName;
 
                     eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
                             + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(searchQuery) : searchQuery), event.getNativeEvent()
@@ -503,7 +503,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
     protected void bindFilteredResultsButtons() {
         imageFilteredResultsComponent.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(imageFilteredResultsComponent.getQuery(), event.getNativeEvent().getKeyCode() == KeyCodes.KEY_CTRL));
                 }
@@ -516,34 +516,34 @@ public class ImagesFilteredResultsAndDetailsPresenter
                 if (isOKToProceed()) {
 
                     /* Start by getting the default locale */
-                    final RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
+                    @NotNull final RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
                             display,
                             new BaseRestCallback.SuccessAction<RESTStringConstantV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
                                 @Override
-                                public void doSuccessAction(final RESTStringConstantV1 retValue,
+                                public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue,
                                                             final ImagesFilteredResultsAndDetailsPresenter.Display display) {
 
                                     /* When we have the default locale, create a new image */
-                                    final RESTLanguageImageV1 langImage = new RESTLanguageImageV1();
+                                    @NotNull final RESTLanguageImageV1 langImage = new RESTLanguageImageV1();
                                     langImage.explicitSetLocale(retValue.getValue());
 
-                                    final RESTImageV1 newImage = new RESTImageV1();
+                                    @NotNull final RESTImageV1 newImage = new RESTImageV1();
                                     newImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                                     newImage.getLanguageImages_OTM().addNewItem(langImage);
 
-                                    final RESTCallback<RESTImageV1> imageCallback = new BaseRestCallback<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
+                                    @NotNull final RESTCallback<RESTImageV1> imageCallback = new BaseRestCallback<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
                                             display,
                                             new BaseRestCallback.SuccessAction<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
                                                 @Override
-                                                public void doSuccessAction(final RESTImageV1 retValue,
+                                                public void doSuccessAction(@NotNull final RESTImageV1 retValue,
                                                                             final ImagesFilteredResultsAndDetailsPresenter.Display display) {
 
-                                                    final RESTImageCollectionItemV1 selectedImageCollectionItem = new RESTImageCollectionItemV1();
+                                                    @NotNull final RESTImageCollectionItemV1 selectedImageCollectionItem = new RESTImageCollectionItemV1();
                                                     selectedImageCollectionItem.setItem(retValue.clone(false));
                                                     imageFilteredResultsComponent.getProviderData().setSelectedItem(
                                                             selectedImageCollectionItem);
 
-                                                    final RESTImageCollectionItemV1 displayedImageCollectionItem = new RESTImageCollectionItemV1();
+                                                    @NotNull final RESTImageCollectionItemV1 displayedImageCollectionItem = new RESTImageCollectionItemV1();
                                                     displayedImageCollectionItem.setItem(retValue.clone(false));
                                                     imageFilteredResultsComponent.getProviderData().setDisplayedItem(
                                                             displayedImageCollectionItem);

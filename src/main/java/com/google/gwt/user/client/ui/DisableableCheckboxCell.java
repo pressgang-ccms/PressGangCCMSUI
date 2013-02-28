@@ -4,6 +4,7 @@ import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A version of CheckboxCell that can display a disabled checkbox.
@@ -47,7 +48,7 @@ public final class DisableableCheckboxCell extends CheckboxCell {
     }
 
     @Override
-    public void render(final Context context, final Boolean value, final SafeHtmlBuilder sb) {
+    public void render(final Context context, final Boolean value, @NotNull final SafeHtmlBuilder sb) {
         if (value && !enabled) {
             sb.append(INPUT_CHECKED_DISABLED);
         } else if (!value && !enabled) {

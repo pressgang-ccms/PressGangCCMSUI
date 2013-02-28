@@ -29,7 +29,7 @@ public class StringConstantView extends BaseTemplateView implements StringConsta
         this.readOnly = readonly;
 
         /* SearchUIProjectsEditor is a grid */
-        final RESTStringConstantV1DetailsEditor editor = new RESTStringConstantV1DetailsEditor(this.readOnly);
+        @NotNull final RESTStringConstantV1DetailsEditor editor = new RESTStringConstantV1DetailsEditor(this.readOnly);
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */

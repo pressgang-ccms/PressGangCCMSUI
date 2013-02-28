@@ -17,6 +17,7 @@ public final class PropertyTagFilteredResultsAndDetailsViewEvent extends ViewOpe
         super(query, newWindow);
     }
 
+    @NotNull
     @Override
     public Type<ViewOpenWithQueryEventHandler> getAssociatedType() {
         return TYPE;

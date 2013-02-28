@@ -17,6 +17,7 @@ public final class PropertyCategoryFilteredResultsAndDetailsViewEvent extends Vi
         super(query, newWindow);
     }
 
+    @NotNull
     @Override
     public Type<ViewOpenWithQueryEventHandler> getAssociatedType() {
         return TYPE;

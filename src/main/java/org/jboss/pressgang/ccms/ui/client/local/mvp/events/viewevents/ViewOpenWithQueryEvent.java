@@ -13,6 +13,7 @@ public abstract class ViewOpenWithQueryEvent<T extends ViewOpenWithQueryEventHan
     /**
      * The query to be passed in the URL history token, and then ultimately onto the REST service.
      */
+    @NotNull
     protected final String query;
     /**
      *  true if the event should trigger a new window, false otherwise
@@ -38,6 +39,7 @@ public abstract class ViewOpenWithQueryEvent<T extends ViewOpenWithQueryEventHan
     /**
      * @return The query to be passed in the URL history token, and then ultimately onto the REST service
      */
+    @NotNull
     public final String getQuery() {
         return query;
     }

@@ -9,6 +9,7 @@ public class SearchResultsAndTopicViewEvent extends ViewOpenWithQueryEvent<ViewO
         super(query, newWindow);
     }
 
+    @NotNull
     @Override
     public Type<ViewOpenWithQueryEventHandler> getAssociatedType() {
         return TYPE;

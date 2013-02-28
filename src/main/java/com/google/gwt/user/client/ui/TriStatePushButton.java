@@ -5,6 +5,7 @@ import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A PushButton to perform the functionality of a tristate checkbox.
@@ -52,6 +53,7 @@ public final class TriStatePushButton extends PushButton implements IsEditor<Lea
         }
     }
 
+    @NotNull
     @Override
     public LeafValueEditor<TriStateSelectionState> asEditor() {
         return new LeafValueEditor<TriStateSelectionState>() {

@@ -7,6 +7,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLErro
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLErrorsEditor;
+import org.jetbrains.annotations.NotNull;
 
 public class TopicXMLErrorsView extends BaseTemplateView implements TopicXMLErrorsPresenter.Display {
 
@@ -29,7 +30,7 @@ public class TopicXMLErrorsView extends BaseTemplateView implements TopicXMLErro
     @Override
     public void display(final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
         /* SearchUIProjectsEditor is a grid */
-        final RESTTopicV1XMLErrorsEditor editor = new RESTTopicV1XMLErrorsEditor();
+        @NotNull final RESTTopicV1XMLErrorsEditor editor = new RESTTopicV1XMLErrorsEditor();
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */

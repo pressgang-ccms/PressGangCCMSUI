@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jetbrains.annotations.NotNull;
 
 public final class RESTCategoryV1BasicDetailsEditor extends FlexTable implements Editor<RESTCategoryV1> {
     private final SimpleIntegerBox id = new SimpleIntegerBox();
@@ -15,14 +16,17 @@ public final class RESTCategoryV1BasicDetailsEditor extends FlexTable implements
     private final Label nameLabel = new Label(PressGangCCMSUI.INSTANCE.CategoryName());
     private final Label descriptionLabel = new Label(PressGangCCMSUI.INSTANCE.CategoryDescription());
 
+    @NotNull
     public SimpleIntegerBox idEditor() {
         return id;
     }
 
+    @NotNull
     public TextBox nameEditor() {
         return name;
     }
 
+    @NotNull
     public TextArea descriptionEditor() {
         return description;
     }

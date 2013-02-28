@@ -34,7 +34,7 @@ public class SearchUILocales {
      */
     public void initialize(@NotNull final List<String> localeNames) {
         locales.clear();
-        for (final String locale : localeNames) {
+        for (@NotNull final String locale : localeNames) {
             locales.add(new SearchUILocale(locale));
         }
     }
@@ -42,6 +42,7 @@ public class SearchUILocales {
     /**
      * @return The individual locales that can be searched.
      */
+    @NotNull
     public List<SearchUILocale> getLocales() {
         return locales;
     }
@@ -60,11 +61,12 @@ public class SearchUILocales {
      * @param includeQueryPrefix  true if the "query;" prefix is to be included, and false otherwise
      * @return the query string
      */
+    @NotNull
     public String buidlQueryString(final boolean includeQueryPrefix) {
-        final StringBuilder retValue = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
+        @NotNull final StringBuilder retValue = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
 
         int index = 0;
-        for (final SearchUILocale locale : locales) {
+        for (@NotNull final SearchUILocale locale : locales) {
             if (locale.getLocale() != TriStateSelectionState.NONE) {
                 ++index;
 

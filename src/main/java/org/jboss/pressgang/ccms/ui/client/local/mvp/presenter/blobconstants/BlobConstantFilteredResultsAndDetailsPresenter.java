@@ -39,6 +39,7 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 
 /**
@@ -96,6 +97,9 @@ implements BaseTemplatePresenterInterface {
 
     @Override
     protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
+        checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
+        checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
+
         blobConstantPresenter.getDisplay().display(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
     }
 
@@ -104,9 +108,11 @@ implements BaseTemplatePresenterInterface {
         /**
          * A click handler used to save any changes to the project
          */
-        final ClickHandler saveClickHandler = new ClickHandler() {
+        @NotNull final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
+
+                checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
 
                 /* Was the tag we just saved a new tag? */
                 final boolean wasNewEntity = blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem();
@@ -114,10 +120,15 @@ implements BaseTemplatePresenterInterface {
                 /* Sync the UI to the underlying object */
                 blobConstantPresenter.getDisplay().getDriver().flush();
 
-                final RESTCalls.RESTCallback<RESTBlobConstantV1> callback = new BaseRestCallback<RESTBlobConstantV1, Display>(display,
+                @NotNull final RESTCalls.RESTCallback<RESTBlobConstantV1> callback = new BaseRestCallback<RESTBlobConstantV1, Display>(display,
                         new BaseRestCallback.SuccessAction<RESTBlobConstantV1, Display>() {
                             @Override
-                            public void doSuccessAction(final RESTBlobConstantV1 retValue, final Display display) {
+                            public void doSuccessAction(@NotNull final RESTBlobConstantV1 retValue, final Display display) {
+
+                                checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
+                                checkState(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem() != null, "There has to be a selected item");
+                                checkState(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem() != null, "The selected item need to reference a valid entity");
+
                                 retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
                                 retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
 
@@ -137,7 +148,9 @@ implements BaseTemplatePresenterInterface {
 
                     if (hasUnsavedChanges()) {
 
-                        final RESTBlobConstantV1 project = new RESTBlobConstantV1();
+                        checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
+
+                        @NotNull final RESTBlobConstantV1 project = new RESTBlobConstantV1();
                         project.setId(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
                         project.explicitSetName(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
                         project.explicitSetValue(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getValue());
@@ -174,14 +187,14 @@ implements BaseTemplatePresenterInterface {
             public void onClick(@NotNull final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
-                final RESTBlobConstantV1 selectedEntity = new RESTBlobConstantV1();
+                @NotNull final RESTBlobConstantV1 selectedEntity = new RESTBlobConstantV1();
                 selectedEntity.setId(Constants.NULL_ID);
-                final RESTBlobConstantCollectionItemV1 selectedTagWrapper = new RESTBlobConstantCollectionItemV1(selectedEntity);
+                @NotNull final RESTBlobConstantCollectionItemV1 selectedTagWrapper = new RESTBlobConstantCollectionItemV1(selectedEntity);
 
                 /* The displayed tag will also be blank. This is the object that our data will be saved into */
-                final RESTBlobConstantV1 displayedEntity = new RESTBlobConstantV1();
+                @NotNull final RESTBlobConstantV1 displayedEntity = new RESTBlobConstantV1();
                 displayedEntity.setId(Constants.NULL_ID);
-                final RESTBlobConstantCollectionItemV1 displayedTagWrapper = new RESTBlobConstantCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
+                @NotNull final RESTBlobConstantCollectionItemV1 displayedTagWrapper = new RESTBlobConstantCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
 
                 blobConstantFilteredResultsPresenter.getProviderData().setSelectedItem(selectedTagWrapper);
                 blobConstantFilteredResultsPresenter.getProviderData().setDisplayedItem(displayedTagWrapper);
@@ -196,10 +209,10 @@ implements BaseTemplatePresenterInterface {
     @Override
     public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTBlobConstantV1> getNewEntityCallback = new GetNewEntityCallback<RESTBlobConstantV1>() {
+        @NotNull final GetNewEntityCallback<RESTBlobConstantV1> getNewEntityCallback = new GetNewEntityCallback<RESTBlobConstantV1>() {
 
             @Override
-            public void getNewEntity(final RESTBlobConstantV1 selectedEntity, final DisplayNewEntityCallback<RESTBlobConstantV1> displayCallback) {
+            public void getNewEntity(@NotNull final RESTBlobConstantV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTBlobConstantV1> displayCallback) {
                 /*
                     There is nothing additional to load here, so just return the selected entity.
                  */
@@ -238,6 +251,11 @@ implements BaseTemplatePresenterInterface {
         if (blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
             blobConstantPresenter.getDisplay().getDriver().flush();
 
+            checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
+            checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
+            checkState(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem() != null, "There has to be a selected item");
+            checkState(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem() != null, "The selected item need to reference a valid entity");
+
             final RESTBlobConstantV1 selectedItem = blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem();
             final RESTBlobConstantV1 displayedItem = blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
 
@@ -249,16 +267,16 @@ implements BaseTemplatePresenterInterface {
     private void bindUploadButton() {
         blobConstantPresenter.getDisplay().getEditor().getUploadButton().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
 
                 /*
                  * There should only be one file, but use a loop to accommodate any changes that might implement multiple
                  * files
                  */
-                for (final File file : blobConstantPresenter.getDisplay().getEditor().getUpload().getFiles()) {
+                for (@NotNull final File file : blobConstantPresenter.getDisplay().getEditor().getUpload().getFiles()) {
                     display.addWaitOperation();
 
-                    final FileReader reader = new FileReader();
+                    @NotNull final FileReader reader = new FileReader();
 
                     reader.addErrorHandler(new ErrorHandler() {
                         @Override
@@ -272,30 +290,37 @@ implements BaseTemplatePresenterInterface {
                         public void onLoadEnd(@NotNull final LoadEndEvent event) {
                             try {
                                 final String result = reader.getStringResult();
-                                final byte[] buffer = GWTUtilities.getByteArray(result, 1);
+                                @NotNull final byte[] buffer = GWTUtilities.getByteArray(result, 1);
 
                                 /* Flush any changes */
                                 blobConstantPresenter.getDisplay().getDriver().flush();
+
+                                checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
+                                checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
 
                                 /*
                                  * Create the image to be modified. This is so we don't send off unnecessary data.
                                  */
                                 final boolean wasNewEntity = blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId() == null;
-                                final RESTBlobConstantV1 updateEntity = new RESTBlobConstantV1();
+                                @NotNull final RESTBlobConstantV1 updateEntity = new RESTBlobConstantV1();
                                 updateEntity.setId(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
                                 updateEntity.explicitSetName(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
 
                                     /* Create the language image */
-                                final RESTLanguageImageV1 updatedLanguageImage = new RESTLanguageImageV1();
+                                @NotNull final RESTLanguageImageV1 updatedLanguageImage = new RESTLanguageImageV1();
                                 updatedLanguageImage.setId(blobConstantPresenter.getDisplay().getEditor().self.getId());
                                 updatedLanguageImage.explicitSetImageData(buffer);
                                 updatedLanguageImage.explicitSetFilename(file.getName());
 
-                                final RESTCalls.RESTCallback<RESTBlobConstantV1> callback = new BaseRestCallback<RESTBlobConstantV1, BaseTemplateViewInterface>(
+                                @NotNull final RESTCalls.RESTCallback<RESTBlobConstantV1> callback = new BaseRestCallback<RESTBlobConstantV1, BaseTemplateViewInterface>(
                                         display,
                                         new BaseRestCallback.SuccessAction<RESTBlobConstantV1, BaseTemplateViewInterface>() {
                                             @Override
-                                            public void doSuccessAction(final RESTBlobConstantV1 retValue, final BaseTemplateViewInterface display) {
+                                            public void doSuccessAction(@NotNull final RESTBlobConstantV1 retValue, final BaseTemplateViewInterface display) {
+
+                                                checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
+                                                checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
+
                                                 retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem(), false);
                                                 retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
                                                 initializeViews();

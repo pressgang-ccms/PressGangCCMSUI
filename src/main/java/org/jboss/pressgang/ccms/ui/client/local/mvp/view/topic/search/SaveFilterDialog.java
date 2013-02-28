@@ -5,6 +5,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SaveFilterDialogInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,11 +44,13 @@ public class SaveFilterDialog extends DialogBox implements SaveFilterDialogInter
     private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
 
 
+    @NotNull
     @Override
     public TextBox getName() {
         return name;
     }
 
+    @NotNull
     @Override
     public TextArea getDescription() {
         return description;
@@ -63,6 +66,7 @@ public class SaveFilterDialog extends DialogBox implements SaveFilterDialogInter
         return cancel;
     }
 
+    @NotNull
     @Override
     public DialogBox getDialogBox() {
         return this;
@@ -80,7 +84,7 @@ public class SaveFilterDialog extends DialogBox implements SaveFilterDialogInter
         layout.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.FilterDescription()));
         layout.setWidget(row, 1, description);
 
-        final HorizontalPanel buttonPanel = new HorizontalPanel();
+        @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
         buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
         buttonPanel.add(cancel);
         buttonPanel.add(ok);

@@ -17,6 +17,7 @@ public final class CategoriesFilteredResultsAndCategoryViewEvent extends ViewOpe
         super(query, newWindow);
     }
 
+    @NotNull
     @Override
     public Type<ViewOpenWithQueryEventHandler> getAssociatedType() {
         return TYPE;

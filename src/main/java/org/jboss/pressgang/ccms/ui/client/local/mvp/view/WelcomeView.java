@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
+import org.jetbrains.annotations.NotNull;
 
 public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Display {
 
@@ -20,9 +21,9 @@ public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Di
     }
 
     @Override
-    public void initialize(final RESTTopicV1 topic) {
+    public void initialize(@NotNull final RESTTopicV1 topic) {
         try {
-            final XsltProcessor processor = new XsltProcessor();
+            @NotNull final XsltProcessor processor = new XsltProcessor();
             processor.importStyleSheet(DocbookToHTML.XSL);
             processor.setParameter("externalImages", true + "");
 
@@ -31,7 +32,7 @@ public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Di
             content.setHTML(resultString);
 
             this.getPanel().setWidget(content);
-        } catch (final XsltProcessingException ex) {
+        } catch (@NotNull final XsltProcessingException ex) {
             content.setHTML(PressGangCCMSUI.INSTANCE.TopicCouldNotBeRendered());
         }
     }

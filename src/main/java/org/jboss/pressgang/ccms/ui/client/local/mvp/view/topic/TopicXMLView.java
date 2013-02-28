@@ -12,6 +12,8 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -65,6 +67,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
             return "";
         }
 
+        @NotNull
         @Override
         public DialogBox getDialogBox() {
             return this;
@@ -78,7 +81,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
 
             this.textArea.addStyleName(CSSConstants.PlainTextXMLDialog.PLAIN_TEXT_XML_DIALOG_TEXTAREA);
 
-            final HorizontalPanel buttonPanel = new HorizontalPanel();
+            @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(this.cancel);
             buttonPanel.add(this.ok);
@@ -122,18 +125,20 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
             return this.moreInfo;
         }
 
+        @NotNull
         @Override
         public ListBox getOptions() {
             return this.options;
         }
 
+        @NotNull
         @Override
         public DialogBox getDialogBox() {
             return this;
         }
 
         @Override
-        public void setSuggestions(final List<String> suggestions) {
+        public void setSuggestions(@Nullable final List<String> suggestions) {
             this.options.clear();
 
             if (suggestions != null) {
@@ -150,7 +155,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
             this.options.setVisibleItemCount(NUMBER_OF_VISIBLE_ITEMS);
             this.layout.setWidget(0, 0, this.options);
 
-            final HorizontalPanel buttonPanel = new HorizontalPanel();
+            @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(this.moreInfo);
             buttonPanel.add(this.cancel);
@@ -197,22 +202,24 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
             return this.cancel;
         }
 
+        @NotNull
         @Override
         public ListBox getOptions() {
             return this.options;
         }
 
+        @NotNull
         @Override
         public DialogBox getDialogBox() {
             return this;
         }
 
         @Override
-        public void setSuggestions(final Map<String, String> suggestions) {
+        public void setSuggestions(@Nullable final Map<String, String> suggestions) {
             this.options.clear();
 
             if (suggestions != null) {
-                for (final Entry<String, String> suggestion : suggestions.entrySet()) {
+                for (@NotNull final Entry<String, String> suggestion : suggestions.entrySet()) {
                     this.options.addItem(suggestion.getKey(), suggestion.getValue());
                 }
             }
@@ -225,7 +232,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
             this.options.setVisibleItemCount(NUMBER_OF_VISIBLE_ITEMS);
             this.layout.setWidget(0, 0, this.options);
 
-            final HorizontalPanel buttonPanel = new HorizontalPanel();
+            @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(this.cancel);
             buttonPanel.add(this.ok);
@@ -267,11 +274,13 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
             return this.cancel;
         }
 
+        @NotNull
         @Override
         public TextBox getIds() {
             return this.ids;
         }
 
+        @NotNull
         @Override
         public DialogBox getDialogBox() {
             return this;
@@ -284,7 +293,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
             this.layout.setWidget(0, 0, this.ids);
             new NumbersAndCommaValidator(this.ids);
 
-            final HorizontalPanel buttonPanel = new HorizontalPanel();
+            @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(this.cancel);
             buttonPanel.add(this.ok);
@@ -306,21 +315,25 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     private final CSPTopicDetailsDialog cspTopicDetailsDialog = new CSPTopicDetailsDialog();
     private final PlainTextXMLDialog plainTextXMLDialog = new PlainTextXMLDialog();
 
+    @NotNull
     @Override
     public PlainTextXMLDialog getPlainTextXMLDialog() {
         return this.plainTextXMLDialog;
     }
 
+    @NotNull
     @Override
     public XmlTemplatesDialog getXmlTemplatesDialog() {
         return this.xmlTemplatesDialog;
     }
 
+    @NotNull
     @Override
     public XmlTagsDialog getXmlTagsDialog() {
         return this.xmlTagsDialog;
     }
 
+    @NotNull
     @Override
     public CSPTopicDetailsDialog getCSPTopicDetailsDialog() {
         return this.cspTopicDetailsDialog;
@@ -341,6 +354,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
         return this.lineWrap;
     }
 
+    @Nullable
     @Override
     public AceEditor getEditor() {
         if (this.editor != null) {

@@ -16,8 +16,10 @@ public class EntityListReceived<T extends RESTBaseCollectionV1<?, ?, ?>> extends
     /**
      * The collection of entities that this event relates to.
      */
+    @NotNull
     private final T entities;
 
+    @NotNull
     public static Type getType() {
         return TYPE;
     }
@@ -31,6 +33,7 @@ public class EntityListReceived<T extends RESTBaseCollectionV1<?, ?, ?>> extends
     }
 
 
+    @NotNull
     @Override
     public Type<EntityListReceivedHandler<T>> getAssociatedType() {
         return TYPE;

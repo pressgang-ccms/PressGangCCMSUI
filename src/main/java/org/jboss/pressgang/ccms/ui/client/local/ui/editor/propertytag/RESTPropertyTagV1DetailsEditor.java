@@ -80,27 +80,27 @@ public final class RESTPropertyTagV1DetailsEditor extends Grid implements Editor
         unique.setEnabled(!readOnly);
         canBeNull.setEnabled(!readOnly);
 
-        final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyID());
+        @NotNull final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyID());
         this.setWidget(0, 0, idLabel);
         this.setWidget(0, 1, id);
 
-        final Label nameLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyName());
+        @NotNull final Label nameLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyName());
         this.setWidget(1, 0, nameLabel);
         this.setWidget(1, 1, name);
 
-        final Label regexLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyRegex());
+        @NotNull final Label regexLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyRegex());
         this.setWidget(2, 0, regexLabel);
         this.setWidget(2, 1, regex);
 
-        final Label uniqueLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyUnique());
+        @NotNull final Label uniqueLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyUnique());
         this.setWidget(3, 0, uniqueLabel);
         this.setWidget(3, 1, unique);
 
-        final Label nullLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyCanBeNull());
+        @NotNull final Label nullLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyCanBeNull());
         this.setWidget(4, 0, nullLabel);
         this.setWidget(4, 1, canBeNull);
 
-        final Label valueLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyDescription());
+        @NotNull final Label valueLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyDescription());
         this.setWidget(5, 0, valueLabel);
         this.setWidget(5, 1, description);
 

@@ -39,6 +39,7 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
     @Inject
     private Display display;
 
+    @Nullable
     private String queryString;
 
     @Inject
@@ -75,6 +76,7 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
         }
     }
 
+    @NotNull
     @Override
     public String getQuery() {
         return queryString;
@@ -85,10 +87,11 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
         // TODO Auto-generated method stub
     }
 
+    @NotNull
     protected EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateListProvider() {
         getProviderData().resetToEmpty();
 
-        final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> list) {
                 displayNewFixedList(getProviderData().getItems());
@@ -97,6 +100,7 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
         return provider;
     }
 
+    @Nullable
     @Override
     protected EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateListProvider(@Nullable final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
 
@@ -104,11 +108,11 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
             return null;
         }
 
-        final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> list) {
 
-                final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
+                @NotNull final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
                     @Override
                     public void begin() {
                         resetProvider();
@@ -122,7 +126,7 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
                     }
 
                     @Override
-                    public void success(final RESTTopicCollectionV1 retValue) {
+                    public void success(@NotNull final RESTTopicCollectionV1 retValue) {
                         try {
                             getProviderData().setItems(retValue.getItems());
                             getProviderData().setSize(retValue.getSize());

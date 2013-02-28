@@ -116,11 +116,11 @@ public class ProjectsFilteredResultsAndDetailsPresenter
     @Override
     public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTProjectV1> getNewEntityCallback = new GetNewEntityCallback<RESTProjectV1>() {
+        @NotNull final GetNewEntityCallback<RESTProjectV1> getNewEntityCallback = new GetNewEntityCallback<RESTProjectV1>() {
 
             @Override
-            public void getNewEntity(final RESTProjectV1 selectedEntity, final DisplayNewEntityCallback<RESTProjectV1> displayCallback) {
-                final RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, BaseTemplateViewInterface>(display,
+            public void getNewEntity(@NotNull final RESTProjectV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTProjectV1> displayCallback) {
+                @NotNull final RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, BaseTemplateViewInterface>(display,
                         new BaseRestCallback.SuccessAction<RESTProjectV1, BaseTemplateViewInterface>() {
                             @Override
                             public void doSuccessAction(@NotNull final RESTProjectV1 retValue, @NotNull final BaseTemplateViewInterface display) {
@@ -144,6 +144,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
         tagComponent.bindPossibleChildrenListButtonClicks(
                 new GetExistingCollectionCallback<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>() {
 
+                    @NotNull
                     @Override
                     public RESTTagCollectionV1 getExistingCollection() {
                         return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags();
@@ -153,7 +154,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
 
                     @Override
                     public void createAndAddChild(@NotNull final RESTTagCollectionItemV1 copy) {
-                        final RESTTagV1 newChild = new RESTTagV1();
+                        @NotNull final RESTTagV1 newChild = new RESTTagV1();
                         newChild.setId(copy.getItem().getId());
                         newChild.setName(copy.getItem().getName());
                         filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(newChild);
@@ -192,7 +193,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
         /**
          * A click handler used to display the project fields view
          */
-        final ClickHandler projectDetailsClickHandler = new ClickHandler() {
+        @NotNull final ClickHandler projectDetailsClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 switchView(resultComponent.getDisplay());
@@ -203,7 +204,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
         /**
          * A click handler used to display the project tags view
          */
-        final ClickHandler projectTagsClickHandler = new ClickHandler() {
+        @NotNull final ClickHandler projectTagsClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 switchView(tagComponent.getDisplay());
@@ -214,7 +215,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
         /**
          * A click handler used to save any changes to the project
          */
-        final ClickHandler saveClickHandler = new ClickHandler() {
+        @NotNull final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
@@ -224,7 +225,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
                 /* Sync the UI to the underlying object */
                 resultComponent.getDisplay().getDriver().flush();
 
-                final RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, Display>(display,
+                @NotNull final RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, Display>(display,
                         new BaseRestCallback.SuccessAction<RESTProjectV1, Display>() {
                             @Override
                             public void doSuccessAction(@NotNull final RESTProjectV1 retValue, @NotNull final Display display) {
@@ -251,7 +252,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
 
                     if (hasUnsavedChanges()) {
 
-                        final RESTProjectV1 project = new RESTProjectV1();
+                        @NotNull final RESTProjectV1 project = new RESTProjectV1();
                         project.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                         project.explicitSetName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
                                 .getName());
@@ -296,15 +297,15 @@ public class ProjectsFilteredResultsAndDetailsPresenter
             public void onClick(@NotNull final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
-                final RESTProjectV1 selectedEntity = new RESTProjectV1();
+                @NotNull final RESTProjectV1 selectedEntity = new RESTProjectV1();
                 selectedEntity.setId(Constants.NULL_ID);
-                final RESTProjectCollectionItemV1 selectedTagWrapper = new RESTProjectCollectionItemV1(selectedEntity);
+                @NotNull final RESTProjectCollectionItemV1 selectedTagWrapper = new RESTProjectCollectionItemV1(selectedEntity);
 
                 /* The displayed tag will also be blank. This is the object that our data will be saved into */
-                final RESTProjectV1 displayedEntity = new RESTProjectV1();
+                @NotNull final RESTProjectV1 displayedEntity = new RESTProjectV1();
                 displayedEntity.setId(Constants.NULL_ID);
                 displayedEntity.setTags(new RESTTagCollectionV1());
-                final RESTProjectCollectionItemV1 displayedTagWrapper = new RESTProjectCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
+                @NotNull final RESTProjectCollectionItemV1 displayedTagWrapper = new RESTProjectCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
 
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
@@ -375,11 +376,11 @@ public class ProjectsFilteredResultsAndDetailsPresenter
     @Override
     protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
 
-        final List<BaseCustomViewInterface<RESTProjectV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTProjectV1>>();
+        @NotNull final List<BaseCustomViewInterface<RESTProjectV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTProjectV1>>();
         displayableViews.add(resultComponent.getDisplay());
         displayableViews.add(tagComponent.getDisplay());
 
-        for (final BaseCustomViewInterface<RESTProjectV1> view : displayableViews) {
+        for (@NotNull final BaseCustomViewInterface<RESTProjectV1> view : displayableViews) {
             if (viewIsInFilter(filter, view)) {
                 view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
             }

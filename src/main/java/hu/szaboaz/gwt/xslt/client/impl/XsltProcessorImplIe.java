@@ -16,6 +16,7 @@
 package hu.szaboaz.gwt.xslt.client.impl;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class is the IE implementation of the XsltProcessor interface.
@@ -26,6 +27,7 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 public final class XsltProcessorImplIe extends XsltProcessorImpl {
 
+    @NotNull
     protected native JavaScriptObject createDocumentImpl() /*-{
         var doc = @hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImplIe::selectDOMDocumentVersion()();
         // preserveWhiteSpace is set to true here to prevent IE from throwing away
@@ -54,6 +56,7 @@ public final class XsltProcessorImplIe extends XsltProcessorImpl {
             styleSheetTemplate.createProcessor();
     }-*/;
 
+    @NotNull
     @Override
     protected native JavaScriptObject parseImpl(final String contents) /*-{
         var doc = this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImplIe::createDocumentImpl()();
@@ -65,6 +68,7 @@ public final class XsltProcessorImplIe extends XsltProcessorImpl {
         }
     }-*/;
 
+    @NotNull
     protected static native JavaScriptObject selectDOMDocumentVersion() /*-{
         try {
             return new ActiveXObject("Msxml2.DOMDocument");
@@ -100,6 +104,7 @@ public final class XsltProcessorImplIe extends XsltProcessorImpl {
         }
     }-*/;
 
+    @NotNull
     @Override
     protected native String transformImpl() /*-{
         if (this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl::processor != null) {

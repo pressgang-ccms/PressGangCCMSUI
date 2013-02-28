@@ -38,7 +38,7 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
     @Override
     protected void displayQueryElements(@NotNull final String queryString) {
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
-        for (final String queryStringElement : queryStringElements) {
+        for (@NotNull final String queryStringElement : queryStringElements) {
             final String[] queryElements = queryStringElement.split("=");
 
             if (queryElements.length == 2) {
@@ -53,13 +53,14 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
         }
     }
 
+    @NotNull
     @Override
     protected EnhancedAsyncDataProvider<RESTStringConstantCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
-        final EnhancedAsyncDataProvider<RESTStringConstantCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTStringConstantCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTStringConstantCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTStringConstantCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTStringConstantCollectionItemV1> list) {
 
-                final BaseRestCallback<RESTStringConstantCollectionV1, Display> callback =new BaseRestCallback<RESTStringConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTStringConstantCollectionV1, Display>() {
+                @NotNull final BaseRestCallback<RESTStringConstantCollectionV1, Display> callback =new BaseRestCallback<RESTStringConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTStringConstantCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTStringConstantCollectionV1 retValue, @NotNull final Display display) {
                         getProviderData().setItems(retValue.getItems());
@@ -79,9 +80,10 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
         return provider;
     }
 
+    @NotNull
     @Override
     public String getQuery() {
-        final StringBuilder retValue = new StringBuilder();
+        @NotNull final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
             retValue.append(";").append(CommonFilterConstants.STRING_CONSTANT_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getIdFilter().getText()) : display.getIdFilter().getText()));
         }
@@ -103,7 +105,7 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
     }
 
     @Override
-    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, final String queryString) {
+    public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         super.bindFilteredResults(topicId, pageId, queryString, display);
         display.setProvider(generateListProvider(queryString, display));
     }
@@ -115,7 +117,7 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }

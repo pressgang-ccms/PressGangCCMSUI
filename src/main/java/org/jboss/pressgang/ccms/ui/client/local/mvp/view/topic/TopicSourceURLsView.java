@@ -15,6 +15,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChild
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 
@@ -32,9 +33,11 @@ public class TopicSourceURLsView extends BaseChildrenView<
      * The column to display the source url.
      */
     private final DisableEditTextCell urlTextCell = new DisableEditTextCell();
+    @NotNull
     private final Column<RESTTopicSourceUrlCollectionItemV1, String> urlValueColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(urlTextCell) {
         @Override
-        public String getValue(final RESTTopicSourceUrlCollectionItemV1 object) {
+        @NotNull
+        public String getValue(@Nullable final RESTTopicSourceUrlCollectionItemV1 object) {
             urlTextCell.setEnabled(!isReadOnly());
             if (object != null && object.getItem() != null && object.getItem().getUrl() != null) {
                 return object.getItem().getUrl();
@@ -47,9 +50,11 @@ public class TopicSourceURLsView extends BaseChildrenView<
      * The column to display the source url.
      */
     private final DisableEditTextCell nameTextCell = new DisableEditTextCell();
+    @NotNull
     private final Column<RESTTopicSourceUrlCollectionItemV1, String> nameValueColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(nameTextCell) {
         @Override
-        public String getValue(final RESTTopicSourceUrlCollectionItemV1 object) {
+        @NotNull
+        public String getValue(@Nullable final RESTTopicSourceUrlCollectionItemV1 object) {
             nameTextCell.setEnabled(!isReadOnly());
             if (object != null && object.getItem() != null && object.getItem().getTitle() != null) {
                 return object.getItem().getTitle();
@@ -62,9 +67,11 @@ public class TopicSourceURLsView extends BaseChildrenView<
      * The column that provides the remove url button.
      */
     private final DisableableButtonCell removeButtonCell = new DisableableButtonCell();
+    @NotNull
     private final Column<RESTTopicSourceUrlCollectionItemV1, String> removeSourceUrlColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(removeButtonCell) {
+        @NotNull
         @Override
-        public String getValue(final RESTTopicSourceUrlCollectionItemV1 object) {
+        public String getValue(@Nullable final RESTTopicSourceUrlCollectionItemV1 object) {
             removeButtonCell.setEnabled(!isReadOnly());
 
             if (getOriginalEntity() != null && object != null) {
@@ -75,13 +82,16 @@ public class TopicSourceURLsView extends BaseChildrenView<
         }
     };
 
+    @NotNull
     private final Column<RESTTopicSourceUrlCollectionItemV1, String> openSourceUrlColumn = new Column<RESTTopicSourceUrlCollectionItemV1, String>(new ButtonCell()) {
+        @NotNull
         @Override
         public String getValue(final RESTTopicSourceUrlCollectionItemV1 object) {
             return PressGangCCMSUI.INSTANCE.OpenURL();
         }
     };
 
+    @NotNull
     private final PushButton add = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Add());
 
     /**
@@ -95,32 +105,36 @@ public class TopicSourceURLsView extends BaseChildrenView<
         getPossibleChildrenResults().addColumn(removeSourceUrlColumn, PressGangCCMSUI.INSTANCE.Remove());
         getPossibleChildrenResults().addColumn(openSourceUrlColumn, PressGangCCMSUI.INSTANCE.OpenURL());
 
-        final HorizontalPanel addButtonPanel = new HorizontalPanel();
+        @NotNull final HorizontalPanel addButtonPanel = new HorizontalPanel();
         addButtonPanel.add(add);
         this.getPossibleChildrenResultsPanel().add(addButtonPanel);
 
     }
 
+    @Nullable
     @Override
     public final Column<RESTTopicSourceUrlCollectionItemV1, String> getPossibleChildrenButtonColumn() {
         return removeSourceUrlColumn;
     }
 
     @Override
-    public final void display(final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
+    public final void display(@NotNull final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
         super.displayChildren(topic, readOnly);
     }
 
+    @NotNull
     @Override
     public final Column<RESTTopicSourceUrlCollectionItemV1, String> getURLValueColumn() {
         return urlValueColumn;
     }
 
+    @NotNull
     @Override
     public final Column<RESTTopicSourceUrlCollectionItemV1, String> getNameValueColumn() {
         return nameValueColumn;
     }
 
+    @NotNull
     @Override
     public final Column<RESTTopicSourceUrlCollectionItemV1, String> getOpenUrlColumn() {
         return openSourceUrlColumn;

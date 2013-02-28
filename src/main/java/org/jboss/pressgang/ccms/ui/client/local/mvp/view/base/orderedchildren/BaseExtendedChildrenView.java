@@ -12,6 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * The base class for views that display a collection of existing children and a second collection of possible children.
@@ -55,11 +56,13 @@ abstract public class BaseExtendedChildrenView<
         return this.existingChildrenPager;
     }
 
+    @NotNull
     @Override
     public final VerticalPanel getExistingChildrenResultsPanel() {
         return this.existingChildrenResultsPanel;
     }
 
+    @NotNull
     @Override
     public final HandlerSplitLayoutPanel getSplit() {
         return this.split;
@@ -71,7 +74,7 @@ abstract public class BaseExtendedChildrenView<
     }
 
     @Override
-    public final void setExistingChildrenProvider(final EnhancedAsyncDataProvider<F> existingChildrenProvider) {
+    public final void setExistingChildrenProvider(@NotNull final EnhancedAsyncDataProvider<F> existingChildrenProvider) {
         if (this.existingChildrenProvider != null) {
             this.existingChildrenProvider.removeDataDisplay(this.existingChildrenResults);
         }
@@ -86,7 +89,7 @@ abstract public class BaseExtendedChildrenView<
      * @param applicationName The name of the application, which will be added to the page's title field
      * @param pageName        The name of the page that is being displayed, which will be added to the page's title field
      */
-    public BaseExtendedChildrenView(final String applicationName, final String pageName) {
+    public BaseExtendedChildrenView(@NotNull final String applicationName, @NotNull final String pageName) {
         super(applicationName, pageName);
 
         this.split.addStyleName(CSSConstants.OrderedChildrenResultsView.ORDERED_CHILDREN_SPLIT_PANEL);

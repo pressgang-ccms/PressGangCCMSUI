@@ -19,6 +19,8 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +37,11 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
     private final PushButton add = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Add());
 
     private final HorizontalPanel newTagUIElementsPanel = new HorizontalPanel();
+    @NotNull
     private final ValueListBox<SearchUIProject> projects;
+    @NotNull
     private final ValueListBox<SearchUICategory> categories;
+    @NotNull
     private final ValueListBox<SearchUITag> myTags;
 
     public interface TopicTagsPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, TopicTagViewProjectsEditor> {
@@ -48,16 +53,19 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
         return add;
     }
 
+    @NotNull
     @Override
     public ValueListBox<SearchUITag> getMyTags() {
         return myTags;
     }
 
+    @NotNull
     @Override
     public ValueListBox<SearchUICategory> getCategoriesList() {
         return categories;
     }
 
+    @NotNull
     @Override
     public ValueListBox<SearchUIProject> getProjectsList() {
         return projects;
@@ -75,20 +83,20 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
     }
 
     public TopicTagsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
-                + PressGangCCMSUI.INSTANCE.TopicTags());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - " + PressGangCCMSUI.INSTANCE.TopicTags());
 
         /* Add the layout to the panel */
         layout.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_TABLE);
 
         projects = new ValueListBox<SearchUIProject>(new ProxyRenderer<SearchUIProject>(null) {
+            @Nullable
             @Override
-            public String render(final SearchUIProject object) {
+            public String render(@Nullable final SearchUIProject object) {
                 return object == null ? null : object.getName();
             }
         }, new ProvidesKey<SearchUIProject>() {
             @Override
-            public Object getKey(final SearchUIProject item) {
+            public Object getKey(@NotNull final SearchUIProject item) {
                 return item.getId();
             }
         }
@@ -96,13 +104,14 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
         projects.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_PROJECTS_LIST);
 
         categories = new ValueListBox<SearchUICategory>(new ProxyRenderer<SearchUICategory>(null) {
+            @Nullable
             @Override
-            public String render(final SearchUICategory object) {
+            public String render(@Nullable final SearchUICategory object) {
                 return object == null ? null : object.getName();
             }
         }, new ProvidesKey<SearchUICategory>() {
             @Override
-            public Object getKey(final SearchUICategory item) {
+            public Object getKey(@NotNull final SearchUICategory item) {
                 return item.getId();
             }
         }
@@ -110,13 +119,14 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
         categories.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_CATEGORIES_LIST);
 
         myTags = new ValueListBox<SearchUITag>(new ProxyRenderer<SearchUITag>(null) {
+            @Nullable
             @Override
-            public String render(final SearchUITag object) {
+            public String render(@Nullable final SearchUITag object) {
                 return object == null ? null : object.getName();
             }
         }, new ProvidesKey<SearchUITag>() {
             @Override
-            public Object getKey(final SearchUITag item) {
+            public Object getKey(@NotNull final SearchUITag item) {
                 return item.getId();
             }
         }
@@ -152,7 +162,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
              * can results in the item showing up twice in the drop down box. So we need to clone the original array and remove
              * the item that was set via setValue().
              */
-            final List<SearchUICategory> clonedCategories = new ArrayList<SearchUICategory>(listCategories);
+            @NotNull final List<SearchUICategory> clonedCategories = new ArrayList<SearchUICategory>(listCategories);
             clonedCategories.remove(category);
 
             categories.setAcceptableValues(clonedCategories);
@@ -164,7 +174,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
 
                 myTags.setValue(tag);
 
-                final List<SearchUITag> cloneTags = new ArrayList<SearchUITag>(listTags);
+                @NotNull final List<SearchUITag> cloneTags = new ArrayList<SearchUITag>(listTags);
                 cloneTags.remove(tag);
 
                 myTags.setAcceptableValues(cloneTags);
@@ -181,7 +191,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
 
             myTags.setValue(tag);
 
-            final List<SearchUITag> cloneTags = new ArrayList<SearchUITag>(listTags);
+            @NotNull final List<SearchUITag> cloneTags = new ArrayList<SearchUITag>(listTags);
             cloneTags.remove(tag);
 
             myTags.setAcceptableValues(cloneTags);
@@ -189,7 +199,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
     }
 
     @Override
-    public void initializeNewTags(final SearchUIProjects tags) {
+    public void initializeNewTags(@NotNull final SearchUIProjects tags) {
         if (!tags.getProjects().isEmpty()) {
             projects.setValue(tags.getProjects().get(0));
 
@@ -210,7 +220,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
     }
 
     @Override
-    public final void display(final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
+    public final void display(@NotNull final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
 
         /* reset the layout */
         layout.clear();
@@ -222,7 +232,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
         /* We can't assume the tags have been loaded by the time we initialize the view */
         if (topic.getTags() != null && topic.getTags().getItems() != null) {
             /* Build up a hierarchy of tags assigned to the topic */
-            final SearchUIProjects projects = new SearchUIProjects(topic.getTags());
+            @NotNull final SearchUIProjects projects = new SearchUIProjects(topic.getTags());
             /* SearchUIProjectsEditor is a simple panel */
             editor = new TopicTagViewProjectsEditor(readOnly);
             /* Initialize the driver with the top-level editor */

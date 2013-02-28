@@ -67,11 +67,11 @@ public class PropertyCategoryFilteredResultsPresenter extends BaseFilteredResult
     @Override
     @NotNull
     protected EnhancedAsyncDataProvider<RESTPropertyCategoryCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
-        final EnhancedAsyncDataProvider<RESTPropertyCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTPropertyCategoryCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTPropertyCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTPropertyCategoryCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTPropertyCategoryCollectionItemV1> list) {
 
-                final BaseRestCallback<RESTPropertyCategoryCollectionV1, Display> callback = new BaseRestCallback<RESTPropertyCategoryCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTPropertyCategoryCollectionV1, Display>() {
+                @NotNull final BaseRestCallback<RESTPropertyCategoryCollectionV1, Display> callback = new BaseRestCallback<RESTPropertyCategoryCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTPropertyCategoryCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTPropertyCategoryCollectionV1 retValue, @NotNull final Display display) {
                         checkArgument(retValue.getItems() != null, "RESTPropertyCategoryCollectionV1 items are null. This is probably due to incorrect expansion.") ;
@@ -96,7 +96,7 @@ public class PropertyCategoryFilteredResultsPresenter extends BaseFilteredResult
     @Override
     @NotNull
     public String getQuery() {
-        final StringBuilder retValue = new StringBuilder();
+        @NotNull final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
             retValue.append(";").append(CommonFilterConstants.PROP_CATEGORY_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getIdFilter().getText()) : display.getIdFilter().getText()));
         }
@@ -113,7 +113,7 @@ public class PropertyCategoryFilteredResultsPresenter extends BaseFilteredResult
     @Override
     protected void displayQueryElements(@NotNull final String queryString) {
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
-        for (final String queryStringElement : queryStringElements) {
+        for (@NotNull final String queryStringElement : queryStringElements) {
             final String[] queryElements = queryStringElement.split("=");
 
             if (queryElements.length == 2) {

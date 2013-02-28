@@ -45,7 +45,7 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
     @Override
     protected void displayQueryElements(@NotNull final String queryString) {
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
-        for (final String queryStringElement : queryStringElements) {
+        for (@NotNull final String queryStringElement : queryStringElements) {
             final String[] queryElements = queryStringElement.split("=");
 
             if (queryElements.length == 2) {
@@ -58,13 +58,14 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
         }
     }
 
+    @NotNull
     @Override
     protected EnhancedAsyncDataProvider<RESTBlobConstantCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
-        final EnhancedAsyncDataProvider<RESTBlobConstantCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTBlobConstantCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTBlobConstantCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTBlobConstantCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTBlobConstantCollectionItemV1> list) {
+            protected void onRangeChanged(@NotNull final HasData<RESTBlobConstantCollectionItemV1> list) {
 
-                final BaseRestCallback<RESTBlobConstantCollectionV1, Display> callback = new BaseRestCallback<RESTBlobConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTBlobConstantCollectionV1, Display>() {
+                @NotNull final BaseRestCallback<RESTBlobConstantCollectionV1, Display> callback = new BaseRestCallback<RESTBlobConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTBlobConstantCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTBlobConstantCollectionV1 retValue, @NotNull final Display display) {
                         checkArgument(retValue.getItems() != null, "RESTBlobConstantCollectionV1 items are null. This is probably due to incorrect expansion.");
@@ -89,7 +90,7 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
     @Override
     @NotNull
     public String getQuery() {
-        final StringBuilder retValue = new StringBuilder();
+        @NotNull final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
             retValue.append(";").append(CommonFilterConstants.INTEGER_CONSTANT_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getIdFilter().getText()) : display.getIdFilter().getText()));
         }

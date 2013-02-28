@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRendere
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
+import org.jetbrains.annotations.NotNull;
 
 public class TopicRenderedView extends BaseTemplateView implements TopicRenderedPresenter.Display {
 
@@ -27,12 +28,12 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     }
 
     @Override
-    public final void displayTopicRendered(final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly, final boolean showImages) {
+    public final void displayTopicRendered(@NotNull final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly, final boolean showImages) {
 
         try {
             // Any number of processors can be created, they will behave
             // independently. Every stylesheet have to have its own processor.
-            final XsltProcessor processor = new XsltProcessor();
+            @NotNull final XsltProcessor processor = new XsltProcessor();
 
             // Setting the stylesheet to transform with
 
@@ -54,7 +55,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
             div.setHTML(resultString);
 
             this.getPanel().setWidget(div);
-        } catch (final XsltProcessingException ex) {
+        } catch (@NotNull final XsltProcessingException ex) {
             div.setHTML(PressGangCCMSUI.INSTANCE.TopicCouldNotBeRendered());
         }
     }

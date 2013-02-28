@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
+import org.jetbrains.annotations.NotNull;
 
 public final class TopicTagViewProjectsEditor extends SimplePanel implements Editor<SearchUIProjects> {
     private final boolean readOnly;
@@ -21,16 +22,17 @@ public final class TopicTagViewProjectsEditor extends SimplePanel implements Edi
      * @author Matthew Casperson
      */
     private class TopicTagViewProjectEditorSource extends EditorSource<TopicTagViewProjectEditor> {
+        @NotNull
         @Override
         public TopicTagViewProjectEditor create(final int index) {
-            final TopicTagViewProjectEditor subEditor = new TopicTagViewProjectEditor(readOnly);
+            @NotNull final TopicTagViewProjectEditor subEditor = new TopicTagViewProjectEditor(readOnly);
             projectLabelPanel.setWidget(index, 0, subEditor);
 
             return subEditor;
         }
 
         @Override
-        public void dispose(final TopicTagViewProjectEditor subEditor) {
+        public void dispose(@NotNull final TopicTagViewProjectEditor subEditor) {
             subEditor.removeFromParent();
         }
 

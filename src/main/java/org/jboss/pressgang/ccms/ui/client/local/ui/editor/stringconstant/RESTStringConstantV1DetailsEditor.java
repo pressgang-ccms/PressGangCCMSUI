@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An editor used to bind the string constant's details to ui elements
@@ -17,14 +18,17 @@ public final class RESTStringConstantV1DetailsEditor extends Grid implements Edi
     private final TextBox name = new TextBox();
     private final TextArea value = new TextArea();
 
+    @NotNull
     public SimpleIntegerBox idEditor() {
         return id;
     }
 
+    @NotNull
     public TextBox nameEditor() {
         return name;
     }
 
+    @NotNull
     public TextArea valueEditor() {
         return value;
     }
@@ -41,15 +45,15 @@ public final class RESTStringConstantV1DetailsEditor extends Grid implements Edi
         name.setReadOnly(readOnly);
         value.setReadOnly(readOnly);
 
-        final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.StringConstantId());
+        @NotNull final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.StringConstantId());
         this.setWidget(0, 0, idLabel);
         this.setWidget(0, 1, id);
 
-        final Label nameLabel = new Label(PressGangCCMSUI.INSTANCE.StringConstantName());
+        @NotNull final Label nameLabel = new Label(PressGangCCMSUI.INSTANCE.StringConstantName());
         this.setWidget(1, 0, nameLabel);
         this.setWidget(1, 1, name);
 
-        final Label valueLabel = new Label(PressGangCCMSUI.INSTANCE.StringConstantValue());
+        @NotNull final Label valueLabel = new Label(PressGangCCMSUI.INSTANCE.StringConstantValue());
         this.setWidget(2, 0, valueLabel);
         this.setWidget(2, 1, value);
 

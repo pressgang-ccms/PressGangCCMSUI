@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTranslatedTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An editor to bind the details in a RESTTranslatedTopicV1 to UI elements. This is similar but not the same
@@ -45,6 +46,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
      * The property used by the editor framework to bind the locale to the ui element.
      * @return The locale ui element
      */
+    @NotNull
     public TextBox localeEditor() {
         return locale;
     }
@@ -53,6 +55,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
      * The property used by the editor framework to bind the topic id to the ui element.
      * @return The topic id ui element
      */
+    @NotNull
     public SimpleIntegerBox topicIdEditor() {
         return topicId;
     }
@@ -61,6 +64,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
      * The property used by the editor framework to bind the topic revision to the ui element.
      * @return The revision ui element
      */
+    @NotNull
     public SimpleIntegerBox topicRevisionEditor() {
         return topicRevision;
     }
@@ -69,6 +73,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
      * The property used by the editor framework to bind the translated topic id to the ui element.
      * @return The translated topic id ui element
      */
+    @NotNull
     public SimpleIntegerBox idEditor() {
         return id;
     }

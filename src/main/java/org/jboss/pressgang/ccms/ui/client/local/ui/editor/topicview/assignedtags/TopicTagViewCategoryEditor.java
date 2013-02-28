@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Label;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
+import org.jetbrains.annotations.NotNull;
 
 public final class TopicTagViewCategoryEditor extends Grid implements Editor<SearchUICategory> {
     private final boolean readOnly;
@@ -22,9 +23,10 @@ public final class TopicTagViewCategoryEditor extends Grid implements Editor<Sea
      * @author Matthew Casperson
      */
     private class TopicTagViewTagEditorSource extends EditorSource<TopicTagViewTagEditor> {
+        @NotNull
         @Override
         public TopicTagViewTagEditor create(final int index) {
-            final TopicTagViewTagEditor subEditor = new TopicTagViewTagEditor(readOnly);
+            @NotNull final TopicTagViewTagEditor subEditor = new TopicTagViewTagEditor(readOnly);
             tagsTable.setWidget(index, 0, subEditor.name);
 
             /* do not show the delete button in readOnly mode */
@@ -37,12 +39,12 @@ public final class TopicTagViewCategoryEditor extends Grid implements Editor<Sea
         }
 
         @Override
-        public void dispose(final TopicTagViewTagEditor subEditor) {
+        public void dispose(@NotNull final TopicTagViewTagEditor subEditor) {
             subEditor.name.removeFromParent();
         }
 
         @Override
-        public void setIndex(final TopicTagViewTagEditor subEditor, final int index) {
+        public void setIndex(@NotNull final TopicTagViewTagEditor subEditor, final int index) {
             tagsTable.setWidget(index, 0, subEditor.name);
         }
     }

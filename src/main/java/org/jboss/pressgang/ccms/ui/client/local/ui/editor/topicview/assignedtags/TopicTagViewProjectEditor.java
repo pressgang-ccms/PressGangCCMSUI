@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Label;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
+import org.jetbrains.annotations.NotNull;
 
 public final class TopicTagViewProjectEditor extends Grid implements Editor<SearchUIProject> {
     private final boolean readOnly;
@@ -23,9 +24,10 @@ public final class TopicTagViewProjectEditor extends Grid implements Editor<Sear
      * @author Matthew Casperson
      */
     private class TopicTagViewCategoryEditorSource extends EditorSource<TopicTagViewCategoryEditor> {
+        @NotNull
         @Override
         public TopicTagViewCategoryEditor create(final int index) {
-            final TopicTagViewCategoryEditor subEditor = new TopicTagViewCategoryEditor(readOnly);
+            @NotNull final TopicTagViewCategoryEditor subEditor = new TopicTagViewCategoryEditor(readOnly);
 
             categoriesLabelPanel.setWidget(index, 0, subEditor);
 
@@ -33,7 +35,7 @@ public final class TopicTagViewProjectEditor extends Grid implements Editor<Sear
         }
 
         @Override
-        public void dispose(final TopicTagViewCategoryEditor subEditor) {
+        public void dispose(@NotNull final TopicTagViewCategoryEditor subEditor) {
             subEditor.removeFromParent();
         }
 
@@ -46,6 +48,7 @@ public final class TopicTagViewProjectEditor extends Grid implements Editor<Sear
     /**
      * @return The name label exposed to the GWT Editor framework
      */
+    @NotNull
     public Label nameEditor() {
         return name;
     }

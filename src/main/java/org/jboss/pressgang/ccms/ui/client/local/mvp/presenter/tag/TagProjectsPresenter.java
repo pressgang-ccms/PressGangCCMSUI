@@ -16,6 +16,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -81,7 +82,7 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
     @NotNull
     public EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> generatePossibleChildrenProvider(@NotNull final RESTTagV1 parent) {
 
-        final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTProjectCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTProjectCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTProjectCollectionItemV1> display) {
 
@@ -102,7 +103,7 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
     public boolean hasUnsavedChanges() {
         /* It is possible that the list of categories has not loaded yet, in which case no changes could have been made */
         if (getPossibleChildrenProviderData().getItems() != null) {
-            for (final RESTProjectCollectionItemV1 project : getPossibleChildrenProviderData().getItems()) {
+            for (@NotNull final RESTProjectCollectionItemV1 project : getPossibleChildrenProviderData().getItems()) {
                 if (project.getItem().getTags().returnDeletedAddedAndUpdatedCollectionItems().size() != 0) {
                     return true;
                 }
@@ -120,7 +121,7 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
      */
     @Override
     public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTTagV1 parent) {
-        final RESTCalls.RESTCallback<RESTProjectCollectionV1> callback = new RESTCalls.RESTCallback<RESTProjectCollectionV1>() {
+        @NotNull final RESTCalls.RESTCallback<RESTProjectCollectionV1> callback = new RESTCalls.RESTCallback<RESTProjectCollectionV1>() {
             @Override
             public void begin() {
                 display.addWaitOperation();
@@ -133,7 +134,7 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
             }
 
             @Override
-            public void success(final RESTProjectCollectionV1 retValue) {
+            public void success(@NotNull final RESTProjectCollectionV1 retValue) {
                 try {
                     /* Zero results can be a null list */
                     getPossibleChildrenProviderData().setStartRow(0);

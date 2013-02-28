@@ -4,6 +4,7 @@ import com.google.gwt.event.logical.shared.HasResizeHandlers;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A SplitLayoutPanel that manages resize event listeners.
@@ -28,8 +29,8 @@ public final class HandlerSplitLayoutPanel extends SplitLayoutPanel implements H
         return ensureHandlers().addHandler(ResizeEvent.getType(), handler);
     }
 
-    public void setSplitPosition(final Widget widgetBeforeTheSplitter, final double size, final boolean animate) {
-        final LayoutData layout = (LayoutData) widgetBeforeTheSplitter.getLayoutData();
+    public void setSplitPosition(@NotNull final Widget widgetBeforeTheSplitter, final double size, final boolean animate) {
+        @NotNull final LayoutData layout = (LayoutData) widgetBeforeTheSplitter.getLayoutData();
         layout.oldSize = layout.size;
         layout.size = size;
         if (animate) {
@@ -39,7 +40,7 @@ public final class HandlerSplitLayoutPanel extends SplitLayoutPanel implements H
         }
     }
 
-    public double getSplitPosition(final Widget widgetBeforeTheSplitter) {
+    public double getSplitPosition(@NotNull final Widget widgetBeforeTheSplitter) {
         return ((LayoutData) widgetBeforeTheSplitter.getLayoutData()).size;
     }
 }

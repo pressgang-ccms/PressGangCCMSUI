@@ -3,6 +3,7 @@ package com.google.gwt.user.client.ui;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * {@link Cell} that wraps a {@link Hyperlink}
@@ -20,7 +21,7 @@ public final class AnchorCell extends AbstractCell<Anchor> {
     }
 
     @Override
-    public void render(final com.google.gwt.cell.client.Cell.Context context, final Anchor link, final SafeHtmlBuilder sb) {
+    public void render(final com.google.gwt.cell.client.Cell.Context context, @NotNull final Anchor link, @NotNull final SafeHtmlBuilder sb) {
         sb.append(SafeHtmlUtils.fromTrustedString(link.toString()));
     }
 }

@@ -13,6 +13,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
+import org.jetbrains.annotations.NotNull;
 
 public class SearchUIProjectsEditor extends DockLayoutPanel implements Editor<SearchUIProjects> {
 
@@ -30,9 +31,10 @@ public class SearchUIProjectsEditor extends DockLayoutPanel implements Editor<Se
      * @author Matthew Casperson
      */
     private class SearchUIProjectEditorSource extends EditorSource<SearchUIProjectEditor> {
+        @NotNull
         @Override
         public SearchUIProjectEditor create(final int index) {
-            final SearchUIProjectEditor subEditor = new SearchUIProjectEditor(driver, searchUIProjects);
+            @NotNull final SearchUIProjectEditor subEditor = new SearchUIProjectEditor(driver, searchUIProjects);
             projectButtonPanel.setWidget(index, 0, subEditor.summary);
 
             subEditor.summary.addClickHandler(new ClickHandler() {
@@ -44,7 +46,7 @@ public class SearchUIProjectsEditor extends DockLayoutPanel implements Editor<Se
                     SearchUIProjectsEditor.this.add(subEditor);
 
                     /* Untoggle the other buttons */
-                    for (final SearchUIProjectEditor projectEditor : projects.getEditors()) {
+                    for (@NotNull final SearchUIProjectEditor projectEditor : projects.getEditors()) {
                         if (projectEditor.summary != subEditor.summary) {
                             projectEditor.summary.removeStyleName(CSSConstants.Common.CUSTOM_BUTTON_DOWN);
                             projectEditor.summary.removeStyleName(CSSConstants.Common.CUSTOM_BUTTON);
@@ -59,7 +61,7 @@ public class SearchUIProjectsEditor extends DockLayoutPanel implements Editor<Se
         }
 
         @Override
-        public void dispose(final SearchUIProjectEditor subEditor) {
+        public void dispose(@NotNull final SearchUIProjectEditor subEditor) {
             subEditor.summary.removeFromParent();
             subEditor.removeFromParent();
         }

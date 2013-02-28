@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A GWT Editor to provide a visual representation of SearchUITag
@@ -21,7 +22,7 @@ public final class SearchUITagEditor implements Editor<SearchUITag> {
     final Label name = new Label();
     final TriStatePushButton state = new TriStatePushButton();
 
-    public SearchUITagEditor(final SearchPresenterDriver driver, final SearchUICategoryEditor searchUICategory) {
+    public SearchUITagEditor(@NotNull final SearchPresenterDriver driver, final SearchUICategoryEditor searchUICategory) {
         this.searchUICategory = searchUICategory;
 
         name.addStyleName(CSSConstants.TagListTagView.TAG_LABEL);

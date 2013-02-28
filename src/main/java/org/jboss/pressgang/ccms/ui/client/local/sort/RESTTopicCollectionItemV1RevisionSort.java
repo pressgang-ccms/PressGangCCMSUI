@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.sort;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -11,7 +12,7 @@ import java.util.Comparator;
 public final class RESTTopicCollectionItemV1RevisionSort implements Comparator<RESTTopicCollectionItemV1>, Serializable {
 
     @Override
-    public int compare(final RESTTopicCollectionItemV1 arg0, final RESTTopicCollectionItemV1 arg1) {
+    public int compare(@Nullable final RESTTopicCollectionItemV1 arg0, @Nullable final RESTTopicCollectionItemV1 arg1) {
         if (arg0 == null && arg1 == null) {
             return 0;
         }

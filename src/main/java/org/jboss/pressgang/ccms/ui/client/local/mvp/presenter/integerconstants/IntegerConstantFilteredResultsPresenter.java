@@ -38,7 +38,7 @@ public class IntegerConstantFilteredResultsPresenter extends BaseFilteredResults
     @Override
     protected void displayQueryElements(@NotNull final String queryString) {
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
-        for (final String queryStringElement : queryStringElements) {
+        for (@NotNull final String queryStringElement : queryStringElements) {
             final String[] queryElements = queryStringElement.split("=");
 
             if (queryElements.length == 2) {
@@ -53,15 +53,16 @@ public class IntegerConstantFilteredResultsPresenter extends BaseFilteredResults
         }
     }
 
+    @NotNull
     @Override
     protected EnhancedAsyncDataProvider<RESTIntegerConstantCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
-        final EnhancedAsyncDataProvider<RESTIntegerConstantCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTIntegerConstantCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTIntegerConstantCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTIntegerConstantCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTIntegerConstantCollectionItemV1> list) {
 
-                final BaseRestCallback<RESTIntegerConstantCollectionV1, Display> callback =new BaseRestCallback<RESTIntegerConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTIntegerConstantCollectionV1, Display>() {
+                @NotNull final BaseRestCallback<RESTIntegerConstantCollectionV1, Display> callback =new BaseRestCallback<RESTIntegerConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTIntegerConstantCollectionV1, Display>() {
                     @Override
-                    public void doSuccessAction(final RESTIntegerConstantCollectionV1 retValue, final Display display) {
+                    public void doSuccessAction(@NotNull final RESTIntegerConstantCollectionV1 retValue, final Display display) {
                         getProviderData().setItems(retValue.getItems());
                         getProviderData().setSize(retValue.getSize());
                         relinkSelectedItem();
@@ -82,7 +83,7 @@ public class IntegerConstantFilteredResultsPresenter extends BaseFilteredResults
     @NotNull
     @Override
     public String getQuery() {
-        final StringBuilder retValue = new StringBuilder();
+        @NotNull final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
             retValue.append(";").append(CommonFilterConstants.INTEGER_CONSTANT_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getIdFilter().getText()) : display.getIdFilter().getText()));
         }

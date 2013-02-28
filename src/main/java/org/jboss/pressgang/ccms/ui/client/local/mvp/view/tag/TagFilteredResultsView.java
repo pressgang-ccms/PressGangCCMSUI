@@ -8,6 +8,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagFilteredRes
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class TagFilteredResultsView extends BaseFilteredResultsView<RESTTagCollectionItemV1> implements
         TagFilteredResultsPresenter.Display {
@@ -16,9 +18,11 @@ public class TagFilteredResultsView extends BaseFilteredResultsView<RESTTagColle
     private final TextBox nameFilter = new TextBox();
     private final TextBox descriptionFilter = new TextBox();
 
+    @NotNull
     private final TextColumn<RESTTagCollectionItemV1> idColumn = new TextColumn<RESTTagCollectionItemV1>() {
+        @NotNull
         @Override
-        public String getValue(final RESTTagCollectionItemV1 object) {
+        public String getValue(@Nullable final RESTTagCollectionItemV1 object) {
             if (object != null && object.getItem() != null) {
                 /* don't display the null ID for new tags */
                 if (object.getItem().getId() != null && object.getItem().getId().equals(Constants.NULL_ID)) {
@@ -31,9 +35,11 @@ public class TagFilteredResultsView extends BaseFilteredResultsView<RESTTagColle
         }
     };
 
+    @NotNull
     private final TextColumn<RESTTagCollectionItemV1> nameColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTagCollectionItemV1 object) {
+        @NotNull
+        public String getValue(@Nullable final RESTTagCollectionItemV1 object) {
             if (object != null && object.getItem() != null) {
                 return object.getItem().getName();
             }
@@ -41,16 +47,19 @@ public class TagFilteredResultsView extends BaseFilteredResultsView<RESTTagColle
         }
     };
 
+    @NotNull
     @Override
     public TextBox getNameFilter() {
         return nameFilter;
     }
 
+    @NotNull
     @Override
     public TextBox getIdFilter() {
         return idFilter;
     }
 
+    @NotNull
     @Override
     public TextBox getDescriptionFilter() {
         return descriptionFilter;

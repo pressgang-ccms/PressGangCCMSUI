@@ -57,10 +57,12 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     /**
      * The name of the application.
      */
+    @NotNull
     private final String applicationName;
     /**
      * The name of the current page.
      */
+    @NotNull
     private final String pageName;
 
     /**
@@ -104,6 +106,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     /**
      * This is where the page specific content is held.
      */
+    @NotNull
     private SimpleLayoutPanel panel = new SimpleLayoutPanel();
 
     /**
@@ -222,13 +225,13 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
             contents.addStyleName(CSSConstants.HelpDialog.HELP_CONTENTS);
 
-            final ScrollPanel scroll = new ScrollPanel(contents);
+            @NotNull final ScrollPanel scroll = new ScrollPanel(contents);
             scroll.setWidth(Constants.HELP_DIALOG_WIDTH);
             scroll.setHeight(Constants.HELP_DIALOG_HEIGHT);
 
             layout.add(scroll);
 
-            final HorizontalPanel buttonPanel = new HorizontalPanel();
+            @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
 
             buttonPanel.add(edit);
@@ -243,13 +246,13 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         public void show(final int topicId, @NotNull final BaseTemplateViewInterface waitDisplay) {
             this.helpTopic = topicId;
 
-            final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
+            @NotNull final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
                     waitDisplay, new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {
                 @Override
-                public void doSuccessAction(final RESTTopicV1 retValue, final BaseTemplateViewInterface display) {
+                public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final BaseTemplateViewInterface display) {
 
                     try {
-                        final XsltProcessor processor = new XsltProcessor();
+                        @NotNull final XsltProcessor processor = new XsltProcessor();
                         processor.importStyleSheet(DocbookToHTML.XSL);
                         processor.importSource(retValue.getXml());
                         processor.setParameter("externalImages", true + "");
@@ -257,7 +260,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
                         contents.setHTML(resultString);
 
 
-                    } catch (final XsltProcessingException ex) {
+                    } catch (@NotNull final XsltProcessingException ex) {
                         // this should not happen
                     }
 
@@ -523,11 +526,11 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         pageTitleParentLayoutPanel.add(pageTitle);
 
         /* Add the quick search box */
-        final HorizontalPanel quickSearchParentPanel = new HorizontalPanel();
+        @NotNull final HorizontalPanel quickSearchParentPanel = new HorizontalPanel();
         quickSearchParentPanel.addStyleName(CSSConstants.Template.QUICK_SEARCH_PARENT_PANEL);
         quickSearchParentPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 
-        final HorizontalPanel quickSearchPanel = new HorizontalPanel();
+        @NotNull final HorizontalPanel quickSearchPanel = new HorizontalPanel();
         quickSearchPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         quickSearchPanel.add(quickSearchQuery);
         quickSearchPanel.add(getQuickSearch());
@@ -574,7 +577,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         footerPanel.setWidget(0, 0, version);
 
         /* Add the REST server */
-        final Label restServer = new Label();
+        @NotNull final Label restServer = new Label();
 
         if (Constants.BASE_URL == Constants.DEV_REST_SERVER) {
             restServer.addStyleName(CSSConstants.Template.SERVER_TYPE_DEVELOPMENT);
@@ -736,9 +739,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      * the template action bar, which is removed.
      */
     protected final void addSpacerToShortcutPanels() {
-        final String spacerDiv = "<div style=\"height: " + Constants.SHORTCUT_BAR_SPACER_HEIGHT + "px;\"></div>";
-        final HTML spacer = new HTML(spacerDiv);
-        final HTML spacer2 = new HTML(spacerDiv);
+        @NotNull final String spacerDiv = "<div style=\"height: " + Constants.SHORTCUT_BAR_SPACER_HEIGHT + "px;\"></div>";
+        @NotNull final HTML spacer = new HTML(spacerDiv);
+        @NotNull final HTML spacer2 = new HTML(spacerDiv);
         this.getShortcutPanel().insertRow(0);
         this.getShortcutPanel().setWidget(0, 0, spacer);
         this.getAdvancedShortcutPanel().insertRow(0);

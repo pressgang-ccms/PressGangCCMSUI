@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This interface defines the base for all views displaying a filtered results set
@@ -43,6 +44,7 @@ public interface BaseFilteredResultsViewInterface<V extends RESTBaseCollectionIt
     /**
      * @return The panel that holds the buttons used as tabs.
      */
+    @NotNull
     FlexTable getTabPanel();
     /**
      * @param provider The provider used to populate the celltable

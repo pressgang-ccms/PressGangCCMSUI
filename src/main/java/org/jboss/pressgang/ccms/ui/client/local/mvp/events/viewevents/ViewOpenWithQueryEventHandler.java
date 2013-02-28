@@ -25,7 +25,7 @@ public class ViewOpenWithQueryEventHandler extends ViewOpenEventHandler {
      */
     protected final void onViewOpen(@NotNull final ViewOpenWithQueryEvent<?> event) {
         if (event.isNewWindow()) {
-            final String newWindowURL = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/"
+            @NotNull final String newWindowURL = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/"
                     + Window.Location.getPath() + "#" + historyToken + ";"
                     + ((event.getQuery() != null) ? event.getQuery() : "");
 

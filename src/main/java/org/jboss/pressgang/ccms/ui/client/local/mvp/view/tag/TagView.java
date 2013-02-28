@@ -7,6 +7,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagPresenter.T
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
+import org.jetbrains.annotations.NotNull;
 
 public class TagView extends BaseTemplateView implements TagPresenter.Display {
 
@@ -32,7 +33,7 @@ public class TagView extends BaseTemplateView implements TagPresenter.Display {
         this.readOnly = readOnly;
 
         /* SearchUIProjectsEditor is a grid */
-        final RESTTagV1BasicDetailsEditor editor = new RESTTagV1BasicDetailsEditor(this.readOnly);
+        @NotNull final RESTTagV1BasicDetailsEditor editor = new RESTTagV1BasicDetailsEditor(this.readOnly);
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */

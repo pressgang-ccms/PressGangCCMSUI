@@ -16,6 +16,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -35,6 +36,7 @@ public class ProjectTagPresenter extends BaseChildrenPresenter<
 
     public static final String HISTORY_TOKEN = "ProjectTagView";
 
+    @Nullable
     private Integer entityId;
 
     @Inject
@@ -49,7 +51,7 @@ public class ProjectTagPresenter extends BaseChildrenPresenter<
     public void parseToken(@NotNull final String historyToken) {
         try {
             entityId = Integer.parseInt(GWTUtilities.removeHistoryToken(HISTORY_TOKEN, historyToken));
-        } catch (final NumberFormatException ex) {
+        } catch (@NotNull final NumberFormatException ex) {
             entityId = null;
         }
     }
@@ -74,10 +76,10 @@ public class ProjectTagPresenter extends BaseChildrenPresenter<
     @Override
     public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTProjectV1 parent) {
 
-        final RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, ProjectTagPresenter.Display>(display,
+        @NotNull final RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, ProjectTagPresenter.Display>(display,
                 new BaseRestCallback.SuccessAction<RESTTagCollectionV1, ProjectTagPresenter.Display>() {
                     @Override
-                    public void doSuccessAction(final RESTTagCollectionV1 retValue, final ProjectTagPresenter.Display display) {
+                    public void doSuccessAction(@NotNull final RESTTagCollectionV1 retValue, final ProjectTagPresenter.Display display) {
 
                         /* Zero results can be a null list */
                         getPossibleChildrenProviderData().setStartRow(0);
@@ -98,7 +100,7 @@ public class ProjectTagPresenter extends BaseChildrenPresenter<
     @NotNull
     public EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generatePossibleChildrenProvider(@NotNull final RESTProjectV1 parent) {
 
-        final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTagCollectionItemV1> display) {
 

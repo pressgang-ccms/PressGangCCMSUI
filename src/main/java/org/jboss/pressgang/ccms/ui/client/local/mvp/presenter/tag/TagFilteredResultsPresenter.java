@@ -55,7 +55,6 @@ public class TagFilteredResultsPresenter
         return display;
     }
 
-    @NotNull
     @Override
     public void parseToken(@NotNull final String searchToken) {
         queryString = searchToken.replace(HISTORY_TOKEN + ";", "");
@@ -76,7 +75,7 @@ public class TagFilteredResultsPresenter
     @Override
     protected void displayQueryElements(@NotNull final String queryString) {
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
-        for (final String queryStringElement : queryStringElements) {
+        for (@NotNull final String queryStringElement : queryStringElements) {
             final String[] queryElements = queryStringElement.split("=");
 
             if (queryElements.length == 2) {
@@ -98,11 +97,11 @@ public class TagFilteredResultsPresenter
     @Override
     @NotNull
     protected EnhancedAsyncDataProvider<RESTTagCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
-        final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTagCollectionItemV1> range) {
 
-                final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
+                @NotNull final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
                     @Override
                     public void begin() {
                         resetProvider();
@@ -116,7 +115,7 @@ public class TagFilteredResultsPresenter
                     }
 
                     @Override
-                    public void success(final RESTTagCollectionV1 retValue) {
+                    public void success(@NotNull final RESTTagCollectionV1 retValue) {
                         try {
                             /* Zero results can be a null list */
                             getProviderData().setItems(retValue.getItems());
@@ -149,7 +148,7 @@ public class TagFilteredResultsPresenter
     @Override
     @NotNull
     public String getQuery() {
-        final StringBuilder retValue = new StringBuilder();
+        @NotNull final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
             retValue.append(";").append(CommonFilterConstants.TAG_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getIdFilter().getText()) : display.getIdFilter().getText()));
         }

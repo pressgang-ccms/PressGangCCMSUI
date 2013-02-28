@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTIntegerConstantV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An editor used to bind the integer constant's details to ui elements
@@ -20,14 +21,17 @@ public final class RESTIntegerConstantV1DetailsEditor extends Grid implements Ed
     private final TextBox name = new TextBox();
     private final SimpleIntegerBox value = new SimpleIntegerBox();
 
+    @NotNull
     public SimpleIntegerBox idEditor() {
         return id;
     }
 
+    @NotNull
     public TextBox nameEditor() {
         return name;
     }
 
+    @NotNull
     public SimpleIntegerBox valueEditor() {
         return value;
     }
@@ -44,15 +48,15 @@ public final class RESTIntegerConstantV1DetailsEditor extends Grid implements Ed
         name.setReadOnly(readOnly);
         value.setReadOnly(readOnly);
 
-        final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.IntegerConstantId());
+        @NotNull final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.IntegerConstantId());
         this.setWidget(0, 0, idLabel);
         this.setWidget(0, 1, id);
 
-        final Label nameLabel = new Label(PressGangCCMSUI.INSTANCE.IntegerConstantName());
+        @NotNull final Label nameLabel = new Label(PressGangCCMSUI.INSTANCE.IntegerConstantName());
         this.setWidget(1, 0, nameLabel);
         this.setWidget(1, 1, name);
 
-        final Label valueLabel = new Label(PressGangCCMSUI.INSTANCE.IntegerConstantValue());
+        @NotNull final Label valueLabel = new Label(PressGangCCMSUI.INSTANCE.IntegerConstantValue());
         this.setWidget(2, 0, valueLabel);
         this.setWidget(2, 1, value);
 

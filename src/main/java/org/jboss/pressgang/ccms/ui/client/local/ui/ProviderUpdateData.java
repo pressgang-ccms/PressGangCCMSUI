@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +16,12 @@ public class ProviderUpdateData<T> {
     /**
      * References the providers start row.
      */
+    @Nullable
     private Integer startRow;
     /**
      * References the items that the provider will display.
      */
+    @Nullable
     private List<T> items;
     /**
      * References the currently selected item.
@@ -30,29 +34,33 @@ public class ProviderUpdateData<T> {
     /**
      * The total size of the collection - for async lists
      */
+    @Nullable
     private Integer size;
 
+    @Nullable
     public final T getSelectedItem() {
         return this.selectedItem;
     }
 
-    public final void setSelectedItem(final T selectedItem) {
+    public final void setSelectedItem(@Nullable final T selectedItem) {
         this.selectedItem = selectedItem;
     }
 
+    @Nullable
     public final Integer getStartRow() {
         return this.startRow;
     }
 
-    public final void setStartRow(final Integer startRow) {
+    public final void setStartRow(@Nullable final Integer startRow) {
         this.startRow = startRow;
     }
 
+    @Nullable
     public final List<T> getItems() {
         return this.items;
     }
 
-    public final void setItems(final List<T> items) {
+    public final void setItems(@Nullable final List<T> items) {
         this.items = items;
     }
 
@@ -63,25 +71,26 @@ public class ProviderUpdateData<T> {
     /**
      * @param displayedItem The initially displayed item
      */
-    public ProviderUpdateData(final T displayedItem) {
+    public ProviderUpdateData(@Nullable final T displayedItem) {
         this.displayedItem = displayedItem;
     }
 
-    public ProviderUpdateData(final Integer startRow, final List<T> items) {
+    public ProviderUpdateData(@Nullable final Integer startRow, @Nullable final List<T> items) {
         this.startRow = startRow;
         this.items = items;
     }
 
-    public ProviderUpdateData(final Integer startRow, final List<T> items, final Integer size) {
+    public ProviderUpdateData(@Nullable final Integer startRow, @Nullable final List<T> items, @Nullable final Integer size) {
         this(startRow, items);
         this.size = size;
     }
 
+    @Nullable
     public final T getDisplayedItem() {
         return this.displayedItem;
     }
 
-    public final void setDisplayedItem(final T displayedItem) {
+    public final void setDisplayedItem(@Nullable final T displayedItem) {
         this.displayedItem = displayedItem;
     }
 
@@ -98,11 +107,12 @@ public class ProviderUpdateData<T> {
     }
 
 
+    @Nullable
     public final Integer getSize() {
         return this.size;
     }
 
-    public final void setSize(final Integer size) {
+    public final void setSize(@Nullable final Integer size) {
         this.size = size;
     }
 }

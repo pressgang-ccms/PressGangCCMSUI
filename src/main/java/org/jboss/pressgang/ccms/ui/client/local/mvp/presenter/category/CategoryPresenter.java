@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCategoryV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -40,6 +41,7 @@ public class CategoryPresenter extends
     /**
      * The id of the category that is being viewed
      */
+    @Nullable
     private Integer categoryId;
 
     /**
@@ -67,7 +69,7 @@ public class CategoryPresenter extends
     public void parseToken(@NotNull final String searchToken) {
         try {
             categoryId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
-        } catch (final NumberFormatException ex) {
+        } catch (@NotNull final NumberFormatException ex) {
             categoryId = null;
         }
     }

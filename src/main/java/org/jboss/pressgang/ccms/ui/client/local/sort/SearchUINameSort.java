@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.sort;
 
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIBase;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -11,7 +12,7 @@ import java.util.Comparator;
 public final class SearchUINameSort implements Comparator<SearchUIBase>, Serializable {
 
     @Override
-    public int compare(final SearchUIBase arg0, final SearchUIBase arg1) {
+    public int compare(@Nullable final SearchUIBase arg0, @Nullable final SearchUIBase arg1) {
         if (arg0 == null && arg1 == null) {
             return 0;
         }

@@ -38,7 +38,7 @@ public final class SearchUIProject extends SearchUIBase {
     /**
      * @param project The project that this object represents
      */
-    public SearchUIProject(final RESTProjectCollectionItemV1 project) {
+    public SearchUIProject(@NotNull final RESTProjectCollectionItemV1 project) {
         super(project.getItem().getName(), project.getItem().getId());
     }
 
@@ -52,11 +52,12 @@ public final class SearchUIProject extends SearchUIBase {
     /**
      * @return An object that contains the summary information to be displayed on the tile
      */
+    @NotNull
     public CategorySummary getSummary() {
         int includedTags = 0;
         int excludedTags = 0;
-        for (final SearchUICategory category : this.categories) {
-            for (final SearchUITag tag : category.getMyTags()) {
+        for (@NotNull final SearchUICategory category : this.categories) {
+            for (@NotNull final SearchUITag tag : category.getMyTags()) {
                 if (tag.getState() == TriStateSelectionState.SELECTED) {
                     ++includedTags;
                 } else if (tag.getState() == TriStateSelectionState.UNSELECTED) {
@@ -71,6 +72,7 @@ public final class SearchUIProject extends SearchUIBase {
     /**
      * @return The categories held by this project
      */
+    @NotNull
     public List<SearchUICategory> getCategories() {
         return this.categories;
     }
@@ -80,7 +82,7 @@ public final class SearchUIProject extends SearchUIBase {
      */
     public int getChildCount() {
         int retValue = 0;
-        for (final SearchUICategory category : this.categories) {
+        for (@NotNull final SearchUICategory category : this.categories) {
             retValue += category.getChildCount();
         }
         return retValue;
@@ -97,14 +99,14 @@ public final class SearchUIProject extends SearchUIBase {
         try {
             //LOGGER.log(Level.INFO, "ENTER SearchUIProject.populateCategories()");
 
-            for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
+            for (@NotNull final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
                 checkState(tag.getItem().getProjects() != null, "tag.getItem().getProjects() cannot be null");
 
                 if (tag.getItem().getProjects().getItems().contains(project)) {
                     checkState(tag.getItem().getCategories().getItems() != null, "tag.getItem().getCategories().getItems() cannot be null");
 
-                    for (final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories().returnExistingAndAddedCollectionItems()) {
-                        final SearchUICategory searchUICategory = new SearchUICategory(this, category);
+                    for (@NotNull final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories().returnExistingAndAddedCollectionItems()) {
+                        @NotNull final SearchUICategory searchUICategory = new SearchUICategory(this, category);
                         if (!this.categories.contains(searchUICategory)) {
                             searchUICategory.populateCategories(project, category, tags, filter);
                             this.categories.add(searchUICategory);
@@ -126,7 +128,7 @@ public final class SearchUIProject extends SearchUIBase {
      * @param tags   The tags that will be populated under this project
      * @param filter The filter that defines the state of the tags
      */
-    public void populateCategoriesWithoutProject(final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
+    public void populateCategoriesWithoutProject(@Nullable final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchUIProject.populateCategoriesWithoutProject()");
 
@@ -137,7 +139,7 @@ public final class SearchUIProject extends SearchUIBase {
                 throw new IllegalArgumentException("tags.getItems() cannot be null");
             }
 
-            for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
+            for (@NotNull final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
                 if (tag.getItem().getProjects() == null) {
                     throw new IllegalArgumentException("tag.getItem().getProjects() cannot be null");
                 }
@@ -147,9 +149,9 @@ public final class SearchUIProject extends SearchUIBase {
                         throw new IllegalArgumentException("tag.getItem().getCategories().getItems() cannot be null");
                     }
 
-                    for (final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories()
+                    for (@NotNull final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories()
                             .returnExistingAndAddedCollectionItems()) {
-                        final SearchUICategory searchUICategory = new SearchUICategory(this, category);
+                        @NotNull final SearchUICategory searchUICategory = new SearchUICategory(this, category);
                         if (!this.categories.contains(searchUICategory)) {
                             searchUICategory.populateCategoriesWithoutProject(category, tags, filter);
                             this.categories.add(searchUICategory);

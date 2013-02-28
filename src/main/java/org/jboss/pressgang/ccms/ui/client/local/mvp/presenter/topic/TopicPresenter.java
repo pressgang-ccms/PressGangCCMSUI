@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -29,6 +30,7 @@ public class TopicPresenter extends BaseTemplatePresenter {
         void displayTopicDetails(final RESTTopicV1 topic, final boolean readOnly, final List<String> locales);
     }
 
+    @Nullable
     private Integer topicId;
 
     @Inject
@@ -42,7 +44,7 @@ public class TopicPresenter extends BaseTemplatePresenter {
     public void parseToken(@NotNull final String searchToken) {
         try {
             topicId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
-        } catch (final NumberFormatException ex) {
+        } catch (@NotNull final NumberFormatException ex) {
             topicId = null;
         }
 

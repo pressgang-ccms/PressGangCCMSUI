@@ -30,6 +30,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.*;
 
+import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
@@ -86,7 +87,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
 
         RESTCalls.populateLocales(new StringListLoaded() {
             @Override
-            public void stringListLoaded(final List<String> locales) {
+            public void stringListLoaded(@NotNull final List<String> locales) {
 
                 /* Get the common query and locales that will make up the grouped results */
                 breakDownQuery(locales);
@@ -102,7 +103,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
 
                     display.addActionButton(localeTab, display.getTabPanel());
 
-                    final ClickHandler clickHandler = new ClickHandler() {
+                    @NotNull final ClickHandler clickHandler = new ClickHandler() {
                         @Override
                         public void onClick(final ClickEvent event) {
                             displayLocaleResults(localeQueries.get(locale));
@@ -133,7 +134,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
 
     private void displayLocaleResults(@Nullable final String localeSearch) {
         /* Initially we display the results from the first locale */
-        final StringBuilder initialQuery = new StringBuilder(commonQuery.toString());
+        @NotNull final StringBuilder initialQuery = new StringBuilder(commonQuery.toString());
         if (localeSearch != null) {
             initialQuery.append(";").append(localeSearch);
         }
@@ -156,30 +157,39 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
         // TODO Auto-generated method stub
     }
 
+    @NotNull
     protected EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1> generateListProvider() {
         getProviderData().resetToEmpty();
 
-        final EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTranslatedTopicCollectionItemV1> list) {
+            protected void onRangeChanged(@NotNull final HasData<RESTTranslatedTopicCollectionItemV1> list) {
+
+                checkState(getProviderData().getItems() != null, "The provider data should have items.");
+
                 displayNewFixedList(getProviderData().getItems());
             }
         };
         return provider;
     }
 
+    @NotNull
     @Override
     protected EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
-        final EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTranslatedTopicCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTranslatedTopicCollectionItemV1> list) {
+            protected void onRangeChanged(@NotNull final HasData<RESTTranslatedTopicCollectionItemV1> list) {
 
-                final BaseRestCallback<RESTTranslatedTopicCollectionV1, Display> callback = new BaseRestCallback<RESTTranslatedTopicCollectionV1, Display>(
+                @NotNull final BaseRestCallback<RESTTranslatedTopicCollectionV1, Display> callback = new BaseRestCallback<RESTTranslatedTopicCollectionV1, Display>(
                         display,
                         new BaseRestCallback.SuccessAction<RESTTranslatedTopicCollectionV1, Display>() {
                             @Override
-                            public void doSuccessAction(final RESTTranslatedTopicCollectionV1 retValue, final Display display) {
+                            public void doSuccessAction(@NotNull final RESTTranslatedTopicCollectionV1 retValue, @NotNull final Display display) {
                                 try {
+                                    checkState(retValue.getItems() != null, "The returned collection data should have items.");
+                                    checkState(retValue.getSize() != null, "The returned collection data should have a size.");
+                                    checkState(getProviderData().getStartRow() != null, "The data provider should have a starting row.");
+
                                     getProviderData().setItems(retValue.getItems());
                                     getProviderData().setSize(retValue.getSize());
                                     relinkSelectedItem();
@@ -193,6 +203,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
                     public void doFailureAction(final Display display) {
                         getProviderData().setItems(new ArrayList<RESTTranslatedTopicCollectionItemV1>());
                         getProviderData().setSize(0);
+                        getProviderData().setStartRow(0);
                         displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                     }
                 }
@@ -216,10 +227,10 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
         final String queryWithoutPrefix = queryString.replaceFirst(Constants.QUERY_PATH_SEGMENT_PREFIX, "");
         final String[] queryOptions = queryWithoutPrefix.split(";");
 
-        final List<String> includedLocales = new ArrayList<String>();
-        final List<String> excludedLocales = new ArrayList<String>();
+        @NotNull final List<String> includedLocales = new ArrayList<String>();
+        @NotNull final List<String> excludedLocales = new ArrayList<String>();
 
-        for (final String queryOption : queryOptions) {
+        for (@NotNull final String queryOption : queryOptions) {
             if (LOCALE_REGEX.test(queryOption)) {
                 if (queryOption.endsWith("0")) {
                     /* If the local query ends with a 0, it is an excluded locale */
@@ -234,7 +245,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
         }
 
         if (!includedLocales.isEmpty()) {
-            for (final String query : includedLocales) {
+            for (@NotNull final String query : includedLocales) {
                 /* extract the locale from the query variable */
                 localeQueries.put(query.split("=")[1].substring(0, query.split("=")[1].length() - 1), query);
             }
@@ -245,7 +256,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
             for (final String locale : locales) {
 
                 boolean isExcluded = false;
-                for (final String query : excludedLocales) {
+                for (@NotNull final String query : excludedLocales) {
                     final String excludedLocale = query.split("=")[1].substring(0, query.split("=")[1].length() - 1);
                     if (excludedLocale.equals(locale)) {
                         isExcluded = true;

@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.filter.RESTFilterV1BasicDetailsEditor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 
@@ -42,7 +43,7 @@ public class SearchFilterView extends BaseTemplateView implements SearchFilterPr
     @Override
     public void display(final RESTFilterV1 entity, final boolean readonly) {
         /* SearchUIProjectsEditor is a grid */
-        final RESTFilterV1BasicDetailsEditor editor = new RESTFilterV1BasicDetailsEditor(readonly);
+        @NotNull final RESTFilterV1BasicDetailsEditor editor = new RESTFilterV1BasicDetailsEditor(readonly);
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */

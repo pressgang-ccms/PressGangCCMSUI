@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkState;
+
 /**
  * @see BaseSearchAndEditPresenterInterface
  *
@@ -175,6 +177,9 @@ abstract public class BaseSearchAndEditPresenter<
                  * don't edit the new entity because there is no view open to display it.
                  */
                 if (lastDisplayedView != null) {
+                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There needs to be a displayed item");
+                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed item needs to reference a valid entity");
+
                     entityPropertiesView.getDriver().edit(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
                 }
             }
@@ -201,7 +206,7 @@ abstract public class BaseSearchAndEditPresenter<
             getNewEntityCallback.getNewEntity(selectedItem.getItem(), new DisplayNewEntityCallback<T>() {
 
                 @Override
-                public void displayNewEntity(final T entity) {
+                public void displayNewEntity(@NotNull final T entity) {
 
                     try {
                         LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.loadNewEntity() DisplayNewEntityCallback.displayNewEntity(final T entity)");
@@ -376,7 +381,7 @@ abstract public class BaseSearchAndEditPresenter<
     /**
      * Called when displaying changes to a entity or when changing views
      */
-    protected final void switchView(@NotNull final BaseTemplateViewInterface displayedView) {
+    protected final void switchView(@Nullable final BaseTemplateViewInterface displayedView) {
 
         try {
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.switchView(final W displayedView)");

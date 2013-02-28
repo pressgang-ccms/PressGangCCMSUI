@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An editor that binds the data in a RESTFilterV1 to UI elements.
@@ -36,6 +37,7 @@ public final class RESTFilterV1BasicDetailsEditor extends Grid implements Editor
      *
      * @return The ui element displaying the filter's description.
      */
+    @NotNull
     public TextArea descriptionEditor() {
         return description;
     }
@@ -45,6 +47,7 @@ public final class RESTFilterV1BasicDetailsEditor extends Grid implements Editor
      *
      * @return The ui element displaying the filter's name.
      */
+    @NotNull
     public TextBox nameEditor() {
         return name;
     }

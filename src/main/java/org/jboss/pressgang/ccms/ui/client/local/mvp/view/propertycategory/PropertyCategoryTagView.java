@@ -36,6 +36,7 @@ public class PropertyCategoryTagView extends BaseChildrenView<
     /**
      * The column used to render the property tag category's id.
      */
+    @NotNull
     private final TextColumn<RESTPropertyTagCollectionItemV1> tagsIdColumn = new TextColumn<RESTPropertyTagCollectionItemV1>() {
         @Override
         public String getValue(@Nullable final RESTPropertyTagCollectionItemV1 object) {
@@ -51,6 +52,7 @@ public class PropertyCategoryTagView extends BaseChildrenView<
     /**
      * The column used to render the property tag category's name.
      */
+    @NotNull
     private final TextColumn<RESTPropertyTagCollectionItemV1> tagsNameColumn = new TextColumn<RESTPropertyTagCollectionItemV1>() {
         @Override
         public String getValue(@Nullable final RESTPropertyTagCollectionItemV1 object) {
@@ -66,7 +68,9 @@ public class PropertyCategoryTagView extends BaseChildrenView<
     /**
      * The column used to render the property tag category's add/remove button.
      */
+    @Nullable
     private final Column<RESTPropertyTagCollectionItemV1, String> tagsButtonColumn = new Column<RESTPropertyTagCollectionItemV1, String>(new ButtonCell()) {
+        @NotNull
         @Override
         public String getValue(@Nullable final RESTPropertyTagCollectionItemV1 object) {
             checkState(getOriginalEntity() != null, "getOriginalEntity() should not be null");

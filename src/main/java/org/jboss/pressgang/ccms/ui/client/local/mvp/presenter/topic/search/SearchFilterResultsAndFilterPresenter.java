@@ -65,6 +65,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
     /**
      * @return The display
      */
+    @NotNull
     public final SearchFilterFilteredResultsPresenter.Display getFilteredResulstsDisplay() {
         return searchFilterFilteredResultsPresenter.getDisplay();
     }
@@ -91,18 +92,18 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
     @Override
     public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTFilterV1> getNewEntityCallback = new GetNewEntityCallback<RESTFilterV1>() {
+        @NotNull final GetNewEntityCallback<RESTFilterV1> getNewEntityCallback = new GetNewEntityCallback<RESTFilterV1>() {
 
             @Override
-            public void getNewEntity(final RESTFilterV1 selectedEntity, final DisplayNewEntityCallback<RESTFilterV1> displayCallback) {
+            public void getNewEntity(@NotNull final RESTFilterV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTFilterV1> displayCallback) {
 
                 try {
                     LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.go() GetNewEntityCallback.getNewEntity()");
 
-                    final RESTCalls.RESTCallback<RESTFilterV1> callback = new BaseRestCallback<RESTFilterV1, BaseTemplateViewInterface>(
+                    @NotNull final RESTCalls.RESTCallback<RESTFilterV1> callback = new BaseRestCallback<RESTFilterV1, BaseTemplateViewInterface>(
                             display, new BaseRestCallback.SuccessAction<RESTFilterV1, BaseTemplateViewInterface>() {
                         @Override
-                        public void doSuccessAction(final RESTFilterV1 retValue, final BaseTemplateViewInterface display) {
+                        public void doSuccessAction(@NotNull final RESTFilterV1 retValue, final BaseTemplateViewInterface display) {
                             try {
                                 LOGGER.log(Level.INFO, "ENTERSearchFilterResultsAndFilterPresenter.go() RESTCallback.doSuccessAction()");
 

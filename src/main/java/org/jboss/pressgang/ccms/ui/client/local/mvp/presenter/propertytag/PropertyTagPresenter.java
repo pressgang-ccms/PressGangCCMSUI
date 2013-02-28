@@ -12,6 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjectV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.propertytag.RESTPropertyTagV1DetailsEditor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -38,6 +39,7 @@ public class PropertyTagPresenter extends BaseTemplatePresenter {
      */
     public static final String HISTORY_TOKEN = "PropertyTagView";
 
+    @Nullable
     private Integer entityId;
 
     @Inject
@@ -53,7 +55,7 @@ public class PropertyTagPresenter extends BaseTemplatePresenter {
     public void parseToken(@NotNull final String searchToken) {
         try {
             entityId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
-        } catch (final NumberFormatException ex) {
+        } catch (@NotNull final NumberFormatException ex) {
             entityId = null;
         }
     }
@@ -72,7 +74,7 @@ public class PropertyTagPresenter extends BaseTemplatePresenter {
      * Get the category from the database and use it to populate the editor in the view
      */
     public void getEntity(@NotNull final Integer entityId) {
-        final RESTCalls.RESTCallback<RESTPropertyTagV1> callback = new BaseRestCallback<RESTPropertyTagV1, PropertyTagPresenter.Display>(display,
+        @NotNull final RESTCalls.RESTCallback<RESTPropertyTagV1> callback = new BaseRestCallback<RESTPropertyTagV1, PropertyTagPresenter.Display>(display,
                 new BaseRestCallback.SuccessAction<RESTPropertyTagV1, PropertyTagPresenter.Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTPropertyTagV1 retValue, @NotNull final PropertyTagPresenter.Display display) {

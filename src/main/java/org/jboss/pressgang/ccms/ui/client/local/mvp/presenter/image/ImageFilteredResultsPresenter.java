@@ -80,7 +80,7 @@ public class ImageFilteredResultsPresenter
     @Override
     @NotNull
     public String getQuery() {
-        final StringBuilder retValue = new StringBuilder();
+        @NotNull final StringBuilder retValue = new StringBuilder();
         if (!display.getImageIdFilter().getText().isEmpty()) {
             retValue.append(";").append(CommonFilterConstants.IMAGE_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getImageIdFilter().getText()) : display.getImageIdFilter().getText()));
         }
@@ -102,14 +102,14 @@ public class ImageFilteredResultsPresenter
     @Override
     @NotNull
     protected EnhancedAsyncDataProvider<RESTImageCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
-        final EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTImageCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTImageCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTImageCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTImageCollectionItemV1> item) {
+            protected void onRangeChanged(@NotNull final HasData<RESTImageCollectionItemV1> item) {
                 getProviderData().setStartRow(item.getVisibleRange().getStart());
                 final int length = item.getVisibleRange().getLength();
                 final int end = getProviderData().getStartRow() + length;
 
-                final BaseRestCallback<RESTImageCollectionV1, Display> callback = new BaseRestCallback<RESTImageCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTImageCollectionV1, Display>() {
+                @NotNull final BaseRestCallback<RESTImageCollectionV1, Display> callback = new BaseRestCallback<RESTImageCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTImageCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTImageCollectionV1 retValue, @NotNull final Display display) {
                         getProviderData().setItems(retValue.getItems());
@@ -128,7 +128,7 @@ public class ImageFilteredResultsPresenter
     @Override
     protected void displayQueryElements(@NotNull final String queryString) {
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
-        for (final String queryStringElement : queryStringElements) {
+        for (@NotNull final String queryStringElement : queryStringElements) {
             final String[] queryElements = queryStringElement.split("=");
 
             if (queryElements.length == 2) {

@@ -12,6 +12,8 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.resources.css.CSSResources;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
@@ -28,7 +30,8 @@ public class App {
     /**
      * The Errai event bus.
      */
-    private HandlerManager eventBus = new HandlerManager(null);
+    @NotNull
+    private final HandlerManager eventBus = new HandlerManager(null);
 
     /**
      * The controller that handles the transitions between views.
@@ -59,7 +62,7 @@ public class App {
 
             GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
                 @Override
-                public void onUncaughtException(final Throwable ex) {
+                public void onUncaughtException(@NotNull final Throwable ex) {
                     LOGGER.log(Level.SEVERE, ex.getMessage());
                     LOGGER.log(Level.SEVERE, GWTUtilities.convertExceptionStackToString(ex));
                     Window.alert("Uncaught exception was detected. Redirecting you to the home page.\nException: " + ex.getMessage());
@@ -82,6 +85,7 @@ public class App {
         }
     }
 
+    @NotNull
     @Produces
     private HandlerManager produceEventBus() {
         return this.eventBus;

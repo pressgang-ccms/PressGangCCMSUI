@@ -7,6 +7,7 @@ import org.jboss.pressgang.ccms.rest.v1.components.ComponentImageV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTImageV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jetbrains.annotations.NotNull;
 
 public final class RESTImageV1Editor extends DockPanel implements ValueAwareEditor<RESTImageV1> {
     private RESTImageV1 value;
@@ -33,10 +34,12 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
      */
     private final RESTLanguageImageCollectionV1Editor languageImages_OTM = new RESTLanguageImageCollectionV1Editor();
 
+    @NotNull
     public TextArea descriptionEditor() {
         return description;
     }
 
+    @NotNull
     public RESTLanguageImageCollectionV1Editor languageImages_OTMEditor() {
         return languageImages_OTM;
     }

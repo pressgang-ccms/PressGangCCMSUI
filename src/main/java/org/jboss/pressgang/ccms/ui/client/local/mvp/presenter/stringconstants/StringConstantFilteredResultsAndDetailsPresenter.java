@@ -92,7 +92,7 @@ implements BaseTemplatePresenterInterface {
         /**
          * A click handler used to save any changes to the project
          */
-        final ClickHandler saveClickHandler = new ClickHandler() {
+        @NotNull final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
@@ -102,10 +102,10 @@ implements BaseTemplatePresenterInterface {
                 /* Sync the UI to the underlying object */
                 stringConstantPresenter.getDisplay().getDriver().flush();
 
-                final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, Display>(display,
+                @NotNull final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, Display>(display,
                         new BaseRestCallback.SuccessAction<RESTStringConstantV1, Display>() {
                             @Override
-                            public void doSuccessAction(final RESTStringConstantV1 retValue, final Display display) {
+                            public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final Display display) {
                                 retValue.cloneInto(stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
                                 retValue.cloneInto(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
 
@@ -125,7 +125,7 @@ implements BaseTemplatePresenterInterface {
 
                     if (hasUnsavedChanges()) {
 
-                        final RESTStringConstantV1 project = new RESTStringConstantV1();
+                        @NotNull final RESTStringConstantV1 project = new RESTStringConstantV1();
                         project.setId(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
                         project.explicitSetName(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
                         project.explicitSetValue(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getValue());
@@ -162,14 +162,14 @@ implements BaseTemplatePresenterInterface {
             public void onClick(@NotNull final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
-                final RESTStringConstantV1 selectedEntity = new RESTStringConstantV1();
+                @NotNull final RESTStringConstantV1 selectedEntity = new RESTStringConstantV1();
                 selectedEntity.setId(Constants.NULL_ID);
-                final RESTStringConstantCollectionItemV1 selectedTagWrapper = new RESTStringConstantCollectionItemV1(selectedEntity);
+                @NotNull final RESTStringConstantCollectionItemV1 selectedTagWrapper = new RESTStringConstantCollectionItemV1(selectedEntity);
 
                 /* The displayed tag will also be blank. This is the object that our data will be saved into */
-                final RESTStringConstantV1 displayedEntity = new RESTStringConstantV1();
+                @NotNull final RESTStringConstantV1 displayedEntity = new RESTStringConstantV1();
                 displayedEntity.setId(Constants.NULL_ID);
-                final RESTStringConstantCollectionItemV1 displayedTagWrapper = new RESTStringConstantCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
+                @NotNull final RESTStringConstantCollectionItemV1 displayedTagWrapper = new RESTStringConstantCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
 
                 stringConstantFilteredResultsPresenter.getProviderData().setSelectedItem(selectedTagWrapper);
                 stringConstantFilteredResultsPresenter.getProviderData().setDisplayedItem(displayedTagWrapper);
@@ -182,9 +182,9 @@ implements BaseTemplatePresenterInterface {
     }
 
     @Override
-    public void bindSearchAndEditExtended(final int topicId, final String pageId, final String queryString) {
+    public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTStringConstantV1> getNewEntityCallback = new GetNewEntityCallback<RESTStringConstantV1>() {
+        @NotNull final GetNewEntityCallback<RESTStringConstantV1> getNewEntityCallback = new GetNewEntityCallback<RESTStringConstantV1>() {
 
             @Override
             public void getNewEntity(@NotNull final RESTStringConstantV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTStringConstantV1> displayCallback) {
@@ -205,7 +205,7 @@ implements BaseTemplatePresenterInterface {
     }
 
     @Override
-    public void parseToken(final String historyToken) {
+    public void parseToken(@NotNull final String historyToken) {
         queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
         if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
             queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
@@ -213,7 +213,7 @@ implements BaseTemplatePresenterInterface {
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindSearchAndEditExtended(ServiceConstants.STRING_CONSTANT_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }

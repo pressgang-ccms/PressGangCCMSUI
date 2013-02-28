@@ -21,6 +21,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -54,6 +55,7 @@ public class CategoryTagPresenter
     /**
      * The id of the category to display.
      */
+    @Nullable
     private Integer entityId;
     /**
      * The category tag view.
@@ -87,7 +89,7 @@ public class CategoryTagPresenter
     }
 
     @Override
-    public void displayDetailedChildrenExtended(final RESTCategoryV1 parent, final boolean readOnly) {
+    public void displayDetailedChildrenExtended(@NotNull final RESTCategoryV1 parent, final boolean readOnly) {
         super.displayDetailedChildren(parent, readOnly);
         display.display(parent, readOnly);
     }
@@ -96,7 +98,7 @@ public class CategoryTagPresenter
     public void parseToken(@NotNull final String historyToken) {
         try {
             entityId = Integer.parseInt(GWTUtilities.removeHistoryToken(HISTORY_TOKEN, historyToken));
-        } catch (final NumberFormatException ex) {
+        } catch (@NotNull final NumberFormatException ex) {
             entityId = null;
         }
     }
@@ -106,21 +108,21 @@ public class CategoryTagPresenter
         try {
             LOGGER.log(Level.INFO, "ENTER CategoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
 
-            final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
+            @NotNull final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new RESTCalls.RESTCallback<RESTTagCollectionV1>() {
                 @Override
                 public void begin() {
                     getDisplay().addWaitOperation();
                 }
 
                 @Override
-                public void generalException(final Exception ex) {
+                public void generalException(@NotNull final Exception ex) {
                     LOGGER.log(Level.SEVERE, "RESTCallback.generalException()\n\tException: " + ex.toString());
                     Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     getDisplay().removeWaitOperation();
                 }
 
                 @Override
-                public void success(final RESTTagCollectionV1 retValue) {
+                public void success(@NotNull final RESTTagCollectionV1 retValue) {
                     try {
                         LOGGER.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
                         /* Zero results can be a null list */
@@ -137,7 +139,7 @@ public class CategoryTagPresenter
                 }
 
                 @Override
-                public void failed(final Message message, final Throwable throwable) {
+                public void failed(@NotNull final Message message, @NotNull final Throwable throwable) {
                     getDisplay().removeWaitOperation();
                     LOGGER.log(Level.SEVERE, "RESTCallback.failed()\n\tMessage: " + message.toString() + "\n\t Throwable: " + throwable.toString());
                     Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
@@ -158,7 +160,7 @@ public class CategoryTagPresenter
 
         return new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTagCollectionItemV1> display) {
+            protected void onRangeChanged(@NotNull final HasData<RESTTagCollectionItemV1> display) {
 
                 getPossibleChildrenProviderData().setStartRow(display.getVisibleRange().getStart());
 
@@ -174,10 +176,10 @@ public class CategoryTagPresenter
 
     @Override
     @NotNull
-    public EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> generateExistingProvider(final RESTCategoryV1 entity) {
+    public EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> generateExistingProvider(@Nullable final RESTCategoryV1 entity) {
         return new EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTagInCategoryCollectionItemV1> display) {
+            protected void onRangeChanged(@NotNull final HasData<RESTTagInCategoryCollectionItemV1> display) {
                 getExistingProviderData().setStartRow(display.getVisibleRange().getStart());
                 getExistingProviderData().setItems(new ArrayList<RESTTagInCategoryCollectionItemV1>());
 

@@ -187,6 +187,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     /**
      * A click handler used to save any changes to the tag
      */
+    @NotNull
     private final ClickHandler saveClickHandler = new ClickHandler() {
         @Override
         public void onClick(@NotNull final ClickEvent event) {
@@ -221,10 +222,10 @@ public class TagsFilteredResultsAndDetailsPresenter
                 final boolean wasNewTag = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
 
                 /* Save any changes made to the tag entity itself */
-                final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, TagsFilteredResultsAndDetailsPresenter.Display>(
+                @NotNull final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, TagsFilteredResultsAndDetailsPresenter.Display>(
                         display, new BaseRestCallback.SuccessAction<RESTTagV1, TagsFilteredResultsAndDetailsPresenter.Display>() {
                     @Override
-                    public void doSuccessAction(final RESTTagV1 retValue,
+                    public void doSuccessAction(@NotNull final RESTTagV1 retValue,
                                                 final TagsFilteredResultsAndDetailsPresenter.Display display) {
 
                         /* we are now viewing the object returned by the save */
@@ -249,7 +250,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                 });
 
                 /* Sync changes from the tag view */
-                final RESTTagV1 updateTag = new RESTTagV1();
+                @NotNull final RESTTagV1 updateTag = new RESTTagV1();
                 updateTag.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                 updateTag.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
                 updateTag.explicitSetName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
@@ -263,20 +264,20 @@ public class TagsFilteredResultsAndDetailsPresenter
 
                     updateTag.explicitSetCategories(new RESTCategoryInTagCollectionV1());
 
-                    for (final RESTCategoryCollectionItemV1 category : categoriesComponent.getPossibleChildrenProviderData()
+                    for (@NotNull final RESTCategoryCollectionItemV1 category : categoriesComponent.getPossibleChildrenProviderData()
                             .getItems()) {
-                        for (final RESTTagInCategoryCollectionItemV1 tag : category.getItem().getTags()
+                        for (@NotNull final RESTTagInCategoryCollectionItemV1 tag : category.getItem().getTags()
                                 .returnDeletedAndAddedCollectionItems()) {
                             /*
                              * It should only be possible to add the currently displayed tag to the categories
                              */
                             if (tag.getItem().getId().equals(updateTag.getId())) {
 
-                                final RESTCategoryInTagV1 addedCategory = new RESTCategoryInTagV1();
+                                @NotNull final RESTCategoryInTagV1 addedCategory = new RESTCategoryInTagV1();
                                 addedCategory.setId(category.getItem().getId());
                                 addedCategory.explicitSetRelationshipSort(tag.getItem().getRelationshipSort());
 
-                                final RESTCategoryInTagCollectionItemV1 collectionItem = new RESTCategoryInTagCollectionItemV1();
+                                @NotNull final RESTCategoryInTagCollectionItemV1 collectionItem = new RESTCategoryInTagCollectionItemV1();
                                 collectionItem.setState(tag.getState());
                                 collectionItem.setItem(addedCategory);
 
@@ -291,14 +292,14 @@ public class TagsFilteredResultsAndDetailsPresenter
                  */
                 if (projectsComponent.getPossibleChildrenProviderData().getItems() != null) {
                     updateTag.explicitSetProjects(new RESTProjectCollectionV1());
-                    for (final RESTProjectCollectionItemV1 project : projectsComponent.getPossibleChildrenProviderData().getItems()) {
-                        for (final RESTTagCollectionItemV1 tag : project.getItem().getTags().returnDeletedAndAddedCollectionItems()) {
+                    for (@NotNull final RESTProjectCollectionItemV1 project : projectsComponent.getPossibleChildrenProviderData().getItems()) {
+                        for (@NotNull final RESTTagCollectionItemV1 tag : project.getItem().getTags().returnDeletedAndAddedCollectionItems()) {
                             if (tag.getItem().getId().equals(updateTag.getId())) {
 
-                                final RESTProjectV1 addedProject = new RESTProjectV1();
+                                @NotNull final RESTProjectV1 addedProject = new RESTProjectV1();
                                 addedProject.setId(project.getItem().getId());
 
-                                final RESTProjectCollectionItemV1 collectionItem = new RESTProjectCollectionItemV1();
+                                @NotNull final RESTProjectCollectionItemV1 collectionItem = new RESTProjectCollectionItemV1();
                                 collectionItem.setState(tag.getState());
                                 collectionItem.setItem(addedProject);
 
@@ -342,7 +343,7 @@ public class TagsFilteredResultsAndDetailsPresenter
             try {
                 LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndDetailsPresenter.saveCategoryChanges()");
 
-                final BaseRestCallback<RESTCategoryCollectionV1, Display> callback = new BaseRestCallback<RESTCategoryCollectionV1, Display>(display,
+                @NotNull final BaseRestCallback<RESTCategoryCollectionV1, Display> callback = new BaseRestCallback<RESTCategoryCollectionV1, Display>(display,
                         new BaseRestCallback.SuccessAction<RESTCategoryCollectionV1, Display>() {
                             @Override
                             public void doSuccessAction(@NotNull final RESTCategoryCollectionV1 retValue, @NotNull final Display display) {
@@ -359,25 +360,25 @@ public class TagsFilteredResultsAndDetailsPresenter
                             }
                         });
 
-                final RESTCategoryCollectionV1 updatedCategories = new RESTCategoryCollectionV1();
+                @NotNull final RESTCategoryCollectionV1 updatedCategories = new RESTCategoryCollectionV1();
 
-                for (final RESTCategoryCollectionItemV1 category : categoriesComponent.getPossibleChildrenProviderData().getItems()) {
+                for (@NotNull final RESTCategoryCollectionItemV1 category : categoriesComponent.getPossibleChildrenProviderData().getItems()) {
                     final List<RESTTagInCategoryCollectionItemV1> updatedItems = category.getItem().getTags()
                             .returnUpdatedCollectionItems();
 
                     /* this should always be greater than 0 */
                     if (updatedItems.size() != 0) {
                         /* Create the category that we are updating */
-                        final RESTCategoryV1 updatedCategory = new RESTCategoryV1();
+                        @NotNull final RESTCategoryV1 updatedCategory = new RESTCategoryV1();
                         updatedCategory.setId(category.getItem().getId());
                         updatedCategory.explicitSetTags(new RESTTagInCategoryCollectionV1());
 
                         /* Add it to the collection */
                         updatedCategories.addItem(updatedCategory);
 
-                        for (final RESTTagInCategoryCollectionItemV1 tag : updatedItems) {
+                        for (@NotNull final RESTTagInCategoryCollectionItemV1 tag : updatedItems) {
                             /* create a new tag to represent the one that we are updating */
-                            final RESTTagInCategoryV1 updatedTag = new RESTTagInCategoryV1();
+                            @NotNull final RESTTagInCategoryV1 updatedTag = new RESTTagInCategoryV1();
                             updatedTag.explicitSetRelationshipId(tag.getItem().getRelationshipId());
                             updatedTag.explicitSetRelationshipSort(tag.getItem().getRelationshipSort());
 
@@ -416,14 +417,14 @@ public class TagsFilteredResultsAndDetailsPresenter
     @Override
     public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
                     /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTTagV1>() {
+        @NotNull final GetNewEntityCallback<RESTTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTTagV1>() {
 
             @Override
-            public void getNewEntity(final RESTTagV1 selectedEntity, final DisplayNewEntityCallback<RESTTagV1> displayCallback) {
-                final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, BaseTemplateViewInterface>(
+            public void getNewEntity(@NotNull final RESTTagV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTTagV1> displayCallback) {
+                @NotNull final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, BaseTemplateViewInterface>(
                         display, new BaseRestCallback.SuccessAction<RESTTagV1, BaseTemplateViewInterface>() {
                     @Override
-                    public void doSuccessAction(final RESTTagV1 retValue, final BaseTemplateViewInterface display) {
+                    public void doSuccessAction(@NotNull final RESTTagV1 retValue, final BaseTemplateViewInterface display) {
                         displayCallback.displayNewEntity(retValue);
                     }
                 });
@@ -463,10 +464,10 @@ public class TagsFilteredResultsAndDetailsPresenter
         projectsComponent.getDisplay().getPossibleChildrenButtonColumn().setFieldUpdater(
                 new FieldUpdater<RESTProjectCollectionItemV1, String>() {
                     @Override
-                    public void update(final int index, final RESTProjectCollectionItemV1 object, final String value) {
+                    public void update(final int index, @NotNull final RESTProjectCollectionItemV1 object, final String value) {
                         boolean found = false;
 
-                        for (final RESTTagCollectionItemV1 tag : object.getItem().getTags().getItems()) {
+                        for (@NotNull final RESTTagCollectionItemV1 tag : object.getItem().getTags().getItems()) {
                             if (tag.getItem().getId()
                                     .equals(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId())) {
                                 /* Project was added and then removed */
@@ -525,9 +526,9 @@ public class TagsFilteredResultsAndDetailsPresenter
         categoriesComponent.getDisplay().getPossibleChildrenButtonColumn().setFieldUpdater(
                 new FieldUpdater<RESTCategoryCollectionItemV1, String>() {
                     @Override
-                    public void update(final int index, final RESTCategoryCollectionItemV1 object, final String value) {
+                    public void update(final int index, @NotNull final RESTCategoryCollectionItemV1 object, final String value) {
                         boolean found = false;
-                        for (final RESTTagInCategoryCollectionItemV1 tag : object.getItem().getTags().getItems()) {
+                        for (@NotNull final RESTTagInCategoryCollectionItemV1 tag : object.getItem().getTags().getItems()) {
                             if (tag.getItem().getId()
                                     .equals(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId())) {
                                 /* Tag was added and then removed */
@@ -552,7 +553,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                         if (!found) {
                             categoriesComponent.setSortOrderOfChildren(sortCallback);
 
-                            final RESTTagInCategoryV1 newTag = new RESTTagInCategoryV1();
+                            @NotNull final RESTTagInCategoryV1 newTag = new RESTTagInCategoryV1();
                             newTag.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                             newTag.setName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
                             newTag.setRelationshipSort(Constants.NEW_CHILD_SORT_ORDER);
@@ -651,14 +652,14 @@ public class TagsFilteredResultsAndDetailsPresenter
             public void onClick(final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
-                final RESTTagV1 selectedTag = new RESTTagV1();
+                @NotNull final RESTTagV1 selectedTag = new RESTTagV1();
                 selectedTag.setId(Constants.NULL_ID);
-                final RESTTagCollectionItemV1 selectedTagWrapper = new RESTTagCollectionItemV1(selectedTag);
+                @NotNull final RESTTagCollectionItemV1 selectedTagWrapper = new RESTTagCollectionItemV1(selectedTag);
 
                 /* The displayed tag will also be blank. This is the object that our data will be saved into */
-                final RESTTagV1 displayedTag = new RESTTagV1();
+                @NotNull final RESTTagV1 displayedTag = new RESTTagV1();
                 displayedTag.setId(Constants.NULL_ID);
-                final RESTTagCollectionItemV1 displayedTagWrapper = new RESTTagCollectionItemV1(displayedTag,
+                @NotNull final RESTTagCollectionItemV1 displayedTagWrapper = new RESTTagCollectionItemV1(displayedTag,
                         RESTBaseCollectionItemV1.ADD_STATE);
 
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
@@ -738,7 +739,7 @@ public class TagsFilteredResultsAndDetailsPresenter
         }
 
         /* Update the page name */
-        final StringBuilder title = new StringBuilder(displayedView.getPageName());
+        @NotNull final StringBuilder title = new StringBuilder(displayedView.getPageName());
         if (this.filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             final String tagTitle = this.filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName();
             title.append(": " + (tagTitle == null ? PressGangCCMSUI.INSTANCE.NoTitle() : tagTitle));
@@ -795,12 +796,12 @@ public class TagsFilteredResultsAndDetailsPresenter
     @Override
     protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
 
-        final List<BaseCustomViewInterface<RESTTagV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTTagV1>>();
+        @NotNull final List<BaseCustomViewInterface<RESTTagV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTTagV1>>();
         displayableViews.add(resultComponent.getDisplay());
         displayableViews.add(projectsComponent.getDisplay());
         displayableViews.add(categoriesComponent.getDisplay());
 
-        for (final BaseCustomViewInterface<RESTTagV1> view : displayableViews) {
+        for (@NotNull final BaseCustomViewInterface<RESTTagV1> view : displayableViews) {
             if (viewIsInFilter(filter, view)) {
                 view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
             }

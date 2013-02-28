@@ -52,7 +52,7 @@ public class SearchUIProjects implements SearchViewBase {
     /**
      * @param tags The collection of tags that is used to build the hierarchy of projects, categories and tags
      */
-    public SearchUIProjects(final RESTTagCollectionV1 tags) {
+    public SearchUIProjects(@NotNull final RESTTagCollectionV1 tags) {
         initialize(tags, null);
     }
 
@@ -60,7 +60,7 @@ public class SearchUIProjects implements SearchViewBase {
      * @param tags   The collection of tags that is used to build the hierarchy of projects, categories and tags
      * @param filter The filter that defines the state of the tags
      */
-    public SearchUIProjects(final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
+    public SearchUIProjects(@NotNull final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
         initialize(tags, filter);
     }
 
@@ -68,6 +68,7 @@ public class SearchUIProjects implements SearchViewBase {
     /**
      * @return The list of projects
      */
+    @NotNull
     public final List<SearchUIProject> getProjects() {
         return this.projects;
     }
@@ -82,12 +83,12 @@ public class SearchUIProjects implements SearchViewBase {
 
             this.projects.clear();
 
-            for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
+            for (@NotNull final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
                 checkState(tag.getItem().getProjects() != null, "tag.getItem().getProjects() cannot be null");
 
                 /* Tags to be removed should not show up */
-                for (final RESTProjectCollectionItemV1 project : tag.getItem().getProjects().returnExistingCollectionItems()) {
-                    final SearchUIProject searchUIProject = new SearchUIProject(project);
+                for (@NotNull final RESTProjectCollectionItemV1 project : tag.getItem().getProjects().returnExistingCollectionItems()) {
+                    @NotNull final SearchUIProject searchUIProject = new SearchUIProject(project);
                     if (!this.projects.contains(searchUIProject)) {
                         searchUIProject.populateCategories(project, tags, filter);
                         this.projects.add(searchUIProject);
@@ -101,7 +102,7 @@ public class SearchUIProjects implements SearchViewBase {
              * Add the common project to the start of the list. Do this after all the projects have been added, so it won't get
              * confused with a project that might be called common.
              */
-            final SearchUIProject common = new SearchUIProject(PressGangCCMSUI.INSTANCE.Common());
+            @NotNull final SearchUIProject common = new SearchUIProject(PressGangCCMSUI.INSTANCE.Common());
             common.populateCategoriesWithoutProject(tags, filter);
             if (common.getChildCount() != 0) {
                 this.projects.addFirst(common);
@@ -111,15 +112,16 @@ public class SearchUIProjects implements SearchViewBase {
         }
     }
 
+    @NotNull
     private RESTFilterCategoryV1 generateRESTFilterCategory(@NotNull final SearchUIProject project, @NotNull final SearchUICategory category, @NotNull final RESTFilterV1 filter) {
-        final RESTCategoryV1 restCategory = new RESTCategoryV1();
+        @NotNull final RESTCategoryV1 restCategory = new RESTCategoryV1();
         restCategory.setId(category.getId());
 
-        final RESTFilterCategoryV1 restFilterCategory = new RESTFilterCategoryV1();
+        @NotNull final RESTFilterCategoryV1 restFilterCategory = new RESTFilterCategoryV1();
         restFilterCategory.explicitSetCategory(restCategory);
 
         if (project.getId() != -1) {
-            final RESTProjectV1 restProject = new RESTProjectV1();
+            @NotNull final RESTProjectV1 restProject = new RESTProjectV1();
             restProject.setId(project.getId());
             restFilterCategory.explicitSetProject(restProject);
         }
@@ -145,10 +147,10 @@ public class SearchUIProjects implements SearchViewBase {
 
             // because a tag can be listed under multiple categories with different values,
             // we keep a track of the tags we have processed here
-            final List<Integer> processedIds = new ArrayList<Integer>();
+            @NotNull final List<Integer> processedIds = new ArrayList<Integer>();
 
-            for (final SearchUIProject project : projects) {
-                for (final SearchUICategory category : project.getCategories()) {
+            for (@NotNull final SearchUIProject project : projects) {
+                for (@NotNull final SearchUICategory category : project.getCategories()) {
 
                     /*
                         Add the parameters for the category logic.
@@ -158,7 +160,7 @@ public class SearchUIProjects implements SearchViewBase {
                             If the internal "and" logic is specified, and the internal "and" logic is not the default value (i.e. Constants.DEFAULT_INTERNAL_AND_LOGIC is false),
                             then add a query parameter.
                          */
-                        final RESTFilterCategoryV1 restFilterCategory = generateRESTFilterCategory(project, category, filter);
+                        @NotNull final RESTFilterCategoryV1 restFilterCategory = generateRESTFilterCategory(project, category, filter);
                         restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_INTERNAL_AND_STATE);
 
                     } else if (category.isInternalLogicOr() && category.isInternalLogicOr() == Constants.DEFAULT_INTERNAL_AND_LOGIC) {
@@ -166,25 +168,25 @@ public class SearchUIProjects implements SearchViewBase {
                             If the internal "or" logic is specified, and the internal "or" logic is not the default value (i.e. Constants.DEFAULT_INTERNAL_AND_LOGIC is true),
                             then add a query parameter.
                          */
-                        final RESTFilterCategoryV1 restFilterCategory = generateRESTFilterCategory(project, category, filter);
+                        @NotNull final RESTFilterCategoryV1 restFilterCategory = generateRESTFilterCategory(project, category, filter);
                         restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_INTERNAL_OR_STATE);
                     }
 
                     if (category.isExternalLogicAnd() && category.isExternalLogicAnd() != Constants.DEFAULT_EXTERNAL_AND_LOGIC) {
-                        final RESTFilterCategoryV1 restFilterCategory = generateRESTFilterCategory(project, category, filter);
+                        @NotNull final RESTFilterCategoryV1 restFilterCategory = generateRESTFilterCategory(project, category, filter);
                         restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_EXTERNAL_AND_STATE);
                     } else if (category.isExternalLogicOr() && category.isExternalLogicOr() == Constants.DEFAULT_EXTERNAL_AND_LOGIC) {
-                        final RESTFilterCategoryV1 restFilterCategory = generateRESTFilterCategory(project, category, filter);
+                        @NotNull final RESTFilterCategoryV1 restFilterCategory = generateRESTFilterCategory(project, category, filter);
                         restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_EXTERNAL_OR_STATE);
                     }
 
-                    for (final SearchUITag tag : category.getMyTags()) {
+                    for (@NotNull final SearchUITag tag : category.getMyTags()) {
                         if (!processedIds.contains(tag.getTag().getItem().getId())) {
                             if (tag.getState() != TriStateSelectionState.NONE) {
-                                final RESTTagV1 filterTagReference = new RESTTagV1();
+                                @NotNull final RESTTagV1 filterTagReference = new RESTTagV1();
                                 filterTagReference.setId(tag.getTag().getItem().getId());
 
-                                final RESTFilterTagV1 filterTag = new RESTFilterTagV1();
+                                @NotNull final RESTFilterTagV1 filterTag = new RESTFilterTagV1();
                                 filterTag.explicitSetTag(filterTagReference);
                                 filterTag.explicitSetState(tag.getState() == TriStateSelectionState.SELECTED ? CommonFilterConstants.MATCH_TAG_STATE : CommonFilterConstants.NOT_MATCH_TAG_STATE);
                                 filter.getFilterTags_OTM().addNewItem(filterTag);
@@ -199,13 +201,14 @@ public class SearchUIProjects implements SearchViewBase {
         }
     }
 
+    @NotNull
     @Override
     public final String getSearchQuery(final boolean includeQueryPrefix) {
 
-        final StringBuilder builder = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
+        @NotNull final StringBuilder builder = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
 
-        for (final SearchUIProject project : this.projects) {
-            for (final SearchUICategory category : project.getCategories()) {
+        for (@NotNull final SearchUIProject project : this.projects) {
+            for (@NotNull final SearchUICategory category : project.getCategories()) {
 
                 /*
                     Add the parameters for the category logic.
@@ -230,7 +233,7 @@ public class SearchUIProjects implements SearchViewBase {
                     builder.append(";").append(CommonFilterConstants.CATEORY_EXTERNAL_LOGIC).append(category.getId()).append("=").append(Constants.OR_LOGIC_QUERY_STRING_VALUE);
                 }
 
-                for (final SearchUITag tag : category.getMyTags()) {
+                for (@NotNull final SearchUITag tag : category.getMyTags()) {
                     if (tag.getState() != TriStateSelectionState.NONE) {
                         builder.append(";");
 

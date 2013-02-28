@@ -65,6 +65,7 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsPre
         return display;
     }
 
+    @NotNull
     @Override
     protected final EnhancedAsyncDataProvider<RESTFilterCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
         try {
@@ -72,11 +73,11 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsPre
 
             checkArgument(queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX), "queryString must begin with " + Constants.QUERY_PATH_SEGMENT_PREFIX);
 
-            final EnhancedAsyncDataProvider<RESTFilterCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTFilterCollectionItemV1>() {
+            @NotNull final EnhancedAsyncDataProvider<RESTFilterCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTFilterCollectionItemV1>() {
                 @Override
                 protected void onRangeChanged(@NotNull final HasData<RESTFilterCollectionItemV1> list) {
 
-                    final RESTCalls.RESTCallback<RESTFilterCollectionV1> callback = new BaseRestCallback<RESTFilterCollectionV1, Display>(
+                    @NotNull final RESTCalls.RESTCallback<RESTFilterCollectionV1> callback = new BaseRestCallback<RESTFilterCollectionV1, Display>(
                             display,
                             new BaseRestCallback.SuccessAction<RESTFilterCollectionV1, Display>() {
                                 @Override

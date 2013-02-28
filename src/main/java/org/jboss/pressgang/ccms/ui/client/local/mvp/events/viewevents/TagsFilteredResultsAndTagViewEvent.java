@@ -9,6 +9,7 @@ public class TagsFilteredResultsAndTagViewEvent extends ViewOpenWithQueryEvent<V
         super(query, newWindow);
     }
 
+    @NotNull
     @Override
     public Type<ViewOpenWithQueryEventHandler> getAssociatedType() {
         return TYPE;

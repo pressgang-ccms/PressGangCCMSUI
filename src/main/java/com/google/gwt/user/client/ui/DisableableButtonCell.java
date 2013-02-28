@@ -3,6 +3,7 @@ package com.google.gwt.user.client.ui;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A version of ButtonCell that can display a disabled button.
@@ -43,7 +44,7 @@ public final class DisableableButtonCell extends ButtonCell {
     }
 
     @Override
-    public void render(final Context context, final SafeHtml value, final SafeHtmlBuilder sb) {
+    public void render(final Context context, @NotNull final SafeHtml value, @NotNull final SafeHtmlBuilder sb) {
         if (enabled) {
             sb.appendHtmlConstant(INPUT_ENABLED + value.asString() + INPUT_CLOSE);
         } else {

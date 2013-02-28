@@ -17,6 +17,9 @@ public class WaitingDialog extends DialogBox {
      */
     private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
 
+    /**
+     * Configures the dialog.
+     */
     public WaitingDialog() {
         this.setGlassEnabled(true);
         this.add(spinner);

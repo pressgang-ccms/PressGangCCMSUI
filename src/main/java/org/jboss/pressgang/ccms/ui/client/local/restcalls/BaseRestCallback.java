@@ -7,6 +7,8 @@ import org.jboss.errai.enterprise.client.jaxrs.api.ResponseException;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +25,7 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
 
     private final D display;
     private final SuccessAction<C, D> successAction;
+    @Nullable
     private final FailureAction<D> failureAction;
 
     private static final Logger LOGGER = Logger.getLogger(BaseRestCallback.class.getName());
@@ -45,7 +48,7 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
     }
 
     @Override
-    public void generalException(final Exception e) {
+    public void generalException(@NotNull final Exception e) {
         LOGGER.log(Level.SEVERE, "BaseRestCallback.generalException(): A general exception was thrown by the REST operation: " + e.toString());
         LOGGER.log(Level.SEVERE, GWTUtilities.convertExceptionStackToString(e));
         display.removeWaitOperation();
@@ -55,7 +58,7 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
                 failureAction.doFailureAction(display);
             }
 
-        } catch (final Exception ex) {
+        } catch (@NotNull final Exception ex) {
             LOGGER.log(Level.WARNING, "ENTER BaseRestCallback.generalException() threw an exception");
         }
     }
@@ -70,13 +73,13 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
     }
 
     @Override
-    public void failed(final Message message, final Throwable throwable) {
+    public void failed(@Nullable final Message message, @Nullable final Throwable throwable) {
 
         try {
             if (failureAction != null) {
                 failureAction.doFailureAction(display);
             }
-        } catch (final Exception ex) {
+        } catch (@NotNull final Exception ex) {
             LOGGER.log(Level.WARNING, "ENTER BaseRestCallback.failed() threw an exception");
         }
 
@@ -91,7 +94,7 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
             }
 
             if (throwable instanceof ResponseException) {
-                final ResponseException ex = (ResponseException) throwable;
+                @NotNull final ResponseException ex = (ResponseException) throwable;
                 /* A bad request means invalid input, like a duplicated name */
                 if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
                     Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput());

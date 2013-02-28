@@ -55,6 +55,7 @@ public class CategoryFilteredResultsPresenter
      */
     private String queryString;
 
+    @NotNull
     public Display getDisplay() {
         return display;
     }
@@ -92,9 +93,9 @@ public class CategoryFilteredResultsPresenter
     protected EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
         return new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTCategoryCollectionItemV1> list) {
+            protected void onRangeChanged(@NotNull final HasData<RESTCategoryCollectionItemV1> list) {
 
-                final RESTCallback<RESTCategoryCollectionV1> callback = new RESTCallback<RESTCategoryCollectionV1>() {
+                @NotNull final RESTCallback<RESTCategoryCollectionV1> callback = new RESTCallback<RESTCategoryCollectionV1>() {
                     @Override
                     public void begin() {
                         LOGGER.log(Level.INFO, "RESTCallback.begin()");
@@ -103,14 +104,14 @@ public class CategoryFilteredResultsPresenter
                     }
 
                     @Override
-                    public void generalException(final Exception ex) {
+                    public void generalException(@NotNull final Exception ex) {
                         LOGGER.log(Level.SEVERE, "RESTCallback.generalException()\n\tException: " + ex.toString());
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                         display.removeWaitOperation();
                     }
 
                     @Override
-                    public void success(final RESTCategoryCollectionV1 retValue) {
+                    public void success(@NotNull final RESTCategoryCollectionV1 retValue) {
                         try {
                             LOGGER.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
                             getProviderData().setItems(retValue.getItems());
@@ -124,7 +125,7 @@ public class CategoryFilteredResultsPresenter
                     }
 
                     @Override
-                    public void failed(final Message message, final Throwable throwable) {
+                    public void failed(@NotNull final Message message, @NotNull final Throwable throwable) {
                         display.removeWaitOperation();
                         LOGGER.log(Level.SEVERE, "RESTCallback.failed()\n\tMessage: " + message.toString() + "\n\t Throwable: " + throwable.toString());
                         Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
@@ -143,7 +144,7 @@ public class CategoryFilteredResultsPresenter
     @Override
     @NotNull
     public String getQuery() {
-        final StringBuilder retValue = new StringBuilder();
+        @NotNull final StringBuilder retValue = new StringBuilder();
         if (!this.display.getIdFilter().getText().isEmpty()) {
             retValue.append(";").append(CommonFilterConstants.CATEGORY_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.display.getIdFilter().getText()) : this.display.getIdFilter().getText()));
         }
@@ -160,7 +161,7 @@ public class CategoryFilteredResultsPresenter
     @Override
     protected void displayQueryElements(@NotNull final String queryString) {
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
-        for (final String queryStringElement : queryStringElements) {
+        for (@NotNull final String queryStringElement : queryStringElements) {
             final String[] queryElements = queryStringElement.split("=");
 
             if (queryElements.length == 2) {

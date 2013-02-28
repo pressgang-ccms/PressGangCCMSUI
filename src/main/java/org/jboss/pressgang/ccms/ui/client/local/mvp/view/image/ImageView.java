@@ -10,6 +10,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +42,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
         private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
 
+        @NotNull
         @Override
         public DialogBox getDialogBox() {
             return this;
@@ -55,11 +58,13 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
             return ok;
         }
 
+        @NotNull
         @Override
         public ListBox getLocales() {
             return locales;
         }
 
+        @NotNull
         public Label getLocalesLabel() {
             return localesLabel;
         }
@@ -71,7 +76,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
             layout.setWidget(0, 0, localesLabel);
             layout.setWidget(0, 1, locales);
 
-            final HorizontalPanel buttonPanel = new HorizontalPanel();
+            @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(cancel);
             buttonPanel.add(ok);
@@ -114,6 +119,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
         this.editor = editor;
     }
 
+    @NotNull
     @Override
     public AddLocaleDialog getAddLocaleDialog() {
         return addLocaleDialog;
@@ -145,7 +151,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
     }
 
     @Override
-    public final void displayExtended(final RESTImageV1 image, final boolean readOnly, final String[] locales) {
+    public final void displayExtended(@Nullable final RESTImageV1 image, final boolean readOnly, @Nullable final String[] locales) {
         if (image == null) {
             throw new IllegalArgumentException("image cannot be null");
         }
@@ -162,7 +168,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
         this.getPanel().setWidget(editor);
 
         /* Sort the array */
-        final List<String> localesList = new ArrayList<String>(Arrays.asList(locales));
+        @NotNull final List<String> localesList = new ArrayList<String>(Arrays.asList(locales));
         Collections.sort(localesList);
 
         /* populate the locales listbox */

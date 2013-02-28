@@ -7,6 +7,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.ValueBoxBase;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Cancels and key press that is not a digit or comma, and removes any non digit or comma character on
@@ -21,17 +22,18 @@ public final class NumbersAndCommaValidator implements KeyDownHandler, ValueChan
     private static final int COMMA_KEY_CODE = 188;
     private static final int ZERO_KEY_CODE = 48;
     private static final int NINE_KEY_CODE = 57;
+    @NotNull
     private final ValueBoxBase<String> source;
 
 
-    public NumbersAndCommaValidator(final ValueBoxBase<String> source) {
+    public NumbersAndCommaValidator(@NotNull final ValueBoxBase<String> source) {
         this.source = source;
         source.addKeyDownHandler(this);
         source.addValueChangeHandler(this);
     }
 
     @Override
-    public void onKeyDown(final KeyDownEvent event) {
+    public void onKeyDown(@NotNull final KeyDownEvent event) {
         final int keyCode = event.getNativeKeyCode();
 
         /* Allow navigation keys */

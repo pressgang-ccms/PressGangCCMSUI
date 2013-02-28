@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jetbrains.annotations.NotNull;
 import org.vectomatic.file.FileUploadExt;
 
 /**
@@ -51,21 +52,25 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
     private final Label imageLabel = new Label(PressGangCCMSUI.INSTANCE.ImageSample());
     private final Label newFileLabel = new Label(PressGangCCMSUI.INSTANCE.UploadFile());
 
+    @NotNull
     @Ignore
     public TextBox getFilename() {
         return filename;
     }
 
+    @NotNull
     @Ignore
     public Image getImageDataBase64() {
         return imageDataBase64;
     }
 
+    @NotNull
     @Ignore
     public FileUploadExt getUpload() {
         return upload;
     }
 
+    @NotNull
     @Ignore
     public PushButton getUploadButton() {
         return uploadButton;
@@ -80,7 +85,7 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
         this.parentPanel = parentPanel;
         this.parentIndex = parentIndex;
 
-        final HorizontalPanel uploadPanel = new HorizontalPanel();
+        @NotNull final HorizontalPanel uploadPanel = new HorizontalPanel();
         uploadPanel.add(this.upload);
         uploadPanel.add(this.uploadButton);
 
@@ -138,7 +143,7 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
     }
 
     @Override
-    public void setValue(final RESTLanguageImageCollectionItemV1 value) {
+    public void setValue(@NotNull final RESTLanguageImageCollectionItemV1 value) {
         this.self = value;
 
         if (value.getItem().getFilename() != null) {
@@ -146,7 +151,7 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
         }
 
         if (value.getItem().getImageDataBase64() != null) {
-            final String base64 = GWTUtilities.getStringUTF8(value.getItem().getImageDataBase64());
+            @NotNull final String base64 = GWTUtilities.getStringUTF8(value.getItem().getImageDataBase64());
             this.imageDataBase64.addLoadHandler(new LoadHandler() {
 
                 @Override

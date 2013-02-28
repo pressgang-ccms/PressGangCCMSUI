@@ -9,6 +9,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytagcategor
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class PropertyCategoryFilteredResultsView extends
         BaseFilteredResultsView<RESTPropertyCategoryCollectionItemV1> implements
@@ -18,9 +20,11 @@ public class PropertyCategoryFilteredResultsView extends
     private final TextBox nameFilter = new TextBox();
     private final TextBox descriptionFilter = new TextBox();
 
+    @NotNull
     private final TextColumn<RESTPropertyCategoryCollectionItemV1> idColumn = new TextColumn<RESTPropertyCategoryCollectionItemV1>() {
         @Override
-        public String getValue(final RESTPropertyCategoryCollectionItemV1 object) {
+        @NotNull
+        public String getValue(@Nullable final RESTPropertyCategoryCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getId() != null) {
                 return object.getItem().getId().toString();
             }
@@ -28,9 +32,11 @@ public class PropertyCategoryFilteredResultsView extends
         }
     };
 
+    @NotNull
     private final TextColumn<RESTPropertyCategoryCollectionItemV1> nameColumn = new TextColumn<RESTPropertyCategoryCollectionItemV1>() {
         @Override
-        public String getValue(final RESTPropertyCategoryCollectionItemV1 object) {
+        @NotNull
+        public String getValue(@Nullable final RESTPropertyCategoryCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getName() != null) {
                 return object.getItem().getName();
             }
@@ -39,16 +45,19 @@ public class PropertyCategoryFilteredResultsView extends
         }
     };
 
+    @NotNull
     @Override
     public TextBox getNameFilter() {
         return nameFilter;
     }
 
+    @NotNull
     @Override
     public TextBox getIdFilter() {
         return idFilter;
     }
 
+    @NotNull
     @Override
     public TextBox getDescriptionFilter() {
         return descriptionFilter;

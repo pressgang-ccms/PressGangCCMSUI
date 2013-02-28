@@ -31,6 +31,7 @@ public interface BaseDetailedChildrenPresenterInterface<
     /**
      * @return The provider that exposes the existing children.
      */
+    @NotNull
     ProviderUpdateData<F> getExistingProviderData();
 
     /**

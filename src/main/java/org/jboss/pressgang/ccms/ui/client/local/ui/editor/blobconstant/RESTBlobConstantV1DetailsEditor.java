@@ -7,6 +7,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
+import org.jetbrains.annotations.NotNull;
 import org.vectomatic.file.FileUploadExt;
 
 /**
@@ -26,18 +27,22 @@ public final class RESTBlobConstantV1DetailsEditor extends Grid implements Value
     private final FileUploadExt upload = new FileUploadExt(false);
     private final PushButton uploadButton = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Upload());
 
+    @NotNull
     public SimpleIntegerBox idEditor() {
         return id;
     }
 
+    @NotNull
     public TextBox nameEditor() {
         return name;
     }
 
+    @NotNull
     public PushButton getUploadButton() {
         return uploadButton;
     }
 
+    @NotNull
     public FileUploadExt getUpload() {
         return upload;
     }
@@ -52,17 +57,17 @@ public final class RESTBlobConstantV1DetailsEditor extends Grid implements Value
         id.setReadOnly(true);
         name.setReadOnly(readOnly);
 
-        final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.BlobConstantId());
+        @NotNull final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.BlobConstantId());
         this.setWidget(0, 0, idLabel);
         this.setWidget(0, 1, id);
 
-        final Label nameLabel = new Label(PressGangCCMSUI.INSTANCE.BlobConstantName());
+        @NotNull final Label nameLabel = new Label(PressGangCCMSUI.INSTANCE.BlobConstantName());
         this.setWidget(1, 0, nameLabel);
         this.setWidget(1, 1, name);
 
-        final Label uploadLabel = new Label(PressGangCCMSUI.INSTANCE.Upload());
+        @NotNull final Label uploadLabel = new Label(PressGangCCMSUI.INSTANCE.Upload());
         this.setWidget(2, 0, uploadLabel);
-        final HorizontalPanel uploadPanel = new HorizontalPanel();
+        @NotNull final HorizontalPanel uploadPanel = new HorizontalPanel();
         this.setWidget(2, 1, uploadPanel);
         uploadPanel.add(upload);
         uploadPanel.add(uploadButton);
@@ -87,7 +92,7 @@ public final class RESTBlobConstantV1DetailsEditor extends Grid implements Value
     }
 
     @Override
-    public void setValue(final RESTBlobConstantV1 value) {
+    public void setValue(@NotNull final RESTBlobConstantV1 value) {
         this.self = value;
         this.id.setText(value.getId().toString());
         this.name.setText(value.getName());

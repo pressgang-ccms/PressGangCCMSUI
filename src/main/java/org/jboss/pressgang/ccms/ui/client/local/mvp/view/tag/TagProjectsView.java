@@ -11,6 +11,8 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagProjectsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class TagProjectsView extends
         BaseChildrenView<RESTTagV1,
@@ -20,7 +22,7 @@ public class TagProjectsView extends
 
     private final TextColumn<RESTProjectCollectionItemV1> idColumn = new TextColumn<RESTProjectCollectionItemV1>() {
         @Override
-        public String getValue(final RESTProjectCollectionItemV1 object) {
+        public String getValue(@NotNull final RESTProjectCollectionItemV1 object) {
             return object.getItem().getId().toString();
 
         }
@@ -28,22 +30,24 @@ public class TagProjectsView extends
 
     private final TextColumn<RESTProjectCollectionItemV1> nameColumn = new TextColumn<RESTProjectCollectionItemV1>() {
         @Override
-        public String getValue(final RESTProjectCollectionItemV1 object) {
+        public String getValue(@NotNull final RESTProjectCollectionItemV1 object) {
             return object.getItem().getName();
         }
     };
 
     private final TextColumn<RESTProjectCollectionItemV1> descriptionColumn = new TextColumn<RESTProjectCollectionItemV1>() {
         @Override
-        public String getValue(final RESTProjectCollectionItemV1 object) {
+        public String getValue(@NotNull final RESTProjectCollectionItemV1 object) {
             return object.getItem().getDescription();
         }
     };
 
+    @NotNull
     private final Column<RESTProjectCollectionItemV1, String> buttonColumn = new Column<RESTProjectCollectionItemV1, String>(
             new ButtonCell()) {
+        @NotNull
         @Override
-        public String getValue(final RESTProjectCollectionItemV1 object) {
+        public String getValue(@NotNull final RESTProjectCollectionItemV1 object) {
             if (getOriginalEntity() != null) {
                 if (ComponentProjectV1.containsTag(object.getItem(), getOriginalEntity().getId())) {
                     return PressGangCCMSUI.INSTANCE.Remove();
@@ -56,13 +60,14 @@ public class TagProjectsView extends
         }
     };
 
+    @Nullable
     @Override
     public Column<RESTProjectCollectionItemV1, String> getPossibleChildrenButtonColumn() {
         return buttonColumn;
     }
 
     @Override
-    public final void display(final RESTTagV1 originalEntity, final boolean readOnly) {
+    public final void display(@NotNull final RESTTagV1 originalEntity, final boolean readOnly) {
         super.displayChildren(originalEntity, readOnly);
     }
 

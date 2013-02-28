@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 /**
@@ -74,6 +75,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     @Inject
     private HandlerManager eventBus;
 
+    @Nullable
     private String queryString;
 
     @Inject
@@ -99,6 +101,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     /**
      * How the rendering panel is displayed
      */
+    @NotNull
     private SplitType split = SplitType.NONE;
 
     protected abstract Display getDisplay();
@@ -330,6 +333,9 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             initializeSplitViewButtons();
 
             /* Display the property tags that are added to the category */
+            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
+            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
+
             Collections.sort(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
                     new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
             topicPropertyTagPresenter.refreshExistingChildList(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem());
@@ -385,10 +391,10 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             if (id != null) {
 
                 /* A callback to respond to a request for a topic with the tags expanded */
-                final RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
+                @NotNull final RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
                         topicTagsComponent.getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
                     @Override
-                    public void doSuccessAction(final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
+                    public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
                         try {
                             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs() topicWithTagsCallback.doSuccessAction()");
 
@@ -469,10 +475,13 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         try {
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.updatePageTitle()");
 
-            final StringBuilder title = new StringBuilder(displayedView.getPageName());
-            final String id = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId() == null ?
+            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
+            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
+
+            @NotNull final StringBuilder title = new StringBuilder(displayedView.getPageName());
+            @NotNull final String id = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId() == null ?
                     PressGangCCMSUI.INSTANCE.New() : getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId().toString();
-            final String displayTitle = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTitle() == null ?
+            @NotNull final String displayTitle = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTitle() == null ?
                     "" : getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTitle();
             if (this.getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                 title.append(": [" + id + "] " + displayTitle);
@@ -512,7 +521,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         try {
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.bindActionButtons()");
 
-            final ClickHandler topicPropertyTagsClickHandler = new ClickHandler() {
+            @NotNull final ClickHandler topicPropertyTagsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -521,7 +530,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            final ClickHandler topicSourceUrlsClickHandler = new ClickHandler() {
+            @NotNull final ClickHandler topicSourceUrlsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -530,7 +539,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            final ClickHandler topicXMLClickHandler = new ClickHandler() {
+            @NotNull final ClickHandler topicXMLClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -540,7 +549,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            final ClickHandler topicRenderedClickHandler = new ClickHandler() {
+            @NotNull final ClickHandler topicRenderedClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -549,7 +558,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            final ClickHandler topicXMLErrorsClickHandler = new ClickHandler() {
+            @NotNull final ClickHandler topicXMLErrorsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -558,7 +567,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            final ClickHandler topicTagsClickHandler = new ClickHandler() {
+            @NotNull final ClickHandler topicTagsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -567,7 +576,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            final ClickHandler topicBugsClickHandler = new ClickHandler() {
+            @NotNull final ClickHandler topicBugsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -576,21 +585,21 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            final ClickHandler splitMenuHandler = new ClickHandler() {
+            @NotNull final ClickHandler splitMenuHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     showRenderedSplitPanelMenu();
                 }
             };
 
-            final ClickHandler splitMenuCloseHandler = new ClickHandler() {
+            @NotNull final ClickHandler splitMenuCloseHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     showRegularMenu();
                 }
             };
 
-            final ClickHandler splitMenuNoSplitHandler = new ClickHandler() {
+            @NotNull final ClickHandler splitMenuNoSplitHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
@@ -601,7 +610,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            final ClickHandler splitMenuVSplitHandler = new ClickHandler() {
+            @NotNull final ClickHandler splitMenuVSplitHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
@@ -617,7 +626,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            final ClickHandler splitMenuHSplitHandler = new ClickHandler() {
+            @NotNull final ClickHandler splitMenuHSplitHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
@@ -633,12 +642,15 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            final ClickHandler cspsHandler = new ClickHandler() {
+            @NotNull final ClickHandler cspsHandler = new ClickHandler() {
 
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
 
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null && isOKToProceed()) {
+
+                        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
+                        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
 
                         final RESTBaseTopicV1<?, ?, ?> topic = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
 
@@ -711,7 +723,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 Loop over all the standard view i.e. those that will display details from the selected topic
                 or topic revision
             */
-            final List<BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>>>();
+            @NotNull final List<BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>>>();
             displayableViews.add(topicXMLComponent.getDisplay());
             displayableViews.add(topicXMLErrorsPresenter.getDisplay());
             displayableViews.add(topicTagsComponent.getDisplay());
@@ -720,7 +732,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             displayableViews.add(topicSourceURLsPresenter.getDisplay());
 
             final RESTBaseTopicV1<?, ?, ?> topicToDisplay = getDisplayedTopic();
-            for (final BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>> view : displayableViews) {
+            for (@NotNull final BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>> view : displayableViews) {
                 if (viewIsInFilter(filter, view)) {
                     view.display(topicToDisplay, isReadOnlyMode());
                 }

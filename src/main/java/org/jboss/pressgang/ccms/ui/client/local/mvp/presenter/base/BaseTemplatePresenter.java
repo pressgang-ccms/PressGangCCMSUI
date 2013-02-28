@@ -168,7 +168,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
-        final ClickHandler closeAdvancedMenu = new ClickHandler() {
+        @NotNull final ClickHandler closeAdvancedMenu = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 display.getShortCutPanelParent().setWidget(display.getShortcutPanel());
@@ -188,7 +188,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         display.getQuickSearchQuery().addKeyPressHandler(new KeyPressHandler() {
 
             @Override
-            public void onKeyPress(final KeyPressEvent event) {
+            public void onKeyPress(@NotNull final KeyPressEvent event) {
                 final int charCode = event.getUnicodeCharCode();
                 if (charCode == 0) {
                     // it's probably Firefox
@@ -267,7 +267,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         } else {
             if (ID_SEARCH.test(query)) {
                 /* If the search query was numbers and integers, assume that we are searching for topics ids */
-                final String fixedQuery = GWTUtilities.fixUpIdSearchString(query);
+                @NotNull final String fixedQuery = GWTUtilities.fixUpIdSearchString(query);
                 eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
                         + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + fixedQuery, newWindow));
             } else {
@@ -298,7 +298,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         Window.addWindowClosingHandler(new ClosingHandler() {
 
             @Override
-            public void onWindowClosing(final ClosingEvent event) {
+            public void onWindowClosing(@NotNull final ClosingEvent event) {
                 if (display.getTopLevelPanel().isAttached() && hasUnsavedChanges()) {
                     event.setMessage(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
                 }
@@ -306,21 +306,21 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         });
 
         /* Add handlers for the help link */
-        final ClickHandler openHelpClickHandler = new ClickHandler() {
+        @NotNull final ClickHandler openHelpClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 display.getHelpDialog().show(helpTopicId, display);
             }
         };
 
-        final ClickHandler okClickHandler = new ClickHandler() {
+        @NotNull final ClickHandler okClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 display.getHelpDialog().getDialogBox().hide();
             }
         };
 
-        final ClickHandler editClickHandler = new ClickHandler() {
+        @NotNull final ClickHandler editClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed()) {

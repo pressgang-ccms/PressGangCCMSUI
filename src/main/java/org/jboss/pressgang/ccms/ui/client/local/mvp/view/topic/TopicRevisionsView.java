@@ -22,6 +22,8 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A MVP view for displaying a topic's revision history.
@@ -56,7 +58,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
      */
     private final TextColumn<RESTTopicCollectionItemV1> revisionNumber = new TextColumn<RESTTopicCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTopicCollectionItemV1 object) {
+        public String getValue(@NotNull final RESTTopicCollectionItemV1 object) {
             return object.getItem().getRevision().toString();
         }
     };
@@ -65,18 +67,19 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
      */
     private final TextColumn<RESTTopicCollectionItemV1> revisionDate = new TextColumn<RESTTopicCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTopicCollectionItemV1 object) {
+        public String getValue(@NotNull final RESTTopicCollectionItemV1 object) {
             return DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG).format(object.getItem().getLastModified());
         }
     };
     /**
      * The column displaying the revision message.
      */
+    @NotNull
     private final TextColumn<RESTTopicCollectionItemV1> revisionMessage = new TextColumn<RESTTopicCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTopicCollectionItemV1 object) {
-            if (object.getItem().getLogDetails() != null
-                    && object.getItem().getLogDetails().getMessage() != null) {
+        @NotNull
+        public String getValue(@Nullable final RESTTopicCollectionItemV1 object) {
+            if (object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getMessage() != null) {
                 return object.getItem().getLogDetails().getMessage();
             }
             return "";
@@ -85,9 +88,11 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     /**
      * The column displaying the user that committed the revision.
      */
+    @NotNull
     private final TextColumn<RESTTopicCollectionItemV1> revisionUser = new TextColumn<RESTTopicCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTopicCollectionItemV1 object) {
+        @NotNull
+        public String getValue(@Nullable final RESTTopicCollectionItemV1 object) {
             if (object.getItem().getLogDetails() != null
                     && object.getItem().getLogDetails().getUser() != null
                     && object.getItem().getLogDetails().getUser().getName() != null) {
@@ -99,10 +104,12 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     /**
      * The column displaying the minor revision checkbox.
      */
+    @NotNull
     private final Column<RESTTopicCollectionItemV1, Boolean> minorRevisionColumn = new Column<RESTTopicCollectionItemV1, Boolean>(
             new DisableableCheckboxCell(false)) {
+        @NotNull
         @Override
-        public Boolean getValue(final RESTTopicCollectionItemV1 object) {
+        public Boolean getValue(@Nullable final RESTTopicCollectionItemV1 object) {
             if (object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getFlag() != null) {
                 final Integer flag = object.getItem().getLogDetails().getFlag();
                 return (flag & ServiceConstants.MINOR_CHANGE) == ServiceConstants.MINOR_CHANGE;
@@ -113,10 +120,12 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     /**
      * The column displaying the major revision checkbox.
      */
+    @NotNull
     private final Column<RESTTopicCollectionItemV1, Boolean> majorRevisionColumn = new Column<RESTTopicCollectionItemV1, Boolean>(
             new DisableableCheckboxCell(false)) {
+        @NotNull
         @Override
-        public Boolean getValue(final RESTTopicCollectionItemV1 object) {
+        public Boolean getValue(@Nullable final RESTTopicCollectionItemV1 object) {
             if (object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getFlag() != null) {
                 return (object.getItem().getLogDetails().getFlag() & ServiceConstants.MAJOR_CHANGE) == ServiceConstants.MAJOR_CHANGE;
             }
@@ -126,10 +135,12 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     /**
      * The column that displays the button used to view the revision.
      */
+    @NotNull
     private final Column<RESTTopicCollectionItemV1, String> viewButton = new Column<RESTTopicCollectionItemV1, String>(
             viewButtonCell) {
+        @NotNull
         @Override
-        public String getValue(final RESTTopicCollectionItemV1 object) {
+        public String getValue(@Nullable final RESTTopicCollectionItemV1 object) {
             viewButtonCell.setEnabled(true);
 
             /*
@@ -156,10 +167,12 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     /**
      * The column that displays the diff button.
      */
+    @NotNull
     private final Column<RESTTopicCollectionItemV1, String> diffButton = new Column<RESTTopicCollectionItemV1, String>(
             diffButtonCell) {
+        @NotNull
         @Override
-        public String getValue(final RESTTopicCollectionItemV1 object) {
+        public String getValue(@Nullable final RESTTopicCollectionItemV1 object) {
             diffButtonCell.setEnabled(true);
 
             if (mainTopic != null && object.getItem().getRevision().equals(mainTopic.getRevision())) {
@@ -172,7 +185,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
             if (revisionTopic == null || !revisionTopic.getItem().getRevision().equals(object.getItem().getRevision())) {
 
                 final String viewingXML = revisionTopic == null ? mainTopic.getXml() : revisionTopic.getItem().getXml();
-                final String fixedViewingXML = viewingXML == null ? "" : viewingXML.trim();
+                @NotNull final String fixedViewingXML = viewingXML == null ? "" : viewingXML.trim();
 
                 if (object.getItem().getXml() == null || object.getItem().getXml().trim().isEmpty()) {
                     /* Diffs don't work if there is no XML to compare to */
@@ -229,6 +242,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         this.getPanel().add(searchResultsPanel);
     }
 
+    @NotNull
     @Override
     public final Column<RESTTopicCollectionItemV1, String> getDiffButton() {
         return diffButton;
@@ -244,6 +258,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         this.revisionTopic = revisionTopic;
     }
 
+    @NotNull
     @Override
     public final Column<RESTTopicCollectionItemV1, String> getViewButton() {
         return viewButton;
@@ -255,11 +270,12 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     }
 
     @Override
-    public final void setProvider(final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider) {
+    public final void setProvider(@NotNull final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider) {
         this.provider = provider;
         provider.addDataDisplay(results);
     }
 
+    @NotNull
     @Override
     public final CellTable<RESTTopicCollectionItemV1> getResults() {
         return results;

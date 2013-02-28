@@ -10,6 +10,9 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.Ba
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * @see BaseFilteredResultsPresenterInterface
@@ -75,7 +78,11 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
      */
     protected final void relinkSelectedItem() {
         if (this.providerData.getSelectedItem() != null && this.providerData.getItems() != null) {
-            for (final V filteredResultEntity : this.providerData.getItems()) {
+            for (@NotNull final V filteredResultEntity : this.providerData.getItems()) {
+
+                checkState(this.providerData.getSelectedItem().getItem() != null, "The entity collection item needs to have a valid entity");
+                checkState(this.providerData.getSelectedItem().getItem().getId() != null, "The entity collection item needs to have a valid entity with a valid id");
+
                 if (filteredResultEntity.getItem().getId().equals(this.providerData.getSelectedItem().getItem().getId())) {
                     this.providerData.setSelectedItem(filteredResultEntity);
                     break;
@@ -96,5 +103,6 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
      * @param waitDisplay The main view used to notify the user that an ongoing operation is in progress
      * @return A provider to be used for the category display list
      */
+    @Nullable
     abstract protected EnhancedAsyncDataProvider<V> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay);
 }

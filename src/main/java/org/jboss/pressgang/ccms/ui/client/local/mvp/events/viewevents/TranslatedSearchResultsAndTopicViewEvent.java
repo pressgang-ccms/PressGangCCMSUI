@@ -18,6 +18,7 @@ public final class TranslatedSearchResultsAndTopicViewEvent extends ViewOpenWith
         super(query, newWindow);
     }
 
+    @NotNull
     @Override
     public Type<ViewOpenWithQueryEventHandler> getAssociatedType() {
         return TYPE;

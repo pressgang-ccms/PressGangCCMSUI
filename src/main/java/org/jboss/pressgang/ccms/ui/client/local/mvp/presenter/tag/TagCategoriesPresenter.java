@@ -26,6 +26,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -129,7 +130,7 @@ public class TagCategoriesPresenter
     @Override
     @NotNull
     public EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generatePossibleChildrenProvider(@NotNull final RESTTagV1 parent) {
-        final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTCategoryCollectionItemV1> display) {
 
@@ -151,8 +152,8 @@ public class TagCategoriesPresenter
      */
     @Override
     @NotNull
-    public EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> generateExistingProvider(final RESTCategoryV1 entity) {
-        final EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1>() {
+    public EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> generateExistingProvider(@Nullable final RESTCategoryV1 entity) {
+        @NotNull final EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagInCategoryCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTagInCategoryCollectionItemV1> display) {
                 getExistingProviderData().setStartRow(display.getVisibleRange().getStart());
@@ -161,8 +162,7 @@ public class TagCategoriesPresenter
                 /* Zero results can be a null list. Also selecting a new tag will reset getProviderData(). */
                 if (entity != null && entity.getTags() != null) {
                     /* Don't display removed tags */
-                    for (final RESTTagInCategoryCollectionItemV1 tagInCategory : entity.getTags()
-                            .returnExistingAddedAndUpdatedCollectionItems()) {
+                    for (final RESTTagInCategoryCollectionItemV1 tagInCategory : entity.getTags().returnExistingAddedAndUpdatedCollectionItems()) {
                         getExistingProviderData().getItems().add(tagInCategory);
                     }
                 }
@@ -224,7 +224,7 @@ public class TagCategoriesPresenter
     public boolean hasUnsavedChanges() {
         /* It is possible that the list of categories has not loaded yet, in which case no changes could have been made */
         if (getPossibleChildrenProviderData().getItems() != null) {
-            for (final RESTCategoryCollectionItemV1 category : getPossibleChildrenProviderData().getItems()) {
+            for (@NotNull final RESTCategoryCollectionItemV1 category : getPossibleChildrenProviderData().getItems()) {
                 if (category.getItem().getTags().returnDeletedAddedAndUpdatedCollectionItems().size() != 0) {
                     return true;
                 }
@@ -239,7 +239,7 @@ public class TagCategoriesPresenter
         display.getExistingChildUpButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
             @Override
-            public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
+            public void update(final int index, @NotNull final RESTTagInCategoryCollectionItemV1 object, final String value) {
                 moveTagsUpAndDown(editingParent, getPossibleChildrenProviderData().getDisplayedItem().getItem(), object, false, sortCallback);
             }
 
@@ -252,7 +252,7 @@ public class TagCategoriesPresenter
                      * Swap the sort value for the tag that was selected with the tag below it.
                      */
                     @Override
-                    public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
+                    public void update(final int index, @NotNull final RESTTagInCategoryCollectionItemV1 object, final String value) {
                         moveTagsUpAndDown(editingParent, getPossibleChildrenProviderData().getDisplayedItem().getItem(), object, true, sortCallback);
                     }
                 });
@@ -266,7 +266,7 @@ public class TagCategoriesPresenter
     @Override
     public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTTagV1 parent) {
 
-        final BaseRestCallback<RESTCategoryCollectionV1, Display> callback = new BaseRestCallback<RESTCategoryCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTCategoryCollectionV1, Display>() {
+        @NotNull final BaseRestCallback<RESTCategoryCollectionV1, Display> callback = new BaseRestCallback<RESTCategoryCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTCategoryCollectionV1, Display>() {
             @Override
             public void doSuccessAction(@NotNull final RESTCategoryCollectionV1 retValue, @NotNull final Display display) {
                 getPossibleChildrenProviderData().setStartRow(0);

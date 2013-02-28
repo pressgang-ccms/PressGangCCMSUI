@@ -16,6 +16,7 @@
 package hu.szaboaz.gwt.xslt.client.impl;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class is the Safari implementation of the XsltProcessor interface.
@@ -26,6 +27,7 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 public final class XsltProcessorImplSafari extends XsltProcessorImplStandard {
 
+    @NotNull
     @Override
     protected native JavaScriptObject parseImpl(final String contents) /*-{
         var domParser =

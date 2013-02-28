@@ -31,6 +31,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -127,7 +128,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
      */
     private void loadSearchTags() {
 
-        final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, BaseTemplateViewInterface>(
+        @NotNull final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, BaseTemplateViewInterface>(
                 display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, BaseTemplateViewInterface>() {
             @Override
             public void doSuccessAction(@NotNull final RESTTagCollectionV1 retValue, @NotNull final BaseTemplateViewInterface waitDisplay) {
@@ -146,7 +147,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
      * Adds logic to the filter action buttons
      */
     private void bindFilterActionButtons(@NotNull final RESTTagCollectionV1 tags) {
-        final ClickHandler loadClickHanlder = new ClickHandler() {
+        @NotNull final ClickHandler loadClickHanlder = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
@@ -155,13 +156,13 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             }
         };
 
-        final ClickHandler loadAndSearchClickHandler = new ClickHandler() {
+        @NotNull final ClickHandler loadAndSearchClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
-                final SearchUIProjects projects = new SearchUIProjects(tags, displayedFilter);
-                final SearchUIFields fields = new SearchUIFields(displayedFilter);
-                final String query = projects.getSearchQuery(true) + fields.getSearchQuery(false);
+                @NotNull final SearchUIProjects projects = new SearchUIProjects(tags, displayedFilter);
+                @NotNull final SearchUIFields fields = new SearchUIFields(displayedFilter);
+                @NotNull final String query = projects.getSearchQuery(true) + fields.getSearchQuery(false);
                 eventBus.fireEvent(new SearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
             }
         };
@@ -170,9 +171,9 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             A filter instance to be shared between the click handlers for create and overwrite, and the save
             dialog ok click handler.
         */
-        final RESTFilterV1 filter = new RESTFilterV1();
+        @NotNull final RESTFilterV1 filter = new RESTFilterV1();
 
-        final ClickHandler createFilter = new ClickHandler() {
+        @NotNull final ClickHandler createFilter = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 try {
@@ -192,7 +193,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             }
         };
 
-        final ClickHandler overwriteFilter = new ClickHandler() {
+        @NotNull final ClickHandler overwriteFilter = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
@@ -211,24 +212,24 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 filter.explicitSetFilterCategories_OTM(new RESTFilterCategoryCollectionV1());
 
                 if (displayedFilter.getFilterTags_OTM() != null) {
-                    for (final RESTFilterTagCollectionItemV1 tag : displayedFilter.getFilterTags_OTM().getItems()) {
-                        final RESTFilterTagV1 removeTag = new RESTFilterTagV1();
+                    for (@NotNull final RESTFilterTagCollectionItemV1 tag : displayedFilter.getFilterTags_OTM().getItems()) {
+                        @NotNull final RESTFilterTagV1 removeTag = new RESTFilterTagV1();
                         removeTag.setId(tag.getItem().getId());
                         filter.getFilterTags_OTM().addRemoveItem(removeTag);
                     }
                 }
 
                 if (displayedFilter.getFilterFields_OTM() != null) {
-                    for (final RESTFilterFieldCollectionItemV1 field : displayedFilter.getFilterFields_OTM().getItems()) {
-                        final RESTFilterFieldV1 remove = new RESTFilterFieldV1();
+                    for (@NotNull final RESTFilterFieldCollectionItemV1 field : displayedFilter.getFilterFields_OTM().getItems()) {
+                        @NotNull final RESTFilterFieldV1 remove = new RESTFilterFieldV1();
                         remove.setId(field.getItem().getId());
                         filter.getFilterFields_OTM().addRemoveItem(remove);
                     }
                 }
 
                 if (displayedFilter.getFilterCategories_OTM() != null) {
-                    for (final RESTFilterCategoryCollectionItemV1 category : displayedFilter.getFilterCategories_OTM().getItems()) {
-                        final RESTFilterCategoryV1 remove = new RESTFilterCategoryV1();
+                    for (@NotNull final RESTFilterCategoryCollectionItemV1 category : displayedFilter.getFilterCategories_OTM().getItems()) {
+                        @NotNull final RESTFilterCategoryV1 remove = new RESTFilterCategoryV1();
                         remove.setId(category.getItem().getId());
                         filter.getFilterCategories_OTM().addRemoveItem(remove);
                     }
@@ -241,7 +242,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             }
         };
 
-        final ClickHandler saveOKHandler = new ClickHandler() {
+        @NotNull final ClickHandler saveOKHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
@@ -253,14 +254,14 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 filter.explicitSetName(saveFilterDialog.getName().getValue());
                 filter.explicitSetDescription(saveFilterDialog.getDescription().getValue());
 
-                final BaseRestCallback<RESTFilterV1, Display> createFilter = new BaseRestCallback<RESTFilterV1, Display>(display, new BaseRestCallback.SuccessAction<RESTFilterV1, Display>() {
+                @NotNull final BaseRestCallback<RESTFilterV1, Display> createFilter = new BaseRestCallback<RESTFilterV1, Display>(display, new BaseRestCallback.SuccessAction<RESTFilterV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTFilterV1 retValue, @NotNull final Display display) {
                         try {
                             LOGGER.log(Level.INFO, "ENTER SearchTagsFieldsAndFiltersPresenter.bindFilterActionButtons() createFilter.saveOKHandler() SuccessAction.doSuccessAction()");
 
                             // Create the topic wrapper
-                            final RESTFilterCollectionItemV1 collectionItem = new RESTFilterCollectionItemV1();
+                            @NotNull final RESTFilterCollectionItemV1 collectionItem = new RESTFilterCollectionItemV1();
                             collectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
                             // create the topic, and add to the wrapper
@@ -294,7 +295,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             }
         };
 
-        final ClickHandler saveCancelHandler = new ClickHandler() {
+        @NotNull final ClickHandler saveCancelHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 saveFilterDialog.getDialogBox().hide();
@@ -318,41 +319,41 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
     private void bindSearchButtons() {
 
-        final ClickHandler tagsHandler = new ClickHandler() {
+        @NotNull final ClickHandler tagsHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 displayTags();
             }
         };
 
-        final ClickHandler fieldsHandler = new ClickHandler() {
+        @NotNull final ClickHandler fieldsHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 displayFields();
             }
         };
-        final ClickHandler filtersHandler = new ClickHandler() {
+        @NotNull final ClickHandler filtersHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 displayFilters();
             }
         };
 
-        final ClickHandler localesHandler = new ClickHandler() {
+        @NotNull final ClickHandler localesHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 displayLocales();
             }
         };
 
-        final ClickHandler searchHandler = new ClickHandler() {
+        @NotNull final ClickHandler searchHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 fieldsComponent.getDisplay().getDriver().flush();
                 tagsComponent.getDisplay().getDriver().flush();
                 localePresenter.getDisplay().getDriver().flush();
 
-                final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
+                @NotNull final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
                         + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
                         + localePresenter.getDisplay().getSearchUILocales().buidlQueryString(false);
 

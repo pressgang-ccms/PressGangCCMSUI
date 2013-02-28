@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.TriStatePushButton;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.locale.SearchUILocale;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.locale.SearchUILocales;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -28,18 +29,16 @@ public final class SearchUILocaleEditor extends FlexTable implements LeafValueEd
         if (value != null) {
 
             int index = 0;
-            for (final SearchUILocale locale : value.getLocales()) {
+            for (@NotNull final SearchUILocale locale : value.getLocales()) {
 
                 final int fixedIndex = index / COLUMNS;
                 final int column = index % COLUMNS;
 
-                final Label label = new Label(locale.getName());
+                @NotNull final Label label = new Label(locale.getName());
                 label.addStyleName(CSSConstants.LocaleList.LOCALE_LABEL);
-                final TriStatePushButton button = new TriStatePushButton();
+                @NotNull final TriStatePushButton button = new TriStatePushButton();
 
                 buttonsMap.put(button, locale);
-
-                final int row = this.getRowCount();
 
                 this.setWidget(fixedIndex, column * 2, label);
                 this.setWidget(fixedIndex, (column * 2) + 1, button);
@@ -49,11 +48,12 @@ public final class SearchUILocaleEditor extends FlexTable implements LeafValueEd
         }
     }
 
+    @NotNull
     @Override
     public SearchUILocales getValue() {
-        final SearchUILocales retValue = new SearchUILocales();
+        @NotNull final SearchUILocales retValue = new SearchUILocales();
 
-        for (final TriStatePushButton button : buttonsMap.keySet()) {
+        for (@NotNull final TriStatePushButton button : buttonsMap.keySet()) {
             final SearchUILocale locale = buttonsMap.get(button);
             locale.setLocale(button.getState());
         }

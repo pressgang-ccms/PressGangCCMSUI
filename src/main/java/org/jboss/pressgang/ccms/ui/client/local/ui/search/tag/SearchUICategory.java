@@ -53,17 +53,18 @@ public final class SearchUICategory extends SearchUIBase {
      * @param project  The project that this object represents
      * @param category The category that this object represents
      */
-    public SearchUICategory(final SearchUIProject project, final RESTCategoryInTagCollectionItemV1 category) {
+    public SearchUICategory(final SearchUIProject project, @NotNull final RESTCategoryInTagCollectionItemV1 category) {
         super(category.getItem().getName(), category.getItem().getId());
     }
 
     /**
      * @return An object that contains the summary information displayed on the Category tile in the search screen.
      */
+    @NotNull
     public TagSummary getSummary() {
         int includedTags = 0;
         int excludedTags = 0;
-        for (final SearchUITag tag : this.myTags) {
+        for (@NotNull final SearchUITag tag : this.myTags) {
             if (tag.getState() == TriStateSelectionState.SELECTED) {
                 ++includedTags;
             } else if (tag.getState() == TriStateSelectionState.UNSELECTED) {
@@ -77,6 +78,7 @@ public final class SearchUICategory extends SearchUIBase {
     /**
      * @return The tags held by this category
      */
+    @NotNull
     public List<SearchUITag> getMyTags() {
         return this.myTags;
     }
@@ -136,7 +138,7 @@ public final class SearchUICategory extends SearchUIBase {
             checkArgument(filter == null || filter.getFilterCategories_OTM() != null, "Filter must be null or have a populated collection of categories.");
 
             if (filter != null) {
-                for (final RESTFilterCategoryCollectionItemV1 filterCategory : filter.getFilterCategories_OTM().getItems()) {
+                for (@NotNull final RESTFilterCategoryCollectionItemV1 filterCategory : filter.getFilterCategories_OTM().getItems()) {
                     checkState(filterCategory.getItem().getCategory() != null, "filterCategory.getItem().getCategory() cannot be null");
 
                     if (filterCategory.getItem().getCategory().getId().equals(category.getItem().getId()) &&
@@ -159,14 +161,14 @@ public final class SearchUICategory extends SearchUIBase {
                 }
             }
 
-            for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
+            for (@NotNull final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
                 checkState(tag.getItem().getProjects() != null, "tag.getItem().getProjects() cannot be null");
                 checkState(tag.getItem().getCategories() != null, "tag.getItem().getCategories() cannot be null");
 
                 final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory = Iterables.tryFind(tag.getItem()
                         .getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
                     @Override
-                    public boolean apply(final RESTCategoryInTagCollectionItemV1 arg) {
+                    public boolean apply(@NotNull final RESTCategoryInTagCollectionItemV1 arg) {
                         return arg.getItem().getId().equals(category.getItem().getId());
                     }
                 });
@@ -174,13 +176,13 @@ public final class SearchUICategory extends SearchUIBase {
                 final Optional<RESTProjectCollectionItemV1> matchingProject = Iterables.tryFind(tag.getItem().getProjects()
                         .getItems(), new Predicate<RESTProjectCollectionItemV1>() {
                     @Override
-                    public boolean apply(final RESTProjectCollectionItemV1 arg) {
+                    public boolean apply(@NotNull final RESTProjectCollectionItemV1 arg) {
                         return arg.getItem().getId().equals(project.getItem().getId());
                     }
                 });
 
                 if (matchingCategory.isPresent() && matchingProject.isPresent()) {
-                    final SearchUITag searchUITag = new SearchUITag(this, tag, filter);
+                    @NotNull final SearchUITag searchUITag = new SearchUITag(this, tag, filter);
                     if (!this.myTags.contains(searchUITag)) {
                         this.myTags.add(searchUITag);
                     }
@@ -206,7 +208,7 @@ public final class SearchUICategory extends SearchUIBase {
             LOGGER.log(Level.INFO, "ENTER SearchUICategory.populateCategoriesWithoutProject()");
 
             if (filter != null) {
-                for (final RESTFilterCategoryCollectionItemV1 filterCategory : filter.getFilterCategories_OTM().getItems()) {
+                for (@NotNull final RESTFilterCategoryCollectionItemV1 filterCategory : filter.getFilterCategories_OTM().getItems()) {
                     checkState(filterCategory.getItem().getCategory() != null, "filterCategory.getItem().getCategory() cannot be null");
 
                     if (filterCategory.getItem().getCategory().getId().equals(category.getItem().getId()) && filterCategory.getItem().getProject() == null) {
@@ -227,7 +229,7 @@ public final class SearchUICategory extends SearchUIBase {
                 }
             }
 
-            for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
+            for (@NotNull final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
                 checkState(tag.getItem().getProjects() != null, "tag.getItem().getProjects() cannot be null");
                 checkState(tag.getItem().getCategories() != null, "tag.getItem().getCategories() cannot be null");
 
@@ -236,13 +238,13 @@ public final class SearchUICategory extends SearchUIBase {
                     final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory = Iterables.tryFind(tag.getItem()
                             .getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
                         @Override
-                        public boolean apply(final RESTCategoryInTagCollectionItemV1 arg) {
+                        public boolean apply(@NotNull final RESTCategoryInTagCollectionItemV1 arg) {
                             return arg.getItem().getId().equals(category.getItem().getId());
                         }
                     });
 
                     if (matchingCategory.isPresent()) {
-                        final SearchUITag searchUITag = new SearchUITag(this, tag, filter);
+                        @NotNull final SearchUITag searchUITag = new SearchUITag(this, tag, filter);
                         if (!this.myTags.contains(searchUITag)) {
                             this.myTags.add(searchUITag);
                         }

@@ -8,6 +8,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.Searc
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 
@@ -24,9 +26,11 @@ public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<RES
     private final Label filters = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Filters());
     private final PushButton locales = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Locales());
 
+    @NotNull
     private final TextColumn<RESTFilterCollectionItemV1> idColumn = new TextColumn<RESTFilterCollectionItemV1>() {
         @Override
-        public String getValue(final RESTFilterCollectionItemV1 object) {
+        @NotNull
+        public String getValue(@Nullable final RESTFilterCollectionItemV1 object) {
             if (object == null) {
                 return null + "";
             }
@@ -34,9 +38,11 @@ public class SearchFilterFilteredResultsView extends BaseFilteredResultsView<RES
         }
     };
 
+    @NotNull
     private final TextColumn<RESTFilterCollectionItemV1> nameColumn = new TextColumn<RESTFilterCollectionItemV1>() {
         @Override
-        public String getValue(final RESTFilterCollectionItemV1 object) {
+        @NotNull
+        public String getValue(@Nullable final RESTFilterCollectionItemV1 object) {
             if (object == null) {
                 return null + "";
             }

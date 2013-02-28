@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.preferences;
 
 import com.google.gwt.storage.client.Storage;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class provides access to the local preferences saved by the browser.
@@ -134,7 +135,7 @@ final public class Preferences {
                 }
             }
 
-        } catch (final Exception ex) {
+        } catch (@NotNull final Exception ex) {
 
         }
 
@@ -150,7 +151,7 @@ final public class Preferences {
                 }
             }
 
-        } catch (final Exception ex) {
+        } catch (@NotNull final Exception ex) {
 
         }
 

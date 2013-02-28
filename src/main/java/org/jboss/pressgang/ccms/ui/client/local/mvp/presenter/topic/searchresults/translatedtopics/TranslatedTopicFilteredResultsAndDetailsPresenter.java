@@ -80,26 +80,27 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         return display;
     }
 
+    @NotNull
     @Override
     protected BaseFilteredResultsPresenter<RESTTranslatedTopicCollectionItemV1> getSearchResultsComponent() {
         return translatedTopicsFilteredResultsPresenter;
     }
 
     @Override
-    protected void postBindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
+    protected void postBindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @Nullable final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTTranslatedTopicV1> getNewEntityCallback = new GetNewEntityCallback<RESTTranslatedTopicV1>() {
+        @NotNull final GetNewEntityCallback<RESTTranslatedTopicV1> getNewEntityCallback = new GetNewEntityCallback<RESTTranslatedTopicV1>() {
 
             @Override
-            public void getNewEntity(final RESTTranslatedTopicV1 selectedEntity, final DisplayNewEntityCallback<RESTTranslatedTopicV1> displayCallback) {
+            public void getNewEntity(@NotNull final RESTTranslatedTopicV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTTranslatedTopicV1> displayCallback) {
 
                 try {
                     LOGGER.log(Level.INFO, "ENTER TranslatedTopicFilteredResultsAndDetailsPresenter.bind() GetNewEntityCallback.getNewEntity()");
 
-                    final RESTCalls.RESTCallback<RESTTranslatedTopicV1> callback = new BaseRestCallback<RESTTranslatedTopicV1, BaseTemplateViewInterface>(
+                    @NotNull final RESTCalls.RESTCallback<RESTTranslatedTopicV1> callback = new BaseRestCallback<RESTTranslatedTopicV1, BaseTemplateViewInterface>(
                             getDisplay(), new BaseRestCallback.SuccessAction<RESTTranslatedTopicV1, BaseTemplateViewInterface>() {
                         @Override
-                        public void doSuccessAction(final RESTTranslatedTopicV1 retValue, final BaseTemplateViewInterface display) {
+                        public void doSuccessAction(@NotNull final RESTTranslatedTopicV1 retValue, final BaseTemplateViewInterface display) {
                             try {
                                 LOGGER.log(Level.INFO, "ENTER TranslatedTopicFilteredResultsAndDetailsPresenter.bind() RESTCallback.doSuccessAction()");
 
@@ -124,7 +125,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         /* When the topics have been loaded, display the first one */
         getSearchResultsComponent().addTopicListReceivedHandler(new EntityListReceivedHandler<RESTTranslatedTopicCollectionV1>() {
             @Override
-            public void onCollectionRecieved(final RESTTranslatedTopicCollectionV1 topics) {
+            public void onCollectionRecieved(@NotNull final RESTTranslatedTopicCollectionV1 topics) {
                 displayInitialTopic(getNewEntityCallback);
             }
         });
@@ -150,6 +151,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         */
     }
 
+    @Nullable
     @Override
     protected RESTTranslatedTopicV1 getDisplayedTopic() {
         final RESTTranslatedTopicCollectionItemV1 displayedItem = this.getSearchResultsComponent().getProviderData().getDisplayedItem();
@@ -173,7 +175,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
 
     @Override
     protected void postBindActionButtons() {
-        final ClickHandler topicViewClickHandler = new ClickHandler() {
+        @NotNull final ClickHandler topicViewClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {

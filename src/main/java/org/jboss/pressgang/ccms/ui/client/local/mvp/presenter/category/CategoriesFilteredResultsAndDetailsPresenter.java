@@ -132,14 +132,14 @@ public class CategoriesFilteredResultsAndDetailsPresenter
     @Override
     public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
        /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTCategoryV1> getNewEntityCallback = new GetNewEntityCallback<RESTCategoryV1>() {
+        @NotNull final GetNewEntityCallback<RESTCategoryV1> getNewEntityCallback = new GetNewEntityCallback<RESTCategoryV1>() {
 
             @Override
-            public void getNewEntity(final RESTCategoryV1 selectedEntity, final DisplayNewEntityCallback<RESTCategoryV1> displayCallback) {
-                final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, BaseTemplateViewInterface>(
+            public void getNewEntity(@NotNull final RESTCategoryV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTCategoryV1> displayCallback) {
+                @NotNull final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, BaseTemplateViewInterface>(
                         display, new BaseRestCallback.SuccessAction<RESTCategoryV1, BaseTemplateViewInterface>() {
                     @Override
-                    public void doSuccessAction(final RESTCategoryV1 retValue, final BaseTemplateViewInterface display) {
+                    public void doSuccessAction(@NotNull final RESTCategoryV1 retValue, final BaseTemplateViewInterface display) {
                         displayCallback.displayNewEntity(retValue);
                     }
                 });
@@ -177,6 +177,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                 .bindPossibleChildrenListButtonClicks(
                         new GetExistingCollectionCallback<RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>() {
 
+                            @NotNull
                             @Override
                             public RESTTagInCategoryCollectionV1 getExistingCollection() {
                                 return filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getTags();
@@ -189,7 +190,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
 
                                 categoryTagPresenter.setSortOrderOfChildren(sortCallback);
 
-                                final RESTTagInCategoryV1 newChild = new RESTTagInCategoryV1();
+                                @NotNull final RESTTagInCategoryV1 newChild = new RESTTagInCategoryV1();
                                 newChild.setId(copy.getItem().getId());
                                 newChild.setName(copy.getItem().getName());
                                 newChild.explicitSetRelationshipSort(Constants.NEW_CHILD_SORT_ORDER);
@@ -258,7 +259,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                 new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
                     @Override
-                    public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
+                    public void update(final int index, @NotNull final RESTTagInCategoryCollectionItemV1 object, final String value) {
                         categoryTagPresenter.moveTagsUpAndDown(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
                                 filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
                                 object, false, sortCallback);
@@ -273,7 +274,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                      * Swap the sort value for the tag that was selected with the tag below it.
                      */
                     @Override
-                    public void update(final int index, final RESTTagInCategoryCollectionItemV1 object, final String value) {
+                    public void update(final int index, @NotNull final RESTTagInCategoryCollectionItemV1 object, final String value) {
                         categoryTagPresenter.moveTagsUpAndDown(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
                                 filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
                                 object, true, sortCallback);
@@ -286,7 +287,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
         /**
          * A click handler used to display the category fields view
          */
-        final ClickHandler categoryDetailsClickHandler = new ClickHandler() {
+        @NotNull final ClickHandler categoryDetailsClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 switchView(categoryPresenter.getDisplay());
@@ -297,7 +298,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
         /**
          * A click handler used to display the category tags view
          */
-        final ClickHandler categoryTagsClickHandler = new
+        @NotNull final ClickHandler categoryTagsClickHandler = new
 
                 ClickHandler() {
                     @Override
@@ -311,7 +312,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
         /**
          * A click handler used to save any changes to the category
          */
-        final ClickHandler saveClickHandler = new ClickHandler() {
+        @NotNull final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
@@ -321,10 +322,10 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                      /* Sync the UI to the underlying object */
                 categoryPresenter.getDisplay().getDriver().flush();
 
-                final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, Display>(display,
+                @NotNull final RESTCallback<RESTCategoryV1> callback = new BaseRestCallback<RESTCategoryV1, Display>(display,
                         new BaseRestCallback.SuccessAction<RESTCategoryV1, Display>() {
                             @Override
-                            public void doSuccessAction(final RESTCategoryV1 retValue, final Display display) {
+                            public void doSuccessAction(@NotNull final RESTCategoryV1 retValue, final Display display) {
                                 retValue.cloneInto(filteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
                                 retValue.cloneInto(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),
                                         true);
@@ -351,7 +352,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
 
                     if (unsavedTagChanges) {
 
-                        final RESTCategoryV1 category = new RESTCategoryV1();
+                        @NotNull final RESTCategoryV1 category = new RESTCategoryV1();
                         category.setId(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
                         category.explicitSetName(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
                         category.explicitSetDescription(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getDescription());
@@ -400,15 +401,15 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                 public void onClick(@NotNull final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
-                    final RESTCategoryV1 selectedEntity = new RESTCategoryV1();
+                    @NotNull final RESTCategoryV1 selectedEntity = new RESTCategoryV1();
                     selectedEntity.setId(Constants.NULL_ID);
-                    final RESTCategoryCollectionItemV1 selectedTagWrapper = new RESTCategoryCollectionItemV1(selectedEntity);
+                    @NotNull final RESTCategoryCollectionItemV1 selectedTagWrapper = new RESTCategoryCollectionItemV1(selectedEntity);
 
                 /* The displayed tag will also be blank. This is the object that our data will be saved into */
-                    final RESTCategoryV1 displayedEntity = new RESTCategoryV1();
+                    @NotNull final RESTCategoryV1 displayedEntity = new RESTCategoryV1();
                     displayedEntity.setId(Constants.NULL_ID);
                     displayedEntity.setTags(new RESTTagInCategoryCollectionV1());
-                    final RESTCategoryCollectionItemV1 displayedTagWrapper = new RESTCategoryCollectionItemV1(displayedEntity,
+                    @NotNull final RESTCategoryCollectionItemV1 displayedTagWrapper = new RESTCategoryCollectionItemV1(displayedEntity,
                             RESTBaseCollectionItemV1.ADD_STATE);
 
                     filteredResultsPresenter.getProviderData().setSelectedItem(selectedTagWrapper);

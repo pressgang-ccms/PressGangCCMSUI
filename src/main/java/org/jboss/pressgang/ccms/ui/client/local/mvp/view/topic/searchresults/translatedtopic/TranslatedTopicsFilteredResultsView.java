@@ -5,6 +5,8 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTranslatedTopicCol
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics.TranslatedTopicsFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 
@@ -15,9 +17,11 @@ import javax.enterprise.context.Dependent;
 public class TranslatedTopicsFilteredResultsView extends BaseFilteredResultsView<RESTTranslatedTopicCollectionItemV1>
         implements TranslatedTopicsFilteredResultsPresenter.Display {
 
+    @NotNull
     private final TextColumn<RESTTranslatedTopicCollectionItemV1> idColumn = new TextColumn<RESTTranslatedTopicCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTranslatedTopicCollectionItemV1 object) {
+        @NotNull
+        public String getValue(@Nullable final RESTTranslatedTopicCollectionItemV1 object) {
             if (object == null) {
                 return null + "";
             }
@@ -25,9 +29,11 @@ public class TranslatedTopicsFilteredResultsView extends BaseFilteredResultsView
         }
     };
 
+    @NotNull
     private final TextColumn<RESTTranslatedTopicCollectionItemV1> revisionColumn = new TextColumn<RESTTranslatedTopicCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTranslatedTopicCollectionItemV1 object) {
+        @NotNull
+        public String getValue(@Nullable final RESTTranslatedTopicCollectionItemV1 object) {
             if (object == null) {
                 return null + "";
             }
@@ -35,9 +41,11 @@ public class TranslatedTopicsFilteredResultsView extends BaseFilteredResultsView
         }
     };
 
+    @NotNull
     private final TextColumn<RESTTranslatedTopicCollectionItemV1> titleColumn = new TextColumn<RESTTranslatedTopicCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTranslatedTopicCollectionItemV1 object) {
+        @NotNull
+        public String getValue(@Nullable final RESTTranslatedTopicCollectionItemV1 object) {
             if (object == null) {
                 return null + "";
             }

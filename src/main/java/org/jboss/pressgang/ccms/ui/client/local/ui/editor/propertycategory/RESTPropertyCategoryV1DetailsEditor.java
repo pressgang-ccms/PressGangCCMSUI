@@ -57,15 +57,15 @@ public final class RESTPropertyCategoryV1DetailsEditor extends Grid implements E
         name.setReadOnly(readOnly);
         description.setReadOnly(readOnly);
 
-        final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyID());
+        @NotNull final Label idLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyID());
         this.setWidget(0, 0, idLabel);
         this.setWidget(0, 1, id);
 
-        final Label nameLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyName());
+        @NotNull final Label nameLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyName());
         this.setWidget(1, 0, nameLabel);
         this.setWidget(1, 1, name);
 
-        final Label valueLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyDescription());
+        @NotNull final Label valueLabel = new Label(PressGangCCMSUI.INSTANCE.ExtendedPropertyDescription());
         this.setWidget(2, 0, valueLabel);
         this.setWidget(2, 1, description);
 

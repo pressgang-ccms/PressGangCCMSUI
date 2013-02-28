@@ -22,7 +22,9 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
     private static final String INTERNAL_LOGIC_RADIOBUTTON_GROUP = "InternalLogic";
     private static final String EXTERNAL_LOGIC_RADIOBUTTON_GROUP = "ExternalLogic";
 
+    @NotNull
     private final SearchPresenterDriver driver;
+    @NotNull
     private final SearchUIProjectEditor searchUIProject;
     private SearchUICategory value;
     private final FlexTable tagsTable = new FlexTable();
@@ -40,12 +42,13 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
      * @author Matthew Casperson
      */
     private class SearchUITagEditorSource extends EditorSource<SearchUITagEditor> {
+        @NotNull
         @Override
         public SearchUITagEditor create(final int index) {
             final int fixedIndex = (index / COLUMNS) + LOGIC_AND_HEADING_ROW_COUNT; // add 3 because the first rows are taken up by the category logic controls
             final int column = index % COLUMNS;
 
-            final SearchUITagEditor subEditor = new SearchUITagEditor(driver, SearchUICategoryEditor.this);
+            @NotNull final SearchUITagEditor subEditor = new SearchUITagEditor(driver, SearchUICategoryEditor.this);
             tagsTable.setWidget(fixedIndex, column * 2, subEditor.name);
             tagsTable.setWidget(fixedIndex, (column * 2) + 1, subEditor.state);
             return subEditor;
@@ -99,11 +102,11 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
 
         // Internal logic
 
-        final Label internalLogicLabel = new Label(PressGangCCMSUI.INSTANCE.InternalLogic());
+        @NotNull final Label internalLogicLabel = new Label(PressGangCCMSUI.INSTANCE.InternalLogic());
         tagsTable.setWidget(0, 0, internalLogicLabel);
         tagsTable.getFlexCellFormatter().addStyleName(0, 0, CSSConstants.SearchView.LOGIC_HEADER_CELL);
 
-        final HorizontalPanel internalLogicPanel = new HorizontalPanel();
+        @NotNull final HorizontalPanel internalLogicPanel = new HorizontalPanel();
         internalLogicPanel.addStyleName(CSSConstants.SearchView.LOGIC_DETAILS_TABLE);
         internalLogicPanel.add(internalLogicAnd);
         internalLogicPanel.add(internalLogicOr);
@@ -113,12 +116,12 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
 
         // External logic
 
-        final Label externalLogicLabel = new Label(PressGangCCMSUI.INSTANCE.ExternalLogic());
+        @NotNull final Label externalLogicLabel = new Label(PressGangCCMSUI.INSTANCE.ExternalLogic());
         tagsTable.setWidget(0, 1, externalLogicLabel);
         tagsTable.getFlexCellFormatter().addStyleName(0, 1, CSSConstants.SearchView.LOGIC_HEADER_CELL);
 
 
-        final HorizontalPanel externalLogicPanel = new HorizontalPanel();
+        @NotNull final HorizontalPanel externalLogicPanel = new HorizontalPanel();
         externalLogicPanel.addStyleName(CSSConstants.SearchView.LOGIC_DETAILS_TABLE);
         externalLogicPanel.add(externalLogicAnd);
         externalLogicPanel.add(externalLogicOr);
@@ -128,7 +131,7 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
 
         // tags heading cell
 
-        final Label tags = new Label(PressGangCCMSUI.INSTANCE.Tags());
+        @NotNull final Label tags = new Label(PressGangCCMSUI.INSTANCE.Tags());
         tagsTable.setWidget(2, 0, tags);
         tagsTable.getFlexCellFormatter().addStyleName(2, 0, CSSConstants.SearchView.LOGIC_HEADER_CELL);
 

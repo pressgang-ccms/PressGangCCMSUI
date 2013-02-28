@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class serves as the base for all views displaying a filtered results set.
@@ -49,7 +50,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
      */
     private EnhancedAsyncDataProvider<V> provider;
 
-    public BaseFilteredResultsView(final String applicationName, final String pageName, final String createLabel) {
+    public BaseFilteredResultsView(@NotNull final String applicationName, @NotNull final String pageName, final String createLabel) {
         super(applicationName, pageName);
 
         create = UIUtilities.createPushButton(createLabel);
@@ -83,7 +84,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
      * @param provider The provider used to populate the celltable
      */
     @Override
-    public final void setProvider(final EnhancedAsyncDataProvider<V> provider) {
+    public final void setProvider(@NotNull final EnhancedAsyncDataProvider<V> provider) {
         if (this.provider != null) {
             this.provider.removeDataDisplay(getResults());
         }
@@ -95,6 +96,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
     /**
      * @return The panel that holds the filter fields and the search results
      */
+    @NotNull
     public final FlexTable getFilterTable() {
         return filterTable;
     }
@@ -102,6 +104,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
     /**
      * @return The table that holds the filter fields
      */
+    @NotNull
     public final VerticalPanel getSearchResultsPanel() {
         return searchResultsPanel;
     }
@@ -153,6 +156,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
     /**
      * @return The panel that holds the buttons used as tabs.
      */
+    @NotNull
     @Override
     public FlexTable getTabPanel() {
         return tabPanel;

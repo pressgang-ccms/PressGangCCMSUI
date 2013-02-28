@@ -11,6 +11,8 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project.ProjectTagPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ProjectTagView
         extends BaseChildrenView<
@@ -19,9 +21,11 @@ public class ProjectTagView
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>             // The existing child types
         implements ProjectTagPresenter.Display {
 
+    @NotNull
     private final TextColumn<RESTTagCollectionItemV1> tagsIdColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTagCollectionItemV1 object) {
+        @NotNull
+        public String getValue(@Nullable final RESTTagCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getId() != null) {
                 return object.getItem().getId().toString();
             }
@@ -29,9 +33,11 @@ public class ProjectTagView
         }
     };
 
+    @NotNull
     private final TextColumn<RESTTagCollectionItemV1> tagsNameColumn = new TextColumn<RESTTagCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTagCollectionItemV1 object) {
+        @NotNull
+        public String getValue(@Nullable final RESTTagCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getName() != null) {
                 return object.getItem().getName();
             }
@@ -39,10 +45,12 @@ public class ProjectTagView
         }
     };
 
+    @NotNull
     private final Column<RESTTagCollectionItemV1, String> tagsButtonColumn = new Column<RESTTagCollectionItemV1, String>(
             new ButtonCell()) {
+        @NotNull
         @Override
-        public String getValue(final RESTTagCollectionItemV1 object) {
+        public String getValue(@Nullable final RESTTagCollectionItemV1 object) {
             if (getOriginalEntity() != null && object != null && object.getItem().getId() != null) {
                 if (ComponentProjectV1.containsTag(getOriginalEntity(), object.getItem().getId())) {
                     return PressGangCCMSUI.INSTANCE.Remove();
@@ -55,6 +63,7 @@ public class ProjectTagView
         }
     };
 
+    @Nullable
     @Override
     public Column<RESTTagCollectionItemV1, String> getPossibleChildrenButtonColumn() {
         return tagsButtonColumn;
@@ -68,7 +77,7 @@ public class ProjectTagView
         getPossibleChildrenResults().addColumn(tagsButtonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
     }
 
-    public void display(final RESTProjectV1 entity, final boolean readOnly) {
+    public void display(@NotNull final RESTProjectV1 entity, final boolean readOnly) {
         super.displayChildren(entity, readOnly);
     }
 }

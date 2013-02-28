@@ -4,6 +4,7 @@ import com.google.gwt.user.cellview.client.Column;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @param <T> The entity type
@@ -21,7 +22,9 @@ public interface BaseOrderedChildrenViewInterface<
         D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
         extends BaseExtendedChildrenViewInterface<T, W, C, D, E, F> {
 
+    @NotNull
     Column<F, String> getExistingChildUpButtonColumn();
 
+    @NotNull
     Column<F, String> getExistingChildDownButtonColumn();
 }

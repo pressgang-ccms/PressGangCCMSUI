@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1.REMOVE_STATE;
 import static org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1.UNCHANGED_STATE;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
@@ -65,6 +66,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenPresenter<
         /**
          * @return The button used to add a source URL
          */
+        @NotNull
         PushButton getAdd();
     }
 
@@ -97,7 +99,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenPresenter<
     public final EnhancedAsyncDataProvider<RESTTopicSourceUrlCollectionItemV1> generatePossibleChildrenProvider(@Nullable final RESTBaseTopicV1<?, ?, ?> parent) {
         return new EnhancedAsyncDataProvider<RESTTopicSourceUrlCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTTopicSourceUrlCollectionItemV1> data) {
+            protected void onRangeChanged(@NotNull final HasData<RESTTopicSourceUrlCollectionItemV1> data) {
 
                 getPossibleChildrenProviderData().setStartRow(data.getVisibleRange().getStart());
                 getPossibleChildrenProviderData().setItems(new ArrayList<RESTTopicSourceUrlCollectionItemV1>());
@@ -143,7 +145,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenPresenter<
             display.getNameValueColumn().setFieldUpdater(
                     new FieldUpdater<RESTTopicSourceUrlCollectionItemV1, String>() {
                         @Override
-                        public void update(final int index, final RESTTopicSourceUrlCollectionItemV1 object, final String value) {
+                        public void update(final int index, @NotNull final RESTTopicSourceUrlCollectionItemV1 object, final String value) {
                             if (UNCHANGED_STATE.equals(object.getState())) {
                                 object.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
                             }
@@ -155,7 +157,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenPresenter<
 
             display.getURLValueColumn().setFieldUpdater(new FieldUpdater<RESTTopicSourceUrlCollectionItemV1, String>() {
                 @Override
-                public void update(final int index, final RESTTopicSourceUrlCollectionItemV1 object, final String value) {
+                public void update(final int index, @NotNull final RESTTopicSourceUrlCollectionItemV1 object, final String value) {
 
                     if (UNCHANGED_STATE.equals(object.getState())) {
                         object.setState(RESTBaseUpdateCollectionItemV1.UPDATE_STATE);
@@ -168,7 +170,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenPresenter<
             display.getOpenUrlColumn().setFieldUpdater(
                     new FieldUpdater<RESTTopicSourceUrlCollectionItemV1, String>() {
                         @Override
-                        public void update(final int index, final RESTTopicSourceUrlCollectionItemV1 object, final String value) {
+                        public void update(final int index, @NotNull final RESTTopicSourceUrlCollectionItemV1 object, final String value) {
                             Window.open(object.getItem().getUrl(), "_blank", "");
                         }
                     }
@@ -176,12 +178,16 @@ public class TopicSourceURLsPresenter extends BaseChildrenPresenter<
 
             display.getPossibleChildrenButtonColumn().setFieldUpdater(new FieldUpdater<RESTTopicSourceUrlCollectionItemV1, String>() {
                 @Override
-                public void update(final int index, final RESTTopicSourceUrlCollectionItemV1 object, final String value) {
+                public void update(final int index, @NotNull final RESTTopicSourceUrlCollectionItemV1 object, final String value) {
                     try {
                         LOGGER.log(Level.INFO, "ENTER Remove Column FieldUpdater.update()");
 
                         if (object.returnIsAddItem()) {
                             LOGGER.log(Level.INFO, "Item is new, so removing from collection");
+
+                            checkState(parent.getSourceUrls_OTM() != null, "The parent should have a collection of source urls");
+                            checkState(parent.getSourceUrls_OTM().getItems() != null, "The parent's collection of source urls should have valid items");
+
                             parent.getSourceUrls_OTM().getItems().remove(index);
                         } else {
                             LOGGER.log(Level.INFO, "Item is existing, so marking as removed from collection");
@@ -198,7 +204,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenPresenter<
             display.getAdd().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    final RESTTopicSourceUrlV1 newUrl = new RESTTopicSourceUrlV1();
+                    @NotNull final RESTTopicSourceUrlV1 newUrl = new RESTTopicSourceUrlV1();
                     newUrl.explicitSetUrl(PressGangCCMSUI.INSTANCE.NewURLLink());
                     newUrl.explicitSetTitle(PressGangCCMSUI.INSTANCE.NewURLTitle());
                     parent.getSourceUrls_OTM().addNewItem(newUrl);

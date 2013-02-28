@@ -23,6 +23,10 @@ public class ViewOpenEventHandler implements EventHandler {
         this.historyToken = historyToken;
     }
 
+    /**
+     * Changes the history token when the event is triggered.
+     * @param event The event triggered to open a new view.
+     */
     protected void onViewOpen(@NotNull final ViewOpenEvent<?> event) {
         History.newItem(historyToken);
     }

@@ -18,6 +18,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -33,6 +34,7 @@ public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
         implements BaseTemplatePresenterInterface {
 
     public static final String HISTORY_TOKEN = "PropertyCategoryView";
+    @Nullable
     private Integer entityId;
     @Inject
     private Display display;
@@ -47,7 +49,7 @@ public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
     public void parseToken(@NotNull final String historyToken) {
         try {
             entityId = Integer.parseInt(GWTUtilities.removeHistoryToken(HISTORY_TOKEN, historyToken));
-        } catch (final NumberFormatException ex) {
+        } catch (@NotNull final NumberFormatException ex) {
             entityId = null;
         }
     }
@@ -72,7 +74,7 @@ public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
     @Override
     public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTPropertyCategoryV1 parent) {
 
-        final RESTCallback<RESTPropertyTagCollectionV1> callback = new BaseRestCallback<RESTPropertyTagCollectionV1, PropertyCategoryTagPresenter.Display>(display,
+        @NotNull final RESTCallback<RESTPropertyTagCollectionV1> callback = new BaseRestCallback<RESTPropertyTagCollectionV1, PropertyCategoryTagPresenter.Display>(display,
                 new BaseRestCallback.SuccessAction<RESTPropertyTagCollectionV1, PropertyCategoryTagPresenter.Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTPropertyTagCollectionV1 retValue, @NotNull final PropertyCategoryTagPresenter.Display display) {
@@ -97,7 +99,7 @@ public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
     @NotNull
     public EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> generatePossibleChildrenProvider(@NotNull final RESTPropertyCategoryV1 parent) {
 
-        final EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTPropertyTagCollectionItemV1> display) {
 

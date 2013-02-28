@@ -92,7 +92,7 @@ implements BaseTemplatePresenterInterface {
         /**
          * A click handler used to save any changes to the project
          */
-        final ClickHandler saveClickHandler = new ClickHandler() {
+        @NotNull final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
@@ -102,7 +102,7 @@ implements BaseTemplatePresenterInterface {
                 /* Sync the UI to the underlying object */
                 integerConstantPresenter.getDisplay().getDriver().flush();
 
-                final RESTCalls.RESTCallback<RESTIntegerConstantV1> callback = new BaseRestCallback<RESTIntegerConstantV1, Display>(display,
+                @NotNull final RESTCalls.RESTCallback<RESTIntegerConstantV1> callback = new BaseRestCallback<RESTIntegerConstantV1, Display>(display,
                         new BaseRestCallback.SuccessAction<RESTIntegerConstantV1, Display>() {
                             @Override
                             public void doSuccessAction(@NotNull final RESTIntegerConstantV1 retValue, @NotNull final Display display) {
@@ -125,7 +125,7 @@ implements BaseTemplatePresenterInterface {
 
                     if (hasUnsavedChanges()) {
 
-                        final RESTIntegerConstantV1 project = new RESTIntegerConstantV1();
+                        @NotNull final RESTIntegerConstantV1 project = new RESTIntegerConstantV1();
                         project.setId(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
                         project.explicitSetName(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
                         project.explicitSetValue(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getValue());
@@ -162,14 +162,14 @@ implements BaseTemplatePresenterInterface {
             public void onClick(@NotNull final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
-                final RESTIntegerConstantV1 selectedEntity = new RESTIntegerConstantV1();
+                @NotNull final RESTIntegerConstantV1 selectedEntity = new RESTIntegerConstantV1();
                 selectedEntity.setId(Constants.NULL_ID);
-                final RESTIntegerConstantCollectionItemV1 selectedTagWrapper = new RESTIntegerConstantCollectionItemV1(selectedEntity);
+                @NotNull final RESTIntegerConstantCollectionItemV1 selectedTagWrapper = new RESTIntegerConstantCollectionItemV1(selectedEntity);
 
                 /* The displayed tag will also be blank. This is the object that our data will be saved into */
-                final RESTIntegerConstantV1 displayedEntity = new RESTIntegerConstantV1();
+                @NotNull final RESTIntegerConstantV1 displayedEntity = new RESTIntegerConstantV1();
                 displayedEntity.setId(Constants.NULL_ID);
-                final RESTIntegerConstantCollectionItemV1 displayedTagWrapper = new RESTIntegerConstantCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
+                @NotNull final RESTIntegerConstantCollectionItemV1 displayedTagWrapper = new RESTIntegerConstantCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
 
                 integerConstantFilteredResultsPresenter.getProviderData().setSelectedItem(selectedTagWrapper);
                 integerConstantFilteredResultsPresenter.getProviderData().setDisplayedItem(displayedTagWrapper);
@@ -184,10 +184,10 @@ implements BaseTemplatePresenterInterface {
     @Override
     public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTIntegerConstantV1> getNewEntityCallback = new GetNewEntityCallback<RESTIntegerConstantV1>() {
+        @NotNull final GetNewEntityCallback<RESTIntegerConstantV1> getNewEntityCallback = new GetNewEntityCallback<RESTIntegerConstantV1>() {
 
             @Override
-            public void getNewEntity(final RESTIntegerConstantV1 selectedEntity, final DisplayNewEntityCallback<RESTIntegerConstantV1> displayCallback) {
+            public void getNewEntity(@NotNull final RESTIntegerConstantV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTIntegerConstantV1> displayCallback) {
                 /*
                     There is nothing additional to load here, so just return the selected entity.
                  */

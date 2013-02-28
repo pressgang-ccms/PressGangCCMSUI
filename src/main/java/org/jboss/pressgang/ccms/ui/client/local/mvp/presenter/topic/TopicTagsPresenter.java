@@ -19,6 +19,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
 import java.util.logging.Level;
@@ -51,6 +52,7 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
 
     private static final Logger LOGGER = Logger.getLogger(TopicTagsPresenter.class.getName());
 
+    @Nullable
     private Integer topicId;
 
     @Inject
@@ -66,6 +68,7 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
      */
     private final SearchUIProjects searchUIProjects = new SearchUIProjects();
 
+    @NotNull
     public SearchUIProjects getSearchUIProjects() {
         return searchUIProjects;
     }
@@ -74,7 +77,7 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
     public void parseToken(@NotNull final String searchToken) {
         try {
             topicId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
-        } catch (final NumberFormatException ex) {
+        } catch (@NotNull final NumberFormatException ex) {
             topicId = null;
         }
     }
@@ -97,10 +100,10 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
         try {
             LOGGER.log(Level.INFO, "ENTER TopicTagsPresenter.getTags()");
 
-            final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, TopicTagsPresenter.Display>(
+            @NotNull final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, TopicTagsPresenter.Display>(
                     display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, TopicTagsPresenter.Display>() {
                 @Override
-                public void doSuccessAction(final RESTTagCollectionV1 retValue, final TopicTagsPresenter.Display display) {
+                public void doSuccessAction(@NotNull final RESTTagCollectionV1 retValue, @NotNull final TopicTagsPresenter.Display display) {
                     try {
                         LOGGER.log(Level.INFO, "ENTER TopicTagsPresenter.getTags() callback.doSuccessAction()");
 

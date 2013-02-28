@@ -17,6 +17,7 @@ public final class IntegerConstantFilteredResultsAndDetailsViewEvent extends Vie
         super(query, newWindow);
     }
 
+    @NotNull
     @Override
     public Type<ViewOpenWithQueryEventHandler> getAssociatedType() {
         return TYPE;

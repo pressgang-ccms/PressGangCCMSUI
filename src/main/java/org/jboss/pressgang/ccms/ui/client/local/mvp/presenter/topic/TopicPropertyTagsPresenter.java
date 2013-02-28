@@ -24,6 +24,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -63,6 +64,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
      * A logger.
      */
     private static final Logger LOGGER = Logger.getLogger(TopicPropertyTagsPresenter.class.getName());
+    @Nullable
     private Integer topicId;
     @Inject
     private Display display;
@@ -75,7 +77,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     public void parseToken(@NotNull final String historyToken) {
         try {
             topicId = Integer.parseInt(removeHistoryToken(historyToken, HISTORY_TOKEN));
-        } catch (final NumberFormatException ex) {
+        } catch (@NotNull final NumberFormatException ex) {
             topicId = null;
         }
     }
@@ -107,10 +109,10 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
             display.getPossibleChildrenButtonColumn().setFieldUpdater(
                     new FieldUpdater<RESTPropertyTagCollectionItemV1, String>() {
                         @Override
-                        public void update(final int index, final RESTPropertyTagCollectionItemV1 object, final String value) {
+                        public void update(final int index, @NotNull final RESTPropertyTagCollectionItemV1 object, final String value) {
 
                             /* Create a new property tag child */
-                            final RESTAssignedPropertyTagV1 restAssignedPropertyTagV1 = new RESTAssignedPropertyTagV1();
+                            @NotNull final RESTAssignedPropertyTagV1 restAssignedPropertyTagV1 = new RESTAssignedPropertyTagV1();
                             restAssignedPropertyTagV1.setId(object.getItem().getId());
                             restAssignedPropertyTagV1.setName(object.getItem().getName());
                             restAssignedPropertyTagV1.setDescription(object.getItem().getDescription());
@@ -127,7 +129,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
             display.getPropertyTagRemoveColumn().setFieldUpdater(
                     new FieldUpdater<RESTAssignedPropertyTagCollectionItemV1, String>() {
                         @Override
-                        public void update(final int index, final RESTAssignedPropertyTagCollectionItemV1 object, final String value) {
+                        public void update(final int index, @NotNull final RESTAssignedPropertyTagCollectionItemV1 object, final String value) {
 
                             /*
                                 Note that the relationship between topic and property tag is many to many.
@@ -149,7 +151,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
 
             display.getPropertyTagValueColumn().setFieldUpdater(new FieldUpdater<RESTAssignedPropertyTagCollectionItemV1, String>() {
                 @Override
-                public void update(final int index, final RESTAssignedPropertyTagCollectionItemV1 object, final String value) {
+                public void update(final int index, @NotNull final RESTAssignedPropertyTagCollectionItemV1 object, final String value) {
 
                     /*
                         Updating just the value (and no other topic fields or children) will not create a new Envers revision
@@ -168,7 +170,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
                         object.setState(REMOVE_STATE);
 
                         /* Create a new property tag child */
-                        final RESTAssignedPropertyTagV1 restAssignedPropertyTagV1 = new RESTAssignedPropertyTagV1();
+                        @NotNull final RESTAssignedPropertyTagV1 restAssignedPropertyTagV1 = new RESTAssignedPropertyTagV1();
                         restAssignedPropertyTagV1.setId(object.getItem().getId());
                         restAssignedPropertyTagV1.setName(object.getItem().getName());
                         restAssignedPropertyTagV1.setDescription(object.getItem().getDescription());
@@ -187,11 +189,12 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
         }
     }
 
+    @NotNull
     @Override
     public EnhancedAsyncDataProvider<RESTAssignedPropertyTagCollectionItemV1> generateExistingProvider(@NotNull final RESTBaseTopicV1<?, ?, ?> entity) {
         return new EnhancedAsyncDataProvider<RESTAssignedPropertyTagCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTAssignedPropertyTagCollectionItemV1> display) {
+            protected void onRangeChanged(@NotNull final HasData<RESTAssignedPropertyTagCollectionItemV1> display) {
                 try {
                     LOGGER.log(Level.INFO, "ENTER TopicPropertyTagsPresenter.generateExistingProvider() EnhancedAsyncDataProvider.onRangeChanged()");
 
@@ -219,11 +222,12 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
         };
     }
 
+    @NotNull
     @Override
     public EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> generatePossibleChildrenProvider(@NotNull final RESTBaseTopicV1<?, ?, ?> parent) {
         return new EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(final HasData<RESTPropertyTagCollectionItemV1> data) {
+            protected void onRangeChanged(@NotNull final HasData<RESTPropertyTagCollectionItemV1> data) {
 
                 getPossibleChildrenProviderData().setStartRow(data.getVisibleRange().getStart());
 
@@ -242,7 +246,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
         try {
             LOGGER.log(Level.INFO, "ENTER TopicPropertyTagsPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
 
-            final BaseRestCallback<RESTPropertyTagCollectionV1, Display>  callback = new BaseRestCallback<RESTPropertyTagCollectionV1, Display>(display,
+            @NotNull final BaseRestCallback<RESTPropertyTagCollectionV1, Display>  callback = new BaseRestCallback<RESTPropertyTagCollectionV1, Display>(display,
                     new BaseRestCallback.SuccessAction<RESTPropertyTagCollectionV1, Display>() {
                         @Override
                         public void doSuccessAction(@NotNull final RESTPropertyTagCollectionV1 retValue, @NotNull final Display display) {

@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchFieldEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
+import org.jetbrains.annotations.NotNull;
 
 public class SearchFieldView extends BaseTemplateView implements SearchFieldPresenter.Display {
 
@@ -33,6 +34,7 @@ public class SearchFieldView extends BaseTemplateView implements SearchFieldPres
         return driver;
     }
 
+    @NotNull
     @Override
     public SearchUIFields getSearchUIFields() {
         return searchUIFields;
@@ -73,7 +75,7 @@ public class SearchFieldView extends BaseTemplateView implements SearchFieldPres
     public void display(final RESTFilterV1 filter, final boolean readOnly) {
         searchUIFields.initialize(filter);
         /* SearchUIProjectsEditor is a grid */
-        final SearchFieldEditor editor = new SearchFieldEditor();
+        @NotNull final SearchFieldEditor editor = new SearchFieldEditor();
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */

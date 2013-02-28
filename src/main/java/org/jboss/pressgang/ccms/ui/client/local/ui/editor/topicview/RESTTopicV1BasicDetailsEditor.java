@@ -8,6 +8,8 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,35 +38,42 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<
     private final DateBox created = new DateBox();
     private final DateBox lastModified = new DateBox();
 
+    @NotNull
     public DateBox lastModifiedEditor() {
         return lastModified;
     }
 
+    @NotNull
     public DateBox createdEditor() {
         return created;
     }
 
+    @NotNull
     public TextArea descriptionEditor() {
         return description;
     }
 
+    @NotNull
     public TextBox titleEditor() {
         return title;
     }
 
+    @NotNull
     public ValueListBox<String> localeEditor() {
         return locale;
     }
 
+    @NotNull
     public SimpleIntegerBox revisionEditor() {
         return revision;
     }
 
+    @NotNull
     public SimpleIntegerBox idEditor() {
         return id;
     }
 
-    public RESTTopicV1BasicDetailsEditor(final boolean readOnly, final List<String> locales) {
+    public RESTTopicV1BasicDetailsEditor(final boolean readOnly, @Nullable final List<String> locales) {
         super(ROWS, COLS);
 
         this.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_PANEL);

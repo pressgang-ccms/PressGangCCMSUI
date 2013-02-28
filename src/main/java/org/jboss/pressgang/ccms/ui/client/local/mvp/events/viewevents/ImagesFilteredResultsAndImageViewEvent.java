@@ -17,6 +17,7 @@ public final class ImagesFilteredResultsAndImageViewEvent extends ViewOpenWithQu
         super(query, newWindow);
     }
 
+    @NotNull
     @Override
     public Type<ViewOpenWithQueryEventHandler> getAssociatedType() {
         return TYPE;

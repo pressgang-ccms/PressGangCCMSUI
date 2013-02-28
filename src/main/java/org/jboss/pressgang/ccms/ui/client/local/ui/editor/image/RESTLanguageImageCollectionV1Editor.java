@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTLanguageImageCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class provides a UI object to represent the collection of language images in an image.
@@ -28,21 +29,22 @@ public final class RESTLanguageImageCollectionV1Editor extends TabLayoutPanel im
      * @author Matthew Casperson
      */
     private class LanguageImageEditorSource extends EditorSource<RESTLanguageImageV1Editor> {
+        @NotNull
         @Override
         public RESTLanguageImageV1Editor create(final int index) {
-            final RESTLanguageImageV1Editor editor = new RESTLanguageImageV1Editor(RESTLanguageImageCollectionV1Editor.this,
+            @NotNull final RESTLanguageImageV1Editor editor = new RESTLanguageImageV1Editor(RESTLanguageImageCollectionV1Editor.this,
                     index);
             RESTLanguageImageCollectionV1Editor.this.add(editor, PressGangCCMSUI.INSTANCE.ImagePlaceholder());
             return editor;
         }
 
         @Override
-        public void dispose(final RESTLanguageImageV1Editor subEditor) {
+        public void dispose(@NotNull final RESTLanguageImageV1Editor subEditor) {
             subEditor.removeFromParent();
         }
 
         @Override
-        public void setIndex(final RESTLanguageImageV1Editor subEditor, final int index) {
+        public void setIndex(@NotNull final RESTLanguageImageV1Editor subEditor, final int index) {
             subEditor.removeFromParent();
             RESTLanguageImageCollectionV1Editor.this.insert(subEditor, index);
         }

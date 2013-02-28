@@ -7,6 +7,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicBIRTBugsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A MVP view for displaying a topic's Bugzilla Bugs. This view simply displays an iFrame
@@ -16,6 +17,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
  */
 public class TopicBIRTBugsView extends BaseTemplateView implements TopicBIRTBugsPresenter.Display {
 
+    @NotNull
     private final Frame iFrame;
 
     public TopicBIRTBugsView() {
@@ -30,7 +32,7 @@ public class TopicBIRTBugsView extends BaseTemplateView implements TopicBIRTBugs
     }
 
     @Override
-    public void display(final RESTBaseTopicV1<?, ?, ?> entity, final boolean readonly) {
+    public void display(@NotNull final RESTBaseTopicV1<?, ?, ?> entity, final boolean readonly) {
         if (entity.getId() != null) {
             iFrame.setUrl(Constants.BIRT_URL + Constants.BIRT_RUN_REPORT + Constants.BIRT_TOPIC_BUGZILLA_REPORT + entity.getId());
         }

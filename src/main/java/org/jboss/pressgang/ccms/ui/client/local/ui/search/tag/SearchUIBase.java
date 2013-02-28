@@ -1,5 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.search.tag;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * The base class for all the entites that make up the tag search screen.
  *
@@ -34,7 +36,7 @@ public class SearchUIBase {
             return false;
         }
 
-        final SearchUIBase otherCasted = (SearchUIBase) other;
+        @NotNull final SearchUIBase otherCasted = (SearchUIBase) other;
 
         if (this.name == null && otherCasted.name == null) {
             return true;

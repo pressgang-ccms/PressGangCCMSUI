@@ -35,9 +35,9 @@ public class TopicView extends BaseTemplateView implements TopicPresenter.Displa
     }
 
     @Override
-    public final void displayTopicDetails(@NotNull final RESTTopicV1 topic, @NotNull final boolean readOnly, @NotNull final List<String> locales) {
+    public final void displayTopicDetails(@NotNull final RESTTopicV1 topic, final boolean readOnly, @NotNull final List<String> locales) {
         /* SearchUIProjectsEditor is a grid */
-        final RESTTopicV1BasicDetailsEditor editor = new RESTTopicV1BasicDetailsEditor(readOnly, locales);
+        @NotNull final RESTTopicV1BasicDetailsEditor editor = new RESTTopicV1BasicDetailsEditor(readOnly, locales);
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */

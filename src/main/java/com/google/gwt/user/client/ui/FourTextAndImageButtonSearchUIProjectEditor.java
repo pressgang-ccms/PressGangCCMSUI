@@ -5,6 +5,7 @@ import com.google.gwt.editor.client.LeafValueEditor;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This is a custom button that can be databound to a SearchUIProject.CategorySummary object. This button is used to display a
@@ -20,11 +21,12 @@ public final class FourTextAndImageButtonSearchUIProjectEditor extends FourTextA
 
     }
 
+    @NotNull
     @Override
     public LeafValueEditor<SearchUIProject.CategorySummary> asEditor() {
         return new LeafValueEditor<SearchUIProject.CategorySummary>() {
             @Override
-            public void setValue(final SearchUIProject.CategorySummary value) {
+            public void setValue(@NotNull final SearchUIProject.CategorySummary value) {
                 details = value;
 
                 setText(value.getName());

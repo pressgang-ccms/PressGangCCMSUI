@@ -12,6 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -64,6 +65,7 @@ public class ImagePresenter extends BaseTemplatePresenter implements BaseTemplat
     /**
      * The id of the image to display, extracted from the history token.
      */
+    @Nullable
     private Integer imageId;
 
     @NotNull
@@ -89,7 +91,7 @@ public class ImagePresenter extends BaseTemplatePresenter implements BaseTemplat
     public void parseToken(@NotNull final String historyToken) {
         try {
             imageId = Integer.parseInt(removeHistoryToken(historyToken, HISTORY_TOKEN));
-        } catch (final Exception ex) {
+        } catch (@NotNull final Exception ex) {
             // bad history token. silently fail
             imageId = null;
         }

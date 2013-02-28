@@ -10,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkState;
+
 /**
  * @see BaseOrderedChildrenPresenterInterface
  */
@@ -31,6 +33,8 @@ abstract public class BaseOrderedChildrenPresenter<
     @Override
     public final void setSortOrderOfChildren(@NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {
 
+        checkState(getExistingProviderData().getItems() != null, "The getExistingProviderData() collection needs to have valid items");
+
         final int size = getExistingProviderData().getItems().size();
 
         for (int i = Constants.CHILDREN_SORT_ORDER_START; i < size + Constants.CHILDREN_SORT_ORDER_START; ++i) {
@@ -43,15 +47,7 @@ abstract public class BaseOrderedChildrenPresenter<
     public final boolean moveTagsUpAndDown(@NotNull final T editingParent, @NotNull final W parent, @NotNull final F object, final boolean down,
                                            @NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {
 
-        if (parent == null) {
-            throw new NullPointerException("parent cannot be null");
-        }
-        if (object == null) {
-            throw new NullPointerException("object cannot be null");
-        }
-        if (sortCallback == null) {
-            throw new NullPointerException("sortCallback cannot be null");
-        }
+        checkState(getExistingProviderData().getItems() != null, "The getExistingProviderData() collection needs to have valid items");
 
         final int size = getExistingProviderData().getItems().size();
 

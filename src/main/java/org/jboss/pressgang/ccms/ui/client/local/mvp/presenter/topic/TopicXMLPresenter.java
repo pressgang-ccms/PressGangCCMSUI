@@ -12,6 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEdito
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -98,6 +99,7 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
 
     public static final String HISTORY_TOKEN = "TopicXMLView";
 
+    @Nullable
     private Integer topicId;
 
     @Inject
@@ -112,7 +114,7 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
     public void parseToken(@NotNull final String searchToken) {
         try {
             topicId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
-        } catch (final NumberFormatException ex) {
+        } catch (@NotNull final NumberFormatException ex) {
             topicId = null;
         }
 

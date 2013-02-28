@@ -7,6 +7,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category.CategoryP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.categoryview.RESTCategoryV1BasicDetailsEditor;
+import org.jetbrains.annotations.NotNull;
 
 public class CategoryView extends BaseTemplateView implements CategoryPresenter.Display {
 
@@ -32,7 +33,7 @@ public class CategoryView extends BaseTemplateView implements CategoryPresenter.
         this.readOnly = readOnly;
 
         /* SearchUIProjectsEditor is a grid */
-        final RESTCategoryV1BasicDetailsEditor editor = new RESTCategoryV1BasicDetailsEditor(this.readOnly);
+        @NotNull final RESTCategoryV1BasicDetailsEditor editor = new RESTCategoryV1BasicDetailsEditor(this.readOnly);
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */

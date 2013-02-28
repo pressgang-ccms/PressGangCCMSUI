@@ -29,7 +29,7 @@ public class IntegerConstantView extends BaseTemplateView implements IntegerCons
         this.readOnly = readonly;
 
         /* SearchUIProjectsEditor is a grid */
-        final RESTIntegerConstantV1DetailsEditor editor = new RESTIntegerConstantV1DetailsEditor(this.readOnly);
+        @NotNull final RESTIntegerConstantV1DetailsEditor editor = new RESTIntegerConstantV1DetailsEditor(this.readOnly);
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */

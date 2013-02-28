@@ -119,14 +119,14 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
     @Override
     public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTPropertyTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTPropertyTagV1>() {
+        @NotNull final GetNewEntityCallback<RESTPropertyTagV1> getNewEntityCallback = new GetNewEntityCallback<RESTPropertyTagV1>() {
 
             @Override
             public void getNewEntity(@NotNull final RESTPropertyTagV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTPropertyTagV1> displayCallback) {
-                final RESTCallback<RESTPropertyTagV1> callback = new BaseRestCallback<RESTPropertyTagV1, BaseTemplateViewInterface>(display,
+                @NotNull final RESTCallback<RESTPropertyTagV1> callback = new BaseRestCallback<RESTPropertyTagV1, BaseTemplateViewInterface>(display,
                         new BaseRestCallback.SuccessAction<RESTPropertyTagV1, BaseTemplateViewInterface>() {
                             @Override
-                            public void doSuccessAction(final RESTPropertyTagV1 retValue, final BaseTemplateViewInterface display) {
+                            public void doSuccessAction(@NotNull final RESTPropertyTagV1 retValue, final BaseTemplateViewInterface display) {
                                 displayCallback.displayNewEntity(retValue);
                             }
                         });
@@ -146,6 +146,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
         /* Bind the logic to add and remove possible children */
         tagComponent.bindPossibleChildrenListButtonClicks(
             new GetExistingCollectionCallback<RESTPropertyCategoryInPropertyTagV1, RESTPropertyCategoryInPropertyTagCollectionV1, RESTPropertyCategoryInPropertyTagCollectionItemV1>() {
+                @NotNull
                 @Override
                 public RESTPropertyCategoryInPropertyTagCollectionV1 getExistingCollection() {
                     return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories();
@@ -154,7 +155,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
             new AddPossibleChildCallback<RESTPropertyCategoryCollectionItemV1>() {
                 @Override
                 public void createAndAddChild(@NotNull final RESTPropertyCategoryCollectionItemV1 copy) {
-                    final RESTPropertyCategoryInPropertyTagV1 newChild = new RESTPropertyCategoryInPropertyTagV1();
+                    @NotNull final RESTPropertyCategoryInPropertyTagV1 newChild = new RESTPropertyCategoryInPropertyTagV1();
                     newChild.setId(copy.getItem().getId());
                     newChild.setName(copy.getItem().getName());
                     filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories().addNewItem(newChild);
@@ -191,7 +192,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
         /**
          * A click handler used to display the project fields view
          */
-        final ClickHandler projectDetailsClickHandler = new ClickHandler() {
+        @NotNull final ClickHandler projectDetailsClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 switchView(resultComponent.getDisplay());
@@ -202,7 +203,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
         /**
          * A click handler used to display the project tags view
          */
-        final ClickHandler projectTagsClickHandler = new ClickHandler() {
+        @NotNull final ClickHandler projectTagsClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 switchView(tagComponent.getDisplay());
@@ -213,7 +214,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
         /**
          * A click handler used to save any changes to the project
          */
-        final ClickHandler saveClickHandler = new ClickHandler() {
+        @NotNull final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
@@ -226,7 +227,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
                 /* Sync the UI to the underlying object */
                 resultComponent.getDisplay().getDriver().flush();
 
-                final RESTCallback<RESTPropertyTagV1> callback = new BaseRestCallback<RESTPropertyTagV1, Display>(display,
+                @NotNull final RESTCallback<RESTPropertyTagV1> callback = new BaseRestCallback<RESTPropertyTagV1, Display>(display,
                         new BaseRestCallback.SuccessAction<RESTPropertyTagV1, Display>() {
                             @Override
                             public void doSuccessAction(@NotNull final RESTPropertyTagV1 retValue, @NotNull final Display display) {
@@ -253,7 +254,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
                     if (hasUnsavedChanges()) {
 
                         final RESTPropertyTagV1 displayedItem = filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
-                        final RESTPropertyTagV1 propertyTag = new RESTPropertyTagV1();
+                        @NotNull final RESTPropertyTagV1 propertyTag = new RESTPropertyTagV1();
 
                         propertyTag.setId(displayedItem.getId());
                         propertyTag.explicitSetName(displayedItem.getName());
@@ -300,15 +301,15 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
             public void onClick(final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
-                final RESTPropertyTagV1 selectedEntity = new RESTPropertyTagV1();
+                @NotNull final RESTPropertyTagV1 selectedEntity = new RESTPropertyTagV1();
                 selectedEntity.setId(Constants.NULL_ID);
-                final RESTPropertyTagCollectionItemV1 selectedTagWrapper = new RESTPropertyTagCollectionItemV1(selectedEntity);
+                @NotNull final RESTPropertyTagCollectionItemV1 selectedTagWrapper = new RESTPropertyTagCollectionItemV1(selectedEntity);
 
                 /* The displayed tag will also be blank. This is the object that our data will be saved into */
-                final RESTPropertyTagV1 displayedEntity = new RESTPropertyTagV1();
+                @NotNull final RESTPropertyTagV1 displayedEntity = new RESTPropertyTagV1();
                 displayedEntity.setId(Constants.NULL_ID);
                 displayedEntity.setPropertyCategories(new RESTPropertyCategoryInPropertyTagCollectionV1());
-                final RESTPropertyTagCollectionItemV1 displayedTagWrapper = new RESTPropertyTagCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
+                @NotNull final RESTPropertyTagCollectionItemV1 displayedTagWrapper = new RESTPropertyTagCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
 
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
@@ -387,11 +388,11 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
     @Override
     protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
 
-        final List<BaseCustomViewInterface<RESTPropertyTagV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTPropertyTagV1>>();
+        @NotNull final List<BaseCustomViewInterface<RESTPropertyTagV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTPropertyTagV1>>();
         displayableViews.add(resultComponent.getDisplay());
         displayableViews.add(tagComponent.getDisplay());
 
-        for (final BaseCustomViewInterface<RESTPropertyTagV1> view : displayableViews) {
+        for (@NotNull final BaseCustomViewInterface<RESTPropertyTagV1> view : displayableViews) {
             if (viewIsInFilter(filter, view)) {
                 view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
             }

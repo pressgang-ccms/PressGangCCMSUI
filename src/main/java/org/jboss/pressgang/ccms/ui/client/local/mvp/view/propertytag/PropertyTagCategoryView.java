@@ -37,8 +37,10 @@ public class PropertyTagCategoryView extends BaseChildrenView<
     /**
      * The column used to render the property tag category's id.
      */
+    @NotNull
     private final TextColumn<RESTPropertyCategoryCollectionItemV1> tagsIdColumn = new TextColumn<RESTPropertyCategoryCollectionItemV1>() {
         @Override
+        @NotNull
         public String getValue(@Nullable final RESTPropertyCategoryCollectionItemV1 object) {
             checkArgument(object == null || (object.getItem() != null && object.getItem().getName() != null), "object should be null or it should have a valid item and the item should have a valid id");
 
@@ -52,8 +54,10 @@ public class PropertyTagCategoryView extends BaseChildrenView<
     /**
      * The column used to render the property tag category's name.
      */
+    @NotNull
     private final TextColumn<RESTPropertyCategoryCollectionItemV1> tagsNameColumn = new TextColumn<RESTPropertyCategoryCollectionItemV1>() {
         @Override
+        @NotNull
         public String getValue(@Nullable final RESTPropertyCategoryCollectionItemV1 object) {
             checkArgument(object == null || (object.getItem() != null && object.getItem().getName() != null), "object should be null or it should have a valid item and the item should have a valid name");
 
@@ -67,7 +71,9 @@ public class PropertyTagCategoryView extends BaseChildrenView<
     /**
      * The column used to render the property tag category's add/remove button.
      */
+    @NotNull
     private final Column<RESTPropertyCategoryCollectionItemV1, String> tagsButtonColumn = new Column<RESTPropertyCategoryCollectionItemV1, String>(new ButtonCell()) {
+        @NotNull
         @Override
         public String getValue(@Nullable final RESTPropertyCategoryCollectionItemV1 object) {
             checkState(getOriginalEntity() != null, "getOriginalEntity() should not be null");

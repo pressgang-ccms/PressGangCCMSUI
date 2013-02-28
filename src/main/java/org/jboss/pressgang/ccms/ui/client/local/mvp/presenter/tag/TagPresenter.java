@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -28,6 +29,7 @@ public class TagPresenter extends BaseTemplatePresenter {
 
     }
 
+    @Nullable
     private Integer tagId;
 
     @Inject
@@ -38,12 +40,11 @@ public class TagPresenter extends BaseTemplatePresenter {
         return display;
     }
 
-    @NotNull
     @Override
     public void parseToken(@NotNull final String searchToken) {
         try {
             tagId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
-        } catch (final NumberFormatException ex) {
+        } catch (@NotNull final NumberFormatException ex) {
             tagId = null;
         }
 

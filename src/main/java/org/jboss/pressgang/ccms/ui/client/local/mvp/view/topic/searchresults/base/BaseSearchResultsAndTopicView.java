@@ -12,6 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.LogMessageView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * The view that combines the topic search results with the individual topic views
@@ -121,6 +122,7 @@ public abstract class BaseSearchResultsAndTopicView<
         return renderedHorizontalSplit;
     }
 
+    @NotNull
     @Override
     public FlexTable getRenderedSplitViewMenu() {
         return renderedSplitViewMenu;
@@ -186,6 +188,7 @@ public abstract class BaseSearchResultsAndTopicView<
         return extendedProperties;
     }
 
+    @NotNull
     @Override
     public LogMessageView getMessageLogDialog() {
         return messageLogDialog;
@@ -255,7 +258,7 @@ public abstract class BaseSearchResultsAndTopicView<
 
             getSplitPanel().addWest(this.getResultsViewLayoutPanel(), Constants.SPLIT_PANEL_SIZE);
 
-            final SimplePanel renderedPanelParent = new SimplePanel();
+            @NotNull final SimplePanel renderedPanelParent = new SimplePanel();
             renderedPanelParent.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_LAYOUT_PANEL);
             renderedPanelParent.add(panel);
 

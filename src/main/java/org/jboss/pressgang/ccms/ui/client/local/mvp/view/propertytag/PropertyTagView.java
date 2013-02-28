@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytag.Proper
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.propertytag.RESTPropertyTagV1DetailsEditor;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * The view used to display the property tag details via the RESTPropertyTagV1DetailsEditor class.
@@ -36,7 +37,7 @@ public class PropertyTagView extends BaseTemplateView implements PropertyTagPres
         this.readOnly = readOnly;
 
         /* SearchUIProjectsEditor is a grid */
-        final RESTPropertyTagV1DetailsEditor editor = new RESTPropertyTagV1DetailsEditor(this.readOnly);
+        @NotNull final RESTPropertyTagV1DetailsEditor editor = new RESTPropertyTagV1DetailsEditor(this.readOnly);
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */

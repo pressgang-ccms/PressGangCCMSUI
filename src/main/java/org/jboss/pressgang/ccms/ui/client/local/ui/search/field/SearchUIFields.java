@@ -23,11 +23,17 @@ import java.util.Date;
 public class SearchUIFields implements SearchViewBase {
     private static final boolean MATCH_ALL_DEFAULT = true;
 
+    @Nullable
     private Date createdAfter;
+    @Nullable
     private Date createdBefore;
+    @Nullable
     private Date editedAfter;
+    @Nullable
     private Date editedBefore;
+    @Nullable
     private Integer editedInLastXDays;
+    @Nullable
     private Integer notEditedInLastXDays;
     private String ids;
     private String notIds;
@@ -45,139 +51,156 @@ public class SearchUIFields implements SearchViewBase {
     private boolean matchAll = MATCH_ALL_DEFAULT;
     private final DateTimeFormat dateformat = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.ISO_8601);
 
+    @Nullable
     public final Date getCreatedAfter() {
         return GWTUtilities.createDateCopy(this.createdAfter);
     }
 
-    public final void setCreatedAfter(final Date createdAfter) {
+    public final void setCreatedAfter(@Nullable final Date createdAfter) {
         this.createdAfter = GWTUtilities.createDateCopy(createdAfter);
     }
 
+    @Nullable
     public final Date getCreatedBefore() {
         return GWTUtilities.createDateCopy(this.createdBefore);
     }
 
-    public final void setCreatedBefore(final Date createdBefore) {
+    public final void setCreatedBefore(@Nullable final Date createdBefore) {
         this.createdBefore = GWTUtilities.createDateCopy(createdBefore);
     }
 
+    @Nullable
     public final Date getEditedAfter() {
         return GWTUtilities.createDateCopy(this.editedAfter);
     }
 
-    public final void setEditedAfter(final Date editedAfter) {
+    public final void setEditedAfter(@Nullable final Date editedAfter) {
         this.editedAfter = GWTUtilities.createDateCopy(editedAfter);
     }
 
+    @Nullable
     public final Date getEditedBefore() {
         return GWTUtilities.createDateCopy(this.editedBefore);
     }
 
-    public final void setEditedBefore(final Date editedBefore) {
+    public final void setEditedBefore(@Nullable final Date editedBefore) {
         this.editedBefore = GWTUtilities.createDateCopy(editedBefore);
     }
 
+    @Nullable
     public final Integer getEditedInLastXDays() {
         return this.editedInLastXDays;
     }
 
-    public final void setEditedInLastXDays(final Integer editedInLastXDays) {
+    public final void setEditedInLastXDays(@Nullable final Integer editedInLastXDays) {
         this.editedInLastXDays = editedInLastXDays;
     }
 
+    @Nullable
     public final String getIds() {
         return this.ids;
     }
 
-    public final void setIds(final String ids) {
+    public final void setIds(@Nullable final String ids) {
         this.ids = ids;
     }
 
+    @Nullable
     public final String getNotIds() {
         return this.notIds;
     }
 
-    public final void setNotIds(final String notIds) {
+    public final void setNotIds(@Nullable final String notIds) {
         this.notIds = notIds;
     }
 
+    @Nullable
     public final String getTitle() {
         return this.title;
     }
 
-    public final void setTitle(final String title) {
+    public final void setTitle(@Nullable final String title) {
         this.title = title;
     }
 
+    @Nullable
     public final String getNotTitle() {
         return this.notTitle;
     }
 
-    public final void setNotTitle(final String notTitle) {
+    public final void setNotTitle(@Nullable final String notTitle) {
         this.notTitle = notTitle;
     }
 
+    @Nullable
     public final String getDescription() {
         return this.description;
     }
 
-    public final void setDescription(final String description) {
+    public final void setDescription(@Nullable final String description) {
         this.description = description;
     }
 
+    @Nullable
     public final String getNotDescription() {
         return this.notDescription;
     }
 
-    public final void setNotDescription(final String notDescription) {
+    public final void setNotDescription(@Nullable final String notDescription) {
         this.notDescription = notDescription;
     }
 
+    @Nullable
     public final String getIncludedInContentSpecs() {
         return this.includedInContentSpecs;
     }
 
-    public final void setIncludedInContentSpecs(final String includedInContentSpecs) {
+    public final void setIncludedInContentSpecs(@Nullable final String includedInContentSpecs) {
         this.includedInContentSpecs = includedInContentSpecs;
     }
 
+    @Nullable
     public final String getNotIncludedInContentSpecs() {
         return this.notIncludedInContentSpecs;
     }
 
-    public final void setNotIncludedInContentSpecs(final String notIncludedInContentSpecs) {
+    public final void setNotIncludedInContentSpecs(@Nullable final String notIncludedInContentSpecs) {
         this.notIncludedInContentSpecs = notIncludedInContentSpecs;
     }
 
+    @Nullable
     public final String getFreeTextSearch() {
         return this.freeTextSearch;
     }
 
-    public final void setFreeTextSearch(final String freeTextSearch) {
+    public final void setFreeTextSearch(@Nullable final String freeTextSearch) {
         this.freeTextSearch = freeTextSearch;
     }
 
+    @Nullable
     public final String getContents() {
         return this.contents;
     }
 
-    public final void setContents(final String contents) {
+    public final void setContents(@Nullable final String contents) {
         this.contents = contents;
     }
 
+    @Nullable
     public final Integer getNotEditedInLastXDays() {
         return this.notEditedInLastXDays;
     }
 
-    public final void setNotEditedInLastXDays(final Integer notEditedInLastXDays) {
+    public final void setNotEditedInLastXDays(@Nullable final Integer notEditedInLastXDays) {
         this.notEditedInLastXDays = notEditedInLastXDays;
     }
 
+    @Nullable
     public final String getNotContents() {
         return this.notContents;
     }
 
-    public final void setNotContents(final String notContents) {
+    public final void setNotContents(@Nullable final String notContents) {
         this.notContents = notContents;
     }
 
@@ -219,126 +242,126 @@ public class SearchUIFields implements SearchViewBase {
     public void populateFilter(@NotNull final RESTFilterV1 filter) {
 
         if (!GWTUtilities.isStringNullOrEmpty(this.getIds())) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_IDS_FILTER_VAR);
             field.explicitSetValue(this.getIds());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(this.getNotIds())) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR);
             field.explicitSetValue(this.getNotIds());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(this.getDescription())) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR);
             field.explicitSetValue(this.getDescription());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(this.getNotDescription())) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_DESCRIPTION_NOT_FILTER_VAR);
             field.explicitSetValue(this.getNotDescription());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(this.getTitle())) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_TITLE_FILTER_VAR);
             field.explicitSetValue(this.getTitle());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(this.getNotTitle())) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR);
             field.explicitSetValue(this.getNotTitle());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
         if (getEditedInLastXDays() != null) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS);
             field.explicitSetValue(this.getEditedInLastXDays().toString());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
         if (getNotEditedInLastXDays() != null) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS);
             field.explicitSetValue(this.getNotEditedInLastXDays().toString());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(this.getContents())) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_XML_FILTER_VAR);
             field.explicitSetValue(this.getContents());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(this.getNotContents())) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_XML_NOT_FILTER_VAR);
             field.explicitSetValue(this.getNotContents());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(this.getIncludedInContentSpecs())) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC);
             field.explicitSetValue(this.getIncludedInContentSpecs());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(this.getNotIncludedInContentSpecs())) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC);
             field.explicitSetValue(this.getNotIncludedInContentSpecs());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
         if (!GWTUtilities.isStringNullOrEmpty(this.getFreeTextSearch())) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR);
             field.explicitSetValue(this.getFreeTextSearch());
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
         if (this.isMatchAll() != MATCH_ALL_DEFAULT) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.LOGIC_FILTER_VAR);
             field.explicitSetValue(this.isMatchAll() + "");
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
         if (getCreatedBefore() != null) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR);
             field.explicitSetValue(this.dateformat.format(getCreatedBefore()));
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
         if (getEditedBefore() != null) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_ENDEDITDATE_FILTER_VAR);
             field.explicitSetValue(this.dateformat.format(getEditedBefore()));
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
         if (getCreatedAfter() != null) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR);
             field.explicitSetValue(this.dateformat.format(getCreatedAfter()));
             filter.getFilterFields_OTM().addNewItem(field);
         }
 
         if (getEditedAfter() != null) {
-            final RESTFilterFieldV1 field = new RESTFilterFieldV1();
+            @NotNull final RESTFilterFieldV1 field = new RESTFilterFieldV1();
             field.explicitSetName(CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR);
             field.explicitSetValue(this.dateformat.format(getEditedAfter()));
             filter.getFilterFields_OTM().addNewItem(field);
@@ -371,7 +394,7 @@ public class SearchUIFields implements SearchViewBase {
 
             if (filter.getFilterFields_OTM() != null) {
 
-                for (final RESTFilterFieldCollectionItemV1 field : filter.getFilterFields_OTM().getItems()) {
+                for (@NotNull final RESTFilterFieldCollectionItemV1 field : filter.getFilterFields_OTM().getItems()) {
 
                     final RESTFilterFieldV1 fieldItem = field.getItem();
 
@@ -390,13 +413,13 @@ public class SearchUIFields implements SearchViewBase {
                     } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS)) {
                         try {
                             this.setEditedInLastXDays(Integer.parseInt(fieldItem.getValue()));
-                        } catch (final NumberFormatException ex) {
+                        } catch (@NotNull final NumberFormatException ex) {
                             // do nothing
                         }
                     } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS)) {
                         try {
                             this.setNotEditedInLastXDays(Integer.parseInt(fieldItem.getValue()));
-                        } catch (final NumberFormatException ex) {
+                        } catch (@NotNull final NumberFormatException ex) {
                             // do nothing
                         }
                     } else if (fieldItem.getName().equals(CommonFilterConstants.TOPIC_XML_FILTER_VAR)) {
@@ -425,10 +448,11 @@ public class SearchUIFields implements SearchViewBase {
         }
     }
 
+    @NotNull
     @Override
     public final String getSearchQuery(final boolean includeQueryPrefix) {
 
-        final StringBuilder retValue = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
+        @NotNull final StringBuilder retValue = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
 
         if (!GWTUtilities.isStringNullOrEmpty(this.ids)) {
             retValue.append(";" + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "="

@@ -44,7 +44,7 @@ public final class SearchUITag extends SearchUIBase {
 
             if (filter != null) {
                 //LOGGER.log(Level.INFO, "Processing filter with " + filter.getFilterTags_OTM().getItems().size() + " tags");
-                for (final RESTFilterTagCollectionItemV1 filterTag : filter.getFilterTags_OTM().getItems()) {
+                for (@NotNull final RESTFilterTagCollectionItemV1 filterTag : filter.getFilterTags_OTM().getItems()) {
                     if (filterTag.getItem().getTag().getId().equals(tag.getItem().getId())) {
                         if (filterTag.getItem().getState().equals(CommonFilterConstants.MATCH_TAG_STATE)) {
                             //LOGGER.log(Level.INFO, "Found included tag");

@@ -121,11 +121,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     /**
      * true after the default locale has been loaded
      */
+    @org.jetbrains.annotations.Nullable
     private String defaultLocale = null;
 
     /**
      * The last xml that was rendered
      */
+    @org.jetbrains.annotations.Nullable
     private String lastXML;
     /**
      * How long it has been since the xml changes
@@ -169,18 +171,18 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     @Override
     protected void postBindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @Nullable final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
-        final GetNewEntityCallback<RESTTopicV1> getNewEntityCallback = new GetNewEntityCallback<RESTTopicV1>() {
+        @NotNull final GetNewEntityCallback<RESTTopicV1> getNewEntityCallback = new GetNewEntityCallback<RESTTopicV1>() {
 
             @Override
-            public void getNewEntity(final RESTTopicV1 selectedEntity, final DisplayNewEntityCallback<RESTTopicV1> displayCallback) {
+            public void getNewEntity(@NotNull final RESTTopicV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTTopicV1> displayCallback) {
 
                 try {
                     LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bind() GetNewEntityCallback.getNewEntity()");
 
-                    final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
+                    @NotNull final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
                             getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {
                         @Override
-                        public void doSuccessAction(final RESTTopicV1 retValue, final BaseTemplateViewInterface display) {
+                        public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final BaseTemplateViewInterface display) {
                             try {
                                 LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bind() RESTCallback.doSuccessAction()");
 
@@ -210,7 +212,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         /* When the topics have been loaded, display the first one */
         getSearchResultsComponent().addTopicListReceivedHandler(new EntityListReceivedHandler<RESTTopicCollectionV1>() {
             @Override
-            public void onCollectionRecieved(final RESTTopicCollectionV1 topics) {
+            public void onCollectionRecieved(@NotNull final RESTTopicCollectionV1 topics) {
                 topicListLoaded = true;
                 displayInitialTopic(getNewEntityCallback);
             }
@@ -265,11 +267,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         /* if getSearchResultsComponent().getProviderData().getSelectedItem() == null, then we are displaying a new topic */
         if (this.getSearchResultsComponent().getProviderData().getSelectedItem() != null) {
                 /* A callback to respond to a request for a topic with the revisions expanded */
-            final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
+            @NotNull final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
                     topicRevisionsComponent.getDisplay(),
                     new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
                         @Override
-                        public void doSuccessAction(final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
+                        public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
                             getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().setRevisions(retValue.getRevisions());
 
                             /* refresh the list */
@@ -281,6 +283,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         }
     }
 
+    @org.jetbrains.annotations.Nullable
     @Override
     protected RESTTopicV1 getDisplayedTopic() {
         try {
@@ -351,7 +354,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.postAfterSwitchView()");
 
             /* Build up a click handler to save the topic */
-            final ClickHandler saveClickHandler = new ClickHandler() {
+            @NotNull final ClickHandler saveClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
 
@@ -380,7 +383,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
-            final ClickHandler messageLogDialogOK = new ClickHandler() {
+            @NotNull final ClickHandler messageLogDialogOK = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     try {
@@ -392,12 +395,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             final String user = display.getMessageLogDialog().getUsername().getText().trim();
                             Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
 
-                            final StringBuilder message = new StringBuilder();
+                            @NotNull final StringBuilder message = new StringBuilder();
                             if (!user.isEmpty()) {
                                 message.append(user).append(": ");
                             }
                             message.append(display.getMessageLogDialog().getMessage().getText());
-                            final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
+                            @NotNull final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
 
                                 /* Sync any changes back to the underlying object */
                             flushChanges();
@@ -410,7 +413,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                  */
                             final RESTTopicV1 sourceTopic = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
 
-                            final RESTTopicV1 newTopic = new RESTTopicV1();
+                            @NotNull final RESTTopicV1 newTopic = new RESTTopicV1();
                             newTopic.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
                             newTopic.explicitSetSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
                             newTopic.explicitSetTags(new RESTTagCollectionV1());
@@ -436,7 +439,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             newTopic.explicitSetXml(sourceTopic.getXml());
 
                             if (getSearchResultsComponent().getProviderData().getDisplayedItem().returnIsAddItem()) {
-                                final BaseRestCallback<RESTTopicV1, Display> addCallback = new BaseRestCallback<RESTTopicV1, Display>(
+                                @NotNull final BaseRestCallback<RESTTopicV1, Display> addCallback = new BaseRestCallback<RESTTopicV1, Display>(
                                         display,
                                         new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
                                             @Override
@@ -446,7 +449,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                             "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
 
                                                     // Create the topic wrapper
-                                                    final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
+                                                    @NotNull final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
                                                     topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
                                                     // create the topic, and add to the wrapper
@@ -502,7 +505,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                                 RESTCalls.createTopic(addCallback, newTopic, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
                             } else {
-                                final BaseRestCallback<RESTTopicV1, Display> updateCallback = new BaseRestCallback<RESTTopicV1, Display>(
+                                @NotNull final BaseRestCallback<RESTTopicV1, Display> updateCallback = new BaseRestCallback<RESTTopicV1, Display>(
                                         display,
                                         new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
                                             @Override
@@ -612,7 +615,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             });
 
-            final ClickHandler topicViewClickHandler = new ClickHandler() {
+            @NotNull final ClickHandler topicViewClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -621,7 +624,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
-            final ClickHandler topicRevisionsClickHanlder = new ClickHandler() {
+            @NotNull final ClickHandler topicRevisionsClickHanlder = new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -679,7 +682,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindFilteredResultsButtons()");
 
-            final ClickHandler createClickHanlder = new ClickHandler() {
+            @NotNull final ClickHandler createClickHanlder = new ClickHandler() {
 
                 @Override
                 public void onClick(final ClickEvent event) {
@@ -741,7 +744,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             try {
                 getTopicXMLComponent().getDisplay().getDriver().flush();
-            } catch (final IllegalStateException ex) {
+            } catch (@NotNull final IllegalStateException ex) {
                 LOGGER.log(Level.WARNING, "getTopicXMLComponent().getDisplay().getDriver().flush() threw an IllegalStateException. This probably happened because the rendered view was refreshed before the XML editor was bound.");
             }
 
@@ -751,7 +754,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 lastXMLChange = System.currentTimeMillis();
             }
 
-            final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >= Constants.REFRESH_RATE_WTH_IMAGES;
+            @NotNull final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >= Constants.REFRESH_RATE_WTH_IMAGES;
 
             if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
                 isDisplayingImage = timeToDisplayImage;
@@ -793,8 +796,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     /**
      * @return A provider to be used for the topic revisions display list
      */
+    @org.jetbrains.annotations.Nullable
     private EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateTopicRevisionsListProvider() {
-        final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> display) {
                 if (TopicFilteredResultsAndDetailsPresenter.this.getSearchResultsComponent().getProviderData().getDisplayedItem() != null
@@ -826,21 +830,21 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 return;
             }
 
-            for (final TopicTagViewProjectEditor topicTagViewProjectEditor : getTopicTagsComponent().getDisplay().getEditor().projects.getEditors()) {
+            for (@NotNull final TopicTagViewProjectEditor topicTagViewProjectEditor : getTopicTagsComponent().getDisplay().getEditor().projects.getEditors()) {
 
                 if (topicTagViewProjectEditor.categories == null || topicTagViewProjectEditor.categories.getEditors() == null) {
                     LOGGER.log(Level.INFO, "categories is null");
                     break;
                 }
 
-                for (final TopicTagViewCategoryEditor topicTagViewCategoryEditor : topicTagViewProjectEditor.categories.getEditors()) {
+                for (@NotNull final TopicTagViewCategoryEditor topicTagViewCategoryEditor : topicTagViewProjectEditor.categories.getEditors()) {
 
                     if (topicTagViewCategoryEditor.myTags == null || topicTagViewCategoryEditor.myTags.getEditors() == null) {
                         LOGGER.log(Level.INFO, "myTags is null");
                         break;
                     }
 
-                    for (final TopicTagViewTagEditor topicTagViewTagEditor : topicTagViewCategoryEditor.myTags.getEditors()) {
+                    for (@NotNull final TopicTagViewTagEditor topicTagViewTagEditor : topicTagViewCategoryEditor.myTags.getEditors()) {
                         topicTagViewTagEditor.getDelete().addClickHandler(new DeleteTagClickHandler(topicTagViewTagEditor.getTag().getTag()));
                     }
                 }
@@ -859,13 +863,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             topicRevisionsComponent.getDisplay().getDiffButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
                 @Override
-                public void update(final int index, final RESTTopicCollectionItemV1 revisionTopic, final String value) {
-                    final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
+                public void update(final int index, @NotNull final RESTTopicCollectionItemV1 revisionTopic, final String value) {
+                    @NotNull final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
                             topicRevisionsComponent.getDisplay(),
                             new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
                                 @Override
-                                public void doSuccessAction(final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
-                                    final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID()
+                                public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
+                                    @NotNull final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID()
                                             + ": "
                                             + retValue.getId()
                                             + " "
@@ -878,7 +882,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                             + DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(
                                             retValue.getLastModified());
 
-                                    final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID()
+                                    @NotNull final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID()
                                             + ": "
                                             + getDisplayedTopic().getId()
                                             + " "
@@ -895,7 +899,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     boolean isXML = true;
                                     try {
                                         XMLParser.parse(getDisplayedTopic().getXml());
-                                    } catch (final DOMParseException ex) {
+                                    } catch (@NotNull final DOMParseException ex) {
                                         isXML = false;
                                     }
 
@@ -908,7 +912,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             topicRevisionsComponent.getDisplay().getViewButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
                 @Override
-                public void update(final int index, final RESTTopicCollectionItemV1 revisionTopic, final String value) {
+                public void update(final int index, @NotNull final RESTTopicCollectionItemV1 revisionTopic, final String value) {
 
                     try {
                         LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton() FieldUpdater.update()");
@@ -1026,11 +1030,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             // Create the topic wrapper
-            final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
+            @NotNull final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
             topicCollectionItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
 
             // create the topic, and add to the wrapper
-            final RESTTopicV1 restTopic = new RESTTopicV1();
+            @NotNull final RESTTopicV1 restTopic = new RESTTopicV1();
             restTopic.setProperties(new RESTAssignedPropertyTagCollectionV1());
             restTopic.setTags(new RESTTagCollectionV1());
             restTopic.setRevisions(new RESTTopicCollectionV1());
@@ -1057,10 +1061,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.loadDefaultLocale()");
 
-            final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+            @NotNull final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
                     display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
                 @Override
-                public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
+                public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
                     loadedCallback.stringLoaded(retValue.getValue());
                 }
             });
@@ -1081,15 +1085,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.populateXMLElements()");
 
-            final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+            @NotNull final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
                     waitDisplay, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
                 @Override
-                public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
+                public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
                     try {
                         LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.populateXMLElements() callback.doSuccessAction()");
 
                         /* Get the list of locales from the StringConstant */
-                        final List<String> xmlElements = new LinkedList<String>(Arrays.asList(retValue.getValue()
+                        @NotNull final List<String> xmlElements = new LinkedList<String>(Arrays.asList(retValue.getValue()
                                 .replaceAll(Constants.CARRIAGE_RETURN_AND_LINE_BREAK, Constants.LINE_BREAK).replaceAll(" ", "").split(Constants.LINE_BREAK)));
 
                         /* Clean the list */
@@ -1119,26 +1123,26 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * @param loadedCallback The callback to call when the data is loaded
      */
     private void populateXMLTemplates(@NotNull final BaseTemplateViewInterface waitDisplay, @NotNull final StringMapLoaded loadedCallback) {
-        final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+        @NotNull final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
                 waitDisplay, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
             @Override
-            public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
+            public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
 
                 /* Get the list of template string constant ids from the StringConstant */
-                final Set<String> xmlElements = new HashSet<String>(Arrays.asList(GWTUtilities.fixUpIdSearchString(
+                @NotNull final Set<String> xmlElements = new HashSet<String>(Arrays.asList(GWTUtilities.fixUpIdSearchString(
                         retValue.getValue()).split(Constants.COMMA)));
-                final Map<String, String> data = new TreeMap<String, String>();
+                @NotNull final Map<String, String> data = new TreeMap<String, String>();
 
                 /* work around the inability to modify an int from an anonymous class */
-                final int[] counter = new int[]{0};
+                @NotNull final int[] counter = new int[]{0};
 
                 for (final String id : xmlElements) {
                     try {
-                        final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+                        @NotNull final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
                                 waitDisplay,
                                 new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
                                     @Override
-                                    public void doSuccessAction(final RESTStringConstantV1 retValue,
+                                    public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue,
                                                                 final BaseTemplateViewInterface display) {
 
                                         ++counter[0];
@@ -1165,7 +1169,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         );
 
                         RESTCalls.getStringConstant(callback, Integer.parseInt(id));
-                    } catch (final NumberFormatException ex) {
+                    } catch (@NotNull final NumberFormatException ex) {
                         // this should not happen if GWTUtilities.fixUpIdSearchString() does its job properly
                     }
                 }
@@ -1205,9 +1209,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      */
     private void addKeyboardShortcutEventHandler(@NotNull final TopicXMLPresenter.Display topicXMLDisplay,
                                                  @NotNull final BaseTemplateViewInterface display, @NotNull final GetCurrentTopic currentTopicCallback) {
-        final Event.NativePreviewHandler keyboardShortcutPreviewhandler = new Event.NativePreviewHandler() {
+        @NotNull final Event.NativePreviewHandler keyboardShortcutPreviewhandler = new Event.NativePreviewHandler() {
             @Override
-            public void onPreviewNativeEvent(final Event.NativePreviewEvent event) {
+            public void onPreviewNativeEvent(@NotNull final Event.NativePreviewEvent event) {
                 final NativeEvent ne = event.getNativeEvent();
 
                 if (ne.getKeyCode() == KeyCodes.KEY_ESCAPE) {
@@ -1324,7 +1328,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         topicXMLDisplay.getXmlTagsDialog().getOptions().addKeyPressHandler(new KeyPressHandler() {
 
             @Override
-            public void onKeyPress(final KeyPressEvent event) {
+            public void onKeyPress(@NotNull final KeyPressEvent event) {
                 final int charCode = event.getUnicodeCharCode();
                 if (charCode == 0) {
                     // it's probably Firefox
@@ -1365,7 +1369,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         topicXMLDisplay.getCSPTopicDetailsDialog().getIds().addKeyPressHandler(new KeyPressHandler() {
 
             @Override
-            public void onKeyPress(final KeyPressEvent event) {
+            public void onKeyPress(@NotNull final KeyPressEvent event) {
                 final int charCode = event.getUnicodeCharCode();
                 if (charCode == 0) {
                     // it's probably Firefox
@@ -1401,7 +1405,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         topicXMLDisplay.getXmlTemplatesDialog().getOptions().addKeyPressHandler(new KeyPressHandler() {
 
             @Override
-            public void onKeyPress(final KeyPressEvent event) {
+            public void onKeyPress(@NotNull final KeyPressEvent event) {
                 final int charCode = event.getUnicodeCharCode();
                 if (charCode == 0) {
                     // it's probably Firefox
@@ -1494,9 +1498,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     private void insertCspDetails(@NotNull final TopicXMLPresenter.Display topicXMLDisplay,
                                   @NotNull final BaseTemplateViewInterface display) {
-        final String ids = GWTUtilities.fixUpIdSearchString(topicXMLDisplay.getCSPTopicDetailsDialog().getIds().getValue());
+        @NotNull final String ids = GWTUtilities.fixUpIdSearchString(topicXMLDisplay.getCSPTopicDetailsDialog().getIds().getValue());
         if (!ids.isEmpty()) {
-            final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
+            @NotNull final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
                 @Override
                 public void begin() {
                     display.addWaitOperation();
@@ -1509,10 +1513,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
 
                 @Override
-                public void success(final RESTTopicCollectionV1 retValue) {
+                public void success(@NotNull final RESTTopicCollectionV1 retValue) {
                     try {
-                        final StringBuilder details = new StringBuilder();
-                        for (final RESTTopicCollectionItemV1 topicCollectionItem : retValue.getItems()) {
+                        @NotNull final StringBuilder details = new StringBuilder();
+                        for (@NotNull final RESTTopicCollectionItemV1 topicCollectionItem : retValue.getItems()) {
                             final RESTTopicV1 topic = topicCollectionItem.getItem();
                             if (!details.toString().isEmpty()) {
                                 details.append("\n");
@@ -1553,8 +1557,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             final RESTTagV1 selectedTag = getTopicTagsComponent().getDisplay().getMyTags().getValue().getTag().getItem();
 
             /* Need to deal with re-adding removed tags */
-            RESTTagCollectionItemV1 deletedTag = null;
-            for (final RESTTagCollectionItemV1 tag : getSearchResultsComponent().getProviderData().getDisplayedItem().getItem()
+            @org.jetbrains.annotations.Nullable RESTTagCollectionItemV1 deletedTag = null;
+            for (@NotNull final RESTTagCollectionItemV1 tag : getSearchResultsComponent().getProviderData().getDisplayedItem().getItem()
                     .getTags().getItems()) {
                 if (tag.getItem().getId().equals(selectedTag.getId())) {
                     if (RESTBaseCollectionItemV1.REMOVE_STATE.equals(tag.getState())) {
@@ -1632,8 +1636,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     });
 
             if (!conflictingTags.isEmpty()) {
-                final StringBuilder tags = new StringBuilder("\n");
-                for (final RESTTagCollectionItemV1 tag : conflictingTags) {
+                @NotNull final StringBuilder tags = new StringBuilder("\n");
+                for (@NotNull final RESTTagCollectionItemV1 tag : conflictingTags) {
                     tags.append("\n* " + tag.getItem().getName());
                 }
 
@@ -1642,7 +1646,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     return;
                 }
 
-                for (final RESTTagCollectionItemV1 tag : conflictingTags) {
+                for (@NotNull final RESTTagCollectionItemV1 tag : conflictingTags) {
                     tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
                 }
             }
@@ -1667,9 +1671,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * @author Matthew Casperson
      */
     private class DeleteTagClickHandler implements ClickHandler {
+        @org.jetbrains.annotations.Nullable
         private final RESTTagCollectionItemV1 tag;
 
-        public DeleteTagClickHandler(final RESTTagCollectionItemV1 tag) {
+        public DeleteTagClickHandler(@org.jetbrains.annotations.Nullable final RESTTagCollectionItemV1 tag) {
             if (tag == null) {
                 throw new IllegalArgumentException("tag cannot be null");
             }

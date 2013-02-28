@@ -7,6 +7,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.blobconstants.Blob
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The view used to show the list of blob constants.
@@ -19,9 +21,10 @@ public class BlobConstantFilteredResultsView extends
     private final TextBox nameFilter = new TextBox();
     private final TextBox valueFilter = new TextBox();
 
+    @NotNull
     private TextColumn<RESTBlobConstantCollectionItemV1> idColumn = new TextColumn<RESTBlobConstantCollectionItemV1>() {
         @Override
-        public String getValue(final RESTBlobConstantCollectionItemV1 object) {
+        public String getValue(@Nullable final RESTBlobConstantCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getId() != null) {
                 return object.getItem().getId().toString();
             }
@@ -29,9 +32,10 @@ public class BlobConstantFilteredResultsView extends
         }
     };
 
+    @NotNull
     private TextColumn<RESTBlobConstantCollectionItemV1> nameColumn = new TextColumn<RESTBlobConstantCollectionItemV1>() {
         @Override
-        public String getValue(final RESTBlobConstantCollectionItemV1 object) {
+        public String getValue(@Nullable final RESTBlobConstantCollectionItemV1 object) {
             if (object != null && object.getItem() != null && object.getItem().getName() != null) {
                 return object.getItem().getName();
             }
@@ -40,16 +44,19 @@ public class BlobConstantFilteredResultsView extends
         }
     };
 
+    @NotNull
     @Override
     public TextBox getNameFilter() {
         return nameFilter;
     }
 
+    @NotNull
     @Override
     public TextBox getIdFilter() {
         return idFilter;
     }
 
+    @NotNull
     @Override
     public TextBox getValueFilter() {
         return valueFilter;

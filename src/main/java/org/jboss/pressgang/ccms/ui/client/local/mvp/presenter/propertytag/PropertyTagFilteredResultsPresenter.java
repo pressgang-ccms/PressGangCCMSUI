@@ -68,11 +68,11 @@ public class PropertyTagFilteredResultsPresenter extends BaseFilteredResultsPres
     @Override
     @NotNull
     protected EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
-        final EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTPropertyTagCollectionItemV1> list) {
 
-                final BaseRestCallback<RESTPropertyTagCollectionV1, Display> callback = new BaseRestCallback<RESTPropertyTagCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTPropertyTagCollectionV1, Display>() {
+                @NotNull final BaseRestCallback<RESTPropertyTagCollectionV1, Display> callback = new BaseRestCallback<RESTPropertyTagCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTPropertyTagCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTPropertyTagCollectionV1 retValue, @NotNull final Display display) {
                         checkArgument(retValue.getItems() != null, "RESTPropertyTagCollectionV1 items are null. This is probably due to incorrect expansion.") ;
@@ -97,7 +97,7 @@ public class PropertyTagFilteredResultsPresenter extends BaseFilteredResultsPres
     @Override
     @NotNull
     public String getQuery() {
-        final StringBuilder retValue = new StringBuilder();
+        @NotNull final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
             retValue.append(";").append(CommonFilterConstants.PROP_TAG_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getIdFilter().getText()) : display.getIdFilter().getText()));
         }
@@ -114,7 +114,7 @@ public class PropertyTagFilteredResultsPresenter extends BaseFilteredResultsPres
     @Override
     protected void displayQueryElements(@NotNull final String queryString) {
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
-        for (final String queryStringElement : queryStringElements) {
+        for (@NotNull final String queryStringElement : queryStringElements) {
             final String[] queryElements = queryStringElement.split("=");
 
             if (queryElements.length == 2) {

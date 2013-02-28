@@ -17,6 +17,7 @@ public final class StringConstantFilteredResultsAndDetailsViewEvent extends View
         super(query, newWindow);
     }
 
+    @NotNull
     @Override
     public Type<ViewOpenWithQueryEventHandler> getAssociatedType() {
         return TYPE;

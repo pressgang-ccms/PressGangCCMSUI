@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @param <T> The entity type
@@ -61,6 +62,7 @@ public interface BaseExtendedChildrenViewInterface<
     /**
      * @return The parent entity that holds the existing children
      */
+    @Nullable
     T getOriginalEntity();
 
     /**

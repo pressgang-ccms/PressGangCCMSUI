@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.projectview.RESTProjectV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -33,6 +34,7 @@ public class ProjectPresenter extends BaseTemplatePresenter {
      */
     public static final String HISTORY_TOKEN = "ProjectView";
 
+    @Nullable
     private Integer entityId;
 
     @Inject
@@ -47,7 +49,7 @@ public class ProjectPresenter extends BaseTemplatePresenter {
     public void parseToken(@NotNull final String searchToken) {
         try {
             entityId = Integer.parseInt(removeHistoryToken(searchToken, HISTORY_TOKEN));
-        } catch (final NumberFormatException ex) {
+        } catch (@NotNull final NumberFormatException ex) {
             entityId = null;
         }
     }
@@ -66,10 +68,10 @@ public class ProjectPresenter extends BaseTemplatePresenter {
      * Get the category from the database and use it to populate the editor in the view
      */
     public void getEntity(@NotNull final Integer entityId) {
-        final RESTCalls.RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, ProjectPresenter.Display>(display,
+        @NotNull final RESTCalls.RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, ProjectPresenter.Display>(display,
                 new BaseRestCallback.SuccessAction<RESTProjectV1, ProjectPresenter.Display>() {
                     @Override
-                    public void doSuccessAction(final RESTProjectV1 retValue, final ProjectPresenter.Display display) {
+                    public void doSuccessAction(final RESTProjectV1 retValue, @NotNull final ProjectPresenter.Display display) {
                         display.display(retValue, false);
                     }
                 });

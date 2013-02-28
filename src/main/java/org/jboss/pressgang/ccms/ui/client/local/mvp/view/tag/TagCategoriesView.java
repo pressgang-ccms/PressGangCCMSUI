@@ -14,6 +14,8 @@ import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagCategoriesPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class TagCategoriesView
         extends
@@ -27,9 +29,11 @@ public class TagCategoriesView
         implements TagCategoriesPresenter.Display {
 
 
+    @NotNull
     private final TextColumn<RESTCategoryCollectionItemV1> idColumn = new TextColumn<RESTCategoryCollectionItemV1>() {
         @Override
-        public String getValue(final RESTCategoryCollectionItemV1 object) {
+        @NotNull
+        public String getValue(@Nullable final RESTCategoryCollectionItemV1 object) {
             if (object == null) {
                 return null + "";
             }
@@ -38,9 +42,11 @@ public class TagCategoriesView
         }
     };
 
+    @NotNull
     private final TextColumn<RESTCategoryCollectionItemV1> nameColumn = new TextColumn<RESTCategoryCollectionItemV1>() {
         @Override
-        public String getValue(final RESTCategoryCollectionItemV1 object) {
+        @NotNull
+        public String getValue(@Nullable final RESTCategoryCollectionItemV1 object) {
             if (object == null) {
                 return null + "";
             }
@@ -48,10 +54,12 @@ public class TagCategoriesView
         }
     };
 
+    @NotNull
     private final Column<RESTCategoryCollectionItemV1, String> buttonColumn = new Column<RESTCategoryCollectionItemV1, String>(
             new ButtonCell()) {
+        @NotNull
         @Override
-        public String getValue(final RESTCategoryCollectionItemV1 object) {
+        public String getValue(@NotNull final RESTCategoryCollectionItemV1 object) {
             if (getOriginalEntity() != null) {
                 if (ComponentCategoryV1.containsTag(object.getItem(), getOriginalEntity().getId())) {
                     return PressGangCCMSUI.INSTANCE.Remove();
@@ -64,9 +72,11 @@ public class TagCategoriesView
         }
     };
 
+    @NotNull
     private final TextColumn<RESTTagInCategoryCollectionItemV1> tagIdColumn = new TextColumn<RESTTagInCategoryCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
+        @NotNull
+        public String getValue(@Nullable final RESTTagInCategoryCollectionItemV1 object) {
             if (object == null) {
                 return null + "";
             }
@@ -75,9 +85,11 @@ public class TagCategoriesView
         }
     };
 
+    @NotNull
     private final TextColumn<RESTTagInCategoryCollectionItemV1> tagNameColumn = new TextColumn<RESTTagInCategoryCollectionItemV1>() {
         @Override
-        public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
+        @NotNull
+        public String getValue(@Nullable final RESTTagInCategoryCollectionItemV1 object) {
             if (object == null) {
                 return null + "";
             }
@@ -85,41 +97,52 @@ public class TagCategoriesView
         }
     };
 
+    @NotNull
     final DisableableButtonCell up = new DisableableButtonCell();
+
+    @NotNull
     private final Column<RESTTagInCategoryCollectionItemV1, String> tagUpButtonColumn = new Column<RESTTagInCategoryCollectionItemV1, String>(
             up) {
+        @NotNull
         @Override
         public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
             return PressGangCCMSUI.INSTANCE.Up();
         }
     };
 
+    @NotNull
     final DisableableButtonCell down = new DisableableButtonCell();
+
+    @NotNull
     private final Column<RESTTagInCategoryCollectionItemV1, String> tagDownButtonColumn = new Column<RESTTagInCategoryCollectionItemV1, String>(
             down) {
+        @NotNull
         @Override
         public String getValue(final RESTTagInCategoryCollectionItemV1 object) {
             return PressGangCCMSUI.INSTANCE.Down();
         }
     };
 
+    @NotNull
     @Override
     public Column<RESTTagInCategoryCollectionItemV1, String> getExistingChildDownButtonColumn() {
         return tagDownButtonColumn;
     }
 
+    @NotNull
     @Override
     public Column<RESTTagInCategoryCollectionItemV1, String> getExistingChildUpButtonColumn() {
         return tagUpButtonColumn;
     }
 
+    @Nullable
     @Override
     public Column<RESTCategoryCollectionItemV1, String> getPossibleChildrenButtonColumn() {
         return buttonColumn;
     }
 
     @Override
-    public void display(final RESTTagV1 originalEntity, final boolean readOnly) {
+    public void display(@NotNull final RESTTagV1 originalEntity, final boolean readOnly) {
         super.displayChildren(originalEntity, readOnly);
     }
 

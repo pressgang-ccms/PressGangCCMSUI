@@ -41,9 +41,10 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
      * @author Matthew Casperson
      */
     private class SearchUICategoryEditorSource extends EditorSource<SearchUICategoryEditor> {
+        @NotNull
         @Override
         public SearchUICategoryEditor create(final int index) {
-            final SearchUICategoryEditor subEditor = new SearchUICategoryEditor(SearchUIProjectEditor.this.driver, SearchUIProjectEditor.this);
+            @NotNull final SearchUICategoryEditor subEditor = new SearchUICategoryEditor(SearchUIProjectEditor.this.driver, SearchUIProjectEditor.this);
 
             SearchUIProjectEditor.this.categoriesButtonPanel.setWidget(index, 0, subEditor.summary);
 
@@ -56,7 +57,7 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
                     SearchUIProjectEditor.this.add(subEditor);
 
                     /* Untoggle the other buttons */
-                    for (final SearchUICategoryEditor editor : categories.getEditors()) {
+                    for (@NotNull final SearchUICategoryEditor editor : categories.getEditors()) {
                         if (editor.summary != subEditor.summary) {
                             editor.summary.removeStyleName(CSSConstants.Common.CUSTOM_BUTTON_DOWN);
                             editor.summary.removeStyleName(CSSConstants.Common.CUSTOM_BUTTON);
@@ -71,7 +72,7 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
         }
 
         @Override
-        public void dispose(final SearchUICategoryEditor subEditor) {
+        public void dispose(@NotNull final SearchUICategoryEditor subEditor) {
             subEditor.summary.removeFromParent();
             subEditor.removeFromParent();
         }

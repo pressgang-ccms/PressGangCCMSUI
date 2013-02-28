@@ -137,8 +137,9 @@ public final class RESTCalls {
 
     }
 
-    private static <T> RemoteCallback<T> constructSuccessCallback(final RESTCallback<T> callback) {
-        final RemoteCallback<T> successCallback = new RemoteCallback<T>() {
+    @NotNull
+    private static <T> RemoteCallback<T> constructSuccessCallback(@NotNull final RESTCallback<T> callback) {
+        @NotNull final RemoteCallback<T> successCallback = new RemoteCallback<T>() {
             @Override
             public void callback(final T retValue) {
                 callback.success(retValue);
@@ -147,8 +148,9 @@ public final class RESTCalls {
         return successCallback;
     }
 
-    private static <T> ErrorCallback constructErrorCallback(final RESTCallback<T> callback) {
-        final ErrorCallback errorCallback = new ErrorCallback() {
+    @NotNull
+    private static <T> ErrorCallback constructErrorCallback(@NotNull final RESTCallback<T> callback) {
+        @NotNull final ErrorCallback errorCallback = new ErrorCallback() {
             @Override
             public boolean error(final Message message, final Throwable throwable) {
                 callback.failed(message, throwable);
@@ -158,22 +160,22 @@ public final class RESTCalls {
         return errorCallback;
     }
 
-    private static <T> RESTInterfaceV1 createRestMethod(final RESTCallback<T> callback) {
+    private static <T> RESTInterfaceV1 createRestMethod(@NotNull final RESTCallback<T> callback) {
         return RestClient.create(RESTInterfaceV1.class, constructSuccessCallback(callback), constructErrorCallback(callback));
     }
 
-    private static <T> void doRestCall(final RESTCallback<T> callback, final RestMethodCaller methodCaller) {
+    private static <T> void doRestCall(@NotNull final RESTCallback<T> callback, @NotNull final RestMethodCaller methodCaller) {
         try {
             callback.begin();
             methodCaller.call();
-        } catch (final Exception e) {
+        } catch (@NotNull final Exception e) {
             callback.generalException(e);
         }
     }
 
     public static void saveTag(@NotNull final RESTCallback<RESTTagV1> callback, @NotNull final RESTTagV1 tag) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[" + TAG_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + TAG_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -184,7 +186,7 @@ public final class RESTCalls {
 
     public static void createTag(@NotNull final RESTCallback<RESTTagV1> callback, @NotNull final RESTTagV1 tag) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[" + TAG_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + TAG_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -194,7 +196,7 @@ public final class RESTCalls {
     }
 
     public static void saveCategory(@NotNull final RESTCallback<RESTCategoryV1> callback, @NotNull final RESTCategoryV1 category) {
-        final String expand = "{\"branches\":[" + CATEGORY_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + CATEGORY_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -204,7 +206,7 @@ public final class RESTCalls {
     }
 
     public static void createCategory(@NotNull final RESTCallback<RESTCategoryV1> callback, @NotNull final RESTCategoryV1 category) {
-        final String expand = "{\"branches\":[" + CATEGORY_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + CATEGORY_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -272,7 +274,7 @@ public final class RESTCalls {
 
     public static void getPropertyTags(@NotNull final RESTCalls.RESTCallback<RESTPropertyTagCollectionV1> callback) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"trunk\":{\"name\":\"" + RESTv1Constants.PROPERTYTAGS_EXPANSION_NAME + "\"}}]}";
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"name\":\"" + RESTv1Constants.PROPERTYTAGS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -283,7 +285,7 @@ public final class RESTCalls {
 
     public static void getTags(@NotNull final RESTCalls.RESTCallback<RESTTagCollectionV1> callback) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"branches\":[" + TAG_EXPANSION + "],\"trunk\":{\"name\":\"tags\"}}]}";
+        @NotNull final String expand = "{\"branches\":[{\"branches\":[" + TAG_EXPANSION + "],\"trunk\":{\"name\":\"tags\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -294,7 +296,7 @@ public final class RESTCalls {
 
     public static void getTag(@NotNull final RESTCallback<RESTTagV1> callback, final Integer id) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[" + TAG_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + TAG_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -314,7 +316,7 @@ public final class RESTCalls {
 
     public static void getTopicWithRevisions(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[" + TOPIC_REVISIONS_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + TOPIC_REVISIONS_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -325,7 +327,7 @@ public final class RESTCalls {
 
     public static void getTopicWithBugs(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[" + TOPIC_BUGS_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + TOPIC_BUGS_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -336,7 +338,7 @@ public final class RESTCalls {
 
     public static void getTopicRevisionWithBugs(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id, @NotNull final Integer revision) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[" + TOPIC_BUGS_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + TOPIC_BUGS_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -347,7 +349,7 @@ public final class RESTCalls {
 
     public static void getTopicWithTags(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[" + TOPIC_TAGS_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + TOPIC_TAGS_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -358,7 +360,7 @@ public final class RESTCalls {
 
     public static void getTopicRevisionWithTags(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id, @NotNull final Integer revision) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[" + TOPIC_TAGS_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + TOPIC_TAGS_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -378,7 +380,7 @@ public final class RESTCalls {
 
     public static void getImage(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final Integer id) {
         /* Expand the language images */
-        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
                 + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -390,7 +392,7 @@ public final class RESTCalls {
 
     public static void getImageWithoutLanguageImages(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final Integer id) {
         /* Expand the language images */
-        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}}]}";
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -401,7 +403,7 @@ public final class RESTCalls {
 
     public static void updateImage(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final RESTImageV1 image) {
         /* Expand the language images */
-        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
                 + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -413,7 +415,7 @@ public final class RESTCalls {
 
     public static void createImage(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final RESTImageV1 image) {
         /* Expand the language images */
-        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME
                 + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTLanguageImageV1.IMAGEDATABASE64_NAME + "\"}}]}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -443,7 +445,7 @@ public final class RESTCalls {
 
     public static void getFiltersFromQuery(@NotNull final RESTCallback<RESTFilterCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.FILTERS_EXPANSION_NAME + "\"}}]}";
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.FILTERS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -473,7 +475,7 @@ public final class RESTCalls {
 
     public static void getTopicsFromQuery(@NotNull final RESTCallback<RESTTopicCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}}]}";
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -484,7 +486,7 @@ public final class RESTCalls {
 
     public static void getTopicsFromQuery(@NotNull final RESTCallback<RESTTopicCollectionV1> callback, @NotNull final String queryString) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}}]}";
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -495,7 +497,7 @@ public final class RESTCalls {
 
     public static void getTranslatedTopicsFromQuery(@NotNull final RESTCallback<RESTTranslatedTopicCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TRANSLATEDTOPICS_EXPANSION_NAME + "\"}}]}";
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TRANSLATEDTOPICS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -515,7 +517,7 @@ public final class RESTCalls {
 
     public static void getTagsFromQuery(@NotNull final RESTCallback<RESTTagCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TAGS_EXPANSION_NAME + "\"}}]}";
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.TAGS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -526,7 +528,7 @@ public final class RESTCalls {
 
     public static void getTagsFromQuery(@NotNull final RESTCallback<RESTTagCollectionV1> callback, @NotNull final String queryString) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.TAGS_EXPANSION_NAME + "\"}}]}";
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.TAGS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -536,7 +538,7 @@ public final class RESTCalls {
     }
 
     public static void getStringConstantsFromQuery(@NotNull final RESTCallback<RESTStringConstantCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
-        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.STRINGCONSTANTS_EXPANSION_NAME + "\"}}]}";
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.STRINGCONSTANTS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -564,7 +566,7 @@ public final class RESTCalls {
     }
 
     public static void getIntegerConstantsFromQuery(@NotNull final RESTCallback<RESTIntegerConstantCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
-        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.INTEGERCONSTANTS_EXPANSION_NAME + "\"}}]}";
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.INTEGERCONSTANTS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -592,7 +594,7 @@ public final class RESTCalls {
     }
 
     public static void getBlobConstantsFromQuery(@NotNull final RESTCallback<RESTBlobConstantCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
-        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.BLOBCONSTANTS_EXPANSION_NAME + "\"}}]}";
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end + ", \"name\": \"" + RESTv1Constants.BLOBCONSTANTS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -621,7 +623,7 @@ public final class RESTCalls {
 
     public static void getCategory(@NotNull final RESTCallback<RESTCategoryV1> callback, @NotNull final Integer id) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[" + CATEGORY_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + CATEGORY_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -641,7 +643,7 @@ public final class RESTCalls {
 
     public static void getCategories(@NotNull final RESTCallback<RESTCategoryCollectionV1> callback) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"trunk\":{ \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}, \"branches\":[" + CATEGORY_EXPANSION
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{ \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}, \"branches\":[" + CATEGORY_EXPANSION
                 + "]}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -653,7 +655,7 @@ public final class RESTCalls {
 
     public static void getUnexpandedCategoriesFromQuery(@NotNull final RESTCallback<RESTCategoryCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
                 + ", \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -665,7 +667,7 @@ public final class RESTCalls {
 
     public static void getCategoriesFromQuery(@NotNull final RESTCallback<RESTCategoryCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
                 + ", \"name\": \"" + RESTv1Constants.CATEGORIES_EXPANSION_NAME + "\"}, \"branches\":[" + CATEGORY_EXPANSION + "]}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -678,7 +680,7 @@ public final class RESTCalls {
     public static void getProjectsFromQuery(@NotNull final RESTCallback<RESTProjectCollectionV1> callback, @NotNull final String queryString,
                                             final int start, final int end) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"start\": " + start + ", \"end\": " + end
                 + ", \"name\": \"" + RESTv1Constants.PROJECTS_EXPANSION_NAME + "\"}, \"branches\":[" + PROJECT_EXPANSION + "]}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
@@ -689,7 +691,7 @@ public final class RESTCalls {
     }
 
     public static void getProjects(@NotNull final RESTCallback<RESTProjectCollectionV1> callback) {
-        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROJECTS_EXPANSION_NAME + "\"}, \"branches\":[" + PROJECT_EXPANSION + "]}]}";
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROJECTS_EXPANSION_NAME + "\"}, \"branches\":[" + PROJECT_EXPANSION + "]}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -700,7 +702,7 @@ public final class RESTCalls {
 
     public static void getProject(@NotNull final RESTCallback<RESTProjectV1> callback, @NotNull final Integer id) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -719,7 +721,7 @@ public final class RESTCalls {
     }
 
     public static void saveProject(@NotNull final RESTCallback<RESTProjectV1> callback, @NotNull final RESTProjectV1 category) {
-        final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -729,7 +731,7 @@ public final class RESTCalls {
     }
 
     public static void createProject(@NotNull final RESTCallback<RESTProjectV1> callback, @NotNull final RESTProjectV1 category) {
-        final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + PROJECT_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -740,7 +742,7 @@ public final class RESTCalls {
 
     public static void getImagesFromQuery(@NotNull final RESTCallback<RESTImageCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
         /* Expand the categories and projects in the tags */
-        final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.IMAGES_EXPANSION_NAME + "\"}}]}";
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.IMAGES_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -754,7 +756,7 @@ public final class RESTCalls {
      * @param callback The callback to process the results from the REST server
      */
     public static void getPropertyTagCategories(@NotNull final RESTCallback<RESTPropertyCategoryCollectionV1> callback) {
-        final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}]}";
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -771,7 +773,7 @@ public final class RESTCalls {
      * @param end The end of the range of returned entities
      */
     public static void getPropertyTagsFromQuery(@NotNull final RESTCallback<RESTPropertyTagCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
-        final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.PROPERTYTAGS_EXPANSION_NAME + "\"}}]}";
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.PROPERTYTAGS_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -781,7 +783,7 @@ public final class RESTCalls {
     }
 
     public static void getPropertyTag(@NotNull final RESTCallback<RESTPropertyTagV1> callback, @NotNull final Integer id) {
-        final String expand = "{\"branches\":[" + PROPERTY_TAG_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + PROPERTY_TAG_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -791,7 +793,7 @@ public final class RESTCalls {
     }
 
     public static void savePropertyTag(@NotNull final RESTCallback<RESTPropertyTagV1> callback, @NotNull final RESTPropertyTagV1 propertyTag) {
-        final String expand = "{\"branches\":[" + PROPERTY_TAG_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + PROPERTY_TAG_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -801,7 +803,7 @@ public final class RESTCalls {
     }
 
     public static void createPropertyTag(@NotNull final RESTCallback<RESTPropertyTagV1> callback, @NotNull final RESTPropertyTagV1 propertyTag) {
-        final String expand = "{\"branches\":[" + PROPERTY_TAG_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + PROPERTY_TAG_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -818,7 +820,7 @@ public final class RESTCalls {
      * @param end The end of the range of returned entities
      */
     public static void getPropertyCategoriesFromQuery(@NotNull final RESTCallback<RESTPropertyCategoryCollectionV1> callback, @NotNull final String queryString, final int start, final int end) {
-        final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}]}";
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"start\":" + start + ", \"end\":" + end + ",\"name\": \"" + RESTv1Constants.PROPERTY_CATEGORIES_EXPANSION_NAME + "\"}}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -828,7 +830,7 @@ public final class RESTCalls {
     }
 
     public static void getPropertyCategory(@NotNull final RESTCallback<RESTPropertyCategoryV1> callback, @NotNull final Integer id) {
-        final String expand = "{\"branches\":[" + PROPERTY_CATEGORY_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + PROPERTY_CATEGORY_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -838,7 +840,7 @@ public final class RESTCalls {
     }
 
     public static void savePropertyCategory(@NotNull final RESTCallback<RESTPropertyCategoryV1> callback, @NotNull final RESTPropertyCategoryV1 propertyCategory) {
-        final String expand = "{\"branches\":[" + PROPERTY_CATEGORY_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + PROPERTY_CATEGORY_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -848,7 +850,7 @@ public final class RESTCalls {
     }
 
     public static void createPropertyCategory(@NotNull final RESTCallback<RESTPropertyCategoryV1> callback, @NotNull final RESTPropertyCategoryV1 propertyCategory) {
-        final String expand = "{\"branches\":[" + PROPERTY_CATEGORY_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + PROPERTY_CATEGORY_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -864,12 +866,12 @@ public final class RESTCalls {
      */
     public static void populateLocales(@NotNull final StringListLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display) {
 
-            final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+            @NotNull final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
                     display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
                 @Override
-                public void doSuccessAction(final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
+                public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
                             /* Get the list of locales from the StringConstant */
-                    final List<String> locales = new LinkedList<String>(Arrays.asList(retValue.getValue()
+                    @NotNull final List<String> locales = new LinkedList<String>(Arrays.asList(retValue.getValue()
                             .replaceAll(Constants.CARRIAGE_RETURN_AND_LINE_BREAK_ESCAPED, "").replaceAll(Constants.LINE_BREAK_ESCAPED, "")
                             .replaceAll(" ", "").split(Constants.COMMA)));
 

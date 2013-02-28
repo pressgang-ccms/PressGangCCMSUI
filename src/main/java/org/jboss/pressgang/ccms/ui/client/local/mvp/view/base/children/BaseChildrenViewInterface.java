@@ -9,6 +9,8 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @param <T> The entity type
@@ -29,6 +31,7 @@ public interface BaseChildrenViewInterface<
     /**
      * @return The entity that will have the possible children added to it.
      */
+    @Nullable
     T getOriginalEntity();
 
     /**
@@ -39,21 +42,25 @@ public interface BaseChildrenViewInterface<
     /**
      * @return The panel used to hold the table and pager
      */
+    @NotNull
     VerticalPanel getPossibleChildrenResultsPanel();
 
     /**
      * @return The table pager.
      */
+    @NotNull
     SimplePager getPossibleChildrenPager();
 
     /**
      * @return The table used to display the possible children
      */
+    @NotNull
     CellTable<C> getPossibleChildrenResults();
 
     /**
      * @return The provider used as the source for the possible children.
      */
+    @Nullable
     EnhancedAsyncDataProvider<C> getPossibleChildrenProvider();
 
     /**
@@ -64,5 +71,6 @@ public interface BaseChildrenViewInterface<
     /**
      * @return The column that holds the buttons used to add or remove the possible children.
      */
+    @Nullable
     Column<C, String> getPossibleChildrenButtonColumn();
 }

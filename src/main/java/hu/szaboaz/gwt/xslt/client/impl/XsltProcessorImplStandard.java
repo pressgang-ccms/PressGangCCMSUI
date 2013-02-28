@@ -16,6 +16,7 @@
 package hu.szaboaz.gwt.xslt.client.impl;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class is the Standard (other than IE) implementation of the XsltProcessor interface.
@@ -26,6 +27,7 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 public class XsltProcessorImplStandard extends XsltProcessorImpl {
 
+    @NotNull
     protected static native JavaScriptObject createDOMParser() /*-{
         return new DOMParser();
     }-*/;
@@ -42,6 +44,7 @@ public class XsltProcessorImplStandard extends XsltProcessorImpl {
         this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl::processor.importStylesheet(styleSheet);
     }-*/;
 
+    @NotNull
     @Override
     protected native JavaScriptObject parseImpl(final String contents) /*-{
         var domParser = this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImplStandard::domParser;
@@ -65,6 +68,7 @@ public class XsltProcessorImplStandard extends XsltProcessorImpl {
         }
     }-*/;
 
+    @NotNull
     @Override
     protected final native String transformImpl() /*-{
         if (this.@hu.szaboaz.gwt.xslt.client.impl.XsltProcessorImpl::processor != null) {

@@ -37,7 +37,7 @@ public class WelcomePresenter extends BaseTemplatePresenter implements BaseTempl
     public void bindExtended(final int topicId, @NotNull final String pageId) {
         super.bind(topicId, pageId, display);
 
-        final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, Display>(
+        @NotNull final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, Display>(
                 display,
                 new BaseRestCallback.SuccessAction<RESTTopicV1, WelcomePresenter.Display>() {
 

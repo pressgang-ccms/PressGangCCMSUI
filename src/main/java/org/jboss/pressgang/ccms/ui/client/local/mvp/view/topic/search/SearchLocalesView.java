@@ -75,7 +75,7 @@ public class SearchLocalesView extends BaseTemplateView implements SearchLocaleP
         searchUILocales.initialize(entity);
 
         /* SearchUIProjectsEditor is a grid */
-        final SearchUILocaleEditor editor = new SearchUILocaleEditor();
+        @NotNull final SearchUILocaleEditor editor = new SearchUILocaleEditor();
         /* Initialize the driver with the top-level editor */
         driver.initialize(editor);
         /* Copy the data in the object into the UI */
@@ -89,6 +89,7 @@ public class SearchLocalesView extends BaseTemplateView implements SearchLocaleP
         return driver;
     }
 
+    @NotNull
     @Override
     public SearchUILocales getSearchUILocales() {
         return searchUILocales;

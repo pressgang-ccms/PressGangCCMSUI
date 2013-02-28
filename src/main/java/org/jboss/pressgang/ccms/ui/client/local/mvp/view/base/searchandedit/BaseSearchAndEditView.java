@@ -11,6 +11,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.WaitingDialog;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 abstract public class BaseSearchAndEditView<
         T extends RESTBaseEntityV1<T, U, V>,
@@ -53,41 +55,48 @@ abstract public class BaseSearchAndEditView<
      */
     private final WaitingDialog waiting = new WaitingDialog();
 
+    @NotNull
     @Override
     public final DockLayoutPanel getResultsViewLayoutPanel() {
         return resultsViewLayoutPanel;
     }
 
+    @NotNull
     public final DockLayoutPanel getViewLayoutPanel() {
         return viewLayoutPanel;
     }
 
+    @NotNull
     @Override
     public final HandlerSplitLayoutPanel getSplitPanel() {
         return splitPanel;
     }
 
+    @NotNull
     @Override
     public final FlexTable getResultsActionButtonsParentPanel() {
         return resultsActionButtonsParentPanel;
     }
 
+    @NotNull
     @Override
     public final SimpleLayoutPanel getResultsPanel() {
         return resultsPanel;
     }
 
+    @NotNull
     @Override
     public final SimpleLayoutPanel getViewPanel() {
         return viewPanel;
     }
 
+    @NotNull
     @Override
     public final FlexTable getViewActionButtonsParentPanel() {
         return viewActionButtonsParentPanel;
     }
 
-    public BaseSearchAndEditView(final String applicationName, final String pageName) {
+    public BaseSearchAndEditView(@NotNull final String applicationName, @NotNull final String pageName) {
         super(applicationName, pageName);
 
         /* We have own own top action panels */
@@ -141,7 +150,7 @@ abstract public class BaseSearchAndEditView<
      * @param displayedView The view to be displayed, or null if no view is to be displayed
      */
     @Override
-    public final void displayChildView(final BaseTemplateViewInterface displayedView) {
+    public final void displayChildView(@Nullable final BaseTemplateViewInterface displayedView) {
         this.getViewPanel().clear();
         this.viewActionButtonsParentPanel.clear();
         this.viewActionButtonsPanel.clear();
@@ -171,7 +180,7 @@ abstract public class BaseSearchAndEditView<
      * @param filteredResultsView The filtered view to be displayed, or null if no view is to be displayed
      */
     @Override
-    public final void displaySearchResultsView(final BaseFilteredResultsViewInterface<V> filteredResultsView) {
+    public final void displaySearchResultsView(@Nullable final BaseFilteredResultsViewInterface<V> filteredResultsView) {
         this.getResultsPanel().clear();
         this.resultsActionButtonsParentPanel.clear();
         this.resultsActionButtonsPanel.clear();

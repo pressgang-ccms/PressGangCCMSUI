@@ -36,8 +36,8 @@ final public class GWTUtilities {
      */
     @NotNull
     public static String convertExceptionStackToString(@NotNull final Throwable ex) {
-        final StringBuilder sb = new StringBuilder();
-        for (final StackTraceElement element : ex.getStackTrace()) {
+        @NotNull final StringBuilder sb = new StringBuilder();
+        for (@NotNull final StackTraceElement element : ex.getStackTrace()) {
             sb.append(element.toString());
             sb.append("\n");
         }
@@ -50,7 +50,7 @@ final public class GWTUtilities {
      * @param event the event to test
      * @return true if the CTRL key is down
      */
-    public static boolean isEventToOpenNewWindow(final ClickEvent event) {
+    public static boolean isEventToOpenNewWindow(@NotNull final ClickEvent event) {
         return event.isControlKeyDown();
 
     }
@@ -139,7 +139,7 @@ final public class GWTUtilities {
         }
 
         final char[] chars = string.toCharArray();
-        final byte[] toReturn = new byte[chars.length * bytesPerChar];
+        @NotNull final byte[] toReturn = new byte[chars.length * bytesPerChar];
         for (int i = 0; i < chars.length; ++i) {
             for (int j = 0; j < bytesPerChar; ++j) {
                 toReturn[i * bytesPerChar + j] = (byte) (chars[i] >>> (BITS_PER_BYTE * (bytesPerChar - 1 - j)));
@@ -173,7 +173,7 @@ final public class GWTUtilities {
         }
 
         final int length = bytes.length / bytesPerChar;
-        final StringBuilder retValue = new StringBuilder();
+        @NotNull final StringBuilder retValue = new StringBuilder();
 
         for (int i = 0; i < length; ++i) {
             char thisChar = 0;
@@ -199,7 +199,7 @@ final public class GWTUtilities {
     @NotNull
     public static byte[] getByteArray(@NotNull final String string, final int bytesPerChar) {
         final char[] chars = string.toCharArray();
-        final byte[] toReturn = new byte[chars.length * bytesPerChar];
+        @NotNull final byte[] toReturn = new byte[chars.length * bytesPerChar];
         for (int i = 0; i < chars.length; ++i) {
             for (int j = 0; j < bytesPerChar; ++j) {
                 toReturn[i * bytesPerChar + j] = (byte) (chars[i] >>> (BITS_PER_BYTE * (bytesPerChar - 1 - j)));

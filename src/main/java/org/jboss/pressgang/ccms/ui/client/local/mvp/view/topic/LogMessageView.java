@@ -5,6 +5,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.LogMessageInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * The dialog box that presents the list of locales for the user to select from.
@@ -26,21 +27,25 @@ public class LogMessageView extends DialogBox implements LogMessageInterface {
     private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
     private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
 
+    @NotNull
     @Override
     public TextArea getMessage() {
         return message;
     }
 
+    @NotNull
     @Override
     public RadioButton getMajorChange() {
         return majorChange;
     }
 
+    @NotNull
     @Override
     public RadioButton getMinorChange() {
         return minorChange;
     }
 
+    @NotNull
     @Override
     public DialogBox getDialogBox() {
         return this;
@@ -56,6 +61,7 @@ public class LogMessageView extends DialogBox implements LogMessageInterface {
         return ok;
     }
 
+    @NotNull
     @Override
     public TextBox getUsername() {
         return username;
@@ -81,7 +87,7 @@ public class LogMessageView extends DialogBox implements LogMessageInterface {
         layout.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.MajorChange()));
         layout.setWidget(row, 1, majorChange);
 
-        final HorizontalPanel buttonPanel = new HorizontalPanel();
+        @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
         buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
         buttonPanel.add(cancel);
         buttonPanel.add(ok);

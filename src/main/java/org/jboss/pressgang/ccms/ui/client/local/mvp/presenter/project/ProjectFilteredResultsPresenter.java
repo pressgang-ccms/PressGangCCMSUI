@@ -72,11 +72,11 @@ public class ProjectFilteredResultsPresenter
     @Override
     @NotNull
     protected EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
-        final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTProjectCollectionItemV1>() {
+        @NotNull final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTProjectCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTProjectCollectionItemV1> list) {
 
-                final BaseRestCallback<RESTProjectCollectionV1, Display> callback = new BaseRestCallback<RESTProjectCollectionV1, Display>(display,
+                @NotNull final BaseRestCallback<RESTProjectCollectionV1, Display> callback = new BaseRestCallback<RESTProjectCollectionV1, Display>(display,
                     new BaseRestCallback.SuccessAction<RESTProjectCollectionV1, Display>() {
                         @Override
                         public void doSuccessAction(@NotNull final RESTProjectCollectionV1 retValue, @NotNull final Display display) {
@@ -100,7 +100,7 @@ public class ProjectFilteredResultsPresenter
     @Override
     @NotNull
     public String getQuery() {
-        final StringBuilder retValue = new StringBuilder();
+        @NotNull final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
             retValue.append(";").append(CommonFilterConstants.PROJECT_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getIdFilter().getText()) : display.getIdFilter().getText()));
         }
@@ -118,7 +118,7 @@ public class ProjectFilteredResultsPresenter
     @Override
     protected void displayQueryElements(@NotNull final String queryString) {
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
-        for (final String queryStringElement : queryStringElements) {
+        for (@NotNull final String queryStringElement : queryStringElements) {
             final String[] queryElements = queryStringElement.split("=");
 
             if (queryElements.length == 2) {

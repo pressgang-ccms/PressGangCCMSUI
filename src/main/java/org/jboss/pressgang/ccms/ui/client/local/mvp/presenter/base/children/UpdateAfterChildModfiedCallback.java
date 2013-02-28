@@ -1,9 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children;
 
 /**
- * Called by BaseChildrenPresenter after a possible child has been added or removed
+ * Called by BaseChildrenPresenter after a possible child has been added or removed.
  *
- * @author matthew
+ * @author Matthew Casperson
  */
 public interface UpdateAfterChildModfiedCallback {
     void updateAfterChidModfied();

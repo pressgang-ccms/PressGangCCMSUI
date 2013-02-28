@@ -9,6 +9,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChild
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jetbrains.annotations.NotNull;
 
+import static com.google.common.base.Preconditions.checkState;
+
 /**
  * @see BaseChildrenPresenterInterface
  */
@@ -80,10 +82,20 @@ public abstract class BaseChildrenPresenter<
         this.display.getPossibleChildrenButtonColumn().setFieldUpdater(new FieldUpdater<C, String>() {
             @Override
             public void update(final int index, @NotNull final C object, @NotNull final String value) {
+                checkState(object.getItem() != null, "The object collection item needs to have a valid item.");
+                checkState(object.getItem().getId() != null, "The object collection item needs to have a valid item with a valid id.");
+
                 /* find the tag if it exists in the category */
                 boolean found = false;
-                final E existingCollection = getExistingCollectionCallback.getExistingCollection();
-                for (final F child : existingCollection.getItems()) {
+                @NotNull final E existingCollection = getExistingCollectionCallback.getExistingCollection();
+
+                checkState(getExistingCollectionCallback.getExistingCollection().getItems() != null, "The existing collection must have populated items.");
+
+                for (@NotNull final F child : existingCollection.getItems()) {
+
+                    checkState(child.getItem() != null, "The child collection item needs to have a valid item.");
+                    checkState(child.getItem().getId() != null, "The child collection item needs to have a valid item with a valid id.");
+
                     /* we've found a matching tag */
                     if (child.getItem().getId().equals(object.getItem().getId())) {
                         if (child.returnIsAddItem()) {

@@ -7,6 +7,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFiltere
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageCollectionItemV1>
         implements ImageFilteredResultsPresenter.Display {
@@ -16,9 +18,10 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageC
     private final TextBox imageOriginalFileNameFilter = new TextBox();
 
 
+    @NotNull
     private TextColumn<RESTImageCollectionItemV1> idColumn = new TextColumn<RESTImageCollectionItemV1>() {
         @Override
-        public String getValue(final RESTImageCollectionItemV1 object) {
+        public String getValue(@Nullable final RESTImageCollectionItemV1 object) {
             if (object == null) {
                 return null + "";
             }
@@ -28,9 +31,10 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageC
         }
     };
 
+    @NotNull
     private TextColumn<RESTImageCollectionItemV1> descriptionColumn = new TextColumn<RESTImageCollectionItemV1>() {
         @Override
-        public String getValue(final RESTImageCollectionItemV1 object) {
+        public String getValue(@Nullable final RESTImageCollectionItemV1 object) {
             if (object == null) {
                 return null + "";
             }
@@ -39,16 +43,19 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageC
         }
     };
 
+    @NotNull
     @Override
     public TextBox getImageOriginalFileNameFilter() {
         return imageOriginalFileNameFilter;
     }
 
+    @NotNull
     @Override
     public TextBox getImageIdFilter() {
         return imageIdFilter;
     }
 
+    @NotNull
     @Override
     public TextBox getImageDescriptionFilter() {
         return imageDescriptionFilter;
