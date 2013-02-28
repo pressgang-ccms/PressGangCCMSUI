@@ -199,7 +199,7 @@ public abstract class BaseSearchResultsAndTopicView<
     public BaseSearchResultsAndTopicView(final String applicationName, final String pageName) {
         super(applicationName, pageName);
 
-        renderedSplitViewMenu.addStyleName(CSSConstants.RENDERED_SPLIT_VIEW_MENU_TABLE);
+        renderedSplitViewMenu.addStyleName(CSSConstants.TopicView.RENDERED_SPLIT_VIEW_MENU_TABLE);
 
         /* Build the action bar icons */
         renderedSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
@@ -256,7 +256,7 @@ public abstract class BaseSearchResultsAndTopicView<
             getSplitPanel().addWest(this.getResultsViewLayoutPanel(), Constants.SPLIT_PANEL_SIZE);
 
             final SimplePanel renderedPanelParent = new SimplePanel();
-            renderedPanelParent.addStyleName(CSSConstants.TOPIC_VIEW_LAYOUT_PANEL);
+            renderedPanelParent.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_LAYOUT_PANEL);
             renderedPanelParent.add(panel);
 
             if (splitType == SplitType.HORIZONTAL) {

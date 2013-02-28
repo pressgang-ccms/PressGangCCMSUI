@@ -80,7 +80,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
     public RESTTranslatedTopicV1BasicDetailsEditor(final boolean readOnly) {
         super(ROWS, COLS);
 
-        this.addStyleName(CSSConstants.TOPIC_VIEW_PANEL);
+        this.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_PANEL);
 
         topicId.setReadOnly(readOnly);
         topicRevision.setReadOnly(readOnly);
@@ -105,11 +105,11 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
         this.setWidget(row, 1, locale);
 
         for (int i = 0; i < ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TOPIC_VIEW_LABEL);
+            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TopicView.TOPIC_VIEW_LABEL);
         }
 
         for (int i = 0; i < ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TOPIC_VIEW_DETAIL);
+            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TopicView.TOPIC_VIEW_DETAIL);
         }
 
     }

@@ -55,12 +55,12 @@ public final class TopicTagViewProjectEditor extends Grid implements Editor<Sear
 
         this.readOnly = readOnly;
 
-        this.addStyleName(CSSConstants.TOPIC_TAG_VIEW_PROJECT_TABLE);
+        this.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_PROJECT_TABLE);
 
         this.setWidget(0, 0, name);
         this.setWidget(0, 1, categoriesLabelPanel);
 
-        this.getCellFormatter().addStyleName(0, 0, CSSConstants.TOPIC_TAG_VIEW_PROJECT_ROW);
-        categoriesLabelPanel.addStyleName(CSSConstants.TOPIC_TAG_VIEW_CATEGORIES_TABLE);
+        this.getCellFormatter().addStyleName(0, 0, CSSConstants.TopicView.TOPIC_TAG_VIEW_PROJECT_ROW);
+        categoriesLabelPanel.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_CATEGORIES_TABLE);
     }
 }

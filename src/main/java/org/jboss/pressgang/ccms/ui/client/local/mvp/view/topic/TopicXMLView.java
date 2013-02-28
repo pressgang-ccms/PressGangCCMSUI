@@ -79,7 +79,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
             this.textArea.addStyleName(CSSConstants.PlainTextXMLDialog.PLAIN_TEXT_XML_DIALOG_TEXTAREA);
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
-            buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
+            buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(this.cancel);
             buttonPanel.add(this.ok);
 
@@ -151,7 +151,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
             this.layout.setWidget(0, 0, this.options);
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
-            buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
+            buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(this.moreInfo);
             buttonPanel.add(this.cancel);
             buttonPanel.add(this.ok);
@@ -226,7 +226,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
             this.layout.setWidget(0, 0, this.options);
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
-            buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
+            buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(this.cancel);
             buttonPanel.add(this.ok);
 
@@ -285,7 +285,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
             new NumbersAndCommaValidator(this.ids);
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
-            buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
+            buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(this.cancel);
             buttonPanel.add(this.ok);
 
@@ -352,7 +352,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     public TopicXMLView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
                 + PressGangCCMSUI.INSTANCE.XMLEditing());
-        this.getPanel().addStyleName(CSSConstants.TOPIC_XML_VIEW_PANEL);
+        this.getPanel().addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_PANEL);
 
         addLocalActionButton(this.lineWrap);
         addLocalActionButton(this.showInvisibles);

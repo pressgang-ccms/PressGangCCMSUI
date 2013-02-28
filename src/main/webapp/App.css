@@ -258,7 +258,7 @@ html {
     vertical-align: middle;
 }
 
-.TagLabel {
+.TagLabel, .LocaleLabel {
     min-width: 200px;
 }
 

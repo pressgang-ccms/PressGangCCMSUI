@@ -208,8 +208,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
      * Builds the UI.
      */
     public TopicRevisionsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
-                + PressGangCCMSUI.INSTANCE.Revisions());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - " + PressGangCCMSUI.INSTANCE.Revisions());
 
         results.addColumn(revisionNumber, PressGangCCMSUI.INSTANCE.RevisionNumber());
         results.addColumn(revisionDate, PressGangCCMSUI.INSTANCE.RevisionDate());
@@ -220,7 +219,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.View() + " / " + PressGangCCMSUI.INSTANCE.Edit());
         results.addColumn(diffButton, PressGangCCMSUI.INSTANCE.Diff());
 
-        searchResultsPanel.addStyleName(CSSConstants.SEARCH_RESULTS_PANEL);
+        searchResultsPanel.addStyleName(CSSConstants.TopicView.SEARCH_RESULTS_PANEL);
 
         searchResultsPanel.add(results);
         searchResultsPanel.add(pager);

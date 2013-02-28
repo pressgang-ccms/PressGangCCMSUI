@@ -79,7 +79,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
                 + PressGangCCMSUI.INSTANCE.TopicTags());
 
         /* Add the layout to the panel */
-        layout.addStyleName(CSSConstants.TOPIC_TAG_VIEW_NEW_TAG_TABLE);
+        layout.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_TABLE);
 
         projects = new ValueListBox<SearchUIProject>(new ProxyRenderer<SearchUIProject>(null) {
             @Override
@@ -93,7 +93,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
             }
         }
         );
-        projects.addStyleName(CSSConstants.TOPIC_TAG_VIEW_NEW_TAG_PROJECTS_LIST);
+        projects.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_PROJECTS_LIST);
 
         categories = new ValueListBox<SearchUICategory>(new ProxyRenderer<SearchUICategory>(null) {
             @Override
@@ -107,7 +107,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
             }
         }
         );
-        categories.addStyleName(CSSConstants.TOPIC_TAG_VIEW_NEW_TAG_CATEGORIES_LIST);
+        categories.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_CATEGORIES_LIST);
 
         myTags = new ValueListBox<SearchUITag>(new ProxyRenderer<SearchUITag>(null) {
             @Override
@@ -121,15 +121,15 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
             }
         }
         );
-        myTags.addStyleName(CSSConstants.TOPIC_TAG_VIEW_NEW_TAG_TAGS_LIST);
+        myTags.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_TAGS_LIST);
 
-        newTagUIElementsPanel.addStyleName(CSSConstants.TOPIC_TAG_VIEW_NEW_TAG_PARENT_PANEL);
+        newTagUIElementsPanel.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_PARENT_PANEL);
         newTagUIElementsPanel.add(projects);
         newTagUIElementsPanel.add(categories);
         newTagUIElementsPanel.add(myTags);
         newTagUIElementsPanel.add(add);
 
-        this.getPanel().addStyleName(CSSConstants.TOPIC_TAG_VIEW_CONTENT_PANEL);
+        this.getPanel().addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_CONTENT_PANEL);
         this.getPanel().setWidget(layout);
     }
 

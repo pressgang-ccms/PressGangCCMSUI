@@ -70,13 +70,13 @@ public final class RESTPropertyCategoryV1DetailsEditor extends Grid implements E
         this.setWidget(2, 1, description);
 
         for (int i = 0; i < ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TOPIC_VIEW_LABEL);
+            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TopicView.TOPIC_VIEW_LABEL);
         }
 
         for (int i = 0; i < ROWS - 1; ++i) {
-            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TOPIC_VIEW_DETAIL);
+            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TopicView.TOPIC_VIEW_DETAIL);
         }
-        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.TOPIC_VIEW_DESCRIPTION_DETAIL);
+        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.TopicView.TOPIC_VIEW_DESCRIPTION_DETAIL);
     }
 
 }

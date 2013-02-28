@@ -82,7 +82,7 @@ public class LogMessageView extends DialogBox implements LogMessageInterface {
         layout.setWidget(row, 1, majorChange);
 
         final HorizontalPanel buttonPanel = new HorizontalPanel();
-        buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
+        buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
         buttonPanel.add(cancel);
         buttonPanel.add(ok);
 

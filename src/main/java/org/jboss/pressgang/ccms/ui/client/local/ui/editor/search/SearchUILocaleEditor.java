@@ -34,7 +34,7 @@ public final class SearchUILocaleEditor extends FlexTable implements LeafValueEd
                 final int column = index % COLUMNS;
 
                 final Label label = new Label(locale.getName());
-                label.addStyleName(CSSConstants.TAG_LABEL);
+                label.addStyleName(CSSConstants.LocaleList.LOCALE_LABEL);
                 final TriStatePushButton button = new TriStatePushButton();
 
                 buttonsMap.put(button, locale);

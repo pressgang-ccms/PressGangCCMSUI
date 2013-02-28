@@ -68,11 +68,11 @@ public final class RESTBlobConstantV1DetailsEditor extends Grid implements Value
         uploadPanel.add(uploadButton);
 
         for (int i = 0; i < ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TOPIC_VIEW_LABEL);
+            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TopicView.TOPIC_VIEW_LABEL);
         }
 
         for (int i = 0; i < ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TOPIC_VIEW_DETAIL);
+            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TopicView.TOPIC_VIEW_DETAIL);
         }
     }
 

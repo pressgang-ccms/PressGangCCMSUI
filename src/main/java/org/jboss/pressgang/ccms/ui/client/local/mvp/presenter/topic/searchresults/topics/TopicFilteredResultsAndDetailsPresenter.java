@@ -308,9 +308,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             if (isReadOnlyMode()) {
-                this.getDisplay().getHistory().addStyleName(CSSConstants.ALERT_BUTTON);
+                this.getDisplay().getHistory().addStyleName(CSSConstants.Common.ALERT_BUTTON);
             } else {
-                this.getDisplay().getHistory().removeStyleName(CSSConstants.ALERT_BUTTON);
+                this.getDisplay().getHistory().removeStyleName(CSSConstants.Common.ALERT_BUTTON);
             }
 
 

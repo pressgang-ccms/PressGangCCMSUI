@@ -440,11 +440,11 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             }
 
             if (getDisplayedTopic() != null && getDisplayedTopic().getXmlErrors() != null && !getDisplayedTopic().getXmlErrors().isEmpty()) {
-                getDisplay().getXmlErrors().addStyleName(CSSConstants.ERROR);
-                getDisplay().getXmlErrorsDown().addStyleName(CSSConstants.ERROR);
+                getDisplay().getXmlErrors().addStyleName(CSSConstants.Common.ERROR);
+                getDisplay().getXmlErrorsDown().addStyleName(CSSConstants.Common.ERROR);
             } else {
-                getDisplay().getXmlErrors().removeStyleName(CSSConstants.ERROR);
-                getDisplay().getXmlErrorsDown().removeStyleName(CSSConstants.ERROR);
+                getDisplay().getXmlErrors().removeStyleName(CSSConstants.Common.ERROR);
+                getDisplay().getXmlErrorsDown().removeStyleName(CSSConstants.Common.ERROR);
             }
 
             postEnableAndDisableActionButtons(displayedView);

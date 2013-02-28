@@ -71,9 +71,9 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
         this.driver = driver;
         this.searchUIProject = searchUIProject;
 
-        this.summary.addStyleName(CSSConstants.CUSTOM_BUTTON);
-        tagsTable.addStyleName(CSSConstants.CATEGORY_TAG_LAYOUT);
-        this.addStyleName(CSSConstants.CATEGORY_TAG_SCROLL);
+        this.summary.addStyleName(CSSConstants.Common.CUSTOM_BUTTON);
+        tagsTable.addStyleName(CSSConstants.TagListCategoryView.CATEGORY_TAG_LAYOUT);
+        this.addStyleName(CSSConstants.TagListCategoryView.CATEGORY_TAG_SCROLL);
 
         this.setWidget(tagsTable);
 
@@ -135,8 +135,8 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
         summary.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                summary.removeStyleName(CSSConstants.CUSTOM_BUTTON);
-                summary.addStyleName(CSSConstants.CUSTOM_BUTTON_DOWN);
+                summary.removeStyleName(CSSConstants.Common.CUSTOM_BUTTON);
+                summary.addStyleName(CSSConstants.Common.CUSTOM_BUTTON_DOWN);
             }
         });
     }

@@ -18,7 +18,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
                 + PressGangCCMSUI.INSTANCE.RenderedView());
 
-        div.addStyleName(CSSConstants.TOPIC_RENDERED_VIEW_DIV);
+        div.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_DIV);
     }
 
     @Override

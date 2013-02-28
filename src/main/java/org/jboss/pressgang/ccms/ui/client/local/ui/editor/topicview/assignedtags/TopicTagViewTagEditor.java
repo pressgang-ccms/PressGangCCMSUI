@@ -41,6 +41,6 @@ public final class TopicTagViewTagEditor implements Editor<SearchUITag> {
 
     public TopicTagViewTagEditor(final boolean readOnly) {
         this.readOnly = readOnly;
-        name.addStyleName(CSSConstants.TOPIC_VIEW_TAG_LABEL);
+        name.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_TAG_LABEL);
     }
 }

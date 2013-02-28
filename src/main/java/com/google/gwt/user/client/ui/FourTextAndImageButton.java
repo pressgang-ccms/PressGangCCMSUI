@@ -16,16 +16,16 @@ public class FourTextAndImageButton extends TextAndImageButton {
      * Create the UI element and sets the CSS styles.
      */
     public FourTextAndImageButton() {
-        super(CSSConstants.CUSTOM_BUTTON_TEXT_BOLD);
+        super(CSSConstants.Common.CUSTOM_BUTTON_TEXT_BOLD);
 
         int row = 1;
-        div2.setAttribute("class", CSSConstants.CUSTOM_BUTTON_TEXT);
+        div2.setAttribute("class", CSSConstants.Common.CUSTOM_BUTTON_TEXT);
         DOM.insertChild(getElement(), div2, row);
 
-        div3.setAttribute("class", CSSConstants.CUSTOM_BUTTON_TEXT);
+        div3.setAttribute("class", CSSConstants.Common.CUSTOM_BUTTON_TEXT);
         DOM.insertChild(getElement(), div3, ++row);
 
-        div4.setAttribute("class", CSSConstants.CUSTOM_BUTTON_TEXT);
+        div4.setAttribute("class", CSSConstants.Common.CUSTOM_BUTTON_TEXT);
         DOM.insertChild(getElement(), div4, ++row);
     }
 

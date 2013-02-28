@@ -32,10 +32,10 @@ public final class FourTextAndImageButtonSearchUIProjectEditor extends FourTextA
                 setText3(PressGangCCMSUI.INSTANCE.Included() + ": " + value.getIncludedTags());
                 setText4(PressGangCCMSUI.INSTANCE.Excluded() + ": " + value.getExcludedTags());
 
-                div3.setAttribute("class", value.getIncludedTags() != 0 ? CSSConstants.CUSTOM_BUTTON_TAGS_INCLUDED + ""
-                        : CSSConstants.CUSTOM_BUTTON_TEXT);
-                div4.setAttribute("class", value.getExcludedTags() != 0 ? CSSConstants.CUSTOM_BUTTON_TAGS_EXCLUDED + ""
-                        : CSSConstants.CUSTOM_BUTTON_TEXT);
+                div3.setAttribute("class", value.getIncludedTags() != 0 ? CSSConstants.Common.CUSTOM_BUTTON_TAGS_INCLUDED + ""
+                        : CSSConstants.Common.CUSTOM_BUTTON_TEXT);
+                div4.setAttribute("class", value.getExcludedTags() != 0 ? CSSConstants.Common.CUSTOM_BUTTON_TAGS_EXCLUDED + ""
+                        : CSSConstants.Common.CUSTOM_BUTTON_TEXT);
             }
 
             @Override

@@ -67,7 +67,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<
     public RESTTopicV1BasicDetailsEditor(final boolean readOnly, final List<String> locales) {
         super(ROWS, COLS);
 
-        this.addStyleName(CSSConstants.TOPIC_VIEW_PANEL);
+        this.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_PANEL);
 
         title.setReadOnly(readOnly);
         /* http://code.google.com/p/google-web-toolkit/issues/detail?id=6112 */
@@ -82,11 +82,11 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<
         created.setEnabled(false);
         lastModified.setEnabled(false);
 
-        id.addStyleName(CSSConstants.TOPIC_VIEW_ID_FIELD);
-        revision.addStyleName(CSSConstants.TOPIC_VIEW_REVISION_NUMBER_FIELD);
-        title.addStyleName(CSSConstants.TOPIC_VIEW_TITLE_FIELD);
-        locale.addStyleName(CSSConstants.TOPIC_VIEW_LOCALE_FIELD);
-        description.addStyleName(CSSConstants.TOPIC_VIEW_DESCRIPTION_FIELD);
+        id.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_ID_FIELD);
+        revision.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_REVISION_NUMBER_FIELD);
+        title.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_TITLE_FIELD);
+        locale.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_LOCALE_FIELD);
+        description.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_DESCRIPTION_FIELD);
 
         int row = 0;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicID()));
@@ -117,12 +117,12 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<
         this.setWidget(row, 1, description);
 
         for (int i = 0; i < ROWS; ++i) {
-            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TOPIC_VIEW_LABEL);
+            this.getCellFormatter().addStyleName(i, 0, CSSConstants.TopicView.TOPIC_VIEW_LABEL);
         }
 
         for (int i = 0; i < ROWS - 1; ++i) {
-            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TOPIC_VIEW_DETAIL);
+            this.getCellFormatter().addStyleName(i, 1, CSSConstants.TopicView.TOPIC_VIEW_DETAIL);
         }
-        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.TOPIC_VIEW_DESCRIPTION_DETAIL);
+        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.TopicView.TOPIC_VIEW_DESCRIPTION_DETAIL);
     }
 }

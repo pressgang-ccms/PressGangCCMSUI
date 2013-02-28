@@ -32,7 +32,7 @@ public final class TopicTagViewCategoryEditor extends Grid implements Editor<Sea
                 tagsTable.setWidget(index, 1, subEditor.getDelete());
             }
 
-            tagsTable.getCellFormatter().addStyleName(index, 0, CSSConstants.TOPIC_TAG_VIEW_TAG_ROW);
+            tagsTable.getCellFormatter().addStyleName(index, 0, CSSConstants.TopicView.TOPIC_TAG_VIEW_TAG_ROW);
             return subEditor;
         }
 
@@ -52,12 +52,12 @@ public final class TopicTagViewCategoryEditor extends Grid implements Editor<Sea
 
         this.readOnly = readOnly;
 
-        this.addStyleName(CSSConstants.TOPIC_TAG_VIEW_CATEGORY_TABLE);
+        this.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_CATEGORY_TABLE);
 
         this.setWidget(0, 0, name);
         this.setWidget(0, 1, tagsTable);
 
-        this.getCellFormatter().addStyleName(0, 0, CSSConstants.TOPIC_TAG_VIEW_CATEGORY_ROW);
-        tagsTable.addStyleName(CSSConstants.TOPIC_TAG_VIEW_TAG_STABLE);
+        this.getCellFormatter().addStyleName(0, 0, CSSConstants.TopicView.TOPIC_TAG_VIEW_CATEGORY_ROW);
+        tagsTable.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_TAG_STABLE);
     }
 }

@@ -33,12 +33,12 @@ final public class UIUtilities {
 
     public static PushButton createPushButton(final String text, final boolean subMenu, final boolean externalLink) {
         final PushButton retvalue = new PushButton(text);
-        retvalue.addStyleName(CSSConstants.TEXT_BUTTON);
+        retvalue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
 
         if (subMenu) {
-            retvalue.addStyleName(CSSConstants.SUB_MENU);
+            retvalue.addStyleName(CSSConstants.Common.SUB_MENU);
         } else if (externalLink) {
-            retvalue.addStyleName(CSSConstants.EXTERNAL_BUTTON);
+            retvalue.addStyleName(CSSConstants.Common.EXTERNAL_BUTTON);
         }
 
         return retvalue;
@@ -50,7 +50,7 @@ final public class UIUtilities {
 
     public static PushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink) {
         final PushButton retvalue = createPushButton(text, subMenu, externalLink);
-        retvalue.addStyleName(CSSConstants.TOP_TAB_BUTTON);
+        retvalue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
         return retvalue;
     }
 
@@ -60,17 +60,17 @@ final public class UIUtilities {
 
     public static PushButton createLeftSideTabPushButton(final String text, final boolean subMenu, final boolean externalLink) {
         final PushButton retvalue = createPushButton(text, subMenu, externalLink);
-        retvalue.addStyleName(CSSConstants.LEFT_TAB_BUTTON);
+        retvalue.addStyleName(CSSConstants.Common.LEFT_TAB_BUTTON);
         return retvalue;
     }
 
 
     public static ToggleButton createToggleButton(final String text, final boolean subMenu) {
         final ToggleButton retvalue = new ToggleButton(text);
-        retvalue.addStyleName(CSSConstants.TEXT_BUTTON);
+        retvalue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
 
         if (subMenu) {
-            retvalue.addStyleName(CSSConstants.SUB_MENU);
+            retvalue.addStyleName(CSSConstants.Common.SUB_MENU);
         }
 
         return retvalue;
@@ -82,7 +82,7 @@ final public class UIUtilities {
 
     public static Label createDownLabel(final String text) {
         final Label retvalue = new Label(text);
-        retvalue.addStyleName(CSSConstants.DOWN_LABEL);
+        retvalue.addStyleName(CSSConstants.Common.DOWN_LABEL);
         return retvalue;
     }
 
@@ -92,7 +92,7 @@ final public class UIUtilities {
 
     public static Label createTopTabDownLabel(final String text, final boolean subMenu) {
         final Label retvalue = createDownLabel(text);
-        retvalue.addStyleName(CSSConstants.TOP_TAB_BUTTON);
+        retvalue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
         return retvalue;
     }
 
@@ -102,7 +102,7 @@ final public class UIUtilities {
 
     public static Label createLeftSideTabDownLabel(final String text, final boolean subMenu) {
         final Label retvalue = createDownLabel(text);
-        retvalue.addStyleName(CSSConstants.LEFT_TAB_BUTTON);
+        retvalue.addStyleName(CSSConstants.Common.LEFT_TAB_BUTTON);
         return retvalue;
     }
 

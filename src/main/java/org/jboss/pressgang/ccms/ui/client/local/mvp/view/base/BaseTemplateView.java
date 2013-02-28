@@ -223,7 +223,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
             layout.add(scroll);
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
-            buttonPanel.addStyleName(CSSConstants.DIALOG_BOX_OK_CANCEL_PANEL);
+            buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
 
             buttonPanel.add(edit);
             buttonPanel.add(ok);

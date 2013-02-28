@@ -58,10 +58,10 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
                     /* Untoggle the other buttons */
                     for (final SearchUICategoryEditor editor : categories.getEditors()) {
                         if (editor.summary != subEditor.summary) {
-                            editor.summary.removeStyleName(CSSConstants.CUSTOM_BUTTON_DOWN);
-                            editor.summary.removeStyleName(CSSConstants.CUSTOM_BUTTON);
+                            editor.summary.removeStyleName(CSSConstants.Common.CUSTOM_BUTTON_DOWN);
+                            editor.summary.removeStyleName(CSSConstants.Common.CUSTOM_BUTTON);
 
-                            editor.summary.addStyleName(CSSConstants.CUSTOM_BUTTON);
+                            editor.summary.addStyleName(CSSConstants.Common.CUSTOM_BUTTON);
                         }
                     }
                 }
@@ -88,11 +88,11 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
         this.driver = driver;
         this.searchUIProjects = searchUIProjects;
 
-        this.addStyleName(CSSConstants.CATEGORIES_LAYOUT);
-        summary.addStyleName(CSSConstants.CUSTOM_BUTTON);
+        this.addStyleName(CSSConstants.TagListCategoryView.CATEGORIES_LAYOUT);
+        summary.addStyleName(CSSConstants.Common.CUSTOM_BUTTON);
 
-        categoriesButtonPanel.addStyleName(CSSConstants.CATEGORIES_BUTTONS_LAYOUT);
-        scroll.addStyleName(CSSConstants.CATEGORIES_SCROLL_PANEL);
+        categoriesButtonPanel.addStyleName(CSSConstants.TagListCategoryView.CATEGORIES_BUTTONS_LAYOUT);
+        scroll.addStyleName(CSSConstants.TagListCategoryView.CATEGORIES_SCROLL_PANEL);
 
         scroll.setWidget(categoriesButtonPanel);
         this.addWest(scroll, BUTTON_COLUMN_WIDTH);
@@ -100,8 +100,8 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
         summary.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                summary.removeStyleName(CSSConstants.CUSTOM_BUTTON);
-                summary.addStyleName(CSSConstants.CUSTOM_BUTTON_DOWN);
+                summary.removeStyleName(CSSConstants.Common.CUSTOM_BUTTON);
+                summary.addStyleName(CSSConstants.Common.CUSTOM_BUTTON_DOWN);
             }
         });
     }

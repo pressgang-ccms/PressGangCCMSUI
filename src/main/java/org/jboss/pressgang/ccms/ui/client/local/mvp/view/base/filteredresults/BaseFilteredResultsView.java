@@ -56,7 +56,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
 
         searchResultsPanel.addStyleName(CSSConstants.FilteredResultsView.FILTERED_RESULTS_PANEL);
         filterTable.addStyleName(CSSConstants.FilteredResultsView.FILTERED_OPTIONS_PANEL);
-        tabPanel.addStyleName(CSSConstants.FILTERED_RESULTS_TAB_MENU_TABLE);
+        tabPanel.addStyleName(CSSConstants.Template.FILTERED_RESULTS_TAB_MENU_TABLE);
 
         this.addActionButton(entitySearch);
         this.addActionButton(create);
