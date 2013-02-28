@@ -503,22 +503,22 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         headingBanner.addStyleName(CSSResources.INSTANCE.appCss().ApplicationHeadingPanel());
         headingBanner.add(new Image(ImageResources.INSTANCE.headingBanner()));
 
-        topLevelLayoutPanel.addStyleName(CSSConstants.TOP_LEVEL_LAYOUT_PANEL);
+        topLevelLayoutPanel.addStyleName(CSSConstants.Template.TOP_LEVEL_LAYOUT_PANEL);
         topLevelLayoutPanel.addNorth(headingBanner, Constants.HEADING_BANNER_HEIGHT);
 
         /* Set the second level layout */
-        secondLevelLayoutPanel.addStyleName(CSSConstants.SECOND_LEVEL_LAYOUT_PANEL);
+        secondLevelLayoutPanel.addStyleName(CSSConstants.Template.SECOND_LEVEL_LAYOUT_PANEL);
         topLevelLayoutPanel.add(secondLevelLayoutPanel);
 
         /* Set the page title */
         pageTitle.setText(pageName);
-        pageTitle.addStyleName(CSSConstants.PAGE_TITLE);
+        pageTitle.addStyleName(CSSConstants.Template.PAGE_TITLE);
         pageTitleParentLayoutPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
         pageTitleParentLayoutPanel.add(pageTitle);
 
         /* Add the quick search box */
         final HorizontalPanel quickSearchParentPanel = new HorizontalPanel();
-        quickSearchParentPanel.addStyleName(CSSConstants.QUICK_SEARCH_PARENT_PANEL);
+        quickSearchParentPanel.addStyleName(CSSConstants.Template.QUICK_SEARCH_PARENT_PANEL);
         quickSearchParentPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 
         final HorizontalPanel quickSearchPanel = new HorizontalPanel();
@@ -529,18 +529,18 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         quickSearchParentPanel.add(quickSearchPanel);
         pageTitleParentLayoutPanel.add(quickSearchParentPanel);
 
-        pageTitleParentLayoutPanel.addStyleName(CSSConstants.PAGE_TITLE_PARENT_LAYOUT_PANEL);
+        pageTitleParentLayoutPanel.addStyleName(CSSConstants.Template.PAGE_TITLE_PARENT_LAYOUT_PANEL);
         secondLevelLayoutPanel.addNorth(pageTitleParentLayoutPanel, Constants.PAGE_TITLE_BAR_HEIGHT);
 
         /* Set the remaining content */
-        thirdLevelLayoutPanel.addStyleName(CSSConstants.THIRD_LEVEL_LAYOUT_PANEL);
+        thirdLevelLayoutPanel.addStyleName(CSSConstants.Template.THIRD_LEVEL_LAYOUT_PANEL);
         secondLevelLayoutPanel.add(thirdLevelLayoutPanel);
 
         /* Set the action bar panel */
-        topActionGrandParentPanel.addStyleName(CSSConstants.TOP_ACTION_GRANDPARENT_PANEL);
-        topActionParentPanel.addStyleName(CSSConstants.TOP_ACTION_PARENT_PANEL);
-        topActionPanel.addStyleName(CSSConstants.TOP_ACTION_PANEL);
-        topViewSpecificActionPanel.addStyleName(CSSConstants.TOP_ACTION_PANEL);
+        topActionGrandParentPanel.addStyleName(CSSConstants.Template.TOP_ACTION_GRANDPARENT_PANEL);
+        topActionParentPanel.addStyleName(CSSConstants.Template.TOP_ACTION_PARENT_PANEL);
+        topActionPanel.addStyleName(CSSConstants.Template.TOP_ACTION_PANEL);
+        topViewSpecificActionPanel.addStyleName(CSSConstants.Template.TOP_ACTION_PANEL);
 
         topActionParentPanel.setWidget(0, 0, topActionPanel);
         /* A spacer cell, to push the next cell to the right */
@@ -552,14 +552,14 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         thirdLevelLayoutPanel.addNorth(topActionGrandParentPanel, Constants.ACTION_BAR_HEIGHT);
 
         /* Set the footer panel */
-        footerPanel.addStyleName(CSSConstants.FOOTER_PANEL);
+        footerPanel.addStyleName(CSSConstants.Template.FOOTER_PANEL);
 
         thirdLevelLayoutPanel.addSouth(footerPanel, Constants.FOOTER_HEIGHT);
 
         /* Set the shortcut bar */
         shortCutPanelParent.setWidget(shortcutPanel);
-        shortCutPanelParent.addStyleName(CSSConstants.SHORTCUT_PANEL_PARENT);
-        shortcutPanel.addStyleName(CSSConstants.SHORTCUT_PANEL);
+        shortCutPanelParent.addStyleName(CSSConstants.Template.SHORTCUT_PANEL_PARENT);
+        shortcutPanel.addStyleName(CSSConstants.Template.SHORTCUT_PANEL);
 
         thirdLevelLayoutPanel.addWest(shortCutPanelParent, Constants.SHORTCUT_BAR_WIDTH);
 
@@ -569,14 +569,19 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         /* Add the REST server */
         final Label restServer = new Label();
+
         if (Constants.BASE_URL == Constants.DEV_REST_SERVER) {
+            restServer.addStyleName(CSSConstants.Template.SERVER_TYPE_DEVELOPMENT);
             restServer.setText(PressGangCCMSUI.INSTANCE.DevelopmentServer());
         } else if (Constants.BASE_URL == Constants.PROD_REST_SERVER) {
+            restServer.addStyleName(CSSConstants.Template.SERVER_TYPE_PRODUCTION);
             restServer.setText(PressGangCCMSUI.INSTANCE.ProductionServer());
         } else if (Constants.BASE_URL == Constants.LOCAL_REST_SERVER) {
+            restServer.addStyleName(CSSConstants.Template.SERVER_TYPE_DEVELOPMENT);
             restServer.setText(PressGangCCMSUI.INSTANCE.LocalServer());
         } else {
             restServer.setText(PressGangCCMSUI.INSTANCE.OtherServer());
+            restServer.addStyleName(CSSConstants.Template.SERVER_TYPE_DEVELOPMENT);
         }
 
         footerPanel.setWidget(0, footerPanel.getCellCount(0), new Label("|"));
@@ -589,7 +594,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         footerPanel.setWidget(0, footerPanel.getCellCount(0), feedback);
 
         /* Add the content panel */
-        panel.addStyleName(CSSConstants.CONTENT_LAYOUT_PANEL);
+        panel.addStyleName(CSSConstants.Template.CONTENT_LAYOUT_PANEL);
 
         thirdLevelLayoutPanel.add(panel);
 
@@ -687,7 +692,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         }
 
         table.setWidget(0, columns, new SimplePanel());
-        table.getCellFormatter().addStyleName(0, columns, CSSConstants.RIGHT_ALIGNED_ACTION_BUTTONS);
+        table.getCellFormatter().addStyleName(0, columns, CSSConstants.Template.RIGHT_ALIGNED_ACTION_BUTTONS);
     }
 
     public final void addActionButton(@NotNull final Widget widget, @NotNull final FlexTable table) {

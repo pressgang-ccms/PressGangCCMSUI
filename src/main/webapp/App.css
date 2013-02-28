@@ -65,7 +65,7 @@
     overflow-x: hidden;
 }
 
-.FilteredOptionsPanel, .ImageFilteredOptionsPanel, .TagFilteredOptionsPanel {
+.FilteredOptionsPanel, .TagFilteredOptionsPanel {
     margin-bottom: 8px;
 }
 
@@ -115,9 +115,7 @@ html {
     /*bottom: 16px !important;*/
 }
 
-.CreateTopicViewButtonsPanel {
-    bottom: 16px !important;
-}
+
 
 .FilteredResultsTabMenu {
     border-spacing: 0px;
@@ -214,14 +212,6 @@ html {
     background-color: #B4B4B4;
 }
 
-.ImageButton {
-    margin: 8px;
-}
-
-.SpacedButton {
-    margin: 8px;
-}
-
 .ContentLayoutPanel>div {
     overflow-y: auto !important;
 }
@@ -261,15 +251,6 @@ html {
 .CategoriesButtonsLayout td {
     padding-bottom: 2px;
     padding-top: 2px;
-}
-
-.ProjectLayout {
-    border-spacing: 0px;
-    padding: 0px;
-}
-
-.ProjectLayout td {
-    vertical-align: top;
 }
 
 .CategoryTagLayout td {

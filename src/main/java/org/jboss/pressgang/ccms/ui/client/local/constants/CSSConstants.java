@@ -8,6 +8,76 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
  */
 public interface CSSConstants {
 
+    /**
+     * Styles applied to the base template.
+     */
+    interface Template {
+        /**
+         * Style applied to the label that identifies the ui as working with a production server.
+         */
+        String SERVER_TYPE_PRODUCTION = "ServerTypeProduction";
+        /**
+         * Style applied to the label that identifies the ui as working with a development server.
+         */
+        String SERVER_TYPE_DEVELOPMENT = "ServerTypeDevelopment";
+        /**
+         * Assigned to the panel that holds the shortcut panels.
+         */
+        String SHORTCUT_PANEL_PARENT = "ShortcutPanelParent";
+        /**
+         * Assigned to the vertical panel holding the shortcut buttons on the left of the screen.
+         */
+        String SHORTCUT_PANEL = "ShortcutPanel";
+        /**
+         * Assigned to the panel down the bottom of the screen that serves as the footer.
+         */
+        String FOOTER_PANEL = "FooterPanel";
+        /**
+         * The class assigned to the top level DockLayoutPanel.
+         */
+        String TOP_LEVEL_LAYOUT_PANEL = "TopLevelLayoutPanel";
+        /**
+         * Assigned to the doc layout panel below the page heading.
+         */
+        String SECOND_LEVEL_LAYOUT_PANEL = "SecondLevelLayoutPanel";
+        /**
+         * The class assigned to the page title label.
+         */
+        String PAGE_TITLE = "PageTitle";
+        /**
+         * Assigned to the panel that holds the quick search controls.
+         */
+        String QUICK_SEARCH_PARENT_PANEL = "QuickSearchParentPanel";
+        /**
+         * Assigned to the panel that holds the page title and quick search buttons
+         */
+        String PAGE_TITLE_PARENT_LAYOUT_PANEL = "PageTitleParentLayoutPanel";
+        /**
+         * Assigend to the panel that holds the top action buttons and page content.
+         */
+        String THIRD_LEVEL_LAYOUT_PANEL = "ThirdLevelLayoutPanel";
+        /**
+         * Assigned to the panel that holds the parent of the  action buttons panel.
+         */
+        String TOP_ACTION_GRANDPARENT_PANEL = "TopActionGrandParentPanel";
+        /**
+         * Assigned to the panel that holds the action buttons panel.
+         */
+        String TOP_ACTION_PARENT_PANEL = "TopActionParentPanel";
+        /**
+         * Assigned to the panel that holds the action buttons.
+         */
+        String TOP_ACTION_PANEL = "TopActionPanel";
+        /**
+         * Assigned to the panel that holds the page content.
+         */
+        String CONTENT_LAYOUT_PANEL = "ContentLayoutPanel";
+        /**
+         * Assigned to a padding element that pushing the remaining buttons to the right.
+         */
+        String RIGHT_ALIGNED_ACTION_BUTTONS = "RightAlignedActionButtons";
+    }
+
     interface HelpDialog {
         String HELP_CONTENTS = "HelpContents";
     }
@@ -95,15 +165,8 @@ public interface CSSConstants {
          */
         String ENTITY_SEARCH_TAG_VIEW_BUTTONS_PANEL = "EntitySearchTagViewButtonsPanel";
         String ENTITY_SEARCH_TAG_VIEW_BUTTONS_PARENT_PANEL = "EntitySearchTagViewButtonsParentPanel";
-        String ENTITY_SEARCH_TOPIC_VIEW_BUTTONS_PANEL = "EntitySearchTopicViewButtonsPanel";
         String ENTITY_SEARCH_TOPIC_VIEW_DETAILS_PANEL = "EntitySearchTopicViewDetailsPanel";
         String ENTITY_SEARCH_RESULTS_AND_VIEW_PARENT_PANEL = "EntitySearchResultsAndViewParentPanel";
-    }
-
-    interface CreateTopicView {
-        String CREATE_TOPIC_VIEW_BUTTONS_PANEL = "CreateTopicViewButtonsPanel";
-        String CREATE_TOPIC_VIEW_DETAILS_PANEL = "CreateTopicViewDetailsPanel";
-        String CREATE_RESULTS_AND_VIEW_PARENT_PANEL = "CreateResultsAndViewPanelParent";
     }
 
     interface StringConstantView {
@@ -141,7 +204,6 @@ public interface CSSConstants {
         String BLOB_CONSTANT_VIEW_PANEL = "BlobConstantViewPanel";
         String BLOB_CONSTANT_VIEW_ID_FIELD = "BlobConstantViewIdField";
         String BLOB_CONSTANT_VIEW_NAME_FIELD = "BlobConstantViewNameField";
-        String BLOB_CONSTANT_VIEW_VALUE_FIELD = "BlobConstantViewValueField";
     }
 
     interface TagView {
@@ -195,30 +257,6 @@ public interface CSSConstants {
         String PROJECT_VIEW_DESCRIPTION_TEXT_CELL = "ProjectViewDescriptionTextCell";
     }
 
-    /**
-     * The class assigned to the page title label.
-     */
-    String PAGE_TITLE = "PageTitle";
-    /**
-     * The class assigned to the top level DockLayoutPanel.
-     */
-    String TOP_LEVEL_LAYOUT_PANEL = "TopLevelLayoutPanel";
-    String SECOND_LEVEL_LAYOUT_PANEL = "SecondLevelLayoutPanel";
-    String THIRD_LEVEL_LAYOUT_PANEL = "ThirdLevelLayoutPanel";
-    String CONTENT_LAYOUT_PANEL = "ContentLayoutPanel";
-    String TOP_ACTION_GRANDPARENT_PANEL = "TopActionGrandParentPanel";
-    String TOP_ACTION_PARENT_PANEL = "TopActionParentPanel";
-    String TOP_ACTION_PANEL = "TopActionPanel";
-    String SHORTCUT_PANEL = "ShortcutPanel";
-    /**
-     * Assigned to the panel that holds the shortcut panels.
-     */
-    String SHORTCUT_PANEL_PARENT = "ShortcutPanelParent";
-    String FOOTER_PANEL = "FooterPanel";
-    String RIGHT_ALIGNED_ACTION_BUTTONS = "RightAlignedActionButtons";
-    String PAGE_TITLE_PARENT_LAYOUT_PANEL = "PageTitleParentLayoutPanel";
-    String QUICK_SEARCH_PARENT_PANEL = "QuickSearchParentPanel";
-
     String TOPIC_VIEW_LAYOUT_PANEL = "TopicViewLayoutPanel";
     String TOPIC_RENDERED_VIEW_DIV = "TopicRenderedViewDiv";
     String SEARCH_RESULTS_PANEL = "SearchResultsPanel";
@@ -231,9 +269,7 @@ public interface CSSConstants {
     String TOPIC_VIEW_LABEL = "TopicViewLabel";
     String TOPIC_VIEW_DETAIL = "TopicViewDetail";
     String TOPIC_VIEW_DESCRIPTION_DETAIL = "TopicViewDescriptionDetail";
-    String SPACED_BUTTON = "SpacedButton";
     String PROJECTS_LAYOUT = "ProjectsLayout";
-    String PROJECT_LAYOUT = "ProjectLayout";
     String PROJECTS_BUTTONS_LAYOUT = "ProjectsButtonsLayout";
     String PROJECTS_SCROLL_PANEL = "ProjectsScrollPanel";
     String CUSTOM_BUTTON = "CustomButton";
@@ -423,10 +459,6 @@ public interface CSSConstants {
      */
     String EXTERNAL_BUTTON = "ExternalLink";
     /**
-     * Assigned to text buttons.
-     */
-    String IMAGE_BUTTON = "ImageButton";
-    /**
      * Assigned to the table that holds the split view menu.
      */
     String RENDERED_SPLIT_VIEW_MENU_TABLE = "RenderedSplitViewMenuTable";
@@ -462,13 +494,5 @@ public interface CSSConstants {
      * Assigned to the cell that holds the image upload buttons.
      */
     String IMAGE_VIEW_LANGUAGE_IMAGE_UPLOAD_BUTTONS_CELL = "ImageViewLanguageImageUploadButtonsCell";
-    /**
-     * Assigned to the panel that holds the list of images.
-     */
-    String IMAGE_FILTERED_RESULTS_PANEL = "ImageFilteredResultsPanel";
-    /**
-     * Assigned to the panel that holds the filter options for images.
-     */
-    String IMAGE_FILTERED_OPTIONS_PANEL = "ImageFilteredOptionsPanel";
 
 }
