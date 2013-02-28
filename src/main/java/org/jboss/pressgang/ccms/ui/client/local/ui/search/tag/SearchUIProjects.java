@@ -17,8 +17,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -110,62 +112,73 @@ public class SearchUIProjects implements SearchViewBase {
     }
 
     public void populateFilter(@NotNull final RESTFilterV1 filter) {
-        // because a tag can be listed under multiple categories with different values,
-        // we keep a track of the tags we have processed here
-        final List<Integer> processedIds = new ArrayList<Integer>();
+        try
+        {
+            LOGGER.log(Level.INFO, "ENTER SearchUIProjects.populateFilter()");
 
-        for (final SearchUIProject project : projects) {
-            for (final SearchUICategory category : project.getCategories()) {
+            checkArgument(filter.getFilterTags_OTM() != null, "The filter must have a collection of tags");
+            checkArgument(filter.getFilterFields_OTM() != null, "The filter must have a collection of fields");
+            checkArgument(filter.getFilterCategories_OTM() != null, "The filter must have a collection of categories");
 
-                final RESTProjectV1 restProject = new RESTProjectV1();
-                restProject.setId(project.getId());
+            // because a tag can be listed under multiple categories with different values,
+            // we keep a track of the tags we have processed here
+            final List<Integer> processedIds = new ArrayList<Integer>();
 
-                final RESTCategoryV1 restCategory = new RESTCategoryV1();
-                restCategory.setId(category.getId());
+            for (final SearchUIProject project : projects) {
+                for (final SearchUICategory category : project.getCategories()) {
 
-                final RESTFilterCategoryV1 restFilterCategory = new RESTFilterCategoryV1();
-                restFilterCategory.explicitSetProject(restProject);
-                restFilterCategory.explicitSetCategory(restCategory);
+                    final RESTProjectV1 restProject = new RESTProjectV1();
+                    restProject.setId(project.getId());
 
-                /*
-                    Add the parameters for the category logic.
-                 */
-                if (category.isInternalLogicAnd() && category.isInternalLogicAnd() != Constants.DEFAULT_INTERNAL_AND_LOGIC) {
+                    final RESTCategoryV1 restCategory = new RESTCategoryV1();
+                    restCategory.setId(category.getId());
+
+                    final RESTFilterCategoryV1 restFilterCategory = new RESTFilterCategoryV1();
+                    restFilterCategory.explicitSetProject(restProject);
+                    restFilterCategory.explicitSetCategory(restCategory);
+
                     /*
-                        If the internal "and" logic is specified, and the internal "and" logic is not the default value (i.e. Constants.DEFAULT_INTERNAL_AND_LOGIC is false),
-                        then add a query parameter.
+                        Add the parameters for the category logic.
                      */
-                    restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_INTERNAL_AND_STATE);
-                    filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
-                } else if (category.isInternalLogicOr() && category.isInternalLogicOr() == Constants.DEFAULT_INTERNAL_AND_LOGIC) {
-                    /*
-                        If the internal "or" logic is specified, and the internal "or" logic is not the default value (i.e. Constants.DEFAULT_INTERNAL_AND_LOGIC is true),
-                        then add a query parameter.
-                     */
-                    restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_INTERNAL_OR_STATE);
-                    filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
-                }
+                    if (category.isInternalLogicAnd() && category.isInternalLogicAnd() != Constants.DEFAULT_INTERNAL_AND_LOGIC) {
+                        /*
+                            If the internal "and" logic is specified, and the internal "and" logic is not the default value (i.e. Constants.DEFAULT_INTERNAL_AND_LOGIC is false),
+                            then add a query parameter.
+                         */
+                        restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_INTERNAL_AND_STATE);
+                        filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
+                    } else if (category.isInternalLogicOr() && category.isInternalLogicOr() == Constants.DEFAULT_INTERNAL_AND_LOGIC) {
+                        /*
+                            If the internal "or" logic is specified, and the internal "or" logic is not the default value (i.e. Constants.DEFAULT_INTERNAL_AND_LOGIC is true),
+                            then add a query parameter.
+                         */
+                        restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_INTERNAL_OR_STATE);
+                        filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
+                    }
 
-                if (category.isExternalLogicAnd() && category.isExternalLogicAnd() != Constants.DEFAULT_EXTERNAL_AND_LOGIC) {
-                    restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_EXTERNAL_AND_STATE);
-                    filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
-                } else if (category.isExternalLogicOr() && category.isExternalLogicOr() == Constants.DEFAULT_EXTERNAL_AND_LOGIC) {
-                    restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_EXTERNAL_OR_STATE);
-                    filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
-                }
+                    if (category.isExternalLogicAnd() && category.isExternalLogicAnd() != Constants.DEFAULT_EXTERNAL_AND_LOGIC) {
+                        restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_EXTERNAL_AND_STATE);
+                        filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
+                    } else if (category.isExternalLogicOr() && category.isExternalLogicOr() == Constants.DEFAULT_EXTERNAL_AND_LOGIC) {
+                        restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_EXTERNAL_OR_STATE);
+                        filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
+                    }
 
-                for (final SearchUITag tag : category.getMyTags()) {
-                    if (!processedIds.contains(tag.getTag().getItem().getId())) {
-                        if (tag.getState() != TriStateSelectionState.NONE) {
-                            final RESTFilterTagV1 filterTag = new RESTFilterTagV1();
-                            filterTag.explicitSetTag(tag.getTag().getItem());
-                            filterTag.explicitSetState(tag.getState() == TriStateSelectionState.SELECTED ? CommonFilterConstants.MATCH_TAG_STATE : CommonFilterConstants.NOT_MATCH_TAG_STATE);
-                            filter.getFilterTags_OTM().addNewItem(filterTag);
-                            processedIds.add(tag.getTag().getItem().getId());
+                    for (final SearchUITag tag : category.getMyTags()) {
+                        if (!processedIds.contains(tag.getTag().getItem().getId())) {
+                            if (tag.getState() != TriStateSelectionState.NONE) {
+                                final RESTFilterTagV1 filterTag = new RESTFilterTagV1();
+                                filterTag.explicitSetTag(tag.getTag().getItem());
+                                filterTag.explicitSetState(tag.getState() == TriStateSelectionState.SELECTED ? CommonFilterConstants.MATCH_TAG_STATE : CommonFilterConstants.NOT_MATCH_TAG_STATE);
+                                filter.getFilterTags_OTM().addNewItem(filterTag);
+                                processedIds.add(tag.getTag().getItem().getId());
+                            }
                         }
                     }
                 }
             }
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT SearchUIProjects.populateFilter()");
         }
     }
 

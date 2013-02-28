@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
@@ -178,6 +179,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                     /* The collections are new for a new filter */
                     filter.explicitSetFilterTags_OTM(new RESTFilterTagCollectionV1());
                     filter.explicitSetFilterFields_OTM(new RESTFilterFieldCollectionV1());
+                    filter.explicitSetFilterCategories_OTM(new RESTFilterCategoryCollectionV1());
 
                     saveFilterDialog.getDialogBox().show();
                 } finally {
