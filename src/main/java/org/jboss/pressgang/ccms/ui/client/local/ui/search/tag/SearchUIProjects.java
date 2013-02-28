@@ -111,6 +111,27 @@ public class SearchUIProjects implements SearchViewBase {
         }
     }
 
+    private RESTFilterCategoryV1 generateRESTFilterCategory(@NotNull final SearchUIProject project, @NotNull final SearchUICategory category, @NotNull final RESTFilterV1 filter) {
+        final RESTProjectV1 restProject = new RESTProjectV1();
+        restProject.setId(project.getId());
+
+        final RESTCategoryV1 restCategory = new RESTCategoryV1();
+        restCategory.setId(category.getId());
+
+        final RESTFilterCategoryV1 restFilterCategory = new RESTFilterCategoryV1();
+        restFilterCategory.explicitSetProject(restProject);
+        restFilterCategory.explicitSetCategory(restCategory);
+
+        filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
+
+        return restFilterCategory;
+    }
+
+    /**
+     * Add the tag and category states to the supplied filter. This is usually so a filter object can be
+     * saved.
+     * @param filter The filter to be synced with the tag and category states.
+     */
     public void populateFilter(@NotNull final RESTFilterV1 filter) {
         try
         {
@@ -127,16 +148,6 @@ public class SearchUIProjects implements SearchViewBase {
             for (final SearchUIProject project : projects) {
                 for (final SearchUICategory category : project.getCategories()) {
 
-                    final RESTProjectV1 restProject = new RESTProjectV1();
-                    restProject.setId(project.getId());
-
-                    final RESTCategoryV1 restCategory = new RESTCategoryV1();
-                    restCategory.setId(category.getId());
-
-                    final RESTFilterCategoryV1 restFilterCategory = new RESTFilterCategoryV1();
-                    restFilterCategory.explicitSetProject(restProject);
-                    restFilterCategory.explicitSetCategory(restCategory);
-
                     /*
                         Add the parameters for the category logic.
                      */
@@ -145,23 +156,24 @@ public class SearchUIProjects implements SearchViewBase {
                             If the internal "and" logic is specified, and the internal "and" logic is not the default value (i.e. Constants.DEFAULT_INTERNAL_AND_LOGIC is false),
                             then add a query parameter.
                          */
+                        final RESTFilterCategoryV1 restFilterCategory = generateRESTFilterCategory(project, category, filter);
                         restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_INTERNAL_AND_STATE);
-                        filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
+
                     } else if (category.isInternalLogicOr() && category.isInternalLogicOr() == Constants.DEFAULT_INTERNAL_AND_LOGIC) {
                         /*
                             If the internal "or" logic is specified, and the internal "or" logic is not the default value (i.e. Constants.DEFAULT_INTERNAL_AND_LOGIC is true),
                             then add a query parameter.
                          */
+                        final RESTFilterCategoryV1 restFilterCategory = generateRESTFilterCategory(project, category, filter);
                         restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_INTERNAL_OR_STATE);
-                        filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
                     }
 
                     if (category.isExternalLogicAnd() && category.isExternalLogicAnd() != Constants.DEFAULT_EXTERNAL_AND_LOGIC) {
+                        final RESTFilterCategoryV1 restFilterCategory = generateRESTFilterCategory(project, category, filter);
                         restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_EXTERNAL_AND_STATE);
-                        filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
                     } else if (category.isExternalLogicOr() && category.isExternalLogicOr() == Constants.DEFAULT_EXTERNAL_AND_LOGIC) {
+                        final RESTFilterCategoryV1 restFilterCategory = generateRESTFilterCategory(project, category, filter);
                         restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_EXTERNAL_OR_STATE);
-                        filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
                     }
 
                     for (final SearchUITag tag : category.getMyTags()) {

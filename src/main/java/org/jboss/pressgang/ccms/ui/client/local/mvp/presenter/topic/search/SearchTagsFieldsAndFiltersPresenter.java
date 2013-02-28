@@ -228,13 +228,13 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             @Override
             public void onClick(final ClickEvent event) {
 
+                saveFilterDialog.getDialogBox().hide();
+
                 tagsComponent.getDisplay().getSearchUIProjects().populateFilter(filter);
                 fieldsComponent.getDisplay().getSearchUIFields().populateFilter(filter);
 
                 filter.explicitSetName(saveFilterDialog.getName().getValue());
                 filter.explicitSetDescription(saveFilterDialog.getDescription().getValue());
-
-                saveFilterDialog.getDialogBox().hide();
 
                 final BaseRestCallback<RESTFilterV1, Display> createFilter = new BaseRestCallback<RESTFilterV1, Display>(display, new BaseRestCallback.SuccessAction<RESTFilterV1, Display>() {
                     @Override
