@@ -30,7 +30,7 @@ public final class SearchUITag extends SearchUIBase {
      * @param filter The filter that defines the state of the tags
      */
     public SearchUITag(@NotNull final SearchUICategory parent, @NotNull final RESTTagCollectionItemV1 tag, @Nullable final RESTFilterV1 filter) {
-        super(tag.getItem().getName(), tag.getItem().getId().toString());
+        super(tag.getItem().getName(), tag.getItem().getId());
 
         try {
             //LOGGER.log(Level.INFO, "ENTER SearchUITag()");

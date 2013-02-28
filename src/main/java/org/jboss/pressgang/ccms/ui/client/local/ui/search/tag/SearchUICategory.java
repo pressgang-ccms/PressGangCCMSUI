@@ -6,12 +6,17 @@ import com.google.common.collect.Iterables;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TriStateSelectionState;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
+import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,7 +51,7 @@ public final class SearchUICategory extends SearchUIBase {
      * @param category The category that this object represents
      */
     public SearchUICategory(final SearchUIProject project, final RESTCategoryInTagCollectionItemV1 category) {
-        super(category.getItem().getName(), category.getItem().getId().toString());
+        super(category.getItem().getName(), category.getItem().getId());
     }
 
     /**
@@ -120,19 +125,29 @@ public final class SearchUICategory extends SearchUIBase {
      * @param tags     The tags collection from which tags will be selected for this category
      * @param filter   The filter that defines the state of the tags
      */
-    public void populateCategories(final RESTProjectCollectionItemV1 project, final RESTCategoryInTagCollectionItemV1 category,
-                                   final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
+    public void populateCategories(@NotNull final RESTProjectCollectionItemV1 project, @NotNull final RESTCategoryInTagCollectionItemV1 category,
+                                   @NotNull final RESTTagCollectionV1 tags, @Nullable final RESTFilterV1 filter) {
         try {
             //LOGGER.log(Level.INFO, "ENTER SearchUICategory.populateCategories()");
 
-            if (tags == null) {
-                throw new IllegalArgumentException("tags parameter cannot be null");
-            }
-            if (project == null) {
-                throw new IllegalArgumentException("project cannot be null");
-            }
-            if (category == null) {
-                throw new IllegalArgumentException("category cannot be null");
+            if (filter != null) {
+                for (final RESTFilterCategoryCollectionItemV1 filterCategory : filter.getFilterCategories_OTM().getItems()) {
+                    if (filterCategory.getItem().getCategory().getId().equals(category.getItem().getId())) {
+                        if (filterCategory.getItem().getState().equals(CommonFilterConstants.CATEGORY_INTERNAL_AND_STATE)) {
+                            internalLogicAnd = true;
+                            internalLogicOr = !internalLogicAnd;
+                        } else if (filterCategory.getItem().getState().equals(CommonFilterConstants.CATEGORY_INTERNAL_OR_STATE)) {
+                            internalLogicAnd = false;
+                            internalLogicOr = !internalLogicAnd;
+                        } else if (filterCategory.getItem().getState().equals(CommonFilterConstants.CATEGORY_EXTERNAL_AND_STATE)) {
+                            externalLogicAnd = true;
+                            externalLogicOr = !externalLogicAnd;
+                        } else if (filterCategory.getItem().getState().equals(CommonFilterConstants.CATEGORY_EXTERNAL_OR_STATE)) {
+                            externalLogicAnd = false;
+                            externalLogicOr = !externalLogicAnd;
+                        }
+                    }
+                }
             }
 
             for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {

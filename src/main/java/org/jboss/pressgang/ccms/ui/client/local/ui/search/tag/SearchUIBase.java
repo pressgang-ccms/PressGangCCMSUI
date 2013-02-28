@@ -13,9 +13,9 @@ public class SearchUIBase {
     /**
      * Each entity has an ID
      */
-    private final String id;
+    private final Integer id;
 
-    public final String getId() {
+    public final Integer getId() {
         return id;
     }
 
@@ -23,7 +23,7 @@ public class SearchUIBase {
         return name;
     }
 
-    public SearchUIBase(final String name, final String id) {
+    public SearchUIBase(final String name, final Integer id) {
         this.name = name;
         this.id = id;
     }

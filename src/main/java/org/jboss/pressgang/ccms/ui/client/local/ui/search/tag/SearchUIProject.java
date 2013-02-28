@@ -7,12 +7,16 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * This class represents a single project, with child categories.
@@ -35,14 +39,14 @@ public final class SearchUIProject extends SearchUIBase {
      * @param project The project that this object represents
      */
     public SearchUIProject(final RESTProjectCollectionItemV1 project) {
-        super(project.getItem().getName(), project.getItem().getId().toString());
+        super(project.getItem().getName(), project.getItem().getId());
     }
 
     /**
      * @param name The name of the project that this object represents
      */
     public SearchUIProject(final String name) {
-        super(name, "-1");
+        super(name, -1);
     }
 
     /**
@@ -89,26 +93,15 @@ public final class SearchUIProject extends SearchUIBase {
      * @param tags    The tags that will be populated under this project
      * @param filter  The filter that defines the state of the tags
      */
-    public void populateCategories(final RESTProjectCollectionItemV1 project, final RESTTagCollectionV1 tags, final RESTFilterV1 filter) {
+    public void populateCategories(@NotNull final RESTProjectCollectionItemV1 project, @NotNull final RESTTagCollectionV1 tags, @Nullable final RESTFilterV1 filter) {
         try {
             //LOGGER.log(Level.INFO, "ENTER SearchUIProject.populateCategories()");
 
-            if (tags == null) {
-                throw new IllegalArgumentException("tags parameter cannot be null");
-            }
-            if (project == null) {
-                throw new IllegalArgumentException("project cannot be null");
-            }
-
             for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
-                if (tag.getItem().getProjects() == null) {
-                    throw new IllegalArgumentException("tag.getItem().getProjects() cannot be null");
-                }
+                checkState(tag.getItem().getProjects() != null, "tag.getItem().getProjects() cannot be null");
 
                 if (tag.getItem().getProjects().getItems().contains(project)) {
-                    if (tag.getItem().getCategories().getItems() == null) {
-                        throw new IllegalArgumentException("tag.getItem().getCategories().getItems() cannot be null");
-                    }
+                    checkState(tag.getItem().getCategories().getItems() != null, "tag.getItem().getCategories().getItems() cannot be null");
 
                     for (final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories().returnExistingAndAddedCollectionItems()) {
                         final SearchUICategory searchUICategory = new SearchUICategory(this, category);

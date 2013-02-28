@@ -4,8 +4,8 @@ import com.google.gwt.user.client.ui.TriStateSelectionState;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
+import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
+import org.jboss.pressgang.ccms.rest.v1.entities.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.sort.SearchUINameSort;
@@ -18,6 +18,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * The REST interface does not define a hierarchy or projects->categories->tags. Instead, tags belong to both categories and
@@ -91,16 +93,10 @@ public class SearchUIProjects implements SearchViewBase {
         try {
             //LOGGER.log(Level.INFO, "ENTER SearchUIProjects.initialize()");
 
-            if (tags == null) {
-                throw new IllegalArgumentException("tags parameter cannot be null");
-            }
-
             this.projects.clear();
 
             for (final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
-                if (tag.getItem().getProjects() == null) {
-                    throw new IllegalArgumentException("tag.getItem().getProjects() cannot be null");
-                }
+                checkState(tag.getItem().getProjects() != null, "tag.getItem().getProjects() cannot be null");
 
                 /* Tags to be removed should not show up */
                 for (final RESTProjectCollectionItemV1 project : tag.getItem().getProjects().returnExistingCollectionItems()) {
@@ -135,6 +131,44 @@ public class SearchUIProjects implements SearchViewBase {
 
         for (final SearchUIProject project : projects) {
             for (final SearchUICategory category : project.getCategories()) {
+
+                final RESTProjectV1 restProject = new RESTProjectV1();
+                restProject.setId(project.getId());
+
+                final RESTCategoryV1 restCategory = new RESTCategoryV1();
+                restCategory.setId(category.getId());
+
+                final RESTFilterCategoryV1 restFilterCategory = new RESTFilterCategoryV1();
+                restFilterCategory.explicitSetProject(restProject);
+                restFilterCategory.explicitSetCategory(restCategory);
+
+                /*
+                    Add the parameters for the category logic.
+                 */
+                if (category.isInternalLogicAnd() && category.isInternalLogicAnd() != Constants.DEFAULT_INTERNAL_AND_LOGIC) {
+                    /*
+                        If the internal "and" logic is specified, and the internal "and" logic is not the default value (i.e. Constants.DEFAULT_INTERNAL_AND_LOGIC is false),
+                        then add a query parameter.
+                     */
+                    restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_INTERNAL_AND_STATE);
+                    filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
+                } else if (category.isInternalLogicOr() && category.isInternalLogicOr() == Constants.DEFAULT_INTERNAL_AND_LOGIC) {
+                    /*
+                        If the internal "or" logic is specified, and the internal "or" logic is not the default value (i.e. Constants.DEFAULT_INTERNAL_AND_LOGIC is true),
+                        then add a query parameter.
+                     */
+                    restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_INTERNAL_OR_STATE);
+                    filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
+                }
+
+                if (category.isExternalLogicAnd() && category.isExternalLogicAnd() != Constants.DEFAULT_EXTERNAL_AND_LOGIC) {
+                    restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_EXTERNAL_AND_STATE);
+                    filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
+                } else if (category.isExternalLogicOr() && category.isExternalLogicOr() == Constants.DEFAULT_EXTERNAL_AND_LOGIC) {
+                    restFilterCategory.explicitSetState(CommonFilterConstants.CATEGORY_EXTERNAL_OR_STATE);
+                    filter.getFilterCategories_OTM().addNewItem(restFilterCategory);
+                }
+
                 for (final SearchUITag tag : category.getMyTags()) {
                     if (!processedIds.contains(tag.getTag().getItem().getId())) {
                         if (tag.getState() != TriStateSelectionState.NONE) {
