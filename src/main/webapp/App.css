@@ -1,3 +1,11 @@
+.ServerTypeProduction {
+    color: red;
+}
+
+.ServerTypeDevelopment {
+    color: blue;
+}
+
 .HelpContents {
     margin: 8px;
 }
