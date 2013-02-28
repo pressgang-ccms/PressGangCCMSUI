@@ -39,6 +39,13 @@ public final class SearchUIProject extends SearchUIBase {
     }
 
     /**
+     * @param name The name of the project that this object represents
+     */
+    public SearchUIProject(final String name) {
+        super(name, "-1");
+    }
+
+    /**
      * @return An object that contains the summary information to be displayed on the tile
      */
     public CategorySummary getSummary() {
