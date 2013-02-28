@@ -9,6 +9,10 @@
     text-align: center;
 }
 
+.LogicDetailsTable > td {
+    padding: 8px;
+}
+
 .HelpContents {
     margin: 8px;
 }

@@ -22,9 +22,13 @@ public interface CSSConstants {
          */
         String LOGIC_HEADER_CELL = "LogicHeaderCell";
         /**
-         * The style applied to the cell that holds the logic details radio buttons.
+         * The style applied to the cell that holds the table holding the logic details radio buttons.
          */
         String LOGIC_DETAILS_CELL = "LogicDetailsCell";
+        /**
+         * The style applied to the table holding the logic details radio buttons.
+         */
+        String LOGIC_DETAILS_TABLE = "LogicDetailsTable";
     }
 
     /**
