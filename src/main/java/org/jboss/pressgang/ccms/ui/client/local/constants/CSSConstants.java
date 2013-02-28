@@ -175,6 +175,9 @@ public interface CSSConstants {
         String ENTITY_SEARCH_RESULTS_AND_VIEW_PARENT_PANEL = "EntitySearchResultsAndViewParentPanel";
     }
 
+    /**
+     *  Holds the styles that are applied to the string constant's views.
+     */
     interface StringConstantView {
         String STRING_CONSTANT_VIEW_PANEL = "StringConstantViewPanel";
         String STRING_CONSTANT_VIEW_ID_FIELD = "StringConstantViewIdField";
@@ -182,6 +185,9 @@ public interface CSSConstants {
         String STRING_CONSTANT_VIEW_VALUE_FIELD = "StringConstantViewValueField";
     }
 
+    /**
+     *  Holds the styles that are applied to the property tag's views.
+     */
     interface PropertyTagView {
         String PROPERTY_TAG_VIEW_PANEL = "PropertyTagViewPanel";
         String PROPERTY_TAG_VIEW_ID_FIELD = "PropertyTagViewIdField";
@@ -192,6 +198,9 @@ public interface CSSConstants {
         String PROPERTY_TAG_VIEW_CANBENULL_FIELD = "PropertyTagViewCanBeNullField";
     }
 
+    /**
+     *  Holds the styles that are applied to the property category's views.
+     */
     interface PropertyCategoryView {
         String PROPERTY_CATEGORY_VIEW_PANEL = "PropertyCategoryViewPanel";
         String PROPERTY_CATEGORY_VIEW_ID_FIELD = "PropertyCategoryViewIdField";
@@ -199,6 +208,9 @@ public interface CSSConstants {
         String PROPERTY_CATEGORY_VIEW_DESCRIPTION_FIELD = "PropertyCategoryViewDescriptionField";
     }
 
+    /**
+     *  Holds the styles that are applied to the integer constant's views.
+     */
     interface IntegerConstantView {
         String INTEGER_CONSTANT_VIEW_PANEL = "IntegerConstantViewPanel";
         String INTEGER_CONSTANT_VIEW_ID_FIELD = "IntegerConstantViewIdField";
@@ -206,12 +218,18 @@ public interface CSSConstants {
         String INTEGER_CONSTANT_VIEW_VALUE_FIELD = "IntegerConstantViewValueField";
     }
 
+    /**
+     *  Holds the styles that are applied to the blob constant's views.
+     */
     interface BlobConstantView {
         String BLOB_CONSTANT_VIEW_PANEL = "BlobConstantViewPanel";
         String BLOB_CONSTANT_VIEW_ID_FIELD = "BlobConstantViewIdField";
         String BLOB_CONSTANT_VIEW_NAME_FIELD = "BlobConstantViewNameField";
     }
 
+    /**
+     *  Holds the styles that are applied to the tag's views.
+     */
     interface TagView {
         String TAG_VIEW_PANEL = "TagViewPanel";
         String TAG_VIEW_ID_LABEL = "TagViewIDLabel";
@@ -229,6 +247,9 @@ public interface CSSConstants {
         String TAG_VIEW_DESCRIPTION_TEXT_CELL = "TagViewDescriptionTextCell";
     }
 
+    /**
+     *  Holds the styles that are applied to the category's views.
+     */
     interface CategoryView {
         String CATEGORY_VIEW_PANEL = "CategoryViewPanel";
         String CATEGORY_VIEW_ID_LABEL = "CategoryViewIDLabel";
@@ -246,6 +267,9 @@ public interface CSSConstants {
         String CATEGORY_VIEW_DESCRIPTION_TEXT_CELL = "CategoryViewDescriptionTextCell";
     }
 
+    /**
+     *  Holds the styles that are applied to the project's views.
+     */
     interface ProjectView {
         String PROJECT_VIEW_PANEL = "ProjectViewPanel";
         String PROJECT_VIEW_ID_LABEL = "ProjectViewIDLabel";
@@ -265,6 +289,9 @@ public interface CSSConstants {
 
     }
 
+    /**
+     *  Holds the styles that are applied to the topic's views.
+     */
     interface TopicView {
         String TOPIC_VIEW_PANEL = "TopicViewPanel";
         String TOPIC_VIEW_ID_FIELD = "TopicViewIDField";
@@ -355,6 +382,9 @@ public interface CSSConstants {
         String RENDERED_SPLIT_VIEW_MENU_TABLE = "RenderedSplitViewMenuTable";
     }
 
+    /**
+     *  Holds the styles that are applied to the tag list category list view.
+     */
     interface TagListCategoryView {
         String CATEGORIES_BUTTONS_LAYOUT = "CategoriesButtonsLayout";
         String CATEGORIES_LAYOUT = "CategoriesLayout";
@@ -363,12 +393,18 @@ public interface CSSConstants {
         String CATEGORY_TAG_SCROLL = "CategoryTagScroll";
     }
 
+    /**
+     *  Holds the styles that are applied to the tag list projects list view.
+     */
     interface TagListProjectsView {
         String PROJECTS_BUTTONS_LAYOUT = "ProjectsButtonsLayout";
         String PROJECTS_SCROLL_PANEL = "ProjectsScrollPanel";
         String PROJECTS_LAYOUT = "ProjectsLayout";
     }
 
+    /**
+     *  Holds the styles that are applied to the tag list tags view.
+     */
     interface TagListTagView {
         /**
          *  Assigned to the tag labels.
@@ -376,6 +412,9 @@ public interface CSSConstants {
         String TAG_LABEL = "TagLabel";
     }
 
+    /**
+     *  Holds the styles that are applied to the locales view.
+     */
     interface LocaleList{
         /**
          *  Assigned to the locale labels.
@@ -383,7 +422,9 @@ public interface CSSConstants {
         String LOCALE_LABEL = "LocaleLabel";
     }
 
-
+    /**
+     *  Holds the styles that are applied to the images view.
+     */
     interface ImageView {
         /**
          * Assigned to the dock panel that hosts the image description and the tab view of specific language images.
@@ -487,6 +528,9 @@ public interface CSSConstants {
         String IMAGE_VIEW_LANGUAGE_IMAGE_UPLOAD_BUTTONS_CELL = "ImageViewLanguageImageUploadButtonsCell";
     }
 
+    /**
+     * Holds the styles that are applied to UI elements used throughout the app.
+     */
     interface Common {
         String CUSTOM_BUTTON_TEXT = "CustomButtonText";
         String CUSTOM_BUTTON_TAGS_INCLUDED = "CustomButtonTagsInclued";
