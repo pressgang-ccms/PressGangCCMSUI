@@ -166,19 +166,19 @@ public class SearchUIProjects implements SearchViewBase {
                         If the internal "and" logic is specified, and the internal "and" logic is not the default value (i.e. Constants.DEFAULT_INTERNAL_AND_LOGIC is false),
                         then add a query parameter.
                      */
-                    builder.append(CATEGORY_INTERNAL_PREFIX).append(category.getId()).append("=").append(Constants.AND_LOGIC_QUERY_STRING_VALUE);
+                    builder.append(";").append(CATEGORY_INTERNAL_PREFIX).append(category.getId()).append("=").append(Constants.AND_LOGIC_QUERY_STRING_VALUE);
                 } else if (category.isInternalLogicOr() && category.isInternalLogicOr() == Constants.DEFAULT_INTERNAL_AND_LOGIC) {
                     /*
                         If the internal "or" logic is specified, and the internal "or" logic is not the default value (i.e. Constants.DEFAULT_INTERNAL_AND_LOGIC is true),
                         then add a query parameter.
                      */
-                    builder.append(CATEGORY_INTERNAL_PREFIX).append(category.getId()).append("=").append(Constants.OR_LOGIC_QUERY_STRING_VALUE);
+                    builder.append(";").append(CATEGORY_INTERNAL_PREFIX).append(category.getId()).append("=").append(Constants.OR_LOGIC_QUERY_STRING_VALUE);
                 }
 
                 if (category.isExternalLogicAnd() && category.isExternalLogicAnd() != Constants.DEFAULT_EXTERNAL_AND_LOGIC) {
-                    builder.append(CATEGORY_EXTERNAL_PREFIX).append(category.getId()).append("=").append(Constants.AND_LOGIC_QUERY_STRING_VALUE);
+                    builder.append(";").append(CATEGORY_EXTERNAL_PREFIX).append(category.getId()).append("=").append(Constants.AND_LOGIC_QUERY_STRING_VALUE);
                 } else if (category.isExternalLogicOr() && category.isExternalLogicOr() == Constants.DEFAULT_EXTERNAL_AND_LOGIC) {
-                    builder.append(CATEGORY_EXTERNAL_PREFIX).append(category.getId()).append("=").append(Constants.OR_LOGIC_QUERY_STRING_VALUE);
+                    builder.append(";").append(CATEGORY_EXTERNAL_PREFIX).append(category.getId()).append("=").append(Constants.OR_LOGIC_QUERY_STRING_VALUE);
                 }
 
                 for (final SearchUITag tag : category.getMyTags()) {
@@ -186,9 +186,9 @@ public class SearchUIProjects implements SearchViewBase {
                         builder.append(";");
 
                         if (tag.getState() == TriStateSelectionState.SELECTED) {
-                            builder.append(TAG_PREFIX + tag.getTag().getItem().getId() + "=" + Constants.TAG_INCLUDED);
+                            builder.append(TAG_PREFIX).append(tag.getTag().getItem().getId()).append("=").append(Constants.TAG_INCLUDED);
                         } else if (tag.getState() == TriStateSelectionState.UNSELECTED) {
-                            builder.append(TAG_PREFIX + tag.getTag().getItem().getId() + "=" + Constants.TAG_EXCLUDED);
+                            builder.append(TAG_PREFIX).append(tag.getTag().getItem().getId()).append("=").append(Constants.TAG_EXCLUDED);
                         }
                     }
                 }
