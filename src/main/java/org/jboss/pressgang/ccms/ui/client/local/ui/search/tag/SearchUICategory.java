@@ -46,7 +46,7 @@ public final class SearchUICategory extends SearchUIBase {
      * @param category The category that this object represents
      */
     public SearchUICategory(final SearchUIProject project, final RESTCategoryInTagCollectionItemV1 category) {
-        super(category.getItem().getName(), project.getId() + "-" + category.getItem().getId());
+        super(category.getItem().getName(), category.getItem().getId().toString());
     }
 
     /**
