@@ -204,6 +204,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 /* An overwritten filter will delete any existing children before adding new ones */
                 filter.explicitSetFilterTags_OTM(new RESTFilterTagCollectionV1());
                 filter.explicitSetFilterFields_OTM(new RESTFilterFieldCollectionV1());
+                filter.explicitSetFilterCategories_OTM(new RESTFilterCategoryCollectionV1());
 
                 if (displayedFilter.getFilterTags_OTM() != null) {
                     for (final RESTFilterTagCollectionItemV1 tag : displayedFilter.getFilterTags_OTM().getItems()) {
