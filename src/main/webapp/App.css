@@ -5,8 +5,9 @@
     text-align: center;
 }
 
-.LogicDetailsCell {
-    text-align: center;
+.LogicDetailsTable {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .LogicDetailsTable > td {

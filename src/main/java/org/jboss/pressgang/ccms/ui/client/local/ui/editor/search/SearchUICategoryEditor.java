@@ -130,7 +130,7 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
         /*
             Using column 1 here isn't what you might expect, but it is the next column after column 0. The fact
             that column 0 spans multiple columns doesn't affect how we refer to the next column; the next column
-            is referenced by an incremented column count without any reference to the previous column span.
+            is referenced by an incremented column count without any consideration to the previous column span.
          */
         tagsTable.getFlexCellFormatter().setColSpan(0, 1, COLUMNS);
         tagsTable.getFlexCellFormatter().setColSpan(1, 0, COLUMNS);
