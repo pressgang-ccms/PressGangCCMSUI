@@ -148,11 +148,19 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
 
     @Override
     public void flush() {
+        /*
+            Upon flushing the selected state of the tags, update the value displayed by the tile. It is a little
+            backwards to set the value of a UI element from the underlying data object in a flush operation, but
+            in this case it allows us to complete the loop from SearchUITagEditor to SearchUITag and then back to
+            the FourTextAndImageButtonSearchUICategoryEditor.
+         */
         this.summary.asEditor().setValue(value.getSummary());
-        externalLogicAnd.setValue(value.isExternalLogicAnd());
-        externalLogicOr.setValue(value.isExternalLogicAnd());
-        internalLogicAnd.setValue(value.isInternalLogicAnd());
-        internalLogicOr.setValue(value.isInternalLogicOr());
+
+        /* flush the value of the category logic checkboxes */
+        value.setExternalLogicAnd(externalLogicAnd.getValue());
+        value.setExternalLogicOr(externalLogicOr.getValue());
+        value.setInternalLogicAnd(internalLogicAnd.getValue());
+        value.setInternalLogicOr(internalLogicOr.getValue());
     }
 
     @Override
@@ -164,8 +172,6 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
     public void setValue(@NotNull final SearchUICategory value) {
         this.value = value;
 
-
-
         // group the radio buttons by project and category id to make them unique
         internalLogicAnd.setName(INTERNAL_LOGIC_RADIOBUTTON_GROUP + searchUIProject.getValue().getId() + value.getId());
         internalLogicOr.setName(INTERNAL_LOGIC_RADIOBUTTON_GROUP + searchUIProject.getValue().getId() + value.getId());
@@ -176,6 +182,6 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
         internalLogicAnd.setValue(value.isInternalLogicAnd());
         internalLogicOr.setValue(value.isInternalLogicOr());
         externalLogicAnd.setValue(value.isExternalLogicAnd());
-        externalLogicOr.setValue(value.isExternalLogicAnd());
+        externalLogicOr.setValue(value.isExternalLogicOr());
     }
 }
