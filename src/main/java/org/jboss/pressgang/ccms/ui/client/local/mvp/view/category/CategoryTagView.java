@@ -135,6 +135,7 @@ public class CategoryTagView
          */
         @NotNull final ColumnSortEvent.AsyncHandler columnSortHandler = new ColumnSortEvent.AsyncHandler(getPossibleChildrenResults());
         getPossibleChildrenResults().addColumnSortHandler(columnSortHandler);
+        getPossibleChildrenResults().getColumnSortList().push(tagsButtonColumn);
 
         getExistingChildrenResults().addColumn(tagIdColumn, PressGangCCMSUI.INSTANCE.ChildTagID());
         getExistingChildrenResults().addColumn(tagNameColumn, PressGangCCMSUI.INSTANCE.ChildTagName());
