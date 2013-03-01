@@ -26,6 +26,7 @@ import javax.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
@@ -114,11 +115,14 @@ public class CategoryFilteredResultsPresenter
                     public void success(@NotNull final RESTCategoryCollectionV1 retValue) {
                         try {
                             LOGGER.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
+
+                            checkState(retValue.getItems() != null, "There returned collection should have a valid items collection.");
+                            checkState(retValue.getSize() != null, "There returned collection should have a valid size collection.");
+
                             getProviderData().setItems(retValue.getItems());
                             getProviderData().setSize(retValue.getSize());
                             relinkSelectedItem();
-                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(),
-                                    getProviderData().getStartRow());
+                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
                         } finally {
                             display.removeWaitOperation();
                         }

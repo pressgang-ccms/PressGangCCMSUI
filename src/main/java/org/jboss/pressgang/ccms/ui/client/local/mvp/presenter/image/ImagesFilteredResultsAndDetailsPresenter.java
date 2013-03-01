@@ -153,11 +153,16 @@ public class ImagesFilteredResultsAndDetailsPresenter
     @Override
     protected void loadAdditionalDisplayedItemData() {
 
+        checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+        checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+        checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() != null, "The displayed collection item to reference a valid entity and have a valid id");
+
         @NotNull final RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
                 display, new BaseRestCallback.SuccessAction<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
             @Override
             public void doSuccessAction(@NotNull final RESTImageV1 retValue, @NotNull final ImagesFilteredResultsAndDetailsPresenter.Display display) {
                 checkArgument(retValue.getLanguageImages_OTM() != null, "The image should have the language image children populated.");
+
 
                 /*
                  * Do a shallow copy here, because Chrome has issues with System.arraycopy - see
@@ -177,6 +182,12 @@ public class ImagesFilteredResultsAndDetailsPresenter
         return new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
             @Override
             public void doSuccessAction(@NotNull final RESTImageV1 retValue, @NotNull final BaseTemplateViewInterface display) {
+
+                checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                checkState(imageFilteredResultsComponent.getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
+                checkState(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
+
                 retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem(), false);
                 retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
                 initializeViews();
@@ -197,6 +208,11 @@ public class ImagesFilteredResultsAndDetailsPresenter
 
     @NotNull
     private List<String> getUnassignedLocales() {
+
+        checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+        checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+        checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getLanguageImages_OTM() != null, "The displayed collection item to reference a valid entity and have a valid collection of language images.");
+
         @NotNull final List<String> newLocales = new ArrayList<String>(Arrays.asList(locales));
 
         /* Make it so you can't add a locale if it already exists */
@@ -258,6 +274,10 @@ public class ImagesFilteredResultsAndDetailsPresenter
                             @Override
                             public void onLoadEnd(@NotNull final LoadEndEvent event) {
                                 try {
+                                    checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                                    checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                                    checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() != null, "The displayed collection item to reference a valid entity and have a valid id");
+
                                     final String result = reader.getStringResult();
                                     @NotNull final byte[] buffer = GWTUtilities.getByteArray(result, 1);
 
@@ -268,8 +288,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                                      * Create the image to be modified. This is so we don't send off unnecessary data.
                                      */
                                     @NotNull final RESTImageV1 updateImage = new RESTImageV1();
-                                    updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                                            .getId());
+                                    updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                                     updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
 
                                     /* Create the language image */
@@ -306,6 +325,11 @@ public class ImagesFilteredResultsAndDetailsPresenter
     public boolean hasUnsavedChanges() {
         if (imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null) {
 
+            checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+            checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+            checkState(imageFilteredResultsComponent.getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
+            checkState(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
+
             imageComponent.getDisplay().getDriver().flush();
 
             return !GWTUtilities.stringEqualsEquatingNullWithEmptyString(imageFilteredResultsComponent.getProviderData()
@@ -332,16 +356,17 @@ public class ImagesFilteredResultsAndDetailsPresenter
             public void onClick(final ClickEvent event) {
                 if (hasUnsavedChanges()) {
 
+                    checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                    checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+
                     /*
                      * Create the image to be modified. This is so we don't send off unnessessary data.
                      */
                     @NotNull final RESTImageV1 updateImage = new RESTImageV1();
                     updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                    updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                            .getDescription());
+                    updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
 
-                    @NotNull final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                            display, getDefaultImageRestCallback());
+                    @NotNull final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(display, getDefaultImageRestCallback());
 
                     RESTCalls.updateImage(callback, updateImage);
                 } else {
@@ -366,6 +391,10 @@ public class ImagesFilteredResultsAndDetailsPresenter
 
                     final int selectedTab = imageComponent.getDisplay().getEditor().languageImages_OTMEditor().getSelectedIndex();
                     if (selectedTab != -1) {
+
+                        checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                        checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+
                         final RESTLanguageImageCollectionItemV1 selectedImage = imageComponent.getDisplay().getEditor()
                                 .languageImages_OTMEditor().itemsEditor().getList().get(selectedTab);
 
@@ -377,8 +406,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                          */
                         @NotNull final RESTImageV1 updateImage = new RESTImageV1();
                         updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                        updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem()
-                                .getItem().getDescription());
+                        updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
 
                         /* Create the language image */
                         @NotNull final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
@@ -388,8 +416,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                         updateImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
                         updateImage.getLanguageImages_OTM().addRemoveItem(languageImage);
 
-                        @NotNull final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(
-                                display, getDefaultImageRestCallback());
+                        @NotNull final RESTCalls.RESTCallback<RESTImageV1> callback = new BaseRestCallback<RESTImageV1, BaseTemplateViewInterface>(display, getDefaultImageRestCallback());
 
                         RESTCalls.updateImage(callback, updateImage);
                     }
@@ -400,6 +427,10 @@ public class ImagesFilteredResultsAndDetailsPresenter
         imageComponent.getDisplay().getAddLocaleDialog().getOk().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
+
+                checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+
                 imageComponent.getDisplay().getAddLocaleDialog().getDialogBox().hide();
 
                 final String selectedLocale = imageComponent.getDisplay().getAddLocaleDialog().getLocales()
@@ -423,8 +454,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                  */
                 @NotNull final RESTImageV1 updateImage = new RESTImageV1();
                 updateImage.setId(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                        .getDescription());
+                updateImage.explicitSetDescription(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
 
                 /* Create the language image */
                 @NotNull final RESTLanguageImageV1 languageImage = new RESTLanguageImageV1();
@@ -472,8 +502,10 @@ public class ImagesFilteredResultsAndDetailsPresenter
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
-                final String docbookFileName = ComponentImageV1.getDocbookFileName(imageFilteredResultsComponent.getProviderData()
-                        .getDisplayedItem().getItem());
+                checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+
+                final String docbookFileName = ComponentImageV1.getDocbookFileName(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
                 if (docbookFileName != null && !docbookFileName.isEmpty() && isOKToProceed()) {
 
@@ -572,6 +604,9 @@ public class ImagesFilteredResultsAndDetailsPresenter
 
     @Override
     protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
+
+        checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+        checkState(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
         if (viewIsInFilter(filter, imageComponent.getDisplay())) {
             imageComponent.getDisplay().displayExtended(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false,

@@ -159,7 +159,8 @@ abstract public class BaseSearchAndEditPresenter<
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.refreshFilteredResults()");
 
             if (!wasNewEntity) {
-                    /* refresh the list of tags from the existing list that was modified */
+                /* refresh the list of tags from the existing list that was modified */
+                checkState(filteredResultsComponent.getProviderData().isValid(), "filteredResultsComponent.getProviderData() should be valid");
 
                 filteredResultsDisplay.getProvider().displayAsynchronousList(filteredResultsComponent.getProviderData().getItems(),
                         filteredResultsComponent.getProviderData().getSize(),
@@ -437,6 +438,6 @@ abstract public class BaseSearchAndEditPresenter<
      *
      * @param displayedView The newly displayed screen.
      */
-    protected void beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
+    protected void beforeSwitchView(@Nullable final BaseTemplateViewInterface displayedView) {
     }
 }

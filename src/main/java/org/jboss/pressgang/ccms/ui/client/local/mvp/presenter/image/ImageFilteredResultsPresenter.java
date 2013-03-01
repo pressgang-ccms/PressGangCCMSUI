@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
@@ -112,6 +113,9 @@ public class ImageFilteredResultsPresenter
                 @NotNull final BaseRestCallback<RESTImageCollectionV1, Display> callback = new BaseRestCallback<RESTImageCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTImageCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTImageCollectionV1 retValue, @NotNull final Display display) {
+                        checkState(retValue.getItems() != null, "The returned collection should have a valid items collection");
+                        checkState(retValue.getSize() != null, "The returned collection should have a valid size");
+
                         getProviderData().setItems(retValue.getItems());
                         getProviderData().setSize(retValue.getSize());
                         relinkSelectedItem();

@@ -115,4 +115,12 @@ public class ProviderUpdateData<T> {
     public final void setSize(@Nullable final Integer size) {
         this.size = size;
     }
+
+    /**
+     *
+     * @return true if this object holds valid data, and false otherwise.
+     */
+    public boolean isValid() {
+        return items != null && startRow != null && size != null;
+    }
 }

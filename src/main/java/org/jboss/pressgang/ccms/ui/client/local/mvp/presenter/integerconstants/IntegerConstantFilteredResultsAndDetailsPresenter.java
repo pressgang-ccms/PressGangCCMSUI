@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 
 /**
@@ -84,6 +85,9 @@ implements BaseTemplatePresenterInterface {
 
     @Override
     protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
+        checkState(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+        checkState(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+
         integerConstantPresenter.getDisplay().display(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
     }
 
@@ -95,6 +99,11 @@ implements BaseTemplatePresenterInterface {
         @NotNull final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
+
+                checkState(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                checkState(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                checkState(integerConstantFilteredResultsPresenter.getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
+                checkState(integerConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
 
                 /* Was the tag we just saved a new tag? */
                 final boolean wasNewEntity = integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem();
@@ -223,6 +232,11 @@ implements BaseTemplatePresenterInterface {
         /* sync the UI with the underlying tag */
         if (integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
             integerConstantPresenter.getDisplay().getDriver().flush();
+
+            checkState(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+            checkState(integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+            checkState(integerConstantFilteredResultsPresenter.getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
+            checkState(integerConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
 
             final RESTIntegerConstantV1 selectedItem = integerConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem();
             final RESTIntegerConstantV1 displayedItem = integerConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem();

@@ -42,6 +42,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 
 @Dependent
@@ -147,6 +148,10 @@ public class ProjectsFilteredResultsAndDetailsPresenter
                     @NotNull
                     @Override
                     public RESTTagCollectionV1 getExistingCollection() {
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags() != null, "The displayed collection item to reference a valid entity and have a valid tags collection.");
+
                         return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags();
                     }
 
@@ -154,6 +159,10 @@ public class ProjectsFilteredResultsAndDetailsPresenter
 
                     @Override
                     public void createAndAddChild(@NotNull final RESTTagCollectionItemV1 copy) {
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags() != null, "The displayed collection item to reference a valid entity and have a valid tags collection.");
+
                         @NotNull final RESTTagV1 newChild = new RESTTagV1();
                         newChild.setId(copy.getItem().getId());
                         newChild.setName(copy.getItem().getName());
@@ -164,6 +173,9 @@ public class ProjectsFilteredResultsAndDetailsPresenter
 
                     @Override
                     public void updateAfterChidModfied() {
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+
                         /*
                          * refresh the list of possible tags
                          */
@@ -184,6 +196,9 @@ public class ProjectsFilteredResultsAndDetailsPresenter
 
     @Override
     protected void loadAdditionalDisplayedItemData() {
+        checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+
         /* Get a new collection of tags */
         tagComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
     }
@@ -219,6 +234,11 @@ public class ProjectsFilteredResultsAndDetailsPresenter
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
+                checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                checkState(filteredResultsComponent.getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
+                checkState(filteredResultsComponent.getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
+
                 /* Was the tag we just saved a new tag? */
                 final boolean wasNewEntity = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
 
@@ -229,6 +249,8 @@ public class ProjectsFilteredResultsAndDetailsPresenter
                         new BaseRestCallback.SuccessAction<RESTProjectV1, Display>() {
                             @Override
                             public void doSuccessAction(@NotNull final RESTProjectV1 retValue, @NotNull final Display display) {
+                                checkState(filteredResultsComponent.getProviderData().isValid(), "The filtered results provider data should be valid.");
+
                                 retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
                                 retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(),
                                         true);
@@ -254,12 +276,9 @@ public class ProjectsFilteredResultsAndDetailsPresenter
 
                         @NotNull final RESTProjectV1 project = new RESTProjectV1();
                         project.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                        project.explicitSetName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                                .getName());
-                        project.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                                .getDescription());
-                        project.explicitSetTags(filteredResultsComponent.getProviderData().getDisplayedItem().getItem()
-                                .getTags());
+                        project.explicitSetName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
+                        project.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
+                        project.explicitSetTags(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags());
 
                         if (wasNewEntity) {
                             RESTCalls.createProject(callback, project);
@@ -336,6 +355,11 @@ public class ProjectsFilteredResultsAndDetailsPresenter
      * @return true if there are unsaved changes, false otherwise
      */
     private boolean unsavedProjectChanges() {
+        checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+        checkState(filteredResultsComponent.getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
+        checkState(filteredResultsComponent.getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
+
         return !(stringEqualsEquatingNullWithEmptyString(filteredResultsComponent.getProviderData().getSelectedItem().getItem()
                 .getName(), filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName()) && stringEqualsEquatingNullWithEmptyString(
                 filteredResultsComponent.getProviderData().getSelectedItem().getItem().getDescription(),
@@ -348,8 +372,15 @@ public class ProjectsFilteredResultsAndDetailsPresenter
      * @return true if there are modified tags, false otherwise
      */
     private boolean unsavedTagChanges() {
-        return !filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags()
-                .returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
+        checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+
+        /*
+            We might be saving the entity before the tags have been loaded, so filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags()
+            could be null.
+         */
+        return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags() == null ||
+                !filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
     }
 
     /**
@@ -375,6 +406,9 @@ public class ProjectsFilteredResultsAndDetailsPresenter
 
     @Override
     protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
+
+        checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
         @NotNull final List<BaseCustomViewInterface<RESTProjectV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTProjectV1>>();
         displayableViews.add(resultComponent.getDisplay());
