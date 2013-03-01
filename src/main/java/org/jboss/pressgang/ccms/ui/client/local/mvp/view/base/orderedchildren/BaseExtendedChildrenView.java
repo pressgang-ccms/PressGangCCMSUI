@@ -17,14 +17,6 @@ import org.jetbrains.annotations.NotNull;
 /**
  * The base class for views that display a collection of existing children and a second collection of possible children.
  *
- * @param <T> The entity type
- * @param <W> The parent of the children
- * @param <A> The possible child type
- * @param <B> The collection type for entity A
- * @param <C> The collection item type for entity A
- * @param <D> The existing child type
- * @param <E> The collection type for entity D
- * @param <F> The collection item type for entity D
  * @author Matthew Casperson
  */
 abstract public class BaseExtendedChildrenView<

@@ -23,7 +23,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.Categories
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.AddPossibleChildCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.GetExistingCollectionCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.UpdateAfterChildModfiedCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.UpdateAfterChildModifiedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.SetNewChildSortCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
@@ -207,10 +207,10 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                                 filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(newChild);
                             }
 
-                        }, new UpdateAfterChildModfiedCallback() {
+                        }, new UpdateAfterChildModifiedCallback() {
 
                             @Override
-                            public void updateAfterChidModfied() {
+                            public void updateAfterChildModified() {
                                 checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
                                 checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 

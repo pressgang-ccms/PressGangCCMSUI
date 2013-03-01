@@ -78,7 +78,7 @@ public abstract class BaseChildrenPresenter<
     @Override
     public final void bindPossibleChildrenListButtonClicks(@NotNull final GetExistingCollectionCallback<D, E, F> getExistingCollectionCallback,
                                                            @NotNull final AddPossibleChildCallback<C> addChildCallback,
-                                                           @NotNull final UpdateAfterChildModfiedCallback updateAfterChildModfied) {
+                                                           @NotNull final UpdateAfterChildModifiedCallback updateAfterChildModified) {
         this.display.getPossibleChildrenButtonColumn().setFieldUpdater(new FieldUpdater<C, String>() {
             @Override
             public void update(final int index, @NotNull final C object, @NotNull final String value) {
@@ -116,7 +116,7 @@ public abstract class BaseChildrenPresenter<
                 if (!found) {
                     addChildCallback.createAndAddChild(object);
                 }
-                updateAfterChildModfied.updateAfterChidModfied();
+                updateAfterChildModified.updateAfterChildModified();
             }
         });
     }

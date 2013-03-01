@@ -31,7 +31,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -85,7 +84,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     /**
      * This is set to true if the history token indicates that we are trying to do a search of translated topics.
      */
-    private boolean doingTransleatedSearch = false;
+    private boolean doingTranslatedSearch = false;
 
     @Override
     public void go(@NotNull final HasWidgets container) {
@@ -320,7 +319,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     @Override
     public void parseToken(@NotNull final String historyToken) {
         if (historyToken.startsWith(TRANSLATED_HISTORY_TOKEN)) {
-            doingTransleatedSearch = true;
+            doingTranslatedSearch = true;
         }
     }
 
@@ -362,9 +361,9 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
                 @NotNull final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
                         + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
-                        + localePresenter.getDisplay().getSearchUILocales().buidlQueryString(false);
+                        + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
 
-                if (doingTransleatedSearch) {
+                if (doingTranslatedSearch) {
                     eventBus.fireEvent(new TranslatedSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
                 else {
@@ -376,22 +375,22 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         tagsComponent.getDisplay().getSearchTopics().addClickHandler(searchHandler);
         fieldsComponent.getDisplay().getSearchTopics().addClickHandler(searchHandler);
         localePresenter.getDisplay().getSearchTopics().addClickHandler(searchHandler);
-        searchFilterResultsAndFilterPresenter.getFilteredResulstsDisplay().getSearchTopics().addClickHandler(searchHandler);
+        searchFilterResultsAndFilterPresenter.getFilteredResultsDisplay().getSearchTopics().addClickHandler(searchHandler);
 
         fieldsComponent.getDisplay().getTagsSearch().addClickHandler(tagsHandler);
         localePresenter.getDisplay().getTagsSearch().addClickHandler(tagsHandler);
-        searchFilterResultsAndFilterPresenter.getFilteredResulstsDisplay().getTagsSearch().addClickHandler(tagsHandler);
+        searchFilterResultsAndFilterPresenter.getFilteredResultsDisplay().getTagsSearch().addClickHandler(tagsHandler);
 
         tagsComponent.getDisplay().getFields().addClickHandler(fieldsHandler);
         localePresenter.getDisplay().getFields().addClickHandler(fieldsHandler);
-        searchFilterResultsAndFilterPresenter.getFilteredResulstsDisplay().getFields().addClickHandler(fieldsHandler);
+        searchFilterResultsAndFilterPresenter.getFilteredResultsDisplay().getFields().addClickHandler(fieldsHandler);
 
         tagsComponent.getDisplay().getFilters().addClickHandler(filtersHandler);
         localePresenter.getDisplay().getFilters().addClickHandler(filtersHandler);
         fieldsComponent.getDisplay().getFilters().addClickHandler(filtersHandler);
 
         tagsComponent.getDisplay().getLocales().addClickHandler(localesHandler);
-        searchFilterResultsAndFilterPresenter.getFilteredResulstsDisplay().getLocales().addClickHandler(localesHandler);
+        searchFilterResultsAndFilterPresenter.getFilteredResultsDisplay().getLocales().addClickHandler(localesHandler);
         fieldsComponent.getDisplay().getLocales().addClickHandler(localesHandler);
     }
 

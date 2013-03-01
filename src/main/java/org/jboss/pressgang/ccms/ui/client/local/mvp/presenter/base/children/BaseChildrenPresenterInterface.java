@@ -85,12 +85,12 @@ public interface BaseChildrenPresenterInterface<
      *
      * @param getExistingCollectionCallback A callback that is used to get the collection of existing children.
      * @param addChildCallback              A callback that is used to create and add a new child.
-     * @param updateAfterChildModfied       A callback that is used to perform any post-processing required after the
+     * @param updateAfterChildModified       A callback that is used to perform any post-processing required after the
      *                                      child collection has been modified.
      */
     void bindPossibleChildrenListButtonClicks(@NotNull final GetExistingCollectionCallback<D, E, F> getExistingCollectionCallback,
                                               @NotNull final AddPossibleChildCallback<C> addChildCallback,
-                                              @NotNull final UpdateAfterChildModfiedCallback updateAfterChildModfied);
+                                              @NotNull final UpdateAfterChildModifiedCallback updateAfterChildModified);
 
     /**
      * Get a list of potential children from the REST service and refresh the list of potential children. Used when we

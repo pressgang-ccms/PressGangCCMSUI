@@ -31,7 +31,7 @@ public interface ImageResources extends ClientBundle {
     ImageResource headingBanner();
 
     /**
-     * @return Used to indicate tristate checkbox in a nonselected state
+     * @return Used to indicate tristate checkbox in a non-selected state
      */
     @NotNull
     @Source("round32.png")

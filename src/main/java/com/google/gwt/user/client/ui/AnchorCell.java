@@ -6,7 +6,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * {@link Cell} that wraps a {@link Hyperlink}
+ * Cell that wraps a {@link Hyperlink}
  * WARNING: make sure the contents of your Hyperlink really are safe from XSS!
  * https://groups.google.com/forum/?fromgroups=#!topic/google-web-toolkit/C18YWWkVbHw
  */

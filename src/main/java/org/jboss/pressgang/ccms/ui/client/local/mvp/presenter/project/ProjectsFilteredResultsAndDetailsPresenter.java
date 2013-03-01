@@ -20,7 +20,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ProjectsFi
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.AddPossibleChildCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.GetExistingCollectionCallback;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.UpdateAfterChildModfiedCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.UpdateAfterChildModifiedCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
@@ -89,13 +89,13 @@ public class ProjectsFilteredResultsAndDetailsPresenter
     private Display display;
 
     /**
-     * An Errai injected instance of a class that implements ProjectFilteredResultsPresenter.LogicCompnent
+     * An Errai injected instance of a class that implements ProjectFilteredResultsPresenter
      */
     @Inject
     private ProjectFilteredResultsPresenter filteredResultsComponent;
 
     /**
-     * An Errai injected instance of a class that implements PropertyTagPresenter.LogicComponent
+     * An Errai injected instance of a class that implements ProjectPresenter
      */
     @Inject
     private ProjectPresenter resultComponent;
@@ -169,10 +169,10 @@ public class ProjectsFilteredResultsAndDetailsPresenter
                         filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(newChild);
                     }
 
-                }, new UpdateAfterChildModfiedCallback() {
+                }, new UpdateAfterChildModifiedCallback() {
 
                     @Override
-                    public void updateAfterChidModfied() {
+                    public void updateAfterChildModified() {
                         checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
                         checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 

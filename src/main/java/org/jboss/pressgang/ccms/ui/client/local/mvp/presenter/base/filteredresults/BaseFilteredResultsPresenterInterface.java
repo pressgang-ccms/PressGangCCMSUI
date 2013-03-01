@@ -21,7 +21,7 @@ public interface BaseFilteredResultsPresenterInterface<V extends RESTBaseCollect
     String getQuery();
 
     /**
-     * @return The provider data used to populate the celltable
+     * @return The provider data used to populate the cell table
      */
     @NotNull
     ProviderUpdateData<V> getProviderData();

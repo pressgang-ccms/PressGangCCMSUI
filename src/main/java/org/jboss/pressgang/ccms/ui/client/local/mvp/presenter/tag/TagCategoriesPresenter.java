@@ -178,7 +178,7 @@ public class TagCategoriesPresenter
     }
 
     /**
-     * Bind behaviour to the buttons found in the celltable listing the categories
+     * Bind behaviour to the buttons found in the cell table listing the categories
      */
     private void initLifecycleBindPossibleChildrenRowClick() {
         display.getPossibleChildrenResults().addCellPreviewHandler(new Handler<RESTCategoryCollectionItemV1>() {

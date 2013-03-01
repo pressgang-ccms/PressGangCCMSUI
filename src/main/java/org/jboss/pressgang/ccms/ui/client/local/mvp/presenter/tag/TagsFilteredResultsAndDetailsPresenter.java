@@ -790,16 +790,16 @@ public class TagsFilteredResultsAndDetailsPresenter
     /**
      * Called when a new tag is selected or the tag is saved. This refreshes the list of categories and projects.
      *
-     * @param removeCatgeoryTagListFromScreen
+     * @param removeCategoryTagListFromScreen
      *         true if the list of tags within a category is to be removed from the screen
      */
-    private void resetCategoryAndProjectsLists(final boolean removeCatgeoryTagListFromScreen) {
+    private void resetCategoryAndProjectsLists(final boolean removeCategoryTagListFromScreen) {
 
         resetCategoryLists();
         resetProjectList();
 
         /* remove the category tags list */
-        if (removeCatgeoryTagListFromScreen) {
+        if (removeCategoryTagListFromScreen) {
             categoriesComponent.getPossibleChildrenProviderData().setSelectedItem(null);
             categoriesComponent.getPossibleChildrenProviderData().setDisplayedItem(null);
             categoriesComponent.getDisplay().getSplit().remove(categoriesComponent.getDisplay().getExistingChildrenResultsPanel());

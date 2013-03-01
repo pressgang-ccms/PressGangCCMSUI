@@ -36,16 +36,16 @@ final public class UIUtilities {
 
     @NotNull
     public static PushButton createPushButton(final String text, final boolean subMenu, final boolean externalLink) {
-        @NotNull final PushButton retvalue = new PushButton(text);
-        retvalue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
+        @NotNull final PushButton retValue = new PushButton(text);
+        retValue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
 
         if (subMenu) {
-            retvalue.addStyleName(CSSConstants.Common.SUB_MENU);
+            retValue.addStyleName(CSSConstants.Common.SUB_MENU);
         } else if (externalLink) {
-            retvalue.addStyleName(CSSConstants.Common.EXTERNAL_BUTTON);
+            retValue.addStyleName(CSSConstants.Common.EXTERNAL_BUTTON);
         }
 
-        return retvalue;
+        return retValue;
     }
 
     @NotNull
@@ -55,9 +55,9 @@ final public class UIUtilities {
 
     @NotNull
     public static PushButton createTopTabPushButton(final String text, final boolean subMenu, final boolean externalLink) {
-        @NotNull final PushButton retvalue = createPushButton(text, subMenu, externalLink);
-        retvalue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
-        return retvalue;
+        @NotNull final PushButton retValue = createPushButton(text, subMenu, externalLink);
+        retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
+        return retValue;
     }
 
     @NotNull
@@ -67,22 +67,22 @@ final public class UIUtilities {
 
     @NotNull
     public static PushButton createLeftSideTabPushButton(final String text, final boolean subMenu, final boolean externalLink) {
-        @NotNull final PushButton retvalue = createPushButton(text, subMenu, externalLink);
-        retvalue.addStyleName(CSSConstants.Common.LEFT_TAB_BUTTON);
-        return retvalue;
+        @NotNull final PushButton retValue = createPushButton(text, subMenu, externalLink);
+        retValue.addStyleName(CSSConstants.Common.LEFT_TAB_BUTTON);
+        return retValue;
     }
 
 
     @NotNull
     public static ToggleButton createToggleButton(final String text, final boolean subMenu) {
-        @NotNull final ToggleButton retvalue = new ToggleButton(text);
-        retvalue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
+        @NotNull final ToggleButton retValue = new ToggleButton(text);
+        retValue.addStyleName(CSSConstants.Common.TEXT_BUTTON);
 
         if (subMenu) {
-            retvalue.addStyleName(CSSConstants.Common.SUB_MENU);
+            retValue.addStyleName(CSSConstants.Common.SUB_MENU);
         }
 
-        return retvalue;
+        return retValue;
     }
 
     @NotNull
@@ -92,9 +92,9 @@ final public class UIUtilities {
 
     @NotNull
     public static Label createDownLabel(final String text) {
-        @NotNull final Label retvalue = new Label(text);
-        retvalue.addStyleName(CSSConstants.Common.DOWN_LABEL);
-        return retvalue;
+        @NotNull final Label retValue = new Label(text);
+        retValue.addStyleName(CSSConstants.Common.DOWN_LABEL);
+        return retValue;
     }
 
     @NotNull
@@ -104,9 +104,9 @@ final public class UIUtilities {
 
     @NotNull
     public static Label createTopTabDownLabel(final String text, final boolean subMenu) {
-        @NotNull final Label retvalue = createDownLabel(text);
-        retvalue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
-        return retvalue;
+        @NotNull final Label retValue = createDownLabel(text);
+        retValue.addStyleName(CSSConstants.Common.TOP_TAB_BUTTON);
+        return retValue;
     }
 
     @NotNull
@@ -130,8 +130,8 @@ final public class UIUtilities {
     }
 
     /**
-     * @param <T> The type of collection item to be displayed by the celltable
-     * @return A new celltable with the default settings
+     * @param <T> The type of collection item to be displayed by the cell table
+     * @return A new cell table with the default settings
      */
     @NotNull
     public static <T extends RESTBaseCollectionItemV1<?, ?, ?>> CellTable<T> createCellTable() {

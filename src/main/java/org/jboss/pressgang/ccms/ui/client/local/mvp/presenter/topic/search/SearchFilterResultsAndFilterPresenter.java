@@ -67,7 +67,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
      * @return The display
      */
     @NotNull
-    public final SearchFilterFilteredResultsPresenter.Display getFilteredResulstsDisplay() {
+    public final SearchFilterFilteredResultsPresenter.Display getFilteredResultsDisplay() {
         return searchFilterFilteredResultsPresenter.getDisplay();
     }
 

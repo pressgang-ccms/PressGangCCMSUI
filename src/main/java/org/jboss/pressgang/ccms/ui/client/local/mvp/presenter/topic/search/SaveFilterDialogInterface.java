@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.TextBox;
 public interface SaveFilterDialogInterface {
 
     /**
-     * @return The textbox representing the name of the filter.
+     * @return The text box representing the name of the filter.
      */
     TextBox getName();
 

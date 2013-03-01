@@ -171,7 +171,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
         @NotNull final List<String> localesList = new ArrayList<String>(Arrays.asList(locales));
         Collections.sort(localesList);
 
-        /* populate the locales listbox */
+        /* populate the locales list box */
         this.addLocaleDialog.locales.clear();
         for (final String locale : localesList) {
             this.addLocaleDialog.locales.addItem(locale);

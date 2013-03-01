@@ -53,7 +53,7 @@ public interface CSSConstants {
          */
         String PAGE_TITLE_PARENT_LAYOUT_PANEL = "PageTitleParentLayoutPanel";
         /**
-         * Assigend to the panel that holds the top action buttons and page content.
+         * Assigned to the panel that holds the top action buttons and page content.
          */
         String THIRD_LEVEL_LAYOUT_PANEL = "ThirdLevelLayoutPanel";
         /**

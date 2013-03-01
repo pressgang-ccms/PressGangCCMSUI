@@ -14,5 +14,5 @@ public interface EntityListReceivedHandler<T extends RESTBaseCollectionV1<?, ?, 
      *
      * @param entities The collection that was loaded.
      */
-    void onCollectionRecieved(@NotNull final T entities);
+    void onCollectionReceived(@NotNull final T entities);
 }

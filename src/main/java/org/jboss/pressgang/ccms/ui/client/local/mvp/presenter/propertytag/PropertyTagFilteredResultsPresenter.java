@@ -62,7 +62,7 @@ public class PropertyTagFilteredResultsPresenter extends BaseFilteredResultsPres
     }
 
     /**
-     * @param waitDisplay The view used to notify the user that an ongoin operation is in progress
+     * @param waitDisplay The view used to notify the user that an on going operation is in progress
      * @return A provider to be used for the category display list
      */
     @Override

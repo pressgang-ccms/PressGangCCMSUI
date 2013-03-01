@@ -58,7 +58,7 @@ abstract public class BaseDetailedChildrenPresenter<
      * An empty implementation of the extended bind method. Classes extending BaseDetailedChildrenPresenter should implement
      * bindChildrenExtended().
      *
-     * @param topicId
+     * @param topicId The help topic for the view
      * @param pageId  The history token of the page
      */
     public final void bindChildrenExtended(final int topicId, @NotNull final String pageId) {

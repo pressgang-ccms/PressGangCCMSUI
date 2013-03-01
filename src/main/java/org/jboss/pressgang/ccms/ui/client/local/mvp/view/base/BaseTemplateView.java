@@ -80,7 +80,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      */
     private final DockLayoutPanel thirdLevelLayoutPanel = new DockLayoutPanel(Unit.PX);
     /**
-     * The panel that holds the pressgang logo.
+     * The panel that holds the PressGang logo.
      */
     private final SimplePanel headingBanner = new SimplePanel();
     /**
@@ -578,13 +578,13 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         /* Add the REST server */
         @NotNull final Label restServer = new Label();
 
-        if (Constants.BASE_URL == Constants.DEV_REST_SERVER) {
+        if (Constants.BASE_URL.equals(Constants.DEV_REST_SERVER)) {
             restServer.addStyleName(CSSConstants.Template.SERVER_TYPE_DEVELOPMENT);
             restServer.setText(PressGangCCMSUI.INSTANCE.DevelopmentServer());
-        } else if (Constants.BASE_URL == Constants.PROD_REST_SERVER) {
+        } else if (Constants.BASE_URL.equals(Constants.PROD_REST_SERVER)) {
             restServer.addStyleName(CSSConstants.Template.SERVER_TYPE_PRODUCTION);
             restServer.setText(PressGangCCMSUI.INSTANCE.ProductionServer());
-        } else if (Constants.BASE_URL == Constants.LOCAL_REST_SERVER) {
+        } else if (Constants.BASE_URL.equals(Constants.LOCAL_REST_SERVER)) {
             restServer.addStyleName(CSSConstants.Template.SERVER_TYPE_DEVELOPMENT);
             restServer.setText(PressGangCCMSUI.INSTANCE.LocalServer());
         } else {
@@ -734,7 +734,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     }
 
     /**
-     * When combining views into a single merged view, the shortcuit panels need to have a spacer placed above them to replace
+     * When combining views into a single merged view, the shortcut panels need to have a spacer placed above them to replace
      * the template action bar, which is removed.
      */
     protected final void addSpacerToShortcutPanels() {

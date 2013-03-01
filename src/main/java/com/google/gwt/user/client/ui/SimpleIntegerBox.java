@@ -6,7 +6,7 @@ import com.google.gwt.text.shared.AbstractRenderer;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A ValueBox that displays interegers as plain strings
+ * A ValueBox that displays Integers as plain strings
  */
 public class SimpleIntegerBox extends ValueBox<Integer> {
 

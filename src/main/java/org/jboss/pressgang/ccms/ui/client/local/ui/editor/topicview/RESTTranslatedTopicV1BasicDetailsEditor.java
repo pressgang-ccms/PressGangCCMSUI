@@ -26,7 +26,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
     private static final int COLS = 2;
 
     /**
-     * The interger text box that displays the translated topic id
+     * The integer text box that displays the translated topic id
      */
     private final SimpleIntegerBox id = new SimpleIntegerBox();
     /**

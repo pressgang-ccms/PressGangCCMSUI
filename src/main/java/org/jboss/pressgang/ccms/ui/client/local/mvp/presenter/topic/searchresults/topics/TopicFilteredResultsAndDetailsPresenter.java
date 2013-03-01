@@ -213,7 +213,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         /* When the topics have been loaded, display the first one */
         getSearchResultsComponent().addTopicListReceivedHandler(new EntityListReceivedHandler<RESTTopicCollectionV1>() {
             @Override
-            public void onCollectionRecieved(@NotNull final RESTTopicCollectionV1 topics) {
+            public void onCollectionReceived(@NotNull final RESTTopicCollectionV1 topics) {
                 topicListLoaded = true;
                 displayInitialTopic(getNewEntityCallback);
             }
@@ -1614,7 +1614,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
              */
 
             /* Find the mutually exclusive categories that the new tag belongs to */
-            final Collection<RESTCategoryInTagCollectionItemV1> mutuiallyExclusiveCategories = Collections2.filter(selectedTag
+            final Collection<RESTCategoryInTagCollectionItemV1> mutuallyExclusiveCategories = Collections2.filter(selectedTag
                     .getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
 
                 @Override
@@ -1655,7 +1655,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                              * match any categories that the tag belongs to with any of the mutually exclusive
                                              * categories
                                              */
-                                            return Iterables.any(mutuiallyExclusiveCategories,
+                                            return Iterables.any(mutuallyExclusiveCategories,
                                                     new Predicate<RESTCategoryInTagCollectionItemV1>() {
 
                                                         @Override

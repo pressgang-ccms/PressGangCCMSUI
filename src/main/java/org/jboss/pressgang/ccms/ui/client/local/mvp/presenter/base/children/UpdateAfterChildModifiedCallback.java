@@ -5,6 +5,6 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children;
  *
  * @author Matthew Casperson
  */
-public interface UpdateAfterChildModfiedCallback {
-    void updateAfterChidModfied();
+public interface UpdateAfterChildModifiedCallback {
+    void updateAfterChildModified();
 }

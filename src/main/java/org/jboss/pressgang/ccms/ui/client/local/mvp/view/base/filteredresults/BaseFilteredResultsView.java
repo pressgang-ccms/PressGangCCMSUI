@@ -33,7 +33,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
      */
     private final SimplePager pager = UIUtilities.createSimplePager();
     /**
-     * The celltable that displays the results
+     * The cell table that displays the results
      */
     private final CellTable<V> results = UIUtilities.<V>createCellTable();
     /**
@@ -46,7 +46,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
      */
     private final FlexTable filterTable = new FlexTable();
     /**
-     * The provider used to populate the celltable
+     * The provider used to populate the cell table
      */
     private EnhancedAsyncDataProvider<V> provider;
 
@@ -73,7 +73,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
     }
 
     /**
-     * @return The provider used to populate the celltable
+     * @return The provider used to populate the cell table
      */
     @Override
     public final EnhancedAsyncDataProvider<V> getProvider() {
@@ -81,7 +81,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
     }
 
     /**
-     * @param provider The provider used to populate the celltable
+     * @param provider The provider used to populate the cell table
      */
     @Override
     public final void setProvider(@NotNull final EnhancedAsyncDataProvider<V> provider) {
@@ -110,7 +110,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
     }
 
     /**
-     * @return The celltable that displays the results
+     * @return The cell table that displays the results
      */
     @Override
     public final CellTable<V> getResults() {
@@ -144,7 +144,7 @@ abstract public class BaseFilteredResultsView<V extends RESTBaseCollectionItemV1
     /**
      * Adds a filter field above the search results
      *
-     * @param label The lable to apply to the field
+     * @param label The label to apply to the field
      * @param field The field itself
      */
     protected final void addFilterField(final String label, final Widget field) {

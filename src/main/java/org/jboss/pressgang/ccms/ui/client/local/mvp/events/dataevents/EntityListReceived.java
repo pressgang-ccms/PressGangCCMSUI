@@ -4,8 +4,6 @@ import com.google.gwt.event.shared.GwtEvent;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-
 /**
  * Represents an event that is raised when the topics from a query have been returned from the
  * REST server.
@@ -40,7 +38,7 @@ public class EntityListReceived<T extends RESTBaseCollectionV1<?, ?, ?>> extends
     }
 
     @Override
-    protected void dispatch(@NotNull final EntityListReceivedHandler<T> collectionRecievedHandler) {
-        collectionRecievedHandler.onCollectionRecieved(entities);
+    protected void dispatch(@NotNull final EntityListReceivedHandler<T> collectionReceivedHandler) {
+        collectionReceivedHandler.onCollectionReceived(entities);
     }
 }

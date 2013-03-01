@@ -125,7 +125,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         /* When the topics have been loaded, display the first one */
         getSearchResultsComponent().addTopicListReceivedHandler(new EntityListReceivedHandler<RESTTranslatedTopicCollectionV1>() {
             @Override
-            public void onCollectionRecieved(@NotNull final RESTTranslatedTopicCollectionV1 topics) {
+            public void onCollectionReceived(@NotNull final RESTTranslatedTopicCollectionV1 topics) {
                 displayInitialTopic(getNewEntityCallback);
             }
         });

@@ -28,7 +28,7 @@ public interface BaseFilteredResultsViewInterface<V extends RESTBaseCollectionIt
     PushButton getEntitySearch();
 
     /**
-     * @return The celltable that displays the results
+     * @return The cell table that displays the results
      */
     CellTable<V> getResults();
 
@@ -38,7 +38,7 @@ public interface BaseFilteredResultsViewInterface<V extends RESTBaseCollectionIt
     SimplePager getPager();
 
     /**
-     * @return The provider used to populate the celltable
+     * @return The provider used to populate the cell table
      */
     EnhancedAsyncDataProvider<V> getProvider();
     /**
@@ -47,7 +47,7 @@ public interface BaseFilteredResultsViewInterface<V extends RESTBaseCollectionIt
     @NotNull
     FlexTable getTabPanel();
     /**
-     * @param provider The provider used to populate the celltable
+     * @param provider The provider used to populate the cell table
      */
     void setProvider(final EnhancedAsyncDataProvider<V> provider);
 }

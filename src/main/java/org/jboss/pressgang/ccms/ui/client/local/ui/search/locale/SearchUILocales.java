@@ -62,7 +62,7 @@ public class SearchUILocales {
      * @return the query string
      */
     @NotNull
-    public String buidlQueryString(final boolean includeQueryPrefix) {
+    public String buildQueryString(final boolean includeQueryPrefix) {
         @NotNull final StringBuilder retValue = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
 
         int index = 0;

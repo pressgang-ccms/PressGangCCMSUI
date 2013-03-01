@@ -192,7 +192,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     abstract protected boolean isInitialTopicReadyToBeLoaded();
 
     /**
-     * When the locales and the topic list have been loaded we can display the fisrt topic if only
+     * When the locales and the topic list have been loaded we can display the first topic if only
      * one was returned.
      */
     protected void displayInitialTopic(@NotNull final GetNewEntityCallback<T> getNewEntityCallback) {
@@ -711,7 +711,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             /**
              * Initialize the views first, as quite often the tables have columns whose
-             * values depend on the parent entity set when initialzing the views. This is
+             * values depend on the parent entity set when initializing the views. This is
              * common for "Add" and "Remove" column buttons that need to know if the
              * entity in the row is in the parent in order to choose between the add and
              * remove labels.

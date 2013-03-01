@@ -27,7 +27,7 @@ public class SaveFilterDialog extends DialogBox implements SaveFilterDialogInter
     private final FlexTable layout = new FlexTable();
 
     /**
-     * The textbox representing the name of the filter.
+     * The text box representing the name of the filter.
      */
     private final TextBox name = new TextBox();
     /**
