@@ -1,8 +1,5 @@
 @sprite .ApplicationHeadingPanel {
     gwt-image: "headingBackground";
-    background-repeat: no-repeat;
-    background-attachment: scroll;
-    background-position: right top;
-    background-color: transparent;
+    background: transparent no-repeat scroll right top;
     width: 100%;
 }

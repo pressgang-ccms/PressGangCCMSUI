@@ -160,10 +160,8 @@ html {
 }
 
 .TextButton {
-    border-style: solid;
-    border-width: 1px;
     background-color: #0072C6;
-    border-color: #005492;
+    border: 1px solid #005492;
     padding: 8px;
     color: white;
     height: 100%;
@@ -201,10 +199,8 @@ html {
 }
 
 .TextButton:hover, .DownLabel {
-    border-style: solid;
-    border-width: 1px;
     background-color: #005492;
-    border-color: #005492;
+    border: 1px solid #005492;
     padding: 8px;
     color: white;
     height: 100%;

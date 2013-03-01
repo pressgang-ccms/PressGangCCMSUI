@@ -6,8 +6,7 @@
     border-collapse: collapse;
     table-layout: fixed;
     word-wrap: break-word;
-    border-width: 1px;
-    border-color: #444;
+    border: 1px #444;
 }
 
 .docbookTable th {
@@ -27,7 +26,6 @@
 
 .docbookFigureTitle, .formalParaTitle, .docbookTableTitle, .docbookItemizedListTitle, .docbookProcedureTitle, .docbookExampleTitle, .docbookSectionTitle {
     color: #369;
-    margin-top: 0px;
     margin-bottom: 0px;
     background-color: transparent;
     margin-bottom: 0px;
@@ -83,8 +81,6 @@
     padding: 0px;
     margin-top: -40px;
     padding-left: 58px;
-    line-height: 1.0px;
-    font-size: 1.0px;
     height: 1.4em;
     line-height: 1.4em;
     font-size: 17px;

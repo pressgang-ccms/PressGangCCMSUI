@@ -493,8 +493,6 @@ public class ImagesFilteredResultsAndDetailsPresenter
                     }
                 }
             }
-
-            ;
         });
 
         imageComponent.getDisplay().getFindTopics().addClickHandler(new ClickHandler() {

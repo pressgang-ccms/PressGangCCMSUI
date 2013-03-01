@@ -1,8 +1,7 @@
 table.diff {
     border-collapse: collapse;
-    border-style: solid;
-    border-width: .2em;
-    font-family: "Arial";
+    border: .2em solid;
+    font-family: sans-serif;
     white-space: pre-wrap;
 }
 
