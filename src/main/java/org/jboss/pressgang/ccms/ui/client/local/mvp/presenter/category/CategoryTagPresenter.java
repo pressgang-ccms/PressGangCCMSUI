@@ -21,6 +21,7 @@ import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTagCollectionItemParentSort;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -171,81 +172,7 @@ public class CategoryTagPresenter
                             */
                             if (sortList.get(0).getColumn() == display.getPossibleChildrenButtonColumn()) {
 
-                                Collections.sort(getPossibleChildrenProviderData().getItems(), new Comparator<RESTTagCollectionItemV1>() {
-                                    @Override
-                                    public int compare(@Nullable final RESTTagCollectionItemV1 arg0, @Nullable final RESTTagCollectionItemV1 arg1) {
-                                        /*
-                                            First deal with null objects
-                                        */
-                                        if (arg0 == null && arg1 == null) {
-                                            return 0;
-                                        }
-
-                                        if (arg0 == arg1) {
-                                            return 0;
-                                        }
-
-                                        if (arg0 == null) {
-                                            return -1 * orderMultiplier;
-                                        }
-
-                                        if (arg1 == null) {
-                                            return 1 * orderMultiplier;
-                                        }
-
-                                        /*
-                                            Now deal with their inclusion in the parent
-                                        */
-                                        if (parent != null && parent.getTags() != null && parent.getTags().getItems() != null) {
-
-                                            final boolean arg0IsChild = ComponentCategoryV1.containsTag(parent, arg0.getItem().getId());
-                                            final boolean arg1IsChild = ComponentCategoryV1.containsTag(parent, arg1.getItem().getId());
-
-                                            if (arg0IsChild && arg1IsChild) {
-
-                                                /*
-                                                    Fall back to comparing by name
-                                                */
-                                                if (arg0.getItem().getName() == null && arg1.getItem().getName() == null) {
-                                                    return 0;
-                                                }
-
-                                                if (arg0.getItem().getName() == null) {
-                                                    return -1 * orderMultiplier;
-                                                }
-
-                                                if (arg1.getItem().getName() == null) {
-                                                    return 1 * orderMultiplier;
-                                                }
-
-                                                return arg0.getItem().getName().compareTo(arg1.getItem().getName());
-                                            }
-
-                                            if (arg0IsChild) {
-                                                return -1 * orderMultiplier;
-                                            }
-
-                                            return -1 * orderMultiplier;
-                                        }
-
-                                        /*
-                                            Fall back to comparing by name
-                                         */
-                                        if (arg0.getItem().getName() == null && arg1.getItem().getName() == null) {
-                                            return 0;
-                                        }
-
-                                        if (arg0.getItem().getName() == null) {
-                                            return -1 * orderMultiplier;
-                                        }
-
-                                        if (arg1.getItem().getName() == null) {
-                                            return 1 * orderMultiplier;
-                                        }
-
-                                        return arg0.getItem().getName().compareTo(arg1.getItem().getName())  * orderMultiplier;
-                                    }
-                                });
+                                Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemParentSort(parent));
                             }
                         }
 
