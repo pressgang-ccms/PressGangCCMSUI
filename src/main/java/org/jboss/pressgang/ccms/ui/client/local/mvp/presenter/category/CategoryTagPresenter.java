@@ -163,13 +163,13 @@ public class CategoryTagPresenter
                         */
                         final ColumnSortList sortList = display.getPossibleChildrenResults().getColumnSortList();
                         if (sortList.size() != 0) {
-                            LOGGER.log(Level.INFO, "Sort column found");
+
+                            final int orderMultiplier = sortList.get(0).isAscending() ? 1 : -1;
 
                             /*
                                 Do a sort based on the tags inclusion in the parent
                             */
                             if (sortList.get(0).getColumn() == display.getPossibleChildrenButtonColumn()) {
-                                LOGGER.log(Level.INFO, "Sorting tags");
 
                                 Collections.sort(getPossibleChildrenProviderData().getItems(), new Comparator<RESTTagCollectionItemV1>() {
                                     @Override
@@ -186,11 +186,11 @@ public class CategoryTagPresenter
                                         }
 
                                         if (arg0 == null) {
-                                            return -1;
+                                            return -1 * orderMultiplier;
                                         }
 
                                         if (arg1 == null) {
-                                            return 1;
+                                            return 1 * orderMultiplier;
                                         }
 
                                         /*
@@ -212,21 +212,21 @@ public class CategoryTagPresenter
                                                 }
 
                                                 if (arg0.getItem().getName() == null) {
-                                                    return -1;
+                                                    return -1 * orderMultiplier;
                                                 }
 
                                                 if (arg1.getItem().getName() == null) {
-                                                    return 1;
+                                                    return 1 * orderMultiplier;
                                                 }
 
                                                 return arg0.getItem().getName().compareTo(arg1.getItem().getName());
                                             }
 
                                             if (!arg0IsChild) {
-                                                return -1;
+                                                return -1 * orderMultiplier;
                                             }
 
-                                            return 1;
+                                            return 1 * orderMultiplier;
                                         }
 
                                         /*
@@ -237,14 +237,14 @@ public class CategoryTagPresenter
                                         }
 
                                         if (arg0.getItem().getName() == null) {
-                                            return -1;
+                                            return -1 * orderMultiplier;
                                         }
 
                                         if (arg1.getItem().getName() == null) {
-                                            return 1;
+                                            return 1 * orderMultiplier;
                                         }
 
-                                        return arg0.getItem().getName().compareTo(arg1.getItem().getName());
+                                        return arg0.getItem().getName().compareTo(arg1.getItem().getName())  * orderMultiplier;
                                     }
                                 });
                             }
