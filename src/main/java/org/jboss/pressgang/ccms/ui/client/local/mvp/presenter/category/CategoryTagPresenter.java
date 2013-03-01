@@ -197,7 +197,6 @@ public class CategoryTagPresenter
                                             Now deal with their inclusion in the parent
                                         */
                                         if (parent != null && parent.getTags() != null && parent.getTags().getItems() != null) {
-                                            LOGGER.log(Level.INFO, "Sorting on tag inclusion in category");
 
                                             final boolean arg0IsChild = ComponentCategoryV1.containsTag(parent, arg0.getItem().getId());
                                             final boolean arg1IsChild = ComponentCategoryV1.containsTag(parent, arg1.getItem().getId());
