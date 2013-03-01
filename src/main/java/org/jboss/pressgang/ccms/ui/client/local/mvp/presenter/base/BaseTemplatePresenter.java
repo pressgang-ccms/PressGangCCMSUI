@@ -17,6 +17,8 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Provides the basic functionality added to a template view defined in BaseTemplateViewInterface.
@@ -26,6 +28,11 @@ import javax.inject.Inject;
 abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInterface, EditableView {
 
     private static final RegExp ID_SEARCH = RegExp.compile(",*(\\s*\\d+\\s*,+)*\\s*\\d+\\s*,*");
+
+    /**
+     * A Logger
+     */
+    private static final Logger LOGGER = Logger.getLogger(BaseTemplatePresenter.class.getName());
 
     /**
      * The GWT event bus.
@@ -189,17 +196,23 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
             @Override
             public void onKeyPress(@NotNull final KeyPressEvent event) {
-                final int charCode = event.getUnicodeCharCode();
-                if (charCode == 0) {
-                    // it's probably Firefox
-                    final int keyCode = event.getNativeEvent().getKeyCode();
-                    // beware! keyCode=40 means "down arrow", while charCode=40 means '('
-                    // always check the keyCode against a list of "known to be buggy" codes!
-                    if (keyCode == KeyCodes.KEY_ENTER) {
+                try {
+                    LOGGER.log(Level.INFO, "ENTER BaseTemplatePresenter.bindStandardButtons() KeyPressHandler.onKeyPress()");
+
+                    final int charCode = event.getUnicodeCharCode();
+                    if (charCode == 0) {
+                        // it's probably Firefox
+                        final int keyCode = event.getNativeEvent().getKeyCode();
+                        // beware! keyCode=40 means "down arrow", while charCode=40 means '('
+                        // always check the keyCode against a list of "known to be buggy" codes!
+                        if (keyCode == KeyCodes.KEY_ENTER) {
+                            doQuickSearch(event.isControlKeyDown());
+                        }
+                    } else if (charCode == KeyCodes.KEY_ENTER) {
                         doQuickSearch(event.isControlKeyDown());
                     }
-                } else if (charCode == KeyCodes.KEY_ENTER) {
-                    doQuickSearch(event.isControlKeyDown());
+                } finally {
+                    LOGGER.log(Level.INFO, "EXIT BaseTemplatePresenter.bindStandardButtons() KeyPressHandler.onKeyPress()");
                 }
             }
         });
@@ -260,24 +273,30 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     }
 
     private void doQuickSearch(final boolean newWindow) {
-        final String query = display.getQuickSearchQuery().getValue().trim();
+        try {
+            LOGGER.log(Level.INFO, "ENTER BaseTemplatePresenter.doQuickSearch()");
 
-        if (query.isEmpty()) {
-            Window.alert(PressGangCCMSUI.INSTANCE.PleaseEnterValue());
-        } else {
-            if (ID_SEARCH.test(query)) {
-                /* If the search query was numbers and integers, assume that we are searching for topics ids */
-                @NotNull final String fixedQuery = GWTUtilities.fixUpIdSearchString(query);
-                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
-                        + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + fixedQuery, newWindow));
+            final String query = display.getQuickSearchQuery().getValue().trim();
+
+            if (query.isEmpty()) {
+                Window.alert(PressGangCCMSUI.INSTANCE.PleaseEnterValue());
             } else {
-                /* Otherwise do a search against the title, description and content of the topics */
-                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
-                        + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + query + ";"
-                        + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + query + ";"
-                        + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + query + ";"
-                        + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.LOGIC_FILTER_VAR + "=" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.OR_LOGIC, newWindow));
+                if (ID_SEARCH.test(query)) {
+                    /* If the search query was numbers and integers, assume that we are searching for topics ids */
+                    @NotNull final String fixedQuery = GWTUtilities.fixUpIdSearchString(query);
+                    eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
+                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + fixedQuery, newWindow));
+                } else {
+                    /* Otherwise do a search against the title, description and content of the topics */
+                    eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
+                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + query + ";"
+                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + query + ";"
+                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + query + ";"
+                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.LOGIC_FILTER_VAR + "=" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.OR_LOGIC, newWindow));
+                }
             }
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT BaseTemplatePresenter.doQuickSearch()");
         }
     }
 
