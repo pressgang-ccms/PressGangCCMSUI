@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category;
 
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
@@ -167,17 +168,17 @@ public class CategoryTagPresenter
                         */
                         final ColumnSortList sortList = display.getPossibleChildrenResults().getColumnSortList();
                         if (sortList.size() != 0) {
-
+                            final Column<?, ?> column = sortList.get(0).getColumn();
                             final boolean ascending = sortList.get(0).isAscending();
 
                             /*
                                 Sort the collection
                             */
-                            if (sortList.get(0).getColumn() == display.getPossibleChildrenButtonColumn()) {
+                            if (column == display.getPossibleChildrenButtonColumn()) {
                                 Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemParentSort(parent, ascending));
-                            } else if (sortList.get(0).getColumn() == display.getTagsIdColumn())  {
+                            } else if (column == display.getTagsIdColumn())  {
                                 Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemIDSort(ascending));
-                            } else if (sortList.get(0).getColumn() == display.getTagsNameColumn())  {
+                            } else if (column == display.getTagsNameColumn())  {
                                 Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemNameSort(ascending));
                             }
 
