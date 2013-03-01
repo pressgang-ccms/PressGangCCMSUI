@@ -54,6 +54,6 @@ public class RESTTagCollectionItemIDSort implements Comparator<RESTTagCollection
             return 1 * ascendingMultiplier;
         }
 
-        return arg0.getItem().getId().compareTo(arg1.getItem().getId());
+        return arg0.getItem().getId().compareTo(arg1.getItem().getId()) * ascendingMultiplier;
     }
 }

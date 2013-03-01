@@ -55,7 +55,7 @@ public class RESTTagCollectionItemNameSort implements Comparator<RESTTagCollecti
             return 1 * ascendingMultiplier;
         }
 
-        final int nameSort = arg0.getItem().getName().compareTo(arg1.getItem().getName());
+        final int nameSort = arg0.getItem().getName().compareTo(arg1.getItem().getName()) * ascendingMultiplier;
 
         if (nameSort == 0) {
             return new RESTTagCollectionItemIDSort(ascending).compare(arg0, arg1);
