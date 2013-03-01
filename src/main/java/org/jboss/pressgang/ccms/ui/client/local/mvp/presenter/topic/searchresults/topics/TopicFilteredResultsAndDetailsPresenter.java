@@ -408,7 +408,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
 
                             checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-                            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity."
+                            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
                             final String user = display.getMessageLogDialog().getUsername().getText().trim();
                             Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
