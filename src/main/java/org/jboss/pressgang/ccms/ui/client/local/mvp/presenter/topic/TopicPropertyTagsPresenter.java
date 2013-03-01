@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1.REMOVE_STATE;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
@@ -110,6 +111,8 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
                     new FieldUpdater<RESTPropertyTagCollectionItemV1, String>() {
                         @Override
                         public void update(final int index, @NotNull final RESTPropertyTagCollectionItemV1 object, final String value) {
+
+                            checkState(object.getItem() != null, "The object collection item being clicked on need to reference a valid entity");
 
                             /* Create a new property tag child */
                             @NotNull final RESTAssignedPropertyTagV1 restAssignedPropertyTagV1 = new RESTAssignedPropertyTagV1();
@@ -202,15 +205,16 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
                     getExistingProviderData().setItems(new ArrayList<RESTAssignedPropertyTagCollectionItemV1>());
 
                     /* Zero results can be a null list. Also selecting a new tag will reset getProviderData(). */
-                    if (entity != null && entity.getProperties() != null) {
-                        LOGGER.log(Level.INFO, "Found " + entity.getProperties().getItems().size() + " Property Tags.");
-                        /* Don't display removed tags */
-                        for (final RESTAssignedPropertyTagCollectionItemV1 propertyTagInTopic : entity.getProperties().returnExistingAddedAndUpdatedCollectionItems()) {
-                            getExistingProviderData().getItems().add(propertyTagInTopic);
-                        }
-                    } else {
-                        LOGGER.log(Level.WARNING, "entity == null: " + (entity == null) + " entity.getProperties() == null: " + (entity.getProperties() == null));
+
+                    checkState(entity.getProperties() != null, "The entity should have a collection of properties");
+                    checkState(getExistingProviderData().getItems() != null, "The existing data provider should have a valid collection of items");
+
+                    LOGGER.log(Level.INFO, "Found " + entity.getProperties().getItems().size() + " Property Tags.");
+                    /* Don't display removed tags */
+                    for (final RESTAssignedPropertyTagCollectionItemV1 propertyTagInTopic : entity.getProperties().returnExistingAddedAndUpdatedCollectionItems()) {
+                        getExistingProviderData().getItems().add(propertyTagInTopic);
                     }
+
 
                     //Collections.sort(getExistingProviderData().getItems(), new RESTTagCategoryCollectionItemV1SortComparator());
 
@@ -258,6 +262,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
                             getPossibleChildrenProviderData().setSize(retValue.getItems().size());
 
                             /* Refresh the list */
+                            checkState(getDisplay().getPossibleChildrenProvider() != null, "There should be a valid possible children provider");
                             getDisplay().getPossibleChildrenProvider().displayNewFixedList(getPossibleChildrenProviderData().getItems());
                         }
                     });

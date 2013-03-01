@@ -79,7 +79,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         @Override
         @NotNull
         public String getValue(@Nullable final RESTTopicCollectionItemV1 object) {
-            if (object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getMessage() != null) {
+            if (object != null && object.getItem() != null && object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getMessage() != null) {
                 return object.getItem().getLogDetails().getMessage();
             }
             return "";
@@ -93,7 +93,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         @Override
         @NotNull
         public String getValue(@Nullable final RESTTopicCollectionItemV1 object) {
-            if (object.getItem().getLogDetails() != null
+            if (object != null && object.getItem() != null && object.getItem().getLogDetails() != null
                     && object.getItem().getLogDetails().getUser() != null
                     && object.getItem().getLogDetails().getUser().getName() != null) {
                 return object.getItem().getLogDetails().getUser().getName();
@@ -110,7 +110,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         @NotNull
         @Override
         public Boolean getValue(@Nullable final RESTTopicCollectionItemV1 object) {
-            if (object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getFlag() != null) {
+            if (object != null && object.getItem() != null && object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getFlag() != null) {
                 final Integer flag = object.getItem().getLogDetails().getFlag();
                 return (flag & ServiceConstants.MINOR_CHANGE) == ServiceConstants.MINOR_CHANGE;
             }
@@ -126,7 +126,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         @NotNull
         @Override
         public Boolean getValue(@Nullable final RESTTopicCollectionItemV1 object) {
-            if (object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getFlag() != null) {
+            if (object != null && object.getItem() != null && object.getItem().getLogDetails() != null && object.getItem().getLogDetails().getFlag() != null) {
                 return (object.getItem().getLogDetails().getFlag() & ServiceConstants.MAJOR_CHANGE) == ServiceConstants.MAJOR_CHANGE;
             }
             return false;
@@ -147,7 +147,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
              * The last revision is the same as the topic in the main database. We indicate that by showing the last revision as
              * editable instead of read only.
              */
-            if (mainTopic != null && object.getItem().getRevision().equals(mainTopic.getRevision())) {
+            if (mainTopic != null && object != null && object.getItem() != null && object.getItem().getRevision().equals(mainTopic.getRevision())) {
                 if (revisionTopic == null || revisionTopic.getItem().getRevision().equals(mainTopic.getRevision())) {
                     viewButtonCell.setEnabled(false);
                     return PressGangCCMSUI.INSTANCE.CurrentlyEditing();
@@ -156,7 +156,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
                 }
             }
 
-            if (revisionTopic == null || !revisionTopic.getItem().getRevision().equals(object.getItem().getRevision())) {
+            if (revisionTopic == null || (object != null && object.getItem() != null && !revisionTopic.getItem().getRevision().equals(object.getItem().getRevision()))) {
                 return PressGangCCMSUI.INSTANCE.View();
             }
 
@@ -175,28 +175,30 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         public String getValue(@Nullable final RESTTopicCollectionItemV1 object) {
             diffButtonCell.setEnabled(true);
 
-            if (mainTopic != null && object.getItem().getRevision().equals(mainTopic.getRevision())) {
-                if (revisionTopic == null || revisionTopic.getItem().getRevision().equals(mainTopic.getRevision())) {
-                    diffButtonCell.setEnabled(false);
-                    return PressGangCCMSUI.INSTANCE.CurrentlyEditing();
+            if (mainTopic != null) {
+                if (object != null && object.getItem() != null && object.getItem().getRevision().equals(mainTopic.getRevision())) {
+                    if (revisionTopic == null || revisionTopic.getItem().getRevision().equals(mainTopic.getRevision())) {
+                        diffButtonCell.setEnabled(false);
+                        return PressGangCCMSUI.INSTANCE.CurrentlyEditing();
+                    }
                 }
-            }
 
-            if (revisionTopic == null || !revisionTopic.getItem().getRevision().equals(object.getItem().getRevision())) {
+                if (revisionTopic == null || (object != null && object.getItem() != null && !revisionTopic.getItem().getRevision().equals(object.getItem().getRevision()))) {
 
-                final String viewingXML = revisionTopic == null ? mainTopic.getXml() : revisionTopic.getItem().getXml();
-                @NotNull final String fixedViewingXML = viewingXML == null ? "" : viewingXML.trim();
+                    final String viewingXML = revisionTopic == null ? mainTopic.getXml() : revisionTopic.getItem().getXml();
+                    @NotNull final String fixedViewingXML = viewingXML == null ? "" : viewingXML.trim();
 
-                if (object.getItem().getXml() == null || object.getItem().getXml().trim().isEmpty()) {
-                    /* Diffs don't work if there is no XML to compare to */
-                    diffButtonCell.setEnabled(false);
-                    return PressGangCCMSUI.INSTANCE.NoXML();
-                } else if (object.getItem().getXml().trim().equals(fixedViewingXML)) {
-                    /* The XML is the same */
-                    diffButtonCell.setEnabled(false);
-                    return PressGangCCMSUI.INSTANCE.SameXML();
-                } else {
-                    return PressGangCCMSUI.INSTANCE.Diff();
+                    if (object.getItem().getXml() == null || object.getItem().getXml().trim().isEmpty()) {
+                        /* Diffs don't work if there is no XML to compare to */
+                        diffButtonCell.setEnabled(false);
+                        return PressGangCCMSUI.INSTANCE.NoXML();
+                    } else if (object.getItem().getXml().trim().equals(fixedViewingXML)) {
+                        /* The XML is the same */
+                        diffButtonCell.setEnabled(false);
+                        return PressGangCCMSUI.INSTANCE.SameXML();
+                    } else {
+                        return PressGangCCMSUI.INSTANCE.Diff();
+                    }
                 }
             }
 
