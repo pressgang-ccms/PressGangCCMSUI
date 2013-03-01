@@ -10,8 +10,17 @@ import java.util.Comparator;
  * Sorts RESTTagCollectionItemV1 objects based on their name.
  */
 public class RESTTagCollectionItemNameSort implements Comparator<RESTTagCollectionItemV1> {
+    final boolean ascending;
+
+
+    public RESTTagCollectionItemNameSort(final boolean ascending) {
+        this.ascending = ascending;
+    }
+
     @Override
     public int compare(@Nullable final RESTTagCollectionItemV1 arg0, @Nullable final RESTTagCollectionItemV1 arg1) {
+        final int ascendingMultiplier = ascending ? 1 : -1;
+
         /*
             First deal with null objects
         */
@@ -24,11 +33,11 @@ public class RESTTagCollectionItemNameSort implements Comparator<RESTTagCollecti
         }
 
         if (arg0 == null) {
-            return -1;
+            return -1 * ascendingMultiplier;
         }
 
         if (arg1 == null) {
-            return 1 ;
+            return 1 * ascendingMultiplier ;
         }
 
         /*
@@ -39,17 +48,17 @@ public class RESTTagCollectionItemNameSort implements Comparator<RESTTagCollecti
         }
 
         if (arg0.getItem().getName() == null) {
-            return -1;
+            return -1 * ascendingMultiplier;
         }
 
         if (arg1.getItem().getName() == null) {
-            return 1;
+            return 1 * ascendingMultiplier;
         }
 
         final int nameSort = arg0.getItem().getName().compareTo(arg1.getItem().getName());
 
         if (nameSort == 0) {
-            return new RESTTagCollectionItemIDSort().compare(arg0, arg1);
+            return new RESTTagCollectionItemIDSort(ascending).compare(arg0, arg1);
         }
 
         return nameSort;

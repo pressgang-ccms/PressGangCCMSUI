@@ -13,14 +13,17 @@ import java.util.Comparator;
  */
 public class RESTTagCollectionItemParentSort implements Comparator<RESTTagCollectionItemV1> {
     @NotNull final RESTCategoryV1 parent;
+    final boolean ascending;
 
-    public RESTTagCollectionItemParentSort(@NotNull final RESTCategoryV1 parent) {
+    public RESTTagCollectionItemParentSort(@NotNull final RESTCategoryV1 parent, final boolean ascending) {
         this.parent = parent;
-
+        this.ascending = ascending;
     }
 
     @Override
     public int compare(@Nullable final RESTTagCollectionItemV1 arg0, @Nullable final RESTTagCollectionItemV1 arg1) {
+        final int acendingMultiplier = ascending ? 1 : -1;
+
         /*
             First deal with null objects
         */
@@ -33,11 +36,11 @@ public class RESTTagCollectionItemParentSort implements Comparator<RESTTagCollec
         }
 
         if (arg0 == null) {
-            return -1;
+            return -1 * acendingMultiplier;
         }
 
         if (arg1 == null) {
-            return 1 ;
+            return 1 * acendingMultiplier ;
         }
 
         /*
@@ -47,18 +50,18 @@ public class RESTTagCollectionItemParentSort implements Comparator<RESTTagCollec
         final boolean arg1IsChild = ComponentCategoryV1.containsTag(parent, arg1.getItem().getId());
 
         if (arg0IsChild && arg1IsChild) {
-            final int id = new RESTTagCollectionItemIDSort().compare(arg0, arg1);
+            final int id = new RESTTagCollectionItemIDSort(ascending).compare(arg0, arg1);
             if (id == 0) {
-                return new RESTTagCollectionItemNameSort().compare(arg0, arg1);
+                return new RESTTagCollectionItemNameSort(ascending).compare(arg0, arg1);
             }
 
             return id;
         }
 
         if (arg0IsChild) {
-            return -1;
+            return -1 * acendingMultiplier;
         }
 
-        return -1;
+        return -1 * acendingMultiplier;
     }
 }

@@ -168,17 +168,17 @@ public class CategoryTagPresenter
                         final ColumnSortList sortList = display.getPossibleChildrenResults().getColumnSortList();
                         if (sortList.size() != 0) {
 
-                            final int orderMultiplier = sortList.get(0).isAscending() ? 1 : -1;
+                            final boolean ascending = sortList.get(0).isAscending();
 
                             /*
                                 Sort the collection
                             */
                             if (sortList.get(0).getColumn() == display.getPossibleChildrenButtonColumn()) {
-                                Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemParentSort(parent));
+                                Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemParentSort(parent, ascending));
                             } else if (sortList.get(0).getColumn() == display.getTagsIdColumn())  {
-                                Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemIDSort());
+                                Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemIDSort(ascending));
                             } else if (sortList.get(0).getColumn() == display.getTagsNameColumn())  {
-                                Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemNameSort());
+                                Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemNameSort(ascending));
                             }
 
                         }
