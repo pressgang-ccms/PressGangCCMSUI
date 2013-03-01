@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 /**
@@ -154,6 +155,9 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
     protected final void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
         try {
             LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.initializeViews()");
+
+            checkState(searchFilterFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+            checkState(searchFilterFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
             if (this.viewIsInFilter(filter, this.searchFilterPresenter.getDisplay())) {
                 this.searchFilterPresenter.getDisplay().display(this.searchFilterFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);

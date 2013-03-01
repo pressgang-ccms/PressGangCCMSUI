@@ -148,12 +148,20 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
                 @NotNull
                 @Override
                 public RESTPropertyTagInPropertyCategoryCollectionV1 getExistingCollection() {
+                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags() != null, "The displayed collection item to reference a valid entity and have a valid property tags collection.");
+
                     return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags();
                 }
             },
             new AddPossibleChildCallback<RESTPropertyTagCollectionItemV1>() {
                 @Override
                 public void createAndAddChild(@NotNull final RESTPropertyTagCollectionItemV1 copy) {
+                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags() != null, "The displayed collection item to reference a valid entity and have a valid property tags collection.");
+
                     @NotNull final RESTPropertyTagInPropertyCategoryV1 newChild = new RESTPropertyTagInPropertyCategoryV1();
                     newChild.setId(copy.getItem().getId());
                     newChild.setName(copy.getItem().getName());
@@ -163,6 +171,9 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
             new UpdateAfterChildModfiedCallback() {
                 @Override
                 public void updateAfterChidModfied() {
+                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+
                     /*
                      * refresh the list of possible tags
                      */
@@ -219,6 +230,8 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
 
                 checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "An item should have been displayed.");
                 checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed item should have a valid entity.");
+                checkState(filteredResultsComponent.getProviderData().getSelectedItem() != null, "An item should have been selected.");
+                checkState(filteredResultsComponent.getProviderData().getSelectedItem().getItem() != null, "The selected item should have a valid entity.");
 
                 /* Was the tag we just saved a new tag? */
                 final boolean wasNewEntity = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
@@ -230,6 +243,8 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
                         new BaseRestCallback.SuccessAction<RESTPropertyCategoryV1, Display>() {
                             @Override
                             public void doSuccessAction(@NotNull final RESTPropertyCategoryV1 retValue, @NotNull final Display display) {
+                                checkState(filteredResultsComponent.getProviderData().isValid(), "The filtered results data provider should be valid");
+
                                 retValue.cloneInto(filteredResultsComponent.getProviderData().getSelectedItem().getItem(), true);
                                 retValue.cloneInto(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), true);
 
@@ -251,6 +266,9 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
                 if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
 
                     if (hasUnsavedChanges()) {
+
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "An item should have been displayed.");
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed item should have a valid entity.");
 
                         final RESTPropertyCategoryV1 displayedItem = filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
                         @NotNull final RESTPropertyCategoryV1 propertyTag = new RESTPropertyCategoryV1();
@@ -294,6 +312,9 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
         filteredResultsComponent.getDisplay().getCreate().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
+
+                checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "An item should have been displayed.");
+                checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed item should have a valid entity.");
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
                 @NotNull final RESTPropertyCategoryV1 selectedEntity = new RESTPropertyCategoryV1();
@@ -351,9 +372,11 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
      * @return true if there are modified tags, false otherwise
      */
     private boolean unsavedCategoryChanges() {
-        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags() != null, "The property collection's collection of tags should have been populated.");
+        checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "An item should have been displayed.");
+        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed item should have a valid entity.");
 
-        return !filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags().returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
+        return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags() == null ||
+                !filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyTags().returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
     }
 
     /**
@@ -379,6 +402,9 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
 
     @Override
     protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
+
+        checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "An item should have been displayed.");
+        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed item should have a valid entity.");
 
         @NotNull final List<BaseCustomViewInterface<RESTPropertyCategoryV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTPropertyCategoryV1>>();
         displayableViews.add(resultComponent.getDisplay());

@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
@@ -150,6 +151,9 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         @NotNull final ClickHandler loadClickHanlder = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
+                checkState(searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                checkState(searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+
                 final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
                 tagsComponent.getDisplay().displayExtended(tags, displayedFilter, false);
                 fieldsComponent.getDisplay().display(displayedFilter, false);
@@ -196,6 +200,9 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         @NotNull final ClickHandler overwriteFilter = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
+
+                checkState(searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                checkState(searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
                 /* Save any changes back to the underlying object */
                 fieldsComponent.getDisplay().getDriver().flush();

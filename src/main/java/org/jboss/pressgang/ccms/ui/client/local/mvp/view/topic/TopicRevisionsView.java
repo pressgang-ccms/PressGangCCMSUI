@@ -25,6 +25,8 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static com.google.common.base.Preconditions.checkState;
+
 /**
  * A MVP view for displaying a topic's revision history.
  *
@@ -187,6 +189,8 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
                     final String viewingXML = revisionTopic == null ? mainTopic.getXml() : revisionTopic.getItem().getXml();
                     @NotNull final String fixedViewingXML = viewingXML == null ? "" : viewingXML.trim();
+
+                    checkState(object.getItem() != null, "The collection item should reference a valid entity.");
 
                     if (object.getItem().getXml() == null || object.getItem().getXml().trim().isEmpty()) {
                         /* Diffs don't work if there is no XML to compare to */

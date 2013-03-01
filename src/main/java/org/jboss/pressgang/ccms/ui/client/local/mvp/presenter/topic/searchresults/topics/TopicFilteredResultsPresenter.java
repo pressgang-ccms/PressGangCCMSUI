@@ -14,6 +14,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresul
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
@@ -23,6 +24,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
@@ -112,41 +114,18 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> list) {
 
-                @NotNull final RESTCalls.RESTCallback<RESTTopicCollectionV1> callback = new RESTCalls.RESTCallback<RESTTopicCollectionV1>() {
+                @NotNull final BaseRestCallback<RESTTopicCollectionV1, Display> callback = new BaseRestCallback<RESTTopicCollectionV1, Display>(display,  new BaseRestCallback.SuccessAction<RESTTopicCollectionV1, Display>() {
                     @Override
-                    public void begin() {
-                        resetProvider();
-                        display.addWaitOperation();
-                    }
+                    public void doSuccessAction(@NotNull final RESTTopicCollectionV1 retValue, @NotNull final Display display) {
+                        checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                        checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
-                    @Override
-                    public void generalException(final Exception e) {
-                        Window.alert(PressGangCCMSUI.INSTANCE.ErrorGettingTopics());
-                        display.removeWaitOperation();
-                    }
-
-                    @Override
-                    public void success(@NotNull final RESTTopicCollectionV1 retValue) {
-                        try {
-                            getProviderData().setItems(retValue.getItems());
-                            getProviderData().setSize(retValue.getSize());
-                            relinkSelectedItem();
-                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
-                        } finally {
-                            display.removeWaitOperation();
-                            getHandlerManager().fireEvent(new EntityListReceived(retValue));
-                        }
-                    }
-
-                    @Override
-                    public void failed(final Message message, final Throwable throwable) {
-                        display.removeWaitOperation();
-                        getProviderData().setItems(new ArrayList<RESTTopicCollectionItemV1>());
-                        getProviderData().setSize(0);
+                        getProviderData().setItems(retValue.getItems());
+                        getProviderData().setSize(retValue.getSize());
+                        relinkSelectedItem();
                         displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
-                        Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
                     }
-                };
+                });
 
                 getProviderData().setStartRow(list.getVisibleRange().getStart());
                 final int length = list.getVisibleRange().getLength();

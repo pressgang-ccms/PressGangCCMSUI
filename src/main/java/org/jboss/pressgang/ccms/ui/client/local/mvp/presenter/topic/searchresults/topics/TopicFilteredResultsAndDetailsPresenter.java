@@ -67,6 +67,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
@@ -240,6 +241,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             @Override
             public RESTTopicV1 getCurrentlyEditedTopic() {
+                checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+
                 return getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
             }
         });
@@ -266,12 +270,21 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         /* if getSearchResultsComponent().getProviderData().getSelectedItem() == null, then we are displaying a new topic */
         if (this.getSearchResultsComponent().getProviderData().getSelectedItem() != null) {
-                /* A callback to respond to a request for a topic with the revisions expanded */
+
+            checkState(getSearchResultsComponent().getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
+            checkState(getSearchResultsComponent().getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
+
+
+            /* A callback to respond to a request for a topic with the revisions expanded */
             @NotNull final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
                     topicRevisionsComponent.getDisplay(),
                     new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
                         @Override
-                        public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
+                        public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final TopicRevisionsPresenter.Display display) {
+
+                            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+
                             getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().setRevisions(retValue.getRevisions());
 
                             /* refresh the list */
@@ -362,9 +375,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() saveClickHandler.onClick()");
 
                         if (hasUnsavedChanges()) {
-                                /*
-                                    Default to using the major change for new topics
-                                 */
+                            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity."
+
+                            /*
+                                Default to using the major change for new topics
+                             */
                             if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null && getSearchResultsComponent().getProviderData().getDisplayedItem().returnIsAddItem()) {
                                 display.getMessageLogDialog().getMajorChange().setValue(true);
                                 display.getMessageLogDialog().getMessage().setValue(PressGangCCMSUI.INSTANCE.InitialTopicCreation());
@@ -387,10 +403,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     try {
-                        LOGGER.log(Level.INFO,
-                                "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
+                        LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
 
                         if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
+
+                            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity."
 
                             final String user = display.getMessageLogDialog().getUsername().getText().trim();
                             Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
@@ -402,15 +420,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             message.append(display.getMessageLogDialog().getMessage().getText());
                             @NotNull final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
 
-                                /* Sync any changes back to the underlying object */
+                            /* Sync any changes back to the underlying object */
                             flushChanges();
 
-                                 /*
-                                 * Create a new instance of the topic, and copy out any updated, added or deleted fields. We don't
-                                 * do a clone or send the original object here because a full object will send back a whole lot of
-                                 * data that was never modified, wasting bandwidth, and chewing up CPU cycles as Errai serializes
-                                 * the data into JSON.
-                                 */
+                             /*
+                             * Create a new instance of the topic, and copy out any updated, added or deleted fields. We don't
+                             * do a clone or send the original object here because a full object will send back a whole lot of
+                             * data that was never modified, wasting bandwidth, and chewing up CPU cycles as Errai serializes
+                             * the data into JSON.
+                             */
                             final RESTTopicV1 sourceTopic = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
 
                             @NotNull final RESTTopicV1 newTopic = new RESTTopicV1();
@@ -458,17 +476,17 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                         /* Update the displayed topic */
                                                     getSearchResultsComponent().getProviderData().setDisplayedItem(topicCollectionItem.clone(true));
 
-                                                        /*
-                                                            Two things can happen to the selected item at this point. Either we are in the
-                                                            "create topic" mode, in which we simply add the new topics to the data provider, and
-                                                            never refresh from the database. In this case, the selected item and the item
-                                                            in the data provider are the same, and always linked.
+                                                    /*
+                                                        Two things can happen to the selected item at this point. Either we are in the
+                                                        "create topic" mode, in which we simply add the new topics to the data provider, and
+                                                        never refresh from the database. In this case, the selected item and the item
+                                                        in the data provider are the same, and always linked.
 
-                                                            The second mode is where we have created a topic when already displaying a query.
-                                                            In this case the selected item will be relinked in the relinkSelectedItem() method,
-                                                            or it will remain referencing the returned value here if the query doesn't actually
-                                                            return the topic that was saved.
-                                                         */
+                                                        The second mode is where we have created a topic when already displaying a query.
+                                                        In this case the selected item will be relinked in the relinkSelectedItem() method,
+                                                        or it will remain referencing the returned value here if the query doesn't actually
+                                                        return the topic that was saved.
+                                                     */
                                                     getSearchResultsComponent().getProviderData().setSelectedItem(topicCollectionItem);
 
                                                     lastXML = null;
@@ -648,6 +666,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.postInitializeViews()");
 
+            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+
             if (viewIsInFilter(filter, topicViewComponent.getDisplay())) {
                 topicViewComponent.getDisplay().displayTopicDetails(this.getDisplayedTopic(), isReadOnlyMode(), locales);
             }
@@ -748,20 +769,22 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 LOGGER.log(Level.WARNING, "getTopicXMLComponent().getDisplay().getDriver().flush() threw an IllegalStateException. This probably happened because the rendered view was refreshed before the XML editor was bound.");
             }
 
-            final boolean xmlHasChanges = lastXML == null || !lastXML.equals(this.getDisplayedTopic().getXml());
+            if (this.getDisplayedTopic() != null) {
+                final boolean xmlHasChanges = lastXML == null || !lastXML.equals(this.getDisplayedTopic().getXml());
 
-            if (xmlHasChanges) {
-                lastXMLChange = System.currentTimeMillis();
+                if (xmlHasChanges) {
+                    lastXMLChange = System.currentTimeMillis();
+                }
+
+                @NotNull final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >= Constants.REFRESH_RATE_WTH_IMAGES;
+
+                if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
+                    isDisplayingImage = timeToDisplayImage;
+                    getTopicSplitPanelRenderedDisplay().displayTopicRendered(this.getDisplayedTopic(), isReadOnlyMode(), isDisplayingImage);
+                }
+
+                lastXML = this.getDisplayedTopic().getXml();
             }
-
-            @NotNull final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >= Constants.REFRESH_RATE_WTH_IMAGES;
-
-            if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
-                isDisplayingImage = timeToDisplayImage;
-                getTopicSplitPanelRenderedDisplay().displayTopicRendered(this.getDisplayedTopic(), isReadOnlyMode(), isDisplayingImage);
-            }
-
-            lastXML = this.getDisplayedTopic().getXml();
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.refreshRenderedView()");
         }
@@ -845,6 +868,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     }
 
                     for (@NotNull final TopicTagViewTagEditor topicTagViewTagEditor : topicTagViewCategoryEditor.myTags.getEditors()) {
+                        checkState(topicTagViewTagEditor.getTag() != null, "The tag editor should point to a valid tag ui data POJO.");
+                        checkState(topicTagViewTagEditor.getTag().getTag() != null, "The tag editor should point to a valid tag ui data POJO, which should reference a valid tag entity.");
                         topicTagViewTagEditor.getDelete().addClickHandler(new DeleteTagClickHandler(topicTagViewTagEditor.getTag().getTag()));
                     }
                 }
@@ -869,41 +894,45 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
                                 @Override
                                 public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
-                                    @NotNull final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID()
-                                            + ": "
-                                            + retValue.getId()
-                                            + " "
-                                            + PressGangCCMSUI.INSTANCE.TopicRevision()
-                                            + ": "
-                                            + retValue.getRevision().toString()
-                                            + " "
-                                            + PressGangCCMSUI.INSTANCE.RevisionDate()
-                                            + ": "
-                                            + DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(
-                                            retValue.getLastModified());
+                                    checkState(getDisplayedTopic() != null, "There should be a displayed item.");
 
-                                    @NotNull final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID()
-                                            + ": "
-                                            + getDisplayedTopic().getId()
-                                            + " "
-                                            + PressGangCCMSUI.INSTANCE.TopicRevision()
-                                            + ": "
-                                            + getDisplayedTopic().getRevision().toString()
-                                            + " "
-                                            + PressGangCCMSUI.INSTANCE.RevisionDate()
-                                            + ": "
-                                            + DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(
-                                            getDisplayedTopic().getLastModified());
+                                    if (getDisplayedTopic() != null) {
+                                        @NotNull final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID()
+                                                + ": "
+                                                + retValue.getId()
+                                                + " "
+                                                + PressGangCCMSUI.INSTANCE.TopicRevision()
+                                                + ": "
+                                                + retValue.getRevision().toString()
+                                                + " "
+                                                + PressGangCCMSUI.INSTANCE.RevisionDate()
+                                                + ": "
+                                                + DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(
+                                                retValue.getLastModified());
 
-                                    /* See if the topic contains valid XML or not */
-                                    boolean isXML = true;
-                                    try {
-                                        XMLParser.parse(getDisplayedTopic().getXml());
-                                    } catch (@NotNull final DOMParseException ex) {
-                                        isXML = false;
+                                        @NotNull final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID()
+                                                + ": "
+                                                + getDisplayedTopic().getId()
+                                                + " "
+                                                + PressGangCCMSUI.INSTANCE.TopicRevision()
+                                                + ": "
+                                                + getDisplayedTopic().getRevision().toString()
+                                                + " "
+                                                + PressGangCCMSUI.INSTANCE.RevisionDate()
+                                                + ": "
+                                                + DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(
+                                                getDisplayedTopic().getLastModified());
+
+                                        /* See if the topic contains valid XML or not */
+                                        boolean isXML = true;
+                                        try {
+                                            XMLParser.parse(getDisplayedTopic().getXml());
+                                        } catch (@NotNull final DOMParseException ex) {
+                                            isXML = false;
+                                        }
+
+                                        topicRevisionsComponent.displayDiff(retValue.getXml(), retValueLabel, getDisplayedTopic().getXml(), sourceTopicLabel, isXML);
                                     }
-
-                                    topicRevisionsComponent.displayDiff(retValue.getXml(), retValueLabel, getDisplayedTopic().getXml(), sourceTopicLabel, isXML);
                                 }
                             });
                     RESTCalls.getTopicRevision(callback, revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision());
@@ -916,6 +945,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                     try {
                         LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton() FieldUpdater.update()");
+
+                        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                        checkState(getDisplayedTopic() != null, "There should be a displayed item.");
 
                         /* Reset the reference to the revision topic */
                         viewLatestTopicRevision();
@@ -1554,12 +1587,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         @Override
         public void onClick(final ClickEvent event) {
+            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTags() != null, "The displayed collection item to reference a valid entity and have a valid tags collection.");
+
             final RESTTagV1 selectedTag = getTopicTagsComponent().getDisplay().getMyTags().getValue().getTag().getItem();
 
             /* Need to deal with re-adding removed tags */
             @org.jetbrains.annotations.Nullable RESTTagCollectionItemV1 deletedTag = null;
-            for (@NotNull final RESTTagCollectionItemV1 tag : getSearchResultsComponent().getProviderData().getDisplayedItem().getItem()
-                    .getTags().getItems()) {
+            for (@NotNull final RESTTagCollectionItemV1 tag : getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTags().getItems()) {
                 if (tag.getItem().getId().equals(selectedTag.getId())) {
                     if (RESTBaseCollectionItemV1.REMOVE_STATE.equals(tag.getState())) {
                         deletedTag = tag;
@@ -1684,9 +1720,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         @Override
         public void onClick(final ClickEvent event) {
-            if (getSearchResultsComponent().getProviderData().getDisplayedItem() == null) {
-                throw new IllegalStateException("getSearchResultsComponent().getProviderData().getDisplayedItem() cannot be null");
-            }
+            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
             if (RESTBaseCollectionItemV1.ADD_STATE.equals(tag.getState())) {
                 /* Tag was added and then removed, so we just delete the tag */

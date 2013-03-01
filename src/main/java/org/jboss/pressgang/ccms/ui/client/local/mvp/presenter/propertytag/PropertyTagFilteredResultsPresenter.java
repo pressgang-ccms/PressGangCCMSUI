@@ -75,7 +75,8 @@ public class PropertyTagFilteredResultsPresenter extends BaseFilteredResultsPres
                 @NotNull final BaseRestCallback<RESTPropertyTagCollectionV1, Display> callback = new BaseRestCallback<RESTPropertyTagCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTPropertyTagCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTPropertyTagCollectionV1 retValue, @NotNull final Display display) {
-                        checkArgument(retValue.getItems() != null, "RESTPropertyTagCollectionV1 items are null. This is probably due to incorrect expansion.") ;
+                        checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                        checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
                         getProviderData().setItems(retValue.getItems());
                         getProviderData().setSize(retValue.getSize());

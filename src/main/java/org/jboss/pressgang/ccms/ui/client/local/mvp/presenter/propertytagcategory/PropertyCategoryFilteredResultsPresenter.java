@@ -74,7 +74,8 @@ public class PropertyCategoryFilteredResultsPresenter extends BaseFilteredResult
                 @NotNull final BaseRestCallback<RESTPropertyCategoryCollectionV1, Display> callback = new BaseRestCallback<RESTPropertyCategoryCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTPropertyCategoryCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTPropertyCategoryCollectionV1 retValue, @NotNull final Display display) {
-                        checkArgument(retValue.getItems() != null, "RESTPropertyCategoryCollectionV1 items are null. This is probably due to incorrect expansion.") ;
+                        checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                        checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
                         getProviderData().setItems(retValue.getItems());
                         getProviderData().setSize(retValue.getSize());

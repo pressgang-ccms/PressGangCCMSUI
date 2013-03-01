@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 
 /**
@@ -84,6 +85,9 @@ implements BaseTemplatePresenterInterface {
 
     @Override
     protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
+        checkState(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+        checkState(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+
         stringConstantPresenter.getDisplay().display(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
     }
 
@@ -96,6 +100,11 @@ implements BaseTemplatePresenterInterface {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
+                checkState(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                checkState(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                checkState(stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
+                checkState(stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
+
                 /* Was the tag we just saved a new tag? */
                 final boolean wasNewEntity = stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem();
 
@@ -106,6 +115,8 @@ implements BaseTemplatePresenterInterface {
                         new BaseRestCallback.SuccessAction<RESTStringConstantV1, Display>() {
                             @Override
                             public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final Display display) {
+                                checkState(stringConstantFilteredResultsPresenter.getProviderData().isValid(), "The filtered results data provider should be valid.");
+
                                 retValue.cloneInto(stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
                                 retValue.cloneInto(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
 

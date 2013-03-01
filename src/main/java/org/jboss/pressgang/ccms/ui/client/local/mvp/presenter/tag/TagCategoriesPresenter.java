@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
@@ -236,6 +237,9 @@ public class TagCategoriesPresenter
 
     @Override
     protected void initLifecycleBindExistingChildrenRowClick(@NotNull final RESTTagV1 editingParent) {
+        checkState(getPossibleChildrenProviderData().getDisplayedItem() != null, "There should be a displayed possible children collection item.");
+        checkState(getPossibleChildrenProviderData().getDisplayedItem().getItem() != null, "The displayed possible children collection item to reference a valid entity.");
+
         display.getExistingChildUpButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
             @Override

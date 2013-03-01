@@ -85,6 +85,9 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsPre
                                     try {
                                         LOGGER.log(Level.INFO, "ENTER SearchFilterFilteredResultsPresenter.generateListProvider() SuccessAction.doSuccessAction()");
 
+                                        checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                                        checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
+
                                         getProviderData().setItems(retValue.getItems());
                                         getProviderData().setSize(retValue.getSize());
                                         relinkSelectedItem();
