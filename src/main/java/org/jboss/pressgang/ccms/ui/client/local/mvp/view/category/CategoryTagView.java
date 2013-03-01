@@ -129,6 +129,8 @@ public class CategoryTagView
         getPossibleChildrenResults().addColumn(tagsNameColumn, PressGangCCMSUI.INSTANCE.TagName());
         getPossibleChildrenResults().addColumn(tagsButtonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
         tagsButtonColumn.setSortable(true);
+        tagsNameColumn.setSortable(true);
+        tagsIdColumn.setSortable(true);
 
         /*
             Allow the table to be sorted.
@@ -156,4 +158,13 @@ public class CategoryTagView
         return tagDownButtonColumn;
     }
 
+    @NotNull
+    public TextColumn<RESTTagCollectionItemV1> getTagsIdColumn() {
+        return tagsIdColumn;
+    }
+
+    @NotNull
+    public TextColumn<RESTTagCollectionItemV1> getTagsNameColumn() {
+        return tagsNameColumn;
+    }
 }

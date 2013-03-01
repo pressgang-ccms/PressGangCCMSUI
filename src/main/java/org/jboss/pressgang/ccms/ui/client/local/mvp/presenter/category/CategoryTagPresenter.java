@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category;
 
 import com.google.gwt.user.cellview.client.ColumnSortList;
+import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
@@ -21,6 +22,8 @@ import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTagCollectionItemIDSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTagCollectionItemNameSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTagCollectionItemParentSort;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
@@ -168,12 +171,16 @@ public class CategoryTagPresenter
                             final int orderMultiplier = sortList.get(0).isAscending() ? 1 : -1;
 
                             /*
-                                Do a sort based on the tags inclusion in the parent
+                                Sort the collection
                             */
                             if (sortList.get(0).getColumn() == display.getPossibleChildrenButtonColumn()) {
-
                                 Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemParentSort(parent));
+                            } else if (sortList.get(0).getColumn() == display.getTagsIdColumn())  {
+                                Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemIDSort());
+                            } else if (sortList.get(0).getColumn() == display.getTagsNameColumn())  {
+                                Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemNameSort());
                             }
+
                         }
 
                         displayNewFixedList(getPossibleChildrenProviderData().getItems());
@@ -221,7 +228,11 @@ public class CategoryTagPresenter
                     RESTTagCollectionItemV1,
                     RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> {
 
+        @NotNull
+        TextColumn<RESTTagCollectionItemV1> getTagsIdColumn();
 
+        @NotNull
+        TextColumn<RESTTagCollectionItemV1> getTagsNameColumn();
     }
 
 }
