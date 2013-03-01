@@ -30,13 +30,13 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
 
     private static final Logger LOGGER = Logger.getLogger(BaseRestCallback.class.getName());
 
-    public BaseRestCallback(final D display, final SuccessAction<C, D> successAction) {
+    public BaseRestCallback(@NotNull final D display, @NotNull final SuccessAction<C, D> successAction) {
         this.display = display;
         this.successAction = successAction;
         this.failureAction = null;
     }
 
-    public BaseRestCallback(final D display, final SuccessAction<C, D> successAction, final FailureAction<D> failureAction) {
+    public BaseRestCallback(@NotNull final D display, @NotNull final SuccessAction<C, D> successAction, @NotNull final FailureAction<D> failureAction) {
         this.display = display;
         this.successAction = successAction;
         this.failureAction = failureAction;

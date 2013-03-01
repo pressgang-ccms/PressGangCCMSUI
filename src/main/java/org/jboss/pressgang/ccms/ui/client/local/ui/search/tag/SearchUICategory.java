@@ -165,8 +165,8 @@ public final class SearchUICategory extends SearchUIBase {
                 checkState(tag.getItem().getProjects() != null, "tag.getItem().getProjects() cannot be null");
                 checkState(tag.getItem().getCategories() != null, "tag.getItem().getCategories() cannot be null");
 
-                final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory = Iterables.tryFind(tag.getItem()
-                        .getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
+                final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory =
+                        Iterables.tryFind(tag.getItem().getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
                     @Override
                     public boolean apply(@NotNull final RESTCategoryInTagCollectionItemV1 arg) {
                         return arg.getItem().getId().equals(category.getItem().getId());

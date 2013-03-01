@@ -39,5 +39,5 @@ public interface BaseFilteredResultsPresenterInterface<V extends RESTBaseCollect
      * @param pageId      The string that identifies the page
      * @param queryString The query string that is passed to the REST interface
      */
-    void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @Nullable final String queryString);
+    void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @NotNull final String queryString);
 }

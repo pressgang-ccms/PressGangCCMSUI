@@ -48,7 +48,7 @@ abstract public class BaseChildrenView<
 
     @NotNull
     @Override
-    public final void setOriginalEntity(final T originalEntity) {
+    public final void setOriginalEntity(@NotNull final T originalEntity) {
         this.originalEntity = originalEntity;
     }
 

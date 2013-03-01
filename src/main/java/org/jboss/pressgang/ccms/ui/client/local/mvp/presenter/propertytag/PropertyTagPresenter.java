@@ -50,7 +50,6 @@ public class PropertyTagPresenter extends BaseTemplatePresenter {
         return display;
     }
 
-    @NotNull
     @Override
     public void parseToken(@NotNull final String searchToken) {
         try {

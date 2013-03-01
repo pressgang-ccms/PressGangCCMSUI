@@ -109,7 +109,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
     }
 
     @Override
-    public void go(final HasWidgets container) {
+    public void go(@NotNull final HasWidgets container) {
         try {
             LOGGER.log(Level.INFO, "ENTER AppController.go()");
 

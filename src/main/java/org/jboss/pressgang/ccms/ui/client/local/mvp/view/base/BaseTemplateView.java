@@ -213,7 +213,6 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
             return this.contents;
         }
 
-        @NotNull
         @Override
         public int getHelpTopic() {
             return helpTopic;

@@ -114,7 +114,6 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
         display.setProvider(generateListProvider(queryString, display));
     }
 
-    @NotNull
     @Override
     public void parseToken(@NotNull final String historyToken) {
         queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
