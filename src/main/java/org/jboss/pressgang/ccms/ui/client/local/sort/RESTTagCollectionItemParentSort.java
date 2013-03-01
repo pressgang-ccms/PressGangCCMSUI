@@ -57,6 +57,6 @@ public class RESTTagCollectionItemParentSort implements Comparator<RESTTagCollec
             return -1 * acendingMultiplier;
         }
 
-        return -1 * acendingMultiplier;
+        return 1 * acendingMultiplier;
     }
 }
