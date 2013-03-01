@@ -204,9 +204,9 @@ public class CategoryTagPresenter
 
                                             if (arg0IsChild && arg1IsChild) {
 
-                                                    /*
-                                                        Fall back to comparing by name
-                                                    */
+                                                /*
+                                                    Fall back to comparing by name
+                                                */
                                                 if (arg0.getItem().getName() == null && arg1.getItem().getName() == null) {
                                                     return 0;
                                                 }
@@ -222,11 +222,11 @@ public class CategoryTagPresenter
                                                 return arg0.getItem().getName().compareTo(arg1.getItem().getName());
                                             }
 
-                                            if (!arg0IsChild) {
+                                            if (arg0IsChild) {
                                                 return -1 * orderMultiplier;
                                             }
 
-                                            return 1 * orderMultiplier;
+                                            return -1 * orderMultiplier;
                                         }
 
                                         /*
