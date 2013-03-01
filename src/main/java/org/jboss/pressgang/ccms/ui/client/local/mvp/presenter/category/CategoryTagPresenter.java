@@ -123,96 +123,7 @@ public class CategoryTagPresenter
                         checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
                         checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
-                        /*
-                            Implement sorting
-                         */
-                        final ColumnSortList sortList = display.getExistingChildrenResults().getColumnSortList();
-                        if (sortList.size() != 0) {
 
-                            /*
-                                Do a sort based on the tags inclusion in the parent
-                             */
-                            if (sortList.get(0).getColumn() == display.getPossibleChildrenButtonColumn()) {
-                                LOGGER.log(Level.INFO, "Sorting tags.");
-
-                                Collections.sort(retValue.getItems(), new Comparator<RESTTagCollectionItemV1>() {
-                                    @Override
-                                    public int compare(@Nullable final RESTTagCollectionItemV1 arg0, @Nullable final RESTTagCollectionItemV1 arg1) {
-                                        /*
-                                            First deal with null objects
-                                         */
-                                        if (arg0 == null && arg1 == null) {
-                                            return 0;
-                                        }
-
-                                        if (arg0 == arg1) {
-                                            return 0;
-                                        }
-
-                                        if (arg0 == null) {
-                                            return -1;
-                                        }
-
-                                        if (arg1 == null) {
-                                            return 1;
-                                        }
-
-                                        /*
-                                            Now deal with their inclusion in the parent
-                                         */
-                                        if (parent != null && parent.getTags() != null && parent.getTags().getItems() != null) {
-                                            LOGGER.log(Level.INFO, "Sorting on tag inclusion in category.");
-
-                                            final boolean arg0IsChild = ComponentCategoryV1.containsTag(parent, arg0.getItem().getId());
-                                            final boolean arg1IsChild = ComponentCategoryV1.containsTag(parent, arg1.getItem().getId());
-
-                                            if (arg0IsChild && arg1IsChild) {
-
-                                                /*
-                                                    Fall back to comparing by name
-                                                */
-                                                if (arg0.getItem().getName() == null && arg1.getItem().getName() == null) {
-                                                    return 0;
-                                                }
-
-                                                if (arg0.getItem().getName() == null) {
-                                                    return -1;
-                                                }
-
-                                                if (arg1.getItem().getName() == null) {
-                                                    return 1;
-                                                }
-
-                                                return arg0.getItem().getName().compareTo(arg1.getItem().getName());
-                                            }
-
-                                            if (!arg0IsChild) {
-                                                return -1;
-                                            }
-
-                                            return 1;
-                                        }
-
-                                        /*
-                                            Fall back to comparing by name
-                                         */
-                                        if (arg0.getItem().getName() == null && arg1.getItem().getName() == null) {
-                                            return 0;
-                                        }
-
-                                        if (arg0.getItem().getName() == null) {
-                                            return -1;
-                                        }
-
-                                        if (arg1.getItem().getName() == null) {
-                                            return 1;
-                                        }
-
-                                        return arg0.getItem().getName().compareTo(arg1.getItem().getName());
-                                    }
-                                });
-                            }
-                        }
 
                         getPossibleChildrenProviderData().setStartRow(0);
                         getPossibleChildrenProviderData().setItems(retValue.getItems());
@@ -240,11 +151,103 @@ public class CategoryTagPresenter
 
         return new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(@NotNull final HasData<RESTTagCollectionItemV1> display) {
+            protected void onRangeChanged(@NotNull final HasData<RESTTagCollectionItemV1> data) {
 
-                getPossibleChildrenProviderData().setStartRow(display.getVisibleRange().getStart());
+                getPossibleChildrenProviderData().setStartRow(data.getVisibleRange().getStart());
 
                 if (getPossibleChildrenProviderData().getItems() != null) {
+                    /*
+                        Implement sorting
+                     */
+                    final ColumnSortList sortList = display.getExistingChildrenResults().getColumnSortList();
+                    if (sortList.size() != 0) {
+                        LOGGER.log(Level.INFO, "Sort column found");
+
+                        /*
+                            Do a sort based on the tags inclusion in the parent
+                         */
+                        if (sortList.get(0).getColumn() == display.getPossibleChildrenButtonColumn()) {
+                            LOGGER.log(Level.INFO, "Sorting tags");
+
+                            Collections.sort(getPossibleChildrenProviderData().getItems(), new Comparator<RESTTagCollectionItemV1>() {
+                                @Override
+                                public int compare(@Nullable final RESTTagCollectionItemV1 arg0, @Nullable final RESTTagCollectionItemV1 arg1) {
+                                        /*
+                                            First deal with null objects
+                                         */
+                                    if (arg0 == null && arg1 == null) {
+                                        return 0;
+                                    }
+
+                                    if (arg0 == arg1) {
+                                        return 0;
+                                    }
+
+                                    if (arg0 == null) {
+                                        return -1;
+                                    }
+
+                                    if (arg1 == null) {
+                                        return 1;
+                                    }
+
+                                        /*
+                                            Now deal with their inclusion in the parent
+                                         */
+                                    if (parent != null && parent.getTags() != null && parent.getTags().getItems() != null) {
+                                        LOGGER.log(Level.INFO, "Sorting on tag inclusion in category");
+
+                                        final boolean arg0IsChild = ComponentCategoryV1.containsTag(parent, arg0.getItem().getId());
+                                        final boolean arg1IsChild = ComponentCategoryV1.containsTag(parent, arg1.getItem().getId());
+
+                                        if (arg0IsChild && arg1IsChild) {
+
+                                                /*
+                                                    Fall back to comparing by name
+                                                */
+                                            if (arg0.getItem().getName() == null && arg1.getItem().getName() == null) {
+                                                return 0;
+                                            }
+
+                                            if (arg0.getItem().getName() == null) {
+                                                return -1;
+                                            }
+
+                                            if (arg1.getItem().getName() == null) {
+                                                return 1;
+                                            }
+
+                                            return arg0.getItem().getName().compareTo(arg1.getItem().getName());
+                                        }
+
+                                        if (!arg0IsChild) {
+                                            return -1;
+                                        }
+
+                                        return 1;
+                                    }
+
+                                        /*
+                                            Fall back to comparing by name
+                                         */
+                                    if (arg0.getItem().getName() == null && arg1.getItem().getName() == null) {
+                                        return 0;
+                                    }
+
+                                    if (arg0.getItem().getName() == null) {
+                                        return -1;
+                                    }
+
+                                    if (arg1.getItem().getName() == null) {
+                                        return 1;
+                                    }
+
+                                    return arg0.getItem().getName().compareTo(arg1.getItem().getName());
+                                }
+                            });
+                        }
+                    }
+
                     displayNewFixedList(getPossibleChildrenProviderData().getItems());
                 } else {
                     resetProvider();
