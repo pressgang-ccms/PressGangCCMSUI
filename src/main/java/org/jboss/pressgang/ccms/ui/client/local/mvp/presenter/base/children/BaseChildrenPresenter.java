@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static com.google.common.base.Preconditions.checkState;
 
@@ -29,6 +30,9 @@ public abstract class BaseChildrenPresenter<
      * The display that shows the children of a given entity.
      */
     private BaseChildrenViewInterface display;
+
+    @Nullable
+    private T parent;
 
     /**
      * @return An instance of the possible children provider data.
@@ -138,5 +142,17 @@ public abstract class BaseChildrenPresenter<
 
     protected boolean isReadOnly() {
         return readOnly;
+    }
+
+    /**
+     * The entity being displayed.
+     */
+    @Nullable
+    public T getParent() {
+        return parent;
+    }
+
+    public void setParent(@NotNull T parent) {
+        this.parent = parent;
     }
 }

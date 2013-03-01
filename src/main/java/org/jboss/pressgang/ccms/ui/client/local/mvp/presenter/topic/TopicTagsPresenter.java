@@ -25,6 +25,7 @@ import javax.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
@@ -106,6 +107,9 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
                 public void doSuccessAction(@NotNull final RESTTagCollectionV1 retValue, @NotNull final TopicTagsPresenter.Display display) {
                     try {
                         LOGGER.log(Level.INFO, "ENTER TopicTagsPresenter.getTags() callback.doSuccessAction()");
+
+                        checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                        checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
                         searchUIProjects.initialize(retValue, null);
                         display.initializeNewTags(searchUIProjects);

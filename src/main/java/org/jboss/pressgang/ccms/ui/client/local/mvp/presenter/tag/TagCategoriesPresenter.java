@@ -237,13 +237,14 @@ public class TagCategoriesPresenter
 
     @Override
     protected void initLifecycleBindExistingChildrenRowClick(@NotNull final RESTTagV1 editingParent) {
-        checkState(getPossibleChildrenProviderData().getDisplayedItem() != null, "There should be a displayed possible children collection item.");
-        checkState(getPossibleChildrenProviderData().getDisplayedItem().getItem() != null, "The displayed possible children collection item to reference a valid entity.");
+
 
         display.getExistingChildUpButtonColumn().setFieldUpdater(new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
             @Override
-            public void update(final int index, @NotNull final RESTTagInCategoryCollectionItemV1 object, final String value) {
+            public void update(final int index, @NotNull final RESTTagInCategoryCollectionItemV1 object, @Nullable final String value) {
+                checkState(getPossibleChildrenProviderData().getDisplayedItem() != null, "There should be a displayed possible children collection item.");
+                checkState(getPossibleChildrenProviderData().getDisplayedItem().getItem() != null, "The displayed possible children collection item to reference a valid entity.");
                 moveTagsUpAndDown(editingParent, getPossibleChildrenProviderData().getDisplayedItem().getItem(), object, false, sortCallback);
             }
 
@@ -256,7 +257,9 @@ public class TagCategoriesPresenter
                      * Swap the sort value for the tag that was selected with the tag below it.
                      */
                     @Override
-                    public void update(final int index, @NotNull final RESTTagInCategoryCollectionItemV1 object, final String value) {
+                    public void update(final int index, @NotNull final RESTTagInCategoryCollectionItemV1 object, @Nullable final String value) {
+                        checkState(getPossibleChildrenProviderData().getDisplayedItem() != null, "There should be a displayed possible children collection item.");
+                        checkState(getPossibleChildrenProviderData().getDisplayedItem().getItem() != null, "The displayed possible children collection item to reference a valid entity.");
                         moveTagsUpAndDown(editingParent, getPossibleChildrenProviderData().getDisplayedItem().getItem(), object, true, sortCallback);
                     }
                 });

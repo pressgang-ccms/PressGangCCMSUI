@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
@@ -81,7 +82,9 @@ public class ProjectTagPresenter extends BaseChildrenPresenter<
                     @Override
                     public void doSuccessAction(@NotNull final RESTTagCollectionV1 retValue, final ProjectTagPresenter.Display display) {
 
-                        /* Zero results can be a null list */
+                        checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                        checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
+
                         getPossibleChildrenProviderData().setStartRow(0);
                         getPossibleChildrenProviderData().setItems(retValue.getItems());
                         getPossibleChildrenProviderData().setSize(retValue.getItems().size());

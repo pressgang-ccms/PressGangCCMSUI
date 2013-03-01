@@ -77,7 +77,8 @@ public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
                 new BaseRestCallback.SuccessAction<RESTPropertyTagCollectionV1, PropertyCategoryTagPresenter.Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTPropertyTagCollectionV1 retValue, @NotNull final PropertyCategoryTagPresenter.Display display) {
-                        checkArgument(retValue.getItems() != null, "RESTPropertyTagCollectionV1 items are null. This is probably due to incorrect expansion.");
+                        checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                        checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
                         /* Zero results can be a null list */
                         getPossibleChildrenProviderData().setStartRow(0);
