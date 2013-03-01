@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Comparator;
 
 /**
- * Sorts RESTTagCollectionItemV1 objects based on their id.
+ * Sorts RESTTagCollectionItemV1 objects based on their inclusion in a parent.
  */
 public class RESTTagCollectionItemParentSort implements Comparator<RESTTagCollectionItemV1> {
     @NotNull final RESTCategoryV1 parent;
