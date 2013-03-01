@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTranslatedTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
@@ -117,13 +118,18 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
                 @NotNull final BaseRestCallback<RESTTopicCollectionV1, Display> callback = new BaseRestCallback<RESTTopicCollectionV1, Display>(display,  new BaseRestCallback.SuccessAction<RESTTopicCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTTopicCollectionV1 retValue, @NotNull final Display display) {
-                        checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
-                        checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
+                        try
+                        {
+                            checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                            checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
-                        getProviderData().setItems(retValue.getItems());
-                        getProviderData().setSize(retValue.getSize());
-                        relinkSelectedItem();
-                        displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
+                            getProviderData().setItems(retValue.getItems());
+                            getProviderData().setSize(retValue.getSize());
+                            relinkSelectedItem();
+                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
+                        } finally {
+                            getHandlerManager().fireEvent(new EntityListReceived<RESTTopicCollectionV1>(retValue));
+                        }
                     }
                 });
 

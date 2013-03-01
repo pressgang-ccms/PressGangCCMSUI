@@ -76,7 +76,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         display.getHome().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new WelcomeViewEvent());
                 }
@@ -85,7 +85,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         display.getSearch().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new SearchTagsFieldsAndFiltersViewEvent());
                 }
@@ -94,7 +94,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         display.getCreateTopic().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 /* don't try and launch the page again */
                 if (History.getToken().startsWith(TopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN + ";" + Constants.CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON)) {
                     return;
@@ -108,28 +108,28 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         display.getBug().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 Window.open(Constants.BUGZILLA_URL, "_blank", "");
             }
         });
 
         display.getReports().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 Window.open(Constants.BIRT_URL, "_blank", "");
             }
         });
 
         display.getMonitoring().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 Window.open(Constants.MONITORING_URL, "_blank", "");
             }
         });
 
         display.getImages().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
@@ -138,7 +138,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         display.getTags().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
@@ -147,7 +147,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         display.getCategories().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new CategoriesFilteredResultsAndCategoryViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
@@ -156,21 +156,21 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         display.getProjects().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 eventBus.fireEvent(new ProjectsFilteredResultsAndProjectViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
             }
         });
 
         display.getAdvanced().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 display.getShortCutPanelParent().setWidget(display.getAdvancedShortcutPanel());
             }
         });
 
         @NotNull final ClickHandler closeAdvancedMenu = new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 display.getShortCutPanelParent().setWidget(display.getShortcutPanel());
             }
         };
@@ -180,7 +180,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         display.getQuickSearch().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 doQuickSearch(GWTUtilities.isEventToOpenNewWindow(event));
             }
         });
@@ -206,7 +206,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         display.getSearchTranslations().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new TranslatedSearchTagsFieldsAndFiltersViewEvent());
                 }
@@ -215,7 +215,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         display.getStringConstants().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new StringConstantFilteredResultsAndDetailsViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
@@ -224,7 +224,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         display.getIntegerConstants().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new IntegerConstantFilteredResultsAndDetailsViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
@@ -233,7 +233,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         display.getBlobConstants().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new BlobConstantFilteredResultsAndDetailsViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
@@ -242,7 +242,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         display.getPropertyTags().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new PropertyTagFilteredResultsAndDetailsViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
@@ -251,7 +251,7 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
 
         display.getPropertyTagCategories().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
                     eventBus.fireEvent(new PropertyCategoryFilteredResultsAndDetailsViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX, GWTUtilities.isEventToOpenNewWindow(event)));
                 }

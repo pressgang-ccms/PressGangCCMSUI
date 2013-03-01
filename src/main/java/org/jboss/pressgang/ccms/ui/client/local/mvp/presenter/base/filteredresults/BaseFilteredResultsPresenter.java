@@ -12,6 +12,9 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -19,6 +22,11 @@ import static com.google.common.base.Preconditions.checkState;
  */
 abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionItemV1<?, ?, ?>>
         extends BaseTemplatePresenter implements BaseFilteredResultsPresenterInterface<V> {
+
+    /**
+     * A Logger
+     */
+    private static final Logger LOGGER = Logger.getLogger(BaseFilteredResultsPresenter.class.getName());
 
     /**
      * Holds the data required to populate and refresh the tags list
@@ -49,9 +57,13 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
      * @param handler The event handler
      */
     public final void addTopicListReceivedHandler(@NotNull final EntityListReceivedHandler handler) {
-        handlerManager.addHandler(EntityListReceived.getType(), handler);
+        try {
+            LOGGER.log(Level.INFO, "ENTER BaseFilteredResultsPresenter.addTopicListReceivedHandler()");
+            handlerManager.addHandler(EntityListReceived.getType(), handler);
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT BaseFilteredResultsPresenter.addTopicListReceivedHandler()");
+        }
     }
-
 
     /**
      * @param topicId     The ID of the help topic associated with this view

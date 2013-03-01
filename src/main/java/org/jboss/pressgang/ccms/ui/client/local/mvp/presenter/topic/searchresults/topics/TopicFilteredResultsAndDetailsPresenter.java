@@ -183,7 +183,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     @NotNull final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, BaseTemplateViewInterface>(
                             getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, BaseTemplateViewInterface>() {
                         @Override
-                        public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final BaseTemplateViewInterface display) {
+                        public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final BaseTemplateViewInterface display) {
                             try {
                                 LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bind() RESTCallback.doSuccessAction()");
 
@@ -214,24 +214,37 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         getSearchResultsComponent().addTopicListReceivedHandler(new EntityListReceivedHandler<RESTTopicCollectionV1>() {
             @Override
             public void onCollectionReceived(@NotNull final RESTTopicCollectionV1 topics) {
-                topicListLoaded = true;
-                displayInitialTopic(getNewEntityCallback);
+                try {
+                    LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bind() EntityListReceivedHandler.onCollectionReceived()");
+
+                    topicListLoaded = true;
+                    displayInitialTopic(getNewEntityCallback);
+                } finally {
+                    LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bind() EntityListReceivedHandler.onCollectionReceived()");
+                }
             }
         });
 
         RESTCalls.populateLocales(new StringListLoaded() {
             @Override
-            public void stringListLoaded(final List<String> locales) {
-                TopicFilteredResultsAndDetailsPresenter.this.locales = locales;
-                localesLoaded = true;
-                displayNewTopic();
-                displayInitialTopic(getNewEntityCallback);
+            public void stringListLoaded(@NotNull final List<String> locales) {
+                try {
+                    LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bind() StringListLoaded.stringListLoaded()");
+
+                    TopicFilteredResultsAndDetailsPresenter.this.locales = locales;
+                    localesLoaded = true;
+                    displayNewTopic();
+                    displayInitialTopic(getNewEntityCallback);
+                } finally {
+                    LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bind() StringListLoaded.stringListLoaded()");
+                }
+
             }
         }, display);
 
         loadDefaultLocale(new StringLoaded() {
             @Override
-            public void stringLoaded(final String string) {
+            public void stringLoaded(@NotNull final String string) {
                 defaultLocale = string;
                 displayNewTopic();
             }

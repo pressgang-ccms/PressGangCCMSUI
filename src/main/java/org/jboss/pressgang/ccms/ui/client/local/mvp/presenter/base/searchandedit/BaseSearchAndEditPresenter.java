@@ -382,7 +382,7 @@ abstract public class BaseSearchAndEditPresenter<
     /**
      * Called when displaying changes to a entity or when changing views
      */
-    protected final void switchView(@Nullable final BaseTemplateViewInterface displayedView) {
+    protected final void switchView(@NotNull final BaseTemplateViewInterface displayedView) {
 
         try {
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.switchView(final W displayedView)");
