@@ -1,9 +1,13 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytag;
 
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.ColumnSortList;
+import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTPropertyCategoryInPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTPropertyCategoryInPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
@@ -15,6 +19,12 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChild
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
+import org.jboss.pressgang.ccms.ui.client.local.sort.propertycategory.RESTPropertyCategoryCollectionItemIDSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.propertycategory.RESTPropertyCategoryCollectionItemNameSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.propertycategory.RESTPropertyCategoryCollectionItemParentSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.tag.RESTTagCollectionItemIDSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.tag.RESTTagCollectionItemNameSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.taginproject.RESTTagCollectionItemParentSort;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +32,8 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+
+import java.util.Collections;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
@@ -101,11 +113,31 @@ public class PropertyTagCategoryPresenter extends BaseChildrenPresenter<
 
         @NotNull final EnhancedAsyncDataProvider<RESTPropertyCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTPropertyCategoryCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(@NotNull final HasData<RESTPropertyCategoryCollectionItemV1> display) {
+            protected void onRangeChanged(@NotNull final HasData<RESTPropertyCategoryCollectionItemV1> data) {
 
-                getPossibleChildrenProviderData().setStartRow(display.getVisibleRange().getStart());
+                getPossibleChildrenProviderData().setStartRow(data.getVisibleRange().getStart());
 
                 if (getPossibleChildrenProviderData().getItems() != null) {
+                    /*
+                        Implement sorting
+                    */
+                    final ColumnSortList sortList = display.getPossibleChildrenResults().getColumnSortList();
+                    if (sortList.size() != 0) {
+                        final Column<?, ?> column = sortList.get(0).getColumn();
+                        final boolean ascending = sortList.get(0).isAscending();
+
+                        /*
+                            Sort the collection
+                        */
+                        if (column == display.getPossibleChildrenButtonColumn()) {
+                            Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTPropertyCategoryCollectionItemParentSort(parent, ascending));
+                        } else if (column == display.getTagsIdColumn())  {
+                            Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTPropertyCategoryCollectionItemIDSort(ascending));
+                        } else if (column == display.getTagsNameColumn())  {
+                            Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTPropertyCategoryCollectionItemNameSort(ascending));
+                        }
+                    }
+
                     displayNewFixedList(getPossibleChildrenProviderData().getItems());
                 } else {
                     resetProvider();
@@ -121,5 +153,16 @@ public class PropertyTagCategoryPresenter extends BaseChildrenPresenter<
             RESTPropertyCategoryCollectionItemV1,                                                                                                       // The possible children types
             RESTPropertyCategoryInPropertyTagV1, RESTPropertyCategoryInPropertyTagCollectionV1, RESTPropertyCategoryInPropertyTagCollectionItemV1>      // The existing children types
     {
+        /**
+         *
+         * @return The column that holds the child id
+         */
+        @NotNull
+        TextColumn<RESTPropertyCategoryCollectionItemV1> getTagsIdColumn();
+        /**
+         *
+         * @return The column that holds the child name
+         */
+        @NotNull TextColumn<RESTPropertyCategoryCollectionItemV1> getTagsNameColumn();
     }
 }

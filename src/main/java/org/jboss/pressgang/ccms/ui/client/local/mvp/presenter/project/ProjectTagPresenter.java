@@ -133,8 +133,8 @@ public class ProjectTagPresenter extends BaseChildrenPresenter<
                 if (getPossibleChildrenProviderData().getItems() != null) {
 
                     /*
-                            Implement sorting
-                        */
+                        Implement sorting
+                    */
                     final ColumnSortList sortList = display.getPossibleChildrenResults().getColumnSortList();
                     if (sortList.size() != 0) {
                         final Column<?, ?> column = sortList.get(0).getColumn();
@@ -150,8 +150,6 @@ public class ProjectTagPresenter extends BaseChildrenPresenter<
                         } else if (column == display.getTagsNameColumn())  {
                             Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemNameSort(ascending));
                         }
-
-
                     }
 
                     displayNewFixedList(getPossibleChildrenProviderData().getItems());

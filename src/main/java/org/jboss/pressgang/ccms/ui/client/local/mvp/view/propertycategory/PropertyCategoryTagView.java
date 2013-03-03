@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.propertycategory;
 
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.TextColumn;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
@@ -33,9 +34,6 @@ public class PropertyCategoryTagView extends BaseChildrenView<
         RESTPropertyTagInPropertyCategoryV1, RESTPropertyTagInPropertyCategoryCollectionV1, RESTPropertyTagInPropertyCategoryCollectionItemV1>          // The existing children types
     implements PropertyCategoryTagPresenter.Display {
 
-    /**
-     * The column used to render the property tagincategory category's id.
-     */
     @NotNull
     private final TextColumn<RESTPropertyTagCollectionItemV1> tagsIdColumn = new TextColumn<RESTPropertyTagCollectionItemV1>() {
         @Override
@@ -49,9 +47,6 @@ public class PropertyCategoryTagView extends BaseChildrenView<
         }
     };
 
-    /**
-     * The column used to render the property tagincategory category's name.
-     */
     @NotNull
     private final TextColumn<RESTPropertyTagCollectionItemV1> tagsNameColumn = new TextColumn<RESTPropertyTagCollectionItemV1>() {
         @Override
@@ -64,6 +59,24 @@ public class PropertyCategoryTagView extends BaseChildrenView<
             return null + "";
         }
     };
+
+    /**
+     * The column used to render the property category's id.
+     */
+    @NotNull
+    @Override
+    public TextColumn<RESTPropertyTagCollectionItemV1> getTagsIdColumn() {
+        return tagsIdColumn;
+    }
+
+    /**
+     * The column used to render the property category's name.
+     */
+    @NotNull
+    @Override
+    public TextColumn<RESTPropertyTagCollectionItemV1> getTagsNameColumn() {
+        return tagsNameColumn;
+    }
 
     /**
      * The column used to render the property tagincategory category's add/remove button.
@@ -100,9 +113,21 @@ public class PropertyCategoryTagView extends BaseChildrenView<
         getPossibleChildrenResults().addColumn(tagsIdColumn, PressGangCCMSUI.INSTANCE.TagID());
         getPossibleChildrenResults().addColumn(tagsNameColumn, PressGangCCMSUI.INSTANCE.TagName());
         getPossibleChildrenResults().addColumn(tagsButtonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
+
+        tagsButtonColumn.setSortable(true);
+        tagsNameColumn.setSortable(true);
+        tagsIdColumn.setSortable(true);
+
+        /*
+            Allow the table to be sorted.
+        */
+        @NotNull final ColumnSortEvent.AsyncHandler columnSortHandler = new ColumnSortEvent.AsyncHandler(getPossibleChildrenResults());
+        getPossibleChildrenResults().addColumnSortHandler(columnSortHandler);
     }
 
     public void display(@NotNull final RESTPropertyCategoryV1 entity, final boolean readOnly) {
         super.displayChildren(entity, readOnly);
     }
+
+
 }
