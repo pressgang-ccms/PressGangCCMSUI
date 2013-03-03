@@ -194,7 +194,7 @@ define('ace/mode/powershell_highlight_rules', ['require', 'exports', 'module' , 
                     next: "start"
                 },
                 {
-                    token: "doc.comment.tag",
+                    token: "doc.comment.tagincategory",
                     merge: true,
                     regex: "^\\.\\w+"
                 },

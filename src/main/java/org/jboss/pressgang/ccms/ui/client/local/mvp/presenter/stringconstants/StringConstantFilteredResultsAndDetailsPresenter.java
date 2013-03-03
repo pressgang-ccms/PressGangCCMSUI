@@ -105,7 +105,7 @@ implements BaseTemplatePresenterInterface {
                 checkState(stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
                 checkState(stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
 
-                /* Was the tag we just saved a new tag? */
+                /* Was the tagincategory we just saved a new tagincategory? */
                 final boolean wasNewEntity = stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem();
 
                 /* Sync the UI to the underlying object */
@@ -172,12 +172,12 @@ implements BaseTemplatePresenterInterface {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
-                /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
+                /* The 'selected' tagincategory will be blank. This gives us something to compare to when checking for unsaved changes */
                 @NotNull final RESTStringConstantV1 selectedEntity = new RESTStringConstantV1();
                 selectedEntity.setId(Constants.NULL_ID);
                 @NotNull final RESTStringConstantCollectionItemV1 selectedTagWrapper = new RESTStringConstantCollectionItemV1(selectedEntity);
 
-                /* The displayed tag will also be blank. This is the object that our data will be saved into */
+                /* The displayed tagincategory will also be blank. This is the object that our data will be saved into */
                 @NotNull final RESTStringConstantV1 displayedEntity = new RESTStringConstantV1();
                 displayedEntity.setId(Constants.NULL_ID);
                 @NotNull final RESTStringConstantCollectionItemV1 displayedTagWrapper = new RESTStringConstantCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
@@ -231,7 +231,7 @@ implements BaseTemplatePresenterInterface {
 
     @Override
     public boolean hasUnsavedChanges() {
-        /* sync the UI with the underlying tag */
+        /* sync the UI with the underlying tagincategory */
         if (stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
             stringConstantPresenter.getDisplay().getDriver().flush();
 

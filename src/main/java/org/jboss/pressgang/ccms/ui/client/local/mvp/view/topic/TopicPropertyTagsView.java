@@ -31,7 +31,7 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
         implements TopicPropertyTagsPresenter.Display {
 
     /**
-     * The column to display the assigned property tag's value.
+     * The column to display the assigned property tagincategory's value.
      */
     private final DisableEditTextCell valueTextCell = new DisableEditTextCell();
     @NotNull

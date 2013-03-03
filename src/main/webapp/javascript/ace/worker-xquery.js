@@ -25176,7 +25176,7 @@ define('ace/mode/xquery/visitors/SyntaxHighlighter', ['require', 'exports', 'mod
 
     var SyntaxHighlighter = exports.SyntaxHighlighter = function (source, tree) {
         var keywords = ['after', 'ancestor', 'ancestor-or-self', 'and', 'as', 'ascending', 'attribute', 'before', 'case', 'cast', 'castable', 'child', 'collation', 'comment', 'copy', 'count', 'declare', 'default', 'delete', 'descendant', 'descendant-or-self', 'descending', 'div', 'document', 'document-node', 'element', 'else', 'empty', 'empty-sequence', 'end', 'eq', 'every', 'except', 'first', 'following', 'following-sibling', 'for', 'function', 'ge', 'group', 'gt', 'idiv', 'if', 'then', 'import', 'insert', 'instance', 'intersect', 'into', 'is', 'item', 'last', 'le', 'let', 'lt', 'mod', 'modify', 'module', 'namespace', 'namespace-node', 'ne', 'node', 'only', 'or', 'order', 'ordered', 'parent', 'preceding', 'preceding-sibling', 'processing-instruction', 'rename', 'replace', 'return', 'satisfies', 'schema-attribute', 'schema-element', 'self', 'some', 'stable', 'start', 'switch', 'text', 'to', 'treat', 'try', 'typeswitch', 'union', 'unordered', 'validate', 'where', 'with', 'xquery', 'contains', 'paragraphs', 'sentences', 'times', 'words', 'by', 'collection', 'allowing', 'at', 'base-uri', 'boundary-space', 'break', 'catch', 'construction', 'context', 'continue', 'copy-namespaces', 'decimal-format', 'encoding', 'exit', 'external', 'ft-option', 'in', 'index', 'integrity', 'lax', 'nodes', 'option', 'ordering', 'revalidation', 'schema', 'score', 'sliding', 'strict', 'tumbling', 'type', 'updating', 'value', 'variable', 'version', 'while', 'constraint', 'loop', 'returning', 'append', 'array', 'json-item', 'object', 'structured-item', 'when', 'next', 'previous', 'window'];
-        var states = ["cdata", "comment", "tag"];
+        var states = ["cdata", "comment", "tagincategory"];
         var info = { lines: [
             []
         ], states: [] };
@@ -25217,7 +25217,7 @@ define('ace/mode/xquery/visitors/SyntaxHighlighter', ['require', 'exports', 'mod
                 var child = node.children[i];
                 if (child.name === "TOKEN" || child.name === "QName") {
                     var value = this.getNodeValue(child);
-                    this.addTokens(value, "meta.tag");
+                    this.addTokens(value, "meta.tagincategory");
                 } else {
                     this.visit(child);
                 }
@@ -25230,7 +25230,7 @@ define('ace/mode/xquery/visitors/SyntaxHighlighter', ['require', 'exports', 'mod
                 var child = node.children[i];
                 if (child.name === "QName") {
                     var value = this.getNodeValue(child);
-                    this.addTokens(value, "meta.tag");
+                    this.addTokens(value, "meta.tagincategory");
                 } else {
                     this.visit(child);
                 }

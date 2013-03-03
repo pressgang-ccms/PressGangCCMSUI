@@ -282,7 +282,7 @@ ace.define('ace/mode/ocaml_highlight_rules', ['require', 'exports', 'module' , '
                 "sub_right|subset|subset|substitute_first|substring|succ|succ|" +
                 "succ|succ|succ_big_int|succ_num|symbol_end|symbol_end_pos|symbol_start|" +
                 "symbol_start_pos|symlink|symlink|sync|synchronize|system|system|system|" +
-                "tag|take|tan|tanh|tcdrain|tcdrain|tcflow|tcflow|tcflush|tcflush|" +
+                "tagincategory|take|tan|tanh|tcdrain|tcdrain|tcflow|tcflow|tcflush|tcflush|" +
                 "tcgetattr|tcgetattr|tcsendbreak|tcsendbreak|tcsetattr|tcsetattr|" +
                 "temp_file|text_size|time|time|time|timed_read|timed_write|times|times|" +
                 "tl|tl|tl|to_buffer|to_channel|to_float|to_hex|to_int|to_int32|to_list|" +

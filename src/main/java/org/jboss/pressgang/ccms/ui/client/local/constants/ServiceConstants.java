@@ -31,7 +31,7 @@ public final class ServiceConstants {
      */
     public static final byte MAJOR_CHANGE = 0x02;
     /**
-     * The id of the tag applied to all content specs.
+     * The id of the tagincategory applied to all content specs.
      */
     public static final Integer CSP_TAG_ID = 268;
     /**
@@ -112,16 +112,16 @@ public final class ServiceConstants {
      */
     public static final int PROJECT_HELP_TOPIC = 13583;
     /**
-     * The help topic for the property tag details view.
+     * The help topic for the property tagincategory details view.
      */
     public static final int PROPERTY_TAG_DETAILS_HELP_TOPIC = 13663;
 
     /**
-     * The help topic for the property tag tags view.
+     * The help topic for the property tagincategory tags view.
      */
     public static final int PROPERTY_TAG_CATEGORIES_HELP_TOPIC = 13664;
     /**
-     * The help topic for the property tag view.
+     * The help topic for the property tagincategory view.
      */
     public static final int PROPERTY_TAG_HELP_TOPIC = 13665;
 
@@ -136,7 +136,7 @@ public final class ServiceConstants {
     public static final int PROPERTY_CATEGORY_DETAILS_HELP_TOPIC = 13743;
 
     /**
-     * The help topic for the property tag tags view.
+     * The help topic for the property tagincategory tags view.
      */
     public static final int PROPERTY_CATEGORY_TAGS_HELP_TOPIC = 13744;
 
@@ -161,7 +161,7 @@ public final class ServiceConstants {
     public static final int CATEGORY_DETAIL_HELP_TOPIC = 13585;
 
     /**
-     * The help topic for the category tag view.
+     * The help topic for the category tagincategory view.
      */
     public static final int CATEGORY_TAG_HELP_TOPIC = 13586;
 
@@ -171,22 +171,22 @@ public final class ServiceConstants {
     public static final int IMAGE_HELP_TOPIC = 13587;
 
     /**
-     * The help topic for the tag view.
+     * The help topic for the tagincategory view.
      */
     public static final int TAG_HELP_TOPIC = 13588;
 
     /**
-     * The help topic for the tag projects view.
+     * The help topic for the tagincategory projects view.
      */
     public static final int TAG_PROJECTS_HELP_TOPIC = 13589;
 
     /**
-     * The help topic for the tag categories view.
+     * The help topic for the tagincategory categories view.
      */
     public static final int TAG_CATEGORIES_HELP_TOPIC = 13590;
 
     /**
-     * The help topic for the tag details view.
+     * The help topic for the tagincategory details view.
      */
     public static final int TAG_DETAIL_HELP_TOPIC = 13591;
 

@@ -25,7 +25,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
- * The view used to display a property tag's categories.
+ * The view used to display a property tagincategory's categories.
  */
 public class PropertyCategoryTagView extends BaseChildrenView<
         RESTPropertyCategoryV1,                                                                                                                         // The main REST types
@@ -34,7 +34,7 @@ public class PropertyCategoryTagView extends BaseChildrenView<
     implements PropertyCategoryTagPresenter.Display {
 
     /**
-     * The column used to render the property tag category's id.
+     * The column used to render the property tagincategory category's id.
      */
     @NotNull
     private final TextColumn<RESTPropertyTagCollectionItemV1> tagsIdColumn = new TextColumn<RESTPropertyTagCollectionItemV1>() {
@@ -50,7 +50,7 @@ public class PropertyCategoryTagView extends BaseChildrenView<
     };
 
     /**
-     * The column used to render the property tag category's name.
+     * The column used to render the property tagincategory category's name.
      */
     @NotNull
     private final TextColumn<RESTPropertyTagCollectionItemV1> tagsNameColumn = new TextColumn<RESTPropertyTagCollectionItemV1>() {
@@ -66,7 +66,7 @@ public class PropertyCategoryTagView extends BaseChildrenView<
     };
 
     /**
-     * The column used to render the property tag category's add/remove button.
+     * The column used to render the property tagincategory category's add/remove button.
      */
     @Nullable
     private final Column<RESTPropertyTagCollectionItemV1, String> tagsButtonColumn = new Column<RESTPropertyTagCollectionItemV1, String>(new ButtonCell()) {

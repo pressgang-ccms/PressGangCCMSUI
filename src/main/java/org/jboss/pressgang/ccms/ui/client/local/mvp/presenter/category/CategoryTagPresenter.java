@@ -3,15 +3,12 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.category;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
-import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.components.ComponentCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTTagInCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.sort.RESTTagCategoryCollectionItemV1SortComparator;
@@ -20,12 +17,11 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.BaseOrderedChildrenPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseOrderedChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
-import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
-import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTagCollectionItemIDSort;
-import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTagCollectionItemNameSort;
-import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTagCollectionItemParentSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.tag.RESTTagCollectionItemIDSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.tag.RESTTagCollectionItemNameSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.tagincategory.RESTTagCollectionItemParentSort;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +31,6 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,7 +39,7 @@ import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 /**
- * The presenter used to add logic to the category tag view.
+ * The presenter used to add logic to the category tagincategory view.
  */
 @Dependent
 public class CategoryTagPresenter
@@ -69,13 +64,13 @@ public class CategoryTagPresenter
     @Nullable
     private Integer entityId;
     /**
-     * The category tag view.
+     * The category tagincategory view.
      */
     @Inject
     private Display display;
 
     /**
-     * The category tag view.
+     * The category tagincategory view.
      */
     @NotNull
     public Display getDisplay() {
@@ -128,8 +123,6 @@ public class CategoryTagPresenter
                         checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
                         checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
-
-
                         getPossibleChildrenProviderData().setStartRow(0);
                         getPossibleChildrenProviderData().setItems(retValue.getItems());
                         getPossibleChildrenProviderData().setSize(retValue.getItems().size());
@@ -181,7 +174,6 @@ public class CategoryTagPresenter
                             } else if (column == display.getTagsNameColumn())  {
                                 Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemNameSort(ascending));
                             }
-
                         }
 
                         displayNewFixedList(getPossibleChildrenProviderData().getItems());
@@ -204,7 +196,7 @@ public class CategoryTagPresenter
                 getExistingProviderData().setStartRow(display.getVisibleRange().getStart());
                 getExistingProviderData().setItems(new ArrayList<RESTTagInCategoryCollectionItemV1>());
 
-                /* Zero results can be a null list. Also selecting a new tag will reset getProviderData(). */
+                /* Zero results can be a null list. Also selecting a new tagincategory will reset getProviderData(). */
                 if (entity != null && entity.getTags() != null) {
                     /* Don't display removed tags */
                     for (final RESTTagInCategoryCollectionItemV1 tagInCategory : entity.getTags().returnExistingAddedAndUpdatedCollectionItems()) {
@@ -220,7 +212,7 @@ public class CategoryTagPresenter
     }
 
     /**
-     * The interface that defines the category tag view.
+     * The interface that defines the category tagincategory view.
      */
     public interface Display extends
             BaseOrderedChildrenViewInterface<

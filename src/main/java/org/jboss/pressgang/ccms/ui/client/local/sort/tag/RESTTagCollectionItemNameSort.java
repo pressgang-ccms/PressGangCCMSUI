@@ -1,7 +1,6 @@
-package org.jboss.pressgang.ccms.ui.client.local.sort;
+package org.jboss.pressgang.ccms.ui.client.local.sort.tag;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.components.ComponentCategoryV1;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;

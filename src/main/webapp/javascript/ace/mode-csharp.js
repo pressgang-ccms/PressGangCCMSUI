@@ -166,7 +166,7 @@ define('ace/mode/doc_comment_highlight_rules', ['require', 'exports', 'module' ,
         this.$rules = {
             "start": [
                 {
-                    token: "comment.doc.tag",
+                    token: "comment.doc.tagincategory",
                     regex: "@[\\w\\d_]+" // TODO: fix email addresses
                 },
                 {

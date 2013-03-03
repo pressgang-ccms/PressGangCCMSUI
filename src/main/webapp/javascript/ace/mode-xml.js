@@ -87,9 +87,9 @@ define('ace/mode/xml_highlight_rules', ['require', 'exports', 'module' , 'ace/li
                     regex: "<\\!.*?>"
                 },
                 {
-                    token: "meta.tag", // opening tag
+                    token: "meta.tagincategory", // opening tagincategory
                     regex: "<\\/?",
-                    next: "tag"
+                    next: "tagincategory"
                 },
                 {
                     token: "text",
@@ -135,7 +135,7 @@ define('ace/mode/xml_highlight_rules', ['require', 'exports', 'module' , 'ace/li
             ]
         };
 
-        xmlUtil.tag(this.$rules, "tag", "start");
+        xmlUtil.tag(this.$rules, "tagincategory", "start");
     };
 
     oop.inherits(XmlHighlightRules, TextHighlightRules);
@@ -195,11 +195,11 @@ define('ace/mode/xml_util', ['require', 'exports', 'module' ], function (require
             },
             {
 
-                token: !tagMap ? "meta.tag.tag-name" : function (value) {
+                token: !tagMap ? "meta.tagincategory.tagincategory-name" : function (value) {
                     if (tagMap[value])
-                        return "meta.tag.tag-name." + tagMap[value];
+                        return "meta.tagincategory.tagincategory-name." + tagMap[value];
                     else
-                        return "meta.tag.tag-name";
+                        return "meta.tagincategory.tagincategory-name";
                 },
                 merge: true,
                 regex: "[-_a-zA-Z0-9:]+",
@@ -217,7 +217,7 @@ define('ace/mode/xml_util', ['require', 'exports', 'module' ], function (require
 
         states[name + "_embed_attribute_list"] = [
             {
-                token: "meta.tag",
+                token: "meta.tagincategory",
                 merge: true,
                 regex: "\/?>",
                 next: nextState
@@ -274,14 +274,14 @@ define('ace/mode/behaviour/xml', ['require', 'exports', 'module' , 'ace/lib/oop'
                 var iterator = new TokenIterator(session, position.row, position.column);
                 var token = iterator.getCurrentToken();
                 var atCursor = false;
-                if (!token || !hasType(token, 'meta.tag') && !(hasType(token, 'text') && token.value.match('/'))) {
+                if (!token || !hasType(token, 'meta.tagincategory') && !(hasType(token, 'text') && token.value.match('/'))) {
                     do {
                         token = iterator.stepBackward();
                     } while (token && (hasType(token, 'string') || hasType(token, 'keyword.operator') || hasType(token, 'entity.attribute-name') || hasType(token, 'text')));
                 } else {
                     atCursor = true;
                 }
-                if (!token || !hasType(token, 'meta.tag-name') || iterator.stepBackward().value.match('/')) {
+                if (!token || !hasType(token, 'meta.tagincategory-name') || iterator.stepBackward().value.match('/')) {
                     return
                 }
                 var tag = token.value;
@@ -633,7 +633,7 @@ define('ace/mode/folding/xml', ['require', 'exports', 'module' , 'ace/lib/oop', 
             var value = "";
             for (var i = 0; i < tokens.length; i++) {
                 var token = tokens[i];
-                if (token.type.indexOf("meta.tag") === 0)
+                if (token.type.indexOf("meta.tagincategory") === 0)
                     value += token.value;
                 else
                     value += lang.stringRepeat(" ", token.value.length);
@@ -667,7 +667,7 @@ define('ace/mode/folding/xml', ['require', 'exports', 'module' , 'ace/lib/oop', 
             var start;
 
             do {
-                if (token.type.indexOf("meta.tag") === 0) {
+                if (token.type.indexOf("meta.tagincategory") === 0) {
                     if (!start) {
                         var start = {
                             row: iterator.getCurrentTokenRow(),
@@ -700,7 +700,7 @@ define('ace/mode/folding/xml', ['require', 'exports', 'module' , 'ace/lib/oop', 
             var end;
 
             do {
-                if (token.type.indexOf("meta.tag") === 0) {
+                if (token.type.indexOf("meta.tagincategory") === 0) {
                     if (!end) {
                         end = {
                             row: iterator.getCurrentTokenRow(),

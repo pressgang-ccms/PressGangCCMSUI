@@ -109,7 +109,7 @@ define('ace/mode/asciidoc_highlight_rules', ['require', 'exports', 'module' , 'a
 
             "listStart": [
                 {token: "keyword", regex: /^\s*(?:\d+\.|[a-zA-Z]\.|[ixvmIXVM]+\)|\*{1,5}|-|\.{1,5})\s/, next: "listText"},
-                {token: "meta.tag", regex: /^.+(?::{2,4}|;;)(?: |$)/, next: "listText"},
+                {token: "meta.tagincategory", regex: /^.+(?::{2,4}|;;)(?: |$)/, next: "listText"},
                 {token: "support.function.list.callout", regex: /^(?:<\d+>|\d+>|>) /, next: "text"},
                 {token: "keyword", regex: /^\+\s*$/, next: "start"}
             ],

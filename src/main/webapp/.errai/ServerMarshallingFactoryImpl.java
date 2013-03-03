@@ -1334,8 +1334,8 @@ public class ServerMarshallingFactoryImpl implements MarshallerFactory {
                     }
                     RESTFilterTagV1 entity = new RESTFilterTagV1();
                     a1.recordObject(objId, entity);
-                    if ((obj.containsKey("tag")) && (!obj.get("tag").isNull())) {
-                        entity.setTag(org_jboss_pressgang_ccms_rest_v1_entities_RESTTagV1.demarshall(obj.get("tag"), a1));
+                    if ((obj.containsKey("tagincategory")) && (!obj.get("tagincategory").isNull())) {
+                        entity.setTag(org_jboss_pressgang_ccms_rest_v1_entities_RESTTagV1.demarshall(obj.get("tagincategory"), a1));
                     }
                     if ((obj.containsKey("state")) && (!obj.get("state").isNull())) {
                         entity.setState(java_lang_Integer.demarshall(obj.get("state"), a1));
@@ -1382,7 +1382,7 @@ public class ServerMarshallingFactoryImpl implements MarshallerFactory {
                 }
                 String objId = a1.getObject(a0);
                 a1.recordObject(objId, objId);
-                return new StringBuilder(14848).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"tag\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTTagV1.marshall(a0.getTag(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append(",").append("\"filter\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterV1.marshall(a0.getFilter(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterTagCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
+                return new StringBuilder(14848).append("{\"^EncodedType\":\"org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1\",\"^ObjectID\":\"").append(objId).append("\"").append(",").append("\"tagincategory\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTTagV1.marshall(a0.getTag(), a1)).append(",").append("\"state\" : ").append(java_lang_Integer.marshall(a0.getState(), a1)).append(",").append("\"filter\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterV1.marshall(a0.getFilter(), a1)).append(",").append("\"revisions\" : ").append(org_jboss_pressgang_ccms_rest_v1_collections_RESTFilterTagCollectionV1.marshall(a0.getRevisions(), a1)).append(",").append("\"id\" : ").append(java_lang_Integer.marshall(a0.getId(), a1)).append(",").append("\"revision\" : ").append(java_lang_Integer.marshall(a0.getRevision(), a1)).append(",").append("\"configuredParameters\" : ").append(java_util_List.marshall(a0.getConfiguredParameters(), a1)).append(",").append("\"expand\" : ").append(java_util_List.marshall(a0.getExpand(), a1)).append(",").append("\"logDetails\" : ").append(org_jboss_pressgang_ccms_rest_v1_entities_base_RESTLogDetailsV1.marshall(a0.getLogDetails(), a1)).append("}").toString();
             }
         };
         marshallers.put("org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1", org_jboss_pressgang_ccms_rest_v1_entities_RESTFilterTagV1);

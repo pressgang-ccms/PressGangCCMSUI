@@ -1,5 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.project;
 
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.ColumnSortList;
+import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
@@ -13,6 +16,10 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChild
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
+import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollectionItemDescriptionSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.tag.RESTTagCollectionItemIDSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.tag.RESTTagCollectionItemNameSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.taginproject.RESTTagCollectionItemParentSort;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +27,8 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+
+import java.util.Collections;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
@@ -31,8 +40,20 @@ public class ProjectTagPresenter extends BaseChildrenPresenter<
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>                // The existing children types
         implements BaseTemplatePresenterInterface {
 
-    public interface Display extends
-        BaseChildrenViewInterface<RESTProjectV1, RESTTagCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
+    /**
+     * The interface that defines the child tagincategory view
+     */
+    public interface Display extends BaseChildrenViewInterface<RESTProjectV1, RESTTagCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
+        /**
+         *
+         * @return The column that holds the child tagincategory id
+         */
+        @NotNull TextColumn<RESTTagCollectionItemV1> getTagsIdColumn();
+        /**
+         *
+         * @return The column that holds the child tagincategory name
+         */
+        @NotNull TextColumn<RESTTagCollectionItemV1> getTagsNameColumn();
     }
 
     public static final String HISTORY_TOKEN = "ProjectTagView";
@@ -105,11 +126,34 @@ public class ProjectTagPresenter extends BaseChildrenPresenter<
 
         @NotNull final EnhancedAsyncDataProvider<RESTTagCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTagCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(@NotNull final HasData<RESTTagCollectionItemV1> display) {
+            protected void onRangeChanged(@NotNull final HasData<RESTTagCollectionItemV1> data) {
 
-                getPossibleChildrenProviderData().setStartRow(display.getVisibleRange().getStart());
+                getPossibleChildrenProviderData().setStartRow(data.getVisibleRange().getStart());
 
                 if (getPossibleChildrenProviderData().getItems() != null) {
+
+                    /*
+                            Implement sorting
+                        */
+                    final ColumnSortList sortList = display.getPossibleChildrenResults().getColumnSortList();
+                    if (sortList.size() != 0) {
+                        final Column<?, ?> column = sortList.get(0).getColumn();
+                        final boolean ascending = sortList.get(0).isAscending();
+
+                        /*
+                            Sort the collection
+                        */
+                        if (column == display.getPossibleChildrenButtonColumn()) {
+                            Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemParentSort(parent, ascending));
+                        } else if (column == display.getTagsIdColumn())  {
+                            Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemIDSort(ascending));
+                        } else if (column == display.getTagsNameColumn())  {
+                            Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTTagCollectionItemNameSort(ascending));
+                        }
+
+
+                    }
+
                     displayNewFixedList(getPossibleChildrenProviderData().getItems());
                 } else {
                     resetProvider();

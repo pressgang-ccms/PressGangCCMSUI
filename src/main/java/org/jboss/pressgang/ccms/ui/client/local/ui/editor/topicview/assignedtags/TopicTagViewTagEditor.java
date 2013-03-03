@@ -23,7 +23,7 @@ public final class TopicTagViewTagEditor implements Editor<SearchUITag> {
      */
     final Label name = new Label();
     /**
-     * A button used to delete this tag
+     * A button used to delete this tagincategory
      */
     private final PushButton delete = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Remove());
 

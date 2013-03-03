@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag;
 
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.TextColumn;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
@@ -79,6 +80,34 @@ public class TagProjectsView extends
         getPossibleChildrenResults().addColumn(descriptionColumn, PressGangCCMSUI.INSTANCE.ProjectDescription());
         getPossibleChildrenResults().addColumn(buttonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
 
+        idColumn.setSortable(true);
+        nameColumn.setSortable(true);
+        descriptionColumn.setSortable(true);
+        buttonColumn.setSortable(true);
+
+        /*
+            Allow the table to be sorted.
+         */
+        @NotNull final ColumnSortEvent.AsyncHandler columnSortHandler = new ColumnSortEvent.AsyncHandler(getPossibleChildrenResults());
+        getPossibleChildrenResults().addColumnSortHandler(columnSortHandler);
+
     }
 
+    @NotNull
+    @Override
+    public TextColumn<RESTProjectCollectionItemV1> getIdColumn() {
+        return idColumn;
+    }
+
+    @NotNull
+    @Override
+    public TextColumn<RESTProjectCollectionItemV1> getNameColumn() {
+        return nameColumn;
+    }
+
+    @NotNull
+    @Override
+    public TextColumn<RESTProjectCollectionItemV1> getDescriptionColumn() {
+        return descriptionColumn;
+    }
 }

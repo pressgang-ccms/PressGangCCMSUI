@@ -42,7 +42,7 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
         }
 
         /**
-         * The interface that defines the tag selection dialog box
+         * The interface that defines the tagincategory selection dialog box
          *
          * @author Matthew Casperson
          */

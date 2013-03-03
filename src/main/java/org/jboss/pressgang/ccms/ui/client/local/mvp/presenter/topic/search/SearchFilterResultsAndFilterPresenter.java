@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
@@ -107,6 +108,17 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
                         public void doSuccessAction(@NotNull final RESTFilterV1 retValue, final BaseTemplateViewInterface display) {
                             try {
                                 LOGGER.log(Level.INFO, "ENTERSearchFilterResultsAndFilterPresenter.go() RESTCallback.doSuccessAction()");
+
+                                checkArgument(retValue.getFilterCategories_OTM() != null, "The initially retrieved entity should have an expanded filter categories collection");
+                                checkArgument(retValue.getFilterFields_OTM() != null, "The initially retrieved entity should have an expanded filter fields collection");
+                                checkArgument(retValue.getFilterTags_OTM() != null, "The initially retrieved entity should have an expanded filter tags collection");
+                                checkArgument(retValue.getFilterLocales_OTM() != null, "The initially retrieved entity should have an expanded filter locales collection");
+
+                                checkArgument(retValue.getFilterTags_OTM().getItems().size() == 0 || retValue.getFilterTags_OTM().getItems().get(0).getItem().getTag() != null,
+                                        "The initially retrieved entity should have an expanded filter tags collection, and the filter tags should have an expanded tagincategory reference");
+
+                                checkArgument(retValue.getFilterCategories_OTM().getItems().size() == 0 || retValue.getFilterCategories_OTM().getItems().get(0).getItem().getCategory() != null,
+                                        "The initially retrieved entity should have an expanded filter categories collection, and the filter tags should have an expanded category reference");
 
                                 displayCallback.displayNewEntity(retValue);
                             } finally {

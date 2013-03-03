@@ -105,11 +105,11 @@ define('ace/mode/yaml_highlight_rules', ['require', 'exports', 'module' , 'ace/l
                     regex: "[&\\*][a-zA-Z0-9-_]+"
                 },
                 {
-                    token: ["meta.tag", "keyword"],
+                    token: ["meta.tagincategory", "keyword"],
                     regex: /^(\s*\w.*?)(\:(?:\s+|$))/
                 },
                 {
-                    token: ["meta.tag", "keyword"],
+                    token: ["meta.tagincategory", "keyword"],
                     regex: /(\w+?)(\s*\:(?:\s+|$))/
                 },
                 {

@@ -1,6 +1,7 @@
-package org.jboss.pressgang.ccms.ui.client.local.sort;
+package org.jboss.pressgang.ccms.ui.client.local.sort.project;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
@@ -8,16 +9,16 @@ import java.util.Comparator;
 /**
  * Sorts RESTTagCollectionItemV1 objects based on their id.
  */
-public class RESTTagCollectionItemIDSort implements Comparator<RESTTagCollectionItemV1> {
+public class RESTProjectCollectionItemIDSort implements Comparator<RESTProjectCollectionItemV1> {
     final boolean ascending;
 
 
-    public RESTTagCollectionItemIDSort(final boolean ascending) {
+    public RESTProjectCollectionItemIDSort(final boolean ascending) {
         this.ascending = ascending;
     }
 
     @Override
-    public int compare(@Nullable final RESTTagCollectionItemV1 arg0, @Nullable final RESTTagCollectionItemV1 arg1) {
+    public int compare(@Nullable final RESTProjectCollectionItemV1 arg0, @Nullable final RESTProjectCollectionItemV1 arg1) {
         final int ascendingMultiplier = ascending ? 1 : -1;
 
         /*

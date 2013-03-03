@@ -66,7 +66,7 @@ define('ace/mode/jsp_highlight_rules', ['require', 'exports', 'module' , 'ace/li
         HtmlHighlightRules.call(this);
         for (var i in this.$rules) {
             this.$rules[i].unshift({
-                token: "meta.tag", // jsp open tag
+                token: "meta.tagincategory", // jsp open tagincategory
                 regex: "<%@?|<%=?|<jsp:[^>]+>",
                 next: "jsp-start"
             });
@@ -87,7 +87,7 @@ define('ace/mode/jsp_highlight_rules', ['require', 'exports', 'module' , 'ace/li
         });
 
         this.$rules["jsp-start"].unshift({
-                token: "meta.tag", // jsp close tag
+                token: "meta.tagincategory", // jsp close tagincategory
                 regex: "%>|<\\/jsp:[^>]+>",
                 next: "start"
             },
@@ -164,19 +164,19 @@ define('ace/mode/html_highlight_rules', ['require', 'exports', 'module' , 'ace/l
                     regex: "<\\!.*?>"
                 },
                 {
-                    token: "meta.tag",
+                    token: "meta.tagincategory",
                     regex: "<(?=script\\b)",
                     next: "script"
                 },
                 {
-                    token: "meta.tag",
+                    token: "meta.tagincategory",
                     regex: "<(?=style\\b)",
                     next: "style"
                 },
                 {
-                    token: "meta.tag", // opening tag
+                    token: "meta.tagincategory", // opening tagincategory
                     regex: "<\\/?",
-                    next: "tag"
+                    next: "tagincategory"
                 },
                 {
                     token: "text",
@@ -224,7 +224,7 @@ define('ace/mode/html_highlight_rules', ['require', 'exports', 'module' , 'ace/l
             ]
         };
 
-        xmlUtil.tag(this.$rules, "tag", "start", tagMap);
+        xmlUtil.tag(this.$rules, "tagincategory", "start", tagMap);
         xmlUtil.tag(this.$rules, "style", "css-start", tagMap);
         xmlUtil.tag(this.$rules, "script", "js-start", tagMap);
 
@@ -232,20 +232,20 @@ define('ace/mode/html_highlight_rules', ['require', 'exports', 'module' , 'ace/l
             {
                 token: "comment",
                 regex: "\\/\\/.*(?=<\\/script>)",
-                next: "tag"
+                next: "tagincategory"
             },
             {
-                token: "meta.tag",
+                token: "meta.tagincategory",
                 regex: "<\\/(?=script)",
-                next: "tag"
+                next: "tagincategory"
             }
         ]);
 
         this.embedRules(CssHighlightRules, "css-", [
             {
-                token: "meta.tag",
+                token: "meta.tagincategory",
                 regex: "<\\/(?=style)",
-                next: "tag"
+                next: "tagincategory"
             }
         ]);
     };
@@ -839,7 +839,7 @@ define('ace/mode/doc_comment_highlight_rules', ['require', 'exports', 'module' ,
         this.$rules = {
             "start": [
                 {
-                    token: "comment.doc.tag",
+                    token: "comment.doc.tagincategory",
                     regex: "@[\\w\\d_]+" // TODO: fix email addresses
                 },
                 {
@@ -943,11 +943,11 @@ define('ace/mode/xml_util', ['require', 'exports', 'module' ], function (require
             },
             {
 
-                token: !tagMap ? "meta.tag.tag-name" : function (value) {
+                token: !tagMap ? "meta.tagincategory.tagincategory-name" : function (value) {
                     if (tagMap[value])
-                        return "meta.tag.tag-name." + tagMap[value];
+                        return "meta.tagincategory.tagincategory-name." + tagMap[value];
                     else
-                        return "meta.tag.tag-name";
+                        return "meta.tagincategory.tagincategory-name";
                 },
                 merge: true,
                 regex: "[-_a-zA-Z0-9:]+",
@@ -965,7 +965,7 @@ define('ace/mode/xml_util', ['require', 'exports', 'module' ], function (require
 
         states[name + "_embed_attribute_list"] = [
             {
-                token: "meta.tag",
+                token: "meta.tagincategory",
                 merge: true,
                 regex: "\/?>",
                 next: nextState

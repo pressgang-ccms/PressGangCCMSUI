@@ -2,9 +2,11 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.tag;
 
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.DisableableButtonCell;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentCategoryV1;
@@ -141,6 +143,18 @@ public class TagCategoriesView
         return buttonColumn;
     }
 
+    @NotNull
+    @Override
+    public TextColumn<RESTProjectCollectionItemV1> getIdColumn() {
+        return idColumn;
+    }
+
+    @NotNull
+    @Override
+    public TextColumn<RESTProjectCollectionItemV1> getNameColumn() {
+        return nameColumn;
+    }
+
     @Override
     public void display(@NotNull final RESTTagV1 originalEntity, final boolean readOnly) {
         super.displayChildren(originalEntity, readOnly);
@@ -152,6 +166,16 @@ public class TagCategoriesView
         getPossibleChildrenResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.CategoryID());
         getPossibleChildrenResults().addColumn(nameColumn, PressGangCCMSUI.INSTANCE.CategoryName());
         getPossibleChildrenResults().addColumn(buttonColumn, PressGangCCMSUI.INSTANCE.AddRemove());
+
+        idColumn.setSortable(true);
+        nameColumn.setSortable(true);
+        buttonColumn.setSortable(true);
+
+        /*
+            Allow the table to be sorted.
+         */
+        @NotNull final ColumnSortEvent.AsyncHandler columnSortHandler = new ColumnSortEvent.AsyncHandler(getPossibleChildrenResults());
+        getPossibleChildrenResults().addColumnSortHandler(columnSortHandler);
 
         getExistingChildrenResults().addColumn(tagIdColumn, PressGangCCMSUI.INSTANCE.TagID());
         getExistingChildrenResults().addColumn(tagNameColumn, PressGangCCMSUI.INSTANCE.TagName());

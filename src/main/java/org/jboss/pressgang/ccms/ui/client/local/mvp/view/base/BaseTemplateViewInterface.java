@@ -183,7 +183,7 @@ public interface BaseTemplateViewInterface {
     PushButton getAdvanced();
 
     /**
-     * @return The button that opens the property tag categories view
+     * @return The button that opens the property tagincategory categories view
      */
     @NotNull
     PushButton getPropertyTagCategories();

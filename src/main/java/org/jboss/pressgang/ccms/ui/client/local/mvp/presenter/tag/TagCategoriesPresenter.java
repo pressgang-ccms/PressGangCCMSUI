@@ -1,6 +1,9 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag;
 
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.ColumnSortList;
+import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.CellPreviewEvent.Handler;
@@ -9,6 +12,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseUpdateCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
@@ -24,6 +28,13 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.Ba
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.sort.category.RESTCategoryCollectionItemIDSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.category.RESTCategoryCollectionItemNameSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.category.RESTCategoryCollectionItemParentSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollectionItemDescriptionSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollectionItemIDSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollectionItemNameSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollectionItemParentSort;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,7 +65,9 @@ public class TagCategoriesPresenter
             RESTCategoryV1,
             RESTCategoryCollectionItemV1,
             RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> {
+        TextColumn<RESTProjectCollectionItemV1> getIdColumn();
 
+        TextColumn<RESTProjectCollectionItemV1> getNameColumn();
     }
 
     /**
@@ -123,7 +136,7 @@ public class TagCategoriesPresenter
 
     /**
      * This provider pages over a collection of categories that was returned when the page was built. This is because changes to
-     * the tag category relationships are done to the categories, not to the tag. This means we need to keep a list of the
+     * the tagincategory category relationships are done to the categories, not to the tagincategory. This means we need to keep a list of the
      * categories instead of losing them when the table is paged through.
      *
      * @return A provider to be used for the category display list.
@@ -133,11 +146,31 @@ public class TagCategoriesPresenter
     public EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> generatePossibleChildrenProvider(@NotNull final RESTTagV1 parent) {
         @NotNull final EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTCategoryCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(@NotNull final HasData<RESTCategoryCollectionItemV1> display) {
+            protected void onRangeChanged(@NotNull final HasData<RESTCategoryCollectionItemV1> data) {
 
-                getPossibleChildrenProviderData().setStartRow(display.getVisibleRange().getStart());
+                getPossibleChildrenProviderData().setStartRow(data.getVisibleRange().getStart());
 
                 if (getPossibleChildrenProviderData().getItems() != null) {
+                     /*
+                            Implement sorting
+                        */
+                    final ColumnSortList sortList = display.getPossibleChildrenResults().getColumnSortList();
+                    if (sortList.size() != 0) {
+                        final Column<?, ?> column = sortList.get(0).getColumn();
+                        final boolean ascending = sortList.get(0).isAscending();
+
+                        /*
+                            Sort the collection
+                        */
+                        if (column == display.getPossibleChildrenButtonColumn()) {
+                            Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTCategoryCollectionItemParentSort(parent, ascending));
+                        } else if (column == display.getIdColumn())  {
+                            Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTCategoryCollectionItemIDSort(ascending));
+                        } else if (column == display.getNameColumn())  {
+                            Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTCategoryCollectionItemNameSort(ascending));
+                        }
+                    }
+
                     displayNewFixedList(getPossibleChildrenProviderData().getItems());
                 } else {
                     resetProvider();
@@ -149,7 +182,7 @@ public class TagCategoriesPresenter
     }
 
     /**
-     * @return A provider to be used for the tag display list
+     * @return A provider to be used for the tagincategory display list
      */
     @Override
     @NotNull
@@ -160,7 +193,7 @@ public class TagCategoriesPresenter
                 getExistingProviderData().setStartRow(display.getVisibleRange().getStart());
                 getExistingProviderData().setItems(new ArrayList<RESTTagInCategoryCollectionItemV1>());
 
-                /* Zero results can be a null list. Also selecting a new tag will reset getProviderData(). */
+                /* Zero results can be a null list. Also selecting a new tagincategory will reset getProviderData(). */
                 if (entity != null && entity.getTags() != null) {
                     /* Don't display removed tags */
                     for (final RESTTagInCategoryCollectionItemV1 tagInCategory : entity.getTags().returnExistingAddedAndUpdatedCollectionItems()) {
@@ -254,7 +287,7 @@ public class TagCategoriesPresenter
                 new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
                     /**
-                     * Swap the sort value for the tag that was selected with the tag below it.
+                     * Swap the sort value for the tagincategory that was selected with the tagincategory below it.
                      */
                     @Override
                     public void update(final int index, @NotNull final RESTTagInCategoryCollectionItemV1 object, @Nullable final String value) {
@@ -266,9 +299,9 @@ public class TagCategoriesPresenter
     }
 
     /**
-     * Get the collection of categories, to which we will add or remove the currently selected tag. Note that the changes made
-     * to this collection will be synced in reverse to the tag when the save button is clicked i.e. where the displayed tag is
-     * added to a project, that will actually be persisted through the REST interface as a category added to the displayed tag.
+     * Get the collection of categories, to which we will add or remove the currently selected tagincategory. Note that the changes made
+     * to this collection will be synced in reverse to the tagincategory when the save button is clicked i.e. where the displayed tagincategory is
+     * added to a project, that will actually be persisted through the REST interface as a category added to the displayed tagincategory.
      */
     @Override
     public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTTagV1 parent) {

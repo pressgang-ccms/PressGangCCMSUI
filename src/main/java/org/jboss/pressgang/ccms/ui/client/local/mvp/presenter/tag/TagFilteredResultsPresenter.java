@@ -93,7 +93,7 @@ public class TagFilteredResultsPresenter
 
     /**
      * @param waitDisplay The view used to notify the user that an on going operation is in progress
-     * @return A provider to be used for the tag display list
+     * @return A provider to be used for the tagincategory display list
      */
     @Override
     @NotNull

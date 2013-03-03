@@ -162,8 +162,8 @@ public final class SearchUICategory extends SearchUIBase {
             }
 
             for (@NotNull final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
-                checkState(tag.getItem().getProjects() != null, "tag.getItem().getProjects() cannot be null");
-                checkState(tag.getItem().getCategories() != null, "tag.getItem().getCategories() cannot be null");
+                checkState(tag.getItem().getProjects() != null, "tagincategory.getItem().getProjects() cannot be null");
+                checkState(tag.getItem().getCategories() != null, "tagincategory.getItem().getCategories() cannot be null");
 
                 final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory =
                         Iterables.tryFind(tag.getItem().getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
@@ -230,8 +230,8 @@ public final class SearchUICategory extends SearchUIBase {
             }
 
             for (@NotNull final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
-                checkState(tag.getItem().getProjects() != null, "tag.getItem().getProjects() cannot be null");
-                checkState(tag.getItem().getCategories() != null, "tag.getItem().getCategories() cannot be null");
+                checkState(tag.getItem().getProjects() != null, "tagincategory.getItem().getProjects() cannot be null");
+                checkState(tag.getItem().getCategories() != null, "tagincategory.getItem().getCategories() cannot be null");
 
                 if (tag.getItem().getProjects().getItems().isEmpty()) {
 

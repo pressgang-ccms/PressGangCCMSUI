@@ -168,7 +168,7 @@ ace.define('ace/mode/liquid_highlight_rules', ['require', 'exports', 'module' , 
                     next: "liquid_start"
                 },
                 {
-                    token: "meta.tag",
+                    token: "meta.tagincategory",
                     merge: true,
                     regex: "<\\!\\[CDATA\\[",
                     next: "cdata"
@@ -184,19 +184,19 @@ ace.define('ace/mode/liquid_highlight_rules', ['require', 'exports', 'module' , 
                     next: "comment"
                 },
                 {
-                    token: "meta.tag",
+                    token: "meta.tagincategory",
                     regex: "<(?=\\s*script\\b)",
                     next: "script"
                 },
                 {
-                    token: "meta.tag",
+                    token: "meta.tagincategory",
                     regex: "<(?=\\s*style\\b)",
                     next: "style"
                 },
                 {
-                    token: "meta.tag", // opening tag
+                    token: "meta.tagincategory", // opening tagincategory
                     regex: "<\\/?",
-                    next: "tag"
+                    next: "tagincategory"
                 },
                 {
                     token: "text",
@@ -304,7 +304,7 @@ ace.define('ace/mode/liquid_highlight_rules', ['require', 'exports', 'module' , 
             ]
         };
 
-        xmlUtil.tag(this.$rules, "tag", "start");
+        xmlUtil.tag(this.$rules, "tagincategory", "start");
         xmlUtil.tag(this.$rules, "style", "css-start");
         xmlUtil.tag(this.$rules, "script", "js-start");
 
@@ -312,20 +312,20 @@ ace.define('ace/mode/liquid_highlight_rules', ['require', 'exports', 'module' , 
             {
                 token: "comment",
                 regex: "\\/\\/.*(?=<\\/script>)",
-                next: "tag"
+                next: "tagincategory"
             },
             {
-                token: "meta.tag",
+                token: "meta.tagincategory",
                 regex: "<\\/(?=script)",
-                next: "tag"
+                next: "tagincategory"
             }
         ]);
 
         this.embedRules(CssHighlightRules, "css-", [
             {
-                token: "meta.tag",
+                token: "meta.tagincategory",
                 regex: "<\\/(?=style)",
-                next: "tag"
+                next: "tagincategory"
             }
         ]);
     };
@@ -1056,7 +1056,7 @@ ace.define('ace/mode/doc_comment_highlight_rules', ['require', 'exports', 'modul
         this.$rules = {
             "start": [
                 {
-                    token: "comment.doc.tag",
+                    token: "comment.doc.tagincategory",
                     regex: "@[\\w\\d_]+" // TODO: fix email addresses
                 },
                 {
@@ -1159,13 +1159,13 @@ ace.define('ace/mode/xml_util', ['require', 'exports', 'module' ], function (req
                 regex: "\\s+"
             },
             {
-                //token : "meta.tag",
+                //token : "meta.tagincategory",
 
                 token: function (value) {
                     if (tagMap && tagMap[value]) {
-                        return "meta.tag.tag-name" + '.' + tagMap[value];
+                        return "meta.tagincategory.tagincategory-name" + '.' + tagMap[value];
                     } else {
-                        return "meta.tag.tag-name";
+                        return "meta.tagincategory.tagincategory-name";
                     }
                 },
                 merge: true,
@@ -1184,7 +1184,7 @@ ace.define('ace/mode/xml_util', ['require', 'exports', 'module' ], function (req
 
         states[name + "_embed_attribute_list"] = [
             {
-                token: "meta.tag",
+                token: "meta.tagincategory",
                 merge: true,
                 regex: "\/?>",
                 next: nextState

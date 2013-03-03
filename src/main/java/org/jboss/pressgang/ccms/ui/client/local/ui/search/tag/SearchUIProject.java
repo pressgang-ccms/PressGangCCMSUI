@@ -100,10 +100,10 @@ public final class SearchUIProject extends SearchUIBase {
             //LOGGER.log(Level.INFO, "ENTER SearchUIProject.populateCategories()");
 
             for (@NotNull final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
-                checkState(tag.getItem().getProjects() != null, "tag.getItem().getProjects() cannot be null");
+                checkState(tag.getItem().getProjects() != null, "tagincategory.getItem().getProjects() cannot be null");
 
                 if (tag.getItem().getProjects().getItems().contains(project)) {
-                    checkState(tag.getItem().getCategories().getItems() != null, "tag.getItem().getCategories().getItems() cannot be null");
+                    checkState(tag.getItem().getCategories().getItems() != null, "tagincategory.getItem().getCategories().getItems() cannot be null");
 
                     for (@NotNull final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories().returnExistingAndAddedCollectionItems()) {
                         @NotNull final SearchUICategory searchUICategory = new SearchUICategory(this, category);
@@ -141,12 +141,12 @@ public final class SearchUIProject extends SearchUIBase {
 
             for (@NotNull final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
                 if (tag.getItem().getProjects() == null) {
-                    throw new IllegalArgumentException("tag.getItem().getProjects() cannot be null");
+                    throw new IllegalArgumentException("tagincategory.getItem().getProjects() cannot be null");
                 }
 
                 if (tag.getItem().getProjects().getItems().isEmpty()) {
                     if (tag.getItem().getCategories().getItems() == null) {
-                        throw new IllegalArgumentException("tag.getItem().getCategories().getItems() cannot be null");
+                        throw new IllegalArgumentException("tagincategory.getItem().getCategories().getItems() cannot be null");
                     }
 
                     for (@NotNull final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories()

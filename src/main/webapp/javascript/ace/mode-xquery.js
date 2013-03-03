@@ -222,9 +222,9 @@ define('ace/mode/xquery_highlight_rules', ['require', 'exports', 'module' , 'ace
                     next: "comment"
                 },
                 {
-                    token: "text", // opening tag
+                    token: "text", // opening tagincategory
                     regex: "<\\/?",
-                    next: "tag"
+                    next: "tagincategory"
                 },
                 {
                     token: "constant", // number
@@ -275,7 +275,7 @@ define('ace/mode/xquery_highlight_rules', ['require', 'exports', 'module' , 'ace
                     next: "start"
                 },
                 {
-                    token: "meta.tag",
+                    token: "meta.tagincategory",
                     regex: "[-_a-zA-Z0-9:]+"
                 },
                 {

@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
@@ -104,7 +105,9 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                             try {
                                 LOGGER.log(Level.INFO, "ENTER TranslatedTopicFilteredResultsAndDetailsPresenter.bind() RESTCallback.doSuccessAction()");
 
-                                LOGGER.log(Level.INFO, "retValue.getProperties().getItems().size(): " + retValue.getProperties().getItems().size());
+                                checkArgument(retValue.getSourceUrls_OTM() != null, "The initially retrieved entity should have an expanded source urls collection");
+                                checkArgument(retValue.getProperties() != null, "The initially retrieved entity should have an expanded properties collection");
+                                checkArgument(retValue.getRevisions() != null, "The initially retrieved entity should have an expanded revisions collection");
 
                                 displayCallback.displayNewEntity(retValue);
                             } finally {

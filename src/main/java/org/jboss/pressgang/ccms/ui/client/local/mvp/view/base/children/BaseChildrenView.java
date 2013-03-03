@@ -29,7 +29,7 @@ abstract public class BaseChildrenView<
         extends BaseTemplateView implements BaseChildrenViewInterface<T, C, D, E, F> {
 
     /**
-     * A reference to the tag that this view will be modifying
+     * A reference to the tagincategory that this view will be modifying
      */
     private T originalEntity;
 

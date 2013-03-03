@@ -8536,7 +8536,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
             public String getJSONPTag(final Integer a0, final String a1, final String a2) {
                 StringBuilder url = new StringBuilder(getBaseUrl());
-                url.append("1/tag/get/jsonp/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+                url.append("1/tagincategory/get/jsonp/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
                 RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
                 requestBuilder.setHeader("Accept", "application/json");
                 requestBuilder.setHeader("Content-Type", "*");
@@ -8641,7 +8641,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
             public String updateJSONPTag(final String a0, final RESTTagV1 a1, final String a2) {
                 StringBuilder url = new StringBuilder(getBaseUrl());
-                url.append("1/tag/update/jsonp").append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("data").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1))).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
+                url.append("1/tagincategory/update/jsonp").append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("data").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1))).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
                 RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
                 requestBuilder.setHeader("Accept", "application/json");
                 requestBuilder.setHeader("Content-Type", "application/json");
@@ -8676,7 +8676,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
             public String updateJSONPTag(final String a0, final RESTTagV1 a1, final RESTLogDetailsV1 a2, final String a3) {
                 StringBuilder url = new StringBuilder(getBaseUrl());
-                url.append("1/tag/update/jsonp").append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a3).toString())).append("&").append("data").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1))).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a2)));
+                url.append("1/tagincategory/update/jsonp").append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a3).toString())).append("&").append("data").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1))).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a2)));
                 RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
                 requestBuilder.setHeader("Accept", "application/json");
                 requestBuilder.setHeader("Content-Type", "application/json");
@@ -8781,7 +8781,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
             public String createJSONPTag(final String a0, final RESTTagV1 a1, final String a2) {
                 StringBuilder url = new StringBuilder(getBaseUrl());
-                url.append("1/tag/create/jsonp").append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("data").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1))).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
+                url.append("1/tagincategory/create/jsonp").append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("data").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1))).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
                 RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
                 requestBuilder.setHeader("Accept", "application/json");
                 requestBuilder.setHeader("Content-Type", "application/json");
@@ -8816,7 +8816,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
             public String createJSONPTag(final String a0, final RESTTagV1 a1, final RESTLogDetailsV1 a2, final String a3) {
                 StringBuilder url = new StringBuilder(getBaseUrl());
-                url.append("1/tag/create/jsonp").append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a3).toString())).append("&").append("data").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1))).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a2)));
+                url.append("1/tagincategory/create/jsonp").append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a3).toString())).append("&").append("data").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1))).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a2)));
                 RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
                 requestBuilder.setHeader("Accept", "application/json");
                 requestBuilder.setHeader("Content-Type", "application/json");
@@ -8921,7 +8921,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
             public String deleteJSONPTag(final Integer a0, final String a1, final String a2) {
                 StringBuilder url = new StringBuilder(getBaseUrl());
-                url.append("1/tag/delete/jsonp/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+                url.append("1/tagincategory/delete/jsonp/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
                 RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
                 requestBuilder.setHeader("Accept", "application/json");
                 requestBuilder.setHeader("Content-Type", "*");
@@ -8956,7 +8956,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
             public String deleteJSONPTag(final Integer a0, final RESTLogDetailsV1 a1, final String a2, final String a3) {
                 StringBuilder url = new StringBuilder(getBaseUrl());
-                url.append("1/tag/delete/jsonp/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a3).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1)));
+                url.append("1/tagincategory/delete/jsonp/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("callback").append("=").append(URL.encodeQueryString(new String(a3).toString())).append("&").append("expand").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1)));
                 RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
                 requestBuilder.setHeader("Accept", "application/json");
                 requestBuilder.setHeader("Content-Type", "*");
@@ -9061,7 +9061,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
             public RESTTagV1 getJSONTag(final Integer a0, final String a1) {
                 StringBuilder url = new StringBuilder(getBaseUrl());
-                url.append("1/tag/get/json/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+                url.append("1/tagincategory/get/json/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
                 RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, url.toString());
                 requestBuilder.setHeader("Accept", "application/json");
                 requestBuilder.setHeader("Content-Type", "*");
@@ -9166,7 +9166,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
             public RESTTagV1 updateJSONTag(final String a0, final RESTTagV1 a1) {
                 StringBuilder url = new StringBuilder(getBaseUrl());
-                url.append("1/tag/update/json").append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
+                url.append("1/tagincategory/update/json").append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
                 RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, url.toString());
                 requestBuilder.setHeader("Accept", "application/json");
                 requestBuilder.setHeader("Content-Type", "application/json");
@@ -9201,7 +9201,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
             public RESTTagV1 updateJSONTag(final String a0, final RESTTagV1 a1, final RESTLogDetailsV1 a2) {
                 StringBuilder url = new StringBuilder(getBaseUrl());
-                url.append("1/tag/update/json").append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a2)));
+                url.append("1/tagincategory/update/json").append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a2)));
                 RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, url.toString());
                 requestBuilder.setHeader("Accept", "application/json");
                 requestBuilder.setHeader("Content-Type", "application/json");
@@ -9306,7 +9306,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
             public RESTTagV1 createJSONTag(final String a0, final RESTTagV1 a1) {
                 StringBuilder url = new StringBuilder(getBaseUrl());
-                url.append("1/tag/create/json").append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
+                url.append("1/tagincategory/create/json").append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString()));
                 RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, url.toString());
                 requestBuilder.setHeader("Accept", "application/json");
                 requestBuilder.setHeader("Content-Type", "application/json");
@@ -9341,7 +9341,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
             public RESTTagV1 createJSONTag(final String a0, final RESTTagV1 a1, final RESTLogDetailsV1 a2) {
                 StringBuilder url = new StringBuilder(getBaseUrl());
-                url.append("1/tag/create/json").append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a2)));
+                url.append("1/tagincategory/create/json").append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a0).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a2)));
                 RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, url.toString());
                 requestBuilder.setHeader("Accept", "application/json");
                 requestBuilder.setHeader("Content-Type", "application/json");
@@ -9446,7 +9446,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
             public RESTTagV1 deleteJSONTag(final Integer a0, final String a1) {
                 StringBuilder url = new StringBuilder(getBaseUrl());
-                url.append("1/tag/delete/json/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
+                url.append("1/tagincategory/delete/json/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a1).toString()));
                 RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
                 requestBuilder.setHeader("Accept", "application/json");
                 requestBuilder.setHeader("Content-Type", "*");
@@ -9481,7 +9481,7 @@ public class JaxrsProxyLoaderImpl implements JaxrsProxyLoader {
 
             public RESTTagV1 deleteJSONTag(final Integer a0, final RESTLogDetailsV1 a1, final String a2) {
                 StringBuilder url = new StringBuilder(getBaseUrl());
-                url.append("1/tag/delete/json/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1)));
+                url.append("1/tagincategory/delete/json/{id}".replace("{id}", URL.encodePathSegment(new Integer(a0).toString()))).append("?").append("expand").append("=").append(URL.encodeQueryString(new String(a2).toString())).append("&").append("logDetails").append("=").append(URL.encodeQueryString(MarshallingWrapper.toJSON(a1)));
                 RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.DELETE, url.toString());
                 requestBuilder.setHeader("Accept", "application/json");
                 requestBuilder.setHeader("Content-Type", "*");

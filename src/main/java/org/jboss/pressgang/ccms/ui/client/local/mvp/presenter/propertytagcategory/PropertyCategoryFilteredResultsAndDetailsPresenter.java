@@ -43,6 +43,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.*;
 
@@ -126,6 +127,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
                         new BaseRestCallback.SuccessAction<RESTPropertyCategoryV1, BaseTemplateViewInterface>() {
                             @Override
                             public void doSuccessAction(@NotNull final RESTPropertyCategoryV1 retValue, @NotNull final BaseTemplateViewInterface display) {
+                                checkArgument(retValue.getPropertyTags() != null, "The initially retrieved entity should have an expanded tags collection");
                                 displayCallback.displayNewEntity(retValue);
                             }
                         });
@@ -233,7 +235,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
                 checkState(filteredResultsComponent.getProviderData().getSelectedItem() != null, "An item should have been selected.");
                 checkState(filteredResultsComponent.getProviderData().getSelectedItem().getItem() != null, "The selected item should have a valid entity.");
 
-                /* Was the tag we just saved a new tag? */
+                /* Was the tagincategory we just saved a new tagincategory? */
                 final boolean wasNewEntity = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
 
                 /* Sync the UI to the underlying object */
@@ -296,7 +298,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
     }
 
     /**
-     * Binds behaviour to the tag search and list view
+     * Binds behaviour to the tagincategory search and list view
      */
     @Override
     protected void bindFilteredResultsButtons() {
@@ -316,12 +318,12 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
                 checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "An item should have been displayed.");
                 checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed item should have a valid entity.");
 
-                /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
+                /* The 'selected' tagincategory will be blank. This gives us something to compare to when checking for unsaved changes */
                 @NotNull final RESTPropertyCategoryV1 selectedEntity = new RESTPropertyCategoryV1();
                 selectedEntity.setId(Constants.NULL_ID);
                 @NotNull final RESTPropertyCategoryCollectionItemV1 selectedTagWrapper = new RESTPropertyCategoryCollectionItemV1(selectedEntity);
 
-                /* The displayed tag will also be blank. This is the object that our data will be saved into */
+                /* The displayed tagincategory will also be blank. This is the object that our data will be saved into */
                 @NotNull final RESTPropertyCategoryV1 displayedEntity = new RESTPropertyCategoryV1();
                 displayedEntity.setId(Constants.NULL_ID);
                 displayedEntity.setPropertyTags(new RESTPropertyTagInPropertyCategoryCollectionV1());
@@ -341,7 +343,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
 
     @Override
     public boolean hasUnsavedChanges() {
-        /* sync the UI with the underlying tag */
+        /* sync the UI with the underlying tagincategory */
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             resultComponent.getDisplay().getDriver().flush();
 
@@ -380,7 +382,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
     }
 
     /**
-     * Called when the selected tag is changed, or the selected view is changed.
+     * Called when the selected tagincategory is changed, or the selected view is changed.
      */
     @Override
     protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {

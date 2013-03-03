@@ -89,7 +89,7 @@ public abstract class BaseChildrenPresenter<
                 checkState(object.getItem() != null, "The object collection item needs to have a valid item.");
                 checkState(object.getItem().getId() != null, "The object collection item needs to have a valid item with a valid id.");
 
-                /* find the tag if it exists in the category */
+                /* find the tagincategory if it exists in the category */
                 boolean found = false;
                 @NotNull final E existingCollection = getExistingCollectionCallback.getExistingCollection();
 
@@ -100,7 +100,7 @@ public abstract class BaseChildrenPresenter<
                     checkState(child.getItem() != null, "The child collection item needs to have a valid item.");
                     checkState(child.getItem().getId() != null, "The child collection item needs to have a valid item with a valid id.");
 
-                    /* we've found a matching tag */
+                    /* we've found a matching tagincategory */
                     if (child.getItem().getId().equals(object.getItem().getId())) {
                         if (child.returnIsAddItem()) {
                             /* Tag was added and then removed */
@@ -116,7 +116,7 @@ public abstract class BaseChildrenPresenter<
                         break;
                     }
                 }
-                /* The tag did not exist, so add it to the collection */
+                /* The tagincategory did not exist, so add it to the collection */
                 if (!found) {
                     addChildCallback.createAndAddChild(object);
                 }

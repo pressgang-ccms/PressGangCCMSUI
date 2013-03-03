@@ -1,11 +1,15 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag;
 
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.ColumnSortList;
+import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTProjectCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTProjectV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -14,12 +18,21 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.Base
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollectionItemDescriptionSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollectionItemIDSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollectionItemNameSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollectionItemParentSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.tag.RESTTagCollectionItemIDSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.tag.RESTTagCollectionItemNameSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.tagincategory.RESTTagCollectionItemParentSort;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+
+import java.util.Collections;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
@@ -34,7 +47,11 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
             RESTTagV1,
             RESTProjectCollectionItemV1,
             RESTProjectV1, RESTProjectCollectionV1, RESTProjectCollectionItemV1> {
+        TextColumn<RESTProjectCollectionItemV1> getIdColumn();
 
+        TextColumn<RESTProjectCollectionItemV1> getNameColumn();
+
+        TextColumn<RESTProjectCollectionItemV1> getDescriptionColumn();
     }
 
     /**
@@ -84,11 +101,33 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
 
         @NotNull final EnhancedAsyncDataProvider<RESTProjectCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTProjectCollectionItemV1>() {
             @Override
-            protected void onRangeChanged(@NotNull final HasData<RESTProjectCollectionItemV1> display) {
+            protected void onRangeChanged(@NotNull final HasData<RESTProjectCollectionItemV1> data) {
 
-                getPossibleChildrenProviderData().setStartRow(display.getVisibleRange().getStart());
+                getPossibleChildrenProviderData().setStartRow(data.getVisibleRange().getStart());
 
                 if (getPossibleChildrenProviderData().getItems() != null) {
+                    /*
+                            Implement sorting
+                        */
+                    final ColumnSortList sortList = display.getPossibleChildrenResults().getColumnSortList();
+                    if (sortList.size() != 0) {
+                        final Column<?, ?> column = sortList.get(0).getColumn();
+                        final boolean ascending = sortList.get(0).isAscending();
+
+                        /*
+                            Sort the collection
+                        */
+                        if (column == display.getPossibleChildrenButtonColumn()) {
+                            Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTProjectCollectionItemParentSort(parent, ascending));
+                        } else if (column == display.getIdColumn())  {
+                            Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTProjectCollectionItemIDSort(ascending));
+                        } else if (column == display.getNameColumn())  {
+                            Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTProjectCollectionItemNameSort(ascending));
+                        } else if (column == display.getDescriptionColumn())  {
+                            Collections.sort(getPossibleChildrenProviderData().getItems(), new RESTProjectCollectionItemDescriptionSort(ascending));
+                        }
+                    }
+
                     displayNewFixedList(getPossibleChildrenProviderData().getItems());
                 } else {
                     resetProvider();
@@ -115,9 +154,9 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
 
 
     /**
-     * Get the collection of projects, to which we will add or remove the currently selected tag. Note that the changes made to
-     * this collection will be synced in reverse to the tag when the save button is clicked i.e. where the displayed tag is
-     * added to a project, that will actually be persisted through the REST interface as a project added to the displayed tag.
+     * Get the collection of projects, to which we will add or remove the currently selected tagincategory. Note that the changes made to
+     * this collection will be synced in reverse to the tagincategory when the save button is clicked i.e. where the displayed tagincategory is
+     * added to a project, that will actually be persisted through the REST interface as a project added to the displayed tagincategory.
      */
     @Override
     public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTTagV1 parent) {

@@ -22,7 +22,7 @@ public final class DisableableButtonCell extends ButtonCell {
     private static final String INPUT_DISABLED = "<button type=\"button\" tabindex=\"-1\" disabled=\"disabled\">";
 
     /**
-     * The close tag
+     * The close tagincategory
      */
     private static final String INPUT_CLOSE = "</button>";
 

@@ -3,7 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.search.tag;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * The base class for all the entites that make up the tag search screen.
+ * The base class for all the entites that make up the tagincategory search screen.
  *
  * @author matthew
  */

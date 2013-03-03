@@ -104,7 +104,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
     private PropertyTagPresenter resultComponent;
 
     @Inject
-    private PropertyTagCategoryPresenter tagComponent;
+    private PropertyTagCategoryPresenter categoryPresenter;
 
     /**
      * The category query string extracted from the history token
@@ -127,7 +127,8 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
                 @NotNull final RESTCallback<RESTPropertyTagV1> callback = new BaseRestCallback<RESTPropertyTagV1, BaseTemplateViewInterface>(display,
                         new BaseRestCallback.SuccessAction<RESTPropertyTagV1, BaseTemplateViewInterface>() {
                             @Override
-                            public void doSuccessAction(@NotNull final RESTPropertyTagV1 retValue, final BaseTemplateViewInterface display) {
+                            public void doSuccessAction(@NotNull final RESTPropertyTagV1 retValue, @NotNull final BaseTemplateViewInterface display) {
+                                checkArgument(retValue.getPropertyCategories() != null, "The initially retrieved entity should have an expanded categories collection");
                                 displayCallback.displayNewEntity(retValue);
                             }
                         });
@@ -135,53 +136,52 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
             }
         };
 
-
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
         filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.PROPERTY_TAG_HELP_TOPIC, pageId, queryString);
         resultComponent.bindExtended(ServiceConstants.PROPERTY_TAG_DETAILS_HELP_TOPIC, pageId);
-        tagComponent.bindChildrenExtended(ServiceConstants.PROPERTY_TAG_CATEGORIES_HELP_TOPIC, pageId);
+        categoryPresenter.bindChildrenExtended(ServiceConstants.PROPERTY_TAG_CATEGORIES_HELP_TOPIC, pageId);
         super.bindSearchAndEdit(topicId, pageId, Preferences.PROPERTY_TAG_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
                 filteredResultsComponent.getDisplay(), filteredResultsComponent, display, display, getNewEntityCallback);
 
         /* Bind the logic to add and remove possible children */
-        tagComponent.bindPossibleChildrenListButtonClicks(
-            new GetExistingCollectionCallback<RESTPropertyCategoryInPropertyTagV1, RESTPropertyCategoryInPropertyTagCollectionV1, RESTPropertyCategoryInPropertyTagCollectionItemV1>() {
-                @NotNull
-                @Override
-                public RESTPropertyCategoryInPropertyTagCollectionV1 getExistingCollection() {
-                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
-                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories() != null, "The displayed collection item to reference a valid entity and have a valid collection of property catgegories.");
+        categoryPresenter.bindPossibleChildrenListButtonClicks(
+                new GetExistingCollectionCallback<RESTPropertyCategoryInPropertyTagV1, RESTPropertyCategoryInPropertyTagCollectionV1, RESTPropertyCategoryInPropertyTagCollectionItemV1>() {
+                    @NotNull
+                    @Override
+                    public RESTPropertyCategoryInPropertyTagCollectionV1 getExistingCollection() {
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories() != null, "The displayed collection item to reference a valid entity and have a valid collection of property catgegories.");
 
-                    return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories();
-                }
-            },
-            new AddPossibleChildCallback<RESTPropertyCategoryCollectionItemV1>() {
-                @Override
-                public void createAndAddChild(@NotNull final RESTPropertyCategoryCollectionItemV1 copy) {
-                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
-                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories() != null, "The displayed collection item to reference a valid entity and have a valid collection of property catgegories.");
+                        return filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories();
+                    }
+                },
+                new AddPossibleChildCallback<RESTPropertyCategoryCollectionItemV1>() {
+                    @Override
+                    public void createAndAddChild(@NotNull final RESTPropertyCategoryCollectionItemV1 copy) {
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories() != null, "The displayed collection item to reference a valid entity and have a valid collection of property catgegories.");
 
-                    @NotNull final RESTPropertyCategoryInPropertyTagV1 newChild = new RESTPropertyCategoryInPropertyTagV1();
-                    newChild.setId(copy.getItem().getId());
-                    newChild.setName(copy.getItem().getName());
-                    filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories().addNewItem(newChild);
-                }
-            },
-            new UpdateAfterChildModifiedCallback() {
-                @Override
-                public void updateAfterChildModified() {
-                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-                    checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                        @NotNull final RESTPropertyCategoryInPropertyTagV1 newChild = new RESTPropertyCategoryInPropertyTagV1();
+                        newChild.setId(copy.getItem().getId());
+                        newChild.setName(copy.getItem().getName());
+                        filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories().addNewItem(newChild);
+                    }
+                },
+                new UpdateAfterChildModifiedCallback() {
+                    @Override
+                    public void updateAfterChildModified() {
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
                     /*
                      * refresh the list of possible tags
                      */
-                    tagComponent.redisplayPossibleChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+                        categoryPresenter.redisplayPossibleChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+                    }
                 }
-            }
         );
     }
 
@@ -199,7 +199,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
         checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
         /* Get a new collection of tags */
-        tagComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+        categoryPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
     }
 
     @Override
@@ -221,7 +221,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
         @NotNull final ClickHandler projectTagsClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                switchView(tagComponent.getDisplay());
+                switchView(categoryPresenter.getDisplay());
             }
 
         };
@@ -238,7 +238,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
                 checkState(filteredResultsComponent.getProviderData().getSelectedItem() != null, "An item should have been selected.");
                 checkState(filteredResultsComponent.getProviderData().getSelectedItem().getItem() != null, "The selected item should have a valid entity.");
 
-                /* Was the tag we just saved a new tag? */
+                /* Was the tagincategory we just saved a new tagincategory? */
                 final boolean wasNewEntity = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
 
                 /* Sync the UI to the underlying object */
@@ -259,8 +259,8 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
                                         filteredResultsComponent.getProviderData().getStartRow(),
                                         filteredResultsComponent.getProviderData().getItems());
 
-                                tagComponent.getDisplay().display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
-                                tagComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+                                categoryPresenter.getDisplay().display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+                                categoryPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
                                 updateDisplayAfterSave(wasNewEntity);
 
@@ -301,7 +301,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
     }
 
     /**
-     * Binds behaviour to the tag search and list view
+     * Binds behaviour to the tagincategory search and list view
      */
     @Override
     protected void bindFilteredResultsButtons() {
@@ -319,12 +319,12 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
             @Override
             public void onClick(final ClickEvent event) {
 
-                /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
+                /* The 'selected' tagincategory will be blank. This gives us something to compare to when checking for unsaved changes */
                 @NotNull final RESTPropertyTagV1 selectedEntity = new RESTPropertyTagV1();
                 selectedEntity.setId(Constants.NULL_ID);
                 @NotNull final RESTPropertyTagCollectionItemV1 selectedTagWrapper = new RESTPropertyTagCollectionItemV1(selectedEntity);
 
-                /* The displayed tag will also be blank. This is the object that our data will be saved into */
+                /* The displayed tagincategory will also be blank. This is the object that our data will be saved into */
                 @NotNull final RESTPropertyTagV1 displayedEntity = new RESTPropertyTagV1();
                 displayedEntity.setId(Constants.NULL_ID);
                 displayedEntity.setPropertyCategories(new RESTPropertyCategoryInPropertyTagCollectionV1());
@@ -337,14 +337,14 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
 
                 switchView(lastDisplayedView == null ? resultComponent.getDisplay() : lastDisplayedView);
 
-                tagComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+                categoryPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
             }
         });
     }
 
     @Override
     public boolean hasUnsavedChanges() {
-        /* sync the UI with the underlying tag */
+        /* sync the UI with the underlying tagincategory */
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             resultComponent.getDisplay().getDriver().flush();
 
@@ -383,13 +383,13 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
     private boolean unsavedCategoryChanges() {
         checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "An item should have been displayed.");
         checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed item should have a valid entity.");
-        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories() != null, "The property tag's collection of categories should have been populated.");
+        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories() != null, "The property tagincategory's collection of categories should have been populated.");
 
         return !filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories().returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
     }
 
     /**
-     * Called when the selected tag is changed, or the selected view is changed.
+     * Called when the selected tagincategory is changed, or the selected view is changed.
      */
     @Override
     protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
@@ -404,7 +404,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
 
         if (displayedView == this.resultComponent.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getDetails(), this.display.getDetailsDown());
-        } else if (displayedView == this.tagComponent.getDisplay()) {
+        } else if (displayedView == this.categoryPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getChildren(), this.display.getChildrenDown());
         }
     }
@@ -417,7 +417,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
 
         @NotNull final List<BaseCustomViewInterface<RESTPropertyTagV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTPropertyTagV1>>();
         displayableViews.add(resultComponent.getDisplay());
-        displayableViews.add(tagComponent.getDisplay());
+        displayableViews.add(categoryPresenter.getDisplay());
 
         for (@NotNull final BaseCustomViewInterface<RESTPropertyTagV1> view : displayableViews) {
             if (viewIsInFilter(filter, view)) {
@@ -425,15 +425,15 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
             }
         }
 
-        if (viewIsInFilter(filter, tagComponent.getDisplay())) {
-            tagComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+        if (viewIsInFilter(filter, categoryPresenter.getDisplay())) {
+            categoryPresenter.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
         }
 
     }
 
     private void setHelpTopicForView(@NotNull final BaseTemplateViewInterface view) {
-        if (view == tagComponent.getDisplay()) {
-            setHelpTopicId(tagComponent.getHelpTopicId());
+        if (view == categoryPresenter.getDisplay()) {
+            setHelpTopicId(categoryPresenter.getHelpTopicId());
         } else if (view == resultComponent.getDisplay()) {
             setHelpTopicId(resultComponent.getHelpTopicId());
         }

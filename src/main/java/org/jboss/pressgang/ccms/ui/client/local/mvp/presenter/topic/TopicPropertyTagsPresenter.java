@@ -101,7 +101,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     }
 
     /**
-     * Add behaviour to the property tag add and remove buttons, and the value text edit field.
+     * Add behaviour to the property tagincategory add and remove buttons, and the value text edit field.
      */
     private void bindPropertyTagButtons(@NotNull final RESTBaseTopicV1<?, ?, ?> parent) {
         try {
@@ -114,7 +114,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
 
                             checkState(object.getItem() != null, "The object collection item being clicked on need to reference a valid entity");
 
-                            /* Create a new property tag child */
+                            /* Create a new property tagincategory child */
                             @NotNull final RESTAssignedPropertyTagV1 restAssignedPropertyTagV1 = new RESTAssignedPropertyTagV1();
                             restAssignedPropertyTagV1.setId(object.getItem().getId());
                             restAssignedPropertyTagV1.setName(object.getItem().getName());
@@ -135,7 +135,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
                         public void update(final int index, @NotNull final RESTAssignedPropertyTagCollectionItemV1 object, final String value) {
 
                             /*
-                                Note that the relationship between topic and property tag is many to many.
+                                Note that the relationship between topic and property tagincategory is many to many.
                              */
 
                             if (object.returnIsAddItem()) {
@@ -164,7 +164,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
 
                         To force a new topic revision to be created, any time a value is updated the existing mapping is removed
                          and a new one created. This has the effect of creating a new topic revision to match the fact that
-                         the value of a property tag has been changed.
+                         the value of a property tagincategory has been changed.
                      */
 
                     if (object.returnIsAddItem()) {
@@ -172,7 +172,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
                     } else {
                         object.setState(REMOVE_STATE);
 
-                        /* Create a new property tag child */
+                        /* Create a new property tagincategory child */
                         @NotNull final RESTAssignedPropertyTagV1 restAssignedPropertyTagV1 = new RESTAssignedPropertyTagV1();
                         restAssignedPropertyTagV1.setId(object.getItem().getId());
                         restAssignedPropertyTagV1.setName(object.getItem().getName());
@@ -204,7 +204,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
                     getExistingProviderData().setStartRow(display.getVisibleRange().getStart());
                     getExistingProviderData().setItems(new ArrayList<RESTAssignedPropertyTagCollectionItemV1>());
 
-                    /* Zero results can be a null list. Also selecting a new tag will reset getProviderData(). */
+                    /* Zero results can be a null list. Also selecting a new tagincategory will reset getProviderData(). */
 
                     checkState(entity.getProperties() != null, "The entity should have a collection of properties");
                     checkState(getExistingProviderData().getItems() != null, "The existing data provider should have a valid collection of items");

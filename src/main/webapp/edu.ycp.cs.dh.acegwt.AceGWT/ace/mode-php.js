@@ -861,7 +861,7 @@ define('ace/mode/php_highlight_rules', ['require', 'exports', 'module' , 'ace/li
                 'sybase_deadlock_retry_count|sybase_fetch_array|sybase_fetch_assoc|sybase_fetch_field|sybase_fetch_object|sybase_fetch_row|' +
                 'sybase_field_seek|sybase_free_result|sybase_get_last_message|sybase_min_client_severity|sybase_min_error_severity|' +
                 'sybase_min_message_severity|sybase_min_server_severity|sybase_num_fields|sybase_num_rows|sybase_pconnect|sybase_query|sybase_result|' +
-                'sybase_select_db|sybase_set_message_handler|sybase_unbuffered_query|symlink|sys_get_temp_dir|sys_getloadavg|syslog|system|tag|tan|tanh|' +
+                'sybase_select_db|sybase_set_message_handler|sybase_unbuffered_query|symlink|sys_get_temp_dir|sys_getloadavg|syslog|system|tagincategory|tan|tanh|' +
                 'tcpwrap_check|tempnam|textdomain|tidy|tidy_access_count|tidy_config_count|tidy_diagnose|tidy_error_count|tidy_get_error_buffer|' +
                 'tidy_get_output|tidy_load_config|tidy_reset_config|tidy_save_config|tidy_set_encoding|tidy_setopt|tidy_warning_count|tidynode|time|' +
                 'time_nanosleep|time_sleep_until|timezone_abbreviations_list|timezone_identifiers_list|timezone_location_get|timezone_name_from_abbr|' +
@@ -986,11 +986,11 @@ define('ace/mode/php_highlight_rules', ['require', 'exports', 'module' , 'ace/li
         this.$rules = {
             "start": [
                 {
-                    token: "support.php_tag", // php open tag
+                    token: "support.php_tag", // php open tagincategory
                     regex: "<\\?(?:php|\\=)"
                 },
                 {
-                    token: "support.php_tag", // php close tag
+                    token: "support.php_tag", // php close tagincategory
                     regex: "\\?>"
                 },
                 {
@@ -999,17 +999,17 @@ define('ace/mode/php_highlight_rules', ['require', 'exports', 'module' , 'ace/li
                     next: "htmlcomment"
                 },
                 {
-                    token: "meta.tag",
+                    token: "meta.tagincategory",
                     regex: "<style",
                     next: "css"
                 },
                 {
-                    token: "meta.tag", // opening tag
+                    token: "meta.tagincategory", // opening tagincategory
                     regex: "<\\/?[-_a-zA-Z0-9:]+",
                     next: "htmltag"
                 },
                 {
-                    token: 'meta.tag',
+                    token: 'meta.tagincategory',
                     regex: '<\!DOCTYPE.*?>'
                 },
                 {
@@ -1176,7 +1176,7 @@ define('ace/mode/php_highlight_rules', ['require', 'exports', 'module' , 'ace/li
             ],
             "htmltag": [
                 {
-                    token: "meta.tag",
+                    token: "meta.tagincategory",
                     regex: ">",
                     next: "start"
                 },
@@ -1199,12 +1199,12 @@ define('ace/mode/php_highlight_rules', ['require', 'exports', 'module' , 'ace/li
             ],
             "css": [
                 {
-                    token: "meta.tag",
+                    token: "meta.tagincategory",
                     regex: "<\/style>",
                     next: "htmltag"
                 },
                 {
-                    token: "meta.tag",
+                    token: "meta.tagincategory",
                     regex: ">"
                 },
                 {
@@ -1286,7 +1286,7 @@ define('ace/mode/doc_comment_highlight_rules', ['require', 'exports', 'module' ,
         this.$rules = {
             "start": [
                 {
-                    token: "comment.doc.tag",
+                    token: "comment.doc.tagincategory",
                     regex: "@[\\w\\d_]+" // TODO: fix email addresses
                 },
                 {

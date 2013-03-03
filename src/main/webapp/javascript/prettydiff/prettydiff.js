@@ -5441,9 +5441,9 @@ var prettydiff = function (api) {
                                     q = "";
                                 }
                                 c.push(a);
-                                c.push(" more start tag");
+                                c.push(" more start tagincategory");
                                 c.push(q);
-                                c.push(" than end tag");
+                                c.push(" than end tagincategory");
                                 c.push(q);
                                 c.push("!");
                             } else {
@@ -5451,9 +5451,9 @@ var prettydiff = function (api) {
                                     q = "";
                                 }
                                 c.push(a * -1);
-                                c.push(" more end tag");
+                                c.push(" more end tagincategory");
                                 c.push(q);
-                                c.push(" than start tag");
+                                c.push(" than start tagincategory");
                                 c.push(q);
                                 c.push("!");
                             }

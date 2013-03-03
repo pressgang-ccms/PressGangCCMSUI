@@ -882,7 +882,7 @@ define('ace/mode/php_highlight_rules', ['require', 'exports', 'module' , 'ace/li
                 'sybase_deadlock_retry_count|sybase_fetch_array|sybase_fetch_assoc|sybase_fetch_field|sybase_fetch_object|sybase_fetch_row|' +
                 'sybase_field_seek|sybase_free_result|sybase_get_last_message|sybase_min_client_severity|sybase_min_error_severity|' +
                 'sybase_min_message_severity|sybase_min_server_severity|sybase_num_fields|sybase_num_rows|sybase_pconnect|sybase_query|sybase_result|' +
-                'sybase_select_db|sybase_set_message_handler|sybase_unbuffered_query|symlink|sys_get_temp_dir|sys_getloadavg|syslog|system|tag|tan|tanh|' +
+                'sybase_select_db|sybase_set_message_handler|sybase_unbuffered_query|symlink|sys_get_temp_dir|sys_getloadavg|syslog|system|tagincategory|tan|tanh|' +
                 'tcpwrap_check|tempnam|textdomain|tidy|tidy_access_count|tidy_config_count|tidy_diagnose|tidy_error_count|tidy_get_error_buffer|' +
                 'tidy_get_output|tidy_load_config|tidy_reset_config|tidy_save_config|tidy_set_encoding|tidy_setopt|tidy_warning_count|tidynode|time|' +
                 'time_nanosleep|time_sleep_until|timezone_abbreviations_list|timezone_identifiers_list|timezone_location_get|timezone_name_from_abbr|' +
@@ -1159,7 +1159,7 @@ define('ace/mode/php_highlight_rules', ['require', 'exports', 'module' , 'ace/li
 
         for (var i in this.$rules) {
             this.$rules[i].unshift({
-                token: "support.php_tag", // php open tag
+                token: "support.php_tag", // php open tagincategory
                 regex: "<\\?(?:php|\\=)?",
                 next: "php-start"
             });
@@ -1168,7 +1168,7 @@ define('ace/mode/php_highlight_rules', ['require', 'exports', 'module' , 'ace/li
         this.embedRules(PhpLangHighlightRules, "php-");
 
         this.$rules["php-start"].unshift({
-            token: "support.php_tag", // php close tag
+            token: "support.php_tag", // php close tagincategory
             regex: "\\?>",
             next: "start"
         });
@@ -1190,7 +1190,7 @@ define('ace/mode/doc_comment_highlight_rules', ['require', 'exports', 'module' ,
         this.$rules = {
             "start": [
                 {
-                    token: "comment.doc.tag",
+                    token: "comment.doc.tagincategory",
                     regex: "@[\\w\\d_]+" // TODO: fix email addresses
                 },
                 {
@@ -1295,19 +1295,19 @@ define('ace/mode/html_highlight_rules', ['require', 'exports', 'module' , 'ace/l
                     regex: "<\\!.*?>"
                 },
                 {
-                    token: "meta.tag",
+                    token: "meta.tagincategory",
                     regex: "<(?=script\\b)",
                     next: "script"
                 },
                 {
-                    token: "meta.tag",
+                    token: "meta.tagincategory",
                     regex: "<(?=style\\b)",
                     next: "style"
                 },
                 {
-                    token: "meta.tag", // opening tag
+                    token: "meta.tagincategory", // opening tagincategory
                     regex: "<\\/?",
-                    next: "tag"
+                    next: "tagincategory"
                 },
                 {
                     token: "text",
@@ -1355,7 +1355,7 @@ define('ace/mode/html_highlight_rules', ['require', 'exports', 'module' , 'ace/l
             ]
         };
 
-        xmlUtil.tag(this.$rules, "tag", "start", tagMap);
+        xmlUtil.tag(this.$rules, "tagincategory", "start", tagMap);
         xmlUtil.tag(this.$rules, "style", "css-start", tagMap);
         xmlUtil.tag(this.$rules, "script", "js-start", tagMap);
 
@@ -1363,20 +1363,20 @@ define('ace/mode/html_highlight_rules', ['require', 'exports', 'module' , 'ace/l
             {
                 token: "comment",
                 regex: "\\/\\/.*(?=<\\/script>)",
-                next: "tag"
+                next: "tagincategory"
             },
             {
-                token: "meta.tag",
+                token: "meta.tagincategory",
                 regex: "<\\/(?=script)",
-                next: "tag"
+                next: "tagincategory"
             }
         ]);
 
         this.embedRules(CssHighlightRules, "css-", [
             {
-                token: "meta.tag",
+                token: "meta.tagincategory",
                 regex: "<\\/(?=style)",
-                next: "tag"
+                next: "tagincategory"
             }
         ]);
     };
@@ -2011,11 +2011,11 @@ define('ace/mode/xml_util', ['require', 'exports', 'module' ], function (require
             },
             {
 
-                token: !tagMap ? "meta.tag.tag-name" : function (value) {
+                token: !tagMap ? "meta.tagincategory.tagincategory-name" : function (value) {
                     if (tagMap[value])
-                        return "meta.tag.tag-name." + tagMap[value];
+                        return "meta.tagincategory.tagincategory-name." + tagMap[value];
                     else
-                        return "meta.tag.tag-name";
+                        return "meta.tagincategory.tagincategory-name";
                 },
                 merge: true,
                 regex: "[-_a-zA-Z0-9:]+",
@@ -2033,7 +2033,7 @@ define('ace/mode/xml_util', ['require', 'exports', 'module' ], function (require
 
         states[name + "_embed_attribute_list"] = [
             {
-                token: "meta.tag",
+                token: "meta.tagincategory",
                 merge: true,
                 regex: "\/?>",
                 next: nextState
