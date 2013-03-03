@@ -59,7 +59,7 @@ public final class RESTPropertyTagCollectionItemParentSort implements Comparator
         final boolean arg0IsChild = ComponentPropertyCategoryV1.isInCategory(parent, arg0.getItem().getId());
         final boolean arg1IsChild = ComponentPropertyCategoryV1.isInCategory(parent, arg1.getItem().getId());
 
-        if (arg0IsChild && arg1IsChild) {
+        if (arg0IsChild == arg1IsChild) {
             return new RESTPropertyTagCollectionItemIDSort(ascending).compare(arg0, arg1);
         }
 

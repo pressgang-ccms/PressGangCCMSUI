@@ -54,7 +54,7 @@ public final class RESTProjectCollectionItemParentSort implements Comparator<RES
         final boolean arg0IsChild = ComponentTagV1.containedInProject(parent, arg0.getItem().getId());
         final boolean arg1IsChild = ComponentTagV1.containedInProject(parent, arg1.getItem().getId());
 
-        if (arg0IsChild && arg1IsChild) {
+        if (arg0IsChild == arg1IsChild) {
             return new RESTProjectCollectionItemIDSort(ascending).compare(arg0, arg1);
         }
 

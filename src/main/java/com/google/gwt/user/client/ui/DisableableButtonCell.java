@@ -22,23 +22,34 @@ public final class DisableableButtonCell extends ButtonCell {
     private static final String INPUT_DISABLED = "<button type=\"button\" tabindex=\"-1\" disabled=\"disabled\">";
 
     /**
-     * The close tagincategory
+     * The close tag
      */
     private static final String INPUT_CLOSE = "</button>";
 
     /**
-     * whether or not the button is enabled
+     * whether or not the button is enabled.
      */
     private boolean enabled = true;
 
+    /**
+     *
+     * @return whether or not the button is enabled
+     */
     public boolean isEnabled() {
         return enabled;
     }
 
+    /**
+     *
+     * @param enabled whether or not the button is enabled
+     */
     public void setEnabled(final boolean enabled) {
         this.enabled = enabled;
     }
 
+    /**
+     * Default constructor. Does nothing.
+     */
     public DisableableButtonCell() {
 
     }

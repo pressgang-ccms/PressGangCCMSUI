@@ -54,7 +54,7 @@ public class RESTTagCollectionItemParentSort implements Comparator<RESTTagCollec
         final boolean arg0IsChild = ComponentCategoryV1.containsTag(parent, arg0.getItem().getId());
         final boolean arg1IsChild = ComponentCategoryV1.containsTag(parent, arg1.getItem().getId());
 
-        if (arg0IsChild && arg1IsChild) {
+        if (arg0IsChild == arg1IsChild) {
             return new RESTTagCollectionItemIDSort(ascending).compare(arg0, arg1);
         }
 

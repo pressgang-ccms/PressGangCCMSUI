@@ -56,7 +56,7 @@ public final class RESTCategoryCollectionItemParentSort implements Comparator<RE
         final boolean arg0IsChild = ComponentTagV1.containedInCategory(parent, arg0.getItem().getId());
         final boolean arg1IsChild = ComponentTagV1.containedInCategory(parent, arg1.getItem().getId());
 
-        if (arg0IsChild && arg1IsChild) {
+        if (arg0IsChild == arg1IsChild) {
             return new RESTCategoryCollectionItemIDSort(ascending).compare(arg0, arg1);
         }
 

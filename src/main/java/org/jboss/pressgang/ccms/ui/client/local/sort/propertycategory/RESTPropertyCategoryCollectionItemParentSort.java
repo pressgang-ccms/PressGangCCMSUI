@@ -55,7 +55,7 @@ public final class RESTPropertyCategoryCollectionItemParentSort implements Compa
         final boolean arg0IsChild = ComponentPropertyTagV1.isInCategory(parent, arg0.getItem().getId());
         final boolean arg1IsChild = ComponentPropertyTagV1.isInCategory(parent, arg1.getItem().getId());
 
-        if (arg0IsChild && arg1IsChild) {
+        if (arg0IsChild == arg1IsChild) {
             return new RESTPropertyCategoryCollectionItemIDSort(ascending).compare(arg0, arg1);
         }
 
