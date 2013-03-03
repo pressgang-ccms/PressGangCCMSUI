@@ -145,13 +145,13 @@ public class TagCategoriesView
 
     @NotNull
     @Override
-    public TextColumn<RESTProjectCollectionItemV1> getIdColumn() {
+    public TextColumn<RESTCategoryCollectionItemV1> getIdColumn() {
         return idColumn;
     }
 
     @NotNull
     @Override
-    public TextColumn<RESTProjectCollectionItemV1> getNameColumn() {
+    public TextColumn<RESTCategoryCollectionItemV1> getNameColumn() {
         return nameColumn;
     }
 

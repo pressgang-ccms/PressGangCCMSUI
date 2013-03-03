@@ -65,9 +65,9 @@ public class TagCategoriesPresenter
             RESTCategoryV1,
             RESTCategoryCollectionItemV1,
             RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> {
-        TextColumn<RESTProjectCollectionItemV1> getIdColumn();
+        TextColumn<RESTCategoryCollectionItemV1> getIdColumn();
 
-        TextColumn<RESTProjectCollectionItemV1> getNameColumn();
+        TextColumn<RESTCategoryCollectionItemV1> getNameColumn();
     }
 
     /**
