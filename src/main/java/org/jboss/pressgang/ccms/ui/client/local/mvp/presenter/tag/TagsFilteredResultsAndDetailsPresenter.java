@@ -449,7 +449,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                         display, new BaseRestCallback.SuccessAction<RESTTagV1, BaseTemplateViewInterface>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTTagV1 retValue, final BaseTemplateViewInterface display) {
-                        checkArgument(retValue.getProperties() != null, "The initially retrieved entity should have an expanded projects collection");
+                        checkArgument(retValue.getProjects() != null, "The initially retrieved entity should have an expanded projects collection");
                         checkArgument(retValue.getCategories() != null, "The initially retrieved entity should have an expanded categories collection");
                         displayCallback.displayNewEntity(retValue);
                     }
