@@ -22,9 +22,15 @@ public class StringConstantPresenter extends BaseTemplatePresenter {
 
     public static final String HISTORY_TOKEN = "StringConstantView";
 
+    /**
+     * The view that corresponds to this presenter.
+     */
     @Inject
     private Display display;
 
+    /**
+     * @return The view that corresponds to this presenter.
+     */
     @NotNull
     public Display getDisplay() {
         return display;
@@ -50,6 +56,9 @@ public class StringConstantPresenter extends BaseTemplatePresenter {
     public interface StringConstantPresenterDriver extends SimpleBeanEditorDriver<RESTStringConstantV1, RESTStringConstantV1DetailsEditor> {
     }
 
+    /**
+     * The definition of the view that corresponds to this presenter.
+     */
     public interface Display extends BasePopulatedEditorViewInterface<RESTStringConstantV1, RESTStringConstantV1, RESTStringConstantV1DetailsEditor> {
 
     }

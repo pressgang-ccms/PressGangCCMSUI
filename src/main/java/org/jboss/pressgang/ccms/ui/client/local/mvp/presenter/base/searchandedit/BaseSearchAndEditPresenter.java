@@ -396,10 +396,9 @@ abstract public class BaseSearchAndEditPresenter<
             }
 
             /* update the new view */
-            if (displayedView != null) {
-                LOGGER.log(Level.INFO, "\tSetting new view to shown");
-                displayedView.setViewShown(true);
-            }
+            LOGGER.log(Level.INFO, "\tSetting new view to shown");
+            displayedView.setViewShown(true);
+
 
             /* update the display widgets if we have changed displays */
             if (lastDisplayedView != displayedView) {
@@ -438,6 +437,6 @@ abstract public class BaseSearchAndEditPresenter<
      *
      * @param displayedView The newly displayed screen.
      */
-    protected void beforeSwitchView(@Nullable final BaseTemplateViewInterface displayedView) {
+    protected void beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
     }
 }

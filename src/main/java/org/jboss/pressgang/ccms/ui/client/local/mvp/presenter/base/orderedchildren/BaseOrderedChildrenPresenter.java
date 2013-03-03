@@ -33,7 +33,7 @@ abstract public class BaseOrderedChildrenPresenter<
     @Override
     public final void setSortOrderOfChildren(@NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {
 
-        checkState(getExistingProviderData().getItems() != null, "The getExistingProviderData() collection needs to have valid items");
+        checkState(getExistingProviderData().isValid(), "The getExistingProviderData() collection needs to be valid");
 
         final int size = getExistingProviderData().getItems().size();
 
@@ -47,7 +47,7 @@ abstract public class BaseOrderedChildrenPresenter<
     public final boolean moveTagsUpAndDown(@NotNull final T editingParent, @NotNull final W parent, @NotNull final F object, final boolean down,
                                            @NotNull final SetNewChildSortCallback<D, E, F> sortCallback) {
 
-        checkState(getExistingProviderData().getItems() != null, "The getExistingProviderData() collection needs to have valid items");
+        checkState(getExistingProviderData().isValid(), "The getExistingProviderData() collection needs to be valid");
 
         final int size = getExistingProviderData().getItems().size();
 

@@ -64,14 +64,22 @@ implements BaseTemplatePresenterInterface {
     @Inject
     private Display display;
 
+    /**
+     * The presenter used to display the filtered results.
+     */
     @Inject private StringConstantFilteredResultsPresenter stringConstantFilteredResultsPresenter;
+    /**
+     * The presenter used to display the string constant's details.
+     */
     @Inject private StringConstantPresenter stringConstantPresenter;
 
     /**
      * The category query string extracted from the history token
      */
     private String queryString;
-
+    /**
+     * The global event bus.
+     */
     @Inject
     private HandlerManager eventBus;
 
@@ -80,11 +88,11 @@ implements BaseTemplatePresenterInterface {
     protected void loadAdditionalDisplayedItemData() {
         /*
             Do Nothing.
-         */
+        */
     }
 
     @Override
-    protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
+    protected final void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
         checkState(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
         checkState(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
@@ -92,7 +100,7 @@ implements BaseTemplatePresenterInterface {
     }
 
     @Override
-    protected void bindActionButtons() {
+    protected final void bindActionButtons() {
         /**
          * A click handler used to save any changes to the project
          */
@@ -105,7 +113,7 @@ implements BaseTemplatePresenterInterface {
                 checkState(stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
                 checkState(stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
 
-                /* Was the tagincategory we just saved a new tagincategory? */
+                /* Was the entity we just saved a new entity? */
                 final boolean wasNewEntity = stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem();
 
                 /* Sync the UI to the underlying object */
@@ -157,7 +165,7 @@ implements BaseTemplatePresenterInterface {
     }
 
     @Override
-    protected void bindFilteredResultsButtons() {
+    protected final void bindFilteredResultsButtons() {
         stringConstantFilteredResultsPresenter.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
@@ -172,12 +180,12 @@ implements BaseTemplatePresenterInterface {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
-                /* The 'selected' tagincategory will be blank. This gives us something to compare to when checking for unsaved changes */
+                /* The 'selected' entity will be blank. This gives us something to compare to when checking for unsaved changes */
                 @NotNull final RESTStringConstantV1 selectedEntity = new RESTStringConstantV1();
                 selectedEntity.setId(Constants.NULL_ID);
                 @NotNull final RESTStringConstantCollectionItemV1 selectedTagWrapper = new RESTStringConstantCollectionItemV1(selectedEntity);
 
-                /* The displayed tagincategory will also be blank. This is the object that our data will be saved into */
+                /* The displayed entity will also be blank. This is the object that our data will be saved into */
                 @NotNull final RESTStringConstantV1 displayedEntity = new RESTStringConstantV1();
                 displayedEntity.setId(Constants.NULL_ID);
                 @NotNull final RESTStringConstantCollectionItemV1 displayedTagWrapper = new RESTStringConstantCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
@@ -206,7 +214,6 @@ implements BaseTemplatePresenterInterface {
             }
         };
 
-
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
         stringConstantFilteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.STRING_CONSTANT_HELP_TOPIC, pageId, queryString);
@@ -231,8 +238,13 @@ implements BaseTemplatePresenterInterface {
 
     @Override
     public boolean hasUnsavedChanges() {
-        /* sync the UI with the underlying tagincategory */
+        /* sync the UI with the underlying entity */
         if (stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
+
+            checkState(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+            checkState(stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
+            checkState(stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
+
             stringConstantPresenter.getDisplay().getDriver().flush();
 
             final RESTStringConstantV1 selectedItem = stringConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem();
@@ -244,10 +256,17 @@ implements BaseTemplatePresenterInterface {
         return false;
     }
 
+    /**
+     * The definition of the view that corresponds to this presenter.
+     */
     public interface Display extends BaseSearchAndEditViewInterface<
                 RESTStringConstantV1,
                 RESTStringConstantCollectionV1,
                 RESTStringConstantCollectionItemV1> {
+        /**
+         *
+         * @return The Save button
+         */
         PushButton getSave();
     }
 }

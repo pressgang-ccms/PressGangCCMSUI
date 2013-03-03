@@ -209,7 +209,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 getSearchResultsComponent().getDisplay(), getSearchResultsComponent(), getDisplay(), getDisplay(), getNewEntityCallback);
 
         this.topicRevisionsComponent.getDisplay().setProvider(generateTopicRevisionsListProvider());
-        this.getTopicTagsComponent().bindNewTagListBoxes(new AddTagClickhandler());
+        this.getTopicTagsPresenter().bindNewTagListBoxes(new AddTagClickhandler());
 
         bindViewTopicRevisionButton();
 
@@ -361,8 +361,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.postAfterSwitchView()");
 
             /* Set the projects combo box as the focused element */
-            if (displayedView == this.getTopicTagsComponent().getDisplay() && getTopicTagsComponent().getDisplay().getProjectsList().isAttached()) {
-                getTopicTagsComponent().getDisplay().getProjectsList().getElement().focus();
+            if (displayedView == this.getTopicTagsPresenter().getDisplay() && getTopicTagsPresenter().getDisplay().getProjectsList().isAttached()) {
+                getTopicTagsPresenter().getDisplay().getProjectsList().getElement().focus();
             }
 
                 /* While editing the XML, we need to setup a refresh of the rendered view */
@@ -700,7 +700,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             /*
                 Bind logic to the tagincategory buttons
              */
-            if (viewIsInFilter(filter, getTopicTagsComponent().getDisplay())) {
+            if (viewIsInFilter(filter, getTopicTagsPresenter().getDisplay())) {
                 LOGGER.log(Level.INFO, "\tInitializing topic tags view");
                 bindTagEditingButtons();
             }
@@ -822,7 +822,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             /* These are read only views */
-            if (lastDisplayedView == getTopicXMLErrorsPresenter().getDisplay() || lastDisplayedView == getTopicTagsComponent().getDisplay()) {
+            if (lastDisplayedView == getTopicXMLErrorsPresenter().getDisplay() || lastDisplayedView == getTopicTagsPresenter().getDisplay()) {
                 return;
             }
 
@@ -861,15 +861,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindTagEditingButtons()");
 
             /* This will be null if the tags have not been downloaded */
-            if (getTopicTagsComponent().getDisplay().getEditor() == null) {
+            if (getTopicTagsPresenter().getDisplay().getEditor() == null) {
                 return;
             }
 
-            if (getTopicTagsComponent().getDisplay().getEditor().projects == null) {
+            if (getTopicTagsPresenter().getDisplay().getEditor().projects == null) {
                 return;
             }
 
-            for (@NotNull final TopicTagViewProjectEditor topicTagViewProjectEditor : getTopicTagsComponent().getDisplay().getEditor().projects.getEditors()) {
+            for (@NotNull final TopicTagViewProjectEditor topicTagViewProjectEditor : getTopicTagsPresenter().getDisplay().getEditor().projects.getEditors()) {
 
                 if (topicTagViewProjectEditor.categories == null || topicTagViewProjectEditor.categories.getEditors() == null) {
                     LOGGER.log(Level.INFO, "categories is null");
@@ -1607,7 +1607,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
             checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTags() != null, "The displayed collection item to reference a valid entity and have a valid tags collection.");
 
-            final RESTTagV1 selectedTag = getTopicTagsComponent().getDisplay().getMyTags().getValue().getTag().getItem();
+            final RESTTagV1 selectedTag = getTopicTagsPresenter().getDisplay().getMyTags().getValue().getTag().getItem();
 
             /* Need to deal with re-adding removed tags */
             @org.jetbrains.annotations.Nullable RESTTagCollectionItemV1 deletedTag = null;
@@ -1713,7 +1713,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             /* Redisplay the view */
-            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicTagsComponent().getDisplay()}));
+            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicTagsPresenter().getDisplay()}));
         }
     }
 
@@ -1747,7 +1747,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
             }
 
-            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicTagsComponent().getDisplay()}));
+            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicTagsPresenter().getDisplay()}));
         }
     }
 

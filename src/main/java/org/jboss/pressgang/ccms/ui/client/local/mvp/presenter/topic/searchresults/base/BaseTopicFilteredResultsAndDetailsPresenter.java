@@ -72,9 +72,16 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      */
     private static final Logger LOGGER = Logger.getLogger(BaseTopicFilteredResultsAndDetailsPresenter.class.getName());
 
+    /**
+     * The global event bus.
+     */
     @Inject
     private HandlerManager eventBus;
 
+    /**
+     * The query string, which is the full history token minus the HISTORY_TOKEN. Or it is null
+     * if we are creating only new topics.
+     */
     @Nullable
     private String queryString;
 
@@ -85,17 +92,34 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      */
     @Inject
     private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
-
+    /**
+     * The presenter used to display the XML errors.
+     */
     @Inject
     private TopicXMLErrorsPresenter topicXMLErrorsPresenter;
+    /**
+     * The presenter used to display the topic tags.
+     */
     @Inject
-    private TopicTagsPresenter topicTagsComponent;
+    private TopicTagsPresenter topicTagsPresenter;
+    /**
+     * The presenter used to display the topic bugs.
+     */
     @Inject
     private TopicBIRTBugsPresenter topicBugsPresenter;
+    /**
+     * The presenter used to display the topic's rendered view..
+     */
     @Inject
     private TopicRenderedPresenter topicRenderedPresenter;
+    /**
+     * The presenter used to display the topic property tags.
+     */
     @Inject
     private TopicPropertyTagsPresenter topicPropertyTagPresenter;
+    /**
+     * The presenter used to display the topic's source urls.
+     */
     @Inject
     private TopicSourceURLsPresenter topicSourceURLsPresenter;
     /**
@@ -104,6 +128,10 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     @NotNull
     private SplitType split = SplitType.NONE;
 
+    /**
+     *
+     * @return The view that corresponds to this parent presenter.
+     */
     protected abstract Display getDisplay();
 
     @NotNull
@@ -115,8 +143,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     protected abstract BaseFilteredResultsPresenter<V> getSearchResultsComponent();
 
     @NotNull
-    protected final TopicTagsPresenter getTopicTagsComponent() {
-        return topicTagsComponent;
+    protected final TopicTagsPresenter getTopicTagsPresenter() {
+        return topicTagsPresenter;
     }
 
     @NotNull
@@ -170,7 +198,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @Nullable final String queryString) {
         /* Initialize the other presenters we have pulled in */
         getSearchResultsComponent().bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
-        topicTagsComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        topicTagsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicPropertyTagPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicSourceURLsPresenter.bindChildrenExtended(ServiceConstants.TOPIC_SOURCE_URLS_HELP_TOPIC, pageId);
 
@@ -183,6 +211,13 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         postBindSearchAndEditExtended(topicId, pageId, queryString);
     }
 
+    /**
+     * Called by bindSearchAndEditExtended(). Overriding classes should perform any additional initialization in this
+     * method.
+     * @param topicId The help topic for this view
+     * @param pageId The id for this view
+     * @param queryString The query for this view
+     */
     abstract protected void postBindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @Nullable final String queryString);
 
     /**
@@ -392,7 +427,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
                 /* A callback to respond to a request for a topic with the tags expanded */
                 @NotNull final RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
-                        topicTagsComponent.getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
+                        topicTagsPresenter.getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
                         try {
@@ -402,7 +437,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                             getDisplayedTopic().setTags(retValue.getTags());
 
                             /* update the view */
-                            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{topicTagsComponent.getDisplay()}));
+                            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{topicTagsPresenter.getDisplay()}));
                         } finally {
                             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs() topicWithTagsCallback.doSuccessAction()");
                         }
@@ -443,7 +478,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 getDisplay().replaceTopActionButton(getDisplay().getExtendedProperties(), getDisplay().getExtendedPropertiesDown());
             } else if (displayedView == this.topicRenderedPresenter.getDisplay()) {
                 getDisplay().replaceTopActionButton(getDisplay().getRendered(), getDisplay().getRenderedDown());
-            } else if (displayedView == this.topicTagsComponent.getDisplay()) {
+            } else if (displayedView == this.topicTagsPresenter.getDisplay()) {
                 getDisplay().replaceTopActionButton(getDisplay().getTopicTags(), getDisplay().getTopicTagsDown());
             } else if (displayedView == this.topicXMLErrorsPresenter.getDisplay()) {
                 getDisplay().replaceTopActionButton(getDisplay().getXmlErrors(), getDisplay().getXmlErrorsDown());
@@ -571,7 +606,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
-                        switchView(topicTagsComponent.getDisplay());
+                        switchView(topicTagsPresenter.getDisplay());
                     }
                 }
             };
@@ -726,7 +761,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             @NotNull final List<BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>>>();
             displayableViews.add(topicXMLComponent.getDisplay());
             displayableViews.add(topicXMLErrorsPresenter.getDisplay());
-            displayableViews.add(topicTagsComponent.getDisplay());
+            displayableViews.add(topicTagsPresenter.getDisplay());
             displayableViews.add(topicBugsPresenter.getDisplay());
             displayableViews.add(topicPropertyTagPresenter.getDisplay());
             displayableViews.add(topicSourceURLsPresenter.getDisplay());

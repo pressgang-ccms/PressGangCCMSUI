@@ -25,19 +25,28 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
-    The presenter used to display the list of string constants
+    The presenter used to display the list of string constants.
  */
 @Dependent
 public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsPresenter<RESTStringConstantCollectionItemV1> {
 
+    /**
+     * The history token.
+     */
     public static final String HISTORY_TOKEN = "StringConstantFilteredResultsView";
 
+    /**
+     * The view that corresponds to this presenter.
+     */
     @Inject
     private Display display;
+    /**
+     * The query string, which is the full history token minus the HISTORY_TOKEN.
+     */
     private String queryString;
 
     @Override
-    protected void displayQueryElements(@NotNull final String queryString) {
+    protected final void displayQueryElements(@NotNull final String queryString) {
         final String[] queryStringElements = queryString.replace(Constants.QUERY_PATH_SEGMENT_PREFIX, "").split(";");
         for (@NotNull final String queryStringElement : queryStringElements) {
             final String[] queryElements = queryStringElement.split("=");
@@ -56,12 +65,12 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
 
     @NotNull
     @Override
-    protected EnhancedAsyncDataProvider<RESTStringConstantCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
-        @NotNull final EnhancedAsyncDataProvider<RESTStringConstantCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTStringConstantCollectionItemV1>() {
+    protected final EnhancedAsyncDataProvider<RESTStringConstantCollectionItemV1> generateListProvider(@NotNull final String queryString, @NotNull final BaseTemplateViewInterface waitDisplay) {
+        return new EnhancedAsyncDataProvider<RESTStringConstantCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTStringConstantCollectionItemV1> list) {
 
-                @NotNull final BaseRestCallback<RESTStringConstantCollectionV1, Display> callback =new BaseRestCallback<RESTStringConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTStringConstantCollectionV1, Display>() {
+                @NotNull final BaseRestCallback<RESTStringConstantCollectionV1, Display> callback = new BaseRestCallback<RESTStringConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTStringConstantCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTStringConstantCollectionV1 retValue, @NotNull final Display display) {
                         checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
@@ -81,7 +90,6 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
                 RESTCalls.getStringConstantsFromQuery(callback, queryString, getProviderData().getStartRow(), end);
             }
         };
-        return provider;
     }
 
     @NotNull
@@ -89,19 +97,21 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
     public String getQuery() {
         @NotNull final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.STRING_CONSTANT_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getIdFilter().getText()) : display.getIdFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.STRING_CONSTANT_IDS_FILTER_VAR).append("=").append(Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getIdFilter().getText()) : display.getIdFilter().getText());
         }
         if (!display.getValueFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.STRING_CONSTANT_VALUE_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getValueFilter().getText()) : display.getValueFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.STRING_CONSTANT_VALUE_FILTER_VAR).append("=").append(Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getValueFilter().getText()) : display.getValueFilter().getText());
         }
         if (!display.getNameFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.STRING_CONSTANT_NAME_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getNameFilter().getText()) : display.getNameFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.STRING_CONSTANT_NAME_FILTER_VAR).append("=").append(Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getNameFilter().getText()) : display.getNameFilter().getText());
         }
 
-        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX
-                : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
+        return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();
     }
 
+    /**
+     * @return The view that corresponds to this presenter.
+     */
     @Override
     @NotNull
     public Display getDisplay() {
@@ -125,12 +135,27 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
         bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
+    /**
+     * The definition of the view that corresponds to this presenter.
+     */
     public interface Display extends BaseFilteredResultsViewInterface<RESTStringConstantCollectionItemV1> {
 
+        /**
+         *
+         * @return The text box used to display the filter ids
+         */
         TextBox getIdFilter();
 
+        /**
+         *
+         * @return The text box used to display the filter name
+         */
         TextBox getNameFilter();
 
+        /**
+         *
+         * @return The text box used to display the filter value
+         */
         TextBox getValueFilter();
     }
 }

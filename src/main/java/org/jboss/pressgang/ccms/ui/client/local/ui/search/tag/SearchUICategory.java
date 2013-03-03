@@ -168,7 +168,10 @@ public final class SearchUICategory extends SearchUIBase {
                 final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory =
                         Iterables.tryFind(tag.getItem().getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
                     @Override
-                    public boolean apply(@NotNull final RESTCategoryInTagCollectionItemV1 arg) {
+                    public boolean apply(@Nullable final RESTCategoryInTagCollectionItemV1 arg) {
+                        if (arg == null) {
+                            return false;
+                        }
                         return arg.getItem().getId().equals(category.getItem().getId());
                     }
                 });
@@ -176,7 +179,10 @@ public final class SearchUICategory extends SearchUIBase {
                 final Optional<RESTProjectCollectionItemV1> matchingProject = Iterables.tryFind(tag.getItem().getProjects()
                         .getItems(), new Predicate<RESTProjectCollectionItemV1>() {
                     @Override
-                    public boolean apply(@NotNull final RESTProjectCollectionItemV1 arg) {
+                    public boolean apply(@Nullable final RESTProjectCollectionItemV1 arg) {
+                        if (arg == null) {
+                            return false;
+                        }
                         return arg.getItem().getId().equals(project.getItem().getId());
                     }
                 });
@@ -238,7 +244,10 @@ public final class SearchUICategory extends SearchUIBase {
                     final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory = Iterables.tryFind(tag.getItem()
                             .getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
                         @Override
-                        public boolean apply(@NotNull final RESTCategoryInTagCollectionItemV1 arg) {
+                        public boolean apply(@Nullable final RESTCategoryInTagCollectionItemV1 arg) {
+                            if (arg == null) {
+                                return false;
+                            }
                             return arg.getItem().getId().equals(category.getItem().getId());
                         }
                     });

@@ -92,7 +92,8 @@ abstract public class BaseFilteredResultsPresenter<V extends RESTBaseCollectionI
         if (this.providerData.getSelectedItem() != null && this.providerData.getItems() != null) {
             for (@NotNull final V filteredResultEntity : this.providerData.getItems()) {
 
-                checkState(this.providerData.getSelectedItem().getItem() != null, "The entity collection item needs to have a valid entity");
+                checkState(this.providerData.getSelectedItem() != null, "There has to be a selected item");
+                checkState(this.providerData.getSelectedItem().getItem() != null, "The selected item needs to have reference a valid entity");
                 checkState(this.providerData.getSelectedItem().getItem().getId() != null, "The entity collection item needs to have a valid entity with a valid id");
 
                 if (filteredResultEntity.getItem().getId().equals(this.providerData.getSelectedItem().getItem().getId())) {

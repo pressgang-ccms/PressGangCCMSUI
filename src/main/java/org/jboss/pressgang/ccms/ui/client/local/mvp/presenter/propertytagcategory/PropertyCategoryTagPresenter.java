@@ -37,6 +37,9 @@ import java.util.Collections;
 import static com.google.common.base.Preconditions.checkArgument;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
+/**
+    The presenter used to display the property category tags.
+ */
 @Dependent
 public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
         RESTPropertyCategoryV1,                                                                                                                         // The main REST types
@@ -47,6 +50,9 @@ public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
     public static final String HISTORY_TOKEN = "PropertyCategoryView";
     @Nullable
     private Integer entityId;
+    /**
+     * The view that corresponds to this presenter.
+     */
     @Inject
     private Display display;
 
@@ -147,13 +153,24 @@ public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
         return provider;
     }
 
+    /**
+     * The definition of the view that corresponds to this presenter.
+     */
     public interface Display extends BaseChildrenViewInterface<
             RESTPropertyCategoryV1,                                                                                                                         // The main REST types
             RESTPropertyTagCollectionItemV1,                                                                                                                // The possible children types
             RESTPropertyTagInPropertyCategoryV1, RESTPropertyTagInPropertyCategoryCollectionV1, RESTPropertyTagInPropertyCategoryCollectionItemV1>          // The existing children types
     {
+        /**
+         *
+         * @return The column that displays the id field.
+         */
         TextColumn<RESTPropertyTagCollectionItemV1> getTagsIdColumn();
 
+        /**
+         *
+         * @return The column that displays the name field.
+         */
         TextColumn<RESTPropertyTagCollectionItemV1> getTagsNameColumn();
     }
 }

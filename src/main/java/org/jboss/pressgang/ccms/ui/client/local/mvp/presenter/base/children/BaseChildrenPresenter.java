@@ -25,11 +25,11 @@ public abstract class BaseChildrenPresenter<
 
     private boolean readOnly;
 
-    private final ProviderUpdateData<C> providerData = new ProviderUpdateData<C>();
+    @NotNull private final ProviderUpdateData<C> providerData = new ProviderUpdateData<C>();
     /**
      * The display that shows the children of a given entity.
      */
-    private BaseChildrenViewInterface display;
+    @Nullable private BaseChildrenViewInterface display;
 
     @Nullable
     private T parent;
@@ -83,6 +83,8 @@ public abstract class BaseChildrenPresenter<
     public final void bindPossibleChildrenListButtonClicks(@NotNull final GetExistingCollectionCallback<D, E, F> getExistingCollectionCallback,
                                                            @NotNull final AddPossibleChildCallback<C> addChildCallback,
                                                            @NotNull final UpdateAfterChildModifiedCallback updateAfterChildModified) {
+        checkState(display != null, "The display variable should have been set.");
+
         this.display.getPossibleChildrenButtonColumn().setFieldUpdater(new FieldUpdater<C, String>() {
             @Override
             public void update(final int index, @NotNull final C object, @NotNull final String value) {
