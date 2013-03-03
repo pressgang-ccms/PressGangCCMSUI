@@ -1,7 +1,7 @@
-package org.jboss.pressgang.ccms.ui.client.local.sort.project;
+package org.jboss.pressgang.ccms.ui.client.local.sort.propertytag;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
@@ -9,19 +9,19 @@ import java.util.Comparator;
 /**
  * Sorts RESTTagCollectionItemV1 objects based on their name.
  */
-public class RESTProjectCollectionItemNameSort implements Comparator<RESTProjectCollectionItemV1> {
+public class RESTPropertyTagCollectionItemNameSort implements Comparator<RESTPropertyTagCollectionItemV1> {
     final boolean ascending;
 
     /**
      *
      * @param ascending true if the items should be sorted in ascending order, false otherwise
      */
-    public RESTProjectCollectionItemNameSort(final boolean ascending) {
+    public RESTPropertyTagCollectionItemNameSort(final boolean ascending) {
         this.ascending = ascending;
     }
 
     @Override
-    public int compare(@Nullable final RESTProjectCollectionItemV1 arg0, @Nullable final RESTProjectCollectionItemV1 arg1) {
+    public int compare(@Nullable final RESTPropertyTagCollectionItemV1 arg0, @Nullable final RESTPropertyTagCollectionItemV1 arg1) {
         final int ascendingMultiplier = ascending ? 1 : -1;
 
         /*
@@ -40,7 +40,7 @@ public class RESTProjectCollectionItemNameSort implements Comparator<RESTProject
         }
 
         if (arg1 == null) {
-            return 1 * ascendingMultiplier ;
+            return 1 * ascendingMultiplier;
         }
 
         /*
@@ -61,7 +61,7 @@ public class RESTProjectCollectionItemNameSort implements Comparator<RESTProject
         final int nameSort = arg0.getItem().getName().compareTo(arg1.getItem().getName()) * ascendingMultiplier;
 
         if (nameSort == 0) {
-            return new RESTProjectCollectionItemIDSort(ascending).compare(arg0, arg1);
+            return new RESTPropertyTagCollectionItemIDSort(ascending).compare(arg0, arg1);
         }
 
         return nameSort;

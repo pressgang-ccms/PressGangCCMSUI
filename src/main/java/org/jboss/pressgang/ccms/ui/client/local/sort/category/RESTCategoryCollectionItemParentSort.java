@@ -14,10 +14,14 @@ import java.util.Comparator;
 /**
  * Sorts RESTTagCollectionItemV1 objects based on their inclusion in a parent.
  */
-public class RESTCategoryCollectionItemParentSort implements Comparator<RESTCategoryCollectionItemV1> {
-    @NotNull final RESTTagV1 parent;
-    final boolean ascending;
+public final class RESTCategoryCollectionItemParentSort implements Comparator<RESTCategoryCollectionItemV1> {
+    @NotNull private final RESTTagV1 parent;
+    private final boolean ascending;
 
+    /**
+     * @param parent the entity that holds the child entities being sorted
+     * @param ascending true if the items should be sorted in ascending order, false otherwise
+     */
     public RESTCategoryCollectionItemParentSort(@NotNull final RESTTagV1 parent, final boolean ascending) {
         this.parent = parent;
         this.ascending = ascending;

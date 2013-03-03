@@ -11,7 +11,10 @@ import java.util.Comparator;
 public class RESTTagCollectionItemNameSort implements Comparator<RESTTagCollectionItemV1> {
     final boolean ascending;
 
-
+    /**
+     *
+     * @param ascending true if the items should be sorted in ascending order, false otherwise
+     */
     public RESTTagCollectionItemNameSort(final boolean ascending) {
         this.ascending = ascending;
     }

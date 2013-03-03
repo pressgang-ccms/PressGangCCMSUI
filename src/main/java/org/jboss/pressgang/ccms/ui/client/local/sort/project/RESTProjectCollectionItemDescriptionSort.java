@@ -8,10 +8,13 @@ import java.util.Comparator;
 /**
  * Sorts RESTTagCollectionItemV1 objects based on their name.
  */
-public class RESTProjectCollectionItemDescriptionSort implements Comparator<RESTProjectCollectionItemV1> {
-    final boolean ascending;
+public final class RESTProjectCollectionItemDescriptionSort implements Comparator<RESTProjectCollectionItemV1> {
+    private final boolean ascending;
 
-
+    /**
+     *
+     * @param ascending true if the items should be sorted in ascending order, false otherwise
+     */
     public RESTProjectCollectionItemDescriptionSort(final boolean ascending) {
         this.ascending = ascending;
     }

@@ -16,6 +16,10 @@ public class RESTTagCollectionItemParentSort implements Comparator<RESTTagCollec
     @NotNull final RESTCategoryV1 parent;
     final boolean ascending;
 
+    /**
+     * @param parent the entity that holds the child entities being sorted
+     * @param ascending true if the items should be sorted in ascending order, false otherwise
+     */
     public RESTTagCollectionItemParentSort(@NotNull final RESTCategoryV1 parent, final boolean ascending) {
         this.parent = parent;
         this.ascending = ascending;

@@ -1,7 +1,6 @@
-package org.jboss.pressgang.ccms.ui.client.local.sort.project;
+package org.jboss.pressgang.ccms.ui.client.local.sort.propertycategory;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyCategoryCollectionItemV1;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
@@ -9,19 +8,19 @@ import java.util.Comparator;
 /**
  * Sorts RESTTagCollectionItemV1 objects based on their name.
  */
-public class RESTProjectCollectionItemNameSort implements Comparator<RESTProjectCollectionItemV1> {
-    final boolean ascending;
+public final class RESTPropertyCategoryCollectionItemNameSort implements Comparator<RESTPropertyCategoryCollectionItemV1> {
+    private final boolean ascending;
 
     /**
      *
      * @param ascending true if the items should be sorted in ascending order, false otherwise
      */
-    public RESTProjectCollectionItemNameSort(final boolean ascending) {
+    public RESTPropertyCategoryCollectionItemNameSort(final boolean ascending) {
         this.ascending = ascending;
     }
 
     @Override
-    public int compare(@Nullable final RESTProjectCollectionItemV1 arg0, @Nullable final RESTProjectCollectionItemV1 arg1) {
+    public int compare(@Nullable final RESTPropertyCategoryCollectionItemV1 arg0, @Nullable final RESTPropertyCategoryCollectionItemV1 arg1) {
         final int ascendingMultiplier = ascending ? 1 : -1;
 
         /*
@@ -40,7 +39,7 @@ public class RESTProjectCollectionItemNameSort implements Comparator<RESTProject
         }
 
         if (arg1 == null) {
-            return 1 * ascendingMultiplier ;
+            return 1 * ascendingMultiplier;
         }
 
         /*
@@ -61,7 +60,7 @@ public class RESTProjectCollectionItemNameSort implements Comparator<RESTProject
         final int nameSort = arg0.getItem().getName().compareTo(arg1.getItem().getName()) * ascendingMultiplier;
 
         if (nameSort == 0) {
-            return new RESTProjectCollectionItemIDSort(ascending).compare(arg0, arg1);
+            return new RESTPropertyCategoryCollectionItemIDSort(ascending).compare(arg0, arg1);
         }
 
         return nameSort;
