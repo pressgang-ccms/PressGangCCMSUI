@@ -148,8 +148,16 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
             }
         }
 
+        // set the td style for the tag heading cells
         for (int j = 0; j < TAG_CELLS_PER_COLUMN * COLUMNS; ++j) {
             tagsTable.getFlexCellFormatter().addStyleName(2, j, CSSConstants.SearchView.LOGIC_HEADER_CELL);
+        }
+
+        // span across the bulk tagging column if it is not displayed
+        if (!showBulkTags) {
+            for (int i = 0; i < COLUMNS; ++i) {
+                tagsTable.getFlexCellFormatter().setColSpan(2, i * (COLUMNS + TAG_CELLS_PER_COLUMN) + 2, 2);
+            }
         }
 
         summary.addClickHandler(new ClickHandler() {
