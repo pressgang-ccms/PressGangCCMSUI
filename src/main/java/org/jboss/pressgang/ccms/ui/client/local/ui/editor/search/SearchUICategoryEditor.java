@@ -51,9 +51,9 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
             final int column = index % COLUMNS;
 
             @NotNull final SearchUITagEditor subEditor = new SearchUITagEditor(driver, SearchUICategoryEditor.this);
-            tagsTable.setWidget(fixedIndex, column * 2, subEditor.name);
-            tagsTable.setWidget(fixedIndex, (column * 2) + 1, subEditor.state);
-            tagsTable.setWidget(fixedIndex, (column * 2) + 2, subEditor.bulkTagState);
+            tagsTable.setWidget(fixedIndex, column * TAG_CELLS_PER_COLUMN, subEditor.name);
+            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 1, subEditor.state);
+            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 2, subEditor.bulkTagState);
             subEditor.bulkTagState.setVisible(showBulkTags);
             return subEditor;
         }
@@ -69,9 +69,9 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
             final int fixedIndex = (index / COLUMNS) + LOGIC_AND_HEADING_ROW_COUNT; // add 3 because the first rows are taken up by the category logic controls
             final int column = index % COLUMNS;
 
-            tagsTable.setWidget(fixedIndex, column * 2, subEditor.name);
-            tagsTable.setWidget(fixedIndex, (column * 2) + 1, subEditor.state);
-            tagsTable.setWidget(fixedIndex, (column * 2) + 2, subEditor.bulkTagState);
+            tagsTable.setWidget(fixedIndex, column * TAG_CELLS_PER_COLUMN, subEditor.name);
+            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 1, subEditor.state);
+            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 2, subEditor.bulkTagState);
         }
     }
 
