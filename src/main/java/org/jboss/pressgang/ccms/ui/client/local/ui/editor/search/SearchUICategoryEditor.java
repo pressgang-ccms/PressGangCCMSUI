@@ -137,8 +137,22 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
 
         // tags heading cell
 
-        @NotNull final Label tags = new Label(PressGangCCMSUI.INSTANCE.Tags());
-        tagsTable.setWidget(2, 0, tags);
+        for (int i = 0; i < COLUMNS; ++i) {
+            @NotNull final Label tags = new Label(PressGangCCMSUI.INSTANCE.TagName());
+            @NotNull final Label tagSearchState = new Label(PressGangCCMSUI.INSTANCE.TagSearchState());
+            @NotNull final Label tagBulkUpdateState = new Label(PressGangCCMSUI.INSTANCE.TagBulkUpdateState());
+            tagsTable.setWidget(2, i * (COLUMNS + TAG_CELLS_PER_COLUMN), tags);
+            tagsTable.setWidget(2, i * (COLUMNS + TAG_CELLS_PER_COLUMN) + 1, tagSearchState);
+
+            if (showBulkTags) {
+                tagsTable.setWidget(2, i * (COLUMNS + TAG_CELLS_PER_COLUMN) + 2, tagBulkUpdateState);
+            }
+        }
+
+        for (int j = 0; j < TAG_CELLS_PER_COLUMN * COLUMNS; ++j) {
+            tagsTable.getFlexCellFormatter().addStyleName(2, j, CSSConstants.SearchView.LOGIC_HEADER_CELL);
+        }
+
         tagsTable.getFlexCellFormatter().addStyleName(2, 0, CSSConstants.SearchView.LOGIC_HEADER_CELL);
 
         summary.addClickHandler(new ClickHandler() {

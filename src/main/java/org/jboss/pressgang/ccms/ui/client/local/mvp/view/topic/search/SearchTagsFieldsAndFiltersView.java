@@ -36,7 +36,7 @@ public class SearchTagsFieldsAndFiltersView extends
         addActionButton(searchTopics);
         addActionButton(tagsSearch);
         addActionButton(fields);
-        addActionButton(locales);
+        //addActionButton(locales);
         addActionButton(filters);
     }
 

@@ -399,6 +399,12 @@ public interface PressGangCCMSUI extends Constants {
     String TagName();
 
     @NotNull
+    String TagSearchState();
+
+    @NotNull
+    String TagBulkUpdateState();
+
+    @NotNull
     String ChildTagID();
 
     @NotNull
