@@ -60,6 +60,9 @@ public interface PressGangCCMSUI extends Constants {
     String Search();
 
     @NotNull
+    String ApplyBulkTags();
+
+    @NotNull
     String QuickSearch();
 
     @NotNull

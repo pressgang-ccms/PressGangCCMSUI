@@ -19,7 +19,7 @@ public class SearchTagsFieldsAndFiltersView extends
     private final WaitingDialog waiting = new WaitingDialog();
 
     private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
-    private final PushButton applyBulkTags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
+    private final PushButton applyBulkTags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ApplyBulkTags());
     private final PushButton tagsSearch = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
     private final PushButton filters = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Filters());
     private final PushButton fields = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Fields());
