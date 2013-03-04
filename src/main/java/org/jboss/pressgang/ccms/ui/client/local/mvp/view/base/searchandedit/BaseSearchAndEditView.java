@@ -51,6 +51,18 @@ abstract public class BaseSearchAndEditView<
     private final HorizontalPanel viewViewSpecificActionButtonsPanel = new HorizontalPanel();
 
     /**
+     * If true, this view will create top action panels above the filtered results, and above
+     * the entity view area. It will also pull out the entity view top action panel and
+     * place it in this new view. If false, this view won't touch the top action panel, and
+     * will eave it to another presenter to manage.
+     *
+     * The topic search view is an example where a BaseSearchAndEdit presenter is a child of
+     * another presenter, and as such the child BaseSearchAndEdit does not manage the top action panel.
+     * In this case, addCustomActionButtonFields is false.
+     */
+    final boolean addCustomActionButtonFields;
+
+    /**
      * The dialog that is presented when the view is unavailable.
      */
     private final WaitingDialog waiting = new WaitingDialog();
@@ -103,15 +115,17 @@ abstract public class BaseSearchAndEditView<
     public BaseSearchAndEditView(@NotNull final String applicationName, @NotNull final String pageName, final boolean addCustomActionButtonFields) {
         super(applicationName, pageName);
 
-        /* We have own own top action panels */
-        this.getTopActionGrandParentPanel().removeFromParent();
-
-        addSpacerToShortcutPanels();
+        this.addCustomActionButtonFields = addCustomActionButtonFields;
 
         resultsViewLayoutPanel.addStyleName(CSSConstants.BaseSearchAndEditView.RESULTS_VIEW_LAYOUT_PANEL);
         viewLayoutPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_VIEW_LAYOUT_PANEL);
 
         if (addCustomActionButtonFields) {
+            /* We have own own top action panels */
+            this.getTopActionGrandParentPanel().removeFromParent();
+
+            addSpacerToShortcutPanels();
+
             resultsViewLayoutPanel.addNorth(resultsActionButtonsParentPanel, Constants.ACTION_BAR_HEIGHT);
             viewLayoutPanel.addNorth(viewActionButtonsParentPanel, Constants.ACTION_BAR_HEIGHT);
         }
@@ -168,8 +182,10 @@ abstract public class BaseSearchAndEditView<
         viewActionButtonsParentPanel.setWidget(0, 2, viewViewSpecificActionButtonsPanel);
         viewActionButtonsParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
 
-        this.viewActionButtonsPanel.add(this.getTopActionPanel());
-        this.viewViewSpecificActionButtonsPanel.add(this.getTopViewSpecificRightActionPanel());
+        if (addCustomActionButtonFields) {
+            this.viewActionButtonsPanel.add(this.getTopActionPanel());
+            this.viewViewSpecificActionButtonsPanel.add(this.getTopViewSpecificRightActionPanel());
+        }
 
         if (displayedView != null) {
             this.getViewPanel().setWidget(displayedView.getPanel());
