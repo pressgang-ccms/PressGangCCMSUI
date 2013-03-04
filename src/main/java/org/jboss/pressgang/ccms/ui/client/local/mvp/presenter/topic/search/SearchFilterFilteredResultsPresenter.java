@@ -37,13 +37,6 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsPre
      * The interface that defines the display used by this presenter.
      */
     public interface Display extends BaseFilteredResultsViewInterface<RESTFilterCollectionItemV1> {
-        PushButton getSearchTopics();
-
-        PushButton getTagsSearch();
-
-        PushButton getFields();
-
-        PushButton getLocales();
     }
 
     /**

@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 public final class SearchUITag extends SearchUIBase {
     private TriStateSelectionState state = TriStateSelectionState.NONE;
     private RESTTagCollectionItemV1 tag;
+    private TriStateSelectionState bulkTagState = TriStateSelectionState.NONE;
 
     /**
      * A logger.
@@ -102,4 +103,11 @@ public final class SearchUITag extends SearchUIBase {
         return super.hashCode();
     }
 
+    public TriStateSelectionState getBulkTagState() {
+        return bulkTagState;
+    }
+
+    public void setBulkTagState(final TriStateSelectionState bulkTagState) {
+        this.bulkTagState = bulkTagState;
+    }
 }

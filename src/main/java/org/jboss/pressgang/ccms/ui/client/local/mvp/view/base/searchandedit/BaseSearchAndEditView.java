@@ -163,13 +163,13 @@ abstract public class BaseSearchAndEditView<
         viewActionButtonsParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
 
         this.viewActionButtonsPanel.add(this.getTopActionPanel());
-        this.viewViewSpecificActionButtonsPanel.add(this.getTopViewSpecificActionPanel());
+        this.viewViewSpecificActionButtonsPanel.add(this.getTopViewSpecificRightActionPanel());
 
         if (displayedView != null) {
             this.getViewPanel().setWidget(displayedView.getPanel());
             this.viewActionButtonsPanel.add(displayedView.getTopActionParentPanel());
 
-            this.viewViewSpecificActionButtonsPanel.add(displayedView.getTopViewSpecificActionPanel());
+            this.viewViewSpecificActionButtonsPanel.add(displayedView.getTopViewSpecificRightActionPanel());
         }
     }
 
@@ -195,7 +195,7 @@ abstract public class BaseSearchAndEditView<
         if (filteredResultsView != null) {
             this.getResultsPanel().setWidget(filteredResultsView.getPanel());
             this.resultsActionButtonsPanel.add(filteredResultsView.getTopActionPanel());
-            this.resultsViewSpecificActionButtonsPanel.add(filteredResultsView.getTopViewSpecificActionPanel());
+            this.resultsViewSpecificActionButtonsPanel.add(filteredResultsView.getTopViewSpecificRightActionPanel());
         }
     }
 }

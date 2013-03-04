@@ -118,9 +118,13 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      */
     private final FlexTable topActionParentPanel = new FlexTable();
     /**
-     * This is the collection the local action panel buttons.
+     * This is the collection the local action panel buttons. These buttons are placed to the right.
      */
-    private final FlexTable topViewSpecificActionPanel = new FlexTable();
+    private final FlexTable topViewSpecificRightActionPanel = new FlexTable();
+    /**
+     * This is the collection the local action panel buttons. These buttons are placed to the left.
+     */
+    private final SimplePanel topViewSpecificLeftActionPanel = new SimplePanel();
     /**
      * This is the collection of view specific action buttons.
      */
@@ -482,8 +486,14 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
     @NotNull
     @Override
-    public final FlexTable getTopViewSpecificActionPanel() {
-        return topViewSpecificActionPanel;
+    public final FlexTable getTopViewSpecificRightActionPanel() {
+        return topViewSpecificRightActionPanel;
+    }
+
+    @NotNull
+    @Override
+    public final SimplePanel getTopViewSpecificLeftActionPanel() {
+        return topViewSpecificLeftActionPanel;
     }
 
     @NotNull
@@ -548,14 +558,17 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         topActionGrandParentPanel.addStyleName(CSSConstants.Template.TOP_ACTION_GRANDPARENT_PANEL);
         topActionParentPanel.addStyleName(CSSConstants.Template.TOP_ACTION_PARENT_PANEL);
         topActionPanel.addStyleName(CSSConstants.Template.TOP_ACTION_PANEL);
-        topViewSpecificActionPanel.addStyleName(CSSConstants.Template.TOP_ACTION_PANEL);
+        topViewSpecificRightActionPanel.addStyleName(CSSConstants.Template.TOP_ACTION_PANEL);
+        topViewSpecificLeftActionPanel.addStyleName(CSSConstants.Template.TOP_ACTION_PANEL);
 
         topActionParentPanel.setWidget(0, 0, topActionPanel);
-        /* A spacer cell, to push the next cell to the right */
-        topActionParentPanel.setWidget(0, 1, new SimplePanel());
-        topActionParentPanel.setWidget(0, 2, topViewSpecificActionPanel);
-        topActionParentPanel.getFlexCellFormatter().setWidth(0, 1, "100%");
+        topActionParentPanel.setWidget(0, 1, topViewSpecificLeftActionPanel);
+         /* A spacer cell, to push the next cell to the right */
+        topActionParentPanel.setWidget(0, 2, new SimplePanel());
+        topActionParentPanel.getFlexCellFormatter().setWidth(0, 2, "100%");
+        topActionParentPanel.setWidget(0, 3, topViewSpecificRightActionPanel);
 
+        topActionGrandParentPanel.setWidget(topActionParentPanel);
 
         thirdLevelLayoutPanel.addNorth(topActionGrandParentPanel, Constants.ACTION_BAR_HEIGHT);
 
@@ -717,7 +730,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     }
 
     protected final void addLocalActionButton(@NotNull final Widget widget) {
-        addActionButton(widget, this.getTopViewSpecificActionPanel());
+        addActionButton(widget, this.getTopViewSpecificRightActionPanel());
     }
 
     protected final void addActionButton(@NotNull final Widget widget) {

@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
 
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
@@ -209,6 +210,9 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
             RESTFilterV1,
             RESTFilterCollectionV1,
             RESTFilterCollectionItemV1> {
-
+        PushButton getCreate();
+        PushButton getOverwrite();
+        PushButton getLoad();
+        PushButton getLoadAndSearch();
     }
 }

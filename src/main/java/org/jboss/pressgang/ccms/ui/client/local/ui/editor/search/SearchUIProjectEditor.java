@@ -24,6 +24,7 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
     private final SearchPresenterDriver driver;
     private final SearchUIProjects searchUIProjects;
     private SearchUIProject value;
+    private final boolean showBulkTags;
 
     final FourTextAndImageButtonSearchUIProjectEditor summary = new FourTextAndImageButtonSearchUIProjectEditor();
     final ListEditor<SearchUICategory, SearchUICategoryEditor> categories = ListEditor.of(new SearchUICategoryEditorSource());
@@ -44,7 +45,7 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
         @NotNull
         @Override
         public SearchUICategoryEditor create(final int index) {
-            @NotNull final SearchUICategoryEditor subEditor = new SearchUICategoryEditor(SearchUIProjectEditor.this.driver, SearchUIProjectEditor.this);
+            @NotNull final SearchUICategoryEditor subEditor = new SearchUICategoryEditor(SearchUIProjectEditor.this.driver, SearchUIProjectEditor.this, showBulkTags);
 
             SearchUIProjectEditor.this.categoriesButtonPanel.setWidget(index, 0, subEditor.summary);
 
@@ -78,16 +79,17 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
         }
 
         @Override
-        public void setIndex(final SearchUICategoryEditor subEditor, final int index) {
+        public void setIndex(@NotNull final SearchUICategoryEditor subEditor, final int index) {
             SearchUIProjectEditor.this.categoriesButtonPanel.setWidget(index, 0, subEditor);
         }
     }
 
-    public SearchUIProjectEditor(final SearchPresenterDriver driver, final SearchUIProjects searchUIProjects) {
+    public SearchUIProjectEditor(@NotNull final SearchPresenterDriver driver, @NotNull final SearchUIProjects searchUIProjects, final boolean showBulkTags) {
         super(Style.Unit.EM);
 
         this.driver = driver;
         this.searchUIProjects = searchUIProjects;
+        this.showBulkTags = showBulkTags;
 
         this.addStyleName(CSSConstants.TagListCategoryView.CATEGORIES_LAYOUT);
         summary.addStyleName(CSSConstants.Common.CUSTOM_BUTTON);
@@ -108,7 +110,7 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
     }
 
     @Override
-    public void setDelegate(final EditorDelegate<SearchUIProject> delegate) {
+    public void setDelegate(@NotNull final EditorDelegate<SearchUIProject> delegate) {
         // TODO Auto-generated method stub
 
     }
@@ -119,13 +121,13 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
     }
 
     @Override
-    public void onPropertyChange(final String... paths) {
+    public void onPropertyChange(@NotNull final String... paths) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void setValue(final SearchUIProject value) {
+    public void setValue(@NotNull final SearchUIProject value) {
         this.value = value;
     }
 }

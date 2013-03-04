@@ -21,15 +21,23 @@ public final class SearchUITagEditor implements Editor<SearchUITag> {
 
     final Label name = new Label();
     final TriStatePushButton state = new TriStatePushButton();
+    final TriStatePushButton bulkTagState = new TriStatePushButton();
 
-    public SearchUITagEditor(@NotNull final SearchPresenterDriver driver, final SearchUICategoryEditor searchUICategory) {
+    public SearchUITagEditor(@NotNull final SearchPresenterDriver driver, @NotNull final SearchUICategoryEditor searchUICategory) {
         this.searchUICategory = searchUICategory;
 
         name.addStyleName(CSSConstants.TagListTagView.TAG_LABEL);
 
         state.addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
+                driver.flush();
+            }
+        });
+
+        bulkTagState.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
                 driver.flush();
             }
         });

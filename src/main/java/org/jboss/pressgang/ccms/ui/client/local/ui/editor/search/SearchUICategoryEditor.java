@@ -18,6 +18,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 public final class SearchUICategoryEditor extends ScrollPanel implements ValueAwareEditor<SearchUICategory> {
     private static final int COLUMNS = 2;
+    private static final int TAG_CELLS_PER_COLUMN = 3;
     private static final int LOGIC_AND_HEADING_ROW_COUNT = 3;
     private static final String INTERNAL_LOGIC_RADIOBUTTON_GROUP = "InternalLogic";
     private static final String EXTERNAL_LOGIC_RADIOBUTTON_GROUP = "ExternalLogic";
@@ -27,6 +28,7 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
     @NotNull
     private final SearchUIProjectEditor searchUIProject;
     private SearchUICategory value;
+    private final boolean showBulkTags;
     private final FlexTable tagsTable = new FlexTable();
     private final RadioButton internalLogicAnd = new RadioButton("", PressGangCCMSUI.INSTANCE.And());
     private final RadioButton internalLogicOr  = new RadioButton("", PressGangCCMSUI.INSTANCE.Or());
@@ -51,6 +53,8 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
             @NotNull final SearchUITagEditor subEditor = new SearchUITagEditor(driver, SearchUICategoryEditor.this);
             tagsTable.setWidget(fixedIndex, column * 2, subEditor.name);
             tagsTable.setWidget(fixedIndex, (column * 2) + 1, subEditor.state);
+            tagsTable.setWidget(fixedIndex, (column * 2) + 2, subEditor.bulkTagState);
+            subEditor.bulkTagState.setVisible(showBulkTags);
             return subEditor;
         }
 
@@ -67,12 +71,14 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
 
             tagsTable.setWidget(fixedIndex, column * 2, subEditor.name);
             tagsTable.setWidget(fixedIndex, (column * 2) + 1, subEditor.state);
+            tagsTable.setWidget(fixedIndex, (column * 2) + 2, subEditor.bulkTagState);
         }
     }
 
-    public SearchUICategoryEditor(@NotNull final SearchPresenterDriver driver, @NotNull final SearchUIProjectEditor searchUIProject) {
+    public SearchUICategoryEditor(@NotNull final SearchPresenterDriver driver, @NotNull final SearchUIProjectEditor searchUIProject, final boolean showBulkTags) {
         this.driver = driver;
         this.searchUIProject = searchUIProject;
+        this.showBulkTags = showBulkTags;
 
         this.summary.addStyleName(CSSConstants.Common.CUSTOM_BUTTON);
         tagsTable.addStyleName(CSSConstants.TagListCategoryView.CATEGORY_TAG_LAYOUT);
@@ -89,16 +95,16 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
         checkState(COLUMNS >= 2, "The layout of the category logic ui elements assumes that there are at least 2 columns.");
 
         // setup the column spans
-        tagsTable.getFlexCellFormatter().setColSpan(0, 0, COLUMNS);
+        tagsTable.getFlexCellFormatter().setColSpan(0, 0, TAG_CELLS_PER_COLUMN);
         /*
             Using column 1 here isn't what you might expect, but it is the next column after column 0. The fact
             that column 0 spans multiple columns doesn't affect how we refer to the next column; the next column
             is referenced by an incremented column count without any consideration to the previous column span.
          */
-        tagsTable.getFlexCellFormatter().setColSpan(0, 1, COLUMNS);
-        tagsTable.getFlexCellFormatter().setColSpan(1, 0, COLUMNS);
-        tagsTable.getFlexCellFormatter().setColSpan(1, 1, COLUMNS);
-        tagsTable.getFlexCellFormatter().setColSpan(2, 0, COLUMNS * 2);
+        tagsTable.getFlexCellFormatter().setColSpan(0, 1, TAG_CELLS_PER_COLUMN);
+        tagsTable.getFlexCellFormatter().setColSpan(1, 0, TAG_CELLS_PER_COLUMN);
+        tagsTable.getFlexCellFormatter().setColSpan(1, 1, TAG_CELLS_PER_COLUMN);
+        tagsTable.getFlexCellFormatter().setColSpan(2, 0, TAG_CELLS_PER_COLUMN * 2);
 
         // Internal logic
 

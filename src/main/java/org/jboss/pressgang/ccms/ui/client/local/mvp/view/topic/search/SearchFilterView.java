@@ -24,20 +24,13 @@ public class SearchFilterView extends BaseTemplateView implements SearchFilterPr
      */
     private final SearchFilterPresenter.FilterPresenterDriver driver = GWT.create(SearchFilterPresenter.FilterPresenterDriver.class);
 
-    private final PushButton overwrite = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Overwrite());
-    private final PushButton load = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Load());
-    private final PushButton loadAndSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.LoadAndSearch());
+
 
     /**
      * Sets the application and page titles.
      */
     public SearchFilterView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Filters());
-
-        addActionButton(load);
-        addActionButton(loadAndSearch);
-        addActionButton(overwrite);
-
     }
 
     @Override
@@ -55,20 +48,5 @@ public class SearchFilterView extends BaseTemplateView implements SearchFilterPr
     @Override
     public SimpleBeanEditorDriver<RESTFilterV1, RESTFilterV1BasicDetailsEditor> getDriver() {
         return driver;
-    }
-
-    @Override
-    public PushButton getOverwrite() {
-        return overwrite;
-    }
-
-    @Override
-    public PushButton getLoad() {
-        return load;
-    }
-
-    @Override
-    public PushButton getLoadAndSearch() {
-        return loadAndSearch;
     }
 }

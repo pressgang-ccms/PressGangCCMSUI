@@ -29,17 +29,9 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
         interface SearchPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, SearchUIProjectsEditor> {
         }
 
-        void displayExtended(final RESTTagCollectionV1 tagCollection, final RESTFilterV1 filter, final boolean readOnly);
+        void displayExtended(@NotNull final RESTTagCollectionV1 tagCollection, final RESTFilterV1 filter, final boolean readOnly, final boolean showBulkTags);
 
         SearchUIProjects getSearchUIProjects();
-
-        PushButton getFields();
-
-        PushButton getSearchTopics();
-
-        PushButton getFilters();
-
-        PushButton getLocales();
     }
 
     public static final String HISTORY_TOKEN = "SearchView";

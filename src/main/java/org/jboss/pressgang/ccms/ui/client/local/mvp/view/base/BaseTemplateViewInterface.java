@@ -74,10 +74,17 @@ public interface BaseTemplateViewInterface {
     FlexTable getTopActionPanel();
 
     /**
-     * @return The container that holds the view specific actions buttons
+     * @return The container that holds the view specific actions buttons. These buttons are displayed to the right.
      */
     @NotNull
-    FlexTable getTopViewSpecificActionPanel();
+    FlexTable getTopViewSpecificRightActionPanel();
+
+    /**
+     * @return The container that holds the view specific actions buttons. These buttons are displayed to the left.
+     */
+    @NotNull
+    SimplePanel getTopViewSpecificLeftActionPanel();
+
 
     /**
      * @return The panel into which a view will add its own content

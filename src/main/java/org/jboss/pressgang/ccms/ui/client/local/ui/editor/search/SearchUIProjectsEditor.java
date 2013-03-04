@@ -21,6 +21,7 @@ public class SearchUIProjectsEditor extends DockLayoutPanel implements Editor<Se
 
     private final SearchPresenterDriver driver;
     final SearchUIProjects searchUIProjects;
+    private final boolean showBulkTags;
     final ListEditor<SearchUIProject, SearchUIProjectEditor> projects = ListEditor.of(new SearchUIProjectEditorSource());
     private final FlexTable projectButtonPanel = new FlexTable();
     private final ScrollPanel scrollPanel = new ScrollPanel();
@@ -34,12 +35,12 @@ public class SearchUIProjectsEditor extends DockLayoutPanel implements Editor<Se
         @NotNull
         @Override
         public SearchUIProjectEditor create(final int index) {
-            @NotNull final SearchUIProjectEditor subEditor = new SearchUIProjectEditor(driver, searchUIProjects);
+            @NotNull final SearchUIProjectEditor subEditor = new SearchUIProjectEditor(driver, searchUIProjects, showBulkTags);
             projectButtonPanel.setWidget(index, 0, subEditor.summary);
 
             subEditor.summary.addClickHandler(new ClickHandler() {
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
                     if (SearchUIProjectsEditor.this.getCenter() != null) {
                         SearchUIProjectsEditor.this.remove(SearchUIProjectsEditor.this.getCenter());
                     }
@@ -67,16 +68,17 @@ public class SearchUIProjectsEditor extends DockLayoutPanel implements Editor<Se
         }
 
         @Override
-        public void setIndex(final SearchUIProjectEditor subEditor, final int index) {
+        public void setIndex(@NotNull final SearchUIProjectEditor subEditor, final int index) {
             projectButtonPanel.setWidget(index, 0, subEditor);
         }
     }
 
-    public SearchUIProjectsEditor(final SearchPresenterDriver driver, final SearchUIProjects searchUIProjects) {
+    public SearchUIProjectsEditor(@NotNull final SearchPresenterDriver driver, @NotNull final SearchUIProjects searchUIProjects, final boolean showBulkTags) {
         super(Style.Unit.EM);
 
         this.driver = driver;
         this.searchUIProjects = searchUIProjects;
+        this.showBulkTags = showBulkTags;
 
         this.addStyleName(CSSConstants.TagListProjectsView.PROJECTS_LAYOUT);
         projectButtonPanel.addStyleName(CSSConstants.TagListProjectsView.PROJECTS_BUTTONS_LAYOUT);

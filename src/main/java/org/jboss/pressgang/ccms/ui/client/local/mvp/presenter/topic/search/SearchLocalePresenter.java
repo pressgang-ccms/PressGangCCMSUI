@@ -60,16 +60,6 @@ public class SearchLocalePresenter  extends BaseTemplatePresenter implements Bas
     }
 
     public interface Display extends BaseTemplateViewInterface, BasePopulatedEditorViewInterface<List<String>, SearchUILocales, SearchUILocaleEditor> {
-        Label getLocales();
-
-        PushButton getSearchTopics();
-
-        PushButton getTagsSearch();
-
-        PushButton getFilters();
-
-        PushButton getFields();
-
         SearchUILocales getSearchUILocales();
     }
 }

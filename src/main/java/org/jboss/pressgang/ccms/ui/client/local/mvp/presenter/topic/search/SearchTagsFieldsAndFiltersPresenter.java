@@ -3,7 +3,10 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1;
@@ -24,6 +27,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.Translated
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
@@ -41,6 +45,10 @@ import java.util.logging.Logger;
 import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
+/**
+ * The presenter used to display the search screen, including the child tags, fields, locales and filters
+ * presenters.
+ */
 @Dependent
 public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
     /**
@@ -54,12 +62,31 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     public static final String TRANSLATED_HISTORY_TOKEN = "TranslatedSearchTagsFieldsAndFiltersView";
 
     /**
+     * The history token used when doing bulk tag operations
+     */
+    public static final String BULK_TAG_HISTORY_TOKEN = "BulkTagSearchTagsFieldsAndFiltersView";
+
+    /**
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(SearchTagsFieldsAndFiltersPresenter.class.getName());
 
-    public interface Display extends BaseTemplateViewInterface {
+    /**
+     * true if we are showing bulk tag buttons, and false otherwise.
+     */
+    private boolean showBulkTags;
 
+    public interface Display extends BaseTemplateViewInterface {
+        PushButton getSearchTopics();
+        PushButton getApplyBulkTags();
+        PushButton getTagsSearch();
+        PushButton getFilters();
+        PushButton getFields();
+        PushButton getLocales();
+        Label getTagsSearchDownLabel();
+        Label getFiltersDownLabel();
+        Label getFieldsDownLabel();
+        Label getLocalesDownLabel();
     }
 
     @Inject private Display display;
@@ -89,14 +116,14 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     @Override
     public void go(@NotNull final HasWidgets container) {
 
-        this.container = container;
+        //this.container = container;
         clearContainerAndAddTopLevelPanel(container, display);
 
-        display.setViewShown(true);
+        //display.setViewShown(true);
 
-        bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
+        //bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
 
-        tagsComponent.bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
+        /*tagsComponent.bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
         fieldsComponent.bindExtended(ServiceConstants.SEARCH_FIELDS_HELP_TOPIC, HISTORY_TOKEN);
         localePresenter.bindExtended(ServiceConstants.SEARCH_LOCALES_HELP_TOPIC, HISTORY_TOKEN);
         searchFilterResultsAndFilterPresenter.bindSearchAndEditExtended(ServiceConstants.FILTERS_HELP_TOPIC, HISTORY_TOKEN, Constants.QUERY_PATH_SEGMENT_PREFIX);
@@ -107,7 +134,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         loadSearchTags();
         loadSearchLocales();
 
-        displayTags();
+        displayTags();   */
     }
 
     public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
@@ -137,7 +164,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 bindFilterActionButtons(retValue);
 
                 /* Display the tags */
-                tagsComponent.getDisplay().displayExtended(retValue, null, false);
+                tagsComponent.getDisplay().displayExtended(retValue, null, false, showBulkTags);
             }
         });
         RESTCalls.getTags(callback);
@@ -149,12 +176,12 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     private void bindFilterActionButtons(@NotNull final RESTTagCollectionV1 tags) {
         @NotNull final ClickHandler loadClickHanlder = new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 checkState(searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
                 checkState(searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
                 final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
-                tagsComponent.getDisplay().displayExtended(tags, displayedFilter, false);
+                tagsComponent.getDisplay().displayExtended(tags, displayedFilter, false, showBulkTags);
                 fieldsComponent.getDisplay().display(displayedFilter, false);
             }
         };
@@ -308,10 +335,10 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             }
         };
 
-        searchFilterResultsAndFilterPresenter.getSearchFilterPresenter().getDisplay().getLoad().addClickHandler(loadClickHanlder);
-        searchFilterResultsAndFilterPresenter.getSearchFilterPresenter().getDisplay().getLoadAndSearch().addClickHandler(loadAndSearchClickHandler);
-        searchFilterResultsAndFilterPresenter.getSearchFilterPresenter().getDisplay().getOverwrite().addClickHandler(overwriteFilter);
-        searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getDisplay().getCreate().addClickHandler(createFilter);
+        searchFilterResultsAndFilterPresenter.getDisplay().getLoad().addClickHandler(loadClickHanlder);
+        searchFilterResultsAndFilterPresenter.getDisplay().getLoadAndSearch().addClickHandler(loadAndSearchClickHandler);
+        searchFilterResultsAndFilterPresenter.getDisplay().getOverwrite().addClickHandler(overwriteFilter);
+        searchFilterResultsAndFilterPresenter.getDisplay().getCreate().addClickHandler(createFilter);
         saveFilterDialog.getOk().addClickHandler(saveOKHandler);
         saveFilterDialog.getCancel().addClickHandler(saveCancelHandler);
     }
@@ -320,6 +347,8 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     public void parseToken(@NotNull final String historyToken) {
         if (historyToken.startsWith(TRANSLATED_HISTORY_TOKEN)) {
             doingTranslatedSearch = true;
+        } else if (historyToken.startsWith(BULK_TAG_HISTORY_TOKEN)) {
+            showBulkTags = true;
         }
     }
 
@@ -338,6 +367,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 displayFields();
             }
         };
+
         @NotNull final ClickHandler filtersHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
@@ -354,7 +384,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
         @NotNull final ClickHandler searchHandler = new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 fieldsComponent.getDisplay().getDriver().flush();
                 tagsComponent.getDisplay().getDriver().flush();
                 localePresenter.getDisplay().getDriver().flush();
@@ -372,36 +402,28 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             }
         };
 
-        tagsComponent.getDisplay().getSearchTopics().addClickHandler(searchHandler);
-        fieldsComponent.getDisplay().getSearchTopics().addClickHandler(searchHandler);
-        localePresenter.getDisplay().getSearchTopics().addClickHandler(searchHandler);
-        searchFilterResultsAndFilterPresenter.getFilteredResultsDisplay().getSearchTopics().addClickHandler(searchHandler);
+        display.getSearchTopics().addClickHandler(searchHandler);
+        display.getTagsSearch().addClickHandler(tagsHandler);
+        display.getFields().addClickHandler(fieldsHandler);
+        display.getFilters().addClickHandler(filtersHandler);
+        display.getLocales().addClickHandler(localesHandler);
+    }
 
-        fieldsComponent.getDisplay().getTagsSearch().addClickHandler(tagsHandler);
-        localePresenter.getDisplay().getTagsSearch().addClickHandler(tagsHandler);
-        searchFilterResultsAndFilterPresenter.getFilteredResultsDisplay().getTagsSearch().addClickHandler(tagsHandler);
-
-        tagsComponent.getDisplay().getFields().addClickHandler(fieldsHandler);
-        localePresenter.getDisplay().getFields().addClickHandler(fieldsHandler);
-        searchFilterResultsAndFilterPresenter.getFilteredResultsDisplay().getFields().addClickHandler(fieldsHandler);
-
-        tagsComponent.getDisplay().getFilters().addClickHandler(filtersHandler);
-        localePresenter.getDisplay().getFilters().addClickHandler(filtersHandler);
-        fieldsComponent.getDisplay().getFilters().addClickHandler(filtersHandler);
-
-        tagsComponent.getDisplay().getLocales().addClickHandler(localesHandler);
-        searchFilterResultsAndFilterPresenter.getFilteredResultsDisplay().getLocales().addClickHandler(localesHandler);
-        fieldsComponent.getDisplay().getLocales().addClickHandler(localesHandler);
+    private void resetTopActionButtons() {
+        display.replaceTopActionButton(display.getLocalesDownLabel(), display.getLocales());
+        display.replaceTopActionButton(display.getTagsSearchDownLabel(), display.getTagsSearch());
+        display.replaceTopActionButton(display.getFieldsDownLabel(), display.getFields());
+        display.replaceTopActionButton(display.getFiltersDownLabel(), display.getFilters());
+        display.getTopViewSpecificLeftActionPanel().clear();
     }
 
     private void displayLocales() {
-        clearContainerAndAddTopLevelPanel(container, display);
-        display.getTopActionGrandParentPanel().clear();
-        display.getTopActionGrandParentPanel().setWidget(localePresenter.getDisplay().getTopActionParentPanel());
         this.setHelpTopicId(localePresenter.getHelpTopicId());
 
         display.getPanel().clear();
         display.getPanel().setWidget(localePresenter.getDisplay().getPanel());
+        resetTopActionButtons();
+        display.replaceTopActionButton(display.getLocales(), display.getLocalesDownLabel());
 
         fieldsComponent.getDisplay().setViewShown(false);
         tagsComponent.getDisplay().setViewShown(false);
@@ -410,13 +432,11 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     }
 
     private void displayTags() {
-        clearContainerAndAddTopLevelPanel(container, display);
-        display.getTopActionGrandParentPanel().clear();
-        display.getTopActionGrandParentPanel().setWidget(tagsComponent.getDisplay().getTopActionParentPanel());
         this.setHelpTopicId(tagsComponent.getHelpTopicId());
 
         display.getPanel().clear();
         display.getPanel().setWidget(tagsComponent.getDisplay().getPanel());
+        display.replaceTopActionButton(display.getTagsSearch(), display.getTagsSearchDownLabel());
 
         fieldsComponent.getDisplay().setViewShown(false);
         tagsComponent.getDisplay().setViewShown(true);
@@ -425,13 +445,11 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     }
 
     private void displayFields() {
-        clearContainerAndAddTopLevelPanel(container, display);
-        display.getTopActionGrandParentPanel().clear();
-        display.getTopActionGrandParentPanel().setWidget(fieldsComponent.getDisplay().getTopActionParentPanel());
         this.setHelpTopicId(fieldsComponent.getHelpTopicId());
 
         display.getPanel().clear();
         display.getPanel().setWidget(fieldsComponent.getDisplay().getPanel());
+        display.replaceTopActionButton(display.getFields(), display.getFieldsDownLabel());
 
         fieldsComponent.getDisplay().setViewShown(true);
         tagsComponent.getDisplay().setViewShown(false);
@@ -440,13 +458,24 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     }
 
     private void displayFilters() {
-        clearContainerAndAddTopLevelPanel(container, searchFilterResultsAndFilterPresenter.getDisplay());
         this.setHelpTopicId(searchFilterResultsAndFilterPresenter.getHelpTopicId());
+
+        display.getPanel().clear();
+        display.getPanel().setWidget(searchFilterResultsAndFilterPresenter.getDisplay().getPanel());
+        display.replaceTopActionButton(display.getFilters(), display.getFiltersDownLabel());
+        display.getTopViewSpecificLeftActionPanel().add(searchFilterResultsAndFilterPresenter.getDisplay().getTopActionPanel());
 
         fieldsComponent.getDisplay().setViewShown(false);
         tagsComponent.getDisplay().setViewShown(false);
         localePresenter.getDisplay().setViewShown(false);
         searchFilterResultsAndFilterPresenter.getDisplay().setViewShown(true);
     }
+
+    private void applyBulkTags(final String query) {
+        if (Window.confirm(PressGangCCMSUI.INSTANCE.BulkTagConfirm())) {
+
+        }
+    }
+
 
 }

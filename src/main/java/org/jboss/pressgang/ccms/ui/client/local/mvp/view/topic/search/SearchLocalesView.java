@@ -26,48 +26,10 @@ public class SearchLocalesView extends BaseTemplateView implements SearchLocaleP
      */
     private final SearchLocalePresenter.LocalesPresenterDriver driver = GWT.create(SearchLocalePresenter.LocalesPresenterDriver.class);
 
-    private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
-    private final PushButton tagsSearch = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
-    private final PushButton filters = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Filters());
-    private final PushButton fields = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Fields());
-    private final Label locales = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Locales());
-
     private final SearchUILocales searchUILocales = new SearchUILocales();
-
-    @Override
-    public Label getLocales() {
-        return locales;
-    }
-
-    @Override
-    public PushButton getSearchTopics() {
-        return searchTopics;
-    }
-
-    @Override
-    public PushButton getTagsSearch() {
-        return tagsSearch;
-    }
-
-    @Override
-    public PushButton getFilters() {
-        return filters;
-    }
-
-    @Override
-    public PushButton getFields() {
-        return fields;
-    }
 
     public SearchLocalesView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchFields());
-
-        /* Build the action bar icons */
-        addActionButton(searchTopics);
-        addActionButton(tagsSearch);
-        addActionButton(fields);
-        addActionButton(locales);
-        addActionButton(filters);
     }
 
     @Override

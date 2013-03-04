@@ -1,11 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.search;
 
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFilterResultsAndFilterPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +23,40 @@ public class SearchFilterResultsAndFilterView extends BaseSearchAndEditView<
         RESTFilterCollectionItemV1>
         implements SearchFilterResultsAndFilterPresenter.Display {
 
+    private final PushButton create = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Overwrite());
+    private final PushButton overwrite = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Overwrite());
+    private final PushButton load = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Load());
+    private final PushButton loadAndSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.LoadAndSearch());
+
     public SearchFilterResultsAndFilterView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Filters());
+
+        addActionButton(load);
+        addActionButton(loadAndSearch);
+        addActionButton(overwrite);
+    }
+
+    @Override
+    @NotNull
+    public PushButton getCreate() {
+        return create;
+    }
+
+    @Override
+    @NotNull
+    public PushButton getOverwrite() {
+        return overwrite;
+    }
+
+    @Override
+    @NotNull
+    public PushButton getLoad() {
+        return load;
+    }
+
+    @Override
+    @NotNull
+    public PushButton getLoadAndSearch() {
+        return loadAndSearch;
     }
 }
