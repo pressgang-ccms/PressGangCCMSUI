@@ -135,16 +135,28 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
         tagsTable.getFlexCellFormatter().addStyleName(1, 1, CSSConstants.SearchView.LOGIC_DETAILS_CELL);
 
         // tags heading cell
-
         for (int i = 0; i < COLUMNS; ++i) {
             @NotNull final Label tags = new Label(PressGangCCMSUI.INSTANCE.TagName());
             @NotNull final Label tagSearchState = new Label(PressGangCCMSUI.INSTANCE.TagSearchState());
-            @NotNull final Label tagBulkUpdateState = new Label(PressGangCCMSUI.INSTANCE.TagBulkUpdateState());
-            tagsTable.setWidget(2, i * TAG_CELLS_PER_COLUMN, tags);
-            tagsTable.setWidget(2, i * TAG_CELLS_PER_COLUMN + 1, tagSearchState);
+
+
+            /*
+                Because a column span reduces the number of columns in a table, we need to do some funky
+                calculations here on the column index.
+
+                If the bulk tag checkboxes are not being displayed, the search state cell spans
+                2 columns. This means that for every loop over the columns, we need to subtract 1 from the
+                column index, since each span done in the previous loop reduces the number of cells in
+                this row by one.
+            */
+            tagsTable.setWidget(2, i * TAG_CELLS_PER_COLUMN - (showBulkTags ? 0: i), tags);
+            tagsTable.setWidget(2, i * TAG_CELLS_PER_COLUMN + 1 - (showBulkTags ? 0: i), tagSearchState);
 
             if (showBulkTags) {
+                @NotNull final Label tagBulkUpdateState = new Label(PressGangCCMSUI.INSTANCE.TagBulkUpdateState());
                 tagsTable.setWidget(2, i * TAG_CELLS_PER_COLUMN + 2, tagBulkUpdateState);
+            } else {
+                tagsTable.getFlexCellFormatter().setColSpan(2, i * TAG_CELLS_PER_COLUMN + 1 - (showBulkTags ? 0 : i), 2);
             }
         }
 
@@ -153,16 +165,9 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
             tagsTable.getFlexCellFormatter().addStyleName(2, j, CSSConstants.SearchView.LOGIC_HEADER_CELL);
         }
 
-        // span across the bulk tagging column if it is not displayed
-        if (!showBulkTags) {
-            for (int i = 0; i < COLUMNS; ++i) {
-                tagsTable.getFlexCellFormatter().setColSpan(2, i * TAG_CELLS_PER_COLUMN + 2, 2);
-            }
-        }
-
         summary.addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 summary.removeStyleName(CSSConstants.Common.CUSTOM_BUTTON);
                 summary.addStyleName(CSSConstants.Common.CUSTOM_BUTTON_DOWN);
             }
