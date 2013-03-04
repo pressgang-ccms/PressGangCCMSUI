@@ -1,3 +1,7 @@
+.SeachState, .BulkTagState {
+    text-align: center;
+}
+
 .ServerTypeProduction {
     color: red;
 }

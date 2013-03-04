@@ -105,6 +105,18 @@ public interface CSSConstants {
          * The style applied to the table holding the logic details radio buttons.
          */
         String LOGIC_DETAILS_TABLE = "LogicDetailsTable";
+        /**
+         * The style applied to the cell that holds the tag's name
+          */
+        String TAG_NAME = "TagName";
+        /**
+         * The style applied to the cell that holds the tag's search state
+         */
+        String SEARCH_STATE = "SearchState";
+        /**
+         * The style applied to the cell that holds the tag's bulk update state
+         */
+        String BULK_TAG_STATE = "BulkTagState";
     }
 
     /**
