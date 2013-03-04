@@ -140,11 +140,11 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
             @NotNull final Label tags = new Label(PressGangCCMSUI.INSTANCE.TagName());
             @NotNull final Label tagSearchState = new Label(PressGangCCMSUI.INSTANCE.TagSearchState());
             @NotNull final Label tagBulkUpdateState = new Label(PressGangCCMSUI.INSTANCE.TagBulkUpdateState());
-            tagsTable.setWidget(2, i * (COLUMNS + TAG_CELLS_PER_COLUMN), tags);
-            tagsTable.setWidget(2, i * (COLUMNS + TAG_CELLS_PER_COLUMN) + 1, tagSearchState);
+            tagsTable.setWidget(2, i * TAG_CELLS_PER_COLUMN, tags);
+            tagsTable.setWidget(2, i * TAG_CELLS_PER_COLUMN + 1, tagSearchState);
 
             if (showBulkTags) {
-                tagsTable.setWidget(2, i * (COLUMNS + TAG_CELLS_PER_COLUMN) + 2, tagBulkUpdateState);
+                tagsTable.setWidget(2, i * TAG_CELLS_PER_COLUMN + 2, tagBulkUpdateState);
             }
         }
 
@@ -156,7 +156,7 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
         // span across the bulk tagging column if it is not displayed
         if (!showBulkTags) {
             for (int i = 0; i < COLUMNS; ++i) {
-                tagsTable.getFlexCellFormatter().setColSpan(2, i * (COLUMNS + TAG_CELLS_PER_COLUMN) + 2, 2);
+                tagsTable.getFlexCellFormatter().setColSpan(2, i * TAG_CELLS_PER_COLUMN + 2, 2);
             }
         }
 
