@@ -22,6 +22,7 @@ public final class SearchUITag extends SearchUIBase {
     private TriStateSelectionState state = TriStateSelectionState.NONE;
     private RESTTagCollectionItemV1 tag;
     private TriStateSelectionState bulkTagState = TriStateSelectionState.NONE;
+    private final boolean inMutuallyExclusiveCategory;
 
     /**
      * A logger.
@@ -33,13 +34,15 @@ public final class SearchUITag extends SearchUIBase {
      * @param tag    The tag referenced by this object
      * @param filter The filter that defines the state of the tags
      */
-    public SearchUITag(@NotNull final SearchUICategory parent, @NotNull final RESTTagCollectionItemV1 tag, @Nullable final RESTFilterV1 filter) {
+    public SearchUITag(@NotNull final SearchUICategory parent, @NotNull final RESTTagCollectionItemV1 tag, final boolean inMutuallyExclusiveCategory, @Nullable final RESTFilterV1 filter) {
         super(tag.getItem().getName(), tag.getItem().getId());
 
         try {
             //LOGGER.log(Level.INFO, "ENTER SearchUITag()");
 
             checkArgument(filter == null || filter.getFilterTags_OTM() != null, "Filter must be null or have a populated collection of tags.");
+
+            this.inMutuallyExclusiveCategory = inMutuallyExclusiveCategory;
 
             this.tag = tag;
 
@@ -109,5 +112,9 @@ public final class SearchUITag extends SearchUIBase {
 
     public void setBulkTagState(final TriStateSelectionState bulkTagState) {
         this.bulkTagState = bulkTagState;
+    }
+
+    public boolean isInMutuallyExclusiveCategory() {
+        return inMutuallyExclusiveCategory;
     }
 }

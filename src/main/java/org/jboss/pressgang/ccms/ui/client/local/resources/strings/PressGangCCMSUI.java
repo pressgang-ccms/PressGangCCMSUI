@@ -739,4 +739,25 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String BulkTagConfirm();
+
+    @NotNull
+    String ThisOperationWillModify();
+
+    @NotNull
+    String AreYouSureYouWishToContinue();
+
+    @NotNull
+    String Topics();
+
+    @NotNull
+    String NoTopicsFound();
+
+    @NotNull
+    String BulkTagUpdateLogMessage();
+
+    @NotNull
+    String AllTopicsUpdatedSuccessfully();
+
+    @NotNull
+    String TopicsWereNotUpdatedCorrectly();
 }

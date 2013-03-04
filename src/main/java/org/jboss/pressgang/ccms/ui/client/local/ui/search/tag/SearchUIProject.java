@@ -100,9 +100,11 @@ public final class SearchUIProject extends SearchUIBase {
             //LOGGER.log(Level.INFO, "ENTER SearchUIProject.populateCategories()");
 
             for (@NotNull final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
+
                 checkState(tag.getItem().getProjects() != null, "tag.getItem().getProjects() cannot be null");
 
                 if (tag.getItem().getProjects().getItems().contains(project)) {
+
                     checkState(tag.getItem().getCategories().getItems() != null, "tag.getItem().getCategories().getItems() cannot be null");
 
                     for (@NotNull final RESTCategoryInTagCollectionItemV1 category : tag.getItem().getCategories().returnExistingAndAddedCollectionItems()) {

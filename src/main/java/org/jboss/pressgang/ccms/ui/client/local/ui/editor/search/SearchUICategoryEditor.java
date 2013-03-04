@@ -36,7 +36,11 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
     private final RadioButton externalLogicOr = new RadioButton("", PressGangCCMSUI.INSTANCE.Or());
 
     final FourTextAndImageButtonSearchUICategoryEditor summary = new FourTextAndImageButtonSearchUICategoryEditor();
-    final ListEditor<SearchUITag, SearchUITagEditor> myTags = ListEditor.of(new SearchUITagEditorSource());
+    private final ListEditor<SearchUITag, SearchUITagEditor> myTags = ListEditor.of(new SearchUITagEditorSource());
+
+    public ListEditor<SearchUITag, SearchUITagEditor> getMyTags() {
+        return myTags;
+    }
 
     /**
      * The EditorSource is used to create and orgainse the Editors that go into a ListEditor
@@ -51,17 +55,17 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
             final int column = index % COLUMNS;
 
             @NotNull final SearchUITagEditor subEditor = new SearchUITagEditor(driver, SearchUICategoryEditor.this);
-            tagsTable.setWidget(fixedIndex, column * TAG_CELLS_PER_COLUMN, subEditor.name);
-            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 1, subEditor.state);
-            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 2, subEditor.bulkTagState);
-            subEditor.bulkTagState.setVisible(showBulkTags);
+            tagsTable.setWidget(fixedIndex, column * TAG_CELLS_PER_COLUMN, subEditor.getName());
+            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 1, subEditor.getState());
+            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 2, subEditor.getBulkTagState());
+            subEditor.getBulkTagState().setVisible(showBulkTags);
             return subEditor;
         }
 
         @Override
         public void dispose(@NotNull final SearchUITagEditor subEditor) {
-            subEditor.name.removeFromParent();
-            subEditor.state.removeFromParent();
+            subEditor.getName().removeFromParent();
+            subEditor.getState().removeFromParent();
         }
 
         @Override
@@ -69,9 +73,9 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
             final int fixedIndex = (index / COLUMNS) + LOGIC_AND_HEADING_ROW_COUNT; // add 3 because the first rows are taken up by the category logic controls
             final int column = index % COLUMNS;
 
-            tagsTable.setWidget(fixedIndex, column * TAG_CELLS_PER_COLUMN, subEditor.name);
-            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 1, subEditor.state);
-            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 2, subEditor.bulkTagState);
+            tagsTable.setWidget(fixedIndex, column * TAG_CELLS_PER_COLUMN, subEditor.getName());
+            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 1, subEditor.getState());
+            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 2, subEditor.getBulkTagState());
         }
     }
 

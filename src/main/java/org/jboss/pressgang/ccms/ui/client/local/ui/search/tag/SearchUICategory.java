@@ -49,12 +49,16 @@ public final class SearchUICategory extends SearchUIBase {
     private boolean externalLogicAnd = Constants.DEFAULT_EXTERNAL_AND_LOGIC;
     private boolean externalLogicOr = !Constants.DEFAULT_EXTERNAL_AND_LOGIC;
 
+    private final boolean mutuallyExclusiveCategory;
+
     /**
      * @param project  The project that this object represents
      * @param category The category that this object represents
      */
     public SearchUICategory(final SearchUIProject project, @NotNull final RESTCategoryInTagCollectionItemV1 category) {
         super(category.getItem().getName(), category.getItem().getId());
+
+        mutuallyExclusiveCategory = category.getItem().getMutuallyExclusive();
     }
 
     /**
@@ -137,6 +141,8 @@ public final class SearchUICategory extends SearchUIBase {
 
             checkArgument(filter == null || filter.getFilterCategories_OTM() != null, "Filter must be null or have a populated collection of categories.");
 
+
+
             if (filter != null) {
                 for (@NotNull final RESTFilterCategoryCollectionItemV1 filterCategory : filter.getFilterCategories_OTM().getItems()) {
                     checkState(filterCategory.getItem().getCategory() != null, "filterCategory.getItem().getCategory() cannot be null");
@@ -188,7 +194,7 @@ public final class SearchUICategory extends SearchUIBase {
                 });
 
                 if (matchingCategory.isPresent() && matchingProject.isPresent()) {
-                    @NotNull final SearchUITag searchUITag = new SearchUITag(this, tag, filter);
+                    @NotNull final SearchUITag searchUITag = new SearchUITag(this, tag, this.mutuallyExclusiveCategory, filter);
                     if (!this.myTags.contains(searchUITag)) {
                         this.myTags.add(searchUITag);
                     }
@@ -241,8 +247,8 @@ public final class SearchUICategory extends SearchUIBase {
 
                 if (tag.getItem().getProjects().getItems().isEmpty()) {
 
-                    final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory = Iterables.tryFind(tag.getItem()
-                            .getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
+                    final Optional<RESTCategoryInTagCollectionItemV1> matchingCategory = Iterables.tryFind(tag.getItem().getCategories().getItems(),
+                            new Predicate<RESTCategoryInTagCollectionItemV1>() {
                         @Override
                         public boolean apply(@Nullable final RESTCategoryInTagCollectionItemV1 arg) {
                             if (arg == null) {
@@ -253,7 +259,7 @@ public final class SearchUICategory extends SearchUIBase {
                     });
 
                     if (matchingCategory.isPresent()) {
-                        @NotNull final SearchUITag searchUITag = new SearchUITag(this, tag, filter);
+                        @NotNull final SearchUITag searchUITag = new SearchUITag(this, tag, this.mutuallyExclusiveCategory, filter);
                         if (!this.myTags.contains(searchUITag)) {
                             this.myTags.add(searchUITag);
                         }
@@ -278,6 +284,9 @@ public final class SearchUICategory extends SearchUIBase {
         return super.hashCode();
     }
 
+    public boolean getMutuallyExclusiveCategory() {
+        return mutuallyExclusiveCategory;
+    }
 
 
     /**

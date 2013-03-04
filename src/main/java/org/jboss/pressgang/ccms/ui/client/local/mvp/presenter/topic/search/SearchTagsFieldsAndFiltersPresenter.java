@@ -7,19 +7,13 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterCategoryCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterFieldCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTFilterTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import com.google.gwt.user.client.ui.TriStateSelectionState;
+import org.jboss.pressgang.ccms.rest.v1.collections.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCategoryCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterFieldCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTFilterTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterCategoryV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterFieldV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTFilterV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.*;
+import org.jboss.pressgang.ccms.rest.v1.components.ComponentTagV1;
+import org.jboss.pressgang.ccms.rest.v1.components.ComponentTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsAndTopicViewEvent;
@@ -32,16 +26,23 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.StringListLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.field.SearchUIFields;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
@@ -55,59 +56,43 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
      * The history token used to access this page
      */
     public static final String HISTORY_TOKEN = "SearchTagsFieldsAndFiltersView";
-
     /**
      * The history token used when searching for translated topics
      */
     public static final String TRANSLATED_HISTORY_TOKEN = "TranslatedSearchTagsFieldsAndFiltersView";
-
     /**
      * The history token used when doing bulk tag operations
      */
     public static final String BULK_TAG_HISTORY_TOKEN = "BulkTagSearchTagsFieldsAndFiltersView";
-
     /**
      * A Logger
      */
     private static final Logger LOGGER = Logger.getLogger(SearchTagsFieldsAndFiltersPresenter.class.getName());
-
     /**
      * true if we are showing bulk tag buttons, and false otherwise.
      */
     private boolean showBulkTags;
-
-    public interface Display extends BaseTemplateViewInterface {
-        PushButton getSearchTopics();
-        PushButton getApplyBulkTags();
-        PushButton getTagsSearch();
-        PushButton getFilters();
-        PushButton getFields();
-        PushButton getLocales();
-        Label getTagsSearchDownLabel();
-        Label getFiltersDownLabel();
-        Label getFieldsDownLabel();
-        Label getLocalesDownLabel();
-    }
-
-    @Inject private Display display;
-    @Inject private SearchPresenter tagsComponent;
-    @Inject private SearchFieldPresenter fieldsComponent;
-    @Inject private SearchLocalePresenter localePresenter;
-
+    @Inject
+    private Display display;
+    @Inject
+    private SearchPresenter tagsComponent;
+    @Inject
+    private SearchFieldPresenter fieldsComponent;
+    @Inject
+    private SearchLocalePresenter localePresenter;
     /**
      * The presenter used to display the list of filters
      */
-    @Inject private SearchFilterResultsAndFilterPresenter searchFilterResultsAndFilterPresenter;
-
+    @Inject
+    private SearchFilterResultsAndFilterPresenter searchFilterResultsAndFilterPresenter;
     /**
      * The dialog used when saving or overwriting a filter
      */
-    @Inject private SaveFilterDialogInterface saveFilterDialog;
-
-    @Inject private HandlerManager eventBus;
-
+    @Inject
+    private SaveFilterDialogInterface saveFilterDialog;
+    @Inject
+    private HandlerManager eventBus;
     private HasWidgets container;
-
     /**
      * This is set to true if the history token indicates that we are trying to do a search of translated topics.
      */
@@ -155,7 +140,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             public void stringListLoaded(@NotNull final List<String> stringList) {
                 localePresenter.getDisplay().display(stringList, false);
             }
-        }, display) ;
+        }, display);
     }
 
     /**
@@ -403,8 +388,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
                 if (doingTranslatedSearch) {
                     eventBus.fireEvent(new TranslatedSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
-                }
-                else {
+                } else {
                     eventBus.fireEvent(new SearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
                 }
             }
@@ -417,11 +401,30 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 tagsComponent.getDisplay().getDriver().flush();
                 localePresenter.getDisplay().getDriver().flush();
 
-                @NotNull final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
+                final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
                         + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
                         + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
 
-                applyBulkTags(query);
+                /* Get a list of the tags to be added and removed */
+                final List<Integer> removeTags = new ArrayList<Integer>();
+                final Map<SearchUICategory, ArrayList<Integer>> addTags = new HashMap<SearchUICategory, ArrayList<Integer>>();
+
+                for (@NotNull final SearchUIProject project : tagsComponent.getDisplay().getSearchUIProjects().getProjects()) {
+                    for (@NotNull final SearchUICategory category : project.getCategories()) {
+                        for (@NotNull final SearchUITag tag : category.getMyTags()) {
+                            if (tag.getBulkTagState() == TriStateSelectionState.SELECTED) {
+                                if (!addTags.containsKey(category)) {
+                                    addTags.put(category, new ArrayList<Integer>());
+                                }
+                                addTags.get(category).add(tag.getId());
+                            } else if (tag.getBulkTagState() == TriStateSelectionState.UNSELECTED) {
+                                removeTags.add(tag.getId());
+                            }
+                        }
+                    }
+                }
+
+                applyBulkTags(query, removeTags, addTags);
             }
         };
 
@@ -500,10 +503,121 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         searchFilterResultsAndFilterPresenter.getDisplay().setViewShown(true);
     }
 
-    private void applyBulkTags(final String query) {
+    private void applyBulkTags(@NotNull final String query, @NotNull final List<Integer> removeTags, @NotNull final Map<SearchUICategory, ArrayList<Integer>> addTags) {
         if (Window.confirm(PressGangCCMSUI.INSTANCE.BulkTagConfirm())) {
+            final BaseRestCallback<RESTTopicCollectionV1, Display> callback = new BaseRestCallback<RESTTopicCollectionV1, Display>(display,
+                    new BaseRestCallback.SuccessAction<RESTTopicCollectionV1, Display>() {
+                        @Override
+                        public void doSuccessAction(@NotNull final RESTTopicCollectionV1 retValue, @NotNull final Display display) {
+                            checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                            checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
+                            final List<RESTTopicV1> modifiedTopics = new ArrayList<RESTTopicV1>();
+
+                            for (@NotNull final RESTTopicCollectionItemV1 topic : retValue.getItems()) {
+
+                                checkState(topic.getItem().getTags() != null, "Returned collection items should have an expanded tags collection.");
+                                checkState(topic.getItem().getTags().getItems() != null, "Returned collection items should have an expanded tags collection.");
+
+                                final RESTTopicV1 modifiedTopic = new RESTTopicV1();
+                                modifiedTopic.setId(topic.getItem().getId());
+                                modifiedTopic.explicitSetTags(new RESTTagCollectionV1());
+
+                                for (@NotNull final Integer removeTagID : removeTags) {
+                                    if (ComponentTopicV1.hasTag(topic.getItem(), removeTagID)) {
+                                        final RESTTagV1 removeTag = new RESTTagV1();
+                                        removeTag.setId(removeTagID);
+                                        modifiedTopic.getTags().addRemoveItem(removeTag);
+                                    }
+                                }
+
+                                for (@NotNull final SearchUICategory addTagCategory : addTags.keySet()) {
+                                    if (addTagCategory.getMutuallyExclusiveCategory()) {
+
+                                        checkState(addTags.get(addTagCategory).size() == 1, "Only one tag should be added in a mutually exclusive category.");
+
+                                        /* Remove any existing tag in the mutually exclusive category */
+                                        for (final RESTTagCollectionItemV1 existingTags : topic.getItem().getTags().getItems()) {
+
+                                            checkState(existingTags.getItem().getCategories() != null, "Tag should have an expanded categories collection.");
+                                            checkState(existingTags.getItem().getCategories().getItems() != null, "Tag should have an expanded categories collection.");
+
+                                            if (ComponentTagV1.containedInCategory(existingTags.getItem(), addTagCategory.getId())) {
+                                                final RESTTagV1 removeTag = new RESTTagV1();
+                                                removeTag.setId(existingTags.getItem().getId());
+                                                modifiedTopic.getTags().addRemoveItem(removeTag);
+                                            }
+                                        }
+                                    }
+
+                                    for (final Integer addTagID : addTags.get(addTagCategory)) {
+                                        if (!ComponentTopicV1.hasTag(topic.getItem(), addTagID)) {
+                                            final RESTTagV1 addTag = new RESTTagV1();
+                                            addTag.setId(addTagID);
+                                            modifiedTopic.getTags().addNewItem(addTag);
+                                        }
+                                    }
+                                }
+
+                                modifiedTopics.add(modifiedTopic);
+                            }
+
+                            if (modifiedTopics.size() == 0) {
+                                Window.alert(PressGangCCMSUI.INSTANCE.NoTopicsFound());
+                            } else if (Window.confirm(PressGangCCMSUI.INSTANCE.ThisOperationWillModify() + " " + modifiedTopics.size() + " " + PressGangCCMSUI.INSTANCE.Topics() + ".\n" + PressGangCCMSUI.INSTANCE.AreYouSureYouWishToContinue())) {
+                                updateTopic(0, new ArrayList<Integer>(), modifiedTopics);
+                            }
+                        }
+                    });
         }
+    }
+
+    private void updateTopic(final int index, @NotNull final List<Integer> failedTopics, @NotNull final List<RESTTopicV1> modifiedTopics) {
+        checkArgument(index >= 0, "The index must be positive");
+        if (index < modifiedTopics.size()) {
+            final BaseRestCallback<RESTTopicV1, Display> updateTopicCallback = new BaseRestCallback<RESTTopicV1, Display>(display, new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
+                @Override
+                public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
+                    updateTopic(index + 1, failedTopics, modifiedTopics);
+                }
+            }, new BaseRestCallback.FailureAction<Display>() {
+                @Override
+                public void doFailureAction(@NotNull final Display display) {
+                    failedTopics.add(modifiedTopics.get(index).getId());
+                    updateTopic(index + 1, failedTopics, modifiedTopics);
+                }
+            }
+            );
+            RESTCalls.saveTopic(updateTopicCallback, modifiedTopics.get(index), PressGangCCMSUI.INSTANCE.BulkTagUpdateLogMessage(), new Integer(ServiceConstants.MINOR_CHANGE), ServiceConstants.NULL_USER_ID.toString());
+        } else {
+            if (failedTopics.size() == 0) {
+                Window.alert(PressGangCCMSUI.INSTANCE.AllTopicsUpdatedSuccessfully());
+            } else {
+                Window.alert(failedTopics.size() + " " + PressGangCCMSUI.INSTANCE.TopicsWereNotUpdatedCorrectly() + modifiedTopics.toString());
+            }
+        }
+    }
+
+    public interface Display extends BaseTemplateViewInterface {
+        PushButton getSearchTopics();
+
+        PushButton getApplyBulkTags();
+
+        PushButton getTagsSearch();
+
+        PushButton getFilters();
+
+        PushButton getFields();
+
+        PushButton getLocales();
+
+        Label getTagsSearchDownLabel();
+
+        Label getFiltersDownLabel();
+
+        Label getFieldsDownLabel();
+
+        Label getLocalesDownLabel();
     }
 
 

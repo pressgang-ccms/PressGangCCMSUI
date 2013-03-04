@@ -1,10 +1,14 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.search;
 
 import com.google.gwt.editor.client.Editor;
+import com.google.gwt.editor.client.EditorDelegate;
+import com.google.gwt.editor.client.ValueAwareEditor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TriStatePushButton;
+import com.google.gwt.user.client.ui.TriStateSelectionState;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
@@ -16,12 +20,13 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Matthew Casperson
  */
-public final class SearchUITagEditor implements Editor<SearchUITag> {
+public final class SearchUITagEditor implements ValueAwareEditor<SearchUITag> {
     private final SearchUICategoryEditor searchUICategory;
+    private SearchUITag value;
 
-    final Label name = new Label();
-    final TriStatePushButton state = new TriStatePushButton();
-    final TriStatePushButton bulkTagState = new TriStatePushButton();
+    private final Label name = new Label();
+    private final TriStatePushButton state = new TriStatePushButton();
+    private final TriStatePushButton bulkTagState = new TriStatePushButton();
 
     public SearchUITagEditor(@NotNull final SearchPresenterDriver driver, @NotNull final SearchUICategoryEditor searchUICategory) {
         this.searchUICategory = searchUICategory;
@@ -38,8 +43,54 @@ public final class SearchUITagEditor implements Editor<SearchUITag> {
         bulkTagState.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                driver.flush();
+                /*
+                    If this tag is in a mutually exclusive category, then unselect any other selected tags.
+                 */
+                if (value.isInMutuallyExclusiveCategory() && bulkTagState.getState() == TriStateSelectionState.SELECTED) {
+                    for (final SearchUITag tag : searchUICategory.getMyTags().getList()) {
+                        if (tag != value && tag.getBulkTagState() == TriStateSelectionState.SELECTED) {
+                            tag.setBulkTagState(TriStateSelectionState.UNSELECTED);
+                        }
+                    }
+                    driver.flush();
+                }
             }
         });
+    }
+
+    @Override
+    public void flush() {
+        value.setBulkTagState(this.bulkTagState.getState());
+        value.setState(this.state.getState());
+    }
+
+    @Override
+    public void onPropertyChange(@NotNull final String... paths) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void setValue(@NotNull final SearchUITag value) {
+        this.value = value;
+        this.name.setText(value.getName());
+        this.state.setState(value.getState());
+        this.bulkTagState.setState(value.getBulkTagState());
+    }
+
+    @Override
+    public void setDelegate(@NotNull final EditorDelegate<SearchUITag> delegate) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public TriStatePushButton getState() {
+        return state;
+    }
+
+    public TriStatePushButton getBulkTagState() {
+        return bulkTagState;
+    }
+
+    public Label getName() {
+        return name;
     }
 }
