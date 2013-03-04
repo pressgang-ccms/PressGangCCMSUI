@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.editor.search;
 
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.EditorDelegate;
+import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.editor.client.ValueAwareEditor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -20,9 +21,8 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Matthew Casperson
  */
-public final class SearchUITagEditor implements ValueAwareEditor<SearchUITag> {
+public final class SearchUITagEditor implements Editor<SearchUITag> {
     private final SearchUICategoryEditor searchUICategory;
-    private SearchUITag value;
 
     private final Label name = new Label();
     private final TriStatePushButton state = new TriStatePushButton();
@@ -39,58 +39,17 @@ public final class SearchUITagEditor implements ValueAwareEditor<SearchUITag> {
                 driver.flush();
             }
         });
-
-        bulkTagState.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                /*
-                    If this tag is in a mutually exclusive category, then unselect any other selected tags.
-                 */
-                if (value.isInMutuallyExclusiveCategory() && bulkTagState.getState() == TriStateSelectionState.SELECTED) {
-                    for (final SearchUITag tag : searchUICategory.getMyTags().getList()) {
-                        if (tag != value && tag.getBulkTagState() == TriStateSelectionState.SELECTED) {
-                            tag.setBulkTagState(TriStateSelectionState.UNSELECTED);
-                        }
-                    }
-                    driver.flush();
-                }
-            }
-        });
     }
 
-    @Override
-    public void flush() {
-        value.setBulkTagState(this.bulkTagState.getState());
-        value.setState(this.state.getState());
-    }
-
-    @Override
-    public void onPropertyChange(@NotNull final String... paths) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void setValue(@NotNull final SearchUITag value) {
-        this.value = value;
-        this.name.setText(value.getName());
-        this.state.setState(value.getState());
-        this.bulkTagState.setState(value.getBulkTagState());
-    }
-
-    @Override
-    public void setDelegate(@NotNull final EditorDelegate<SearchUITag> delegate) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public TriStatePushButton getState() {
+    public TriStatePushButton stateEditor() {
         return state;
     }
 
-    public TriStatePushButton getBulkTagState() {
+    public TriStatePushButton bulkTagStateEditor() {
         return bulkTagState;
     }
 
-    public Label getName() {
+    public Label nameEditor() {
         return name;
     }
 }

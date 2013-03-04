@@ -38,7 +38,7 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
     final FourTextAndImageButtonSearchUICategoryEditor summary = new FourTextAndImageButtonSearchUICategoryEditor();
     private final ListEditor<SearchUITag, SearchUITagEditor> myTags = ListEditor.of(new SearchUITagEditorSource());
 
-    public ListEditor<SearchUITag, SearchUITagEditor> getMyTags() {
+    public ListEditor<SearchUITag, SearchUITagEditor> myTagsEditor() {
         return myTags;
     }
 
@@ -55,17 +55,35 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
             final int column = index % COLUMNS;
 
             @NotNull final SearchUITagEditor subEditor = new SearchUITagEditor(driver, SearchUICategoryEditor.this);
-            tagsTable.setWidget(fixedIndex, column * TAG_CELLS_PER_COLUMN, subEditor.getName());
-            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 1, subEditor.getState());
-            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 2, subEditor.getBulkTagState());
-            subEditor.getBulkTagState().setVisible(showBulkTags);
+            tagsTable.setWidget(fixedIndex, column * TAG_CELLS_PER_COLUMN, subEditor.nameEditor());
+            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 1, subEditor.stateEditor());
+            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 2, subEditor.bulkTagStateEditor());
+            subEditor.bulkTagStateEditor().setVisible(showBulkTags);
+
+            subEditor.bulkTagStateEditor().addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    /*
+                        If this tag is in a mutually exclusive category, then unselect any other selected tags.
+                    */
+                    if (value.getMutuallyExclusiveCategory() && subEditor.bulkTagStateEditor().getState() == TriStateSelectionState.SELECTED) {
+                        for (final SearchUITagEditor tag : myTagsEditor().getEditors()) {
+                            if (tag != subEditor && tag.bulkTagStateEditor().getState() == TriStateSelectionState.SELECTED) {
+                                tag.bulkTagStateEditor().setState(TriStateSelectionState.UNSELECTED);
+                            }
+                        }
+                        driver.flush();
+                    }
+                }
+            });
+
             return subEditor;
         }
 
         @Override
         public void dispose(@NotNull final SearchUITagEditor subEditor) {
-            subEditor.getName().removeFromParent();
-            subEditor.getState().removeFromParent();
+            subEditor.nameEditor().removeFromParent();
+            subEditor.stateEditor().removeFromParent();
         }
 
         @Override
@@ -73,9 +91,9 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
             final int fixedIndex = (index / COLUMNS) + LOGIC_AND_HEADING_ROW_COUNT; // add 3 because the first rows are taken up by the category logic controls
             final int column = index % COLUMNS;
 
-            tagsTable.setWidget(fixedIndex, column * TAG_CELLS_PER_COLUMN, subEditor.getName());
-            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 1, subEditor.getState());
-            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 2, subEditor.getBulkTagState());
+            tagsTable.setWidget(fixedIndex, column * TAG_CELLS_PER_COLUMN, subEditor.nameEditor());
+            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 1, subEditor.stateEditor());
+            tagsTable.setWidget(fixedIndex, (column * TAG_CELLS_PER_COLUMN) + 2, subEditor.bulkTagStateEditor());
         }
     }
 

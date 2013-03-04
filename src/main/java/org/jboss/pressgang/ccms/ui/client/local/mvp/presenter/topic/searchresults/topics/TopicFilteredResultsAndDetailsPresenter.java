@@ -59,8 +59,8 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.*;
@@ -871,17 +871,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             for (@NotNull final TopicTagViewProjectEditor topicTagViewProjectEditor : getTopicTagsPresenter().getDisplay().getEditor().projects.getEditors()) {
 
-                if (topicTagViewProjectEditor.categories == null || topicTagViewProjectEditor.categories.getEditors() == null) {
-                    LOGGER.log(Level.INFO, "categories is null");
-                    break;
-                }
+                checkState(topicTagViewProjectEditor.categories != null && topicTagViewProjectEditor.categories.getEditors() != null, "The project's categories editor collection should be valid");
 
                 for (@NotNull final TopicTagViewCategoryEditor topicTagViewCategoryEditor : topicTagViewProjectEditor.categories.getEditors()) {
 
-                    if (topicTagViewCategoryEditor.myTags == null || topicTagViewCategoryEditor.myTags.getEditors() == null) {
-                        LOGGER.log(Level.INFO, "myTags is null");
-                        break;
-                    }
+                    checkState(topicTagViewCategoryEditor.myTags != null && topicTagViewCategoryEditor.myTags.getEditors() != null, "The category's tag editor collection should be valid");
 
                     for (@NotNull final TopicTagViewTagEditor topicTagViewTagEditor : topicTagViewCategoryEditor.myTags.getEditors()) {
                         checkState(topicTagViewTagEditor.getTag() != null, "The tag editor should point to a valid tag ui data POJO.");
@@ -1610,7 +1604,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             final RESTTagV1 selectedTag = getTopicTagsPresenter().getDisplay().getMyTags().getValue().getTag().getItem();
 
             /* Need to deal with re-adding removed tags */
-            @org.jetbrains.annotations.Nullable RESTTagCollectionItemV1 deletedTag = null;
+            @Nullable RESTTagCollectionItemV1 deletedTag = null;
             for (@NotNull final RESTTagCollectionItemV1 tag : getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTags().getItems()) {
                 if (tag.getItem().getId().equals(selectedTag.getId())) {
                     if (RESTBaseCollectionItemV1.REMOVE_STATE.equals(tag.getState())) {
@@ -1651,8 +1645,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         public boolean apply(final @Nullable RESTTagCollectionItemV1 existingTag) {
 
                             /* there is no match if the tag has already been removed */
-                            if (existingTag == null || existingTag.getItem() == null
-                                    || RESTBaseCollectionItemV1.REMOVE_STATE.equals(existingTag.getState())) {
+                            if (existingTag == null || existingTag.getItem() == null || RESTBaseCollectionItemV1.REMOVE_STATE.equals(existingTag.getState())) {
                                 return false;
                             }
 

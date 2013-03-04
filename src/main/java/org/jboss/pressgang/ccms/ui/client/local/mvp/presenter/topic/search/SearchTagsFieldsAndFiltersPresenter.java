@@ -12,7 +12,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.*;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentTagV1;
-import org.jboss.pressgang.ccms.rest.v1.components.ComponentTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.components.GWTComponentTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -524,7 +524,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                                 modifiedTopic.explicitSetTags(new RESTTagCollectionV1());
 
                                 for (@NotNull final Integer removeTagID : removeTags) {
-                                    if (ComponentTopicV1.hasTag(topic.getItem(), removeTagID)) {
+                                    if (GWTComponentTopicV1.hasTag(topic.getItem(), removeTagID)) {
                                         final RESTTagV1 removeTag = new RESTTagV1();
                                         removeTag.setId(removeTagID);
                                         modifiedTopic.getTags().addRemoveItem(removeTag);
@@ -551,7 +551,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                                     }
 
                                     for (final Integer addTagID : addTags.get(addTagCategory)) {
-                                        if (!ComponentTopicV1.hasTag(topic.getItem(), addTagID)) {
+                                        if (!GWTComponentTopicV1.hasTag(topic.getItem(), addTagID)) {
                                             final RESTTagV1 addTag = new RESTTagV1();
                                             addTag.setId(addTagID);
                                             modifiedTopic.getTags().addNewItem(addTag);
