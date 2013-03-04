@@ -93,7 +93,8 @@ public final class RESTCalls {
 
     private static final String TOPIC_TAG_EXPANSION =
             "{\"branches\":[" +
-                "{\"trunk\":{\"name\": \"" + RESTTopicV1.TAGS_NAME + "\"}, \"branches\":[" +
+                "{\"trunk\":{\"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}, \"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.TAGS_NAME + "\"}, \"branches\":[" +
                     "{\"trunk\":{\"name\": \"" + RESTFilterCategoryV1.CATEGORY_NAME + "\"}}" +
                 "]}" +
             "]}";
@@ -504,11 +505,10 @@ public final class RESTCalls {
 
     public static void getTopicsFromQueryWithExpandedTags(@NotNull final RESTCallback<RESTTopicCollectionV1> callback, @NotNull final String queryString) {
         /* Expand the categories and projects in the tags */
-        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}," + TOPIC_TAG_EXPANSION + "}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).getJSONTopicsWithQuery(new PathSegmentImpl(queryString), expand);
+                createRestMethod(callback).getJSONTopicsWithQuery(new PathSegmentImpl(queryString), TOPIC_TAG_EXPANSION);
             }
         });
     }
