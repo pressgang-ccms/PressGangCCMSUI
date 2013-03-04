@@ -436,6 +436,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
         display.getPanel().clear();
         display.getPanel().setWidget(tagsComponent.getDisplay().getPanel());
+        resetTopActionButtons();
         display.replaceTopActionButton(display.getTagsSearch(), display.getTagsSearchDownLabel());
 
         fieldsComponent.getDisplay().setViewShown(false);
@@ -449,6 +450,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
         display.getPanel().clear();
         display.getPanel().setWidget(fieldsComponent.getDisplay().getPanel());
+        resetTopActionButtons();
         display.replaceTopActionButton(display.getFields(), display.getFieldsDownLabel());
 
         fieldsComponent.getDisplay().setViewShown(true);
@@ -463,6 +465,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         display.getPanel().clear();
         display.getPanel().setWidget(searchFilterResultsAndFilterPresenter.getDisplay().getPanel());
         display.replaceTopActionButton(display.getFilters(), display.getFiltersDownLabel());
+        resetTopActionButtons();
         display.getTopViewSpecificLeftActionPanel().add(searchFilterResultsAndFilterPresenter.getDisplay().getTopActionPanel());
 
         fieldsComponent.getDisplay().setViewShown(false);
