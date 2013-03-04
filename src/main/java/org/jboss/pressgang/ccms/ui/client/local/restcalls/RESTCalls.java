@@ -91,6 +91,13 @@ public final class RESTCalls {
                 "]}" +
             "]}";
 
+    private static final String TOPIC_TAG_EXPANSION =
+            "{\"branches\":[" +
+                "{\"trunk\":{\"name\": \"" + RESTTopicV1.TAGS_NAME + "\"}, \"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTFilterCategoryV1.CATEGORY_NAME + "\"}}" +
+                "]}" +
+            "]}";
+
     /**
      * All REST calls follow a similar pattern: Before it starts An Exception may be thrown The call succeeds or The call fails
      * <p/>
@@ -487,6 +494,17 @@ public final class RESTCalls {
     public static void getTopicsFromQuery(@NotNull final RESTCallback<RESTTopicCollectionV1> callback, @NotNull final String queryString) {
         /* Expand the categories and projects in the tags */
         @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}}]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONTopicsWithQuery(new PathSegmentImpl(queryString), expand);
+            }
+        });
+    }
+
+    public static void getTopicsFromQueryWithExpandedTags(@NotNull final RESTCallback<RESTTopicCollectionV1> callback, @NotNull final String queryString) {
+        /* Expand the categories and projects in the tags */
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTv1Constants.TOPICS_EXPANSION_NAME + "\"}," + TOPIC_TAG_EXPANSION + "}]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
