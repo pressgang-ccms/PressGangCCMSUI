@@ -115,7 +115,7 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
                                 checkArgument(retValue.getFilterLocales_OTM() != null, "The initially retrieved entity should have an expanded filter locales collection");
 
                                 checkArgument(retValue.getFilterTags_OTM().getItems().size() == 0 || retValue.getFilterTags_OTM().getItems().get(0).getItem().getTag() != null,
-                                        "The initially retrieved entity should have an expanded filter tags collection, and the filter tags should have an expanded tagincategory reference");
+                                        "The initially retrieved entity should have an expanded filter tags collection, and the filter tags should have an expanded tag reference");
 
                                 checkArgument(retValue.getFilterCategories_OTM().getItems().size() == 0 || retValue.getFilterCategories_OTM().getItems().get(0).getItem().getCategory() != null,
                                         "The initially retrieved entity should have an expanded filter categories collection, and the filter tags should have an expanded category reference");

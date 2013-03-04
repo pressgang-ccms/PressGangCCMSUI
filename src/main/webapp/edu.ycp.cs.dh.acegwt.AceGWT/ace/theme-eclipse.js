@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-define('ace/theme/eclipse', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/eclipse', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
 
-    exports.isDark = false;
-    exports.cssText = ".ace-eclipse .ace_editor {\
+exports.isDark = false;
+exports.cssText = ".ace-eclipse .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
 \
@@ -143,8 +143,8 @@ define('ace/theme/eclipse', ['require', 'exports', 'module', 'ace/lib/dom'], fun
   background: rgb(232, 242, 254);\
 }";
 
-    exports.cssClass = "ace-eclipse";
+exports.cssClass = "ace-eclipse";
 
-    var dom = require("../lib/dom");
-    dom.importCssString(exports.cssText, exports.cssClass);
+var dom = require("../lib/dom");
+dom.importCssString(exports.cssText, exports.cssClass);
 });

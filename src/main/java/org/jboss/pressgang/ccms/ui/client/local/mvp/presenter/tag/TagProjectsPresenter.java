@@ -24,7 +24,7 @@ import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollecti
 import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollectionItemParentSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.tag.RESTTagCollectionItemIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.tag.RESTTagCollectionItemNameSort;
-import org.jboss.pressgang.ccms.ui.client.local.sort.tagincategory.RESTTagCollectionItemParentSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.taginproject.RESTTagCollectionItemParentSort;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -154,9 +154,9 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
 
 
     /**
-     * Get the collection of projects, to which we will add or remove the currently selected tagincategory. Note that the changes made to
-     * this collection will be synced in reverse to the tagincategory when the save button is clicked i.e. where the displayed tagincategory is
-     * added to a project, that will actually be persisted through the REST interface as a project added to the displayed tagincategory.
+     * Get the collection of projects, to which we will add or remove the currently selected tag. Note that the changes made to
+     * this collection will be synced in reverse to the tag when the save button is clicked i.e. where the displayed tag is
+     * added to a project, that will actually be persisted through the REST interface as a project added to the displayed tag.
      */
     @Override
     public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTTagV1 parent) {

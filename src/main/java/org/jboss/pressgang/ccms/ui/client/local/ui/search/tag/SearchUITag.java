@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * This class represents a single tagincategory under a parent category.
+ * This class represents a single tag under a parent category.
  *
  * @author Matthew Casperson
  */
@@ -28,8 +28,8 @@ public final class SearchUITag extends SearchUIBase {
     private static final Logger LOGGER = Logger.getLogger(SearchUITag.class.getName());
 
     /**
-     * @param parent The parent category that this tagincategory belongs to
-     * @param tag    The tagincategory referenced by this object
+     * @param parent The parent category that this tag belongs to
+     * @param tag    The tag referenced by this object
      * @param filter The filter that defines the state of the tags
      */
     public SearchUITag(@NotNull final SearchUICategory parent, @NotNull final RESTTagCollectionItemV1 tag, @Nullable final RESTFilterV1 filter) {
@@ -47,10 +47,10 @@ public final class SearchUITag extends SearchUIBase {
                 for (@NotNull final RESTFilterTagCollectionItemV1 filterTag : filter.getFilterTags_OTM().getItems()) {
                     if (filterTag.getItem().getTag().getId().equals(tag.getItem().getId())) {
                         if (filterTag.getItem().getState().equals(CommonFilterConstants.MATCH_TAG_STATE)) {
-                            //LOGGER.log(Level.INFO, "Found included tagincategory");
+                            //LOGGER.log(Level.INFO, "Found included tag");
                             state = TriStateSelectionState.SELECTED;
                         } else if (filterTag.getItem().getState().equals(CommonFilterConstants.NOT_MATCH_TAG_STATE)) {
-                            //LOGGER.log(Level.INFO, "Found excluded tagincategory");
+                            //LOGGER.log(Level.INFO, "Found excluded tag");
                             state = TriStateSelectionState.UNSELECTED;
                         }
                         break;
@@ -63,7 +63,7 @@ public final class SearchUITag extends SearchUIBase {
     }
 
     /**
-     * @return The tagincategory referenced by this object
+     * @return The tag referenced by this object
      */
     public
     @NotNull
@@ -72,21 +72,21 @@ public final class SearchUITag extends SearchUIBase {
     }
 
     /**
-     * @param tag The tagincategory referenced by this object
+     * @param tag The tag referenced by this object
      */
     public void setTag(@NotNull final RESTTagCollectionItemV1 tag) {
         this.tag = tag;
     }
 
     /**
-     * @return The selection state of the tagincategory
+     * @return The selection state of the tag
      */
     public TriStateSelectionState getState() {
         return this.state;
     }
 
     /**
-     * @param state The selection state of the tagincategory
+     * @param state The selection state of the tag
      */
     public void setState(final TriStateSelectionState state) {
         this.state = state;

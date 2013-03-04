@@ -41,17 +41,17 @@ public class ProjectTagPresenter extends BaseChildrenPresenter<
         implements BaseTemplatePresenterInterface {
 
     /**
-     * The interface that defines the child tagincategory view
+     * The interface that defines the child tag view
      */
     public interface Display extends BaseChildrenViewInterface<RESTProjectV1, RESTTagCollectionItemV1, RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1> {
         /**
          *
-         * @return The column that holds the child tagincategory id
+         * @return The column that holds the child tag id
          */
         @NotNull TextColumn<RESTTagCollectionItemV1> getTagsIdColumn();
         /**
          *
-         * @return The column that holds the child tagincategory name
+         * @return The column that holds the child tag name
          */
         @NotNull TextColumn<RESTTagCollectionItemV1> getTagsNameColumn();
     }

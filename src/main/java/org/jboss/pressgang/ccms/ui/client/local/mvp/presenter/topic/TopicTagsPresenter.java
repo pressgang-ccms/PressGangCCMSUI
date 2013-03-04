@@ -65,7 +65,7 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
     }
 
     /**
-     * A copy of all the tags in the system, broken down into project->category->tagincategory. Used when adding new tags to a topic.
+     * A copy of all the tags in the system, broken down into project->category->tag. Used when adding new tags to a topic.
      */
     private final SearchUIProjects searchUIProjects = new SearchUIProjects();
 
@@ -125,7 +125,7 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
     }
 
     /**
-     * Add behaviour to the tagincategory view screen elements
+     * Add behaviour to the tag view screen elements
      */
     public void bindNewTagListBoxes(@NotNull final ClickHandler clickHandler) {
         display.getProjectsList().addValueChangeHandler(new ValueChangeHandler<SearchUIProject>() {

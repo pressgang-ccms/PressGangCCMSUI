@@ -136,7 +136,7 @@ public class TagCategoriesPresenter
 
     /**
      * This provider pages over a collection of categories that was returned when the page was built. This is because changes to
-     * the tagincategory category relationships are done to the categories, not to the tagincategory. This means we need to keep a list of the
+     * the tag category relationships are done to the categories, not to the tag. This means we need to keep a list of the
      * categories instead of losing them when the table is paged through.
      *
      * @return A provider to be used for the category display list.
@@ -182,7 +182,7 @@ public class TagCategoriesPresenter
     }
 
     /**
-     * @return A provider to be used for the tagincategory display list
+     * @return A provider to be used for the tag display list
      */
     @Override
     @NotNull
@@ -193,7 +193,7 @@ public class TagCategoriesPresenter
                 getExistingProviderData().setStartRow(display.getVisibleRange().getStart());
                 getExistingProviderData().setItems(new ArrayList<RESTTagInCategoryCollectionItemV1>());
 
-                /* Zero results can be a null list. Also selecting a new tagincategory will reset getProviderData(). */
+                /* Zero results can be a null list. Also selecting a new tag will reset getProviderData(). */
                 if (entity != null && entity.getTags() != null) {
                     /* Don't display removed tags */
                     for (final RESTTagInCategoryCollectionItemV1 tagInCategory : entity.getTags().returnExistingAddedAndUpdatedCollectionItems()) {
@@ -287,7 +287,7 @@ public class TagCategoriesPresenter
                 new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
                     /**
-                     * Swap the sort value for the tagincategory that was selected with the tagincategory below it.
+                     * Swap the sort value for the tag that was selected with the tag below it.
                      */
                     @Override
                     public void update(final int index, @NotNull final RESTTagInCategoryCollectionItemV1 object, @Nullable final String value) {
@@ -299,9 +299,9 @@ public class TagCategoriesPresenter
     }
 
     /**
-     * Get the collection of categories, to which we will add or remove the currently selected tagincategory. Note that the changes made
-     * to this collection will be synced in reverse to the tagincategory when the save button is clicked i.e. where the displayed tagincategory is
-     * added to a project, that will actually be persisted through the REST interface as a category added to the displayed tagincategory.
+     * Get the collection of categories, to which we will add or remove the currently selected tag. Note that the changes made
+     * to this collection will be synced in reverse to the tag when the save button is clicked i.e. where the displayed tag is
+     * added to a project, that will actually be persisted through the REST interface as a category added to the displayed tag.
      */
     @Override
     public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTTagV1 parent) {

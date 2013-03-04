@@ -80,7 +80,7 @@ ace.define('ace/mode/diff_highlight_rules', ['require', 'exports', 'module' , 'a
                         "constant",
                         "constant.numeric",
                         "constant",
-                        "comment.doc.tagincategory"
+                        "comment.doc.tag"
                     ]
                 },
                 { //diff.range.normal
@@ -99,7 +99,7 @@ ace.define('ace/mode/diff_highlight_rules', ['require', 'exports', 'module' , 'a
                     "regex": "^(?:(\\-{3}|\\+{3}|\\*{3})( .+))$",
                     "token": [
                         "constant.numeric",
-                        "meta.tagincategory"
+                        "meta.tag"
                     ]
                 },
                 { // added

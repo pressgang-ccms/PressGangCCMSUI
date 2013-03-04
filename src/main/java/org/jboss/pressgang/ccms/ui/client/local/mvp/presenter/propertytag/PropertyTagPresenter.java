@@ -21,7 +21,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
- * The presenter for the property tagincategory details view.
+ * The presenter for the property tag details view.
  */
 @Dependent
 public class PropertyTagPresenter extends BaseTemplatePresenter {

@@ -691,7 +691,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
                         eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
                                 + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "="
-                                + topic.getTitle() + " [" + topic.getId() + "];tagincategory" + ServiceConstants.CSP_TAG_ID + "=1;logic=AND",
+                                + topic.getTitle() + " [" + topic.getId() + "];tag" + ServiceConstants.CSP_TAG_ID + "=1;logic=AND",
                                 GWTUtilities.isEventToOpenNewWindow(event)));
                     }
 

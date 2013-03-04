@@ -86,7 +86,7 @@ public class SearchView extends BaseTemplateView implements SearchPresenter.Disp
 
     public final void displayExtended(@NotNull final RESTTagCollectionV1 tagCollection, final RESTFilterV1 filter, final boolean readOnly) {
 
-        /* Construct a hierarchy of tags from the tagincategory collection */
+        /* Construct a hierarchy of tags from the tag collection */
         searchUIProjects.initialize(tagCollection, filter);
 
         /* SearchUIProjectsEditor is a grid */

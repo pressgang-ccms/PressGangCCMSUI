@@ -37,8 +37,8 @@ public interface BaseOrderedChildrenPresenterInterface<
      *
      * @param editingParent The entity that is being edited.
      * @param parent The parent of the children being modified. This is not necessarily the same of the editingParent. For example, tags are ordered children of categories.
-     *               So while none of the child collections of a tagincategory is ordered, it is still convenient to be able to order a tagincategory within the child tags held bya parent
-     *               category within the tags editing view. In this case the editingParent would be the tagincategory, while the parent would be the category.
+     *               So while none of the child collections of a tag is ordered, it is still convenient to be able to order a tag within the child tags held bya parent
+     *               category within the tags editing view. In this case the editingParent would be the tag, while the parent would be the category.
      * @param object The child being edited.
      * @param down true if it is being moved down, and false if it is being moved up
      * @param sortCallback a callback used to set the sort property of the child (as this property is not defined in it's own interface or subclass)

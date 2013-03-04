@@ -238,7 +238,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
                 checkState(filteredResultsComponent.getProviderData().getSelectedItem() != null, "An item should have been selected.");
                 checkState(filteredResultsComponent.getProviderData().getSelectedItem().getItem() != null, "The selected item should have a valid entity.");
 
-                /* Was the tagincategory we just saved a new tagincategory? */
+                /* Was the tag we just saved a new tag? */
                 final boolean wasNewEntity = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
 
                 /* Sync the UI to the underlying object */
@@ -301,7 +301,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
     }
 
     /**
-     * Binds behaviour to the tagincategory search and list view
+     * Binds behaviour to the tag search and list view
      */
     @Override
     protected void bindFilteredResultsButtons() {
@@ -319,12 +319,12 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
             @Override
             public void onClick(final ClickEvent event) {
 
-                /* The 'selected' tagincategory will be blank. This gives us something to compare to when checking for unsaved changes */
+                /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
                 @NotNull final RESTPropertyTagV1 selectedEntity = new RESTPropertyTagV1();
                 selectedEntity.setId(Constants.NULL_ID);
                 @NotNull final RESTPropertyTagCollectionItemV1 selectedTagWrapper = new RESTPropertyTagCollectionItemV1(selectedEntity);
 
-                /* The displayed tagincategory will also be blank. This is the object that our data will be saved into */
+                /* The displayed tag will also be blank. This is the object that our data will be saved into */
                 @NotNull final RESTPropertyTagV1 displayedEntity = new RESTPropertyTagV1();
                 displayedEntity.setId(Constants.NULL_ID);
                 displayedEntity.setPropertyCategories(new RESTPropertyCategoryInPropertyTagCollectionV1());
@@ -344,7 +344,7 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
 
     @Override
     public boolean hasUnsavedChanges() {
-        /* sync the UI with the underlying tagincategory */
+        /* sync the UI with the underlying tag */
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             resultComponent.getDisplay().getDriver().flush();
 
@@ -383,13 +383,13 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
     private boolean unsavedCategoryChanges() {
         checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "An item should have been displayed.");
         checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed item should have a valid entity.");
-        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories() != null, "The property tagincategory's collection of categories should have been populated.");
+        checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories() != null, "The property tag's collection of categories should have been populated.");
 
         return !filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getPropertyCategories().returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
     }
 
     /**
-     * Called when the selected tagincategory is changed, or the selected view is changed.
+     * Called when the selected tag is changed, or the selected view is changed.
      */
     @Override
     protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {

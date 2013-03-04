@@ -560,7 +560,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                                 changes.
 
                                                                 Note that this should not happen because we don't actually just update the property tags;
-                                                                any change to the property tagincategory value results in the mapping being deleted and recreated.
+                                                                any change to the property tag value results in the mapping being deleted and recreated.
 
                                                                 The code is left here as a reminder that some additional checking might be required with
                                                                 new children that are exposed through the UI.
@@ -698,7 +698,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             /*
-                Bind logic to the tagincategory buttons
+                Bind logic to the tag buttons
              */
             if (viewIsInFilter(filter, getTopicTagsPresenter().getDisplay())) {
                 LOGGER.log(Level.INFO, "\tInitializing topic tags view");
@@ -853,7 +853,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     /**
-     * Add behaviour to the tagincategory delete buttons
+     * Add behaviour to the tag delete buttons
      */
     private void bindTagEditingButtons() {
 
@@ -884,8 +884,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     }
 
                     for (@NotNull final TopicTagViewTagEditor topicTagViewTagEditor : topicTagViewCategoryEditor.myTags.getEditors()) {
-                        checkState(topicTagViewTagEditor.getTag() != null, "The tagincategory editor should point to a valid tagincategory ui data POJO.");
-                        checkState(topicTagViewTagEditor.getTag().getTag() != null, "The tagincategory editor should point to a valid tagincategory ui data POJO, which should reference a valid tagincategory entity.");
+                        checkState(topicTagViewTagEditor.getTag() != null, "The tag editor should point to a valid tag ui data POJO.");
+                        checkState(topicTagViewTagEditor.getTag().getTag() != null, "The tag editor should point to a valid tag ui data POJO, which should reference a valid tag entity.");
                         topicTagViewTagEditor.getDelete().addClickHandler(new DeleteTagClickHandler(topicTagViewTagEditor.getTag().getTag()));
                     }
                 }
@@ -1595,7 +1595,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     /**
-     * A click handler to add a tagincategory to a topic
+     * A click handler to add a tag to a topic
      *
      * @author Matthew Casperson
      */
@@ -1625,11 +1625,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             /*
-             * If we get this far we are adding a tagincategory to the topic. However, some categories are mutually exclusive, so we need
+             * If we get this far we are adding a tag to the topic. However, some categories are mutually exclusive, so we need
              * to remove any conflicting tags.
              */
 
-            /* Find the mutually exclusive categories that the new tagincategory belongs to */
+            /* Find the mutually exclusive categories that the new tag belongs to */
             final Collection<RESTCategoryInTagCollectionItemV1> mutuallyExclusiveCategories = Collections2.filter(selectedTag
                     .getCategories().getItems(), new Predicate<RESTCategoryInTagCollectionItemV1>() {
 
@@ -1650,13 +1650,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         @Override
                         public boolean apply(final @Nullable RESTTagCollectionItemV1 existingTag) {
 
-                            /* there is no match if the tagincategory has already been removed */
+                            /* there is no match if the tag has already been removed */
                             if (existingTag == null || existingTag.getItem() == null
                                     || RESTBaseCollectionItemV1.REMOVE_STATE.equals(existingTag.getState())) {
                                 return false;
                             }
 
-                            /* loop over the categories that the tagincategory belongs to */
+                            /* loop over the categories that the tag belongs to */
                             return Iterables.any(existingTag.getItem().getCategories().getItems(),
                                     new Predicate<RESTCategoryInTagCollectionItemV1>() {
 
@@ -1668,7 +1668,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                             }
 
                                             /*
-                                             * match any categories that the tagincategory belongs to with any of the mutually exclusive
+                                             * match any categories that the tag belongs to with any of the mutually exclusive
                                              * categories
                                              */
                                             return Iterables.any(mutuallyExclusiveCategories,
@@ -1704,9 +1704,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             if (deletedTag == null) {
-                /* Get the selected tagincategory, and clone it */
+                /* Get the selected tag, and clone it */
                 final RESTTagV1 selectedTagClone = selectedTag.clone(true);
-                /* Add the tagincategory to the topic */
+                /* Add the tag to the topic */
                 getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTags().addNewItem(selectedTagClone);
             } else {
                 deletedTag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
@@ -1718,7 +1718,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     /**
-     * A click handler to remove a tagincategory from a topic
+     * A click handler to remove a tag from a topic
      *
      * @author Matthew Casperson
      */
@@ -1728,7 +1728,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
         public DeleteTagClickHandler(@org.jetbrains.annotations.Nullable final RESTTagCollectionItemV1 tag) {
             if (tag == null) {
-                throw new IllegalArgumentException("tagincategory cannot be null");
+                throw new IllegalArgumentException("tag cannot be null");
             }
 
             this.tag = tag;
@@ -1740,10 +1740,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
             if (RESTBaseCollectionItemV1.ADD_STATE.equals(tag.getState())) {
-                /* Tag was added and then removed, so we just delete the tagincategory */
+                /* Tag was added and then removed, so we just delete the tag */
                 getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTags().getItems().remove(tag);
             } else {
-                /* Otherwise we set the tagincategory as removed */
+                /* Otherwise we set the tag as removed */
                 tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
             }
 

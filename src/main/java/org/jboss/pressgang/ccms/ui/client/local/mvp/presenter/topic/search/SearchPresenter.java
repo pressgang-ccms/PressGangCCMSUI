@@ -58,7 +58,7 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
     private Display display;
 
     /**
-     * The filter that will be used to set the tagincategory's initial state
+     * The filter that will be used to set the tag's initial state
      */
     private RESTFilterV1 filter;
 

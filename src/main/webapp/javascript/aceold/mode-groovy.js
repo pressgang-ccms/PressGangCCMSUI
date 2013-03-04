@@ -639,7 +639,7 @@ ace.define('ace/mode/doc_comment_highlight_rules', ['require', 'exports', 'modul
         this.$rules = {
             "start": [
                 {
-                    token: "comment.doc.tagincategory",
+                    token: "comment.doc.tag",
                     regex: "@[\\w\\d_]+" // TODO: fix email addresses
                 },
                 {

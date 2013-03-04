@@ -39,7 +39,7 @@ import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 /**
- * The presenter used to add logic to the category tagincategory view.
+ * The presenter used to add logic to the category tag view.
  */
 @Dependent
 public class CategoryTagPresenter
@@ -64,13 +64,13 @@ public class CategoryTagPresenter
     @Nullable
     private Integer entityId;
     /**
-     * The category tagincategory view.
+     * The category tag view.
      */
     @Inject
     private Display display;
 
     /**
-     * The category tagincategory view.
+     * The category tag view.
      */
     @NotNull
     public Display getDisplay() {
@@ -196,7 +196,7 @@ public class CategoryTagPresenter
                 getExistingProviderData().setStartRow(display.getVisibleRange().getStart());
                 getExistingProviderData().setItems(new ArrayList<RESTTagInCategoryCollectionItemV1>());
 
-                /* Zero results can be a null list. Also selecting a new tagincategory will reset getProviderData(). */
+                /* Zero results can be a null list. Also selecting a new tag will reset getProviderData(). */
                 if (entity != null && entity.getTags() != null) {
                     /* Don't display removed tags */
                     for (final RESTTagInCategoryCollectionItemV1 tagInCategory : entity.getTags().returnExistingAddedAndUpdatedCollectionItems()) {
@@ -212,7 +212,7 @@ public class CategoryTagPresenter
     }
 
     /**
-     * The interface that defines the category tagincategory view.
+     * The interface that defines the category tag view.
      */
     public interface Display extends
             BaseOrderedChildrenViewInterface<

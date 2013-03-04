@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-define('ace/theme/mono_industrial', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/mono_industrial', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = true;
-    exports.cssClass = "ace-mono-industrial";
-    exports.cssText = "\
+exports.isDark = true;
+exports.cssClass = "ace-mono-industrial";
+exports.cssText = "\
 .ace-mono-industrial .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\

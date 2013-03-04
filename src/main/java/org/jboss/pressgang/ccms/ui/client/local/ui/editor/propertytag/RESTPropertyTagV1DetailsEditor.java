@@ -9,7 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An editor used to bind the property tagincategory's details to ui elements.
+ * An editor used to bind the property tag's details to ui elements.
  */
 public final class RESTPropertyTagV1DetailsEditor extends Grid implements Editor<RESTPropertyTagV1> {
     /**

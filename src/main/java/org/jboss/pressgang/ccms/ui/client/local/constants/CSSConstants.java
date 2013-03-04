@@ -186,7 +186,7 @@ public interface CSSConstants {
     }
 
     /**
-     *  Holds the styles that are applied to the property tagincategory's views.
+     *  Holds the styles that are applied to the property tag's views.
      */
     interface PropertyTagView {
         String PROPERTY_TAG_VIEW_PANEL = "PropertyTagViewPanel";
@@ -228,7 +228,7 @@ public interface CSSConstants {
     }
 
     /**
-     *  Holds the styles that are applied to the tagincategory's views.
+     *  Holds the styles that are applied to the tag's views.
      */
     interface TagView {
         String TAG_VIEW_PANEL = "TagViewPanel";
@@ -320,7 +320,7 @@ public interface CSSConstants {
          */
         String TOPIC_TAG_VIEW_PROJECT_ROW = "TopicTagViewProjectRow";
         /**
-         * Assigned to the FlexTable rows that list a tagincategory in the topic tags view.
+         * Assigned to the FlexTable rows that list a tag in the topic tags view.
          */
         String TOPIC_TAG_VIEW_TAG_ROW = "TopicTagViewTagRow";
         /**
@@ -348,11 +348,11 @@ public interface CSSConstants {
          */
         String TOPIC_TAG_VIEW_TAG_STABLE = "TopicTagViewTagsTable";
         /**
-         * Assigned to the table that holds the new tagincategory project, category and tagincategory lists.
+         * Assigned to the table that holds the new tag project, category and tag lists.
          */
         String TOPIC_TAG_VIEW_NEW_TAG_TABLE = "TopicTagViewNewTagTable";
         /**
-         * Assigned to the panel that holds the topic tagincategory view.
+         * Assigned to the panel that holds the topic tag view.
          */
         String TOPIC_TAG_VIEW_CONTENT_PANEL = "TopicTagViewContentPanel";
         /**
@@ -368,7 +368,7 @@ public interface CSSConstants {
          */
         String TOPIC_TAG_VIEW_NEW_TAG_TAGS_LIST = "TopicTagViewNewTagTagsList";
         /**
-         * Assigned to the panel that holds the new tagincategory ui elements.
+         * Assigned to the panel that holds the new tag ui elements.
          */
         String TOPIC_TAG_VIEW_NEW_TAG_PARENT_PANEL = "TopicTagViewNewTagParentPanel";
         /**
@@ -383,7 +383,7 @@ public interface CSSConstants {
     }
 
     /**
-     *  Holds the styles that are applied to the tagincategory list category list view.
+     *  Holds the styles that are applied to the tag list category list view.
      */
     interface TagListCategoryView {
         String CATEGORIES_BUTTONS_LAYOUT = "CategoriesButtonsLayout";
@@ -394,7 +394,7 @@ public interface CSSConstants {
     }
 
     /**
-     *  Holds the styles that are applied to the tagincategory list projects list view.
+     *  Holds the styles that are applied to the tag list projects list view.
      */
     interface TagListProjectsView {
         String PROJECTS_BUTTONS_LAYOUT = "ProjectsButtonsLayout";
@@ -403,11 +403,11 @@ public interface CSSConstants {
     }
 
     /**
-     *  Holds the styles that are applied to the tagincategory list tags view.
+     *  Holds the styles that are applied to the tag list tags view.
      */
     interface TagListTagView {
         /**
-         *  Assigned to the tagincategory labels.
+         *  Assigned to the tag labels.
          */
         String TAG_LABEL = "TagLabel";
     }

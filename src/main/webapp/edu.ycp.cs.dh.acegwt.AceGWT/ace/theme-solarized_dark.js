@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-define('ace/theme/solarized_dark', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/solarized_dark', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = true;
-    exports.cssClass = "ace-solarized-dark";
-    exports.cssText = "\
+exports.isDark = true;
+exports.cssClass = "ace-solarized-dark";
+exports.cssText = "\
 .ace-solarized-dark .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\

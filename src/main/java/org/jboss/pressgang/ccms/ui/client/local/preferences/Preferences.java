@@ -18,7 +18,7 @@ final public class Preferences {
      */
     public static final String LAST_BUILD = "LastBuild";
     /**
-     * The setting that saves the width of the split screen on the tagincategory search screen
+     * The setting that saves the width of the split screen on the tag search screen
      */
     public static final String TAG_VIEW_MAIN_SPLIT_WIDTH = "TagViewMainSplitWidth";
     /**
@@ -34,7 +34,7 @@ final public class Preferences {
      */
     public static final String TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH = "TopicViewRenderedVerticalSplitWidth";
     /**
-     * The setting that saves the width of the split screen on the tagincategory search screen
+     * The setting that saves the width of the split screen on the tag search screen
      */
     public static final String TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH = "TagCategoryViewMainSplitWidth";
     /**
@@ -46,11 +46,11 @@ final public class Preferences {
      */
     public static final String CATEGORY_VIEW_MAIN_SPLIT_WIDTH = "CategoryViewMainSplitWidth";
     /**
-     * The setting that saves the width of the split screen on the category's tagincategory editing screen
+     * The setting that saves the width of the split screen on the category's tag editing screen
      */
     public static final String CATEGORY_TAG_VIEW_MAIN_SPLIT_WIDTH = "CategoryTagViewMainSplitWidth";
     /**
-     * The setting that saves the width of the split screen on the category's tagincategory editing screen
+     * The setting that saves the width of the split screen on the category's tag editing screen
      */
     public static final String TOPIC_PROPERTYTAG_VIEW_MAIN_SPLIT_WIDTH = "TopicPropertyTagViewMainSplitWidth";
     /**
@@ -58,7 +58,7 @@ final public class Preferences {
      */
     public static final String PROJECT_VIEW_MAIN_SPLIT_WIDTH = "ProjectViewMainSplitWidth";
     /**
-     * The setting that saves the width of the split screen on the category's tagincategory editing screen
+     * The setting that saves the width of the split screen on the category's tag editing screen
      */
     public static final String PROJECT_TAG_VIEW_MAIN_SPLIT_WIDTH = "ProjectTagViewMainSplitWidth";
     /**

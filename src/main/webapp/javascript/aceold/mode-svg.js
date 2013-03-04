@@ -139,9 +139,9 @@ ace.define('ace/mode/xml_highlight_rules', ['require', 'exports', 'module' , 'ac
                     regex: "<\\!.*?>"
                 },
                 {
-                    token: "meta.tagincategory", // opening tagincategory
+                    token: "meta.tag", // opening tag
                     regex: "<\\/?",
-                    next: "tagincategory"
+                    next: "tag"
                 },
                 {
                     token: "text",
@@ -187,7 +187,7 @@ ace.define('ace/mode/xml_highlight_rules', ['require', 'exports', 'module' , 'ac
             ]
         };
 
-        xmlUtil.tag(this.$rules, "tagincategory", "start");
+        xmlUtil.tag(this.$rules, "tag", "start");
     };
 
     oop.inherits(XmlHighlightRules, TextHighlightRules);
@@ -246,13 +246,13 @@ ace.define('ace/mode/xml_util', ['require', 'exports', 'module' ], function (req
                 regex: "\\s+"
             },
             {
-                //token : "meta.tagincategory",
+                //token : "meta.tag",
 
                 token: function (value) {
                     if (tagMap && tagMap[value]) {
-                        return "meta.tagincategory.tagincategory-name" + '.' + tagMap[value];
+                        return "meta.tag.tag-name" + '.' + tagMap[value];
                     } else {
-                        return "meta.tagincategory.tagincategory-name";
+                        return "meta.tag.tag-name";
                     }
                 },
                 merge: true,
@@ -271,7 +271,7 @@ ace.define('ace/mode/xml_util', ['require', 'exports', 'module' ], function (req
 
         states[name + "_embed_attribute_list"] = [
             {
-                token: "meta.tagincategory",
+                token: "meta.tag",
                 merge: true,
                 regex: "\/?>",
                 next: nextState
@@ -328,14 +328,14 @@ ace.define('ace/mode/behaviour/xml', ['require', 'exports', 'module' , 'ace/lib/
                 var iterator = new TokenIterator(session, position.row, position.column);
                 var token = iterator.getCurrentToken();
                 var atCursor = false;
-                if (!token || !hasType(token, 'meta.tagincategory') && !(hasType(token, 'text') && token.value.match('/'))) {
+                if (!token || !hasType(token, 'meta.tag') && !(hasType(token, 'text') && token.value.match('/'))) {
                     do {
                         token = iterator.stepBackward();
                     } while (token && (hasType(token, 'string') || hasType(token, 'keyword.operator') || hasType(token, 'entity.attribute-name') || hasType(token, 'text')));
                 } else {
                     atCursor = true;
                 }
-                if (!token || !hasType(token, 'meta.tagincategory-name') || iterator.stepBackward().value.match('/')) {
+                if (!token || !hasType(token, 'meta.tag-name') || iterator.stepBackward().value.match('/')) {
                     return
                 }
                 var tag = token.value;
@@ -644,7 +644,7 @@ ace.define('ace/mode/folding/xml', ['require', 'exports', 'module' , 'ace/lib/oo
             var value = "";
             for (var i = 0; i < tokens.length; i++) {
                 var token = tokens[i];
-                if (token.type.indexOf("meta.tagincategory") === 0)
+                if (token.type.indexOf("meta.tag") === 0)
                     value += token.value;
                 else
                     value += lang.stringRepeat(" ", token.value.length);
@@ -678,7 +678,7 @@ ace.define('ace/mode/folding/xml', ['require', 'exports', 'module' , 'ace/lib/oo
             var start;
 
             do {
-                if (token.type.indexOf("meta.tagincategory") === 0) {
+                if (token.type.indexOf("meta.tag") === 0) {
                     if (!start) {
                         var start = {
                             row: iterator.getCurrentTokenRow(),
@@ -711,7 +711,7 @@ ace.define('ace/mode/folding/xml', ['require', 'exports', 'module' , 'ace/lib/oo
             var end;
 
             do {
-                if (token.type.indexOf("meta.tagincategory") === 0) {
+                if (token.type.indexOf("meta.tag") === 0) {
                     if (!end) {
                         end = {
                             row: iterator.getCurrentTokenRow(),
@@ -1522,7 +1522,7 @@ ace.define('ace/mode/doc_comment_highlight_rules', ['require', 'exports', 'modul
         this.$rules = {
             "start": [
                 {
-                    token: "comment.doc.tagincategory",
+                    token: "comment.doc.tag",
                     regex: "@[\\w\\d_]+" // TODO: fix email addresses
                 },
                 {
@@ -1692,7 +1692,7 @@ ace.define('ace/mode/svg_highlight_rules', ['require', 'exports', 'module' , 'ac
         XmlHighlightRules.call(this);
 
         this.$rules.start.splice(3, 0, {
-            token: "meta.tagincategory",
+            token: "meta.tag",
             regex: "<(?=\s*script)",
             next: "script"
         });
@@ -1703,12 +1703,12 @@ ace.define('ace/mode/svg_highlight_rules', ['require', 'exports', 'module' , 'ac
             {
                 token: "comment",
                 regex: "\\/\\/.*(?=<\\/script>)",
-                next: "tagincategory"
+                next: "tag"
             },
             {
-                token: "meta.tagincategory",
+                token: "meta.tag",
                 regex: "<\\/(?=script)",
-                next: "tagincategory"
+                next: "tag"
             }
         ]);
     };

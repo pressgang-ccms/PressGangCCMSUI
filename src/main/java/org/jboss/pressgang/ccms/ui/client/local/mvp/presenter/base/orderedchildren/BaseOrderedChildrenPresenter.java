@@ -66,8 +66,8 @@ abstract public class BaseOrderedChildrenPresenter<
                  * same or no sort value assigned to them, or have sort values that increment in odd values.
                  * 
                  * If we are changing the sort order in the new UI, we need a consistent progression of the sort field. So, now
-                 * that we have found a tagincategory that needs changing, we start by reassigning sort values based on the location of
-                 * the tagincategory in the collection.
+                 * that we have found a tag that needs changing, we start by reassigning sort values based on the location of
+                 * the tag in the collection.
                  */
 
                 for (int j = 0; j < size; ++j) {

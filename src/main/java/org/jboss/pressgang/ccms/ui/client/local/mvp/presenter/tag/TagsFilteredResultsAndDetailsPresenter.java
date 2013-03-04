@@ -130,7 +130,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     private TagCategoriesPresenter categoriesComponent;
 
     /**
-     * The tagincategory query string extracted from the history token
+     * The tag query string extracted from the history token
      */
     private String queryString;
 
@@ -156,7 +156,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     };
 
     /**
-     * A click handler used to display the tagincategory fields view
+     * A click handler used to display the tag fields view
      */
     private final ClickHandler tagDetailsClickHandler = new ClickHandler() {
         @Override
@@ -167,7 +167,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     };
 
     /**
-     * A click handler used to display the tagincategory projects view
+     * A click handler used to display the tag projects view
      */
     private final ClickHandler tagProjectsClickHandler = new ClickHandler() {
         @Override
@@ -177,7 +177,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     };
 
     /**
-     * A click handler used to display the tagincategory categories view
+     * A click handler used to display the tag categories view
      */
     private final ClickHandler tagCategoriesClickHandler = new ClickHandler() {
         @Override
@@ -187,7 +187,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     };
 
     /**
-     * A click handler used to save any changes to the tagincategory
+     * A click handler used to save any changes to the tag
      */
     @NotNull
     private final ClickHandler saveClickHandler = new ClickHandler() {
@@ -204,7 +204,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                     LOGGER.log(Level.INFO, "unsavedTagChanges: " + unsavedTagChanges);
                     LOGGER.log(Level.INFO, "unsavedCategoryChanges: " + unsavedCategoryChanges);
 
-                    /* Create the tagincategory first */
+                    /* Create the tag first */
                     saveTagChanges(unsavedTagChanges, unsavedCategoryChanges);
                 } else {
                     Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
@@ -228,10 +228,10 @@ public class TagsFilteredResultsAndDetailsPresenter
                 checkState(projectsComponent.getPossibleChildrenProviderData().getItems() == null || projectsComponent.getPossibleChildrenProviderData().isValid(), "The projects should not have been loaded, or they should have a valid data provider.");
 
 
-                /* Was the tagincategory we just saved a new tagincategory? */
+                /* Was the tag we just saved a new tag? */
                 final boolean wasNewTag = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
 
-                /* Save any changes made to the tagincategory entity itself */
+                /* Save any changes made to the tag entity itself */
                 @NotNull final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, TagsFilteredResultsAndDetailsPresenter.Display>(
                         display, new BaseRestCallback.SuccessAction<RESTTagV1, TagsFilteredResultsAndDetailsPresenter.Display>() {
                     @Override
@@ -258,7 +258,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                     }
                 });
 
-                /* Sync changes from the tagincategory view */
+                /* Sync changes from the tag view */
                 @NotNull final RESTTagV1 updateTag = new RESTTagV1();
                 updateTag.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                 updateTag.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
@@ -266,7 +266,7 @@ public class TagsFilteredResultsAndDetailsPresenter
 
                 /*
                  * Sync changes from the projects. categoriesComponent.getProviderData().getItems() contains a collection of all the
-                 * projects, and their tags collections contain any added or removed tagincategory relationships. Here we copy those modified
+                 * projects, and their tags collections contain any added or removed tag relationships. Here we copy those modified
                  * relationships into the updateTag, so the changes are all done in one transaction.
                  */
                 if (categoriesComponent.getPossibleChildrenProviderData().getItems() != null) {
@@ -280,7 +280,7 @@ public class TagsFilteredResultsAndDetailsPresenter
 
                         for (@NotNull final RESTTagInCategoryCollectionItemV1 tag : category.getItem().getTags().returnDeletedAndAddedCollectionItems()) {
                             /*
-                             * It should only be possible to add the currently displayed tagincategory to the categories
+                             * It should only be possible to add the currently displayed tag to the categories
                              */
                             if (tag.getItem().getId().equals(updateTag.getId())) {
 
@@ -325,7 +325,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                 }
 
                 /*
-                 * If this is a new tagincategory, it needs to be saved in order to get the tagincategory id to complete the category updates. Upon
+                 * If this is a new tag, it needs to be saved in order to get the tag id to complete the category updates. Upon
                  * success, the categories will be updated.
                  */
                 if (unsavedTagChanges) {
@@ -336,8 +336,8 @@ public class TagsFilteredResultsAndDetailsPresenter
                     }
                 }
                 /*
-                 * If there are no tagincategory changes but there are pending category changes, apply them. There should never be a situation
-                 * where a there are no tagincategory changes but the tagincategory is new.
+                 * If there are no tag changes but there are pending category changes, apply them. There should never be a situation
+                 * where a there are no tag changes but the tag is new.
                  */
                 else if (unsavedCategoryChanges && !wasNewTag) {
 
@@ -351,8 +351,8 @@ public class TagsFilteredResultsAndDetailsPresenter
         /**
          * Saves the changes to the tags within the categories
          *
-         * @param wasNewTag true if we just created a new tagincategory
-         * @param newTagId the id of the new tagincategory, to replace any tags with the NULL_ID placeholder id if wasNewTag == true
+         * @param wasNewTag true if we just created a new tag
+         * @param newTagId the id of the new tag, to replace any tags with the NULL_ID placeholder id if wasNewTag == true
          */
         private void saveCategoryChanges(final boolean wasNewTag, @NotNull final Integer newTagId) {
             try {
@@ -401,14 +401,14 @@ public class TagsFilteredResultsAndDetailsPresenter
                         updatedCategories.addItem(updatedCategory);
 
                         for (@NotNull final RESTTagInCategoryCollectionItemV1 tag : updatedItems) {
-                            /* create a new tagincategory to represent the one that we are updating */
+                            /* create a new tag to represent the one that we are updating */
                             @NotNull final RESTTagInCategoryV1 updatedTag = new RESTTagInCategoryV1();
                             updatedTag.explicitSetRelationshipId(tag.getItem().getRelationshipId());
                             updatedTag.explicitSetRelationshipSort(tag.getItem().getRelationshipSort());
 
                             /*
-                             * If we were editing a new tagincategory, it is possible that a tagincategory with a NULL_ID is in the category tags
-                             * collection. If so, replace it with the id that was assigned to the created tagincategory.
+                             * If we were editing a new tag, it is possible that a tag with a NULL_ID is in the category tags
+                             * collection. If so, replace it with the id that was assigned to the created tag.
                              */
                             updatedTag.setId(tag.getItem().getId() == Constants.NULL_ID && wasNewTag ? newTagId : tag.getItem().getId());
 
@@ -499,7 +499,7 @@ public class TagsFilteredResultsAndDetailsPresenter
 
                         for (@NotNull final RESTTagCollectionItemV1 tag : object.getItem().getTags().getItems()) {
 
-                            checkState(tag.getItem().getId() != null, "The tagincategory should have a valid id.");
+                            checkState(tag.getItem().getId() != null, "The tag should have a valid id.");
 
                             if (tag.getItem().getId().equals(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId())) {
                                 /* Project was added and then removed */
@@ -527,10 +527,10 @@ public class TagsFilteredResultsAndDetailsPresenter
                         }
 
                         /*
-                         * In order for the warning to appear if selecting a new tagincategory when unsaved changes exist, we need to set
+                         * In order for the warning to appear if selecting a new tag when unsaved changes exist, we need to set
                          * the configured parameters to reflect the fact that the category contains tags that will modify the
                          * database. So here we check to see if any tags have been added or removed. If there are none (i.e. a
-                         * tagincategory was added and then removed again without persisting the change in the database, or there were
+                         * tag was added and then removed again without persisting the change in the database, or there were
                          * just no changes made) we remove the tags collection from the configured parameters.
                          */
                         if (object.getItem().getTags().returnDeletedAndAddedCollectionItems().size() != 0) {
@@ -566,7 +566,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                         boolean found = false;
                         for (@NotNull final RESTTagInCategoryCollectionItemV1 tag : object.getItem().getTags().getItems()) {
 
-                            checkState(tag.getItem().getId() != null, "The tagincategory should have a valid id.");
+                            checkState(tag.getItem().getId() != null, "The tag should have a valid id.");
 
                             if (tag.getItem().getId().equals(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId())) {
                                 /* Tag was added and then removed */
@@ -600,10 +600,10 @@ public class TagsFilteredResultsAndDetailsPresenter
                         }
 
                         /*
-                         * In order for the warning to appear if selecting a new tagincategory when unsaved changes exist, we need to set
+                         * In order for the warning to appear if selecting a new tag when unsaved changes exist, we need to set
                          * the configured parameters to reflect the fact that the category contains tags that will modify the
                          * database. So here we check to see if any tags have been added or removed. If there are none (i.e. a
-                         * tagincategory was added and then removed again without persisting the change in the database, or there were
+                         * tag was added and then removed again without persisting the change in the database, or there were
                          * just no changes made) we remove the tags collection from the configured parameters.
                          */
                         if (object.getItem().getTags().returnDeletedAndAddedCollectionItems().size() != 0) {
@@ -632,7 +632,7 @@ public class TagsFilteredResultsAndDetailsPresenter
 
     @Override
     public boolean hasUnsavedChanges() {
-        /* sync the UI with the underlying tagincategory */
+        /* sync the UI with the underlying tag */
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             resultComponent.getDisplay().getDriver().flush();
 
@@ -643,7 +643,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     }
 
     /**
-     * @return true if the tagincategory has any unsaved changes
+     * @return true if the tag has any unsaved changes
      */
     public boolean unsavedTagChanged() {
         checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
@@ -675,7 +675,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     }
 
     /**
-     * Binds behaviour to the tagincategory search and list view
+     * Binds behaviour to the tag search and list view
      */
     @Override
     protected void bindFilteredResultsButtons() {
@@ -693,12 +693,12 @@ public class TagsFilteredResultsAndDetailsPresenter
             @Override
             public void onClick(final ClickEvent event) {
 
-                /* The 'selected' tagincategory will be blank. This gives us something to compare to when checking for unsaved changes */
+                /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
                 @NotNull final RESTTagV1 selectedTag = new RESTTagV1();
                 selectedTag.setId(Constants.NULL_ID);
                 @NotNull final RESTTagCollectionItemV1 selectedTagWrapper = new RESTTagCollectionItemV1(selectedTag);
 
-                /* The displayed tagincategory will also be blank. This is the object that our data will be saved into */
+                /* The displayed tag will also be blank. This is the object that our data will be saved into */
                 @NotNull final RESTTagV1 displayedTag = new RESTTagV1();
                 displayedTag.setId(Constants.NULL_ID);
                 @NotNull final RESTTagCollectionItemV1 displayedTagWrapper = new RESTTagCollectionItemV1(displayedTag,
@@ -731,7 +731,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     }
 
     /**
-     * Called when the selected tagincategory is changed, or the selected view is changed.
+     * Called when the selected tag is changed, or the selected view is changed.
      */
     @Override
     protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
@@ -742,11 +742,11 @@ public class TagsFilteredResultsAndDetailsPresenter
         this.enableAndDisableActionButtons(displayedView);
         setHelpTopicForView(displayedView);
 
-        /* save any changes to the tagincategory details */
+        /* save any changes to the tag details */
         if (lastDisplayedView == this.resultComponent.getDisplay()) {
             /*
-             * If this tagincategory was added to a category, the it was cloned with the old tagincategory name. Here we reflect the current tagincategory
-             * name in the category tagincategory lists.
+             * If this tag was added to a category, the it was cloned with the old tag name. Here we reflect the current tag
+             * name in the category tag lists.
              */
             if (this.categoriesComponent.getPossibleChildrenProviderData().getDisplayedItem() != null) {
                 final RESTTagInCategoryV1 tag = ComponentCategoryV1.returnTag(this.categoriesComponent
@@ -754,7 +754,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                         .getProviderData().getDisplayedItem().getItem().getId());
                 if (tag != null) {
 
-                    /* update the tagincategory in the category list */
+                    /* update the tag in the category list */
                     tag.setName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
 
                     /* refresh the list */
@@ -791,7 +791,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     }
 
     /**
-     * Called when a new tagincategory is selected or the tagincategory is saved. This refreshes the list of categories and projects.
+     * Called when a new tag is selected or the tag is saved. This refreshes the list of categories and projects.
      *
      * @param removeCategoryTagListFromScreen
      *         true if the list of tags within a category is to be removed from the screen

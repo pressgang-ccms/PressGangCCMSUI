@@ -19,12 +19,12 @@ public interface BaseSearchAndEditViewInterface<T extends RESTBaseEntityV1<T, U,
     @NotNull SimpleLayoutPanel getResultsPanel();
 
     /**
-     * @return The panel used to hold the views that display the tagincategory details
+     * @return The panel used to hold the views that display the tag details
      */
     @NotNull SimpleLayoutPanel getViewPanel();
 
     /**
-     * @return The panel that holds the action buttons for the tagincategory detail views
+     * @return The panel that holds the action buttons for the tag detail views
      */
     @NotNull FlexTable getViewActionButtonsParentPanel();
 
@@ -35,7 +35,7 @@ public interface BaseSearchAndEditViewInterface<T extends RESTBaseEntityV1<T, U,
     FlexTable getResultsActionButtonsParentPanel();
 
     /**
-     * @return The split panel that separates the tagincategory list from the tagincategory details views
+     * @return The split panel that separates the tag list from the tag details views
      */
     @NotNull HandlerSplitLayoutPanel getSplitPanel();
 

@@ -11,7 +11,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.propertytag.RESTProper
 import org.jetbrains.annotations.NotNull;
 
 /**
- * The view used to display the property tagincategory details via the RESTPropertyTagV1DetailsEditor class.
+ * The view used to display the property tag details via the RESTPropertyTagV1DetailsEditor class.
  */
 public class PropertyTagView extends BaseTemplateView implements PropertyTagPresenter.Display {
 

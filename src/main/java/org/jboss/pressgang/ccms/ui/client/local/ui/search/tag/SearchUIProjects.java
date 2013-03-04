@@ -84,7 +84,7 @@ public class SearchUIProjects implements SearchViewBase {
             this.projects.clear();
 
             for (@NotNull final RESTTagCollectionItemV1 tag : tags.returnExistingAndAddedCollectionItems()) {
-                checkState(tag.getItem().getProjects() != null, "tagincategory.getItem().getProjects() cannot be null");
+                checkState(tag.getItem().getProjects() != null, "tag.getItem().getProjects() cannot be null");
 
                 /* Tags to be removed should not show up */
                 for (@NotNull final RESTProjectCollectionItemV1 project : tag.getItem().getProjects().returnExistingCollectionItems()) {
@@ -132,9 +132,9 @@ public class SearchUIProjects implements SearchViewBase {
     }
 
     /**
-     * Add the tagincategory and category states to the supplied filter. This is usually so a filter object can be
+     * Add the tag and category states to the supplied filter. This is usually so a filter object can be
      * saved.
-     * @param filter The filter to be synced with the tagincategory and category states.
+     * @param filter The filter to be synced with the tag and category states.
      */
     public void populateFilter(@NotNull final RESTFilterV1 filter) {
         try
@@ -145,7 +145,7 @@ public class SearchUIProjects implements SearchViewBase {
             checkArgument(filter.getFilterFields_OTM() != null, "The filter must have a collection of fields");
             checkArgument(filter.getFilterCategories_OTM() != null, "The filter must have a collection of categories");
 
-            // because a tagincategory can be listed under multiple categories with different values,
+            // because a tag can be listed under multiple categories with different values,
             // we keep a track of the tags we have processed here
             @NotNull final List<Integer> processedIds = new ArrayList<Integer>();
 

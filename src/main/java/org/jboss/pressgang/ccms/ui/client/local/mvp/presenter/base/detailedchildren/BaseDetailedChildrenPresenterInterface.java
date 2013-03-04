@@ -36,7 +36,7 @@ public interface BaseDetailedChildrenPresenterInterface<
 
     /**
      * @param entity Sometimes the entity being edited is one of the potential children e.g. when editing tags, we can add and
-     *               remove the tagincategory from a category that is selected as a potential child, and that selected category's tags are then
+     *               remove the tag from a category that is selected as a potential child, and that selected category's tags are then
      *               presented for ordering. In that case, the entity being edited can be found through the
      *               getPossibleChildrenProviderData().getDisplayedItem() property.
      *

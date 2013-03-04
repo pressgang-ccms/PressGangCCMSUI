@@ -295,7 +295,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                 new FieldUpdater<RESTTagInCategoryCollectionItemV1, String>() {
 
                     /**
-                     * Swap the sort value for the tagincategory that was selected with the tagincategory below it.
+                     * Swap the sort value for the tag that was selected with the tag below it.
                      */
                     @Override
                     public void update(final int index, @NotNull final RESTTagInCategoryCollectionItemV1 object, final String value) {
@@ -349,7 +349,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                 checkState(filteredResultsPresenter.getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
                 checkState(filteredResultsPresenter.getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
 
-                /* Was the tagincategory we just saved a new tagincategory? */
+                /* Was the tag we just saved a new tag? */
                 final boolean wasNewEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem();
 
                      /* Sync the UI to the underlying object */
@@ -377,7 +377,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                 if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
 
                         /*
-                         * If this is a new category, it needs to be saved in order to get the tagincategory id to complete the category
+                         * If this is a new category, it needs to be saved in order to get the tag id to complete the category
                          * updates. Upon success, the categories will be updated.
                          */
                     final boolean unsavedTagChanges = unsavedCategoryChanges() || unsavedTagChanges();
@@ -411,7 +411,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
     }
 
     /**
-     * Binds behaviour to the tagincategory search and list view
+     * Binds behaviour to the tag search and list view
      */
     @Override
     protected void bindFilteredResultsButtons() {
@@ -432,12 +432,12 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
 
-                    /* The 'selected' tagincategory will be blank. This gives us something to compare to when checking for unsaved changes */
+                    /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
                     @NotNull final RESTCategoryV1 selectedEntity = new RESTCategoryV1();
                     selectedEntity.setId(Constants.NULL_ID);
                     @NotNull final RESTCategoryCollectionItemV1 selectedTagWrapper = new RESTCategoryCollectionItemV1(selectedEntity);
 
-                    /* The displayed tagincategory will also be blank. This is the object that our data will be saved into */
+                    /* The displayed tag will also be blank. This is the object that our data will be saved into */
                     @NotNull final RESTCategoryV1 displayedEntity = new RESTCategoryV1();
                     displayedEntity.setId(Constants.NULL_ID);
                     displayedEntity.setTags(new RESTTagInCategoryCollectionV1());
@@ -461,7 +461,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
 
     @Override
     public boolean hasUnsavedChanges() {
-        /* sync the UI with the underlying tagincategory */
+        /* sync the UI with the underlying tag */
         if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
             categoryPresenter.getDisplay().getDriver().flush();
 

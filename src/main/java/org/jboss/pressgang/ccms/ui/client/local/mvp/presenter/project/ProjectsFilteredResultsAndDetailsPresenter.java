@@ -241,7 +241,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
                 checkState(filteredResultsComponent.getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
                 checkState(filteredResultsComponent.getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
 
-                /* Was the tagincategory we just saved a new tagincategory? */
+                /* Was the tag we just saved a new tag? */
                 final boolean wasNewEntity = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
 
                 /* Sync the UI to the underlying object */
@@ -300,7 +300,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
     }
 
     /**
-     * Binds behaviour to the tagincategory search and list view
+     * Binds behaviour to the tag search and list view
      */
     @Override
     protected void bindFilteredResultsButtons() {
@@ -317,12 +317,12 @@ public class ProjectsFilteredResultsAndDetailsPresenter
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
-                /* The 'selected' tagincategory will be blank. This gives us something to compare to when checking for unsaved changes */
+                /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
                 @NotNull final RESTProjectV1 selectedEntity = new RESTProjectV1();
                 selectedEntity.setId(Constants.NULL_ID);
                 @NotNull final RESTProjectCollectionItemV1 selectedTagWrapper = new RESTProjectCollectionItemV1(selectedEntity);
 
-                /* The displayed tagincategory will also be blank. This is the object that our data will be saved into */
+                /* The displayed tag will also be blank. This is the object that our data will be saved into */
                 @NotNull final RESTProjectV1 displayedEntity = new RESTProjectV1();
                 displayedEntity.setId(Constants.NULL_ID);
                 displayedEntity.setTags(new RESTTagCollectionV1());
@@ -342,7 +342,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
 
     @Override
     public boolean hasUnsavedChanges() {
-        /* sync the UI with the underlying tagincategory */
+        /* sync the UI with the underlying tag */
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
             resultComponent.getDisplay().getDriver().flush();
 
@@ -386,7 +386,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
     }
 
     /**
-     * Called when the selected tagincategory is changed, or the selected view is changed.
+     * Called when the selected tag is changed, or the selected view is changed.
      */
     @Override
     protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {

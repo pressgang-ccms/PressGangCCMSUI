@@ -77,7 +77,7 @@ public interface BaseChildrenPresenterInterface<
     EnhancedAsyncDataProvider<C> generatePossibleChildrenProvider(@NotNull final T parent);
 
     /**
-     * Binds behaviour to the tagincategory list buttons.
+     * Binds behaviour to the tag list buttons.
      * <p/>
      * This method provides the logic for matching the potential child that was clicked, and either adding or removing
      * it from the parent collection. The various callbacks delegate the tasks of getting the collection of existing

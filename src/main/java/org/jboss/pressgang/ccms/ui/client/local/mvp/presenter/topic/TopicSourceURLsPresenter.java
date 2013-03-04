@@ -136,7 +136,7 @@ public class TopicSourceURLsPresenter extends BaseChildrenPresenter<
     }
 
     /**
-     * Add behaviour to the property tagincategory add and remove buttons, and the value text edit field.
+     * Add behaviour to the property tag add and remove buttons, and the value text edit field.
      */
     private void bindPropertyTagButtons(@NotNull final RESTBaseTopicV1<?, ?, ?> parent) {
         try {

@@ -10612,7 +10612,7 @@ define('ace/mode/css/csslint', ['require', 'exports', 'module' ], function (requ
         name: "Checkstyle XML format",
 
         /**
-         * Return opening root XML tagincategory.
+         * Return opening root XML tag.
          * @return {String} to prepend before all results
          */
         startFormat: function () {
@@ -10620,7 +10620,7 @@ define('ace/mode/css/csslint', ['require', 'exports', 'module' ], function (requ
         },
 
         /**
-         * Return closing root XML tagincategory.
+         * Return closing root XML tag.
          * @return {String} to append after all results
          */
         endFormat: function () {
@@ -10723,7 +10723,7 @@ define('ace/mode/css/csslint', ['require', 'exports', 'module' ], function (requ
         name: "CSSLint XML format",
 
         /**
-         * Return opening root XML tagincategory.
+         * Return opening root XML tag.
          * @return {String} to prepend before all results
          */
         startFormat: function () {
@@ -10731,7 +10731,7 @@ define('ace/mode/css/csslint', ['require', 'exports', 'module' ], function (requ
         },
 
         /**
-         * Return closing root XML tagincategory.
+         * Return closing root XML tag.
          * @return {String} to append after all results
          */
         endFormat: function () {
@@ -10777,7 +10777,7 @@ define('ace/mode/css/csslint', ['require', 'exports', 'module' ], function (requ
         name: "Lint XML format",
 
         /**
-         * Return opening root XML tagincategory.
+         * Return opening root XML tag.
          * @return {String} to prepend before all results
          */
         startFormat: function () {
@@ -10785,7 +10785,7 @@ define('ace/mode/css/csslint', ['require', 'exports', 'module' ], function (requ
         },
 
         /**
-         * Return closing root XML tagincategory.
+         * Return closing root XML tag.
          * @return {String} to append after all results
          */
         endFormat: function () {

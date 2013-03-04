@@ -233,9 +233,9 @@ ace.define('ace/mode/xquery_highlight_rules', ['require', 'exports', 'module' , 
                     next: "comment"
                 },
                 {
-                    token: "text", // opening tagincategory
+                    token: "text", // opening tag
                     regex: "<\\/?",
-                    next: "tagincategory"
+                    next: "tag"
                 },
                 {
                     token: "constant", // number
@@ -291,7 +291,7 @@ ace.define('ace/mode/xquery_highlight_rules', ['require', 'exports', 'module' , 
                     next: "start"
                 },
                 {
-                    token: "meta.tagincategory",
+                    token: "meta.tag",
                     regex: "[-_a-zA-Z0-9:]+"
                 },
                 {
@@ -377,7 +377,7 @@ ace.define('ace/mode/behaviour/xquery', ['require', 'exports', 'module' , 'ace/l
 //          return false;
 //      });
 
-        // Check for open tagincategory if user enters / and auto-close it.
+        // Check for open tag if user enters / and auto-close it.
 //      this.add("slash", "insertion", function (state, action, editor, session, text) {
 //        if (text == "/") {
 //          var cursor = editor.getCursorPosition();
@@ -386,7 +386,7 @@ ace.define('ace/mode/behaviour/xquery', ['require', 'exports', 'module' , 'ace/l
 //          line = line.substring(0, cursor.column) + "/" + line.substring(cursor.column);
 //          var lines = session.doc.getAllLines();
 //          lines[cursor.row] = line;
-//          // call mode helper to close the tagincategory if possible
+//          // call mode helper to close the tag if possible
 //          parent.exec("closeTag", lines.join(session.doc.getNewLineCharacter()), cursor.row);
 //        }
 //        }

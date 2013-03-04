@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-define('ace/theme/tomorrow_night_eighties', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/tomorrow_night_eighties', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = true;
-    exports.cssClass = "ace-tomorrow-night-eighties";
-    exports.cssText = "\
+exports.isDark = true;
+exports.cssClass = "ace-tomorrow-night-eighties";
+exports.cssText = "\
 .ace-tomorrow-night-eighties .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\

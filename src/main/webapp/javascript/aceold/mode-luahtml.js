@@ -684,7 +684,7 @@ ace.define('ace/mode/doc_comment_highlight_rules', ['require', 'exports', 'modul
         this.$rules = {
             "start": [
                 {
-                    token: "comment.doc.tagincategory",
+                    token: "comment.doc.tag",
                     regex: "@[\\w\\d_]+" // TODO: fix email addresses
                 },
                 {
@@ -1451,19 +1451,19 @@ ace.define('ace/mode/html_highlight_rules', ['require', 'exports', 'module' , 'a
                     regex: "<\\!.*?>"
                 },
                 {
-                    token: "meta.tagincategory",
+                    token: "meta.tag",
                     regex: "<(?=\s*script\\b)",
                     next: "script"
                 },
                 {
-                    token: "meta.tagincategory",
+                    token: "meta.tag",
                     regex: "<(?=\s*style\\b)",
                     next: "style"
                 },
                 {
-                    token: "meta.tagincategory", // opening tagincategory
+                    token: "meta.tag", // opening tag
                     regex: "<\\/?",
-                    next: "tagincategory"
+                    next: "tag"
                 },
                 {
                     token: "text",
@@ -1511,7 +1511,7 @@ ace.define('ace/mode/html_highlight_rules', ['require', 'exports', 'module' , 'a
             ]
         };
 
-        xmlUtil.tag(this.$rules, "tagincategory", "start");
+        xmlUtil.tag(this.$rules, "tag", "start");
         xmlUtil.tag(this.$rules, "style", "css-start");
         xmlUtil.tag(this.$rules, "script", "js-start");
 
@@ -1519,20 +1519,20 @@ ace.define('ace/mode/html_highlight_rules', ['require', 'exports', 'module' , 'a
             {
                 token: "comment",
                 regex: "\\/\\/.*(?=<\\/script>)",
-                next: "tagincategory"
+                next: "tag"
             },
             {
-                token: "meta.tagincategory",
+                token: "meta.tag",
                 regex: "<\\/(?=script)",
-                next: "tagincategory"
+                next: "tag"
             }
         ]);
 
         this.embedRules(CssHighlightRules, "css-", [
             {
-                token: "meta.tagincategory",
+                token: "meta.tag",
                 regex: "<\\/(?=style)",
-                next: "tagincategory"
+                next: "tag"
             }
         ]);
     };
@@ -1603,29 +1603,29 @@ ace.define('ace/mode/xml_util', ['require', 'exports', 'module' , 'ace/lib/lang'
                 regex: "\\s+"
             },
             {
-                //token : "meta.tagincategory",
+                //token : "meta.tag",
 
                 token: function (value) {
                     if (value === 'a') {
-                        return "meta.tagincategory.anchor";
+                        return "meta.tag.anchor";
                     }
                     else if (value === 'img') {
-                        return "meta.tagincategory.image";
+                        return "meta.tag.image";
                     }
                     else if (value === 'script') {
-                        return "meta.tagincategory.script";
+                        return "meta.tag.script";
                     }
                     else if (value === 'style') {
-                        return "meta.tagincategory.style";
+                        return "meta.tag.style";
                     }
                     else if (formTags.hasOwnProperty(value.toLowerCase())) {
-                        return "meta.tagincategory.form";
+                        return "meta.tag.form";
                     }
                     else if (tableTags.hasOwnProperty(value.toLowerCase())) {
-                        return "meta.tagincategory.table";
+                        return "meta.tag.table";
                     }
                     else {
-                        return "meta.tagincategory";
+                        return "meta.tag";
                     }
                 },
                 merge: true,
@@ -1644,7 +1644,7 @@ ace.define('ace/mode/xml_util', ['require', 'exports', 'module' , 'ace/lib/lang'
 
         states[name + "_embed_attribute_list"] = [
             {
-                token: "meta.tagincategory",
+                token: "meta.tag",
                 merge: true,
                 regex: "\/?>",
                 next: nextState
@@ -1867,7 +1867,7 @@ ace.define('ace/mode/folding/xml', ['require', 'exports', 'module' , 'ace/lib/oo
             var value = "";
             for (var i = 0; i < tokens.length; i++) {
                 var token = tokens[i];
-                if (token.type.indexOf("meta.tagincategory") === 0)
+                if (token.type.indexOf("meta.tag") === 0)
                     value += token.value;
                 else
                     value += lang.stringRepeat(" ", token.value.length);
@@ -1901,7 +1901,7 @@ ace.define('ace/mode/folding/xml', ['require', 'exports', 'module' , 'ace/lib/oo
             var start;
 
             do {
-                if (token.type.indexOf("meta.tagincategory") === 0) {
+                if (token.type.indexOf("meta.tag") === 0) {
                     if (!start) {
                         var start = {
                             row: iterator.getCurrentTokenRow(),
@@ -1934,7 +1934,7 @@ ace.define('ace/mode/folding/xml', ['require', 'exports', 'module' , 'ace/lib/oo
             var end;
 
             do {
-                if (token.type.indexOf("meta.tagincategory") === 0) {
+                if (token.type.indexOf("meta.tag") === 0) {
                     if (!end) {
                         end = {
                             row: iterator.getCurrentTokenRow(),
