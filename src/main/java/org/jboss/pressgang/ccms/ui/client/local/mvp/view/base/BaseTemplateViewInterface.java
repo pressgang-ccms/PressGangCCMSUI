@@ -214,6 +214,12 @@ public interface BaseTemplateViewInterface {
     PushButton getBlobConstants();
 
     /**
+     * @return The button that opens the bulk tagging view
+     */
+    @NotNull
+    PushButton getBulkTagging();
+
+    /**
      * @return The button that opens the string constants view
      */
     @NotNull

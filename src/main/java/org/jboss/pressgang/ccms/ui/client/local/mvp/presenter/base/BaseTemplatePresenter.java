@@ -270,6 +270,15 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 }
             }
         });
+
+        display.getBulkTagging().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                if (isOKToProceed()) {
+                    eventBus.fireEvent(new BulkTagSearchTagsFieldsAndFiltersViewEvent());
+                }
+            }
+        });
     }
 
     private void doQuickSearch(final boolean newWindow) {

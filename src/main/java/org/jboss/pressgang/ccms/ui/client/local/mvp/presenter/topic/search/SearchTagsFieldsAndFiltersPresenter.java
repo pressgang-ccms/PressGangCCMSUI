@@ -134,6 +134,14 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         loadSearchTags();
         loadSearchLocales();
 
+        /*
+            Show the bulk tagging button instead of the search button if the history token
+            indicates that we are displaying a bulk tagging screen.
+         */
+        if (showBulkTags) {
+            display.replaceTopActionButton(display.getSearchTopics(), display.getBulkTagging());
+        }
+
         displayTags();
     }
 
@@ -402,11 +410,27 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             }
         };
 
+        @NotNull final ClickHandler bulkTaggingHandler = new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                fieldsComponent.getDisplay().getDriver().flush();
+                tagsComponent.getDisplay().getDriver().flush();
+                localePresenter.getDisplay().getDriver().flush();
+
+                @NotNull final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
+                        + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
+                        + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
+
+                applyBulkTags(query);
+            }
+        };
+
         display.getSearchTopics().addClickHandler(searchHandler);
         display.getTagsSearch().addClickHandler(tagsHandler);
         display.getFields().addClickHandler(fieldsHandler);
         display.getFilters().addClickHandler(filtersHandler);
         display.getLocales().addClickHandler(localesHandler);
+        display.getBulkTagging().addClickHandler(bulkTaggingHandler);
     }
 
     private void resetTopActionButtons() {

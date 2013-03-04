@@ -100,6 +100,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
             this.eventBus.addHandler(BlobConstantFilteredResultsAndDetailsViewEvent.TYPE, new ViewOpenWithQueryEventHandler(BlobConstantFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(PropertyTagFilteredResultsAndDetailsViewEvent.TYPE, new ViewOpenWithQueryEventHandler(PropertyTagFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(PropertyCategoryFilteredResultsAndDetailsViewEvent.TYPE, new ViewOpenWithQueryEventHandler(PropertyCategoryFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
+            this.eventBus.addHandler(BulkTagSearchTagsFieldsAndFiltersViewEvent.TYPE, new ViewOpenWithQueryEventHandler(SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN));
 
 
 
@@ -184,10 +185,11 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                 } else if (token.startsWith(SearchFieldPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(SearchFieldPresenter.class);
                 } else if (token.startsWith(SearchTagsFieldsAndFiltersPresenter.HISTORY_TOKEN) ||
-                        token.startsWith(SearchTagsFieldsAndFiltersPresenter.TRANSLATED_HISTORY_TOKEN)) {
+                        token.startsWith(SearchTagsFieldsAndFiltersPresenter.TRANSLATED_HISTORY_TOKEN) ||
+                        token.startsWith(SearchTagsFieldsAndFiltersPresenter.BULK_TAG_HISTORY_TOKEN)) {
                     /*
-                        Both SearchTagsFieldsAndFiltersView and TranslatedSearchTagsFieldsAndFiltersView
-                        history tokens will launch the search view.
+                        The SearchTagsFieldsAndFiltersView, TranslatedSearchTagsFieldsAndFiltersView
+                        and BulkTagSearchTagsFieldsAndFiltersViewEvent history tokens will launch the search view.
                      */
                     presenter = getBeanInstance(SearchTagsFieldsAndFiltersPresenter.class);
                 } else if (token.startsWith(ProjectsFilteredResultsAndDetailsPresenter.HISTORY_TOKEN)) {

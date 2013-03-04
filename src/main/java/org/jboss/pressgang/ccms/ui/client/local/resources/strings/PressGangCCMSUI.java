@@ -348,6 +348,9 @@ public interface PressGangCCMSUI extends Constants {
     String StringConstants();
 
     @NotNull
+    String BulkTagging();
+
+    @NotNull
     String BlobConstants();
 
     @NotNull

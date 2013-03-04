@@ -155,6 +155,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private final PushButton tags;
     private final PushButton categories;
     private final PushButton projects;
+    private final PushButton bulkTagging;
     private final PushButton stringConstants;
     private final PushButton blobConstants;
     private final PushButton integerConstants;
@@ -386,6 +387,12 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     @Override
     public final PushButton getBlobConstants() {
         return blobConstants;
+    }
+
+    @NotNull
+    @Override
+    public final PushButton getBulkTagging() {
+        return bulkTagging;
     }
 
     @NotNull
@@ -657,6 +664,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         advancedOpen = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Advanced(), true);
         addShortcutButton(advancedOpen, advancedShortcutPanel);
+
+        bulkTagging = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.BulkTagging());
+        addShortcutButton(bulkTagging, advancedShortcutPanel);
 
         stringConstants = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.StringConstants());
         addShortcutButton(stringConstants, advancedShortcutPanel);
