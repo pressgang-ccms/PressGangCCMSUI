@@ -116,14 +116,14 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
     @Override
     public void go(@NotNull final HasWidgets container) {
 
-        //this.container = container;
+        this.container = container;
         clearContainerAndAddTopLevelPanel(container, display);
 
-        //display.setViewShown(true);
+        display.setViewShown(true);
 
-        //bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
+        bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
 
-        /*tagsComponent.bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
+        tagsComponent.bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
         fieldsComponent.bindExtended(ServiceConstants.SEARCH_FIELDS_HELP_TOPIC, HISTORY_TOKEN);
         localePresenter.bindExtended(ServiceConstants.SEARCH_LOCALES_HELP_TOPIC, HISTORY_TOKEN);
         searchFilterResultsAndFilterPresenter.bindSearchAndEditExtended(ServiceConstants.FILTERS_HELP_TOPIC, HISTORY_TOKEN, Constants.QUERY_PATH_SEGMENT_PREFIX);
@@ -134,7 +134,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         loadSearchTags();
         loadSearchLocales();
 
-        displayTags();   */
+        displayTags();
     }
 
     public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
