@@ -149,14 +149,14 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
                 column index, since each span done in the previous loop reduces the number of cells in
                 this row by one.
             */
-            tagsTable.setWidget(2, i * TAG_CELLS_PER_COLUMN - (showBulkTags ? 0: i), tags);
-            tagsTable.setWidget(2, i * TAG_CELLS_PER_COLUMN + 1 - (showBulkTags ? 0: i), tagSearchState);
+            tagsTable.setWidget(2, i * (TAG_CELLS_PER_COLUMN - (showBulkTags ? 0 : 1)), tags);
+            tagsTable.setWidget(2, i * (TAG_CELLS_PER_COLUMN - (showBulkTags ? 0 : 1)) + 1, tagSearchState);
 
             if (showBulkTags) {
                 @NotNull final Label tagBulkUpdateState = new Label(PressGangCCMSUI.INSTANCE.TagBulkUpdateState());
                 tagsTable.setWidget(2, i * TAG_CELLS_PER_COLUMN + 2, tagBulkUpdateState);
             } else {
-                tagsTable.getFlexCellFormatter().setColSpan(2, i * TAG_CELLS_PER_COLUMN + 1 - (showBulkTags ? 0 : i), 2);
+                tagsTable.getFlexCellFormatter().setColSpan(2, i * (TAG_CELLS_PER_COLUMN - (showBulkTags ? 0 : 1)) + 1, 2);
             }
         }
 
