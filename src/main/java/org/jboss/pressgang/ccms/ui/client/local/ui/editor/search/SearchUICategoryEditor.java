@@ -150,19 +150,19 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
                 this row by one.
             */
             tagsTable.setWidget(2, i * (TAG_CELLS_PER_COLUMN - (showBulkTags ? 0 : 1)), tags);
+            tagsTable.getFlexCellFormatter().addStyleName(2, i * (TAG_CELLS_PER_COLUMN - (showBulkTags ? 0 : 1)), CSSConstants.SearchView.LOGIC_HEADER_CELL);
+
             tagsTable.setWidget(2, i * (TAG_CELLS_PER_COLUMN - (showBulkTags ? 0 : 1)) + 1, tagSearchState);
+            tagsTable.getFlexCellFormatter().addStyleName(2, i * (TAG_CELLS_PER_COLUMN - (showBulkTags ? 0 : 1)) + 1, CSSConstants.SearchView.LOGIC_HEADER_CELL);
+
 
             if (showBulkTags) {
                 @NotNull final Label tagBulkUpdateState = new Label(PressGangCCMSUI.INSTANCE.TagBulkUpdateState());
                 tagsTable.setWidget(2, i * TAG_CELLS_PER_COLUMN + 2, tagBulkUpdateState);
+                tagsTable.getFlexCellFormatter().addStyleName(2,  i * TAG_CELLS_PER_COLUMN + 2, CSSConstants.SearchView.LOGIC_HEADER_CELL);
             } else {
                 tagsTable.getFlexCellFormatter().setColSpan(2, i * (TAG_CELLS_PER_COLUMN - (showBulkTags ? 0 : 1)) + 1, 2);
             }
-        }
-
-        // set the td style for the tag heading cells
-        for (int j = 0; j < TAG_CELLS_PER_COLUMN * COLUMNS; ++j) {
-            tagsTable.getFlexCellFormatter().addStyleName(2, j, CSSConstants.SearchView.LOGIC_HEADER_CELL);
         }
 
         summary.addClickHandler(new ClickHandler() {
