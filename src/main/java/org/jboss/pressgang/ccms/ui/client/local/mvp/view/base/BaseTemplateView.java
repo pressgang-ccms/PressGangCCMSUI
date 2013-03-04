@@ -701,6 +701,22 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         replaceTopActionButton(existing, replacement, this.topActionPanel);
     }
 
+    public final void removeTopActionButton(@NotNull final Widget existing) {
+        /* Early out if the existing widget isn't actually attached */
+        if (!existing.isAttached() || existing.getParent() != topActionPanel) {
+            return;
+        }
+
+        for (int row = 0; row < topActionPanel.getRowCount(); ++row) {
+            for (int column = 0; column < topActionPanel.getCellCount(row); ++column) {
+                if (topActionPanel.getWidget(row, column) == existing) {
+                    topActionPanel.removeCell(row, column);
+                    return;
+                }
+            }
+        }
+    }
+
     public final void replaceTopActionButton(@NotNull final Widget existing, @NotNull final Widget replacement, @NotNull final FlexTable table) {
 
         /* Early out if the existing widget isn't actually attached */

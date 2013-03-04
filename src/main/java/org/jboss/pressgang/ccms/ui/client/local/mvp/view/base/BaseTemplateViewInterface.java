@@ -338,6 +338,12 @@ public interface BaseTemplateViewInterface {
     void replaceTopActionButton(@NotNull final Widget existing, @NotNull final Widget replacement, @NotNull final FlexTable table);
 
     /**
+     * Remove a button from the top action panel.
+     * @param existing The button to be removed
+     */
+    void removeTopActionButton(@NotNull final Widget existing);
+
+    /**
      * Adds a widget to a new column in the table.
      * @param widget The widget to add.
      * @param table The table to add the widget to.

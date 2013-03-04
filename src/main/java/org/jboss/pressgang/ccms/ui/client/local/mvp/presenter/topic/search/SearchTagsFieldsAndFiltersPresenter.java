@@ -123,8 +123,8 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             Show the bulk tagging button instead of the search button if the history token
             indicates that we are displaying a bulk tagging screen.
          */
-        if (showBulkTags) {
-            display.replaceTopActionButton(display.getSearchTopics(), display.getApplyBulkTags());
+        if (!showBulkTags) {
+            display.removeTopActionButton(display.getApplyBulkTags());
         }
 
         displayTags();
