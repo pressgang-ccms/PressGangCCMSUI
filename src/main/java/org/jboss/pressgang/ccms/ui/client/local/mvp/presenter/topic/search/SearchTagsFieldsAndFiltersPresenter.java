@@ -464,9 +464,11 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
         display.getPanel().clear();
         display.getPanel().setWidget(searchFilterResultsAndFilterPresenter.getDisplay().getPanel());
-        display.replaceTopActionButton(display.getFilters(), display.getFiltersDownLabel());
         resetTopActionButtons();
-        display.getTopViewSpecificLeftActionPanel().add(searchFilterResultsAndFilterPresenter.getDisplay().getTopActionPanel());
+        display.replaceTopActionButton(display.getFilters(), display.getFiltersDownLabel());
+
+        searchFilterResultsAndFilterPresenter.getDisplay().getTopActionPanel().removeFromParent();
+        display.getTopViewSpecificLeftActionPanel().setWidget(searchFilterResultsAndFilterPresenter.getDisplay().getTopActionPanel());
 
         fieldsComponent.getDisplay().setViewShown(false);
         tagsComponent.getDisplay().setViewShown(false);

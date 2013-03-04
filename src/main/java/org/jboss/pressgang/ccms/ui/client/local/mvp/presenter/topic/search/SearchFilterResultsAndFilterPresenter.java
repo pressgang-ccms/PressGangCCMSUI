@@ -161,12 +161,19 @@ public class SearchFilterResultsAndFilterPresenter extends BaseSearchAndEditPres
 
     @Override
     protected final void loadAdditionalDisplayedItemData() {
-        /*
-            When a filter is selected, the load and overwrite buttons are displayed.
-         */
-        display.addActionButton(display.getLoad());
-        display.addActionButton(display.getLoadAndSearch());
-        display.addActionButton(display.getOverwrite());
+        try {
+            LOGGER.log(Level.INFO, "ENTER SearchFilterResultsAndFilterPresenter.loadAdditionalDisplayedItemData()");
+
+            /*
+                When a filter is selected, the load and overwrite buttons are displayed.
+            */
+            display.getLoad().setEnabled(true);
+            display.getLoadAndSearch().setEnabled(true);
+            display.getOverwrite().setEnabled(true);
+
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT SearchFilterResultsAndFilterPresenter.loadAdditionalDisplayedItemData()");
+        }
     }
 
     @Override
