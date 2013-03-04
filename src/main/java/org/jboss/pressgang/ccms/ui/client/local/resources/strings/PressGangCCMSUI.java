@@ -741,9 +741,6 @@ public interface PressGangCCMSUI extends Constants {
     String CreateExtendedProperty();
 
     @NotNull
-    String BulkTagConfirm();
-
-    @NotNull
     String ThisOperationWillModify();
 
     @NotNull
