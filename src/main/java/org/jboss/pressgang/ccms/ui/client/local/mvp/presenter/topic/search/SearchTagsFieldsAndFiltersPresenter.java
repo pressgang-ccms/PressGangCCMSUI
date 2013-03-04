@@ -124,7 +124,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             indicates that we are displaying a bulk tagging screen.
          */
         if (showBulkTags) {
-            display.replaceTopActionButton(display.getSearchTopics(), display.getBulkTagging());
+            display.replaceTopActionButton(display.getSearchTopics(), display.getApplyBulkTags());
         }
 
         displayTags();
@@ -433,7 +433,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         display.getFields().addClickHandler(fieldsHandler);
         display.getFilters().addClickHandler(filtersHandler);
         display.getLocales().addClickHandler(localesHandler);
-        display.getBulkTagging().addClickHandler(bulkTaggingHandler);
+        display.getApplyBulkTags().addClickHandler(bulkTaggingHandler);
     }
 
     private void resetTopActionButtons() {
