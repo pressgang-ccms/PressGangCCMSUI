@@ -104,7 +104,6 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
         tagsTable.getFlexCellFormatter().setColSpan(0, 1, TAG_CELLS_PER_COLUMN);
         tagsTable.getFlexCellFormatter().setColSpan(1, 0, TAG_CELLS_PER_COLUMN);
         tagsTable.getFlexCellFormatter().setColSpan(1, 1, TAG_CELLS_PER_COLUMN);
-        tagsTable.getFlexCellFormatter().setColSpan(2, 0, TAG_CELLS_PER_COLUMN * 2);
 
         // Internal logic
 
@@ -152,8 +151,6 @@ public final class SearchUICategoryEditor extends ScrollPanel implements ValueAw
         for (int j = 0; j < TAG_CELLS_PER_COLUMN * COLUMNS; ++j) {
             tagsTable.getFlexCellFormatter().addStyleName(2, j, CSSConstants.SearchView.LOGIC_HEADER_CELL);
         }
-
-        tagsTable.getFlexCellFormatter().addStyleName(2, 0, CSSConstants.SearchView.LOGIC_HEADER_CELL);
 
         summary.addClickHandler(new ClickHandler() {
             @Override
