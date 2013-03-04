@@ -505,6 +505,11 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
     private void applyBulkTags(@NotNull final String query, @NotNull final List<Integer> removeTags, @NotNull final Map<SearchUICategory, ArrayList<Integer>> addTags) {
 
+        if (removeTags.size() == 0 && addTags.size() == 0) {
+            Window.alert(PressGangCCMSUI.INSTANCE.NoBulkTagsSelected());
+            return;
+        }
+
         final BaseRestCallback<RESTTopicCollectionV1, Display> callback = new BaseRestCallback<RESTTopicCollectionV1, Display>(display,
                 new BaseRestCallback.SuccessAction<RESTTopicCollectionV1, Display>() {
                     @Override

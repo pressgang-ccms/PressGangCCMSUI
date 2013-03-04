@@ -760,4 +760,7 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String TopicsWereNotUpdatedCorrectly();
+
+    @NotNull
+    String NoBulkTagsSelected();
 }
