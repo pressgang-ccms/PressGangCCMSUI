@@ -96,7 +96,11 @@ abstract public class BaseSearchAndEditView<
         return viewActionButtonsParentPanel;
     }
 
-    public BaseSearchAndEditView(@NotNull final String applicationName, @NotNull final String pageName) {
+    public BaseSearchAndEditView(@NotNull final String applicationName, @NotNull final String pageName)  {
+        this(applicationName, pageName, true);
+    }
+
+    public BaseSearchAndEditView(@NotNull final String applicationName, @NotNull final String pageName, final boolean addCustomActionButtonFields) {
         super(applicationName, pageName);
 
         /* We have own own top action panels */
@@ -107,8 +111,10 @@ abstract public class BaseSearchAndEditView<
         resultsViewLayoutPanel.addStyleName(CSSConstants.BaseSearchAndEditView.RESULTS_VIEW_LAYOUT_PANEL);
         viewLayoutPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_VIEW_LAYOUT_PANEL);
 
-        resultsViewLayoutPanel.addNorth(resultsActionButtonsParentPanel, Constants.ACTION_BAR_HEIGHT);
-        viewLayoutPanel.addNorth(viewActionButtonsParentPanel, Constants.ACTION_BAR_HEIGHT);
+        if (addCustomActionButtonFields) {
+            resultsViewLayoutPanel.addNorth(resultsActionButtonsParentPanel, Constants.ACTION_BAR_HEIGHT);
+            viewLayoutPanel.addNorth(viewActionButtonsParentPanel, Constants.ACTION_BAR_HEIGHT);
+        }
 
         resultsViewLayoutPanel.add(resultsPanel);
         viewLayoutPanel.add(viewPanel);

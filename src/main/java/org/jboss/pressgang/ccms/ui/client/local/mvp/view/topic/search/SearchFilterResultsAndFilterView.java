@@ -29,11 +29,7 @@ public class SearchFilterResultsAndFilterView extends BaseSearchAndEditView<
     private final PushButton loadAndSearch = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.LoadAndSearch());
 
     public SearchFilterResultsAndFilterView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Filters());
-
-        addActionButton(load);
-        addActionButton(loadAndSearch);
-        addActionButton(overwrite);
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Filters(), false);
     }
 
     @Override

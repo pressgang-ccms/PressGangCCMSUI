@@ -322,19 +322,29 @@ public interface BaseTemplateViewInterface {
      * @param existing The widget that is currently displayed in the top action panel
      * @param replacement The widget to replace the existing widget with
      */
-    void replaceTopActionButton(final Widget existing, final Widget replacement);
+    void replaceTopActionButton(@NotNull final Widget existing, @NotNull final Widget replacement);
     /**
      * Replaces a widget in a flex table with another widget.
      * @param existing The widget that is currently displayed in the top action panel
      * @param replacement The widget to replace the existing widget with
      * @param table The table that holds the widgets.
      */
-    void replaceTopActionButton(final Widget existing, final Widget replacement, final FlexTable table);
+    void replaceTopActionButton(@NotNull final Widget existing, @NotNull final Widget replacement, @NotNull final FlexTable table);
 
     /**
      * Adds a widget to a new column in the table.
      * @param widget The widget to add.
      * @param table The table to add the widget to.
      */
-    void addActionButton(final Widget widget, final FlexTable table);
+    void addActionButton(@NotNull final Widget widget, @NotNull final FlexTable table);
+    /**
+     * Adds a widget to a new column in the top action panel.
+     * @param widget The widget to add.
+     */
+    void addActionButton(@NotNull final Widget widget);
+    /**
+     * Adds a widget to a new column in the local (ie right hand side) top action panel.
+     * @param widget The widget to add.
+     */
+    void addLocalActionButton(@NotNull final Widget widget);
 }

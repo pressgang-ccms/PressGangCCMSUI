@@ -729,11 +729,11 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         table.setWidget(0, columns, widget);
     }
 
-    protected final void addLocalActionButton(@NotNull final Widget widget) {
+    public final void addLocalActionButton(@NotNull final Widget widget) {
         addActionButton(widget, this.getTopViewSpecificRightActionPanel());
     }
 
-    protected final void addActionButton(@NotNull final Widget widget) {
+    public final void addActionButton(@NotNull final Widget widget) {
         addActionButton(widget, this.getTopActionPanel());
     }
 
