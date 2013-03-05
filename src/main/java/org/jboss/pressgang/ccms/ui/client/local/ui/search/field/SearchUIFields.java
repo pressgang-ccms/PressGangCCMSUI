@@ -497,19 +497,19 @@ public class SearchUIFields implements SearchViewBase {
         }
         if (this.createdBefore != null) {
             retValue.append(";" + CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR + "="
-                    + this.dateformat.format(this.createdBefore));
+                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.dateformat.format(this.editedBefore)) : this.dateformat.format(this.createdBefore)));
         }
         if (this.editedBefore != null) {
             retValue.append(";" + CommonFilterConstants.TOPIC_ENDEDITDATE_FILTER_VAR
-                    + "=" + this.dateformat.format(this.editedBefore));
+                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.dateformat.format(this.editedBefore)) : this.dateformat.format(this.editedBefore)));
         }
         if (this.editedAfter != null) {
             retValue.append(";" + CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR
-                    + "=" + this.dateformat.format(this.editedAfter));
+                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.dateformat.format(this.editedAfter)) : this.dateformat.format(this.editedAfter)));
         }
         if (this.createdAfter != null) {
             retValue.append(";" + CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR
-                    + "=" + this.dateformat.format(this.createdAfter));
+                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.dateformat.format(this.createdAfter)) : this.dateformat.format(this.createdAfter)));
         }
         if (!GWTUtilities.isStringNullOrEmpty(this.includedInContentSpecs)) {
             retValue.append(";" + CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC
