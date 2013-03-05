@@ -21,4 +21,4 @@ Some views simply create iFrames to BIRT reports. See https://github.com/mcasper
 
 To get rid of the border in the standard BIRT web viewer, set the border-width property in the .birtviewer_document_fragment class in webcontent/birt/styles.style.css file to 0.
 
-The ACE editor currently works with the ACE distribution from the 16th December 2012. See https://github.com/ajaxorg/ace-builds/tree/9f433321a8cca9270753842c2517bd3588354dfe
+The ACE editor currently works with the ACE distribution from the 17th December 2012. See https://github.com/ajaxorg/ace-builds/tree/97bae1d132effbeca5eef8aaef2a2a1fa836b181
