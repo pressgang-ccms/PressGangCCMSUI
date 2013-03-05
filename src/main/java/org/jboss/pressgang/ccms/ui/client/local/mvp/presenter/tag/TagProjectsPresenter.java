@@ -17,6 +17,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.children.BaseChildrenPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChildrenViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollectionItemDescriptionSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.project.RESTProjectCollectionItemIDSort;
@@ -34,6 +35,7 @@ import javax.inject.Inject;
 
 import java.util.Collections;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
@@ -160,40 +162,22 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
      */
     @Override
     public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTTagV1 parent) {
-        @NotNull final RESTCalls.RESTCallback<RESTProjectCollectionV1> callback = new RESTCalls.RESTCallback<RESTProjectCollectionV1>() {
-            @Override
-            public void begin() {
-                display.addWaitOperation();
-            }
 
-            @Override
-            public void generalException(final Exception e) {
-                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-                display.removeWaitOperation();
-            }
+        final BaseRestCallback<RESTProjectCollectionV1, Display> callback = new BaseRestCallback<RESTProjectCollectionV1, Display>(display,
+            new BaseRestCallback.SuccessAction<RESTProjectCollectionV1, Display>() {
+                @Override
+                public void doSuccessAction(@NotNull final RESTProjectCollectionV1 retValue, @NotNull final Display display) {
+                    checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                    checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
-            @Override
-            public void success(@NotNull final RESTProjectCollectionV1 retValue) {
-                try {
-                    /* Zero results can be a null list */
                     getPossibleChildrenProviderData().setStartRow(0);
                     getPossibleChildrenProviderData().setItems(retValue.getItems());
                     getPossibleChildrenProviderData().setSize(retValue.getItems().size());
 
                     /* Refresh the list */
                     redisplayPossibleChildList(parent);
-
-                } finally {
-                    display.removeWaitOperation();
                 }
-            }
-
-            @Override
-            public void failed(final Message message, final Throwable throwable) {
-                display.removeWaitOperation();
-                Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError());
-            }
-        };
+        });
 
         getPossibleChildrenProviderData().reset();
 

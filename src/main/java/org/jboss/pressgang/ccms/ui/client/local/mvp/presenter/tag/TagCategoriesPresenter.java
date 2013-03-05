@@ -44,6 +44,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
@@ -309,8 +310,12 @@ public class TagCategoriesPresenter
         @NotNull final BaseRestCallback<RESTCategoryCollectionV1, Display> callback = new BaseRestCallback<RESTCategoryCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTCategoryCollectionV1, Display>() {
             @Override
             public void doSuccessAction(@NotNull final RESTCategoryCollectionV1 retValue, @NotNull final Display display) {
+
+                checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
+
                 getPossibleChildrenProviderData().setStartRow(0);
-                /* Zero results can be a null list */
+                getPossibleChildrenProviderData().setSize(retValue.getSize());
                 getPossibleChildrenProviderData().setItems(retValue.getItems());
 
                 redisplayPossibleChildList(parent);
