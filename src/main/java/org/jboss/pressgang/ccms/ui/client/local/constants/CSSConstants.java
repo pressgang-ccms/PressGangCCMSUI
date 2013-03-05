@@ -185,6 +185,14 @@ public interface CSSConstants {
         String ENTITY_SEARCH_TAG_VIEW_BUTTONS_PARENT_PANEL = "EntitySearchTagViewButtonsParentPanel";
         String ENTITY_SEARCH_TOPIC_VIEW_DETAILS_PANEL = "EntitySearchTopicViewDetailsPanel";
         String ENTITY_SEARCH_RESULTS_AND_VIEW_PARENT_PANEL = "EntitySearchResultsAndViewParentPanel";
+        /**
+         * The style applied to the scroll panel that holds the views action buttons
+         */
+        String VIEW_ACTION_BUTTONS_PARENT_PANEL_SCROLL = "ViewActionButtonsParentPanelScroll";
+        /**
+         * The style applied to the scroll panel that holds the results action buttons
+         */
+        String RESULTS_ACTION_BUTTONS_PARENT_PANEL_SCROLL = "ResultsActionButtonsParentPanelScroll";
     }
 
     /**

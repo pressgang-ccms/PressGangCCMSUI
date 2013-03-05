@@ -1,3 +1,8 @@
+.ViewActionButtonsParentPanelScroll, .ResultsActionButtonsParentPanelScroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
 .SearchState, .BulkTagState {
     text-align: center;
 }

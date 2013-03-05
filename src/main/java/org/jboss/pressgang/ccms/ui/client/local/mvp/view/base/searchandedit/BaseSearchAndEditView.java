@@ -135,6 +135,9 @@ abstract public class BaseSearchAndEditView<
 
             addSpacerToShortcutPanels();
 
+            viewActionButtonsParentPanelScroll.addStyleName(CSSConstants.BaseSearchAndEditView.VIEW_ACTION_BUTTONS_PARENT_PANEL_SCROLL);
+            resultsActionButtonsParentPanelScroll.addStyleName(CSSConstants.BaseSearchAndEditView.RESULTS_ACTION_BUTTONS_PARENT_PANEL_SCROLL);
+
             viewActionButtonsParentPanelScroll.setWidget(viewActionButtonsParentPanel);
             resultsActionButtonsParentPanelScroll.setWidget(resultsActionButtonsParentPanel);
 
