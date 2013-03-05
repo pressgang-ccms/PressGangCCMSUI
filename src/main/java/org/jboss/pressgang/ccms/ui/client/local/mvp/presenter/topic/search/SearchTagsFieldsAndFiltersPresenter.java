@@ -186,7 +186,11 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                 @NotNull final SearchUIProjects projects = new SearchUIProjects(tags, displayedFilter);
                 @NotNull final SearchUIFields fields = new SearchUIFields(displayedFilter);
                 @NotNull final String query = projects.getSearchQuery(true) + fields.getSearchQuery(false);
-                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
+                if (doingTranslatedSearch) {
+                    eventBus.fireEvent(new TranslatedSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
+                } else {
+                    eventBus.fireEvent(new SearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
+                }
             }
         };
 

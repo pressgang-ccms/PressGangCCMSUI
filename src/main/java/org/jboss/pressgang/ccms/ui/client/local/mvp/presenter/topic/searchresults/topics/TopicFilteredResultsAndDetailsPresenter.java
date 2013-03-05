@@ -604,6 +604,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                     updateDisplayAfterSave(false);
 
                                                     if (overwroteChanges) {
+                                                        /* Take the user to the revisions view so they can review any overwritten changes */
+                                                        switchView(topicRevisionsComponent.getDisplay());
                                                         Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
                                                     } else {
                                                         Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());

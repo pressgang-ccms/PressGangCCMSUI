@@ -49,6 +49,15 @@ abstract public class BaseSearchAndEditView<
      * The panel that will hold the view specific action buttons
      */
     private final HorizontalPanel viewViewSpecificActionButtonsPanel = new HorizontalPanel();
+    /**
+     * The scroll panel used to hold the view action buttons.
+     */
+    private final ScrollPanel viewActionButtonsParentPanelScroll = new ScrollPanel();
+    /**
+     * The scroll panel used to hold the results action buttons.
+     */
+    private final ScrollPanel resultsActionButtonsParentPanelScroll = new ScrollPanel();
+
 
     /**
      * If true, this view will create top action panels above the filtered results, and above
@@ -126,8 +135,11 @@ abstract public class BaseSearchAndEditView<
 
             addSpacerToShortcutPanels();
 
-            resultsViewLayoutPanel.addNorth(resultsActionButtonsParentPanel, Constants.ACTION_BAR_HEIGHT);
-            viewLayoutPanel.addNorth(viewActionButtonsParentPanel, Constants.ACTION_BAR_HEIGHT);
+            viewActionButtonsParentPanelScroll.setWidget(viewActionButtonsParentPanel);
+            resultsActionButtonsParentPanelScroll.setWidget(resultsActionButtonsParentPanel);
+
+            resultsViewLayoutPanel.addNorth(resultsActionButtonsParentPanelScroll, Constants.ACTION_BAR_HEIGHT);
+            viewLayoutPanel.addNorth(viewActionButtonsParentPanelScroll, Constants.ACTION_BAR_HEIGHT);
         }
 
         resultsViewLayoutPanel.add(resultsPanel);

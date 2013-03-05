@@ -37,7 +37,7 @@ public class SearchTagsFieldsAndFiltersView extends
         addActionButton(applyBulkTags);
         addActionButton(tagsSearch);
         addActionButton(fields);
-        //addActionButton(locales);
+        addActionButton(locales);
         addActionButton(filters);
     }
 
