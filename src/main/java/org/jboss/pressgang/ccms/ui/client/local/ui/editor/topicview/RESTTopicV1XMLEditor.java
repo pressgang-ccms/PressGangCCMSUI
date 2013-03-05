@@ -9,7 +9,12 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 
 public final class RESTTopicV1XMLEditor extends SimplePanel implements Editor<RESTBaseTopicV1<?, ?, ?>> {
-    public final AceEditor xml = new AceEditor(true);
+    /**
+     * Ace builds from the 17th December 2012 and prior use absolute positioning, and require
+     * that the AceEditor being constructed with true. After the 17th December 2012 the ACE
+     * editor uses relative positioning, and the AceEditor needs to be constructed with false.
+     */
+    public final AceEditor xml = new AceEditor(false);
 
     public RESTTopicV1XMLEditor(final boolean readOnly) {
         this.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_ACE_PANEL);
