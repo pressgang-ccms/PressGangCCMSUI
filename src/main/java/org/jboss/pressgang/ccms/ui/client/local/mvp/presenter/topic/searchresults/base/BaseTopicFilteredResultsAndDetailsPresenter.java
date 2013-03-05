@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
@@ -433,6 +434,22 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                         try {
                             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs() topicWithTagsCallback.doSuccessAction()");
 
+                            /*
+                                There is a small chance that in between loading the topic's details and
+                                loading its tags, a new revision was created.
+
+                                So, what do we do? If changes are made to the topic, then
+                                the user will be warned that they have overwritten a revision created
+                                in the mean time. In fact seeing the latest tag relationships could
+                                mean that the user doesn't try to add conflicting tags (like adding
+                                a tag from a mutually exclusive category when one already exists).
+
+                                This check is left in comments just to show that a conflict is possible.
+                            */
+                            /*if (!retValue.getRevision().equals(revision)) {
+                                Window.alert("The topics details and tags are not in sync.");
+                            }*/
+
                             /* copy the revisions into the displayed Topic */
                             getDisplayedTopic().setTags(retValue.getTags());
 
@@ -444,7 +461,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                     }
                 });
 
-                RESTCalls.getTopicRevisionWithTags(topicWithTagsCallback, id, revision);
+                RESTCalls.getTopicWithTags(topicWithTagsCallback, id);
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs()");
