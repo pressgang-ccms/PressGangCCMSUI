@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/tomorrow_night_blue', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/tomorrow_night_blue', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = true;
-    exports.cssClass = "ace-tomorrow-night-blue";
-    exports.cssText = "\
+exports.isDark = true;
+exports.cssClass = "ace-tomorrow-night-blue";
+exports.cssText = "\
 .ace-tomorrow-night-blue .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -49,13 +49,13 @@ ace.define('ace/theme/tomorrow_night_blue', ['require', 'exports', 'module', 'ac
 }\
 \
 .ace-tomorrow-night-blue .ace_gutter {\
-  background: #00204b;\
+  background: #022346;\
   color: #7388b5;\
 }\
 \
 .ace-tomorrow-night-blue .ace_print_margin {\
   width: 1px;\
-  background: #00204b;\
+  background: #e8e8e8;\
 }\
 \
 .ace-tomorrow-night-blue .ace_scroller {\
@@ -63,6 +63,7 @@ ace.define('ace/theme/tomorrow_night_blue', ['require', 'exports', 'module', 'ac
 }\
 \
 .ace-tomorrow-night-blue .ace_text-layer {\
+  cursor: text;\
   color: #FFFFFF;\
 }\
 \
@@ -202,10 +203,6 @@ background-color:#EBBBFF;\
 \
 .ace-tomorrow-night-blue .ace_markup.ace_heading {\
   color:#D1F1A9;\
-}\
-\
-.ace-tomorrow-night-blue .ace_indent-guide {\
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWNgUAn8z7Bq1ar/ABBUBHJ4/r3JAAAAAElFTkSuQmCC) right repeat-y;\
 }";
 
     var dom = require("../lib/dom");

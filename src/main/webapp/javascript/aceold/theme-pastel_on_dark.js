@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/pastel_on_dark', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/pastel_on_dark', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = true;
-    exports.cssClass = "ace-pastel-on-dark";
-    exports.cssText = "\
+exports.isDark = true;
+exports.cssClass = "ace-pastel-on-dark";
+exports.cssText = "\
 .ace-pastel-on-dark .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -49,13 +49,13 @@ ace.define('ace/theme/pastel_on_dark', ['require', 'exports', 'module', 'ace/lib
 }\
 \
 .ace-pastel-on-dark .ace_gutter {\
-  background: #353030;\
-  color: #8F938F;\
+  background: #e8e8e8;\
+  color: #333;\
 }\
 \
 .ace-pastel-on-dark .ace_print_margin {\
   width: 1px;\
-  background: #353030;\
+  background: #e8e8e8;\
 }\
 \
 .ace-pastel-on-dark .ace_scroller {\
@@ -63,6 +63,7 @@ ace.define('ace/theme/pastel_on_dark', ['require', 'exports', 'module', 'ace/lib
 }\
 \
 .ace-pastel-on-dark .ace_text-layer {\
+  cursor: text;\
   color: #8F938F;\
 }\
 \
@@ -98,7 +99,7 @@ ace.define('ace/theme/pastel_on_dark', ['require', 'exports', 'module', 'ace/lib
 }\
 \
 .ace-pastel-on-dark .ace_gutter_active_line {\
-  background-color: rgba(255, 255, 255, 0.031);\
+  background-color : #dcdcdc;\
 }\
 \
 .ace-pastel-on-dark .ace_marker-layer .ace_selected_word {\
@@ -188,10 +189,6 @@ color:#D2A8A1;\
 \
 .ace-pastel-on-dark .ace_markup.ace_underline {\
     text-decoration:underline;\
-}\
-\
-.ace-pastel-on-dark .ace_indent-guide {\
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWPQ0dD4z9DR0fEfAA+vBBPqhbn1AAAAAElFTkSuQmCC) right repeat-y;\
 }";
 
     var dom = require("../lib/dom");

@@ -35,12 +35,12 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/textmate', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/textmate', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
 
-    exports.isDark = false;
-    exports.cssClass = "ace-tm";
-    exports.cssText = ".ace-tm .ace_editor {\
+exports.isDark = false;
+exports.cssClass = "ace-tm";
+exports.cssText = ".ace-tm .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
 \
@@ -49,7 +49,7 @@ ace.define('ace/theme/textmate', ['require', 'exports', 'module', 'ace/lib/dom']
 }\
 \
 .ace-tm .ace_gutter {\
-  background: #f0f0f0;\
+  background: #e8e8e8;\
   color: #333;\
 }\
 \
@@ -63,6 +63,7 @@ ace.define('ace/theme/textmate', ['require', 'exports', 'module', 'ace/lib/dom']
 }\
 \
 .ace-tm .ace_text-layer {\
+  cursor: text;\
 }\
 \
 .ace-tm .ace_cursor {\
@@ -188,8 +189,7 @@ ace.define('ace/theme/textmate', ['require', 'exports', 'module', 'ace/lib/dom']
 .ace-tm .ace_marker-layer .ace_active_line {\
   background: rgba(0, 0, 0, 0.07);\
 }\
-\
-.ace-tm .ace_gutter_active_line {\
+.ace-tm .ace_gutter_active_line{\
     background-color : #dcdcdc;\
 }\
 \
@@ -199,18 +199,13 @@ ace.define('ace/theme/textmate', ['require', 'exports', 'module', 'ace/lib/dom']
 }\
 \
 .ace-tm .ace_meta.ace_tag {\
-  color:rgb(0, 22, 142);\
+  color:rgb(0, 50, 198);\
 }\
 \
 .ace-tm .ace_string.ace_regex {\
   color: rgb(255, 0, 0)\
-}\
-\
-.ace-tm .ace_indent-guide {\
-  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==\") right repeat-y;\
-}\
-";
+}";
 
-    var dom = require("../lib/dom");
-    dom.importCssString(exports.cssText, exports.cssClass);
+var dom = require("../lib/dom");
+dom.importCssString(exports.cssText, exports.cssClass);
 });

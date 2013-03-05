@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/mono_industrial', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/mono_industrial', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = true;
-    exports.cssClass = "ace-mono-industrial";
-    exports.cssText = "\
+exports.isDark = true;
+exports.cssClass = "ace-mono-industrial";
+exports.cssText = "\
 .ace-mono-industrial .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -49,8 +49,8 @@ ace.define('ace/theme/mono_industrial', ['require', 'exports', 'module', 'ace/li
 }\
 \
 .ace-mono-industrial .ace_gutter {\
-  background: #1d2521;\
-  color: #fff;\
+  background: #e8e8e8;\
+  color: #333;\
 }\
 \
 .ace-mono-industrial .ace_print_margin {\
@@ -63,6 +63,7 @@ ace.define('ace/theme/mono_industrial', ['require', 'exports', 'module', 'ace/li
 }\
 \
 .ace-mono-industrial .ace_text-layer {\
+  cursor: text;\
   color: #FFFFFF;\
 }\
 \
@@ -98,7 +99,7 @@ ace.define('ace/theme/mono_industrial', ['require', 'exports', 'module', 'ace/li
 }\
 \
 .ace-mono-industrial .ace_gutter_active_line {\
-  background-color: rgba(12, 13, 12, 0.25);\
+  background-color : #dcdcdc;\
 }\
 \
 .ace-mono-industrial .ace_marker-layer .ace_selected_word {\
@@ -186,10 +187,6 @@ background-color:#151C19;\
 \
 .ace-mono-industrial .ace_markup.ace_underline {\
     text-decoration:underline;\
-}\
-\
-.ace-mono-industrial .ace_indent-guide {\
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWNQ0tH4zzBz5sz/ABAOBECKH+evAAAAAElFTkSuQmCC) right repeat-y;\
 }";
 
     var dom = require("../lib/dom");

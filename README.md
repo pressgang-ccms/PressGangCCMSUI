@@ -20,3 +20,5 @@ mvn -P oss-public,jboss-public gwt:run-codeserver
 Some views simply create iFrames to BIRT reports. See https://github.com/mcasperson/birt-jsonparser and https://github.com/mcasperson/BIRT-JSON-Report-Template for examples.
 
 To get rid of the border in the standard BIRT web viewer, set the border-width property in the .birtviewer_document_fragment class in webcontent/birt/styles.style.css file to 0.
+
+The ACE editor currently works with the ACE distribution from the 4th of November 2012. See https://github.com/ajaxorg/ace-builds/tree/86abb02339499ac96f95649ad5e088e66b6b9a9c

@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/merbivore_soft', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/merbivore_soft', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = true;
-    exports.cssClass = "ace-merbivore-soft";
-    exports.cssText = "\
+exports.isDark = true;
+exports.cssClass = "ace-merbivore-soft";
+exports.cssText = "\
 .ace-merbivore-soft .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -49,13 +49,13 @@ ace.define('ace/theme/merbivore_soft', ['require', 'exports', 'module', 'ace/lib
 }\
 \
 .ace-merbivore-soft .ace_gutter {\
-  background: #262424;\
-  color: #E6E1DC;\
+  background: #e8e8e8;\
+  color: #333;\
 }\
 \
 .ace-merbivore-soft .ace_print_margin {\
   width: 1px;\
-  background: #262424;\
+  background: #e8e8e8;\
 }\
 \
 .ace-merbivore-soft .ace_scroller {\
@@ -63,6 +63,7 @@ ace.define('ace/theme/merbivore_soft', ['require', 'exports', 'module', 'ace/lib
 }\
 \
 .ace-merbivore-soft .ace_text-layer {\
+  cursor: text;\
   color: #E6E1DC;\
 }\
 \
@@ -98,7 +99,7 @@ ace.define('ace/theme/merbivore_soft', ['require', 'exports', 'module', 'ace/lib
 }\
 \
 .ace-merbivore-soft .ace_gutter_active_line {\
-  background-color: #333435;\
+  background-color : #dcdcdc;\
 }\
 \
 .ace-merbivore-soft .ace_marker-layer .ace_selected_word {\
@@ -184,10 +185,6 @@ color:#AC4BB8;\
 \
 .ace-merbivore-soft .ace_markup.ace_underline {\
     text-decoration:underline;\
-}\
-\
-.ace-merbivore-soft .ace_indent-guide {\
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWOQkZH5zzBz5sz/AA8EBB6crd1rAAAAAElFTkSuQmCC) right repeat-y;\
 }";
 
     var dom = require("../lib/dom");

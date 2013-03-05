@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/idle_fingers', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/idle_fingers', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = true;
-    exports.cssClass = "ace-idle-fingers";
-    exports.cssText = "\
+exports.isDark = true;
+exports.cssClass = "ace-idle-fingers";
+exports.cssText = "\
 .ace-idle-fingers .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -49,13 +49,13 @@ ace.define('ace/theme/idle_fingers', ['require', 'exports', 'module', 'ace/lib/d
 }\
 \
 .ace-idle-fingers .ace_gutter {\
-  background: #3b3b3b;\
-  color: #fff;\
+  background: #e8e8e8;\
+  color: #333;\
 }\
 \
 .ace-idle-fingers .ace_print_margin {\
   width: 1px;\
-  background: #3b3b3b;\
+  background: #e8e8e8;\
 }\
 \
 .ace-idle-fingers .ace_scroller {\
@@ -63,6 +63,7 @@ ace.define('ace/theme/idle_fingers', ['require', 'exports', 'module', 'ace/lib/d
 }\
 \
 .ace-idle-fingers .ace_text-layer {\
+  cursor: text;\
   color: #FFFFFF;\
 }\
 \
@@ -98,7 +99,7 @@ ace.define('ace/theme/idle_fingers', ['require', 'exports', 'module', 'ace/lib/d
 }\
 \
 .ace-idle-fingers .ace_gutter_active_line {\
-  background-color: #353637;\
+  background-color : #dcdcdc;\
 }\
 \
 .ace-idle-fingers .ace_marker-layer .ace_selected_word {\
@@ -174,11 +175,7 @@ color:#BC9458;\
 \
 .ace-idle-fingers .ace_collab.ace_user1 {\
   color:#323232;\
-  background-color:#FFF980;\
-}\
-\
-.ace-idle-fingers .ace_indent-guide {\
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWMwMjL6zzBz5sz/ABEUBGCqhK6UAAAAAElFTkSuQmCC) right repeat-y;\
+background-color:#FFF980;\
 }";
 
     var dom = require("../lib/dom");

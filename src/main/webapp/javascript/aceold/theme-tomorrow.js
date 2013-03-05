@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/tomorrow', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/tomorrow', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = false;
-    exports.cssClass = "ace-tomorrow";
-    exports.cssText = "\
+exports.isDark = false;
+exports.cssClass = "ace-tomorrow";
+exports.cssText = "\
 .ace-tomorrow .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -49,13 +49,13 @@ ace.define('ace/theme/tomorrow', ['require', 'exports', 'module', 'ace/lib/dom']
 }\
 \
 .ace-tomorrow .ace_gutter {\
-  background: #f6f6f6;\
-  color: #4D4D4C;\
+  background: #e8e8e8;\
+  color: #333;\
 }\
 \
 .ace-tomorrow .ace_print_margin {\
   width: 1px;\
-  background: #f6f6f6;\
+  background: #e8e8e8;\
 }\
 \
 .ace-tomorrow .ace_scroller {\
@@ -63,6 +63,7 @@ ace.define('ace/theme/tomorrow', ['require', 'exports', 'module', 'ace/lib/dom']
 }\
 \
 .ace-tomorrow .ace_text-layer {\
+  cursor: text;\
   color: #4D4D4C;\
 }\
 \
@@ -202,10 +203,6 @@ background-color:#8959A8;\
 \
 .ace-tomorrow .ace_markup.ace_heading {\
   color:#718C00;\
-}\
-\
-.ace-tomorrow .ace_indent-guide {\
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bdu3f/BwAlfgctduB85QAAAABJRU5ErkJggg==) right repeat-y;\
 }";
 
     var dom = require("../lib/dom");

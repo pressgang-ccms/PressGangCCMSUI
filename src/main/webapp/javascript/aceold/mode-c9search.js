@@ -35,244 +35,264 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/mode/c9search', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/text', 'ace/tokenizer', 'ace/mode/c9search_highlight_rules', 'ace/mode/matching_brace_outdent', 'ace/mode/folding/c9search'], function (require, exports, module) {
+define('ace/mode/c9search', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/text', 'ace/tokenizer', 'ace/mode/c9search_highlight_rules', 'ace/mode/matching_brace_outdent', 'ace/mode/folding/c9search'], function(require, exports, module) {
 
 
-    var oop = require("../lib/oop");
-    var TextMode = require("./text").Mode;
-    var Tokenizer = require("../tokenizer").Tokenizer;
-    var C9SearchHighlightRules = require("./c9search_highlight_rules").C9SearchHighlightRules;
-    var MatchingBraceOutdent = require("./matching_brace_outdent").MatchingBraceOutdent;
-    var C9StyleFoldMode = require("./folding/c9search").FoldMode;
+var oop = require("../lib/oop");
+var TextMode = require("./text").Mode;
+var Tokenizer = require("../tokenizer").Tokenizer;
+var C9SearchHighlightRules = require("./c9search_highlight_rules").C9SearchHighlightRules;
+var MatchingBraceOutdent = require("./matching_brace_outdent").MatchingBraceOutdent;
+var C9StyleFoldMode = require("./folding/c9search").FoldMode;
 
-    var Mode = function () {
-        this.$tokenizer = new Tokenizer(new C9SearchHighlightRules().getRules(), "i");
-        this.$outdent = new MatchingBraceOutdent();
-        this.foldingRules = new C9StyleFoldMode();
-    };
-    oop.inherits(Mode, TextMode);
+var Mode = function() {
+    this.$tokenizer = new Tokenizer(new C9SearchHighlightRules().getRules(), "i");
+    this.$outdent = new MatchingBraceOutdent();
+    this.foldingRules = new C9StyleFoldMode();
+};
+oop.inherits(Mode, TextMode);
 
-    (function () {
+(function() {
+    
+    this.getNextLineIndent = function(state, line, tab) {
+        var indent = this.$getIndent(line);
 
-        this.getNextLineIndent = function (state, line, tab) {
-            var indent = this.$getIndent(line);
+        // ignore braces in comments
+        var tokens = this.$tokenizer.getLineTokens(line, state).tokens;
+        if (tokens.length && tokens[tokens.length-1].type == "comment") {
             return indent;
-        };
+        }
 
-        this.checkOutdent = function (state, line, input) {
-            return this.$outdent.checkOutdent(line, input);
-        };
+        var match = line.match(/^.*\{\s*$/);
+        if (match) {
+            indent += tab;
+        }
 
-        this.autoOutdent = function (state, doc, row) {
-            this.$outdent.autoOutdent(doc, row);
-        };
+        return indent;
+    };
 
-    }).call(Mode.prototype);
+    this.checkOutdent = function(state, line, input) {
+        return this.$outdent.checkOutdent(line, input);
+    };
 
-    exports.Mode = Mode;
+    this.autoOutdent = function(state, doc, row) {
+        this.$outdent.autoOutdent(doc, row);
+    };
+
+}).call(Mode.prototype);
+
+exports.Mode = Mode;
 
 });
 
-ace.define('ace/mode/c9search_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/text_highlight_rules'], function (require, exports, module) {
+define('ace/mode/c9search_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/text_highlight_rules'], function(require, exports, module) {
 
 
-    var oop = require("../lib/oop");
-    var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
+var oop = require("../lib/oop");
+var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 
-    var C9SearchHighlightRules = function () {
+var C9SearchHighlightRules = function() {
 
-        // regexp must not have capturing parentheses. Use (?:) instead.
-        // regexps are ordered -> the first match is used
-        this.$rules = {
-            "start": [
-                {
-                    token: ["c9searchresults.constant.numeric", "c9searchresults.text", "c9searchresults.text"],
-                    regex: "(^\\s+[0-9]+)(:\\s*)(.+)"
-                },
-                {
-                    token: ["string", "text"], // single line
-                    regex: "(.+)(:$)"
-                }
-            ]
-        };
+    // regexp must not have capturing parentheses. Use (?:) instead.
+    // regexps are ordered -> the first match is used
+    this.$rules = {
+        "start" : [
+            {
+                token : ["constant.numeric", "text", "text"],
+                regex : "(^\\s+[0-9]+)(:\\s*)(.+)"
+            },
+            {
+                token : ["string", "text"], // single line
+                regex : "(.+)(:$)"
+            }
+        ]
     };
+};
 
-    oop.inherits(C9SearchHighlightRules, TextHighlightRules);
+oop.inherits(C9SearchHighlightRules, TextHighlightRules);
 
-    exports.C9SearchHighlightRules = C9SearchHighlightRules;
+exports.C9SearchHighlightRules = C9SearchHighlightRules;
 
 });
 
-ace.define('ace/mode/matching_brace_outdent', ['require', 'exports', 'module' , 'ace/range'], function (require, exports, module) {
+define('ace/mode/matching_brace_outdent', ['require', 'exports', 'module' , 'ace/range'], function(require, exports, module) {
 
 
-    var Range = require("../range").Range;
+var Range = require("../range").Range;
 
-    var MatchingBraceOutdent = function () {
+var MatchingBraceOutdent = function() {};
+
+(function() {
+
+    this.checkOutdent = function(line, input) {
+        if (! /^\s+$/.test(line))
+            return false;
+
+        return /^\s*\}/.test(input);
     };
 
-    (function () {
+    this.autoOutdent = function(doc, row) {
+        var line = doc.getLine(row);
+        var match = line.match(/^(\s*\})/);
 
-        this.checkOutdent = function (line, input) {
-            if (!/^\s+$/.test(line))
-                return false;
+        if (!match) return 0;
 
-            return /^\s*\}/.test(input);
-        };
+        var column = match[1].length;
+        var openBracePos = doc.findMatchingBracket({row: row, column: column});
 
-        this.autoOutdent = function (doc, row) {
-            var line = doc.getLine(row);
-            var match = line.match(/^(\s*\})/);
+        if (!openBracePos || openBracePos.row == row) return 0;
 
-            if (!match) return 0;
+        var indent = this.$getIndent(doc.getLine(openBracePos.row));
+        doc.replace(new Range(row, 0, row, column-1), indent);
+    };
 
-            var column = match[1].length;
-            var openBracePos = doc.findMatchingBracket({row: row, column: column});
+    this.$getIndent = function(line) {
+        var match = line.match(/^(\s+)/);
+        if (match) {
+            return match[1];
+        }
 
-            if (!openBracePos || openBracePos.row == row) return 0;
+        return "";
+    };
 
-            var indent = this.$getIndent(doc.getLine(openBracePos.row));
-            doc.replace(new Range(row, 0, row, column - 1), indent);
-        };
+}).call(MatchingBraceOutdent.prototype);
 
-        this.$getIndent = function (line) {
-            var match = line.match(/^(\s+)/);
-            if (match) {
-                return match[1];
+exports.MatchingBraceOutdent = MatchingBraceOutdent;
+});
+
+
+define('ace/mode/folding/c9search', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/range', 'ace/mode/folding/fold_mode'], function(require, exports, module) {
+
+
+var oop = require("../../lib/oop");
+var Range = require("../../range").Range;
+var BaseFoldMode = require("./fold_mode").FoldMode;
+
+var FoldMode = exports.FoldMode = function() {};
+oop.inherits(FoldMode, BaseFoldMode);
+
+(function() {
+
+    this.foldingStartMarker = /[a-zA-Z](:)\s*$/;
+    this.foldingStopMarker = /^(\s*)$/;
+    
+    this.getFoldWidgetRange = function(session, foldStyle, row) {
+        var line = session.getLine(row);
+        var match = line.match(this.foldingStartMarker);
+        if (match) {
+            var i = match.index;
+
+            if (match[1])
+                return this.openingBracketBlock(session, match[1], row, i, false, true);
+
+            var range = session.getCommentFoldRange(row, i + match[0].length);
+            range.end.column -= 2;
+            return range;
+        }
+
+        if (foldStyle !== "markbeginend")
+            return;
+            
+        var match = line.match(this.foldingStopMarker);
+        if (match) {
+            var i = match.index + match[0].length;
+
+            if (match[2]) {
+                var range = session.getCommentFoldRange(row, i);
+                range.end.column -= 2;
+                return range;
             }
 
-            return "";
-        };
+            var end = {row: row, column: i};
+            var start = session.$findOpeningBracket(match[1], end);
+            
+            if (!start)
+                return;
 
-    }).call(MatchingBraceOutdent.prototype);
+            start.column++;
+            end.column--;
 
-    exports.MatchingBraceOutdent = MatchingBraceOutdent;
-});
-
-
-ace.define('ace/mode/folding/c9search', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/range', 'ace/mode/folding/fold_mode'], function (require, exports, module) {
-
-
-    var oop = require("../../lib/oop");
-    var Range = require("../../range").Range;
-    var BaseFoldMode = require("./fold_mode").FoldMode;
-
-    var FoldMode = exports.FoldMode = function () {
+            return  Range.fromPoints(start, end);
+        }
     };
-    oop.inherits(FoldMode, BaseFoldMode);
-
-    (function () {
-
-        this.foldingStartMarker = /^(\S.*\:|Searching for.*)$/;
-        this.foldingStopMarker = /^(\s+|Found.*)$/;
-
-        this.getFoldWidgetRange = function (session, foldStyle, row) {
-            var lines = session.doc.getAllLines(row);
-            var line = lines[row];
-            var level1 = /^(Found.*|Searching for.*)$/;
-            var level2 = /^(\S.*\:|\s*)$/;
-            var re = level1.test(line) ? level1 : level2;
-
-            if (this.foldingStartMarker.test(line)) {
-                for (var i = row + 1, l = session.getLength(); i < l; i++) {
-                    if (re.test(lines[i]))
-                        break;
-                }
-
-                return new Range(row, line.length, i, 0);
-            }
-
-            if (this.foldingStopMarker.test(line)) {
-                for (var i = row - 1; i >= 0; i--) {
-                    line = lines[i];
-                    if (re.test(line))
-                        break;
-                }
-
-                return new Range(i, line.length, row, 0);
-            }
-        };
-
-    }).call(FoldMode.prototype);
+    
+}).call(FoldMode.prototype);
 
 });
 
-ace.define('ace/mode/folding/fold_mode', ['require', 'exports', 'module' , 'ace/range'], function (require, exports, module) {
+define('ace/mode/folding/fold_mode', ['require', 'exports', 'module' , 'ace/range'], function(require, exports, module) {
 
 
-    var Range = require("../../range").Range;
+var Range = require("../../range").Range;
 
-    var FoldMode = exports.FoldMode = function () {
-    };
+var FoldMode = exports.FoldMode = function() {};
 
-    (function () {
+(function() {
 
-        this.foldingStartMarker = null;
-        this.foldingStopMarker = null;
+    this.foldingStartMarker = null;
+    this.foldingStopMarker = null;
 
-        // must return "" if there's no fold, to enable caching
-        this.getFoldWidget = function (session, foldStyle, row) {
-            var line = session.getLine(row);
-            if (this.foldingStartMarker.test(line))
-                return "start";
-            if (foldStyle == "markbeginend"
+    // must return "" if there's no fold, to enable caching
+    this.getFoldWidget = function(session, foldStyle, row) {
+        var line = session.getLine(row);
+        if (this.foldingStartMarker.test(line))
+            return "start";
+        if (foldStyle == "markbeginend"
                 && this.foldingStopMarker
                 && this.foldingStopMarker.test(line))
-                return "end";
-            return "";
-        };
+            return "end";
+        return "";
+    };
+    
+    this.getFoldWidgetRange = function(session, foldStyle, row) {
+        return null;
+    };
 
-        this.getFoldWidgetRange = function (session, foldStyle, row) {
-            return null;
-        };
+    this.indentationBlock = function(session, row, column) {
+        var re = /^\s*/;
+        var startRow = row;
+        var endRow = row;
+        var line = session.getLine(row);
+        var startColumn = column || line.length;
+        var startLevel = line.match(re)[0].length;
+        var maxRow = session.getLength()
+        
+        while (++row < maxRow) {
+            line = session.getLine(row);
+            var level = line.match(re)[0].length;
 
-        this.indentationBlock = function (session, row, column) {
-            var re = /\S/;
-            var line = session.getLine(row);
-            var startLevel = line.search(re);
-            if (startLevel == -1)
-                return;
+            if (level == line.length)
+                continue;
 
-            var startColumn = column || line.length;
-            var maxRow = session.getLength();
-            var startRow = row;
-            var endRow = row;
+            if (level <= startLevel)
+                break;
 
-            while (++row < maxRow) {
-                var level = session.getLine(row).search(re);
+            endRow = row;
+        }
 
-                if (level == -1)
-                    continue;
+        if (endRow > startRow) {
+            var endColumn = session.getLine(endRow).length;
+            return new Range(startRow, startColumn, endRow, endColumn);
+        }
+    };
 
-                if (level <= startLevel)
-                    break;
+    this.openingBracketBlock = function(session, bracket, row, column, typeRe, allowBlankLine) {
+        var start = {row: row, column: column + 1};
+        var end = session.$findClosingBracket(bracket, start, typeRe, allowBlankLine);
+        if (!end)
+            return;
 
-                endRow = row;
-            }
+        var fw = session.foldWidgets[end.row];
+        if (fw == null)
+            fw = this.getFoldWidget(session, end.row);
 
-            if (endRow > startRow) {
-                var endColumn = session.getLine(endRow).length;
-                return new Range(startRow, startColumn, endRow, endColumn);
-            }
-        };
+        if (fw == "start") {
+            end.row --;
+            end.column = session.getLine(end.row).length;
+        }
+        return Range.fromPoints(start, end);
+    };
 
-        this.openingBracketBlock = function (session, bracket, row, column, typeRe) {
-            var start = {row: row, column: column + 1};
-            var end = session.$findClosingBracket(bracket, start, typeRe);
-            if (!end)
-                return;
-
-            var fw = session.foldWidgets[end.row];
-            if (fw == null)
-                fw = this.getFoldWidget(session, end.row);
-
-            if (fw == "start" && end.row > start.row) {
-                end.row--;
-                end.column = session.getLine(end.row).length;
-            }
-            return Range.fromPoints(start, end);
-        };
-
-    }).call(FoldMode.prototype);
+}).call(FoldMode.prototype);
 
 });

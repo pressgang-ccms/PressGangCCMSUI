@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/dawn', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/dawn', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = false;
-    exports.cssClass = "ace-dawn";
-    exports.cssText = "\
+exports.isDark = false;
+exports.cssClass = "ace-dawn";
+exports.cssText = "\
 .ace-dawn .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -49,7 +49,7 @@ ace.define('ace/theme/dawn', ['require', 'exports', 'module', 'ace/lib/dom'], fu
 }\
 \
 .ace-dawn .ace_gutter {\
-  background: #ebebeb;\
+  background: #e8e8e8;\
   color: #333;\
 }\
 \
@@ -63,6 +63,7 @@ ace.define('ace/theme/dawn', ['require', 'exports', 'module', 'ace/lib/dom'], fu
 }\
 \
 .ace-dawn .ace_text-layer {\
+  cursor: text;\
   color: #080808;\
 }\
 \
@@ -187,10 +188,6 @@ color:#5A525F;\
 \
 .ace-dawn .ace_markup.ace_list {\
   color:#693A17;\
-}\
-\
-.ace-dawn .ace_indent-guide {\
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4+fPnf4ZVq1b9BwAkVQboFQv98gAAAABJRU5ErkJggg==) right repeat-y;\
 }";
 
     var dom = require("../lib/dom");

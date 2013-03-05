@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/tomorrow_night_bright', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/tomorrow_night_bright', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = true;
-    exports.cssClass = "ace-tomorrow-night-bright";
-    exports.cssText = "\
+exports.isDark = true;
+exports.cssClass = "ace-tomorrow-night-bright";
+exports.cssText = "\
 .ace-tomorrow-night-bright .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -49,13 +49,13 @@ ace.define('ace/theme/tomorrow_night_bright', ['require', 'exports', 'module', '
 }\
 \
 .ace-tomorrow-night-bright .ace_gutter {\
-  background: #1a1a1a;\
-  color: #DEDEDE;\
+  background: #e8e8e8;\
+  color: #333;\
 }\
 \
 .ace-tomorrow-night-bright .ace_print_margin {\
   width: 1px;\
-  background: #1a1a1a;\
+  background: #e8e8e8;\
 }\
 \
 .ace-tomorrow-night-bright .ace_scroller {\
@@ -63,6 +63,7 @@ ace.define('ace/theme/tomorrow_night_bright', ['require', 'exports', 'module', '
 }\
 \
 .ace-tomorrow-night-bright .ace_text-layer {\
+  cursor: text;\
   color: #DEDEDE;\
 }\
 \
@@ -98,7 +99,7 @@ ace.define('ace/theme/tomorrow_night_bright', ['require', 'exports', 'module', '
 }\
 \
 .ace-tomorrow-night-bright .ace_gutter_active_line {\
-  background-color: #2A2A2A;\
+  background-color : #dcdcdc;\
 }\
 \
 .ace-tomorrow-night-bright .ace_marker-layer .ace_selected_word {\
@@ -202,10 +203,6 @@ background-color:#B798BF;\
 \
 .ace-tomorrow-night-bright .ace_markup.ace_heading {\
   color:#B9CA4A;\
-}\
-\
-.ace-tomorrow-night-bright .ace_indent-guide {\
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWNgYGD4z7Bq1ar/AAz9A/2naJQKAAAAAElFTkSuQmCC) right repeat-y;\
 }";
 
     var dom = require("../lib/dom");

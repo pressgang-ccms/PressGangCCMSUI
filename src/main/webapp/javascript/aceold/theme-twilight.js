@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/twilight', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/twilight', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = true;
-    exports.cssClass = "ace-twilight";
-    exports.cssText = "\
+exports.isDark = true;
+exports.cssClass = "ace-twilight";
+exports.cssText = "\
 .ace-twilight .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -49,13 +49,13 @@ ace.define('ace/theme/twilight', ['require', 'exports', 'module', 'ace/lib/dom']
 }\
 \
 .ace-twilight .ace_gutter {\
-  background: #232323;\
-  color: #F8F8F8;\
+  background: #e8e8e8;\
+  color: #333;\
 }\
 \
 .ace-twilight .ace_print_margin {\
   width: 1px;\
-  background: #232323;\
+  background: #e8e8e8;\
 }\
 \
 .ace-twilight .ace_scroller {\
@@ -63,6 +63,7 @@ ace.define('ace/theme/twilight', ['require', 'exports', 'module', 'ace/lib/dom']
 }\
 \
 .ace-twilight .ace_text-layer {\
+  cursor: text;\
   color: #F8F8F8;\
 }\
 \
@@ -98,7 +99,7 @@ ace.define('ace/theme/twilight', ['require', 'exports', 'module', 'ace/lib/dom']
 }\
 \
 .ace-twilight .ace_gutter_active_line {\
-  background-color: rgba(255, 255, 255, 0.031);\
+  background-color : #dcdcdc;\
 }\
 \
 .ace-twilight .ace_marker-layer .ace_selected_word {\
@@ -200,10 +201,6 @@ color:#5F5A60;\
 \
 .ace-twilight .ace_markup.ace_list {\
   color:#F9EE98;\
-}\
-\
-.ace-twilight .ace_indent-guide {\
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWMQERH5zzBz5sz/AA5EBAYqeZXWAAAAAElFTkSuQmCC) right repeat-y;\
 }";
 
     var dom = require("../lib/dom");

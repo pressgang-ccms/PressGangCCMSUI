@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/cobalt', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/cobalt', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = true;
-    exports.cssClass = "ace-cobalt";
-    exports.cssText = "\
+exports.isDark = true;
+exports.cssClass = "ace-cobalt";
+exports.cssText = "\
 .ace-cobalt .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -49,13 +49,13 @@ ace.define('ace/theme/cobalt', ['require', 'exports', 'module', 'ace/lib/dom'], 
 }\
 \
 .ace-cobalt .ace_gutter {\
-  background: #011e3a;\
-  color: #fff;\
+  background: #e8e8e8;\
+  color: #333;\
 }\
 \
 .ace-cobalt .ace_print_margin {\
   width: 1px;\
-  background: #011e3a;\
+  background: #e8e8e8;\
 }\
 \
 .ace-cobalt .ace_scroller {\
@@ -63,6 +63,7 @@ ace.define('ace/theme/cobalt', ['require', 'exports', 'module', 'ace/lib/dom'], 
 }\
 \
 .ace-cobalt .ace_text-layer {\
+  cursor: text;\
   color: #FFFFFF;\
 }\
 \
@@ -98,7 +99,7 @@ ace.define('ace/theme/cobalt', ['require', 'exports', 'module', 'ace/lib/dom'], 
 }\
 \
 .ace-cobalt .ace_gutter_active_line {\
-  background-color : rgba(0, 0, 0, 0.35);\
+  background-color : #dcdcdc;\
 }\
 \
 .ace-cobalt .ace_marker-layer .ace_selected_word {\
@@ -183,10 +184,6 @@ background-color:#001221;\
 \
 .ace-cobalt .ace_markup.ace_list {\
   background-color:#130D26;\
-}\
-\
-.ace-cobalt .ace_indent-guide {\
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWNgUHL4zzBz5sz/AA80BCzv+WXhAAAAAElFTkSuQmCC) right repeat-y;\
 }";
 
     var dom = require("../lib/dom");

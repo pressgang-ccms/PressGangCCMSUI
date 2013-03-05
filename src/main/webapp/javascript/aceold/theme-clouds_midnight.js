@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/clouds_midnight', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/clouds_midnight', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = true;
-    exports.cssClass = "ace-clouds-midnight";
-    exports.cssText = "\
+exports.isDark = true;
+exports.cssClass = "ace-clouds-midnight";
+exports.cssText = "\
 .ace-clouds-midnight .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -49,13 +49,13 @@ ace.define('ace/theme/clouds_midnight', ['require', 'exports', 'module', 'ace/li
 }\
 \
 .ace-clouds-midnight .ace_gutter {\
-  background: #232323;\
-  color: #929292;\
+  background: #e8e8e8;\
+  color: #333;\
 }\
 \
 .ace-clouds-midnight .ace_print_margin {\
   width: 1px;\
-  background: #232323;\
+  background: #e8e8e8;\
 }\
 \
 .ace-clouds-midnight .ace_scroller {\
@@ -63,6 +63,7 @@ ace.define('ace/theme/clouds_midnight', ['require', 'exports', 'module', 'ace/li
 }\
 \
 .ace-clouds-midnight .ace_text-layer {\
+  cursor: text;\
   color: #929292;\
 }\
 \
@@ -98,7 +99,7 @@ ace.define('ace/theme/clouds_midnight', ['require', 'exports', 'module', 'ace/li
 }\
 \
 .ace-clouds-midnight .ace_gutter_active_line {\
-  background-color: rgba(215, 215, 215, 0.031);\
+  background-color : #dcdcdc;\
 }\
 \
 .ace-clouds-midnight .ace_marker-layer .ace_selected_word {\
@@ -157,10 +158,6 @@ background-color:#E92E2E;\
 \
 .ace-clouds-midnight .ace_markup.ace_underline {\
     text-decoration:underline;\
-}\
-\
-.ace-clouds-midnight .ace_indent-guide {\
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWOQlJT8z1BeXv4fAA2KA6+h9Z+2AAAAAElFTkSuQmCC) right repeat-y;\
 }";
 
     var dom = require("../lib/dom");

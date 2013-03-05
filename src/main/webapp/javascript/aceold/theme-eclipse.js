@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/eclipse', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/eclipse', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
 
-    exports.isDark = false;
-    exports.cssText = ".ace-eclipse .ace_editor {\
+exports.isDark = false;
+exports.cssText = ".ace-eclipse .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
 \
@@ -48,14 +48,14 @@ ace.define('ace/theme/eclipse', ['require', 'exports', 'module', 'ace/lib/dom'],
 }\
 \
 .ace-eclipse .ace_gutter {\
-  background: #ebebeb;\
+  background: rgb(227, 227, 227);\
   border-right: 1px solid rgb(159, 159, 159);\
   color: rgb(136, 136, 136);\
 }\
 \
 .ace-eclipse .ace_print_margin {\
   width: 1px;\
-  background: #ebebeb;\
+  background: #b1b4ba;\
 }\
 \
 .ace-eclipse .ace_fold {\
@@ -63,6 +63,7 @@ ace.define('ace/theme/eclipse', ['require', 'exports', 'module', 'ace/lib/dom'],
 }\
 \
 .ace-eclipse .ace_text-layer {\
+  cursor: text;\
 }\
 \
 .ace-eclipse .ace_cursor {\
@@ -140,14 +141,10 @@ ace.define('ace/theme/eclipse', ['require', 'exports', 'module', 'ace/lib/dom'],
 \
 .ace-eclipse .ace_marker-layer .ace_active_line {\
   background: rgb(232, 242, 254);\
-}\
-\
-.ace-eclipse .ace_indent-guide {\
-  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==\") right repeat-y;\
 }";
 
-    exports.cssClass = "ace-eclipse";
+exports.cssClass = "ace-eclipse";
 
-    var dom = require("../lib/dom");
-    dom.importCssString(exports.cssText, exports.cssClass);
+var dom = require("../lib/dom");
+dom.importCssString(exports.cssText, exports.cssClass);
 });

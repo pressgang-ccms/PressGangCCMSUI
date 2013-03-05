@@ -35,10 +35,10 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/chrome', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/chrome', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.cssClass = "ace-chrome";
-    exports.cssText = ".ace-chrome .ace_editor {\
+exports.cssClass = "ace-chrome";
+exports.cssText = ".ace-chrome .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
 \
@@ -47,7 +47,7 @@ ace.define('ace/theme/chrome', ['require', 'exports', 'module', 'ace/lib/dom'], 
 }\
 \
 .ace-chrome .ace_gutter {\
-  background: #ebebeb;\
+  background: #e8e8e8;\
   color: #333;\
   overflow : hidden;\
 }\
@@ -58,6 +58,7 @@ ace.define('ace/theme/chrome', ['require', 'exports', 'module', 'ace/lib/dom'], 
 }\
 \
 .ace-chrome .ace_text-layer {\
+  cursor: text;\
 }\
 \
 .ace-chrome .ace_cursor {\
@@ -190,20 +191,12 @@ color:#FD971F;\
   color: rgb(255, 0, 0)\
 }\
 \
-.ace-chrome .ace_line .ace_string{\
-  color: #1A1AA6;\
-}\
-\
+.ace-chrome .ace_line .ace_string,\
 .ace-chrome .ace_entity.ace_other.ace_attribute-name{\
   color: #994409;\
-}\
-\
-.ace-chrome .ace_indent-guide {\
-  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==\") right repeat-y;\
-}\
-";
+}";
 
-    var dom = require("../lib/dom");
-    dom.importCssString(exports.cssText, exports.cssClass);
+var dom = require("../lib/dom");
+dom.importCssString(exports.cssText, exports.cssClass);
 
 });

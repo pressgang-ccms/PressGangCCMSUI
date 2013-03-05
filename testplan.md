@@ -1,3 +1,6 @@
+BUGFIX NOTES
+https://bugzilla.redhat.com/show_bug.cgi?id=895309 - Fix simplelist
+
 HOME
 * Home page content is loaded
 

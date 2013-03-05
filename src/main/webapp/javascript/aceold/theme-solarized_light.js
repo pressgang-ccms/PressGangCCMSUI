@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/solarized_light', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/solarized_light', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = false;
-    exports.cssClass = "ace-solarized-light";
-    exports.cssText = "\
+exports.isDark = false;
+exports.cssClass = "ace-solarized-light";
+exports.cssText = "\
 .ace-solarized-light .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -49,7 +49,7 @@ ace.define('ace/theme/solarized_light', ['require', 'exports', 'module', 'ace/li
 }\
 \
 .ace-solarized-light .ace_gutter {\
-  background: #fbf1d3;\
+  background: #e8e8e8;\
   color: #333;\
 }\
 \
@@ -63,6 +63,7 @@ ace.define('ace/theme/solarized_light', ['require', 'exports', 'module', 'ace/li
 }\
 \
 .ace-solarized-light .ace_text-layer {\
+  cursor: text;\
   color: #586E75;\
 }\
 \
@@ -168,10 +169,6 @@ ace.define('ace/theme/solarized_light', ['require', 'exports', 'module', 'ace/li
 \
 .ace-solarized-light .ace_markup.ace_underline {\
     text-decoration:underline;\
-}\
-\
-.ace-solarized-light .ace_indent-guide {\
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4++3xf4ZVq1b9BwAjxwbT1g3hiwAAAABJRU5ErkJggg==) right repeat-y;\
 }";
 
     var dom = require("../lib/dom");

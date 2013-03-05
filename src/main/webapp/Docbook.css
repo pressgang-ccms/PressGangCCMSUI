@@ -20,7 +20,7 @@
     padding: .15em .5em;
 }
 
-.docbookTable tr:nth-child(even) {
+.docbookTable tr:nth-child(even), .docbookSimpleList tr:nth-child(even) {
     background-color: #EEE;
 }
 

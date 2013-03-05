@@ -68,7 +68,8 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
                 @NotNull final BaseRestCallback<RESTBlobConstantCollectionV1, Display> callback = new BaseRestCallback<RESTBlobConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTBlobConstantCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTBlobConstantCollectionV1 retValue, @NotNull final Display display) {
-                        checkArgument(retValue.getItems() != null, "RESTBlobConstantCollectionV1 items are null. This is probably due to incorrect expansion.");
+                        checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                        checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
                         getProviderData().setItems(retValue.getItems());
                         getProviderData().setSize(retValue.getSize());

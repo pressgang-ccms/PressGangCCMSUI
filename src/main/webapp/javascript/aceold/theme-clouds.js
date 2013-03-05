@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/clouds', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/clouds', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = false;
-    exports.cssClass = "ace-clouds";
-    exports.cssText = "\
+exports.isDark = false;
+exports.cssClass = "ace-clouds";
+exports.cssText = "\
 .ace-clouds .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -49,7 +49,7 @@ ace.define('ace/theme/clouds', ['require', 'exports', 'module', 'ace/lib/dom'], 
 }\
 \
 .ace-clouds .ace_gutter {\
-  background: #ebebeb;\
+  background: #e8e8e8;\
   color: #333;\
 }\
 \
@@ -63,6 +63,7 @@ ace.define('ace/theme/clouds', ['require', 'exports', 'module', 'ace/lib/dom'], 
 }\
 \
 .ace-clouds .ace_text-layer {\
+  cursor: text;\
   color: #000000;\
 }\
 \
@@ -156,10 +157,6 @@ ace.define('ace/theme/clouds', ['require', 'exports', 'module', 'ace/lib/dom'], 
 \
 .ace-clouds .ace_markup.ace_underline {\
     text-decoration:underline;\
-}\
-\
-.ace-clouds .ace_indent-guide {\
-  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==\") right repeat-y;\
 }";
 
     var dom = require("../lib/dom");

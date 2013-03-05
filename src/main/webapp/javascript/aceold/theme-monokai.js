@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/monokai', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/monokai', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = true;
-    exports.cssClass = "ace-monokai";
-    exports.cssText = "\
+exports.isDark = true;
+exports.cssClass = "ace-monokai";
+exports.cssText = "\
 .ace-monokai .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -49,7 +49,7 @@ ace.define('ace/theme/monokai', ['require', 'exports', 'module', 'ace/lib/dom'],
 }\
 \
 .ace-monokai .ace_gutter {\
-  background: #2f3129;\
+  background: #292a24;\
   color: #f1f1f1;\
 }\
 \
@@ -63,6 +63,7 @@ ace.define('ace/theme/monokai', ['require', 'exports', 'module', 'ace/lib/dom'],
 }\
 \
 .ace-monokai .ace_text-layer {\
+  cursor: text;\
   color: #F8F8F2;\
 }\
 \
@@ -183,10 +184,6 @@ color:#FD971F;\
 \
 .ace-monokai .ace_markup.ace_underline {\
     text-decoration:underline;\
-}\
-\
-.ace-monokai .ace_indent-guide {\
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWNQ11D6z7Bq1ar/ABCKBG6g04U2AAAAAElFTkSuQmCC) right repeat-y;\
 }";
 
     var dom = require("../lib/dom");

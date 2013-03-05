@@ -553,18 +553,18 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                     if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null) {
                                                         Collections.sort(retValue.getRevisions().getItems(), new RESTTopicCollectionItemV1RevisionSort());
 
-                                                            /*
-                                                                If no changes were made to the topic itself (i.e. we just update some children),
-                                                                then the revision number will not change. So if what is sent back has the same
-                                                                revision number as the topic we were editing, then we have not overwritten background
-                                                                changes.
+                                                        /*
+                                                            If no changes were made to the topic itself (i.e. we just update some children),
+                                                            then the revision number will not change. So if what is sent back has the same
+                                                            revision number as the topic we were editing, then we have not overwritten background
+                                                            changes.
 
-                                                                Note that this should not happen because we don't actually just update the property tags;
-                                                                any change to the property tag value results in the mapping being deleted and recreated.
+                                                            Note that this should not happen because we don't actually just update the property tags;
+                                                            any change to the property tag value results in the mapping being deleted and recreated.
 
-                                                                The code is left here as a reminder that some additional checking might be required with
-                                                                new children that are exposed through the UI.
-                                                            */
+                                                            The code is left here as a reminder that some additional checking might be required with
+                                                            new children that are exposed through the UI.
+                                                        */
                                                         if (retValue.getRevisions().getItems().size() >= 1) {
                                                             final Integer overwriteRevision = retValue.getRevisions().getItems()
                                                                     .get(retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
@@ -574,29 +574,29 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                             overwroteChanges = !originalRevision.equals(overwriteRevision);
                                                         }
 
-                                                            /*
-                                                                Otherwise we need to make sure that the second last revision matches the revision
-                                                                 of the topic we were editing.
-                                                             */
+                                                        /*
+                                                            Otherwise we need to make sure that the second last revision matches the revision
+                                                             of the topic we were editing.
+                                                         */
                                                         if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2) {
-                                                                /* Get the second last revision (the last one is the current one) */
+                                                            /* Get the second last revision (the last one is the current one) */
                                                             final Integer overwriteRevision = retValue.getRevisions().getItems()
                                                                     .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
 
                                                             LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " last revision: " + overwriteRevision);
 
-                                                                /*
-                                                                 * if the second last revision doesn't match the revision of the topic when editing was
-                                                                 * started, then we have overwritten someone elses changes
-                                                                 */
+                                                            /*
+                                                             * if the second last revision doesn't match the revision of the topic when editing was
+                                                             * started, then we have overwritten someone elses changes
+                                                             */
                                                             overwroteChanges = !originalRevision.equals(overwriteRevision);
                                                         }
                                                     }
 
-                                                        /* Update the displayed topic */
+                                                    /* Update the displayed topic */
                                                     retValue.cloneInto(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem(),
                                                             true);
-                                                        /* Update the selected topic */
+                                                    /* Update the selected topic */
                                                     retValue.cloneInto(getSearchResultsComponent().getProviderData().getSelectedItem().getItem(), true);
 
                                                     lastXML = null;

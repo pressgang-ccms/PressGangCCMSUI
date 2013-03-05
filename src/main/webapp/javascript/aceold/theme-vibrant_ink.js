@@ -35,11 +35,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('ace/theme/vibrant_ink', ['require', 'exports', 'module', 'ace/lib/dom'], function (require, exports, module) {
+define('ace/theme/vibrant_ink', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 
-    exports.isDark = true;
-    exports.cssClass = "ace-vibrant-ink";
-    exports.cssText = "\
+exports.isDark = true;
+exports.cssClass = "ace-vibrant-ink";
+exports.cssText = "\
 .ace-vibrant-ink .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
@@ -49,13 +49,13 @@ ace.define('ace/theme/vibrant_ink', ['require', 'exports', 'module', 'ace/lib/do
 }\
 \
 .ace-vibrant-ink .ace_gutter {\
-  background: #1a1a1a;\
-  color: white;\
+  background: #e8e8e8;\
+  color: #333;\
 }\
 \
 .ace-vibrant-ink .ace_print_margin {\
   width: 1px;\
-  background: #1a1a1a;\
+  background: #e8e8e8;\
 }\
 \
 .ace-vibrant-ink .ace_scroller {\
@@ -63,6 +63,7 @@ ace.define('ace/theme/vibrant_ink', ['require', 'exports', 'module', 'ace/lib/do
 }\
 \
 .ace-vibrant-ink .ace_text-layer {\
+  cursor: text;\
   color: #FFFFFF;\
 }\
 \
@@ -98,7 +99,7 @@ ace.define('ace/theme/vibrant_ink', ['require', 'exports', 'module', 'ace/lib/do
 }\
 \
 .ace-vibrant-ink .ace_gutter_active_line {\
-  background-color: #333333;\
+  background-color : #dcdcdc;\
 }\
 \
 .ace-vibrant-ink .ace_marker-layer .ace_selected_word {\
@@ -179,10 +180,6 @@ color:#99CC99;\
 \
 .ace-vibrant-ink .ace_markup.ace_underline {\
     text-decoration:underline;\
-}\
-\
-.ace-vibrant-ink .ace_indent-guide {\
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEklEQVQImWPg5+f/z7Bq1ar/AA5lBCqoLxsgAAAAAElFTkSuQmCC) right repeat-y;\
 }";
 
     var dom = require("../lib/dom");
