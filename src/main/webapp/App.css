@@ -365,7 +365,7 @@ html {
     box-sizing: border-box;
 }
 
-.TopicViewTitleField, .FilterViewNameField {
+.TopicViewTitleField, .FilterViewNameField, .TopicViewDetailsEndpointField, .TopicViewXMLEndpointField {
     width: 100%;
     box-sizing: border-box;
 }

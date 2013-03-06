@@ -132,6 +132,12 @@ public interface PressGangCCMSUI extends Constants {
     String TopicXML();
 
     @NotNull
+    String TopicDetailsRESTEndpoint();
+
+    @NotNull
+    String TopicXMLRESTEndpoint();
+
+    @NotNull
     String SaveSuccess();
 
     @NotNull

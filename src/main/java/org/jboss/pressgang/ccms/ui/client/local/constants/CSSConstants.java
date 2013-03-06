@@ -317,6 +317,14 @@ public interface CSSConstants {
         String TOPIC_VIEW_ID_FIELD = "TopicViewIDField";
         String TOPIC_VIEW_REVISION_NUMBER_FIELD = "TopicViewRevisionNumberField";
         String TOPIC_VIEW_TITLE_FIELD = "TopicViewTitleField";
+        /**
+         * Assigned to the field that holds the topic's detail endpoint url
+         */
+        String TOPIC_VIEW_DETAILS_ENDPOINT_FIELD = "TopicViewDetailsEndpointField";
+        /**
+         * Assigned to the field that holds the topic's XML endpoint url
+         */
+        String TOPIC_VIEW_XML_ENDPOINT_FIELD = "TopicViewXMLEndpointField";
         String TOPIC_VIEW_LOCALE_FIELD = "TopicViewLocaleField";
         String TOPIC_VIEW_DESCRIPTION_FIELD = "TopicViewDescriptionField";
         String TOPIC_VIEW_LABEL = "TopicViewLabel";

@@ -126,7 +126,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                         new BaseRestCallback.SuccessAction<RESTImageV1, BaseTemplateViewInterface>() {
                             @Override
                             public void doSuccessAction(@NotNull final RESTImageV1 retValue, @NotNull final BaseTemplateViewInterface display) {
-                                checkArgument(retValue.getLanguageImages_OTM() == null, "The initially retrieved entity should not have a language images collection");
+                                checkArgument(retValue.getLanguageImages_OTM() != null, "The initially retrieved entity should have a language images collection");
                                 displayCallback.displayNewEntity(retValue);
                             }
                         });

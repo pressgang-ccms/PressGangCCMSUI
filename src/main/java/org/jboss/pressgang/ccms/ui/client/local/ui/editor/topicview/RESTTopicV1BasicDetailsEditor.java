@@ -1,12 +1,15 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview;
 
 import com.google.gwt.editor.client.Editor;
+import com.google.gwt.editor.client.HasEditorDelegate;
+import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -15,11 +18,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<RESTTopicV1> {
+public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafValueEditor<RESTTopicV1> {
 
-    private static final int ROWS = 7;
+    private static final int ROWS = 9;
     private static final int COLS = 2;
 
+    private RESTTopicV1 value;
     private final SimpleIntegerBox id = new SimpleIntegerBox();
     private final SimpleIntegerBox revision = new SimpleIntegerBox();
     private final ValueListBox<String> locale = new ValueListBox<String>(new Renderer<String>() {
@@ -37,6 +41,11 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<
     private final TextArea description = new TextArea();
     private final DateBox created = new DateBox();
     private final DateBox lastModified = new DateBox();
+
+    private final Anchor restTopicDetailsLabel = new Anchor(PressGangCCMSUI.INSTANCE.TopicDetailsRESTEndpoint());
+    private final Anchor restTopicXMLLabel = new Anchor(PressGangCCMSUI.INSTANCE.TopicXMLRESTEndpoint());
+    private final TextBox restTopicDetails = new TextBox();
+    private final TextBox restTopicXML = new TextBox();
 
     @NotNull
     public DateBox lastModifiedEditor() {
@@ -90,10 +99,14 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<
         revision.setReadOnly(true);
         created.setEnabled(false);
         lastModified.setEnabled(false);
+        restTopicDetails.setReadOnly(true);
+        restTopicXML.setReadOnly(true);
 
         id.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_ID_FIELD);
         revision.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_REVISION_NUMBER_FIELD);
         title.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_TITLE_FIELD);
+        restTopicDetails.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_DETAILS_ENDPOINT_FIELD);
+        restTopicXML.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_XML_ENDPOINT_FIELD);
         locale.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_LOCALE_FIELD);
         description.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_DESCRIPTION_FIELD);
 
@@ -122,6 +135,14 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<
         this.setWidget(row, 1, title);
 
         ++row;
+        this.setWidget(row, 0, restTopicDetailsLabel);
+        this.setWidget(row, 1, restTopicDetails);
+
+        ++row;
+        this.setWidget(row, 0, restTopicXMLLabel);
+        this.setWidget(row, 1, restTopicXML);
+
+        ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicDescription()));
         this.setWidget(row, 1, description);
 
@@ -133,5 +154,35 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements Editor<
             this.getCellFormatter().addStyleName(i, 1, CSSConstants.TopicView.TOPIC_VIEW_DETAIL);
         }
         this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.TopicView.TOPIC_VIEW_DESCRIPTION_DETAIL);
+    }
+
+    @Override
+    public void setValue(@NotNull final RESTTopicV1 value) {
+        this.value = value;
+
+        id.setValue(value.getId());
+        revision.setValue(value.getRevision());
+        created.setValue(value.getCreated());
+        title.setValue(value.getTitle());
+        description.setValue(value.getDescription());
+        locale.setValue(value.getLocale());
+        lastModified.setValue(value.getLastModified());
+
+        final String detailsURL = Constants.REST_SERVER + "/1/topic/get/json/" + value.getId() + "/r/" + value.getRevision();
+        final String xmlURL = Constants.REST_SERVER + "/1/topic/get/xml/" + value.getId() + "/r/" + value.getRevision() + "/xml";
+
+        restTopicDetailsLabel.setHref(detailsURL);
+        restTopicXMLLabel.setHref(xmlURL);
+
+        restTopicDetails.setValue(detailsURL);
+        restTopicXML.setValue(xmlURL);
+    }
+
+    @Override
+    public RESTTopicV1 getValue() {
+        value.setTitle(title.getValue());
+        value.setLocale(locale.getValue());
+        value.setDescription(description.getValue());
+        return value;
     }
 }
