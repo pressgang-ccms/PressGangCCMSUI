@@ -4,6 +4,7 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.HasData;
 import org.jboss.errai.bus.client.api.Message;
@@ -37,11 +38,29 @@ public class ImageFilteredResultsPresenter
 
     public interface Display extends BaseFilteredResultsViewInterface<RESTImageCollectionItemV1> {
 
+        /**
+         *
+         * @return The image id search filter field
+         */
         TextBox getImageIdFilter();
 
+        /**
+         *
+         * @return The image description search filter field
+         */
         TextBox getImageDescriptionFilter();
 
+        /**
+         *
+         * @return The image original file name search filter field
+         */
         TextBox getImageOriginalFileNameFilter();
+
+        /**
+         *
+         * @return The bulk image upload action button.
+         */
+        PushButton getBulkUpload();
     }
 
     /**

@@ -18,6 +18,18 @@ public interface PressGangCCMSUI extends Constants {
     PressGangCCMSUI INSTANCE = GWT.create(PressGangCCMSUI.class);
 
     @NotNull
+    String SelectFiles();
+
+    @NotNull
+    String CommonDescription();
+
+    @NotNull
+    String ImagesUplodedSuccessfully();
+
+    @NotNull
+    String NoFilesSelected();
+
+    @NotNull
     String And();
 
     @NotNull
@@ -346,6 +358,9 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String ImageID();
+
+    @NotNull
+    String BulkImageUpload();
 
     @NotNull
     String DocbookImageTemplate();

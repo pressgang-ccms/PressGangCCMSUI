@@ -1,11 +1,13 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.image;
 
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image.ImageFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCommaValidator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,6 +18,12 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageC
     private final TextBox imageIdFilter = new TextBox();
     private final TextBox imageDescriptionFilter = new TextBox();
     private final TextBox imageOriginalFileNameFilter = new TextBox();
+    private final PushButton bulkUpload = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.BulkImageUpload());
+
+    @NotNull
+    public PushButton getBulkUpload() {
+        return bulkUpload;
+    }
 
 
     @NotNull
@@ -72,6 +80,7 @@ public class ImageFilteredResultsView extends BaseFilteredResultsView<RESTImageC
         addFilterField(PressGangCCMSUI.INSTANCE.ImageOriginalFileName(), imageOriginalFileNameFilter);
 
         new NumbersAndCommaValidator(imageIdFilter);
-    }
 
+        this.addActionButton(bulkUpload);
+    }
 }

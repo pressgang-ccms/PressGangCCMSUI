@@ -6,7 +6,10 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.TextArea;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTImageCollectionItemV1;
@@ -33,10 +36,13 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.image.RESTLanguageImageV1Editor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.vectomatic.file.File;
+import org.vectomatic.file.FileList;
 import org.vectomatic.file.FileReader;
+import org.vectomatic.file.FileUploadExt;
 import org.vectomatic.file.events.ErrorHandler;
 import org.vectomatic.file.events.LoadEndEvent;
 import org.vectomatic.file.events.LoadEndHandler;
@@ -77,8 +83,45 @@ public class ImagesFilteredResultsAndDetailsPresenter
 
 
     public interface Display extends BaseSearchAndEditViewInterface<RESTImageV1, RESTImageCollectionV1, RESTImageCollectionItemV1> {
+        /**
+         * The interface that defines the bulk image upload dialog box.
+         */
+        public interface BulkUploadDisplay {
+            /**
+             *
+             * @return A reference to the dialog box.
+             */
+            @NotNull DialogBox getDialogBox();
 
+            /**
+             *
+             * @return The OK button
+             */
+            @NotNull PushButton getOK();
+
+            /**
+             *
+             * @return The Cancel button
+             */
+            @NotNull PushButton getCancel();
+
+            /**
+             *
+             * @return The file upload element
+             */
+            @NotNull FileUploadExt getFiles();
+
+            /**
+             *
+             * @return The description to be added to each new image
+             */
+            @NotNull TextArea getDescription();
+        }
+
+        BulkUploadDisplay getBulkUploadDialog();
     }
+
+
 
     /**
      * History token
@@ -543,7 +586,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
 
         imageFilteredResultsComponent.getDisplay().getCreate().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(final ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 if (isOKToProceed()) {
 
                     /* Start by getting the default locale */
@@ -551,8 +594,9 @@ public class ImagesFilteredResultsAndDetailsPresenter
                             display,
                             new BaseRestCallback.SuccessAction<RESTStringConstantV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
                                 @Override
-                                public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue,
-                                                            final ImagesFilteredResultsAndDetailsPresenter.Display display) {
+                                public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, @NotNull final ImagesFilteredResultsAndDetailsPresenter.Display display) {
+
+                                    checkArgument(retValue.getValue() != null, "The returned string constant should have a valid value.");
 
                                     /* When we have the default locale, create a new image */
                                     @NotNull final RESTLanguageImageV1 langImage = new RESTLanguageImageV1();
@@ -566,8 +610,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                                             display,
                                             new BaseRestCallback.SuccessAction<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
                                                 @Override
-                                                public void doSuccessAction(@NotNull final RESTImageV1 retValue,
-                                                                            final ImagesFilteredResultsAndDetailsPresenter.Display display) {
+                                                public void doSuccessAction(@NotNull final RESTImageV1 retValue, @NotNull final ImagesFilteredResultsAndDetailsPresenter.Display display) {
 
                                                     @NotNull final RESTImageCollectionItemV1 selectedImageCollectionItem = new RESTImageCollectionItemV1();
                                                     selectedImageCollectionItem.setItem(retValue.clone(false));
@@ -598,6 +641,116 @@ public class ImagesFilteredResultsAndDetailsPresenter
                 }
             }
         });
+
+        imageFilteredResultsComponent.getDisplay().getBulkUpload().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                display.getBulkUploadDialog().getDialogBox().center();
+            }
+        });
+
+        display.getBulkUploadDialog().getCancel().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                display.getBulkUploadDialog().getDialogBox().hide();
+            }
+        });
+
+        display.getBulkUploadDialog().getOK().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                display.getBulkUploadDialog().getDialogBox().hide();
+
+                if (display.getBulkUploadDialog().getFiles().getFiles().getLength() == 0) {
+                    Window.alert(PressGangCCMSUI.INSTANCE.NoFilesSelected());
+                } else {
+                    /* Start by getting the default locale */
+                    @NotNull final RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
+                        display,
+                        new BaseRestCallback.SuccessAction<RESTStringConstantV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
+                            @Override
+                            public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, @NotNull final ImagesFilteredResultsAndDetailsPresenter.Display display) {
+                                checkArgument(retValue.getValue() != null, "The returned string constant should have a valid value.");
+                                createNewImage(display.getBulkUploadDialog().getDescription().getText(), retValue.getValue(), 0, display.getBulkUploadDialog().getFiles().getFiles(), new ArrayList<Integer>());
+                            }
+                        });
+                }
+            }
+        });
+    }
+
+    /**
+     * A methods to recursively load a file from the disk, add it to a new image, and upload the image.
+     * @param description The common description to be added to each image
+     * @param locale The image locale
+     * @param index The index of the file we are uploading
+     * @param files The collection of file selected on the disk
+     * @param ids A list of the newly created image ids
+     */
+    private void createNewImage(@NotNull final String description, @NotNull final String locale, final int index, @NotNull final FileList files, @NotNull final List<Integer> ids) {
+        if (index >= files.getLength()) {
+            Window.alert(PressGangCCMSUI.INSTANCE.ImagesUplodedSuccessfully());
+            final StringBuilder idsQuery = new StringBuilder();
+            for (final Integer id : ids) {
+                if (!idsQuery.toString().isEmpty()) {
+                    idsQuery.append(",");
+                }
+                idsQuery.append(id);
+            }
+            eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.IMAGE_IDS_FILTER_VAR + "=" + idsQuery.toString(), false));
+        } else {
+
+            @NotNull final FileReader reader = new FileReader();
+
+            reader.addErrorHandler(new ErrorHandler() {
+                @Override
+                public void onError(@NotNull final org.vectomatic.file.events.ErrorEvent event) {
+                    createNewImage(description, locale, index + 1, files, ids);
+                }
+            });
+
+            reader.addLoadEndHandler(new LoadEndHandler() {
+                @Override
+                public void onLoadEnd(@NotNull final LoadEndEvent event) {
+                    try {
+                        final String result = reader.getStringResult();
+                        @NotNull final byte[] buffer = GWTUtilities.getByteArray(result, 1);
+
+
+                         /* When we have the default locale, create a new image */
+                        @NotNull final RESTLanguageImageV1 langImage = new RESTLanguageImageV1();
+                        langImage.explicitSetLocale(locale);
+                        langImage.explicitSetImageData(buffer);
+
+                        @NotNull final RESTImageV1 newImage = new RESTImageV1();
+                        newImage.explicitSetDescription(description);
+                        newImage.explicitSetLanguageImages_OTM(new RESTLanguageImageCollectionV1());
+                        newImage.getLanguageImages_OTM().addNewItem(langImage);
+
+                        @NotNull final RESTCallback<RESTImageV1> imageCallback = new BaseRestCallback<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>(
+                                display,
+                                new BaseRestCallback.SuccessAction<RESTImageV1, ImagesFilteredResultsAndDetailsPresenter.Display>() {
+                                    @Override
+                                    public void doSuccessAction(@NotNull final RESTImageV1 retValue, @NotNull final ImagesFilteredResultsAndDetailsPresenter.Display display) {
+                                        ids.add(retValue.getId());
+                                        createNewImage(description, locale, index + 1, files, ids);
+                                    }
+                                }, new BaseRestCallback.FailureAction<Display>() {
+                            @Override
+                            public void doFailureAction(@NotNull final Display display) {
+                                createNewImage(description, locale, index + 1, files, ids);
+                            }
+                        });
+
+                        RESTCalls.createImage(imageCallback, newImage);
+                    } finally {
+                        display.removeWaitOperation();
+                    }
+                }
+            });
+
+            reader.readAsBinaryString(files.getItem(index));
+        }
 
     }
 
