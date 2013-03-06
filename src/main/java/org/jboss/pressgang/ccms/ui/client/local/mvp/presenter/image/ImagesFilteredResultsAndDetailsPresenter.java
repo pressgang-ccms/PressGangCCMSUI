@@ -614,13 +614,11 @@ public class ImagesFilteredResultsAndDetailsPresenter
 
                                                     @NotNull final RESTImageCollectionItemV1 selectedImageCollectionItem = new RESTImageCollectionItemV1();
                                                     selectedImageCollectionItem.setItem(retValue.clone(false));
-                                                    imageFilteredResultsComponent.getProviderData().setSelectedItem(
-                                                            selectedImageCollectionItem);
+                                                    imageFilteredResultsComponent.getProviderData().setSelectedItem(selectedImageCollectionItem);
 
                                                     @NotNull final RESTImageCollectionItemV1 displayedImageCollectionItem = new RESTImageCollectionItemV1();
                                                     displayedImageCollectionItem.setItem(retValue.clone(false));
-                                                    imageFilteredResultsComponent.getProviderData().setDisplayedItem(
-                                                            displayedImageCollectionItem);
+                                                    imageFilteredResultsComponent.getProviderData().setDisplayedItem(displayedImageCollectionItem);
 
                                                     initializeViews();
 
@@ -674,6 +672,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                                 createNewImage(display.getBulkUploadDialog().getDescription().getText(), retValue.getValue(), 0, display.getBulkUploadDialog().getFiles().getFiles(), new ArrayList<Integer>());
                             }
                         });
+                    RESTCalls.getStringConstant(callback, ServiceConstants.DEFAULT_LOCALE_ID);
                 }
             }
         });
@@ -715,7 +714,6 @@ public class ImagesFilteredResultsAndDetailsPresenter
                     try {
                         final String result = reader.getStringResult();
                         @NotNull final byte[] buffer = GWTUtilities.getByteArray(result, 1);
-
 
                          /* When we have the default locale, create a new image */
                         @NotNull final RESTLanguageImageV1 langImage = new RESTLanguageImageV1();
