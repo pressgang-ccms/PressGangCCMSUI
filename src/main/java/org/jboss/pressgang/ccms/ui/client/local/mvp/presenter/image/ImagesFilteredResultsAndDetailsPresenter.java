@@ -669,7 +669,13 @@ public class ImagesFilteredResultsAndDetailsPresenter
                             @Override
                             public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, @NotNull final ImagesFilteredResultsAndDetailsPresenter.Display display) {
                                 checkArgument(retValue.getValue() != null, "The returned string constant should have a valid value.");
-                                createNewImage(display.getBulkUploadDialog().getDescription().getText(), retValue.getValue(), 0, display.getBulkUploadDialog().getFiles().getFiles(), new ArrayList<Integer>());
+                                createNewImage(
+                                        display.getBulkUploadDialog().getDescription().getText(),
+                                        retValue.getValue(),
+                                        0,
+                                        display.getBulkUploadDialog().getFiles().getFiles(),
+                                        new ArrayList<Integer>(),
+                                        new ArrayList<String> ());
                             }
                         });
                     RESTCalls.getStringConstant(callback, ServiceConstants.DEFAULT_LOCALE_ID);
@@ -686,9 +692,24 @@ public class ImagesFilteredResultsAndDetailsPresenter
      * @param files The collection of file selected on the disk
      * @param ids A list of the newly created image ids
      */
-    private void createNewImage(@NotNull final String description, @NotNull final String locale, final int index, @NotNull final FileList files, @NotNull final List<Integer> ids) {
+    private void createNewImage(@NotNull final String description, @NotNull final String locale, final int index, @NotNull final FileList files, @NotNull final List<Integer> ids, @NotNull final List<String> failedFiled) {
         if (index >= files.getLength()) {
-            Window.alert(PressGangCCMSUI.INSTANCE.ImagesUplodedSuccessfully());
+
+            if (failedFiled.size() == 0) {
+                Window.alert(PressGangCCMSUI.INSTANCE.ImagesUplodedSuccessfully());
+            } else {
+                final StringBuilder failedNames = new StringBuilder();
+                for (final String name : failedFiled) {
+                    if (!failedNames.toString().isEmpty()) {
+                        failedNames.append(",");
+                    }
+                    failedNames.append(name);
+                }
+
+                Window.alert(PressGangCCMSUI.INSTANCE.ImagesNotUplodedSuccessfully() + ": " + failedNames.toString());
+            }
+
+
             final StringBuilder idsQuery = new StringBuilder();
             for (final Integer id : ids) {
                 if (!idsQuery.toString().isEmpty()) {
@@ -707,7 +728,8 @@ public class ImagesFilteredResultsAndDetailsPresenter
                 @Override
                 public void onError(@NotNull final org.vectomatic.file.events.ErrorEvent event) {
                     display.removeWaitOperation();
-                    createNewImage(description, locale, index + 1, files, ids);
+                    failedFiled.add(files.getItem(index).getName());
+                    createNewImage(description, locale, index + 1, files, ids, failedFiled);
                 }
             });
 
@@ -734,12 +756,12 @@ public class ImagesFilteredResultsAndDetailsPresenter
                                     @Override
                                     public void doSuccessAction(@NotNull final RESTImageV1 retValue, @NotNull final ImagesFilteredResultsAndDetailsPresenter.Display display) {
                                         ids.add(retValue.getId());
-                                        createNewImage(description, locale, index + 1, files, ids);
+                                        createNewImage(description, locale, index + 1, files, ids, failedFiled);
                                     }
                                 }, new BaseRestCallback.FailureAction<Display>() {
                             @Override
                             public void doFailureAction(@NotNull final Display display) {
-                                createNewImage(description, locale, index + 1, files, ids);
+                                createNewImage(description, locale, index + 1, files, ids, failedFiled);
                             }
                         });
 

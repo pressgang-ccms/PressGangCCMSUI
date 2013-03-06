@@ -27,6 +27,9 @@ public interface PressGangCCMSUI extends Constants {
     String ImagesUplodedSuccessfully();
 
     @NotNull
+    String ImagesNotUplodedSuccessfully();
+
+    @NotNull
     String NoFilesSelected();
 
     @NotNull
