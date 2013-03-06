@@ -707,7 +707,6 @@ public class ImagesFilteredResultsAndDetailsPresenter
                 @Override
                 public void onError(@NotNull final org.vectomatic.file.events.ErrorEvent event) {
                     display.removeWaitOperation();
-
                     createNewImage(description, locale, index + 1, files, ids);
                 }
             });
@@ -716,8 +715,6 @@ public class ImagesFilteredResultsAndDetailsPresenter
                 @Override
                 public void onLoadEnd(@NotNull final LoadEndEvent event) {
                     try {
-                        display.removeWaitOperation();
-
                         final String result = reader.getStringResult();
                         @NotNull final byte[] buffer = GWTUtilities.getByteArray(result, 1);
 
