@@ -204,7 +204,7 @@ abstract public class BaseSearchAndEditView<
 
         if (displayedView != null) {
             this.getViewPanel().setWidget(displayedView.getPanel());
-            this.viewActionButtonsPanel.add(displayedView.getTopActionParentPanel());
+            this.viewActionButtonsPanel.add(displayedView.getTopActionPanel());
 
             this.viewViewSpecificActionButtonsPanel.add(displayedView.getTopViewSpecificRightActionPanel());
         }
