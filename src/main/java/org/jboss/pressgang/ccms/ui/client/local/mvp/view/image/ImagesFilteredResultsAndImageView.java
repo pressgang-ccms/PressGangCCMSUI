@@ -67,9 +67,6 @@ public class ImagesFilteredResultsAndImageView extends
             this.setModal(false);
             this.setText(PressGangCCMSUI.INSTANCE.BulkImageUpload());
 
-            this.setWidth(Constants.BULK_IMAGE_UPLOAD_WIDTH);
-            this.setHeight(Constants.BULK_IMAGE_UPLOAD_HEIGHT);
-
             this.description.addStyleName(CSSConstants.BulkImageUploadDialog.DESCRIPTION_FIELD);
 
             @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
