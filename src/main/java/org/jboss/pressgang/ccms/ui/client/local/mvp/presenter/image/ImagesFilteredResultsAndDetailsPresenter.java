@@ -744,6 +744,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                         @NotNull final RESTLanguageImageV1 langImage = new RESTLanguageImageV1();
                         langImage.explicitSetLocale(locale);
                         langImage.explicitSetImageData(buffer);
+                        langImage.explicitSetFilename(files.getItem(index).getName());
 
                         @NotNull final RESTImageV1 newImage = new RESTImageV1();
                         newImage.explicitSetDescription(description);

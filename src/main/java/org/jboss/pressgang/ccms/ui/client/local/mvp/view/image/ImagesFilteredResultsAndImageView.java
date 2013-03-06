@@ -67,8 +67,8 @@ public class ImagesFilteredResultsAndImageView extends
             this.setModal(false);
             this.setText(PressGangCCMSUI.INSTANCE.BulkImageUpload());
 
-            this.setWidth(Constants.HELP_DIALOG_WIDTH);
-            this.setHeight(Constants.HELP_DIALOG_HEIGHT);
+            this.setWidth(Constants.BULK_IMAGE_UPLOAD_WIDTH);
+            this.setHeight(Constants.BULK_IMAGE_UPLOAD_HEIGHT);
 
             this.description.addStyleName(CSSConstants.PlainTextXMLDialog.PLAIN_TEXT_XML_DIALOG_TEXTAREA);
 

@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201303070852";
+    public static final String VERSION = "201303070901";
 
     /**
      * The sort order to apply to a newly added child.
@@ -165,6 +165,14 @@ public final class Constants {
      * The height of the help dialog box.
      */
     public static final String HELP_DIALOG_HEIGHT = "480px";
+    /**
+     * The width of the bulk image upload dialog box.
+     */
+    public static final String BULK_IMAGE_UPLOAD_WIDTH = "320px";
+    /**
+     * The height of the bulk image upload dialog box.
+     */
+    public static final String BULK_IMAGE_UPLOAD_HEIGHT = "240px";
     /**
      * A line break escaped.
      */
