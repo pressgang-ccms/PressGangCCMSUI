@@ -70,7 +70,7 @@ public class ImagesFilteredResultsAndImageView extends
             this.setWidth(Constants.BULK_IMAGE_UPLOAD_WIDTH);
             this.setHeight(Constants.BULK_IMAGE_UPLOAD_HEIGHT);
 
-            this.description.addStyleName(CSSConstants.PlainTextXMLDialog.PLAIN_TEXT_XML_DIALOG_TEXTAREA);
+            this.description.addStyleName(CSSConstants.BulkImageUploadDialog.DESCRIPTION_FIELD);
 
             @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
