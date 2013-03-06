@@ -1,3 +1,22 @@
+/*
+    The div referenced here is created by a scroll panel. We need to set it's height so
+    the action buttons don't decrease in side when the horizontal scroll bar is present.
+    The difference between Constants.ACTION_BAR_HEIGHT and the height set here is the
+    space below the action buttons which will be filled by the scroll bar.
+ */
+.ViewActionButtonsParentPanelScroll>div, .ResultsActionButtonsParentPanelScroll>div, .TopActionParentPanel {
+    height: 84px;
+}
+
+.TopActionParentPanel
+ {
+    overflow: hidden;
+    border-spacing: 0px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    /*bottom: 16px !important;*/
+}
+
 .ViewActionButtonsParentPanelScroll, .ResultsActionButtonsParentPanelScroll {
     overflow-x: auto !important;
     overflow-y: hidden !important;
@@ -121,16 +140,9 @@ html {
 
 .TopActionGrandParentPanel {
     margin-left: 110px;
-    margin-top: 8px;
-    margin-bottom: 8px;
 }
 
-.TopActionParentPanel {
-    overflow: hidden;
-    height: 100%;
-    border-spacing: 0px;
-    /*bottom: 16px !important;*/
-}
+
 
 
 
