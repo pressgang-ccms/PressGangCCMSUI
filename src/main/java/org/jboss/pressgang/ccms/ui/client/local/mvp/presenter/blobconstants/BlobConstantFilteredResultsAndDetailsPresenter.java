@@ -91,7 +91,7 @@ implements BaseTemplatePresenterInterface {
 
     @Override
     protected void loadAdditionalDisplayedItemData() {
-        bindUploadButton();
+
     }
 
     @Override
@@ -100,6 +100,7 @@ implements BaseTemplatePresenterInterface {
         checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
 
         blobConstantPresenter.getDisplay().display(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
+        bindUploadButton();
     }
 
     @Override
