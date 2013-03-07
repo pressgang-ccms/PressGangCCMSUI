@@ -37,6 +37,7 @@ import org.vectomatic.file.events.LoadEndHandler;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkState;
@@ -90,9 +91,7 @@ implements BaseTemplatePresenterInterface {
 
     @Override
     protected void loadAdditionalDisplayedItemData() {
-        /*
-            Do Nothing.
-         */
+        bindUploadButton();
     }
 
     @Override
@@ -208,27 +207,31 @@ implements BaseTemplatePresenterInterface {
 
     @Override
     public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
-        /* A call back used to get a fresh copy of the entity that was selected */
-        @NotNull final GetNewEntityCallback<RESTBlobConstantV1> getNewEntityCallback = new GetNewEntityCallback<RESTBlobConstantV1>() {
+        try {
+            LOGGER.log(Level.INFO, "ENTER BlobConstantFilteredResultsAndDetailsPresenter.bindSearchAndEditExtended()");
 
-            @Override
-            public void getNewEntity(@NotNull final RESTBlobConstantV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTBlobConstantV1> displayCallback) {
-                /*
-                    There is nothing additional to load here, so just return the selected entity.
-                 */
-                displayCallback.displayNewEntity(selectedEntity);
-            }
-        };
+            /* A call back used to get a fresh copy of the entity that was selected */
+            @NotNull final GetNewEntityCallback<RESTBlobConstantV1> getNewEntityCallback = new GetNewEntityCallback<RESTBlobConstantV1>() {
+
+                @Override
+                public void getNewEntity(@NotNull final RESTBlobConstantV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTBlobConstantV1> displayCallback) {
+                    /*
+                        There is nothing additional to load here, so just return the selected entity.
+                     */
+                    displayCallback.displayNewEntity(selectedEntity);
+                }
+            };
 
 
-        display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
+            display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 
-        blobConstantFilteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.BLOB_CONSTANT_HELP_TOPIC, pageId, queryString);
-        blobConstantPresenter.bindExtended(ServiceConstants.STRING_CONSTANT_DETAILS_HELP_TOPIC, pageId);
-        super.bindSearchAndEdit(topicId, pageId, Preferences.STRING_CONSTANTS_VIEW_MAIN_SPLIT_WIDTH, blobConstantPresenter.getDisplay(), blobConstantPresenter.getDisplay(),
-                blobConstantFilteredResultsPresenter.getDisplay(), blobConstantFilteredResultsPresenter, display, display, getNewEntityCallback);
-
-        bindUploadButton();
+            blobConstantFilteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.BLOB_CONSTANT_HELP_TOPIC, pageId, queryString);
+            blobConstantPresenter.bindExtended(ServiceConstants.STRING_CONSTANT_DETAILS_HELP_TOPIC, pageId);
+            super.bindSearchAndEdit(topicId, pageId, Preferences.STRING_CONSTANTS_VIEW_MAIN_SPLIT_WIDTH, blobConstantPresenter.getDisplay(), blobConstantPresenter.getDisplay(),
+                    blobConstantFilteredResultsPresenter.getDisplay(), blobConstantFilteredResultsPresenter, display, display, getNewEntityCallback);
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT BlobConstantFilteredResultsAndDetailsPresenter.bindSearchAndEditExtended()");
+        }
     }
 
     @Override
@@ -241,8 +244,14 @@ implements BaseTemplatePresenterInterface {
 
     @Override
     public void go(@NotNull final HasWidgets container) {
-        clearContainerAndAddTopLevelPanel(container, display);
-        bindSearchAndEditExtended(ServiceConstants.BLOB_CONSTANT_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        try {
+            LOGGER.log(Level.INFO, "ENTER BlobConstantFilteredResultsAndDetailsPresenter.go()");
+
+            clearContainerAndAddTopLevelPanel(container, display);
+            bindSearchAndEditExtended(ServiceConstants.BLOB_CONSTANT_HELP_TOPIC, HISTORY_TOKEN, queryString);
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT BlobConstantFilteredResultsAndDetailsPresenter.go()");
+        }
     }
 
     @Override
