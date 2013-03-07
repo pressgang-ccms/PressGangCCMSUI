@@ -38,9 +38,17 @@
 
     <dependencies>
         <!-- Smart GWT -->
-        <!-- <dependency> <groupId>com.smartgwt</groupId> <artifactId>smartgwt</artifactId>
-            <version>3.0</version> </dependency> <dependency> <groupId>com.smartgwt</groupId>
-            <artifactId>smartgwt-skins</artifactId> <version>3.0</version> </dependency> -->
+        <dependency>
+            <groupId>com.smartgwt</groupId>
+            <artifactId>smartgwt</artifactId>
+            <version>3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.smartgwt</groupId>
+            <artifactId>smartgwt-skins</artifactId>
+            <version>3.0</version>
+        </dependency>
 
         <dependency>
             <groupId>com.intellij</groupId>
@@ -615,7 +623,8 @@
                         <artifactId>gwt-maven-plugin</artifactId>
                         <version>${gwt.maven.version}</version>
                         <configuration>
-                            <extraJvmArgs>-Xmx1024M -Xms1024M -Xss1024k -XX:MaxPermSize=256M -XX:PermSize=128M</extraJvmArgs>
+                            <extraJvmArgs>-Xmx1024M -Xms1024M -Xss1024k -XX:MaxPermSize=256M -XX:PermSize=128M
+                            </extraJvmArgs>
                             <logLevel>INFO</logLevel>
                             <optimizationLevel>9</optimizationLevel>
                             <enableClosureCompiler>true</enableClosureCompiler>
@@ -1492,21 +1501,21 @@
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
-                                	<pluginExecutionFilter>
-                                		<groupId>org.jacoco</groupId>
-                                		<artifactId>
-                                			jacoco-maven-plugin
-                                		</artifactId>
-                                		<versionRange>
-                                			[0.5.10.201208310627,)
-                                		</versionRange>
-                                		<goals>
-                                			<goal>prepare-agent</goal>
-                                		</goals>
-                                	</pluginExecutionFilter>
-                                	<action>
-                                		<ignore></ignore>
-                                	</action>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.jacoco</groupId>
+                                        <artifactId>
+                                            jacoco-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [0.5.10.201208310627,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>prepare-agent</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
                                 </pluginExecution>
                             </pluginExecutions>
                         </lifecycleMappingMetadata>

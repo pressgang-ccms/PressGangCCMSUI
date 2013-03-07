@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 1.6//EN"
-        "http://google-web-toolkit.googlecode.com/svn/releases/2.4/distro-source/core/src/gwt-module.dtd">
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 1.6//EN" "http://google-web-toolkit.googlecode.com/svn/releases/2.4/distro-source/core/src/gwt-module.dtd">
 <module rename-to="app">
     <inherits name='com.google.gwt.user.UserAgent'/>
     <inherits name="com.google.gwt.user.User"/>
@@ -18,8 +17,8 @@
     <inherits name="com.google.gwt.user.client.ui"/>
     <inherits name='com.google.web.bindery.requestfactory.RequestFactory'/>
     <inherits name="org.vectomatic.libgwtfile"/>
-
-    <!-- <inherits name="com.smartgwt.SmartGwt"/>  -->
+    <!--http://forums.smartclient.com/showthread.php?t=20246 -->
+    <inherits name="com.smartgwt.SmartGwtNoScript"/>
 
     <set-property name="gwt.logging.logLevel" value="INFO"/>
     <set-property name="gwt.logging.popupHandler" value="DISABLED"/>
