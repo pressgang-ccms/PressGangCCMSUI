@@ -98,7 +98,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      */
     public static final String HISTORY_TOKEN = "SearchResultsAndTopicView";
 
-
     /**
      * A Logger
      */

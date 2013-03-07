@@ -21,6 +21,9 @@ import org.jetbrains.annotations.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static com.google.common.base.Preconditions.checkArgument;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
@@ -33,6 +36,10 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
 
     public static final String HISTORY_TOKEN = "BlobConstantFilteredResultsView";
 
+    /**
+     * A Logger
+     */
+    private static final Logger LOGGER = Logger.getLogger(BlobConstantFilteredResultsPresenter.class.getName());
     /**
      * The view this presenter is associated with.
      */
@@ -64,25 +71,30 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
         @NotNull final EnhancedAsyncDataProvider<RESTBlobConstantCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTBlobConstantCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTBlobConstantCollectionItemV1> list) {
+                try {
+                    LOGGER.log(Level.INFO, "ENTER BlobConstantFilteredResultsPresenter.generateListProvider() EnhancedAsyncDataProvider.onRangeChanged()");
 
-                @NotNull final BaseRestCallback<RESTBlobConstantCollectionV1, Display> callback = new BaseRestCallback<RESTBlobConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTBlobConstantCollectionV1, Display>() {
+                    @NotNull final BaseRestCallback<RESTBlobConstantCollectionV1, Display> callback = new BaseRestCallback<RESTBlobConstantCollectionV1, Display>(display, new BaseRestCallback.SuccessAction<RESTBlobConstantCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTBlobConstantCollectionV1 retValue, @NotNull final Display display) {
-                        checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
-                        checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
+                            checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                            checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
-                        getProviderData().setItems(retValue.getItems());
-                        getProviderData().setSize(retValue.getSize());
-                        relinkSelectedItem();
-                        displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
-                    }
-                });
+                            getProviderData().setItems(retValue.getItems());
+                            getProviderData().setSize(retValue.getSize());
+                            relinkSelectedItem();
+                            displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
+                        }
+                    });
 
-                getProviderData().setStartRow(list.getVisibleRange().getStart());
-                final int length = list.getVisibleRange().getLength();
-                final int end = getProviderData().getStartRow() + length;
+                    getProviderData().setStartRow(list.getVisibleRange().getStart());
+                    final int length = list.getVisibleRange().getLength();
+                    final int end = getProviderData().getStartRow() + length;
 
-                RESTCalls.getBlobConstantsFromQuery(callback, queryString, getProviderData().getStartRow(), end);
+                    RESTCalls.getBlobConstantsFromQuery(callback, queryString, getProviderData().getStartRow(), end);
+                } finally {
+                    LOGGER.log(Level.INFO, "EXIT BlobConstantFilteredResultsPresenter.generateListProvider() EnhancedAsyncDataProvider.onRangeChanged()");
+                }
             }
         };
         return provider;

@@ -615,8 +615,7 @@
                         <artifactId>gwt-maven-plugin</artifactId>
                         <version>${gwt.maven.version}</version>
                         <configuration>
-                            <extraJvmArgs>-Xmx1024M -Xms1024M -Xss1024k -XX:MaxPermSize=256M -XX:PermSize=128M
-                            </extraJvmArgs>
+                            <extraJvmArgs>-Xmx1024M -Xms1024M -Xss1024k -XX:MaxPermSize=256M -XX:PermSize=128M</extraJvmArgs>
                             <logLevel>INFO</logLevel>
                             <optimizationLevel>9</optimizationLevel>
                             <enableClosureCompiler>true</enableClosureCompiler>
@@ -1346,9 +1345,12 @@
                 <artifactId>gwt-maven-plugin</artifactId>
                 <version>${gwt.maven.version}</version>
                 <configuration>
+                    <extraJvmArgs>-Xmx1024M -Xms1024M -Xss1024k -XX:MaxPermSize=256M -XX:PermSize=128M</extraJvmArgs>
+                    <optimizationLevel>9</optimizationLevel>
+                    <enableClosureCompiler>true</enableClosureCompiler>
+                    <!--<localWorkers>2</localWorkers> -->
                     <logLevel>INFO</logLevel>
                     <runTarget>App.html</runTarget>
-                    <extraJvmArgs>-Xmx512m</extraJvmArgs>
                     <soyc>false</soyc>
                     <hostedWebapp>src/main/webapp/</hostedWebapp>
                     <server>org.jboss.errai.cdi.server.gwt.JettyLauncher</server>
