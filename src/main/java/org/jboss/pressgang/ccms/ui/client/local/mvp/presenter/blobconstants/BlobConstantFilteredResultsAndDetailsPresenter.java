@@ -274,6 +274,8 @@ implements BaseTemplatePresenterInterface {
     }
 
     private void bindUploadButton() {
+        checkState(blobConstantPresenter.getDisplay().getEditor() != null, "An entity should have been displayed and bound to an editor.");
+
         blobConstantPresenter.getDisplay().getEditor().getUploadButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
