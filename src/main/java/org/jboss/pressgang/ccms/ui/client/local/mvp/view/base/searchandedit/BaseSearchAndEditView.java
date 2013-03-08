@@ -166,9 +166,16 @@ abstract public class BaseSearchAndEditView<
     }
 
     protected final void initialize(final boolean displaySearchResults) {
+        initialize(displaySearchResults, null);
+    }
+
+    protected final void initialize(final boolean displaySearchResults, @Nullable final DisplaySplitViewCallback callback) {
         splitPanel.clear();
         if (displaySearchResults) {
             splitPanel.addWest(resultsViewLayoutPanel, Constants.SPLIT_PANEL_SIZE);
+        }
+        if (callback != null) {
+            callback.addToCompassPoints();
         }
         splitPanel.add(viewLayoutPanel);
     }

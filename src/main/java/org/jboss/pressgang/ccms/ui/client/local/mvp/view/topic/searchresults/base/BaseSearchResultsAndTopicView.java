@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseTopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditView;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.DisplaySplitViewCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.LogMessageView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
@@ -284,29 +285,23 @@ public abstract class BaseSearchResultsAndTopicView<
     @Override
     public void initialize(final boolean readOnly, final SplitType splitType, final boolean dislaySearchResults, @NotNull final Panel panel) {
 
-        super.initialize(dislaySearchResults);
-
-        if (this.splitType != splitType) {
-            this.splitType = splitType;
-
-            getSplitPanel().clear();
-
-            getSplitPanel().addWest(this.getResultsViewLayoutPanel(), Constants.SPLIT_PANEL_SIZE);
-
-            @NotNull final SimplePanel renderedPanelParent = new SimplePanel();
-            renderedPanelParent.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_LAYOUT_PANEL);
-            renderedPanelParent.add(panel);
-
-            if (splitType == SplitType.HORIZONTAL) {
-                getSplitPanel().addSouth(renderedPanelParent, Constants.SPLIT_PANEL_SIZE);
-            } else if (splitType == SplitType.VERTICAL) {
-                getSplitPanel().addEast(renderedPanelParent, Constants.SPLIT_PANEL_SIZE);
-            }
-
-            getSplitPanel().add(this.getViewLayoutPanel());
-        }
-
+        this.splitType = splitType;
         this.readOnly = readOnly;
+
+        super.initialize(dislaySearchResults, new DisplaySplitViewCallback() {
+            @Override
+            public void addToCompassPoints() {
+                @NotNull final SimplePanel renderedPanelParent = new SimplePanel();
+                renderedPanelParent.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_LAYOUT_PANEL);
+                renderedPanelParent.add(panel);
+
+                if (splitType == SplitType.HORIZONTAL) {
+                    getSplitPanel().addSouth(renderedPanelParent, Constants.SPLIT_PANEL_SIZE);
+                } else if (splitType == SplitType.VERTICAL) {
+                    getSplitPanel().addEast(renderedPanelParent, Constants.SPLIT_PANEL_SIZE);
+                }
+            }
+        });
 
         buildSplitViewButtons(splitType);
     }
