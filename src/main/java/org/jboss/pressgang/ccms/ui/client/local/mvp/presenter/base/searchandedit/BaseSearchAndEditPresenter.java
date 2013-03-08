@@ -121,7 +121,6 @@ abstract public class BaseSearchAndEditPresenter<
 
         display.displaySearchResultsView(filteredResultsDisplay);
 
-
         bindResultsListRowClicks(getNewEntityCallback);
         bindActionButtons();
         bindFilteredResultsButtons();

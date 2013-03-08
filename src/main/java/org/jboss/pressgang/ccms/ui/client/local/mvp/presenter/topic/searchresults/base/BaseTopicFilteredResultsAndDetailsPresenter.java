@@ -219,8 +219,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         topicPropertyTagPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicSourceURLsPresenter.bindChildrenExtended(ServiceConstants.TOPIC_SOURCE_URLS_HELP_TOPIC, pageId);
 
-        bindSplitPanelResize();
         loadSplitPanelSize();
+        bindSplitPanelResize();
 
         postBindSearchAndEditExtended(topicId, pageId, queryString);
 
