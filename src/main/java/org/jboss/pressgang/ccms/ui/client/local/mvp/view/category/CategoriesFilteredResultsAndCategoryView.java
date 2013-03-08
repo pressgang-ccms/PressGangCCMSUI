@@ -50,6 +50,7 @@ public class CategoriesFilteredResultsAndCategoryView extends
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Categories());
         populateTopActionBar();
         addSpacerToShortcutPanels();
+        super.initialize(true);
     }
 
 

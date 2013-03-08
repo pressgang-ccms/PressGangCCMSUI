@@ -50,6 +50,7 @@ public class ProjectsFilteredResultsAndProjectView extends
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Projects());
         populateTopActionBar();
         addSpacerToShortcutPanels();
+        super.initialize(true);
     }
 
     private void populateTopActionBar() {

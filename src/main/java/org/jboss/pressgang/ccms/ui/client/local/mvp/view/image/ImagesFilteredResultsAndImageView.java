@@ -91,6 +91,7 @@ public class ImagesFilteredResultsAndImageView extends
     public ImagesFilteredResultsAndImageView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults());
         addSpacerToShortcutPanels();
+        super.initialize(true);
     }
 
 }

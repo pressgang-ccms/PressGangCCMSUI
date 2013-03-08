@@ -53,6 +53,7 @@ public class PropertyCategoryFilteredResultsAndDetailsView extends BaseSearchAnd
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.ExtendedPropertyCategories());
         populateTopActionBar();
         addSpacerToShortcutPanels();
+        super.initialize(true);
     }
 
     private void populateTopActionBar() {
