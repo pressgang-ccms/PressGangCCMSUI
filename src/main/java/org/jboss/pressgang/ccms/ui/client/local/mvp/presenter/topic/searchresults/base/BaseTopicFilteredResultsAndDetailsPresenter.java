@@ -141,10 +141,10 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         this.displayingSearchResults = displayingSearchResults;
         if (displayingSearchResults) {
             getDisplay().getShowHideSearchResults().setText(PressGangCCMSUI.INSTANCE.HideSearchResults());
-            getDisplay().getShowHideSearchResults().getDownFace().setText(PressGangCCMSUI.INSTANCE.HideSearchResults());
+            getDisplay().getShowHideSearchResults().getUpHoveringFace().setText(PressGangCCMSUI.INSTANCE.HideSearchResults());
         } else {
             getDisplay().getShowHideSearchResults().setText(PressGangCCMSUI.INSTANCE.ShowSearchResults());
-            getDisplay().getShowHideSearchResults().getDownFace().setText(PressGangCCMSUI.INSTANCE.ShowSearchResults());
+            getDisplay().getShowHideSearchResults().getUpHoveringFace().setText(PressGangCCMSUI.INSTANCE.ShowSearchResults());
         }
     }
 
