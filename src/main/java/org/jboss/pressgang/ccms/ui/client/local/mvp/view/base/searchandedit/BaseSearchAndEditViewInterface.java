@@ -1,9 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit;
 
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HandlerSplitLayoutPanel;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityV1;
@@ -40,6 +37,7 @@ public interface BaseSearchAndEditViewInterface<T extends RESTBaseEntityV1<T, U,
     @NotNull HandlerSplitLayoutPanel getSplitPanel();
 
     @NotNull DockLayoutPanel getResultsViewLayoutPanel();
+
 
     /**
      * Displays the contents of a child view

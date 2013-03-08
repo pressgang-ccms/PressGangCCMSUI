@@ -28,6 +28,8 @@ public class BlobConstantFilteredResultsAndDetailsView extends
     public BlobConstantFilteredResultsAndDetailsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Categories());
         populateTopActionBar();
+        addSpacerToShortcutPanels();
+        super.initialize(true);
     }
 
 

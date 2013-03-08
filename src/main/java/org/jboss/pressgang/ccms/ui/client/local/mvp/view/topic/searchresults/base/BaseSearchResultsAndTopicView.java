@@ -65,58 +65,77 @@ public abstract class BaseSearchResultsAndTopicView<
     private final PushButton renderedSplitClose;
     private final PushButton renderedSplitOpen;
 
+    private final PushButton showHideSearchResults = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.HideSearchResults());
+
     protected boolean readOnly = false;
 
+    @NotNull
+    @Override
+    public PushButton getShowHideSearchResults() {
+        return showHideSearchResults;
+    }
+
+    @NotNull
     @Override
     public PushButton getUrls() {
         return urls;
     }
 
+    @NotNull
     @Override
     public Label getUrlsDown() {
         return urlsDown;
     }
 
+    @NotNull
     @Override
     public PushButton getCsps() {
         return csps;
     }
 
+    @NotNull
     @Override
     public Label getFieldsDown() {
         return fieldsDown;
     }
 
+    @NotNull
     @Override
     public Label getXmlDown() {
         return xmlDown;
     }
 
+    @NotNull
     @Override
     public Label getXmlErrorsDown() {
         return xmlErrorsDown;
     }
 
+    @NotNull
     @Override
     public Label getRenderedDown() {
         return renderedDown;
     }
 
+    @NotNull
     @Override
     public Label getTopicTagsDown() {
         return tagsDown;
     }
 
+    @NotNull
     @Override
     public Label getBugsDown() {
         return bugsDown;
     }
 
+    @NotNull
     @Override
     public PushButton getRenderedSplitOpen() {
         return renderedSplitOpen;
     }
 
+    @NotNull
     @Override
     public PushButton getRenderedHorizontalSplit() {
         return renderedHorizontalSplit;
@@ -128,61 +147,73 @@ public abstract class BaseSearchResultsAndTopicView<
         return renderedSplitViewMenu;
     }
 
+    @NotNull
     @Override
     public PushButton getRenderedSplitClose() {
         return renderedSplitClose;
     }
 
+    @NotNull
     @Override
     public PushButton getRenderedVerticalSplit() {
         return renderedVerticalSplit;
     }
 
+    @NotNull
     @Override
     public PushButton getRenderedNoSplit() {
         return renderedNoSplit;
     }
 
+    @NotNull
     @Override
     public PushButton getRenderedSplit() {
         return renderedSplit;
     }
 
+    @NotNull
     @Override
     public PushButton getBugs() {
         return bugs;
     }
 
+    @NotNull
     @Override
     public PushButton getTopicTags() {
         return topicTags;
     }
 
+    @NotNull
     @Override
     public PushButton getXmlErrors() {
         return xmlErrors;
     }
 
+    @NotNull
     @Override
     public PushButton getRendered() {
         return rendered;
     }
 
+    @NotNull
     @Override
     public PushButton getXml() {
         return xml;
     }
 
+    @NotNull
     @Override
     public PushButton getFields() {
         return fields;
     }
 
+    @NotNull
     @Override
     public Label getExtendedPropertiesDown() {
         return extendedPropertiesDown;
     }
 
+    @NotNull
     @Override
     public PushButton getExtendedProperties() {
         return extendedProperties;
@@ -199,7 +230,7 @@ public abstract class BaseSearchResultsAndTopicView<
         return splitType;
     }
 
-    public BaseSearchResultsAndTopicView(final String applicationName, final String pageName) {
+    public BaseSearchResultsAndTopicView(@NotNull final String applicationName, @NotNull final String pageName) {
         super(applicationName, pageName);
 
         renderedSplitViewMenu.addStyleName(CSSConstants.TopicView.RENDERED_SPLIT_VIEW_MENU_TABLE);
@@ -234,6 +265,8 @@ public abstract class BaseSearchResultsAndTopicView<
         renderedHorizontalSplitDown = UIUtilities.createDownLabel(PressGangCCMSUI.INSTANCE.HorizontalSplit());
         renderedSplitClose = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.CloseSubMenu());
 
+        addButtonToShortcutPanels(showHideSearchResults);
+
         // add the filtered results panel
         getSplitPanel().clear();
         getSplitPanel().addWest(this.getResultsViewLayoutPanel(), Constants.SPLIT_PANEL_SIZE);
@@ -249,7 +282,9 @@ public abstract class BaseSearchResultsAndTopicView<
      * @param panel     The rendered view panel itself
      */
     @Override
-    public void initialize(final boolean readOnly, final SplitType splitType, final Panel panel) {
+    public void initialize(final boolean readOnly, final SplitType splitType, final boolean dislaySearchResults, @NotNull final Panel panel) {
+
+        super.initialize(dislaySearchResults);
 
         if (this.splitType != splitType) {
             this.splitType = splitType;

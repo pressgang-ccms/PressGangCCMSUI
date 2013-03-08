@@ -25,18 +25,20 @@ public final class HandlerSplitLayoutPanel extends SplitLayoutPanel implements H
     }
 
     @Override
-    public HandlerRegistration addResizeHandler(final ResizeHandler handler) {
+    public HandlerRegistration addResizeHandler(@NotNull final ResizeHandler handler) {
         return ensureHandlers().addHandler(ResizeEvent.getType(), handler);
     }
 
     public void setSplitPosition(@NotNull final Widget widgetBeforeTheSplitter, final double size, final boolean animate) {
-        @NotNull final LayoutData layout = (LayoutData) widgetBeforeTheSplitter.getLayoutData();
-        layout.oldSize = layout.size;
-        layout.size = size;
-        if (animate) {
-            animate(ANIMATION_TIME_MILLISECONDS);
-        } else {
-            forceLayout();
+        if (this.getChildren().contains(widgetBeforeTheSplitter)) {
+            @NotNull final LayoutData layout = (LayoutData) widgetBeforeTheSplitter.getLayoutData();
+            layout.oldSize = layout.size;
+            layout.size = size;
+            if (animate) {
+                animate(ANIMATION_TIME_MILLISECONDS);
+            } else {
+                forceLayout();
+            }
         }
     }
 

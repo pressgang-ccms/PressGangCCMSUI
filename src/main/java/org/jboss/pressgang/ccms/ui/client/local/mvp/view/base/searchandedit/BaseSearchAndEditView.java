@@ -11,6 +11,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.WaitingDialog;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,6 +59,7 @@ abstract public class BaseSearchAndEditView<
      * The scroll panel used to hold the results action buttons.
      */
     private final ScrollPanel resultsActionButtonsParentPanelScroll = new ScrollPanel();
+
 
 
     /**
@@ -117,6 +120,7 @@ abstract public class BaseSearchAndEditView<
         return viewActionButtonsParentPanel;
     }
 
+
     public BaseSearchAndEditView(@NotNull final String applicationName, @NotNull final String pageName)  {
         this(applicationName, pageName, true);
     }
@@ -133,8 +137,6 @@ abstract public class BaseSearchAndEditView<
             /* We have own own top action panels */
             this.getTopActionGrandParentPanel().removeFromParent();
 
-            addSpacerToShortcutPanels();
-
             viewActionButtonsParentPanelScroll.addStyleName(CSSConstants.BaseSearchAndEditView.VIEW_ACTION_BUTTONS_PARENT_PANEL_SCROLL);
             resultsActionButtonsParentPanelScroll.addStyleName(CSSConstants.BaseSearchAndEditView.RESULTS_ACTION_BUTTONS_PARENT_PANEL_SCROLL);
 
@@ -148,8 +150,6 @@ abstract public class BaseSearchAndEditView<
         resultsViewLayoutPanel.add(resultsPanel);
         viewLayoutPanel.add(viewPanel);
 
-        splitPanel.addWest(resultsViewLayoutPanel, Constants.SPLIT_PANEL_SIZE);
-
         viewActionButtonsPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_SEARCH_TAG_VIEW_BUTTONS_PANEL);
         viewViewSpecificActionButtonsPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_SEARCH_TAG_VIEW_BUTTONS_PANEL);
         viewActionButtonsParentPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_SEARCH_TAG_VIEW_BUTTONS_PARENT_PANEL);
@@ -162,10 +162,17 @@ abstract public class BaseSearchAndEditView<
 
         splitPanel.addStyleName(CSSConstants.BaseSearchAndEditView.ENTITY_SEARCH_RESULTS_AND_VIEW_PARENT_PANEL);
 
-        splitPanel.add(viewLayoutPanel);
-
         this.getPanel().add(splitPanel);
     }
+
+    protected final void initialize(final boolean displaySearchResults) {
+        splitPanel.clear();
+        if (displaySearchResults) {
+            splitPanel.addWest(resultsViewLayoutPanel, Constants.SPLIT_PANEL_SIZE);
+        }
+        splitPanel.add(viewLayoutPanel);
+    }
+
 
     @Override
     protected final void showWaiting() {
@@ -235,4 +242,6 @@ abstract public class BaseSearchAndEditView<
             this.resultsViewSpecificActionButtonsPanel.add(filteredResultsView.getTopViewSpecificRightActionPanel());
         }
     }
+
+
 }

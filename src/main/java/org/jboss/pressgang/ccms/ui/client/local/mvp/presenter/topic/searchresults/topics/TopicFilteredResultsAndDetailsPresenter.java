@@ -204,7 +204,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
         };
 
-        super.bindSearchAndEdit(topicId, pageId, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, getTopicXMLComponent().getDisplay(), topicViewComponent.getDisplay(),
+        super.bindSearchAndEdit(topicId, pageId, getMainResizePreferencesKey(), getTopicXMLComponent().getDisplay(), topicViewComponent.getDisplay(),
                 getSearchResultsComponent().getDisplay(), getSearchResultsComponent(), getDisplay(), getDisplay(), getNewEntityCallback);
 
         this.topicRevisionsComponent.getDisplay().setProvider(generateTopicRevisionsListProvider());
@@ -262,6 +262,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 return getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
             }
         });
+    }
+
+    @NotNull
+    @Override
+    protected  String getMainResizePreferencesKey() {
+        return Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH;
     }
 
     @Override

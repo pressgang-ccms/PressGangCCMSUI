@@ -26,6 +26,10 @@ final public class Preferences {
      */
     public static final String TOPIC_VIEW_MAIN_SPLIT_WIDTH = "TopicViewMainSplitWidth";
     /**
+     * The setting that saves the width of the split screen on the topic search screen
+     */
+    public static final String TRANSLATED_TOPIC_VIEW_MAIN_SPLIT_WIDTH = "TranslatedTopicViewMainSplitWidth";
+    /**
      * The setting that saves the width of the horizontally split screen on the rendered topic search screen
      */
     public static final String TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH = "TopicViewRenderedHorizontalSplitWidth";

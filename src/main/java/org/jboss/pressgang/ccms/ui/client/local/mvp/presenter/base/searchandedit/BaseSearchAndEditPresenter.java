@@ -1,6 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit;
 
 import com.google.gwt.editor.client.Editor;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.view.client.CellPreviewEvent;
@@ -17,6 +19,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -71,6 +74,7 @@ abstract public class BaseSearchAndEditPresenter<
      */
     private BaseSearchAndEditViewInterface display;
 
+
     /**
      * Unsupported method. Call bindSearchAndEdit() instead.
      *
@@ -117,11 +121,13 @@ abstract public class BaseSearchAndEditPresenter<
 
         display.displaySearchResultsView(filteredResultsDisplay);
 
-        loadMainSplitResize(mainSplitSizePreferenceKey);
-        bindMainSplitResize(mainSplitSizePreferenceKey);
+
         bindResultsListRowClicks(getNewEntityCallback);
         bindActionButtons();
         bindFilteredResultsButtons();
+
+        loadMainSplitResize(mainSplitSizePreferenceKey);
+        bindMainSplitResize(mainSplitSizePreferenceKey);
     }
 
     /**
@@ -330,9 +336,14 @@ abstract public class BaseSearchAndEditPresenter<
             display.getSplitPanel().addResizeHandler(new ResizeHandler() {
 
                 @Override
-                public void onResize(final ResizeEvent event) {
-                    Preferences.INSTANCE.saveSetting(saveKey,
-                            display.getSplitPanel().getSplitPosition(display.getResultsViewLayoutPanel()) + "");
+                public void onResize(@NotNull final ResizeEvent event) {
+                    /**
+                     * The results panel may not be displayed, in which case we don't want to save
+                     * the size.
+                     */
+                    if (display.getResultsViewLayoutPanel().isAttached()) {
+                        Preferences.INSTANCE.saveSetting(saveKey, display.getSplitPanel().getSplitPosition(display.getResultsViewLayoutPanel()) + "");
+                    }
                 }
             });
         } finally {
@@ -342,15 +353,18 @@ abstract public class BaseSearchAndEditPresenter<
 
     /**
      * Restores the size of the main split screen
-     *
-     * @param preferencesKey The key against which the previous size was saved
      */
-    private void loadMainSplitResize(@NotNull final String preferencesKey) {
+    protected final void loadMainSplitResize(@NotNull final String mainSplitSizePreferenceKey) {
         try {
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.loadMainSplitResize()");
 
-            display.getSplitPanel().setSplitPosition(display.getResultsViewLayoutPanel(),
-                    Preferences.INSTANCE.getInt(preferencesKey, Constants.SPLIT_PANEL_SIZE), false);
+            checkState(display != null, "The display variable should have been initialized. You need to call bindSearchAndEdit() first.");
+
+            if (display.getResultsViewLayoutPanel().isAttached()) {
+                display.getSplitPanel().setSplitPosition(display.getResultsViewLayoutPanel(),
+                        Preferences.INSTANCE.getInt(mainSplitSizePreferenceKey, Constants.SPLIT_PANEL_SIZE), false);
+            }
+
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.loadMainSplitResize()");
         }
@@ -439,4 +453,6 @@ abstract public class BaseSearchAndEditPresenter<
      */
     protected void beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
     }
+
+
 }

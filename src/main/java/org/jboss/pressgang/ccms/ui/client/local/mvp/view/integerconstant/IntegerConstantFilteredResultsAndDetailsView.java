@@ -28,6 +28,7 @@ public class IntegerConstantFilteredResultsAndDetailsView extends
     public IntegerConstantFilteredResultsAndDetailsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Categories());
         populateTopActionBar();
+        addSpacerToShortcutPanels();
     }
 
 

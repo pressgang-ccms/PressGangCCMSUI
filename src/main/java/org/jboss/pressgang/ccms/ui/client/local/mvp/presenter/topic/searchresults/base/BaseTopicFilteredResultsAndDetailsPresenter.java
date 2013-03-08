@@ -129,6 +129,25 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     @NotNull
     private SplitType split = SplitType.NONE;
 
+    private boolean displayingSearchResults = true;
+
+
+
+    public boolean isDisplayingSearchResults() {
+        return displayingSearchResults;
+    }
+
+    public void setDisplayingSearchResults(final boolean displayingSearchResults) {
+        this.displayingSearchResults = displayingSearchResults;
+        if (displayingSearchResults) {
+            getDisplay().getShowHideSearchResults().setText(PressGangCCMSUI.INSTANCE.HideSearchResults());
+            getDisplay().getShowHideSearchResults().getDownFace().setText(PressGangCCMSUI.INSTANCE.HideSearchResults());
+        } else {
+            getDisplay().getShowHideSearchResults().setText(PressGangCCMSUI.INSTANCE.ShowSearchResults());
+            getDisplay().getShowHideSearchResults().getDownFace().setText(PressGangCCMSUI.INSTANCE.ShowSearchResults());
+        }
+    }
+
     /**
      *
      * @return The view that corresponds to this parent presenter.
@@ -203,13 +222,17 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         topicPropertyTagPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicSourceURLsPresenter.bindChildrenExtended(ServiceConstants.TOPIC_SOURCE_URLS_HELP_TOPIC, pageId);
 
-        /* Display the split panes */
-        initializeDisplay();
-
         bindSplitPanelResize();
         loadSplitPanelSize();
 
         postBindSearchAndEditExtended(topicId, pageId, queryString);
+
+        /*
+            Display the split panes. This is done after the call to postBindSearchAndEditExtended to ensure that the
+            super.bindSearchAndEdit() method has been called. This means that the loadMainSplitResize() method
+            can be called.
+        */
+        initializeDisplay();
     }
 
     /**
@@ -276,14 +299,21 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             }
 
             /* Have to do this after the parseToken method has been called */
-            getDisplay().initialize(false, split, topicSplitPanelRenderedDisplay.getPanel());
+            getDisplay().initialize(false, split, isDisplayingSearchResults(), topicSplitPanelRenderedDisplay.getPanel());
             enableAndDisableActionButtons(lastDisplayedView);
-
+            loadMainSplitResize(getMainResizePreferencesKey());
             loadSplitPanelSize();
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.initializeDisplay()");
         }
     }
+
+    /**
+     *
+     * @return The key that saves the width of the split between the search results and the topic details
+     */
+    @NotNull
+    protected abstract String getMainResizePreferencesKey();
 
     /**
      * Display the usual menus. This is called after the split rendering pane menu has been closed.
@@ -333,7 +363,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             getDisplay().getSplitPanel().addResizeHandler(new ResizeHandler() {
                 @Override
-                public void onResize(final ResizeEvent event) {
+                public void onResize(@NotNull final ResizeEvent event) {
                     if (topicXMLComponent.getDisplay().getEditor() != null) {
                         topicXMLComponent.getDisplay().getEditor().redisplay();
                     }
@@ -694,6 +724,14 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
+            final ClickHandler showHideSearchResults = new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    setDisplayingSearchResults(!isDisplayingSearchResults());
+                    initializeDisplay();
+                }
+            };
+
             @NotNull final ClickHandler cspsHandler = new ClickHandler() {
 
                 @Override
@@ -731,6 +769,8 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             getDisplay().getRenderedNoSplit().addClickHandler(splitMenuNoSplitHandler);
             getDisplay().getRenderedVerticalSplit().addClickHandler(splitMenuVSplitHandler);
             getDisplay().getRenderedHorizontalSplit().addClickHandler(splitMenuHSplitHandler);
+
+            getDisplay().getShowHideSearchResults().addClickHandler(showHideSearchResults);
 
             /* Hook up the xml editor buttons */
             topicXMLComponent.getDisplay().getLineWrap().addClickHandler(new ClickHandler() {
@@ -986,6 +1026,11 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
         SplitType getSplitType();
 
-        void initialize(final boolean readOnly, final SplitType splitType, final Panel panel);
+        void initialize(final boolean readOnly, final SplitType splitType, final boolean dislaySearchResults, final Panel panel);
+
+        /**
+         * @return The button used to show or hide the search results panel
+         */
+        @NotNull PushButton getShowHideSearchResults();
     }
 }

@@ -18,6 +18,12 @@ public interface PressGangCCMSUI extends Constants {
     PressGangCCMSUI INSTANCE = GWT.create(PressGangCCMSUI.class);
 
     @NotNull
+    String HideSearchResults();
+
+    @NotNull
+    String ShowSearchResults();
+
+    @NotNull
     String SelectFiles();
 
     @NotNull

@@ -49,6 +49,7 @@ public class ProjectsFilteredResultsAndProjectView extends
     public ProjectsFilteredResultsAndProjectView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Projects());
         populateTopActionBar();
+        addSpacerToShortcutPanels();
     }
 
     private void populateTopActionBar() {

@@ -122,7 +122,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
             }
         };
 
-        bindSearchAndEdit(topicId, pageId, Preferences.TOPIC_VIEW_MAIN_SPLIT_WIDTH, getTopicXMLComponent().getDisplay(), translatedTopicPresenter.getDisplay(),
+        bindSearchAndEdit(topicId, pageId, getMainResizePreferencesKey(), getTopicXMLComponent().getDisplay(), translatedTopicPresenter.getDisplay(),
                 getSearchResultsComponent().getDisplay(), getSearchResultsComponent(), getDisplay(), getDisplay(), getNewEntityCallback);
 
         /* When the topics have been loaded, display the first one */
@@ -132,6 +132,12 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
                 displayInitialTopic(getNewEntityCallback);
             }
         });
+    }
+
+    @NotNull
+    @Override
+    protected  String getMainResizePreferencesKey() {
+        return Preferences.TRANSLATED_TOPIC_VIEW_MAIN_SPLIT_WIDTH;
     }
 
     @Override

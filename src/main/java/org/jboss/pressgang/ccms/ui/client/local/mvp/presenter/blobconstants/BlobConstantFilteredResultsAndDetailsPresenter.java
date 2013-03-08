@@ -230,6 +230,7 @@ implements BaseTemplatePresenterInterface {
             blobConstantPresenter.bindExtended(ServiceConstants.STRING_CONSTANT_DETAILS_HELP_TOPIC, pageId);
             super.bindSearchAndEdit(topicId, pageId, Preferences.STRING_CONSTANTS_VIEW_MAIN_SPLIT_WIDTH, blobConstantPresenter.getDisplay(), blobConstantPresenter.getDisplay(),
                     blobConstantFilteredResultsPresenter.getDisplay(), blobConstantFilteredResultsPresenter, display, display, getNewEntityCallback);
+
         } finally {
             LOGGER.log(Level.INFO, "EXIT BlobConstantFilteredResultsAndDetailsPresenter.bindSearchAndEditExtended()");
         }

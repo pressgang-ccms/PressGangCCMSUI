@@ -785,6 +785,27 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     }
 
     /**
+     * When combining views into a single merged view, the shortcut panels need to have a spacer placed above them to replace
+     * the template action bar, which is removed.
+     *
+     * The button supplied to this method is placed in the spacer cell.
+     */
+    protected final void addButtonToShortcutPanels(@NotNull final PushButton button) {
+        @NotNull final String spacerDiv = "<div style=\"height: " + Constants.SHORTCUT_BAR_SPACER_HEIGHT + "px;\"></div>";
+
+        this.getShortcutPanel().insertRow(0);
+        final SimplePanel panel = new SimplePanel();
+        panel.setWidget(button);
+        this.getShortcutPanel().setWidget(0, 0, panel);
+        this.getShortcutPanel().getCellFormatter().setHeight(0, 0, Constants.SHORTCUT_BAR_SPACER_HEIGHT + "px");
+        this.getShortcutPanel().getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_MIDDLE);
+
+        @NotNull final HTML spacer2 = new HTML(spacerDiv);
+        this.getAdvancedShortcutPanel().insertRow(0);
+        this.getAdvancedShortcutPanel().setWidget(0, 0, spacer2);
+    }
+
+    /**
      * Called when some background operation that would cause this view to be locked is started.
      */
     @Override

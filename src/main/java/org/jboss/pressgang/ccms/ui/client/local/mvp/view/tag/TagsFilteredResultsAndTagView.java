@@ -61,6 +61,7 @@ public class TagsFilteredResultsAndTagView
     public TagsFilteredResultsAndTagView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Tags());
         populateTopActionBar();
+        addSpacerToShortcutPanels();
     }
 
     private void populateTopActionBar() {

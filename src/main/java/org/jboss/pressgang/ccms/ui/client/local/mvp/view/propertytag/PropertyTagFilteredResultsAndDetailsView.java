@@ -53,6 +53,7 @@ public class PropertyTagFilteredResultsAndDetailsView extends
     public PropertyTagFilteredResultsAndDetailsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.ExtendedProperties());
         populateTopActionBar();
+        addSpacerToShortcutPanels();
     }
 
     private void populateTopActionBar() {
