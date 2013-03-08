@@ -131,8 +131,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
     private boolean displayingSearchResults = true;
 
-
-
     public boolean isDisplayingSearchResults() {
         return displayingSearchResults;
     }
@@ -140,11 +138,10 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     public void setDisplayingSearchResults(final boolean displayingSearchResults) {
         this.displayingSearchResults = displayingSearchResults;
         if (displayingSearchResults) {
-            getDisplay().getShowHideSearchResults().setText(PressGangCCMSUI.INSTANCE.HideSearchResults());
-            getDisplay().getShowHideSearchResults().getUpHoveringFace().setText(PressGangCCMSUI.INSTANCE.HideSearchResults());
+            getDisplay().getShowHideSearchResults().getUpFace().setText(PressGangCCMSUI.INSTANCE.HideSearchResults());
         } else {
-            getDisplay().getShowHideSearchResults().setText(PressGangCCMSUI.INSTANCE.ShowSearchResults());
-            getDisplay().getShowHideSearchResults().getUpHoveringFace().setText(PressGangCCMSUI.INSTANCE.ShowSearchResults());
+            getDisplay().getShowHideSearchResults().getUpFace().setText(PressGangCCMSUI.INSTANCE.ShowSearchResults());
+
         }
     }
 
@@ -338,15 +335,17 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             this.LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadSplitPanelSize()");
 
             if (this.split == SplitType.HORIZONTAL) {
-                this.getDisplay().getSplitPanel().setSplitPosition(
-                        this.topicSplitPanelRenderedDisplay.getPanel().getParent(),
-                        Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH,
-                                Constants.SPLIT_PANEL_SIZE), false);
+                final int horizontalSplitSize = Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE);
+
+                this.LOGGER.log(Level.INFO, "Horizontal split panel size = " + horizontalSplitSize);
+
+                this.getDisplay().getSplitPanel().setSplitPosition(this.topicSplitPanelRenderedDisplay.getPanel().getParent(), horizontalSplitSize, false);
             } else if (this.split == SplitType.VERTICAL) {
-                this.getDisplay().getSplitPanel().setSplitPosition(
-                        this.topicSplitPanelRenderedDisplay.getPanel().getParent(),
-                        Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH,
-                                Constants.SPLIT_PANEL_SIZE), false);
+                final int verticalSplitSize = Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE);
+
+                this.LOGGER.log(Level.INFO, "Vertical split panel size = " + verticalSplitSize);
+
+                this.getDisplay().getSplitPanel().setSplitPosition(this.topicSplitPanelRenderedDisplay.getPanel().getParent(), verticalSplitSize, false);
             }
         } finally {
             this.LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadSplitPanelSize()");
