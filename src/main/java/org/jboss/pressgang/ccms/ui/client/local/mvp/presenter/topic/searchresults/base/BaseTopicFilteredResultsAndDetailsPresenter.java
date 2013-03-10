@@ -223,7 +223,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         topicSourceURLsPresenter.bindChildrenExtended(ServiceConstants.TOPIC_SOURCE_URLS_HELP_TOPIC, pageId);
 
         bindSplitPanelResize();
-        loadSplitPanelSize();
 
         postBindSearchAndEditExtended(topicId, pageId, queryString);
 
@@ -298,11 +297,19 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 split = SplitType.HORIZONTAL;
             }
 
+            int renderedPanelSize = Constants.SPLIT_PANEL_SIZE;
+            if (this.split == SplitType.HORIZONTAL) {
+                renderedPanelSize = Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE);
+            } else if (this.split == SplitType.VERTICAL) {
+                renderedPanelSize = Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH, Constants.SPLIT_PANEL_SIZE);
+            }
+
+            final int searchResultsWidth = Preferences.INSTANCE.getInt(getMainResizePreferencesKey(), Constants.SPLIT_PANEL_SIZE);
+
             /* Have to do this after the parseToken method has been called */
-            getDisplay().initialize(false, split, isDisplayingSearchResults(), topicSplitPanelRenderedDisplay.getPanel());
+            getDisplay().initialize(false, split, isDisplayingSearchResults(), topicSplitPanelRenderedDisplay.getPanel(), searchResultsWidth, renderedPanelSize);
             enableAndDisableActionButtons(lastDisplayedView);
             loadMainSplitResize(getMainResizePreferencesKey());
-            loadSplitPanelSize();
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.initializeDisplay()");
         }
@@ -328,29 +335,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     private void showRenderedSplitPanelMenu() {
         this.getDisplay().getViewActionButtonsParentPanel().clear();
         this.getDisplay().getViewActionButtonsParentPanel().setWidget(0, 0, this.getDisplay().getRenderedSplitViewMenu());
-    }
-
-    /**
-     * Load the split panel sizes
-     */
-    private void loadSplitPanelSize() {
-        try {
-            this.LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadSplitPanelSize()");
-
-            if (this.split == SplitType.HORIZONTAL) {
-                this.getDisplay().getSplitPanel().setSplitPosition(
-                        this.topicSplitPanelRenderedDisplay.getPanel().getParent(),
-                        Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_HORIZONTAL_SPLIT_WIDTH,
-                                Constants.SPLIT_PANEL_SIZE), false);
-            } else if (this.split == SplitType.VERTICAL) {
-                this.getDisplay().getSplitPanel().setSplitPosition(
-                        this.topicSplitPanelRenderedDisplay.getPanel().getParent(),
-                        Preferences.INSTANCE.getInt(Preferences.TOPIC_VIEW_RENDERED_VERTICAL_SPLIT_WIDTH,
-                                Constants.SPLIT_PANEL_SIZE), false);
-            }
-        } finally {
-            this.LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadSplitPanelSize()");
-        }
     }
 
     /**
@@ -1026,7 +1010,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
         SplitType getSplitType();
 
-        void initialize(final boolean readOnly, final SplitType splitType, final boolean dislaySearchResults, final Panel panel);
+        void initialize(final boolean readOnly, final SplitType splitType, final boolean dislaySearchResults, final Panel panel, final int searchResultsWidth, final int renderedPanelSize);
 
         /**
          * @return The button used to show or hide the search results panel

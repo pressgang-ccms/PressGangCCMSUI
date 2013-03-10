@@ -16,6 +16,8 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 abstract public class BaseSearchAndEditView<
         T extends RESTBaseEntityV1<T, U, V>,
         U extends RESTBaseCollectionV1<T, U, V>,
@@ -166,13 +168,15 @@ abstract public class BaseSearchAndEditView<
     }
 
     protected final void initialize(final boolean displaySearchResults) {
-        initialize(displaySearchResults, null);
+        initialize(displaySearchResults, Constants.SPLIT_PANEL_SIZE, null);
     }
 
-    protected final void initialize(final boolean displaySearchResults, @Nullable final DisplaySplitViewCallback callback) {
+    protected final void initialize(final boolean displaySearchResults, final int searchResultsWidth, @Nullable final DisplaySplitViewCallback callback) {
+        checkArgument(searchResultsWidth > 0, "searchResultsWidth can not be less than 0.");
+
         splitPanel.clear();
         if (displaySearchResults) {
-            splitPanel.addWest(resultsViewLayoutPanel, Constants.SPLIT_PANEL_SIZE);
+            splitPanel.addWest(resultsViewLayoutPanel, searchResultsWidth);
         }
         if (callback != null) {
             callback.addToCompassPoints();

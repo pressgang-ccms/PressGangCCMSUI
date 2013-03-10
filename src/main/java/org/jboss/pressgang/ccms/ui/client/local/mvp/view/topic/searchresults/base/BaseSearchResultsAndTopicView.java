@@ -15,6 +15,8 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jetbrains.annotations.NotNull;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * The view that combines the topic search results with the individual topic views
  *
@@ -279,16 +281,22 @@ public abstract class BaseSearchResultsAndTopicView<
      * The split panel needs to have the center widget added last, which we need to do after optionally added a east or south
      * widget for the rendered view.
      *
+     * @param readOnly true if the view should be read only, and false otherwise
      * @param splitType How the parent panel should be split
      * @param panel     The rendered view panel itself
+     * @param dislaySearchResults true if the search results are being displayed, false otherwise
+     * @param searchResultsWidth the width of the search results panel
+     * @param renderedPanelSize the width of the rendered panel
      */
     @Override
-    public void initialize(final boolean readOnly, final SplitType splitType, final boolean dislaySearchResults, @NotNull final Panel panel) {
+    public void initialize(final boolean readOnly, final SplitType splitType, final boolean dislaySearchResults, @NotNull final Panel panel, final int searchResultsWidth, final int renderedPanelSize) {
+
+        checkArgument(renderedPanelSize > 0, "renderedPanelSize can not be less than 0.");
 
         this.splitType = splitType;
         this.readOnly = readOnly;
 
-        super.initialize(dislaySearchResults, new DisplaySplitViewCallback() {
+        super.initialize(dislaySearchResults, searchResultsWidth, new DisplaySplitViewCallback() {
             @Override
             public void addToCompassPoints() {
                 @NotNull final SimplePanel renderedPanelParent = new SimplePanel();
@@ -296,9 +304,9 @@ public abstract class BaseSearchResultsAndTopicView<
                 renderedPanelParent.add(panel);
 
                 if (splitType == SplitType.HORIZONTAL) {
-                    getSplitPanel().addSouth(renderedPanelParent, Constants.SPLIT_PANEL_SIZE);
+                    getSplitPanel().addSouth(renderedPanelParent, renderedPanelSize);
                 } else if (splitType == SplitType.VERTICAL) {
-                    getSplitPanel().addEast(renderedPanelParent, Constants.SPLIT_PANEL_SIZE);
+                    getSplitPanel().addEast(renderedPanelParent, renderedPanelSize);
                 }
             }
         });
