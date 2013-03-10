@@ -10,10 +10,6 @@
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
           <root url="file://$MODULE_DIR$/src/jboss7" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/src/main/java" />
-          <root url="file://$MODULE_DIR$/src/main/resources" />
-        </sourceRoots>
       </configuration>
     </facet>
     <facet type="gwt" name="GWT">
@@ -122,7 +118,7 @@
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.0.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.0.1" level="project" />
     <orderEntry type="library" name="Maven: net.jcip:jcip-annotations:1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.pressgang.ccms:pressgang-ccms-restv1:1.0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.pressgang.ccms:pressgang-ccms-restv1:1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.pressgang.ccms:pressgang-ccms-utils:1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" name="Maven: xalan:xalan:2.7.1" level="project" />

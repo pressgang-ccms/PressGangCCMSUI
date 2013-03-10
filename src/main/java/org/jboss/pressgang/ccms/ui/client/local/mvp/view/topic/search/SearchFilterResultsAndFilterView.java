@@ -38,6 +38,8 @@ public class SearchFilterResultsAndFilterView extends BaseSearchAndEditView<
         load.setEnabled(false);
         overwrite.setEnabled(false);
         loadAndSearch.setEnabled(false);
+
+        super.initialize(true);
     }
 
     @Override
