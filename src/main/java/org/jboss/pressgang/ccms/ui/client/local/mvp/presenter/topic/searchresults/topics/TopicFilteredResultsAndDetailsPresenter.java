@@ -12,6 +12,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.view.client.HasData;
@@ -38,6 +39,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRevisionsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.GetCurrentTopic;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringLoaded;
@@ -60,6 +62,7 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.vectomatic.file.FileUploadExt;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -388,7 +391,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.postAfterSwitchView()");
 
             /* Build up a click handler to save the topic */
-            @NotNull final ClickHandler saveClickHandler = new ClickHandler() {
+            final ClickHandler saveClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
 
@@ -420,7 +423,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
-            @NotNull final ClickHandler messageLogDialogOK = new ClickHandler() {
+            final ClickHandler messageLogDialogOK = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     try {
@@ -645,18 +648,16 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
-            display.getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
-
-            display.getMessageLogDialog().getCancel().addClickHandler(new ClickHandler() {
+            final ClickHandler messageLogDialogCancel = new ClickHandler() {
 
                 @Override
                 public void onClick(final ClickEvent event) {
                     display.getMessageLogDialog().reset();
                     display.getMessageLogDialog().getDialogBox().hide();
                 }
-            });
+            };
 
-            @NotNull final ClickHandler topicViewClickHandler = new ClickHandler() {
+            final ClickHandler topicViewClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -665,7 +666,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
-            @NotNull final ClickHandler topicRevisionsClickHanlder = new ClickHandler() {
+            final ClickHandler topicRevisionsClickHanlder = new ClickHandler() {
                 @Override
                 public void onClick(final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -673,6 +674,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     }
                 }
             };
+
+            display.getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
+            display.getMessageLogDialog().getCancel().addClickHandler(messageLogDialogCancel);
 
             getDisplay().getSave().addClickHandler(saveClickHandler);
             getDisplay().getHistory().addClickHandler(topicRevisionsClickHanlder);
@@ -1752,10 +1756,23 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     public interface Display extends BaseTopicFilteredResultsAndDetailsPresenter.Display<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
-        PushButton getSave();
+        @NotNull PushButton getSave();
 
-        PushButton getHistory();
+        @NotNull PushButton getHistory();
 
-        Label getHistoryDown();
+        @NotNull Label getHistoryDown();
+
+        @NotNull BulkImport getBulkImport();
+
+        /**
+         * Defines the dialog box used to bulk upload topics.
+         */
+        interface BulkImport {
+            @NotNull DialogBox getDialog();
+            @NotNull FileUploadExt getFiles();
+            @NotNull PushButton getOK();
+            @NotNull PushButton getCancel();
+            @NotNull TopicTagsPresenter.Display getTagsView();
+        }
     }
 }

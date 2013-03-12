@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresul
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
@@ -29,7 +30,7 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
         implements BaseTemplatePresenterInterface {
 
     public interface Display extends BaseFilteredResultsViewInterface<RESTTopicCollectionItemV1> {
-
+        @NotNull PushButton getBulkImport();
     }
 
     public static final String HISTORY_TOKEN = "SearchResultsView";

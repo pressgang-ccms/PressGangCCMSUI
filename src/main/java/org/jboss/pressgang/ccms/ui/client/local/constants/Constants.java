@@ -93,10 +93,17 @@ public final class Constants {
      */
     public static final int MAX_SEARCH_RESULTS = 15;
     /**
-     * The BIRT URL.
+     * The Prod BIRT URL.
      */
-    public static final String BIRT_URL = "http://skynet.usersys.redhat.com:8080/birt/";
-    //public static final String BIRT_URL =  "http://skynet-dev.usersys.redhat.com:8080/birt/";
+    public static final String PROD_BIRT_URL = "http://skynet.usersys.redhat.com:8080/birt/";
+    /**
+     * The Dev BIRT URL.
+     */
+    public static final String DEV_BIRT_URL =  "http://skynet-dev.usersys.redhat.com:8080/birt/";
+    /**
+     * The Local BIRT URL.
+     */
+    public static final String LOCAL_BIRT_URL =  "http://localhost:8080/birt/";
     /**
      * The report that run a report with no other options.
      */
@@ -106,9 +113,17 @@ public final class Constants {
      */
     public static final String BIRT_TOPIC_BUGZILLA_REPORT = "General/Bugs_Per_Topic.rptdesign&ShowOnlyData=True&AlternateTableHeaderBackgroundColour=True&TopicIDParameter=";
     /**
-     * The JavaMelody URL
+     * The Prod JavaMelody URL
      */
-    public static final String MONITORING_URL = "https://skynet.usersys.redhat.com:8443/TopicIndex/monitoring";
+    public static final String PROD_MONITORING_URL = "https://skynet.usersys.redhat.com:8443/TopicIndex/monitoring";
+    /**
+     * The Dev JavaMelody URL
+     */
+    public static final String DEV_MONITORING_URL = "https://skynet-de.usersys.redhat.com:8443/TopicIndex/monitoring";
+    /**
+     * The Local JavaMelody URL
+     */
+    public static final String LOCAL_MONITORING_URL = "https://skynet-de.usersys.redhat.com:8443/TopicIndex/monitoring";
     /**
      * A link to a locally hosted REST server.
      */
@@ -121,18 +136,34 @@ public final class Constants {
      * The production server.
      */
     public static final String PROD_REST_SERVER = "http://skynet.usersys.redhat.com:8080/TopicIndex/";
-    /**
-     * The REST server.
-     */
+
+    /*------------------------------------------------------------------------------------------------------------------
+        UPDATE THESE WHEN CHECKING INTO THE MASTER BRANCH
+     -----------------------------------------------------------------------------------------------------------------*/
+
+    public static final String BIRT_URL = LOCAL_BIRT_URL;
+    public static final String MONITORING_URL = LOCAL_MONITORING_URL;
     public static final String BASE_URL = LOCAL_REST_SERVER;
-    //public static final String BASE_URL = DEV_REST_SERVER;
-    //public static final String BASE_URL = PROD_REST_SERVER;
+
+    /*public static final String BASE_URL = DEV_REST_SERVER;
+    public static final String BIRT_URL = DEV_BIRT_URL;
+    public static final String MONITORING_URL = DEV_MONITORING_URL;*/
+
+    /*public static final String MONITORING_URL = PROD_MONITORING_URL;
+    public static final String BASE_URL = PROD_REST_SERVER;
+    public static final String BIRT_URL = PROD_BIRT_URL;*/
+
     /**
      * The newer versions of the REST interface encode the query PathParam elements (so as to allow for searches to
      * include characters like the semicolon). If this constant is true, the query elements will be encoded.
      */
     public static final boolean ENCODE_QUERY_OPTIONS = false;
     //public static final boolean ENCODE_QUERY_OPTIONS = true;
+
+    /*------------------------------------------------------------------------------------------------------------------
+
+     -----------------------------------------------------------------------------------------------------------------*/
+
     /**
      * The REST URL.
      */

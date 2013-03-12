@@ -1,18 +1,22 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.topic;
 
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
+import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 
 @Dependent
-public class SearchResultsView extends BaseFilteredResultsView<RESTTopicCollectionItemV1>
+public class TopicFilteredResultsView extends BaseFilteredResultsView<RESTTopicCollectionItemV1>
         implements TopicFilteredResultsPresenter.Display {
+
+    private final PushButton bulkImport = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.BulkTopicImport());
 
     @NotNull
     private final TextColumn<RESTTopicCollectionItemV1> idColumn = new TextColumn<RESTTopicCollectionItemV1>() {
@@ -38,7 +42,7 @@ public class SearchResultsView extends BaseFilteredResultsView<RESTTopicCollecti
         }
     };
 
-    public SearchResultsView() {
+    public TopicFilteredResultsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults(), PressGangCCMSUI.INSTANCE.CreateTopic());
 
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.TopicID());
@@ -46,5 +50,13 @@ public class SearchResultsView extends BaseFilteredResultsView<RESTTopicCollecti
         
         /* Unlike every other results view, the topic results don't have a search button */
         this.getEntitySearch().removeFromParent();
+
+        addActionButton(bulkImport);
+    }
+
+    @NotNull
+    @Override
+    public PushButton getBulkImport() {
+        return bulkImport;
     }
 }
