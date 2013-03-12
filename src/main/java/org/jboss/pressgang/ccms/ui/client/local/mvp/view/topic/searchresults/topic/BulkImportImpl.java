@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.to
 
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -75,6 +76,9 @@ public class BulkImportImpl extends DialogBox implements TopicFilteredResultsAnd
     private void postConstruct() {
         try {
             LOGGER.log(Level.INFO, "ENTER BulkImportImpl.postConstruct()");
+
+            this.setWidth(Constants.HELP_DIALOG_WIDTH);
+            this.setHeight(Constants.HELP_DIALOG_HEIGHT);
 
             this.setGlassEnabled(true);
             this.setModal(true);
