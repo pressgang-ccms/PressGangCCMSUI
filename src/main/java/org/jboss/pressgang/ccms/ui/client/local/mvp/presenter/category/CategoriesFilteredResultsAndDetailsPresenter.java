@@ -142,7 +142,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                         display, new BaseRestCallback.SuccessAction<RESTCategoryV1, BaseTemplateViewInterface>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTCategoryV1 retValue, @NotNull final BaseTemplateViewInterface display) {
-                        checkArgument(retValue.getTags() == null, "The initially retrieved entity should not have a tags collection");
+                        checkArgument(retValue.getTags() != null, "The initially retrieved entity should have a tags collection");
 
                         displayCallback.displayNewEntity(retValue);
                     }

@@ -202,6 +202,7 @@ public class TagCategoriesPresenter
                     }
                 }
 
+                getExistingProviderData().setSize(getExistingProviderData().getItems().size());
                 Collections.sort(getExistingProviderData().getItems(), new RESTTagCategoryCollectionItemV1SortComparator());
 
                 displayNewFixedList(getExistingProviderData().getItems());
