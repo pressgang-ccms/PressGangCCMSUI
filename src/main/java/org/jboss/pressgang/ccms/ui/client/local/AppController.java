@@ -100,9 +100,6 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
             this.eventBus.addHandler(PropertyTagFilteredResultsAndDetailsViewEvent.TYPE, new ViewOpenWithQueryEventHandler(PropertyTagFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(PropertyCategoryFilteredResultsAndDetailsViewEvent.TYPE, new ViewOpenWithQueryEventHandler(PropertyCategoryFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(BulkTagSearchTagsFieldsAndFiltersViewEvent.TYPE, new ViewOpenWithQueryEventHandler(SearchTagsFieldsAndFiltersPresenter.BULK_TAG_HISTORY_TOKEN));
-
-
-
         } finally {
             LOGGER.log(Level.INFO, "EXIT AppController.bind()");
         }

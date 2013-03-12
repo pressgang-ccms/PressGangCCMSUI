@@ -16,6 +16,7 @@ import org.vectomatic.file.FileUploadExt;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.New;
 import javax.inject.Inject;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -48,12 +49,11 @@ public class TopicFilteredResultsAndDetailsView extends
     /**
      * The bulk import dialog box.
      */
-    private @Inject
-    BulkImportImpl bulkImport;
+    private @Inject BulkImportImpl bulkImport;
 
     @Override
     @NotNull
-    public BulkImport getBulkImport() {
+    public TopicFilteredResultsAndDetailsPresenter.BulkImport getBulkImport() {
         return bulkImport;
     }
 
@@ -87,67 +87,4 @@ public class TopicFilteredResultsAndDetailsView extends
         this.addActionButton(history);
         this.addActionButton(save);
     }
-
-    @Dependent
-    public static class BulkImportImpl extends DialogBox implements BulkImport {
-
-        private final FileUploadExt fileUploadExt = new FileUploadExt();
-        private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
-        private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
-        @New private TopicTagsPresenter.Display tagsView;
-        private final FlexTable layout = new FlexTable();
-
-        @NotNull
-        @Override
-        public DialogBox getDialog() {
-            return this;
-        }
-
-        @NotNull
-        @Override
-        public FileUploadExt getFiles() {
-            return fileUploadExt;
-        }
-
-        @NotNull
-        @Override
-        public PushButton getOK() {
-            return ok;
-        }
-
-        @NotNull
-        @Override
-        public PushButton getCancel() {
-            return cancel;
-        }
-
-        @NotNull
-        @Override
-        public TopicTagsPresenter.Display getTagsView() {
-            return tagsView;
-        }
-
-        public BulkImportImpl() {
-            this.setGlassEnabled(true);
-            /* If true, this interferes with the "After the Deadline" plugin */
-            this.setModal(false);
-            this.setText(PressGangCCMSUI.INSTANCE.BulkImageUpload());
-
-            @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
-            buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
-            buttonPanel.add(this.cancel);
-            buttonPanel.add(this.ok);
-
-            this.layout.setWidget(0, 0, new Label(PressGangCCMSUI.INSTANCE.SelectFiles()));
-            this.layout.setWidget(0, 1, fileUploadExt);
-            this.layout.setWidget(1, 0, new Label(PressGangCCMSUI.INSTANCE.CommonDescription()));
-            this.layout.setWidget(1, 1, tagsView.getPanel());
-            this.layout.setWidget(2, 0, buttonPanel);
-
-            this.layout.getFlexCellFormatter().setColSpan(2, 0, 2);
-
-            this.add(this.layout);
-        }
-    }
-
 }

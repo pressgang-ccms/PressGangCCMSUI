@@ -62,9 +62,11 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.vectomatic.file.FileList;
 import org.vectomatic.file.FileUploadExt;
 
 import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.New;
 import javax.inject.Inject;
 import java.util.*;
 import java.util.logging.Level;
@@ -94,6 +96,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     private TopicRevisionsPresenter topicRevisionsComponent;
     @Inject
     private Display display;
+
+
+    /**
+     * This entity is used to hold the tags that will be applied to
+     * any bulk uploaded topics.
+     */
+    private final RESTTopicV1 bulkImportTemplate = new RESTTopicV1();
 
 
     /**
@@ -265,6 +274,39 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 return getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
             }
         });
+
+        getTags();
+    }
+
+    /**
+     * Gets the tags, so they can be displayed and added to topics. Unlike the TopicTagsPresenter.getTags() method,
+     * here we populate both the tags view, and the tags view in the bulk topic import dialog.
+     */
+    private void getTags() {
+        try {
+            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.getTags()");
+
+            @NotNull final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, Display>(
+                    display, new BaseRestCallback.SuccessAction<RESTTagCollectionV1, Display>() {
+                @Override
+                public void doSuccessAction(@NotNull final RESTTagCollectionV1 retValue, @NotNull final Display display) {
+                    try {
+                        LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.getTags() callback.doSuccessAction()");
+
+                        checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
+                        checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
+
+                        getTopicTagsPresenter().getDisplay().initializeNewTags(retValue);
+                        display.getBulkImport().getTagsView().initializeNewTags(retValue);
+                    } finally {
+                        LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.getTags() callback.doSuccessAction()");
+                    }
+                }
+            });
+            RESTCalls.getTags(callback);
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.getTags()");
+        }
     }
 
     @NotNull
@@ -675,9 +717,44 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
+            final ClickHandler bulkImport = new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    display.getBulkImport().getTagsView().display(bulkImportTemplate, false);
+                    display.getBulkImport().getDialog().center();
+                }
+            };
+
+            final ClickHandler bulkImportOK = new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    try
+                    {
+                        display.getBulkImport().getTagsView().getDriver().flush();
+
+                        if (display.getBulkImport().getFiles().getFiles().getLength() != 0) {
+                            uploadBulkImportTopic(0, display.getBulkImport().getFiles().getFiles());
+                        }
+
+                    } finally {
+                        display.getBulkImport().getDialog().hide();
+                    }
+                }
+            };
+
+            final ClickHandler bulkImportCancel = new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    display.getBulkImport().getDialog().hide();
+                }
+            };
+
             display.getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
             display.getMessageLogDialog().getCancel().addClickHandler(messageLogDialogCancel);
 
+            display.getBulkImport().getCancel().addClickHandler(bulkImportCancel);
+
+            searchResultsComponent.getDisplay().getBulkImport().addClickHandler(bulkImport);
             getDisplay().getSave().addClickHandler(saveClickHandler);
             getDisplay().getHistory().addClickHandler(topicRevisionsClickHanlder);
             getDisplay().getFields().addClickHandler(topicViewClickHandler);
@@ -686,6 +763,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.postAfterSwitchView()");
         }
+    }
+
+    private void uploadBulkImportTopic(final int index, @NotNull final FileList files) {
+
     }
 
     @Override
@@ -1757,22 +1838,20 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     public interface Display extends BaseTopicFilteredResultsAndDetailsPresenter.Display<RESTTopicV1, RESTTopicCollectionV1, RESTTopicCollectionItemV1> {
         @NotNull PushButton getSave();
-
         @NotNull PushButton getHistory();
-
         @NotNull Label getHistoryDown();
-
         @NotNull BulkImport getBulkImport();
 
-        /**
-         * Defines the dialog box used to bulk upload topics.
-         */
-        interface BulkImport {
-            @NotNull DialogBox getDialog();
-            @NotNull FileUploadExt getFiles();
-            @NotNull PushButton getOK();
-            @NotNull PushButton getCancel();
-            @NotNull TopicTagsPresenter.Display getTagsView();
-        }
+    }
+
+    /**
+     * Defines the dialog box used to bulk upload topics.
+     */
+    public interface BulkImport {
+        @NotNull DialogBox getDialog();
+        @NotNull FileUploadExt getFiles();
+        @NotNull PushButton getOK();
+        @NotNull PushButton getCancel();
+        @NotNull TopicTagsPresenter.Display getTagsView();
     }
 }

@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.web.bindery.requestfactory.gwt.ui.client.ProxyRenderer;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
@@ -22,10 +23,19 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUITag;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.enterprise.context.Dependent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+@Dependent
 public class TopicTagsView extends BaseTemplateView implements TopicTagsPresenter.Display {
+
+    /**
+     * A Logger
+     */
+    private static final Logger LOGGER = Logger.getLogger(TopicTagsView.class.getName());
 
     final FlexTable layout = new FlexTable();
 
@@ -37,11 +47,8 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
     private final PushButton add = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Add());
 
     private final HorizontalPanel newTagUIElementsPanel = new HorizontalPanel();
-    @NotNull
     private final ValueListBox<SearchUIProject> projects;
-    @NotNull
     private final ValueListBox<SearchUICategory> categories;
-    @NotNull
     private final ValueListBox<SearchUITag> myTags;
 
     public interface TopicTagsPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, TopicTagViewProjectsEditor> {
@@ -85,62 +92,69 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
     public TopicTagsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - " + PressGangCCMSUI.INSTANCE.TopicTags());
 
-        /* Add the layout to the panel */
-        layout.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_TABLE);
+        try {
+            LOGGER.log(Level.INFO, "ENTER TopicTagsView()");
 
-        projects = new ValueListBox<SearchUIProject>(new ProxyRenderer<SearchUIProject>(null) {
-            @Nullable
-            @Override
-            public String render(@Nullable final SearchUIProject object) {
-                return object == null ? null : object.getName();
+            /* Add the layout to the panel */
+            layout.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_TABLE);
+
+            projects = new ValueListBox<SearchUIProject>(
+                new ProxyRenderer<SearchUIProject>(null) {
+                    @Nullable
+                    @Override
+                    public String render(@Nullable final SearchUIProject object) {
+                        return object == null ? null : object.getName();
+                    }
+                }, new ProvidesKey<SearchUIProject>() {
+                    @Override
+                    public Object getKey(@NotNull final SearchUIProject item) {
+                        return item.getId();
+                    }
+                }
+            );
+            projects.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_PROJECTS_LIST);
+
+            categories = new ValueListBox<SearchUICategory>(new ProxyRenderer<SearchUICategory>(null) {
+                @Nullable
+                @Override
+                public String render(@Nullable final SearchUICategory object) {
+                    return object == null ? null : object.getName();
+                }
+            }, new ProvidesKey<SearchUICategory>() {
+                @Override
+                public Object getKey(@NotNull final SearchUICategory item) {
+                    return item.getId();
+                }
             }
-        }, new ProvidesKey<SearchUIProject>() {
-            @Override
-            public Object getKey(@NotNull final SearchUIProject item) {
-                return item.getId();
+            );
+            categories.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_CATEGORIES_LIST);
+
+            myTags = new ValueListBox<SearchUITag>(new ProxyRenderer<SearchUITag>(null) {
+                @Nullable
+                @Override
+                public String render(@Nullable final SearchUITag object) {
+                    return object == null ? null : object.getName();
+                }
+            }, new ProvidesKey<SearchUITag>() {
+                @Override
+                public Object getKey(@NotNull final SearchUITag item) {
+                    return item.getId();
+                }
             }
+            );
+            myTags.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_TAGS_LIST);
+
+            newTagUIElementsPanel.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_PARENT_PANEL);
+            newTagUIElementsPanel.add(projects);
+            newTagUIElementsPanel.add(categories);
+            newTagUIElementsPanel.add(myTags);
+            newTagUIElementsPanel.add(add);
+
+            this.getPanel().addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_CONTENT_PANEL);
+            this.getPanel().setWidget(layout);
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT TopicTagsView()");
         }
-        );
-        projects.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_PROJECTS_LIST);
-
-        categories = new ValueListBox<SearchUICategory>(new ProxyRenderer<SearchUICategory>(null) {
-            @Nullable
-            @Override
-            public String render(@Nullable final SearchUICategory object) {
-                return object == null ? null : object.getName();
-            }
-        }, new ProvidesKey<SearchUICategory>() {
-            @Override
-            public Object getKey(@NotNull final SearchUICategory item) {
-                return item.getId();
-            }
-        }
-        );
-        categories.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_CATEGORIES_LIST);
-
-        myTags = new ValueListBox<SearchUITag>(new ProxyRenderer<SearchUITag>(null) {
-            @Nullable
-            @Override
-            public String render(@Nullable final SearchUITag object) {
-                return object == null ? null : object.getName();
-            }
-        }, new ProvidesKey<SearchUITag>() {
-            @Override
-            public Object getKey(@NotNull final SearchUITag item) {
-                return item.getId();
-            }
-        }
-        );
-        myTags.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_TAGS_LIST);
-
-        newTagUIElementsPanel.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_NEW_TAG_PARENT_PANEL);
-        newTagUIElementsPanel.add(projects);
-        newTagUIElementsPanel.add(categories);
-        newTagUIElementsPanel.add(myTags);
-        newTagUIElementsPanel.add(add);
-
-        this.getPanel().addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_CONTENT_PANEL);
-        this.getPanel().setWidget(layout);
     }
 
     @Override
@@ -199,7 +213,9 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
     }
 
     @Override
-    public void initializeNewTags(@NotNull final SearchUIProjects tags) {
+    public void initializeNewTags(@NotNull final RESTTagCollectionV1 retValue) {
+        final SearchUIProjects tags = new SearchUIProjects(retValue);
+
         if (!tags.getProjects().isEmpty()) {
             projects.setValue(tags.getProjects().get(0));
 

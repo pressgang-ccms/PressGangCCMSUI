@@ -32,7 +32,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 public class TopicTagsPresenter extends BaseTemplatePresenter {
 
     public interface Display extends BasePopulatedEditorViewInterface<RESTBaseTopicV1<?, ?, ?>, SearchUIProjects, TopicTagViewProjectsEditor> {
-        void initializeNewTags(final SearchUIProjects tags);
+        void initializeNewTags(@NotNull final RESTTagCollectionV1 retValue);
 
         void updateNewTagCategoriesDisplay();
 
@@ -64,16 +64,6 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
         return display;
     }
 
-    /**
-     * A copy of all the tags in the system, broken down into project->category->tag. Used when adding new tags to a topic.
-     */
-    private final SearchUIProjects searchUIProjects = new SearchUIProjects();
-
-    @NotNull
-    public SearchUIProjects getSearchUIProjects() {
-        return searchUIProjects;
-    }
-
     @Override
     public void parseToken(@NotNull final String searchToken) {
         try {
@@ -87,11 +77,12 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtended(ServiceConstants.TOPIC_TAGS_TOPIC, HISTORY_TOKEN);
+        getTags();
     }
 
     public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
         super.bind(helpTopicId, pageId, display);
-        getTags();
+
     }
 
     /**
@@ -111,8 +102,7 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
                         checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
                         checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
 
-                        searchUIProjects.initialize(retValue, null);
-                        display.initializeNewTags(searchUIProjects);
+                        display.initializeNewTags(retValue);
                     } finally {
                         LOGGER.log(Level.INFO, "EXIT TopicTagsPresenter.getTags() callback.doSuccessAction()");
                     }
