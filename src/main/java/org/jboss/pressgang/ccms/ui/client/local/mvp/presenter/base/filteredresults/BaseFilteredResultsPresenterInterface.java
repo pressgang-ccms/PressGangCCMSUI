@@ -5,7 +5,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.PresenterInte
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * This is the base class that is used for components adding logic to views that list the results of a query.

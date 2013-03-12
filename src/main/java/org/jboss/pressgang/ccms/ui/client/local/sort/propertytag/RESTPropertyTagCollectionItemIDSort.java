@@ -1,6 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.sort.propertytag;
 
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
 import org.jetbrains.annotations.Nullable;
 

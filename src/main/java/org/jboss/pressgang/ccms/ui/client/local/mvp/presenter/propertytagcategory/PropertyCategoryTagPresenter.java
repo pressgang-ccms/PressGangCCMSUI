@@ -18,9 +18,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.children.BaseChild
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
-import org.jboss.pressgang.ccms.ui.client.local.sort.propertycategory.RESTPropertyCategoryCollectionItemIDSort;
-import org.jboss.pressgang.ccms.ui.client.local.sort.propertycategory.RESTPropertyCategoryCollectionItemNameSort;
-import org.jboss.pressgang.ccms.ui.client.local.sort.propertycategory.RESTPropertyCategoryCollectionItemParentSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.propertytag.RESTPropertyTagCollectionItemIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.propertytag.RESTPropertyTagCollectionItemNameSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.propertytag.RESTPropertyTagCollectionItemParentSort;
@@ -31,7 +28,6 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-
 import java.util.Collections;
 
 import static com.google.common.base.Preconditions.checkArgument;

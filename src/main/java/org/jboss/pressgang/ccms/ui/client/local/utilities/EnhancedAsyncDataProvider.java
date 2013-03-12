@@ -2,7 +2,6 @@ package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
 import com.google.gwt.view.client.AsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 

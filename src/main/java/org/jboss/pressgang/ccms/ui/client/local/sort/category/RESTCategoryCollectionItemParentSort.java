@@ -1,10 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.sort.category;
 
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
-import org.jboss.pressgang.ccms.rest.v1.components.ComponentCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

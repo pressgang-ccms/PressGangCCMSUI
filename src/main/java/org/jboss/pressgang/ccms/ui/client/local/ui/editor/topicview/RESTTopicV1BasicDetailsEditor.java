@@ -1,7 +1,5 @@
 package org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview;
 
-import com.google.gwt.editor.client.Editor;
-import com.google.gwt.editor.client.HasEditorDelegate;
 import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.user.client.DOM;

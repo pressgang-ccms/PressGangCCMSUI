@@ -42,7 +42,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresult
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.logging.Level;

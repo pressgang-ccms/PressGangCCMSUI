@@ -3,7 +3,6 @@ package org.jboss.pressgang.ccms.ui.client.local.ui.editor.propertytag;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTPropertyTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.NotNull;
