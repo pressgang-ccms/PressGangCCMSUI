@@ -77,9 +77,6 @@ public class BulkImportImpl extends DialogBox implements TopicFilteredResultsAnd
         try {
             LOGGER.log(Level.INFO, "ENTER BulkImportImpl.postConstruct()");
 
-            this.setWidth(Constants.HELP_DIALOG_WIDTH);
-            this.setHeight(Constants.HELP_DIALOG_HEIGHT);
-
             this.setGlassEnabled(true);
             this.setModal(false);
             this.setText(PressGangCCMSUI.INSTANCE.BulkImageUpload());
@@ -94,6 +91,9 @@ public class BulkImportImpl extends DialogBox implements TopicFilteredResultsAnd
             this.layout.setWidget(1, 0, new Label(PressGangCCMSUI.INSTANCE.CommonDescription()));
             this.layout.setWidget(1, 1, tagsView.getPanel());
             this.layout.setWidget(2, 0, buttonPanel);
+
+            this.layout.setWidth(Constants.HELP_DIALOG_WIDTH);
+            this.layout.setHeight(Constants.HELP_DIALOG_HEIGHT);
 
             this.layout.getFlexCellFormatter().setColSpan(2, 0, 2);
 
