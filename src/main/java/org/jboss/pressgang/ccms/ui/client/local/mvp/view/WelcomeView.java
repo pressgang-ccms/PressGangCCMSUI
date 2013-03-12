@@ -27,7 +27,7 @@ public class WelcomeView extends BaseTemplateView implements WelcomePresenter.Di
             @NotNull final XsltProcessor processor = new XsltProcessor();
             processor.importStyleSheet(DocbookToHTML.XSL);
             processor.setParameter("externalImages", true + "");
-            processor.setParameter("externalImagesUrlPrefix", Constants.REST_SERVER + "/seam/resource/rest/1/image/get/raw/");
+            processor.setParameter("externalImagesUrlPrefix", Constants.REST_SERVER + "/1/image/get/raw/");
 
             processor.importSource(topic.getXml());
             final String resultString = processor.transform();
