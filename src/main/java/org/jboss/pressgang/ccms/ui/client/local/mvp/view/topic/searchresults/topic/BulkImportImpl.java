@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.searchresults.topic;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -31,7 +32,7 @@ public class BulkImportImpl extends DialogBox implements TopicFilteredResultsAnd
     private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
     private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
     @Inject private TopicTagsPresenter.Display tagsView;
-    private final FlexTable layout = new FlexTable();
+    private final DockLayoutPanel layout = new DockLayoutPanel(Style.Unit.EM);
 
     @NotNull
     @Override
@@ -86,16 +87,12 @@ public class BulkImportImpl extends DialogBox implements TopicFilteredResultsAnd
             buttonPanel.add(this.cancel);
             buttonPanel.add(this.ok);
 
-            this.layout.setWidget(0, 0, new Label(PressGangCCMSUI.INSTANCE.SelectFiles()));
-            this.layout.setWidget(0, 1, fileUploadExt);
-            this.layout.setWidget(1, 0, new Label(PressGangCCMSUI.INSTANCE.CommonDescription()));
-            this.layout.setWidget(1, 1, tagsView.getPanel());
-            this.layout.setWidget(2, 0, buttonPanel);
+            this.layout.addNorth(fileUploadExt, 3);
+            this.layout.addSouth(buttonPanel, 3);
+            this.layout.add(tagsView.getPanel());
 
             this.layout.setWidth(Constants.HELP_DIALOG_WIDTH);
             this.layout.setHeight(Constants.HELP_DIALOG_HEIGHT);
-
-            this.layout.getFlexCellFormatter().setColSpan(2, 0, 2);
 
             this.add(this.layout);
         } finally {
