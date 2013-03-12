@@ -270,6 +270,12 @@
             <artifactId>guava-gwt</artifactId>
             <version>13.0</version>
         </dependency>
+        <!--<dependency>
+            <groupId>org.jboss.as.plugins</groupId>
+            <artifactId>jboss-as-maven-plugin</artifactId>
+            <version>7.4.Final</version>
+        </dependency>-->
+
     </dependencies>
 
     <profiles>
@@ -618,6 +624,11 @@
 
             <build>
                 <plugins>
+                    <!--<plugin>
+                        <groupId>org.jboss.as.plugins</groupId>
+                        <artifactId>jboss-as-maven-plugin</artifactId>
+                        <version>7.4.Final</version>
+                    </plugin>-->
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>gwt-maven-plugin</artifactId>
