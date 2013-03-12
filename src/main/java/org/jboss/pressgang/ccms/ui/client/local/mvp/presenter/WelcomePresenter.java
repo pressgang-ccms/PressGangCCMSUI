@@ -16,7 +16,7 @@ import javax.inject.Inject;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
-public class cd ~WelcomePresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
+public class WelcomePresenter extends BaseTemplatePresenter implements BaseTemplatePresenterInterface {
 
     public static final String HISTORY_TOKEN = "WelcomeView";
 
