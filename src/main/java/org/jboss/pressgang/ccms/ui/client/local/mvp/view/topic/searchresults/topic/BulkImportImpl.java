@@ -81,7 +81,7 @@ public class BulkImportImpl extends DialogBox implements TopicFilteredResultsAnd
             this.setHeight(Constants.HELP_DIALOG_HEIGHT);
 
             this.setGlassEnabled(true);
-            this.setModal(true);
+            this.setModal(false);
             this.setText(PressGangCCMSUI.INSTANCE.BulkImageUpload());
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
