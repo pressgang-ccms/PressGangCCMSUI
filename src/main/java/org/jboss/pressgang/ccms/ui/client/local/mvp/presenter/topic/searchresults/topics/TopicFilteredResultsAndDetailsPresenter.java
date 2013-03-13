@@ -932,7 +932,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     @Override
                                     public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
                                         ids.add(retValue.getId());
-                                        createNewTopic(index + 1, files, ids, failedFiled);
 
                                         /*
                                             If we are working with a collection of new topics, add anything uploaded to
@@ -946,6 +945,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                             getSearchResultsComponent().getProviderData().getItems().add(topicCollectionItem);
                                             getSearchResultsComponent().getProviderData().setSize(getSearchResultsComponent().getProviderData().getItems().size());
                                         }
+
+                                        createNewTopic(index + 1, files, ids, failedFiled);
                                     }
                                 }, new BaseRestCallback.FailureAction<Display>() {
                             @Override
