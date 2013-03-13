@@ -841,6 +841,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             display.getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
             display.getMessageLogDialog().getCancel().addClickHandler(messageLogDialogCancel);
 
+            display.getBulkImport().getOK().addClickHandler(bulkImportOK);
             display.getBulkImport().getCancel().addClickHandler(bulkImportCancel);
 
             searchResultsComponent.getDisplay().getBulkImport().addClickHandler(bulkImport);
@@ -873,11 +874,17 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 message.append(PressGangCCMSUI.INSTANCE.TopicsNotUplodedSuccessfully() + ": " + failedNames.toString());
             }
 
+            /*
+                Update the list of topics
+             */
+            updateDisplayAfterSave(true);
+
             if (startWithNewTopic) {
                 /*
                     If this view was started by the Create Topic link in the menu (as opposed to a search),
                     then the new topics will just show up.
                  */
+
                 Window.alert(message.toString());
             } else if (Window.confirm(message.toString() + "\n" + PressGangCCMSUI.INSTANCE.OpenImportedTopics())) {
                 /*
@@ -895,11 +902,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
 
                 eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + idsQuery.toString(), false));
-            } else {
-                /*
-                    If the user does not want a new search, refresh the current search.
-                 */
-                updateDisplayAfterSave(true);
             }
 
         } else {
@@ -921,13 +923,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 public void onLoadEnd(@NotNull final LoadEndEvent event) {
                     try {
                         final String result = reader.getStringResult();
-                        final byte[] buffer = GWTUtilities.getByteArray(result, 1);
 
                          /* Populate the new topics details */
                         final RESTTopicV1 newTopic = new RESTTopicV1();
                         newTopic.explicitSetTags(bulkImportTemplate.getTags());
                         newTopic.explicitSetLocale(defaultLocale);
                         newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
+                        newTopic.explicitSetXml(result);
 
                         final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, Display>(
                                 display,
