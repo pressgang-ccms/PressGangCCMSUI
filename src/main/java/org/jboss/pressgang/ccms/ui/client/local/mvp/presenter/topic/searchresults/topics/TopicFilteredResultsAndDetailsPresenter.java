@@ -650,7 +650,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                         getSearchResultsComponent().getProviderData().setSize(getSearchResultsComponent().getProviderData().getItems().size());
                                                         updateDisplayAfterSave(false);
                                                     } else {
-                                                            /* Update the selected topic */
+                                                        /* Update the selected topic */
                                                         LOGGER.log(Level.INFO, "Redisplaying query");
                                                         updateDisplayAfterSave(true);
                                                     }
@@ -662,8 +662,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                                                     Window.alert(PressGangCCMSUI.INSTANCE.TopicSaveSuccessWithID() + " " + retValue.getId());
                                                 } finally {
-                                                    LOGGER.log(Level.INFO,
-                                                            "EXIT TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
+                                                    LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
                                                 }
                                             }
                                         }, new BaseRestCallback.FailureAction<Display>() {
@@ -872,17 +871,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 message.append(PressGangCCMSUI.INSTANCE.TopicsNotUplodedSuccessfully() + ": " + failedNames.toString());
             }
 
-            /*
-                Update the list of topics
-             */
-            updateDisplayAfterSave(true);
 
             if (startWithNewTopic) {
                 /*
                     If this view was started by the Create Topic link in the menu (as opposed to a search),
                     then the new topics will just show up.
                  */
-
+                updateDisplayAfterSave(false);
                 Window.alert(message.toString());
             } else if (Window.confirm(message.toString() + "\n" + PressGangCCMSUI.INSTANCE.OpenImportedTopics())) {
                 /*
@@ -900,6 +895,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
 
                 eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + idsQuery.toString(), false));
+            } else {
+                updateDisplayAfterSave(true);
             }
 
         } else {
