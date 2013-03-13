@@ -219,6 +219,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 getSearchResultsComponent().getDisplay(), getSearchResultsComponent(), getDisplay(), getDisplay(), getNewEntityCallback);
 
         this.topicRevisionsComponent.getDisplay().setProvider(generateTopicRevisionsListProvider());
+
+        /* Bind the add button in the tags view */
         this.getTopicTagsPresenter().bindNewTagListBoxes(new AddTagClickHandler(
                 new ReturnCurrentTopic() {
                     @NotNull
@@ -234,8 +236,34 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     public boolean getReadOnlyMode() {
                         return isReadOnlyMode();
                     }
+                }, new BindRemoveButtons() {
+                    @Override
+                    public void bindRemoveButtons() {
+                        bindTagEditingButtons();
+                    }
                 },
                 getTopicTagsPresenter().getDisplay()));
+
+        /* Bind the add button in the bulk topic import dialog */
+        this.getTopicTagsPresenter().bindNewTagListBoxes(new AddTagClickHandler(
+                new ReturnCurrentTopic() {
+                    @NotNull
+                    @Override
+                    public RESTTopicV1 getTopic() {
+                        return bulkImportTemplate;
+                    }
+                }, new ReturnReadOnlyMode() {
+                    @Override
+                    public boolean getReadOnlyMode() {
+                        return false;
+                    }
+                }, new BindRemoveButtons() {
+                    @Override
+                    public void bindRemoveButtons() {
+                        bindBulkImportTagEditingButtons();
+                    }
+                },
+                display.getBulkImport().getTagsView()));
 
         bindViewTopicRevisionButton();
 
@@ -736,6 +764,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     display.getBulkImport().getTagsView().display(bulkImportTemplate, false);
+                    bindBulkImportTagEditingButtons();
                     display.getBulkImport().getDialog().center();
                 }
             };
@@ -1003,13 +1032,76 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 public boolean getReadOnlyMode() {
                                     return isReadOnlyMode();
                                 }
-                            },
+                            }, new BindRemoveButtons() {
+                                @Override
+                                public void bindRemoveButtons() {
+                                    bindTagEditingButtons();
+                                }
+                            } ,
                             getTopicTagsPresenter().getDisplay()));
                     }
                 }
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindTagEditingButtons()");
+        }
+    }
+
+    /**
+     * Add behaviour to the tag delete buttons
+     */
+    private void bindBulkImportTagEditingButtons() {
+
+        try {
+            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindBulkImportTagEditingButtons()");
+
+            /* This will be null if the tags have not been downloaded */
+            if (display.getBulkImport().getTagsView().getEditor() == null) {
+                return;
+            }
+
+            if (display.getBulkImport().getTagsView().getEditor().projects == null) {
+                return;
+            }
+
+            for (@NotNull final TopicTagViewProjectEditor topicTagViewProjectEditor : display.getBulkImport().getTagsView().getEditor().projects.getEditors()) {
+
+                checkState(topicTagViewProjectEditor.categories != null && topicTagViewProjectEditor.categories.getEditors() != null, "The project's categories editor collection should be valid");
+
+                for (@NotNull final TopicTagViewCategoryEditor topicTagViewCategoryEditor : topicTagViewProjectEditor.categories.getEditors()) {
+
+                    checkState(topicTagViewCategoryEditor.myTags != null && topicTagViewCategoryEditor.myTags.getEditors() != null, "The category's tag editor collection should be valid");
+
+                    for (@NotNull final TopicTagViewTagEditor topicTagViewTagEditor : topicTagViewCategoryEditor.myTags.getEditors()) {
+                        checkState(topicTagViewTagEditor.getTag() != null, "The tag editor should point to a valid tag ui data POJO.");
+                        checkState(topicTagViewTagEditor.getTag().getTag() != null, "The tag editor should point to a valid tag ui data POJO, which should reference a valid tag entity.");
+
+                        topicTagViewTagEditor.getDelete().addClickHandler(new DeleteTagClickHandler(
+                                topicTagViewTagEditor.getTag().getTag(),
+                                new ReturnCurrentTopic() {
+                                    @NotNull
+                                    @Override
+                                    public RESTTopicV1 getTopic() {
+                                        return bulkImportTemplate;
+                                    }
+                                },
+                                new ReturnReadOnlyMode() {
+                                    @Override
+                                    public boolean getReadOnlyMode() {
+                                        return false;
+                                    }
+                                },new BindRemoveButtons() {
+                                    @Override
+                                    public void bindRemoveButtons() {
+                                        bindBulkImportTagEditingButtons();
+                                    }
+                                } ,
+                                getTopicTagsPresenter().getDisplay()));
+                    }
+                }
+            }
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindBulkImportTagEditingButtons()");
         }
     }
 
@@ -1720,6 +1812,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         boolean getReadOnlyMode();
     }
 
+    private interface BindRemoveButtons {
+        void bindRemoveButtons();
+    }
+
     /**
      * A click handler to add a tag to a topic
      *
@@ -1730,15 +1826,21 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         private final ReturnCurrentTopic returnCurrentTopic;
         private final TopicTagsPresenter.Display tagDisplay;
         private final ReturnReadOnlyMode returnReadOnlyMode;
+        private final BindRemoveButtons bindRemoveButtons;
 
         /**
          * @param returnCurrentTopic A callback used to get the topic that the click handler is modifying
          * @param tagDisplay The display that the callback is modifying
          */
-        public AddTagClickHandler(@NotNull final ReturnCurrentTopic returnCurrentTopic, final ReturnReadOnlyMode returnReadOnlyMode, final TopicTagsPresenter.Display tagDisplay) {
+        public AddTagClickHandler(
+                @NotNull final ReturnCurrentTopic returnCurrentTopic,
+                @NotNull final ReturnReadOnlyMode returnReadOnlyMode,
+                @NotNull final BindRemoveButtons bindRemoveButtons,
+                @NotNull final TopicTagsPresenter.Display tagDisplay) {
             this.returnCurrentTopic = returnCurrentTopic;
             this.tagDisplay = tagDisplay;
             this.returnReadOnlyMode = returnReadOnlyMode;
+            this.bindRemoveButtons = bindRemoveButtons;
         }
 
         @Override
@@ -1849,6 +1951,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             /* Redisplay the view */
             tagDisplay.display(returnCurrentTopic.getTopic(), returnReadOnlyMode.getReadOnlyMode());
+            bindRemoveButtons.bindRemoveButtons();
         }
     }
 
@@ -1862,17 +1965,24 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         private final ReturnCurrentTopic returnCurrentTopic;
         private final TopicTagsPresenter.Display tagDisplay;
         private final ReturnReadOnlyMode returnReadOnlyMode;
+        private final BindRemoveButtons bindRemoveButtons;
 
 
         /**
          * @param returnCurrentTopic A callback used to get the topic that the click handler is modifying
          * @param tagDisplay The display that the callback is modifying
          */
-        public DeleteTagClickHandler(@NotNull final RESTTagCollectionItemV1 tag, @NotNull final ReturnCurrentTopic returnCurrentTopic, final ReturnReadOnlyMode returnReadOnlyMode, final TopicTagsPresenter.Display tagDisplay) {
+        public DeleteTagClickHandler(
+                @NotNull final RESTTagCollectionItemV1 tag,
+                @NotNull final ReturnCurrentTopic returnCurrentTopic,
+                @NotNull final ReturnReadOnlyMode returnReadOnlyMode,
+                @NotNull final BindRemoveButtons bindRemoveButtons,
+                @NotNull final TopicTagsPresenter.Display tagDisplay) {
             this.returnCurrentTopic = returnCurrentTopic;
             this.tagDisplay = tagDisplay;
             this.tag = tag;
             this.returnReadOnlyMode = returnReadOnlyMode;
+            this.bindRemoveButtons = bindRemoveButtons;
         }
 
         @Override
@@ -1887,6 +1997,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             tagDisplay.display(returnCurrentTopic.getTopic(), returnReadOnlyMode.getReadOnlyMode());
+            bindRemoveButtons.bindRemoveButtons();
         }
     }
 
