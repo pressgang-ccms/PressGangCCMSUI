@@ -7,6 +7,9 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
@@ -19,6 +22,7 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
 import org.jboss.errai.bus.client.api.Message;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
@@ -27,13 +31,13 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTagV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ImagesFilteredResultsAndImageViewEvent;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
@@ -58,12 +62,17 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1B
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewCategoryEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
+import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
+import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.vectomatic.file.FileList;
+import org.vectomatic.file.FileReader;
 import org.vectomatic.file.FileUploadExt;
+import org.vectomatic.file.events.*;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -95,6 +104,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     private TopicRevisionsPresenter topicRevisionsComponent;
     @Inject
     private Display display;
+
+    /**
+     * The global event bus.
+     */
+    @Inject
+    private HandlerManager eventBus;
 
 
     /**
@@ -221,7 +236,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         this.topicRevisionsComponent.getDisplay().setProvider(generateTopicRevisionsListProvider());
 
         /* Bind the add button in the tags view */
-        this.getTopicTagsPresenter().bindNewTagListBoxes(new AddTagClickHandler(
+        bindNewTagListBoxes(new AddTagClickHandler(
                 new ReturnCurrentTopic() {
                     @NotNull
                     @Override
@@ -242,10 +257,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         bindTagEditingButtons();
                     }
                 },
-                getTopicTagsPresenter().getDisplay()));
+                getTopicTagsPresenter().getDisplay()
+            ), getTopicTagsPresenter().getDisplay()
+        );
+
+        /* The template is used to hold tags, so we need to populate the tags collection */
+        bulkImportTemplate.setTags(new RESTTagCollectionV1());
 
         /* Bind the add button in the bulk topic import dialog */
-        this.getTopicTagsPresenter().bindNewTagListBoxes(new AddTagClickHandler(
+        bindNewTagListBoxes(new AddTagClickHandler(
                 new ReturnCurrentTopic() {
                     @NotNull
                     @Override
@@ -263,7 +283,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         bindBulkImportTagEditingButtons();
                     }
                 },
-                display.getBulkImport().getTagsView()));
+                display.getBulkImport().getTagsView()
+            ), display.getBulkImport().getTagsView());
 
         bindViewTopicRevisionButton();
 
@@ -319,6 +340,30 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         });
 
         getTags();
+    }
+
+    /**
+     * Adds event handlers to the new tag combo boxes and add button. Similar to TopicTagsPresenter.bindNewTagListBoxes(),
+     * but this version takes the tags display, so we can apply it to the bulk import dialog too.
+     * @param clickHandler The Add button click handler
+     * @param tagsDisplay The tags view
+     */
+    private void bindNewTagListBoxes(@NotNull final ClickHandler clickHandler, @NotNull final TopicTagsPresenter.Display tagsDisplay) {
+        tagsDisplay.getProjectsList().addValueChangeHandler(new ValueChangeHandler<SearchUIProject>() {
+            @Override
+            public void onValueChange(@NotNull final ValueChangeEvent<SearchUIProject> event) {
+                tagsDisplay.updateNewTagCategoriesDisplay();
+            }
+        });
+
+        tagsDisplay.getCategoriesList().addValueChangeHandler(new ValueChangeHandler<SearchUICategory>() {
+            @Override
+            public void onValueChange(@NotNull final ValueChangeEvent<SearchUICategory> event) {
+                tagsDisplay.updateNewTagTagDisplay();
+            }
+        });
+
+        tagsDisplay.getAdd().addClickHandler(clickHandler);
     }
 
     /**
@@ -777,7 +822,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         display.getBulkImport().getTagsView().getDriver().flush();
 
                         if (display.getBulkImport().getFiles().getFiles().getLength() != 0) {
-                            uploadBulkImportTopic(0, display.getBulkImport().getFiles().getFiles());
+                            createNewTopic(0, display.getBulkImport().getFiles().getFiles(), new ArrayList<Integer>(), new ArrayList<String>());
                         }
 
                     } finally {
@@ -809,8 +854,117 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         }
     }
 
-    private void uploadBulkImportTopic(final int index, @NotNull final FileList files) {
+    private void createNewTopic(final int index, @NotNull final FileList files, @NotNull final List<Integer> ids, @NotNull final List<String> failedFiled) {
+        if (index >= files.getLength()) {
 
+            final StringBuilder message = new StringBuilder();
+
+            if (failedFiled.size() == 0) {
+                message.append(PressGangCCMSUI.INSTANCE.TopicsUplodedSuccessfully());
+            } else {
+                final StringBuilder failedNames = new StringBuilder();
+                for (final String name : failedFiled) {
+                    if (!failedNames.toString().isEmpty()) {
+                        failedNames.append(",");
+                    }
+                    failedNames.append(name);
+                }
+
+                message.append(PressGangCCMSUI.INSTANCE.TopicsNotUplodedSuccessfully() + ": " + failedNames.toString());
+            }
+
+            if (startWithNewTopic) {
+                /*
+                    If this view was started by the Create Topic link in the menu (as opposed to a search),
+                    then the new topics will just show up.
+                 */
+                Window.alert(message.toString());
+            } else if (Window.confirm(message.toString() + "\n" + PressGangCCMSUI.INSTANCE.OpenImportedTopics())) {
+                /*
+                    If we imported topics on top of a search, they won't show up unless the new topics
+                    have tags that would place them in the search. This gives the user the option to open
+                    a new search with just the imported topics.
+                 */
+
+                final StringBuilder idsQuery = new StringBuilder();
+                for (final Integer id : ids) {
+                    if (!idsQuery.toString().isEmpty()) {
+                        idsQuery.append(",");
+                    }
+                    idsQuery.append(id);
+                }
+
+                eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + idsQuery.toString(), false));
+            } else {
+                /*
+                    If the user does not want a new search, refresh the current search.
+                 */
+                updateDisplayAfterSave(true);
+            }
+
+        } else {
+            display.addWaitOperation();
+
+            @NotNull final FileReader reader = new FileReader();
+
+            reader.addErrorHandler(new org.vectomatic.file.events.ErrorHandler() {
+                @Override
+                public void onError(@NotNull final org.vectomatic.file.events.ErrorEvent event) {
+                    display.removeWaitOperation();
+                    failedFiled.add(files.getItem(index).getName());
+                    createNewTopic(index + 1, files, ids, failedFiled);
+                }
+            });
+
+            reader.addLoadEndHandler(new LoadEndHandler() {
+                @Override
+                public void onLoadEnd(@NotNull final LoadEndEvent event) {
+                    try {
+                        final String result = reader.getStringResult();
+                        final byte[] buffer = GWTUtilities.getByteArray(result, 1);
+
+                         /* Populate the new topics details */
+                        final RESTTopicV1 newTopic = new RESTTopicV1();
+                        newTopic.explicitSetTags(bulkImportTemplate.getTags());
+                        newTopic.explicitSetLocale(defaultLocale);
+                        newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
+
+                        final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, Display>(
+                                display,
+                                new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
+                                    @Override
+                                    public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
+                                        ids.add(retValue.getId());
+                                        createNewTopic(index + 1, files, ids, failedFiled);
+
+                                        /*
+                                            If we are working with a collection of new topics, add anything uploaded to
+                                            that list.
+                                         */
+                                        if (startWithNewTopic) {
+                                            final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
+                                            topicCollectionItem.setItem(retValue);
+                                            topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+
+                                            getSearchResultsComponent().getProviderData().getItems().add(topicCollectionItem);
+                                        }
+                                    }
+                                }, new BaseRestCallback.FailureAction<Display>() {
+                            @Override
+                            public void doFailureAction(@NotNull final Display display) {
+                                createNewTopic(index + 1, files, ids, failedFiled);
+                            }
+                        });
+
+                        RESTCalls.createTopic(callback, newTopic);
+                    } finally {
+                        display.removeWaitOperation();
+                    }
+                }
+            });
+
+            reader.readAsBinaryString(files.getItem(index));
+        }
     }
 
     @Override
@@ -1014,17 +1168,21 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     checkState(topicTagViewCategoryEditor.myTags != null && topicTagViewCategoryEditor.myTags.getEditors() != null, "The category's tag editor collection should be valid");
 
                     for (@NotNull final TopicTagViewTagEditor topicTagViewTagEditor : topicTagViewCategoryEditor.myTags.getEditors()) {
+
                         checkState(topicTagViewTagEditor.getTag() != null, "The tag editor should point to a valid tag ui data POJO.");
                         checkState(topicTagViewTagEditor.getTag().getTag() != null, "The tag editor should point to a valid tag ui data POJO, which should reference a valid tag entity.");
+
                         topicTagViewTagEditor.getDelete().addClickHandler(new DeleteTagClickHandler(
                             topicTagViewTagEditor.getTag().getTag(),
                             new ReturnCurrentTopic() {
                                 @NotNull
                                 @Override
                                 public RESTTopicV1 getTopic() {
+
                                     checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
                                     checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
                                     checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTags() != null, "The displayed collection item to reference a valid entity and have a valid tags collection.");
+
                                     return getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
                                 }
                             }, new ReturnReadOnlyMode() {
@@ -1037,7 +1195,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 public void bindRemoveButtons() {
                                     bindTagEditingButtons();
                                 }
-                            } ,
+                            },
                             getTopicTagsPresenter().getDisplay()));
                     }
                 }

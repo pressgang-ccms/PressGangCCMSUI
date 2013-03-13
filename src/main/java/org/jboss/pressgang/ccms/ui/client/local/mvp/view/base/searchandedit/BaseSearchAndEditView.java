@@ -170,11 +170,12 @@ abstract public class BaseSearchAndEditView<
     }
 
     protected final void initialize(final boolean displaySearchResults, final int searchResultsWidth, @Nullable final DisplaySplitViewCallback callback) {
-        checkArgument(searchResultsWidth > 0, "searchResultsWidth can not be less than 0.");
+
+        final int fixedSearchResultsWidth =  searchResultsWidth < 0 ? 0 : searchResultsWidth;
 
         splitPanel.clear();
         if (displaySearchResults) {
-            splitPanel.addWest(resultsViewLayoutPanel, searchResultsWidth);
+            splitPanel.addWest(resultsViewLayoutPanel, fixedSearchResultsWidth);
         }
         if (callback != null) {
             callback.addToCompassPoints();
