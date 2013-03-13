@@ -197,6 +197,14 @@ public final class Constants {
      */
     public static final String HELP_DIALOG_HEIGHT = "480px";
     /**
+     * The width of the bulk topic dialog box.
+     */
+    public static final String BULK_IMPORT_DIALOG_WIDTH = "800px";
+    /**
+     * The height of the bulk topic dialog box.
+     */
+    public static final String BULK_IMPORT_DIALOG_HEIGHT = "480px";
+    /**
      * A line break escaped.
      */
     public static final String LINE_BREAK_ESCAPED = "\\n";

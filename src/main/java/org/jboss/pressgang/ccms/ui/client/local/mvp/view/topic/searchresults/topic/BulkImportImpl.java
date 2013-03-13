@@ -91,8 +91,8 @@ public class BulkImportImpl extends DialogBox implements TopicFilteredResultsAnd
             this.layout.addSouth(buttonPanel, 3);
             this.layout.add(tagsView.getPanel());
 
-            this.layout.setWidth(Constants.HELP_DIALOG_WIDTH);
-            this.layout.setHeight(Constants.HELP_DIALOG_HEIGHT);
+            this.layout.setWidth(Constants.BULK_IMPORT_DIALOG_WIDTH);
+            this.layout.setHeight(Constants.BULK_IMPORT_DIALOG_WIDTH);
 
             this.add(this.layout);
         } finally {
