@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201303131238";
+    public static final String VERSION = "201303131251";
 
     /**
      * The sort order to apply to a newly added child.
@@ -32,7 +32,7 @@ public final class Constants {
      */
     public static final int REFRESH_RATE = 1000;
     /**
-     * How long to wait before refreshing the rendered view (in milliseconds).
+     * How long to wait before refreshing the rendered view with images (in milliseconds).
      */
     public static final int REFRESH_RATE_WTH_IMAGES = REFRESH_RATE * 5;
     /**
@@ -145,13 +145,13 @@ public final class Constants {
 //    public static final String MONITORING_URL = LOCAL_MONITORING_URL;
 //    public static final String BASE_URL = LOCAL_REST_SERVER;
 
-    public static final String BASE_URL = DEV_REST_SERVER;
-    public static final String BIRT_URL = DEV_BIRT_URL;
-    public static final String MONITORING_URL = DEV_MONITORING_URL;
+//    public static final String BASE_URL = DEV_REST_SERVER;
+//    public static final String BIRT_URL = DEV_BIRT_URL;
+//    public static final String MONITORING_URL = DEV_MONITORING_URL;
 
-//    public static final String MONITORING_URL = PROD_MONITORING_URL;
-//    public static final String BASE_URL = PROD_REST_SERVER;
-//    public static final String BIRT_URL = PROD_BIRT_URL;
+    public static final String MONITORING_URL = PROD_MONITORING_URL;
+    public static final String BASE_URL = PROD_REST_SERVER;
+    public static final String BIRT_URL = PROD_BIRT_URL;
 
     /**
      * The newer versions of the REST interface encode the query PathParam elements (so as to allow for searches to
