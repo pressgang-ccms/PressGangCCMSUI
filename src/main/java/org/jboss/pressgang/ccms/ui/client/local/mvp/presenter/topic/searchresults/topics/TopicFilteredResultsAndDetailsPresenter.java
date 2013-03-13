@@ -66,7 +66,6 @@ import org.vectomatic.file.FileList;
 import org.vectomatic.file.FileUploadExt;
 
 import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.New;
 import javax.inject.Inject;
 import java.util.*;
 import java.util.logging.Level;
@@ -220,7 +219,23 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 getSearchResultsComponent().getDisplay(), getSearchResultsComponent(), getDisplay(), getDisplay(), getNewEntityCallback);
 
         this.topicRevisionsComponent.getDisplay().setProvider(generateTopicRevisionsListProvider());
-        this.getTopicTagsPresenter().bindNewTagListBoxes(new AddTagClickhandler());
+        this.getTopicTagsPresenter().bindNewTagListBoxes(new AddTagClickHandler(
+                new ReturnCurrentTopic() {
+                    @NotNull
+                    @Override
+                    public RESTTopicV1 getTopic() {
+                        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTags() != null, "The displayed collection item to reference a valid entity and have a valid tags collection.");
+                        return getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
+                    }
+                }, new ReturnReadOnlyMode() {
+                    @Override
+                    public boolean getReadOnlyMode() {
+                        return isReadOnlyMode();
+                    }
+                },
+                getTopicTagsPresenter().getDisplay()));
 
         bindViewTopicRevisionButton();
 
@@ -972,7 +987,24 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     for (@NotNull final TopicTagViewTagEditor topicTagViewTagEditor : topicTagViewCategoryEditor.myTags.getEditors()) {
                         checkState(topicTagViewTagEditor.getTag() != null, "The tag editor should point to a valid tag ui data POJO.");
                         checkState(topicTagViewTagEditor.getTag().getTag() != null, "The tag editor should point to a valid tag ui data POJO, which should reference a valid tag entity.");
-                        topicTagViewTagEditor.getDelete().addClickHandler(new DeleteTagClickHandler(topicTagViewTagEditor.getTag().getTag()));
+                        topicTagViewTagEditor.getDelete().addClickHandler(new DeleteTagClickHandler(
+                            topicTagViewTagEditor.getTag().getTag(),
+                            new ReturnCurrentTopic() {
+                                @NotNull
+                                @Override
+                                public RESTTopicV1 getTopic() {
+                                    checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                                    checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                                    checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTags() != null, "The displayed collection item to reference a valid entity and have a valid tags collection.");
+                                    return getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
+                                }
+                            }, new ReturnReadOnlyMode() {
+                                @Override
+                                public boolean getReadOnlyMode() {
+                                    return isReadOnlyMode();
+                                }
+                            },
+                            getTopicTagsPresenter().getDisplay()));
                     }
                 }
             }
@@ -1680,24 +1712,43 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     }
 
+    private interface ReturnCurrentTopic {
+        @NotNull RESTTopicV1 getTopic();
+    }
+
+    private interface ReturnReadOnlyMode {
+        boolean getReadOnlyMode();
+    }
+
     /**
      * A click handler to add a tag to a topic
      *
      * @author Matthew Casperson
      */
-    private class AddTagClickhandler implements ClickHandler {
+    private static class AddTagClickHandler implements ClickHandler {
+
+        private final ReturnCurrentTopic returnCurrentTopic;
+        private final TopicTagsPresenter.Display tagDisplay;
+        private final ReturnReadOnlyMode returnReadOnlyMode;
+
+        /**
+         * @param returnCurrentTopic A callback used to get the topic that the click handler is modifying
+         * @param tagDisplay The display that the callback is modifying
+         */
+        public AddTagClickHandler(@NotNull final ReturnCurrentTopic returnCurrentTopic, final ReturnReadOnlyMode returnReadOnlyMode, final TopicTagsPresenter.Display tagDisplay) {
+            this.returnCurrentTopic = returnCurrentTopic;
+            this.tagDisplay = tagDisplay;
+            this.returnReadOnlyMode = returnReadOnlyMode;
+        }
 
         @Override
-        public void onClick(final ClickEvent event) {
-            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
-            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTags() != null, "The displayed collection item to reference a valid entity and have a valid tags collection.");
+        public void onClick(@NotNull final ClickEvent event) {
 
-            final RESTTagV1 selectedTag = getTopicTagsPresenter().getDisplay().getMyTags().getValue().getTag().getItem();
+            final RESTTagV1 selectedTag = tagDisplay.getMyTags().getValue().getTag().getItem();
 
             /* Need to deal with re-adding removed tags */
             @Nullable RESTTagCollectionItemV1 deletedTag = null;
-            for (@NotNull final RESTTagCollectionItemV1 tag : getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTags().getItems()) {
+            for (@NotNull final RESTTagCollectionItemV1 tag : returnCurrentTopic.getTopic().getTags().getItems()) {
                 if (tag.getItem().getId().equals(selectedTag.getId())) {
                     if (RESTBaseCollectionItemV1.REMOVE_STATE.equals(tag.getState())) {
                         deletedTag = tag;
@@ -1729,8 +1780,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             });
 
             /* Find existing tags that belong to any of the mutually exclusive categories */
-            final Collection<RESTTagCollectionItemV1> conflictingTags = Collections2.filter(getSearchResultsComponent()
-                    .getProviderData().getDisplayedItem().getItem().getTags().getItems(),
+            final Collection<RESTTagCollectionItemV1> conflictingTags = Collections2.filter(returnCurrentTopic.getTopic().getTags().getItems(),
                     new Predicate<RESTTagCollectionItemV1>() {
 
                         @Override
@@ -1792,13 +1842,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 /* Get the selected tag, and clone it */
                 final RESTTagV1 selectedTagClone = selectedTag.clone(true);
                 /* Add the tag to the topic */
-                getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTags().addNewItem(selectedTagClone);
+                returnCurrentTopic.getTopic().getTags().addNewItem(selectedTagClone);
             } else {
                 deletedTag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
             }
 
             /* Redisplay the view */
-            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicTagsPresenter().getDisplay()}));
+            tagDisplay.display(returnCurrentTopic.getTopic(), returnReadOnlyMode.getReadOnlyMode());
         }
     }
 
@@ -1807,32 +1857,36 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      *
      * @author Matthew Casperson
      */
-    private class DeleteTagClickHandler implements ClickHandler {
-        @org.jetbrains.annotations.Nullable
+    private static class DeleteTagClickHandler implements ClickHandler {
         private final RESTTagCollectionItemV1 tag;
+        private final ReturnCurrentTopic returnCurrentTopic;
+        private final TopicTagsPresenter.Display tagDisplay;
+        private final ReturnReadOnlyMode returnReadOnlyMode;
 
-        public DeleteTagClickHandler(@org.jetbrains.annotations.Nullable final RESTTagCollectionItemV1 tag) {
-            if (tag == null) {
-                throw new IllegalArgumentException("tag cannot be null");
-            }
 
+        /**
+         * @param returnCurrentTopic A callback used to get the topic that the click handler is modifying
+         * @param tagDisplay The display that the callback is modifying
+         */
+        public DeleteTagClickHandler(@NotNull final RESTTagCollectionItemV1 tag, @NotNull final ReturnCurrentTopic returnCurrentTopic, final ReturnReadOnlyMode returnReadOnlyMode, final TopicTagsPresenter.Display tagDisplay) {
+            this.returnCurrentTopic = returnCurrentTopic;
+            this.tagDisplay = tagDisplay;
             this.tag = tag;
+            this.returnReadOnlyMode = returnReadOnlyMode;
         }
 
         @Override
-        public void onClick(final ClickEvent event) {
-            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+        public void onClick(@NotNull final ClickEvent event) {
 
             if (RESTBaseCollectionItemV1.ADD_STATE.equals(tag.getState())) {
                 /* Tag was added and then removed, so we just delete the tag */
-                getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTags().getItems().remove(tag);
+                returnCurrentTopic.getTopic().getTags().getItems().remove(tag);
             } else {
                 /* Otherwise we set the tag as removed */
                 tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
             }
 
-            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicTagsPresenter().getDisplay()}));
+            tagDisplay.display(returnCurrentTopic.getTopic(), returnReadOnlyMode.getReadOnlyMode());
         }
     }
 
