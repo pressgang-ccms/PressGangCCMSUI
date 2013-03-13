@@ -1253,7 +1253,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                         bindBulkImportTagEditingButtons();
                                     }
                                 } ,
-                                getTopicTagsPresenter().getDisplay()));
+                                display.getBulkImport().getTagsView()));
                     }
                 }
             }
