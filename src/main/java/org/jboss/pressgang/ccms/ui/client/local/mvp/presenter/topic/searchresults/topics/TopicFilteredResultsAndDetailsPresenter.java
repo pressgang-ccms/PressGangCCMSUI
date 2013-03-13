@@ -617,8 +617,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                             @Override
                                             public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
                                                 try {
-                                                    LOGGER.log(Level.INFO,
-                                                            "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
+                                                    LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
 
                                                     // Create the topic wrapper
                                                     @NotNull final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
@@ -732,8 +731,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                     }
 
                                                     /* Update the displayed topic */
-                                                    retValue.cloneInto(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem(),
-                                                            true);
+                                                    retValue.cloneInto(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem(),true);
                                                     /* Update the selected topic */
                                                     retValue.cloneInto(getSearchResultsComponent().getProviderData().getSelectedItem().getItem(), true);
 
@@ -949,6 +947,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                             topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
                                             getSearchResultsComponent().getProviderData().getItems().add(topicCollectionItem);
+                                            getSearchResultsComponent().getProviderData().setSize(getSearchResultsComponent().getProviderData().getItems().size());
                                         }
                                     }
                                 }, new BaseRestCallback.FailureAction<Display>() {
