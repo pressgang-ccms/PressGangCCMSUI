@@ -384,6 +384,9 @@ public interface PressGangCCMSUI extends Constants {
     String ImageID();
 
     @NotNull
+    String BulkTopicUpload();
+
+    @NotNull
     String BulkImageUpload();
 
     @NotNull
