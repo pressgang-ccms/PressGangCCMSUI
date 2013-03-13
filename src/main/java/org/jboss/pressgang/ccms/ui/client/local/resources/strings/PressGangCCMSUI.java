@@ -18,6 +18,9 @@ public interface PressGangCCMSUI extends Constants {
     PressGangCCMSUI INSTANCE = GWT.create(PressGangCCMSUI.class);
 
     @NotNull
+    String PleaseSaveChangesBeforeUploading();
+
+    @NotNull
     String ImportedTopic();
 
     @NotNull
