@@ -73,6 +73,7 @@ import org.vectomatic.file.FileList;
 import org.vectomatic.file.FileReader;
 import org.vectomatic.file.FileUploadExt;
 import org.vectomatic.file.events.*;
+import org.zanata.rest.ElemSet;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -805,9 +806,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             final ClickHandler bulkImport = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    display.getBulkImport().getTagsView().display(bulkImportTemplate, false);
-                    bindBulkImportTagEditingButtons();
-                    display.getBulkImport().getDialog().center();
+                    if (!hasUnsavedChanges()) {
+                        display.getBulkImport().getTagsView().display(bulkImportTemplate, false);
+                        bindBulkImportTagEditingButtons();
+                        display.getBulkImport().getDialog().center();
+                    } else {
+                        Window.alert(PressGangCCMSUI.INSTANCE.PleaseSaveChangesBeforeUploading());
+                    }
+
                 }
             };
 
@@ -871,19 +877,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 message.append(PressGangCCMSUI.INSTANCE.TopicsNotUplodedSuccessfully() + ": " + failedNames.toString());
             }
 
-
-            if (startWithNewTopic) {
+            if (Window.confirm(message.toString() + "\n" + PressGangCCMSUI.INSTANCE.OpenImportedTopics())) {
                 /*
-                    If this view was started by the Create Topic link in the menu (as opposed to a search),
-                    then the new topics will just show up.
-                 */
-                updateDisplayAfterSave(false);
-                Window.alert(message.toString());
-            } else if (Window.confirm(message.toString() + "\n" + PressGangCCMSUI.INSTANCE.OpenImportedTopics())) {
-                /*
-                    If we imported topics on top of a search, they won't show up unless the new topics
-                    have tags that would place them in the search. This gives the user the option to open
-                    a new search with just the imported topics.
+                    This gives the user the option to open a new search with just the imported topics.
                  */
 
                 final StringBuilder idsQuery = new StringBuilder();
@@ -895,6 +891,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
 
                 eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "=" + idsQuery.toString(), false));
+            } else if (startWithNewTopic) {
+                /*
+                    If this view was started by the Create Topic link in the menu (as opposed to a search),
+                    then the new topics will just show up.
+                 */
+                updateDisplayAfterSave(false);
             } else {
                 updateDisplayAfterSave(true);
             }
@@ -1370,56 +1372,72 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 return false;
             }
 
-            /* if there is no selected item, we are trying to save a new topic */
-            if (this.getSearchResultsComponent().getProviderData().getSelectedItem() == null) {
-                return true;
-            }
-
             /* Save any pending changes */
             flushChanges();
 
             final RESTTopicV1 displayedTopic = this.getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
-            final RESTTopicV1 selectedTopic = this.getSearchResultsComponent().getProviderData().getSelectedItem().getItem();
 
-            boolean unsavedChanges = false;
-
-            /*
+             /*
                 If there are any modified tags in newTopic, we have unsaved changes.
                 If getTags() is null, the tags have not been loaded yet (and can't have been modified).
             */
             if (displayedTopic.getTags() != null &&
                     !displayedTopic.getTags().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
-                unsavedChanges = true;
+                return true;
             }
 
             /* If there are any modified property tags in newTopic, we have unsaved changes */
             if (!displayedTopic.getProperties().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
-                unsavedChanges = true;
+                return true;
             }
 
             /* If there are any modified source urls in newTopic, we have unsaved changes */
             if (!displayedTopic.getSourceUrls_OTM().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
-                unsavedChanges = true;
+                return true;
             }
 
-            /*
-             * If any values in selectedTopic don't match displayedTopic, we have unsaved changes
-             */
-            if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getTitle(), displayedTopic.getTitle())) {
-                unsavedChanges = true;
-            }
-            if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getLocale(), displayedTopic.getLocale())) {
-                unsavedChanges = true;
-            }
-            if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getDescription(),
-                    displayedTopic.getDescription())) {
-                unsavedChanges = true;
-            }
-            if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getXml(), displayedTopic.getXml())) {
-                unsavedChanges = true;
+
+            if (this.getSearchResultsComponent().getProviderData().getSelectedItem() == null) {
+
+                /* if there is no selected item, we are trying to save a new topic */
+
+                if (!displayedTopic.getXml().trim().isEmpty()) {
+                    return true;
+                }
+
+                if (!displayedTopic.getTitle().trim().isEmpty()) {
+                    return true;
+                }
+
+                if (!displayedTopic.getLocale().equals(defaultLocale)) {
+                    return true;
+                }
+
+            } else {
+
+                /* compare the displayed topics to the selected topic */
+
+                final RESTTopicV1 selectedTopic = this.getSearchResultsComponent().getProviderData().getSelectedItem().getItem();
+
+                /*
+                 * If any values in selectedTopic don't match displayedTopic, we have unsaved changes
+                 */
+                if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getTitle(), displayedTopic.getTitle())) {
+                    return true;
+                }
+                if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getLocale(), displayedTopic.getLocale())) {
+                    return true;
+                }
+                if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getDescription(),
+                        displayedTopic.getDescription())) {
+                    return true;
+                }
+                if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedTopic.getXml(), displayedTopic.getXml())) {
+                    return true;
+                }
             }
 
-            return unsavedChanges;
+            return false;
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.hasUnsavedChanges()");
         }
