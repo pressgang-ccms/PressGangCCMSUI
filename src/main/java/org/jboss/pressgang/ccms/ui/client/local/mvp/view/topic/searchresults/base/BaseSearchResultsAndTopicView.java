@@ -291,10 +291,10 @@ public abstract class BaseSearchResultsAndTopicView<
     @Override
     public void initialize(final boolean readOnly, final SplitType splitType, final boolean dislaySearchResults, @NotNull final Panel panel, final int searchResultsWidth, final int renderedPanelSize) {
 
-        checkArgument(renderedPanelSize > 0, "renderedPanelSize can not be less than 0.");
-
         this.splitType = splitType;
         this.readOnly = readOnly;
+
+       final int fixedRenderedPanelSize = renderedPanelSize < 0 ? 0 : renderedPanelSize;
 
         super.initialize(dislaySearchResults, searchResultsWidth, new DisplaySplitViewCallback() {
             @Override
@@ -304,9 +304,9 @@ public abstract class BaseSearchResultsAndTopicView<
                 renderedPanelParent.add(panel);
 
                 if (splitType == SplitType.HORIZONTAL) {
-                    getSplitPanel().addSouth(renderedPanelParent, renderedPanelSize);
+                    getSplitPanel().addSouth(renderedPanelParent, fixedRenderedPanelSize);
                 } else if (splitType == SplitType.VERTICAL) {
-                    getSplitPanel().addEast(renderedPanelParent, renderedPanelSize);
+                    getSplitPanel().addEast(renderedPanelParent, fixedRenderedPanelSize);
                 }
             }
         });
