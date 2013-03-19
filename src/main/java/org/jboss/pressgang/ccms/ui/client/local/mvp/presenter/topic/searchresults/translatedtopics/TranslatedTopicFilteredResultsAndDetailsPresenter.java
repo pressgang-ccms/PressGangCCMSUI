@@ -13,6 +13,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityList
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TranslatedTopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base.BaseTopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
@@ -25,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -155,9 +157,57 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
 
     @Override
     protected void postLoadAdditionalDisplayedItemData() {
-        /*
-            Nothing needs to be done here
-        */
+
+        try {
+            LOGGER.log(Level.INFO, "ENTER TranslatedTopicFilteredResultsAndDetailsPresenter.postLoadAdditionalDisplayedItemData()");
+
+        /* Initiate the REST calls */
+            final Integer id = getDisplayedTopic().getId();
+            final Integer revision = getDisplayedTopic().getRevision();
+
+        /* If this is a new topic, the id will be null, and there will not be any tags to get */
+            if (id != null) {
+
+            /* A callback to respond to a request for a topic with the tags expanded */
+                @NotNull final RESTCalls.RESTCallback<RESTTranslatedTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTranslatedTopicV1, TopicTagsPresenter.Display>(
+                        getTopicTagsPresenter().getDisplay(), new BaseRestCallback.SuccessAction<RESTTranslatedTopicV1, TopicTagsPresenter.Display>() {
+                    @Override
+                    public void doSuccessAction(@NotNull final RESTTranslatedTopicV1 retValue, final TopicTagsPresenter.Display display) {
+                        try {
+                            LOGGER.log(Level.INFO, "ENTER TranslatedTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs() topicWithTagsCallback.doSuccessAction()");
+
+                        /*
+                            There is a small chance that in between loading the topic's details and
+                            loading its tags, a new revision was created.
+
+                            So, what do we do? If changes are made to the topic, then
+                            the user will be warned that they have overwritten a revision created
+                            in the mean time. In fact seeing the latest tag relationships could
+                            mean that the user doesn't try to add conflicting tags (like adding
+                            a tag from a mutually exclusive category when one already exists).
+
+                            This check is left in comments just to show that a conflict is possible.
+                        */
+                        /*if (!retValue.getRevision().equals(revision)) {
+                            Window.alert("The topics details and tags are not in sync.");
+                        }*/
+
+                        /* copy the revisions into the displayed Topic */
+                            getDisplayedTopic().setTags(retValue.getTags());
+
+                        /* update the view */
+                            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicTagsPresenter().getDisplay()}));
+                        } finally {
+                            LOGGER.log(Level.INFO, "EXIT TranslatedTopicFilteredResultsAndDetailsPresenter.postLoadAdditionalDisplayedItemData() topicWithTagsCallback.doSuccessAction()");
+                        }
+                    }
+                });
+
+                RESTCalls.getTranslatedTopicWithTags(topicWithTagsCallback, id);
+            }
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.postLoadAdditionalDisplayedItemData()");
+        }
     }
 
     @Nullable

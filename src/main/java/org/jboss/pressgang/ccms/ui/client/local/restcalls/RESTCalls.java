@@ -367,6 +367,17 @@ public final class RESTCalls {
         });
     }
 
+    public static void getTranslatedTopicWithTags(@NotNull final RESTCallback<RESTTranslatedTopicV1> callback, @NotNull final Integer id) {
+        /* Expand the categories and projects in the tags */
+        @NotNull final String expand = "{\"branches\":[" + TOPIC_TAGS_EXPANSION + "]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONTranslatedTopic(id, expand);
+            }
+        });
+    }
+
     public static void getTopicRevisionWithTags(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id, @NotNull final Integer revision) {
         /* Expand the categories and projects in the tags */
         @NotNull final String expand = "{\"branches\":[" + TOPIC_TAGS_EXPANSION + "]}";

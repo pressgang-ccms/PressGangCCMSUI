@@ -416,8 +416,71 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         viewLatestTopicRevision();
     }
 
+    /**
+     * The tags and bugs for a topic are loaded as separate operations to minimize the amount of data initially sent when a
+     * topic is displayed.
+     * <p/>
+     * We pull down the extended collections from a revision, just to make sure that the collections we are getting are for
+     * the entity we are viewing, since there is a slight chance that a new revision could be saved in between us loading
+     * the empty entity and then loading the collections.
+     */
+    private void loadTagsAndBugs() {
+        try {
+            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs()");
+
+            /* Initiate the REST calls */
+            final Integer id = getDisplayedTopic().getId();
+            final Integer revision = getDisplayedTopic().getRevision();
+
+            /* If this is a new topic, the id will be null, and there will not be any tags to get */
+            if (id != null) {
+
+                /* A callback to respond to a request for a topic with the tags expanded */
+                @NotNull final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
+                        getTopicTagsPresenter().getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
+                    @Override
+                    public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
+                        try {
+                            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs() topicWithTagsCallback.doSuccessAction()");
+
+                            /*
+                                There is a small chance that in between loading the topic's details and
+                                loading its tags, a new revision was created.
+
+                                So, what do we do? If changes are made to the topic, then
+                                the user will be warned that they have overwritten a revision created
+                                in the mean time. In fact seeing the latest tag relationships could
+                                mean that the user doesn't try to add conflicting tags (like adding
+                                a tag from a mutually exclusive category when one already exists).
+
+                                This check is left in comments just to show that a conflict is possible.
+                            */
+                            /*if (!retValue.getRevision().equals(revision)) {
+                                Window.alert("The topics details and tags are not in sync.");
+                            }*/
+
+                            /* copy the revisions into the displayed Topic */
+                            getDisplayedTopic().setTags(retValue.getTags());
+
+                            /* update the view */
+                            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicTagsPresenter().getDisplay()}));
+                        } finally {
+                            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs() topicWithTagsCallback.doSuccessAction()");
+                        }
+                    }
+                });
+
+                RESTCalls.getTopicWithTags(topicWithTagsCallback, id);
+            }
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs()");
+        }
+    }
+
     @Override
     protected void postLoadAdditionalDisplayedItemData() {
+        loadTagsAndBugs();
+
         /* set the revisions to show the loading widget */
         if (topicRevisionsComponent.getDisplay().getProvider() != null) {
             topicRevisionsComponent.getDisplay().getProvider().resetProvider();
