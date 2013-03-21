@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201303220823";
+    public static final String VERSION = "201303220826";
 
     /**
      * The sort order to apply to a newly added child.
