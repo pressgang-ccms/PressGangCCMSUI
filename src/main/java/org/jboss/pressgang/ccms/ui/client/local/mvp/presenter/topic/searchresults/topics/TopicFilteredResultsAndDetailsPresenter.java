@@ -990,7 +990,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             }
 
-            if (Window.confirm(message.toString() + "\n" + PressGangCCMSUI.INSTANCE.OpenImportedTopics())) {
+            if (ids.isEmpty()) {
+                Window.alert(message.toString());
+            } else if (Window.confirm(message.toString() + "\n" + PressGangCCMSUI.INSTANCE.OpenImportedTopics())) {
                 /*
                     This gives the user the option to open a new search with just the imported topics.
                  */
