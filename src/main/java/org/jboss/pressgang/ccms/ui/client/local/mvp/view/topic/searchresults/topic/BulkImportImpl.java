@@ -80,7 +80,7 @@ public class BulkImportImpl extends DialogBox implements TopicFilteredResultsAnd
 
             this.setGlassEnabled(true);
             this.setModal(false);
-            this.setText(PressGangCCMSUI.INSTANCE.BulkImageUpload());
+            this.setText(PressGangCCMSUI.INSTANCE.BulkTopicUpload());
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);

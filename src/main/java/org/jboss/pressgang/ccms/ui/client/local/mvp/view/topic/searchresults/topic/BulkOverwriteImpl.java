@@ -73,7 +73,7 @@ public class BulkOverwriteImpl extends DialogBox implements TopicFilteredResults
 
             this.setGlassEnabled(true);
             this.setModal(false);
-            this.setText(PressGangCCMSUI.INSTANCE.BulkImageUpload());
+            this.setText(PressGangCCMSUI.INSTANCE.BulkTopicOverwrite());
 
             final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
@@ -82,9 +82,6 @@ public class BulkOverwriteImpl extends DialogBox implements TopicFilteredResults
 
             this.layout.addNorth(fileUploadExt, 3);
             this.layout.add(buttonPanel);
-
-            this.layout.setWidth(Constants.BULK_IMPORT_DIALOG_WIDTH);
-            this.layout.setHeight(Constants.BULK_IMPORT_DIALOG_HEIGHT);
 
             this.add(this.layout);
         } finally {
