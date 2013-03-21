@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201303220819";
+    public static final String VERSION = "201303220823";
 
     /**
      * The sort order to apply to a newly added child.
@@ -210,7 +210,7 @@ public final class Constants {
     /**
      * The height of the bulk topic dialog box.
      */
-    public static final String BULK_OVERWRITE_DIALOG_HEIGHT = "120px;";
+    public static final String BULK_OVERWRITE_DIALOG_HEIGHT = "120px";
     /**
      * A line break escaped.
      */
