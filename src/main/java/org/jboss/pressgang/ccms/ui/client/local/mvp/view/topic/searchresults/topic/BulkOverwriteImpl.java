@@ -83,6 +83,9 @@ public class BulkOverwriteImpl extends DialogBox implements TopicFilteredResults
             this.layout.addNorth(fileUploadExt, 3);
             this.layout.add(buttonPanel);
 
+            this.layout.setWidth(Constants.BULK_OVERWRITE_DIALOG_WIDTH);
+            this.layout.setHeight(Constants.BULK_OVERWRITE_DIALOG_HEIGHT);
+
             this.add(this.layout);
         } finally {
             LOGGER.log(Level.INFO, "EXIT BulkOverwriteImpl.postConstruct()");
