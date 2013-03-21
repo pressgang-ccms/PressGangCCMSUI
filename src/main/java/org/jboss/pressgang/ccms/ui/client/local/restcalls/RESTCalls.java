@@ -581,7 +581,7 @@ public final class RESTCalls {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).createJSONStringConstant(FILTER_EXPANSION, entity);
+                createRestMethod(callback).createJSONStringConstant("", entity);
             }
         });
     }
@@ -590,7 +590,7 @@ public final class RESTCalls {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).updateJSONStringConstant(FILTER_EXPANSION, entity);
+                createRestMethod(callback).updateJSONStringConstant("", entity);
             }
         });
     }
@@ -609,7 +609,7 @@ public final class RESTCalls {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).createJSONIntegerConstant(FILTER_EXPANSION, entity);
+                createRestMethod(callback).createJSONIntegerConstant("", entity);
             }
         });
     }
@@ -618,7 +618,7 @@ public final class RESTCalls {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).updateJSONIntegerConstant(FILTER_EXPANSION, entity);
+                createRestMethod(callback).updateJSONIntegerConstant("", entity);
             }
         });
     }
@@ -637,7 +637,7 @@ public final class RESTCalls {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).createJSONBlobConstant(FILTER_EXPANSION, entity);
+                createRestMethod(callback).createJSONBlobConstant("", entity);
             }
         });
     }
@@ -646,7 +646,7 @@ public final class RESTCalls {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).updateJSONBlobConstant(FILTER_EXPANSION, entity);
+                createRestMethod(callback).updateJSONBlobConstant("", entity);
             }
         });
     }
