@@ -51,10 +51,21 @@ public class TopicFilteredResultsAndDetailsView extends
      */
     private @Inject BulkImportImpl bulkImport;
 
+    /**
+     * The bulk overwrite dialog box.
+     */
+    private @Inject BulkOverwriteImpl bulkOverwrite;
+
     @Override
     @NotNull
     public TopicFilteredResultsAndDetailsPresenter.BulkImport getBulkImport() {
         return bulkImport;
+    }
+
+    @Override
+    @NotNull
+    public TopicFilteredResultsAndDetailsPresenter.BulkOverwrite getBulkOverwrite() {
+        return bulkOverwrite;
     }
 
     @Override

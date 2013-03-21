@@ -888,7 +888,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         display.getBulkImport().getTagsView().getDriver().flush();
 
                         if (display.getBulkImport().getFiles().getFiles().getLength() != 0) {
-                            createNewTopic(0, display.getBulkImport().getFiles().getFiles(), new ArrayList<Integer>(), new ArrayList<String>());
+                            createNewTopic(false, 0, display.getBulkImport().getFiles().getFiles(), new ArrayList<Integer>(), new ArrayList<String>());
                         }
 
                     } finally {
@@ -904,13 +904,51 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
             };
 
+            final ClickHandler bulkOverwrite = new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    if (!hasUnsavedChanges()) {
+                        display.getBulkOverwrite().getDialog().center();
+                    } else {
+                        Window.alert(PressGangCCMSUI.INSTANCE.PleaseSaveChangesBeforeUploading());
+                    }
+
+                }
+            };
+
+            final ClickHandler bulkOverwriteOK = new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    try
+                    {
+                        if (display.getBulkOverwrite().getFiles().getFiles().getLength() != 0) {
+                            createNewTopic(true, 0, display.getBulkOverwrite().getFiles().getFiles(), new ArrayList<Integer>(), new ArrayList<String>());
+                        }
+
+                    } finally {
+                        display.getBulkOverwrite().getDialog().hide();
+                    }
+                }
+            };
+
+            final ClickHandler bulkOverwriteCancel = new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    display.getBulkOverwrite().getDialog().hide();
+                }
+            };
+
             display.getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
             display.getMessageLogDialog().getCancel().addClickHandler(messageLogDialogCancel);
 
             display.getBulkImport().getOK().addClickHandler(bulkImportOK);
             display.getBulkImport().getCancel().addClickHandler(bulkImportCancel);
 
+            display.getBulkOverwrite().getOK().addClickHandler(bulkOverwriteOK);
+            display.getBulkOverwrite().getCancel().addClickHandler(bulkOverwriteCancel);
+
             searchResultsComponent.getDisplay().getBulkImport().addClickHandler(bulkImport);
+            searchResultsComponent.getDisplay().getBulkOverwrite().addClickHandler(bulkOverwrite);
             getDisplay().getSave().addClickHandler(saveClickHandler);
             getDisplay().getHistory().addClickHandler(topicRevisionsClickHanlder);
             getDisplay().getFields().addClickHandler(topicViewClickHandler);
@@ -921,7 +959,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         }
     }
 
-    private void createNewTopic(final int index, @NotNull final FileList files, @NotNull final List<Integer> ids, @NotNull final List<String> failedFiled) {
+    /**
+     *
+     * @param overwrite true if files named 123.xml (where 123 is the topic id) should overwrite existing topics
+     * @param index the current file being processed
+     * @param files the list of files to process
+     * @param ids the ids of the topics that have been modified
+     * @param failedFiled the file names of files that were not processed
+     */
+    private void createNewTopic(final boolean overwrite, final int index, @NotNull final FileList files, @NotNull final List<Integer> ids, @NotNull final List<String> failedFiled) {
         if (index >= files.getLength()) {
 
             final StringBuilder message = new StringBuilder();
@@ -938,6 +984,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 }
 
                 message.append(PressGangCCMSUI.INSTANCE.TopicsNotUplodedSuccessfully() + ": " + failedNames.toString());
+
+                if (overwrite) {
+                    message.append("\n" + PressGangCCMSUI.INSTANCE.OverwriteFilenameErrorMessage());
+                }
             }
 
             if (Window.confirm(message.toString() + "\n" + PressGangCCMSUI.INSTANCE.OpenImportedTopics())) {
@@ -974,7 +1024,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 public void onError(@NotNull final org.vectomatic.file.events.ErrorEvent event) {
                     display.removeWaitOperation();
                     failedFiled.add(files.getItem(index).getName());
-                    createNewTopic(index + 1, files, ids, failedFiled);
+                    createNewTopic(overwrite, index + 1, files, ids, failedFiled);
                 }
             });
 
@@ -986,10 +1036,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                          /* Populate the new topics details */
                         final RESTTopicV1 newTopic = new RESTTopicV1();
-                        newTopic.explicitSetTags(bulkImportTemplate.getTags());
-                        newTopic.explicitSetLocale(defaultLocale);
-                        newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
                         newTopic.explicitSetXml(result);
+                        if (overwrite) {
+                            newTopic.setId(overwriteFilenameAsInt(files.getItem(index).getName()));
+                        } else {
+                            newTopic.explicitSetTags(bulkImportTemplate.getTags());
+                            newTopic.explicitSetLocale(defaultLocale);
+                            newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
+                        }
 
                         final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, Display>(
                                 display,
@@ -1011,25 +1065,56 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                             getSearchResultsComponent().getProviderData().setSize(getSearchResultsComponent().getProviderData().getItems().size());
                                         }
 
-                                        createNewTopic(index + 1, files, ids, failedFiled);
+                                        createNewTopic(overwrite, index + 1, files, ids, failedFiled);
                                     }
                                 }, new BaseRestCallback.FailureAction<Display>() {
                             @Override
                             public void doFailureAction(@NotNull final Display display) {
-                                createNewTopic(index + 1, files, ids, failedFiled);
+                                createNewTopic(overwrite, index + 1, files, ids, failedFiled);
                             }
                         });
 
-                        RESTCalls.createTopic(callback, newTopic);
+                        if (overwrite) {
+                            RESTCalls.saveTopic(callback, newTopic, PressGangCCMSUI.INSTANCE.BulkTopicOverwriteMessage(), (int)ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString());
+                        } else {
+                            RESTCalls.createTopic(callback, newTopic);
+                        }
                     } finally {
                         display.removeWaitOperation();
                     }
                 }
             });
 
-            reader.readAsBinaryString(files.getItem(index));
+            if (overwrite) {
+                if (overwriteFilenameAsInt(files.getItem(index).getName()) == null) {
+                    display.removeWaitOperation();
+                    failedFiled.add(files.getItem(index).getName());
+                    createNewTopic(overwrite, index + 1, files, ids, failedFiled);
+                } else {
+                    reader.readAsBinaryString(files.getItem(index));
+                }
+            } else {
+                reader.readAsBinaryString(files.getItem(index));
+            }
         }
     }
+
+    @Nullable
+    private Integer overwriteFilenameAsInt(@NotNull final String filename) {
+        if (!filename.endsWith(".xml")) {
+            return null;
+        }
+
+        final String fixedFilename = filename.replaceFirst(".xml", "");
+
+        try {
+            return Integer.parseInt(fixedFilename);
+
+        } catch (@NotNull final NumberFormatException ex) {
+            return null;
+        }
+    }
+
 
     @Override
     protected void postInitializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
@@ -2244,17 +2329,26 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         @NotNull PushButton getHistory();
         @NotNull Label getHistoryDown();
         @NotNull BulkImport getBulkImport();
+        @NotNull BulkOverwrite getBulkOverwrite();
 
+    }
+
+    /**
+     * Defines the dialog box used to bulk overwrite topics.
+     */
+    public interface BulkOverwrite {
+        @NotNull DialogBox getDialog();
+        @NotNull FileUploadExt getFiles();
+        @NotNull PushButton getOK();
+        @NotNull PushButton getCancel();
     }
 
     /**
      * Defines the dialog box used to bulk upload topics.
      */
-    public interface BulkImport {
-        @NotNull DialogBox getDialog();
-        @NotNull FileUploadExt getFiles();
-        @NotNull PushButton getOK();
-        @NotNull PushButton getCancel();
+    public interface BulkImport extends BulkOverwrite {
         @NotNull TopicTagsPresenter.Display getTagsView();
     }
+
+
 }

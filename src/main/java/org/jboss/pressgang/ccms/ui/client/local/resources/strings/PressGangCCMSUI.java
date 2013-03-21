@@ -30,6 +30,12 @@ public interface PressGangCCMSUI extends Constants {
     String BulkTopicImport();
 
     @NotNull
+    String BulkTopicOverwrite();
+
+    @NotNull
+    String BulkTopicOverwriteMessage();
+
+    @NotNull
     String HideSearchResults();
 
     @NotNull
@@ -52,6 +58,9 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String TopicsNotUplodedSuccessfully();
+
+    @NotNull
+    String OverwriteFilenameErrorMessage();
 
     @NotNull
     String NoFilesSelected();

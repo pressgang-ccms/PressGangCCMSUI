@@ -17,6 +17,7 @@ public class TopicFilteredResultsView extends BaseFilteredResultsView<RESTTopicC
         implements TopicFilteredResultsPresenter.Display {
 
     private final PushButton bulkImport = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.BulkTopicImport());
+    private final PushButton bulkOverwrite = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.BulkTopicOverwrite());
 
     @NotNull
     private final TextColumn<RESTTopicCollectionItemV1> idColumn = new TextColumn<RESTTopicCollectionItemV1>() {
@@ -52,11 +53,18 @@ public class TopicFilteredResultsView extends BaseFilteredResultsView<RESTTopicC
         this.getEntitySearch().removeFromParent();
 
         addActionButton(bulkImport);
+        addActionButton(bulkOverwrite);
     }
 
     @NotNull
     @Override
     public PushButton getBulkImport() {
         return bulkImport;
+    }
+
+    @NotNull
+    @Override
+    public PushButton getBulkOverwrite() {
+        return bulkOverwrite;
     }
 }
