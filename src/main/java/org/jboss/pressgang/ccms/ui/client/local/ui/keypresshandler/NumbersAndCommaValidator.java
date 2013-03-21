@@ -22,6 +22,7 @@ public final class NumbersAndCommaValidator implements KeyDownHandler, ValueChan
     private static final int COMMA_KEY_CODE = 188;
     private static final int ZERO_KEY_CODE = 48;
     private static final int NINE_KEY_CODE = 57;
+    private static final int INSERT_KEY_CODE = 45;
     @NotNull
     private final ValueBoxBase<String> source;
 
@@ -44,7 +45,11 @@ public final class NumbersAndCommaValidator implements KeyDownHandler, ValueChan
                 keyCode == KeyCodes.KEY_UP ||
                 keyCode == KeyCodes.KEY_DOWN ||
                 keyCode == KeyCodes.KEY_HOME ||
-                keyCode == KeyCodes.KEY_END) {
+                keyCode == KeyCodes.KEY_END ||
+                (event.isControlKeyDown() && keyCode == 'V')||                  // paste
+                (event.isControlKeyDown() && keyCode == 'C') ||                 // copy
+                (event.isControlKeyDown() && keyCode == INSERT_KEY_CODE) ||     // copy
+                (event.isShiftKeyDown() && keyCode == INSERT_KEY_CODE) ) {      // paste
             return;
         }
         

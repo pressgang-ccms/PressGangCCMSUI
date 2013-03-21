@@ -6,22 +6,7 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
  * @author Matthew Casperson
  */
 public final class ServiceConstants {
-    /**
-     * The StringConstant that holds the locales.
-     */
-    public static final int LOCALE_STRING_CONSTANT = 38;
-    /**
-     * The StringConstant that holds the concept XML template.
-     */
-    public static final int CONCEPT_TOPIC_TEMPLATE = 14;
-    /**
-     * The StringConstant the holds the default topic template.
-     */
-    public static final int TOPIC_TEMPLATE = 39;
-    /**
-     * The StringConstant default locale id.
-     */
-    public static final int DEFAULT_LOCALE_ID = 40;
+
     /**
      * Used to indicate a minor change to an entity.
      */
@@ -40,6 +25,19 @@ public final class ServiceConstants {
      */
     public static final Integer NULL_USER_ID = 89;
     //public static final Integer NULL_USER_ID = null;
+
+    /*
+        *************** STRING CONSTANTS ***************
+     */
+
+    /**
+     * The StringConstant that holds the locales.
+     */
+    public static final int LOCALE_STRING_CONSTANT = 38;
+    /**
+     * The StringConstant default locale id.
+     */
+    public static final int DEFAULT_LOCALE_ID = 40;
     /**
      * The string constant that contains all the docbook elements.
      */
@@ -49,6 +47,11 @@ public final class ServiceConstants {
      * other string constant IDs that contain docbook templates.
      */
     public static final Integer DOCBOOK_TEMPLATES_STRING_CONSTANT_ID = 43;
+
+    /*
+        *************** TOPIC CONSTANTS ***************
+     */
+
     /**
      * The help topic for the search screen.
      */
