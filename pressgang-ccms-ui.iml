@@ -10,14 +10,12 @@
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
           <root url="file://$MODULE_DIR$/src/jboss7" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/src/main/java" />
-          <root url="file://$MODULE_DIR$/src/main/resources" />
-        </sourceRoots>
       </configuration>
     </facet>
     <facet type="gwt" name="GWT">
       <configuration>
+        <setting name="additionalCompilerParameters" value="-Xmx1024M -Xms1024M -Xss1024k -XX:MaxPermSize=256M -XX:PermSize=128M" />
+        <setting name="compilerParameters" value="-optimize 9" />
         <setting name="compilerMaxHeapSize" value="1024" />
         <setting name="gwtScriptOutputStyle" value="DETAILED" />
         <setting name="gwtSdkUrl" value="file://$MAVEN_REPOSITORY$/com/google/gwt/gwt-dev/2.5.0/" />

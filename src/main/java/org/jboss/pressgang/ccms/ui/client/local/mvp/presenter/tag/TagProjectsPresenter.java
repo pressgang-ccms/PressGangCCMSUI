@@ -100,8 +100,8 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
 
                 if (getPossibleChildrenProviderData().getItems() != null) {
                     /*
-                            Implement sorting
-                        */
+                        Implement sorting
+                    */
                     final ColumnSortList sortList = display.getPossibleChildrenResults().getColumnSortList();
                     if (sortList.size() != 0) {
                         final Column<?, ?> column = sortList.get(0).getColumn();

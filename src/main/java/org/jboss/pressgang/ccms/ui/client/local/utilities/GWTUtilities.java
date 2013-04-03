@@ -92,7 +92,7 @@ final public class GWTUtilities {
      */
     @NotNull
     public static String fixUpIdSearchString(@NotNull final String input) {
-        final RegExp regex = RegExp.compile("[^0-9,]", "g");
+        final RegExp regex = RegExp.compile("[^0-9,-]", "g");
 
         String retValue = regex.replace(input, "");
 

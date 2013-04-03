@@ -140,7 +140,10 @@ public class TagsFilteredResultsAndDetailsPresenter
 
         @Override
         public boolean setSort(@NotNull final RESTTagInCategoryCollectionItemV1 child, final int index) {
-            if (child.getItem().getRelationshipSort() != index) {
+
+            checkArgument(child.getItem() != null, "The collection item should reference a valid entity.");
+
+            if (child.getItem().getRelationshipSort() == null || child.getItem().getRelationshipSort() != index) {
                 child.getItem().explicitSetRelationshipSort(index);
                 /* Set any unchanged items to updated */
                 if (RESTBaseCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {
@@ -490,141 +493,160 @@ public class TagsFilteredResultsAndDetailsPresenter
                 new FieldUpdater<RESTProjectCollectionItemV1, String>() {
                     @Override
                     public void update(final int index, @NotNull final RESTProjectCollectionItemV1 object, final String value) {
+                        try {
+                            LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndDetailsPresenter.bindProjectColumnButtons() FieldUpdater.update()");
 
-                        checkState(object.getItem() != null, "The selected collection item to reference a valid entity.");
-                        checkState(object.getItem().getTags() != null, "The selected collection item to reference a valid entity and have a valid tags collection.");
+                            checkState(object.getItem() != null, "The selected collection item to reference a valid entity.");
+                            checkState(object.getItem().getTags() != null, "The selected collection item to reference a valid entity and have a valid tags collection.");
+                            checkState(object.getItem().getTags().getItems() != null, "The selected collection item to reference a valid entity, have a valid tags collection, and has a valid items collection.");
 
-                        boolean found = false;
+                            checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                            checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                            checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() != null, "The displayed collection item to reference a valid entity with a valid id.");
 
-                        for (@NotNull final RESTTagCollectionItemV1 tag : object.getItem().getTags().getItems()) {
+                            boolean found = false;
 
-                            checkState(tag.getItem().getId() != null, "The tag should have a valid id.");
+                            for (@NotNull final RESTTagCollectionItemV1 tag : object.getItem().getTags().getItems()) {
 
-                            if (tag.getItem().getId().equals(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId())) {
-                                /* Project was added and then removed */
-                                if (RESTBaseCollectionItemV1.ADD_STATE.equals(tag.getState())) {
-                                    object.getItem().getTags().getItems().remove(tag);
+                                checkState(tag.getItem().getId() != null, "The tag should have a valid id.");
+
+                                if (tag.getItem().getId().equals(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId())) {
+                                    /* Project was added and then removed */
+                                    if (RESTBaseCollectionItemV1.ADD_STATE.equals(tag.getState())) {
+                                        object.getItem().getTags().getItems().remove(tag);
+                                    }
+
+                                    /* Project existed, was removed and then was added again */
+                                    if (RESTBaseCollectionItemV1.REMOVE_STATE.equals(tag.getState())) {
+                                        tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                                    }
+                                    /* Project existed and was removed */
+                                    else {
+                                        tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+                                    }
+
+                                    found = true;
+                                    break;
                                 }
-
-                                /* Project existed, was removed and then was added again */
-                                if (RESTBaseCollectionItemV1.REMOVE_STATE.equals(tag.getState())) {
-                                    tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
-                                }
-                                /* Project existed and was removed */
-                                else {
-                                    tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
-                                }
-
-                                found = true;
-                                break;
                             }
-                        }
 
-                        if (!found) {
-                            final RESTTagV1 newTag = filteredResultsComponent.getProviderData().getDisplayedItem().getItem().clone(true);
-                            object.getItem().getTags().addNewItem(newTag);
-                        }
-
-                        /*
-                         * In order for the warning to appear if selecting a new tag when unsaved changes exist, we need to set
-                         * the configured parameters to reflect the fact that the category contains tags that will modify the
-                         * database. So here we check to see if any tags have been added or removed. If there are none (i.e. a
-                         * tag was added and then removed again without persisting the change in the database, or there were
-                         * just no changes made) we remove the tags collection from the configured parameters.
-                         */
-                        if (object.getItem().getTags().returnDeletedAndAddedCollectionItems().size() != 0) {
+                            if (!found) {
+                                final RESTTagV1 newTag = filteredResultsComponent.getProviderData().getDisplayedItem().getItem().clone(true);
+                                object.getItem().getTags().addNewItem(newTag);
+                            }
 
                             /*
-                             * Need to mark the tags collection as dirty. The explicitSetTags provides a convenient way to set
-                             * the appropriate configured parameter value
+                             * In order for the warning to appear if selecting a new tag when unsaved changes exist, we need to set
+                             * the configured parameters to reflect the fact that the category contains tags that will modify the
+                             * database. So here we check to see if any tags have been added or removed. If there are none (i.e. a
+                             * tag was added and then removed again without persisting the change in the database, or there were
+                             * just no changes made) we remove the tags collection from the configured parameters.
                              */
-                            object.getItem().explicitSetTags(object.getItem().getTags());
-                        } else {
-                            object.getItem().getConfiguredParameters().remove(RESTBaseCategoryV1.TAGS_NAME);
-                        }
+                            if (object.getItem().getTags().returnDeletedAndAddedCollectionItems().size() != 0) {
 
-                        /* refresh the project list */
-                        projectsComponent.getDisplay().getPossibleChildrenProvider().displayNewFixedList(
-                                projectsComponent.getPossibleChildrenProviderData().getItems());
+                                /*
+                                 * Need to mark the tags collection as dirty. The explicitSetTags provides a convenient way to set
+                                 * the appropriate configured parameter value
+                                 */
+                                object.getItem().explicitSetTags(object.getItem().getTags());
+                            } else {
+                                object.getItem().getConfiguredParameters().remove(RESTBaseCategoryV1.TAGS_NAME);
+                            }
+
+                            /* refresh the project list */
+                            projectsComponent.getDisplay().getPossibleChildrenProvider().displayNewFixedList(projectsComponent.getPossibleChildrenProviderData().getItems());
+                        } finally {
+                            LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndDetailsPresenter.bindProjectColumnButtons() FieldUpdater.update()");
+                        }
                     }
                 });
     }
 
     /**
-     * Binds behaviour to the category list buttons
+     * Binds behaviour to the category list buttons.
      */
     private void bindCategoryColumnButtons() {
         categoriesComponent.getDisplay().getPossibleChildrenButtonColumn().setFieldUpdater(
                 new FieldUpdater<RESTCategoryCollectionItemV1, String>() {
                     @Override
                     public void update(final int index, @NotNull final RESTCategoryCollectionItemV1 object, final String value) {
+                        try {
+                            LOGGER.log(Level.INFO, "ENTER TagsFilteredResultsAndDetailsPresenter.bindCategoryColumnButtons() FieldUpdater.update()");
 
-                        checkState(object.getItem() != null, "The selected collection item to reference a valid entity.");
-                        checkState(object.getItem().getTags() != null, "The selected collection item to reference a valid entity and have a valid tags collection.");
+                            checkState(object.getItem() != null, "The selected collection item to reference a valid entity.");
+                            checkState(object.getItem().getTags() != null, "The selected collection item to reference a valid entity and have a valid tags collection.");
+                            checkState(object.getItem().getTags().getItems() != null, "The selected collection item to reference a valid entity, have a valid tags collection, and has a valid items collection.");
 
-                        boolean found = false;
-                        for (@NotNull final RESTTagInCategoryCollectionItemV1 tag : object.getItem().getTags().getItems()) {
+                            checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                            checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                            checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId() != null, "The displayed collection item to reference a valid entity with a valid id.");
 
-                            checkState(tag.getItem().getId() != null, "The tag should have a valid id.");
+                            boolean found = false;
+                            for (@NotNull final RESTTagInCategoryCollectionItemV1 tag : object.getItem().getTags().getItems()) {
 
-                            if (tag.getItem().getId().equals(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId())) {
-                                /* Tag was added and then removed */
-                                if (tag.returnIsAddItem()) {
-                                    object.getItem().getTags().getItems().remove(tag);
+                                checkState(tag.getItem().getId() != null, "The tag should have a valid id.");
+
+                                if (tag.getItem().getId().equals(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId())) {
+                                    /* Tag was added and then removed */
+                                    if (tag.returnIsAddItem()) {
+                                        object.getItem().getTags().getItems().remove(tag);
+                                    }
+                                    /* Tag existed, was removed and then was added again */
+                                    else if (tag.returnIsRemoveItem()) {
+                                        tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
+                                    }
+                                    /* Tag existed and was removed */
+                                    else {
+                                        tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
+                                        tag.getItem().setRelationshipSort(0);
+                                    }
+
+                                    found = true;
+                                    break;
                                 }
-                                /* Tag existed, was removed and then was added again */
-                                else if (tag.returnIsRemoveItem()) {
-                                    tag.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
-                                }
-                                /* Tag existed and was removed */
-                                else {
-                                    tag.setState(RESTBaseCollectionItemV1.REMOVE_STATE);
-                                    tag.getItem().setRelationshipSort(0);
-                                }
-
-                                found = true;
-                                break;
                             }
-                        }
 
-                        if (!found) {
-                            categoriesComponent.setSortOrderOfChildren(sortCallback);
+                            if (!found) {
+                                categoriesComponent.setSortOrderOfChildren(sortCallback);
 
-                            @NotNull final RESTTagInCategoryV1 newTag = new RESTTagInCategoryV1();
-                            newTag.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                            newTag.setName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
-                            newTag.setRelationshipSort(Constants.NEW_CHILD_SORT_ORDER);
+                                @NotNull final RESTTagInCategoryV1 newTag = new RESTTagInCategoryV1();
+                                newTag.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
+                                newTag.setName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
+                                newTag.setRelationshipSort(Constants.NEW_CHILD_SORT_ORDER);
 
-                            object.getItem().getTags().addNewItem(newTag);
-                        }
-
-                        /*
-                         * In order for the warning to appear if selecting a new tag when unsaved changes exist, we need to set
-                         * the configured parameters to reflect the fact that the category contains tags that will modify the
-                         * database. So here we check to see if any tags have been added or removed. If there are none (i.e. a
-                         * tag was added and then removed again without persisting the change in the database, or there were
-                         * just no changes made) we remove the tags collection from the configured parameters.
-                         */
-                        if (object.getItem().getTags().returnDeletedAndAddedCollectionItems().size() != 0) {
+                                object.getItem().getTags().addNewItem(newTag);
+                            }
 
                             /*
-                             * Need to mark the tags collection as dirty. The explicitSetTags provides a convenient way to set
-                             * the appropriate configured parameter value
+                             * In order for the warning to appear if selecting a new tag when unsaved changes exist, we need to set
+                             * the configured parameters to reflect the fact that the category contains tags that will modify the
+                             * database. So here we check to see if any tags have been added or removed. If there are none (i.e. a
+                             * tag was added and then removed again without persisting the change in the database, or there were
+                             * just no changes made) we remove the tags collection from the configured parameters.
                              */
-                            object.getItem().explicitSetTags(object.getItem().getTags());
-                        } else {
-                            object.getItem().getConfiguredParameters().remove(RESTBaseCategoryV1.TAGS_NAME);
+                            if (object.getItem().getTags().returnDeletedAndAddedCollectionItems().size() != 0) {
+
+                                /*
+                                 * Need to mark the tags collection as dirty. The explicitSetTags provides a convenient way to set
+                                 * the appropriate configured parameter value
+                                 */
+                                object.getItem().explicitSetTags(object.getItem().getTags());
+                            } else {
+                                object.getItem().getConfiguredParameters().remove(RESTBaseCategoryV1.TAGS_NAME);
+                            }
+
+                            /* refresh the category list */
+                            categoriesComponent.getDisplay().getPossibleChildrenProvider().displayNewFixedList(categoriesComponent.getPossibleChildrenProviderData().getItems());
+
+                            /*
+                             * refresh the list of tags in the category
+                             */
+                            categoriesComponent.getDisplay().setExistingChildrenProvider(categoriesComponent
+                                    .generateExistingProvider(categoriesComponent.getPossibleChildrenProviderData()
+                                            .getDisplayedItem().getItem()));
+                        } finally {
+                            LOGGER.log(Level.INFO, "EXIT TagsFilteredResultsAndDetailsPresenter.bindCategoryColumnButtons() FieldUpdater.update()");
                         }
-
-                        /* refresh the category list */
-                        categoriesComponent.getDisplay().getPossibleChildrenProvider().displayNewFixedList(categoriesComponent.getPossibleChildrenProviderData().getItems());
-
-                        /*
-                         * refresh the list of tags in the category
-                         */
-                        categoriesComponent.getDisplay().setExistingChildrenProvider(categoriesComponent
-                                .generateExistingProvider(categoriesComponent.getPossibleChildrenProviderData()
-                                        .getDisplayedItem().getItem()));
                     }
                 });
     }

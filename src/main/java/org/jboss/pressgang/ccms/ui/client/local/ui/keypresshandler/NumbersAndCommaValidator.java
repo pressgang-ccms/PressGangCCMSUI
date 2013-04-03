@@ -23,6 +23,9 @@ public final class NumbersAndCommaValidator implements KeyDownHandler, ValueChan
     private static final int ZERO_KEY_CODE = 48;
     private static final int NINE_KEY_CODE = 57;
     private static final int INSERT_KEY_CODE = 45;
+    private static final int MINUS_KEY_CODE = 189;
+    private static final int NUMPAD_MINUS_KEY_CODE = 109;
+
     @NotNull
     private final ValueBoxBase<String> source;
 
@@ -58,8 +61,8 @@ public final class NumbersAndCommaValidator implements KeyDownHandler, ValueChan
             return;
         }
         
-        /* Allow the comma */
-        if (keyCode == COMMA_KEY_CODE) {
+        /* Allow the comma and minus keys */
+        if (keyCode == COMMA_KEY_CODE || keyCode == MINUS_KEY_CODE || keyCode == NUMPAD_MINUS_KEY_CODE) {
             return;
         }
         
