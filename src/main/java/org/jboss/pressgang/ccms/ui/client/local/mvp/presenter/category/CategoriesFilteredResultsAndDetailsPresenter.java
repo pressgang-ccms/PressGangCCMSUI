@@ -80,7 +80,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
 
         @Override
         public boolean setSort(@NotNull final RESTTagInCategoryCollectionItemV1 child, final int index) {
-            if (child.getItem().getRelationshipSort() != index) {
+            if (child.getItem().getRelationshipSort() == null || child.getItem().getRelationshipSort() != index) {
                 child.getItem().explicitSetRelationshipSort(index);
                 /* Set any unchanged items to updated */
                 if (RESTBaseCollectionItemV1.UNCHANGED_STATE.equals(child.getState())) {
