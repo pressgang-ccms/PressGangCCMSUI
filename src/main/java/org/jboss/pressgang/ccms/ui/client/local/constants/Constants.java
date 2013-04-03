@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201304040748";
+    public static final String VERSION = "201304040811";
 
     /**
      * The sort order to apply to a newly added child.
@@ -141,18 +141,18 @@ public final class Constants {
         UPDATE THESE WHEN CHECKING INTO THE MASTER BRANCH
      -----------------------------------------------------------------------------------------------------------------*/
 
-    public static final String BIRT_URL = LOCAL_BIRT_URL;
-    public static final String MONITORING_URL = LOCAL_MONITORING_URL;
-    public static final String BASE_URL = LOCAL_REST_SERVER;
+//    public static final String BIRT_URL = LOCAL_BIRT_URL;
+//    public static final String MONITORING_URL = LOCAL_MONITORING_URL;
+//    public static final String BASE_URL = LOCAL_REST_SERVER;
 
 //    public static final String BASE_URL = DEV_REST_SERVER;
 //    public static final String BIRT_URL = DEV_BIRT_URL;
 //    public static final String MONITORING_URL = DEV_MONITORING_URL;
 //    public static final boolean ENCODE_QUERY_OPTIONS = true;
 
-//    public static final String MONITORING_URL = PROD_MONITORING_URL;
-//    public static final String BASE_URL = PROD_REST_SERVER;
-//    public static final String BIRT_URL = PROD_BIRT_URL;
+    public static final String MONITORING_URL = PROD_MONITORING_URL;
+    public static final String BASE_URL = PROD_REST_SERVER;
+    public static final String BIRT_URL = PROD_BIRT_URL;
     /**
      * The newer versions of the REST interface encode the query PathParam elements (so as to allow for searches to
      * include characters like the semicolon). If this constant is true, the query elements will be encoded.
