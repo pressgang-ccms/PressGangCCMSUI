@@ -37,7 +37,7 @@ public class TranslatedTopicsFilteredResultsView extends BaseFilteredResultsView
             if (object == null) {
                 return null + "";
             }
-            return object.getItem().getRevision().toString();
+            return object.getItem().getTopicRevision().toString();
         }
     };
 
