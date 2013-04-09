@@ -26,9 +26,10 @@ public class StringConstantFilteredResultsAndDetailsView extends
 
 
     public StringConstantFilteredResultsAndDetailsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Categories());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.StringConstants());
         populateTopActionBar();
         addSpacerToShortcutPanels();
+        super.initialize(true);
     }
 
 
