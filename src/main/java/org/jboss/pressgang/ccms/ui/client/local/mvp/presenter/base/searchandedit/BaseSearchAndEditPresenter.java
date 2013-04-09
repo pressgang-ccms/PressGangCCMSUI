@@ -104,26 +104,31 @@ abstract public class BaseSearchAndEditPresenter<
             @NotNull final BaseSearchAndEditViewInterface display,
             @NotNull final BaseTemplateViewInterface waitDisplay,
             @NotNull final GetNewEntityCallback<T> getNewEntityCallback) {
+        try {
+            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.bindSearchAndEdit()");
 
-        super.bind(topicId, pageId, display);
+            super.bind(topicId, pageId, display);
 
-        this.entityPropertiesView = entityPropertiesView;
-        this.filteredResultsDisplay = filteredResultsDisplay;
-        this.filteredResultsComponent = filteredResultsComponent;
-        this.firstDisplayedView = firstDisplayedView;
-        this.display = display;
+            this.entityPropertiesView = entityPropertiesView;
+            this.filteredResultsDisplay = filteredResultsDisplay;
+            this.filteredResultsComponent = filteredResultsComponent;
+            this.firstDisplayedView = firstDisplayedView;
+            this.display = display;
 
-        filteredResultsDisplay.setViewShown(true);
-        display.setViewShown(true);
+            filteredResultsDisplay.setViewShown(true);
+            display.setViewShown(true);
 
-        display.displaySearchResultsView(filteredResultsDisplay);
+            display.displaySearchResultsView(filteredResultsDisplay);
 
-        bindResultsListRowClicks(getNewEntityCallback);
-        bindActionButtons();
-        bindFilteredResultsButtons();
+            bindResultsListRowClicks(getNewEntityCallback);
+            bindActionButtons();
+            bindFilteredResultsButtons();
 
-        loadMainSplitResize(mainSplitSizePreferenceKey);
-        bindMainSplitResize(mainSplitSizePreferenceKey);
+            loadMainSplitResize(mainSplitSizePreferenceKey);
+            bindMainSplitResize(mainSplitSizePreferenceKey);
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.bindSearchAndEdit()");
+        }
     }
 
     /**

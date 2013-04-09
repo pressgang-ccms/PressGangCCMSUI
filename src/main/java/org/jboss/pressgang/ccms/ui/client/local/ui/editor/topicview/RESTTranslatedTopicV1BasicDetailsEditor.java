@@ -85,7 +85,7 @@ public final class RESTTranslatedTopicV1BasicDetailsEditor extends Grid implemen
     public RESTTranslatedTopicV1BasicDetailsEditor(final boolean readOnly) {
         super(ROWS, COLS);
 
-        this.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_PANEL);
+        this.addStyleName(CSSConstants.TranslatedTopicView.TRANSLATED_TOPIC_VIEW_PANEL);
 
         topicId.setReadOnly(readOnly);
         topicRevision.setReadOnly(readOnly);

@@ -313,6 +313,11 @@ public interface CSSConstants {
 
     }
 
+    interface TranslatedTopicView {
+        String TRANSLATED_TOPIC_VIEW_PANEL = "TranslatedTopicViewPanel";
+
+    }
+
     /**
      *  Holds the styles that are applied to the topic's views.
      */
