@@ -32,6 +32,7 @@ public class BulkImportImpl extends DialogBox implements TopicFilteredResultsAnd
     private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
     private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
     @Inject private TopicTagsPresenter.Display tagsView;
+    private final TextArea commitMessage = new TextArea();
     private final DockLayoutPanel layout = new DockLayoutPanel(Style.Unit.EM);
 
     @NotNull
@@ -64,6 +65,12 @@ public class BulkImportImpl extends DialogBox implements TopicFilteredResultsAnd
         return tagsView;
     }
 
+    @NotNull
+    @Override
+    public TextArea getCommitMessage() {
+        return commitMessage;
+    }
+
 
     public BulkImportImpl() {
 
@@ -87,8 +94,15 @@ public class BulkImportImpl extends DialogBox implements TopicFilteredResultsAnd
             buttonPanel.add(this.cancel);
             buttonPanel.add(this.ok);
 
+            final HorizontalPanel logMessagePanel = new HorizontalPanel();
+            logMessagePanel.add(new Label(PressGangCCMSUI.INSTANCE.Message()));
+            logMessagePanel.add(commitMessage);
+
+            commitMessage.addStyleName(CSSConstants.ImportDialogs.IMPORT_DIALOG_MESSAGE);
+
             this.layout.addNorth(fileUploadExt, 3);
             this.layout.addSouth(buttonPanel, 3);
+            this.layout.addSouth(logMessagePanel, 5);
             this.layout.add(tagsView.getPanel());
 
             this.layout.setWidth(Constants.BULK_IMPORT_DIALOG_WIDTH);

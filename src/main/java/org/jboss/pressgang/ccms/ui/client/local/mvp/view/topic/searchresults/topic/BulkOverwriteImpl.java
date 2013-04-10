@@ -31,6 +31,7 @@ public class BulkOverwriteImpl extends DialogBox implements TopicFilteredResults
     private final FileUploadExt fileUploadExt = new FileUploadExt();
     private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
     private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
+    private final TextArea commitMessage = new TextArea();
     private final DockLayoutPanel layout = new DockLayoutPanel(Style.Unit.EM);
 
     @NotNull
@@ -57,6 +58,12 @@ public class BulkOverwriteImpl extends DialogBox implements TopicFilteredResults
         return cancel;
     }
 
+    @NotNull
+    @Override
+    public TextArea getCommitMessage() {
+        return commitMessage;
+    }
+
 
     public BulkOverwriteImpl() {
 
@@ -80,8 +87,15 @@ public class BulkOverwriteImpl extends DialogBox implements TopicFilteredResults
             buttonPanel.add(this.cancel);
             buttonPanel.add(this.ok);
 
+            final HorizontalPanel logMessagePanel = new HorizontalPanel();
+            logMessagePanel.add(new Label(PressGangCCMSUI.INSTANCE.Message()));
+            logMessagePanel.add(commitMessage);
+
+            commitMessage.addStyleName(CSSConstants.ImportDialogs.IMPORT_DIALOG_MESSAGE);
+
             this.layout.addNorth(fileUploadExt, 3);
-            this.layout.add(buttonPanel);
+            this.layout.addSouth(buttonPanel, 3);
+            this.layout.add(logMessagePanel);
 
             this.layout.setWidth(Constants.BULK_OVERWRITE_DIALOG_WIDTH);
             this.layout.setHeight(Constants.BULK_OVERWRITE_DIALOG_HEIGHT);
@@ -91,4 +105,6 @@ public class BulkOverwriteImpl extends DialogBox implements TopicFilteredResults
             LOGGER.log(Level.INFO, "EXIT BulkOverwriteImpl.postConstruct()");
         }
     }
+
+
 }
