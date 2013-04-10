@@ -285,6 +285,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 display.getBulkImport().getTagsView()
             ), display.getBulkImport().getTagsView());
 
+        /* Bind logic to the revisions buttons */
         bindViewTopicRevisionButton();
 
         /* When the topics have been loaded, display the first one */
@@ -1461,6 +1462,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         getTopicPropertyTagPresenter().getDisplay().setExistingChildrenProvider(getTopicPropertyTagPresenter().generateExistingProvider(getDisplayedTopic()));
 
                         switchView(topicRevisionsComponent.getDisplay());
+
+                        topicRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(topicRevisionsComponent.getProviderData().getItems(), topicRevisionsComponent.getProviderData().getSize(), topicRevisionsComponent.getProviderData().getStartRow());
                     } finally {
                         LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton() FieldUpdater.update()");
                     }
