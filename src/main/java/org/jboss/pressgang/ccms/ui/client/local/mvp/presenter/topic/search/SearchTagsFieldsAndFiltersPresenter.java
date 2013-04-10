@@ -351,42 +351,42 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
     private void bindSearchButtons() {
 
-        @NotNull final ClickHandler tagsHandler = new ClickHandler() {
+        final ClickHandler tagsHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 displayTags();
             }
         };
 
-        @NotNull final ClickHandler fieldsHandler = new ClickHandler() {
+        final ClickHandler fieldsHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 displayFields();
             }
         };
 
-        @NotNull final ClickHandler filtersHandler = new ClickHandler() {
+        final ClickHandler filtersHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 displayFilters();
             }
         };
 
-        @NotNull final ClickHandler localesHandler = new ClickHandler() {
+        final ClickHandler localesHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 displayLocales();
             }
         };
 
-        @NotNull final ClickHandler searchHandler = new ClickHandler() {
+        final ClickHandler searchHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 fieldsComponent.getDisplay().getDriver().flush();
                 tagsComponent.getDisplay().getDriver().flush();
                 localePresenter.getDisplay().getDriver().flush();
 
-                @NotNull final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
+                final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
                         + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
                         + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
 
@@ -398,7 +398,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             }
         };
 
-        @NotNull final ClickHandler bulkTaggingHandler = new ClickHandler() {
+        final ClickHandler bulkTaggingHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 fieldsComponent.getDisplay().getDriver().flush();
@@ -432,7 +432,29 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             }
         };
 
+        final ClickHandler downloadZipHandler = new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
+                        + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
+                        + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
+                Window.open(Constants.REST_SERVER + "/1/topics/get/zip/query;" + query, "Zip Download", "");
+            }
+        };
+
+        final ClickHandler downloadCsvHandler = new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
+                        + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
+                        + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
+                Window.open(Constants.REST_SERVER + "/1/topics/get/csv/query;" + query, "Csv Download", "");
+            }
+        };
+
         display.getSearchTopics().addClickHandler(searchHandler);
+        display.getDownloadZip().addClickHandler(downloadZipHandler);
+        display.getDownloadCSV().addClickHandler(downloadCsvHandler);
         display.getTagsSearch().addClickHandler(tagsHandler);
         display.getFields().addClickHandler(fieldsHandler);
         display.getFilters().addClickHandler(filtersHandler);
@@ -610,6 +632,10 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
     public interface Display extends BaseTemplateViewInterface {
         PushButton getSearchTopics();
+
+        PushButton getDownloadZip();
+
+        PushButton getDownloadCSV();
 
         PushButton getApplyBulkTags();
 

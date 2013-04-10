@@ -108,6 +108,12 @@ public interface PressGangCCMSUI extends Constants {
     String Search();
 
     @NotNull
+    String DownloadZip();
+
+    @NotNull
+    String DownloadCSV();
+
+    @NotNull
     String ApplyBulkTags();
 
     @NotNull
