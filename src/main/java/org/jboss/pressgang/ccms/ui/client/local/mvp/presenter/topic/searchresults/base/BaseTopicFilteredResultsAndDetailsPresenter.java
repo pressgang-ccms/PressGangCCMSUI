@@ -29,9 +29,6 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicSourceURLsVi
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicXMLView;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
-import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;

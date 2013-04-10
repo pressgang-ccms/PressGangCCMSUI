@@ -120,7 +120,7 @@ implements BaseTemplatePresenterInterface {
                 /* Sync the UI to the underlying object */
                 stringConstantPresenter.getDisplay().getDriver().flush();
 
-                @NotNull final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, Display>(display,
+                final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, Display>(display,
                         new BaseRestCallback.SuccessAction<RESTStringConstantV1, Display>() {
                             @Override
                             public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final Display display) {
@@ -145,7 +145,7 @@ implements BaseTemplatePresenterInterface {
 
                     if (hasUnsavedChanges()) {
 
-                        @NotNull final RESTStringConstantV1 project = new RESTStringConstantV1();
+                        final RESTStringConstantV1 project = new RESTStringConstantV1();
                         project.setId(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
                         project.explicitSetName(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
                         project.explicitSetValue(stringConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getValue());
