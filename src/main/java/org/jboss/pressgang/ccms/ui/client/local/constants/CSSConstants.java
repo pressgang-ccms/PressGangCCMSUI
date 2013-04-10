@@ -94,6 +94,7 @@ public interface CSSConstants {
 
     interface ImportDialogs {
         String IMPORT_DIALOG_MESSAGE = "ImportDialogMessage";
+        String IMPORT_DIALOG_MESSAGE_PANEL = "ImportDialogMessagePanel";
     }
 
     /**

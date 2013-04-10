@@ -887,7 +887,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         display.getBulkImport().getTagsView().getDriver().flush();
 
                         if (display.getBulkImport().getFiles().getFiles().getLength() != 0) {
-                            createNewTopic(false, 0, display.getBulkImport().getFiles().getFiles(), new ArrayList<Integer>(), new ArrayList<String>());
+                            createNewTopic(false, 0, display.getBulkImport().getFiles().getFiles(), new ArrayList<Integer>(), new ArrayList<String>(), display.getBulkImport().getCommitMessage().getText());
                         }
 
                     } finally {
@@ -921,7 +921,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     try
                     {
                         if (display.getBulkOverwrite().getFiles().getFiles().getLength() != 0) {
-                            createNewTopic(true, 0, display.getBulkOverwrite().getFiles().getFiles(), new ArrayList<Integer>(), new ArrayList<String>());
+                            createNewTopic(true, 0, display.getBulkOverwrite().getFiles().getFiles(), new ArrayList<Integer>(), new ArrayList<String>(), display.getBulkOverwrite().getCommitMessage().getText());
                         }
 
                     } finally {
@@ -965,8 +965,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * @param files the list of files to process
      * @param ids the ids of the topics that have been modified
      * @param failedFiled the file names of files that were not processed
+     * @param logMessage The message to use when overwriting topics
      */
-    private void createNewTopic(final boolean overwrite, final int index, @NotNull final FileList files, @NotNull final List<Integer> ids, @NotNull final List<String> failedFiled) {
+    private void createNewTopic(final boolean overwrite, final int index, @NotNull final FileList files, @NotNull final List<Integer> ids, @NotNull final List<String> failedFiled, @NotNull final String logMessage) {
         if (index >= files.getLength()) {
 
             final StringBuilder message = new StringBuilder();
@@ -1025,7 +1026,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 public void onError(@NotNull final org.vectomatic.file.events.ErrorEvent event) {
                     display.removeWaitOperation();
                     failedFiled.add(files.getItem(index).getName());
-                    createNewTopic(overwrite, index + 1, files, ids, failedFiled);
+                    createNewTopic(overwrite, index + 1, files, ids, failedFiled, logMessage);
                 }
             });
 
@@ -1066,19 +1067,19 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                             getSearchResultsComponent().getProviderData().setSize(getSearchResultsComponent().getProviderData().getItems().size());
                                         }
 
-                                        createNewTopic(overwrite, index + 1, files, ids, failedFiled);
+                                        createNewTopic(overwrite, index + 1, files, ids, failedFiled, logMessage);
                                     }
                                 }, new BaseRestCallback.FailureAction<Display>() {
                             @Override
                             public void doFailureAction(@NotNull final Display display) {
-                                createNewTopic(overwrite, index + 1, files, ids, failedFiled);
+                                createNewTopic(overwrite, index + 1, files, ids, failedFiled, logMessage);
                             }
                         });
 
                         if (overwrite) {
-                            RESTCalls.saveTopic(callback, newTopic, PressGangCCMSUI.INSTANCE.BulkTopicOverwriteMessage(), (int)ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString());
+                            RESTCalls.saveTopic(callback, newTopic, logMessage, (int)ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString());
                         } else {
-                            RESTCalls.createTopic(callback, newTopic);
+                            RESTCalls.createTopic(callback, newTopic, logMessage, (int)ServiceConstants.MAJOR_CHANGE, ServiceConstants.NULL_USER_ID.toString());
                         }
                     } finally {
                         display.removeWaitOperation();
@@ -1090,7 +1091,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 if (overwriteFilenameAsInt(files.getItem(index).getName()) == null) {
                     display.removeWaitOperation();
                     failedFiled.add(files.getItem(index).getName());
-                    createNewTopic(overwrite, index + 1, files, ids, failedFiled);
+                    createNewTopic(overwrite, index + 1, files, ids, failedFiled, logMessage);
                 } else {
                     reader.readAsBinaryString(files.getItem(index));
                 }

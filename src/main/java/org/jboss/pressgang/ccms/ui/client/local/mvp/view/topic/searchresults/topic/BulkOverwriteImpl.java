@@ -91,6 +91,7 @@ public class BulkOverwriteImpl extends DialogBox implements TopicFilteredResults
             logMessagePanel.add(new Label(PressGangCCMSUI.INSTANCE.Message()));
             logMessagePanel.add(commitMessage);
 
+            logMessagePanel.addStyleName(CSSConstants.ImportDialogs.IMPORT_DIALOG_MESSAGE_PANEL);
             commitMessage.addStyleName(CSSConstants.ImportDialogs.IMPORT_DIALOG_MESSAGE);
 
             this.layout.addNorth(fileUploadExt, 3);
