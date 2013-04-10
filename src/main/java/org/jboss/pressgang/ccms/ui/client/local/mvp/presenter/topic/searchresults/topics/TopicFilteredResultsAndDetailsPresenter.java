@@ -234,8 +234,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         super.bindSearchAndEdit(topicId, pageId, getMainResizePreferencesKey(), getTopicXMLComponent().getDisplay(), topicViewComponent.getDisplay(),
                 getSearchResultsComponent().getDisplay(), getSearchResultsComponent(), getDisplay(), getDisplay(), getNewEntityCallback);
 
-        this.topicRevisionsComponent.getDisplay().setProvider(generateTopicRevisionsListProvider());
-
         /* Bind the add button in the tags view */
         bindNewTagListBoxes(new AddTagClickHandler(
                 new ReturnCurrentTopic() {
@@ -492,25 +490,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             checkState(getSearchResultsComponent().getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
             checkState(getSearchResultsComponent().getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
 
-
-            /* A callback to respond to a request for a topic with the revisions expanded */
-            @NotNull final RESTCalls.RESTCallback<RESTTopicV1> topicWithRevisionsCallback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
-                    topicRevisionsComponent.getDisplay(),
-                    new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
-                        @Override
-                        public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final TopicRevisionsPresenter.Display display) {
-
-                            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-                            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
-
-                            getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().setRevisions(retValue.getRevisions());
-
-                            /* refresh the list */
-                            topicRevisionsComponent.getDisplay().getProvider().displayNewFixedList(retValue.getRevisions().getItems());
-                        }
-                    });
-
-            RESTCalls.getTopicWithRevisions(topicWithRevisionsCallback, getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getId());
+            this.topicRevisionsComponent.getDisplay().setProvider(this.topicRevisionsComponent.generateListProvider(getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getId(), display));
         }
     }
 
@@ -1274,26 +1254,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     /**
-     * @return A provider to be used for the topic revisions display list
-     */
-    @org.jetbrains.annotations.Nullable
-    private EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateTopicRevisionsListProvider() {
-        @NotNull final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
-            @Override
-            protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> display) {
-                if (TopicFilteredResultsAndDetailsPresenter.this.getSearchResultsComponent().getProviderData().getDisplayedItem() != null
-                        && TopicFilteredResultsAndDetailsPresenter.this.getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevisions() != null
-                        && TopicFilteredResultsAndDetailsPresenter.this.getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevisions().getItems() != null) {
-                    displayNewFixedList(TopicFilteredResultsAndDetailsPresenter.this.getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevisions().getItems());
-                } else {
-                    resetProvider();
-                }
-            }
-        };
-        return provider;
-    }
-
-    /**
      * Add behaviour to the tag delete buttons
      */
     private void bindTagEditingButtons() {
@@ -1498,7 +1458,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         /* Load the tags and bugs */
                         loadTagsAndBugs();
 
-                        topicRevisionsComponent.getDisplay().setProvider(generateTopicRevisionsListProvider());
                         getTopicPropertyTagPresenter().getDisplay().setExistingChildrenProvider(getTopicPropertyTagPresenter().generateExistingProvider(getDisplayedTopic()));
 
                         switchView(topicRevisionsComponent.getDisplay());
