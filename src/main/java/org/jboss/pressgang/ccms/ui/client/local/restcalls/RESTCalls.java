@@ -66,14 +66,24 @@ public final class RESTCalls {
      */
     private static final String PROJECT_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTProjectV1.TAGS_NAME + "\"}}";
     /**
+     * The required expansion details for a topic. This is used when loading a topic for the first time
+     */
+    private static final String TOPIC_EXPANSION_WO_REVISIONS =
+            "{\"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
+                    "]}";
+    /**
      * The required expansion details for a topic. The revisions are required so we can check to see if
      * the last revision was the one we edited. If not, there was a conflicting save.
+     *
+     * We only need the last 2 revisions to check for save conflicts.
      */
     private static final String TOPIC_EXPANSION =
             "{\"branches\":[" +
                     "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
                     "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}," +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\"}}" +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}" +
                     "]}";
     /**
      * The required expansion details for a filter.
@@ -393,7 +403,7 @@ public final class RESTCalls {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).getJSONTopic(id, TOPIC_EXPANSION);
+                createRestMethod(callback).getJSONTopic(id, TOPIC_EXPANSION_WO_REVISIONS);
             }
         });
     }

@@ -92,6 +92,10 @@ public interface CSSConstants {
         String HELP_CONTENTS = "HelpContents";
     }
 
+    interface ImportDialogs {
+        String IMPORT_DIALOG_MESSAGE = "ImportDialogMessage";
+    }
+
     /**
      * These styles are applied to the topic and translated topic search views.
      */

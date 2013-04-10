@@ -1,3 +1,7 @@
+.ImportDialogMessage {
+    width: 100%
+}
+
 .BulkImageUploadDescriptionField {
     width: 320px;
     height: 5em;

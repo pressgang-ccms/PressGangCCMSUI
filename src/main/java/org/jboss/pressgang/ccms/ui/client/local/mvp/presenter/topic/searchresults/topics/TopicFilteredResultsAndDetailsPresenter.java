@@ -18,6 +18,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
@@ -216,7 +217,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                                 checkArgument(retValue.getSourceUrls_OTM() != null, "The initially retrieved entity should have an expanded source urls collection");
                                 checkArgument(retValue.getProperties() != null, "The initially retrieved entity should have an expanded properties collection");
-                                checkArgument(retValue.getRevisions() != null, "The initially retrieved entity should have an expanded revisions collection");
 
                                 displayCallback.displayNewEntity(retValue);
                             } finally {
@@ -654,9 +654,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             newTopic.explicitSetSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
                             newTopic.explicitSetTags(new RESTTagCollectionV1());
 
-                                /*
-                                    Only assign those modified children to the topic that is to be added/updated
-                                 */
+                            /*
+                                Only assign those modified children to the topic that is to be added/updated
+                            */
                             LOGGER.log(Level.INFO, "Copying modified collections");
                             newTopic.getProperties().setItems(sourceTopic.getProperties().returnDeletedAddedAndUpdatedCollectionItems());
                             if (sourceTopic.getSourceUrls_OTM() != null && sourceTopic.getSourceUrls_OTM().getItems() != null) {
@@ -666,7 +666,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                             /*
                                 Assume all the text fields have been updated
-                             */
+                            */
                             LOGGER.log(Level.INFO, "Copying modified fields");
                             newTopic.setId(sourceTopic.getId());
                             newTopic.explicitSetDescription(sourceTopic.getDescription());
@@ -775,8 +775,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                         }
 
                                                         /*
-                                                            Otherwise we need to make sure that the second last revision matches the revision
-                                                             of the topic we were editing.
+                                                            Otherwise we need to make sure that the second last revision matches the revision of the topic we were editing.
                                                          */
                                                         if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2) {
                                                             /* Get the second last revision (the last one is the current one) */
@@ -2343,6 +2342,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         @NotNull FileUploadExt getFiles();
         @NotNull PushButton getOK();
         @NotNull PushButton getCancel();
+        @NotNull TextArea getCommitMessage();
     }
 
     /**
@@ -2350,6 +2350,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      */
     public interface BulkImport extends BulkOverwrite {
         @NotNull TopicTagsPresenter.Display getTagsView();
+
     }
 
 
