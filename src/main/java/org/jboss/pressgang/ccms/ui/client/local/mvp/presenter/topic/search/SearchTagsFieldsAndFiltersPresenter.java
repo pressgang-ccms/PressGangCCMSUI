@@ -435,20 +435,28 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         final ClickHandler downloadZipHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
+                fieldsComponent.getDisplay().getDriver().flush();
+                tagsComponent.getDisplay().getDriver().flush();
+                localePresenter.getDisplay().getDriver().flush();
+
                 final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
                         + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
                         + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
-                Window.open(Constants.REST_SERVER + "/1/topics/get/zip/query;" + query, "Zip Download", "");
+                Window.open(Constants.REST_SERVER + "/1/topics/get/zip/" + query, "Zip Download", "");
             }
         };
 
         final ClickHandler downloadCsvHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
+                fieldsComponent.getDisplay().getDriver().flush();
+                tagsComponent.getDisplay().getDriver().flush();
+                localePresenter.getDisplay().getDriver().flush();
+
                 final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
                         + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
                         + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
-                Window.open(Constants.REST_SERVER + "/1/topics/get/csv/query;" + query, "Csv Download", "");
+                Window.open(Constants.REST_SERVER + "/1/topics/get/csv/" + query, "Csv Download", "");
             }
         };
 
