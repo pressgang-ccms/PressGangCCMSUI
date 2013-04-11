@@ -77,6 +77,7 @@ import org.vectomatic.file.FileReader;
 import org.vectomatic.file.FileUploadExt;
 import org.vectomatic.file.events.*;
 import org.zanata.rest.ElemSet;
+import sun.misc.PerformanceLogger;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -526,10 +527,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.getDisplayedTopic()");
 
-            final RESTTopicV1 sourceTopic = topicRevisionsComponent.getDisplay().getRevisionTopic() == null ? this.getSearchResultsComponent()
-                    .getProviderData().getDisplayedItem().getItem() : topicRevisionsComponent.getDisplay().getRevisionTopic();
+            RESTTopicV1 sourceTopic = null;
 
-            return sourceTopic == null ? null : sourceTopic;
+            if (topicRevisionsComponent.getDisplay().getRevisionTopic() != null) {
+                sourceTopic = topicRevisionsComponent.getDisplay().getRevisionTopic();
+            } else if (this.getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
+                sourceTopic =this.getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
+            }
+
+            return sourceTopic;
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.getDisplayedTopic()");
         }
@@ -1196,11 +1202,19 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 if (queryString.startsWith(Constants.TOPIC_VIEW_DATA_PREFIX)) {
                     topicRevisionViewData.clear();
 
-                    final String topicViewDataRegex = "^" + Constants.TOPIC_VIEW_DATA_PREFIX + "(.*?)(" + Constants.QUERY_PATH_SEGMENT_PREFIX + ")?";
+                    final String topicViewDataRegex = Constants.TOPIC_VIEW_DATA_PREFIX + "(.*?)(;" + Constants.QUERY_PATH_SEGMENT_PREFIX + ")";
+
                     final RegExp regExp = RegExp.compile(topicViewDataRegex);
                     final MatchResult matcher = regExp.exec(queryString);
-                    if (matcher.getGroupCount() >= 2) {
+
+                    if (matcher != null && matcher.getGroupCount() >= 2) {
+
+                        for (int i = 0; i < matcher.getGroupCount(); ++i) {
+                            LOGGER.log(Level.INFO, matcher.getGroup(i));
+                        }
+
                         final String topicViewData = matcher.getGroup(1);
+
                         final String[] topicViewDataElements = topicViewData.split(";");
                         for (int i = 0; i < topicViewDataElements.length; ++i) {
                             final String[] details = topicViewDataElements[i].split("=");
@@ -1213,7 +1227,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             }
                         }
 
-                        queryString = queryString.replaceFirst(topicViewData, "");
+                        queryString = queryString.replaceFirst(Constants.TOPIC_VIEW_DATA_PREFIX + topicViewData + ";", "");
                     }
                 }
 

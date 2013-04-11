@@ -56,6 +56,14 @@ public final class Constants {
      */
     public static final String CREATE_PATH_SEGMENT_PREFIX = CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON + ";";
     /**
+     * This path segment defines the initial topic view state.
+     */
+    public static final String TOPIC_VIEW_DATA_PREFIX_WO_SEMICOLON = "topicViewData";
+    /**
+     * This path segment defines the initial topic view state.
+     */
+    public static final String TOPIC_VIEW_DATA_PREFIX = TOPIC_VIEW_DATA_PREFIX_WO_SEMICOLON + ";";
+    /**
      * The size of the split panels.
      */
     public static final int SPLIT_PANEL_SIZE = 300;
