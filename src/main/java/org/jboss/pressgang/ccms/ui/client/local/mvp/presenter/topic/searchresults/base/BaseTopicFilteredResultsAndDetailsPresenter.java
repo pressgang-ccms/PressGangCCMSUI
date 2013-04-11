@@ -470,7 +470,10 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      */
     protected abstract void postEnableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView);
 
-    /* Update the page name */
+    /**
+     *  Update the page name.
+     *  @param displayedView the currently displayed view.
+     */
     private void updatePageTitle(@NotNull final BaseTemplateViewInterface displayedView) {
         try {
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.updatePageTitle()");
@@ -478,13 +481,19 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
             checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
 
-            @NotNull final StringBuilder title = new StringBuilder(displayedView.getPageName());
-            @NotNull final String id = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId() == null ?
-                    PressGangCCMSUI.INSTANCE.New() : getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId().toString();
-            @NotNull final String displayTitle = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTitle() == null ?
-                    "" : getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTitle();
+            final StringBuilder title = new StringBuilder(displayedView.getPageName());
+            final StringBuilder id = new StringBuilder(getDisplayedTopic().getId() == null ? PressGangCCMSUI.INSTANCE.New() : getDisplayedTopic().getId().toString());
+
+            /*
+                Test to see if we are looking at a specific revision. If so, add the revision to the page title.
+             */
+            if (!getDisplayedTopic().getRevision().equals(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision())) {
+               id.append("-" + getDisplayedTopic().getRevision());
+            }
+
+            final String displayTitle = getDisplayedTopic().getTitle() == null ? "" : getDisplayedTopic().getTitle();
             if (this.getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
-                title.append(": [" + id + "] " + displayTitle);
+                title.append(": [" + id.toString() + "] " + displayTitle);
             }
             getDisplay().getPageTitle().setText(title.toString());
         } finally {

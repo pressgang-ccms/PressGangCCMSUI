@@ -1555,13 +1555,16 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 topicRevisionsComponent.getDisplay().setRevisionTopic(revisionTopic);
             }
 
+            /* Initialize the views with the new topic being displayed */
             initializeViews();
 
             /* Load the tags and bugs */
             loadTagsAndBugs();
 
+            /* Redisplay the list of property tags */
             getTopicPropertyTagPresenter().getDisplay().setExistingChildrenProvider(getTopicPropertyTagPresenter().generateExistingProvider(getDisplayedTopic()));
 
+            /* Display the revisions view (which will also update buttons like Save) */
             switchView(topicRevisionsComponent.getDisplay());
 
         } finally {
