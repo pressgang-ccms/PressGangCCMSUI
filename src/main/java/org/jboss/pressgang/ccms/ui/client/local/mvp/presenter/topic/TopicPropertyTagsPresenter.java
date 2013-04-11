@@ -206,7 +206,6 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
                     checkState(entity.getProperties() != null, "The entity should have a collection of properties");
                     checkState(getExistingProviderData().getItems() != null, "The existing data provider should have a valid collection of items");
 
-                    LOGGER.log(Level.INFO, "Found " + entity.getProperties().getItems().size() + " Property Tags.");
                     /* Don't display removed tags */
                     for (final RESTAssignedPropertyTagCollectionItemV1 propertyTagInTopic : entity.getProperties().returnExistingAddedAndUpdatedCollectionItems()) {
                         getExistingProviderData().getItems().add(propertyTagInTopic);

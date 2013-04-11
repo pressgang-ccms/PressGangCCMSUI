@@ -511,6 +511,18 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             @Override
                             public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
                                 displayRevision(retValue);
+
+                                /*
+                                    If the revision presenter has a valid provider data, then it has loaded and displayed
+                                    the revisions (loading this revision and the general revision list are async processes,
+                                     so we don't know which will finish fisrt).
+
+                                     If that is the case, we need to redisplay the list to reflect the fact that we are displaying
+                                     a new revision.
+                                 */
+                                if (topicRevisionsComponent.getProviderData().isValid()) {
+                                    topicRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(topicRevisionsComponent.getProviderData().getItems(), topicRevisionsComponent.getProviderData().getSize(), topicRevisionsComponent.getProviderData().getStartRow());
+                                }
                             }
                         });
 
@@ -521,7 +533,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     }
 
-    @org.jetbrains.annotations.Nullable
+    @Nullable
     @Override
     protected RESTTopicV1 getDisplayedTopic() {
         try {
@@ -1513,9 +1525,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
                         checkState(getDisplayedTopic() != null, "There should be a displayed item.");
 
-                        switchView(topicRevisionsComponent.getDisplay());
-
                         displayRevision(revisionTopic.getItem());
+
+                        topicRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(topicRevisionsComponent.getProviderData().getItems(), topicRevisionsComponent.getProviderData().getSize(), topicRevisionsComponent.getProviderData().getStartRow());
                     } finally {
                         LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton() FieldUpdater.update()");
                     }
@@ -1532,22 +1544,29 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * @param revisionTopic The revision to be displayed.
      */
     private void displayRevision(@NotNull final RESTTopicV1 revisionTopic) {
-        /* Reset the reference to the revision topic */
-        viewLatestTopicRevision();
+        try {
+            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.displayRevision()");
 
-        if (!revisionTopic.getRevision().equals(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision())) {
-                            /* Reset the reference to the revision topic */
-            topicRevisionsComponent.getDisplay().setRevisionTopic(revisionTopic);
+            /* Reset the reference to the revision topic */
+            viewLatestTopicRevision();
+
+            if (!revisionTopic.getRevision().equals(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision())) {
+                /* Reset the reference to the revision topic */
+                topicRevisionsComponent.getDisplay().setRevisionTopic(revisionTopic);
+            }
+
+            initializeViews();
+
+            /* Load the tags and bugs */
+            loadTagsAndBugs();
+
+            getTopicPropertyTagPresenter().getDisplay().setExistingChildrenProvider(getTopicPropertyTagPresenter().generateExistingProvider(getDisplayedTopic()));
+
+            switchView(topicRevisionsComponent.getDisplay());
+
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.displayRevision()");
         }
-
-        initializeViews();
-
-        /* Load the tags and bugs */
-        loadTagsAndBugs();
-
-        getTopicPropertyTagPresenter().getDisplay().setExistingChildrenProvider(getTopicPropertyTagPresenter().generateExistingProvider(getDisplayedTopic()));
-
-        topicRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(topicRevisionsComponent.getProviderData().getItems(), topicRevisionsComponent.getProviderData().getSize(), topicRevisionsComponent.getProviderData().getStartRow());
     }
 
     @Override

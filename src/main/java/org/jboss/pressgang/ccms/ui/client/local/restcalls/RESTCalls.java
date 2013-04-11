@@ -512,11 +512,10 @@ public final class RESTCalls {
     }
 
     public static void getTopicRevision(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id, @NotNull final Integer revision) {
-        /* Expand the categories and projects in the tags */
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).getJSONTopicRevision(id, revision, "");
+                createRestMethod(callback).getJSONTopicRevision(id, revision, TOPIC_EXPANSION_WO_REVISIONS);
             }
         });
     }
