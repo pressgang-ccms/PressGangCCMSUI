@@ -46,12 +46,12 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         /**
          * @return The currently selected revision topic.
          */
-        RESTTopicCollectionItemV1 getRevisionTopic();
+        RESTTopicV1 getRevisionTopic();
 
         /**
          * @param revisionTopic The currently selected revision topic.
          */
-        void setRevisionTopic(RESTTopicCollectionItemV1 revisionTopic);
+        void setRevisionTopic(RESTTopicV1 revisionTopic);
     }
 
     /**

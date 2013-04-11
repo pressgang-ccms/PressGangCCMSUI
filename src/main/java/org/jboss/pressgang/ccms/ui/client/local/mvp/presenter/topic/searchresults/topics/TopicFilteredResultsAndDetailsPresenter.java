@@ -501,10 +501,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.getDisplayedTopic()");
 
-            final RESTTopicCollectionItemV1 sourceTopic = topicRevisionsComponent.getDisplay().getRevisionTopic() == null ? this.getSearchResultsComponent()
-                    .getProviderData().getDisplayedItem() : topicRevisionsComponent.getDisplay().getRevisionTopic();
+            final RESTTopicV1 sourceTopic = topicRevisionsComponent.getDisplay().getRevisionTopic() == null ? this.getSearchResultsComponent()
+                    .getProviderData().getDisplayedItem().getItem() : topicRevisionsComponent.getDisplay().getRevisionTopic();
 
-            return sourceTopic == null ? null : sourceTopic.getItem();
+            return sourceTopic == null ? null : sourceTopic;
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.getDisplayedTopic()");
         }
@@ -1446,24 +1446,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
                         checkState(getDisplayedTopic() != null, "There should be a displayed item.");
 
-                        /* Reset the reference to the revision topic */
-                        viewLatestTopicRevision();
-
-                        if (!revisionTopic.getItem().getRevision().equals(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision())) {
-                            /* Reset the reference to the revision topic */
-                            topicRevisionsComponent.getDisplay().setRevisionTopic(revisionTopic);
-                        }
-
-                        initializeViews();
-
-                        /* Load the tags and bugs */
-                        loadTagsAndBugs();
-
-                        getTopicPropertyTagPresenter().getDisplay().setExistingChildrenProvider(getTopicPropertyTagPresenter().generateExistingProvider(getDisplayedTopic()));
-
                         switchView(topicRevisionsComponent.getDisplay());
 
-                        topicRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(topicRevisionsComponent.getProviderData().getItems(), topicRevisionsComponent.getProviderData().getSize(), topicRevisionsComponent.getProviderData().getStartRow());
+                        displayRevision(revisionTopic.getItem());
                     } finally {
                         LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton() FieldUpdater.update()");
                     }
@@ -1472,6 +1457,30 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         } finally {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindViewTopicRevisionButton()");
         }
+    }
+
+    /**
+     * Displays a revision of a topic. This can be called when a revision is selected to be displayed, or if
+     * a particular revision is set as the default to be displayed.
+     * @param revisionTopic The revision to be displayed.
+     */
+    private void displayRevision(@NotNull final RESTTopicV1 revisionTopic) {
+        /* Reset the reference to the revision topic */
+        viewLatestTopicRevision();
+
+        if (!revisionTopic.getRevision().equals(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision())) {
+                            /* Reset the reference to the revision topic */
+            topicRevisionsComponent.getDisplay().setRevisionTopic(revisionTopic);
+        }
+
+        initializeViews();
+
+        /* Load the tags and bugs */
+        loadTagsAndBugs();
+
+        getTopicPropertyTagPresenter().getDisplay().setExistingChildrenProvider(getTopicPropertyTagPresenter().generateExistingProvider(getDisplayedTopic()));
+
+        topicRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(topicRevisionsComponent.getProviderData().getItems(), topicRevisionsComponent.getProviderData().getSize(), topicRevisionsComponent.getProviderData().getStartRow());
     }
 
     @Override
