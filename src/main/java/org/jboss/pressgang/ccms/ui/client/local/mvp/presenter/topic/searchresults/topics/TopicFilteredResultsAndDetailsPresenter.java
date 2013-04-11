@@ -11,6 +11,8 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.regexp.shared.MatchResult;
+import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
@@ -180,6 +182,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * true after the topics have been loaded
      */
     private boolean topicListLoaded = false;
+
+    private final Map<Integer, Integer> topicRevisionViewData = new HashMap<Integer, Integer>();
 
     @NotNull
     @Override
@@ -490,9 +494,30 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             checkState(getSearchResultsComponent().getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
             checkState(getSearchResultsComponent().getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
+            checkState(getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getId() != null, "The selected collection item to reference a valid entity with a valid ID.");
 
             this.topicRevisionsComponent.getDisplay().setProvider(this.topicRevisionsComponent.generateListProvider(getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getId(), display));
+
+            /*
+                Check to see if there is any view data associated with this topic
+             */
+            final Integer topicId =  this.getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getId();
+            if (this.topicRevisionViewData.containsKey(topicId)){
+                final Integer topicRevision = topicRevisionViewData.get(topicId);
+
+                final BaseRestCallback<RESTTopicV1, Display> callback = new BaseRestCallback<RESTTopicV1, Display>(display,
+                        new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
+                            @Override
+                            public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
+                                displayRevision(retValue);
+                            }
+                        });
+
+                RESTCalls.getTopicRevision(callback, topicId, topicRevision);
+            }
         }
+
+
     }
 
     @org.jetbrains.annotations.Nullable
@@ -1161,15 +1186,43 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.parseToken()");
 
-            setQueryString(removeHistoryToken(historyToken, TopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN));
+            String queryString = removeHistoryToken(historyToken, TopicFilteredResultsAndDetailsPresenter.HISTORY_TOKEN);
+            setQueryString(queryString);
 
-            if (getQueryString().startsWith(Constants.CREATE_PATH_SEGMENT_PREFIX)) {
+            if (queryString.startsWith(Constants.CREATE_PATH_SEGMENT_PREFIX)) {
                 startWithNewTopic = true;
                 setQueryString(null);
-            } else if (!getQueryString().startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
+            } else {
+                if (queryString.startsWith(Constants.TOPIC_VIEW_DATA_PREFIX)) {
+                    topicRevisionViewData.clear();
+
+                    final String topicViewDataRegex = "^" + Constants.TOPIC_VIEW_DATA_PREFIX + "(.*?)(" + Constants.QUERY_PATH_SEGMENT_PREFIX + ")?";
+                    final RegExp regExp = RegExp.compile(topicViewDataRegex);
+                    final MatchResult matcher = regExp.exec(queryString);
+                    if (matcher.getGroupCount() >= 2) {
+                        final String topicViewData = matcher.getGroup(1);
+                        final String[] topicViewDataElements = topicViewData.split(";");
+                        for (int i = 0; i < topicViewDataElements.length; ++i) {
+                            final String[] details = topicViewDataElements[i].split("=");
+                            if (details.length == 2) {
+                                try {
+                                    topicRevisionViewData.put(Integer.parseInt(details[0]), Integer.parseInt(details[1]));
+                                } catch (@NotNull final NumberFormatException ex) {
+                                    // A badly formed url. Ignore this.
+                                }
+                            }
+                        }
+
+                        queryString = queryString.replaceFirst(topicViewData, "");
+                    }
+                }
+
+                if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
                 /* Make sure that the query string has at least the prefix */
-                setQueryString(Constants.QUERY_PATH_SEGMENT_PREFIX);
+                    setQueryString(Constants.QUERY_PATH_SEGMENT_PREFIX);
+                }
             }
+
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.parseToken()");
         }
