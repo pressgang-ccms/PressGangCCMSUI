@@ -12,6 +12,11 @@ public final class Constants {
     public static final String VERSION = "201304111005";
 
     /**
+     * The prefix used to identify a topic's initial revision
+     */
+    public static final String REVISION_TOPIC_VIEW_DATA_PREFIX = "r:";
+
+    /**
      * The sort order to apply to a newly added child.
      */
     public static final int NEW_CHILD_SORT_ORDER = 0;

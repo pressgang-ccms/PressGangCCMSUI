@@ -1232,7 +1232,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             final String[] details = topicViewDataElements[i].split("=");
                             if (details.length == 2) {
                                 try {
-                                    topicRevisionViewData.put(Integer.parseInt(details[0]), Integer.parseInt(details[1]));
+                                    if (details[1].startsWith(Constants.REVISION_TOPIC_VIEW_DATA_PREFIX)) {
+                                        topicRevisionViewData.put(Integer.parseInt(details[0]), Integer.parseInt(details[1].replaceFirst(Constants.REVISION_TOPIC_VIEW_DATA_PREFIX, "")));
+                                    }
                                 } catch (@NotNull final NumberFormatException ex) {
                                     // A badly formed url. Ignore this.
                                 }
