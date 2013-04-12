@@ -1212,6 +1212,18 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 setQueryString(null);
             } else {
                 if (queryString.startsWith(Constants.TOPIC_VIEW_DATA_PREFIX)) {
+
+                    /*
+                        Topic view data is in the form of:
+                        topicViewData;1234=r:321234
+
+                        Where 1234 is the topic id, r: indicates that a particular revision should be displayed, and 321234
+                         is the revision.
+
+                         In future more view data could be added with a comma separated list like  maybe
+                         topicViewData;1234=r:321234,v:Properties
+                     */
+
                     topicRevisionViewData.clear();
 
                     final String topicViewDataRegex = Constants.TOPIC_VIEW_DATA_PREFIX + "(.*?)(;" + Constants.QUERY_PATH_SEGMENT_PREFIX + ")";
@@ -1232,8 +1244,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             final String[] details = topicViewDataElements[i].split("=");
                             if (details.length == 2) {
                                 try {
-                                    if (details[1].startsWith(Constants.REVISION_TOPIC_VIEW_DATA_PREFIX)) {
-                                        topicRevisionViewData.put(Integer.parseInt(details[0]), Integer.parseInt(details[1].replaceFirst(Constants.REVISION_TOPIC_VIEW_DATA_PREFIX, "")));
+                                    final Integer topicId = Integer.parseInt(details[0]);
+                                    final String[] settings =  details[1].split(",");
+
+                                    for (final String setting : settings) {
+                                        if (setting.startsWith(Constants.REVISION_TOPIC_VIEW_DATA_PREFIX)) {
+                                            topicRevisionViewData.put(topicId, Integer.parseInt(setting.replaceFirst(Constants.REVISION_TOPIC_VIEW_DATA_PREFIX, "")));
+                                        }
                                     }
                                 } catch (@NotNull final NumberFormatException ex) {
                                     // A badly formed url. Ignore this.
