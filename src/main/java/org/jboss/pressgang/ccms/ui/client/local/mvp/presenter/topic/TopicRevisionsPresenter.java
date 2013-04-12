@@ -4,18 +4,26 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.view.client.HasData;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
+import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
@@ -38,12 +46,12 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         /**
          * @return The currently selected revision topic.
          */
-        RESTTopicCollectionItemV1 getRevisionTopic();
+        RESTTopicV1 getRevisionTopic();
 
         /**
          * @param revisionTopic The currently selected revision topic.
          */
-        void setRevisionTopic(RESTTopicCollectionItemV1 revisionTopic);
+        void setRevisionTopic(RESTTopicV1 revisionTopic);
     }
 
     /**
@@ -55,6 +63,17 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 
     @Inject
     private Display display;
+
+    /**
+     * Holds the data required to populate and refresh the tags list
+     */
+    private final ProviderUpdateData<RESTTopicCollectionItemV1> providerData = new ProviderUpdateData<RESTTopicCollectionItemV1>();
+
+    @NotNull
+    public final ProviderUpdateData<RESTTopicCollectionItemV1> getProviderData() {
+        return providerData;
+    }
+
 
     @NotNull
     public Display getDisplay() {
@@ -105,4 +124,40 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
             win.document.close();
         }
     }-*/;
+
+    public EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateListProvider(@NotNull final Integer id, @NotNull final BaseTemplateViewInterface waitDisplay) {
+
+        getProviderData().reset();
+
+        final EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTTopicCollectionItemV1>() {
+            @Override
+            protected void onRangeChanged(@NotNull final HasData<RESTTopicCollectionItemV1> list) {
+
+                final BaseRestCallback<RESTTopicV1, Display> callback = new BaseRestCallback<RESTTopicV1, Display>(display, new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
+                    @Override
+                    public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
+                        checkArgument(retValue.getRevisions().getItems() != null, "Returned collection should have a valid items collection.");
+                        checkArgument(retValue.getRevisions().getSize() != null, "Returned collection should have a valid size.");
+
+                        if (retValue.getRevisions().getItems().size() != 0) {
+                            checkArgument(retValue.getRevisions().getItems().get(0).getItem().getProperties() != null, "Returned collection should include items with a valid properties collection.");
+                            checkArgument(retValue.getRevisions().getItems().get(0).getItem().getSourceUrls_OTM() != null, "Returned collection should include items with a valid source urls collection.");
+                        }
+
+                        getProviderData().setItems(retValue.getRevisions().getItems());
+                        getProviderData().setSize(retValue.getRevisions().getSize());
+                        displayAsynchronousList(getProviderData().getItems(), getProviderData().getSize(), getProviderData().getStartRow());
+                    }
+                });
+
+                final int start = list.getVisibleRange().getStart();
+                getProviderData().setStartRow(start);
+                final int length = list.getVisibleRange().getLength();
+                final int end = start + length;
+
+                RESTCalls.getTopicWithRevisions(callback, id, start, end);
+            }
+        };
+        return provider;
+    }
 }

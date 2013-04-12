@@ -303,10 +303,10 @@ abstract public class BaseSearchAndEditPresenter<
     /**
      * Called when a new entity is selected. This method is used to display any data that is contained
      * in the selected object when it is initially loaded.
-     * <p/>
+     *
      * Typically, this method is initially called when the entity is loaded with no filter (i.e. filter = null), meaning
      * that the displayBlah() methods on the views are called.
-     * <p/>
+     *
      * Additional data (usually child collections) is expected to be loaded and displayed in the
      * loadAdditionalDisplayedItemData() method. The loadAdditionalDisplayedItemData() will then
      * call initializeViews() with a filter set to the view that needs to be updated with the new data.

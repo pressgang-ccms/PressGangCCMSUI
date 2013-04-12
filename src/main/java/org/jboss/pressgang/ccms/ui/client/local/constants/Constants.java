@@ -9,7 +9,12 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201304110725";
+    public static final String VERSION = "201304121250";
+
+    /**
+     * The prefix used to identify a topic's initial revision
+     */
+    public static final String REVISION_TOPIC_VIEW_DATA_PREFIX = "r:";
 
     /**
      * The sort order to apply to a newly added child.
@@ -55,6 +60,14 @@ public final class Constants {
      * All path segments that define a query must start with this string.
      */
     public static final String CREATE_PATH_SEGMENT_PREFIX = CREATE_PATH_SEGMENT_PREFIX_WO_SEMICOLON + ";";
+    /**
+     * This path segment defines the initial topic view state.
+     */
+    public static final String TOPIC_VIEW_DATA_PREFIX_WO_SEMICOLON = "topicViewData";
+    /**
+     * This path segment defines the initial topic view state.
+     */
+    public static final String TOPIC_VIEW_DATA_PREFIX = TOPIC_VIEW_DATA_PREFIX_WO_SEMICOLON + ";";
     /**
      * The size of the split panels.
      */
@@ -137,9 +150,16 @@ public final class Constants {
      */
     public static final String PROD_REST_SERVER = "http://skynet.usersys.redhat.com:8080/TopicIndex/";
 
+    /**
+     * Old versions of the rest interface did not accept encode text for queries. New versions do. Set to
+     * true for the new REST API, and false for older versions.
+     */
+    public static final boolean ENCODE_QUERY_OPTIONS = true;
+
     /*------------------------------------------------------------------------------------------------------------------
         UPDATE THESE WHEN CHECKING INTO THE MASTER BRANCH
      -----------------------------------------------------------------------------------------------------------------*/
+
 
 //    public static final String BIRT_URL = LOCAL_BIRT_URL;
 //    public static final String MONITORING_URL = LOCAL_MONITORING_URL;
@@ -148,16 +168,10 @@ public final class Constants {
 //    public static final String BASE_URL = DEV_REST_SERVER;
 //    public static final String BIRT_URL = DEV_BIRT_URL;
 //    public static final String MONITORING_URL = DEV_MONITORING_URL;
-//    public static final boolean ENCODE_QUERY_OPTIONS = true;
 
     public static final String MONITORING_URL = PROD_MONITORING_URL;
     public static final String BASE_URL = PROD_REST_SERVER;
     public static final String BIRT_URL = PROD_BIRT_URL;
-    /**
-     * The newer versions of the REST interface encode the query PathParam elements (so as to allow for searches to
-     * include characters like the semicolon). If this constant is true, the query elements will be encoded.
-     */
-    public static final boolean ENCODE_QUERY_OPTIONS = false;
 
     /*------------------------------------------------------------------------------------------------------------------
 

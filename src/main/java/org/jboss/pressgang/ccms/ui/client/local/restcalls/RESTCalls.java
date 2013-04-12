@@ -333,6 +333,24 @@ public final class RESTCalls {
         });
     }
 
+    public static void getTopicWithRevisions(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id, final int start, final int end) {
+        final String revisionExpand =
+                "{\"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\":" + start + ", \"end\":" + end + "}," +
+                    "\"branches\":[" +
+                        "{\"trunk\":{\"name\": \"" + RESTTopicV1.LOG_DETAILS_NAME + "\"}}," +
+                        "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
+                        "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
+                    "]}" +
+                "]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONTopic(id, revisionExpand);
+            }
+        });
+    }
+
     public static void getTopicWithRevisions(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id) {
         /* Expand the categories and projects in the tags */
         @NotNull final String expand = "{\"branches\":[" + TOPIC_REVISIONS_EXPANSION + "]}";
@@ -494,11 +512,10 @@ public final class RESTCalls {
     }
 
     public static void getTopicRevision(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id, @NotNull final Integer revision) {
-        /* Expand the categories and projects in the tags */
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).getJSONTopicRevision(id, revision, "");
+                createRestMethod(callback).getJSONTopicRevision(id, revision, TOPIC_EXPANSION_WO_REVISIONS);
             }
         });
     }
