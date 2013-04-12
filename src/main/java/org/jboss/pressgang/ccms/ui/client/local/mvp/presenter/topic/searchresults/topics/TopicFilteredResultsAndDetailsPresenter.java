@@ -1217,6 +1217,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         Topic view data is in the form of:
                         topicViewData;1234=r:321234
 
+                        In a the full url, this would look like:
+                        http://localhost:8080/pressgang-ccms-ui/#SearchResultsAndTopicView;topicViewData;1234=r:321234;query;topicIds=1234
+
                         Where 1234 is the topic id, r: indicates that a particular revision should be displayed, and 321234
                          is the revision.
 
@@ -1247,7 +1250,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     final Integer topicId = Integer.parseInt(details[0]);
                                     final String[] settings =  details[1].split(",");
 
-                                    for (final String setting : settings) {
+                                    for (@NotNull final String setting : settings) {
+                                        /* A directive to display a particular revision of a topic */
                                         if (setting.startsWith(Constants.REVISION_TOPIC_VIEW_DATA_PREFIX)) {
                                             topicRevisionViewData.put(topicId, Integer.parseInt(setting.replaceFirst(Constants.REVISION_TOPIC_VIEW_DATA_PREFIX, "")));
                                         }
