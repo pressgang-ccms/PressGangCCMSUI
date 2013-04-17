@@ -34,26 +34,31 @@ public class ContentSpecFilteredResultsAndDetailsView extends
      */
     private final LogMessageView messageLogDialog = new LogMessageView();
 
+    @NotNull
     @Override
     public PushButton getText() {
         return text;
     }
 
+    @NotNull
     @Override
     public PushButton getDetails() {
         return details;
     }
 
+    @NotNull
     @Override
     public PushButton getSave() {
         return save;
     }
 
+    @NotNull
     @Override
     public Label getTextDown() {
         return textDown;
     }
 
+    @NotNull
     @Override
     public Label getDetailsDown() {
         return detailsDown;
