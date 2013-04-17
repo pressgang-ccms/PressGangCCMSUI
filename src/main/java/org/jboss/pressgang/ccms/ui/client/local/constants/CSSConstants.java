@@ -323,6 +323,11 @@ public interface CSSConstants {
 
     }
 
+    interface ContentSpecView {
+        String CONTENT_SPEC_VIEW_PANEL = "ContentSpecViewPanel";
+
+    }
+
     /**
      *  Holds the styles that are applied to the topic's views.
      */

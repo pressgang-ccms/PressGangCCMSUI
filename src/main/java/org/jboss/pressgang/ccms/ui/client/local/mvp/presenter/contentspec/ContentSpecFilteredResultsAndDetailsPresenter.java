@@ -189,7 +189,19 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
     @Override
     protected void bindFilteredResultsButtons() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        display.getText().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                switchView(contentSpecPresenter.getDisplay());
+            }
+        }) ;
+
+        display.getDetails().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                switchView(contentSpecDetailsPresenter.getDisplay());
+            }
+        }) ;
     }
 
     @Override
@@ -235,6 +247,37 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindSearchAndEditExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
+    }
+
+    @Override
+    protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
+
+        enableAndDisableActionButtons(displayedView);
+        setHelpTopicForView(displayedView);
+
+        /* Show any wait dialogs from the new view, and update the view with the currently displayed entity */
+        if (displayedView != null) {
+            displayedView.setViewShown(true);
+        }
+    }
+
+    private void enableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView) {
+        this.display.replaceTopActionButton(this.display.getTextDown(), this.display.getText());
+        this.display.replaceTopActionButton(this.display.getDetailsDown(), this.display.getDetails());
+
+        if (displayedView == this.contentSpecDetailsPresenter.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getDetails(), this.display.getDetailsDown());
+        } else if (displayedView == this.contentSpecPresenter.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getText(), this.display.getTextDown());
+        }
+    }
+
+    private void setHelpTopicForView(@NotNull final BaseTemplateViewInterface view) {
+        if (view == contentSpecDetailsPresenter.getDisplay()) {
+            setHelpTopicId(contentSpecDetailsPresenter.getHelpTopicId());
+        } else if (view == contentSpecPresenter.getDisplay()) {
+            setHelpTopicId(contentSpecPresenter.getHelpTopicId());
+        }
     }
 
     /**

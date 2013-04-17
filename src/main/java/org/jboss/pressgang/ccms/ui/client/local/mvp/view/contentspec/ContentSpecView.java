@@ -48,6 +48,7 @@ public class ContentSpecView extends BaseTemplateView implements ContentSpecPres
         xml.setTheme(AceEditorTheme.ECLIPSE);
 
         if (contentSpecText == null) {
+            /* This is how this view implements a loading state */
             xml.setText(PressGangCCMSUI.INSTANCE.LoadingText());
             xml.setReadOnly(true);
         } else {

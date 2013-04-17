@@ -66,7 +66,7 @@ public final class RESTContentSpecV1BasicDetailsEditor extends Grid implements L
     public RESTContentSpecV1BasicDetailsEditor(final boolean readOnly, @Nullable final List<String> locales) {
         super(ROWS, COLS);
 
-        this.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_PANEL);
+        this.addStyleName(CSSConstants.ContentSpecView.CONTENT_SPEC_VIEW_PANEL);
 
         /* http://code.google.com/p/google-web-toolkit/issues/detail?id=6112 */
         DOM.setElementPropertyBoolean(locale.getElement(), "disabled", readOnly);
@@ -127,8 +127,8 @@ public final class RESTContentSpecV1BasicDetailsEditor extends Grid implements L
         locale.setValue(value.getLocale());
         lastModified.setValue(value.getLastModified());
 
-        final String detailsURL = Constants.REST_SERVER + "1/contentspec/get/json/" + value.getId() + "/r/" + value.getRevision();
-        final String textURL = Constants.REST_SERVER + "1/contentspec/get/text/" + value.getId() + "/r/" + value.getRevision();
+        final String detailsURL = Constants.REST_SERVER + "/1/contentspec/get/json/" + value.getId() + "/r/" + value.getRevision();
+        final String textURL = Constants.REST_SERVER + "/1/contentspec/get/text/" + value.getId() + "/r/" + value.getRevision();
 
         restTopicDetailsLabel.setHref(detailsURL);
         restTopicXMLLabel.setHref(textURL);
