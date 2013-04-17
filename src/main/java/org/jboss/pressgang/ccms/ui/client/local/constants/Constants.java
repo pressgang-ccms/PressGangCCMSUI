@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201304171352";
+    public static final String VERSION = "201304171437";
 
     /**
      * The maximum length of the title before it is truncated
@@ -137,11 +137,11 @@ public final class Constants {
     /**
      * The Dev JavaMelody URL
      */
-    public static final String DEV_MONITORING_URL = "https://skynet-de.usersys.redhat.com:8443/TopicIndex/monitoring";
+    public static final String DEV_MONITORING_URL = "https://skynet-dev.usersys.redhat.com:8443/TopicIndex/monitoring";
     /**
      * The Local JavaMelody URL
      */
-    public static final String LOCAL_MONITORING_URL = "https://skynet-de.usersys.redhat.com:8443/TopicIndex/monitoring";
+    public static final String LOCAL_MONITORING_URL = "https://skynet-dev.usersys.redhat.com:8443/TopicIndex/monitoring";
     /**
      * A link to a locally hosted REST server.
      */
@@ -149,7 +149,7 @@ public final class Constants {
     /**
      * The dev server.
      */
-    public static final String DEV_REST_SERVER = "http://skynet-dev.usersys.redhat.com:8080/TopicIndex/";
+    public static final String DEV_REST_SERVER = "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms-rest/";
     /**
      * The production server.
      */
@@ -184,7 +184,7 @@ public final class Constants {
     /**
      * The REST URL.
      */
-    public static final String REST_SERVER = BASE_URL + "seam/resource/rest";
+    public static final String REST_SERVER = BASE_URL + "rest";
     /**
      * The base URL to Bugzilla.
      */
