@@ -29,6 +29,10 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
 
     private final Label xmlTemplateLabel = new Label(PressGangCCMSUI.INSTANCE.DocbookImageTemplate());
 
+    private final TextArea inlineXmlTemplate = new TextArea();
+
+    private final Label inlineXmlTemplateLabel = new Label(PressGangCCMSUI.INSTANCE.DocbookInlineImageTemplate());
+
     /**
      * The editor representing a collection of language image editors.
      */
@@ -59,8 +63,10 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
         imageDetails.setWidget(0, 1, description);
         imageDetails.setWidget(1, 0, xmlTemplateLabel);
         imageDetails.setWidget(1, 1, xmlTemplate);
-        imageDetails.setWidget(2, 0, docbookFileNameLabel);
-        imageDetails.setWidget(2, 1, docbookFileName);
+        imageDetails.setWidget(2, 0, inlineXmlTemplate);
+        imageDetails.setWidget(2, 1, inlineXmlTemplate);
+        imageDetails.setWidget(3, 0, docbookFileNameLabel);
+        imageDetails.setWidget(3, 1, docbookFileName);
 
         imageDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.ImageView.IMAGE_VIEW_DESCRIPTION_LABEL_CELL);
         imageDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.ImageView.IMAGE_VIEW_DESCRIPTION_TEXT_CELL);
@@ -94,6 +100,7 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
         this.value = value;
         this.docbookFileName.setText(ComponentImageV1.getDocbookFileName(value));
         this.xmlTemplate.setText(ComponentImageV1.getXMLTemplate(value));
+        this.inlineXmlTemplate.setText(ComponentImageV1.getInlineXMLTemplate(value));
     }
 
 }

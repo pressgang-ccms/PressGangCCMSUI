@@ -192,6 +192,12 @@ public interface PressGangCCMSUI extends Constants {
     String TopicXMLRESTEndpoint();
 
     @NotNull
+    String ContentSpecDetailsRESTEndpoint();
+
+    @NotNull
+    String ContentSpecTextRESTEndpoint();
+
+    @NotNull
     String SaveSuccess();
 
     @NotNull
@@ -409,6 +415,9 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String DocbookImageTemplate();
+
+    @NotNull
+    String DocbookInlineImageTemplate();
 
     @NotNull
     String Projects();
@@ -829,4 +838,13 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String NoBulkTagsSelected();
+
+    @NotNull
+    String ContentSpecTextEdit();
+
+    @NotNull
+    String ContentSpecID();
+
+    @NotNull
+    String ContentSpecTitle();
 }

@@ -487,11 +487,16 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             /*
                 Test to see if we are looking at a specific revision. If so, add the revision to the page title.
              */
-            if (!getDisplayedTopic().getRevision().equals(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision())) {
+            if (getDisplayedTopic().getRevision() != null &&
+                    !getDisplayedTopic().getRevision().equals(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision())) {
                id.append("-" + getDisplayedTopic().getRevision());
             }
 
-            final String displayTitle = getDisplayedTopic().getTitle() == null ? "" : getDisplayedTopic().getTitle();
+            String displayTitle = getDisplayedTopic().getTitle() == null ? "" : getDisplayedTopic().getTitle();
+            if (displayTitle.length() > Constants.MAX_PAGE_TITLE_LENGTH) {
+                displayTitle = displayTitle.substring(0, Constants.MAX_PAGE_TITLE_LENGTH - 3) + "...";
+            }
+
             if (this.getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                 title.append(": [" + id.toString() + "] " + displayTitle);
             }

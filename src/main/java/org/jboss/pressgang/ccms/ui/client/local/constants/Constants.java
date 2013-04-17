@@ -9,7 +9,12 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201304121250";
+    public static final String VERSION = "201304170907";
+
+    /**
+     * The maximum length of the title before it is truncated
+     */
+    public static final int MAX_PAGE_TITLE_LENGTH = 70;
 
     /**
      * The prefix used to identify a topic's initial revision
@@ -160,14 +165,13 @@ public final class Constants {
         UPDATE THESE WHEN CHECKING INTO THE MASTER BRANCH
      -----------------------------------------------------------------------------------------------------------------*/
 
+//    public static final String BIRT_URL = LOCAL_BIRT_URL;
+//    public static final String MONITORING_URL = LOCAL_MONITORING_URL;
+//    public static final String BASE_URL = LOCAL_REST_SERVER;
 
-    public static final String BIRT_URL = LOCAL_BIRT_URL;
-    public static final String MONITORING_URL = LOCAL_MONITORING_URL;
-    public static final String BASE_URL = LOCAL_REST_SERVER;
-
-//    public static final String BASE_URL = DEV_REST_SERVER;
-//    public static final String BIRT_URL = DEV_BIRT_URL;
-//    public static final String MONITORING_URL = DEV_MONITORING_URL;
+    public static final String BASE_URL = DEV_REST_SERVER;
+    public static final String BIRT_URL = DEV_BIRT_URL;
+    public static final String MONITORING_URL = DEV_MONITORING_URL;
 
 //    public static final String MONITORING_URL = PROD_MONITORING_URL;
 //    public static final String BASE_URL = PROD_REST_SERVER;
