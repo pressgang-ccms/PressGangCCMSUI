@@ -45,7 +45,7 @@ public class ContentSpecFilteredResultsView extends BaseFilteredResultsView<REST
             }
 
             final RESTCSNodeV1 retValue = ComponentContentSpecV1.returnMetaData(object.getItem(), "Title");
-            return retValue == null ? "" : retValue.getTitle();
+            return retValue == null ? null + "" : retValue.getAdditionalText();
         }
     };
 

@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201304171437";
+    public static final String VERSION = "201304180632";
 
     /**
      * The maximum length of the title before it is truncated
@@ -145,15 +145,15 @@ public final class Constants {
     /**
      * A link to a locally hosted REST server.
      */
-    public static final String LOCAL_REST_SERVER = "http://localhost:8080/TopicIndex/";
+    public static final String LOCAL_REST_SERVER = "http://localhost:8080/TopicIndex";
     /**
      * The dev server.
      */
-    public static final String DEV_REST_SERVER = "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms-rest/";
+    public static final String DEV_REST_SERVER = "http://skynet-dev.usersys.redhat.com:8080/TopicIndex";
     /**
      * The production server.
      */
-    public static final String PROD_REST_SERVER = "http://skynet.usersys.redhat.com:8080/TopicIndex/";
+    public static final String PROD_REST_SERVER = "http://skynet.usersys.redhat.com:8080/TopicIndex";
 
     /**
      * Old versions of the rest interface did not accept encode text for queries. New versions do. Set to
@@ -184,7 +184,7 @@ public final class Constants {
     /**
      * The REST URL.
      */
-    public static final String REST_SERVER = BASE_URL + "rest";
+    public static final String REST_SERVER = BASE_URL + "/seam/resource/rest";
     /**
      * The base URL to Bugzilla.
      */

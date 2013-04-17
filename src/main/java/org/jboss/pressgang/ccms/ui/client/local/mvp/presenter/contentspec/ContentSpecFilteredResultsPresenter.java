@@ -122,6 +122,7 @@ public class ContentSpecFilteredResultsPresenter extends BaseFilteredResultsPres
                         {
                             checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
                             checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
+                            checkArgument(retValue.getItems().size() == 0 || retValue.getItems().get(0).getItem().getChildren_OTM() != null, "The items in the returned collection should have a valid children collection");
 
                             getProviderData().setItems(retValue.getItems());
                             getProviderData().setSize(retValue.getSize());
