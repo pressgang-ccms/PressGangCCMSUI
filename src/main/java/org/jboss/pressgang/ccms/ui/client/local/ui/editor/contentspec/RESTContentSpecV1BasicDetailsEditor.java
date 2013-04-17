@@ -79,6 +79,7 @@ public final class RESTContentSpecV1BasicDetailsEditor extends Grid implements L
         lastModified.setEnabled(false);
         restTopicDetails.setReadOnly(true);
         restTopicXML.setReadOnly(true);
+        DOM.setElementPropertyBoolean(locale.getElement(), "disabled", true);
 
         id.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_ID_FIELD);
         revision.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_REVISION_NUMBER_FIELD);
