@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
@@ -16,6 +17,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 /**
  * Displays the text of a content spec.
  */
+@Dependent
 public class ContentSpecPresenter extends BaseTemplatePresenter {
 
     public static final String HISTORY_TOKEN = "ContentSpecTextEditor";

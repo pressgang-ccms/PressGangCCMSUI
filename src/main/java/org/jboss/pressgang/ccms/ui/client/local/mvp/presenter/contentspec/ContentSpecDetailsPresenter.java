@@ -12,6 +12,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1B
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 /**
  * The presenter that displays the content spec details.
  */
+@Dependent
 public class ContentSpecDetailsPresenter extends BaseTemplatePresenter {
     public static final String HISTORY_TOKEN = "ContentSpecDetailsView";
 

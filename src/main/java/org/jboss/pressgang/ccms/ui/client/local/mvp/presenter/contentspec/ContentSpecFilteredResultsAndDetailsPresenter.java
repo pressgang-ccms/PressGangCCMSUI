@@ -24,6 +24,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.contentspec.RESTConten
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +33,12 @@ import java.util.logging.Logger;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
+import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
  * The presenter that combines all the content spec presenters.
  */
+@Dependent
 public class ContentSpecFilteredResultsAndDetailsPresenter
         extends BaseSearchAndEditPresenter<
             RESTContentSpecV1,
@@ -116,15 +119,23 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);
 
+        contentSpecDetailsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         contentSpecPresenter.bindExtended(ServiceConstants.CONTENT_SPEC_TEXT_EDIT_HELP_TOPIC, pageId);
+        filteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
 
         super.bindSearchAndEdit(topicId, pageId, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, contentSpecDetailsPresenter.getDisplay(), contentSpecDetailsPresenter.getDisplay(),
                 filteredResultsPresenter.getDisplay(), filteredResultsPresenter, display, display, getNewEntityCallback);
     }
 
     @Override
-    public void parseToken(@NotNull String historyToken) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void parseToken(@NotNull final String historyToken) {
+
+        this.queryString = removeHistoryToken(historyToken, HISTORY_TOKEN);
+
+        if (!queryString.startsWith(Constants.QUERY_PATH_SEGMENT_PREFIX)) {
+            /* Make sure that the query string has at least the prefix */
+            queryString = Constants.QUERY_PATH_SEGMENT_PREFIX;
+        }
     }
 
     @Override
