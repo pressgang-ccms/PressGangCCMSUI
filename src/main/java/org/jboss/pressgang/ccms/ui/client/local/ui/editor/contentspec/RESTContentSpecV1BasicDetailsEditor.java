@@ -87,19 +87,19 @@ public final class RESTContentSpecV1BasicDetailsEditor extends Grid implements L
         locale.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_LOCALE_FIELD);
 
         int row = 0;
-        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicID()));
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.ContentSpecID()));
         this.setWidget(row, 1, id);
 
         ++row;
-        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicRevision()));
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.ContentSpecRevision()));
         this.setWidget(row, 1, revision);
 
         ++row;
-        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLastModified()));
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.ContentSpecLastModified()));
         this.setWidget(row, 1, lastModified);
 
         ++row;
-        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicLocale()));
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.ContentSpecLocale()));
         this.setWidget(row, 1, locale);
         ++row;
         this.setWidget(row, 0, restTopicDetailsLabel);

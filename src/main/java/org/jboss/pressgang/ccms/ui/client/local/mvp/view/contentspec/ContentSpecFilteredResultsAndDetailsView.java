@@ -23,11 +23,11 @@ public class ContentSpecFilteredResultsAndDetailsView extends
         ContentSpecFilteredResultsAndDetailsPresenter.Display {
 
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
-    private final PushButton details = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.CategoryDetails());
-    private final PushButton text = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.CategoryTags());
+    private final PushButton details = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecDetails());
+    private final PushButton text = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecText());
 
-    private final Label detailsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.CategoryDetails());
-    private final Label textDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.CategoryTags());
+    private final Label detailsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecDetails());
+    private final Label textDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecText());
 
     /**
      * An instance of the message log dialog box

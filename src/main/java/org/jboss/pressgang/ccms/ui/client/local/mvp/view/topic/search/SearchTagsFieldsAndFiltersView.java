@@ -22,6 +22,7 @@ public class SearchTagsFieldsAndFiltersView extends
     private final WaitingDialog waiting = new WaitingDialog();
 
     private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
+    private final PushButton searchContentSpecs = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.SearchContentSpecs());
     private final PushButton downloadZip = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.DownloadZip());
     private final PushButton downloadCSV = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.DownloadCSV());
     private final PushButton applyBulkTags = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.ApplyBulkTags());
@@ -39,6 +40,7 @@ public class SearchTagsFieldsAndFiltersView extends
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Search());
 
         addActionButton(searchTopics);
+        addActionButton(searchContentSpecs);
         addActionButton(downloadZip);
         addActionButton(downloadCSV);
         addActionButton(applyBulkTags);
@@ -63,6 +65,12 @@ public class SearchTagsFieldsAndFiltersView extends
     @NotNull
     public PushButton getSearchTopics() {
         return searchTopics;
+    }
+
+    @Override
+    @NotNull
+    public PushButton getSearchContentSpecs() {
+        return searchContentSpecs;
     }
 
     @Override

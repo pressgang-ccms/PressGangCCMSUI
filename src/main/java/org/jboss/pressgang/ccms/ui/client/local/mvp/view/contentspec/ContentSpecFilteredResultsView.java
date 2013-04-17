@@ -50,7 +50,7 @@ public class ContentSpecFilteredResultsView extends BaseFilteredResultsView<REST
     };
 
     public ContentSpecFilteredResultsView() {
-        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults(), PressGangCCMSUI.INSTANCE.CreateTopic());
+        super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults(), PressGangCCMSUI.INSTANCE.CreateContentSpec());
 
         getResults().addColumn(idColumn, PressGangCCMSUI.INSTANCE.ContentSpecID());
         getResults().addColumn(titleColumn, PressGangCCMSUI.INSTANCE.ContentSpecTitle());

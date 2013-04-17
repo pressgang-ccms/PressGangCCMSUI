@@ -108,6 +108,9 @@ public interface PressGangCCMSUI extends Constants {
     String Search();
 
     @NotNull
+    String SearchContentSpecs();
+
+    @NotNull
     String DownloadZip();
 
     @NotNull
@@ -460,6 +463,9 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String CreateTopic();
+
+    @NotNull
+    String CreateContentSpec();
 
     @NotNull
     String Tags();
@@ -847,4 +853,19 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String ContentSpecTitle();
+
+    @NotNull
+    String ContentSpecRevision();
+
+    @NotNull
+    String ContentSpecLastModified();
+
+    @NotNull
+    String ContentSpecLocale();
+
+    @NotNull
+    String ContentSpecDetails();
+
+    @NotNull
+    String ContentSpecText();
 }

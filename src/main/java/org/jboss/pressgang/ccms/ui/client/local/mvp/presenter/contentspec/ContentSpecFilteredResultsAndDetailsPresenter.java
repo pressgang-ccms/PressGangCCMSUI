@@ -177,6 +177,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                 display.getMessageLogDialog().getDialogBox().hide();
             }
         };
+
+        display.getSave().addClickHandler(saveClickHandler);
+        display.getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
+        display.getMessageLogDialog().getCancel().addClickHandler(messageLogDialogCancel);
     }
 
     @Override
@@ -201,7 +205,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                 RESTCalls.getContentSpec(callback, selectedEntity.getId());
             }
         };
-
 
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + pageId);
 
