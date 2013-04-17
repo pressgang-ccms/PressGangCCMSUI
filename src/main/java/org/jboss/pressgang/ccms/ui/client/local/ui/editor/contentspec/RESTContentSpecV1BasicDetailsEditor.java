@@ -113,10 +113,9 @@ public final class RESTContentSpecV1BasicDetailsEditor extends Grid implements L
             this.getCellFormatter().addStyleName(i, 0, CSSConstants.TopicView.TOPIC_VIEW_LABEL);
         }
 
-        for (int i = 0; i < ROWS - 1; ++i) {
+        for (int i = 0; i < ROWS; ++i) {
             this.getCellFormatter().addStyleName(i, 1, CSSConstants.TopicView.TOPIC_VIEW_DETAIL);
         }
-        this.getCellFormatter().addStyleName(ROWS - 1, 1, CSSConstants.TopicView.TOPIC_VIEW_DESCRIPTION_DETAIL);
     }
 
     @Override

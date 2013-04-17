@@ -13,6 +13,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
 * The view that displays the text content of a content spec
@@ -36,15 +37,23 @@ public class ContentSpecView extends BaseTemplateView implements ContentSpecPres
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.ContentSpecTextEdit());
     }
 
-    public void display(@NotNull final String contentSpecText, final boolean readOnly) {
+    public void display(@Nullable final String contentSpecText, final boolean readOnly) {
         final SimplePanel panel = new SimplePanel();
 
         panel.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_ACE_PANEL);
         xml.addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_XML_FIELD);
 
-        xml.setReadOnly(readOnly);
+
         xml.setMode(AceEditorMode.XML);
         xml.setTheme(AceEditorTheme.ECLIPSE);
+
+        if (contentSpecText == null) {
+            xml.setText(PressGangCCMSUI.INSTANCE.LoadingText());
+            xml.setReadOnly(true);
+        } else {
+            xml.setText(contentSpecText);
+            xml.setReadOnly(readOnly);
+        }
 
         panel.setWidget(xml);
         /* Add the projects */

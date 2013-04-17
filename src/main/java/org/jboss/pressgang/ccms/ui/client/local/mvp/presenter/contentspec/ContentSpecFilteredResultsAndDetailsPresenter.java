@@ -82,7 +82,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
      */
     private String queryString;
 
-    private String contentSpecText = "";
+    /**
+     * The text version of the content spec, or null if it hasn't been loaded yet.
+     */
+    private String contentSpecText = null;
 
     @Override
     protected void loadAdditionalDisplayedItemData() {
@@ -96,6 +99,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                     @Override
                     public void doSuccessAction(@NotNull final String retValue, @NotNull final Display display) {
                         contentSpecText = retValue;
+                        initializeViews(new ArrayList<BaseTemplateViewInterface>(){{add(contentSpecPresenter.getDisplay());}});
                     }
                 }
         );
@@ -212,7 +216,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
         contentSpecPresenter.bindExtended(ServiceConstants.CONTENT_SPEC_TEXT_EDIT_HELP_TOPIC, pageId);
         filteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
 
-        super.bindSearchAndEdit(topicId, pageId, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, contentSpecDetailsPresenter.getDisplay(), contentSpecDetailsPresenter.getDisplay(),
+        super.bindSearchAndEdit(topicId, pageId, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, contentSpecPresenter.getDisplay(), contentSpecDetailsPresenter.getDisplay(),
                 filteredResultsPresenter.getDisplay(), filteredResultsPresenter, display, display, getNewEntityCallback);
     }
 
