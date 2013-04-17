@@ -246,9 +246,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                 message.append(display.getMessageLogDialog().getMessage().getText());
                 final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
 
-                LOGGER.info(contentSpecPresenter.getDisplay().getEditor().getText());
+                final String contentSpecText = contentSpecPresenter.getDisplay().getEditor().getText();
 
-                RESTCalls.updateContentSpecText(callback, contentSpecPresenter.getDisplay().getEditor().getText(), message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
+                LOGGER.info(contentSpecText);
+
+                RESTCalls.updateContentSpecText(callback, contentSpecText, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
             }
         });
     }
