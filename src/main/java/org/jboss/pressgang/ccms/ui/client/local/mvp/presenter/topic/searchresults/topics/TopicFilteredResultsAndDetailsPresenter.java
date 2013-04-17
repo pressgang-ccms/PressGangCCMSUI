@@ -77,7 +77,6 @@ import org.vectomatic.file.FileReader;
 import org.vectomatic.file.FileUploadExt;
 import org.vectomatic.file.events.*;
 import org.zanata.rest.ElemSet;
-import sun.misc.PerformanceLogger;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;

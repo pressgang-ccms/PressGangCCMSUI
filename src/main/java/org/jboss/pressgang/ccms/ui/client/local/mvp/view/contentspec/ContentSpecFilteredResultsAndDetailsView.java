@@ -10,8 +10,10 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec.ContentSpecFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditView;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.LogMessageView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
+import org.jetbrains.annotations.NotNull;
 
 /**
 
@@ -26,6 +28,11 @@ public class ContentSpecFilteredResultsAndDetailsView extends
 
     private final Label detailsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.CategoryDetails());
     private final Label textDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.CategoryTags());
+
+    /**
+     * An instance of the message log dialog box
+     */
+    private final LogMessageView messageLogDialog = new LogMessageView();
 
     @Override
     public PushButton getText() {
@@ -50,6 +57,12 @@ public class ContentSpecFilteredResultsAndDetailsView extends
     @Override
     public Label getDetailsDown() {
         return detailsDown;
+    }
+
+    @NotNull
+    @Override
+    public LogMessageView getMessageLogDialog() {
+        return messageLogDialog;
     }
 
     public ContentSpecFilteredResultsAndDetailsView() {

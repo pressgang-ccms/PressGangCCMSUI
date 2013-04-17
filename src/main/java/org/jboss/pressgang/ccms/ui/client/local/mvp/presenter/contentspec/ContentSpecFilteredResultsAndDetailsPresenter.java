@@ -1,25 +1,38 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTCategoryCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTContentSpecCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTCategoryV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.LogMessageInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTopicCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.contentspec.RESTContentSpecV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +40,9 @@ import org.jetbrains.annotations.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -71,7 +86,21 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
     @Override
     protected void loadAdditionalDisplayedItemData() {
-        //To change body of implemented methods use File | Settings | File Templates.
+
+        /*
+            Load the text version of the content spec.
+         */
+        final BaseRestCallback<String, Display> callback = new BaseRestCallback<String, Display>(
+                display,
+                new BaseRestCallback.SuccessAction<String, Display>() {
+                    @Override
+                    public void doSuccessAction(@NotNull final String retValue, @NotNull final Display display) {
+                        contentSpecText = retValue;
+                    }
+                }
+        );
+
+        RESTCalls.getContentSpecText(callback, filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
     }
 
     @Override
@@ -90,7 +119,64 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
     @Override
     protected void bindActionButtons() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        final ClickHandler saveClickHandler = new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                display.getMessageLogDialog().getUsername().setText(Preferences.INSTANCE.getString(Preferences.LOG_MESSAGE_USERNAME, ""));
+
+                display.getMessageLogDialog().getDialogBox().center();
+                display.getMessageLogDialog().getDialogBox().show();
+            }
+        };
+
+        final ClickHandler messageLogDialogOK = new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                try {
+                    LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
+
+                    final String user = display.getMessageLogDialog().getUsername().getText().trim();
+                    Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
+
+                    final StringBuilder message = new StringBuilder();
+                    if (!user.isEmpty()) {
+                        message.append(user).append(": ");
+                    }
+                    message.append(display.getMessageLogDialog().getMessage().getText());
+                    final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
+
+                    /*
+                        Save the text version of the content spec.
+                    */
+                    final BaseRestCallback<String, Display> callback = new BaseRestCallback<String, Display>(
+                            display,
+                            new BaseRestCallback.SuccessAction<String, Display>() {
+                                @Override
+                                public void doSuccessAction(@NotNull final String retValue, @NotNull final Display display) {
+                                    contentSpecText = retValue;
+                                    initializeViews(new ArrayList<BaseTemplateViewInterface>() {{add(contentSpecPresenter.getDisplay());}});
+                                }
+                            }
+                    );
+
+                    RESTCalls.updateContentSpecText(callback, contentSpecText, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
+                } finally {
+                    display.getMessageLogDialog().reset();
+                    display.getMessageLogDialog().getDialogBox().hide();
+
+                    LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
+                }
+            }
+        };
+
+        final ClickHandler messageLogDialogCancel = new ClickHandler() {
+
+            @Override
+            public void onClick(final ClickEvent event) {
+                display.getMessageLogDialog().reset();
+                display.getMessageLogDialog().getDialogBox().hide();
+            }
+        };
     }
 
     @Override
@@ -160,5 +246,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
         Label getTextDown();
 
         Label getDetailsDown();
+
+        LogMessageInterface getMessageLogDialog();
     }
 }

@@ -684,6 +684,27 @@ public final class RESTCalls {
         });
     }
 
+    public static void getContentSpecText(@NotNull final RESTCallback<String> callback, @NotNull final Integer id) {
+        /* Expand the categories and projects in the tags */
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getTEXTContentSpec(id);
+            }
+        });
+    }
+
+    public static void updateContentSpecText(@NotNull final RESTCallback<String> callback, @NotNull final String contentSpecText, @NotNull final String message,
+                                             @NotNull final Integer flag, @NotNull final String userId) {
+        /* Expand the categories and projects in the tags */
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).updateTEXTContentSpec(contentSpecText, message, flag, userId);
+            }
+        });
+    }
+
     public static void getContentSpec(@NotNull final RESTCallback<RESTContentSpecV1> callback, @NotNull final Integer id) {
         /* Expand the categories and projects in the tags */
         doRestCall(callback, new RestMethodCaller() {

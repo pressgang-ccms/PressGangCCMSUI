@@ -110,11 +110,11 @@ public class ContentSpecFilteredResultsPresenter extends BaseFilteredResultsPres
             return null;
         }
 
-        @NotNull final EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1>() {
+        final EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1> provider = new EnhancedAsyncDataProvider<RESTContentSpecCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTContentSpecCollectionItemV1> list) {
 
-                @NotNull final BaseRestCallback<RESTContentSpecCollectionV1, Display> callback = new BaseRestCallback<RESTContentSpecCollectionV1, Display>(
+                final BaseRestCallback<RESTContentSpecCollectionV1, Display> callback = new BaseRestCallback<RESTContentSpecCollectionV1, Display>(
                         display,  new BaseRestCallback.SuccessAction<RESTContentSpecCollectionV1, Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTContentSpecCollectionV1 retValue, @NotNull final Display display) {
