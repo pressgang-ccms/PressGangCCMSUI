@@ -137,10 +137,10 @@ public class TagsFilteredResultsAndDetailsPresenter
     private TagCategoriesPresenter categoriesComponent;
 
     /**
-     * The presenter used to display the topic property tags.
+     * The presenter used to display the property tags.
      */
     @Inject
-    private CommonExtendedPropertiesPresenter tagPropertyTagPresenter;
+    private CommonExtendedPropertiesPresenter commonExtendedPropertiesPresenter;
 
     /**
      * The tag query string extracted from the history token
@@ -209,7 +209,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     private final ClickHandler tagCategoriesClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
-            switchView(tagPropertyTagPresenter.getDisplay());
+            switchView(commonExtendedPropertiesPresenter.getDisplay());
         }
     };
 
@@ -499,7 +499,7 @@ public class TagsFilteredResultsAndDetailsPresenter
         projectsComponent.bindChildrenExtended(ServiceConstants.TAG_PROJECTS_HELP_TOPIC, pageId);
         categoriesComponent.bindDetailedChildrenExtended(ServiceConstants.TAG_CATEGORIES_HELP_TOPIC, pageId);
         resultComponent.bindExtended(ServiceConstants.TAG_DETAIL_HELP_TOPIC, pageId);
-        tagPropertyTagPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        commonExtendedPropertiesPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
 
         super.bindSearchAndEdit(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
                 filteredResultsComponent.getDisplay(), filteredResultsComponent, display, display, getNewEntityCallback);
@@ -779,7 +779,7 @@ public class TagsFilteredResultsAndDetailsPresenter
             this.display.replaceTopActionButton(this.display.getTagProjects(), this.display.getTagProjectsDown());
         } else if (displayedView == this.resultComponent.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getTagDetails(), this.display.getTagDetailsDown());
-        }  else if (displayedView == this.tagPropertyTagPresenter.getDisplay()) {
+        }  else if (displayedView == this.commonExtendedPropertiesPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getExtendedProperties(), this.display.getExtendedPropertiesDown());
         }
     }
@@ -901,10 +901,10 @@ public class TagsFilteredResultsAndDetailsPresenter
          */
         Collections.sort(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
                 new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
-        tagPropertyTagPresenter.refreshExistingChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+        commonExtendedPropertiesPresenter.refreshExistingChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
         /* Get a new collection of property tags. */
-        tagPropertyTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+        commonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
     }
 
     @Override
@@ -919,7 +919,7 @@ public class TagsFilteredResultsAndDetailsPresenter
         displayableViews.add(resultComponent.getDisplay());
         displayableViews.add(projectsComponent.getDisplay());
         displayableViews.add(categoriesComponent.getDisplay());
-        displayableViews.add(tagPropertyTagPresenter.getDisplay());
+        displayableViews.add(commonExtendedPropertiesPresenter.getDisplay());
 
         for (@NotNull final BaseCustomViewInterface view : displayableViews) {
             if (viewIsInFilter(filter, view)) {
@@ -935,8 +935,8 @@ public class TagsFilteredResultsAndDetailsPresenter
             categoriesComponent.displayDetailedChildrenExtended(displayedTag, false);
         }
 
-        if (viewIsInFilter(filter, tagPropertyTagPresenter.getDisplay())) {
-            tagPropertyTagPresenter.displayDetailedChildrenExtended(displayedTag, false);
+        if (viewIsInFilter(filter, commonExtendedPropertiesPresenter.getDisplay())) {
+            commonExtendedPropertiesPresenter.displayDetailedChildrenExtended(displayedTag, false);
         }
     }
 

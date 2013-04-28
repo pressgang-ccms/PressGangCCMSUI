@@ -9,6 +9,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredRe
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
+import org.jetbrains.annotations.NotNull;
 
 public class TagsFilteredResultsAndTagView
         extends BaseSearchAndEditView<RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1>
@@ -26,36 +27,43 @@ public class TagsFilteredResultsAndTagView
     private final Label tagCategoriesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.TagCategories());
 
     @Override
+    @NotNull
     public PushButton getTagCategories() {
         return tagCategories;
     }
 
     @Override
+    @NotNull
     public PushButton getSave() {
         return save;
     }
 
     @Override
+    @NotNull
     public PushButton getTagProjects() {
         return tagProjects;
     }
 
     @Override
+    @NotNull
     public PushButton getTagDetails() {
         return tagDetails;
     }
 
     @Override
+    @NotNull
     public Label getTagCategoriesDown() {
         return tagCategoriesDown;
     }
 
     @Override
+    @NotNull
     public Label getTagProjectsDown() {
         return tagProjectsDown;
     }
 
     @Override
+    @NotNull
     public Label getTagDetailsDown() {
         return tagDetailsDown;
     }
@@ -76,11 +84,13 @@ public class TagsFilteredResultsAndTagView
     }
 
     @Override
+    @NotNull
     public PushButton getExtendedProperties() {
         return extendedProperties;
     }
 
     @Override
+    @NotNull
     public Label getExtendedPropertiesDown() {
         return extendedPropertiesDown;
     }

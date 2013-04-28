@@ -24,6 +24,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityList
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.common.CommonExtendedPropertiesPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.LogMessageInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.filteredresults.BaseFilteredResultsViewInterface;
@@ -32,6 +33,7 @@ import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTopicCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.contentspec.RESTContentSpecV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
@@ -76,6 +78,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
     @Inject private ContentSpecPresenter contentSpecPresenter;
     @Inject private ContentSpecDetailsPresenter contentSpecDetailsPresenter;
     @Inject private ContentSpecFilteredResultsPresenter filteredResultsPresenter;
+    /**
+     * The presenter used to display the property tags.
+     */
+    @Inject
+    private CommonExtendedPropertiesPresenter commonExtendedPropertiesPresenter;
 
     /**
      * The category query string extracted from the history token
@@ -89,6 +96,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
     @Override
     protected void loadAdditionalDisplayedItemData() {
+
+        final RESTContentSpecV1 displayedItem =  filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
 
         /*
             Load the text version of the content spec.
@@ -104,7 +113,16 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                 }
         );
 
-        RESTCalls.getContentSpecText(callback, filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
+        RESTCalls.getContentSpecText(callback, displayedItem.getId());
+
+        /*
+            Display the list of assigned property tags.
+        */
+        Collections.sort(displayedItem.getProperties().getItems(), new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
+        commonExtendedPropertiesPresenter.refreshExistingChildList(displayedItem);
+
+        /* Get a new collection of property tags. */
+        commonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(displayedItem);
     }
 
     @Override
@@ -112,12 +130,19 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
         checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
         checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
+        final RESTContentSpecV1 displayedItem = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
+
         if (viewIsInFilter(filter, contentSpecDetailsPresenter.getDisplay())) {
-            contentSpecDetailsPresenter.getDisplay().displayContentSpecDetails(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false, new ArrayList<String>());
+            contentSpecDetailsPresenter.getDisplay().displayContentSpecDetails(displayedItem, false, new ArrayList<String>());
         }
 
         if (viewIsInFilter(filter, contentSpecPresenter.getDisplay())) {
             contentSpecPresenter.getDisplay().display(contentSpecText, false);
+        }
+
+        if (viewIsInFilter(filter, commonExtendedPropertiesPresenter.getDisplay())) {
+            commonExtendedPropertiesPresenter.getDisplay().display(displayedItem, false);
+            commonExtendedPropertiesPresenter.displayDetailedChildrenExtended(displayedItem, false);
         }
     }
 
@@ -129,6 +154,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                 switchView(contentSpecPresenter.getDisplay());
             }
         }) ;
+
+        display.getExtendedProperties().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                switchView(commonExtendedPropertiesPresenter.getDisplay());
+            }
+        });
 
         display.getDetails().addClickHandler(new ClickHandler() {
             @Override
@@ -240,6 +272,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
         contentSpecDetailsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         contentSpecPresenter.bindExtended(ServiceConstants.CONTENT_SPEC_TEXT_EDIT_HELP_TOPIC, pageId);
         filteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
+        commonExtendedPropertiesPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
 
         super.bindSearchAndEdit(topicId, pageId, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, contentSpecPresenter.getDisplay(), contentSpecDetailsPresenter.getDisplay(),
                 filteredResultsPresenter.getDisplay(), filteredResultsPresenter, display, display, getNewEntityCallback);
@@ -282,6 +315,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             this.display.replaceTopActionButton(this.display.getDetails(), this.display.getDetailsDown());
         } else if (displayedView == this.contentSpecPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getText(), this.display.getTextDown());
+        }  else if (displayedView == this.commonExtendedPropertiesPresenter.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getExtendedProperties(), this.display.getExtendedPropertiesDown());
         }
     }
 
@@ -302,6 +337,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             BaseSearchAndEditViewInterface<RESTContentSpecV1, RESTContentSpecCollectionV1, RESTContentSpecCollectionItemV1> {
         PushButton getText();
 
+        PushButton getExtendedProperties();
+
         PushButton getDetails();
 
         PushButton getSave();
@@ -310,6 +347,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
         Label getDetailsDown();
 
+        Label getExtendedPropertiesDown();
+
         LogMessageInterface getMessageLogDialog();
+
+
     }
 }

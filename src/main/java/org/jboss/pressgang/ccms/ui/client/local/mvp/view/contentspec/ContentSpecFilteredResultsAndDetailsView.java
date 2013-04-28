@@ -23,9 +23,11 @@ public class ContentSpecFilteredResultsAndDetailsView extends
         ContentSpecFilteredResultsAndDetailsPresenter.Display {
 
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+    private final PushButton extendedProperties = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ExtendedProperties());
     private final PushButton details = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecDetails());
     private final PushButton text = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecText());
 
+    private final Label extendedPropertiesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ExtendedProperties());
     private final Label detailsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecDetails());
     private final Label textDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecText());
 
@@ -70,6 +72,18 @@ public class ContentSpecFilteredResultsAndDetailsView extends
         return messageLogDialog;
     }
 
+    @Override
+    @NotNull
+    public PushButton getExtendedProperties() {
+        return extendedProperties;
+    }
+
+    @Override
+    @NotNull
+    public Label getExtendedPropertiesDown() {
+        return extendedPropertiesDown;
+    }
+
     public ContentSpecFilteredResultsAndDetailsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.ContentSpecifications());
         populateTopActionBar();
@@ -81,6 +95,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends
     private void populateTopActionBar() {
         this.addActionButton(this.getText());
         this.addActionButton(this.getDetails());
+        this.addActionButton(this.getExtendedProperties());
         this.addActionButton(this.getSave());
     }
 }
