@@ -36,6 +36,9 @@ public interface PressGangCCMSUI extends Constants {
     String BulkTopicOverwrite();
 
     @NotNull
+    String ATOMFeed();
+
+    @NotNull
     String BulkTopicOverwriteMessage();
 
     @NotNull

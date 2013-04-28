@@ -1182,16 +1182,21 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     protected void bindFilteredResultsButtons() {
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindFilteredResultsButtons()");
-
-            @NotNull final ClickHandler createClickHanlder = new ClickHandler() {
+            getSearchResultsComponent().getDisplay().getCreate().addClickHandler(new ClickHandler() {
 
                 @Override
-                public void onClick(final ClickEvent event) {
+                public void onClick(@NotNull final ClickEvent event) {
                     createNewTopic();
                 }
-            };
+            });
 
-            getSearchResultsComponent().getDisplay().getCreate().addClickHandler(createClickHanlder);
+            searchResultsComponent.getDisplay().getAtomFeed().addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    Window.open(Constants.REST_SERVER + "/1/topics/get/atom/" + getQueryString(), "", "");
+                }
+            });
+
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindFilteredResultsButtons()");
         }

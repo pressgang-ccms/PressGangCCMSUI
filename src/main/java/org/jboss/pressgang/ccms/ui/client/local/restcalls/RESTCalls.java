@@ -72,7 +72,8 @@ public final class RESTCalls {
     /**
      * The required expansion details for the content specs.
      */
-    private static final String CONTENT_SPEC_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.CHILDREN_NAME + "\"}}";
+    private static final String CONTENT_SPEC_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.CHILDREN_NAME + "\"}}, " +
+            "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}";
     /**
      * The required expansion details for a topic. This is used when loading a topic for the first time
      */
