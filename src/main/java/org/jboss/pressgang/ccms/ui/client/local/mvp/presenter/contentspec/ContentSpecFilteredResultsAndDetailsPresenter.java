@@ -96,6 +96,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
     @Override
     protected void loadAdditionalDisplayedItemData() {
+        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId() != null, "The displayed collection item to reference a valid entity with a valid ID.");
 
         final RESTContentSpecV1 displayedItem =  filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
 
@@ -116,10 +119,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
         RESTCalls.getContentSpecText(callback, displayedItem.getId());
 
         /*
-            Display the list of assigned property tags.
+            Display the list of assigned property tags. This should not be null, but bugs in the REST api can
+            lead to the properties collection being null.
         */
-        Collections.sort(displayedItem.getProperties().getItems(), new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
-        commonExtendedPropertiesPresenter.refreshExistingChildList(displayedItem);
+        if (displayedItem.getProperties() != null) {
+            Collections.sort(displayedItem.getProperties().getItems(), new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
+            commonExtendedPropertiesPresenter.refreshExistingChildList(displayedItem);
+        }
 
         /* Get a new collection of property tags. */
         commonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(displayedItem);

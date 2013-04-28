@@ -72,8 +72,13 @@ public final class RESTCalls {
     /**
      * The required expansion details for the content specs.
      */
-    private static final String CONTENT_SPEC_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.CHILDREN_NAME + "\"}}, " +
-            "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}";
+    private static final String CONTENT_SPEC_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.CHILDREN_NAME + "\"}}";
+
+    /**
+     * Content specifications need the extended properties expanded
+     */
+    private static final String CONTENT_SPEC_ITEM_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}";
+
     /**
      * The required expansion details for a topic. This is used when loading a topic for the first time
      */
@@ -713,7 +718,7 @@ public final class RESTCalls {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).getJSONContentSpec(id, "");
+                createRestMethod(callback).getJSONContentSpec(id, CONTENT_SPEC_ITEM_EXPANSION);
             }
         });
     }
