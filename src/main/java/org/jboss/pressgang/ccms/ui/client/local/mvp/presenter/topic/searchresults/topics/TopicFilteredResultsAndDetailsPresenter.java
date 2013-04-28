@@ -1193,7 +1193,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             searchResultsComponent.getDisplay().getAtomFeed().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
-                    Window.open(Constants.REST_SERVER + "/1/topics/get/atom/" + getQueryString(), "", "");
+                    Window.open(Constants.REST_SERVER + "/1/topics/get/atom/" + getQueryString() + "?expand=%7B%22branches%22%3A%5B%7B%22trunk%22%3A%7B%22name%22%3A%20%22topics%22%7D%7D%5D%7D", "", "");
                 }
             });
 
