@@ -50,7 +50,9 @@ public final class RESTCalls {
     /**
      * The required expansion details for the tags.
      */
-    private static final String TAG_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTagV1.PROJECTS_NAME + "\"}}, {\"trunk\":{\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}";
+    private static final String TAG_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTagV1.PROJECTS_NAME + "\"}}," +
+            "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
+            "{\"trunk\":{\"name\": \"" + RESTTagV1.CATEGORIES_NAME + "\"}}";
     /**
      * The required expansion details for the categories.
      */
@@ -694,13 +696,13 @@ public final class RESTCalls {
         });
     }
 
-    public static void updateContentSpecText(@NotNull final RESTCallback<String> callback, @NotNull final String contentSpecText, @NotNull final String message,
+    public static void updateContentSpecText(@NotNull final RESTCallback<String> callback, @NotNull final Integer contentSpecID, @NotNull final String contentSpecText, @NotNull final String message,
                                              @NotNull final Integer flag, @NotNull final String userId) {
         /* Expand the categories and projects in the tags */
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).updateTEXTContentSpec(contentSpecText, message, flag, userId);
+                createRestMethod(callback).updateTEXTContentSpec(contentSpecID, contentSpecText, message, flag, userId);
             }
         });
     }

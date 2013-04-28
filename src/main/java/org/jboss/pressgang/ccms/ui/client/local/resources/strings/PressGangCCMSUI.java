@@ -111,6 +111,9 @@ public interface PressGangCCMSUI extends Constants {
     String Search();
 
     @NotNull
+    String SearchTopics();
+
+    @NotNull
     String SearchContentSpecs();
 
     @NotNull
@@ -424,6 +427,9 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String DocbookInlineImageTemplate();
+
+    @NotNull
+    String DocbookBareImageTemplate();
 
     @NotNull
     String Projects();

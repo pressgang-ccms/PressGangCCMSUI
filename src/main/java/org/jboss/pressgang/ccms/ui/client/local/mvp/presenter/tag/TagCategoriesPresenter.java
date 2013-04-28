@@ -58,7 +58,6 @@ public class TagCategoriesPresenter
 
     public interface Display extends BaseOrderedChildrenViewInterface<
             RESTTagV1,
-            RESTCategoryV1,
             RESTCategoryCollectionItemV1,
             RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> {
         TextColumn<RESTCategoryCollectionItemV1> getIdColumn();

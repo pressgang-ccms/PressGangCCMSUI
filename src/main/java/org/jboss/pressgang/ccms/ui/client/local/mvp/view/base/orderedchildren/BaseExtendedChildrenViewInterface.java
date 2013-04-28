@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * @param <T> The entity type
- * @param <W> The parent of the children
  * @param <C> The collection item type for entity A
  * @param <D> The existing child type
  * @param <E> The collection type for entity D
@@ -22,7 +21,6 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface BaseExtendedChildrenViewInterface<
         T extends RESTBaseEntityV1<?, ?, ?>,
-        W extends RESTBaseEntityV1<?, ?, ?>,
         C extends RESTBaseCollectionItemV1<?, ?, ?>,
         D extends RESTBaseEntityV1<D, E, F>,
         E extends RESTBaseCollectionV1<D, E, F>,

@@ -15,10 +15,12 @@ public class TagsFilteredResultsAndTagView
         implements TagsFilteredResultsAndDetailsPresenter.Display {
 
     private final PushButton save = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Save());
+    private final PushButton extendedProperties = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ExtendedProperties());
     private final PushButton tagDetails = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TagDetails());
     private final PushButton tagProjects = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TagProjects());
     private final PushButton tagCategories = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TagCategories());
 
+    private final Label extendedPropertiesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ExtendedProperties());
     private final Label tagDetailsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.TagDetails());
     private final Label tagProjectsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.TagProjects());
     private final Label tagCategoriesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.TagCategories());
@@ -69,6 +71,17 @@ public class TagsFilteredResultsAndTagView
         this.addActionButton(this.getTagDetails());
         this.addActionButton(this.getTagProjects());
         this.addActionButton(this.getTagCategories());
+        this.addActionButton(this.getExtendedProperties());
         this.addActionButton(this.getSave());
+    }
+
+    @Override
+    public PushButton getExtendedProperties() {
+        return extendedProperties;
+    }
+
+    @Override
+    public Label getExtendedPropertiesDown() {
+        return extendedPropertiesDown;
     }
 }

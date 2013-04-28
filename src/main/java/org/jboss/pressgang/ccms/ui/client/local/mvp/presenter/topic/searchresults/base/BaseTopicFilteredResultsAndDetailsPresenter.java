@@ -20,11 +20,11 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.common.CommonExtendedPropertiesPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicPropertyTagsView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicSourceURLsView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicXMLView;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -113,7 +113,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      * The presenter used to display the topic property tags.
      */
     @Inject
-    private TopicPropertyTagsPresenter topicPropertyTagPresenter;
+    private CommonExtendedPropertiesPresenter topicPropertyTagPresenter;
     /**
      * The presenter used to display the topic's source urls.
      */
@@ -163,7 +163,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     }
 
     @NotNull
-    protected final TopicPropertyTagsPresenter getTopicPropertyTagPresenter() {
+    protected final CommonExtendedPropertiesPresenter getTopicPropertyTagPresenter() {
         return topicPropertyTagPresenter;
     }
 
@@ -747,7 +747,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 Loop over all the standard view i.e. those that will display details from the selected topic
                 or topic revision
             */
-            @NotNull final List<BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>>>();
+            @NotNull final List<BaseCustomViewInterface> displayableViews = new ArrayList<BaseCustomViewInterface>();
             displayableViews.add(topicXMLComponent.getDisplay());
             displayableViews.add(topicXMLErrorsPresenter.getDisplay());
             displayableViews.add(topicTagsPresenter.getDisplay());
@@ -756,7 +756,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             displayableViews.add(topicSourceURLsPresenter.getDisplay());
 
             final RESTBaseTopicV1<?, ?, ?> topicToDisplay = getDisplayedTopic();
-            for (@NotNull final BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>> view : displayableViews) {
+            for (@NotNull final BaseCustomViewInterface view : displayableViews) {
                 if (viewIsInFilter(filter, view)) {
                     view.display(topicToDisplay, isReadOnlyMode());
                 }
@@ -831,7 +831,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             component.setHelpTopicId(ServiceConstants.TOPIC_XML_EDIT_TOPIC);
         } else if (view instanceof TopicSourceURLsView) {
             component.setHelpTopicId(ServiceConstants.TOPIC_SOURCE_URLS_HELP_TOPIC);
-        } else if (view instanceof TopicPropertyTagsView) {
+        } else if (view instanceof CommonExtendedPropertiesPresenter) {
             component.setHelpTopicId(ServiceConstants.TOPIC_EXTENDED_PROPERTIES_HELP_TOPIC);
         } else {
             component.setHelpTopicId(ServiceConstants.DEFAULT_HELP_TOPIC);

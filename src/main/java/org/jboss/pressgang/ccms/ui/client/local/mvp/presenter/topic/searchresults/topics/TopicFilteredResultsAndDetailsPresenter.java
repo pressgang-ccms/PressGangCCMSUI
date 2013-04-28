@@ -672,7 +672,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                              */
                             final RESTTopicV1 sourceTopic = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
 
-                            @NotNull final RESTTopicV1 newTopic = new RESTTopicV1();
+                            final RESTTopicV1 newTopic = new RESTTopicV1();
                             newTopic.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
                             newTopic.explicitSetSourceUrls_OTM(new RESTTopicSourceUrlCollectionV1());
                             newTopic.explicitSetTags(new RESTTagCollectionV1());
@@ -698,7 +698,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             newTopic.explicitSetXml(sourceTopic.getXml());
 
                             if (getSearchResultsComponent().getProviderData().getDisplayedItem().returnIsAddItem()) {
-                                @NotNull final BaseRestCallback<RESTTopicV1, Display> addCallback = new BaseRestCallback<RESTTopicV1, Display>(
+                                final BaseRestCallback<RESTTopicV1, Display> addCallback = new BaseRestCallback<RESTTopicV1, Display>(
                                         display,
                                         new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
                                             @Override
@@ -762,7 +762,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                                 RESTCalls.createTopic(addCallback, newTopic, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
                             } else {
-                                @NotNull final BaseRestCallback<RESTTopicV1, Display> updateCallback = new BaseRestCallback<RESTTopicV1, Display>(
+                                final BaseRestCallback<RESTTopicV1, Display> updateCallback = new BaseRestCallback<RESTTopicV1, Display>(
                                         display,
                                         new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
                                             @Override

@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.view.common;
 
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.user.cellview.client.Column;
@@ -8,10 +8,10 @@ import com.google.gwt.user.client.ui.DisableableButtonCell;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTAssignedPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityWithPropertiesV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPropertyTagsPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.common.CommonExtendedPropertiesPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.orderedchildren.BaseExtendedChildrenView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.NotNull;
@@ -20,15 +20,14 @@ import org.jetbrains.annotations.Nullable;
 import javax.enterprise.context.Dependent;
 
 /**
-
+    The view for the extended properties assigned to an entity.
  */
 @Dependent
-public class TopicPropertyTagsView extends BaseExtendedChildrenView<
-        RESTBaseTopicV1<?, ?, ?>,
-        RESTTopicV1,
+public class CommonExtenedPropertyView extends BaseExtendedChildrenView<
+        RESTBaseEntityWithPropertiesV1<?, ?, ?>,
         RESTPropertyTagCollectionItemV1,
         RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1>
-        implements TopicPropertyTagsPresenter.Display {
+        implements CommonExtendedPropertiesPresenter.Display {
 
     /**
      * The column to display the assigned property tag's value.
@@ -148,7 +147,7 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
         return propertyTagValueColumn;
     }
 
-    public TopicPropertyTagsView() {
+    public CommonExtenedPropertyView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.PropertyTags());
 
         getExistingChildrenResults().addColumn(propertyTagNameColumn, PressGangCCMSUI.INSTANCE.PropertyTagName());
@@ -174,7 +173,7 @@ public class TopicPropertyTagsView extends BaseExtendedChildrenView<
 
 
     @Override
-    public void display(@NotNull final RESTBaseTopicV1 topic, final boolean readOnly) {
+    public void display(@NotNull final RESTBaseEntityWithPropertiesV1<?, ?, ?> topic, final boolean readOnly) {
         super.displayChildren(topic, readOnly);
     }
 

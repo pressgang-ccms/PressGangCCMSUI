@@ -33,6 +33,10 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
 
     private final Label inlineXmlTemplateLabel = new Label(PressGangCCMSUI.INSTANCE.DocbookInlineImageTemplate());
 
+    private final TextArea bareXmlTemplate = new TextArea();
+
+    private final Label bareXmlTemplateLabel = new Label(PressGangCCMSUI.INSTANCE.DocbookBareImageTemplate());
+
     /**
      * The editor representing a collection of language image editors.
      */
@@ -58,22 +62,30 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
         descriptionLabel.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_DESCRIPTION_LABEL);
         description.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_DESCRIPTION_TEXT);
         xmlTemplate.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_TEXT);
+        inlineXmlTemplate.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_TEXT);
+        bareXmlTemplate.addStyleName(CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_TEXT);
 
         imageDetails.setWidget(0, 0, descriptionLabel);
         imageDetails.setWidget(0, 1, description);
         imageDetails.setWidget(1, 0, xmlTemplateLabel);
         imageDetails.setWidget(1, 1, xmlTemplate);
-        imageDetails.setWidget(2, 0, inlineXmlTemplate);
+        imageDetails.setWidget(2, 0, inlineXmlTemplateLabel);
         imageDetails.setWidget(2, 1, inlineXmlTemplate);
-        imageDetails.setWidget(3, 0, docbookFileNameLabel);
-        imageDetails.setWidget(3, 1, docbookFileName);
+        imageDetails.setWidget(3, 0, bareXmlTemplateLabel);
+        imageDetails.setWidget(3, 1, bareXmlTemplate);
+        imageDetails.setWidget(4, 0, docbookFileNameLabel);
+        imageDetails.setWidget(4, 1, docbookFileName);
 
         imageDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.ImageView.IMAGE_VIEW_DESCRIPTION_LABEL_CELL);
         imageDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.ImageView.IMAGE_VIEW_DESCRIPTION_TEXT_CELL);
-        imageDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_LABEL_CELL);
-        imageDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_TEXT_CELL);
-        imageDetails.getCellFormatter().addStyleName(2, 0, CSSConstants.ImageView.IMAGE_VIEW_DOCBOOK_FILENAME_LABEL_CELL);
-        imageDetails.getCellFormatter().addStyleName(2, 1, CSSConstants.ImageView.IMAGE_VIEW_DOCBOOK_FILENAME_TEXT_CELL);
+        imageDetails.getCellFormatter().addStyleName(1, 0, CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_LABEL_CELL);
+        imageDetails.getCellFormatter().addStyleName(1, 1, CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_TEXT_CELL);
+        imageDetails.getCellFormatter().addStyleName(2, 0, CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_LABEL_CELL);
+        imageDetails.getCellFormatter().addStyleName(2, 1, CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_TEXT_CELL);
+        imageDetails.getCellFormatter().addStyleName(3, 0, CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_LABEL_CELL);
+        imageDetails.getCellFormatter().addStyleName(3, 1, CSSConstants.ImageView.IMAGE_VIEW_TEMPLATE_TEXT_CELL);
+        imageDetails.getCellFormatter().addStyleName(4, 0, CSSConstants.ImageView.IMAGE_VIEW_DOCBOOK_FILENAME_LABEL_CELL);
+        imageDetails.getCellFormatter().addStyleName(4, 1, CSSConstants.ImageView.IMAGE_VIEW_DOCBOOK_FILENAME_TEXT_CELL);
 
         this.add(imageDetails, DockPanel.NORTH);
         this.add(languageImages_OTM, DockPanel.CENTER);
@@ -101,6 +113,7 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
         this.docbookFileName.setText(ComponentImageV1.getDocbookFileName(value));
         this.xmlTemplate.setText(ComponentImageV1.getXMLTemplate(value));
         this.inlineXmlTemplate.setText(ComponentImageV1.getInlineXMLTemplate(value));
+        this.bareXmlTemplate.setText(ComponentImageV1.getBareXMLTemplate(value));
     }
 
 }

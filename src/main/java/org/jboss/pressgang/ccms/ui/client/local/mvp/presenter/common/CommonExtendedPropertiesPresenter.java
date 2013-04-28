@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.common;
 
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.user.cellview.client.Column;
@@ -8,7 +8,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTAssignedPropertyTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
-import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseEntityWithPropertiesV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -23,7 +23,6 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,16 +37,15 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
 /**
  * The presenter used to populate the tables of possible and existing topic property tags.
  */
-@Dependent
-public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
-        RESTBaseTopicV1<?, ?, ?>,
-        RESTBaseTopicV1<?, ?, ?>,
-        RESTPropertyTagCollectionItemV1,
-        RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1> {
+public class CommonExtendedPropertiesPresenter
+        extends BaseDetailedChildrenPresenter<
+        RESTBaseEntityWithPropertiesV1<?, ?, ?>,
+        RESTBaseEntityWithPropertiesV1<?, ?, ?>,
+            RESTPropertyTagCollectionItemV1,
+            RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1> {
 
     public interface Display extends BaseExtendedChildrenViewInterface<
-            RESTBaseTopicV1<?, ?, ?>,
-            RESTTopicV1,
+            RESTBaseEntityWithPropertiesV1<?, ?, ?>,
             RESTPropertyTagCollectionItemV1,
             RESTAssignedPropertyTagV1, RESTAssignedPropertyTagCollectionV1, RESTAssignedPropertyTagCollectionItemV1>,
             BaseTemplateViewInterface {
@@ -56,12 +54,12 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
         Column<RESTAssignedPropertyTagCollectionItemV1, String> getPropertyTagValueColumn();
     }
 
-    public static final String HISTORY_TOKEN = "TopicPropertyTagsView";
+    public static final String HISTORY_TOKEN = "CommonPropertyTagsView";
 
     /**
      * A logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TopicPropertyTagsPresenter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommonExtendedPropertiesPresenter.class.getName());
     @Nullable
     private Integer topicId;
     @Inject
@@ -92,7 +90,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     }
 
     @Override
-    public void displayDetailedChildrenExtended(@NotNull final RESTBaseTopicV1<?, ?, ?> parent, final boolean readOnly) {
+    public void displayDetailedChildrenExtended(@NotNull final RESTBaseEntityWithPropertiesV1<?, ?, ?> parent, final boolean readOnly) {
         super.displayDetailedChildren(parent, readOnly);
         bindPropertyTagButtons(parent);
     }
@@ -100,7 +98,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     /**
      * Add behaviour to the property tag add and remove buttons, and the value text edit field.
      */
-    private void bindPropertyTagButtons(@NotNull final RESTBaseTopicV1<?, ?, ?> parent) {
+    private void bindPropertyTagButtons(@NotNull final RESTBaseEntityWithPropertiesV1<?, ?, ?> parent) {
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindPropertyTagButtons()");
 
@@ -191,7 +189,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
 
     @NotNull
     @Override
-    public EnhancedAsyncDataProvider<RESTAssignedPropertyTagCollectionItemV1> generateExistingProvider(@NotNull final RESTBaseTopicV1<?, ?, ?> entity) {
+    public EnhancedAsyncDataProvider<RESTAssignedPropertyTagCollectionItemV1> generateExistingProvider(@NotNull final RESTBaseEntityWithPropertiesV1<?, ?, ?> entity) {
         return new EnhancedAsyncDataProvider<RESTAssignedPropertyTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTAssignedPropertyTagCollectionItemV1> display) {
@@ -224,7 +222,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
 
     @NotNull
     @Override
-    public EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> generatePossibleChildrenProvider(@NotNull final RESTBaseTopicV1<?, ?, ?> parent) {
+    public EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1> generatePossibleChildrenProvider(@NotNull final RESTBaseEntityWithPropertiesV1<?, ?, ?> parent) {
         return new EnhancedAsyncDataProvider<RESTPropertyTagCollectionItemV1>() {
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTPropertyTagCollectionItemV1> data) {
@@ -242,7 +240,7 @@ public class TopicPropertyTagsPresenter extends BaseDetailedChildrenPresenter<
     }
 
     @Override
-    public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTBaseTopicV1<?, ?, ?> parent) {
+    public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTBaseEntityWithPropertiesV1<?, ?, ?> parent) {
         try {
             LOGGER.log(Level.INFO, "ENTER TopicPropertyTagsPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
 

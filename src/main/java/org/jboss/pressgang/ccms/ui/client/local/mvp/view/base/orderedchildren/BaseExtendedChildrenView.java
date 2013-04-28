@@ -21,12 +21,11 @@ import org.jetbrains.annotations.NotNull;
  */
 abstract public class BaseExtendedChildrenView<
         T extends RESTBaseEntityV1<?, ?, ?>,
-        W extends RESTBaseEntityV1<?, ?, ?>,
         C extends RESTBaseCollectionItemV1<?, ?, ?>,
         D extends RESTBaseEntityV1<D, E, F>,
         E extends RESTBaseCollectionV1<D, E, F>,
         F extends RESTBaseCollectionItemV1<D, E, F>>
-        extends BaseChildrenView<T, C, D, E, F> implements BaseExtendedChildrenViewInterface<T, W, C, D, E, F> {
+        extends BaseChildrenView<T, C, D, E, F> implements BaseExtendedChildrenViewInterface<T, C, D, E, F> {
 
     /**
      * The panel that defines the split between the current children and the possible children

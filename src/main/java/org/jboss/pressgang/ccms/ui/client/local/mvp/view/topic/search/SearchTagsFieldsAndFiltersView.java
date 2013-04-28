@@ -21,7 +21,7 @@ public class SearchTagsFieldsAndFiltersView extends
      */
     private final WaitingDialog waiting = new WaitingDialog();
 
-    private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Search());
+    private final PushButton searchTopics = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.SearchTopics());
     private final PushButton searchContentSpecs = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.SearchContentSpecs());
     private final PushButton downloadZip = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.DownloadZip());
     private final PushButton downloadCSV = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.DownloadCSV());

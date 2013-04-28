@@ -123,6 +123,28 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
     @Override
     protected void bindActionButtons() {
+        display.getText().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                switchView(contentSpecPresenter.getDisplay());
+            }
+        }) ;
+
+        display.getDetails().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                switchView(contentSpecDetailsPresenter.getDisplay());
+            }
+        }) ;
+
+        display.getSave().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                display.getMessageLogDialog().reset();
+                display.getMessageLogDialog().getDialogBox().center();
+            }
+        });
+
         final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
@@ -163,7 +185,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                             }
                     );
 
-                    RESTCalls.updateContentSpecText(callback, contentSpecText, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
+                    final Integer id = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId();
+
+                    RESTCalls.updateContentSpecText(callback, id, contentSpecText, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
                 } finally {
                     display.getMessageLogDialog().reset();
                     display.getMessageLogDialog().getDialogBox().hide();
@@ -189,70 +213,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
     @Override
     protected void bindFilteredResultsButtons() {
-        display.getText().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                switchView(contentSpecPresenter.getDisplay());
-            }
-        }) ;
 
-        display.getDetails().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                switchView(contentSpecDetailsPresenter.getDisplay());
-            }
-        }) ;
 
-        display.getSave().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                display.getMessageLogDialog().reset();
-                display.getMessageLogDialog().getDialogBox().center();
-            }
-        });
-
-        display.getMessageLogDialog().getCancel().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                display.getMessageLogDialog().getDialogBox().hide();
-            }
-        });
-
-        display.getMessageLogDialog().getOk().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(@NotNull final ClickEvent event) {
-                /*
-                    Load the text version of the content spec.
-                */
-                final BaseRestCallback<String, Display> callback = new BaseRestCallback<String, Display>(
-                        display,
-                        new BaseRestCallback.SuccessAction<String, Display>() {
-                            @Override
-                            public void doSuccessAction(@NotNull final String retValue, @NotNull final Display display) {
-                                contentSpecText = retValue;
-                                initializeViews(new ArrayList<BaseTemplateViewInterface>(){{add(contentSpecPresenter.getDisplay());}});
-                                Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
-                            }
-                        }
-                );
-
-                final String user = display.getMessageLogDialog().getUsername().getText().trim();
-                Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
-
-                final StringBuilder message = new StringBuilder();
-                if (!user.isEmpty()) {
-                    message.append(user).append(": ");
-                }
-                message.append(display.getMessageLogDialog().getMessage().getText());
-                final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
-
-                final String contentSpecText = contentSpecPresenter.getDisplay().getEditor().getText();
-
-                LOGGER.info(contentSpecText);
-
-                RESTCalls.updateContentSpecText(callback, contentSpecText, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
-            }
-        });
     }
 
     @Override
