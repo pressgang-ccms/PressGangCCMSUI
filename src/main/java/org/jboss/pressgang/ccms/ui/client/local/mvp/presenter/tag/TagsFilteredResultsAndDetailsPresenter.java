@@ -187,7 +187,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     private final ClickHandler tagExtendedPropertiesClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
-            switchView(resultComponent.getDisplay());
+            switchView(commonExtendedPropertiesPresenter.getDisplay());
         }
 
     };
@@ -208,7 +208,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     private final ClickHandler tagCategoriesClickHandler = new ClickHandler() {
         @Override
         public void onClick(final ClickEvent event) {
-            switchView(commonExtendedPropertiesPresenter.getDisplay());
+            switchView(categoriesComponent.getDisplay());
         }
     };
 
@@ -790,6 +790,7 @@ public class TagsFilteredResultsAndDetailsPresenter
         this.display.replaceTopActionButton(this.display.getTagCategoriesDown(), this.display.getTagCategories());
         this.display.replaceTopActionButton(this.display.getTagDetailsDown(), this.display.getTagDetails());
         this.display.replaceTopActionButton(this.display.getTagProjectsDown(), this.display.getTagProjects());
+        this.display.replaceTopActionButton(this.display.getExtendedPropertiesDown(), this.display.getExtendedProperties());
 
         if (displayedView == this.categoriesComponent.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getTagCategories(), this.display.getTagCategoriesDown());
