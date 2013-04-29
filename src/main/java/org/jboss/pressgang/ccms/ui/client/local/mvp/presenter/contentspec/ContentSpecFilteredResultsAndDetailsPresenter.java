@@ -102,22 +102,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
         final RESTContentSpecV1 selectedItem =  filteredResultsPresenter.getProviderData().getSelectedItem().getItem();
 
         /*
-            Load the text version of the content spec.
-         */
-        final BaseRestCallback<String, Display> callback = new BaseRestCallback<String, Display>(
-                display,
-                new BaseRestCallback.SuccessAction<String, Display>() {
-                    @Override
-                    public void doSuccessAction(@NotNull final String retValue, @NotNull final Display display) {
-                        contentSpecText = retValue;
-                        initializeViews(new ArrayList<BaseTemplateViewInterface>(){{add(contentSpecPresenter.getDisplay());}});
-                    }
-                }
-        );
-
-        RESTCalls.getContentSpecText(callback, displayedItem.getId());
-
-        /*
             Display the list of assigned property tags. This should not be null, but bugs in the REST api can
             lead to the properties collection being null.
         */
@@ -129,10 +113,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
         /* Get a new collection of property tags. */
         commonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(displayedItem);
 
-        /* set the revisions to show the loading widget */
-        if (contentSpecRevisionsComponent.getDisplay().getProvider() != null) {
-            contentSpecRevisionsComponent.getDisplay().getProvider().resetProvider();
-        }
+        displayPropertyTags();
 
         this.contentSpecRevisionsComponent.getDisplay().setProvider(this.contentSpecRevisionsComponent.generateListProvider(selectedItem.getId(), display));
 
@@ -398,6 +379,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             /* Reset the reference to the revision topic */
             viewLatestSpecRevision();
 
+            /*
+                The latest revision is the same as the revision that is pulled down when the content spec is first viewed.
+                 If the selected revision is the latest one, just display the latest one. Otherwise, display the revision.
+             */
             if (!revisionSpec.getRevision().equals(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getRevision())) {
                 /* Reset the reference to the revision topic */
                 contentSpecRevisionsComponent.getDisplay().setRevisionContentSpec(revisionSpec);
@@ -413,7 +398,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             loadContentSpecText();
 
             /* Redisplay the list of property tags */
-            commonExtendedPropertiesPresenter.getDisplay().setExistingChildrenProvider(commonExtendedPropertiesPresenter.generateExistingProvider(getDisplayedContentSpec()));
+            displayPropertyTags();
 
             /* Display the revisions view (which will also update buttons like Save) */
             switchView(contentSpecRevisionsComponent.getDisplay());
@@ -429,6 +414,19 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
      */
     private void viewLatestSpecRevision() {
         contentSpecRevisionsComponent.getDisplay().setRevisionContentSpec(null);
+    }
+
+    private void displayPropertyTags() {
+        final RESTContentSpecV1 displayedItem = getDisplayedContentSpec();
+
+        /*
+            Display the list of assigned property tags. This should not be null, but bugs in the REST api can
+            lead to the properties collection being null.
+        */
+        if (displayedItem.getProperties() != null) {
+            Collections.sort(displayedItem.getProperties().getItems(), new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
+            commonExtendedPropertiesPresenter.refreshExistingChildList(displayedItem);
+        }
     }
 
     private void loadContentSpecText() {

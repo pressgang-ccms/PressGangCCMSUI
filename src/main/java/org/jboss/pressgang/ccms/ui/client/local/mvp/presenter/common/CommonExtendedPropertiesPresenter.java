@@ -100,7 +100,7 @@ public class CommonExtendedPropertiesPresenter
      */
     private void bindPropertyTagButtons(@NotNull final RESTBaseEntityWithPropertiesV1<?, ?, ?> parent) {
         try {
-            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindPropertyTagButtons()");
+            LOGGER.log(Level.INFO, "ENTER CommonExtendedPropertiesPresenter.bindPropertyTagButtons()");
 
             display.getPossibleChildrenButtonColumn().setFieldUpdater(
                     new FieldUpdater<RESTPropertyTagCollectionItemV1, String>() {
@@ -183,7 +183,7 @@ public class CommonExtendedPropertiesPresenter
                 }
             });
         } finally {
-            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindPropertyTagButtons()");
+            LOGGER.log(Level.INFO, "EXIT CommonExtendedPropertiesPresenter.bindPropertyTagButtons()");
         }
     }
 
@@ -194,7 +194,7 @@ public class CommonExtendedPropertiesPresenter
             @Override
             protected void onRangeChanged(@NotNull final HasData<RESTAssignedPropertyTagCollectionItemV1> display) {
                 try {
-                    LOGGER.log(Level.INFO, "ENTER TopicPropertyTagsPresenter.generateExistingProvider() EnhancedAsyncDataProvider.onRangeChanged()");
+                    LOGGER.log(Level.INFO, "ENTER CommonExtendedPropertiesPresenter.generateExistingProvider() EnhancedAsyncDataProvider.onRangeChanged()");
 
                     getExistingProviderData().setStartRow(display.getVisibleRange().getStart());
                     getExistingProviderData().setItems(new ArrayList<RESTAssignedPropertyTagCollectionItemV1>());
@@ -214,7 +214,7 @@ public class CommonExtendedPropertiesPresenter
 
                     displayNewFixedList(getExistingProviderData().getItems());
                 } finally {
-                    LOGGER.log(Level.INFO, "EXIT TopicPropertyTagsPresenter.generateExistingProvider() EnhancedAsyncDataProvider.onRangeChanged()");
+                    LOGGER.log(Level.INFO, "EXIT CommonExtendedPropertiesPresenter.generateExistingProvider() EnhancedAsyncDataProvider.onRangeChanged()");
                 }
             }
         };
@@ -242,13 +242,13 @@ public class CommonExtendedPropertiesPresenter
     @Override
     public void refreshPossibleChildrenDataFromRESTAndRedisplayList(@NotNull final RESTBaseEntityWithPropertiesV1<?, ?, ?> parent) {
         try {
-            LOGGER.log(Level.INFO, "ENTER TopicPropertyTagsPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
+            LOGGER.log(Level.INFO, "ENTER CommonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
 
             @NotNull final BaseRestCallback<RESTPropertyTagCollectionV1, Display>  callback = new BaseRestCallback<RESTPropertyTagCollectionV1, Display>(display,
                     new BaseRestCallback.SuccessAction<RESTPropertyTagCollectionV1, Display>() {
                         @Override
                         public void doSuccessAction(@NotNull final RESTPropertyTagCollectionV1 retValue, @NotNull final Display display) {
-                            LOGGER.log(Level.INFO, "ENTER TopicPropertyTagsPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList() callback.success()");
+                            LOGGER.log(Level.INFO, "ENTER CommonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList() callback.success()");
                             LOGGER.log(Level.INFO, "RESTCallback.success(). retValue.getSize(): " + retValue.getSize() + " retValue.getItems().size(): " + retValue.getItems().size());
                             /* Zero results can be a null list */
                             getPossibleChildrenProviderData().setStartRow(0);
@@ -265,7 +265,7 @@ public class CommonExtendedPropertiesPresenter
             getPossibleChildrenProviderData().reset();
             RESTCalls.getPropertyTags(callback);
         } finally {
-            LOGGER.log(Level.INFO, "EXIT TopicPropertyTagsPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
+            LOGGER.log(Level.INFO, "EXIT CommonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
         }
     }
 }
