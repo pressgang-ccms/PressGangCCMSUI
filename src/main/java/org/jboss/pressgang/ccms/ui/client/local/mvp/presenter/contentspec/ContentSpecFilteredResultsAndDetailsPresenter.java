@@ -316,6 +316,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
     private void enableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView) {
         this.display.replaceTopActionButton(this.display.getTextDown(), this.display.getText());
         this.display.replaceTopActionButton(this.display.getDetailsDown(), this.display.getDetails());
+        this.display.replaceTopActionButton(this.display.getExtendedPropertiesDown(), this.display.getExtendedProperties());
 
         if (displayedView == this.contentSpecDetailsPresenter.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getDetails(), this.display.getDetailsDown());

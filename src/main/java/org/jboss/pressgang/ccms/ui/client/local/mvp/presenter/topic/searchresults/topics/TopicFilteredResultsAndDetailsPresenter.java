@@ -1491,7 +1491,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             topicRevisionsComponent.getDisplay().getDiffButton().setFieldUpdater(new FieldUpdater<RESTTopicCollectionItemV1, String>() {
                 @Override
                 public void update(final int index, @NotNull final RESTTopicCollectionItemV1 revisionTopic, final String value) {
-                    @NotNull final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
+                    final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, TopicRevisionsPresenter.Display>(
                             topicRevisionsComponent.getDisplay(),
                             new BaseRestCallback.SuccessAction<RESTTopicV1, TopicRevisionsPresenter.Display>() {
                                 @Override
@@ -1499,7 +1499,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     checkState(getDisplayedTopic() != null, "There should be a displayed item.");
 
                                     if (getDisplayedTopic() != null) {
-                                        @NotNull final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID()
+                                        final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID()
                                                 + ": "
                                                 + retValue.getId()
                                                 + " "
@@ -1512,7 +1512,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                 + DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(
                                                 retValue.getLastModified());
 
-                                        @NotNull final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID()
+                                        final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID()
                                                 + ": "
                                                 + getDisplayedTopic().getId()
                                                 + " "
@@ -1533,7 +1533,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                             isXML = false;
                                         }
 
-                                        topicRevisionsComponent.displayDiff(retValue.getXml(), retValueLabel, getDisplayedTopic().getXml(), sourceTopicLabel, isXML);
+                                        GWTUtilities.displayDiff(retValue.getXml(), retValueLabel, getDisplayedTopic().getXml(), sourceTopicLabel, isXML);
                                     }
                                 }
                             });
