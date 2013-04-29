@@ -40,7 +40,7 @@ public class SearchTagsFieldsAndFiltersView extends
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.Search());
 
         addActionButton(searchTopics);
-        //addActionButton(searchContentSpecs);
+        addActionButton(searchContentSpecs);
         addActionButton(downloadZip);
         addActionButton(downloadCSV);
         addActionButton(applyBulkTags);

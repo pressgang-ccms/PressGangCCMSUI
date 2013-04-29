@@ -228,7 +228,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             }
         };
 
-        final ClickHandler messageLogDialogOK = new ClickHandler() {
+        display.getMessageLogDialog().getOk().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 try {
@@ -313,7 +313,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                                                     }
 
                                                     /* Update the displayed topic */
-                                                    retValue.cloneInto(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),true);
+                                                    retValue.cloneInto(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), true);
                                                     /* Update the selected topic */
                                                     retValue.cloneInto(filteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
 
@@ -372,20 +372,16 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                     LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick()");
                 }
             }
-        };
+        });
 
-        final ClickHandler messageLogDialogCancel = new ClickHandler() {
+        display.getMessageLogDialog().getCancel().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(final ClickEvent event) {
                 display.getMessageLogDialog().reset();
                 display.getMessageLogDialog().getDialogBox().hide();
             }
-        };
-
-        display.getSave().addClickHandler(saveClickHandler);
-        display.getMessageLogDialog().getOk().addClickHandler(messageLogDialogOK);
-        display.getMessageLogDialog().getCancel().addClickHandler(messageLogDialogCancel);
+        });
     }
 
     @Override
