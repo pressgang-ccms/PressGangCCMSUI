@@ -432,7 +432,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
     }
 
     private void loadContentSpecText() {
-        final RESTContentSpecV1 displayedItem =  filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
+        final RESTContentSpecV1 displayedItem =  getDisplayedContentSpec();
 
         /*
             Load the text version of the content spec.
@@ -454,7 +454,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
         contentSpecText = null;
         initializeViews(new ArrayList<BaseTemplateViewInterface>(){{add(contentSpecPresenter.getDisplay());}});
 
-        RESTCalls.getContentSpecText(callback, displayedItem.getId());
+        RESTCalls.getContentSpecTextRevision(callback, displayedItem.getId(), displayedItem.getRevision());
     }
 
     /**
