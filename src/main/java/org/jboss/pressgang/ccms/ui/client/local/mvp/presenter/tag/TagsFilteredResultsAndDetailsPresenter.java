@@ -907,7 +907,7 @@ public class TagsFilteredResultsAndDetailsPresenter
         display.getTagProjects().addClickHandler(tagProjectsClickHandler);
         display.getSave().addClickHandler(saveClickHandler);
         display.getTagCategories().addClickHandler(tagCategoriesClickHandler);
-        display.getExtendedProperties().addClickHandler(tagCategoriesClickHandler);
+        display.getExtendedProperties().addClickHandler(tagExtendedPropertiesClickHandler);
     }
 
     @Override
