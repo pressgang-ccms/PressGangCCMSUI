@@ -136,6 +136,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             contentSpecPresenter.getDisplay().display(contentSpecText, isReadOnlyMode());
         }
 
+        if (viewIsInFilter(filter, contentSpecTagsPresenter.getDisplay())) {
+            contentSpecTagsPresenter.getDisplay().display(displayedItem, isReadOnlyMode());
+        }
+
         if (viewIsInFilter(filter, commonExtendedPropertiesPresenter.getDisplay())) {
             commonExtendedPropertiesPresenter.getDisplay().display(displayedItem, isReadOnlyMode());
             commonExtendedPropertiesPresenter.displayDetailedChildrenExtended(displayedItem, isReadOnlyMode());
@@ -186,6 +190,15 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             public void onClick(final ClickEvent event) {
                 if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
                     switchView(contentSpecRevisionsComponent.getDisplay());
+                }
+            }
+        });
+
+        display.getContentSpecTags().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(final ClickEvent event) {
+                if (filteredResultsPresenter.getProviderData().getDisplayedItem() != null) {
+                    switchView(contentSpecTagsPresenter.getDisplay());
                 }
             }
         });
@@ -287,6 +300,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
         contentSpecPresenter.bindExtended(ServiceConstants.CONTENT_SPEC_TEXT_EDIT_HELP_TOPIC, pageId);
         filteredResultsPresenter.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);
         commonExtendedPropertiesPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        contentSpecTagsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
 
         super.bindSearchAndEdit(topicId, pageId, Preferences.CATEGORY_VIEW_MAIN_SPLIT_WIDTH, contentSpecPresenter.getDisplay(), contentSpecDetailsPresenter.getDisplay(),
                 filteredResultsPresenter.getDisplay(), filteredResultsPresenter, display, display, getNewEntityCallback);

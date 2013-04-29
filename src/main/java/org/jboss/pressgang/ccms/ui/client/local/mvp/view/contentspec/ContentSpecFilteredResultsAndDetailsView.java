@@ -99,6 +99,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends
     private void populateTopActionBar() {
         this.addActionButton(this.getText());
         this.addActionButton(this.getDetails());
+        this.addActionButton(this.getContentSpecTags());
         this.addActionButton(this.getExtendedProperties());
         this.addActionButton(this.getHistory());
         this.addActionButton(this.getSave());
