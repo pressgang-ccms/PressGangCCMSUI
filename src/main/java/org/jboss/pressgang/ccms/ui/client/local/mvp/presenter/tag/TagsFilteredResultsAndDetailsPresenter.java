@@ -765,15 +765,14 @@ public class TagsFilteredResultsAndDetailsPresenter
             public void onClick(final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
-                @NotNull final RESTTagV1 selectedTag = new RESTTagV1();
+                final RESTTagV1 selectedTag = new RESTTagV1();
                 selectedTag.setId(Constants.NULL_ID);
-                @NotNull final RESTTagCollectionItemV1 selectedTagWrapper = new RESTTagCollectionItemV1(selectedTag);
+                final RESTTagCollectionItemV1 selectedTagWrapper = new RESTTagCollectionItemV1(selectedTag);
 
                 /* The displayed tag will also be blank. This is the object that our data will be saved into */
-                @NotNull final RESTTagV1 displayedTag = new RESTTagV1();
+                final RESTTagV1 displayedTag = new RESTTagV1();
                 displayedTag.setId(Constants.NULL_ID);
-                @NotNull final RESTTagCollectionItemV1 displayedTagWrapper = new RESTTagCollectionItemV1(displayedTag,
-                        RESTBaseCollectionItemV1.ADD_STATE);
+                final RESTTagCollectionItemV1 displayedTagWrapper = new RESTTagCollectionItemV1(displayedTag, RESTBaseCollectionItemV1.ADD_STATE);
 
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
