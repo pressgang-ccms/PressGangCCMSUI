@@ -31,6 +31,8 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTContentSpecCollectionItemV1RevisionSort;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTTopicCollectionItemV1RevisionSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.contentspec.RESTContentSpecV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -157,6 +159,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
         }
     }
 
+    private void afterSave(final boolean wasNewEntity) {
+        initializeViews(new ArrayList<BaseTemplateViewInterface>() {{add(contentSpecPresenter.getDisplay());}});
+        updateDisplayAfterSave(wasNewEntity);
+    }
+
     @Override
     protected void bindActionButtons() {
         display.getText().addClickHandler(new ClickHandler() {
@@ -259,12 +266,71 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                                             new BaseRestCallback.SuccessAction<RESTContentSpecV1, Display>() {
                                                 @Override
                                                 public void doSuccessAction(@NotNull final RESTContentSpecV1 retValue, @NotNull final Display display) {
-                                                    initializeViews(new ArrayList<BaseTemplateViewInterface>() {{add(contentSpecPresenter.getDisplay());}});
+
+                                                    boolean overwroteChanges = false;
+                                                    final Integer originalRevision = displayedEntity.getRevision();
+
+                                                    if (retValue.getRevisions() != null && retValue.getRevisions().getItems() != null) {
+                                                        Collections.sort(retValue.getRevisions().getItems(), new RESTContentSpecCollectionItemV1RevisionSort());
+
+                                                        /*
+                                                            If no changes were made to the topic itself (i.e. we just update some children),
+                                                            then the revision number will not change. So if what is sent back has the same
+                                                            revision number as the topic we were editing, then we have not overwritten background
+                                                            changes.
+
+                                                            Note that this should not happen because we don't actually just update the property tags;
+                                                            any change to the property tag value results in the mapping being deleted and recreated.
+
+                                                            The code is left here as a reminder that some additional checking might be required with
+                                                            new children that are exposed through the UI.
+                                                        */
+                                                        if (retValue.getRevisions().getItems().size() >= 1) {
+                                                            final Integer overwriteRevision = retValue.getRevisions().getItems()
+                                                                    .get(retValue.getRevisions().getItems().size() - 1).getItem().getRevision();
+
+                                                            LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " new revision: " + overwriteRevision);
+
+                                                            overwroteChanges = !originalRevision.equals(overwriteRevision);
+                                                        }
+
+                                                        /*
+                                                            Otherwise we need to make sure that the second last revision matches the revision of the topic we were editing.
+                                                         */
+                                                        if (overwroteChanges && retValue.getRevisions().getItems().size() >= 2) {
+                                                            /* Get the second last revision (the last one is the current one) */
+                                                            final Integer overwriteRevision = retValue.getRevisions().getItems()
+                                                                    .get(retValue.getRevisions().getItems().size() - 2).getItem().getRevision();
+
+                                                            LOGGER.log(Level.INFO, "originalRevision: " + originalRevision + " last revision: " + overwriteRevision);
+
+                                                            /*
+                                                             * if the second last revision doesn't match the revision of the topic when editing was
+                                                             * started, then we have overwritten someone elses changes
+                                                             */
+                                                            overwroteChanges = !originalRevision.equals(overwriteRevision);
+                                                        }
+                                                    }
+
+                                                    /* Update the displayed topic */
+                                                    retValue.cloneInto(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(),true);
+                                                    /* Update the selected topic */
+                                                    retValue.cloneInto(filteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
+
+                                                    afterSave(false);
+
+                                                    if (overwroteChanges) {
+                                                        /* Take the user to the revisions view so they can review any overwritten changes */
+                                                        switchView(contentSpecRevisionsComponent.getDisplay());
+                                                        Window.alert(PressGangCCMSUI.INSTANCE.OverwriteSuccess());
+                                                    } else {
+                                                        Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
+                                                    }
                                                 }
                                             }, new BaseRestCallback.FailureAction<Display>() {
                                                 @Override
                                                 public void doFailureAction(@NotNull final Display display) {
-                                                    initializeViews(new ArrayList<BaseTemplateViewInterface>() {{add(contentSpecPresenter.getDisplay());}});
+                                                    afterSave(false);
                                                 }
                                             }
                                     );
@@ -286,10 +352,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                                         secondaryChanges = true;
                                     }
 
+                                    /*
+                                        Only make the second call if there is something to save
+                                     */
                                     if (secondaryChanges) {
                                         RESTCalls.updateContentSpec(callback2, updatedSpec, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
                                     } else {
-                                        initializeViews(new ArrayList<BaseTemplateViewInterface>() {{add(contentSpecPresenter.getDisplay());}});
+                                        afterSave(false);
                                     }
                                 }
                             }
