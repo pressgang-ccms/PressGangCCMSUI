@@ -173,23 +173,8 @@ implements BaseTemplatePresenterInterface {
         final KeyPressHandler searchKeyPressHandler = new KeyPressHandler() {
             @Override
             public void onKeyPress(@NotNull final KeyPressEvent event) {
-                try {
-                    LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditViewInterface.bindFilteredResultsButtons() KeyPressHandler.onKeyPress()");
-
-                    final int charCode = event.getUnicodeCharCode();
-                    if (charCode == 0) {
-                        // it's probably Firefox
-                        final int keyCode = event.getNativeEvent().getKeyCode();
-                        // beware! keyCode=40 means "down arrow", while charCode=40 means '('
-                        // always check the keyCode against a list of "known to be buggy" codes!
-                        if (keyCode == KeyCodes.KEY_ENTER) {
-                            doSearch(false);
-                        }
-                    } else if (charCode == KeyCodes.KEY_ENTER) {
-                        doSearch(false);
-                    }
-                } finally {
-                    LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditViewInterface.bindFilteredResultsButtons() KeyPressHandler.onKeyPress()");
+                if (GWTUtilities.enterKeyWasPressed(event)) {
+                    doSearch(false);
                 }
             }
         };

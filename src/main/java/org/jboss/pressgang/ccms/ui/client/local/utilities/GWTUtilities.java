@@ -1,6 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -82,6 +84,23 @@ final public class GWTUtilities {
      */
     public static boolean isEventToOpenNewWindow(@NotNull final ClickEvent event) {
         return event.isControlKeyDown();
+    }
+
+    public static boolean enterKeyWasPressed(@NotNull final KeyPressEvent event) {
+        final int charCode = event.getUnicodeCharCode();
+        if (charCode == 0) {
+            // it's probably Firefox
+            final int keyCode = event.getNativeEvent().getKeyCode();
+            // beware! keyCode=40 means "down arrow", while charCode=40 means '('
+            // always check the keyCode against a list of "known to be buggy" codes!
+            if (keyCode == KeyCodes.KEY_ENTER) {
+                return true;
+            }
+        } else if (charCode == KeyCodes.KEY_ENTER) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
