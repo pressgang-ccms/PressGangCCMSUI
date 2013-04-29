@@ -26,10 +26,14 @@ public class ContentSpecFilteredResultsAndDetailsView extends
     private final PushButton extendedProperties = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ExtendedProperties());
     private final PushButton details = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecDetails());
     private final PushButton text = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecText());
+    private final PushButton history = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Revisions());
+    private final PushButton tags = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
 
     private final Label extendedPropertiesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ExtendedProperties());
     private final Label detailsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecDetails());
     private final Label textDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecText());
+    private final Label historyDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
+    private final Label tagsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Tags());
 
     /**
      * An instance of the message log dialog box
@@ -96,6 +100,31 @@ public class ContentSpecFilteredResultsAndDetailsView extends
         this.addActionButton(this.getText());
         this.addActionButton(this.getDetails());
         this.addActionButton(this.getExtendedProperties());
+        this.addActionButton(this.getHistory());
         this.addActionButton(this.getSave());
+    }
+
+    @Override
+    @NotNull
+    public PushButton getHistory() {
+        return history;
+    }
+
+    @Override
+    @NotNull
+    public PushButton getContentSpecTags() {
+        return tags;
+    }
+
+    @Override
+    @NotNull
+    public Label getHistoryDown() {
+        return historyDown;
+    }
+
+    @Override
+    @NotNull
+    public Label getContentSpecTagsDown() {
+        return tagsDown;
     }
 }

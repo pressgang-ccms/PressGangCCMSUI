@@ -95,8 +95,6 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
 
     }
 
-
-
     public EnhancedAsyncDataProvider<RESTTopicCollectionItemV1> generateListProvider(@NotNull final Integer id, @NotNull final BaseTemplateViewInterface waitDisplay) {
 
         getProviderData().reset();

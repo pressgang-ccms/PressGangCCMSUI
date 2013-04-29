@@ -44,9 +44,10 @@ public final class RESTCalls {
     /**
      * A topic with expanded tags
      */
-    private static final String TOPIC_TAGS_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.TAGS_NAME
+    private static final String TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.TAGS_NAME
             + "\"},\"branches\":[{\"trunk\":{\"name\": \"" + RESTTagV1.PROJECTS_NAME + "\"}},{\"trunk\":{\"name\":\""
             + RESTTagV1.CATEGORIES_NAME + "\"}}]}";
+
     /**
      * The required expansion details for the tags.
      */
@@ -86,6 +87,14 @@ public final class RESTCalls {
             "{\"branches\":[" +
                     "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
                     "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
+                    "]}";
+
+    /**
+     * The required expansion details for a topic. This is used when loading a topic for the first time
+     */
+    private static final String CONTENT_SPEC_EXPANSION_WO_REVISIONS =
+            "{\"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
                     "]}";
     /**
      * The required expansion details for a topic. The revisions are required so we can check to see if
@@ -400,7 +409,7 @@ public final class RESTCalls {
 
     public static void getTopicWithTags(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id) {
         /* Expand the categories and projects in the tags */
-        @NotNull final String expand = "{\"branches\":[" + TOPIC_TAGS_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -411,7 +420,7 @@ public final class RESTCalls {
 
     public static void getTranslatedTopicWithTags(@NotNull final RESTCallback<RESTTranslatedTopicV1> callback, @NotNull final Integer id) {
         /* Expand the categories and projects in the tags */
-        @NotNull final String expand = "{\"branches\":[" + TOPIC_TAGS_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -422,7 +431,7 @@ public final class RESTCalls {
 
     public static void getTopicRevisionWithTags(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id, @NotNull final Integer revision) {
         /* Expand the categories and projects in the tags */
-        @NotNull final String expand = "{\"branches\":[" + TOPIC_TAGS_EXPANSION + "]}";
+        @NotNull final String expand = "{\"branches\":[" + TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
@@ -702,6 +711,16 @@ public final class RESTCalls {
         });
     }
 
+    public static void getContentSpecTextRevision(@NotNull final RESTCallback<String> callback, @NotNull final Integer id, @NotNull final Integer revision) {
+        /* Expand the categories and projects in the tags */
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getTEXTContentSpecRevision(id, revision);
+            }
+        });
+    }
+
     public static void updateContentSpecText(@NotNull final RESTCallback<String> callback, @NotNull final Integer contentSpecID, @NotNull final String contentSpecText, @NotNull final String message,
                                              @NotNull final Integer flag, @NotNull final String userId) {
         /* Expand the categories and projects in the tags */
@@ -719,6 +738,42 @@ public final class RESTCalls {
             @Override
             public void call() throws Exception {
                 createRestMethod(callback).getJSONContentSpec(id, CONTENT_SPEC_ITEM_EXPANSION);
+            }
+        });
+    }
+
+    public static void getContentSpecRevision(@NotNull final RESTCallback<RESTContentSpecV1> callback, @NotNull final Integer id, @NotNull final Integer revision) {
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONContentSpecRevision(id, revision, CONTENT_SPEC_EXPANSION_WO_REVISIONS);
+            }
+        });
+    }
+
+    public static void getContentSpecWithRevisions(@NotNull final RESTCallback<RESTContentSpecV1> callback, @NotNull final Integer id, final int start, final int end) {
+        final String revisionExpand =
+                "{\"branches\":[" +
+                        "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\":" + start + ", \"end\":" + end + "}," +
+                        "\"branches\":[" +
+                            CONTENT_SPEC_ITEM_EXPANSION  +
+                        "]}" +
+                    "]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONContentSpec(id, revisionExpand);
+            }
+        });
+    }
+
+    public static void getContentSpecWithTags(@NotNull final RESTCallback<RESTContentSpecV1> callback, @NotNull final Integer id) {
+        /* Expand the categories and projects in the tags */
+        final String expand = "{\"branches\":[" + TOPIC_AND_CONTENT_SPEC_TAGS_EXPANSION + "]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONContentSpec(id, expand);
             }
         });
     }

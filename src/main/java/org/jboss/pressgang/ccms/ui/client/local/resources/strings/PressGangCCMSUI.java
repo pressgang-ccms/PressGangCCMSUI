@@ -880,4 +880,7 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String ContentSpecText();
+
+    @NotNull
+    String ContentSpecTags();
 }
