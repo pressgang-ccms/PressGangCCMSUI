@@ -21,7 +21,6 @@ import org.jetbrains.annotations.Nullable;
 public class CategoryTagView
         extends BaseOrderedChildrenView<
         RESTCategoryV1,
-        RESTCategoryV1,
         RESTTagV1, RESTTagCollectionV1, RESTTagCollectionItemV1,
         RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1>
         implements CategoryTagPresenter.Display {

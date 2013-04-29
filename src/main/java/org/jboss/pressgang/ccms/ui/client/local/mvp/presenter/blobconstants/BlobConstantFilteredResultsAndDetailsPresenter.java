@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.blobconstants;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -120,7 +119,7 @@ implements BaseTemplatePresenterInterface {
                 /* Sync the UI to the underlying object */
                 blobConstantPresenter.getDisplay().getDriver().flush();
 
-                @NotNull final RESTCalls.RESTCallback<RESTBlobConstantV1> callback = new BaseRestCallback<RESTBlobConstantV1, Display>(display,
+                final RESTCalls.RESTCallback<RESTBlobConstantV1> callback = new BaseRestCallback<RESTBlobConstantV1, Display>(display,
                         new BaseRestCallback.SuccessAction<RESTBlobConstantV1, Display>() {
                             @Override
                             public void doSuccessAction(@NotNull final RESTBlobConstantV1 retValue, final Display display) {
@@ -170,17 +169,32 @@ implements BaseTemplatePresenterInterface {
         display.getSave().addClickHandler(saveClickHandler);
     }
 
+    private void doSearch(final boolean newWindow) {
+        if (isOKToProceed()) {
+            eventBus.fireEvent(new BlobConstantFilteredResultsAndDetailsViewEvent(blobConstantFilteredResultsPresenter.getQuery(), newWindow));
+        }
+    }
+
     @Override
     protected void bindFilteredResultsButtons() {
         blobConstantFilteredResultsPresenter.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (isOKToProceed()) {
-                    eventBus.fireEvent(new BlobConstantFilteredResultsAndDetailsViewEvent(blobConstantFilteredResultsPresenter.getQuery(),
-                            GWTUtilities.isEventToOpenNewWindow(event)));
-                }
+                doSearch(GWTUtilities.isEventToOpenNewWindow(event));
             }
         });
+
+        final KeyPressHandler searchKeyPressHandler = new KeyPressHandler() {
+            @Override
+            public void onKeyPress(@NotNull final KeyPressEvent event) {
+                if (GWTUtilities.enterKeyWasPressed(event)) {
+                    doSearch(false);
+                }
+            }
+        };
+
+        blobConstantFilteredResultsPresenter.getDisplay().getIdFilter().addKeyPressHandler(searchKeyPressHandler);
+        blobConstantFilteredResultsPresenter.getDisplay().getNameFilter().addKeyPressHandler(searchKeyPressHandler);
 
         blobConstantFilteredResultsPresenter.getDisplay().getCreate().addClickHandler(new ClickHandler() {
             @Override

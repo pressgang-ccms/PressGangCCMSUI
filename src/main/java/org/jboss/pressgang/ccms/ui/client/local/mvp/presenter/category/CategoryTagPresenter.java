@@ -218,7 +218,6 @@ public class CategoryTagPresenter
     public interface Display extends
             BaseOrderedChildrenViewInterface<
                     RESTCategoryV1,
-                    RESTCategoryV1,
                     RESTTagCollectionItemV1,
                     RESTTagInCategoryV1, RESTTagInCategoryCollectionV1, RESTTagInCategoryCollectionItemV1> {
 

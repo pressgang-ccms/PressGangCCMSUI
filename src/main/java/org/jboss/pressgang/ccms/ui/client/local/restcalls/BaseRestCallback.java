@@ -94,10 +94,11 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
             }
 
             if (throwable instanceof ResponseException) {
-                @NotNull final ResponseException ex = (ResponseException) throwable;
+                final ResponseException ex = (ResponseException) throwable;
                 /* A bad request means invalid input, like a duplicated name */
                 if (ex.getResponse().getStatusCode() == Response.SC_BAD_REQUEST) {
-                    Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput());
+                    Window.alert(PressGangCCMSUI.INSTANCE.InvalidInput() + "\n\n" + ex.getResponse().getText());
+
                 }
             } else {
                 Window.alert(PressGangCCMSUI.INSTANCE.ConnectionError() + "\n" + (message != null ? message.toString() : "")

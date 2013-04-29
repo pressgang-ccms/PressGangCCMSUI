@@ -18,7 +18,7 @@
     <inherits name='com.google.web.bindery.requestfactory.RequestFactory'/>
     <inherits name="org.vectomatic.libgwtfile"/>
     <!--http://forums.smartclient.com/showthread.php?t=20246 -->
-    <inherits name="com.smartgwt.SmartGwtNoScript"/>
+    <!--inherits name="com.smartgwt.SmartGwtNoScript"/-->
 
     <set-property name="gwt.logging.logLevel" value="INFO"/>
     <set-property name="gwt.logging.popupHandler" value="DISABLED"/>
@@ -33,5 +33,5 @@
     <set-configuration-property name="devModeRedirectEnabled" value="true"/>
 
     <!-- Logging level -->
-    <!--<set-property name="gwt.logging.logLevel" value="SEVERE"/>-->
+    <set-property name="gwt.logging.logLevel" value="SEVERE"/>
 </module>

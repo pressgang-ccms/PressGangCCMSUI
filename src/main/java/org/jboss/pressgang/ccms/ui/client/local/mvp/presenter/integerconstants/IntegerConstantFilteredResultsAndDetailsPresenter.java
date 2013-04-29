@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.integerconstants;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -31,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkState;
@@ -154,17 +154,33 @@ implements BaseTemplatePresenterInterface {
         display.getSave().addClickHandler(saveClickHandler);
     }
 
+    private void doSearch(final boolean newWindow) {
+        if (isOKToProceed()) {
+        eventBus.fireEvent(new IntegerConstantFilteredResultsAndDetailsViewEvent(integerConstantFilteredResultsPresenter.getQuery(), newWindow));
+      }
+    }
+
+
     @Override
     protected void bindFilteredResultsButtons() {
         integerConstantFilteredResultsPresenter.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                if (isOKToProceed()) {
-                    eventBus.fireEvent(new IntegerConstantFilteredResultsAndDetailsViewEvent(integerConstantFilteredResultsPresenter.getQuery(),
-                            GWTUtilities.isEventToOpenNewWindow(event)));
-                }
+                doSearch(GWTUtilities.isEventToOpenNewWindow(event));
             }
         });
+
+        final KeyPressHandler searchKeyPressHandler = new KeyPressHandler() {
+            @Override
+            public void onKeyPress(@NotNull final KeyPressEvent event) {
+                if (GWTUtilities.enterKeyWasPressed(event)) {
+                    doSearch(false);
+                }
+            }
+        };
+
+        integerConstantFilteredResultsPresenter.getDisplay().getIdFilter().addKeyPressHandler(searchKeyPressHandler);
+        integerConstantFilteredResultsPresenter.getDisplay().getNameFilter().addKeyPressHandler(searchKeyPressHandler);
 
         integerConstantFilteredResultsPresenter.getDisplay().getCreate().addClickHandler(new ClickHandler() {
             @Override

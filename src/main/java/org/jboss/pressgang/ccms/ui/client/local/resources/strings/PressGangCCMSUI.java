@@ -18,6 +18,9 @@ public interface PressGangCCMSUI extends Constants {
     PressGangCCMSUI INSTANCE = GWT.create(PressGangCCMSUI.class);
 
     @NotNull
+    String LoadingText();
+
+    @NotNull
     String PleaseSaveChangesBeforeUploading();
 
     @NotNull
@@ -31,6 +34,9 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String BulkTopicOverwrite();
+
+    @NotNull
+    String ATOMFeed();
 
     @NotNull
     String BulkTopicOverwriteMessage();
@@ -106,6 +112,12 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String Search();
+
+    @NotNull
+    String SearchTopics();
+
+    @NotNull
+    String SearchContentSpecs();
 
     @NotNull
     String DownloadZip();
@@ -190,6 +202,12 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String TopicXMLRESTEndpoint();
+
+    @NotNull
+    String ContentSpecDetailsRESTEndpoint();
+
+    @NotNull
+    String ContentSpecTextRESTEndpoint();
 
     @NotNull
     String SaveSuccess();
@@ -411,6 +429,12 @@ public interface PressGangCCMSUI extends Constants {
     String DocbookImageTemplate();
 
     @NotNull
+    String DocbookInlineImageTemplate();
+
+    @NotNull
+    String DocbookBareImageTemplate();
+
+    @NotNull
     String Projects();
 
     @NotNull
@@ -451,6 +475,9 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String CreateTopic();
+
+    @NotNull
+    String CreateContentSpec();
 
     @NotNull
     String Tags();
@@ -829,4 +856,31 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String NoBulkTagsSelected();
+
+    @NotNull
+    String ContentSpecTextEdit();
+
+    @NotNull
+    String ContentSpecID();
+
+    @NotNull
+    String ContentSpecTitle();
+
+    @NotNull
+    String ContentSpecRevision();
+
+    @NotNull
+    String ContentSpecLastModified();
+
+    @NotNull
+    String ContentSpecLocale();
+
+    @NotNull
+    String ContentSpecDetails();
+
+    @NotNull
+    String ContentSpecText();
+
+    @NotNull
+    String ContentSpecTags();
 }

@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
  * This presenter is used to add logic to a display of potential children and the existing children of an entity.
  *
  * @param <T> The entity type
+ * @param <W> The parent entity type
  * @param <C> The collection item type for potential children
  * @param <D> The existing child type
  * @param <E> The collection type for entity D

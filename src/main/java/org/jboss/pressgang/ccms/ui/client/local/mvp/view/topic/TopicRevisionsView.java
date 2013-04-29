@@ -150,7 +150,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
              * editable instead of read only.
              */
             if (mainTopic != null && object != null && object.getItem() != null && object.getItem().getRevision().equals(mainTopic.getRevision())) {
-                if (revisionTopic == null || revisionTopic.getItem().getRevision().equals(mainTopic.getRevision())) {
+                if (revisionTopic == null || revisionTopic.getRevision().equals(mainTopic.getRevision())) {
                     viewButtonCell.setEnabled(false);
                     return PressGangCCMSUI.INSTANCE.CurrentlyEditing();
                 } else {
@@ -158,7 +158,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
                 }
             }
 
-            if (revisionTopic == null || (object != null && object.getItem() != null && !revisionTopic.getItem().getRevision().equals(object.getItem().getRevision()))) {
+            if (revisionTopic == null || (object != null && object.getItem() != null && !revisionTopic.getRevision().equals(object.getItem().getRevision()))) {
                 return PressGangCCMSUI.INSTANCE.View();
             }
 
@@ -179,15 +179,15 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
             if (mainTopic != null) {
                 if (object != null && object.getItem() != null && object.getItem().getRevision().equals(mainTopic.getRevision())) {
-                    if (revisionTopic == null || revisionTopic.getItem().getRevision().equals(mainTopic.getRevision())) {
+                    if (revisionTopic == null || revisionTopic.getRevision().equals(mainTopic.getRevision())) {
                         diffButtonCell.setEnabled(false);
                         return PressGangCCMSUI.INSTANCE.CurrentlyEditing();
                     }
                 }
 
-                if (revisionTopic == null || (object != null && object.getItem() != null && !revisionTopic.getItem().getRevision().equals(object.getItem().getRevision()))) {
+                if (revisionTopic == null || (object != null && object.getItem() != null && !revisionTopic.getRevision().equals(object.getItem().getRevision()))) {
 
-                    final String viewingXML = revisionTopic == null ? mainTopic.getXml() : revisionTopic.getItem().getXml();
+                    final String viewingXML = revisionTopic == null ? mainTopic.getXml() : revisionTopic.getXml();
                     @NotNull final String fixedViewingXML = viewingXML == null ? "" : viewingXML.trim();
 
                     checkState(object.getItem() != null, "The collection item should reference a valid entity.");
@@ -217,7 +217,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     /**
      * A reference to the displayed revision topic.
      */
-    private RESTTopicCollectionItemV1 revisionTopic;
+    private RESTTopicV1 revisionTopic;
     /**
      * A reference to the displayed topic.
      */
@@ -255,12 +255,12 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     }
 
     @Override
-    public final RESTTopicCollectionItemV1 getRevisionTopic() {
+    public final RESTTopicV1 getRevisionTopic() {
         return revisionTopic;
     }
 
     @Override
-    public final void setRevisionTopic(final RESTTopicCollectionItemV1 revisionTopic) {
+    public final void setRevisionTopic(final RESTTopicV1 revisionTopic) {
         this.revisionTopic = revisionTopic;
     }
 

@@ -49,6 +49,7 @@ public final class NumbersAndCommaValidator implements KeyDownHandler, ValueChan
                 keyCode == KeyCodes.KEY_DOWN ||
                 keyCode == KeyCodes.KEY_HOME ||
                 keyCode == KeyCodes.KEY_END ||
+                keyCode == KeyCodes.KEY_ENTER ||
                 (event.isControlKeyDown() && keyCode == 'V')||                  // paste
                 (event.isControlKeyDown() && keyCode == 'C') ||                 // copy
                 (event.isControlKeyDown() && keyCode == INSERT_KEY_CODE) ||     // copy

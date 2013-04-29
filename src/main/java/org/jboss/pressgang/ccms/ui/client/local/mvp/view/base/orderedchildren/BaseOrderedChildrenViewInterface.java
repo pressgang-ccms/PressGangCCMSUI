@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * @param <T> The entity type
- * @param <W> The parent of the children
  * @param <C> The collection item type for entity A
  * @param <D> The existing child type
  * @param <E> The collection type for entity D
@@ -17,10 +16,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface BaseOrderedChildrenViewInterface<
         T extends RESTBaseEntityV1<T, ?, ?>,
-        W extends RESTBaseEntityV1<?, ?, ?>,
         C extends RESTBaseCollectionItemV1<?, ?, ?>,
         D extends RESTBaseEntityV1<D, E, F>, E extends RESTBaseCollectionV1<D, E, F>, F extends RESTBaseCollectionItemV1<D, E, F>>
-        extends BaseExtendedChildrenViewInterface<T, W, C, D, E, F> {
+        extends BaseExtendedChildrenViewInterface<T, C, D, E, F> {
 
     @NotNull
     Column<F, String> getExistingChildUpButtonColumn();

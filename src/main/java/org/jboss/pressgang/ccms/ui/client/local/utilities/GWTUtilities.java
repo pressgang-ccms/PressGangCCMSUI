@@ -1,6 +1,8 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -29,6 +31,36 @@ final public class GWTUtilities {
     }
 
     /**
+     * Open a new window with the results of a prettydiff comparison
+     *
+     * @param source      The source XML
+     * @param sourceLabel The source XML label
+     * @param diff        The diff XML
+     * @param diffLabel   The diff XML label
+     */
+    native public static void displayDiff(final String source, final String sourceLabel, final String diff, final String diffLabel, final boolean isXML)
+    /*-{
+        var diffTable = $wnd.prettydiff({
+            source: source,
+            sourcelabel: sourceLabel,
+            diff: diff,
+            difflabel: diffLabel,
+            lang: isXML ? "markup" : "text",
+            mode: "diff",
+            diffview: "sidebyside"
+        })[0];
+
+        var win = $wnd.open("", "_blank", "width=" + (screen.width - 200) + ", height=" + (screen.height - 200) + ",scrollbars=yes"); // a window object
+        if (win != null) {
+            win.document.open("text/html", "replace");
+            win.document
+                .write("<HTML><HEAD><TITLE>PressGangCCMS XML Diff</TITLE><link rel=\"stylesheet\" type=\"text/css\" href=\"../prettydiff.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"prettydiff.css\"></HEAD><BODY>"
+                    + diffTable + "</BODY></HTML>");
+            win.document.close();
+        }
+    }-*/;
+
+    /**
      * Writes out a stack trace into a string.
      *
      * @param ex The exception to process
@@ -52,7 +84,23 @@ final public class GWTUtilities {
      */
     public static boolean isEventToOpenNewWindow(@NotNull final ClickEvent event) {
         return event.isControlKeyDown();
+    }
 
+    public static boolean enterKeyWasPressed(@NotNull final KeyPressEvent event) {
+        final int charCode = event.getUnicodeCharCode();
+        if (charCode == 0) {
+            // it's probably Firefox
+            final int keyCode = event.getNativeEvent().getKeyCode();
+            // beware! keyCode=40 means "down arrow", while charCode=40 means '('
+            // always check the keyCode against a list of "known to be buggy" codes!
+            if (keyCode == KeyCodes.KEY_ENTER) {
+                return true;
+            }
+        } else if (charCode == KeyCodes.KEY_ENTER) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

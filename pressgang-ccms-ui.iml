@@ -20,8 +20,6 @@
       <configuration>
         <setting name="additionalCompilerParameters" value="-Xmx1024M -Xms1024M -Xss1024k -XX:MaxPermSize=256M -XX:PermSize=128M" />
         <setting name="compilerParameters" value="-optimize 9" />
-        <setting name="compilerMaxHeapSize" value="1024" />
-        <setting name="gwtScriptOutputStyle" value="DETAILED" />
         <setting name="gwtSdkUrl" value="file://$MAVEN_REPOSITORY$/com/google/gwt/gwt-dev/2.5.0/" />
         <setting name="gwtSdkType" value="maven" />
         <setting name="webFacet" value="Web" />
@@ -40,15 +38,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$APPLICATION_HOME_DIR$/lib/annotations.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="library" name="Maven: com.smartgwt:smartgwt:3.0" level="project" />
     <orderEntry type="library" name="Maven: com.smartgwt:smartgwt-skins:3.0" level="project" />
     <orderEntry type="library" name="Maven: com.intellij:annotations:9.0.4" level="project" />
@@ -124,16 +113,16 @@
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.0.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.0.1" level="project" />
     <orderEntry type="library" name="Maven: net.jcip:jcip-annotations:1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.pressgang.ccms:pressgang-ccms-restv1:1.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.pressgang.ccms:pressgang-ccms-utils:1.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.pressgang.ccms:pressgang-ccms-restv1:1.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.pressgang.ccms:pressgang-ccms-utils:1.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" name="Maven: xalan:xalan:2.7.1" level="project" />
     <orderEntry type="library" name="Maven: xalan:serializer:2.7.1" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.pressgang.ccms:gozirra-extended:0.5-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.pressgang.ccms:gozirra-pressgang:0.5-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.github.tony19:named-regexp:0.1.8" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.pressgang.ccms:pressgang-ccms-zanata:1.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: org.zanata:zanata-rest-client:1.7.4" level="project" />
-    <orderEntry type="library" name="Maven: org.zanata:zanata-common-api:1.7.2" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.pressgang.ccms:pressgang-ccms-zanata:1.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.zanata:zanata-rest-client:2.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.zanata:zanata-common-api:2.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-validator:3.1.0.GA" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.3.0.SP1" level="project" />
     <orderEntry type="library" name="Maven: antlr:antlr:2.7.6" level="project" />
@@ -144,12 +133,14 @@
     <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-impl:2.2.4" level="project" />
     <orderEntry type="library" name="Maven: javax.xml.bind:jaxb-api:2.2.3" level="project" />
     <orderEntry type="library" name="Maven: javax.xml.stream:stax-api:1.0-2" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.resteasy:resteasy-multipart-provider:2.1.0.GA" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.james:apache-mime4j:0.6" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.8" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.8" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-xc:1.8.5" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.resteasy:resteasy-multipart-provider:2.1.0.GA" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.james:apache-mime4j:0.6" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.resteasy:resteasy-atom-provider:2.3.4.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-artifact:3.0.4" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-utils:2.0.6" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.resteasy:resteasy-jackson-provider:2.3.4.Final" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-jaxrs:1.8.5" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.1" level="project" />

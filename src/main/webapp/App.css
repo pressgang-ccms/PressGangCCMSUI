@@ -389,7 +389,7 @@ html {
     height: 100%;
 }
 
-.TranslatedTopicViewPanel {
+.TranslatedTopicViewPanel, .ContentSpecViewPanel {
     width: 100%;
 }
 

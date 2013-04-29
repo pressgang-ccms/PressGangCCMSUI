@@ -16,6 +16,7 @@ import org.jboss.pressgang.ccms.rest.v1.components.GWTComponentTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ContentSpecSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.TranslatedSearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
@@ -398,6 +399,25 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             }
         };
 
+        final ClickHandler searchContentSpecsHandler = new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                fieldsComponent.getDisplay().getDriver().flush();
+                tagsComponent.getDisplay().getDriver().flush();
+                localePresenter.getDisplay().getDriver().flush();
+
+                final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
+                        + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
+                        + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
+
+                if (doingTranslatedSearch) {
+                    //eventBus.fireEvent(new TranslatedSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
+                } else {
+                    eventBus.fireEvent(new ContentSpecSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
+                }
+            }
+        };
+
         final ClickHandler bulkTaggingHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
@@ -435,24 +455,33 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         final ClickHandler downloadZipHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
+                fieldsComponent.getDisplay().getDriver().flush();
+                tagsComponent.getDisplay().getDriver().flush();
+                localePresenter.getDisplay().getDriver().flush();
+
                 final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
                         + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
                         + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
-                Window.open(Constants.REST_SERVER + "/1/topics/get/zip/query;" + query, "Zip Download", "");
+                Window.open(Constants.REST_SERVER + "/1/topics/get/zip/" + query, "Zip Download", "");
             }
         };
 
         final ClickHandler downloadCsvHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
+                fieldsComponent.getDisplay().getDriver().flush();
+                tagsComponent.getDisplay().getDriver().flush();
+                localePresenter.getDisplay().getDriver().flush();
+
                 final String query = tagsComponent.getDisplay().getSearchUIProjects().getSearchQuery(true)
                         + fieldsComponent.getDisplay().getSearchUIFields().getSearchQuery(false)
                         + localePresenter.getDisplay().getSearchUILocales().buildQueryString(false);
-                Window.open(Constants.REST_SERVER + "/1/topics/get/csv/query;" + query, "Csv Download", "");
+                Window.open(Constants.REST_SERVER + "/1/topics/get/csv/" + query, "Csv Download", "");
             }
         };
 
         display.getSearchTopics().addClickHandler(searchHandler);
+        display.getSearchContentSpecs().addClickHandler(searchContentSpecsHandler);
         display.getDownloadZip().addClickHandler(downloadZipHandler);
         display.getDownloadCSV().addClickHandler(downloadCsvHandler);
         display.getTagsSearch().addClickHandler(tagsHandler);
@@ -632,6 +661,8 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
 
     public interface Display extends BaseTemplateViewInterface {
         PushButton getSearchTopics();
+
+        PushButton getSearchContentSpecs();
 
         PushButton getDownloadZip();
 

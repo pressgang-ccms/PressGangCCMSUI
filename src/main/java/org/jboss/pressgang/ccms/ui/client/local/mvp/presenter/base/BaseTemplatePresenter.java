@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base;
 
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
@@ -298,9 +299,9 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
                 } else {
                     /* Otherwise do a search against the title, description and content of the topics */
                     eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
-                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + query + ";"
-                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + query + ";"
-                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + query + ";"
+                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(query) : query) + ";"
+                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(query) : query) + ";"
+                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(query) : query) + ";"
                             + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.LOGIC_FILTER_VAR + "=" + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.OR_LOGIC, newWindow));
                 }
             }

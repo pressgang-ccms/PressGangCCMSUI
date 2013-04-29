@@ -20,11 +20,11 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.common.CommonExtendedPropertiesPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.*;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicPropertyTagsView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicSourceURLsView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicXMLView;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
@@ -113,7 +113,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      * The presenter used to display the topic property tags.
      */
     @Inject
-    private TopicPropertyTagsPresenter topicPropertyTagPresenter;
+    private CommonExtendedPropertiesPresenter topicPropertyTagPresenter;
     /**
      * The presenter used to display the topic's source urls.
      */
@@ -163,7 +163,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     }
 
     @NotNull
-    protected final TopicPropertyTagsPresenter getTopicPropertyTagPresenter() {
+    protected final CommonExtendedPropertiesPresenter getTopicPropertyTagPresenter() {
         return topicPropertyTagPresenter;
     }
 
@@ -470,7 +470,10 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      */
     protected abstract void postEnableAndDisableActionButtons(@NotNull final BaseTemplateViewInterface displayedView);
 
-    /* Update the page name */
+    /**
+     *  Update the page name.
+     *  @param displayedView the currently displayed view.
+     */
     private void updatePageTitle(@NotNull final BaseTemplateViewInterface displayedView) {
         try {
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.updatePageTitle()");
@@ -478,13 +481,24 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
             checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
 
-            @NotNull final StringBuilder title = new StringBuilder(displayedView.getPageName());
-            @NotNull final String id = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId() == null ?
-                    PressGangCCMSUI.INSTANCE.New() : getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId().toString();
-            @NotNull final String displayTitle = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTitle() == null ?
-                    "" : getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTitle();
+            final StringBuilder title = new StringBuilder(displayedView.getPageName());
+            final StringBuilder id = new StringBuilder(getDisplayedTopic().getId() == null ? PressGangCCMSUI.INSTANCE.New() : getDisplayedTopic().getId().toString());
+
+            /*
+                Test to see if we are looking at a specific revision. If so, add the revision to the page title.
+             */
+            if (getDisplayedTopic().getRevision() != null &&
+                    !getDisplayedTopic().getRevision().equals(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision())) {
+               id.append("-" + getDisplayedTopic().getRevision());
+            }
+
+            String displayTitle = getDisplayedTopic().getTitle() == null ? "" : getDisplayedTopic().getTitle();
+            if (displayTitle.length() > Constants.MAX_PAGE_TITLE_LENGTH) {
+                displayTitle = displayTitle.substring(0, Constants.MAX_PAGE_TITLE_LENGTH - 3) + "...";
+            }
+
             if (this.getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
-                title.append(": [" + id + "] " + displayTitle);
+                title.append(": [" + id.toString() + "] " + displayTitle);
             }
             getDisplay().getPageTitle().setText(title.toString());
         } finally {
@@ -733,7 +747,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 Loop over all the standard view i.e. those that will display details from the selected topic
                 or topic revision
             */
-            @NotNull final List<BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>>>();
+            @NotNull final List<BaseCustomViewInterface> displayableViews = new ArrayList<BaseCustomViewInterface>();
             displayableViews.add(topicXMLComponent.getDisplay());
             displayableViews.add(topicXMLErrorsPresenter.getDisplay());
             displayableViews.add(topicTagsPresenter.getDisplay());
@@ -742,7 +756,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             displayableViews.add(topicSourceURLsPresenter.getDisplay());
 
             final RESTBaseTopicV1<?, ?, ?> topicToDisplay = getDisplayedTopic();
-            for (@NotNull final BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>> view : displayableViews) {
+            for (@NotNull final BaseCustomViewInterface view : displayableViews) {
                 if (viewIsInFilter(filter, view)) {
                     view.display(topicToDisplay, isReadOnlyMode());
                 }
@@ -817,7 +831,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             component.setHelpTopicId(ServiceConstants.TOPIC_XML_EDIT_TOPIC);
         } else if (view instanceof TopicSourceURLsView) {
             component.setHelpTopicId(ServiceConstants.TOPIC_SOURCE_URLS_HELP_TOPIC);
-        } else if (view instanceof TopicPropertyTagsView) {
+        } else if (view instanceof CommonExtendedPropertiesPresenter) {
             component.setHelpTopicId(ServiceConstants.TOPIC_EXTENDED_PROPERTIES_HELP_TOPIC);
         } else {
             component.setHelpTopicId(ServiceConstants.DEFAULT_HELP_TOPIC);

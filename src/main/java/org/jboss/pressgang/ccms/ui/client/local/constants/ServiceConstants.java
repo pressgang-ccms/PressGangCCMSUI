@@ -53,6 +53,11 @@ public final class ServiceConstants {
      */
 
     /**
+     * The help topics for the content spec text edit screen
+     */
+    public static final int CONTENT_SPEC_TEXT_EDIT_HELP_TOPIC = 14591;
+
+    /**
      * The help topic for the search screen.
      */
     public static final int SEARCH_VIEW_HELP_TOPIC = 12505;

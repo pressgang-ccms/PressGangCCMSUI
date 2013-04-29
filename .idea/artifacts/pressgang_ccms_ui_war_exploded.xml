@@ -52,16 +52,16 @@
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.0.3/httpclient-4.0.3.jar" output-file-name="httpclient-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1.jar" output-file-name="httpcore-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar" output-file-name="jcip-annotations-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-restv1/1.0-SNAPSHOT/pressgang-ccms-restv1-1.0-20130319.052113-29.jar" output-file-name="pressgang-ccms-restv1-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-utils/1.0-SNAPSHOT/pressgang-ccms-utils-1.0-20130402.060709-24.jar" output-file-name="pressgang-ccms-utils-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-restv1/1.1-SNAPSHOT/pressgang-ccms-restv1-1.1-20130428.224310-13.jar" output-file-name="pressgang-ccms-restv1-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-utils/1.1-SNAPSHOT/pressgang-ccms-utils-1.1-20130416.040656-6.jar" output-file-name="pressgang-ccms-utils-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-lang/commons-lang/2.6/commons-lang-2.6.jar" output-file-name="commons-lang-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/xalan/xalan/2.7.1/xalan-2.7.1.jar" output-file-name="xalan-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/xalan/serializer/2.7.1/serializer-2.7.1.jar" output-file-name="serializer-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/gozirra-extended/0.5-SNAPSHOT/gozirra-extended-0.5-20121113.233603-4.jar" output-file-name="gozirra-extended-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/gozirra-pressgang/0.5-SNAPSHOT/gozirra-pressgang-0.5-20130412.003557-1.jar" output-file-name="gozirra-pressgang-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/com/github/tony19/named-regexp/0.1.8/named-regexp-0.1.8.jar" output-file-name="named-regexp-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-zanata/1.0-SNAPSHOT/pressgang-ccms-zanata-1.0-20130307.012219-9.jar" output-file-name="pressgang-ccms-zanata-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/zanata/zanata-rest-client/1.7.4/zanata-rest-client-1.7.4.jar" output-file-name="zanata-rest-client-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/zanata/zanata-common-api/1.7.2/zanata-common-api-1.7.2.jar" output-file-name="zanata-common-api-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-zanata/1.1-SNAPSHOT/pressgang-ccms-zanata-1.1-20130416.040806-4.jar" output-file-name="pressgang-ccms-zanata-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/zanata/zanata-rest-client/2.0.1/zanata-rest-client-2.0.1.jar" output-file-name="zanata-rest-client-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/zanata/zanata-common-api/2.0.0/zanata-common-api-2.0.0.jar" output-file-name="zanata-common-api-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/hibernate/hibernate-validator/3.1.0.GA/hibernate-validator-3.1.0.GA.jar" output-file-name="hibernate-validator-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/3.3.0.SP1/hibernate-core-3.3.0.SP1.jar" output-file-name="hibernate-core-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/antlr/antlr/2.7.6/antlr-2.7.6.jar" output-file-name="antlr-.jar" />
@@ -72,12 +72,14 @@
           <element id="file-copy" path="$MAVEN_REPOSITORY$/com/sun/xml/bind/jaxb-impl/2.2.4/jaxb-impl-2.2.4.jar" output-file-name="jaxb-impl-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/javax/xml/bind/jaxb-api/2.2.3/jaxb-api-2.2.3.jar" output-file-name="jaxb-api-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/javax/xml/stream/stax-api/1.0-2/stax-api-1.0-2.jar" output-file-name="stax-api-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/resteasy/resteasy-multipart-provider/2.1.0.GA/resteasy-multipart-provider-2.1.0.GA.jar" output-file-name="resteasy-multipart-provider-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/james/apache-mime4j/0.6/apache-mime4j-0.6.jar" output-file-name="apache-mime4j-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/jackson/jackson-core-asl/1.9.8/jackson-core-asl-1.9.8.jar" output-file-name="jackson-core-asl-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/jackson/jackson-mapper-asl/1.9.8/jackson-mapper-asl-1.9.8.jar" output-file-name="jackson-mapper-asl-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/jackson/jackson-xc/1.8.5/jackson-xc-1.8.5.jar" output-file-name="jackson-xc-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/resteasy/resteasy-multipart-provider/2.1.0.GA/resteasy-multipart-provider-2.1.0.GA.jar" output-file-name="resteasy-multipart-provider-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/james/apache-mime4j/0.6/apache-mime4j-0.6.jar" output-file-name="apache-mime4j-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/resteasy/resteasy-atom-provider/2.3.4.Final/resteasy-atom-provider-2.3.4.Final.jar" output-file-name="resteasy-atom-provider-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/maven/maven-artifact/3.0.4/maven-artifact-3.0.4.jar" output-file-name="maven-artifact-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/plexus/plexus-utils/2.0.6/plexus-utils-2.0.6.jar" output-file-name="plexus-utils-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/resteasy/resteasy-jackson-provider/2.3.4.Final/resteasy-jackson-provider-2.3.4.Final.jar" output-file-name="resteasy-jackson-provider-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/jackson/jackson-jaxrs/1.8.5/jackson-jaxrs-1.8.5.jar" output-file-name="jackson-jaxrs-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/joda-time/joda-time/2.1/joda-time-2.1.jar" output-file-name="joda-time-.jar" />

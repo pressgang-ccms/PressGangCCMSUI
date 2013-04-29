@@ -1,8 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag;
 
 import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -18,6 +17,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTProjectCollectionI
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTTagInCategoryCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTCategoryInTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTTagInCategoryCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentCategoryV1;
@@ -36,6 +36,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildr
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.BaseSearchAndEditPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.GetNewEntityCallback;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.common.CommonExtendedPropertiesPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.searchandedit.BaseSearchAndEditViewInterface;
@@ -44,6 +45,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls.RESTCallback;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.tagview.RESTTagV1BasicDetailsEditor;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -52,6 +54,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,6 +87,8 @@ public class TagsFilteredResultsAndDetailsPresenter
 
         PushButton getTagDetails();
 
+        PushButton getExtendedProperties();
+
         PushButton getSave();
 
         PushButton getTagCategories();
@@ -93,6 +98,8 @@ public class TagsFilteredResultsAndDetailsPresenter
         Label getTagProjectsDown();
 
         Label getTagDetailsDown();
+
+        Label getExtendedPropertiesDown();
     }
 
     /**
@@ -127,6 +134,12 @@ public class TagsFilteredResultsAndDetailsPresenter
 
     @Inject
     private TagCategoriesPresenter categoriesComponent;
+
+    /**
+     * The presenter used to display the property tags.
+     */
+    @Inject
+    private CommonExtendedPropertiesPresenter commonExtendedPropertiesPresenter;
 
     /**
      * The tag query string extracted from the history token
@@ -164,6 +177,17 @@ public class TagsFilteredResultsAndDetailsPresenter
         @Override
         public void onClick(final ClickEvent event) {
             switchView(resultComponent.getDisplay());
+        }
+
+    };
+
+    /**
+     * A click handler used to display the tag fields view
+     */
+    private final ClickHandler tagExtendedPropertiesClickHandler = new ClickHandler() {
+        @Override
+        public void onClick(final ClickEvent event) {
+            switchView(commonExtendedPropertiesPresenter.getDisplay());
         }
 
     };
@@ -261,10 +285,15 @@ public class TagsFilteredResultsAndDetailsPresenter
                 });
 
                 /* Sync changes from the tag view */
-                @NotNull final RESTTagV1 updateTag = new RESTTagV1();
-                updateTag.setId(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
-                updateTag.explicitSetDescription(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
-                updateTag.explicitSetName(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getName());
+                final RESTTagV1 sourceTag = filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
+                final RESTTagV1 updateTag = new RESTTagV1();
+                updateTag.setId(sourceTag.getId());
+                updateTag.explicitSetDescription(sourceTag.getDescription());
+                updateTag.explicitSetName(sourceTag.getName());
+                updateTag.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
+
+                /* Update the extended properties */
+                updateTag.getProperties().setItems(sourceTag.getProperties().returnDeletedAddedAndUpdatedCollectionItems());
 
                 /*
                  * Sync changes from the projects. categoriesComponent.getProviderData().getItems() contains a collection of all the
@@ -286,11 +315,11 @@ public class TagsFilteredResultsAndDetailsPresenter
                              */
                             if (tag.getItem().getId().equals(updateTag.getId())) {
 
-                                @NotNull final RESTCategoryInTagV1 addedCategory = new RESTCategoryInTagV1();
+                                final RESTCategoryInTagV1 addedCategory = new RESTCategoryInTagV1();
                                 addedCategory.setId(category.getItem().getId());
                                 addedCategory.explicitSetRelationshipSort(tag.getItem().getRelationshipSort());
 
-                                @NotNull final RESTCategoryInTagCollectionItemV1 collectionItem = new RESTCategoryInTagCollectionItemV1();
+                                final RESTCategoryInTagCollectionItemV1 collectionItem = new RESTCategoryInTagCollectionItemV1();
                                 collectionItem.setState(tag.getState());
                                 collectionItem.setItem(addedCategory);
 
@@ -313,10 +342,10 @@ public class TagsFilteredResultsAndDetailsPresenter
                         for (@NotNull final RESTTagCollectionItemV1 tag : project.getItem().getTags().returnDeletedAndAddedCollectionItems()) {
                             if (tag.getItem().getId().equals(updateTag.getId())) {
 
-                                @NotNull final RESTProjectV1 addedProject = new RESTProjectV1();
+                                final RESTProjectV1 addedProject = new RESTProjectV1();
                                 addedProject.setId(project.getItem().getId());
 
-                                @NotNull final RESTProjectCollectionItemV1 collectionItem = new RESTProjectCollectionItemV1();
+                                final RESTProjectCollectionItemV1 collectionItem = new RESTProjectCollectionItemV1();
                                 collectionItem.setState(tag.getState());
                                 collectionItem.setItem(addedProject);
 
@@ -469,6 +498,7 @@ public class TagsFilteredResultsAndDetailsPresenter
         projectsComponent.bindChildrenExtended(ServiceConstants.TAG_PROJECTS_HELP_TOPIC, pageId);
         categoriesComponent.bindDetailedChildrenExtended(ServiceConstants.TAG_CATEGORIES_HELP_TOPIC, pageId);
         resultComponent.bindExtended(ServiceConstants.TAG_DETAIL_HELP_TOPIC, pageId);
+        commonExtendedPropertiesPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
 
         super.bindSearchAndEdit(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, resultComponent.getDisplay(), resultComponent.getDisplay(),
                 filteredResultsComponent.getDisplay(), filteredResultsComponent, display, display, getNewEntityCallback);
@@ -672,6 +702,9 @@ public class TagsFilteredResultsAndDetailsPresenter
         checkState(filteredResultsComponent.getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
         checkState(filteredResultsComponent.getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
 
+        final RESTTagV1 selected =  filteredResultsComponent.getProviderData().getSelectedItem().getItem();
+        final RESTTagV1 displayed =  filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
+
         /*
          * See if any items have been added or removed from the project and category lists
          */
@@ -684,15 +717,20 @@ public class TagsFilteredResultsAndDetailsPresenter
                 .getPossibleChildrenProviderData().getItems());
 
         /* See if any of the fields were changed */
-        final boolean unsavedDescriptionChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(
-                filteredResultsComponent.getProviderData().getSelectedItem().getItem().getDescription(),
-                filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
+        final boolean unsavedDescriptionChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(selected.getDescription(),displayed.getDescription());
 
-        final boolean unsavedNameChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(filteredResultsComponent
-                .getProviderData().getSelectedItem().getItem().getName(), filteredResultsComponent.getProviderData()
-                .getDisplayedItem().getItem().getName());
+        final boolean unsavedNameChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(selected.getName(), displayed.getName());
 
-        return unsavedCategoryChanges || unsavedProjectChanges || unsavedDescriptionChanges || unsavedNameChanges;
+        /* If there are any modified property tags in newTopic, we have unsaved changes */
+        final boolean unsavedExtendedProperties = !displayed.getProperties().returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
+
+        return unsavedCategoryChanges || unsavedProjectChanges || unsavedDescriptionChanges || unsavedNameChanges || unsavedExtendedProperties;
+    }
+
+    private void doSearch(final boolean newWindow) {
+        if (isOKToProceed()) {
+            eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(filteredResultsComponent.getQuery(), newWindow));
+        }
     }
 
     /**
@@ -703,27 +741,38 @@ public class TagsFilteredResultsAndDetailsPresenter
         filteredResultsComponent.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
-                if (isOKToProceed()) {
-                    eventBus.fireEvent(new TagsFilteredResultsAndTagViewEvent(filteredResultsComponent.getQuery(), GWTUtilities
-                            .isEventToOpenNewWindow(event)));
-                }
+                doSearch(GWTUtilities.isEventToOpenNewWindow(event));
             }
         });
+
+        final KeyPressHandler searchKeyPressHandler = new KeyPressHandler() {
+                @Override
+                public void onKeyPress(@NotNull final KeyPressEvent event) {
+
+                    if (GWTUtilities.enterKeyWasPressed(event)) {
+                        doSearch(false);
+                    }
+
+                }
+        };
+
+        filteredResultsComponent.getDisplay().getDescriptionFilter().addKeyPressHandler(searchKeyPressHandler);
+        filteredResultsComponent.getDisplay().getIdFilter().addKeyPressHandler(searchKeyPressHandler);
+        filteredResultsComponent.getDisplay().getNameFilter().addKeyPressHandler(searchKeyPressHandler);
 
         filteredResultsComponent.getDisplay().getCreate().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
-                @NotNull final RESTTagV1 selectedTag = new RESTTagV1();
+                final RESTTagV1 selectedTag = new RESTTagV1();
                 selectedTag.setId(Constants.NULL_ID);
-                @NotNull final RESTTagCollectionItemV1 selectedTagWrapper = new RESTTagCollectionItemV1(selectedTag);
+                final RESTTagCollectionItemV1 selectedTagWrapper = new RESTTagCollectionItemV1(selectedTag);
 
                 /* The displayed tag will also be blank. This is the object that our data will be saved into */
-                @NotNull final RESTTagV1 displayedTag = new RESTTagV1();
+                final RESTTagV1 displayedTag = new RESTTagV1();
                 displayedTag.setId(Constants.NULL_ID);
-                @NotNull final RESTTagCollectionItemV1 displayedTagWrapper = new RESTTagCollectionItemV1(displayedTag,
-                        RESTBaseCollectionItemV1.ADD_STATE);
+                final RESTTagCollectionItemV1 displayedTagWrapper = new RESTTagCollectionItemV1(displayedTag, RESTBaseCollectionItemV1.ADD_STATE);
 
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
@@ -741,6 +790,7 @@ public class TagsFilteredResultsAndDetailsPresenter
         this.display.replaceTopActionButton(this.display.getTagCategoriesDown(), this.display.getTagCategories());
         this.display.replaceTopActionButton(this.display.getTagDetailsDown(), this.display.getTagDetails());
         this.display.replaceTopActionButton(this.display.getTagProjectsDown(), this.display.getTagProjects());
+        this.display.replaceTopActionButton(this.display.getExtendedPropertiesDown(), this.display.getExtendedProperties());
 
         if (displayedView == this.categoriesComponent.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getTagCategories(), this.display.getTagCategoriesDown());
@@ -748,6 +798,8 @@ public class TagsFilteredResultsAndDetailsPresenter
             this.display.replaceTopActionButton(this.display.getTagProjects(), this.display.getTagProjectsDown());
         } else if (displayedView == this.resultComponent.getDisplay()) {
             this.display.replaceTopActionButton(this.display.getTagDetails(), this.display.getTagDetailsDown());
+        }  else if (displayedView == this.commonExtendedPropertiesPresenter.getDisplay()) {
+            this.display.replaceTopActionButton(this.display.getExtendedProperties(), this.display.getExtendedPropertiesDown());
         }
     }
 
@@ -856,11 +908,22 @@ public class TagsFilteredResultsAndDetailsPresenter
         display.getTagProjects().addClickHandler(tagProjectsClickHandler);
         display.getSave().addClickHandler(saveClickHandler);
         display.getTagCategories().addClickHandler(tagCategoriesClickHandler);
+        display.getExtendedProperties().addClickHandler(tagExtendedPropertiesClickHandler);
     }
 
     @Override
     protected void loadAdditionalDisplayedItemData() {
         resetCategoryAndProjectsLists(true);
+
+        /*
+            Display the list of assigned property tags.
+         */
+        Collections.sort(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
+                new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
+        commonExtendedPropertiesPresenter.refreshExistingChildList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+
+        /* Get a new collection of property tags. */
+        commonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
     }
 
     @Override
@@ -869,23 +932,30 @@ public class TagsFilteredResultsAndDetailsPresenter
         checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
         checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
-        @NotNull final List<BaseCustomViewInterface<RESTTagV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTTagV1>>();
+        final RESTTagV1 displayedTag = filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
+
+        final List<BaseCustomViewInterface> displayableViews = new ArrayList<BaseCustomViewInterface>();
         displayableViews.add(resultComponent.getDisplay());
         displayableViews.add(projectsComponent.getDisplay());
         displayableViews.add(categoriesComponent.getDisplay());
+        displayableViews.add(commonExtendedPropertiesPresenter.getDisplay());
 
-        for (@NotNull final BaseCustomViewInterface<RESTTagV1> view : displayableViews) {
+        for (@NotNull final BaseCustomViewInterface view : displayableViews) {
             if (viewIsInFilter(filter, view)) {
-                view.display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+                view.display(displayedTag, false);
             }
         }
 
         if (viewIsInFilter(filter, projectsComponent.getDisplay())) {
-            projectsComponent.displayChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+            projectsComponent.displayChildrenExtended(displayedTag, false);
         }
 
         if (viewIsInFilter(filter, categoriesComponent.getDisplay())) {
-            categoriesComponent.displayDetailedChildrenExtended(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
+            categoriesComponent.displayDetailedChildrenExtended(displayedTag, false);
+        }
+
+        if (viewIsInFilter(filter, commonExtendedPropertiesPresenter.getDisplay())) {
+            commonExtendedPropertiesPresenter.displayDetailedChildrenExtended(displayedTag, false);
         }
     }
 

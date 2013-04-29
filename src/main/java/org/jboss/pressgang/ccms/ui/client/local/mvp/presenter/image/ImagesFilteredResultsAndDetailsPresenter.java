@@ -1,8 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.image;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
@@ -52,6 +50,8 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
@@ -127,6 +127,11 @@ public class ImagesFilteredResultsAndDetailsPresenter
      * History token
      */
     public static final String HISTORY_TOKEN = "ImageFilteredResultsAndImageView";
+
+    /**
+     * A logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ImagesFilteredResultsAndDetailsPresenter.class.getName());
 
     /**
      * A reference to the StringConstants that holds the locales.
@@ -573,16 +578,45 @@ public class ImagesFilteredResultsAndDetailsPresenter
                 + (screen.height - 200) + ", left=100, top=100"); // a window object
     }-*/;
 
+    private void doSearch(final boolean newWindow) {
+        if (isOKToProceed()) {
+            eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(imageFilteredResultsComponent.getQuery(), newWindow));
+        }
+    }
+
     @Override
     protected void bindFilteredResultsButtons() {
         imageFilteredResultsComponent.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                if (isOKToProceed()) {
-                    eventBus.fireEvent(new ImagesFilteredResultsAndImageViewEvent(imageFilteredResultsComponent.getQuery(), event.getNativeEvent().getKeyCode() == KeyCodes.KEY_CTRL));
-                }
+                doSearch(GWTUtilities.isEventToOpenNewWindow(event));
             }
         });
+
+        final KeyPressHandler searchKeyPressHandler = new KeyPressHandler() {
+            @Override
+            public void onKeyPress(@NotNull final KeyPressEvent event) {
+                LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditViewInterface.bindFilteredResultsButtons() KeyPressHandler.onKeyPress()");
+
+                final int charCode = event.getUnicodeCharCode();
+                if (charCode == 0) {
+                    // it's probably Firefox
+                    final int keyCode = event.getNativeEvent().getKeyCode();
+                    // beware! keyCode=40 means "down arrow", while charCode=40 means '('
+                    // always check the keyCode against a list of "known to be buggy" codes!
+                    if (keyCode == KeyCodes.KEY_ENTER) {
+                        doSearch(false);
+                    }
+                } else if (charCode == KeyCodes.KEY_ENTER) {
+                    doSearch(false);
+                }
+
+            }
+        };
+
+        imageFilteredResultsComponent.getDisplay().getImageDescriptionFilter().addKeyPressHandler(searchKeyPressHandler);
+        imageFilteredResultsComponent.getDisplay().getImageIdFilter().addKeyPressHandler(searchKeyPressHandler);
+        imageFilteredResultsComponent.getDisplay().getImageOriginalFileNameFilter().addKeyPressHandler(searchKeyPressHandler);
 
         imageFilteredResultsComponent.getDisplay().getCreate().addClickHandler(new ClickHandler() {
             @Override

@@ -35,7 +35,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         public void render(final String object, final Appendable appendable) throws IOException {
         }
     });
-    private final TextBox title = new TextBox();
+    private final TextArea title = new TextArea();
     private final TextArea description = new TextArea();
     private final DateBox created = new DateBox();
     private final DateBox lastModified = new DateBox();
@@ -61,7 +61,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
     }
 
     @NotNull
-    public TextBox titleEditor() {
+    public TextArea titleEditor() {
         return title;
     }
 

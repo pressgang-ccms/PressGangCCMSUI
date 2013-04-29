@@ -32,6 +32,7 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
     public interface Display extends BaseFilteredResultsViewInterface<RESTTopicCollectionItemV1> {
         @NotNull PushButton getBulkImport();
         @NotNull PushButton getBulkOverwrite();
+        @NotNull PushButton getAtomFeed();
     }
 
     public static final String HISTORY_TOKEN = "SearchResultsView";
