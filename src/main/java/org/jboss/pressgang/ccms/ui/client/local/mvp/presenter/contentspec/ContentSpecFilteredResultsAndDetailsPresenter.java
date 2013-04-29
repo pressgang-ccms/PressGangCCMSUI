@@ -273,6 +273,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                         display, new BaseRestCallback.SuccessAction<RESTContentSpecV1, BaseTemplateViewInterface>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTContentSpecV1 retValue, @NotNull final BaseTemplateViewInterface display) {
+                        checkState(retValue.getProperties() != null, "The returned entity needs to have a valid properties collection");
                         displayCallback.displayNewEntity(retValue);
                     }
                 });
@@ -417,15 +418,23 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
     }
 
     private void displayPropertyTags() {
-        final RESTContentSpecV1 displayedItem = getDisplayedContentSpec();
+        try {
+            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.displayPropertyTags()");
 
-        /*
-            Display the list of assigned property tags. This should not be null, but bugs in the REST api can
-            lead to the properties collection being null.
-        */
-        if (displayedItem.getProperties() != null) {
+            final RESTContentSpecV1 displayedItem = getDisplayedContentSpec();
+
+            checkState(displayedItem.getProperties() != null, "The displayed entity or revision needs to have a valid properties collection");
+
+            /*
+                Display the list of assigned property tags. This should not be null, but bugs in the REST api can
+                lead to the properties collection being null.
+            */
+
             Collections.sort(displayedItem.getProperties().getItems(), new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
             commonExtendedPropertiesPresenter.refreshExistingChildList(displayedItem);
+
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.displayPropertyTags()");
         }
     }
 

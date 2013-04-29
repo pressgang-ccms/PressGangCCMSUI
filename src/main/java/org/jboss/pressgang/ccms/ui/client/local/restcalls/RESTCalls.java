@@ -78,7 +78,9 @@ public final class RESTCalls {
     /**
      * Content specifications need the extended properties expanded
      */
-    private static final String CONTENT_SPEC_ITEM_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}";
+    private static final String CONTENT_SPEC_ITEM_EXPANSION = "{\"branches\":[" +
+                "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}" +
+            "]}";
 
     /**
      * The required expansion details for a topic. This is used when loading a topic for the first time

@@ -24,6 +24,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
@@ -108,11 +109,14 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
                         new BaseRestCallback.SuccessAction<RESTContentSpecV1, Display>() {
                             @Override
                             public void doSuccessAction(@NotNull final RESTContentSpecV1 retValue, @NotNull final Display display) {
-                                checkArgument(retValue.getRevisions().getItems() != null, "Returned collection should have a valid items collection.");
-                                checkArgument(retValue.getRevisions().getSize() != null, "Returned collection should have a valid size.");
+                                checkArgument(retValue.getRevisions() != null, "Returned entity should have a valid revisions collection.");
+                                checkArgument(retValue.getRevisions().getItems() != null, "Returned entity should have a valid revisions collection with a valid items collection.");
+                                checkArgument(retValue.getRevisions().getSize() != null, "Returned entity should have a valid revisions collection with a valid size.");
 
                                 if (retValue.getRevisions().getItems().size() != 0) {
-                                    checkArgument(retValue.getRevisions().getItems().get(0).getItem().getProperties() != null, "Returned collection should include items with a valid properties collection.");
+                                    checkArgument(retValue.getRevisions().getItems().get(0).getItem().getProperties() != null, "Returned entities should have a valid properties collection.");
+                                    checkArgument(retValue.getRevisions().getItems().get(0).getItem().getProperties().getItems() != null, "Returned entities should have a valid properties collection with a valid items collection.");
+                                    checkArgument(retValue.getRevisions().getItems().get(0).getItem().getProperties().getSize() != null, "Returned entities should have a valid properties collection with a valid size.");
                                 }
 
                                 getProviderData().setItems(retValue.getRevisions().getItems());
