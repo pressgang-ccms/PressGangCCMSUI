@@ -35,7 +35,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.cl
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.removeHistoryToken;
 
 /**
- * The presenter used to populate the tables of possible and existing topic property tags.
+ * The presenter used to populate the tables of possible and existing property tags.
  */
 public class CommonExtendedPropertiesPresenter
         extends BaseDetailedChildrenPresenter<
@@ -106,20 +106,25 @@ public class CommonExtendedPropertiesPresenter
                     new FieldUpdater<RESTPropertyTagCollectionItemV1, String>() {
                         @Override
                         public void update(final int index, @NotNull final RESTPropertyTagCollectionItemV1 object, final String value) {
+                            try {
+                                LOGGER.log(Level.INFO, "ENTER CommonExtendedPropertiesPresenter.bindPropertyTagButtons() FieldUpdater.update()");
 
-                            checkState(object.getItem() != null, "The object collection item being clicked on need to reference a valid entity");
+                                checkState(object.getItem() != null, "The object collection item being clicked on need to reference a valid entity");
 
-                            /* Create a new property tag child */
-                            @NotNull final RESTAssignedPropertyTagV1 restAssignedPropertyTagV1 = new RESTAssignedPropertyTagV1();
-                            restAssignedPropertyTagV1.setId(object.getItem().getId());
-                            restAssignedPropertyTagV1.setName(object.getItem().getName());
-                            restAssignedPropertyTagV1.setDescription(object.getItem().getDescription());
+                                /* Create a new property tag child */
+                                final RESTAssignedPropertyTagV1 restAssignedPropertyTagV1 = new RESTAssignedPropertyTagV1();
+                                restAssignedPropertyTagV1.setId(object.getItem().getId());
+                                restAssignedPropertyTagV1.setName(object.getItem().getName());
+                                restAssignedPropertyTagV1.setDescription(object.getItem().getDescription());
 
-                            parent.getProperties().addNewItem(restAssignedPropertyTagV1);
+                                parent.getProperties().addNewItem(restAssignedPropertyTagV1);
 
-                            /* Update the list of existing children */
-                            Collections.sort(parent.getProperties().getItems(), new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
-                            refreshExistingChildList(parent);
+                                /* Update the list of existing children */
+                                Collections.sort(parent.getProperties().getItems(), new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
+                                refreshExistingChildList(parent);
+                            } finally {
+                                LOGGER.log(Level.INFO, "EXIT CommonExtendedPropertiesPresenter.bindPropertyTagButtons() FieldUpdater.update()");
+                            }
                         }
                     }
             );
@@ -168,7 +173,7 @@ public class CommonExtendedPropertiesPresenter
                         object.setState(REMOVE_STATE);
 
                         /* Create a new property tag child */
-                        @NotNull final RESTAssignedPropertyTagV1 restAssignedPropertyTagV1 = new RESTAssignedPropertyTagV1();
+                        final RESTAssignedPropertyTagV1 restAssignedPropertyTagV1 = new RESTAssignedPropertyTagV1();
                         restAssignedPropertyTagV1.setId(object.getItem().getId());
                         restAssignedPropertyTagV1.setName(object.getItem().getName());
                         restAssignedPropertyTagV1.setDescription(object.getItem().getDescription());

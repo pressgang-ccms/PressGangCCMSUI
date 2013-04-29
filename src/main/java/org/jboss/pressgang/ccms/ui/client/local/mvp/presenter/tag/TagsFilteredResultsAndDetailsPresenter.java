@@ -703,6 +703,9 @@ public class TagsFilteredResultsAndDetailsPresenter
         checkState(filteredResultsComponent.getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
         checkState(filteredResultsComponent.getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
 
+        final RESTTagV1 selected =  filteredResultsComponent.getProviderData().getSelectedItem().getItem();
+        final RESTTagV1 displayed =  filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
+
         /*
          * See if any items have been added or removed from the project and category lists
          */
@@ -715,15 +718,14 @@ public class TagsFilteredResultsAndDetailsPresenter
                 .getPossibleChildrenProviderData().getItems());
 
         /* See if any of the fields were changed */
-        final boolean unsavedDescriptionChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(
-                filteredResultsComponent.getProviderData().getSelectedItem().getItem().getDescription(),
-                filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getDescription());
+        final boolean unsavedDescriptionChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(selected.getDescription(),displayed.getDescription());
 
-        final boolean unsavedNameChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(filteredResultsComponent
-                .getProviderData().getSelectedItem().getItem().getName(), filteredResultsComponent.getProviderData()
-                .getDisplayedItem().getItem().getName());
+        final boolean unsavedNameChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(selected.getName(), displayed.getName());
 
-        return unsavedCategoryChanges || unsavedProjectChanges || unsavedDescriptionChanges || unsavedNameChanges;
+        /* If there are any modified property tags in newTopic, we have unsaved changes */
+        final boolean unsavedExtendedProperties = !displayed.getProperties().returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
+
+        return unsavedCategoryChanges || unsavedProjectChanges || unsavedDescriptionChanges || unsavedNameChanges || unsavedExtendedProperties;
     }
 
     /**
