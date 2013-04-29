@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.stringconstants;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -165,17 +164,49 @@ implements BaseTemplatePresenterInterface {
         display.getSave().addClickHandler(saveClickHandler);
     }
 
+    private void doSearch(final boolean newWindow) {
+        if (isOKToProceed()) {
+            eventBus.fireEvent(new StringConstantFilteredResultsAndDetailsViewEvent(stringConstantFilteredResultsPresenter.getQuery(),
+                    newWindow));
+        }
+    }
+
     @Override
     protected final void bindFilteredResultsButtons() {
         stringConstantFilteredResultsPresenter.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                if (isOKToProceed()) {
-                    eventBus.fireEvent(new StringConstantFilteredResultsAndDetailsViewEvent(stringConstantFilteredResultsPresenter.getQuery(),
-                            GWTUtilities.isEventToOpenNewWindow(event)));
-                }
+             doSearch(GWTUtilities.isEventToOpenNewWindow(event));
             }
         });
+
+        final KeyPressHandler searchKeyPressHandler = new KeyPressHandler() {
+            @Override
+            public void onKeyPress(@NotNull final KeyPressEvent event) {
+                try {
+                    LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditViewInterface.bindFilteredResultsButtons() KeyPressHandler.onKeyPress()");
+
+                    final int charCode = event.getUnicodeCharCode();
+                    if (charCode == 0) {
+                        // it's probably Firefox
+                        final int keyCode = event.getNativeEvent().getKeyCode();
+                        // beware! keyCode=40 means "down arrow", while charCode=40 means '('
+                        // always check the keyCode against a list of "known to be buggy" codes!
+                        if (keyCode == KeyCodes.KEY_ENTER) {
+                            doSearch(false);
+                        }
+                    } else if (charCode == KeyCodes.KEY_ENTER) {
+                        doSearch(false);
+                    }
+                } finally {
+                    LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditViewInterface.bindFilteredResultsButtons() KeyPressHandler.onKeyPress()");
+                }
+            }
+        };
+
+        stringConstantFilteredResultsPresenter.getDisplay().getValueFilter().addKeyPressHandler(searchKeyPressHandler);
+        stringConstantFilteredResultsPresenter.getDisplay().getIdFilter().addKeyPressHandler(searchKeyPressHandler);
+        stringConstantFilteredResultsPresenter.getDisplay().getNameFilter().addKeyPressHandler(searchKeyPressHandler);
 
         stringConstantFilteredResultsPresenter.getDisplay().getCreate().addClickHandler(new ClickHandler() {
             @Override

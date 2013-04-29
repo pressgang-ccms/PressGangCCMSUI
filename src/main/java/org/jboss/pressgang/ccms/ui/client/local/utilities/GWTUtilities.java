@@ -82,7 +82,6 @@ final public class GWTUtilities {
      */
     public static boolean isEventToOpenNewWindow(@NotNull final ClickEvent event) {
         return event.isControlKeyDown();
-
     }
 
     /**

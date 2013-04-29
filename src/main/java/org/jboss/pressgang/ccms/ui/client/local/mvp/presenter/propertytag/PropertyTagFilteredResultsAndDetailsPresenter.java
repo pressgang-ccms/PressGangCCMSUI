@@ -1,7 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.propertytag;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -42,6 +41,8 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
@@ -80,6 +81,11 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
      * The history token used to identify this view.
      */
     public static final String HISTORY_TOKEN = "PropertyTagFilteredResultsAndDetailView";
+
+    /**
+     * A logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(PropertyTagFilteredResultsAndDetailsPresenter.class.getName());
 
     @Inject
     private HandlerManager eventBus;
@@ -299,6 +305,12 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
         display.getSave().addClickHandler(saveClickHandler);
     }
 
+    private void doSearch(final boolean newWindow) {
+        if (isOKToProceed()) {
+            eventBus.fireEvent(new PropertyCategoryFilteredResultsAndDetailsViewEvent(filteredResultsComponent.getQuery(), newWindow));
+        }
+    }
+
     /**
      * Binds behaviour to the tag search and list view
      */
@@ -307,12 +319,37 @@ public class PropertyTagFilteredResultsAndDetailsPresenter
         filteredResultsComponent.getDisplay().getEntitySearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                if (isOKToProceed()) {
-                    eventBus.fireEvent(new PropertyCategoryFilteredResultsAndDetailsViewEvent(filteredResultsComponent.getQuery(),
-                            GWTUtilities.isEventToOpenNewWindow(event)));
-                }
+                doSearch(GWTUtilities.isEventToOpenNewWindow(event));
             }
         });
+
+        final KeyPressHandler searchKeyPressHandler = new KeyPressHandler() {
+            @Override
+            public void onKeyPress(@NotNull final KeyPressEvent event) {
+                try {
+                    LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditViewInterface.bindFilteredResultsButtons() KeyPressHandler.onKeyPress()");
+
+                    final int charCode = event.getUnicodeCharCode();
+                    if (charCode == 0) {
+                        // it's probably Firefox
+                        final int keyCode = event.getNativeEvent().getKeyCode();
+                        // beware! keyCode=40 means "down arrow", while charCode=40 means '('
+                        // always check the keyCode against a list of "known to be buggy" codes!
+                        if (keyCode == KeyCodes.KEY_ENTER) {
+                            doSearch(false);
+                        }
+                    } else if (charCode == KeyCodes.KEY_ENTER) {
+                        doSearch(false);
+                    }
+                } finally {
+                    LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditViewInterface.bindFilteredResultsButtons() KeyPressHandler.onKeyPress()");
+                }
+            }
+        };
+
+        filteredResultsComponent.getDisplay().getDescriptionFilter().addKeyPressHandler(searchKeyPressHandler);
+        filteredResultsComponent.getDisplay().getIdFilter().addKeyPressHandler(searchKeyPressHandler);
+        filteredResultsComponent.getDisplay().getNameFilter().addKeyPressHandler(searchKeyPressHandler);
 
         filteredResultsComponent.getDisplay().getCreate().addClickHandler(new ClickHandler() {
             @Override
