@@ -734,6 +734,17 @@ public final class RESTCalls {
         });
     }
 
+    public static void updateContentSpec(@NotNull final RESTCallback<RESTContentSpecV1> callback, @NotNull final RESTContentSpecV1 contentSpec, @NotNull final String message,
+                                             @NotNull final Integer flag, @NotNull final String userId) {
+        /* Expand the categories and projects in the tags */
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).updateJSONContentSpec("{\"branches\":[" + CONTENT_SPEC_ITEM_EXPANSION + "]}", contentSpec, message, flag, userId);
+            }
+        });
+    }
+
     public static void getContentSpec(@NotNull final RESTCallback<RESTContentSpecV1> callback, @NotNull final Integer id) {
         /* Expand the categories and projects in the tags */
         doRestCall(callback, new RestMethodCaller() {

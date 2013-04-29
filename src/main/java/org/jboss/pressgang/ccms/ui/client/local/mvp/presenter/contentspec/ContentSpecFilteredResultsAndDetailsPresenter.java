@@ -4,13 +4,16 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
+import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTContentSpecCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -180,8 +183,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
         display.getSave().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
-                display.getMessageLogDialog().reset();
-                display.getMessageLogDialog().getDialogBox().center();
+                if (hasUnsavedChanges()) {
+                    display.getMessageLogDialog().getUsername().setText(Preferences.INSTANCE.getString(Preferences.LOG_MESSAGE_USERNAME, ""));
+                    display.getMessageLogDialog().reset();
+                    display.getMessageLogDialog().getDialogBox().center();
+                } else {
+                    Window.alert(PressGangCCMSUI.INSTANCE.NoUnsavedChanges());
+                }
             }
         });
 
@@ -229,6 +237,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                     message.append(display.getMessageLogDialog().getMessage().getText());
                     final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
 
+                    final RESTContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
+                    final Integer id = displayedEntity.getId();
+
                     /*
                         Save the text version of the content spec.
                     */
@@ -238,12 +249,51 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                                 @Override
                                 public void doSuccessAction(@NotNull final String retValue, @NotNull final Display display) {
                                     contentSpecText = retValue;
-                                    initializeViews(new ArrayList<BaseTemplateViewInterface>() {{add(contentSpecPresenter.getDisplay());}});
+
+                                    /*
+                                        Now save the additional details like tags and extended properties
+                                     */
+
+                                    final BaseRestCallback<RESTContentSpecV1, Display> callback2 =  new BaseRestCallback<RESTContentSpecV1, Display>(
+                                            display,
+                                            new BaseRestCallback.SuccessAction<RESTContentSpecV1, Display>() {
+                                                @Override
+                                                public void doSuccessAction(@NotNull final RESTContentSpecV1 retValue, @NotNull final Display display) {
+                                                    initializeViews(new ArrayList<BaseTemplateViewInterface>() {{add(contentSpecPresenter.getDisplay());}});
+                                                }
+                                            }, new BaseRestCallback.FailureAction<Display>() {
+                                                @Override
+                                                public void doFailureAction(@NotNull final Display display) {
+                                                    initializeViews(new ArrayList<BaseTemplateViewInterface>() {{add(contentSpecPresenter.getDisplay());}});
+                                                }
+                                            }
+                                    );
+
+                                    final RESTContentSpecV1 updatedSpec = new RESTContentSpecV1();
+                                    updatedSpec.setId(id);
+
+                                    boolean secondaryChanges = false;
+
+                                    if (displayedEntity.getProperties() != null) {
+                                        updatedSpec.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
+                                        updatedSpec.getProperties().setItems(displayedEntity.getProperties().getItems());
+                                        secondaryChanges = true;
+                                    }
+
+                                    if (displayedEntity.getTags() != null) {
+                                        updatedSpec.explicitSetTags(new RESTTagCollectionV1());
+                                        updatedSpec.getTags().setItems(displayedEntity.getTags().getItems());
+                                        secondaryChanges = true;
+                                    }
+
+                                    if (secondaryChanges) {
+                                        RESTCalls.updateContentSpec(callback2, updatedSpec, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
+                                    } else {
+                                        initializeViews(new ArrayList<BaseTemplateViewInterface>() {{add(contentSpecPresenter.getDisplay());}});
+                                    }
                                 }
                             }
                     );
-
-                    final Integer id = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId();
 
                     RESTCalls.updateContentSpecText(callback, id, contentSpecText, message.toString(), flag, ServiceConstants.NULL_USER_ID.toString());
                 } finally {
@@ -625,6 +675,43 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
     private boolean isReadOnlyMode() {
         return this.contentSpecRevisionsComponent.getDisplay().getRevisionContentSpec() != null;
+    }
+
+    @Override
+    public boolean hasUnsavedChanges() {
+        try {
+            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.hasUnsavedChanges()");
+
+            /* No topic selected, so no changes need to be saved */
+            if (filteredResultsPresenter.getProviderData().getDisplayedItem() == null) {
+                return false;
+            }
+
+            final RESTContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
+
+             /*
+                If there are any modified tags in newTopic, we have unsaved changes.
+                If getTags() is null, the tags have not been loaded yet (and can't have been modified).
+            */
+            if (displayedEntity.getTags() != null &&
+                    !displayedEntity.getTags().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
+                return true;
+            }
+
+            /* If there are any modified property tags in newTopic, we have unsaved changes */
+            if (!displayedEntity.getProperties().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
+                return true;
+            }
+
+            /* See if the text has changed */
+            if (!contentSpecPresenter.getDisplay().getEditor().getText().equals(this.contentSpecText)) {
+                return true;
+            }
+
+            return false;
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.hasUnsavedChanges()");
+        }
     }
 
     /**
