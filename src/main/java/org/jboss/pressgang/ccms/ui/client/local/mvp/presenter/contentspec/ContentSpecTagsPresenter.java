@@ -87,7 +87,7 @@ public class ContentSpecTagsPresenter extends BaseTemplatePresenter {
     /**
      * Gets the tags, so they can be displayed and added to topics
      */
-    private void getTags() {
+    public void getTags() {
         try {
             LOGGER.log(Level.INFO, "ENTER ContentSpecTagsPresenter.getTags()");
 
