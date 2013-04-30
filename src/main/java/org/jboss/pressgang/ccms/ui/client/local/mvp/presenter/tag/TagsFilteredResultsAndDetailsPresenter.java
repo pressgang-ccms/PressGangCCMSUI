@@ -258,7 +258,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                 final boolean wasNewTag = filteredResultsComponent.getProviderData().getDisplayedItem().returnIsAddItem();
 
                 /* Save any changes made to the tag entity itself */
-                @NotNull final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, TagsFilteredResultsAndDetailsPresenter.Display>(
+                final RESTCallback<RESTTagV1> callback = new BaseRestCallback<RESTTagV1, TagsFilteredResultsAndDetailsPresenter.Display>(
                         display, new BaseRestCallback.SuccessAction<RESTTagV1, TagsFilteredResultsAndDetailsPresenter.Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTTagV1 retValue,
@@ -293,7 +293,9 @@ public class TagsFilteredResultsAndDetailsPresenter
                 updateTag.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
 
                 /* Update the extended properties */
-                updateTag.getProperties().setItems(sourceTag.getProperties().returnDeletedAddedAndUpdatedCollectionItems());
+                if (sourceTag.getProperties() != null) {
+                    updateTag.getProperties().setItems(sourceTag.getProperties().returnDeletedAddedAndUpdatedCollectionItems());
+                }
 
                 /*
                  * Sync changes from the projects. categoriesComponent.getProviderData().getItems() contains a collection of all the
@@ -371,7 +373,6 @@ public class TagsFilteredResultsAndDetailsPresenter
                  * where a there are no tag changes but the tag is new.
                  */
                 else if (unsavedCategoryChanges && !wasNewTag) {
-
                     saveCategoryChanges(false, filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                 }
             } finally {
@@ -717,12 +718,13 @@ public class TagsFilteredResultsAndDetailsPresenter
                 .getPossibleChildrenProviderData().getItems());
 
         /* See if any of the fields were changed */
-        final boolean unsavedDescriptionChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(selected.getDescription(),displayed.getDescription());
+        final boolean unsavedDescriptionChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(selected.getDescription(), displayed.getDescription());
 
         final boolean unsavedNameChanges = !GWTUtilities.stringEqualsEquatingNullWithEmptyString(selected.getName(), displayed.getName());
 
         /* If there are any modified property tags in newTopic, we have unsaved changes */
-        final boolean unsavedExtendedProperties = !displayed.getProperties().returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
+        final boolean unsavedExtendedProperties = displayed.getProperties() != null
+                && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems(displayed.getProperties().getItems());
 
         return unsavedCategoryChanges || unsavedProjectChanges || unsavedDescriptionChanges || unsavedNameChanges || unsavedExtendedProperties;
     }
@@ -772,6 +774,8 @@ public class TagsFilteredResultsAndDetailsPresenter
                 /* The displayed tag will also be blank. This is the object that our data will be saved into */
                 final RESTTagV1 displayedTag = new RESTTagV1();
                 displayedTag.setId(Constants.NULL_ID);
+                /* We assume all tags already have a properties collection present */
+                displayedTag.setProperties(new RESTAssignedPropertyTagCollectionV1());
                 final RESTTagCollectionItemV1 displayedTagWrapper = new RESTTagCollectionItemV1(displayedTag, RESTBaseCollectionItemV1.ADD_STATE);
 
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
