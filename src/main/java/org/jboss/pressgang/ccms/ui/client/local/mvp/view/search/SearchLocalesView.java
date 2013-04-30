@@ -1,8 +1,8 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.search;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.view.search;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchLocalePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchLocalePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.search.SearchUILocaleEditor;

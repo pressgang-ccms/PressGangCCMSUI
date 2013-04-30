@@ -142,7 +142,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
         }
 
         if (viewIsInFilter(filter, contentSpecTagsPresenter.getDisplay())) {
-            contentSpecTagsPresenter.getDisplay().display(displayedItem, isReadOnlyMode());
+            /*
+                Tags are always readonly. Tags associated with a csontent spec
+                appear in the spec itself. This is just a secondary way to view them.
+             */
+            contentSpecTagsPresenter.getDisplay().display(displayedItem, true);
         }
 
         if (viewIsInFilter(filter, commonExtendedPropertiesPresenter.getDisplay())) {
