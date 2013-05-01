@@ -395,7 +395,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                             have the invalid spec text.
 
                             In this situation, the UI will display the invalid spec text. So we copy the invalid text
-                            into the text field, and edit as usual.
+                            into the text field, and edit as usual. This provides a workflow much like topics where
+                            the user can save invalid data, and will receive a warning about it when the save is completed.
+
+                            displayRevision() does the same substitution.
                          */
 
                         if (retValue.getErrors() != null) {
@@ -525,6 +528,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             if (!revisionSpec.getRevision().equals(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getRevision())) {
                 /* Reset the reference to the revision topic */
                 contentSpecRevisionsComponent.getDisplay().setRevisionContentSpec(revisionSpec);
+
+                /*
+                    Display the same text that would have been displayed when the spec was edited
+                 */
+                if (revisionSpec.getErrors() != null) {
+                    revisionSpec.setText(revisionSpec.getFailedContentSpec());
+                }
             }
 
             /* Initialize the views with the new topic being displayed */
