@@ -108,6 +108,9 @@ public interface PressGangCCMSUI extends Constants {
     String Home();
 
     @NotNull
+    String DocBuilder();
+
+    @NotNull
     String Welcome();
 
     @NotNull

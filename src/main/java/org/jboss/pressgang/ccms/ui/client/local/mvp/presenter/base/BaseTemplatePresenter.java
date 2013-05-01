@@ -91,6 +91,15 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
             }
         });
 
+        display.getDocBuilder().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                if (isOKToProceed()) {
+                    eventBus.fireEvent(new DocBuilderViewEvent());
+                }
+            }
+        });
+
         display.getSearch().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {

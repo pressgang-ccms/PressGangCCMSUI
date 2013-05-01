@@ -148,6 +148,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     private final Label version = new Label(PressGangCCMSUI.INSTANCE.Build() + " " + Constants.VERSION);
 
     private final PushButton home;
+    private final PushButton docbuilder;
     private final PushButton createTopic;
     private final PushButton search;
     private final PushButton searchTranslations;
@@ -286,6 +287,12 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
     @Override
     public final PushButton getHome() {
         return home;
+    }
+
+    @NotNull
+    @Override
+    public final PushButton getDocBuilder() {
+        return docbuilder;
     }
 
     @NotNull
@@ -630,6 +637,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
 
         home = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.Home());
         addShortcutButton(home);
+
+        docbuilder = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.DocBuilder());
+        addShortcutButton(docbuilder);
 
         createTopic = UIUtilities.createLeftSideTabPushButton(PressGangCCMSUI.INSTANCE.CreateTopic());
         addShortcutButton(createTopic);

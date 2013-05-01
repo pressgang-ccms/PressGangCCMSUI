@@ -12,6 +12,7 @@ import org.jboss.errai.ioc.client.container.IOCBeanDef;
 import org.jboss.errai.ioc.client.container.IOCBeanManager;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.*;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.DocBuilderPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.WelcomePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.PresenterInterface;
@@ -84,6 +85,7 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
 
             History.addValueChangeHandler(this);
 
+            this.eventBus.addHandler(DocBuilderViewEvent.TYPE, new ViewOpenEventHandler(DocBuilderPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(WelcomeViewEvent.TYPE, new ViewOpenEventHandler(WelcomePresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(SearchViewEvent.TYPE, new ViewOpenEventHandler(SearchPresenter.HISTORY_TOKEN));
             this.eventBus.addHandler(SearchResultsViewEvent.TYPE, new ViewOpenWithQueryEventHandler(TopicFilteredResultsPresenter.HISTORY_TOKEN));
@@ -152,7 +154,9 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
             if (token != null) {
                 Optional<BaseTemplatePresenterInterface> presenter = Optional.absent();
 
-                if (token.startsWith(WelcomePresenter.HISTORY_TOKEN)) {
+                if (token.startsWith(DocBuilderPresenter.HISTORY_TOKEN)) {
+                    presenter = getBeanInstance(DocBuilderPresenter.class);
+                } else if (token.startsWith(WelcomePresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(WelcomePresenter.class);
                 } else if (token.startsWith(SearchPresenter.HISTORY_TOKEN)) {
                     presenter = getBeanInstance(SearchPresenter.class);

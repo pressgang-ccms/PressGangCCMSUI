@@ -160,6 +160,12 @@ public interface BaseTemplateViewInterface {
     PushButton getHome();
 
     /**
+     * @return The button that opens the docbuilder view
+     */
+    @NotNull
+    PushButton getDocBuilder();
+
+    /**
      * @return The button that opens the bugzilla window
      */
     @NotNull

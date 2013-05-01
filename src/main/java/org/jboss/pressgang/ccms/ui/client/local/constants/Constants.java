@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201304291504";
+    public static final String VERSION = "201305020737";
 
     /**
      * The maximum length of the title before it is truncated
@@ -154,6 +154,10 @@ public final class Constants {
      * The production server.
      */
     public static final String PROD_REST_SERVER = "http://skynet.usersys.redhat.com:8080/TopicIndex";
+    /**
+     * The DocBuilder server
+      */
+    public static final String DOCBUILDER_SERVER = "http://docbuilder.usersys.redhat.com";
 
     /**
      * Old versions of the rest interface did not accept encode text for queries. New versions do. Set to
