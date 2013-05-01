@@ -80,6 +80,7 @@ public final class RESTCalls {
      */
     private static final String CONTENT_SPEC_ITEM_EXPANSION =
                 "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}," +
+                "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.TEXT_NAME + "\"}}," +
                 "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}";
 
 

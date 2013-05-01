@@ -28,12 +28,14 @@ public class ContentSpecFilteredResultsAndDetailsView extends
     private final PushButton text = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.ContentSpecText());
     private final PushButton history = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Revisions());
     private final PushButton tags = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Tags());
+    private final PushButton errors = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.SpecValidationErrors());
 
     private final Label extendedPropertiesDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ExtendedProperties());
     private final Label detailsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecDetails());
     private final Label textDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.ContentSpecText());
     private final Label historyDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Revisions());
     private final Label tagsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Tags());
+    private final Label errorsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.SpecValidationErrors());
 
     /**
      * An instance of the message log dialog box
@@ -44,6 +46,13 @@ public class ContentSpecFilteredResultsAndDetailsView extends
     @Override
     public PushButton getText() {
         return text;
+    }
+
+
+    @NotNull
+    @Override
+    public PushButton getErrors() {
+        return errors;
     }
 
     @NotNull
@@ -62,6 +71,12 @@ public class ContentSpecFilteredResultsAndDetailsView extends
     @Override
     public Label getTextDown() {
         return textDown;
+    }
+
+    @NotNull
+    @Override
+    public Label getErrorsDown() {
+        return errorsDown;
     }
 
     @NotNull
@@ -98,6 +113,7 @@ public class ContentSpecFilteredResultsAndDetailsView extends
 
     private void populateTopActionBar() {
         this.addActionButton(this.getText());
+        this.addActionButton(this.getErrors());
         this.addActionButton(this.getDetails());
         this.addActionButton(this.getContentSpecTags());
         this.addActionButton(this.getExtendedProperties());

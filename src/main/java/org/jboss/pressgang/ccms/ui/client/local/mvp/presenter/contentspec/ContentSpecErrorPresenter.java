@@ -3,14 +3,12 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.contentspec;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.HasWidgets;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
-import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.contentspec.RESTContentSpecV1TextEditor;
-import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +22,7 @@ import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.re
  * Displays the text of a content spec.
  */
 @Dependent
-public class ContentSpecPresenter extends BaseTemplatePresenter {
+public class ContentSpecErrorPresenter extends BaseTemplatePresenter {
 
     public static final String HISTORY_TOKEN = "ContentSpecTextEditor";
 
@@ -60,12 +58,7 @@ public class ContentSpecPresenter extends BaseTemplatePresenter {
         return display;
     }
 
-    // Empty interface declaration, similar to UiBinder
-    public interface ContentSpecTextPresenterDriver extends SimpleBeanEditorDriver<RESTContentSpecV1, RESTContentSpecV1TextEditor> {
-    }
-
-    public interface Display extends BasePopulatedEditorViewInterface<RESTContentSpecV1, RESTContentSpecV1, RESTContentSpecV1TextEditor> {
-        @NotNull AceEditor getEditor();
-        void display(@NotNull final RESTContentSpecV1 contentSpec, final boolean readOnly);
+    public interface Display extends BaseTemplateViewInterface {
+        void display(@NotNull final RESTContentSpecV1 contentSpec);
     }
 }

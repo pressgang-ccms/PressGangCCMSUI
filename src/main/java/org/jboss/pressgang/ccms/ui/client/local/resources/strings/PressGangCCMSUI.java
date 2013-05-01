@@ -303,6 +303,9 @@ public interface PressGangCCMSUI extends Constants {
     String XMLValidationErrors();
 
     @NotNull
+    String SpecValidationErrors();
+
+    @NotNull
     String Properties();
 
     @NotNull
