@@ -79,7 +79,8 @@ public final class RESTCalls {
      * Content specifications need the extended properties expanded
      */
     private static final String CONTENT_SPEC_ITEM_EXPANSION =
-                "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}";
+                "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}," +
+                "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}";
 
 
     /**
@@ -730,6 +731,17 @@ public final class RESTCalls {
             @Override
             public void call() throws Exception {
                 createRestMethod(callback).updateTEXTContentSpec(contentSpecID, contentSpecText, message, flag, userId);
+            }
+        });
+    }
+
+    public static void updateContentSpec(@NotNull final RESTCallback<RESTContentSpecV1> callback, @NotNull final RESTContentSpecV1 contentSpec, @NotNull final String message,
+                                             @NotNull final Integer flag, @NotNull final String userId) {
+        /* Expand the categories and projects in the tags */
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).updateJSONContentSpec("{\"branches\":[" + CONTENT_SPEC_ITEM_EXPANSION + "]}", contentSpec, message, flag, userId);
             }
         });
     }

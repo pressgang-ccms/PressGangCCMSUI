@@ -1,4 +1,4 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;

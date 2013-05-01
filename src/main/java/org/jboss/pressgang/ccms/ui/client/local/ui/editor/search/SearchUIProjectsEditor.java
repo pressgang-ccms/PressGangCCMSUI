@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter.Display.SearchPresenterDriver;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchPresenter.Display.SearchPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProjects;
 import org.jetbrains.annotations.NotNull;

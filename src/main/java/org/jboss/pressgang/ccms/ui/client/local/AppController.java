@@ -35,10 +35,10 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.tag.TagsFilteredRe
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFieldPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchFilterResultsAndFilterPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchPresenter;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchTagsFieldsAndFiltersPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchFieldPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchFilterResultsAndFilterPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchTagsFieldsAndFiltersPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.translatedtopics.TranslatedTopicFilteredResultsAndDetailsPresenter;

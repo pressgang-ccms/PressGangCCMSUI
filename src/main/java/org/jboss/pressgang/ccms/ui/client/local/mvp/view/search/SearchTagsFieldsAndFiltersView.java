@@ -1,8 +1,8 @@
-package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.search;
+package org.jboss.pressgang.ccms.ui.client.local.mvp.view.search;
 
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.search.SearchTagsFieldsAndFiltersPresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.search.SearchTagsFieldsAndFiltersPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.WaitingDialog;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
@@ -53,7 +53,6 @@ public class SearchTagsFieldsAndFiltersView extends
     @Override
     protected void showWaiting() {
         waiting.center();
-        waiting.show();
     }
 
     @Override
