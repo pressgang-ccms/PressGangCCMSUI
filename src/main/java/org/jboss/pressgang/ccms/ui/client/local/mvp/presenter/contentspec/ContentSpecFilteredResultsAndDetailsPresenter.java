@@ -185,7 +185,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
         display.getExtendedProperties().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(ClickEvent event) {
+            public void onClick(@NotNull final ClickEvent event) {
                 switchView(commonExtendedPropertiesPresenter.getDisplay());
             }
         });
@@ -387,6 +387,21 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                     @Override
                     public void doSuccessAction(@NotNull final RESTContentSpecV1 retValue, @NotNull final BaseTemplateViewInterface display) {
                         checkState(retValue.getProperties() != null, "The returned entity needs to have a valid properties collection");
+                        checkState(retValue.getText() != null, "The returned entity needs to have a valid text field");
+
+                        /*
+                            If the last save of the content spec was not valid, the text field will display the
+                            last valid state, the errors field will be populated, and the failedContentSpec will
+                            have the invalid spec text.
+
+                            In this situation, the UI will display the invalid spec text. So we copy the invalid text
+                            into the text field, and edit as usual.
+                         */
+
+                        if (retValue.getErrors() != null) {
+                            retValue.setText(retValue.getFailedContentSpec());
+                        }
+
                         displayCallback.displayNewEntity(retValue);
                     }
                 });
