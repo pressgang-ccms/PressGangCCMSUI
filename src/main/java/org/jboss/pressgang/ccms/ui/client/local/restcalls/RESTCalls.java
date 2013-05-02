@@ -13,6 +13,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.jaxrsinterfaces.RESTInterfaceV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.base.StringLoaded;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,6 +21,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class provides a standard way to call the REST server and respond to the various success and failure paths.
@@ -27,6 +30,12 @@ import java.util.List;
  * @author Matthew Casperson
  */
 public final class RESTCalls {
+
+    /**
+     * A logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(RESTCalls.class.getName());
+
     /**
      * A topic with expanded revisions
      */
@@ -747,6 +756,17 @@ public final class RESTCalls {
         });
     }
 
+    public static void createContentSpec(@NotNull final RESTCallback<RESTContentSpecV1> callback, @NotNull final RESTContentSpecV1 contentSpec, @NotNull final String message,
+                                         @NotNull final Integer flag, @NotNull final String userId) {
+        /* Expand the categories and projects in the tags */
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).createJSONContentSpec("{\"branches\":[" + CONTENT_SPEC_ITEM_EXPANSION + "]}", contentSpec, message, flag, userId);
+            }
+        });
+    }
+
     public static void getContentSpec(@NotNull final RESTCallback<RESTContentSpecV1> callback, @NotNull final Integer id) {
         /* Expand the categories and projects in the tags */
         doRestCall(callback, new RestMethodCaller() {
@@ -1071,5 +1091,25 @@ public final class RESTCalls {
             });
 
             RESTCalls.getStringConstant(callback, ServiceConstants.LOCALE_STRING_CONSTANT);
+    }
+
+    public static void loadDefaultLocale(@NotNull final StringLoaded loadedCallback, @NotNull final BaseTemplateViewInterface display) {
+        try {
+            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.loadDefaultLocale()");
+
+            final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
+                    display,
+                    new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
+                        @Override
+                        public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
+                            loadedCallback.stringLoaded(retValue.getValue());
+                        }
+                    }
+            );
+
+            RESTCalls.getStringConstant(callback, ServiceConstants.DEFAULT_LOCALE_ID);
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadDefaultLocale()");
+        }
     }
 }

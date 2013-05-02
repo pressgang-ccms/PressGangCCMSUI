@@ -324,13 +324,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
         }, display);
 
-        loadDefaultLocale(new StringLoaded() {
+        RESTCalls.loadDefaultLocale(new StringLoaded() {
             @Override
             public void stringLoaded(@NotNull final String string) {
                 defaultLocale = string;
                 displayNewTopic();
             }
-        });
+        }, display);
 
         addKeyboardShortcutEventHandler(this.getTopicXMLComponent().getDisplay(), this.getDisplay(), new GetCurrentTopic() {
 
@@ -654,12 +654,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             final String user = display.getMessageLogDialog().getUsername().getText().trim();
                             Preferences.INSTANCE.saveSetting(Preferences.LOG_MESSAGE_USERNAME, user);
 
-                            @NotNull final StringBuilder message = new StringBuilder();
+                            final StringBuilder message = new StringBuilder();
                             if (!user.isEmpty()) {
                                 message.append(user).append(": ");
                             }
                             message.append(display.getMessageLogDialog().getMessage().getText());
-                            @NotNull final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
+                            final Integer flag = (int) (display.getMessageLogDialog().getMinorChange().getValue() ? ServiceConstants.MINOR_CHANGE : ServiceConstants.MAJOR_CHANGE);
 
                             /* Sync any changes back to the underlying object */
                             flushChanges();
@@ -707,7 +707,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                     LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
 
                                                     // Create the topic wrapper
-                                                    @NotNull final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
+                                                    final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
                                                     topicCollectionItem.setState(RESTBaseCollectionItemV1.UNCHANGED_STATE);
 
                                                     // create the topic, and add to the wrapper
@@ -1282,7 +1282,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     /**
-     * When the default locale and the topic list have been loaded we can display the fisrt topic if only
+     * When the default locale and the topic list have been loaded we can display the first topic if only
      * one was returned.
      */
     private void displayNewTopic() {
@@ -1728,23 +1728,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
 
 
-    private void loadDefaultLocale(@NotNull final StringLoaded loadedCallback) {
-        try {
-            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.loadDefaultLocale()");
 
-            @NotNull final RESTCalls.RESTCallback<RESTStringConstantV1> callback = new BaseRestCallback<RESTStringConstantV1, BaseTemplateViewInterface>(
-                    display, new BaseRestCallback.SuccessAction<RESTStringConstantV1, BaseTemplateViewInterface>() {
-                @Override
-                public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
-                    loadedCallback.stringLoaded(retValue.getValue());
-                }
-            });
-
-            RESTCalls.getStringConstant(callback, ServiceConstants.DEFAULT_LOCALE_ID);
-        } finally {
-            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.loadDefaultLocale()");
-        }
-    }
 
     /**
      * Retrieve a list of xml elements from the server.

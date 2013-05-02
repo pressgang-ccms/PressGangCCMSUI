@@ -250,7 +250,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      */
     protected void displayInitialTopic(@NotNull final GetNewEntityCallback<T> getNewEntityCallback) {
         try {
-            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.displayInitialTopic()");
+            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
 
             if (isInitialTopicReadyToBeLoaded() &&
                     getSearchResultsComponent().getProviderData().getItems() != null &&
@@ -258,7 +258,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 loadNewEntity(getNewEntityCallback, getSearchResultsComponent().getProviderData().getItems().get(0));
             }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.displayInitialTopic()");
+            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.displayInitialContentSpec()");
         }
     }
 

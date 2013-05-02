@@ -144,7 +144,7 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
 
     @Override
     protected boolean isInitialTopicReadyToBeLoaded() {
-        /* displayInitialTopic() is only called when all the data is available, so just return true */
+        /* displayInitialContentSpec() is only called when all the data is available, so just return true */
         return true;
     }
 
