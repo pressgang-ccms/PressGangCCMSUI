@@ -123,7 +123,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
     protected void loadAdditionalDisplayedItemData() {
         checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
         checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
-        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId() != null, "The displayed collection item to reference a valid entity with a valid ID.");
+        checkState(!filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem() && filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId() != null, "The displayed collection item to reference a valid entity with a valid ID.");
 
         final RESTContentSpecV1 displayedItem =  filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
         final RESTContentSpecV1 selectedItem =  filteredResultsPresenter.getProviderData().getSelectedItem().getItem();
@@ -501,7 +501,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             // create the topic, and add to the wrapper
             final RESTContentSpecV1 newEntity = new RESTContentSpecV1();
             newEntity.setProperties(new RESTAssignedPropertyTagCollectionV1());
-            //newEntity.setLocale(defaultLocale);
+            newEntity.setText("");
+            newEntity.setLocale(defaultLocale);
             contentSpecCollectionItem.setItem(newEntity);
 
             // the topic won't show up in the list of topics until it is saved, so the
