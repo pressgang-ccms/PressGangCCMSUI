@@ -173,7 +173,7 @@ abstract public class BaseSearchAndEditPresenter<
                         filteredResultsComponent.getProviderData().getSize(),
                         filteredResultsComponent.getProviderData().getStartRow());
             } else {
-                    /* If we just created a new entity, refresh the list of entities from the database */
+                /* If we just created a new entity, refresh the list of entities from the database */
 
                 filteredResultsComponent.bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, "", filteredResultsComponent.getQuery());
 

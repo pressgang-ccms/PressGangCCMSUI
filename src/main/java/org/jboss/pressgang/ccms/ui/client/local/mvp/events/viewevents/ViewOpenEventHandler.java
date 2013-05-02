@@ -2,6 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.user.client.History;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.DocBuilderPresenter;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -28,6 +29,10 @@ public class ViewOpenEventHandler implements EventHandler {
      * @param event The event triggered to open a new view.
      */
     protected void onViewOpen(@NotNull final ViewOpenEvent<?> event) {
-        History.newItem(historyToken);
+        if (History.getToken().equals(historyToken)) {
+            History.fireCurrentHistoryState();
+        } else {
+            History.newItem(historyToken);
+        }
     }
 }
