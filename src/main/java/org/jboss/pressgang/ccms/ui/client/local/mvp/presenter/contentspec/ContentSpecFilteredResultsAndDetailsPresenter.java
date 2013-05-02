@@ -121,70 +121,88 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
     @Override
     protected void loadAdditionalDisplayedItemData() {
-        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
-        checkState(!filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem() && filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId() != null, "The displayed collection item to reference a valid entity with a valid ID.");
+        try {
+            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.loadAdditionalDisplayedItemData()");
 
-        final RESTContentSpecV1 displayedItem =  filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
-        final RESTContentSpecV1 selectedItem =  filteredResultsPresenter.getProviderData().getSelectedItem().getItem();
+            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem() || filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId() != null, "The displayed collection item to reference a valid entity with a valid ID.");
 
-        /*
-            Display the list of assigned property tags. This should not be null, but bugs in the REST api can
-            lead to the properties collection being null.
-        */
-        if (displayedItem.getProperties() != null) {
-            Collections.sort(displayedItem.getProperties().getItems(), new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
-            commonExtendedPropertiesPresenter.refreshExistingChildList(displayedItem);
+            final RESTContentSpecV1 displayedItem = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
+            final RESTContentSpecCollectionItemV1 selectedCollectionItem = filteredResultsPresenter.getProviderData().getSelectedItem();
+
+
+            /*
+                Display the list of assigned property tags. This should not be null, but bugs in the REST api can
+                lead to the properties collection being null.
+            */
+            if (displayedItem.getProperties() != null) {
+                Collections.sort(displayedItem.getProperties().getItems(), new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
+                commonExtendedPropertiesPresenter.refreshExistingChildList(displayedItem);
+            }
+
+            /* Get a new collection of property tags. */
+            commonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(displayedItem);
+
+            displayPropertyTags();
+
+            /*
+                If this is not a new item (i.e. the selected item is not null), load some revisions.
+             */
+            if (selectedCollectionItem != null) {
+                this.contentSpecRevisionsComponent.getDisplay().setProvider(this.contentSpecRevisionsComponent.generateListProvider(selectedCollectionItem.getItem().getId(), display));
+            }
+
+            loadTags();
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.loadAdditionalDisplayedItemData()");
         }
-
-        /* Get a new collection of property tags. */
-        commonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(displayedItem);
-
-        displayPropertyTags();
-
-        this.contentSpecRevisionsComponent.getDisplay().setProvider(this.contentSpecRevisionsComponent.generateListProvider(selectedItem.getId(), display));
-
-        loadTags();
     }
 
     @Override
     protected void initializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
-        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-        checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+        try {
+            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.initializeViews()");
 
-        final RESTContentSpecV1 displayedItem = getDisplayedContentSpec();
+            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+            checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
-        if (viewIsInFilter(filter, contentSpecDetailsPresenter.getDisplay())) {
-            contentSpecDetailsPresenter.getDisplay().displayContentSpecDetails(displayedItem, isReadOnlyMode(), new ArrayList<String>());
-        }
+            final RESTContentSpecV1 displayedItem = getDisplayedContentSpec();
 
-        if (viewIsInFilter(filter, contentSpecPresenter.getDisplay())) {
-            contentSpecPresenter.getDisplay().display(displayedItem, isReadOnlyMode());
-        }
+            if (viewIsInFilter(filter, contentSpecDetailsPresenter.getDisplay())) {
+                contentSpecDetailsPresenter.getDisplay().displayContentSpecDetails(displayedItem, isReadOnlyMode(), new ArrayList<String>());
+            }
 
-        if (viewIsInFilter(filter, contentSpecErrorsPresenter.getDisplay())) {
-            contentSpecErrorsPresenter.getDisplay().display(displayedItem);
-        }
+            if (viewIsInFilter(filter, contentSpecPresenter.getDisplay())) {
+                contentSpecPresenter.getDisplay().display(displayedItem, isReadOnlyMode());
+            }
 
-        if (viewIsInFilter(filter, contentSpecTagsPresenter.getDisplay())) {
+            if (viewIsInFilter(filter, contentSpecErrorsPresenter.getDisplay())) {
+                contentSpecErrorsPresenter.getDisplay().display(displayedItem);
+            }
+
+            if (viewIsInFilter(filter, contentSpecTagsPresenter.getDisplay())) {
+                /*
+                    Tags are always readonly. Tags associated with a csontent spec
+                    appear in the spec itself. This is just a secondary way to view them.
+                 */
+                contentSpecTagsPresenter.getDisplay().display(displayedItem, true);
+            }
+
+            if (viewIsInFilter(filter, commonExtendedPropertiesPresenter.getDisplay())) {
+                commonExtendedPropertiesPresenter.getDisplay().display(displayedItem, isReadOnlyMode());
+                commonExtendedPropertiesPresenter.displayDetailedChildrenExtended(displayedItem, isReadOnlyMode());
+            }
+
             /*
-                Tags are always readonly. Tags associated with a csontent spec
-                appear in the spec itself. This is just a secondary way to view them.
-             */
-            contentSpecTagsPresenter.getDisplay().display(displayedItem, true);
-        }
-
-        if (viewIsInFilter(filter, commonExtendedPropertiesPresenter.getDisplay())) {
-            commonExtendedPropertiesPresenter.getDisplay().display(displayedItem, isReadOnlyMode());
-            commonExtendedPropertiesPresenter.displayDetailedChildrenExtended(displayedItem, isReadOnlyMode());
-        }
-
-        /*
-            The revision display always displays details from the main topic, and not the selected revision.
-        */
-        if (viewIsInFilter(filter, contentSpecRevisionsComponent.getDisplay())) {
-            LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
-            contentSpecRevisionsComponent.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), isReadOnlyMode());
+                The revision display always displays details from the main topic, and not the selected revision.
+            */
+            if (viewIsInFilter(filter, contentSpecRevisionsComponent.getDisplay())) {
+                LOGGER.log(Level.INFO, "\tInitializing topic revisions view");
+                contentSpecRevisionsComponent.getDisplay().display(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), isReadOnlyMode());
+            }
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.initializeViews()");
         }
     }
 
@@ -890,13 +908,18 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
     @Override
     protected void afterSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
+        try {
+            LOGGER.log(Level.INFO, "ENTER ContentSpecFilteredResultsAndDetailsPresenter.afterSwitchView()");
 
-        enableAndDisableActionButtons(displayedView);
-        setHelpTopicForView(displayedView);
+            enableAndDisableActionButtons(displayedView);
+            setHelpTopicForView(displayedView);
 
-        /* Show any wait dialogs from the new view, and update the view with the currently displayed entity */
-        if (displayedView != null) {
-            displayedView.setViewShown(true);
+            /* Show any wait dialogs from the new view, and update the view with the currently displayed entity */
+            if (displayedView != null) {
+                displayedView.setViewShown(true);
+            }
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.afterSwitchView()");
         }
     }
 
@@ -988,8 +1011,10 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
             flushChanges();
 
-            final RESTContentSpecV1 displayedEntity = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
-            final RESTContentSpecV1 selectedEntity = filteredResultsPresenter.getProviderData().getSelectedItem().getItem();
+            final RESTContentSpecCollectionItemV1 displayedEntityCollectionItem = filteredResultsPresenter.getProviderData().getDisplayedItem();
+            final RESTContentSpecV1 displayedEntity = displayedEntityCollectionItem.getItem();
+            final RESTContentSpecCollectionItemV1 selectedEntityCollectionItem = filteredResultsPresenter.getProviderData().getSelectedItem();
+
 
              /*
                 If there are any modified tags in newTopic, we have unsaved changes.
@@ -1005,9 +1030,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                 return true;
             }
 
-            /* See if the text has changed */
-            if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedEntity.getText(), displayedEntity.getText())) {
-                return true;
+            if (!displayedEntityCollectionItem.returnIsAddItem()) {
+                /* See if the text has changed */
+                if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedEntityCollectionItem.getItem().getText(), displayedEntity.getText())) {
+                    return true;
+                }
             }
 
             return false;

@@ -250,14 +250,20 @@ abstract public class BaseSearchAndEditPresenter<
      * When a new entity is selected ore created, this method will update the views
      */
     protected final void updateViewsAfterNewEntityLoaded() {
-        /* Allow overriding classes to display any additional details */
-        loadAdditionalDisplayedItemData();
+        try {
+            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.updateViewsAfterNewEntityLoaded()");
 
-        /* Initialize the views */
-        initializeViews();
+            /* Allow overriding classes to display any additional details */
+            loadAdditionalDisplayedItemData();
 
-        /* Refresh the view, or display the properties view if none is shown */
-        switchView(lastDisplayedView == null ? firstDisplayedView : lastDisplayedView);
+            /* Initialize the views */
+            initializeViews();
+
+            /* Refresh the view, or display the properties view if none is shown */
+            switchView(lastDisplayedView == null ? firstDisplayedView : lastDisplayedView);
+        } finally {
+            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.updateViewsAfterNewEntityLoaded()");
+        }
     }
 
     /**
