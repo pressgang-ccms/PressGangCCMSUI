@@ -25,13 +25,19 @@ public class ViewOpenWithQueryEventHandler extends ViewOpenEventHandler {
      */
     protected final void onViewOpen(@NotNull final ViewOpenWithQueryEvent<?> event) {
         if (event.isNewWindow()) {
-            @NotNull final String newWindowURL = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/"
+            final String newWindowURL = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/"
                     + Window.Location.getPath() + "#" + historyToken + ";"
                     + ((event.getQuery() != null) ? event.getQuery() : "");
 
             Window.open(newWindowURL, "_blank", "");
         } else {
-            History.newItem(historyToken + ";" + ((event.getQuery() != null) ? event.getQuery() : ""));
+            final String token = historyToken + ";" + ((event.getQuery() != null) ? event.getQuery() : "");
+
+            if (History.getToken().equals(token)) {
+                History.fireCurrentHistoryState();
+            } else {
+                History.newItem(token);
+            }
         }
     }
 }
