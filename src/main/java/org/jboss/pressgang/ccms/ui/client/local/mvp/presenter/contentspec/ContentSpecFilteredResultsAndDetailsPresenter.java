@@ -1035,6 +1035,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                 if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedEntityCollectionItem.getItem().getText(), displayedEntity.getText())) {
                     return true;
                 }
+            } else {
+                /*
+                    If there has been any text added, we have unsaved changes.
+                 */
+                return !displayedEntity.getText().trim().isEmpty();
             }
 
             return false;
