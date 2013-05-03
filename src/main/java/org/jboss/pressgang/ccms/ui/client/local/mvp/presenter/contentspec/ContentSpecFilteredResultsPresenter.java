@@ -8,6 +8,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTContentSpecCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenterInterface;
@@ -123,6 +124,10 @@ public class ContentSpecFilteredResultsPresenter extends BaseFilteredResultsPres
                             checkArgument(retValue.getItems() != null, "Returned collection should have a valid items collection.");
                             checkArgument(retValue.getSize() != null, "Returned collection should have a valid size.");
                             checkArgument(retValue.getItems().size() == 0 || retValue.getItems().get(0).getItem().getChildren_OTM() != null, "The items in the returned collection should have a valid children collection");
+
+                            for (final RESTContentSpecCollectionItemV1 item : retValue.getItems()) {
+                                ComponentContentSpecV1.fixDisplayedText(item.getItem());
+                            }
 
                             getProviderData().setItems(retValue.getItems());
                             getProviderData().setSize(retValue.getSize());

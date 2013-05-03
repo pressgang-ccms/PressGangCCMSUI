@@ -13,6 +13,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTContentSpecCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
+import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -358,34 +359,32 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                                                 Show the invalid text if required. Also fix up the selected item, because this is what
                                                 we will be comparing to when checking for changes.
                                             */
-                                            fixDisplayedText(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
-                                            fixDisplayedText(filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
+                                            ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+
 
                                             if (startWithNewSpec) {
                                                 LOGGER.log(Level.INFO, "Adding new topic to static list");
+
+                                                /* We need to swap the text with the invalid text */
+                                                ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
+
                                                 filteredResultsPresenter.getProviderData().getItems().add(contentSpecCollectionItem);
                                                 filteredResultsPresenter.getProviderData().setSize(filteredResultsPresenter.getProviderData().getItems().size());
                                                 updateDisplayAfterSave(false);
                                             } else {
                                                /* Update the selected topic */
                                                 LOGGER.log(Level.INFO, "Redisplaying query");
+
+                                                /* When the list is repopulated, the text will be swapped with the invalid text */
                                                 updateDisplayAfterSave(true);
                                             }
 
-                                            LOGGER.log(Level.INFO, "Refreshing editor");
-                                            if (contentSpecPresenter.getDisplay().getEditor() != null) {
-                                                contentSpecPresenter.getDisplay().getEditor().redisplay();
-                                            }
+                                            initializeViews(new ArrayList<BaseTemplateViewInterface>() {{add(contentSpecPresenter.getDisplay());}});
 
                                             Window.alert(PressGangCCMSUI.INSTANCE.ContentSpecSaveSuccessWithID() + " " + retValue.getId());
                                         } finally {
                                             LOGGER.log(Level.INFO, "EXIT ContentSpecFilteredResultsAndDetailsPresenter.bindActionButtons() messageLogDialogOK.onClick() addCallback.doSuccessAction() - New Topic");
                                         }
-                                    }
-                                }, new BaseRestCallback.FailureAction<Display>() {
-                                    @Override
-                                    public void doFailureAction(@NotNull final Display display) {
-                                        contentSpecPresenter.getDisplay().getEditor().redisplay();
                                     }
                                 }
                         );
@@ -514,26 +513,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
     }
 
     /**
-        If the last save of the content spec was not valid, the text field will display the
-        last valid state, the errors field will be populated, and the failedContentSpec will
-        have the invalid spec text.
-
-        In this situation, the UI will display the invalid spec text. So we copy the invalid text
-        into the text field, and edit as usual. This provides a workflow much like topics where
-        the user can save invalid data, and will receive a warning about it when the save is completed.
-
-        @param spec The spec to fix
-    */
-    private void fixDisplayedText(@NotNull final RESTContentSpecV1 spec)
-    {
-
-
-        if (spec.getErrors() != null) {
-            spec.setText(spec.getFailedContentSpec());
-        }
-    }
-
-    /**
      * Called to create a new content spec
      */
     private void createNewContentSpec() {
@@ -583,7 +562,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                         checkState(retValue.getProperties() != null, "The returned entity needs to have a valid properties collection");
                         checkState(retValue.getText() != null, "The returned entity needs to have a valid text field");
 
-                        fixDisplayedText(retValue);
+                        ComponentContentSpecV1.fixDisplayedText(retValue);
                         displayCallback.displayNewEntity(retValue);
                     }
                 });
@@ -703,11 +682,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             contentSpecRevisionsComponent.getDisplay().getDiffButton().setFieldUpdater(new FieldUpdater<RESTContentSpecCollectionItemV1, String>() {
                 @Override
                 public void update(final int index, @NotNull final RESTContentSpecCollectionItemV1 revisionContentSpec, final String value) {
-                    final RESTCalls.RESTCallback<String> callback = new BaseRestCallback<String, ContentSpecRevisionsPresenter.Display>(
+                    final RESTCalls.RESTCallback<RESTContentSpecV1> callback = new BaseRestCallback<RESTContentSpecV1, ContentSpecRevisionsPresenter.Display>(
                             contentSpecRevisionsComponent.getDisplay(),
-                            new BaseRestCallback.SuccessAction<String, ContentSpecRevisionsPresenter.Display>() {
+                            new BaseRestCallback.SuccessAction<RESTContentSpecV1, ContentSpecRevisionsPresenter.Display>() {
                                 @Override
-                                public void doSuccessAction(@NotNull final String retValue, final ContentSpecRevisionsPresenter.Display display) {
+                                public void doSuccessAction(@NotNull final RESTContentSpecV1 retValue, final ContentSpecRevisionsPresenter.Display display) {
                                     checkState(getDisplayedContentSpec() != null, "There should be a displayed item.");
 
                                     if (getDisplayedContentSpec() != null) {
@@ -735,11 +714,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                                                 + ": "
                                                 + DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(getDisplayedContentSpec().getLastModified());
 
-                                        GWTUtilities.displayDiff(retValue, retValueLabel, filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getText(), sourceTopicLabel, false);
+                                        ComponentContentSpecV1.fixDisplayedText(retValue);
+
+                                        GWTUtilities.displayDiff(retValue.getText(), retValueLabel, filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getText(), sourceTopicLabel, false);
                                     }
                                 }
                             });
-                    RESTCalls.getContentSpecTextRevision(callback, revisionContentSpec.getItem().getId(), revisionContentSpec.getItem().getRevision());
+                    RESTCalls.getContentSpecRevision(callback, revisionContentSpec.getItem().getId(), revisionContentSpec.getItem().getRevision());
                 }
             });
 
@@ -786,7 +767,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             if (!revisionSpec.getRevision().equals(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getRevision())) {
                 /* Reset the reference to the revision topic */
                 contentSpecRevisionsComponent.getDisplay().setRevisionContentSpec(revisionSpec);
-                fixDisplayedText(revisionSpec);
+                ComponentContentSpecV1.fixDisplayedText(revisionSpec);
             }
 
             /* Initialize the views with the new topic being displayed */
@@ -1039,18 +1020,24 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
             /* If there are any modified property tags in newTopic, we have unsaved changes */
             if (!displayedEntity.getProperties().returnDeletedAddedAndUpdatedCollectionItems().isEmpty()) {
+                LOGGER.log(Level.INFO, "Unsaved properties");
                 return true;
             }
 
             if (!displayedEntityCollectionItem.returnIsAddItem()) {
                 /* See if the text has changed */
                 if (!GWTUtilities.stringEqualsEquatingNullWithEmptyString(selectedEntityCollectionItem.getItem().getText(), displayedEntity.getText())) {
+                    LOGGER.log(Level.INFO, "Text is different between selected and displayed. \n" + selectedEntityCollectionItem.getItem().getText() + "\n" + displayedEntity.getText());
+                    LOGGER.log(Level.INFO, selectedEntityCollectionItem.getItem().getId().toString());
+                    LOGGER.log(Level.INFO, selectedEntityCollectionItem.getItem().getErrors());
+                    LOGGER.log(Level.INFO, selectedEntityCollectionItem.getItem().getFailedContentSpec());
                     return true;
                 }
             } else {
                 /*
                     If there has been any text added, we have unsaved changes.
                  */
+                LOGGER.log(Level.INFO, "Text is not empty");
                 return !displayedEntity.getText().trim().isEmpty();
             }
 
