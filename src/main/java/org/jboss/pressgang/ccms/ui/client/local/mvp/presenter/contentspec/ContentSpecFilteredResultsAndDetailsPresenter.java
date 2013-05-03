@@ -354,6 +354,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                                              */
                                             filteredResultsPresenter.getProviderData().setSelectedItem(contentSpecCollectionItem);
 
+                                            /*
+                                                Show the invalid text if required. Also fix up the selected item, because this is what
+                                                we will be comparing to when checking for changes.
+                                            */
+                                            fixDisplayedText(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+                                            fixDisplayedText(filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
+
                                             if (startWithNewSpec) {
                                                 LOGGER.log(Level.INFO, "Adding new topic to static list");
                                                 filteredResultsPresenter.getProviderData().getItems().add(contentSpecCollectionItem);
@@ -447,6 +454,12 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                                         /* Update the selected topic */
                                         retValue.cloneInto(filteredResultsPresenter.getProviderData().getSelectedItem().getItem(), true);
 
+                                        /*
+                                            Show the invalid text if required.
+                                         */
+                                        fixDisplayedText(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+                                        fixDisplayedText(filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
+
                                         initializeViews(new ArrayList<BaseTemplateViewInterface>() {{add(contentSpecPresenter.getDisplay());}});
                                         updateDisplayAfterSave(false);
 
@@ -501,6 +514,26 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
     }
 
     /**
+        If the last save of the content spec was not valid, the text field will display the
+        last valid state, the errors field will be populated, and the failedContentSpec will
+        have the invalid spec text.
+
+        In this situation, the UI will display the invalid spec text. So we copy the invalid text
+        into the text field, and edit as usual. This provides a workflow much like topics where
+        the user can save invalid data, and will receive a warning about it when the save is completed.
+
+        @param spec The spec to fix
+    */
+    private void fixDisplayedText(@NotNull final RESTContentSpecV1 spec)
+    {
+
+
+        if (spec.getErrors() != null) {
+            spec.setText(spec.getFailedContentSpec());
+        }
+    }
+
+    /**
      * Called to create a new content spec
      */
     private void createNewContentSpec() {
@@ -550,22 +583,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                         checkState(retValue.getProperties() != null, "The returned entity needs to have a valid properties collection");
                         checkState(retValue.getText() != null, "The returned entity needs to have a valid text field");
 
-                        /*
-                            If the last save of the content spec was not valid, the text field will display the
-                            last valid state, the errors field will be populated, and the failedContentSpec will
-                            have the invalid spec text.
-
-                            In this situation, the UI will display the invalid spec text. So we copy the invalid text
-                            into the text field, and edit as usual. This provides a workflow much like topics where
-                            the user can save invalid data, and will receive a warning about it when the save is completed.
-
-                            displayRevision() does the same substitution.
-                         */
-
-                        if (retValue.getErrors() != null) {
-                            retValue.setText(retValue.getFailedContentSpec());
-                        }
-
+                        fixDisplayedText(retValue);
                         displayCallback.displayNewEntity(retValue);
                     }
                 });
@@ -768,13 +786,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             if (!revisionSpec.getRevision().equals(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getRevision())) {
                 /* Reset the reference to the revision topic */
                 contentSpecRevisionsComponent.getDisplay().setRevisionContentSpec(revisionSpec);
-
-                /*
-                    Display the same text that would have been displayed when the spec was edited
-                 */
-                if (revisionSpec.getErrors() != null) {
-                    revisionSpec.setText(revisionSpec.getFailedContentSpec());
-                }
+                fixDisplayedText(revisionSpec);
             }
 
             /* Initialize the views with the new topic being displayed */
