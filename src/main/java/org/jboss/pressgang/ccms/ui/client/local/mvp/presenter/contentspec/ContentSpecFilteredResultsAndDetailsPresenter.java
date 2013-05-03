@@ -128,6 +128,9 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
             checkState(filteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem() || filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId() != null, "The displayed collection item to reference a valid entity with a valid ID.");
 
+            /* Disable the topic revision view */
+            viewLatestSpecRevision();
+
             final RESTContentSpecV1 displayedItem = filteredResultsPresenter.getProviderData().getDisplayedItem().getItem();
             final RESTContentSpecCollectionItemV1 selectedCollectionItem = filteredResultsPresenter.getProviderData().getSelectedItem();
 
