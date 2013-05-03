@@ -40,7 +40,6 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -272,7 +271,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
                                 tagComponent.getDisplay().display(filteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
                                 tagComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
-                                updateDisplayAfterSave(wasNewEntity);
+                                updateDisplayWithNewEntityData(wasNewEntity);
 
                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                             }

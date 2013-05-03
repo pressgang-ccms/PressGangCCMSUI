@@ -30,7 +30,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkState;
@@ -124,7 +123,7 @@ implements BaseTemplatePresenterInterface {
                                         integerConstantFilteredResultsPresenter.getProviderData().getStartRow(),
                                         integerConstantFilteredResultsPresenter.getProviderData().getItems());
 
-                                updateDisplayAfterSave(wasNewEntity);
+                                updateDisplayWithNewEntityData(wasNewEntity);
 
                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                             }

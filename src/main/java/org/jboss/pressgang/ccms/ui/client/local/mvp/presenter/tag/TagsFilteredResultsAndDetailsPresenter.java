@@ -277,7 +277,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                         if (unsavedCategoryChanges) {
                             saveCategoryChanges(wasNewTag, filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getId());
                         } else {
-                            updateDisplayAfterSave(wasNewTag);
+                            updateDisplayWithNewEntityData(wasNewTag);
                             Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + retValue.getId());
                         }
 
@@ -406,7 +406,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                                 }
                                 categoriesComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
 
-                                updateDisplayAfterSave(wasNewTag);
+                                updateDisplayWithNewEntityData(wasNewTag);
                                 Window.alert(PressGangCCMSUI.INSTANCE.TagSaveSuccess() + " " + newTagId);
                             }
                         });

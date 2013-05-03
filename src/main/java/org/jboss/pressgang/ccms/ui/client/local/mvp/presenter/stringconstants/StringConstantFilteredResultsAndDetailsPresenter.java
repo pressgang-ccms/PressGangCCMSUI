@@ -134,7 +134,7 @@ implements BaseTemplatePresenterInterface {
                                         stringConstantFilteredResultsPresenter.getProviderData().getStartRow(),
                                         stringConstantFilteredResultsPresenter.getProviderData().getItems());
 
-                                updateDisplayAfterSave(wasNewEntity);
+                                updateDisplayWithNewEntityData(wasNewEntity);
 
                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                             }

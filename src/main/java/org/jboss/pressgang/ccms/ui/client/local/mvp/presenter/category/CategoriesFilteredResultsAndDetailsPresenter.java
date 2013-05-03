@@ -367,7 +367,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                                 categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
                                 categoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
 
-                                updateDisplayAfterSave(wasNewEntity);
+                                updateDisplayWithNewEntityData(wasNewEntity);
 
                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                             }

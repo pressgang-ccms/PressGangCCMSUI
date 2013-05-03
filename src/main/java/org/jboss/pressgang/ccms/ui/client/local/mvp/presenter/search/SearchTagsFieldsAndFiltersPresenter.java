@@ -303,7 +303,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
                             searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().setSelectedItem(collectionItem);
 
                             /* if filter.getId() == null, we created a new filter */
-                            searchFilterResultsAndFilterPresenter.updateDisplayAfterSave(filter.getId() == null);
+                            searchFilterResultsAndFilterPresenter.updateDisplayWithNewEntityData(filter.getId() == null);
 
 
                         } finally {

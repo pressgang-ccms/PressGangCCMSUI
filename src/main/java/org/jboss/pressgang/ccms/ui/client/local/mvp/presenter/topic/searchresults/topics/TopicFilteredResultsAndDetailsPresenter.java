@@ -21,11 +21,9 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.view.client.HasData;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
 import org.jboss.errai.bus.client.api.Message;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTLanguageImageCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicSourceUrlCollectionV1;
@@ -39,7 +37,6 @@ import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceivedHandler;
-import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.ImagesFilteredResultsAndImageViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.viewevents.SearchResultsAndTopicViewEvent;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.filteredresults.BaseFilteredResultsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.searchandedit.DisplayNewEntityCallback;
@@ -67,7 +64,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
@@ -76,7 +72,6 @@ import org.vectomatic.file.FileList;
 import org.vectomatic.file.FileReader;
 import org.vectomatic.file.FileUploadExt;
 import org.vectomatic.file.events.*;
-import org.zanata.rest.ElemSet;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -735,11 +730,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                         LOGGER.log(Level.INFO, "Adding new topic to static list");
                                                         getSearchResultsComponent().getProviderData().getItems().add(topicCollectionItem);
                                                         getSearchResultsComponent().getProviderData().setSize(getSearchResultsComponent().getProviderData().getItems().size());
-                                                        updateDisplayAfterSave(false);
+                                                        updateDisplayWithNewEntityData(false);
                                                     } else {
                                                         /* Update the selected topic */
                                                         LOGGER.log(Level.INFO, "Redisplaying query");
-                                                        updateDisplayAfterSave(true);
+                                                        updateDisplayWithNewEntityData(true);
                                                     }
 
                                                     LOGGER.log(Level.INFO, "Refreshing editor");
@@ -822,7 +817,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                                                     lastXML = null;
 
-                                                    updateDisplayAfterSave(false);
+                                                    updateDisplayWithNewEntityData(false);
 
                                                     if (overwroteChanges) {
                                                         /* Take the user to the revisions view so they can review any overwritten changes */
@@ -1034,9 +1029,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     If this view was started by the Create Topic link in the menu (as opposed to a search),
                     then the new topics will just show up.
                  */
-                updateDisplayAfterSave(false);
+                updateDisplayWithNewEntityData(false);
             } else {
-                updateDisplayAfterSave(true);
+                updateDisplayWithNewEntityData(true);
             }
 
         } else {

@@ -8,7 +8,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
-import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.RESTContentSpecCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
@@ -370,13 +369,13 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
                                                 filteredResultsPresenter.getProviderData().getItems().add(contentSpecCollectionItem);
                                                 filteredResultsPresenter.getProviderData().setSize(filteredResultsPresenter.getProviderData().getItems().size());
-                                                updateDisplayAfterSave(false);
+                                                updateDisplayWithNewEntityData(false);
                                             } else {
                                                /* Update the selected topic */
                                                 LOGGER.log(Level.INFO, "Redisplaying query");
 
                                                 /* When the list is repopulated, the text will be swapped with the invalid text */
-                                                updateDisplayAfterSave(true);
+                                                updateDisplayWithNewEntityData(true);
                                             }
 
                                             initializeViews(new ArrayList<BaseTemplateViewInterface>() {{add(contentSpecPresenter.getDisplay());}});
@@ -460,7 +459,7 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                                         ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
 
                                         initializeViews(new ArrayList<BaseTemplateViewInterface>() {{add(contentSpecPresenter.getDisplay());}});
-                                        updateDisplayAfterSave(false);
+                                        updateDisplayWithNewEntityData(false);
 
                                         if (overwroteChanges) {
                                             /* Take the user to the revisions view so they can review any overwritten changes */

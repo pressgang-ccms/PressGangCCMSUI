@@ -137,7 +137,7 @@ implements BaseTemplatePresenterInterface {
                                         blobConstantFilteredResultsPresenter.getProviderData().getStartRow(),
                                         blobConstantFilteredResultsPresenter.getProviderData().getItems());
 
-                                updateDisplayAfterSave(wasNewEntity);
+                                updateDisplayWithNewEntityData(wasNewEntity);
 
                                 Window.alert(PressGangCCMSUI.INSTANCE.SaveSuccess());
                             }
@@ -351,7 +351,7 @@ implements BaseTemplatePresenterInterface {
                                                 retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getSelectedItem().getItem(), false);
                                                 retValue.cloneInto(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem(), false);
                                                 initializeViews();
-                                                updateDisplayAfterSave(wasNewEntity);
+                                                updateDisplayWithNewEntityData(wasNewEntity);
                                             }
                                         });
 

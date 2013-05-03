@@ -240,7 +240,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                 retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getSelectedItem().getItem(), false);
                 retValue.cloneInto(imageFilteredResultsComponent.getProviderData().getDisplayedItem().getItem(), false);
                 initializeViews();
-                updateDisplayAfterSave(false);
+                updateDisplayWithNewEntityData(false);
             }
         };
     }
@@ -660,7 +660,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                                                     switchView(imageComponent.getDisplay());
 
                                                     /* Reload the filtered results view */
-                                                    updateDisplayAfterSave(true);
+                                                    updateDisplayWithNewEntityData(true);
                                                 }
                                             });
 

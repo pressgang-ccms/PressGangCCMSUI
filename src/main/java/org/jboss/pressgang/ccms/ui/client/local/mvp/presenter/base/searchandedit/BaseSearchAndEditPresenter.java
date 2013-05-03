@@ -139,24 +139,40 @@ abstract public class BaseSearchAndEditPresenter<
      * lists with any new information.
      *
      * @param wasNewEntity true if the entity that was saved was a new entity, and false otherwise
+     * @param refreshList true if some changes have been made to the filtered list that should be redisplayed, false otherwise
      */
-    public final void updateDisplayAfterSave(final boolean wasNewEntity) {
+    private final void updateDisplayWithNewEntityData(final boolean wasNewEntity, final boolean refreshList) {
         try {
 
-            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.updateDisplayAfterSave()");
+            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.updateDisplayWithNewEntityData()");
 
-            refreshFilteredResults(wasNewEntity);
-
-            if (lastDisplayedView != null) {
-                /* refresh the display */
-                initializeViews();
-
-                /* Load the data that is loaded when a new entity is selected */
-                loadAdditionalDisplayedItemData();
+            if (refreshList) {
+                refreshFilteredResults(wasNewEntity);
             }
+
+            /* refresh the display */
+            initializeViews();
+
+            /* Load the data that is loaded when a new entity is selected */
+            loadAdditionalDisplayedItemData();
+
+            /* Refresh the view, or display the properties view if none is shown */
+            switchView(lastDisplayedView == null ? firstDisplayedView : lastDisplayedView);
+
         } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.updateDisplayAfterSave()");
+            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.updateDisplayWithNewEntityData()");
         }
+    }
+
+    public final void updateDisplayWithNewEntityData(final boolean wasNewEntity) {
+        updateDisplayWithNewEntityData(wasNewEntity, true);
+    }
+
+    /**
+     * When a new entity is created, this method will update the views. Similar to updateDisplayWithNewEntityData()
+     */
+    protected final void updateViewsAfterNewEntityLoaded() {
+        updateDisplayWithNewEntityData(false, false);
     }
 
     /**
@@ -238,7 +254,9 @@ abstract public class BaseSearchAndEditPresenter<
                          */
                         filteredResultsComponent.getProviderData().setDisplayedItem(selectedItem.clone(true));
 
-                        updateDisplayAfterSave(false);
+                        updateDisplayWithNewEntityData(false);
+
+
                     } finally {
                         LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.loadNewEntity() DisplayNewEntityCallback.displayNewEntity(final T entity)");
                     }
@@ -250,25 +268,7 @@ abstract public class BaseSearchAndEditPresenter<
         }
     }
 
-    /**
-     * When a new entity is created, this method will update the views.
-     */
-    protected final void updateViewsAfterNewEntityLoaded() {
-        try {
-            LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.updateViewsAfterNewEntityLoaded()");
 
-            /* Allow overriding classes to display any additional details */
-            loadAdditionalDisplayedItemData();
-
-            /* Initialize the views */
-            initializeViews();
-
-            /* Refresh the view, or display the properties view if none is shown */
-            switchView(lastDisplayedView == null ? firstDisplayedView : lastDisplayedView);
-        } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.updateViewsAfterNewEntityLoaded()");
-        }
-    }
 
     /**
      * Binds logic to the search results list row click event
