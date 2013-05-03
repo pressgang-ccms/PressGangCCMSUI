@@ -98,9 +98,9 @@ public final class RESTCalls {
      */
     private static final String CONTENT_SPEC_EXPANSION_WO_REVISIONS =
             "{\"branches\":[" +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
-                    "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.TEXT_NAME + "\"}}," +
-                    "]}";
+                    "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.PROPERTIES_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.TEXT_NAME + "\"}}" +
+            "]}";
 
     /**
      * The required expansion details for a topic. This is used when loading a topic for the first time
