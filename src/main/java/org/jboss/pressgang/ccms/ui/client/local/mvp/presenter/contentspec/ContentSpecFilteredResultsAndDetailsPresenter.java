@@ -456,8 +456,8 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
                                         /*
                                             Show the invalid text if required.
                                          */
-                                        fixDisplayedText(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
-                                        fixDisplayedText(filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
+                                        ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
+                                        ComponentContentSpecV1.fixDisplayedText(filteredResultsPresenter.getProviderData().getSelectedItem().getItem());
 
                                         initializeViews(new ArrayList<BaseTemplateViewInterface>() {{add(contentSpecPresenter.getDisplay());}});
                                         updateDisplayAfterSave(false);
