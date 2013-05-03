@@ -13,6 +13,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class DocBuilderView extends BaseTemplateView implements DocBuilderPresenter.Display {
 
@@ -25,7 +26,15 @@ public class DocBuilderView extends BaseTemplateView implements DocBuilderPresen
         iFrame.setWidth("100%");
         iFrame.setHeight("100%");
         iFrame.getElement().getStyle().setBorderWidth(0, Style.Unit.PX);
-        iFrame.setUrl(Constants.DOCBUILDER_SERVER);
         this.getPanel().add(iFrame);
+    }
+
+    public void display(@Nullable final Integer id) {
+        String url = Constants.DOCBUILDER_SERVER;
+        if (id != null)  {
+            url += "/" + id;
+        }
+
+        iFrame.setUrl(url);
     }
 }

@@ -92,6 +92,21 @@ public final class RESTCalls {
                 "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.TEXT_NAME + "\"}}," +
                 "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}";
 
+    /**
+     * When saved or created, we need the children populated in order to get the content spec title
+     */
+    private static final String CONTENT_SPEC_UPDATE_ITEM_EXPANSION =
+            CONTENT_SPEC_ITEM_EXPANSION  + "," +
+            "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.CHILDREN_NAME + "\"}}";
+
+    /**
+     * The required expansion details for a topic. This is used when loading a topic for the first time
+     */
+    private static final String CONTENT_SPEC_EXPANSION_WO_REVISIONS =
+            "{\"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTContentSpecV1.TEXT_NAME + "\"}}," +
+                    "]}";
 
     /**
      * The required expansion details for a topic. This is used when loading a topic for the first time
@@ -102,13 +117,7 @@ public final class RESTCalls {
                     "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
                     "]}";
 
-    /**
-     * The required expansion details for a topic. This is used when loading a topic for the first time
-     */
-    private static final String CONTENT_SPEC_EXPANSION_WO_REVISIONS =
-            "{\"branches\":[" +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
-                    "]}";
+
     /**
      * The required expansion details for a topic. The revisions are required so we can check to see if
      * the last revision was the one we edited. If not, there was a conflicting save.
@@ -751,7 +760,7 @@ public final class RESTCalls {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).updateJSONContentSpec("{\"branches\":[" + CONTENT_SPEC_ITEM_EXPANSION + "]}", contentSpec, message, flag, userId);
+                createRestMethod(callback).updateJSONContentSpec("{\"branches\":[" + CONTENT_SPEC_UPDATE_ITEM_EXPANSION + "]}", contentSpec, message, flag, userId);
             }
         });
     }
@@ -762,7 +771,7 @@ public final class RESTCalls {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).createJSONContentSpec("{\"branches\":[" + CONTENT_SPEC_ITEM_EXPANSION + "]}", contentSpec, message, flag, userId);
+                createRestMethod(callback).createJSONContentSpec("{\"branches\":[" + CONTENT_SPEC_UPDATE_ITEM_EXPANSION + "]}", contentSpec, message, flag, userId);
             }
         });
     }
