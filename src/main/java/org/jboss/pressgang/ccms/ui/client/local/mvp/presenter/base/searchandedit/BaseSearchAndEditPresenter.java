@@ -164,14 +164,18 @@ abstract public class BaseSearchAndEditPresenter<
         }
     }
 
+    /**
+     * When a new entity is selected or saved, this method will update the views and the filtered results list.
+     */
     public final void updateDisplayWithNewEntityData(final boolean wasNewEntity) {
         updateDisplayWithNewEntityData(wasNewEntity, true);
     }
 
     /**
-     * When a new entity is created, this method will update the views. Similar to updateDisplayWithNewEntityData()
+     * When a new entity is created, this method will update the views without updating the filtered results list.
      */
     protected final void updateViewsAfterNewEntityLoaded() {
+        /*  wasNewEntity has no meaning because refreshList is false */
         updateDisplayWithNewEntityData(false, false);
     }
 
