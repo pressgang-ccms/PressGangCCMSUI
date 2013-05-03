@@ -135,6 +135,9 @@ abstract public class BaseSearchAndEditPresenter<
      * Called once an entity has been saved to refresh the various lists that may have been modified by the edited or created
      * entity.
      *
+     * This is also called when a new entity is loaded. This has the effect of updating the filtered results
+     * lists with any new information.
+     *
      * @param wasNewEntity true if the entity that was saved was a new entity, and false otherwise
      */
     public final void updateDisplayAfterSave(final boolean wasNewEntity) {
@@ -197,7 +200,8 @@ abstract public class BaseSearchAndEditPresenter<
     }
 
     /**
-     * Given an entity, load a fresh copy from the database and display it on the screen
+     * Given an entity, load a fresh copy from the database and display it on the screen. Note that this method
+     * will update the selected item as well as the displayed item when a fresh copy is pulled down.
      *
      * @param getNewEntityCallback The callback used to load a fresh entity
      * @param selectedItem         The item that was selected from a collection of entities
@@ -234,7 +238,7 @@ abstract public class BaseSearchAndEditPresenter<
                          */
                         filteredResultsComponent.getProviderData().setDisplayedItem(selectedItem.clone(true));
 
-                        updateViewsAfterNewEntityLoaded();
+                        updateDisplayAfterSave(false);
                     } finally {
                         LOGGER.log(Level.INFO, "EXIT BaseSearchAndEditPresenter.loadNewEntity() DisplayNewEntityCallback.displayNewEntity(final T entity)");
                     }
@@ -247,7 +251,7 @@ abstract public class BaseSearchAndEditPresenter<
     }
 
     /**
-     * When a new entity is selected ore created, this method will update the views
+     * When a new entity is created, this method will update the views.
      */
     protected final void updateViewsAfterNewEntityLoaded() {
         try {

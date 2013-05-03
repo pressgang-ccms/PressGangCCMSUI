@@ -1701,11 +1701,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             // Create the topic wrapper
-            @NotNull final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
+            final RESTTopicCollectionItemV1 topicCollectionItem = new RESTTopicCollectionItemV1();
             topicCollectionItem.setState(RESTBaseCollectionItemV1.ADD_STATE);
 
             // create the topic, and add to the wrapper
-            @NotNull final RESTTopicV1 restTopic = new RESTTopicV1();
+            final RESTTopicV1 restTopic = new RESTTopicV1();
             restTopic.setProperties(new RESTAssignedPropertyTagCollectionV1());
             restTopic.setTags(new RESTTagCollectionV1());
             restTopic.setRevisions(new RESTTopicCollectionV1());
