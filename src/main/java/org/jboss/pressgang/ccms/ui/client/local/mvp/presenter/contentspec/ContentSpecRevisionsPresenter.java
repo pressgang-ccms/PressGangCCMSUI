@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.contentspec.items.RESTContentSpecCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
+import org.jboss.pressgang.ccms.rest.v1.components.ComponentContentSpecV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.contentspec.RESTContentSpecV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -117,6 +118,11 @@ public class ContentSpecRevisionsPresenter extends BaseTemplatePresenter {
                                     checkArgument(retValue.getRevisions().getItems().get(0).getItem().getProperties() != null, "Returned entities should have a valid properties collection.");
                                     checkArgument(retValue.getRevisions().getItems().get(0).getItem().getProperties().getItems() != null, "Returned entities should have a valid properties collection with a valid items collection.");
                                     checkArgument(retValue.getRevisions().getItems().get(0).getItem().getProperties().getSize() != null, "Returned entities should have a valid properties collection with a valid size.");
+                                }
+
+                                /* Fix the text */
+                                for (final RESTContentSpecCollectionItemV1 item : retValue.getRevisions().getItems())  {
+                                    ComponentContentSpecV1.fixDisplayedText(item.getItem());
                                 }
 
                                 getProviderData().setItems(retValue.getRevisions().getItems());

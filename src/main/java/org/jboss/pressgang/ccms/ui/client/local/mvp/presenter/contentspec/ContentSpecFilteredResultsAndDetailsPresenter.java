@@ -146,6 +146,11 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
 
             displayPropertyTags();
 
+            /* set the revisions to show the loading widget */
+            if (contentSpecRevisionsComponent.getDisplay().getProvider() != null) {
+                contentSpecRevisionsComponent.getDisplay().getProvider().resetProvider();
+            }
+
             /*
                 If this is not a new item (i.e. the selected item is not null), load some revisions.
              */
@@ -766,7 +771,6 @@ public class ContentSpecFilteredResultsAndDetailsPresenter
             if (!revisionSpec.getRevision().equals(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getRevision())) {
                 /* Reset the reference to the revision topic */
                 contentSpecRevisionsComponent.getDisplay().setRevisionContentSpec(revisionSpec);
-                ComponentContentSpecV1.fixDisplayedText(revisionSpec);
             }
 
             /* Initialize the views with the new topic being displayed */
