@@ -129,17 +129,17 @@ public final class RESTLanguageImageV1Editor extends FlexTable implements ValueA
 
     @Override
     public void setDelegate(final EditorDelegate<RESTLanguageImageCollectionItemV1> delegate) {
-        // TODO Auto-generated method stub
+
     }
 
     @Override
     public void flush() {
-        // TODO Auto-generated method stub
+
     }
 
     @Override
     public void onPropertyChange(final String... paths) {
-        // TODO Auto-generated method stub
+
     }
 
     @Override

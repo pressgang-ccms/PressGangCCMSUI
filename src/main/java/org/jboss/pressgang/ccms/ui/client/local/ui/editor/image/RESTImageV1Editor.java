@@ -105,7 +105,7 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
 
     @Override
     public void onPropertyChange(final String... paths) {
-        // TODO Auto-generated method stub
+
 
     }
 

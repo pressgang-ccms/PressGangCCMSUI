@@ -154,7 +154,7 @@ public class TranslatedTopicsFilteredResultsPresenter extends BaseFilteredResult
 
     @Override
     protected void displayQueryElements(@NotNull final String queryString) {
-        // TODO Auto-generated method stub
+
     }
 
     @NotNull
