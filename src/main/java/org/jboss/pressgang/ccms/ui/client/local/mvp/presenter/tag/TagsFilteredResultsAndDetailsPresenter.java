@@ -290,7 +290,9 @@ public class TagsFilteredResultsAndDetailsPresenter
                 updateTag.setId(sourceTag.getId());
                 updateTag.explicitSetDescription(sourceTag.getDescription());
                 updateTag.explicitSetName(sourceTag.getName());
-                updateTag.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
+
+                // TODO: Fix this for 1.1
+                //updateTag.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
 
                 /* Update the extended properties */
                 if (sourceTag.getProperties() != null) {
