@@ -85,7 +85,7 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
 
     @Override
     protected void displayQueryElements(@Nullable final String queryString) {
-        // TODO Auto-generated method stub
+
     }
 
     @NotNull

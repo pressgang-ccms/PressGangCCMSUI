@@ -111,7 +111,7 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
 
     @Override
     public void setDelegate(@NotNull final EditorDelegate<SearchUIProject> delegate) {
-        // TODO Auto-generated method stub
+
 
     }
 
@@ -122,7 +122,7 @@ public final class SearchUIProjectEditor extends DockLayoutPanel implements Valu
 
     @Override
     public void onPropertyChange(@NotNull final String... paths) {
-        // TODO Auto-generated method stub
+
 
     }
 

@@ -40,6 +40,6 @@ public class TopicBIRTBugsPresenter extends BaseTemplatePresenter {
 
     @Override
     public void parseToken(@NotNull final String historyToken) {
-        // TODO Auto-generated method stub
+
     }
 }
