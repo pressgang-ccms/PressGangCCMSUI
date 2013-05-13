@@ -150,7 +150,7 @@ ol ol {
     list-style-type: lower-alpha;
 }
 
-.docbookLiteral, .docbookFileName {
+.docbookLiteral, .docbookFileName, .docbookCommand {
     font-family: "liberation mono", "bitstream vera mono", "dejavu mono", monospace;
     font-weight: bold;
 }
