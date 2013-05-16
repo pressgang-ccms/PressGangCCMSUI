@@ -204,6 +204,9 @@ public interface PressGangCCMSUI extends Constants {
     String TopicDetailsRESTEndpoint();
 
     @NotNull
+    String TopicWebDAV();
+
+    @NotNull
     String TopicXMLRESTEndpoint();
 
     @NotNull

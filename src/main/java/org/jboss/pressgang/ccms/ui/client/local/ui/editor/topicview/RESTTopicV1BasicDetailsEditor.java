@@ -44,6 +44,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
     private final Anchor restTopicXMLLabel = new Anchor(PressGangCCMSUI.INSTANCE.TopicXMLRESTEndpoint());
     private final TextBox restTopicDetails = new TextBox();
     private final TextBox restTopicXML = new TextBox();
+    private final TextBox restTopicWebDav = new TextBox();
 
     @NotNull
     public DateBox lastModifiedEditor() {
@@ -141,6 +142,10 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         this.setWidget(row, 1, restTopicXML);
 
         ++row;
+        this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicWebDAV()));
+        this.setWidget(row, 1, restTopicWebDav);
+
+        ++row;
         this.setWidget(row, 0, new Label(PressGangCCMSUI.INSTANCE.TopicDescription()));
         this.setWidget(row, 1, description);
 
@@ -169,11 +174,19 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         final String detailsURL = Constants.REST_SERVER + "/1/topic/get/json/" + value.getId() + "/r/" + value.getRevision();
         final String xmlURL = Constants.REST_SERVER + "/1/topic/get/xml/" + value.getId() + "/r/" + value.getRevision() + "/xml";
 
+        final String idString = value.getId().toString();
+        String webDAV = Constants.REST_SERVER + "/webdav/";
+        for (int i = 0; i < idString.length(); ++i) {
+            webDAV += i + "/";
+        }
+        webDAV += "TOPIC" + idString + "/" + idString + "xml";
+
         restTopicDetailsLabel.setHref(detailsURL);
         restTopicXMLLabel.setHref(xmlURL);
 
         restTopicDetails.setValue(detailsURL);
         restTopicXML.setValue(xmlURL);
+        restTopicWebDav.setValue(webDAV);
     }
 
     @Override
