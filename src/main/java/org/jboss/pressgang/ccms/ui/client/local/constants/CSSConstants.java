@@ -344,6 +344,7 @@ public interface CSSConstants {
          * Assigned to the field that holds the topic's XML endpoint url
          */
         String TOPIC_VIEW_XML_ENDPOINT_FIELD = "TopicViewXMLEndpointField";
+        String TOPIC_VIEW_WEBDAV_ENDPOINT_FIELD = "TopicViewWebDAVEndpointField";
         String TOPIC_VIEW_LOCALE_FIELD = "TopicViewLocaleField";
         String TOPIC_VIEW_DESCRIPTION_FIELD = "TopicViewDescriptionField";
         String TOPIC_VIEW_LABEL = "TopicViewLabel";

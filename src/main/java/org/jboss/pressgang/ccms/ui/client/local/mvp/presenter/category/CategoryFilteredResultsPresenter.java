@@ -150,13 +150,13 @@ public class CategoryFilteredResultsPresenter
     public String getQuery() {
         @NotNull final StringBuilder retValue = new StringBuilder();
         if (!this.display.getIdFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.CATEGORY_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.display.getIdFilter().getText()) : this.display.getIdFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.CATEGORY_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.display.getIdFilter().getText()) : this.display.getIdFilter().getText()));
         }
         if (!this.display.getNameFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.CATEGORY_NAME_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.display.getNameFilter().getText()) : this.display.getNameFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.CATEGORY_NAME_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.display.getNameFilter().getText()) : this.display.getNameFilter().getText()));
         }
         if (!this.display.getDescriptionFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.CATEGORY_DESCRIPTION_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.display.getDescriptionFilter().getText()) : this.display.getDescriptionFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.CATEGORY_DESCRIPTION_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.display.getDescriptionFilter().getText()) : this.display.getDescriptionFilter().getText()));
         }
 
         return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX : Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON + retValue.toString();

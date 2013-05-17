@@ -456,95 +456,95 @@ public class SearchUIFields implements SearchViewBase {
 
         if (!GWTUtilities.isStringNullOrEmpty(this.ids)) {
             retValue.append(";" + CommonFilterConstants.TOPIC_IDS_FILTER_VAR + "="
-                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.ids) : this.ids));
+                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.ids) : this.ids));
         }
         if (!GWTUtilities.isStringNullOrEmpty(this.notIds)) {
             retValue.append(";" + CommonFilterConstants.TOPIC_IDS_NOT_FILTER_VAR + "="
-                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.notIds) : this.notIds));
+                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.notIds) : this.notIds));
         }
         if (!GWTUtilities.isStringNullOrEmpty(this.description)) {
             retValue.append(";" + CommonFilterConstants.TOPIC_DESCRIPTION_FILTER_VAR
-                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.description) : this.description));
+                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.description) : this.description));
         }
         if (!GWTUtilities.isStringNullOrEmpty(this.notDescription)) {
             retValue.append(";"
                     + CommonFilterConstants.TOPIC_DESCRIPTION_NOT_FILTER_VAR + "="
-                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.notDescription) : this.notDescription));
+                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.notDescription) : this.notDescription));
         }
         if (!GWTUtilities.isStringNullOrEmpty(this.title)) {
             retValue.append(";" + CommonFilterConstants.TOPIC_TITLE_FILTER_VAR + "="
-                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.title) : this.title));
+                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.title) : this.title));
         }
         if (!GWTUtilities.isStringNullOrEmpty(this.notTitle)) {
             retValue.append(";" + CommonFilterConstants.TOPIC_TITLE_NOT_FILTER_VAR
-                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.notTitle) : this.notTitle));
+                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.notTitle) : this.notTitle));
         }
         if (this.editedInLastXDays != null) {
             retValue.append(";" + CommonFilterConstants.TOPIC_EDITED_IN_LAST_DAYS
-                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.editedInLastXDays.toString()) : this.editedInLastXDays.toString()));
+                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.editedInLastXDays.toString()) : this.editedInLastXDays.toString()));
         }
         if (this.notEditedInLastXDays != null) {
             retValue.append(";" + CommonFilterConstants.TOPIC_NOT_EDITED_IN_LAST_DAYS
-                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.notEditedInLastXDays.toString()) : this.notEditedInLastXDays.toString()));
+                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.notEditedInLastXDays.toString()) : this.notEditedInLastXDays.toString()));
         }
         if (!GWTUtilities.isStringNullOrEmpty(this.contents)) {
             retValue.append(";" + CommonFilterConstants.TOPIC_XML_FILTER_VAR + "="
-                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.contents) : this.contents));
+                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.contents) : this.contents));
         }
         if (!GWTUtilities.isStringNullOrEmpty(this.notContents)) {
             retValue.append(";" + CommonFilterConstants.TOPIC_XML_NOT_FILTER_VAR + "="
-                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.notContents) : this.notContents));
+                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.notContents) : this.notContents));
         }
         if (this.createdBefore != null) {
             retValue.append(";" + CommonFilterConstants.TOPIC_ENDDATE_FILTER_VAR + "="
-                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.dateformat.format(this.editedBefore)) : this.dateformat.format(this.createdBefore)));
+                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.dateformat.format(this.editedBefore)) : this.dateformat.format(this.createdBefore)));
         }
         if (this.editedBefore != null) {
             retValue.append(";" + CommonFilterConstants.TOPIC_ENDEDITDATE_FILTER_VAR
-                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.dateformat.format(this.editedBefore)) : this.dateformat.format(this.editedBefore)));
+                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.dateformat.format(this.editedBefore)) : this.dateformat.format(this.editedBefore)));
         }
         if (this.editedAfter != null) {
             retValue.append(";" + CommonFilterConstants.TOPIC_STARTEDITDATE_FILTER_VAR
-                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.dateformat.format(this.editedAfter)) : this.dateformat.format(this.editedAfter)));
+                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.dateformat.format(this.editedAfter)) : this.dateformat.format(this.editedAfter)));
         }
         if (this.createdAfter != null) {
             retValue.append(";" + CommonFilterConstants.TOPIC_STARTDATE_FILTER_VAR
-                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.dateformat.format(this.createdAfter)) : this.dateformat.format(this.createdAfter)));
+                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.dateformat.format(this.createdAfter)) : this.dateformat.format(this.createdAfter)));
         }
         if (!GWTUtilities.isStringNullOrEmpty(this.includedInContentSpecs)) {
             retValue.append(";" + CommonFilterConstants.TOPIC_IS_INCLUDED_IN_SPEC
-                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.includedInContentSpecs) : this.includedInContentSpecs));
+                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.includedInContentSpecs) : this.includedInContentSpecs));
         }
         if (!GWTUtilities.isStringNullOrEmpty(this.notIncludedInContentSpecs)) {
             retValue.append(";" + CommonFilterConstants.TOPIC_IS_NOT_INCLUDED_IN_SPEC
-                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.notIncludedInContentSpecs) : this.notIncludedInContentSpecs));
+                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.notIncludedInContentSpecs) : this.notIncludedInContentSpecs));
         }
         if (!GWTUtilities.isStringNullOrEmpty(freeTextSearch)) {
             retValue.append(";" + CommonFilterConstants.TOPIC_TEXT_SEARCH_FILTER_VAR
-                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(this.freeTextSearch) : this.freeTextSearch));
+                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(this.freeTextSearch) : this.freeTextSearch));
         }
         if (this.hasBugzillaBugs == TriStateSelectionState.SELECTED) {
             retValue.append(";" + CommonFilterConstants.TOPIC_HAS_BUGZILLA_BUGS
-                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString("true") : "true"));
+                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment("true") : "true"));
         } else if (this.hasBugzillaBugs == TriStateSelectionState.UNSELECTED) {
             retValue.append(";" + CommonFilterConstants.TOPIC_HAS_NOT_BUGZILLA_BUGS
-                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString("true") : "true"));
+                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment("true") : "true"));
         }
         if (this.hasOpenBugzillaBugs == TriStateSelectionState.SELECTED) {
             retValue.append(";" + CommonFilterConstants.TOPIC_HAS_OPEN_BUGZILLA_BUGS
-                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString("true") : "true"));
+                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment("true") : "true"));
         } else if (this.hasOpenBugzillaBugs == TriStateSelectionState.UNSELECTED) {
             retValue.append(";"
                     + CommonFilterConstants.TOPIC_HAS_NOT_OPEN_BUGZILLA_BUGS
-                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString("true") : "true"));
+                    + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment("true") : "true"));
         }
 
         if (this.matchAll) {
             retValue.append(";" + CommonFilterConstants.LOGIC_FILTER_VAR + "="
-                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(CommonFilterConstants.AND_LOGIC) : CommonFilterConstants.AND_LOGIC));
+                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(CommonFilterConstants.AND_LOGIC) : CommonFilterConstants.AND_LOGIC));
         } else {
             retValue.append(";" + CommonFilterConstants.LOGIC_FILTER_VAR + "="
-                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(CommonFilterConstants.OR_LOGIC) : CommonFilterConstants.OR_LOGIC));
+                    + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(CommonFilterConstants.OR_LOGIC) : CommonFilterConstants.OR_LOGIC));
         }
 
         return retValue.toString();

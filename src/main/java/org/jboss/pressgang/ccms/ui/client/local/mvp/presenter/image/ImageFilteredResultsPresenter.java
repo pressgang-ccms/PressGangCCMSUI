@@ -99,13 +99,13 @@ public class ImageFilteredResultsPresenter
     public String getQuery() {
         @NotNull final StringBuilder retValue = new StringBuilder();
         if (!display.getImageIdFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.IMAGE_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getImageIdFilter().getText()) : display.getImageIdFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.IMAGE_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getImageIdFilter().getText()) : display.getImageIdFilter().getText()));
         }
         if (!display.getImageDescriptionFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.IMAGE_DESCRIPTION_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getImageDescriptionFilter().getText()) : display.getImageDescriptionFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.IMAGE_DESCRIPTION_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getImageDescriptionFilter().getText()) : display.getImageDescriptionFilter().getText()));
         }
         if (!display.getImageOriginalFileNameFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.IMAGE_ORIGINAL_FILENAME_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getImageOriginalFileNameFilter().getText()) : display.getImageOriginalFileNameFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.IMAGE_ORIGINAL_FILENAME_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getImageOriginalFileNameFilter().getText()) : display.getImageOriginalFileNameFilter().getText()));
         }
 
         return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX

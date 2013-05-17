@@ -559,7 +559,7 @@ public class ImagesFilteredResultsAndDetailsPresenter
                     @NotNull final String searchQuery = "images/" + docbookFileName;
 
                     eventBus.fireEvent(new SearchResultsAndTopicViewEvent(Constants.QUERY_PATH_SEGMENT_PREFIX
-                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(searchQuery) : searchQuery), event.getNativeEvent()
+                            + org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants.TOPIC_XML_FILTER_VAR + "=" + (Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(searchQuery) : searchQuery), event.getNativeEvent()
                             .getKeyCode() == KeyCodes.KEY_CTRL));
                 }
 

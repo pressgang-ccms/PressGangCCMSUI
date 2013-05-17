@@ -8,8 +8,6 @@
           <element id="module-output" name="pressgang-ccms-ui" />
         </element>
         <element id="directory" name="lib">
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/smartgwt/smartgwt/3.0/smartgwt-3.0.jar" output-file-name="smartgwt-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/com/smartgwt/smartgwt-skins/3.0/smartgwt-skins-3.0.jar" output-file-name="smartgwt-skins-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/com/intellij/annotations/9.0.4/annotations-9.0.4.jar" output-file-name="annotations-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/log4j/log4j/1.2.16/log4j-1.2.16.jar" output-file-name="log4j-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/spec/javax/interceptor/jboss-interceptors-api_1.1_spec/1.0.0.Beta1/jboss-interceptors-api_1.1_spec-1.0.0.Beta1.jar" output-file-name="jboss-interceptors-api_1.1_spec-.jar" />
@@ -70,8 +68,8 @@
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.0.3/httpclient-4.0.3.jar" output-file-name="httpclient-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1.jar" output-file-name="httpcore-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar" output-file-name="jcip-annotations-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-restv1/1.0-SNAPSHOT/pressgang-ccms-restv1-1.0-20130429.232234-32.jar" output-file-name="pressgang-ccms-restv1-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-utils/1.0-SNAPSHOT/pressgang-ccms-utils-1.0-20130513.234632-30.jar" output-file-name="pressgang-ccms-utils-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-restv1/1.0-SNAPSHOT/pressgang-ccms-restv1-1.0-20130516.082641-36.jar" output-file-name="pressgang-ccms-restv1-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-utils/1.0-SNAPSHOT/pressgang-ccms-utils-1.0-20130516.081056-31.jar" output-file-name="pressgang-ccms-utils-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-lang/commons-lang/2.6/commons-lang-2.6.jar" output-file-name="commons-lang-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/xalan/xalan/2.7.1/xalan-2.7.1.jar" output-file-name="xalan-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/xalan/serializer/2.7.1/serializer-2.7.1.jar" output-file-name="serializer-.jar" />

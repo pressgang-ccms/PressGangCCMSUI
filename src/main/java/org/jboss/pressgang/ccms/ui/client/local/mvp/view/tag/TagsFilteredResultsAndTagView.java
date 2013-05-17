@@ -79,7 +79,8 @@ public class TagsFilteredResultsAndTagView
         this.addActionButton(this.getTagDetails());
         this.addActionButton(this.getTagProjects());
         this.addActionButton(this.getTagCategories());
-        this.addActionButton(this.getExtendedProperties());
+        // TODO: Fix for 1.1
+        //this.addActionButton(this.getExtendedProperties());
         this.addActionButton(this.getSave());
     }
 

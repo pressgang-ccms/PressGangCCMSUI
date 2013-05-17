@@ -295,9 +295,9 @@ public class TagsFilteredResultsAndDetailsPresenter
                 //updateTag.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
 
                 /* Update the extended properties */
-                if (sourceTag.getProperties() != null) {
-                    updateTag.getProperties().setItems(sourceTag.getProperties().returnDeletedAddedAndUpdatedCollectionItems());
-                }
+                //if (sourceTag.getProperties() != null) {
+                    //updateTag.getProperties().setItems(sourceTag.getProperties().returnDeletedAddedAndUpdatedCollectionItems());
+                //}
 
                 /*
                  * Sync changes from the projects. categoriesComponent.getProviderData().getItems() contains a collection of all the

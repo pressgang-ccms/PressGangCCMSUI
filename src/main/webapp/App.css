@@ -379,7 +379,7 @@ html {
     box-sizing: border-box;
 }
 
-.TopicViewTitleField, .FilterViewNameField, .TopicViewDetailsEndpointField, .TopicViewXMLEndpointField {
+.TopicViewTitleField, .FilterViewNameField, .TopicViewDetailsEndpointField, .TopicViewXMLEndpointField, .TopicViewWebDAVEndpointField {
     width: 100%;
     box-sizing: border-box;
 }

@@ -102,13 +102,13 @@ public class ProjectFilteredResultsPresenter
     public String getQuery() {
         @NotNull final StringBuilder retValue = new StringBuilder();
         if (!display.getIdFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.PROJECT_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getIdFilter().getText()) : display.getIdFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.PROJECT_IDS_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getIdFilter().getText()) : display.getIdFilter().getText()));
         }
         if (!display.getNameFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.PROJECT_NAME_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getNameFilter().getText()) : display.getNameFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.PROJECT_NAME_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getNameFilter().getText()) : display.getNameFilter().getText()));
         }
         if (!display.getDescriptionFilter().getText().isEmpty()) {
-            retValue.append(";").append(CommonFilterConstants.PROJECT_DESCRIPTION_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodeQueryString(display.getDescriptionFilter().getText()) : display.getDescriptionFilter().getText()));
+            retValue.append(";").append(CommonFilterConstants.PROJECT_DESCRIPTION_FILTER_VAR).append("=").append((Constants.ENCODE_QUERY_OPTIONS ? URL.encodePathSegment(display.getDescriptionFilter().getText()) : display.getDescriptionFilter().getText()));
         }
 
         return retValue.toString().isEmpty() ? Constants.QUERY_PATH_SEGMENT_PREFIX

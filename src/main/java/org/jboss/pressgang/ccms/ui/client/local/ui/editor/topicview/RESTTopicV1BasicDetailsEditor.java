@@ -18,7 +18,7 @@ import java.util.List;
 
 public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafValueEditor<RESTTopicV1> {
 
-    private static final int ROWS = 9;
+    private static final int ROWS = 10;
     private static final int COLS = 2;
 
     private RESTTopicV1 value;
@@ -100,12 +100,14 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         lastModified.setEnabled(false);
         restTopicDetails.setReadOnly(true);
         restTopicXML.setReadOnly(true);
+        restTopicWebDav.setReadOnly(true);
 
         id.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_ID_FIELD);
         revision.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_REVISION_NUMBER_FIELD);
         title.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_TITLE_FIELD);
         restTopicDetails.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_DETAILS_ENDPOINT_FIELD);
         restTopicXML.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_XML_ENDPOINT_FIELD);
+        restTopicWebDav.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_WEBDAV_ENDPOINT_FIELD);
         locale.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_LOCALE_FIELD);
         description.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_DESCRIPTION_FIELD);
 
@@ -171,22 +173,27 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
         locale.setValue(value.getLocale());
         lastModified.setValue(value.getLastModified());
 
-        final String detailsURL = Constants.REST_SERVER + "/1/topic/get/json/" + value.getId() + "/r/" + value.getRevision();
-        final String xmlURL = Constants.REST_SERVER + "/1/topic/get/xml/" + value.getId() + "/r/" + value.getRevision() + "/xml";
+        /* the id will be null for new topics */
+        if (value.getId() != null)  {
+            final String detailsURL = Constants.REST_SERVER + "/1/topic/get/json/" + value.getId() + "/r/" + value.getRevision();
+            final String xmlURL = Constants.REST_SERVER + "/1/topic/get/xml/" + value.getId() + "/r/" + value.getRevision() + "/xml";
 
-        final String idString = value.getId().toString();
-        String webDAV = Constants.REST_SERVER + "/webdav/";
-        for (int i = 0; i < idString.length(); ++i) {
-            webDAV += i + "/";
+            final String idString = value.getId().toString();
+            String webDAV = Constants.REST_SERVER + "/webdav/";
+            for (int i = 0; i < idString.length(); ++i) {
+                webDAV += idString.charAt(i) + "/";
+            }
+            webDAV += "TOPIC" + idString + "/" + idString + ".xml";
+
+            restTopicDetailsLabel.setHref(detailsURL);
+            restTopicXMLLabel.setHref(xmlURL);
+
+            restTopicDetails.setValue(detailsURL);
+            restTopicXML.setValue(xmlURL);
+
+            // TODO: Fix this in 1.1
+            //restTopicWebDav.setValue(webDAV);
         }
-        webDAV += "TOPIC" + idString + "/" + idString + "xml";
-
-        restTopicDetailsLabel.setHref(detailsURL);
-        restTopicXMLLabel.setHref(xmlURL);
-
-        restTopicDetails.setValue(detailsURL);
-        restTopicXML.setValue(xmlURL);
-        restTopicWebDav.setValue(webDAV);
     }
 
     @Override

@@ -1633,15 +1633,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                 /* if there is no selected item, we are trying to save a new topic */
 
-                if (!displayedTopic.getXml().trim().isEmpty()) {
+                if (displayedTopic.getXml() != null && !displayedTopic.getXml().trim().isEmpty()) {
                     return true;
                 }
 
-                if (!displayedTopic.getTitle().trim().isEmpty()) {
+                if (displayedTopic.getTitle() != null && !displayedTopic.getTitle().trim().isEmpty()) {
                     return true;
                 }
 
-                if (!displayedTopic.getLocale().equals(defaultLocale)) {
+                if (displayedTopic.getLocale() != null && !displayedTopic.getLocale().equals(defaultLocale)) {
                     return true;
                 }
 
