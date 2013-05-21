@@ -179,7 +179,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
             final String xmlURL = Constants.REST_SERVER + "/1/topic/get/xml/" + value.getId() + "/r/" + value.getRevision() + "/xml";
 
             final String idString = value.getId().toString();
-            String webDAV = Constants.REST_SERVER + "/webdav/";
+            String webDAV = Constants.BASE_URL + "/webdav/";
             for (int i = 0; i < idString.length(); ++i) {
                 webDAV += idString.charAt(i) + "/";
             }

@@ -605,13 +605,13 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         /* Add the REST server */
         @NotNull final Label restServer = new Label();
 
-        if (Constants.REST_SERVER.startsWith(Constants.DEV_REST_SERVER)) {
+        if (Constants.BASE_URL.equals(Constants.DEV_REST_SERVER)) {
             restServer.addStyleName(CSSConstants.Template.SERVER_TYPE_DEVELOPMENT);
             restServer.setText(PressGangCCMSUI.INSTANCE.DevelopmentServer());
-        } else if (Constants.REST_SERVER.startsWith(Constants.PROD_REST_SERVER)) {
+        } else if (Constants.BASE_URL.equals(Constants.PROD_REST_SERVER)) {
             restServer.addStyleName(CSSConstants.Template.SERVER_TYPE_PRODUCTION);
             restServer.setText(PressGangCCMSUI.INSTANCE.ProductionServer());
-        } else if (Constants.REST_SERVER.startsWith(Constants.LOCAL_REST_SERVER)) {
+        } else if (Constants.BASE_URL.equals(Constants.LOCAL_REST_SERVER)) {
             restServer.addStyleName(CSSConstants.Template.SERVER_TYPE_DEVELOPMENT);
             restServer.setText(PressGangCCMSUI.INSTANCE.LocalServer());
         } else {
