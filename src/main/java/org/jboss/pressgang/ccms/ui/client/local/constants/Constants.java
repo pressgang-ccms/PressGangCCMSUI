@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201305220622";
+    public static final String VERSION = "201305220625";
 
     /**
      * The maximum length of the title before it is truncated
@@ -171,14 +171,14 @@ public final class Constants {
 
 //    public static final String BIRT_URL = LOCAL_BIRT_URL;
 //    public static final String MONITORING_URL = LOCAL_MONITORING_URL;
-//    public static final String BASE_URL = LOCAL_REST_SERVER;
+//    public static final String BASE_URL = LOCAL_REST_SERVER + "/rest";
 
-    public static final String REST_SERVER = DEV_REST_SERVER;
+    public static final String REST_SERVER = DEV_REST_SERVER + "/rest";
     public static final String BIRT_URL = DEV_BIRT_URL;
     public static final String MONITORING_URL = DEV_MONITORING_URL;
 
 //    public static final String MONITORING_URL = PROD_MONITORING_URL;
-//    public static final String REST_SERVER = PROD_REST_SERVER + "/seam/resource/rest";
+//    public static final String REST_SERVER = PROD_REST_SERVER + "/rest";
 //    public static final String BIRT_URL = PROD_BIRT_URL;
 
     /*------------------------------------------------------------------------------------------------------------------
