@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201305171212";
+    public static final String VERSION = "201305220622";
 
     /**
      * The maximum length of the title before it is truncated
@@ -133,27 +133,27 @@ public final class Constants {
     /**
      * The Prod JavaMelody URL
      */
-    public static final String PROD_MONITORING_URL = "https://skynet.usersys.redhat.com:8443/TopicIndex/monitoring";
+    public static final String PROD_MONITORING_URL = "https://skynet.usersys.redhat.com:8080/pressgang-ccms/monitoring";
     /**
      * The Dev JavaMelody URL
      */
-    public static final String DEV_MONITORING_URL = "https://skynet-dev.usersys.redhat.com:8443/TopicIndex/monitoring";
+    public static final String DEV_MONITORING_URL = "https://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring";
     /**
      * The Local JavaMelody URL
      */
-    public static final String LOCAL_MONITORING_URL = "https://skynet-dev.usersys.redhat.com:8443/TopicIndex/monitoring";
+    public static final String LOCAL_MONITORING_URL = "https://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring";
     /**
      * A link to a locally hosted REST server.
      */
-    public static final String LOCAL_REST_SERVER = "http://localhost:8080/TopicIndex";
+    public static final String LOCAL_REST_SERVER = "http://localhost:8080/pressgang-ccms";
     /**
      * The dev server.
      */
-    public static final String DEV_REST_SERVER = "http://skynet-dev.usersys.redhat.com:8080/TopicIndex";
+    public static final String DEV_REST_SERVER = "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms";
     /**
      * The production server.
      */
-    public static final String PROD_REST_SERVER = "http://skynet.usersys.redhat.com:8080/TopicIndex";
+    public static final String PROD_REST_SERVER = "http://skynet.usersys.redhat.com:8080/pressgang-ccms";
     /**
      * The DocBuilder server
       */
@@ -173,22 +173,18 @@ public final class Constants {
 //    public static final String MONITORING_URL = LOCAL_MONITORING_URL;
 //    public static final String BASE_URL = LOCAL_REST_SERVER;
 
-//    public static final String BASE_URL = DEV_REST_SERVER;
-//    public static final String BIRT_URL = DEV_BIRT_URL;
-//    public static final String MONITORING_URL = DEV_MONITORING_URL;
+    public static final String REST_SERVER = DEV_REST_SERVER;
+    public static final String BIRT_URL = DEV_BIRT_URL;
+    public static final String MONITORING_URL = DEV_MONITORING_URL;
 
-    public static final String MONITORING_URL = PROD_MONITORING_URL;
-    public static final String BASE_URL = PROD_REST_SERVER;
-    public static final String BIRT_URL = PROD_BIRT_URL;
+//    public static final String MONITORING_URL = PROD_MONITORING_URL;
+//    public static final String REST_SERVER = PROD_REST_SERVER + "/seam/resource/rest";
+//    public static final String BIRT_URL = PROD_BIRT_URL;
 
     /*------------------------------------------------------------------------------------------------------------------
 
      -----------------------------------------------------------------------------------------------------------------*/
 
-    /**
-     * The REST URL.
-     */
-    public static final String REST_SERVER = BASE_URL + "/seam/resource/rest";
     /**
      * The base URL to Bugzilla.
      */

@@ -15,7 +15,7 @@ public final class DocbookToHTML {
             + "    <xsl:param name=\"externalImages\" select=\"'false'\"/>\n"
             + "    \n"
             + "    <!-- The start of the url that is used to get the images from the server -->\n"
-            + "    <xsl:param name=\"externalImagesUrlPrefix\" select=\"'http://skynet.usersys.redhat.com:8080/TopicIndex/seam/resource/rest/1/image/get/raw/'\"/>\n"
+            + "    <xsl:param name=\"externalImagesUrlPrefix\" select=\"'http://skynet.usersys.redhat.com:8080/pressgang-ccms/1/image/get/raw/'\"/>\n"
             + "    \n"
             + "    <!-- The end of the url that is used to get the images from the server -->\n"
             + "    <xsl:param name=\"externalImagesUrlSuffix\" select=\"''\"/>\n"

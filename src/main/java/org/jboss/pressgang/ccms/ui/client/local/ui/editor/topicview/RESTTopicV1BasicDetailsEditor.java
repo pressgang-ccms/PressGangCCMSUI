@@ -191,8 +191,7 @@ public final class RESTTopicV1BasicDetailsEditor extends Grid implements LeafVal
             restTopicDetails.setValue(detailsURL);
             restTopicXML.setValue(xmlURL);
 
-            // TODO: Fix this in 1.1
-            //restTopicWebDav.setValue(webDAV);
+            restTopicWebDav.setValue(webDAV);
         }
     }
 

@@ -70,13 +70,12 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
         imageDetails.setWidget(1, 0, xmlTemplateLabel);
         imageDetails.setWidget(1, 1, xmlTemplate);
 
-        // TODO: Fix this for 1.1
-        /*imageDetails.setWidget(2, 0, inlineXmlTemplateLabel);
+        imageDetails.setWidget(2, 0, inlineXmlTemplateLabel);
         imageDetails.setWidget(2, 1, inlineXmlTemplate);
         imageDetails.setWidget(3, 0, bareXmlTemplateLabel);
         imageDetails.setWidget(3, 1, bareXmlTemplate);
         imageDetails.setWidget(4, 0, docbookFileNameLabel);
-        imageDetails.setWidget(4, 1, docbookFileName);*/
+        imageDetails.setWidget(4, 1, docbookFileName);
 
         imageDetails.getCellFormatter().addStyleName(0, 0, CSSConstants.ImageView.IMAGE_VIEW_DESCRIPTION_LABEL_CELL);
         imageDetails.getCellFormatter().addStyleName(0, 1, CSSConstants.ImageView.IMAGE_VIEW_DESCRIPTION_TEXT_CELL);
@@ -115,9 +114,8 @@ public final class RESTImageV1Editor extends DockPanel implements ValueAwareEdit
         this.docbookFileName.setText(ComponentImageV1.getDocbookFileName(value));
         this.xmlTemplate.setText(ComponentImageV1.getXMLTemplate(value));
 
-        // TODO: Fix this for 1.1
-        //this.inlineXmlTemplate.setText(ComponentImageV1.getInlineXMLTemplate(value));
-        //this.bareXmlTemplate.setText(ComponentImageV1.getBareXMLTemplate(value));
+        this.inlineXmlTemplate.setText(ComponentImageV1.getInlineXMLTemplate(value));
+        this.bareXmlTemplate.setText(ComponentImageV1.getBareXMLTemplate(value));
     }
 
 }

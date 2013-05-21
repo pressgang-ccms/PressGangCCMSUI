@@ -291,13 +291,12 @@ public class TagsFilteredResultsAndDetailsPresenter
                 updateTag.explicitSetDescription(sourceTag.getDescription());
                 updateTag.explicitSetName(sourceTag.getName());
 
-                // TODO: Fix this for 1.1
-                //updateTag.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
+                updateTag.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
 
                 /* Update the extended properties */
-                //if (sourceTag.getProperties() != null) {
-                    //updateTag.getProperties().setItems(sourceTag.getProperties().returnDeletedAddedAndUpdatedCollectionItems());
-                //}
+                if (sourceTag.getProperties() != null) {
+                    updateTag.getProperties().setItems(sourceTag.getProperties().returnDeletedAddedAndUpdatedCollectionItems());
+                }
 
                 /*
                  * Sync changes from the projects. categoriesComponent.getProviderData().getItems() contains a collection of all the
@@ -688,6 +687,7 @@ public class TagsFilteredResultsAndDetailsPresenter
     public boolean hasUnsavedChanges() {
         /* sync the UI with the underlying tag */
         if (filteredResultsComponent.getProviderData().getDisplayedItem() != null) {
+
             resultComponent.getDisplay().getDriver().flush();
 
             return (unsavedTagChanged() || categoriesComponent.hasUnsavedChanges() || projectsComponent.hasUnsavedChanges());
@@ -726,7 +726,7 @@ public class TagsFilteredResultsAndDetailsPresenter
 
         /* If there are any modified property tags in newTopic, we have unsaved changes */
         final boolean unsavedExtendedProperties = displayed.getProperties() != null
-                && ComponentRESTBaseEntityV1.returnDirtyStateForCollectionItems(displayed.getProperties().getItems());
+                && !displayed.getProperties().returnDeletedAddedAndUpdatedCollectionItems().isEmpty();
 
         return unsavedCategoryChanges || unsavedProjectChanges || unsavedDescriptionChanges || unsavedNameChanges || unsavedExtendedProperties;
     }
