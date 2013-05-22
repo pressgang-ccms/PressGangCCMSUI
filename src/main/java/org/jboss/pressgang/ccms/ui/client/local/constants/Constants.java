@@ -133,15 +133,15 @@ public final class Constants {
     /**
      * The Prod JavaMelody URL
      */
-    public static final String PROD_MONITORING_URL = "https://skynet.usersys.redhat.com:8080/pressgang-ccms/monitoring";
+    public static final String PROD_MONITORING_URL = "http://skynet.usersys.redhat.com:8080/pressgang-ccms/monitoring";
     /**
      * The Dev JavaMelody URL
      */
-    public static final String DEV_MONITORING_URL = "https://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring";
+    public static final String DEV_MONITORING_URL = "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring";
     /**
      * The Local JavaMelody URL
      */
-    public static final String LOCAL_MONITORING_URL = "https://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring";
+    public static final String LOCAL_MONITORING_URL = "http://skynet-dev.usersys.redhat.com:8080/pressgang-ccms/monitoring";
     /**
      * A link to a locally hosted REST server.
      */
