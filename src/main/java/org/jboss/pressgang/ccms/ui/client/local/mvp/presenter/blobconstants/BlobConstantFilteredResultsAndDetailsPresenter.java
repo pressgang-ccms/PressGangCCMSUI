@@ -303,7 +303,7 @@ implements BaseTemplatePresenterInterface {
                 for (@NotNull final File file : blobConstantPresenter.getDisplay().getEditor().getUpload().getFiles()) {
                     display.addWaitOperation();
 
-                    @NotNull final FileReader reader = new FileReader();
+                    final FileReader reader = new FileReader();
 
                     reader.addErrorHandler(new ErrorHandler() {
                         @Override
@@ -317,7 +317,7 @@ implements BaseTemplatePresenterInterface {
                         public void onLoadEnd(@NotNull final LoadEndEvent event) {
                             try {
                                 final String result = reader.getStringResult();
-                                @NotNull final byte[] buffer = GWTUtilities.getByteArray(result, 1);
+                                final byte[] buffer = GWTUtilities.getByteArray(result, 1);
 
                                 /* Flush any changes */
                                 blobConstantPresenter.getDisplay().getDriver().flush();
@@ -329,17 +329,12 @@ implements BaseTemplatePresenterInterface {
                                  * Create the image to be modified. This is so we don't send off unnecessary data.
                                  */
                                 final boolean wasNewEntity = blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId() == null;
-                                @NotNull final RESTBlobConstantV1 updateEntity = new RESTBlobConstantV1();
+                                final RESTBlobConstantV1 updateEntity = new RESTBlobConstantV1();
                                 updateEntity.setId(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
                                 updateEntity.explicitSetName(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
+                                updateEntity.explicitSetValue(buffer);
 
-                                    /* Create the language image */
-                                @NotNull final RESTLanguageImageV1 updatedLanguageImage = new RESTLanguageImageV1();
-                                updatedLanguageImage.setId(blobConstantPresenter.getDisplay().getEditor().self.getId());
-                                updatedLanguageImage.explicitSetImageData(buffer);
-                                updatedLanguageImage.explicitSetFilename(file.getName());
-
-                                @NotNull final RESTCalls.RESTCallback<RESTBlobConstantV1> callback = new BaseRestCallback<RESTBlobConstantV1, BaseTemplateViewInterface>(
+                                final RESTCalls.RESTCallback<RESTBlobConstantV1> callback = new BaseRestCallback<RESTBlobConstantV1, BaseTemplateViewInterface>(
                                         display,
                                         new BaseRestCallback.SuccessAction<RESTBlobConstantV1, BaseTemplateViewInterface>() {
                                             @Override
