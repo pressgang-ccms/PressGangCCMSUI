@@ -326,7 +326,7 @@ implements BaseTemplatePresenterInterface {
                                 checkState(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
 
                                 /*
-                                 * Create the image to be modified. This is so we don't send off unnecessary data.
+                                 * Create the blob constant to be modified. This is so we don't send off unnecessary data.
                                  */
                                 final boolean wasNewEntity = blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId() == null;
                                 final RESTBlobConstantV1 updateEntity = new RESTBlobConstantV1();
