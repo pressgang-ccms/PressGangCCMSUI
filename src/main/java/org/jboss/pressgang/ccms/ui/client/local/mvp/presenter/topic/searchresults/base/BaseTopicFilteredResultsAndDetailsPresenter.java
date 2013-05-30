@@ -216,6 +216,10 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         topicTagsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicPropertyTagPresenter.bindDetailedChildrenExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
         topicSourceURLsPresenter.bindChildrenExtended(ServiceConstants.TOPIC_SOURCE_URLS_HELP_TOPIC, pageId);
+        topicXMLComponent.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        /*topicBugsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        topicRenderedPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId);
+        topicXMLErrorsPresenter.bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, pageId); */
 
         bindSplitPanelResize();
 

@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.*;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
+import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.TopicXMLPresenterDriver;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
@@ -27,9 +28,24 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     private final TopicXMLPresenterDriver driver = GWT.create(TopicXMLPresenterDriver.class);
 
     private RESTTopicV1XMLEditor editor;
+    private final HandlerSplitLayoutPanel verticalPanel = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
+    private final TextArea xmlErrors = new TextArea();
+    private final SimplePanel editorParent = new SimplePanel();
 
     private final ToggleButton lineWrap = UIUtilities.createToggleButton(PressGangCCMSUI.INSTANCE.LineWrap());
     private final ToggleButton showInvisibles = UIUtilities.createToggleButton(PressGangCCMSUI.INSTANCE.ShowHiddenCharacters());
+
+    @NotNull
+    @Override
+    public TextArea getXmlErrors() {
+        return xmlErrors;
+    }
+
+    @NotNull
+    @Override
+    public HandlerSplitLayoutPanel getVerticalPanel() {
+        return verticalPanel;
+    }
 
     public final static class PlainTextXMLDialog extends DialogBox implements TopicXMLPresenter.Display.PlainTextXMLDialog {
         private final PushButton ok = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.OK());
@@ -368,8 +384,15 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
                 + PressGangCCMSUI.INSTANCE.XMLEditing());
         this.getPanel().addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_PANEL);
 
+
+        this.getXmlErrors().setReadOnly(true);
+        this.getXmlErrors().addStyleName(CSSConstants.TopicView.TOPIC_XML_ERRORS);
+
         addLocalActionButton(this.lineWrap);
         addLocalActionButton(this.showInvisibles);
+
+        /* Add the projects */
+        this.getPanel().setWidget(getVerticalPanel());
     }
 
     @Override
@@ -381,7 +404,19 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
         this.driver.initialize(this.editor);
         /* Copy the data in the object into the UI */
         this.driver.edit(topic);
-        /* Add the projects */
-        this.getPanel().setWidget(this.editor);
+
+        editorParent.setWidget(this.editor);
+    }
+
+
+    @Override
+    public void initialize(final int splitHeight) {
+        this.getVerticalPanel().addSouth(this.getXmlErrors(), splitHeight);
+        /*
+        * We don't add the editor here, because it is null. Instead we add
+        * a panel to hold the editor. Adding null here causes all sorts
+        * of strange things.
+        */
+        this.getVerticalPanel().add(editorParent);
     }
 }

@@ -347,21 +347,21 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
         });
 
         /* Add handlers for the help link */
-        @NotNull final ClickHandler openHelpClickHandler = new ClickHandler() {
+        final ClickHandler openHelpClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 display.getHelpDialog().show(helpTopicId, display);
             }
         };
 
-        @NotNull final ClickHandler okClickHandler = new ClickHandler() {
+        final ClickHandler okClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 display.getHelpDialog().getDialogBox().hide();
             }
         };
 
-        @NotNull final ClickHandler editClickHandler = new ClickHandler() {
+        final ClickHandler editClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 if (isOKToProceed()) {

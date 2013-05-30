@@ -1,3 +1,10 @@
+.TopicXMLErrors {
+    margin-top: 8px;
+    box-sizing: border-box;
+    border: none;
+    font-family: sans-serif;
+}
+
 .ImportDialogMessage {
     width: 100%;
     box-sizing: border-box;

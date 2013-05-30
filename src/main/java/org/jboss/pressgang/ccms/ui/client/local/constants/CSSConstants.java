@@ -354,6 +354,7 @@ public interface CSSConstants {
         String TOPIC_RENDERED_VIEW_DIV = "TopicRenderedViewDiv";
 
         String TOPIC_XML_VIEW_PANEL = "TopicXMLViewPanel";
+        String TOPIC_XML_ERRORS = "TopicXMLErrors";
         String TOPIC_XML_VIEW_ACE_PANEL = "TopicXMLViewACEPanel";
         String TOPIC_XML_VIEW_XML_FIELD = "TopicXMLViewXMLField";
         String TOPIC_XML_ERRORS_VIEW_PANEL = "TopicXMLErrorsViewPanel";

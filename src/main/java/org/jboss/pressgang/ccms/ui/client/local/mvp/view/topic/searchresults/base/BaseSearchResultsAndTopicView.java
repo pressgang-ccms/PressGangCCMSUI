@@ -299,7 +299,7 @@ public abstract class BaseSearchResultsAndTopicView<
         super.initialize(dislaySearchResults, searchResultsWidth, new DisplaySplitViewCallback() {
             @Override
             public void addToCompassPoints() {
-                @NotNull final SimplePanel renderedPanelParent = new SimplePanel();
+                final SimplePanel renderedPanelParent = new SimplePanel();
                 renderedPanelParent.addStyleName(CSSConstants.TopicView.TOPIC_VIEW_LAYOUT_PANEL);
                 renderedPanelParent.add(panel);
 
