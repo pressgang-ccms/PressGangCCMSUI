@@ -140,10 +140,10 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
      */
     private void displayWelcomeMessage() {
         final String lastBuild = Preferences.INSTANCE.getString(Preferences.LAST_BUILD, null);
-        if (lastBuild == null || !lastBuild.equals(Constants.VERSION)) {
+        if (lastBuild == null || lastBuild.compareTo(Constants.VERSION) < 0) {
+            Preferences.INSTANCE.saveSetting(Preferences.LAST_BUILD, Constants.VERSION);
             Window.alert(PressGangCCMSUI.INSTANCE.ApplicationUpdated());
         }
-        Preferences.INSTANCE.saveSetting(Preferences.LAST_BUILD, Constants.VERSION);
     }
 
     @Override
