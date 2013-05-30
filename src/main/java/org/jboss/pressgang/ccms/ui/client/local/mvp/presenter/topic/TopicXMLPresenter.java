@@ -18,6 +18,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplateP
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BasePopulatedEditorViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
+import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.SplitType;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLEditor;
 
@@ -148,7 +149,7 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
                         final String oldErrors = display.getXmlErrors().getText();
                         final String errors = XMLUtilities.getXMLErrors(xml);
                         if (errors == null) {
-                            display.getXmlErrors().setText("");
+                            display.getXmlErrors().setText(PressGangCCMSUI.INSTANCE.NoXMLErrors());
                         } else if (!oldErrors.equals(errors)) {
                             display.getXmlErrors().setText(errors);
                         }
