@@ -3,15 +3,15 @@
 // You should configure these classes.
 var editor = "editor"; // This should be the id of your editor element.
 var lang = "en_US";
-var dicPath = "/static/js/lib/typo/dictionaries/en_US/en_US.dic";
-var affPath = "/static/js/lib/typo/dictionaries/en_US/en_US.aff";
+var dicPath = "javascript/typojs/en_US.dic";
+var affPath = "javascript/typojs/en_US.aff";
 
 // Make red underline for gutter and words.
 $("<style type='text/css'>.ace_marker-layer .misspelled { position: absolute; z-index: -2; border-bottom: 1px solid red; margin-bottom: -1px; }</style>").appendTo("head");
 $("<style type='text/css'>.misspelled { border-bottom: 1px solid red; margin-bottom: -1px; }</style>").appendTo("head");
 
 // Load the dictionary.
-// We have to load the dictionary files sequentially to ensure
+// We have to load the dictionary files sequentially to ensure 
 var dictionary = null;
 $.get(dicPath, function(data) {
     dicData = data;
