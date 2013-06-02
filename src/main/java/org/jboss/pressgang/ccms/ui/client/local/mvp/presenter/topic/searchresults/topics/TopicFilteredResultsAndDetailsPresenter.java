@@ -7,6 +7,7 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
@@ -233,56 +234,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         super.bindSearchAndEdit(topicId, pageId, getMainResizePreferencesKey(), getTopicXMLComponent().getDisplay(), topicViewComponent.getDisplay(),
                 getSearchResultsComponent().getDisplay(), getSearchResultsComponent(), getDisplay(), getDisplay(), getNewEntityCallback);
 
-        /* Bind the add button in the tags view */
-        bindNewTagListBoxes(new AddTagClickHandler(
-                new ReturnCurrentTopic() {
-                    @NotNull
-                    @Override
-                    public RESTTopicV1 getTopic() {
-                        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
-                        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
-                        checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTags() != null, "The displayed collection item to reference a valid entity and have a valid tags collection.");
-                        return getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
-                    }
-                }, new ReturnReadOnlyMode() {
-                    @Override
-                    public boolean getReadOnlyMode() {
-                        return isReadOnlyMode();
-                    }
-                }, new BindRemoveButtons() {
-                    @Override
-                    public void bindRemoveButtons() {
-                        bindTagEditingButtons();
-                    }
-                },
-                getTopicTagsPresenter().getDisplay()
-            ), getTopicTagsPresenter().getDisplay()
-        );
-
-        /* The template is used to hold tags, so we need to populate the tags collection */
-        bulkImportTemplate.setTags(new RESTTagCollectionV1());
-
-        /* Bind the add button in the bulk topic import dialog */
-        bindNewTagListBoxes(new AddTagClickHandler(
-                new ReturnCurrentTopic() {
-                    @NotNull
-                    @Override
-                    public RESTTopicV1 getTopic() {
-                        return bulkImportTemplate;
-                    }
-                }, new ReturnReadOnlyMode() {
-                    @Override
-                    public boolean getReadOnlyMode() {
-                        return false;
-                    }
-                }, new BindRemoveButtons() {
-                    @Override
-                    public void bindRemoveButtons() {
-                        bindBulkImportTagEditingButtons();
-                    }
-                },
-                display.getBulkImport().getTagsView()
-            ), display.getBulkImport().getTagsView());
+        bindTagButtons();
 
         /* Bind logic to the revisions buttons */
         bindViewTopicRevisionButton();
@@ -338,7 +290,76 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
         });
 
+        /* If we leave this page, stop any pending actions */
+        display.getPanel().addAttachHandler(new AttachEvent.Handler() {
+            @Override
+            public void onAttachOrDetach(@NotNull final AttachEvent event) {
+                if (!event.isAttached()) {
+                    timer.cancel();
+                }
+            }
+        });
+
         getTags();
+    }
+
+    private void bindTagButtons() {
+        /* Bind the add button in the tags view */
+        bindNewTagListBoxes(new AddTagClickHandler(
+            new ReturnCurrentTopic() {
+                @NotNull
+                @Override
+                public RESTTopicV1 getTopic() {
+                    checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
+                    checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
+                    checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getTags() != null, "The displayed collection item to reference a valid entity and have a valid tags collection.");
+                    return getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
+                }
+            }, new ReturnReadOnlyMode() {
+                @Override
+                public boolean getReadOnlyMode() {
+                    return isReadOnlyMode();
+                }
+            }, new BindRemoveButtons() {
+                @Override
+                public void bindRemoveButtons() {
+                    bindTagEditingButtons();
+                }
+            },
+            getTopicTagsPresenter().getDisplay()
+        ), getTopicTagsPresenter().getDisplay()
+        );
+
+        /* The template is used to hold tags, so we need to populate the tags collection */
+        bulkImportTemplate.setTags(new RESTTagCollectionV1());
+
+        /* Bind the add button in the bulk topic import dialog */
+        bindNewTagListBoxes(new AddTagClickHandler(
+            new ReturnCurrentTopic() {
+                /**
+                 * @return The topic used as a template when uploading newly imported topics.
+                 */
+                @NotNull
+                @Override
+                public RESTTopicV1 getTopic() {
+                    return bulkImportTemplate;
+                }
+            }, new ReturnReadOnlyMode() {
+                /**
+                 * @return false, because the bulk import dialog is never read only
+                 */
+                @Override
+                public boolean getReadOnlyMode() {
+                    return false;
+                }
+            }, new BindRemoveButtons() {
+                @Override
+                public void bindRemoveButtons() {
+                    bindBulkImportTagEditingButtons();
+                }
+            },
+            display.getBulkImport().getTagsView()
+        ), display.getBulkImport().getTagsView());
     }
 
     /**
@@ -347,7 +368,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * @param clickHandler The Add button click handler
      * @param tagsDisplay The tags view
      */
-    private void bindNewTagListBoxes(@NotNull final ClickHandler clickHandler, @NotNull final TopicTagsPresenter.Display tagsDisplay) {
+    static private void bindNewTagListBoxes(@NotNull final ClickHandler clickHandler, @NotNull final TopicTagsPresenter.Display tagsDisplay) {
         tagsDisplay.getProjectsList().addValueChangeHandler(new ValueChangeHandler<SearchUIProject>() {
             @Override
             public void onValueChange(@NotNull final ValueChangeEvent<SearchUIProject> event) {
@@ -1300,7 +1321,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      */
     private void refreshRenderedView(final boolean forceExternalImages) {
         try {
-            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.refreshRenderedView()");
+            //LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.refreshRenderedView()");
 
             try {
                 getTopicXMLComponent().getDisplay().getDriver().flush();
@@ -1315,7 +1336,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     lastXMLChange = System.currentTimeMillis();
                 }
 
-                @NotNull final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >= Constants.REFRESH_RATE_WTH_IMAGES;
+                final Boolean timeToDisplayImage = forceExternalImages || System.currentTimeMillis() - lastXMLChange >= Constants.REFRESH_RATE_WTH_IMAGES;
 
                 if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
                     isDisplayingImage = timeToDisplayImage;
@@ -1325,7 +1346,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 lastXML = this.getDisplayedTopic().getXml();
             }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.refreshRenderedView()");
+            //LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.refreshRenderedView()");
         }
     }
 
@@ -1419,7 +1440,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     /**
-     * Add behaviour to the tag delete buttons
+     * Add behaviour to the bulk import tag delete buttons.
      */
     private void bindBulkImportTagEditingButtons() {
 

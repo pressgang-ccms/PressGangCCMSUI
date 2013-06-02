@@ -10,8 +10,11 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1B
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class TopicView extends BaseTemplateView implements TopicPresenter.Display {
+
+    private static final Logger LOGGER = Logger.getLogger(TopicView.class.getName());
 
     /**
      * The GWT Editor Driver
@@ -26,7 +29,7 @@ public class TopicView extends BaseTemplateView implements TopicPresenter.Displa
     public TopicView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
                 + PressGangCCMSUI.INSTANCE.Properties());
-
+        LOGGER.info("ENTER TopicView()");
     }
 
     @Override

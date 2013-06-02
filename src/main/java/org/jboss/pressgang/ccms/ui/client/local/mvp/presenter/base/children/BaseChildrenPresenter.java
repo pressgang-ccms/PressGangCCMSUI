@@ -25,7 +25,7 @@ public abstract class BaseChildrenPresenter<
 
     private boolean readOnly;
 
-    @NotNull private final ProviderUpdateData<C> providerData = new ProviderUpdateData<C>();
+    private final ProviderUpdateData<C> providerData = new ProviderUpdateData<C>();
     /**
      * The display that shows the children of a given entity.
      */
@@ -93,7 +93,7 @@ public abstract class BaseChildrenPresenter<
 
                 /* find the tag if it exists in the category */
                 boolean found = false;
-                @NotNull final E existingCollection = getExistingCollectionCallback.getExistingCollection();
+                final E existingCollection = getExistingCollectionCallback.getExistingCollection();
 
                 checkState(getExistingCollectionCallback.getExistingCollection().getItems() != null, "The existing collection must have populated items.");
 

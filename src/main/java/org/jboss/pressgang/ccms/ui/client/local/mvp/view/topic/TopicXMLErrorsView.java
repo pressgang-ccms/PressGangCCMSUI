@@ -9,7 +9,11 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTopicV1XMLErrorsEditor;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.logging.Logger;
+
 public class TopicXMLErrorsView extends BaseTemplateView implements TopicXMLErrorsPresenter.Display {
+
+    private static final Logger LOGGER = Logger.getLogger(TopicXMLErrorsView.class.getName());
 
     /**
      * The GWT Editor Driver
@@ -24,6 +28,7 @@ public class TopicXMLErrorsView extends BaseTemplateView implements TopicXMLErro
     public TopicXMLErrorsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
                 + PressGangCCMSUI.INSTANCE.XMLValidationErrors());
+        LOGGER.info("ENTER TopicXMLErrorsView()");
     }
 
 

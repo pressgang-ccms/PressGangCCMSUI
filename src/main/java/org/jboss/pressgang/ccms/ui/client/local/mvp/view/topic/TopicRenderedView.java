@@ -11,15 +11,37 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSU
 import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.logging.Logger;
+
 public class TopicRenderedView extends BaseTemplateView implements TopicRenderedPresenter.Display {
 
+    private static final Logger LOGGER = Logger.getLogger(TopicRenderedView.class.getName());
+
     private final HTML div = new HTML();
+
+    // Any number of processors can be created, they will behave
+    // independently. Every stylesheet have to have its own processor.
+    final XsltProcessor processor = new XsltProcessor();
+    /**
+     * true if the XSL was imported successfully, and false otherwise
+     */
+    boolean importSuccessful;
 
     public TopicRenderedView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
                 + PressGangCCMSUI.INSTANCE.RenderedView());
 
+        LOGGER.info("ENTER TopicRenderedView()");
+
         div.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_DIV);
+        try {
+            // Setting the stylesheet to transform with
+            processor.importStyleSheet(DocbookToHTML.XSL);
+            importSuccessful = true;
+        } catch (XsltProcessingException e) {
+            importSuccessful = false;
+            div.setHTML(PressGangCCMSUI.INSTANCE.TopicCouldNotBeRendered());
+        }
     }
 
     @Override
@@ -30,25 +52,16 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     @Override
     public final void displayTopicRendered(@NotNull final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly, final boolean showImages) {
 
+        if (!importSuccessful) {
+            return;
+        }
+
         try {
-            // Any number of processors can be created, they will behave
-            // independently. Every stylesheet have to have its own processor.
-            @NotNull final XsltProcessor processor = new XsltProcessor();
-
-            // Setting the stylesheet to transform with
-
-            processor.importStyleSheet(DocbookToHTML.XSL);
+            // define how the images are handled
             processor.setParameter("externalImages", showImages + "");
-
-            //processor.importSource(Constants.DOCBOOK_XSL_FILE);
 
             // Setting the document to be transformed
             processor.importSource(topic.getXml());
-
-            // Order of setting the stylesheet and document is indifferent.
-
-            // Optional, must be called after importStyleSheet
-            // processor.setParameter(paramNameString, paramValueString);
 
             // Getting the result
             final String resultString = processor.transform();

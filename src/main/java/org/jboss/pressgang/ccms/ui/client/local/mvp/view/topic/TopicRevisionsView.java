@@ -25,6 +25,8 @@ import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvi
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.logging.Logger;
+
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -33,6 +35,8 @@ import static com.google.common.base.Preconditions.checkState;
  * @author Matthew Casperson
  */
 public class TopicRevisionsView extends BaseTemplateView implements TopicRevisionsPresenter.Display {
+
+    private static final Logger LOGGER = Logger.getLogger(TopicRevisionsView.class.getName());
 
     /**
      * A button used when rendering the view button column.
@@ -228,6 +232,8 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
      */
     public TopicRevisionsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - " + PressGangCCMSUI.INSTANCE.Revisions());
+
+        LOGGER.info("ENTER TopicRevisionsView()");
 
         results.addColumn(revisionNumber, PressGangCCMSUI.INSTANCE.RevisionNumber());
         results.addColumn(revisionDate, PressGangCCMSUI.INSTANCE.RevisionDate());

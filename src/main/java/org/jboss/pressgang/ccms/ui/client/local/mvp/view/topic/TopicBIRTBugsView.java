@@ -9,6 +9,8 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.logging.Logger;
+
 /**
  * A MVP view for displaying a topic's Bugzilla Bugs. This view simply displays an iFrame
  * to a BIRT report.
@@ -20,9 +22,13 @@ public class TopicBIRTBugsView extends BaseTemplateView implements TopicBIRTBugs
     @NotNull
     private final Frame iFrame;
 
+    private static final Logger LOGGER = Logger.getLogger(TopicBIRTBugsView.class.getName());
+
     public TopicBIRTBugsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
                 + PressGangCCMSUI.INSTANCE.Bugs());
+
+        LOGGER.info("ENTER TopicBIRTBugsView()");
 
         iFrame = new Frame();
         iFrame.setWidth("100%");

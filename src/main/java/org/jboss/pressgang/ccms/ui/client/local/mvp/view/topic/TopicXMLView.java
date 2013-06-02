@@ -19,8 +19,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.Display {
+
+    private static final Logger LOGGER = Logger.getLogger(TopicXMLView.class.getName());
 
     /**
      * The GWT Editor Driver
@@ -382,6 +385,9 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     public TopicXMLView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
                 + PressGangCCMSUI.INSTANCE.XMLEditing());
+
+        LOGGER.info("ENTER TopicXMLView()");
+
         this.getPanel().addStyleName(CSSConstants.TopicView.TOPIC_XML_VIEW_PANEL);
 
 

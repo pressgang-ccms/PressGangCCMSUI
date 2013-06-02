@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.Dependent;
+import java.util.logging.Logger;
 
 /**
  * The view that displays the source urls.
@@ -28,6 +29,8 @@ public class TopicSourceURLsView extends BaseChildrenView<
         RESTTopicSourceUrlCollectionItemV1,
         RESTTopicSourceUrlV1, RESTTopicSourceUrlCollectionV1, RESTTopicSourceUrlCollectionItemV1>
         implements TopicSourceURLsPresenter.Display {
+
+    private static final Logger LOGGER = Logger.getLogger(TopicSourceURLsView.class.getName());
 
     /**
      * The column to display the source url.
@@ -99,6 +102,8 @@ public class TopicSourceURLsView extends BaseChildrenView<
      */
     public TopicSourceURLsView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.TopicSourceUrls());
+
+        LOGGER.info("ENTER TopicSourceURLsView()");
 
         getPossibleChildrenResults().addColumn(urlValueColumn, PressGangCCMSUI.INSTANCE.URL());
         getPossibleChildrenResults().addColumn(nameValueColumn, PressGangCCMSUI.INSTANCE.URLTitle());
