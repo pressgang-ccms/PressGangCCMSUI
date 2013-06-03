@@ -540,6 +540,14 @@ public interface CSSConstants {
          */
         String IMAGE_VIEW_TEMPLATE_TEXT = "ImageViewTemplateText";
         /**
+         * Assigned to the image id label cell.
+         */
+        String IMAGE_VIEW_ID_LABEL_CELL = "ImageViewIDLabelCell";
+        /**
+         * Assigned to the image id text cell.
+         */
+        String IMAGE_VIEW_ID_TEXT_CELL = "ImageViewIDTextCell";
+        /**
          * Assigned to the image description label cell.
          */
         String IMAGE_VIEW_DESCRIPTION_LABEL_CELL = "ImageViewDescriptionLabelCell";

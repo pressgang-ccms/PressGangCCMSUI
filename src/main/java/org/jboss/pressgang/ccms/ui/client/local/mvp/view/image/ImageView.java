@@ -76,7 +76,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
             layout.setWidget(0, 0, localesLabel);
             layout.setWidget(0, 1, locales);
 
-            @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
+            final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(cancel);
             buttonPanel.add(ok);
@@ -168,7 +168,7 @@ public class ImageView extends BaseTemplateView implements ImagePresenter.Displa
         this.getPanel().setWidget(editor);
 
         /* Sort the array */
-        @NotNull final List<String> localesList = new ArrayList<String>(Arrays.asList(locales));
+       final List<String> localesList = new ArrayList<String>(Arrays.asList(locales));
         Collections.sort(localesList);
 
         /* populate the locales list box */

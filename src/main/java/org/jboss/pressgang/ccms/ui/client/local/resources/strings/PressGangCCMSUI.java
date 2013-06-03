@@ -18,6 +18,9 @@ public interface PressGangCCMSUI extends Constants {
     PressGangCCMSUI INSTANCE = GWT.create(PressGangCCMSUI.class);
 
     @NotNull
+    String ImageTooLarge();
+
+    @NotNull
     String NoXMLErrors();
 
     @NotNull
@@ -58,6 +61,9 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String CommonDescription();
+
+    @NotNull
+    String ImageUplodedSuccessfully();
 
     @NotNull
     String ImagesUplodedSuccessfully();
@@ -403,6 +409,9 @@ public interface PressGangCCMSUI extends Constants {
 
     @NotNull
     String ViewImage();
+
+    @NotNull
+    String DownloadImage();
 
     @NotNull
     String FindTopics();

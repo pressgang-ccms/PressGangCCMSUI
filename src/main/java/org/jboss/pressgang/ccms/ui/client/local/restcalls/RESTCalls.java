@@ -479,6 +479,17 @@ public final class RESTCalls {
         });
     }
 
+    public static void getImageWithoutPreview(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final Integer id) {
+        /* Expand the language images, but don't get the preview */
+        @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME+ "\"}}]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONImage(id, expand);
+            }
+        });
+    }
+
     public static void getImageWithoutLanguageImages(@NotNull final RESTCallback<RESTImageV1> callback, @NotNull final Integer id) {
         /* Expand the language images */
         @NotNull final String expand = "{\"branches\":[{\"trunk\":{\"name\": \"" + RESTImageV1.LANGUAGEIMAGES_NAME + "\"}}]}";

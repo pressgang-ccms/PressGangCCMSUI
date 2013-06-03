@@ -43,6 +43,16 @@ public class App {
      */
     private static final Logger LOGGER = Logger.getLogger(App.class.getName());
 
+    public static final GWT.UncaughtExceptionHandler uncaughtExceptionHandler = new GWT.UncaughtExceptionHandler() {
+        @Override
+        public void onUncaughtException(@NotNull final Throwable ex) {
+            LOGGER.log(Level.SEVERE, ex.getMessage());
+            LOGGER.log(Level.SEVERE, GWTUtilities.convertExceptionStackToString(ex));
+            Window.alert("Uncaught exception was detected. Redirecting you to the home page.\nException: " + ex.getMessage());
+            History.newItem(WelcomePresenter.HISTORY_TOKEN);
+        }
+    };
+
     /**
      * Default constructor. Does nothing.
      */
@@ -59,15 +69,7 @@ public class App {
         try {
             LOGGER.log(Level.INFO, "ENTER App.startApp()");
 
-            GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
-                @Override
-                public void onUncaughtException(@NotNull final Throwable ex) {
-                    LOGGER.log(Level.SEVERE, ex.getMessage());
-                    LOGGER.log(Level.SEVERE, GWTUtilities.convertExceptionStackToString(ex));
-                    Window.alert("Uncaught exception was detected. Redirecting you to the home page.\nException: " + ex.getMessage());
-                    History.newItem(WelcomePresenter.HISTORY_TOKEN);
-                }
-            });
+            GWT.setUncaughtExceptionHandler(uncaughtExceptionHandler);
 
             /* Setup the REST client */
             RestClient.setApplicationRoot(Constants.REST_SERVER);
