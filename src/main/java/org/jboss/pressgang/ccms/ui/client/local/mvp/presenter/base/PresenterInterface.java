@@ -12,5 +12,8 @@ public interface PresenterInterface {
      */
     void go(@NotNull final HasWidgets container);
 
+    /**
+     * Called when the another presenter is to be displayed.
+     */
     void close();
 }
