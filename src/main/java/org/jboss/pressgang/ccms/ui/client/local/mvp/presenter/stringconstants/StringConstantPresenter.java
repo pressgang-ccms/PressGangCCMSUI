@@ -52,6 +52,11 @@ public class StringConstantPresenter extends BaseTemplatePresenter {
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
+    @Override
+    public void close() {
+
+    }
+
     // Empty interface declaration, similar to UiBinder
     public interface StringConstantPresenterDriver extends SimpleBeanEditorDriver<RESTStringConstantV1, RESTStringConstantV1DetailsEditor> {
     }

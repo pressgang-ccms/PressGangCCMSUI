@@ -131,6 +131,11 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
         displayTags();
     }
 
+    @Override
+    public void close() {
+
+    }
+
     public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
         bind(helpTopicId, pageId, display);
     }

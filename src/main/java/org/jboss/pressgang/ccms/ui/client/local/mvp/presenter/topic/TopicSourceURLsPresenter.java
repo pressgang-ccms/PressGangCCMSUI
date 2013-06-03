@@ -125,6 +125,11 @@ public class TopicSourceURLsPresenter extends BaseChildrenPresenter<
     }
 
     @Override
+    public void close() {
+
+    }
+
+    @Override
     public final void bindChildrenExtended(final int helpTopicId, @NotNull final String pageId) {
         super.bindChildren(helpTopicId, pageId, display);
     }

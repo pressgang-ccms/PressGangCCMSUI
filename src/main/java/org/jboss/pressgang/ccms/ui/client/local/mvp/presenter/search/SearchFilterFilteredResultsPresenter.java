@@ -128,6 +128,11 @@ public class SearchFilterFilteredResultsPresenter extends BaseFilteredResultsPre
     }
 
     @Override
+    public void close() {
+
+    }
+
+    @Override
     public final void parseToken(@NotNull final String historyToken) {
 
     }

@@ -52,6 +52,11 @@ public class BlobConstantPresenter extends BaseTemplatePresenter {
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
 
+    @Override
+    public void close() {
+
+    }
+
     // Empty interface declaration, similar to UiBinder
     public interface BlobConstantPresenterDriver extends SimpleBeanEditorDriver<RESTBlobConstantV1, RESTBlobConstantV1DetailsEditor> {
     }

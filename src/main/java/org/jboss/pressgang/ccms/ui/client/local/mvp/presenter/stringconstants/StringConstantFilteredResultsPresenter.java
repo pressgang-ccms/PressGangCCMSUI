@@ -135,6 +135,11 @@ public class StringConstantFilteredResultsPresenter extends BaseFilteredResultsP
         bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
+    @Override
+    public void close() {
+
+    }
+
     /**
      * The definition of the view that corresponds to this presenter.
      */

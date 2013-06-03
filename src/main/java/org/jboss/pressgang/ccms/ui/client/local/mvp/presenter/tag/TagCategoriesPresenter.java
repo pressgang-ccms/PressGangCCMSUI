@@ -93,6 +93,11 @@ public class TagCategoriesPresenter
     }
 
     @Override
+    public void close() {
+
+    }
+
+    @Override
     public void bindDetailedChildrenExtended(final int topicId, @NotNull final String pageId) {
         super.bindDetailedChildren(topicId, pageId, Preferences.TAG_CATEGORY_VIEW_MAIN_SPLIT_WIDTH, display);
         // display.setExistingChildrenProvider(generateExistingProvider());

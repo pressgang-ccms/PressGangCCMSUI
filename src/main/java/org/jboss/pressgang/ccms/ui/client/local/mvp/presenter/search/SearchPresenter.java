@@ -66,6 +66,11 @@ public class SearchPresenter extends BaseTemplatePresenter implements BaseTempla
         bindExtended(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN);
     }
 
+    @Override
+    public void close() {
+
+    }
+
     public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
         bind(helpTopicId, pageId, display);
     }

@@ -86,6 +86,11 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         bindExtended(ServiceConstants.TOPIC_REVISIONS_TOPIC, HISTORY_TOKEN);
     }
 
+    @Override
+    public void close() {
+
+    }
+
     public void bindExtended(final int topicId, @NotNull final String pageId) {
         super.bind(topicId, pageId, display);
     }

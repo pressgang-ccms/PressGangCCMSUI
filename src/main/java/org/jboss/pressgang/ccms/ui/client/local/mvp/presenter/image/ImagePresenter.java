@@ -84,6 +84,10 @@ public class ImagePresenter extends BaseTemplatePresenter {
     public void go(@NotNull final HasWidgets container) {
         clearContainerAndAddTopLevelPanel(container, display);
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
+    }
+
+    @Override
+    public void close() {
 
     }
 

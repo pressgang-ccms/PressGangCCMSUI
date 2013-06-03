@@ -73,6 +73,11 @@ public class PropertyCategoryTagPresenter extends BaseChildrenPresenter<
     }
 
     @Override
+    public void close() {
+
+    }
+
+    @Override
     public void bindChildrenExtended(final int topicId, @NotNull final String pageId) {
         super.bindChildren(topicId, pageId, display);
     }

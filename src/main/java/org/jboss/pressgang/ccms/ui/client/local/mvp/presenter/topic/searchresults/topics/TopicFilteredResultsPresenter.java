@@ -66,6 +66,11 @@ public class TopicFilteredResultsPresenter extends BaseFilteredResultsPresenter<
         bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
+    @Override
+    public void close() {
+
+    }
+
     public void bindExtendedFilteredResults(final int topicId, @NotNull final String pageId, @Nullable final String queryString) {
         super.bindFilteredResults(topicId, pageId, queryString, display);
         this.queryString = queryString;

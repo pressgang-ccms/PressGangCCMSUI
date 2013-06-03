@@ -57,6 +57,11 @@ public class SearchLocalePresenter  extends BaseTemplatePresenter implements Bas
         bindExtended(ServiceConstants.SEARCH_LOCALES_HELP_TOPIC, HISTORY_TOKEN);
     }
 
+    @Override
+    public void close() {
+
+    }
+
     public interface Display extends BaseTemplateViewInterface, BasePopulatedEditorViewInterface<List<String>, SearchUILocales, SearchUILocaleEditor> {
         SearchUILocales getSearchUILocales();
     }

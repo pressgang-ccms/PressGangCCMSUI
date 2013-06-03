@@ -124,6 +124,11 @@ public class IntegerConstantFilteredResultsPresenter extends BaseFilteredResults
         bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
+    @Override
+    public void close() {
+
+    }
+
     public interface Display extends BaseFilteredResultsViewInterface<RESTIntegerConstantCollectionItemV1> {
 
         TextBox getIdFilter();

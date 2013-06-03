@@ -64,6 +64,8 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
 
     private HasWidgets container;
 
+    private BaseTemplatePresenterInterface lastPresenter;
+
     /**
      * The logger.
      */
@@ -133,6 +135,11 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
         } finally {
             LOGGER.log(Level.INFO, "EXIT AppController.go()");
         }
+    }
+
+    @Override
+    public void close() {
+
     }
 
     /**
@@ -223,11 +230,16 @@ public class AppController implements PresenterInterface, ValueChangeHandler<Str
                     presenter = getBeanInstance(ContentSpecFilteredResultsAndDetailsPresenter.class);
                 }*/
 
-
                 if (presenter.isPresent()) {
+                    if (lastPresenter != null) {
+                        lastPresenter.close();
+                    }
+
                     LOGGER.log(Level.INFO, "Displaying Presenter");
                     presenter.get().parseToken(token);
                     presenter.get().go(this.container);
+
+                    lastPresenter = presenter.get();
                 }
             }
         } finally {

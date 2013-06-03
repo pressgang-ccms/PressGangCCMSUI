@@ -75,6 +75,11 @@ public class CategoryFilteredResultsPresenter
     }
 
     @Override
+    public void close() {
+
+    }
+
+    @Override
     public void parseToken(@NotNull final String searchToken) {
         this.queryString = removeHistoryToken(searchToken, HISTORY_TOKEN);
     }

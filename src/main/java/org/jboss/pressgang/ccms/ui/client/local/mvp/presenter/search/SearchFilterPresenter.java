@@ -57,4 +57,9 @@ public class SearchFilterPresenter extends BaseTemplatePresenter {
     public final void go(@NotNull final HasWidgets container) {
         bindExtended(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN);
     }
+
+    @Override
+    public void close() {
+
+    }
 }

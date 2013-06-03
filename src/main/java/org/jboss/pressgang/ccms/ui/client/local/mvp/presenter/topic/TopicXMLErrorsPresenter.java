@@ -55,6 +55,11 @@ public class TopicXMLErrorsPresenter extends BaseTemplatePresenter {
         bindExtended(ServiceConstants.TOPIC_VALIDATION_ERRORS_TOPIC, HISTORY_TOKEN);
     }
 
+    @Override
+    public void close() {
+
+    }
+
     public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
         super.bind(helpTopicId, pageId, display);
     }

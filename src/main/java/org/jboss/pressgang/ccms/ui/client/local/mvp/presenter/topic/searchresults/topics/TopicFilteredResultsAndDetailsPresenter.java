@@ -290,17 +290,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
         });
 
-        /* If we leave this page, stop any pending actions */
-        display.getPanel().addAttachHandler(new AttachEvent.Handler() {
-            @Override
-            public void onAttachOrDetach(@NotNull final AttachEvent event) {
-                if (!event.isAttached()) {
-                    timer.cancel();
-                }
-            }
-        });
-
         getTags();
+    }
+
+    @Override
+    public void close() {
+        timer.cancel();
     }
 
     private void bindTagButtons() {

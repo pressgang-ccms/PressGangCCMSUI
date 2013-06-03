@@ -41,6 +41,11 @@ public class DocBuilderPresenter extends BaseTemplatePresenter implements BaseTe
     }
 
     @Override
+    public void close() {
+
+    }
+
+    @Override
     public void bindExtended(final int topicId, @NotNull final String pageId) {
         super.bind(topicId, pageId, display);
         display.display(id);

@@ -34,9 +34,10 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     private RESTTopicV1XMLEditor editor;
 
     /**
-     * An instance of the typo.js library, to be passed to the instance of the ACE editor.
+     * An instance of the typo.js library, to be passed to the instance of the ACE editor. This object seems to stick
+     * around, and consumes a not insignificant amount of memory, so it is initialized once for the duration of the application.
      */
-    private final TypoJS typoJS = new TypoJS();
+    private static final TypoJS typoJS = new TypoJS();
     private final HandlerSplitLayoutPanel verticalPanel = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
     private final TextArea xmlErrors = new TextArea();
     private final SimplePanel editorParent = new SimplePanel();

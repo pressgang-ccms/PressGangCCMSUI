@@ -143,6 +143,12 @@ public class BlobConstantFilteredResultsPresenter extends BaseFilteredResultsPre
         bindExtendedFilteredResults(ServiceConstants.DEFAULT_HELP_TOPIC, HISTORY_TOKEN, queryString);
     }
 
+    @Override
+    public void close() {
+
+    }
+
+
     /**
      * The display that this presenter is associated with.
      */

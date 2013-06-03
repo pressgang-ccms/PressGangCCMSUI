@@ -194,6 +194,11 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
         bindExtended(ServiceConstants.TOPIC_XML_EDIT_TOPIC, HISTORY_TOKEN);
     }
 
+    @Override
+    public void close() {
+
+    }
+
     public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
         super.bind(helpTopicId, pageId, display);
         //bindAceEditorButtons();

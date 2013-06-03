@@ -271,6 +271,11 @@ implements BaseTemplatePresenterInterface {
     }
 
     @Override
+    public void close() {
+
+    }
+
+    @Override
     public boolean hasUnsavedChanges() {
         /* sync the UI with the underlying tag */
         if (blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem() != null) {

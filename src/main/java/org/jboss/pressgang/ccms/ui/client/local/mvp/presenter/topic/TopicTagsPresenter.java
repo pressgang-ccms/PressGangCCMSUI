@@ -80,6 +80,11 @@ public class TopicTagsPresenter extends BaseTemplatePresenter {
         getTags();
     }
 
+    @Override
+    public void close() {
+
+    }
+
     public void bindExtended(final int helpTopicId, @NotNull final String pageId) {
         super.bind(helpTopicId, pageId, display);
     }

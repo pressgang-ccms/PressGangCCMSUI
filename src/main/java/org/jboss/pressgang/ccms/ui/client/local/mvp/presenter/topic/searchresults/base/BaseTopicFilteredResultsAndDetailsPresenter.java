@@ -210,6 +210,11 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
     }
 
     @Override
+    public void close() {
+
+    }
+
+    @Override
     public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @Nullable final String queryString) {
         /* Initialize the other presenters we have pulled in */
         getSearchResultsComponent().bindExtendedFilteredResults(ServiceConstants.SEARCH_VIEW_HELP_TOPIC, pageId, queryString);

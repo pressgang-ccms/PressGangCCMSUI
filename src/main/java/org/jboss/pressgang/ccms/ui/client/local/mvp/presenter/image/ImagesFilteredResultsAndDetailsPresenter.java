@@ -159,6 +159,11 @@ public class ImagesFilteredResultsAndDetailsPresenter
     }
 
     @Override
+    public void close() {
+
+    }
+
+    @Override
     public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         display.setFeedbackLink(Constants.KEY_SURVEY_LINK + HISTORY_TOKEN);
 

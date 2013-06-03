@@ -73,6 +73,11 @@ public class TagProjectsPresenter extends BaseChildrenPresenter<
     }
 
     @Override
+    public void close() {
+
+    }
+
+    @Override
     public void bindChildrenExtended(final int helpTopicId, @NotNull final String pageId) {
         super.bindChildren(helpTopicId, pageId, display);
 

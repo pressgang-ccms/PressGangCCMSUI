@@ -121,6 +121,11 @@ public class ProjectsFilteredResultsAndDetailsPresenter
     }
 
     @Override
+    public void close() {
+
+    }
+
+    @Override
     public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
         @NotNull final GetNewEntityCallback<RESTProjectV1> getNewEntityCallback = new GetNewEntityCallback<RESTProjectV1>() {
