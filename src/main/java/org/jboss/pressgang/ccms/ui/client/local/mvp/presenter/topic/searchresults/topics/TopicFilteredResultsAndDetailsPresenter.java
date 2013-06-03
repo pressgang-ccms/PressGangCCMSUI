@@ -552,7 +552,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     @Override
     protected RESTTopicV1 getDisplayedTopic() {
         try {
-            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.getDisplayedTopic()");
+            //LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.getDisplayedTopic()");
 
             RESTTopicV1 sourceTopic = null;
 
@@ -564,7 +564,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             return sourceTopic;
         } finally {
-            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.getDisplayedTopic()");
+            //LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.getDisplayedTopic()");
         }
     }
 

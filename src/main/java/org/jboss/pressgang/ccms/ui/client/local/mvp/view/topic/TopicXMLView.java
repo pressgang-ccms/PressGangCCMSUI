@@ -3,6 +3,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.*;
 import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
+import edu.ycp.cs.dh.acegwt.client.typo.TypoJS;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
@@ -31,6 +32,11 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     private final TopicXMLPresenterDriver driver = GWT.create(TopicXMLPresenterDriver.class);
 
     private RESTTopicV1XMLEditor editor;
+
+    /**
+     * An instance of the typo.js library, to be passed to the instance of the ACE editor.
+     */
+    private final TypoJS typoJS = new TypoJS();
     private final HandlerSplitLayoutPanel verticalPanel = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
     private final TextArea xmlErrors = new TextArea();
     private final SimplePanel editorParent = new SimplePanel();
@@ -405,7 +411,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     public void display(final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
 
         /* SearchUIProjectsEditor is a grid */
-        this.editor = new RESTTopicV1XMLEditor(readOnly);
+        this.editor = new RESTTopicV1XMLEditor(readOnly, typoJS);
         /* Initialize the driver with the top-level editor */
         this.driver.initialize(this.editor);
         /* Copy the data in the object into the UI */
