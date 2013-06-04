@@ -20,6 +20,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewIn
 import org.jboss.pressgang.ccms.ui.client.local.preferences.Preferences;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
+import org.jboss.pressgang.ccms.ui.client.local.sort.RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.RESTTranslatedTopicV1BasicDetailsEditor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -161,41 +163,49 @@ public class TranslatedTopicFilteredResultsAndDetailsPresenter extends BaseTopic
         try {
             LOGGER.log(Level.INFO, "ENTER TranslatedTopicFilteredResultsAndDetailsPresenter.postLoadAdditionalDisplayedItemData()");
 
-        /* Initiate the REST calls */
+            this.getTopicPropertyTagPresenter().refreshExistingChildList(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem());
+
+            /* Get a new collection of property tags */
+            this.getTopicPropertyTagPresenter().refreshPossibleChildrenDataFromRESTAndRedisplayList(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem());
+
+            Collections.sort(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
+                    new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
+
+            /* Initiate the REST calls */
             final Integer id = getDisplayedTopic().getId();
             final Integer revision = getDisplayedTopic().getRevision();
 
-        /* If this is a new topic, the id will be null, and there will not be any tags to get */
+            /* If this is a new topic, the id will be null, and there will not be any tags to get */
             if (id != null) {
 
             /* A callback to respond to a request for a topic with the tags expanded */
-                @NotNull final RESTCalls.RESTCallback<RESTTranslatedTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTranslatedTopicV1, TopicTagsPresenter.Display>(
+                final RESTCalls.RESTCallback<RESTTranslatedTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTranslatedTopicV1, TopicTagsPresenter.Display>(
                         getTopicTagsPresenter().getDisplay(), new BaseRestCallback.SuccessAction<RESTTranslatedTopicV1, TopicTagsPresenter.Display>() {
                     @Override
                     public void doSuccessAction(@NotNull final RESTTranslatedTopicV1 retValue, final TopicTagsPresenter.Display display) {
                         try {
                             LOGGER.log(Level.INFO, "ENTER TranslatedTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs() topicWithTagsCallback.doSuccessAction()");
 
-                        /*
-                            There is a small chance that in between loading the topic's details and
-                            loading its tags, a new revision was created.
+                            /*
+                                There is a small chance that in between loading the topic's details and
+                                loading its tags, a new revision was created.
 
-                            So, what do we do? If changes are made to the topic, then
-                            the user will be warned that they have overwritten a revision created
-                            in the mean time. In fact seeing the latest tag relationships could
-                            mean that the user doesn't try to add conflicting tags (like adding
-                            a tag from a mutually exclusive category when one already exists).
+                                So, what do we do? If changes are made to the topic, then
+                                the user will be warned that they have overwritten a revision created
+                                in the mean time. In fact seeing the latest tag relationships could
+                                mean that the user doesn't try to add conflicting tags (like adding
+                                a tag from a mutually exclusive category when one already exists).
 
-                            This check is left in comments just to show that a conflict is possible.
-                        */
-                        /*if (!retValue.getRevision().equals(revision)) {
-                            Window.alert("The topics details and tags are not in sync.");
-                        }*/
+                                This check is left in comments just to show that a conflict is possible.
+                            */
+                            /*if (!retValue.getRevision().equals(revision)) {
+                                Window.alert("The topics details and tags are not in sync.");
+                            }*/
 
-                        /* copy the revisions into the displayed Topic */
+                            /* copy the revisions into the displayed Topic */
                             getDisplayedTopic().setTags(retValue.getTags());
 
-                        /* update the view */
+                            /* update the view */
                             initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicTagsPresenter().getDisplay()}));
                         } finally {
                             LOGGER.log(Level.INFO, "EXIT TranslatedTopicFilteredResultsAndDetailsPresenter.postLoadAdditionalDisplayedItemData() topicWithTagsCallback.doSuccessAction()");

@@ -390,12 +390,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There has to be a displayed item");
             checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed item need to reference a valid entity");
 
-            Collections.sort(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
-                    new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
-            topicPropertyTagPresenter.refreshExistingChildList(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem());
-
-            /* Get a new collection of property tags */
-            topicPropertyTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem());
 
             /* Display the list of property tags */
             topicSourceURLsPresenter.redisplayPossibleChildList(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem());

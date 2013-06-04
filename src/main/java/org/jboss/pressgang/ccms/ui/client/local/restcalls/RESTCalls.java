@@ -50,6 +50,11 @@ public final class RESTCalls {
      * A topic with expanded bugs
      */
     private static final String TOPIC_BUGS_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.BUGZILLABUGS_NAME + "\"}}";
+
+    /**
+     * A topic with expanded property tags
+     */
+    private static final String TOPIC_PROPERTIES_EXPANSION = "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}";
     /**
      * A topic with expanded tags
      */
@@ -109,7 +114,6 @@ public final class RESTCalls {
      */
     private static final String TOPIC_EXPANSION_WO_REVISIONS =
             "{\"branches\":[" +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
                     "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}" +
                     "]}";
 
@@ -122,7 +126,6 @@ public final class RESTCalls {
      */
     private static final String TOPIC_EXPANSION =
             "{\"branches\":[" +
-                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
                     "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}," +
                     "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}" +
                     "]}";
@@ -417,6 +420,17 @@ public final class RESTCalls {
     public static void getTopicRevisionWithBugs(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id, @NotNull final Integer revision) {
         /* Expand the categories and projects in the tags */
         @NotNull final String expand = "{\"branches\":[" + TOPIC_BUGS_EXPANSION + "]}";
+        doRestCall(callback, new RestMethodCaller() {
+            @Override
+            public void call() throws Exception {
+                createRestMethod(callback).getJSONTopicRevision(id, revision, expand);
+            }
+        });
+    }
+
+    public static void getTopicRevisionWithProperties(@NotNull final RESTCallback<RESTTopicV1> callback, @NotNull final Integer id, @NotNull final Integer revision) {
+        /* Expand the categories and projects in the tags */
+        @NotNull final String expand = "{\"branches\":[" + TOPIC_PROPERTIES_EXPANSION + "]}";
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
