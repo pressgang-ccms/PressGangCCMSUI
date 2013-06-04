@@ -76,6 +76,16 @@ public class BulkImportImpl extends DialogBox implements TopicFilteredResultsAnd
 
     }
 
+    public void setLoading() {
+        this.ok.setEnabled(false);
+        this.ok.setText(PressGangCCMSUI.INSTANCE.Loading());
+    }
+
+    public void setLoaded() {
+        this.ok.setEnabled(true);
+        this.ok.setText(PressGangCCMSUI.INSTANCE.OK());
+    }
+
     /**
      * Construct the dialog box. Use the PostConstruct annotation, because
      * we reference an injected object in this code.

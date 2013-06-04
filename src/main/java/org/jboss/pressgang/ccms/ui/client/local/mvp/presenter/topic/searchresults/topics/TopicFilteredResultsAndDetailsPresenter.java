@@ -423,7 +423,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             if (!allTagsLoadInitiated) {
                 allTagsLoadInitiated = true;
 
-                display.getBulkImport().getOK().setEnabled(false);
+                /* Disable the OK button, and change the text so it is clear something is happening */
+                display.getBulkImport().setLoading();
 
                 final RESTCalls.RESTCallback<RESTTagCollectionV1> callback = new BaseRestCallback<RESTTagCollectionV1, TopicTagsPresenter.Display>(
                         getTopicTagsPresenter().getDisplay(), new BaseRestCallback.SuccessAction<RESTTagCollectionV1, TopicTagsPresenter.Display>() {
@@ -438,7 +439,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             getTopicTagsPresenter().getDisplay().initializeNewTags(retValue);
                             display.getBulkImport().getTagsView().initializeNewTags(retValue);
 
-                            display.getBulkImport().getOK().setEnabled(true);
+                            display.getBulkImport().setLoaded();
                         } finally {
                             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.getTags() callback.doSuccessAction()");
                         }
@@ -2589,6 +2590,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      */
     public interface BulkImport extends BulkOverwrite {
         @NotNull TopicTagsPresenter.Display getTagsView();
+        void setLoading();
+        void setLoaded();
 
     }
 

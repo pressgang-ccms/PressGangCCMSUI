@@ -129,6 +129,23 @@ public final class RESTCalls {
                     "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}," +
                     "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}" +
                     "]}";
+
+    /**
+     * The required expansion details for a translated topic. The revisions are required so we can check to see if
+     * the last revision was the one we edited. If not, there was a conflicting save.
+     *
+     * The properties are loaded here, unlike in TOPIC_EXPANSION. This is really just for convenience, as the topic
+     * view is much more optimized for fast loading of the topics basic details.
+     *
+     * We only need the last 2 revisions to check for save conflicts.
+     */
+    private static final String TRANSLATED_TOPIC_EXPANSION =
+            "{\"branches\":[" +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.PROPERTIES_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.SOURCE_URLS_NAME + "\"}}," +
+                    "{\"trunk\":{\"name\": \"" + RESTTopicV1.REVISIONS_NAME + "\", \"start\": 0, \"end\": 2}}" +
+                    "]}";
+
     /**
      * The required expansion details for a filter.
      */
@@ -633,7 +650,7 @@ public final class RESTCalls {
         doRestCall(callback, new RestMethodCaller() {
             @Override
             public void call() throws Exception {
-                createRestMethod(callback).getJSONTranslatedTopic(id, TOPIC_EXPANSION);
+                createRestMethod(callback).getJSONTranslatedTopic(id, TRANSLATED_TOPIC_EXPANSION);
             }
         });
     }
