@@ -2,10 +2,7 @@ package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.ValueListBox;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.web.bindery.requestfactory.gwt.ui.client.ProxyRenderer;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
@@ -13,6 +10,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicTagsPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
+import org.jboss.pressgang.ccms.ui.client.local.resources.images.ImageResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewProjectsEditor;
@@ -50,6 +48,10 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
     private final ValueListBox<SearchUIProject> projects;
     private final ValueListBox<SearchUICategory> categories;
     private final ValueListBox<SearchUITag> myTags;
+    /**
+     * The image to display in the waiting dialog.
+     */
+    private final Image spinner = new Image(ImageResources.INSTANCE.spinner());
 
     public interface TopicTagsPresenterDriver extends SimpleBeanEditorDriver<SearchUIProjects, TopicTagViewProjectsEditor> {
     }
@@ -176,7 +178,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
              * can results in the item showing up twice in the drop down box. So we need to clone the original array and remove
              * the item that was set via setValue().
              */
-            @NotNull final List<SearchUICategory> clonedCategories = new ArrayList<SearchUICategory>(listCategories);
+            final List<SearchUICategory> clonedCategories = new ArrayList<SearchUICategory>(listCategories);
             clonedCategories.remove(category);
 
             categories.setAcceptableValues(clonedCategories);
@@ -248,7 +250,7 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
         /* We can't assume the tags have been loaded by the time we initialize the view */
         if (topic.getTags() != null && topic.getTags().getItems() != null) {
             /* Build up a hierarchy of tags assigned to the topic */
-            @NotNull final SearchUIProjects projects = new SearchUIProjects(topic.getTags());
+            final SearchUIProjects projects = new SearchUIProjects(topic.getTags());
             /* SearchUIProjectsEditor is a simple panel */
             editor = new TopicTagViewProjectsEditor(readOnly);
             /* Initialize the driver with the top-level editor */
@@ -258,5 +260,15 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
             /* Add the projects */
             layout.setWidget(layout.getRowCount(), 0, editor);
         }
+    }
+
+    @Override
+    protected void showWaiting() {
+        this.getPanel().setWidget(spinner);
+    }
+
+    @Override
+    protected void hideWaiting() {
+        this.getPanel().setWidget(layout);
     }
 }

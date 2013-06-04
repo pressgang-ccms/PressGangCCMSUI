@@ -23,6 +23,7 @@ import java.util.logging.Logger;
  */
 public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> implements RESTCalls.RESTCallback<C> {
 
+    @Nullable
     private final D display;
     private final SuccessAction<C, D> successAction;
     @Nullable
@@ -30,13 +31,24 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
 
     private static final Logger LOGGER = Logger.getLogger(BaseRestCallback.class.getName());
 
-    public BaseRestCallback(@NotNull final D display, @NotNull final SuccessAction<C, D> successAction) {
+    /**
+     *
+     * @param display The display used to show some kind of waiting screen. This can be null.
+     * @param successAction The action to perform if the rest call was successful
+     */
+    public BaseRestCallback(@Nullable final D display, @NotNull final SuccessAction<C, D> successAction) {
         this.display = display;
         this.successAction = successAction;
         this.failureAction = null;
     }
 
-    public BaseRestCallback(@NotNull final D display, @NotNull final SuccessAction<C, D> successAction, @NotNull final FailureAction<D> failureAction) {
+    /**
+     *
+     * @param display The display used to show some kind of waiting screen. This can be null.
+     * @param successAction The action to perform if the rest call was successful
+     * @param failureAction The action to perform if the rest call was unsuccessful
+     */
+    public BaseRestCallback(@Nullable final D display, @NotNull final SuccessAction<C, D> successAction, @NotNull final FailureAction<D> failureAction) {
         this.display = display;
         this.successAction = successAction;
         this.failureAction = failureAction;
@@ -44,7 +56,9 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
 
     @Override
     public void begin() {
-        display.addWaitOperation();
+        if (display != null) {
+            display.addWaitOperation();
+        }
     }
 
     @Override
@@ -68,7 +82,9 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
         try {
             successAction.doSuccessAction(retValue, display);
         } finally {
-            display.removeWaitOperation();
+            if (display != null) {
+                display.removeWaitOperation();
+            }
         }
     }
 
@@ -106,7 +122,9 @@ public final class BaseRestCallback<C, D extends BaseTemplateViewInterface> impl
             }
 
         } finally {
-            display.removeWaitOperation();
+            if (display != null) {
+                display.removeWaitOperation();
+            }
         }
     }
 

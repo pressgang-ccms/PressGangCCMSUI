@@ -7,7 +7,6 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.*;
-import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
@@ -95,6 +94,26 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         RESTTopicCollectionItemV1,
         RESTTopicV1BasicDetailsEditor> {
 
+    /*
+        True when the XML elements dialog is opened for the first time, and the
+        elements are loaded.
+     */
+    private boolean xmlElementsLoadInitiated = false;
+    /*
+        True when the XML templates dialog is opened for the first time, and the
+        elements are loaded.
+     */
+    private boolean xmlTemplatesLoadInitiated = false;
+    /*
+        True when the revisions tab is opened for the first time, and the
+        elements are loaded.
+     */
+    private boolean revisionsLoadInitiated = false;
+    /*
+        True when the tags tab is opened for the first time, and the
+        elements are loaded.
+     */
+    private boolean tagsLoadInitiated = false;
 
     @Inject
     private TopicFilteredResultsPresenter searchResultsComponent;
@@ -428,6 +447,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     protected void preLoadAdditionalDisplayedItemData() {
        /* Disable the topic revision view */
         viewLatestTopicRevision();
+
+        revisionsLoadInitiated = false;
+        resetRevisionsTable();
+
+        tagsLoadInitiated = false;
     }
 
     /**
@@ -438,109 +462,124 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * the entity we are viewing, since there is a slight chance that a new revision could be saved in between us loading
      * the empty entity and then loading the collections.
      */
-    private void loadTagsAndBugs() {
+    private void loadTags() {
         try {
-            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs()");
+            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTags()");
 
-            /* Initiate the REST calls */
-            final Integer id = getDisplayedTopic().getId();
-            final Integer revision = getDisplayedTopic().getRevision();
+            if (!tagsLoadInitiated) {
+                tagsLoadInitiated = true;
 
-            /* If this is a new topic, the id will be null, and there will not be any tags to get */
-            if (id != null) {
 
-                /* A callback to respond to a request for a topic with the tags expanded */
-                @NotNull final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
-                        getTopicTagsPresenter().getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
-                    @Override
-                    public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
-                        try {
-                            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs() topicWithTagsCallback.doSuccessAction()");
+                /* Initiate the REST calls */
+                final Integer id = getDisplayedTopic().getId();
+                final Integer revision = getDisplayedTopic().getRevision();
 
-                            /*
-                                There is a small chance that in between loading the topic's details and
-                                loading its tags, a new revision was created.
+                /* If this is a new topic, the id will be null, and there will not be any tags to get */
+                if (id != null) {
 
-                                So, what do we do? If changes are made to the topic, then
-                                the user will be warned that they have overwritten a revision created
-                                in the mean time. In fact seeing the latest tag relationships could
-                                mean that the user doesn't try to add conflicting tags (like adding
-                                a tag from a mutually exclusive category when one already exists).
+                    /* A callback to respond to a request for a topic with the tags expanded */
+                    final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
+                            getTopicTagsPresenter().getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
+                        @Override
+                        public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
+                            try {
+                                LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction()");
 
-                                This check is left in comments just to show that a conflict is possible.
-                            */
-                            /*if (!retValue.getRevision().equals(revision)) {
-                                Window.alert("The topics details and tags are not in sync.");
-                            }*/
+                                /*
+                                    There is a small chance that in between loading the topic's details and
+                                    loading its tags, a new revision was created.
 
-                            /* copy the revisions into the displayed Topic */
-                            getDisplayedTopic().setTags(retValue.getTags());
+                                    So, what do we do? If changes are made to the topic, then
+                                    the user will be warned that they have overwritten a revision created
+                                    in the mean time. In fact seeing the latest tag relationships could
+                                    mean that the user doesn't try to add conflicting tags (like adding
+                                    a tag from a mutually exclusive category when one already exists).
 
-                            /* update the view */
-                            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicTagsPresenter().getDisplay()}));
-                        } finally {
-                            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs() topicWithTagsCallback.doSuccessAction()");
+                                    This check is left in comments just to show that a conflict is possible.
+                                */
+                                /*if (!retValue.getRevision().equals(revision)) {
+                                    Window.alert("The topics details and tags are not in sync.");
+                                }*/
+
+                                /* copy the revisions into the displayed Topic */
+                                getDisplayedTopic().setTags(retValue.getTags());
+
+                                /* update the view */
+                                initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicTagsPresenter().getDisplay()}));
+                            } finally {
+                                LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction()");
+                            }
                         }
-                    }
-                });
+                    });
 
-                RESTCalls.getTopicWithTags(topicWithTagsCallback, id);
+                    RESTCalls.getTopicWithTags(topicWithTagsCallback, id);
+                }
             }
         } finally {
-            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTagsAndBugs()");
+            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTags()");
         }
     }
 
     @Override
     protected void postLoadAdditionalDisplayedItemData() {
-        loadTagsAndBugs();
 
+    }
+
+    private void resetRevisionsTable() {
         /* set the revisions to show the loading widget */
         if (topicRevisionsComponent.getDisplay().getProvider() != null) {
             topicRevisionsComponent.getDisplay().getProvider().resetProvider();
         }
+    }
 
-        /* if getSearchResultsComponent().getProviderData().getSelectedItem() == null, then we are displaying a new topic */
-        if (this.getSearchResultsComponent().getProviderData().getSelectedItem() != null) {
+    /**
+     * This is called when the revisions tab is opened for the first time.
+     */
+    private void loadRevisions() {
+        if (!revisionsLoadInitiated) {
+            revisionsLoadInitiated = true;
+            resetRevisionsTable();
 
-            checkState(getSearchResultsComponent().getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
-            checkState(getSearchResultsComponent().getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
-            checkState(getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getId() != null, "The selected collection item to reference a valid entity with a valid ID.");
+            /* if getSearchResultsComponent().getProviderData().getSelectedItem() == null, then we are displaying a new topic */
+            if (this.getSearchResultsComponent().getProviderData().getSelectedItem() != null) {
 
-            this.topicRevisionsComponent.getDisplay().setProvider(this.topicRevisionsComponent.generateListProvider(getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getId(), display));
+                checkState(getSearchResultsComponent().getProviderData().getSelectedItem() != null, "There should be a selected collection item.");
+                checkState(getSearchResultsComponent().getProviderData().getSelectedItem().getItem() != null, "The selected collection item to reference a valid entity.");
+                checkState(getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getId() != null, "The selected collection item to reference a valid entity with a valid ID.");
 
-            /*
-                Check to see if there is any view data associated with this topic
-             */
-            final Integer topicId =  this.getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getId();
-            if (this.topicRevisionViewData.containsKey(topicId)){
-                final Integer topicRevision = topicRevisionViewData.get(topicId);
+                this.topicRevisionsComponent.getDisplay().setProvider(this.topicRevisionsComponent.generateListProvider(getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getId(), display));
 
-                final BaseRestCallback<RESTTopicV1, Display> callback = new BaseRestCallback<RESTTopicV1, Display>(display,
-                        new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
-                            @Override
-                            public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
-                                displayRevision(retValue);
+                /*
+                    Check to see if there is any view data associated with this topic
+                 */
+                final Integer topicId =  this.getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getId();
+                if (this.topicRevisionViewData.containsKey(topicId)){
+                    final Integer topicRevision = topicRevisionViewData.get(topicId);
 
-                                /*
-                                    If the revision presenter has a valid provider data, then it has loaded and displayed
-                                    the revisions (loading this revision and the general revision list are async processes,
-                                     so we don't know which will finish fisrt).
+                    final BaseRestCallback<RESTTopicV1, Display> callback = new BaseRestCallback<RESTTopicV1, Display>(display,
+                            new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
+                                @Override
+                                public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
+                                    displayRevision(retValue);
 
-                                     If that is the case, we need to redisplay the list to reflect the fact that we are displaying
-                                     a new revision.
-                                 */
-                                if (topicRevisionsComponent.getProviderData().isValid()) {
-                                    topicRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(topicRevisionsComponent.getProviderData().getItems(), topicRevisionsComponent.getProviderData().getSize(), topicRevisionsComponent.getProviderData().getStartRow());
+                                    /*
+                                        If the revision presenter has a valid provider data, then it has loaded and displayed
+                                        the revisions (loading this revision and the general revision list are async processes,
+                                         so we don't know which will finish fisrt).
+
+                                         If that is the case, we need to redisplay the list to reflect the fact that we are displaying
+                                         a new revision.
+                                     */
+                                    if (topicRevisionsComponent.getProviderData().isValid()) {
+                                        topicRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(topicRevisionsComponent.getProviderData().getItems(), topicRevisionsComponent.getProviderData().getSize(), topicRevisionsComponent.getProviderData().getStartRow());
+                                    }
                                 }
-                            }
-                        });
+                            });
 
-                RESTCalls.getTopicRevision(callback, topicId, topicRevision);
+                    RESTCalls.getTopicRevision(callback, topicId, topicRevision);
+                }
             }
         }
-
-
     }
 
     @Nullable
@@ -583,8 +622,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 this.getDisplay().getHistory().removeStyleName(CSSConstants.Common.ALERT_BUTTON);
             }
 
-
-
             this.getDisplay().getSave().setEnabled(!isReadOnlyMode());
 
         } finally {
@@ -598,7 +635,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             /* Set the projects combo box as the focused element */
             if (displayedView == this.getTopicTagsPresenter().getDisplay() && getTopicTagsPresenter().getDisplay().getProjectsList().isAttached()) {
+                loadTags();
                 getTopicTagsPresenter().getDisplay().getProjectsList().getElement().focus();
+            }
+
+            /*
+                Load the initial set of revisions.
+             */
+            if (displayedView == this.topicRevisionsComponent.getDisplay()) {
+                loadRevisions();
             }
 
                 /* While editing the XML, we need to setup a refresh of the rendered view */
@@ -616,7 +661,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     @Override
     protected void postBindActionButtons() {
         try {
-            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.postAfterSwitchView()");
+            LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.postBindActionButtons()");
 
             /* Build up a click handler to save the topic */
             final ClickHandler saveClickHandler = new ClickHandler() {
@@ -988,7 +1033,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             addKeyboardShortcutEvents(getTopicXMLComponent().getDisplay(), display);
         } finally {
-            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.postAfterSwitchView()");
+            LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.postBindActionButtons()");
         }
     }
 
@@ -1597,7 +1642,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             initializeViews();
 
             /* Load the tags and bugs */
-            loadTagsAndBugs();
+            loadTags();
 
             /* Redisplay the list of property tags */
             getTopicPropertyTagPresenter().getDisplay().setExistingChildrenProvider(getTopicPropertyTagPresenter().generateExistingProvider(getDisplayedTopic()));
@@ -1795,12 +1840,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             public void doSuccessAction(@NotNull final RESTStringConstantV1 retValue, final BaseTemplateViewInterface display) {
 
                 /* Get the list of template string constant ids from the StringConstant */
-                @NotNull final Set<String> xmlElements = new HashSet<String>(Arrays.asList(GWTUtilities.fixUpIdSearchString(
+                final Set<String> xmlElements = new HashSet<String>(Arrays.asList(GWTUtilities.fixUpIdSearchString(
                         retValue.getValue()).split(Constants.COMMA)));
-                @NotNull final Map<String, String> data = new TreeMap<String, String>();
+                final Map<String, String> data = new TreeMap<String, String>();
 
                 /* work around the inability to modify an int from an anonymous class */
-                @NotNull final int[] counter = new int[]{0};
+                final int[] counter = new int[]{0};
 
                 for (final String id : xmlElements) {
                     try {
@@ -1907,6 +1952,22 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     Scheduler.get().scheduleDeferred(new Command() {
                         @Override
                         public void execute() {
+
+                            if (!xmlElementsLoadInitiated) {
+                                xmlElementsLoadInitiated = true;
+
+                                topicXMLDisplay.getXmlTagsDialog().setSuggestions(new ArrayList<String>(){{add(PressGangCCMSUI.INSTANCE.Loading());}});
+                                topicXMLDisplay.getXmlTagsDialog().getOK().setEnabled(false);
+
+                                populateXMLElements(null, new StringListLoaded() {
+                                    @Override
+                                    public void stringListLoaded(final List<String> xmlElements) {
+                                        topicXMLDisplay.getXmlTagsDialog().setSuggestions(xmlElements);
+                                        topicXMLDisplay.getXmlTagsDialog().getOK().setEnabled(true);
+                                    }
+                                });
+                            }
+
                             if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()
                                     && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
                                 topicXMLDisplay.getXmlTagsDialog().getDialogBox().center();
@@ -1929,6 +1990,22 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     Scheduler.get().scheduleDeferred(new Command() {
                         @Override
                         public void execute() {
+
+                            if (!xmlTemplatesLoadInitiated) {
+                                xmlTemplatesLoadInitiated = true;
+
+                                topicXMLDisplay.getXmlTemplatesDialog().setSuggestions(new HashMap<String, String>(){{put(PressGangCCMSUI.INSTANCE.Loading(), "");}});
+                                topicXMLDisplay.getXmlTemplatesDialog().getOK().setEnabled(false);
+                                populateXMLTemplates(null, new StringMapLoaded() {
+
+                                    @Override
+                                    public void stringMapLoaded(final Map<String, String> stringMap) {
+                                        topicXMLDisplay.getXmlTemplatesDialog().setSuggestions(stringMap);
+                                        topicXMLDisplay.getXmlTemplatesDialog().getOK().setEnabled(true);
+                                    }
+                                });
+                            }
+
                             if (display.getTopLevelPanel().isAttached() && topicXMLDisplay.isViewShown()
                                     && !isAnyDialogBoxesOpen(topicXMLDisplay)) {
                                 topicXMLDisplay.getXmlTemplatesDialog().getDialogBox().center();
@@ -1954,23 +2031,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             }
         };
-
-        populateXMLElements(display, new StringListLoaded() {
-
-            @Override
-            public void stringListLoaded(final List<String> xmlElements) {
-                topicXMLDisplay.getXmlTagsDialog().setSuggestions(xmlElements);
-            }
-        });
-
-        populateXMLTemplates(display, new StringMapLoaded() {
-
-            @Override
-            public void stringMapLoaded(final Map<String, String> stringMap) {
-                topicXMLDisplay.getXmlTemplatesDialog().setSuggestions(stringMap);
-
-            }
-        });
 
         Event.addNativePreviewHandler(keyboardShortcutPreviewhandler);
     }

@@ -88,7 +88,7 @@ public class TagProjectsView extends
         /*
             Allow the table to be sorted.
          */
-        @NotNull final ColumnSortEvent.AsyncHandler columnSortHandler = new ColumnSortEvent.AsyncHandler(getPossibleChildrenResults());
+        final ColumnSortEvent.AsyncHandler columnSortHandler = new ColumnSortEvent.AsyncHandler(getPossibleChildrenResults());
         getPossibleChildrenResults().addColumnSortHandler(columnSortHandler);
 
     }

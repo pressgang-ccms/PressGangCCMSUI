@@ -332,6 +332,8 @@ public interface CSSConstants {
      *  Holds the styles that are applied to the topic's views.
      */
     interface TopicView {
+        String XML_TAGS_LIST = "XmlTagsList";
+
         String TOPIC_VIEW_PANEL = "TopicViewPanel";
         String TOPIC_VIEW_ID_FIELD = "TopicViewIDField";
         String TOPIC_VIEW_REVISION_NUMBER_FIELD = "TopicViewRevisionNumberField";

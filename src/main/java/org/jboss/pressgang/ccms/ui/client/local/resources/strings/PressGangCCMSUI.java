@@ -30,6 +30,9 @@ public interface PressGangCCMSUI extends Constants {
     String LoadingText();
 
     @NotNull
+    String Loading();
+
+    @NotNull
     String PleaseSaveChangesBeforeUploading();
 
     @NotNull

@@ -544,7 +544,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         try {
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.bindActionButtons()");
 
-            @NotNull final ClickHandler topicPropertyTagsClickHandler = new ClickHandler() {
+            final ClickHandler topicPropertyTagsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -553,7 +553,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            @NotNull final ClickHandler topicSourceUrlsClickHandler = new ClickHandler() {
+            final ClickHandler topicSourceUrlsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -562,7 +562,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            @NotNull final ClickHandler topicXMLClickHandler = new ClickHandler() {
+            final ClickHandler topicXMLClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -572,7 +572,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            @NotNull final ClickHandler topicRenderedClickHandler = new ClickHandler() {
+            final ClickHandler topicRenderedClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -581,7 +581,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            @NotNull final ClickHandler topicXMLErrorsClickHandler = new ClickHandler() {
+            final ClickHandler topicXMLErrorsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -590,7 +590,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            @NotNull final ClickHandler topicTagsClickHandler = new ClickHandler() {
+            final ClickHandler topicTagsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -599,7 +599,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            @NotNull final ClickHandler topicBugsClickHandler = new ClickHandler() {
+            final ClickHandler topicBugsClickHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
@@ -608,21 +608,21 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            @NotNull final ClickHandler splitMenuHandler = new ClickHandler() {
+            final ClickHandler splitMenuHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     showRenderedSplitPanelMenu();
                 }
             };
 
-            @NotNull final ClickHandler splitMenuCloseHandler = new ClickHandler() {
+            final ClickHandler splitMenuCloseHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     showRegularMenu();
                 }
             };
 
-            @NotNull final ClickHandler splitMenuNoSplitHandler = new ClickHandler() {
+            final ClickHandler splitMenuNoSplitHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
@@ -633,7 +633,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            @NotNull final ClickHandler splitMenuVSplitHandler = new ClickHandler() {
+            final ClickHandler splitMenuVSplitHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
@@ -649,7 +649,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            @NotNull final ClickHandler splitMenuHSplitHandler = new ClickHandler() {
+            final ClickHandler splitMenuHSplitHandler = new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     Preferences.INSTANCE.saveSetting(Preferences.TOPIC_RENDERED_VIEW_SPLIT_TYPE,
@@ -673,7 +673,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 }
             };
 
-            @NotNull final ClickHandler cspsHandler = new ClickHandler() {
+            final ClickHandler cspsHandler = new ClickHandler() {
 
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
@@ -756,7 +756,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 Loop over all the standard view i.e. those that will display details from the selected topic
                 or topic revision
             */
-            @NotNull final List<BaseCustomViewInterface> displayableViews = new ArrayList<BaseCustomViewInterface>();
+            final List<BaseCustomViewInterface> displayableViews = new ArrayList<BaseCustomViewInterface>();
             displayableViews.add(topicXMLComponent.getDisplay());
             displayableViews.add(topicXMLErrorsPresenter.getDisplay());
             displayableViews.add(topicTagsPresenter.getDisplay());
@@ -845,8 +845,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         } else {
             component.setHelpTopicId(ServiceConstants.DEFAULT_HELP_TOPIC);
         }
-
-
     }
 
 

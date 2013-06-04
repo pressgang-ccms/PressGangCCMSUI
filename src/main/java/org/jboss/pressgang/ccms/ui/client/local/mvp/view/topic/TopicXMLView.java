@@ -17,6 +17,7 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCom
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -107,7 +108,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
 
             this.textArea.addStyleName(CSSConstants.PlainTextXMLDialog.PLAIN_TEXT_XML_DIALOG_TEXTAREA);
 
-            @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
+            final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(this.cancel);
             buttonPanel.add(this.ok);
@@ -179,9 +180,10 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
             this.setText(PressGangCCMSUI.INSTANCE.InsertXMLElement());
 
             this.options.setVisibleItemCount(NUMBER_OF_VISIBLE_ITEMS);
+            this.options.addStyleName(CSSConstants.TopicView.XML_TAGS_LIST);
             this.layout.setWidget(0, 0, this.options);
 
-            @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();
+            final HorizontalPanel buttonPanel = new HorizontalPanel();
             buttonPanel.addStyleName(CSSConstants.Common.DIALOG_BOX_OK_CANCEL_PANEL);
             buttonPanel.add(this.moreInfo);
             buttonPanel.add(this.cancel);
@@ -256,6 +258,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
             this.setText(PressGangCCMSUI.INSTANCE.InsertXMLElement());
 
             this.options.setVisibleItemCount(NUMBER_OF_VISIBLE_ITEMS);
+            this.options.addStyleName(CSSConstants.TopicView.XML_TAGS_LIST);
             this.layout.setWidget(0, 0, this.options);
 
             @NotNull final HorizontalPanel buttonPanel = new HorizontalPanel();

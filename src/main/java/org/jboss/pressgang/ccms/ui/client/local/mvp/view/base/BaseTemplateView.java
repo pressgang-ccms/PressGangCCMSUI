@@ -788,9 +788,9 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      * the template action bar, which is removed.
      */
     protected final void addSpacerToShortcutPanels() {
-        @NotNull final String spacerDiv = "<div style=\"height: " + Constants.SHORTCUT_BAR_SPACER_HEIGHT + "px;\"></div>";
-        @NotNull final HTML spacer = new HTML(spacerDiv);
-        @NotNull final HTML spacer2 = new HTML(spacerDiv);
+        final String spacerDiv = "<div style=\"height: " + Constants.SHORTCUT_BAR_SPACER_HEIGHT + "px;\"></div>";
+        final HTML spacer = new HTML(spacerDiv);
+        final HTML spacer2 = new HTML(spacerDiv);
         this.getShortcutPanel().insertRow(0);
         this.getShortcutPanel().setWidget(0, 0, spacer);
         this.getAdvancedShortcutPanel().insertRow(0);
@@ -804,7 +804,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
      * The button supplied to this method is placed in the spacer cell.
      */
     protected final void addButtonToShortcutPanels(@NotNull final PushButton button) {
-        @NotNull final String spacerDiv = "<div style=\"height: " + Constants.SHORTCUT_BAR_SPACER_HEIGHT + "px;\"></div>";
+        final String spacerDiv = "<div style=\"height: " + Constants.SHORTCUT_BAR_SPACER_HEIGHT + "px;\"></div>";
 
         this.getShortcutPanel().insertRow(0);
         final SimplePanel panel = new SimplePanel();
@@ -813,7 +813,7 @@ public abstract class BaseTemplateView implements BaseTemplateViewInterface {
         this.getShortcutPanel().getCellFormatter().setHeight(0, 0, Constants.SHORTCUT_BAR_SPACER_HEIGHT + "px");
         this.getShortcutPanel().getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_MIDDLE);
 
-        @NotNull final HTML spacer2 = new HTML(spacerDiv);
+        final HTML spacer2 = new HTML(spacerDiv);
         this.getAdvancedShortcutPanel().insertRow(0);
         this.getAdvancedShortcutPanel().setWidget(0, 0, spacer2);
     }
