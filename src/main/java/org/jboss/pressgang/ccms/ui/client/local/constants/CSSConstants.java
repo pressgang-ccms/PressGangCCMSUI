@@ -431,6 +431,10 @@ public interface CSSConstants {
          * Assigned to the table that holds the split view menu.
          */
         String RENDERED_SPLIT_VIEW_MENU_TABLE = "RenderedSplitViewMenuTable";
+        /**
+         * Assigned to the spinner used for the loading widget
+         */
+        String TOPIC_TAG_VIEW_SPINNER = "TopicTagViewSpinner";
     }
 
     /**

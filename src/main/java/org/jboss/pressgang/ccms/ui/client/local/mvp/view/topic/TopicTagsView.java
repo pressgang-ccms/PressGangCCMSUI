@@ -154,6 +154,8 @@ public class TopicTagsView extends BaseTemplateView implements TopicTagsPresente
 
             this.getPanel().addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_CONTENT_PANEL);
             this.getPanel().setWidget(layout);
+
+            spinner.addStyleName(CSSConstants.TopicView.TOPIC_TAG_VIEW_SPINNER);
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicTagsView()");
         }
