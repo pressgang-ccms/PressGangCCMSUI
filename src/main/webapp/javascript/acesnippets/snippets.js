@@ -762,14 +762,147 @@ define('ace/snippets', ['require', 'exports', 'module' , 'ace/lib/lang', 'ace/ra
 
 define('ace/snippets/javascript', ['require', 'exports', 'module' ], function(require, exports, module) {
 
-exports.snippetText = "# formalpara\n\
+exports.snippetText = "\
+# CDATA\n\
+snippet CDATA\n\
+<![CDATA[\n\
+${1:content}\n\
+]]>\n\
+# figure\n\
+<figure>\n\
+    <title>${1:title}</title>\n\
+    <mediaobject>\n\
+        <imageobject>\n\
+            <imagedata align='center' fileref='images/${2:imageid}.png'/>\n\
+        </imageobject>\n\
+        <textobject>\n\
+            <phrase>${3:description}</phrase>\n\
+        </textobject> \n\
+    </mediaobject>\n\
+</figure>\n\
+# formalpara\n\
 snippet formalpara\n\
-	<formalpara>\n\
-		<title>${1:title}</title>\n\
-		<para>\n\
-			${2:para}\n\
-		</para>\n\
-	</formalpara>";
+<formalpara>\n\
+    <title>${1:title}</title>\n\
+    <para>\n\
+        ${2:para}\n\
+    </para>\n\
+</formalpara>\n\
+# itemizedlist\n\
+<itemizedlist> \n\
+        <listitem>\n\
+        <para>\n\
+           ${1:para}\n\
+        </para>\n\
+    </listitem>\n\
+</itemizedlist>\n\
+# keycombo\n\
+<keycombo>\n\
+    <keycap>${1:CTRL}</keycap>\n\
+    <mousebutton>${2:Button1}</mousebutton>\n\
+</keycombo>\n\
+# listitem\n\
+<listitem>\n\
+    <para>\n\
+        ${1:para}\n\
+    </para>\n\
+</listitem>\n\
+# menuchoice\n\
+<menuchoice><guimenu>${1:File}</guimenu><guimenuitem>${2:Open}</guimenuitem></menuchoice>\n\
+# note\n\
+<note>\n\
+    <para>\n\
+        ${1:para}\n\
+    </para>\n\
+</note>\n\
+# orderedlist\n\
+<orderedlist>\n\
+    <listitem>\n\
+        <para>\n\
+            ${1:para}\n\
+        </para>\n\
+    </listitem>\n\
+</orderedlist>\n\
+# procedure\n\
+<procedure>\n\
+    <title>${1:title}</title>\n\
+    <step>\n\
+        <para>\n\
+            ${2:para}\n\
+        </para>\n\
+    </step>\n\
+</procedure>\n\
+# programlisting\n\
+<programlisting><![CDATA[\n\
+${1:code}\n\
+]]></programlisting>\n\
+# section\n\
+<section>\n\
+    <title>${1:title}</title>\n\
+    <para>\n\
+        ${2:para}\n\
+    </para>\n\
+</section>\n\
+# step\n\
+<step>\n\
+    <para>\n\
+        ${1:para}\n\
+    </para>\n\
+</step>\n\
+# table\n\
+<table frame='all'>\n\
+    <title>${1:title}</title>\n\
+    <tgroup cols='2' align='left' colsep='1' rowsep='1'>\n\
+        <colspec colname='c1'/>\n\
+        <colspec colname='c2'/>\n\
+        <thead>\n\
+            <row>\n\
+                <entry>Header Row 0 Col 0</entry>\n\
+                <entry>Header Row 0 Col 1</entry>\n\
+            </row>\n\
+        </thead>\n\
+        <tbody>\n\
+            <row>\n\
+                <entry>Row 1 Col 0</entry>\n\
+                <entry>Row 1 Col 1</entry>\n\
+            </row>\n\
+            <row>\n\
+                <entry>Row 2 Col 0</entry>\n\
+                <entry>Row 2 Col 1</entry> \n\
+            </row>\n\
+        </tbody>\n\
+    </tgroup>\n\
+</table>\n\
+# ulink\n\
+<ulink url='${1:url}'>${2:title}</ulink>\n\
+# variablelist\n\
+<variablelist>\n\
+    <title>Title</title>\n\
+    <varlistentry>\n\
+        <term>\n\
+            ${1:term}\n\
+        </term>\n\
+        <listitem>\n\
+            <para>\n\
+                ${2:para}\n\
+            </para>\n\
+        </listitem>\n\
+    </varlistentry>\n\
+</variablelist>\n\
+# variablelistentry\n\
+<varlistentry>\n\
+    <term>\n\
+        ${1:term}\n\
+    </term>\n\
+    <listitem>\n\
+        <para>\n\
+            ${2:para}\n\
+        </para>\n\
+    </listitem>\n\
+</varlistentry>\n\
+# xref\n\
+<xref linkend='${1:id}' />\n\
+";
 });
 
 /*var snippetManager = require("ace/snippets").snippetManager
