@@ -1539,12 +1539,97 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         final StringBuilder retValue = new StringBuilder();
 
         if (topicXML != null) {
+            /* true if the last line had a hanging cdata start */
+            boolean inCData = false;
             int i = 0;
             for (final String line : topicXML.split("\n")) {
                 ++i;
 
-                final RegExp elementRe = RegExp.compile("(<[^/].*?)(/?)(>)", "g");
-                retValue.append(elementRe.replace(line, "$1 pressgangeditorlinenumber='" + i + "'$2$3"));
+                /* true if the last line had a hanging cdata start and we did not find an end in this line */
+                boolean lineIsOnlyCData = inCData;
+
+                String fixedLine = line;
+
+                final Map<String, String> endHangingCData = new HashMap<String, String>();
+                if (inCData) {
+                    final RegExp cdataEndHangingRe = RegExp.compile("^.*?\\]\\]>", "g");
+                    final MatchResult matcher = cdataEndHangingRe.exec(fixedLine);
+                    if (matcher != null) {
+                        int marker = endHangingCData.size();
+                        while (fixedLine.indexOf("#CDATAENDPLACEHOLDER" + marker + "#") != -1) {
+                            ++marker;
+                        }
+
+                        endHangingCData.put("#CDATAENDPLACEHOLDER" + marker + "#", matcher.getGroup(0));
+
+                        inCData = false;
+
+                        /*
+                         * We found an end to the hanging cdata start. this lets us know further down that
+                         * we do need to process some elements in this line.
+                         */
+                        lineIsOnlyCData = false;
+                    }
+
+                    for (final String marker : endHangingCData.keySet()) {
+                        fixedLine = fixedLine.replace(endHangingCData.get(marker), marker);
+                    }
+                }
+
+                final RegExp cdataRe = RegExp.compile("<!\\[CDATA\\[.*?\\]\\]>", "g");
+                final Map<String, String> singleLineCData = new HashMap<String, String>();
+                for (MatchResult matcher = cdataRe.exec(line); matcher != null; matcher = cdataRe.exec(line)) {
+                    int marker = singleLineCData.size();
+                    while (line.indexOf("#CDATAPLACEHOLDER" + marker + "#") != -1) {
+                        ++marker;
+                    }
+
+                    singleLineCData.put("#CDATAPLACEHOLDER" + marker + "#", matcher.getGroup(0));
+                }
+
+
+                for (final String marker : singleLineCData.keySet()) {
+                    fixedLine = fixedLine.replace(singleLineCData.get(marker), marker);
+                }
+
+                final Map<String, String> startHangingCData = new HashMap<String, String>();
+                if (!inCData) {
+                    final RegExp cdataStartHangingRe = RegExp.compile("<!\\[CDATA\\[.*?$", "g");
+                    final MatchResult matcher = cdataStartHangingRe.exec(fixedLine);
+                    if (matcher != null) {
+                        int marker = startHangingCData.size();
+                        while (fixedLine.indexOf("#CDATASTARTPLACEHOLDER" + marker + "#") != -1) {
+                            ++marker;
+                        }
+
+                        startHangingCData.put("#CDATASTARTPLACEHOLDER" + marker + "#", matcher.getGroup(0));
+
+                        inCData = true;
+                    }
+                }
+
+                for (final String marker : startHangingCData.keySet()) {
+                    fixedLine = fixedLine.replace(startHangingCData.get(marker), marker);
+                }
+
+                if (!lineIsOnlyCData) {
+                    final RegExp elementRe = RegExp.compile("(<[^/!].*?)(/?)(>)", "g");
+                    fixedLine = elementRe.replace(fixedLine, "$1 pressgangeditorlinenumber='" + i + "'$2$3");
+                }
+
+                for (final String marker : endHangingCData.keySet()) {
+                    fixedLine = fixedLine.replace(marker, endHangingCData.get(marker));
+                }
+
+                for (final String marker : singleLineCData.keySet()) {
+                    fixedLine = fixedLine.replace(marker, singleLineCData.get(marker));
+                }
+
+                for (final String marker : startHangingCData.keySet()) {
+                    fixedLine = fixedLine.replace(marker, startHangingCData.get(marker));
+                }
+
+                retValue.append(fixedLine);
                 retValue.append("\n");
             }
         }
