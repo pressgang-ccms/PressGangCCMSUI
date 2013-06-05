@@ -874,14 +874,14 @@ snippet ulink\n\
 	<ulink url='${1:url}'>${2:title}</ulink>\n\
 snippet variablelist\n\
 	<variablelist>\n\
-		<title>Title</title>\n\
+		<title>${1:title}</title>\n\
 		<varlistentry>\n\
 			<term>\n\
-				${1:term}\n\
+				${2:term}\n\
 			</term>\n\
 			<listitem>\n\
 				<para>\n\
-					${2:para}\n\
+					${3:para}\n\
 				</para>\n\
 			</listitem>\n\
 		</varlistentry>\n\
