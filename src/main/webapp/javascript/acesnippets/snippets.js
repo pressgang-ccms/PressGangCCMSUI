@@ -763,12 +763,11 @@ define('ace/snippets', ['require', 'exports', 'module' , 'ace/lib/lang', 'ace/ra
 define('ace/snippets/javascript', ['require', 'exports', 'module' ], function(require, exports, module) {
 
 exports.snippetText = "\
-# CDATA\n\
 snippet CDATA\n\
 <![CDATA[\n\
 ${1:content}\n\
 ]]>\n\
-# figure\n\
+snippet figure\n\
 <figure>\n\
     <title>${1:title}</title>\n\
     <mediaobject>\n\
@@ -780,7 +779,6 @@ ${1:content}\n\
         </textobject> \n\
     </mediaobject>\n\
 </figure>\n\
-# formalpara\n\
 snippet formalpara\n\
 <formalpara>\n\
     <title>${1:title}</title>\n\
@@ -788,7 +786,7 @@ snippet formalpara\n\
         ${2:para}\n\
     </para>\n\
 </formalpara>\n\
-# itemizedlist\n\
+snippet itemizedlist\n\
 <itemizedlist> \n\
         <listitem>\n\
         <para>\n\
@@ -796,26 +794,26 @@ snippet formalpara\n\
         </para>\n\
     </listitem>\n\
 </itemizedlist>\n\
-# keycombo\n\
+snippet keycombo\n\
 <keycombo>\n\
     <keycap>${1:CTRL}</keycap>\n\
     <mousebutton>${2:Button1}</mousebutton>\n\
 </keycombo>\n\
-# listitem\n\
+snippet listitem\n\
 <listitem>\n\
     <para>\n\
         ${1:para}\n\
     </para>\n\
 </listitem>\n\
-# menuchoice\n\
+snippet menuchoice\n\
 <menuchoice><guimenu>${1:File}</guimenu><guimenuitem>${2:Open}</guimenuitem></menuchoice>\n\
-# note\n\
+snippet note\n\
 <note>\n\
     <para>\n\
         ${1:para}\n\
     </para>\n\
 </note>\n\
-# orderedlist\n\
+snippet orderedlist\n\
 <orderedlist>\n\
     <listitem>\n\
         <para>\n\
@@ -823,7 +821,7 @@ snippet formalpara\n\
         </para>\n\
     </listitem>\n\
 </orderedlist>\n\
-# procedure\n\
+snippet procedure\n\
 <procedure>\n\
     <title>${1:title}</title>\n\
     <step>\n\
@@ -832,24 +830,24 @@ snippet formalpara\n\
         </para>\n\
     </step>\n\
 </procedure>\n\
-# programlisting\n\
+snippet programlisting\n\
 <programlisting><![CDATA[\n\
 ${1:code}\n\
 ]]></programlisting>\n\
-# section\n\
+snippet section\n\
 <section>\n\
     <title>${1:title}</title>\n\
     <para>\n\
         ${2:para}\n\
     </para>\n\
 </section>\n\
-# step\n\
+snippet step\n\
 <step>\n\
     <para>\n\
         ${1:para}\n\
     </para>\n\
 </step>\n\
-# table\n\
+snippet table\n\
 <table frame='all'>\n\
     <title>${1:title}</title>\n\
     <tgroup cols='2' align='left' colsep='1' rowsep='1'>\n\
@@ -873,9 +871,9 @@ ${1:code}\n\
         </tbody>\n\
     </tgroup>\n\
 </table>\n\
-# ulink\n\
+snippet ulink\n\
 <ulink url='${1:url}'>${2:title}</ulink>\n\
-# variablelist\n\
+snippet variablelist\n\
 <variablelist>\n\
     <title>Title</title>\n\
     <varlistentry>\n\
@@ -889,7 +887,7 @@ ${1:code}\n\
         </listitem>\n\
     </varlistentry>\n\
 </variablelist>\n\
-# variablelistentry\n\
+snippet variablelistentry\n\
 <varlistentry>\n\
     <term>\n\
         ${1:term}\n\
@@ -900,7 +898,7 @@ ${1:code}\n\
         </para>\n\
     </listitem>\n\
 </varlistentry>\n\
-# xref\n\
+snippet xref\n\
 <xref linkend='${1:id}' />\n\
 ";
 });
