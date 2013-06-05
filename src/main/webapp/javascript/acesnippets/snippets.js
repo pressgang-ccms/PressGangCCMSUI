@@ -1,3 +1,7 @@
+/*
+    Copied from demo.js - https://github.com/ajaxorg/ace/blob/master/demo/kitchen-sink/demo.js
+*/
+
 define('ace/snippets', ['require', 'exports', 'module' , 'ace/lib/lang', 'ace/range', 'ace/keyboard/hash_handler', 'ace/tokenizer', 'ace/lib/dom'], function(require, exports, module) {
 
 var lang = require("./lib/lang")
