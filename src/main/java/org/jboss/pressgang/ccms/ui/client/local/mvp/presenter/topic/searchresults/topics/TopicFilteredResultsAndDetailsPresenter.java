@@ -1526,6 +1526,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         }
     }
 
+    /**
+     * In order to link the rendered view to the line in the editor where the rendered text is coming from,
+     * each element has an attribute pressgangeditorlinenumber added to it to reflect the original line number.
+     * This can then be read when an element in the rendered view is clicked.
+     * @param topicXML The source XML
+     * @return The XML with all the elements having pressgangeditorlinenumber attributes
+     */
     @NotNull
     private String addLineNumberAttributesToXML(@Nullable final String topicXML) {
 
