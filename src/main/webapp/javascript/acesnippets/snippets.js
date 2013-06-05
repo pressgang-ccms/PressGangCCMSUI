@@ -762,8 +762,7 @@ define('ace/snippets', ['require', 'exports', 'module' , 'ace/lib/lang', 'ace/ra
 
 define('ace/snippets/javascript', ['require', 'exports', 'module' ], function(require, exports, module) {
 
-exports.snippetText = "\
-snippet CDATA\n\
+exports.snippetText = "snippet CDATA\n\
 <![CDATA[\n\
 ${1:content}\n\
 ]]>\n\
@@ -899,7 +898,7 @@ snippet variablelistentry\n\
     </listitem>\n\
 </varlistentry>\n\
 snippet xref\n\
-<xref linkend='${1:id}' />\n\
+<xref linkend='${1:id}'/>\n\
 ";
 });
 
