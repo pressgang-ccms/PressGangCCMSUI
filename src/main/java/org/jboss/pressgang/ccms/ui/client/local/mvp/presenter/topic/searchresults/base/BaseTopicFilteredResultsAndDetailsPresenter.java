@@ -6,6 +6,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.regexp.shared.MatchResult;
+import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionV1;
@@ -36,10 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -772,7 +771,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
 
             /* We initially display the split pane rendered view without images */
             if (viewIsInFilter(filter, topicSplitPanelRenderedDisplay)) {
-                topicSplitPanelRenderedDisplay.displayTopicRendered(topicToDisplay.getXml(), isReadOnlyMode(), true);
+                topicSplitPanelRenderedDisplay.displayTopicRendered(addLineNumberAttributesToXML(topicToDisplay.getXml()), isReadOnlyMode(), true);
             }
 
             /* Redisplay the editor. topicXMLComponent.getDisplay().getEditor() will be not null after the initialize method was called above */
@@ -798,6 +797,117 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.initializeViews()");
         }
 
+    }
+
+    /**
+     * In order to link the rendered view to the line in the editor where the rendered text is coming from,
+     * each element has an attribute pressgangeditorlinenumber added to it to reflect the original line number.
+     * This can then be read when an element in the rendered view is clicked.
+     * @param topicXML The source XML
+     * @return The XML with all the elements having pressgangeditorlinenumber attributes
+     */
+    @NotNull
+    protected String addLineNumberAttributesToXML(@Nullable final String topicXML) {
+
+        final StringBuilder retValue = new StringBuilder();
+
+        if (topicXML != null) {
+            /* true if the last line had a hanging cdata start */
+            boolean inCData = false;
+            int i = 0;
+            for (final String line : topicXML.split("\n")) {
+                ++i;
+
+                /* true if the last line had a hanging cdata start and we did not find an end in this line */
+                boolean lineIsOnlyCData = inCData;
+
+                String fixedLine = line;
+
+                final Map<String, String> endHangingCData = new HashMap<String, String>();
+                if (inCData) {
+                    final RegExp cdataEndHangingRe = RegExp.compile("^.*?\\]\\]>", "g");
+                    final MatchResult matcher = cdataEndHangingRe.exec(fixedLine);
+                    if (matcher != null) {
+                        int marker = endHangingCData.size();
+                        while (fixedLine.indexOf("#CDATAENDPLACEHOLDER" + marker + "#") != -1) {
+                            ++marker;
+                        }
+
+                        endHangingCData.put("#CDATAENDPLACEHOLDER" + marker + "#", matcher.getGroup(0));
+
+                        inCData = false;
+
+                        /*
+                         * We found an end to the hanging cdata start. this lets us know further down that
+                         * we do need to process some elements in this line.
+                         */
+                        lineIsOnlyCData = false;
+                    }
+
+                    for (final String marker : endHangingCData.keySet()) {
+                        fixedLine = fixedLine.replace(endHangingCData.get(marker), marker);
+                    }
+                }
+
+                final RegExp cdataRe = RegExp.compile("<!\\[CDATA\\[.*?\\]\\]>", "g");
+                final Map<String, String> singleLineCData = new HashMap<String, String>();
+                for (MatchResult matcher = cdataRe.exec(line); matcher != null; matcher = cdataRe.exec(line)) {
+                    int marker = singleLineCData.size();
+                    while (line.indexOf("#CDATAPLACEHOLDER" + marker + "#") != -1) {
+                        ++marker;
+                    }
+
+                    singleLineCData.put("#CDATAPLACEHOLDER" + marker + "#", matcher.getGroup(0));
+                }
+
+
+                for (final String marker : singleLineCData.keySet()) {
+                    fixedLine = fixedLine.replace(singleLineCData.get(marker), marker);
+                }
+
+                final Map<String, String> startHangingCData = new HashMap<String, String>();
+                if (!inCData) {
+                    final RegExp cdataStartHangingRe = RegExp.compile("<!\\[CDATA\\[.*?$", "g");
+                    final MatchResult matcher = cdataStartHangingRe.exec(fixedLine);
+                    if (matcher != null) {
+                        int marker = startHangingCData.size();
+                        while (fixedLine.indexOf("#CDATASTARTPLACEHOLDER" + marker + "#") != -1) {
+                            ++marker;
+                        }
+
+                        startHangingCData.put("#CDATASTARTPLACEHOLDER" + marker + "#", matcher.getGroup(0));
+
+                        inCData = true;
+                    }
+                }
+
+                for (final String marker : startHangingCData.keySet()) {
+                    fixedLine = fixedLine.replace(startHangingCData.get(marker), marker);
+                }
+
+                if (!lineIsOnlyCData) {
+                    final RegExp elementRe = RegExp.compile("(<[^/!].*?)(/?)(>)", "g");
+                    fixedLine = elementRe.replace(fixedLine, "$1 pressgangeditorlinenumber='" + i + "'$2$3");
+                }
+
+                for (final String marker : endHangingCData.keySet()) {
+                    fixedLine = fixedLine.replace(marker, endHangingCData.get(marker));
+                }
+
+                for (final String marker : singleLineCData.keySet()) {
+                    fixedLine = fixedLine.replace(marker, singleLineCData.get(marker));
+                }
+
+                for (final String marker : startHangingCData.keySet()) {
+                    fixedLine = fixedLine.replace(marker, startHangingCData.get(marker));
+                }
+
+                retValue.append(fixedLine);
+                retValue.append("\n");
+            }
+        }
+
+        return retValue.toString();
     }
 
     protected abstract void postInitializeViews(@Nullable final List<BaseTemplateViewInterface> filter);
