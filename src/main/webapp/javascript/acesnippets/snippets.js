@@ -899,6 +899,18 @@ snippet variablelistentry\n\
 	</varlistentry>\n\
 snippet xref\n\
 	<xref linkend='${1:id}'/>\n\
+snippet important\n\
+	<important>\n\
+		<para>\n\
+			${1:para}\n\
+		</para>\n\
+	</important>\n\
+snippet warning\n\
+	<warning>\n\
+		<para>\n\
+			${1:para}\n\
+		</para>\n\
+	</warning>\n\
 ";
 });
 
