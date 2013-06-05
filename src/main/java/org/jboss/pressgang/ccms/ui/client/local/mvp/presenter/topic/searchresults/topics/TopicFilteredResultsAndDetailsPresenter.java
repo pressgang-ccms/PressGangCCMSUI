@@ -493,13 +493,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             if (!tagsLoadInitiated) {
                 tagsLoadInitiated = true;
 
+                final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultsComponent().getProviderData().getSelectedItem();
 
                 /* Initiate the REST calls */
                 final Integer id = getDisplayedTopic().getId();
                 final Integer revision = getDisplayedTopic().getRevision();
 
-                /* If this is a new topic, the id will be null, and there will not be any tags to get */
-                if (id != null) {
+                /* If this is a new topic, the selectedItem will be null, and there will not be any tags to get */
+                if (selectedItem != null) {
 
                     /* A callback to respond to a request for a topic with the tags expanded */
                     final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
@@ -551,31 +552,39 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         /*
             Check to see if there is any view data associated with this topic
          */
-        final Integer topicId =  this.getSearchResultsComponent().getProviderData().getSelectedItem().getItem().getId();
-        if (this.topicRevisionViewData.containsKey(topicId)){
-            final Integer topicRevision = topicRevisionViewData.get(topicId);
 
-            final BaseRestCallback<RESTTopicV1, Display> callback = new BaseRestCallback<RESTTopicV1, Display>(display,
-                    new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
-                        @Override
-                        public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
-                            displayRevision(retValue);
+        final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultsComponent().getProviderData().getSelectedItem();
 
-                                    /*
-                                        If the revision presenter has a valid provider data, then it has loaded and displayed
-                                        the revisions (loading this revision and the general revision list are async processes,
-                                         so we don't know which will finish fisrt).
+        /*
+            If this is a new topic, there will be no selected item.
+         */
+        if (selectedItem != null) {
+            final Integer topicId =  selectedItem.getItem().getId();
+            if (this.topicRevisionViewData.containsKey(topicId)){
+                final Integer topicRevision = topicRevisionViewData.get(topicId);
 
-                                         If that is the case, we need to redisplay the list to reflect the fact that we are displaying
-                                         a new revision.
-                                     */
-                            if (topicRevisionsComponent.getProviderData().isValid()) {
-                                topicRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(topicRevisionsComponent.getProviderData().getItems(), topicRevisionsComponent.getProviderData().getSize(), topicRevisionsComponent.getProviderData().getStartRow());
+                final BaseRestCallback<RESTTopicV1, Display> callback = new BaseRestCallback<RESTTopicV1, Display>(display,
+                        new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
+                            @Override
+                            public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
+                                displayRevision(retValue);
+
+                                        /*
+                                            If the revision presenter has a valid provider data, then it has loaded and displayed
+                                            the revisions (loading this revision and the general revision list are async processes,
+                                             so we don't know which will finish fisrt).
+
+                                             If that is the case, we need to redisplay the list to reflect the fact that we are displaying
+                                             a new revision.
+                                         */
+                                if (topicRevisionsComponent.getProviderData().isValid()) {
+                                    topicRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(topicRevisionsComponent.getProviderData().getItems(), topicRevisionsComponent.getProviderData().getSize(), topicRevisionsComponent.getProviderData().getStartRow());
+                                }
                             }
-                        }
-                    });
+                        });
 
-            RESTCalls.getTopicRevision(callback, topicId, topicRevision);
+                RESTCalls.getTopicRevision(callback, topicId, topicRevision);
+            }
         }
     }
 
@@ -604,12 +613,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             resetPropertyTagsTable();
 
             final RESTTopicV1 displayedItem = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
+            final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultsComponent().getProviderData().getSelectedItem();
 
             /* Get a new collection of property tags */
             this.getTopicPropertyTagPresenter().refreshPossibleChildrenDataFromRESTAndRedisplayList(displayedItem);
 
             /* if getSearchResultsComponent().getProviderData().getSelectedItem() == null, then we are displaying a new topic */
-            if (this.getSearchResultsComponent().getProviderData().getSelectedItem() != null) {
+            if (selectedItem != null) {
 
                 checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getId() != null, "The displayed collection item to reference a valid entity with a valid ID.");
                 checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision() != null, "The displayed collection item to reference a valid entity with a valid revision.");
