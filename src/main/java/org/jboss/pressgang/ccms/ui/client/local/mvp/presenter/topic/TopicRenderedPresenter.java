@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic;
 
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasWidgets;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
@@ -23,7 +24,8 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
     public static final String HISTORY_TOKEN = "TopicRenderedView";
 
     public interface Display extends BaseTemplateViewInterface, BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>> {
-        void displayTopicRendered(final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly, final boolean showImages);
+        void displayTopicRendered(final String topicXML, final boolean readOnly, final boolean showImages);
+        HTML getDiv();
     }
 
     /**
@@ -61,7 +63,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
             final BaseRestCallback<RESTTopicV1, Display> callback = new BaseRestCallback<RESTTopicV1, Display>(display, new BaseRestCallback.SuccessAction<RESTTopicV1, Display>() {
                 @Override
                 public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
-                    display.displayTopicRendered(retValue, true, true);
+                    display.displayTopicRendered(retValue.getXml(), true, true);
                 }
             });
 

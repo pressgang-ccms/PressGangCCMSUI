@@ -5,6 +5,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -13,14 +14,9 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
@@ -272,6 +268,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         /* Bind logic to the revisions buttons */
         bindViewTopicRevisionButton();
 
+        bindRenderedViewClicks();
+
         /* When the topics have been loaded, display the first one */
         getSearchResultsComponent().addTopicListReceivedHandler(new EntityListReceivedHandler<RESTTopicCollectionV1>() {
             @Override
@@ -327,6 +325,37 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     @Override
     public void close() {
         timer.cancel();
+    }
+
+    private void bindRenderedViewClicks() {
+        getTopicSplitPanelRenderedDisplay().getDiv().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(@NotNull final ClickEvent event) {
+                try {
+                    LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.bindRenderedViewClicks() ClickHandler.onClick()");
+
+                    final EventTarget eventTarget = event.getNativeEvent().getEventTarget();
+                    if (Element.is(eventTarget)) {
+
+                        final Element sender = eventTarget.cast();
+
+                        final String lineNumber = sender.getAttribute("pressgangeditorlinenumber");
+                        if (lineNumber != null) {
+                            try {
+                                final Integer lineNumberInt = Integer.parseInt(lineNumber);
+                                getTopicXMLComponent().getDisplay().getEditor().gotoLine(lineNumberInt);
+                                LOGGER.log(Level.INFO, "Moved to line number " + lineNumberInt);
+                            } catch (@NotNull final NumberFormatException ex) {
+                                // do nothing
+                            }
+                        }
+                    }
+
+                } finally {
+                    LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.bindRenderedViewClicks() ClickHandler.onClick()");
+                }
+            }
+        });
     }
 
     private void bindTagButtons() {
@@ -1487,7 +1516,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                 if (xmlHasChanges || (!isDisplayingImage && timeToDisplayImage)) {
                     isDisplayingImage = timeToDisplayImage;
-                    getTopicSplitPanelRenderedDisplay().displayTopicRendered(this.getDisplayedTopic(), isReadOnlyMode(), isDisplayingImage);
+                    getTopicSplitPanelRenderedDisplay().displayTopicRendered(addLineNumberAttributesToXML(this.getDisplayedTopic().getXml()), isReadOnlyMode(), isDisplayingImage);
                 }
 
                 lastXML = this.getDisplayedTopic().getXml();
@@ -1495,6 +1524,25 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         } finally {
             //LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.refreshRenderedView()");
         }
+    }
+
+    @NotNull
+    private String addLineNumberAttributesToXML(@Nullable final String topicXML) {
+
+        final StringBuilder retValue = new StringBuilder();
+
+        if (topicXML != null) {
+            int i = 0;
+            for (final String line : topicXML.split("\n")) {
+                ++i;
+
+                final RegExp elementRe = RegExp.compile("(<[^/].*?)(/?)(>)", "g");
+                retValue.append(elementRe.replace(line, "$1 pressgangeditorlinenumber='" + i + "'$2$3"));
+                retValue.append("\n");
+            }
+        }
+
+        return retValue.toString();
     }
 
     protected void beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {

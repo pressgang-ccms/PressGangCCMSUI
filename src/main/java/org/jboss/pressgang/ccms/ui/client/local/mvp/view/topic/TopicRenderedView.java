@@ -10,6 +10,7 @@ import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateView;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.resources.xsl.DocbookToHTML;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.logging.Logger;
 
@@ -33,14 +34,14 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
         LOGGER.info("ENTER TopicRenderedView()");
 
-        div.addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_DIV);
+        getDiv().addStyleName(CSSConstants.TopicView.TOPIC_RENDERED_VIEW_DIV);
         try {
             // Setting the stylesheet to transform with
             processor.importStyleSheet(DocbookToHTML.XSL);
             importSuccessful = true;
         } catch (XsltProcessingException e) {
             importSuccessful = false;
-            div.setHTML(PressGangCCMSUI.INSTANCE.TopicCouldNotBeRendered());
+            getDiv().setHTML(PressGangCCMSUI.INSTANCE.TopicCouldNotBeRendered());
         }
     }
 
@@ -50,7 +51,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     }
 
     @Override
-    public final void displayTopicRendered(@NotNull final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly, final boolean showImages) {
+    public final void displayTopicRendered(@Nullable final String topicXML, final boolean readOnly, final boolean showImages) {
 
         if (!importSuccessful) {
             return;
@@ -61,16 +62,20 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
             processor.setParameter("externalImages", showImages + "");
 
             // Setting the document to be transformed
-            processor.importSource(topic.getXml());
+            processor.importSource(topicXML == null ? "" : topicXML);
 
             // Getting the result
             final String resultString = processor.transform();
-            div.setHTML(resultString);
+            getDiv().setHTML(resultString);
 
-            this.getPanel().setWidget(div);
+            this.getPanel().setWidget(getDiv());
         } catch (@NotNull final XsltProcessingException ex) {
-            div.setHTML(PressGangCCMSUI.INSTANCE.TopicCouldNotBeRendered());
+            getDiv().setHTML(PressGangCCMSUI.INSTANCE.TopicCouldNotBeRendered());
         }
     }
 
+    @NotNull
+    public HTML getDiv() {
+        return div;
+    }
 }
