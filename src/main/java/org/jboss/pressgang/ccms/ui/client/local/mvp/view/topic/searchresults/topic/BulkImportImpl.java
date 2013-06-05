@@ -78,12 +78,16 @@ public class BulkImportImpl extends DialogBox implements TopicFilteredResultsAnd
 
     public void setLoading() {
         this.ok.setEnabled(false);
+        this.tagsView.getAdd().setEnabled(false);
         this.ok.setText(PressGangCCMSUI.INSTANCE.Loading());
+        this.tagsView.getAdd().setText(PressGangCCMSUI.INSTANCE.Loading());
     }
 
     public void setLoaded() {
         this.ok.setEnabled(true);
+        this.tagsView.getAdd().setEnabled(true);
         this.ok.setText(PressGangCCMSUI.INSTANCE.OK());
+        this.tagsView.getAdd().setText(PressGangCCMSUI.INSTANCE.Add());
     }
 
     /**

@@ -501,7 +501,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             }
 
             if (this.getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
-                title.append(": [" + id.toString() + "] " + displayTitle);
+                title.append(": " + displayTitle + " [" + id.toString() + "]");
             }
             getDisplay().getPageTitle().setText(title.toString());
         } finally {
