@@ -1,3 +1,9 @@
+.TopicRevisionMinorReleaseColumn, .TopicRevisionMajorReleaseColumn, .TopicRevisionNumberColumn,
+.TopicRevisionDateColumn, .TopicRevisionUserColumn, .TopicRevisionMessageColumn, .TopicRevisionViewColumn,
+.TopicRevisionDiffColumn {
+    white-space: normal;
+}
+
 .TopicTagViewSpinner {
     position: relative;
     margin: auto;

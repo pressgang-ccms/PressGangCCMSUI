@@ -328,6 +328,17 @@ public interface CSSConstants {
 
     }
 
+    interface TopicRevisionView {
+        String TOPIC_REVISION_NUMBER_COULMN  = "TopicRevisionNumberColumn";
+        String TOPIC_REVISION_DATE_COULMN = "TopicRevisionDateColumn";
+        String TOPIC_REVISION_MINOR_RELEASE_COULMN = "TopicRevisionMinorReleaseColumn";
+        String TOPIC_REVISION_MAJOR_RELEASE_COULMN = "TopicRevisionMajorReleaseColumn";
+        String TOPIC_REVISION_USER_COULMN = "TopicRevisionUserColumn";
+        String TOPIC_REVISION_MESSAGE_COULMN = "TopicRevisionMessageColumn";
+        String TOPIC_REVISION_VIEW_COULMN = "TopicRevisionViewColumn";
+        String TOPIC_REVISION_DIFF_COULMN = "TopicRevisionDiffColumn";
+    }
+
     /**
      *  Holds the styles that are applied to the topic's views.
      */

@@ -244,6 +244,15 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         results.addColumn(viewButton, PressGangCCMSUI.INSTANCE.View() + " / " + PressGangCCMSUI.INSTANCE.Edit());
         results.addColumn(diffButton, PressGangCCMSUI.INSTANCE.Diff());
 
+        results.addColumnStyleName(0, CSSConstants.TopicRevisionView.TOPIC_REVISION_NUMBER_COULMN);
+        results.addColumnStyleName(1, CSSConstants.TopicRevisionView.TOPIC_REVISION_DATE_COULMN);
+        results.addColumnStyleName(2, CSSConstants.TopicRevisionView.TOPIC_REVISION_MINOR_RELEASE_COULMN);
+        results.addColumnStyleName(3, CSSConstants.TopicRevisionView.TOPIC_REVISION_MAJOR_RELEASE_COULMN);
+        results.addColumnStyleName(4, CSSConstants.TopicRevisionView.TOPIC_REVISION_USER_COULMN);
+        results.addColumnStyleName(5, CSSConstants.TopicRevisionView.TOPIC_REVISION_MESSAGE_COULMN);
+        results.addColumnStyleName(6, CSSConstants.TopicRevisionView.TOPIC_REVISION_VIEW_COULMN);
+        results.addColumnStyleName(7, CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF_COULMN);
+
         searchResultsPanel.addStyleName(CSSConstants.TopicView.SEARCH_RESULTS_PANEL);
 
         searchResultsPanel.add(results);
