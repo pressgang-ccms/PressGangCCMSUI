@@ -639,3 +639,5 @@ pseudo-ops
 read-only
 s-record
 token-ring
+GTK
+hard-coded

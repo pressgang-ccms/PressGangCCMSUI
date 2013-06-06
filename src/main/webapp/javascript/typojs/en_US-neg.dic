@@ -1,4 +1,4 @@
-170
+173
 can't
 won't
 don't
@@ -40,10 +40,14 @@ firm-ware
 forwards
 GDBTK
 got
+gtk
+gpl
 grayscale
 hardcode
 harddisk
 hard-disk
+hard-drive
+harddrive
 he
 she
 hotadd
@@ -62,7 +66,7 @@ installer
 Tolapai
 interesting
 IPSec
-Itanium2
+itanium2
 iSeries
 it's
 its
@@ -72,9 +76,7 @@ kerberized
 kernelspace
 knowledgebase
 lan
-Lan
 LINUX
-linux
 manpage
 matrices
 meta-data
@@ -154,8 +156,9 @@ time-zone
 time-out
 tool-bar
 trouble-shoot
+unix-like
 UNIX-like
-Unset
+unset
 up-grade
 up-time
 useable
