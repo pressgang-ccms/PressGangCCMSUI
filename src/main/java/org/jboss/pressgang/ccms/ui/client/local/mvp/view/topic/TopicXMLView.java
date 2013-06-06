@@ -17,7 +17,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.keypresshandler.NumbersAndCom
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -38,7 +37,9 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
      * An instance of the typo.js library, to be passed to the instance of the ACE editor. This object seems to stick
      * around, and consumes a not insignificant amount of memory, so it is initialized once for the duration of the application.
      */
-    private static final TypoJS typoJS = new TypoJS();
+    private static final TypoJS positiveDictionary = new TypoJS();
+    private static final TypoJS negativeDictionary = new TypoJS("javascript/typojs/en_US-neg.dic", "javascript/typojs/en_US.aff", "en_US");
+
     private final HandlerSplitLayoutPanel verticalPanel = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
     private final TextArea xmlErrors = new TextArea();
     private final SimplePanel editorParent = new SimplePanel();
@@ -415,7 +416,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
     public void display(final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
 
         /* SearchUIProjectsEditor is a grid */
-        this.editor = new RESTTopicV1XMLEditor(readOnly, typoJS);
+        this.editor = new RESTTopicV1XMLEditor(readOnly, positiveDictionary, negativeDictionary);
         /* Initialize the driver with the top-level editor */
         this.driver.initialize(this.editor);
         /* Copy the data in the object into the UI */
