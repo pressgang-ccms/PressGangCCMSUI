@@ -26,7 +26,6 @@
         <slf4j.version>1.6.1</slf4j.version>
         <uel.impl.version>2.1.2-b04</uel.impl.version>
         <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
-        <jboss.spec.verison>3.0.1.Final</jboss.spec.verison>
     </properties>
 
     <repositories>
@@ -527,14 +526,6 @@
             </properties>
 
             <dependencies>
-                <dependency>
-                    <groupId>org.jboss.spec</groupId>
-                    <artifactId>jboss-javaee-all-6.0</artifactId>
-                    <version>${jboss.spec.verison}</version>
-                    <type>pom</type>
-                    <scope>provided</scope>
-                </dependency>
-
                 <dependency>
                     <groupId>org.jboss.errai</groupId>
                     <artifactId>errai-bus</artifactId>

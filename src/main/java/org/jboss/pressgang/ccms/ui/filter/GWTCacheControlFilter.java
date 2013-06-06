@@ -8,7 +8,6 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
  * @author Sean Flanigan <sflaniga@redhat.com>
  * @created 24 Feb 2009
  */
-@WebFilter(urlPatterns = "/*")
 public class GWTCacheControlFilter implements Filter {
 
    private static final long ONE_DAY_MS = 86400000L;
