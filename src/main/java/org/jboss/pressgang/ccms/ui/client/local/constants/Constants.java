@@ -9,7 +9,7 @@ public final class Constants {
     /**
      * The UI Version - yyyymmddhhmm.
      */
-    public static final String VERSION = "201306061016";
+    public static final String VERSION = "201306061025";
 
     /**
      * The maximum length of the title before it is truncated
