@@ -38,7 +38,7 @@ public class TopicXMLView extends BaseTemplateView implements TopicXMLPresenter.
      * around, and consumes a not insignificant amount of memory, so it is initialized once for the duration of the application.
      */
     private static final TypoJS positiveDictionary = new TypoJS();
-    private static final TypoJS negativeDictionary = new TypoJS("javascript/typojs/en_US-neg.dic", "javascript/typojs/en_US.aff", "en_US");
+    private static final TypoJS negativeDictionary = new TypoJS("javascript/typojs/en_US-neg.dic", "javascript/typojs/en_US-neg.aff", "en_US");
 
     private final HandlerSplitLayoutPanel verticalPanel = new HandlerSplitLayoutPanel(Constants.SPLIT_PANEL_DIVIDER_SIZE);
     private final TextArea xmlErrors = new TextArea();
