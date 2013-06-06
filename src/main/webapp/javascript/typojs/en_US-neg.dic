@@ -1,4 +1,4 @@
-179
+171
 can't
 won't
 don't
@@ -10,10 +10,9 @@ ia64
 alright
 and/or
 and\or
-Applix
+applix
 autodetect
 basically
-Bind
 bitrate
 bugfix
 builtin
@@ -42,8 +41,6 @@ firm-ware
 forwards
 GDBTK
 got
-gtk
-gpl
 grayscale
 hardcode
 harddisk
@@ -159,7 +156,6 @@ time-out
 tool-bar
 trouble-shoot
 unix-like
-UNIX-like
 unset
 up-grade
 up-time
@@ -174,8 +170,3 @@ videomode
 virtual-console
 want
 I
-gnome
-gimp
-grub
-posix
-ppp
