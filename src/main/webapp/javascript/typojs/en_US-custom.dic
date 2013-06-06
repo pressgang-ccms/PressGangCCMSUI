@@ -650,3 +650,7 @@ PHP
 PaaS
 POSIX
 PPP
+auto-detect
+back-end
+client-side
+comma-delimited
