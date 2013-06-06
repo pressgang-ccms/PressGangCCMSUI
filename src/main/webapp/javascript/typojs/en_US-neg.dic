@@ -1,4 +1,4 @@
-171
+174
 can't
 won't
 don't
@@ -39,7 +39,7 @@ dualboot
 essentially
 firm-ware
 forwards
-GDBTK
+gdbtk
 got
 grayscale
 hardcode
@@ -58,12 +58,12 @@ hot-swap
 hyperthreading
 hyper-threading
 hyperviser
-ia64
 nonsecure
 non-secure
 installer
-Tolapai
+tolapai
 interesting
+ipsec
 IPSec
 itanium2
 iSeries
@@ -81,13 +81,13 @@ matrices
 meta-data
 MS
 MSFT
-Montecito
+montecito
 mouse-button
 mousebutton
 ms-dos
 multi-processing
 nonsecure
-Objective-C
+objective-C
 objectoriented
 off-line
 on-line
@@ -97,6 +97,7 @@ opensource
 open-source
 orientate
 OS
+os
 over-ride
 plaintext
 plain-text
@@ -104,7 +105,7 @@ cleartext
 please
 plugin
 popup
-Postscript
+postscript
 PPC
 P-PC
 P-P-C
@@ -112,6 +113,8 @@ pseudoops
 pSeries
 pull-down
 quiescent
+ramdisk
+ram-disk
 RAMdisk
 RAM-disk
 re-boot
