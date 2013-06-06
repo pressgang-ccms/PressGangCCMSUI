@@ -1,10 +1,12 @@
-173
+179
 can't
 won't
 don't
 x86_64
 x86-64
 x64
+IA64
+ia64
 alright
 and/or
 and\or
@@ -172,3 +174,8 @@ videomode
 virtual-console
 want
 I
+gnome
+gimp
+grub
+posix
+ppp
