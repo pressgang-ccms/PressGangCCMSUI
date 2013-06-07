@@ -1,4 +1,9 @@
-self.addEventListener('message', function(e) { 
+/**
+ * A web worker that processes a chunk of the word list in the edits1() function from typo.js.
+ * Splitting the code out into a thread improves the performance of the function significantly
+ * when looking up large files.
+ */
+self.addEventListener('message', function(e) {
 	var words = e.data;
 	
 	var rv = [];
