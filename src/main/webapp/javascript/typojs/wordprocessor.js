@@ -7,7 +7,7 @@ self.addEventListener('message', function(e) {
 	var words = e.data;
 	
 	var rv = [];
-	var alphabet = "abcdefghijklmnopqrstuvwxyz-";
+	var alphabet = "abcdefghijklmnopqrstuvwxyz-'";
 	
 	for (var ii = 0, _iilen = words.length; ii < _iilen; ii++) {
 		var word = words[ii];
