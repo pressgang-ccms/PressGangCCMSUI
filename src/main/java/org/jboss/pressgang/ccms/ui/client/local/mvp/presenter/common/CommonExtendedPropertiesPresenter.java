@@ -206,23 +206,21 @@ public class CommonExtendedPropertiesPresenter
                 try {
                     LOGGER.log(Level.INFO, "ENTER CommonExtendedPropertiesPresenter.generateExistingProvider() EnhancedAsyncDataProvider.onRangeChanged()");
 
-                    getExistingProviderData().setStartRow(display.getVisibleRange().getStart());
-                    getExistingProviderData().setItems(new ArrayList<RESTAssignedPropertyTagCollectionItemV1>());
+                    if (entity.getProperties() != null) {
+                        getExistingProviderData().setStartRow(display.getVisibleRange().getStart());
+                        getExistingProviderData().setItems(new ArrayList<RESTAssignedPropertyTagCollectionItemV1>());
 
-                    /* Zero results can be a null list. Also selecting a new tag will reset getProviderData(). */
+                        /* Don't display removed tags */
+                        for (final RESTAssignedPropertyTagCollectionItemV1 propertyTagInTopic : entity.getProperties().returnExistingAddedAndUpdatedCollectionItems()) {
+                            getExistingProviderData().getItems().add(propertyTagInTopic);
+                        }
 
-                    checkState(entity.getProperties() != null, "The entity should have a collection of properties");
-                    checkState(getExistingProviderData().getItems() != null, "The existing data provider should have a valid collection of items");
+                        //Collections.sort(getExistingProviderData().getItems(), new RESTTagCategoryCollectionItemV1SortComparator());
 
-                    /* Don't display removed tags */
-                    for (final RESTAssignedPropertyTagCollectionItemV1 propertyTagInTopic : entity.getProperties().returnExistingAddedAndUpdatedCollectionItems()) {
-                        getExistingProviderData().getItems().add(propertyTagInTopic);
+                        displayNewFixedList(getExistingProviderData().getItems());
+                    } else {
+                        this.resetProvider();
                     }
-
-
-                    //Collections.sort(getExistingProviderData().getItems(), new RESTTagCategoryCollectionItemV1SortComparator());
-
-                    displayNewFixedList(getExistingProviderData().getItems());
                 } finally {
                     LOGGER.log(Level.INFO, "EXIT CommonExtendedPropertiesPresenter.generateExistingProvider() EnhancedAsyncDataProvider.onRangeChanged()");
                 }
@@ -254,7 +252,9 @@ public class CommonExtendedPropertiesPresenter
         try {
             LOGGER.log(Level.INFO, "ENTER CommonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");
 
-            @NotNull final BaseRestCallback<RESTPropertyTagCollectionV1, Display>  callback = new BaseRestCallback<RESTPropertyTagCollectionV1, Display>(display,
+            checkState(getDisplay().getPossibleChildrenProvider() != null, "There should be a valid possible children provider");
+
+            final BaseRestCallback<RESTPropertyTagCollectionV1, Display>  callback = new BaseRestCallback<RESTPropertyTagCollectionV1, Display>(display,
                     new BaseRestCallback.SuccessAction<RESTPropertyTagCollectionV1, Display>() {
                         @Override
                         public void doSuccessAction(@NotNull final RESTPropertyTagCollectionV1 retValue, @NotNull final Display display) {
@@ -266,13 +266,12 @@ public class CommonExtendedPropertiesPresenter
                             getPossibleChildrenProviderData().setSize(retValue.getItems().size());
 
                             /* Refresh the list */
-                            checkState(getDisplay().getPossibleChildrenProvider() != null, "There should be a valid possible children provider");
                             getDisplay().getPossibleChildrenProvider().displayNewFixedList(getPossibleChildrenProviderData().getItems());
                         }
                     });
 
             /* Redisplay the loading widget. updateRowCount(0, false) is used to display the cell table loading widget. */
-            getPossibleChildrenProviderData().reset();
+            getDisplay().getPossibleChildrenProvider().resetProvider();
             RESTCalls.getPropertyTags(callback);
         } finally {
             LOGGER.log(Level.INFO, "EXIT CommonExtendedPropertiesPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList()");

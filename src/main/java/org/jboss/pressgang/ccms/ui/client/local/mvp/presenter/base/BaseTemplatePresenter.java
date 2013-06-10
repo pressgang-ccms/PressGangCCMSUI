@@ -323,7 +323,13 @@ abstract public class BaseTemplatePresenter implements BaseTemplatePresenterInte
     }
 
     /**
-     * Initialize the common elements of the view.
+     * Binding is done when the view is loaded. The code here doesn't reference the data in a selected entity (it is
+     * quite possible that an entity has not been selected yet).
+     *
+     * Binding is done once.
+     *
+     * The display methods are used to display the actual data.
+     *
      * @param topicId The help topic associated with the view
      * @param pageId The id of the view
      * @param display The view that this presenter is associated with

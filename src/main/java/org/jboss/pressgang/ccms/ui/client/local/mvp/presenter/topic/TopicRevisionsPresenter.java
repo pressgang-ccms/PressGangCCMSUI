@@ -11,6 +11,7 @@ import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.events.dataevents.EntityListReceived;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.BaseTemplatePresenter;
+import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.base.orderedchildren.BaseOrderedChildrenPresenter;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseCustomViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.view.base.BaseTemplateViewInterface;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
@@ -23,7 +24,11 @@ import org.jetbrains.annotations.Nullable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
 import static org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities.clearContainerAndAddTopLevelPanel;
 
 @Dependent
@@ -53,6 +58,11 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
          */
         void setRevisionTopic(RESTTopicV1 revisionTopic);
     }
+
+    /**
+     * A logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(TopicRevisionsPresenter.class.getName());
 
     /**
      * History token
@@ -130,9 +140,12 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
                 final int length = list.getVisibleRange().getLength();
                 final int end = start + length;
 
+                this.resetProvider();
+
                 RESTCalls.getTopicWithRevisions(callback, id, start, end);
             }
         };
         return provider;
     }
+
 }

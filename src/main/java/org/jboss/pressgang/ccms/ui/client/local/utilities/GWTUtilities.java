@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.utilities;
 
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
@@ -28,6 +29,16 @@ final public class GWTUtilities {
     private static final String COMMA = ",";
 
     private GWTUtilities() {
+    }
+
+    /**
+     * Sets the browser's page title
+     * @param newTitle The page title
+     */
+    public static void setBrowserWindowTitle (@NotNull final String newTitle) {
+        if (Document.get() != null) {
+            Document.get().setTitle (newTitle);
+        }
     }
 
     /**

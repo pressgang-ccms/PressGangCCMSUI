@@ -115,6 +115,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      */
     private boolean propertyTagsLoadInitiated = false;
     /*
+        True when the property tags tab is opened for the first time, and the
+        elements are loaded.
+     */
+    private boolean allPropertyTagsLoadInitiated = false;
+    /*
         True when the tags tab or bulk import dialogis opened for the first time, and the
         elements are loaded.
      */
@@ -499,12 +504,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         viewLatestTopicRevision();
 
         revisionsLoadInitiated = false;
-        resetRevisionsTable();
-
         tagsLoadInitiated = false;
-
         propertyTagsLoadInitiated = false;
-        resetPropertyTagsTable();
     }
 
     /**
@@ -519,55 +520,54 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTags()");
 
-            if (!tagsLoadInitiated) {
+            final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultsComponent().getProviderData().getSelectedItem();
+            final RESTTopicV1 displayedTopic= getDisplayedTopic();
+
+            /* If this is a new topic, the selectedItem will be null, and there will not be any tags to get */
+            if (!tagsLoadInitiated && selectedItem != null) {
+
                 tagsLoadInitiated = true;
 
-                final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultsComponent().getProviderData().getSelectedItem();
-
                 /* Initiate the REST calls */
-                final Integer id = getDisplayedTopic().getId();
-                final Integer revision = getDisplayedTopic().getRevision();
+                final Integer id = displayedTopic.getId();
+                final Integer revision = displayedTopic.getRevision();
 
-                /* If this is a new topic, the selectedItem will be null, and there will not be any tags to get */
-                if (selectedItem != null) {
+                /* A callback to respond to a request for a topic with the tags expanded */
+                final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
+                        getTopicTagsPresenter().getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
+                    @Override
+                    public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
+                        try {
+                            LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction()");
 
-                    /* A callback to respond to a request for a topic with the tags expanded */
-                    final RESTCalls.RESTCallback<RESTTopicV1> topicWithTagsCallback = new BaseRestCallback<RESTTopicV1, TopicTagsPresenter.Display>(
-                            getTopicTagsPresenter().getDisplay(), new BaseRestCallback.SuccessAction<RESTTopicV1, TopicTagsPresenter.Display>() {
-                        @Override
-                        public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final TopicTagsPresenter.Display display) {
-                            try {
-                                LOGGER.log(Level.INFO, "ENTER BaseTopicFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction()");
+                            /*
+                                There is a small chance that in between loading the topic's details and
+                                loading its tags, a new revision was created.
 
-                                /*
-                                    There is a small chance that in between loading the topic's details and
-                                    loading its tags, a new revision was created.
+                                So, what do we do? If changes are made to the topic, then
+                                the user will be warned that they have overwritten a revision created
+                                in the mean time. In fact seeing the latest tag relationships could
+                                mean that the user doesn't try to add conflicting tags (like adding
+                                a tag from a mutually exclusive category when one already exists).
 
-                                    So, what do we do? If changes are made to the topic, then
-                                    the user will be warned that they have overwritten a revision created
-                                    in the mean time. In fact seeing the latest tag relationships could
-                                    mean that the user doesn't try to add conflicting tags (like adding
-                                    a tag from a mutually exclusive category when one already exists).
+                                This check is left in comments just to show that a conflict is possible.
+                            */
+                            /*if (!retValue.getRevision().equals(revision)) {
+                                Window.alert("The topics details and tags are not in sync.");
+                            }*/
 
-                                    This check is left in comments just to show that a conflict is possible.
-                                */
-                                /*if (!retValue.getRevision().equals(revision)) {
-                                    Window.alert("The topics details and tags are not in sync.");
-                                }*/
+                            /* copy the revisions into the displayed Topic */
+                            getDisplayedTopic().setTags(retValue.getTags());
 
-                                /* copy the revisions into the displayed Topic */
-                                getDisplayedTopic().setTags(retValue.getTags());
-
-                                /* update the view */
-                                initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicTagsPresenter().getDisplay()}));
-                            } finally {
-                                LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction()");
-                            }
+                            /* update the view */
+                            initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicTagsPresenter().getDisplay()}));
+                        } finally {
+                            LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTags() topicWithTagsCallback.doSuccessAction()");
                         }
-                    });
+                    }
+                });
 
-                    RESTCalls.getTopicWithTags(topicWithTagsCallback, id);
-                }
+                RESTCalls.getTopicRevisionWithTags(topicWithTagsCallback, id, revision);
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT BaseTopicFilteredResultsAndDetailsPresenter.loadTags()");
@@ -598,14 +598,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             public void doSuccessAction(@NotNull final RESTTopicV1 retValue, @NotNull final Display display) {
                                 displayRevision(retValue);
 
-                                        /*
-                                            If the revision presenter has a valid provider data, then it has loaded and displayed
-                                            the revisions (loading this revision and the general revision list are async processes,
-                                             so we don't know which will finish fisrt).
+                                /*
+                                    If the revision presenter has a valid provider data, then it has loaded and displayed
+                                    the revisions (loading this revision and the general revision list are async processes,
+                                     so we don't know which will finish fisrt).
 
-                                             If that is the case, we need to redisplay the list to reflect the fact that we are displaying
-                                             a new revision.
-                                         */
+                                     If that is the case, we need to redisplay the list to reflect the fact that we are displaying
+                                     a new revision.
+                                 */
                                 if (topicRevisionsComponent.getProviderData().isValid()) {
                                     topicRevisionsComponent.getDisplay().getProvider().displayAsynchronousList(topicRevisionsComponent.getProviderData().getItems(), topicRevisionsComponent.getProviderData().getSize(), topicRevisionsComponent.getProviderData().getStartRow());
                                 }
@@ -622,30 +622,29 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         loadTopicRevision();
     }
 
-    private void resetPropertyTagsTable() {
-        /* set the revisions to show the loading widget */
-        if (this.getTopicPropertyTagPresenter().getDisplay().getExistingChildrenProvider() != null) {
-            this.getTopicPropertyTagPresenter().getDisplay().getExistingChildrenProvider().resetProvider();
-        }
-
-        if (this.getTopicPropertyTagPresenter().getDisplay().getPossibleChildrenProvider() != null) {
-            this.getTopicPropertyTagPresenter().getDisplay().getPossibleChildrenProvider().resetProvider();
-        }
-    }
-
+    /**
+     * This method will load the complete list of property tags (and set allPropertyTagsLoadInitiated to true), and load
+     * the property tags assigned to the latest revision of the topic (and set propertyTagsLoadInitiated to true).
+     */
     private void loadPropertyTags() {
         checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "There should be a selected collection item.");
         checkState(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
-        if (!propertyTagsLoadInitiated) {
-            propertyTagsLoadInitiated = true;
-            resetPropertyTagsTable();
+        final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultsComponent().getProviderData().getSelectedItem();
+        final RESTTopicV1 displayedItem = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
+        final RESTTopicV1 displayedTopic= getDisplayedTopic();
+             /* Are we displaying the latest version of the topic i.e. the one that doesn't have its tags loaded? */
+        final boolean displayingLatest =  displayedItem == displayedTopic;
 
-            final RESTTopicV1 displayedItem = getSearchResultsComponent().getProviderData().getDisplayedItem().getItem();
-            final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultsComponent().getProviderData().getSelectedItem();
+        if (!allPropertyTagsLoadInitiated) {
+            allPropertyTagsLoadInitiated = true;
 
             /* Get a new collection of property tags */
             this.getTopicPropertyTagPresenter().refreshPossibleChildrenDataFromRESTAndRedisplayList(displayedItem);
+        }
+
+        if (!propertyTagsLoadInitiated && displayingLatest) {
+            propertyTagsLoadInitiated = true;
 
             /* if getSearchResultsComponent().getProviderData().getSelectedItem() == null, then we are displaying a new topic */
             if (selectedItem != null) {
@@ -664,10 +663,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                                         getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().setProperties(retValue.getProperties());
 
-                                        getTopicPropertyTagPresenter().refreshExistingChildList(displayedItem);
-
                                         Collections.sort(getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getProperties().getItems(),
                                                 new RESTAssignedPropertyTagCollectionItemV1NameAndRelationshipIDSort());
+
+                                        /* We have new data to display */
+                                        initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicPropertyTagPresenter().getDisplay()}));
                                     }
                                 }
                 );
@@ -679,20 +679,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         }
     }
 
-    private void resetRevisionsTable() {
-        /* set the revisions to show the loading widget */
-        if (topicRevisionsComponent.getDisplay().getProvider() != null) {
-            topicRevisionsComponent.getDisplay().getProvider().resetProvider();
-        }
-    }
-
     /**
      * This is called when the revisions tab is opened for the first time.
      */
     private void loadRevisions() {
         if (!revisionsLoadInitiated) {
             revisionsLoadInitiated = true;
-            resetRevisionsTable();
 
             /* if getSearchResultsComponent().getProviderData().getSelectedItem() == null, then we are displaying a new topic */
             if (this.getSearchResultsComponent().getProviderData().getSelectedItem() != null) {
@@ -759,6 +751,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             /* Set the projects combo box as the focused element */
             if (displayedView == this.getTopicTagsPresenter().getDisplay() && getTopicTagsPresenter().getDisplay().getProjectsList().isAttached()) {
+
                 loadTags();
                 loadAllTags();
                 getTopicTagsPresenter().getDisplay().getProjectsList().getElement().focus();
@@ -1346,6 +1339,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             /*
+                refresh the list of assigned property tags
+             */
+            if (viewIsInFilter(filter, getTopicPropertyTagPresenter().getDisplay())) {
+                getTopicPropertyTagPresenter().refreshExistingChildList(getDisplayedTopic());
+            }
+
+            /*
                 The revision display always displays details from the main topic, and not the selected revision.
             */
             if (viewIsInFilter(filter, topicRevisionsComponent.getDisplay())) {
@@ -1780,10 +1780,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             initializeViews();
 
             /* Load the tags and bugs */
+            this.tagsLoadInitiated = false;
             loadTags();
-
-            /* Redisplay the list of property tags */
-            getTopicPropertyTagPresenter().getDisplay().setExistingChildrenProvider(getTopicPropertyTagPresenter().generateExistingProvider(getDisplayedTopic()));
 
             /* Display the revisions view (which will also update buttons like Save) */
             switchView(topicRevisionsComponent.getDisplay());

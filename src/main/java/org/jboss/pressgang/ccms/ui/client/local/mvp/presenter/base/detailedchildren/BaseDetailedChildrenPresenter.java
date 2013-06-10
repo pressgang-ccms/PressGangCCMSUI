@@ -17,6 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.google.common.base.Preconditions.checkState;
+
 /**
  * @see BaseDetailedChildrenPresenterInterface
  */
@@ -132,9 +134,7 @@ abstract public class BaseDetailedChildrenPresenter<
         try {
             LOGGER.log(Level.INFO, "ENTER BaseOrderedChildrenPresenter.refreshExistingChildList()");
 
-            if (this.display == null) {
-                throw new NullPointerException("BaseOrderedChildrenPresenter.refreshExistingChildList(): display cannot be null");
-            }
+            checkState(display != null, "display cannot be null");
 
             this.display.setExistingChildrenProvider(generateExistingProvider(parent));
         } finally {
