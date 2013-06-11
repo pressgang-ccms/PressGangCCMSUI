@@ -334,11 +334,22 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         this.getPanel().setWidget(searchResultsPanel);
     }
 
+    /**
+     * Display a mergely diff viewer.
+     *
+     * For mergely to display properly, it has to be attached when the parent element is attached to the DOM. If you
+     * attach megely when the parent is detached, it will not resize properly.
+     *
+     * @param lhs The text for the left hand side
+     * @param lhsReadOnly true if the left hand side is read only, and false otherwise
+     * @param rhs The text for the right hand side
+     */
     @Override
     public void displayDiff(@NotNull final String lhs, boolean lhsReadOnly, @NotNull final String rhs) {
+        diffParent.setWidget(null);
         mergely = new Mergely(lhs, lhsReadOnly, rhs, true, true);
-        diffParent.setWidget(mergely);
         this.getPanel().setWidget(diffPanel);
+        diffParent.setWidget(mergely);
     }
 
     @Override
