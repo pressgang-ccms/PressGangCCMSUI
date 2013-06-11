@@ -13,6 +13,7 @@
     <inherits name="org.jboss.pressgang.ccms.rest.v1"/>
     <inherits name="com.google.gwt.xml.XML"/>
     <inherits name="hu.szaboaz.gwt.xslt.XSLT"/>
+    <inherits name="org.jboss.pressgang.jquery.jquery"/>
     <inherits name='edu.ycp.cs.dh.acegwt.AceGWT'/>
     <inherits name='org.jboss.pressgang.mergelygwt.Mergely'/>
     <inherits name="com.google.gwt.user.client.ui"/>

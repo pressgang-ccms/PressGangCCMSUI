@@ -49,7 +49,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
 
     private final DockLayoutPanel diffPanel = new DockLayoutPanel(Style.Unit.PX);
-    private final SimplePanel diffParent = new SimplePanel();
+    private final SimpleLayoutPanel diffParent = new SimpleLayoutPanel();
 
     private final PushButton done = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Done());
 
