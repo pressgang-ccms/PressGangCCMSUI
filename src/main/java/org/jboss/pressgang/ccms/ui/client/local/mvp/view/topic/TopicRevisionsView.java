@@ -270,10 +270,10 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         pager.setDisplay(results);
 
         final HorizontalPanel buttonPanel = new HorizontalPanel();
-        buttonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+        buttonPanel.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF_BUTTON_PANEL);
         buttonPanel.add(done);
 
-        diffPanel.addSouth(buttonPanel, 48);
+        diffPanel.addSouth(buttonPanel, 40);
         diffPanel.add(diffParent);
         diffPanel.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF_PANEL);
 

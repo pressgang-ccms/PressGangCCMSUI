@@ -338,6 +338,7 @@ public interface CSSConstants {
         String TOPIC_REVISION_VIEW_COULMN = "TopicRevisionViewColumn";
         String TOPIC_REVISION_DIFF_COULMN = "TopicRevisionDiffColumn";
         String TOPIC_REVISION_DIFF_PANEL = "TopicRevisionDiffPanel";
+        String TOPIC_REVISION_DIFF_BUTTON_PANEL = "TopicRevisionDiffButtonPanel";
     }
 
     /**
