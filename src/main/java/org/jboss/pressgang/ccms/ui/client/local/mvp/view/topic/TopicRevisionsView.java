@@ -1,6 +1,7 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -47,9 +48,12 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     private final DisableableButtonCell diffButtonCell = new DisableableButtonCell();
 
 
-    private final FlexTable diffPanel = new FlexTable();
+    private final DockLayoutPanel diffPanel = new DockLayoutPanel(Style.Unit.PX);
+    private final SimplePanel diffParent = new SimplePanel();
 
     private final PushButton done = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Done());
+
+    private Mergely mergely;
 
     /**
      * The panel that holds the table and pager.
@@ -265,7 +269,12 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
         pager.setDisplay(results);
 
-        diffPanel.setWidget(1, 0, done);
+        final HorizontalPanel buttonPanel = new HorizontalPanel();
+        buttonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+        buttonPanel.add(done);
+
+        diffPanel.addSouth(buttonPanel, 48);
+        diffPanel.add(diffParent);
         diffPanel.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF_PANEL);
 
         this.getPanel().setWidget(searchResultsPanel);
@@ -326,13 +335,20 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     }
 
     @Override
-    public void displayDiff(@NotNull final String lhs, boolean lhsReadOnly,  @NotNull final String rhs) {
-        final Mergely mergely = new Mergely(lhs, lhsReadOnly, rhs, true, true);
-        diffPanel.setWidget(0, 0, mergely);
+    public void displayDiff(@NotNull final String lhs, boolean lhsReadOnly, @NotNull final String rhs) {
+        mergely = new Mergely(lhs, lhsReadOnly, rhs, true, true);
+        diffParent.setWidget(mergely);
         this.getPanel().setWidget(diffPanel);
     }
 
+    @Override
     public PushButton getDone() {
         return done;
+    }
+
+    @Override
+    @Nullable
+    public Mergely getMergely() {
+        return mergely;
     }
 }

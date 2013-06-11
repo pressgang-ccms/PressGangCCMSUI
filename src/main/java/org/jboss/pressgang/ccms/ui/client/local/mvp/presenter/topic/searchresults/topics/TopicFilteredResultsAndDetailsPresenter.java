@@ -800,7 +800,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             topicRevisionsComponent.getDisplay().getDone().addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
+                    if (getDisplayedTopic().getRevision() == getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision()) {
+                        checkState(topicRevisionsComponent.getDisplay().getMergely() != null, "mergely should not be null");
+                        final String lhs = topicRevisionsComponent.getDisplay().getMergely().getLhs();
+                        getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().setXml(lhs);
+                        initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{topicRevisionsComponent.getDisplay()}));
+                    }
                     topicRevisionsComponent.getDisplay().displayRevisions();
+
                 }
             });
 

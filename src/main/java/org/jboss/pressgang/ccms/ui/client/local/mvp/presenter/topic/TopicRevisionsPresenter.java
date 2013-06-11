@@ -19,6 +19,7 @@ import org.jboss.pressgang.ccms.ui.client.local.restcalls.BaseRestCallback;
 import org.jboss.pressgang.ccms.ui.client.local.restcalls.RESTCalls;
 import org.jboss.pressgang.ccms.ui.client.local.ui.ProviderUpdateData;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jboss.pressgang.mergelygwt.client.Mergely;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,6 +61,7 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         void setRevisionTopic(RESTTopicV1 revisionTopic);
 
         PushButton getDone();
+        Mergely getMergely();
         void displayRevisions();
         void displayDiff(String lhs, boolean lhsReadOnly, String rhs);
     }
