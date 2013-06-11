@@ -8,9 +8,7 @@ import com.google.gwt.user.cellview.client.CellTable.Resources;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.DisableableButtonCell;
-import com.google.gwt.user.client.ui.DisableableCheckboxCell;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.*;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
@@ -22,6 +20,7 @@ import org.jboss.pressgang.ccms.ui.client.local.resources.css.TableResources;
 import org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI;
 import org.jboss.pressgang.ccms.ui.client.local.ui.UIUtilities;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
+import org.jboss.pressgang.mergelygwt.client.Mergely;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,6 +45,12 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
      * A button used when rendering the diff button column.
      */
     private final DisableableButtonCell diffButtonCell = new DisableableButtonCell();
+
+
+    private final FlexTable diffPanel = new FlexTable();
+
+    private final PushButton done = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Done());
+
     /**
      * The panel that holds the table and pager.
      */
@@ -260,7 +265,10 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
         pager.setDisplay(results);
 
-        this.getPanel().add(searchResultsPanel);
+        diffPanel.setWidget(1, 0, done);
+        diffPanel.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF_PANEL);
+
+        this.getPanel().setWidget(searchResultsPanel);
     }
 
     @NotNull
@@ -312,5 +320,19 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         this.mainTopic = topic;
     }
 
+    @Override
+    public void displayRevisions() {
+        this.getPanel().setWidget(searchResultsPanel);
+    }
 
+    @Override
+    public void displayDiff(@NotNull final String lhs, boolean lhsReadOnly,  @NotNull final String rhs) {
+        final Mergely mergely = new Mergely(lhs, lhsReadOnly, rhs, true, true);
+        diffPanel.setWidget(0, 0, mergely);
+        this.getPanel().setWidget(diffPanel);
+    }
+
+    public PushButton getDone() {
+        return done;
+    }
 }

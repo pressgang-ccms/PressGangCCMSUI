@@ -100,6 +100,7 @@
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/jackson/jackson-jaxrs/1.8.5/jackson-jaxrs-1.8.5.jar" output-file-name="jackson-jaxrs-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/joda-time/joda-time/2.1/joda-time-2.1.jar" output-file-name="joda-time-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/acegwt-client/1.0-SNAPSHOT/acegwt-client-1.0-20130610.024906-60.jar" output-file-name="acegwt-client-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/mergelygwt-client/1.0-SNAPSHOT/mergelygwt-client-1.0-SNAPSHOT.jar" output-file-name="mergelygwt-client-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/vectomatic/lib-gwt-file/0.3.1/lib-gwt-file-0.3.1.jar" output-file-name="lib-gwt-file-.jar" />
         </element>
       </element>

@@ -330,6 +330,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     @Override
     public void close() {
         timer.cancel();
+        GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.PressGangCCMS());
     }
 
     private void bindRenderedViewClicks() {
@@ -500,7 +501,18 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     @Override
     protected void preLoadAdditionalDisplayedItemData() {
-       /* Disable the topic revision view */
+        final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultsComponent().getProviderData().getSelectedItem();
+
+        checkState(selectedItem != null, "A collection item should be selected");
+        checkState(selectedItem.getItem() != null, "A collection item should be selected and have a valid item");
+
+        if (selectedItem.getItem().getId() != null) {
+            GWTUtilities.setBrowserWindowTitle(selectedItem.getItem().getId() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
+        } else {
+            GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.New() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
+        }
+
+        /* Disable the topic revision view */
         viewLatestTopicRevision();
 
         revisionsLoadInitiated = false;
@@ -784,6 +796,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     protected void postBindActionButtons() {
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.postBindActionButtons()");
+
+            topicRevisionsComponent.getDisplay().getDone().addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
+                    topicRevisionsComponent.getDisplay().displayRevisions();
+                }
+            });
 
             /* Build up a click handler to save the topic */
             final ClickHandler saveClickHandler = new ClickHandler() {
@@ -1692,43 +1711,46 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
                                     checkState(getDisplayedTopic() != null, "There should be a displayed item.");
 
-                                    if (getDisplayedTopic() != null) {
-                                        final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID()
-                                                + ": "
-                                                + retValue.getId()
-                                                + " "
-                                                + PressGangCCMSUI.INSTANCE.TopicRevision()
-                                                + ": "
-                                                + retValue.getRevision().toString()
-                                                + " "
-                                                + PressGangCCMSUI.INSTANCE.RevisionDate()
-                                                + ": "
-                                                + DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(
-                                                retValue.getLastModified());
+                                    final boolean lhsReadonly = getDisplayedTopic().getRevision() != getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision();
 
-                                        final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID()
-                                                + ": "
-                                                + getDisplayedTopic().getId()
-                                                + " "
-                                                + PressGangCCMSUI.INSTANCE.TopicRevision()
-                                                + ": "
-                                                + getDisplayedTopic().getRevision().toString()
-                                                + " "
-                                                + PressGangCCMSUI.INSTANCE.RevisionDate()
-                                                + ": "
-                                                + DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(
-                                                getDisplayedTopic().getLastModified());
+                                    topicRevisionsComponent.getDisplay().displayDiff(getDisplayedTopic().getXml(), lhsReadonly, retValue.getXml());
 
-                                        /* See if the topic contains valid XML or not */
-                                        boolean isXML = true;
-                                        try {
-                                            XMLParser.parse(getDisplayedTopic().getXml());
-                                        } catch (@NotNull final DOMParseException ex) {
-                                            isXML = false;
-                                        }
+                                    /* final String retValueLabel = PressGangCCMSUI.INSTANCE.TopicID()
+                                            + ": "
+                                            + retValue.getId()
+                                            + " "
+                                            + PressGangCCMSUI.INSTANCE.TopicRevision()
+                                            + ": "
+                                            + retValue.getRevision().toString()
+                                            + " "
+                                            + PressGangCCMSUI.INSTANCE.RevisionDate()
+                                            + ": "
+                                            + DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(
+                                            retValue.getLastModified());
 
-                                        GWTUtilities.displayDiff(retValue.getXml(), retValueLabel, getDisplayedTopic().getXml(), sourceTopicLabel, isXML);
+                                    final String sourceTopicLabel = PressGangCCMSUI.INSTANCE.TopicID()
+                                            + ": "
+                                            + getDisplayedTopic().getId()
+                                            + " "
+                                            + PressGangCCMSUI.INSTANCE.TopicRevision()
+                                            + ": "
+                                            + getDisplayedTopic().getRevision().toString()
+                                            + " "
+                                            + PressGangCCMSUI.INSTANCE.RevisionDate()
+                                            + ": "
+                                            + DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_FULL).format(
+                                            getDisplayedTopic().getLastModified());
+
+                                    // See if the topic contains valid XML or not
+                                    boolean isXML = true;
+                                    try {
+                                        XMLParser.parse(getDisplayedTopic().getXml());
+                                    } catch (@NotNull final DOMParseException ex) {
+                                        isXML = false;
                                     }
+
+                                    GWTUtilities.displayDiff(retValue.getXml(), retValueLabel, getDisplayedTopic().getXml(), sourceTopicLabel, isXML); */
+
                                 }
                             });
                     RESTCalls.getTopicRevision(callback, revisionTopic.getItem().getId(), revisionTopic.getItem().getRevision());

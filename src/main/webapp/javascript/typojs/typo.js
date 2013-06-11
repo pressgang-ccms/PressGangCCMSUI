@@ -619,7 +619,6 @@ Typo.prototype = {
 		}
 
 		var self = this;
-		self.alphabet = "abcdefghijklmnopqrstuvwxyz";
 
 		/*
 		 if (!self.alphabet) {

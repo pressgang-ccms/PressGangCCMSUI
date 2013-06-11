@@ -4,6 +4,7 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.view.client.HasData;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionItemV1;
@@ -57,6 +58,10 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
          * @param revisionTopic The currently selected revision topic.
          */
         void setRevisionTopic(RESTTopicV1 revisionTopic);
+
+        PushButton getDone();
+        void displayRevisions();
+        void displayDiff(String lhs, boolean lhsReadOnly, String rhs);
     }
 
     /**
