@@ -887,7 +887,7 @@ jQuery.extend(Mgly.mergely.prototype, {
 			}
 			
 			var ls, le, rs, re;
-			if (this.editor[editor_name1].getOption('lineWrapping') || this.editor[editor_name1].getOption('lineWrapping')) {
+			if (this.editor[editor_name1].getOption('lineWrapping') || this.editor[editor_name2].getOption('lineWrapping')) {
 				// If using line-wrapping, we must get the height of the line
 				var tls = this.editor[editor_name1].cursorCoords({line: change['lhs-line-from'], ch: 0}, 'page');
 				var lhssh = this.editor[editor_name1].getLineHandle(change['lhs-line-from']);

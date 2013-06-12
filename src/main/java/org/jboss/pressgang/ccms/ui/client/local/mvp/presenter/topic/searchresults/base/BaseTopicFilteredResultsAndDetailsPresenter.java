@@ -663,6 +663,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 public void onClick(@NotNull final ClickEvent event) {
                     setDisplayingSearchResults(!isDisplayingSearchResults());
                     initializeDisplay();
+                    getDisplay().getSplitPanel().onResize();
                 }
             };
 
