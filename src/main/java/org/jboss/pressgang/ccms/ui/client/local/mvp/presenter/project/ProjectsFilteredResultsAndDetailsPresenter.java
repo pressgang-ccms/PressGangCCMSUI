@@ -128,11 +128,11 @@ public class ProjectsFilteredResultsAndDetailsPresenter
     @Override
     public void bindSearchAndEditExtended(final int topicId, @NotNull final String pageId, @NotNull final String queryString) {
         /* A call back used to get a fresh copy of the entity that was selected */
-        @NotNull final GetNewEntityCallback<RESTProjectV1> getNewEntityCallback = new GetNewEntityCallback<RESTProjectV1>() {
+        final GetNewEntityCallback<RESTProjectV1> getNewEntityCallback = new GetNewEntityCallback<RESTProjectV1>() {
 
             @Override
             public void getNewEntity(@NotNull final RESTProjectV1 selectedEntity, @NotNull final DisplayNewEntityCallback<RESTProjectV1> displayCallback) {
-                @NotNull final RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, BaseTemplateViewInterface>(display,
+                final RESTCallback<RESTProjectV1> callback = new BaseRestCallback<RESTProjectV1, BaseTemplateViewInterface>(display,
                         new BaseRestCallback.SuccessAction<RESTProjectV1, BaseTemplateViewInterface>() {
                             @Override
                             public void doSuccessAction(@NotNull final RESTProjectV1 retValue, @NotNull final BaseTemplateViewInterface display) {
@@ -175,7 +175,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
                         checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
                         checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags() != null, "The displayed collection item to reference a valid entity and have a valid tags collection.");
 
-                        @NotNull final RESTTagV1 newChild = new RESTTagV1();
+                        final RESTTagV1 newChild = new RESTTagV1();
                         newChild.setId(copy.getItem().getId());
                         newChild.setName(copy.getItem().getName());
                         filteredResultsComponent.getProviderData().getDisplayedItem().getItem().getTags().addNewItem(newChild);
@@ -220,7 +220,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
         /**
          * A click handler used to display the project fields view
          */
-        @NotNull final ClickHandler projectDetailsClickHandler = new ClickHandler() {
+        final ClickHandler projectDetailsClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 switchView(resultComponent.getDisplay());
@@ -231,7 +231,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
         /**
          * A click handler used to display the project tags view
          */
-        @NotNull final ClickHandler projectTagsClickHandler = new ClickHandler() {
+        final ClickHandler projectTagsClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 switchView(tagComponent.getDisplay());
@@ -242,7 +242,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
         /**
          * A click handler used to save any changes to the project
          */
-        @NotNull final ClickHandler saveClickHandler = new ClickHandler() {
+        final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
@@ -353,7 +353,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
                 final RESTProjectV1 displayedEntity = new RESTProjectV1();
                 displayedEntity.setId(Constants.NULL_ID);
                 displayedEntity.setTags(new RESTTagCollectionV1());
-                @final RESTProjectCollectionItemV1 displayedTagWrapper = new RESTProjectCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
+                final RESTProjectCollectionItemV1 displayedTagWrapper = new RESTProjectCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
 
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
@@ -435,7 +435,7 @@ public class ProjectsFilteredResultsAndDetailsPresenter
         checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
         checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed collection item to reference a valid entity.");
 
-        @NotNull final List<BaseCustomViewInterface<RESTProjectV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTProjectV1>>();
+        final List<BaseCustomViewInterface<RESTProjectV1>> displayableViews = new ArrayList<BaseCustomViewInterface<RESTProjectV1>>();
         displayableViews.add(resultComponent.getDisplay());
         displayableViews.add(tagComponent.getDisplay());
 
