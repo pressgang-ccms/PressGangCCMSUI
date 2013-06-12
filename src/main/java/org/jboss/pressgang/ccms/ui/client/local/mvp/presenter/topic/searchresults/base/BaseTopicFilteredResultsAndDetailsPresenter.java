@@ -1,5 +1,6 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.base;
 
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -663,7 +664,19 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 public void onClick(@NotNull final ClickEvent event) {
                     setDisplayingSearchResults(!isDisplayingSearchResults());
                     initializeDisplay();
-                    getDisplay().getSplitPanel().onResize();
+
+                    /*
+                        Elements like the ace editor and mergely diff viewer need to get
+                        an onResize event so they can be sized appropriately. For reasons that
+                        I have not yet worked out, this can only be done after control has been
+                        handed back to the browser loop (which is when scheduleDeferred runs).
+                     */
+                    Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                        @Override
+                        public void execute() {
+                            getDisplay().getSplitPanel().onResize();
+                        }
+                    });
                 }
             };
 

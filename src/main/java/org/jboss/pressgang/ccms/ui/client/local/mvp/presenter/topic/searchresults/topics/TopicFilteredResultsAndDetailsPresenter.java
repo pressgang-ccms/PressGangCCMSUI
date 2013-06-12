@@ -501,13 +501,13 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     @Override
     protected void preLoadAdditionalDisplayedItemData() {
-        final RESTTopicCollectionItemV1 selectedItem = this.getSearchResultsComponent().getProviderData().getSelectedItem();
+        final RESTTopicCollectionItemV1 displayedItem = this.getSearchResultsComponent().getProviderData().getDisplayedItem();
 
-        checkState(selectedItem != null, "A collection item should be selected");
-        checkState(selectedItem.getItem() != null, "A collection item should be selected and have a valid item");
+        checkState(displayedItem != null, "A collection item should be selected");
+        checkState(displayedItem.getItem() != null, "A collection item should be selected and have a valid item");
 
-        if (selectedItem.getItem().getId() != null) {
-            GWTUtilities.setBrowserWindowTitle(selectedItem.getItem().getId() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
+        if (displayedItem.getItem().getId() != null) {
+            GWTUtilities.setBrowserWindowTitle(displayedItem.getItem().getId() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
         } else {
             GWTUtilities.setBrowserWindowTitle(PressGangCCMSUI.INSTANCE.New() + " - " + PressGangCCMSUI.INSTANCE.PressGangCCMS());
         }
