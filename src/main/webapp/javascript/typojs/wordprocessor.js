@@ -57,7 +57,9 @@ self.addEventListener('message', function(e) {
 		
 			if (s[1]) {
 				for (var j = 0, _jlen = alphabet.length; j < _jlen; j++) {
-					inserts.push(s[0] + alphabet[j] + s[1]);
+					if (!((i == 0 || i == _len - 1) && alphabet[j] == " ")) {
+						inserts.push(s[0] + alphabet[j] + s[1]);
+					}
 				}
 			}
 		}
