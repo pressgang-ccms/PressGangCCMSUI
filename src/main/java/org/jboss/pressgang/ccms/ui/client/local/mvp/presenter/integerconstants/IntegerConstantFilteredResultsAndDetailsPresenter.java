@@ -186,21 +186,19 @@ implements BaseTemplatePresenterInterface {
             public void onClick(@NotNull final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
-                @NotNull final RESTIntegerConstantV1 selectedEntity = new RESTIntegerConstantV1();
+                final RESTIntegerConstantV1 selectedEntity = new RESTIntegerConstantV1();
                 selectedEntity.setId(Constants.NULL_ID);
-                @NotNull final RESTIntegerConstantCollectionItemV1 selectedTagWrapper = new RESTIntegerConstantCollectionItemV1(selectedEntity);
+                final RESTIntegerConstantCollectionItemV1 selectedTagWrapper = new RESTIntegerConstantCollectionItemV1(selectedEntity);
 
                 /* The displayed tag will also be blank. This is the object that our data will be saved into */
-                @NotNull final RESTIntegerConstantV1 displayedEntity = new RESTIntegerConstantV1();
+                final RESTIntegerConstantV1 displayedEntity = new RESTIntegerConstantV1();
                 displayedEntity.setId(Constants.NULL_ID);
-                @NotNull final RESTIntegerConstantCollectionItemV1 displayedTagWrapper = new RESTIntegerConstantCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
+                final RESTIntegerConstantCollectionItemV1 displayedTagWrapper = new RESTIntegerConstantCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
 
                 integerConstantFilteredResultsPresenter.getProviderData().setSelectedItem(selectedTagWrapper);
                 integerConstantFilteredResultsPresenter.getProviderData().setDisplayedItem(displayedTagWrapper);
 
-                initializeViews();
-
-                switchView(lastDisplayedView == null ? integerConstantPresenter.getDisplay() : lastDisplayedView);
+                updateViewsAfterNewEntityLoaded();
             }
         });
     }

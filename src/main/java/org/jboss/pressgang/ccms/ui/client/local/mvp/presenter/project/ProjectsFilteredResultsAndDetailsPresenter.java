@@ -345,24 +345,20 @@ public class ProjectsFilteredResultsAndDetailsPresenter
             public void onClick(@NotNull final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
-                @NotNull final RESTProjectV1 selectedEntity = new RESTProjectV1();
+                final RESTProjectV1 selectedEntity = new RESTProjectV1();
                 selectedEntity.setId(Constants.NULL_ID);
-                @NotNull final RESTProjectCollectionItemV1 selectedTagWrapper = new RESTProjectCollectionItemV1(selectedEntity);
+                final RESTProjectCollectionItemV1 selectedTagWrapper = new RESTProjectCollectionItemV1(selectedEntity);
 
                 /* The displayed tag will also be blank. This is the object that our data will be saved into */
-                @NotNull final RESTProjectV1 displayedEntity = new RESTProjectV1();
+                final RESTProjectV1 displayedEntity = new RESTProjectV1();
                 displayedEntity.setId(Constants.NULL_ID);
                 displayedEntity.setTags(new RESTTagCollectionV1());
-                @NotNull final RESTProjectCollectionItemV1 displayedTagWrapper = new RESTProjectCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
+                @final RESTProjectCollectionItemV1 displayedTagWrapper = new RESTProjectCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
 
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
 
-                initializeViews();
-
-                switchView(lastDisplayedView == null ? resultComponent.getDisplay() : lastDisplayedView);
-
-                tagComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+                updateViewsAfterNewEntityLoaded();
             }
         });
     }

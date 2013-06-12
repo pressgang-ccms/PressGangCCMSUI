@@ -454,15 +454,15 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                 public void onClick(@NotNull final ClickEvent event) {
 
                     /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
-                    @NotNull final RESTCategoryV1 selectedEntity = new RESTCategoryV1();
+                    final RESTCategoryV1 selectedEntity = new RESTCategoryV1();
                     selectedEntity.setId(Constants.NULL_ID);
-                    @NotNull final RESTCategoryCollectionItemV1 selectedTagWrapper = new RESTCategoryCollectionItemV1(selectedEntity);
+                    final RESTCategoryCollectionItemV1 selectedTagWrapper = new RESTCategoryCollectionItemV1(selectedEntity);
 
                     /* The displayed tag will also be blank. This is the object that our data will be saved into */
-                    @NotNull final RESTCategoryV1 displayedEntity = new RESTCategoryV1();
+                    final RESTCategoryV1 displayedEntity = new RESTCategoryV1();
                     displayedEntity.setId(Constants.NULL_ID);
                     displayedEntity.setTags(new RESTTagInCategoryCollectionV1());
-                    @NotNull final RESTCategoryCollectionItemV1 displayedTagWrapper = new RESTCategoryCollectionItemV1(displayedEntity,RESTBaseCollectionItemV1.ADD_STATE);
+                    final RESTCategoryCollectionItemV1 displayedTagWrapper = new RESTCategoryCollectionItemV1(displayedEntity,RESTBaseCollectionItemV1.ADD_STATE);
 
                     filteredResultsPresenter.getProviderData().setSelectedItem(selectedTagWrapper);
                     filteredResultsPresenter.getProviderData().setDisplayedItem(displayedTagWrapper);
@@ -470,9 +470,7 @@ public class CategoriesFilteredResultsAndDetailsPresenter
                     categoryTagPresenter.refreshExistingChildList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
                     categoryTagPresenter.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsPresenter.getProviderData().getDisplayedItem().getItem());
 
-                    initializeViews();
-
-                    switchView(lastDisplayedView == null ? categoryPresenter.getDisplay() : lastDisplayedView);
+                    updateViewsAfterNewEntityLoaded();
                 }
             });
         } finally {
