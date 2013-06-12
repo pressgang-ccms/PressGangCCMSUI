@@ -347,7 +347,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     @Override
     public void displayDiff(@NotNull final String lhs, boolean lhsReadOnly, @NotNull final String rhs) {
         diffParent.setWidget(null);
-        mergely = new Mergely(lhs, lhsReadOnly, rhs, true, true, Constants.XML_MIME_TYPE, true);
+        mergely = new Mergely(lhs, lhsReadOnly, rhs, true, true, Constants.XML_MIME_TYPE, false);
         this.getPanel().setWidget(diffPanel);
         diffParent.setWidget(mergely);
     }
