@@ -422,8 +422,8 @@ jQuery.extend(Mgly.mergely.prototype, {
 		this.element = jQuery(el);
 		
 		// save options if there are any
-		if (options && options.lhs_cmsettings) jQuery.extend(this.lhs_cmsettings, cmsettings, options.lhs_cmsettings, options.lhs_cmsettings);
-		if (options && options.cmsettings) jQuery.extend(this.rhs_cmsettings, cmsettings, options.cmsettings, options.rhs_cmsettings);
+		if (options && (options.cmsettings || options.lhs_cmsettings)) jQuery.extend(this.lhs_cmsettings, cmsettings, options.cmsettings, options.lhs_cmsettings);
+		if (options && (options.cmsettings || options.rhs_cmsettings)) jQuery.extend(this.rhs_cmsettings, cmsettings, options.cmsettings, options.rhs_cmsettings);
 		if (options) jQuery.extend(this.settings, options);
 		
 		// bind if the element is destroyed
