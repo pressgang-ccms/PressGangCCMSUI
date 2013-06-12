@@ -788,11 +788,7 @@ public class TagsFilteredResultsAndDetailsPresenter
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
 
-                initializeViews();
-
-                resetCategoryAndProjectsLists(true);
-
-                switchView(lastDisplayedView == null ? resultComponent.getDisplay() : lastDisplayedView);
+                updateViewsAfterNewEntityLoaded();
             }
         });
     }
