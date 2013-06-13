@@ -342,28 +342,21 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
-                checkState(filteredResultsComponent.getProviderData().getDisplayedItem() != null, "An item should have been displayed.");
-                checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed item should have a valid entity.");
-
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
-                @NotNull final RESTPropertyCategoryV1 selectedEntity = new RESTPropertyCategoryV1();
+                final RESTPropertyCategoryV1 selectedEntity = new RESTPropertyCategoryV1();
                 selectedEntity.setId(Constants.NULL_ID);
-                @NotNull final RESTPropertyCategoryCollectionItemV1 selectedTagWrapper = new RESTPropertyCategoryCollectionItemV1(selectedEntity);
+                final RESTPropertyCategoryCollectionItemV1 selectedTagWrapper = new RESTPropertyCategoryCollectionItemV1(selectedEntity);
 
                 /* The displayed tag will also be blank. This is the object that our data will be saved into */
-                @NotNull final RESTPropertyCategoryV1 displayedEntity = new RESTPropertyCategoryV1();
+                final RESTPropertyCategoryV1 displayedEntity = new RESTPropertyCategoryV1();
                 displayedEntity.setId(Constants.NULL_ID);
                 displayedEntity.setPropertyTags(new RESTPropertyTagInPropertyCategoryCollectionV1());
-                @NotNull final RESTPropertyCategoryCollectionItemV1 displayedTagWrapper = new RESTPropertyCategoryCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
+                final RESTPropertyCategoryCollectionItemV1 displayedTagWrapper = new RESTPropertyCategoryCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
 
                 filteredResultsComponent.getProviderData().setSelectedItem(selectedTagWrapper);
                 filteredResultsComponent.getProviderData().setDisplayedItem(displayedTagWrapper);
 
-                initializeViews();
-
-                switchView(lastDisplayedView == null ? resultComponent.getDisplay() : lastDisplayedView);
-
-                tagComponent.refreshPossibleChildrenDataFromRESTAndRedisplayList(filteredResultsComponent.getProviderData().getDisplayedItem().getItem());
+                updateViewsAfterNewEntityLoaded();
             }
         });
     }
