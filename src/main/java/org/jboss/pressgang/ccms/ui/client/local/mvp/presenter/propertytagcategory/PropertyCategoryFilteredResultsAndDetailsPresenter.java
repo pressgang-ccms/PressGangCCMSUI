@@ -214,7 +214,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
         /**
          * A click handler used to display the project fields view
          */
-        @NotNull final ClickHandler projectDetailsClickHandler = new ClickHandler() {
+        final ClickHandler projectDetailsClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 switchView(resultComponent.getDisplay());
@@ -225,7 +225,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
         /**
          * A click handler used to display the project tags view
          */
-        @NotNull final ClickHandler projectTagsClickHandler = new ClickHandler() {
+        final ClickHandler projectTagsClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 switchView(tagComponent.getDisplay());
@@ -236,7 +236,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
         /**
          * A click handler used to save any changes to the project
          */
-        @NotNull final ClickHandler saveClickHandler = new ClickHandler() {
+        final ClickHandler saveClickHandler = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 
@@ -251,7 +251,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
                 /* Sync the UI to the underlying object */
                 resultComponent.getDisplay().getDriver().flush();
 
-                @NotNull final RESTCallback<RESTPropertyCategoryV1> callback = new BaseRestCallback<RESTPropertyCategoryV1, Display>(display,
+                final RESTCallback<RESTPropertyCategoryV1> callback = new BaseRestCallback<RESTPropertyCategoryV1, Display>(display,
                         new BaseRestCallback.SuccessAction<RESTPropertyCategoryV1, Display>() {
                             @Override
                             public void doSuccessAction(@NotNull final RESTPropertyCategoryV1 retValue, @NotNull final Display display) {
@@ -283,7 +283,7 @@ public class PropertyCategoryFilteredResultsAndDetailsPresenter
                         checkState(filteredResultsComponent.getProviderData().getDisplayedItem().getItem() != null, "The displayed item should have a valid entity.");
 
                         final RESTPropertyCategoryV1 displayedItem = filteredResultsComponent.getProviderData().getDisplayedItem().getItem();
-                        @NotNull final RESTPropertyCategoryV1 propertyTag = new RESTPropertyCategoryV1();
+                        final RESTPropertyCategoryV1 propertyTag = new RESTPropertyCategoryV1();
 
                         propertyTag.setId(displayedItem.getId());
                         propertyTag.explicitSetName(displayedItem.getName());

@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2013 by Jamie Peabody, http://www.mergely.com
  * All rights reserved.
- * Version: 3.3.1 2013-05-12
+ * Version: 3.3.2 2013-06-13
  */
 Mgly = {};
 
@@ -356,8 +356,10 @@ jQuery.extend(Mgly.mergely.prototype, {
 		this.settings = {
 			autoupdate: true,
 			autoresize: true,
+			rhs_margin: 'right',
 			lcs: true,
 			sidebar: true,
+			viewport: false,
 			ignorews: false,
 			fadein: 'fast',
 			editor_width: '400px',
@@ -374,7 +376,6 @@ jQuery.extend(Mgly.mergely.prototype, {
 			_auto_width: function(w) { return w; },
 			resize: function() {
 				var w = jQuery(el).parent().width();
-				var h = jQuery(window).height();
 				if (this.width == 'auto') {
 					w = this._auto_width(w);
 				}
@@ -422,8 +423,8 @@ jQuery.extend(Mgly.mergely.prototype, {
 		this.element = jQuery(el);
 		
 		// save options if there are any
-		if (options && (options.cmsettings || options.lhs_cmsettings)) jQuery.extend(this.lhs_cmsettings, cmsettings, options.cmsettings, options.lhs_cmsettings);
-		if (options && (options.cmsettings || options.rhs_cmsettings)) jQuery.extend(this.rhs_cmsettings, cmsettings, options.cmsettings, options.rhs_cmsettings);
+		if (options && options.cmsettings) jQuery.extend(this.lhs_cmsettings, cmsettings, options.cmsettings, options.lhs_cmsettings);
+		if (options && options.cmsettings) jQuery.extend(this.rhs_cmsettings, cmsettings, options.cmsettings, options.rhs_cmsettings);
 		if (options) jQuery.extend(this.settings, options);
 		
 		// bind if the element is destroyed
@@ -611,8 +612,14 @@ jQuery.extend(Mgly.mergely.prototype, {
 		jQuery(this.element).append(jQuery('<div class="mergely-margin" style="height: ' + height + '"><canvas id="' + this.id + '-lhs-margin" width="8px" height="' + height + '"></canvas></div>'));
 		jQuery(this.element).append(jQuery('<div style="width:' + width + '; height:' + height + '" id="' + this.id + '-editor-lhs" class="mergely-column"><textarea style="" id="' + this.id + '-lhs"></textarea></div>'));
 		jQuery(this.element).append(jQuery('<div class="mergely-canvas" style="height: ' + height + '"><canvas id="' + this.id + '-lhs-' + this.id + '-rhs-canvas" style="width:28px" width="28px" height="' + height + '"></canvas></div>'));
+		var rmargin = jQuery('<div class="mergely-margin" style="height: ' + height + '"><canvas id="' + this.id + '-rhs-margin" width="8px" height="' + height + '"></canvas></div>');
+		if (this.settings.rhs_margin == 'left') {
+			jQuery(this.element).append(rmargin);
+		}
 		jQuery(this.element).append(jQuery('<div style="width:' + width + '; height:' + height + '" id="' + this.id + '-editor-rhs" class="mergely-column"><textarea style="" id="' + this.id + '-rhs"></textarea></div>'));
-		jQuery(this.element).append(jQuery('<div class="mergely-margin" style="height: ' + height + '"><canvas id="' + this.id + '-rhs-margin" width="8px" height="' + height + '"></canvas></div>'));
+		if (this.settings.rhs_margin != 'left') {
+			jQuery(this.element).append(rmargin);
+		}
 		//codemirror
 		var cmstyle = '#' + this.id + ' .CodeMirror-gutter-text { padding: 5px 0 0 0; }' +
 			'#' + this.id + ' .CodeMirror-lines pre, ' + '#' + this.id + ' .CodeMirror-gutter-text pre { line-height: 18px; }' +
@@ -834,6 +841,7 @@ jQuery.extend(Mgly.mergely.prototype, {
 		return {from: Math.min(lhsvp.from, rhsvp.from), to: Math.max(lhsvp.to, rhsvp.to)};
 	},
 	_is_change_in_view: function(vp, change) {
+		if (!this.settings.viewport) return true;
 		if ((change['lhs-line-from'] < vp.from && change['lhs-line-to'] < vp.to) ||
 			(change['lhs-line-from'] > vp.from && change['lhs-line-to'] > vp.to) ||
 			(change['rhs-line-from'] < vp.from && change['rhs-line-to'] < vp.to) ||
@@ -887,7 +895,7 @@ jQuery.extend(Mgly.mergely.prototype, {
 			}
 			
 			var ls, le, rs, re;
-			if (this.editor[editor_name1].getOption('lineWrapping') || this.editor[editor_name2].getOption('lineWrapping')) {
+			if (this.editor[editor_name1].getOption('lineWrapping') || this.editor[editor_name1].getOption('lineWrapping')) {
 				// If using line-wrapping, we must get the height of the line
 				var tls = this.editor[editor_name1].cursorCoords({line: change['lhs-line-from'], ch: 0}, 'page');
 				var lhssh = this.editor[editor_name1].getLineHandle(change['lhs-line-from']);
@@ -1157,9 +1165,9 @@ jQuery.extend(Mgly.mergely.prototype, {
 						{ line: change[oside + '-line-to'], ch: line[oside].text.length });
 				}
 				else if (change['op'] == 'a') {
-					ed[oside].replaceRange( text + '\n',
-						{ line: change[oside + '-line-from'], ch: 0 },
-						{ line: change[oside + '-line-to'], ch: 0 });
+					ed[oside].replaceRange( '\n' + text,
+						{ line: change[oside + '-line-from'], ch: line[oside].text.length },
+						{ line: change[oside + '-line-to'], ch: line[oside].text.length });
 				}
 				else {// 'd'
 					var from = parseInt(change[oside + '-line-from']);
