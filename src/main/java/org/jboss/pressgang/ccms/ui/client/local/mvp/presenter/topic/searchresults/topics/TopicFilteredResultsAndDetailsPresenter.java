@@ -11,15 +11,11 @@ import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
-import com.google.gwt.view.client.HasData;
-import com.google.gwt.xml.client.XMLParser;
-import com.google.gwt.xml.client.impl.DOMParseException;
 import org.jboss.errai.bus.client.api.Message;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
@@ -63,7 +59,6 @@ import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags
 import org.jboss.pressgang.ccms.ui.client.local.ui.editor.topicview.assignedtags.TopicTagViewTagEditor;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUICategory;
 import org.jboss.pressgang.ccms.ui.client.local.ui.search.tag.SearchUIProject;
-import org.jboss.pressgang.ccms.ui.client.local.utilities.EnhancedAsyncDataProvider;
 import org.jboss.pressgang.ccms.ui.client.local.utilities.GWTUtilities;
 import org.jboss.pressgang.ccms.utils.constants.CommonFilterConstants;
 import org.jetbrains.annotations.NotNull;
@@ -170,7 +165,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         @Override
         public void run() {
             if (lastDisplayedView == getTopicXMLComponent().getDisplay()) {
-                refreshRenderedView(false);
+                refreshSplitRenderedView(false);
             }
         }
     };
@@ -761,6 +756,19 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         try {
             LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.postAfterSwitchView()");
 
+
+            if (displayedView == this.topicRevisionsComponent.getDisplay()) {
+                /*
+                    Load the initial set of revisions.
+                */
+                loadRevisions();
+            } else {
+                /*
+                    Otherwise switch back to the view of revisions.
+                */
+                this.topicRevisionsComponent.getDisplay().displayRevisions();
+            }
+
             /* Set the projects combo box as the focused element */
             if (displayedView == this.getTopicTagsPresenter().getDisplay() && getTopicTagsPresenter().getDisplay().getProjectsList().isAttached()) {
 
@@ -769,12 +777,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 getTopicTagsPresenter().getDisplay().getProjectsList().getElement().focus();
             }
 
-            /*
-                Load the initial set of revisions.
-             */
-            if (displayedView == this.topicRevisionsComponent.getDisplay()) {
-                loadRevisions();
-            }
+
 
             if (displayedView == this.getTopicPropertyTagPresenter().getDisplay()) {
                 loadPropertyTags();
@@ -785,7 +788,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 timer.scheduleRepeating(Constants.REFRESH_RATE);
             } else {
                 timer.cancel();
-                refreshRenderedView(true);
+                refreshSplitRenderedView(true);
+            }
+
+            if (displayedView == getTopicRenderedPresenter().getDisplay()) {
+                refreshRenderedView();
             }
         } finally {
             LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.postAfterSwitchView()");
@@ -806,6 +813,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().setXml(lhs);
                         initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicXMLComponent().getDisplay()}));
                     }
+                    topicRevisionsComponent.getDisplay().displayRevisions();
+
+                }
+            });
+
+            topicRevisionsComponent.getDisplay().getCancel().addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(@NotNull final ClickEvent event) {
                     topicRevisionsComponent.getDisplay().displayRevisions();
 
                 }
@@ -1521,9 +1536,9 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * @param forceExternalImages true if external images should be displayed, false if they should only be displayed
      *                            after the topics has not been edited after a period of time
      */
-    private void refreshRenderedView(final boolean forceExternalImages) {
+    private void refreshSplitRenderedView(final boolean forceExternalImages) {
         try {
-            //LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.refreshRenderedView()");
+            //LOGGER.log(Level.INFO, "ENTER TopicFilteredResultsAndDetailsPresenter.refreshSplitRenderedView()");
 
             try {
                 getTopicXMLComponent().getDisplay().getDriver().flush();
@@ -1548,14 +1563,35 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 lastXML = this.getDisplayedTopic().getXml();
             }
         } finally {
-            //LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.refreshRenderedView()");
+            //LOGGER.log(Level.INFO, "EXIT TopicFilteredResultsAndDetailsPresenter.refreshSplitRenderedView()");
         }
+    }
+
+    private void refreshRenderedView() {
+        getTopicRenderedPresenter().getDisplay().displayTopicRendered(this.getDisplayedTopic().getXml(), isReadOnlyMode(), true);
     }
 
 
 
-    protected void beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
+    protected boolean beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
+
+        if (displayedView != topicRevisionsComponent.getDisplay() && lastDisplayedView == topicRevisionsComponent.getDisplay()) {
+
+            checkState(topicRevisionsComponent.getDisplay().getMergely() != null, "Mergely should be loaded.");
+            checkState(getDisplayedTopic() != null, "A topic or revision should be displayed.");
+            checkState(getSearchResultsComponent().getProviderData().getDisplayedItem() != null, "A topic should be displayed.");
+
+            if (getDisplayedTopic().getRevision() == getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision()) {
+                if (!topicRevisionsComponent.getDisplay().getMergely().getLhs().equals(getDisplayedTopic().getXml())) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         flushChanges();
+        return true;
     }
 
     /**

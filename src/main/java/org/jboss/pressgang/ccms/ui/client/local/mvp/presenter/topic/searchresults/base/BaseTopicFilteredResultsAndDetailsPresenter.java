@@ -104,9 +104,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      */
     @Inject
     private TopicBIRTBugsPresenter topicBugsPresenter;
-    /**
-     * The presenter used to display the topic's rendered view..
-     */
     @Inject
     private TopicRenderedPresenter topicRenderedPresenter;
     /**
@@ -963,6 +960,13 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         } else {
             component.setHelpTopicId(ServiceConstants.DEFAULT_HELP_TOPIC);
         }
+    }
+
+    /**
+     * The presenter used to display the topic's rendered view..
+     */
+    public TopicRenderedPresenter getTopicRenderedPresenter() {
+        return topicRenderedPresenter;
     }
 
 

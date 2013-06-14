@@ -52,6 +52,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     private final SimpleLayoutPanel diffParent = new SimpleLayoutPanel();
 
     private final PushButton done = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Done());
+    private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
 
     private Mergely mergely;
 
@@ -272,6 +273,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         final HorizontalPanel buttonPanel = new HorizontalPanel();
         buttonPanel.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF_BUTTON_PANEL);
         buttonPanel.add(done);
+        buttonPanel.add(cancel);
 
         diffPanel.addSouth(buttonPanel, 40);
         diffPanel.add(diffParent);
@@ -361,5 +363,10 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     @Nullable
     public Mergely getMergely() {
         return mergely;
+    }
+
+    @Override
+    public PushButton getCancel() {
+        return cancel;
     }
 }

@@ -61,6 +61,7 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         void setRevisionTopic(RESTTopicV1 revisionTopic);
 
         PushButton getDone();
+        PushButton getCancel();
         Mergely getMergely();
         void displayRevisions();
         void displayDiff(String lhs, boolean lhsReadOnly, String rhs);

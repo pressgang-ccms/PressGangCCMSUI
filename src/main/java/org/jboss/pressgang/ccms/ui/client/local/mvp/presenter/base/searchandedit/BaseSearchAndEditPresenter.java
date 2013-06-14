@@ -417,34 +417,35 @@ abstract public class BaseSearchAndEditPresenter<
         try {
             LOGGER.log(Level.INFO, "ENTER BaseSearchAndEditPresenter.switchView(final W displayedView)");
 
-            beforeSwitchView(displayedView);
+            if (beforeSwitchView(displayedView)) {
 
-            /* Show/Hide any localised loading dialogs */
-            if (lastDisplayedView != null) {
-                LOGGER.log(Level.INFO, "\tSetting old view to not shown");
-                lastDisplayedView.setViewShown(false);
+                /* Show/Hide any localised loading dialogs */
+                if (lastDisplayedView != null) {
+                    LOGGER.log(Level.INFO, "\tSetting old view to not shown");
+                    lastDisplayedView.setViewShown(false);
+                }
+
+                /* update the new view */
+                LOGGER.log(Level.INFO, "\tSetting new view to shown");
+                displayedView.setViewShown(true);
+
+
+                /* update the display widgets if we have changed displays */
+                if (lastDisplayedView != displayedView) {
+                    LOGGER.log(Level.INFO, "\tAdding new display to canvas");
+                    display.displayChildView(displayedView);
+                }
+
+                /* copy any changes from the property view into the underlying object */
+                if (lastDisplayedView == this.entityPropertiesView) {
+                    LOGGER.log(Level.INFO, "\tFlushing data from properties view");
+                    this.entityPropertiesView.getDriver().flush();
+                }
+
+                afterSwitchView(displayedView);
+
+                lastDisplayedView = displayedView;
             }
-
-            /* update the new view */
-            LOGGER.log(Level.INFO, "\tSetting new view to shown");
-            displayedView.setViewShown(true);
-
-
-            /* update the display widgets if we have changed displays */
-            if (lastDisplayedView != displayedView) {
-                LOGGER.log(Level.INFO, "\tAdding new display to canvas");
-                display.displayChildView(displayedView);
-            }
-
-            /* copy any changes from the property view into the underlying object */
-            if (lastDisplayedView == this.entityPropertiesView) {
-                LOGGER.log(Level.INFO, "\tFlushing data from properties view");
-                this.entityPropertiesView.getDriver().flush();
-            }
-
-            afterSwitchView(displayedView);
-
-            lastDisplayedView = displayedView;
 
 
         } finally {
@@ -466,8 +467,10 @@ abstract public class BaseSearchAndEditPresenter<
      * additional logic before a new screen has been displayed.
      *
      * @param displayedView The newly displayed screen.
+     * @return true if the switch should go ahead, and false otherwise
      */
-    protected void beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
+    protected boolean beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
+        return true;
     }
 
 
