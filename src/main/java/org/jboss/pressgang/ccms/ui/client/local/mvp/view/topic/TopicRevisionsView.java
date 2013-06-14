@@ -55,6 +55,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
 
     private Mergely mergely;
+    private boolean isDisplayingRevisions = true;
 
     /**
      * The panel that holds the table and pager.
@@ -334,6 +335,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     @Override
     public void displayRevisions() {
         this.getPanel().setWidget(searchResultsPanel);
+        isDisplayingRevisions = true;
     }
 
     /**
@@ -352,6 +354,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         mergely = new Mergely(lhs, lhsReadOnly, rhs, true, true, Constants.XML_MIME_TYPE, false);
         this.getPanel().setWidget(diffPanel);
         diffParent.setWidget(mergely);
+        isDisplayingRevisions = false;
     }
 
     @Override
@@ -368,5 +371,10 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     @Override
     public PushButton getCancel() {
         return cancel;
+    }
+
+    @Override
+    public boolean isDisplayingRevisions() {
+        return isDisplayingRevisions;
     }
 }

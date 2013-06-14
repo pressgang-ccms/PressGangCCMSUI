@@ -1571,11 +1571,17 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         getTopicRenderedPresenter().getDisplay().displayTopicRendered(this.getDisplayedTopic().getXml(), isReadOnlyMode(), true);
     }
 
-
-
+    /**
+     * Check to see if any changes were made while in the merge view. If so, prompt the user to confirm that they
+     * don't want to keep the changes.
+     * @param displayedView The newly displayed screen.
+     * @return true if the view switch should go ahead, and false otherwise
+     */
     protected boolean beforeSwitchView(@NotNull final BaseTemplateViewInterface displayedView) {
 
-        if (displayedView != topicRevisionsComponent.getDisplay() && lastDisplayedView == topicRevisionsComponent.getDisplay()) {
+        if (displayedView != topicRevisionsComponent.getDisplay() &&
+                lastDisplayedView == topicRevisionsComponent.getDisplay() &&
+                !topicRevisionsComponent.getDisplay().isDisplayingRevisions()) {
 
             checkState(topicRevisionsComponent.getDisplay().getMergely() != null, "Mergely should be loaded.");
             checkState(getDisplayedTopic() != null, "A topic or revision should be displayed.");

@@ -65,6 +65,7 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         Mergely getMergely();
         void displayRevisions();
         void displayDiff(String lhs, boolean lhsReadOnly, String rhs);
+        boolean isDisplayingRevisions();
     }
 
     /**
