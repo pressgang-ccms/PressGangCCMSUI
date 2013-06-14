@@ -78,7 +78,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     /**
      * true if the diff and view buttons in the revisions cell table are enabled, and false otherwise.
      */
-    private boolean buttonsEnabled = false;
+    private boolean buttonsEnabled = true;
 
     /**
      * The panel that holds the table and pager.
