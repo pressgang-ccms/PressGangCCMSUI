@@ -51,16 +51,33 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
      * A button used when rendering the diff button column.
      */
     private final DisableableButtonCell diffButtonCell = new DisableableButtonCell();
-
-
+    /**
+     * Holds the mergely elements and the ok/cancel buttons
+     */
     private final DockLayoutPanel diffPanel = new DockLayoutPanel(Style.Unit.PX);
+    /**
+     * The parent for the mergely elements. Needs to be a layout panel so resize events are propogated.
+     */
     private final SimpleLayoutPanel diffParent = new SimpleLayoutPanel();
-
+    /**
+     * The done button.
+     */
     private final PushButton done = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Done());
+    /**
+     * The cancel button.
+     */
     private final PushButton cancel = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.Cancel());
-
+    /**
+     * The current instance of the Mergely ui element.
+     */
     private Mergely mergely;
+    /**
+     * true if we are displaying the revisions, and false if we are displaying the mergely ui element.
+     */
     private boolean isDisplayingRevisions = true;
+    /**
+     * true if the diff and view buttons in the revisions cell table are enabled, and false otherwise.
+     */
     private boolean buttonsEnabled = false;
 
     /**
