@@ -1762,16 +1762,22 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 public void doSuccessAction(@NotNull final RESTTopicV1 retValue, final TopicRevisionsPresenter.Display display) {
                                     checkState(getDisplayedTopic() != null, "There should be a displayed item.");
 
-                                    final boolean lhsReadonly = getDisplayedTopic().getRevision() != getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision();
+                                    /*
+                                        It is possible to switch away from the view while this request was loading. If we
+                                        have done so, don't show the merge view.
+                                     */
+                                    if (lastDisplayedView == topicRevisionsComponent.getDisplay()) {
+                                        final boolean lhsReadonly = getDisplayedTopic().getRevision() != getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision();
 
-                                    topicRevisionsComponent.getDisplay().displayDiff(getDisplayedTopic().getXml(), lhsReadonly, retValue.getXml());
+                                        topicRevisionsComponent.getDisplay().displayDiff(getDisplayedTopic().getXml(), lhsReadonly, retValue.getXml());
+
+                                        /*
+                                            We can't save while merging.
+                                         */
+                                        getDisplay().getSave().setEnabled(false);
+                                    }
 
                                     topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
-
-                                    /*
-                                        We can't save while merging.
-                                     */
-                                    getDisplay().getSave().setEnabled(false);
 
                                 }
                             });
