@@ -1583,7 +1583,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
             if (getDisplayedTopic().getRevision() == getSearchResultsComponent().getProviderData().getDisplayedItem().getItem().getRevision()) {
                 if (!topicRevisionsComponent.getDisplay().getMergely().getLhs().equals(getDisplayedTopic().getXml())) {
-                    return true;
+                    return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
                 }
             }
 
