@@ -814,6 +814,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         initializeViews(Arrays.asList(new BaseTemplateViewInterface[]{getTopicXMLComponent().getDisplay()}));
                     }
                     topicRevisionsComponent.getDisplay().displayRevisions();
+                    getDisplay().getSave().setEnabled(!isReadOnlyMode());
 
                 }
             });
@@ -822,6 +823,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                 @Override
                 public void onClick(@NotNull final ClickEvent event) {
                     topicRevisionsComponent.getDisplay().displayRevisions();
+                    getDisplay().getSave().setEnabled(!isReadOnlyMode());
 
                 }
             });
@@ -1765,6 +1767,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     topicRevisionsComponent.getDisplay().displayDiff(getDisplayedTopic().getXml(), lhsReadonly, retValue.getXml());
 
                                     topicRevisionsComponent.getDisplay().setButtonsEnabled(true);
+
+                                    /*
+                                        We can't save while merging.
+                                     */
+                                    getDisplay().getSave().setEnabled(false);
 
                                 }
                             });
