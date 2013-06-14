@@ -39,6 +39,11 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     private static final Logger LOGGER = Logger.getLogger(TopicRevisionsView.class.getName());
 
     /**
+     * The height of the button panel in the merge view
+     */
+    private static final int BUTTON_PANEL_HEIGHT = 44;
+
+    /**
      * A button used when rendering the view button column.
      */
     private final DisableableButtonCell viewButtonCell = new DisableableButtonCell();
@@ -56,6 +61,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
 
     private Mergely mergely;
     private boolean isDisplayingRevisions = true;
+    private boolean buttonsEnabled = false;
 
     /**
      * The panel that holds the table and pager.
@@ -158,7 +164,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         @NotNull
         @Override
         public String getValue(@Nullable final RESTTopicCollectionItemV1 object) {
-            viewButtonCell.setEnabled(true);
+            viewButtonCell.setEnabled(buttonsEnabled);
 
             /*
              * The last revision is the same as the topic in the main database. We indicate that by showing the last revision as
@@ -190,7 +196,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         @NotNull
         @Override
         public String getValue(@Nullable final RESTTopicCollectionItemV1 object) {
-            diffButtonCell.setEnabled(true);
+            diffButtonCell.setEnabled(buttonsEnabled);
 
             if (mainTopic != null) {
                 if (object != null && object.getItem() != null && object.getItem().getRevision().equals(mainTopic.getRevision())) {
@@ -276,7 +282,7 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
         buttonPanel.add(done);
         buttonPanel.add(cancel);
 
-        diffPanel.addSouth(buttonPanel, 40);
+        diffPanel.addSouth(buttonPanel, BUTTON_PANEL_HEIGHT);
         diffPanel.add(diffParent);
         diffPanel.addStyleName(CSSConstants.TopicRevisionView.TOPIC_REVISION_DIFF_PANEL);
 
@@ -376,5 +382,16 @@ public class TopicRevisionsView extends BaseTemplateView implements TopicRevisio
     @Override
     public boolean isDisplayingRevisions() {
         return isDisplayingRevisions;
+    }
+
+    @Override
+    public boolean isButtonsEnabled() {
+        return buttonsEnabled;
+    }
+
+    @Override
+    public void setButtonsEnabled(boolean buttonsEnabled) {
+        this.buttonsEnabled = buttonsEnabled;
+        results.redraw();
     }
 }

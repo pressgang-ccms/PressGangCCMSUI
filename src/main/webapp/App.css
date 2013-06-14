@@ -1,6 +1,7 @@
 .TopicRevisionDiffButtonPanel {
     margin-top: 8px;
     margin-bottom: 8px;
+    border-spacing: 2px;
 }
 
 .TopicRevisionDiffPanel{

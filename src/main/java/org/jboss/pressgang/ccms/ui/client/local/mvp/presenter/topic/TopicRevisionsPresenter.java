@@ -66,6 +66,8 @@ public class TopicRevisionsPresenter extends BaseTemplatePresenter {
         void displayRevisions();
         void displayDiff(String lhs, boolean lhsReadOnly, String rhs);
         boolean isDisplayingRevisions();
+        boolean isButtonsEnabled();
+        void setButtonsEnabled(boolean buttonsEnabled);
     }
 
     /**
