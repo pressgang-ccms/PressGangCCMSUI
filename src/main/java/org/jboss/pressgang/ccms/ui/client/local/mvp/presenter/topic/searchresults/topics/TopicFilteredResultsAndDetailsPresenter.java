@@ -1586,8 +1586,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                     return Window.confirm(PressGangCCMSUI.INSTANCE.UnsavedChangesPrompt());
                 }
             }
-
-            return false;
         }
 
         flushChanges();
