@@ -1389,6 +1389,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                 }, new BaseRestCallback.FailureAction<Display>() {
                             @Override
                             public void doFailureAction(@NotNull final Display display) {
+                                failedFiled.add(files.getItem(index).getName());
                                 createNewTopic(overwrite, index + 1, files, ids, failedFiled, logMessage);
                             }
                         });
