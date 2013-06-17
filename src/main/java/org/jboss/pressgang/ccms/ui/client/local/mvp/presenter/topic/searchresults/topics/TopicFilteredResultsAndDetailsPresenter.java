@@ -1441,12 +1441,12 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 						// "Document topic.xml does not validate against docbook45.dtd" is a standard part of the error
                         // message, and is removed before being displayed.
                         var errorMessage = theseErrors.replace("\nDocument topic.xml does not validate against docbook45.dtd", "");
-                        if (theseErrors.length == 0) {
+                        if (errorMessage.length == 0) {
 							var strings = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
                             var noXmlErrors = strings.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::NoXMLErrors()();
                             errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(noXmlErrors);
                         } else {
-							errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(theseErrors);
+							errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(errorMessage);
                         }
 
 						var errorLineRegex = /topic.xml:(\d+):/g;
