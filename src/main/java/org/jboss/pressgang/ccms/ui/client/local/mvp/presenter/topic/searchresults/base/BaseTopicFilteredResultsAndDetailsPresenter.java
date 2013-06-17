@@ -89,11 +89,7 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
      */
     @Inject
     private TopicRenderedPresenter.Display topicSplitPanelRenderedDisplay;
-    /**
-     * The presenter used to display the XML errors.
-     */
-    @Inject
-    private TopicXMLErrorsPresenter topicXMLErrorsPresenter;
+
     /**
      * The presenter used to display the topic tags.
      */
@@ -164,10 +160,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
         return topicPropertyTagPresenter;
     }
 
-    @NotNull
-    protected final TopicXMLErrorsPresenter getTopicXMLErrorsPresenter() {
-        return topicXMLErrorsPresenter;
-    }
 
     @NotNull
     protected final TopicRenderedPresenter.Display getTopicSplitPanelRenderedDisplay() {
@@ -445,8 +437,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 getDisplay().replaceTopActionButton(getDisplay().getRendered(), getDisplay().getRenderedDown());
             } else if (displayedView == this.topicTagsPresenter.getDisplay()) {
                 getDisplay().replaceTopActionButton(getDisplay().getTopicTags(), getDisplay().getTopicTagsDown());
-            } else if (displayedView == this.topicXMLErrorsPresenter.getDisplay()) {
-                getDisplay().replaceTopActionButton(getDisplay().getXmlErrors(), getDisplay().getXmlErrorsDown());
             } else if (displayedView == this.topicSourceURLsPresenter.getDisplay()) {
                 getDisplay().replaceTopActionButton(getDisplay().getUrls(), getDisplay().getUrlsDown());
             }
@@ -568,15 +558,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 public void onClick(@NotNull final ClickEvent event) {
                     if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
                         switchView(topicRenderedPresenter.getDisplay());
-                    }
-                }
-            };
-
-            final ClickHandler topicXMLErrorsClickHandler = new ClickHandler() {
-                @Override
-                public void onClick(@NotNull final ClickEvent event) {
-                    if (getSearchResultsComponent().getProviderData().getDisplayedItem() != null) {
-                        switchView(topicXMLErrorsPresenter.getDisplay());
                     }
                 }
             };
@@ -703,7 +684,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             getDisplay().getExtendedProperties().addClickHandler(topicPropertyTagsClickHandler);
             getDisplay().getXml().addClickHandler(topicXMLClickHandler);
             getDisplay().getRendered().addClickHandler(topicRenderedClickHandler);
-            getDisplay().getXmlErrors().addClickHandler(topicXMLErrorsClickHandler);
             getDisplay().getTopicTags().addClickHandler(topicTagsClickHandler);
             getDisplay().getBugs().addClickHandler(topicBugsClickHandler);
             getDisplay().getCsps().addClickHandler(cspsHandler);
@@ -762,7 +742,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             */
             final List<BaseCustomViewInterface> displayableViews = new ArrayList<BaseCustomViewInterface>();
             displayableViews.add(topicXMLComponent.getDisplay());
-            displayableViews.add(topicXMLErrorsPresenter.getDisplay());
             displayableViews.add(topicTagsPresenter.getDisplay());
             displayableViews.add(topicBugsPresenter.getDisplay());
             displayableViews.add(topicPropertyTagPresenter.getDisplay());

@@ -1684,7 +1684,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
             /* These are read only views */
-            if (lastDisplayedView == getTopicXMLErrorsPresenter().getDisplay() || lastDisplayedView == getTopicTagsPresenter().getDisplay()) {
+            if (lastDisplayedView == getTopicTagsPresenter().getDisplay()) {
                 return;
             }
 
