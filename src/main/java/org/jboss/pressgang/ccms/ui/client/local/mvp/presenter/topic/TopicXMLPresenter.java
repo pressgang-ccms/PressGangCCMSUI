@@ -137,27 +137,28 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
     private Display display;
 
     /**
-     * Setup automatic xml error detection
+     * true while there is a thread checking the XML
      */
-    final Timer timer = new Timer() {
-        @Override
-        public void run() {
-            if (display != null) {
-                if (display.getEditor() != null) {
-                    final String xml = display.getEditor().getText();
-                    if (xml != null) {
-                        final String oldErrors = display.getXmlErrors().getText();
-                        final String errors = XMLUtilities.getXMLErrors(xml);
-                        if (errors == null) {
-                            display.getXmlErrors().setText(PressGangCCMSUI.INSTANCE.NoXMLErrors());
-                        } else if (!oldErrors.equals(errors)) {
-                            display.getXmlErrors().setText(errors);
-                        }
-                    }
+    private boolean checkingXML = true;
+
+    private native void checkXML() /*-{
+		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::checkingXML) {
+            var xml = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::display.getText();
+			var dtd = @org.jboss.pressgang.ccms.ui.client.local.constants.DTDConstants::DOCBOOK_45_DTD;
+            var errors = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::display.getXmlErrors();
+
+            var worker = new Worker('/javascript/xmllint/xmllint.js');
+            worker.addEventListener('message', function(e) {
+                var theseErrors = e.data;
+                var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
+                if (oldErrors != theseErrors) {
+                    errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(theseErrors);
+					this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::checkXML()();
                 }
-            }
+            }, false);
+            worker.postMessage({xml: xml, schema: dtd});
         }
-    };
+    }-*/;
 
     public TopicXMLPresenter() {
 
@@ -165,12 +166,12 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
 
     @PostConstruct
     private void postConstruct() {
-        timer.scheduleRepeating(Constants.REFRESH_RATE);
+        checkXML();
     }
 
     @PreDestroy
     private void preDestroy() {
-        timer.cancel();
+        checkingXML = false;
     }
 
     @NotNull

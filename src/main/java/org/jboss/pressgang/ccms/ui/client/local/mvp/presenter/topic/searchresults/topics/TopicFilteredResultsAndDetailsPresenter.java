@@ -171,6 +171,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     };
 
     /**
+     * Setup automatic xml validation
+     */
+
+    /**
      * true if this presenter should be opened with a fresh topic, and false otherwise
      */
     private boolean startWithNewTopic = false;
