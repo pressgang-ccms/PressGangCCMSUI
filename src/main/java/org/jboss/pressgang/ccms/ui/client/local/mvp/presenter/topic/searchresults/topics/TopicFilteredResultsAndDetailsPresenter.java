@@ -1431,7 +1431,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                         var lineNumbers = [];
                         while (match = errorLineRegex.exec(theseErrors)) {
                             if (match.length >= 1) {
-								lineNumbers.push(match[1]);
+								lineNumbers.push(parseInt(match[1]) - 1);
                             }
                         }
 
