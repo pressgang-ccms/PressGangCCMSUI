@@ -1416,10 +1416,25 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 			worker = new Worker('javascript/xmllint/xmllint.js');
 			worker.addEventListener('message', function(me) {
 				return function(e) {
-					var theseErrors = e.data;
+					var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
+
+                    var theseErrors = e.data;
 					var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
 					if (oldErrors != theseErrors) {
 						errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(theseErrors);
+
+						var errorLineRegex = /topic.xml:(\d+):/g;
+                        var match = null;
+                        var lineNumbers = [];
+                        while (match = errorLineRegex.exec(theseErrors)) {
+                            if (match.length >= 1) {
+								lineNumbers.push(match[1]);
+                            }
+                        }
+
+						if (editor != null) {
+                            editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::clearAndAddGutterDecoration([ILjava/lang/String;)(lineNumbers, "xmlerror");
+						}
 					}
 					me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
 				};}(this),
@@ -1430,7 +1445,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkingXML) {
 			var displayComponent = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLComponent()();
 			var display = displayComponent.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::getDisplay()();
-			var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
+
 
             if (editor != null) {
 				var xml = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
