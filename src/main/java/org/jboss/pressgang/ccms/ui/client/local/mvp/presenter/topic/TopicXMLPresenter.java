@@ -144,8 +144,10 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
 
     private native void checkXML(@NotNull final String dtd) /*-{
 		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::checkingXML) {
-            var xml = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::display.getText();
-            var errors = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::display.getXmlErrors();
+            var display = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::display;
+            var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
+		    var xml = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
+            var errors = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getXmlErrors()();
 
             var worker = new Worker('/javascript/xmllint/xmllint.js');
             worker.addEventListener('message', function(e) {
