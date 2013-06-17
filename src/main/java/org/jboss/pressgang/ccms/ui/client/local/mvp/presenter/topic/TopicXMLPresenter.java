@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.xml.client.DOMException;
@@ -141,10 +142,9 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
      */
     private boolean checkingXML = true;
 
-    private native void checkXML() /*-{
+    private native void checkXML(@NotNull final String dtd) /*-{
 		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::checkingXML) {
             var xml = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::display.getText();
-			var dtd = @org.jboss.pressgang.ccms.ui.client.local.constants.DTDConstants::DOCBOOK_45_DTD.toString();
             var errors = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::display.getXmlErrors();
 
             var worker = new Worker('/javascript/xmllint/xmllint.js');
@@ -153,7 +153,7 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
                 var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
                 if (oldErrors != theseErrors) {
                     errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(theseErrors);
-					this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::checkXML()();
+					this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::checkXML(Ljava/lang/String;)(dtd);
                 }
             }, false);
             worker.postMessage({xml: xml, schema: dtd});
@@ -164,9 +164,26 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
 
     }
 
+    /**
+     * Load the DTD file and start the XML checking cycle.
+     */
     @PostConstruct
     private void postConstruct() {
-        checkXML();
+        try {
+            new RequestBuilder(RequestBuilder.GET, "/javascript/xmllint/docbook.dtd").sendRequest("", new RequestCallback() {
+                @Override
+                public void onResponseReceived(@NotNull final Request req, @NotNull final Response resp) {
+                    checkXML(resp.getText());
+                }
+
+                @Override
+                public void onError(@NotNull final Request res, @NotNull final Throwable throwable) {
+                }
+            });
+        } catch (@NotNull final RequestException e) {
+            // do nothing
+        }
+
     }
 
     @PreDestroy

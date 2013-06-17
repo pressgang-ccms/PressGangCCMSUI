@@ -68,8 +68,8 @@
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.0.3/httpclient-4.0.3.jar" output-file-name="httpclient-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1.jar" output-file-name="httpcore-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar" output-file-name="jcip-annotations-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-restv1/1.0-SNAPSHOT/pressgang-ccms-restv1-1.0-20130521.063704-39.jar" output-file-name="pressgang-ccms-restv1-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-utils/1.0-SNAPSHOT/pressgang-ccms-utils-1.0-20130611.041451-35.jar" output-file-name="pressgang-ccms-utils-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-restv1/1.0-SNAPSHOT/pressgang-ccms-restv1-1.0-20130612.072413-41.jar" output-file-name="pressgang-ccms-restv1-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/pressgang-ccms-utils/1.0-SNAPSHOT/pressgang-ccms-utils-1.0-20130616.223813-37.jar" output-file-name="pressgang-ccms-utils-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/commons-lang/commons-lang/2.6/commons-lang-2.6.jar" output-file-name="commons-lang-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/xalan/xalan/2.7.1/xalan-2.7.1.jar" output-file-name="xalan-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/xalan/serializer/2.7.1/serializer-2.7.1.jar" output-file-name="serializer-.jar" />
@@ -99,8 +99,7 @@
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/resteasy/resteasy-jackson-provider/2.3.4.Final/resteasy-jackson-provider-2.3.4.Final.jar" output-file-name="resteasy-jackson-provider-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/codehaus/jackson/jackson-jaxrs/1.8.5/jackson-jaxrs-1.8.5.jar" output-file-name="jackson-jaxrs-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/joda-time/joda-time/2.1/joda-time-2.1.jar" output-file-name="joda-time-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/acegwt-client/1.0-SNAPSHOT/acegwt-client-1.0-SNAPSHOT.jar" output-file-name="acegwt-client-.jar" />
-          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/jquery-gwt/1.0-SNAPSHOT/jquery-gwt-1.0-SNAPSHOT.jar" output-file-name="jquery-gwt-.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/acegwt-client/1.0-SNAPSHOT/acegwt-client-1.0-20130613.005644-69.jar" output-file-name="acegwt-client-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jboss/pressgang/ccms/mergelygwt-client/1.0-SNAPSHOT/mergelygwt-client-1.0-SNAPSHOT.jar" output-file-name="mergelygwt-client-.jar" />
           <element id="file-copy" path="$MAVEN_REPOSITORY$/org/vectomatic/lib-gwt-file/0.3.1/lib-gwt-file-0.3.1.jar" output-file-name="lib-gwt-file-.jar" />
         </element>
