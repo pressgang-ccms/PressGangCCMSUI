@@ -149,7 +149,7 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
 		    var xml = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
             var errors = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getXmlErrors()();
 
-            var worker = new Worker('/javascript/xmllint/xmllint.js');
+            var worker = new Worker('javascript/xmllint/xmllint.js');
             worker.addEventListener('message', function(e) {
                 var theseErrors = e.data;
                 var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
@@ -172,7 +172,7 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
     @PostConstruct
     private void postConstruct() {
         try {
-            new RequestBuilder(RequestBuilder.GET, "/javascript/xmllint/docbook.dtd").sendRequest("", new RequestCallback() {
+            new RequestBuilder(RequestBuilder.GET, "javascript/xmllint/docbook.dtd").sendRequest("", new RequestCallback() {
                 @Override
                 public void onResponseReceived(@NotNull final Request req, @NotNull final Response resp) {
                     checkXML(resp.getText());
