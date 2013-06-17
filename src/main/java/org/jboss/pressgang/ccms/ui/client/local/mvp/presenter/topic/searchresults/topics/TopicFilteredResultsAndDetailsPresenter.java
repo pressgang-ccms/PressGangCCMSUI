@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.NativeEvent;
@@ -140,6 +141,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
      * true while there is a thread checking the XML
      */
     private boolean checkingXML = false;
+    /**
+     * The xmllint worker
+      */
+    private JavaScriptObject worker = null;
 
     /**
      * The global event bus.
@@ -1405,25 +1410,32 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     }
 
     private native void checkXML(@NotNull final String dtd) /*-{
-		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkingXML) {
+		var worker = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker;
+
+		if (worker == null) {
+			worker = new Worker('javascript/xmllint/xmllint.js');
+			worker.addEventListener('message', function(me) {
+				return function(e) {
+					var theseErrors = e.data;
+					var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
+					if (oldErrors != theseErrors) {
+						errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(theseErrors);
+					}
+					me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
+				};}(this),
+				false);
+			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker = worker;
+		}
+
+        if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkingXML) {
 			var displayComponent = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLComponent()();
 			var display = displayComponent.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::getDisplay()();
 			var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
-			if (editor != null) {
+
+            if (editor != null) {
 				var xml = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
 				var errors = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getXmlErrors()();
 
-				var worker = new Worker('javascript/xmllint/xmllint.js');
-				worker.addEventListener('message', function(me) {
-                    return function(e) {
-						var theseErrors = e.data;
-						var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
-						if (oldErrors != theseErrors) {
-							errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(theseErrors);
-						}
-						me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
-					};}(this),
-				false);
 				worker.postMessage({xml: xml, schema: dtd});
 			}
 		}
