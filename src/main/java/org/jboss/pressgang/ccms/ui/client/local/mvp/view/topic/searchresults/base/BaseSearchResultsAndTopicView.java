@@ -41,7 +41,6 @@ public abstract class BaseSearchResultsAndTopicView<
     private final PushButton fields;
     private final PushButton extendedProperties;
     private final PushButton xml;
-    private final PushButton xmlErrors;
     private final PushButton rendered;
     private final PushButton topicTags;
     private final PushButton bugs;
@@ -186,11 +185,6 @@ public abstract class BaseSearchResultsAndTopicView<
         return topicTags;
     }
 
-    @NotNull
-    @Override
-    public PushButton getXmlErrors() {
-        return xmlErrors;
-    }
 
     @NotNull
     @Override
@@ -242,7 +236,6 @@ public abstract class BaseSearchResultsAndTopicView<
         renderedSplit = UIUtilities.createPushButton(PressGangCCMSUI.INSTANCE.RenderedPane(), true);
         rendered = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.RenderedView());
         xml = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.XMLEditing());
-        xmlErrors = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
         fields = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.Properties());
         extendedProperties = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.PropertyTags());
         topicTags = UIUtilities.createTopTabPushButton(PressGangCCMSUI.INSTANCE.TopicTags());

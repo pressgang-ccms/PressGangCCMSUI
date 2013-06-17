@@ -424,7 +424,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
             this.getDisplay().replaceTopActionButton(this.getDisplay().getFieldsDown(), getDisplay().getFields());
             this.getDisplay().replaceTopActionButton(this.getDisplay().getRenderedDown(), getDisplay().getRendered());
             this.getDisplay().replaceTopActionButton(this.getDisplay().getTopicTagsDown(), getDisplay().getTopicTags());
-            this.getDisplay().replaceTopActionButton(this.getDisplay().getXmlErrorsDown(), getDisplay().getXmlErrors());
             this.getDisplay().replaceTopActionButton(this.getDisplay().getUrlsDown(), getDisplay().getUrls());
 
             if (displayedView == this.topicXMLComponent.getDisplay()) {
@@ -439,14 +438,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
                 getDisplay().replaceTopActionButton(getDisplay().getTopicTags(), getDisplay().getTopicTagsDown());
             } else if (displayedView == this.topicSourceURLsPresenter.getDisplay()) {
                 getDisplay().replaceTopActionButton(getDisplay().getUrls(), getDisplay().getUrlsDown());
-            }
-
-            if (getDisplayedTopic() != null && getDisplayedTopic().getXmlErrors() != null && !getDisplayedTopic().getXmlErrors().isEmpty()) {
-                getDisplay().getXmlErrors().addStyleName(CSSConstants.Common.ERROR);
-                getDisplay().getXmlErrorsDown().addStyleName(CSSConstants.Common.ERROR);
-            } else {
-                getDisplay().getXmlErrors().removeStyleName(CSSConstants.Common.ERROR);
-                getDisplay().getXmlErrorsDown().removeStyleName(CSSConstants.Common.ERROR);
             }
 
             postEnableAndDisableActionButtons(displayedView);
@@ -1014,16 +1005,6 @@ public abstract class BaseTopicFilteredResultsAndDetailsPresenter<
          * @return The button that is used to switch to the topic property tags view
          */
         Label getExtendedPropertiesDown();
-
-        /**
-         * @return The button that is used to switch to the XML errors view
-         */
-        PushButton getXmlErrors();
-
-        /**
-         * @return The button that is used to switch to the XML errors view
-         */
-        Label getXmlErrorsDown();
 
         /**
          * @return The button that is used to switch to the tags view
