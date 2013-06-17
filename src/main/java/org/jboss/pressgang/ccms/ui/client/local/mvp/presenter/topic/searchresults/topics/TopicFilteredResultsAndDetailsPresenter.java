@@ -28,6 +28,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.items.RESTTopicCollectionIte
 import org.jboss.pressgang.ccms.rest.v1.collections.items.join.RESTCategoryInTagCollectionItemV1;
 import org.jboss.pressgang.ccms.rest.v1.collections.join.RESTAssignedPropertyTagCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.*;
+import org.jboss.pressgang.ccms.rest.v1.entities.join.RESTAssignedPropertyTagV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -1327,7 +1328,7 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         } else {
             display.addWaitOperation();
 
-            @NotNull final FileReader reader = new FileReader();
+            final FileReader reader = new FileReader();
 
             reader.addErrorHandler(new org.vectomatic.file.events.ErrorHandler() {
                 @Override
@@ -1353,6 +1354,14 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                             newTopic.explicitSetTags(bulkImportTemplate.getTags());
                             newTopic.explicitSetLocale(defaultLocale);
                             newTopic.explicitSetTitle(PressGangCCMSUI.INSTANCE.ImportedTopic());
+                            newTopic.explicitSetProperties(new RESTAssignedPropertyTagCollectionV1());
+
+                            /* save the original file name */
+                            final RESTAssignedPropertyTagV1 originalFileName = new RESTAssignedPropertyTagV1();
+                            originalFileName.setValue(files.getItem(index).getName());
+                            originalFileName.setId(ServiceConstants.ORIGINAL_FILE_NAME_PROPERTY_TAG);
+
+                            newTopic.getProperties().addNewItem(originalFileName);
                         }
 
                         final RESTCalls.RESTCallback<RESTTopicV1> callback = new BaseRestCallback<RESTTopicV1, Display>(

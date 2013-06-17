@@ -8,6 +8,11 @@ package org.jboss.pressgang.ccms.ui.client.local.constants;
 public final class ServiceConstants {
 
     /**
+     * Original file name property tag
+     */
+    public static final int ORIGINAL_FILE_NAME_PROPERTY_TAG = 28;
+
+    /**
      * Used to indicate a minor change to an entity.
      */
     public static final byte MINOR_CHANGE = 0x01;
