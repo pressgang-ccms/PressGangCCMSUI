@@ -1013,6 +1013,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                                     LOGGER.log(Level.INFO, "Refreshing editor");
                                                     if (getTopicXMLComponent().getDisplay().getEditor() != null) {
                                                         getTopicXMLComponent().getDisplay().getEditor().redisplay();
+                                                        /*
+                                                            This forces the xml validation to rehighlight the invalid rows
+                                                         */
+                                                        getTopicXMLComponent().getDisplay().getXmlErrors().setText("");
                                                     }
 
                                                     Window.alert(PressGangCCMSUI.INSTANCE.TopicSaveSuccessWithID() + " " + retValue.getId());
@@ -1024,6 +1028,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     @Override
                                     public void doFailureAction(final Display display) {
                                         getTopicXMLComponent().getDisplay().getEditor().redisplay();
+                                        /*
+                                            This forces the xml validation to rehighlight the invalid rows
+                                         */
+                                        getTopicXMLComponent().getDisplay().getXmlErrors().setText("");
                                     }
                                 }
                                 );
@@ -1105,6 +1113,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
                                                     if (getTopicXMLComponent().getDisplay().getEditor() != null) {
                                                         getTopicXMLComponent().getDisplay().getEditor().redisplay();
+                                                        /*
+                                                            This forces the xml validation to rehighlight the invalid rows
+                                                         */
+                                                        getTopicXMLComponent().getDisplay().getXmlErrors().setText("");
                                                     }
                                                 }
                                             }
@@ -1112,6 +1124,10 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
                                     @Override
                                     public void doFailureAction(final Display display) {
                                         getTopicXMLComponent().getDisplay().getEditor().redisplay();
+                                        /*
+                                            This forces the xml validation to rehighlight the invalid rows
+                                         */
+                                        getTopicXMLComponent().getDisplay().getXmlErrors().setText("");
                                     }
                                 }
                                 );
@@ -1419,7 +1435,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 			worker = new Worker('javascript/xmllint/xmllint.js');
 			worker.addEventListener('message', function(me) {
 				return function(e) {
-
 
                     var theseErrors = e.data;
 					var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
