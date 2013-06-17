@@ -49,7 +49,6 @@ public abstract class BaseSearchResultsAndTopicView<
 
     private final Label fieldsDown;
     private final Label xmlDown;
-    private final Label xmlErrorsDown;
     private final Label renderedDown;
     private final Label tagsDown;
     private final Label bugsDown;
@@ -105,12 +104,6 @@ public abstract class BaseSearchResultsAndTopicView<
     @Override
     public Label getXmlDown() {
         return xmlDown;
-    }
-
-    @NotNull
-    @Override
-    public Label getXmlErrorsDown() {
-        return xmlErrorsDown;
     }
 
     @NotNull
@@ -245,7 +238,6 @@ public abstract class BaseSearchResultsAndTopicView<
 
         fieldsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Properties());
         xmlDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.XMLEditing());
-        xmlErrorsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.XMLValidationErrors());
         renderedDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.RenderedView());
         tagsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.TopicTags());
         bugsDown = UIUtilities.createTopTabDownLabel(PressGangCCMSUI.INSTANCE.Bugs());
@@ -379,7 +371,6 @@ public abstract class BaseSearchResultsAndTopicView<
         addActionButton(this.getRenderedSplit());
         addActionButton(this.getRendered());
         addActionButton(this.getXml());
-        addActionButton(this.getXmlErrors());
         addActionButton(this.getFields());
         addActionButton(this.getExtendedProperties());
         addActionButton(this.getUrls());
