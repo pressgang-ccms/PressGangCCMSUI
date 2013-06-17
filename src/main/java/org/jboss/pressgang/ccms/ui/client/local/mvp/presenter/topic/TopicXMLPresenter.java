@@ -137,30 +137,7 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
     @Inject
     private Display display;
 
-    /**
-     * true while there is a thread checking the XML
-     */
-    private boolean checkingXML = true;
 
-    private native void checkXML(@NotNull final String dtd) /*-{
-		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::checkingXML) {
-            var display = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::display;
-            var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
-		    var xml = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
-            var errors = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getXmlErrors()();
-
-            var worker = new Worker('javascript/xmllint/xmllint.js');
-            worker.addEventListener('message', function(e) {
-                var theseErrors = e.data;
-                var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
-                if (oldErrors != theseErrors) {
-                    errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(theseErrors);
-					this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::checkXML(Ljava/lang/String;)(dtd);
-                }
-            }, false);
-            worker.postMessage({xml: xml, schema: dtd});
-        }
-    }-*/;
 
     public TopicXMLPresenter() {
 
@@ -171,26 +148,13 @@ public class TopicXMLPresenter extends BaseTemplatePresenter {
      */
     @PostConstruct
     private void postConstruct() {
-        try {
-            new RequestBuilder(RequestBuilder.GET, "javascript/xmllint/docbook.dtd").sendRequest("", new RequestCallback() {
-                @Override
-                public void onResponseReceived(@NotNull final Request req, @NotNull final Response resp) {
-                    checkXML(resp.getText());
-                }
 
-                @Override
-                public void onError(@NotNull final Request res, @NotNull final Throwable throwable) {
-                }
-            });
-        } catch (@NotNull final RequestException e) {
-            // do nothing
-        }
 
     }
 
     @PreDestroy
     private void preDestroy() {
-        checkingXML = false;
+
     }
 
     @NotNull

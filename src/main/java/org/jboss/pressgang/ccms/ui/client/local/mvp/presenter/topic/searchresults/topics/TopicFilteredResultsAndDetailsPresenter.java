@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.http.client.*;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.*;
@@ -134,6 +135,11 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
     private TopicRevisionsPresenter topicRevisionsComponent;
     @Inject
     private Display display;
+
+    /**
+     * true while there is a thread checking the XML
+     */
+    private boolean checkingXML = false;
 
     /**
      * The global event bus.
@@ -788,11 +794,37 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
             }
 
                 /* While editing the XML, we need to setup a refresh of the rendered view */
-            if (displayedView == this.getTopicXMLComponent().getDisplay() && this.getDisplay().getSplitType() != SplitType.NONE && !isReadOnlyMode()) {
-                timer.scheduleRepeating(Constants.REFRESH_RATE);
+            if (displayedView == this.getTopicXMLComponent().getDisplay()) {
+                if (this.getDisplay().getSplitType() != SplitType.NONE && !isReadOnlyMode()) {
+                    timer.scheduleRepeating(Constants.REFRESH_RATE);
+                }
+
+                /* This should always be false */
+                if (!checkingXML) {
+                    checkingXML = true;
+
+                    /*
+                        Load the DTD and start checking the XML
+                     */
+                    try {
+                        new RequestBuilder(RequestBuilder.GET, "javascript/xmllint/docbook.dtd").sendRequest("", new RequestCallback() {
+                            @Override
+                            public void onResponseReceived(@NotNull final Request req, @NotNull final Response resp) {
+                                checkXML(resp.getText());
+                            }
+
+                            @Override
+                            public void onError(@NotNull final Request res, @NotNull final Throwable throwable) {
+                            }
+                        });
+                    } catch (@NotNull final RequestException e) {
+                        // do nothing
+                    }
+                }
             } else {
                 timer.cancel();
                 refreshSplitRenderedView(true);
+                checkingXML = false;
             }
 
             if (displayedView == getTopicRenderedPresenter().getDisplay()) {
@@ -1372,6 +1404,30 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
         }
     }
 
+    private native void checkXML(@NotNull final String dtd) /*-{
+		if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkingXML) {
+			var displayComponent = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLComponent()();
+			var display = displayComponent.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::getDisplay()();
+			var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
+			if (editor != null) {
+				var xml = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
+				var errors = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getXmlErrors()();
+
+				var worker = new Worker('javascript/xmllint/xmllint.js');
+				worker.addEventListener('message', function(me) {
+                    return function(e) {
+						var theseErrors = e.data;
+						var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
+						if (oldErrors != theseErrors) {
+							errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(theseErrors);
+							me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
+						}
+					};}(this),
+				false);
+				worker.postMessage({xml: xml, schema: dtd});
+			}
+		}
+	}-*/;
 
     @Override
     protected void postInitializeViews(@Nullable final List<BaseTemplateViewInterface> filter) {
