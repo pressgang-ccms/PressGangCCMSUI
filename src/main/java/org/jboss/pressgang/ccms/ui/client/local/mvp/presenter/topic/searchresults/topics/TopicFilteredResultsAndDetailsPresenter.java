@@ -1411,12 +1411,15 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 
     private native void checkXML(@NotNull final String dtd) /*-{
 		var worker = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::worker;
+		var displayComponent = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLComponent()();
+		var display = displayComponent.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::getDisplay()();
+		var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
 
 		if (worker == null) {
 			worker = new Worker('javascript/xmllint/xmllint.js');
 			worker.addEventListener('message', function(me) {
 				return function(e) {
-					var editor = display.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter.Display::getEditor()();
+
 
                     var theseErrors = e.data;
 					var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
@@ -1443,9 +1446,6 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 		}
 
         if (this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkingXML) {
-			var displayComponent = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::getTopicXMLComponent()();
-			var display = displayComponent.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicXMLPresenter::getDisplay()();
-
 
             if (editor != null) {
 				var xml = editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()();
