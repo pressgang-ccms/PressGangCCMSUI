@@ -1420,8 +1420,8 @@ public class TopicFilteredResultsAndDetailsPresenter extends BaseTopicFilteredRe
 						var oldErrors = errors.@com.google.gwt.user.client.ui.TextArea::getText()();
 						if (oldErrors != theseErrors) {
 							errors.@com.google.gwt.user.client.ui.TextArea::setText(Ljava/lang/String;)(theseErrors);
-							me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
 						}
+						me.@org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.searchresults.topics.TopicFilteredResultsAndDetailsPresenter::checkXML(Ljava/lang/String;)(dtd);
 					};}(this),
 				false);
 				worker.postMessage({xml: xml, schema: dtd});
