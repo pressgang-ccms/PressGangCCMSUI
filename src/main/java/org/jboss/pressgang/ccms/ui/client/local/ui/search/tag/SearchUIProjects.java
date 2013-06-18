@@ -205,7 +205,7 @@ public class SearchUIProjects implements SearchViewBase {
     @Override
     public final String getSearchQuery(final boolean includeQueryPrefix) {
 
-        @NotNull final StringBuilder builder = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
+        final StringBuilder builder = new StringBuilder(includeQueryPrefix ? Constants.QUERY_PATH_SEGMENT_PREFIX_WO_SEMICOLON : "");
 
         for (@NotNull final SearchUIProject project : this.projects) {
             for (@NotNull final SearchUICategory category : project.getCategories()) {

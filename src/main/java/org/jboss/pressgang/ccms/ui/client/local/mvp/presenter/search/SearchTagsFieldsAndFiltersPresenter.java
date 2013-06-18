@@ -13,6 +13,7 @@ import org.jboss.pressgang.ccms.rest.v1.collections.base.RESTBaseCollectionItemV
 import org.jboss.pressgang.ccms.rest.v1.collections.items.*;
 import org.jboss.pressgang.ccms.rest.v1.components.ComponentTagV1;
 import org.jboss.pressgang.ccms.rest.v1.components.GWTComponentTopicV1;
+import org.jboss.pressgang.ccms.rest.v1.constants.CommonFilterConstants;
 import org.jboss.pressgang.ccms.rest.v1.entities.*;
 import org.jboss.pressgang.ccms.ui.client.local.constants.Constants;
 import org.jboss.pressgang.ccms.ui.client.local.constants.ServiceConstants;
@@ -173,7 +174,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
      * Adds logic to the filter action buttons
      */
     private void bindFilterActionButtons(@NotNull final RESTTagCollectionV1 tags) {
-        @NotNull final ClickHandler loadClickHanlder = new ClickHandler() {
+        final ClickHandler loadClickHanlder = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
                 checkState(searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem() != null, "There should be a displayed collection item.");
@@ -185,13 +186,11 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             }
         };
 
-        @NotNull final ClickHandler loadAndSearchClickHandler = new ClickHandler() {
+        final ClickHandler loadAndSearchClickHandler = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 final RESTFilterV1 displayedFilter = searchFilterResultsAndFilterPresenter.getSearchFilterFilteredResultsPresenter().getProviderData().getDisplayedItem().getItem();
-                @NotNull final SearchUIProjects projects = new SearchUIProjects(tags, displayedFilter);
-                @NotNull final SearchUIFields fields = new SearchUIFields(displayedFilter);
-                @NotNull final String query = projects.getSearchQuery(true) + fields.getSearchQuery(false);
+                final String query = Constants.QUERY_PATH_SEGMENT_PREFIX + CommonFilterConstants.FILTER_ID + "=" + displayedFilter.getId();
                 if (doingTranslatedSearch) {
                     eventBus.fireEvent(new TranslatedSearchResultsAndTopicViewEvent(query, GWTUtilities.isEventToOpenNewWindow(event)));
                 } else {
@@ -204,9 +203,9 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             A filter instance to be shared between the click handlers for create and overwrite, and the save
             dialog ok click handler.
         */
-        @NotNull final RESTFilterV1 filter = new RESTFilterV1();
+        final RESTFilterV1 filter = new RESTFilterV1();
 
-        @NotNull final ClickHandler createFilter = new ClickHandler() {
+        final ClickHandler createFilter = new ClickHandler() {
             @Override
             public void onClick(final ClickEvent event) {
                 try {
@@ -226,7 +225,7 @@ public class SearchTagsFieldsAndFiltersPresenter extends BaseTemplatePresenter i
             }
         };
 
-        @NotNull final ClickHandler overwriteFilter = new ClickHandler() {
+        final ClickHandler overwriteFilter = new ClickHandler() {
             @Override
             public void onClick(@NotNull final ClickEvent event) {
 

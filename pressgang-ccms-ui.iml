@@ -38,6 +38,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: com.github.tony19:named-regexp:0.1.8" level="project" />
     <orderEntry type="library" name="Maven: com.intellij:annotations:9.0.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:jsp-api:2.0" level="project" />
@@ -117,7 +118,7 @@
     <orderEntry type="library" name="Maven: xalan:xalan:2.7.1" level="project" />
     <orderEntry type="library" name="Maven: xalan:serializer:2.7.1" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.pressgang.ccms:gozirra-pressgang:0.5-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: com.github.tony19:named-regexp:0.1.8" level="project" />
+    <orderEntry type="library" name="Maven: com.github.tony19:named-regexp:0.1.9" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.pressgang.ccms:pressgang-ccms-zanata:1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.zanata:zanata-rest-client:2.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.zanata:zanata-common-api:2.0.0" level="project" />
