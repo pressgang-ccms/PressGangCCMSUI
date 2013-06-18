@@ -201,14 +201,14 @@ implements BaseTemplatePresenterInterface {
             public void onClick(@NotNull final ClickEvent event) {
 
                 /* The 'selected' tag will be blank. This gives us something to compare to when checking for unsaved changes */
-                @NotNull final RESTBlobConstantV1 selectedEntity = new RESTBlobConstantV1();
+                final RESTBlobConstantV1 selectedEntity = new RESTBlobConstantV1();
                 selectedEntity.setId(Constants.NULL_ID);
-                @NotNull final RESTBlobConstantCollectionItemV1 selectedTagWrapper = new RESTBlobConstantCollectionItemV1(selectedEntity);
+                final RESTBlobConstantCollectionItemV1 selectedTagWrapper = new RESTBlobConstantCollectionItemV1(selectedEntity);
 
                 /* The displayed tag will also be blank. This is the object that our data will be saved into */
-                @NotNull final RESTBlobConstantV1 displayedEntity = new RESTBlobConstantV1();
+                final RESTBlobConstantV1 displayedEntity = new RESTBlobConstantV1();
                 displayedEntity.setId(Constants.NULL_ID);
-                @NotNull final RESTBlobConstantCollectionItemV1 displayedTagWrapper = new RESTBlobConstantCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
+                final RESTBlobConstantCollectionItemV1 displayedTagWrapper = new RESTBlobConstantCollectionItemV1(displayedEntity, RESTBaseCollectionItemV1.ADD_STATE);
 
                 blobConstantFilteredResultsPresenter.getProviderData().setSelectedItem(selectedTagWrapper);
                 blobConstantFilteredResultsPresenter.getProviderData().setDisplayedItem(displayedTagWrapper);
@@ -333,7 +333,7 @@ implements BaseTemplatePresenterInterface {
                                 /*
                                  * Create the blob constant to be modified. This is so we don't send off unnecessary data.
                                  */
-                                final boolean wasNewEntity = blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId() == null;
+                                final boolean wasNewEntity = blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().returnIsAddItem();
                                 final RESTBlobConstantV1 updateEntity = new RESTBlobConstantV1();
                                 updateEntity.setId(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getId());
                                 updateEntity.explicitSetName(blobConstantFilteredResultsPresenter.getProviderData().getDisplayedItem().getItem().getName());
