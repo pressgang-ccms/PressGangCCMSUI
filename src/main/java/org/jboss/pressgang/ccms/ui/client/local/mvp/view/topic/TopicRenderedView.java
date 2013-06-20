@@ -119,7 +119,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
 		var pressGang = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
 
-		var html = convertDocbookToHTML(xml);
+		var html = $wnd.convertDocbookToHTML(xml);
 
         this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::fillIframe(Ljava/lang/String;)(
             "<html>" +
