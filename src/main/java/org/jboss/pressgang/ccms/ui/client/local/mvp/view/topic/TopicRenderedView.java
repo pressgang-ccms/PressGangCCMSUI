@@ -59,7 +59,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 				} else {
 					me.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::fillIframe(Ljava/lang/String;)(
 						"<html><head></head><body>" +
-							pressGang.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::TopicCouldNotBeRendered() +
+							pressGang.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::TopicCouldNotBeRendered()() +
 						"</body></html>");
 				}
 
