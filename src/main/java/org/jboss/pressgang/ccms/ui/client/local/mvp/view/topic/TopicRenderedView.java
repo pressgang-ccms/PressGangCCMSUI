@@ -1,12 +1,15 @@
 package org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
+import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import hu.szaboaz.gwt.xslt.client.XsltProcessingException;
 import hu.szaboaz.gwt.xslt.client.XsltProcessor;
+import org.jboss.pressgang.ccms.rest.v1.entities.RESTTopicV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.base.RESTBaseTopicV1;
 import org.jboss.pressgang.ccms.ui.client.local.constants.CSSConstants;
 import org.jboss.pressgang.ccms.ui.client.local.mvp.presenter.topic.TopicRenderedPresenter;
@@ -24,9 +27,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
     private final IFrameElement frame = Document.get().createIFrameElement();
 
-    // Any number of processors can be created, they will behave
-    // independently. Every stylesheet have to have its own processor.
-    final XsltProcessor processor = new XsltProcessor();
+    private JavaScriptObject worker;
 
     public TopicRenderedView() {
         super(PressGangCCMSUI.INSTANCE.PressGangCCMS(), PressGangCCMSUI.INSTANCE.SearchResults() + " - "
@@ -34,51 +35,52 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
         frame.setFrameBorder(0);
         frame.addClassName(CSSConstants.TopicRenderedView.RENDERED_IFRAME);
         this.getPanel().getElement().appendChild(frame);
-
     }
+
+    private native void createWorker(@NotNull final AceEditor editor, @NotNull final String xsl) /*-{
+        this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::worker = new Worker("javascript/xsl/transform.js");
+
+        var worker = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::worker;
+		var pressGang = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
+
+        worker.addEventListener('message', function(me) {
+            return function(e) {
+				if (e.data != null) {
+					this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::fillIframe(Ljava/lang/String;)(
+						"<html>" +
+							"<head>" +
+                                "<link rel=\"stylesheet\" type=\"text/css\" href=\"common.css\">" +
+                                "<link rel=\"stylesheet\" type=\"text/css\" href=\"overrides.css\">" +
+							"</head>" +
+							"<body>" +
+                                e.data +
+							"</body>" +
+                        "</html>");
+				} else {
+					me.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::fillIframe(Ljava/lang/String;)(
+						"<html><head></head><body>" +
+							pressGang.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::TopicCouldNotBeRendered() +
+						"</body></html>");
+				}
+
+				if (worker.running) {
+					worker.postMessage({xml: editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()()});
+				};
+			}}(this));
+        worker.running = true;
+		worker.postMessage({xsl: xsl});
+		worker.postMessage({xml: editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()()});
+    }-*/;
+
+
 
     @Override
     public final void display(final RESTBaseTopicV1<?, ?, ?> topic, final boolean readOnly) {
-        throw new UnsupportedOperationException("TopicRenderedView.display() is not supported. Use TopicRenderedView.displayTopicRendered() instead.");
+        throw new UnsupportedOperationException("TopicRenderedView.display() is not supported. Use TopicRenderedView.displayEditorRendered() instead.");
     }
 
-    @Override
-    public final void displayTopicRendered(@Nullable final String topicXML, @Nullable final String xsl, final boolean readOnly, final boolean showImages) {
-
-        if (xsl == null) {
-            fillIframe(frame, "<html><head></head><body>" + PressGangCCMSUI.INSTANCE.LoadingXSL() + "</body></html>");
-        } else {
-            try {
-                processor.importStyleSheet(xsl);
-
-                // define how the images are handled
-                processor.setParameter("externalImages", showImages + "");
-
-                processor.setParameter("class.prefix", "");
-
-                // Setting the document to be transformed
-                processor.importSource(topicXML == null ? "" : topicXML);
-
-                // Getting the result
-                final String resultString = processor.transform();
-                fillIframe(frame,
-                        "<html>" +
-                            "<head>" +
-                                "<link rel=\"stylesheet\" type=\"text/css\" href=\"common.css\">" +
-                                "<link rel=\"stylesheet\" type=\"text/css\" href=\"overrides.css\">" +
-                            "</head>" +
-                            "<body>" +
-                                resultString +
-                            "</body>" +
-                        "</html>");
-
-            } catch (@NotNull final XsltProcessingException ex) {
-                fillIframe(frame, "<html><head></head><body>" + PressGangCCMSUI.INSTANCE.TopicCouldNotBeRendered() + "</body></html>");
-            }
-        }
-    }
-
-    private native void fillIframe(final IFrameElement iframe, final String content) /*-{
+    private native void fillIframe(final String content) /*-{
+        var iframe = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::frame;
         var doc = iframe.document;
         if (iframe.contentDocument) {
 			// For NS6
@@ -95,6 +97,72 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
         }
     }-*/;
 
+    /**
+     * Starts a loop that will render the contents of the ACE editor in a background thread.
+     * @param editor The editor that has the source XML
+     * @param xsl The XSL to transform the XML against
+     */
+    @Override
+    public native void displayEditorRendered(@Nullable final AceEditor editor, @NotNull final String xsl) /*-{
+
+		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::stop()();
+
+        var pressGang = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
+
+        if (xsl == null) {
+            this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::fillIframe(Ljava/lang/String;)(
+                "<html><head></head><body>" +
+					pressGang.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::LoadingXSL() +
+                 "</body></html>");
+        } else {
+			this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::createWorker(Ledu/ycp/cs/dh/acegwt/client/ace/AceEditor;Ljava/lang/String;)(editor, xsl);
+        }
+    }-*/;
+
+    /**
+     * Renders the supplied xml once
+     * @param xml The source XML
+     * @param xsl The XSL to transform the XML against
+     */
+    @Override
+    public native void displayStringRendered(@NotNull final String xml, @NotNull final String xsl) /*-{
+		var worker = new Worker("javascript/xsl/transform.js");
+		var pressGang = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
+
+		worker.addEventListener('message', function(data) {
+			if (data != null) {
+				this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::fillIframe(Ljava/lang/String;)(
+					"<html>" +
+						"<head>" +
+						"<link rel=\"stylesheet\" type=\"text/css\" href=\"common.css\">" +
+						"<link rel=\"stylesheet\" type=\"text/css\" href=\"overrides.css\">" +
+						"</head>" +
+						"<body>" +
+						data +
+						"</body>" +
+						"</html>");
+			} else {
+				this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::fillIframe(Ljava/lang/String;)(
+					"<html><head></head><body>" +
+						pressGang.@org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::TopicCouldNotBeRendered() +
+                    "</body></html>");
+			}
+
+		});
+
+		worker.postMessage({xsl: xsl});
+		worker.postMessage({xml: xml});
+	}-*/;
+
+    @Override
+    public native void stop() /*-{
+		var worker = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::worker;
+
+		// cancel the exiting worker
+		if (worker != null) {
+			worker.running = false;
+		}
+	}-*/;
 
     @Override
     @NotNull

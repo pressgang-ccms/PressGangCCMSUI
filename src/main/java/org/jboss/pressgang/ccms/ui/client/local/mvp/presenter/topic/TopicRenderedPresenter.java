@@ -4,6 +4,7 @@ import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasWidgets;
+import edu.ycp.cs.dh.acegwt.client.ace.AceEditor;
 import org.jboss.pressgang.ccms.rest.v1.collections.RESTTopicCollectionV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTBlobConstantV1;
 import org.jboss.pressgang.ccms.rest.v1.entities.RESTStringConstantV1;
@@ -29,8 +30,10 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
     public static final String HISTORY_TOKEN = "TopicRenderedView";
 
     public interface Display extends BaseTemplateViewInterface, BaseCustomViewInterface<RESTBaseTopicV1<?, ?, ?>> {
-        void displayTopicRendered(@Nullable final String topicXML, @Nullable final String xsl, final boolean readOnly, final boolean showImages);
+        void displayEditorRendered(@Nullable final AceEditor editor, @NotNull final String xsl);
+        void displayStringRendered(@NotNull final String xml, @NotNull final String xsl);
         IFrameElement getFrame();
+        void stop();
     }
 
     /**
@@ -73,7 +76,7 @@ public class TopicRenderedPresenter extends BaseTemplatePresenter {
                             new BaseRestCallback.SuccessAction<RESTStringConstantV1, Display>() {
                                 @Override
                                 public void doSuccessAction(final RESTStringConstantV1 string, final Display display) {
-                                    display.displayTopicRendered(topic.getXml(), string.getValue(), true, true);
+                                    display.displayStringRendered(topic.getXml(), string.getValue());
                                 }
                         });
                     RESTCalls.getStringConstant(xslCallback, ServiceConstants.XSL_STRING_CONSTANT);
