@@ -38,7 +38,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
     }
 
     private native void createWorker(@NotNull final AceEditor editor, @NotNull final String xsl) /*-{
-        this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::worker = new Worker("javascript/xsl/transform.js");
+        this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::worker = new Worker("javascript/xsltproc/xsltproc.js");
 
         var worker = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::worker;
 		var pressGang = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
@@ -68,7 +68,6 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 				};
 			}}(this));
         worker.running = true;
-		worker.postMessage({xsl: xsl});
 		worker.postMessage({xml: editor.@edu.ycp.cs.dh.acegwt.client.ace.AceEditor::getText()()});
     }-*/;
 
@@ -126,7 +125,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
      */
     @Override
     public native void displayStringRendered(@NotNull final String xml, @NotNull final String xsl) /*-{
-		var worker = new Worker("javascript/xsl/transform.js");
+		var worker = new Worker("javascript/xsltproc/xsltproc.js");
 		var pressGang = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
 
 		worker.addEventListener('message', function(data) {
@@ -150,7 +149,6 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
 		});
 
-		worker.postMessage({xsl: xsl});
 		worker.postMessage({xml: xml});
 	}-*/;
 
