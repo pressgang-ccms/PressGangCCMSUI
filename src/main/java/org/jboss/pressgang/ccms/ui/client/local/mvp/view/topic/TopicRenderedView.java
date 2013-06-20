@@ -37,7 +37,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
         this.getPanel().getElement().appendChild(frame);
     }
 
-    private native void createWorker(@NotNull final AceEditor editor, @NotNull final String xsl) /*-{
+    private native void createWorker(@NotNull final AceEditor editor) /*-{
         this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::worker = new Worker("javascript/xsltproc/xsltproc.js");
 
         var worker = this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::worker;
@@ -107,7 +107,7 @@ public class TopicRenderedView extends BaseTemplateView implements TopicRendered
 
         var pressGang = @org.jboss.pressgang.ccms.ui.client.local.resources.strings.PressGangCCMSUI::INSTANCE;
 
-		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::createWorker(Ledu/ycp/cs/dh/acegwt/client/ace/AceEditor;Ljava/lang/String;)(editor, xsl);
+		this.@org.jboss.pressgang.ccms.ui.client.local.mvp.view.topic.TopicRenderedView::createWorker(Ledu/ycp/cs/dh/acegwt/client/ace/AceEditor;)(editor);
     }-*/;
 
     /**
